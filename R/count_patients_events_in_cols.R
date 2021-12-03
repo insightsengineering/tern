@@ -50,7 +50,7 @@ s_count_patients_and_multiple_events <- function(df, #nolint
                                                  empty_stats = character(),
                                                  labelstr = "",
                                                  custom_label = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.string(id),
     is_fully_named_list(filters_list),

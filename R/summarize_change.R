@@ -34,7 +34,7 @@ s_change_from_baseline <- function(df,
                                    variables,
                                    na.rm = TRUE,  #nolint
                                    ...) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, c(variables, list(chg = .var))),
     is.numeric(df[[variables$value]]),
     is.numeric(df[[.var]]),

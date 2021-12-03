@@ -98,9 +98,9 @@ of the treatment arm effect estimate across models.}
 and the covariate).}
 }
 \value{
-The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible into formulas (e.g \code{\link[=as.formula]{as.formula()}}).
+The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
 
-The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible into formulas (e.g \code{\link[=as.formula]{as.formula()}}).
+The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
 
 The function \code{fit_coxreg_univar} returns a \code{coxreg.univar} class object which is a named list
 with 5 elements:
@@ -205,7 +205,7 @@ attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
 dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 plot(
-  survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
+  survfit(survival::Surv(time, status) ~ armcd + covar1, data = dta_bladder),
   lty= 2:4, xlab="Months",
   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 )
@@ -351,14 +351,14 @@ multivar_covs_model <- fit_coxreg_multivar(
   data = dta_bladder
 )
 
-mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
+mod <- coxph(survival::Surv(time, status) ~ armcd + var1, data = dta_simple)
 result <- h_coxreg_multivar_extract(
   var = "var1", mod = mod, data = dta_simple
 )
 result
 
 library(broom)
-tidy(multivar_model)
+broom::tidy(multivar_model)
 
 
 # s_coxreg
@@ -370,7 +370,7 @@ univar_model <- fit_coxreg_univar(
   ),
   data = dta_bladder
 )
-df1 <- tidy(univar_model)
+df1 <- broom::tidy(univar_model)
 s_coxreg(df = df1, .var = "hr")
 
 # Only covariates.
@@ -381,7 +381,7 @@ univar_covs_model <- fit_coxreg_univar(
   ),
   data = dta_bladder
 )
-df1_covs <- tidy(univar_covs_model)
+df1_covs <- broom::tidy(univar_covs_model)
 s_coxreg(df = df1_covs, .var = "hr")
 
 # Multivariate.
@@ -392,7 +392,7 @@ multivar_model <- fit_coxreg_multivar(
   ),
   data = dta_bladder
 )
-df2 <- tidy(multivar_model)
+df2 <- broom::tidy(multivar_model)
 s_coxreg(df = df2, .var = "hr")
 
 # Multivariate without treatment arm.
@@ -403,7 +403,7 @@ multivar_covs_model <- fit_coxreg_multivar(
   ),
   data = dta_bladder
 )
-df2_covs <- tidy(multivar_covs_model)
+df2_covs <- broom::tidy(multivar_covs_model)
 s_coxreg(df = df2_covs, .var = "hr")
 
 

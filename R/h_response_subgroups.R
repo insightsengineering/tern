@@ -46,7 +46,7 @@ NULL
 #'
 h_proportion_df <- function(rsp, arm) {
 
-  assert_that(
+  assertthat::assert_that(
     is.logical(rsp),
     is_valid_factor(arm),
     is_equal_length(rsp, arm)
@@ -112,7 +112,7 @@ h_proportion_subgroups_df <- function(variables,
                                       groups_lists = list(),
                                       label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
@@ -177,7 +177,7 @@ h_proportion_subgroups_df <- function(variables,
 #'
 h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
 
-  assert_that(
+  assertthat::assert_that(
     is_valid_factor(arm),
     is_equal_length(rsp, arm),
     are_equal(nlevels(arm), 2)
@@ -193,7 +193,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
     strata_var <- interaction(strata_data, drop = TRUE)
     strata_name <- "strata"
 
-    assert_that(
+    assertthat::assert_that(
       is_valid_factor(strata_var),
       are_equal(length(strata_var), nrow(df_rsp))
     )
@@ -337,7 +337,7 @@ h_odds_ratio_subgroups_df <- function(variables,
                                       method = NULL,
                                       label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),

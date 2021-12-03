@@ -9,7 +9,6 @@
 #' @param name a character identifier for the grob.
 #' @param gp A \code{\link{gpar}} object.
 #'
-#' @importFrom grid gList gTree grid.layout unit unit.c viewport
 #' @export
 #'
 #' @examples
@@ -33,7 +32,7 @@
 #'
 stack_grobs <- function(...,
                         grobs = list(...),
-                        padding = unit(2, "line"),
+                        padding = grid::unit(2, "line"),
                         vp = NULL,
                         gp = NULL,
                         name = NULL) {
@@ -48,7 +47,7 @@ stack_grobs <- function(...,
     seq(1, n_layout),
     function(i) {
       if (i %% 2 != 0) {
-        unit(1, "null")
+        grid::unit(1, "null")
       } else {
         padding
       }
@@ -56,24 +55,24 @@ stack_grobs <- function(...,
   )
   hts <- do.call(unit.c, hts)
 
-  main_vp <- viewport(
-    layout = grid.layout(nrow = n_layout, ncol = 1, heights = hts)
+  main_vp <- grid::viewport(
+    layout = grid::grid.layout(nrow = n_layout, ncol = 1, heights = hts)
   )
 
   nested_grobs <- Map(function(g, i) {
-    gTree(
-      children = gList(g),
-      vp = viewport(layout.pos.row = i, layout.pos.col = 1)
+    grid::gTree(
+      children = grid::gList(g),
+      vp = grid::viewport(layout.pos.row = i, layout.pos.col = 1)
     )
   }, grobs, seq_along(grobs) * 2 - 1)
 
-  grobs_mainvp <- gTree(
+  grobs_mainvp <- grid::gTree(
     children = do.call(gList, nested_grobs),
     vp = main_vp
   )
 
-  gTree(
-    children = gList(grobs_mainvp),
+  grid::gTree(
+    children = grid::gList(grobs_mainvp),
     vp = vp,
     gp = gp,
     name = name
@@ -91,15 +90,13 @@ stack_grobs <- function(...,
 #' @param padding_ht unit of length 1, vertical space between each grob.
 #' @param padding_wt unit of length 1, horizontal space between each grob.
 #'
-#' @import grid
-#'
 #' @export
 #'
 #' @examples
 #' library(grid)
 #'
 #' num <- lapply(1:9, textGrob)
-#' grid.newpage()
+#' grid::grid.newpage()
 #' grid.draw(arrange_grobs(grobs = num, ncol = 2))
 #'
 #' showViewport()
@@ -107,17 +104,17 @@ stack_grobs <- function(...,
 #' g1 <- circleGrob(gp = gpar(col = "blue"))
 #' g2 <- circleGrob(gp = gpar(col = "red"))
 #' g3 <- textGrob("TEST TEXT")
-#' grid.newpage()
+#' grid::grid.newpage()
 #' grid.draw(arrange_grobs(g1, g2, g3, nrow = 2))
 #'
 #' showViewport()
 #'
-#' grid.newpage()
+#' grid::grid.newpage()
 #' grid.draw(arrange_grobs(g1, g2, g3, ncol = 3))
 #'
-#' grid.newpage()
-#' pushViewport(viewport(layout = grid.layout(1,2)))
-#' vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
+#' grid::grid.newpage()
+#' grid::pushViewport(grid::viewport(layout = grid::grid.layout(1,2)))
+#' vp1 <- grid::viewport(layout.pos.row = 1, layout.pos.col = 2)
 #' grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 #'
 #' showViewport()
@@ -125,8 +122,8 @@ stack_grobs <- function(...,
 arrange_grobs <- function(...,
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
-                          padding_ht = unit(2, "line"),
-                          padding_wt = unit(2, "line"),
+                          padding_ht = grid::unit(2, "line"),
+                          padding_wt = grid::unit(2, "line"),
                           vp = NULL,
                           gp = NULL,
                           name = NULL) {
@@ -159,7 +156,7 @@ arrange_grobs <- function(...,
     seq(1, n_row),
     function(i) {
       if (i %% 2 != 0) {
-        unit(1, "null")
+        grid::unit(1, "null")
       } else {
         padding_ht
       }
@@ -171,7 +168,7 @@ arrange_grobs <- function(...,
     seq(1, n_col),
     function(i) {
       if (i %% 2 != 0) {
-        unit(1, "null")
+        grid::unit(1, "null")
       } else {
         padding_wt
       }
@@ -179,8 +176,8 @@ arrange_grobs <- function(...,
   )
   wts <- do.call(unit.c, wts)
 
-  main_vp <- viewport(
-    layout = grid.layout(nrow = n_row, ncol = n_col, widths = wts, heights = hts)
+  main_vp <- grid::viewport(
+    layout = grid::grid.layout(nrow = n_row, ncol = n_col, widths = wts, heights = hts)
   )
 
   nested_grobs <- list()
@@ -190,20 +187,20 @@ arrange_grobs <- function(...,
       k <- k + 1
       if (k <= length(grobs)) {
         nested_grobs <- c(nested_grobs,
-                          list(gTree(
-                            children = gList(grobs[[k]]),
-                            vp = viewport(layout.pos.row = i, layout.pos.col = j)
+                          list(grid::gTree(
+                            children = grid::gList(grobs[[k]]),
+                            vp = grid::viewport(layout.pos.row = i, layout.pos.col = j)
                           )))
       }
     }
   }
-  grobs_mainvp <- gTree(
+  grobs_mainvp <- grid::gTree(
     children = do.call(gList, nested_grobs),
     vp = main_vp
   )
 
-  gTree(
-    children = gList(grobs_mainvp),
+  grid::gTree(
+    children = grid::gList(grobs_mainvp),
     vp = vp,
     gp = gp,
     name = name
@@ -219,15 +216,14 @@ arrange_grobs <- function(...,
 #' @param newpage draw on a new page
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #'
-#' @importFrom grid grid.draw grid.newpage pushViewport
 #' @export
 #'
 #' @examples
 #' library(dplyr)
 #' library(grid)
 #'
-#' rect <- rectGrob(width = unit(0.5, "npc"), height = unit(0.5, "npc"))
-#' rect %>% draw_grob(vp = viewport(angle = 45))
+#' rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
+#' rect %>% draw_grob(vp = grid::viewport(angle = 45))
 #'
 #' num <- lapply(1:10, textGrob)
 #' num %>%
@@ -237,10 +233,10 @@ arrange_grobs <- function(...,
 #'
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {
-    grid.newpage()
+    grid::grid.newpage()
   }
   if (!is.null(vp)) {
-    pushViewport(vp)
+    grid::pushViewport(vp)
   }
   grid.draw(grob)
 }
@@ -250,8 +246,7 @@ tern_grob <- function(x) { # nousage # nolint
   x
 }
 
-#' @importFrom grid grid.draw grid.newpage
 print.ternGrob <- function(x, ...) { # nousage # nolint
-  grid.newpage()
+  grid::grid.newpage()
   grid.draw(x)
 }

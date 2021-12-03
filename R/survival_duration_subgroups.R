@@ -112,7 +112,6 @@ extract_survival_subgroups <- function(variables,
 
 #' @describeIn survival_duration_subgroups Formatted Analysis function used to format the results of
 #'   [extract_survival_subgroups()]. Returns is a list of Formatted Analysis functions with one element per statistic.
-#' @importFrom rtables in_rows
 #' @export
 #' @examples
 #' a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
@@ -128,7 +127,7 @@ a_survival_subgroups <- function(.formats = list(
   pval = "x.xxxx | (<0.0001)")
 ) {
 
-  assert_that(
+  assertthat::assert_that(
     is.list(.formats),
     all_elements_in_ref(
       names(.formats),
@@ -139,7 +138,7 @@ a_survival_subgroups <- function(.formats = list(
   afun_lst <- Map(function(stat, fmt) {
     if (stat == "ci") {
       function(df, labelstr = "", ...) {
-        in_rows(
+        rtables::in_rows(
           .list = combine_vectors(df$lcl, df$ucl),
           .labels = as.character(df$subgroup),
           .formats = fmt
@@ -147,7 +146,7 @@ a_survival_subgroups <- function(.formats = list(
       }
     } else {
       function(df, labelstr = "", ...) {
-        in_rows(
+        rtables::in_rows(
           .list = as.list(df[[stat]]),
           .labels = as.character(df$subgroup),
           .formats = fmt
@@ -337,7 +336,7 @@ d_survival_subgroups_colvars <- function(vars,
                                          method,
                                          time_unit = NULL) {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(vars),
     is.string(time_unit) || is.null(time_unit),
     all_elements_in_ref(c("hr", "ci"), vars),

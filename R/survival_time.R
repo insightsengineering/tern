@@ -19,9 +19,6 @@ NULL
 #' @describeIn survival_time Statistics Function which analyzes survival times.
 #'  `range_censor` and `range_event`.
 #'
-#' @importFrom stats as.formula quantile
-#' @importFrom survival Surv survfit
-#'
 #' @export
 #'
 #' @return The statistics are:
@@ -49,7 +46,7 @@ s_surv_time <- function(df,
                         .var,
                         is_event,
                         control = control_surv_time()) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
     is.string(.var),
     is_numeric_vector(df[[.var]]),
@@ -60,15 +57,15 @@ s_surv_time <- function(df,
   conf_level <- control$conf_level
   quantiles <- control$quantiles
 
-  formula <- as.formula(paste0("Surv(", .var, ", ", is_event, ") ~ 1"))
-  srv_fit <- survfit(
+  formula <- stats::as.formula(paste0("survival::Surv(", .var, ", ", is_event, ") ~ 1"))
+  srv_fit <- survival::survfit(
     formula = formula,
     data = df,
     conf.int = conf_level,
     conf.type = conf_type
   )
   srv_tab <- summary(srv_fit, extend = TRUE)$table
-  srv_qt_tab <- quantile(srv_fit, probs = quantiles)$quantile
+  srv_qt_tab <- stats::quantile(srv_fit, probs = quantiles)$quantile
   range_censor <- range_noinf(df[[.var]][!df[[is_event]]], na.rm = TRUE)
   range_event <- range_noinf(df[[.var]][df[[is_event]]], na.rm = TRUE)
   range <- range_noinf(df[[.var]], na.rm = TRUE)

@@ -9,24 +9,22 @@
 #'
 #' @return e vector with the new strings
 #'
-#' @importFrom grid convertWidth gpar grobWidth textGrob unit
-#'
 #' @noRd
 #'
 #' @author Adrian Waddell
 #'
 #' @examples
 #' text <- "This is a test with many words and more"
-#' teal.modules.clinical:::wrap_text(txt = text, width = unit(4, "cm"), collapse = "\n")
-#' teal.modules.clinical:::wrap_text(txt = text, width = unit(5, "cm"), collapse = "\n")
+#' teal.modules.clinical:::wrap_text(txt = text, width = grid::unit(4, "cm"), collapse = "\n")
+#' teal.modules.clinical:::wrap_text(txt = text, width = grid::unit(5, "cm"), collapse = "\n")
 #'
 wrap_text <- function(txt, # nousage # nolint
-                      width = convertWidth(unit(1, "npc"), "inch", TRUE),
-                      gp = gpar(),
+                      width = grid::convertWidth(grid::unit(1, "npc"), "inch", TRUE),
+                      gp = grid::gpar(),
                       collapse = NULL) {
 
   if (is.unit(width)) {
-    width <- convertWidth(width, "inch", TRUE)
+    width <- grid::convertWidth(width, "inch", TRUE)
   }
 
   if (length(txt) == 0) {
@@ -35,7 +33,7 @@ wrap_text <- function(txt, # nousage # nolint
 
   g_string_width <- function(label) {
     vapply(label,
-           function(lab) convertWidth(grobWidth(textGrob(lab, gp = gp)), "inch", TRUE),
+           function(lab) grid::convertWidth(grid::grobWidth(grid::textGrob(lab, gp = gp)), "inch", TRUE),
            numeric(1)
     )
   }

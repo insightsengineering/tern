@@ -25,7 +25,7 @@ library(grid)
 
 fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
-  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+  survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
 gg <- h_ggkm(
@@ -37,11 +37,11 @@ gg <- h_ggkm(
 
 g_el <- h_decompose_gg(gg)
 
-grid.newpage()
-pvp <- plotViewport(margins = c(5, 4, 2, 20))
+grid::grid.newpage()
+pvp <- grid::plotViewport(margins = c(5, 4, 2, 20))
 pushViewport(pvp)
-grid.draw(h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
-grid.rect(gp = gpar(lty = 1, col = "gray35", fill = NA))
+grid::grid.draw(h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
+grid.rect(gp = grid::gpar(lty = 1, col = "gray35", fill = NA))
 }
 
 }

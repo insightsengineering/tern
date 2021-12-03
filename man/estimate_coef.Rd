@@ -72,17 +72,17 @@ ADTTE <- synthetic_cdisc_data("latest")$adtte \%>\%
 ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 ADTTE$SEX <- droplevels(ADTTE$SEX)
 
-mod <- coxph(
+mod <- survival::coxph(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
   data = ADTTE
 )
 
-mmat <- model.matrix(mod)[1, ]
+mmat <- stats::model.matrix(mod)[1, ]
 mmat[!mmat == 0] <- 0
 
 estimate_coef(
   variable = "ARMCD", given = "SEX",
-  coef = coef(mod), mmat = mmat, vcov = vcov(mod), data = ADTTE, conf_level = .95
+  coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), data = ADTTE, conf_level = .95
 )
 }
 

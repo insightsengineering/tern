@@ -86,7 +86,7 @@ extract_rsp_biomarkers <- function(variables,
                                    groups_lists = list(),
                                    control = control_logistic(),
                                    label_all = "All Patients") {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
     is.string(variables$rsp),
     is.character(variables$subgroups) || is.null(variables$subgroups),

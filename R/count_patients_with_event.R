@@ -60,7 +60,7 @@ s_count_patients_with_event <- function(df,
   col_names <- names(filters)
   filter_values <- filters
 
-  assert_that(all(col_names %in% colnames(df)))
+  assertthat::assert_that(all(col_names %in% colnames(df)))
 
   temp <- Map(
     function(x, y) which(df[[x]] == y),
@@ -213,7 +213,7 @@ s_count_patients_with_flags <- function(df,
   flag_names <- unname(flag_variables)
   flag_variables <- names(flag_variables)
 
-  assert_that(all(flag_variables %in% colnames(df)))
+  assertthat::assert_that(all(flag_variables %in% colnames(df)))
   temp <- sapply(flag_variables, function(x) {
     tmp <- Map(function(y) which(df[[y]]), x)
     position_satisfy_flags <- Reduce(intersect, tmp)

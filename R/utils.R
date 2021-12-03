@@ -22,7 +22,7 @@
 #'
 range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
-  assert_that(is.numeric(x), msg = "Argument x in range_noinf function must be of class numeric.")
+  assertthat::assert_that(is.numeric(x), msg = "Argument x in range_noinf function must be of class numeric.")
 
   if (finite) {
     x <- x[is.finite(x)] # removes NAs too
@@ -51,7 +51,7 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 #' @noRd
 #'
 f_conf_level <- function(conf_level) {
-  assert_that(is_proportion(conf_level))
+  assertthat::assert_that(is_proportion(conf_level))
   paste0(conf_level * 100, "% CI")
 }
 
@@ -61,12 +61,10 @@ f_conf_level <- function(conf_level) {
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #' @return a named `list` of character vector.
 #'
-#' @importFrom stats setNames
-#'
 get_covariates <- function(covariates) {
-  assert_that(is.character(covariates))
+  assertthat::assert_that(is.character(covariates))
   cov_vars <- unique(trimws(unlist(strsplit(covariates, "\\*"))))
-  setNames(as.list(cov_vars), cov_vars)
+  stats::setNames(as.list(cov_vars), cov_vars)
 }
 
 #' Replicate Entries of a Vector if Required
@@ -98,8 +96,6 @@ to_n <- function(x, n) {
 #' @param ... data.frames or vectors
 #' @param omit_null are \code{NULL} elements in \code{...} to be omitted from the check?
 #'
-#' @importFrom stats na.omit
-#'
 check_same_n <- function(..., omit_null = TRUE) {
   dots <- list(...)
 
@@ -120,7 +116,7 @@ check_same_n <- function(..., omit_null = TRUE) {
   },
   dots, names(dots))
 
-  n <- na.omit(unlist(n_list))
+  n <- stats::na.omit(unlist(n_list))
 
   if (length(unique(n)) > 1) {
     sel <- which(n != n[1])
@@ -157,7 +153,7 @@ make_names <- function(nams) {
 #' month2day(x)
 #'
 month2day <- function(x) {
-  assert_that(is.numeric(x))
+  assertthat::assert_that(is.numeric(x))
   x * 30.4375
 }
 
@@ -172,7 +168,7 @@ month2day <- function(x) {
 #' day2month(x)
 #'
 day2month <- function(x) {
-  assert_that(is.numeric(x))
+  assertthat::assert_that(is.numeric(x))
   x / 30.4375
 }
 
@@ -206,7 +202,7 @@ empty_vector_if_na <- function(x) {
 #'
 combine_vectors <- function(x, y) {
 
-  assert_that(
+  assertthat::assert_that(
     is.vector(x),
     is.vector(y),
     is_equal_length(x, y)
@@ -230,14 +226,13 @@ combine_vectors <- function(x, y) {
 #' @param names (`character`)\cr vector of names to extract.
 #'
 #' @return Either `NULL` or the extracted elements from `x`.
-#' @importFrom rlang is_named
 #'
 extract <- function(x, names) {
   if (is.null(x)) {
     return(NULL)
   }
-  assert_that(
-    is_named(x),
+  assertthat::assert_that(
+    rlang::is_named(x),
     is.character(names)
   )
   which_extract <- intersect(names(x), names)
@@ -269,7 +264,7 @@ extract <- function(x, names) {
 #'
 aesi_label <- function(aesi, scope = NULL) {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(aesi),
     is.character(scope) || is.null(scope)
   )
@@ -282,7 +277,7 @@ aesi_label <- function(aesi, scope = NULL) {
 
     scope <- sas_na(scope)
     scope <- unique(scope)[!is.na(unique(scope))]
-    assert_that(
+    assertthat::assert_that(
       is.string(scope)
     )
     paste0(aesi, " (", scope, ")")
@@ -321,11 +316,11 @@ arm <- function(x) {
 #' optional `groups` variables formatted to factor type.
 #'
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
-  assert_that(is.data.frame(df))
+  assertthat::assert_that(is.data.frame(df))
   df_cols <- colnames(df)
-  assert_that(is.string(x) && (x %in% df_cols) && is.numeric(df[[x]]))
-  assert_that(is.string(y) && (y %in% df_cols) && is.numeric(df[[y]]))
-  assert_that(is.null(groups) || (is.character(groups) && all(groups %in% df_cols)))
+  assertthat::assert_that(is.string(x) && (x %in% df_cols) && is.numeric(df[[x]]))
+  assertthat::assert_that(is.string(y) && (y %in% df_cols) && is.numeric(df[[y]]))
+  assertthat::assert_that(is.null(groups) || (is.character(groups) && all(groups %in% df_cols)))
 
   smooths <- function(x, y) {
     predict(stats::loess(y ~ x), se = TRUE)

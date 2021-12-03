@@ -34,7 +34,7 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
     `NE/Missing` = "Missing or unevaluable"
   )
 
-  assert_that(all(x %in% names(desc)))
+  assertthat::assert_that(all(x %in% names(desc)))
   factor(desc[x])
 }
 
@@ -52,7 +52,7 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
 s_length_proportion <- function(x,
                                 .N_col, #nolint snake_case
                                 ...) {
-  assert_that(
+  assertthat::assert_that(
     is_character_or_factor(x),
     length(unique(x)) <= 1L,
     length(x) <= .N_col

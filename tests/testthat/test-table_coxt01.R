@@ -37,7 +37,7 @@ test_that("1. Cox Regression", {
     ),
     data = ADTTE_f
   )
-  df <- tidy(mod1)
+  df <- broom::tidy(mod1)
   result <- basic_table() %>%
     split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
@@ -68,7 +68,7 @@ test_that("2. Cox Regression (with Interaction Term)", {
     data = ADTTE_f,
     control = control_coxreg(interaction = TRUE)
   )
-  df <- tidy(mod2)
+  df <- broom::tidy(mod2)
   result <- basic_table() %>%
     split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
@@ -105,7 +105,7 @@ test_that("3. Cox Regression (specifying covariates)", {
     control = control_coxreg(interaction = TRUE),
     at = list(AGE = c(30, 40, 50))
   )
-  df <- tidy(mod3)
+  df <- broom::tidy(mod3)
   result <- basic_table() %>%
     split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
@@ -150,7 +150,7 @@ test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
     ),
     at = list(AGE = c(30, 40, 50))
   )
-  df <- tidy(mod4)
+  df <- broom::tidy(mod4)
   result <- basic_table() %>%
     split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%

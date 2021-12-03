@@ -10,7 +10,6 @@ NULL
 
 #' @describeIn estimate_proportions the Wilson interval calls [stats::prop.test()]
 #'   with option `correct = FALSE`. Also referred to as Wilson score interval.
-#' @importFrom stats prop.test
 #' @export
 #' @order 2
 #' @examples
@@ -22,7 +21,7 @@ NULL
 #'
 prop_wilson <- function(rsp, conf_level) {
 
-  y <- prop.test(
+  y <- stats::prop.test(
     sum(rsp),
     length(rsp),
     correct = FALSE,
@@ -36,7 +35,6 @@ prop_wilson <- function(rsp, conf_level) {
 #' @describeIn estimate_proportions the Clopper-Pearson interval calls
 #'   [stats::binom.test()]. Also referred to as the `exact` method.
 #' @inheritParams argument_convention
-#' @importFrom stats binom.test
 #' @export
 #' @order 2
 #' @examples
@@ -46,7 +44,7 @@ prop_wilson <- function(rsp, conf_level) {
 prop_clopper_pearson <- function(rsp,
                                  conf_level) {
 
-  y <- binom.test(
+  y <- stats::binom.test(
     x = sum(rsp),
     n = length(rsp),
     conf.level = conf_level
@@ -59,7 +57,6 @@ prop_clopper_pearson <- function(rsp,
 #'   normal approximation.
 #' @inheritParams argument_convention
 #' @param correct (`flag`)\cr apply continuity correction.
-#' @importFrom stats qnorm
 #' @order 2
 #' @export
 #' @examples
@@ -71,7 +68,7 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
 
   n <- length(rsp)
   p_hat <- mean(rsp)
-  z <- qnorm((1 + conf_level) / 2)
+  z <- stats::qnorm((1 + conf_level) / 2)
   q_hat <- 1 - p_hat
   correct <- if (correct) 1 / (2 * n) else 0
 
@@ -88,7 +85,6 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
 #'   two successes and two failures to the data, and then using the Wald
 #'   formula to construct a CI.
 #' @inheritParams argument_convention
-#' @importFrom stats qnorm
 #' @export
 #' @order 2
 #' @examples
@@ -99,7 +95,7 @@ prop_agresti_coull <- function(rsp, conf_level) {
 
   n <- length(rsp)
   x_sum <- sum(rsp)
-  z <- qnorm((1 + conf_level) / 2)
+  z <- stats::qnorm((1 + conf_level) / 2)
 
   # Add here both z^2 / 2 successes and failures.
   x_sum_tilde <- x_sum + z^2 / 2
@@ -120,7 +116,6 @@ prop_agresti_coull <- function(rsp, conf_level) {
 #'   interval based on the non-informative Jeffreys prior for a binomial
 #'   proportion.
 #' @inheritParams argument_convention
-#' @importFrom stats qbeta
 #' @order 2
 #' @export
 #' @examples
@@ -137,13 +132,13 @@ prop_jeffreys <- function(rsp,
   l_ci <- ifelse(
     x_sum == 0,
     0,
-    qbeta(alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
+    stats::qbeta(alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
   )
 
   u_ci <- ifelse(
     x_sum == n,
     1,
-    qbeta(1 - alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
+    stats::qbeta(1 - alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
   )
 
   c(l_ci, u_ci)
@@ -178,7 +173,7 @@ s_proportion <- function(x,
   x <- as.logical(x)
 
   method <- match.arg(method)
-  assert_that(
+  assertthat::assert_that(
     conf_level >= 0,
     conf_level <= 1,
     is.flag(long)

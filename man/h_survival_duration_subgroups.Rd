@@ -94,7 +94,7 @@ library(rtables)
 adtte <- synthetic_cdisc_data("latest")$adtte
 
 # Save variable labels before data processing steps.
-adtte_labels <- var_labels(adtte)
+adtte_labels <- rtables::var_labels(adtte)
 
 adtte_f <- adtte \%>\%
   filter(

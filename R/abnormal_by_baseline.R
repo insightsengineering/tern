@@ -73,7 +73,7 @@ s_count_abnormal_by_baseline <- function(df,
                                          abnormal,
                                          na_level = "<Missing>",
                                          variables = list(id = "USUBJID", baseline = "BNRIND")) {
-  assert_that(
+  assertthat::assert_that(
     is.string(.var),
     is.string(abnormal),
     is.string(na_level),
@@ -88,7 +88,7 @@ s_count_abnormal_by_baseline <- function(df,
   # If input is passed as character, changed to factor
   df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_level)
   df[[variables$baseline]] <- as_factor_keep_attributes(df[[variables$baseline]], na_level = na_level)
-  assert_that(
+  assertthat::assert_that(
     is_factor_no_na(df[[.var]]),
     is_factor_no_na(df[[variables$baseline]])
   )
@@ -190,7 +190,7 @@ count_abnormal_by_baseline <- function(lyt,
                                        .formats = NULL,
                                        .labels = NULL,
                                        .indent_mods = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.string(var),
     !is.null(names(abnormal)),
     is_equal_length(abnormal, table_names)

@@ -9,16 +9,16 @@ decorate_grob(
   titles,
   footnotes,
   page = "",
-  width_titles = unit(1, "npc"),
-  width_footnotes = unit(1, "npc") - stringWidth(page),
+  width_titles = grid::unit(1, "npc"),
+  width_footnotes = grid::unit(1, "npc") - grid::stringWidth(page),
   border = TRUE,
-  margins = unit(c(1, 0, 1, 0), "lines"),
-  padding = unit(rep(1, 4), "lines"),
-  outer_margins = unit(c(2, 1.5, 3, 1.5), "cm"),
-  gp_titles = gpar(),
-  gp_footnotes = gpar(fontsize = 8),
+  margins = grid::unit(c(1, 0, 1, 0), "lines"),
+  padding = grid::unit(rep(1, 4), "lines"),
+  outer_margins = grid::unit(c(2, 1.5, 3, 1.5), "cm"),
+  gp_titles = grid::gpar(),
+  gp_footnotes = grid::gpar(fontsize = 8),
   name = NULL,
-  gp = gpar(),
+  gp = grid::gpar(),
   vp = NULL
 )
 }
@@ -115,9 +115,9 @@ p <- gTree(
     rectGrob(),
     xaxisGrob(),
     yaxisGrob(),
-    textGrob("Sepal.Length", y = unit(-4, "lines")),
-    textGrob("Petal.Length", x = unit(-3.5, "lines"), rot = 90),
-    pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col = iris$Species), pch = 16)
+    textGrob("Sepal.Length", y = grid::unit(-4, "lines")),
+    textGrob("Petal.Length", x = grid::unit(-3.5, "lines"), rot = 90),
+    pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = grid::gpar(col = iris$Species), pch = 16)
   ),
   vp = vpStack(plotViewport(), dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
 )

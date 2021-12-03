@@ -22,7 +22,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- var_labels(adtte)
+#' adtte_labels <- rtables::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(
@@ -58,7 +58,7 @@ NULL
 #'
 h_survtime_df <- function(tte, is_event, arm) {
 
-  assert_that(
+  assertthat::assert_that(
     is.numeric(tte),
     is.logical(is_event),
     is.factor(arm),
@@ -145,7 +145,7 @@ h_survtime_subgroups_df <- function(variables,
                                     groups_lists = list(),
                                     label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
@@ -184,7 +184,6 @@ h_survtime_subgroups_df <- function(variables,
 #'   treatment hazard ratio.
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
 #'   required if stratified analysis is performed.
-#' @importFrom stats setNames
 #' @export
 #' @examples
 #'
@@ -196,7 +195,7 @@ h_survtime_subgroups_df <- function(variables,
 #'
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
 
-  assert_that(
+  assertthat::assert_that(
     is.numeric(tte),
     is.logical(is_event),
     is.factor(arm),
@@ -210,12 +209,12 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   if (!is.null(strata_data)) {
     if (is.data.frame(strata_data)) {
       strata_vars <- names(strata_data)
-      assert_that(
+      assertthat::assert_that(
         are_equal(nrow(strata_data), nrow(df_tte)),
-        is_df_with_factors(strata_data, as.list(setNames(strata_vars, strata_vars)))
+        is_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
       )
     } else {
-      assert_that(
+      assertthat::assert_that(
         is_valid_factor(strata_data),
         are_equal(length(strata_data), nrow(df_tte))
       )
@@ -349,7 +348,7 @@ h_coxph_subgroups_df <- function(variables,
                                  control = control_coxph(),
                                  label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
@@ -416,10 +415,6 @@ h_coxph_subgroups_df <- function(variables,
 #'
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
 #'
-#' @importFrom rtables var_labels var_labels<-
-#' @importFrom stats setNames
-#' @importFrom utils.nest is_fully_named_list
-#'
 #' @export
 #'
 #' @examples
@@ -430,7 +425,7 @@ h_coxph_subgroups_df <- function(variables,
 #'   y = factor(c("A","B", "A", "B", "A"), levels = c("A", "B", "C")),
 #'   z = factor(c("C", "C", "D", "D", "D"), levels = c("D", "C"))
 #' )
-#' var_labels(df) <- paste("label for", names(df))
+#' rtables::var_labels(df) <- paste("label for", names(df))
 #'
 #' h_split_by_subgroups(
 #'   data = df,
@@ -449,15 +444,15 @@ h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {
 
-  assert_that(
+  assertthat::assert_that(
     is_character_vector(subgroups),
-    is_df_with_factors(data, as.list(setNames(subgroups, subgroups))),
-    is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups)
+    is_df_with_factors(data, as.list(stats::setNames(subgroups, subgroups))),
+    utils.nest::is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups)
   )
 
-  data_labels <- unname(var_labels(data))
+  data_labels <- unname(rtables::var_labels(data))
   df_subgroups <- data[, subgroups, drop = FALSE]
-  subgroup_labels <- var_labels(df_subgroups, fill = TRUE)
+  subgroup_labels <- rtables::var_labels(df_subgroups, fill = TRUE)
 
   l_labels <- Map(function(grp_i, name_i) {
     existing_levels <- levels(droplevels(grp_i))
@@ -492,7 +487,7 @@ h_split_by_subgroups <- function(data,
     }
     df <- data[which_row, ]
     rownames(df) <- NULL
-    var_labels(df) <- data_labels
+    rtables::var_labels(df) <- data_labels
 
     list(
       df = df,

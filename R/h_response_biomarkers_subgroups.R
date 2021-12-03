@@ -40,7 +40,7 @@ NULL
 #'   biomarker = "AGE"
 #' )
 h_rsp_to_logistic_variables <- function(variables, biomarker) {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
     is.string(variables$rsp),
     is.string(biomarker)
@@ -87,7 +87,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 h_logistic_mult_cont_df <- function(variables,
                                     data,
                                     control = control_logistic()) {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
     is_character_vector(variables$biomarkers),
     is_df_with_variables(data, as.list(unlist(variables))),

@@ -37,7 +37,7 @@ h_count_cumulative <- function(x,
                                include_eq = TRUE,
                                na.rm = TRUE, # nolint
                                .N_col) { # nolint
-  assert_that(
+  assertthat::assert_that(
     is.numeric(x),
     is.numeric(threshold),
     is.flag(lower_tail),
@@ -68,7 +68,7 @@ h_count_cumulative <- function(x,
 #' @return a `string`
 #'
 d_count_cumulative <- function(threshold, lower_tail, include_eq) {
-  assert_that(
+  assertthat::assert_that(
     is.numeric(threshold)
   )
   lg <- if (lower_tail) "<" else ">"
@@ -94,7 +94,7 @@ s_count_cumulative <- function(x,
                                include_eq = TRUE,
                                .N_col, # nolint
                                ...) {
-  assert_that(
+  assertthat::assert_that(
     is_numeric_vector(thresholds)
   )
 

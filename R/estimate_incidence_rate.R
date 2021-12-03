@@ -44,7 +44,7 @@ control_incidence_rate <- function(conf_level = 0.95,
 
   conf_type <- match.arg(conf_type)
   time_unit_input <- match.arg(time_unit_input)
-  assert_that(
+  assertthat::assert_that(
     is_proportion(conf_level),
     is.number(time_unit_output)
   )
@@ -61,7 +61,6 @@ control_incidence_rate <- function(conf_level = 0.95,
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated confidence interval based on the normal approximation for the
 #'   incidence rate. Unit is one person-year.
-#' @importFrom stats qnorm
 #' @export
 #' @order 2
 #' @examples
@@ -71,7 +70,7 @@ h_incidence_rate_normal <- function(person_years,
                                     n_events,
                                     alpha = 0.05) {
 
-  assert_that(
+  assertthat::assert_that(
     is.number(person_years),
     is.number(n_events),
     is_proportion(alpha)
@@ -79,7 +78,7 @@ h_incidence_rate_normal <- function(person_years,
 
   est <- n_events / person_years
   se <- sqrt(est / person_years)
-  ci <- est + c(-1, 1) * qnorm(1 - alpha / 2) * se
+  ci <- est + c(-1, 1) * stats::qnorm(1 - alpha / 2) * se
 
   list(rate = est, rate_ci = ci)
 
@@ -88,7 +87,6 @@ h_incidence_rate_normal <- function(person_years,
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated confidence interval based on the normal approximation for the
 #'   logarithm of the incidence rate. Unit is one person-year.
-#' @importFrom stats qnorm
 #' @export
 #' @order 2
 #' @examples
@@ -98,7 +96,7 @@ h_incidence_rate_normal_log <- function(person_years,
                                         n_events,
                                         alpha = 0.05) {
 
-  assert_that(
+  assertthat::assert_that(
     is.number(person_years),
     is.number(n_events),
     is_proportion(alpha)
@@ -108,7 +106,7 @@ h_incidence_rate_normal_log <- function(person_years,
   rate_se <- sqrt(rate_est / person_years)
   lrate_est <- log(rate_est)
   lrate_se <- rate_se / rate_est
-  ci <- exp(lrate_est + c(-1, 1) * qnorm(1 - alpha / 2) * lrate_se)
+  ci <- exp(lrate_est + c(-1, 1) * stats::qnorm(1 - alpha / 2) * lrate_se)
 
   list(rate = rate_est, rate_ci = ci)
 
@@ -116,7 +114,6 @@ h_incidence_rate_normal_log <- function(person_years,
 
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated exact confidence interval. Unit is one person-year.
-#' @importFrom stats qchisq
 #' @export
 #' @order 2
 #' @examples
@@ -126,15 +123,15 @@ h_incidence_rate_exact <- function(person_years,
                                    n_events,
                                    alpha = 0.05) {
 
-  assert_that(
+  assertthat::assert_that(
     is.number(person_years),
     is.number(n_events),
     is_proportion(alpha)
   )
 
   est <- n_events / person_years
-  lcl <- qchisq(p = (alpha) / 2, df = 2 * n_events) / (2 * person_years)
-  ucl <- qchisq(p = 1 - (alpha) / 2, df = 2 * n_events + 2) / (2 * person_years)
+  lcl <- stats::qchisq(p = (alpha) / 2, df = 2 * n_events) / (2 * person_years)
+  ucl <- stats::qchisq(p = 1 - (alpha) / 2, df = 2 * n_events + 2) / (2 * person_years)
 
   list(rate = est, rate_ci = c(lcl, ucl))
 
@@ -142,7 +139,6 @@ h_incidence_rate_exact <- function(person_years,
 
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated Byar's confidence interval. Unit is one person-year.
-#' @importFrom stats qnorm
 #' @export
 #' @order 2
 #' @examples
@@ -152,7 +148,7 @@ h_incidence_rate_byar <- function(person_years,
                                   n_events,
                                   alpha = 0.05) {
 
-  assert_that(
+  assertthat::assert_that(
     is.number(person_years),
     is.number(n_events),
     is_proportion(alpha)
@@ -161,7 +157,7 @@ h_incidence_rate_byar <- function(person_years,
   est <- n_events / person_years
   seg_1 <- n_events + 0.5
   seg_2 <- 1 - 1 / (9 * (n_events + 0.5))
-  seg_3 <- qnorm(1 - alpha / 2) * sqrt(1 / (n_events + 0.5)) / 3
+  seg_3 <- stats::qnorm(1 - alpha / 2) * sqrt(1 / (n_events + 0.5)) / 3
   lcl <- seg_1 * ((seg_2 - seg_3)^3) / person_years
   ucl <- seg_1 * ((seg_2 + seg_3)^3) / person_years
 
@@ -249,7 +245,7 @@ s_incidence_rate <- function(df,
     warning("argument is_event will be deprecated. Please use n_events.")
 
     if (missing(n_events)) {
-      assert_that(
+      assertthat::assert_that(
         is_df_with_variables(df, list(tte = .var, is_event = is_event)),
         is.string(.var),
         is_numeric_vector(df[[.var]], min_length = 0),
@@ -260,7 +256,7 @@ s_incidence_rate <- function(df,
     }
 
   } else {
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(df, list(tte = .var, n_events = n_events)),
       is.string(.var),
       is_numeric_vector(df[[.var]], min_length = 0),

@@ -37,7 +37,7 @@ will be excluded.}
 \item{cor_struct}{a string specifying the correlation structure, defaults to
 \code{"unstructured"}. See the details.}
 
-\item{weights_emmeans}{argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.}
+\item{weights_emmeans}{argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}, "proportional" by default.}
 
 \item{optimizer}{a string specifying the optimization algorithm which should be used. By default, "automatic"
 will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
@@ -106,10 +106,10 @@ library(rtables)
 adsl <- synthetic_cdisc_data("latest")$adsl
 adqs <- synthetic_cdisc_data("latest")$adqs
 adqs_f <- adqs \%>\%
-  filter(PARAMCD == "FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
+  dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
   droplevels() \%>\%
-  mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) \%>\%
-  mutate(
+  dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) \%>\%
+  dplyr::mutate(
     AVISITN = rank(AVISITN) \%>\%
     as.factor() \%>\%
     as.numeric() \%>\%

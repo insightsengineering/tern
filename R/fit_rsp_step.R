@@ -92,7 +92,7 @@
 fit_rsp_step <- function(variables,
                          data,
                          control = c(control_step(), control_logistic())) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(data, variables),
     is_fully_named_list(control)
   )

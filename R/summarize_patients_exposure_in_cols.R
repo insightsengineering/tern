@@ -45,7 +45,7 @@ s_count_patients_sum_exposure <- function(df, #nolintr
                                           labelstr = "",
                                           .N_col, #nolintr
                                           custom_label = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.string(id),
     is.string(labelstr),

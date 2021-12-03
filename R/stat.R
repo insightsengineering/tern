@@ -9,7 +9,6 @@
 #' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned
 #' for the use with ggplot.
 #'
-#' @importFrom stats qt
 #' @export
 #'
 #' @examples
@@ -45,7 +44,7 @@ stat_mean_ci <- function(x,
   if (n < n_min || is.na(m)) {
     ci <- c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_)
   } else {
-    hci <- qt((1 + conf_level) / 2, df = n - 1) * sd(x) / sqrt(n)
+    hci <- stats::qt((1 + conf_level) / 2, df = n - 1) * sd(x) / sqrt(n)
     ci <- c(mean_ci_lwr = m - hci, mean_ci_upr = m + hci)
   }
 
@@ -68,7 +67,6 @@ stat_mean_ci <- function(x,
 #'
 #' @details The function was adapted from `DescTools/versions/0.99.35/source`
 #'
-#' @importFrom stats qbinom pbinom
 #' @export
 #'
 #' @examples
@@ -93,7 +91,7 @@ stat_median_ci <- function(x,
   n <- length(x)
   med <- median(x)
 
-  k <- qbinom(p = (1 - conf_level) / 2, size = n, prob = 0.5, lower.tail = TRUE)
+  k <- stats::qbinom(p = (1 - conf_level) / 2, size = n, prob = 0.5, lower.tail = TRUE)
 
   # k == 0 - for small samples (e.g. n <= 5) ci can be outside the observed range
   if (k == 0 || is.na(med)) {
@@ -102,7 +100,7 @@ stat_median_ci <- function(x,
   } else {
     x_sort <- sort(x)
     ci <- c(median_ci_lwr = x_sort[k], median_ci_upr = x_sort[n - k + 1])
-    empir_conf_level <- 1 - 2 * pbinom(k - 1, size = n, prob = 0.5)
+    empir_conf_level <- 1 - 2 * stats::pbinom(k - 1, size = n, prob = 0.5)
   }
 
   if (gg_helper) {

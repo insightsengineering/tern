@@ -42,7 +42,7 @@ test_that("LS means table is produced correctly", {
 
   skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
-  df <- tidy(mmrm_results)
+  df <- broom::tidy(mmrm_results)
   result <- basic_table() %>%
     split_cols_by("ARM", ref_group = mmrm_results$ref_level) %>%
     add_colcounts() %>%

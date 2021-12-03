@@ -7,7 +7,6 @@
 #'   levels that belong to it in the character vectors that are elements of the list.
 #'
 #' @return [tibble::tibble()] in the required format.
-#' @importFrom tibble tibble
 #' @export
 #'
 #' @examples
@@ -19,11 +18,11 @@
 #' groups_list_to_df(grade_groups)
 #'
 groups_list_to_df <- function(groups_list) {
-  assert_that(
+  assertthat::assert_that(
     is_fully_named_list(groups_list),
     all(sapply(groups_list, is.character))
   )
-  tibble(
+  tibble::tibble(
     valname = make_names(names(groups_list)),
     label = names(groups_list),
     levelcombo = unname(groups_list),
@@ -45,8 +44,6 @@ groups_list_to_df <- function(groups_list) {
 #' @return a `list` with first item `ref` (reference) and second item `trt`
 #'   (treatment).
 #'
-#' @importFrom stats setNames
-#'
 #' @export
 #' @examples
 #'
@@ -67,7 +64,7 @@ combine_groups <- function(fct,
                            ref = NULL,
                            collapse = "/") {
 
-  assert_that(
+  assertthat::assert_that(
     (is.null(ref) || is_valid_character(ref)),
     is_character_or_factor(fct),
     is.string(collapse)
@@ -79,14 +76,14 @@ combine_groups <- function(fct,
   if (is.null(ref)) {
     ref <- group_levels[1]
   } else {
-    assert_that(all_elements_in_ref(x = ref, ref = group_levels))
+    assertthat::assert_that(all_elements_in_ref(x = ref, ref = group_levels))
   }
 
   groups <- list(
     ref = group_levels[group_levels %in% ref],
     trt = group_levels[!group_levels %in% ref]
   )
-  setNames(groups, nm = lapply(groups, paste, collapse = collapse))
+  stats::setNames(groups, nm = lapply(groups, paste, collapse = collapse))
 }
 
 #' Split Columns by Groups of Levels
@@ -232,8 +229,6 @@ split_cols_by_groups <- function(lyt,
 #' @inheritParams combine_groups
 #' @inheritParams groups_list_to_df
 #'
-#' @importFrom stats setNames
-#'
 #' @export
 #'
 #' @examples
@@ -268,13 +263,13 @@ split_cols_by_groups <- function(lyt,
 #'
 combine_counts <- function(fct, groups_list = NULL) {
 
-  assert_that(is_character_or_factor(fct))
+  assertthat::assert_that(is_character_or_factor(fct))
 
   fct <- as_factor_keep_attributes(fct)
 
   if (is.null(groups_list)) {
     y <- table(fct)
-    y <- setNames(as.numeric(y), nm = dimnames(y)[[1]])
+    y <- stats::setNames(as.numeric(y), nm = dimnames(y)[[1]])
   } else {
     y <- vapply(
       X = groups_list,

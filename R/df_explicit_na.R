@@ -49,7 +49,7 @@ df_explicit_na <- function(data,
                            logical_as_factor = FALSE,
                            na_level = "<Missing>") {
 
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(data),
     is.null(omit_columns) || is_character_vector(omit_columns),
     is.flag(char_as_factor),
@@ -69,7 +69,7 @@ df_explicit_na <- function(data,
   l_target_vars <- split(target_vars, target_vars)
 
   # Makes sure target_vars exist in data and names are not duplicated.
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(data, l_target_vars)
   )
 

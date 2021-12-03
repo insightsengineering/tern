@@ -58,7 +58,7 @@ s_count_abnormal <- function(df,
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
     is_character_list(abnormal, min_length = 2, max_length = 2),
     !is.null(names(abnormal)),
@@ -162,7 +162,7 @@ count_abnormal <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "fraction"
   )
-  assert_that(
+  assertthat::assert_that(
     is.string(var)
   )
 

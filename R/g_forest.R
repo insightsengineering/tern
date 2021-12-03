@@ -31,8 +31,6 @@
 #'  size is used for all subgroups. By default tries to get this from
 #'  `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
 #'
-#' @import grid
-#'
 #' @export
 #'
 #' @examples
@@ -171,7 +169,7 @@ g_forest <- function(tbl,
                      x_at = c(0.1, 1, 10),
                      width_row_names = NULL,
                      width_columns = NULL,
-                     width_forest = unit(1, "null"),
+                     width_forest = grid::unit(1, "null"),
                      col_symbol_size = attr(tbl, "col_symbol_size"),
                      draw = TRUE,
                      newpage = TRUE) {
@@ -181,8 +179,8 @@ g_forest <- function(tbl,
   nr <- nrow(tbl)
   nc <- ncol(tbl)
 
-  assert_that(!is.null(col_x), msg = "Please specify `col_x` manually.")
-  assert_that(!is.null(col_ci), msg = "Please specify `col_ci` manually.")
+  assertthat::assert_that(!is.null(col_x), msg = "Please specify `col_x` manually.")
+  assertthat::assert_that(!is.null(col_ci), msg = "Please specify `col_ci` manually.")
   stopifnot(
     col_x > 0 && col_x <= nc,
     col_ci > 0 && col_ci <= nc,
@@ -261,8 +259,8 @@ g_forest <- function(tbl,
   }
 
   if (draw) {
-    if (newpage) grid.newpage()
-    grid.draw(grob_forest)
+    if (newpage) grid::grid.newpage()
+    grid::grid.draw(grob_forest)
   }
 
   invisible(grob_forest)
@@ -282,10 +280,6 @@ g_forest <- function(tbl,
 #' The heights get automatically determined.
 #'
 #' @noRd
-#'
-#' @importFrom grDevices extendrange
-#' @importFrom grid dataViewport gList gTree gpar rectGrob
-#' @importFrom stats na.omit
 #'
 #' @examples
 #' tbl <- rtable(
@@ -323,7 +317,7 @@ forest_grob <- function(tbl,
                         x_at = NULL,
                         width_row_names = NULL,
                         width_columns = NULL,
-                        width_forest = unit(1, "null"),
+                        width_forest = grid::unit(1, "null"),
                         symbol_size = NULL,
                         name = NULL,
                         gp = NULL,
@@ -348,12 +342,12 @@ forest_grob <- function(tbl,
   }
 
   if (is.null(xlim)) {
-    xlim <- extendrange(c(x, lower, upper))
+    xlim <- grDevices::extendrange(c(x, lower, upper))
   }
 
   if (logx) {
     if (is.null(x_at)) {
-      x_at <- pretty(log(na.omit(c(x, lower, upper))))
+      x_at <- pretty(log(stats::na.omit(c(x, lower, upper))))
       x_labels <- exp(x_at)
     } else {
       x_labels <- x_at
@@ -370,10 +364,10 @@ forest_grob <- function(tbl,
     x_labels <- TRUE
   }
 
-  data_forest_vp <- dataViewport(xlim, c(0, 1))
+  data_forest_vp <- grid::dataViewport(xlim, c(0, 1))
 
   # Get table content as matrix form.
-  mf <- matrix_form(tbl)
+  mf <- grid::matrix_form(tbl)
 
   # Use rtables indent_string eventually.
   mf$strings[, 1] <- paste0(
@@ -412,70 +406,70 @@ forest_grob <- function(tbl,
   args_header <- to_args_for_cell_in_rows_fun("header", underline_colspan = TRUE)
   args_body <- to_args_for_cell_in_rows_fun("body", underline_colspan = FALSE)
 
-  gTree(
+  grid::gTree(
     name = name,
-    children = gList(
-      gTree(
-        children = do.call(gList, lapply(args_header, do.call, what = cell_in_rows)),
+    children = grid::gList(
+      grid::gTree(
+        children = do.call(grid::gList, lapply(args_header, do.call, what = cell_in_rows)),
         vp = vpPath("vp_table_layout", "vp_header")
       ),
-      gTree(
-        children = do.call(gList, lapply(args_body, do.call, what = cell_in_rows)),
+      grid::gTree(
+        children = do.call(grid::gList, lapply(args_body, do.call, what = cell_in_rows)),
         vp = vpPath("vp_table_layout", "vp_body")
       ),
-      linesGrob(unit(c(0, 1), "npc"), y = unit(c(.5, .5), "npc"), vp = vpPath("vp_table_layout", "vp_spacer")),
+      linesGrob(grid::unit(c(0, 1), "npc"), y = grid::unit(c(.5, .5), "npc"), vp = vpPath("vp_table_layout", "vp_spacer")),
       # forest part
       if (is.null(vline)) {
         NULL
       } else {
-        gTree(
-          children = gList(
-            gTree(
-              children = gList(
+        grid::gTree(
+          children = grid::gList(
+            grid::gTree(
+              children = grid::gList(
                 # this may overflow, to fix, look here
                 # https://stackoverflow.com/questions/33623169/add-multi-line-footnote-to-tablegrob-while-using-gridextra-in-r #nolintr
-                textGrob(
+                grid::textGrob(
                   forest_header[1],
-                  x = unit(vline, "native") - unit(1, "lines"),
+                  x = grid::unit(vline, "native") - grid::unit(1, "lines"),
                   just = c("right", "center")
                 ),
-                textGrob(
+                grid::textGrob(
                   forest_header[2],
-                  x = unit(vline, "native") + unit(1, "lines"),
+                  x = grid::unit(vline, "native") + grid::unit(1, "lines"),
                   just = c("left", "center")
                 )
               ),
-              vp = vpStack(viewport(layout.pos.col = ncol(tbl) + 2), data_forest_vp)
+              vp = vpStack(grid::viewport(layout.pos.col = ncol(tbl) + 2), data_forest_vp)
             )
           ),
           vp = vpPath("vp_table_layout", "vp_header")
         )
       },
-      gTree(
-        children = gList(
-          gTree(
-            children = gList(
-              rectGrob(gp = gpar(col = "gray90", fill = "gray90")),
+      grid::gTree(
+        children = grid::gList(
+          grid::gTree(
+            children = grid::gList(
+              grid::rectGrob(gp = grid::gpar(col = "gray90", fill = "gray90")),
               if (is.null(vline)) {
                 NULL
               } else {
                 linesGrob(
-                  x = unit(rep(vline, 2), "native"),
-                  y = unit(c(0, 1), "npc"),
-                  gp = gpar(lwd = 2),
+                  x = grid::unit(rep(vline, 2), "native"),
+                  y = grid::unit(c(0, 1), "npc"),
+                  gp = grid::gpar(lwd = 2),
                   vp = data_forest_vp
                 )
               },
               xaxisGrob(at = x_at,  label = x_labels, vp = data_forest_vp)
             ),
-            vp = viewport(layout.pos.col = ncol(tbl) + 2)
+            vp = grid::viewport(layout.pos.col = ncol(tbl) + 2)
           )
         ),
         vp = vpPath("vp_table_layout", "vp_body")
       ),
-      gTree(
+      grid::gTree(
         children = do.call(
-          "gList",
+          "grid::gList",
           Map(
             function(xi, li, ui, row_index, size_i) {
               forest_dot_line(
@@ -506,7 +500,6 @@ forest_grob <- function(tbl,
 }
 
 
-#' @importFrom grid gList gTree textGrob unit unit.c
 cell_in_rows <- function(row_name,
                          cells,
                          cell_spans,
@@ -524,10 +517,10 @@ cell_in_rows <- function(row_name,
 
   vp_name_rn <- paste0("rowname-", row_index)
   g_rowname <- if (!is.null(row_name) && row_name != "") {
-    textGrob(
+    grid::textGrob(
       name = vp_name_rn,
       label = row_name,
-      x = unit(0, "npc"),
+      x = grid::unit(0, "npc"),
       just = c("left", "center"),
       vp = vpPath(paste0("rowname-", row_index))
     )
@@ -555,16 +548,16 @@ cell_in_rows <- function(row_name,
         NULL
       } else {
         if (cs == 1) {
-          textGrob(
+          grid::textGrob(
             label = cell_ascii,
             name = cell_name,
             vp = vpPath(paste0("cell-", row_index, "-", j))
           )
         } else {
           # +1 because of rowname
-          vp_joined_cols <- viewport(layout.pos.row = row_index, layout.pos.col = seq(j + 1, j + cs))
+          vp_joined_cols <- grid::viewport(layout.pos.row = row_index, layout.pos.col = seq(j + 1, j + cs))
 
-          lab <- textGrob(
+          lab <- grid::textGrob(
             label = cell_ascii,
             name = cell_name,
             vp = vp_joined_cols
@@ -573,11 +566,11 @@ cell_in_rows <- function(row_name,
           if (!underline_colspan || grepl("^[[:space:]]*$", cell_ascii)) {
             lab
           } else {
-            gList(
+            grid::gList(
               lab,
               linesGrob(
-                x = unit.c(unit(.2, "lines"), unit(1, "npc") - unit(.2, "lines")),
-                y = unit(c(0, 0), "npc"),
+                x = grid::unit.c(grid::unit(.2, "lines"), grid::unit(1, "npc") - grid::unit(.2, "lines")),
+                y = grid::unit(c(0, 0), "npc"),
                 vp = vp_joined_cols
               )
             )
@@ -590,9 +583,9 @@ cell_in_rows <- function(row_name,
     })
   }
 
-  gList(
+  grid::gList(
     g_rowname,
-    do.call(gList, gl_cols)
+    do.call(grid::gList, gl_cols)
   )
 }
 
@@ -601,7 +594,6 @@ cell_in_rows <- function(row_name,
 #' Calculate the `grob` corresponding to the dot line within the forest plot.
 #' @noRd
 #'
-#' @importFrom grid gList gTree unit
 forest_dot_line <- function(x,
                             lower,
                             upper,
@@ -612,27 +604,27 @@ forest_dot_line <- function(x,
   ci <- c(lower, upper)
   if (any(!is.na(c(x, ci)))) {
     # line
-    y <- unit(c(0.5, 0.5), "npc")
+    y <- grid::unit(c(0.5, 0.5), "npc")
 
     g_line <- if (all(!is.na(ci)) && ci[2] > xlim[1] && ci[1] < xlim[2]) {
       # -
       if (ci[1] >= xlim[1] && ci[2] <= xlim[2]) {
-        linesGrob(x = unit(c(ci[1], ci[2]), "native"), y = y)
+        linesGrob(x = grid::unit(c(ci[1], ci[2]), "native"), y = y)
       } else if (ci[1] < xlim[1] && ci[2] > xlim[2]) {
         # <->
         linesGrob(
-          x = unit(xlim, "native"),
+          x = grid::unit(xlim, "native"),
           y = y,
-          arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both")
+          arrow = arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "both")
         )
       } else if (ci[1] < xlim[1] && ci[2] <= xlim[2]) {
         # <-
-        linesGrob(x = unit(c(xlim[1], ci[2]), "native"), y = y,
-                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first"))
+        linesGrob(x = grid::unit(c(xlim[1], ci[2]), "native"), y = y,
+                  arrow = arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "first"))
       } else if (ci[1] >= xlim[1] && ci[2] > xlim[2]) {
         # ->
-        linesGrob(x = unit(c(ci[1], xlim[2]), "native"), y = y,
-                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last"))
+        linesGrob(x = grid::unit(c(ci[1], xlim[2]), "native"), y = y,
+                  arrow = arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "last"))
       }
     } else {
       NULL
@@ -640,26 +632,26 @@ forest_dot_line <- function(x,
 
     g_circle <- if (!is.na(x) && x >= xlim[1] && x <= xlim[2]) {
       circleGrob(
-        x = unit(x, "native"),
+        x = grid::unit(x, "native"),
         y = y,
-        r = unit(1 / 3.5 * symbol_size, "lines"),
+        r = grid::unit(1 / 3.5 * symbol_size, "lines"),
         name = "point"
       )
     } else {
       NULL
     }
 
-    gTree(
-      children = gList(
-        gTree(
-          children = gList(
-            gList(
+    grid::gTree(
+      children = grid::gList(
+        grid::gTree(
+          children = grid::gList(
+            grid::gList(
               g_line,
               g_circle
             )
           ),
           vp = datavp,
-          gp = gpar(col = "blue", fill = "blue")
+          gp = grid::gpar(col = "blue", fill = "blue")
         )
       ),
       vp = vpPath(paste0("forest-", row_index))
@@ -672,9 +664,6 @@ forest_dot_line <- function(x,
 #' Create a Viewport Tree for the Forest Plot
 #'
 #' @noRd
-#'
-#' @importFrom grid grid.layout stringWidth unit unit.c
-#' @importFrom rtables matrix_form
 #'
 #' @examples
 #' library(grid)
@@ -691,15 +680,15 @@ forest_dot_line <- function(x,
 #'
 #' v <- tern:::forest_viewport(tbl)
 #'
-#' grid.newpage()
+#' grid::grid.newpage()
 #' showViewport(v)
 #'
 forest_viewport <- function(tbl,
                             width_row_names = NULL,
                             width_columns = NULL,
-                            width_forest = unit(1, "null"),
-                            gap_column = unit(1, "lines"),
-                            gap_header = unit(1, "lines"),
+                            width_forest = grid::unit(1, "null"),
+                            gap_column = grid::unit(1, "lines"),
+                            gap_header = grid::unit(1, "lines"),
                             mat_form = NULL) {
 
   stopifnot(
@@ -709,7 +698,7 @@ forest_viewport <- function(tbl,
     is.unit(width_forest)
   )
 
-  if (is.null(mat_form)) mat_form <- matrix_form(tbl)
+  if (is.null(mat_form)) mat_form <- grid::matrix_form(tbl)
 
   mat_form$strings[!mat_form$display] <- ""
 
@@ -720,12 +709,12 @@ forest_viewport <- function(tbl,
   if (is.null(width_row_names) || is.null(width_columns)) {
     tbl_widths <- propose_column_widths(tbl, mat_form)
     strs_with_width <- strrep("x", tbl_widths) # that works for mono spaced fonts
-    if (is.null(width_row_names)) width_row_names <- stringWidth(strs_with_width[1])
-    if (is.null(width_columns)) width_columns <- stringWidth(strs_with_width[-1])
+    if (is.null(width_row_names)) width_row_names <- grid::stringWidth(strs_with_width[1])
+    if (is.null(width_columns)) width_columns <- grid::stringWidth(strs_with_width[-1])
   }
 
   # Widths for row name, cols, forest.
-  widths <- unit.c(
+  widths <- grid::unit.c(
     width_row_names + gap_column,
     width_columns + gap_column,
     width_forest
@@ -746,26 +735,26 @@ forest_viewport <- function(tbl,
 
   i_header <- seq_len(nr_h)
 
-  height_body_rows <- unit(n_lines_per_row[-i_header] * 1.2, "lines")
-  height_header_rows <- unit(n_lines_per_row[i_header] * 1.2, "lines")
+  height_body_rows <- grid::unit(n_lines_per_row[-i_header] * 1.2, "lines")
+  height_header_rows <- grid::unit(n_lines_per_row[i_header] * 1.2, "lines")
 
-  height_body <-  unit(sum(n_lines_per_row[-i_header]) * 1.2, "lines")
-  height_header <- unit(sum(n_lines_per_row[i_header]) * 1.2, "lines")
+  height_body <-  grid::unit(sum(n_lines_per_row[-i_header]) * 1.2, "lines")
+  height_header <- grid::unit(sum(n_lines_per_row[i_header]) * 1.2, "lines")
 
   nc_g <- nc + 2 # number of columns incl. row names and forest
 
-  vp_tbl <- vpTree(
-    parent = viewport(
+  vp_tbl <- grid::vpTree(
+    parent = grid::viewport(
       name = "vp_table_layout",
-      layout = grid.layout(
+      layout = grid::grid.layout(
         nrow = 3, ncol = 1,
-        heights = unit.c(height_header, gap_header, height_body)
+        heights = grid::unit.c(height_header, gap_header, height_body)
       )
     ),
-    children = vpList(
+    children = grid::vpList(
       vp_forest_table_part(nr_h, nc_g, 1, 1, widths, height_header_rows, "vp_header"),
       vp_forest_table_part(nr, nc_g, 3, 1, widths, height_body_rows, "vp_body"),
-      viewport(name = "vp_spacer", layout.pos.row = 2, layout.pos.col = 1)
+      grid::viewport(name = "vp_spacer", layout.pos.row = 2, layout.pos.col = 1)
     )
   )
   vp_tbl
@@ -777,8 +766,6 @@ forest_viewport <- function(tbl,
 #'
 #' @noRd
 #'
-#' @importFrom grid grid.layout viewport vpList vpTree
-#'
 vp_forest_table_part <- function(nrow,
                                  ncol,
                                  l_row,
@@ -786,19 +773,19 @@ vp_forest_table_part <- function(nrow,
                                  widths,
                                  heights,
                                  name) {
-  vpTree(
-    viewport(
+  grid::vpTree(
+    grid::viewport(
       name = name,
       layout.pos.row = l_row,
       layout.pos.col = l_col,
-      layout = grid.layout(nrow = nrow, ncol = ncol, widths = widths, heights = heights)
+      layout = grid::grid.layout(nrow = nrow, ncol = ncol, widths = widths, heights = heights)
     ),
-    children = vpList(
+    children = grid::vpList(
       do.call(
         vpList,
         lapply(
           seq_len(nrow), function(i) {
-            viewport(layout.pos.row = i, layout.pos.col = 1, name = paste0("rowname-", i))
+            grid::viewport(layout.pos.row = i, layout.pos.col = 1, name = paste0("rowname-", i))
           }
         )
       ),
@@ -810,7 +797,7 @@ vp_forest_table_part <- function(nrow,
           function(x) {
             i <- x[1]
             j <- x[2]
-            viewport(layout.pos.row = i, layout.pos.col = j + 1, name = paste0("cell-", i, "-", j))
+            grid::viewport(layout.pos.row = i, layout.pos.col = j + 1, name = paste0("cell-", i, "-", j))
           }
         )
       ),
@@ -819,7 +806,7 @@ vp_forest_table_part <- function(nrow,
         lapply(
           seq_len(nrow),
           function(i) {
-            viewport(layout.pos.row = i, layout.pos.col = ncol, name = paste0("forest-", i))
+            grid::viewport(layout.pos.row = i, layout.pos.col = ncol, name = paste0("forest-", i))
           }
         )
       )
@@ -833,10 +820,8 @@ vp_forest_table_part <- function(nrow,
 #'
 #' @noRd
 #'
-#' @importFrom grid grid.draw
-#'
 grid.forest <- function(...) {# nousage # nolint
-  grid.draw(forest_grob(...)) # nolint
+  grid::grid.draw(forest_grob(...)) # nolint
 }
 
 ## To be deprecated ----

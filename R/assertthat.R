@@ -30,7 +30,6 @@ on_failure(is_character_or_factor) <- function(call, env) {
 
 
 #' @describeIn assertions Check whether `x` is a nonnegative count.
-#' @importFrom rlang is_integerish
 #' @export
 #' @examples
 #'
@@ -77,7 +76,7 @@ on_failure(is_variables) <- function(call, env) {
 #' is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 #'
 is_df_with_variables <- function(df, variables) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is_variables(variables)
   )
@@ -103,7 +102,7 @@ on_failure(is_df_with_variables) <- function(call, env) {
 #' )
 #'
 is_df_with_factors <- function(df, variables) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, variables)
   )
   all(vapply(df[, unlist(variables)], is_valid_factor, logical(1)))
@@ -136,7 +135,7 @@ is_df_with_nlevels_factor <- function(df,
                                       variable,
                                       n_levels,
                                       relation = c("==", ">=")) {
-  assert_that(
+  assertthat::assert_that(
     is.string(variable),
     is_df_with_factors(df, variables = list(factor = variable)),
     is.count(n_levels)
@@ -177,11 +176,10 @@ is_equal_length <- function(...) {
   all(y == y[1])
 }
 
-#' @importFrom stats setNames
 on_failure(is_equal_length) <- function(call, env) {
 
   y <- unlist(as.list(call)[-1])
-  y <- setNames(y, nm = y)
+  y <- stats::setNames(y, nm = y)
   y <- mapply(
     FUN = function(expr) eval(expr, envir = parent.frame(n = 2)),
     expr = y
@@ -318,7 +316,7 @@ on_failure(is_valid_character) <- function(call, env) {
 #'
 all_elements_in_ref <- function(x, ref) {
 
-  assert_that(
+  assertthat::assert_that(
     is.vector(x),
     is.vector(ref),
     not_empty(x),
@@ -369,7 +367,7 @@ on_failure(has_tabletree_colnames) <- function(call, env) {
 #' is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
 #'
 is_df_with_no_na_level <- function(df, variables, na_level) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, variables),
     is.string(na_level)
   )

@@ -36,7 +36,6 @@ s_compare <- function(x,
 #' @method s_compare numeric
 #' @order 3
 #'
-#' @importFrom stats t.test
 #' @export
 #'
 #' @examples
@@ -55,7 +54,7 @@ s_compare.numeric <- function(x,
                               .ref_group,
                               .in_ref_col,
                               ...) {
-  assert_that(
+  assertthat::assert_that(
     is.numeric(x),
     is.numeric(.ref_group),
     is.flag(.in_ref_col)
@@ -64,7 +63,7 @@ s_compare.numeric <- function(x,
   y <- s_summary.numeric(x = x, ...)
 
   y$pval <- if (!.in_ref_col && n_available(x) > 1 && n_available(.ref_group) > 1) {
-    t.test(x, .ref_group)$p.value
+    stats::t.test(x, .ref_group)$p.value
   } else {
     character()
   }
@@ -87,7 +86,6 @@ s_compare.numeric <- function(x,
 #' @method s_compare factor
 #' @order 4
 #'
-#' @importFrom stats chisq.test
 #' @export
 #'
 #' @examples
@@ -111,7 +109,7 @@ s_compare.factor <- function(x,
                              na.rm = TRUE, #nolint
                              na_level = "<Missing>",
                              ...) {
-  assert_that(
+  assertthat::assert_that(
     is_factor_no_na(x),
     is_factor_no_na(.ref_group),
     is.flag(.in_ref_col)
@@ -131,14 +129,14 @@ s_compare.factor <- function(x,
     .ref_group <- fct_discard(.ref_group, na_level)
   }
 
-  assert_that(
+  assertthat::assert_that(
     identical(levels(x), levels(.ref_group)),
     nlevels(x) > 1
   )
 
   y$pval <- if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
     tab <- rbind(table(x), table(.ref_group))
-    res <- suppressWarnings(chisq.test(tab))
+    res <- suppressWarnings(stats::chisq.test(tab))
     res$p.value
   } else {
     character()

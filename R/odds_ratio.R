@@ -24,7 +24,6 @@ NULL
 #'   exactly 2 groups in `data` as specified by the `grp` variable.
 #'
 #' @inheritParams argument_convention
-#' @importFrom stats as.formula binomial coef confint confint.default glm setNames
 #' @export
 #' @examples
 #'
@@ -41,7 +40,7 @@ NULL
 #'
 or_glm <- function(data, conf_level) {
 
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(data, list(rsp = "rsp", grp = "grp")),
     is.logical(data$rsp),
     is_character_or_factor(data$grp),
@@ -49,23 +48,23 @@ or_glm <- function(data, conf_level) {
   )
 
   data$grp <- as_factor_keep_attributes(data$grp)
-  assert_that(
+  assertthat::assert_that(
     is_df_with_nlevels_factor(data, variable = "grp", n_levels = 2)
   )
-  formula <- as.formula("rsp ~ grp")
-  model_fit <- glm(
+  formula <- stats::as.formula("rsp ~ grp")
+  model_fit <- stats::glm(
     formula = formula, data = data,
-    family = binomial(link = "logit")
+    family = stats::binomial(link = "logit")
   )
 
   # Note that here we need to discard the intercept.
-  or <- exp(coef(model_fit)[-1])
+  or <- exp(stats::coef(model_fit)[-1])
   or_ci <- exp(
-    confint.default(model_fit, level = conf_level)[-1, , drop = FALSE]
+    stats::confint.default(model_fit, level = conf_level)[-1, , drop = FALSE]
   )
 
-  values <- setNames(c(or, or_ci), c("est", "lcl", "ucl"))
-  n_tot <- setNames(nrow(model_fit$model), "n_tot")
+  values <- stats::setNames(c(or, or_ci), c("est", "lcl", "ucl"))
+  n_tot <- stats::setNames(nrow(model_fit$model), "n_tot")
 
   list(or_ci = values, n_tot = n_tot)
 }
@@ -75,8 +74,6 @@ or_glm <- function(data, conf_level) {
 #'   pairwise comparisons between the groups.
 #'
 #' @inheritParams argument_convention
-#' @importFrom stats setNames
-#' @importFrom survival strata clogit coxph
 #' @export
 #' @examples
 #'
@@ -93,7 +90,7 @@ or_glm <- function(data, conf_level) {
 #'
 or_clogit <- function(data, conf_level) {
 
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata")),
     is.logical(data$rsp),
     is_character_or_factor(data$grp),
@@ -105,17 +102,17 @@ or_clogit <- function(data, conf_level) {
   data$strata <- as_factor_keep_attributes(data$strata)
 
   # Deviation from convention: `survival::strata` must be simply `strata`.
-  formula <- as.formula("rsp ~ grp + strata(strata)")
-  model_fit <- clogit(formula = formula, data = data)
+  formula <- stats::as.formula("rsp ~ grp + survival::strata(strata)")
+  model_fit <- survival::clogit(formula = formula, data = data)
 
   # Create a list with one set of OR estimates and CI per coefficient, i.e.
   # comparison of one group vs. the reference group.
-  coef_est <- coef(model_fit)
-  ci_est <- confint(model_fit, level = conf_level)
+  coef_est <- stats::coef(model_fit)
+  ci_est <- stats::confint(model_fit, level = conf_level)
   or_ci <- list()
   for (coef_name in names(coef_est)) {
     grp_name <- gsub("^grp", "", x = coef_name)
-    or_ci[[grp_name]] <- setNames(
+    or_ci[[grp_name]] <- stats::setNames(
       object = exp(c(coef_est[coef_name], ci_est[coef_name, , drop = TRUE])),
       nm = c("est", "lcl", "ucl")
     )
@@ -128,7 +125,6 @@ or_clogit <- function(data, conf_level) {
 #'   needs to be passed if a stratified analysis is required.
 #' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
-#' @importFrom stats relevel
 #' @export
 #' @examples
 #'
@@ -170,7 +166,7 @@ s_odds_ratio <- function(df,
 
   if (!.in_ref_col) {
 
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(df, list(rsp = .var)),
       is_df_with_variables(.ref_group, list(rsp = .var)),
       is_proportion(conf_level)
@@ -187,7 +183,7 @@ s_odds_ratio <- function(df,
       y <- or_glm(data, conf_level = conf_level)
     } else {
 
-      assert_that(
+      assertthat::assert_that(
         is_df_with_variables(.df_row, c(list(rsp = .var), variables))
       )
 
@@ -195,7 +191,7 @@ s_odds_ratio <- function(df,
       if (is.null(groups_list)) {
         ref_grp <- as.character(unique(.ref_group[[variables$arm]]))
         trt_grp <- as.character(unique(df[[variables$arm]]))
-        grp <- relevel(factor(.df_row[[variables$arm]]), ref = ref_grp)
+        grp <- stats::relevel(factor(.df_row[[variables$arm]]), ref = ref_grp)
       } else {
         # If more than one level in reference col.
         reference <- as.character(unique(.ref_group[[variables$arm]]))
@@ -226,7 +222,7 @@ s_odds_ratio <- function(df,
         strata = interaction(.df_row[variables$strata])
       )
       y_all <- or_clogit(data, conf_level = conf_level)
-      assert_that(
+      assertthat::assert_that(
         is.string(trt_grp),
         trt_grp %in% names(y_all$or_ci)
       )

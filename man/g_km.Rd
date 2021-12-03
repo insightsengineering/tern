@@ -171,37 +171,37 @@ res <- g_km(df = df, variables = variables, max = 2000)
 # 2. Example - Arrange several KM curve on a single graph device
 
 # 2.1 Use case: A general graph on the top, a zoom on the bottom.
-grid.newpage()
-lyt <- grid.layout(nrow = 2, ncol = 1) \%>\%
-  viewport(layout = .) \%>\%
+grid::grid.newpage()
+lyt <- grid::grid.layout(nrow = 2, ncol = 1) \%>\%
+  grid::viewport(layout = .) \%>\%
   pushViewport()
 
 res <- g_km(
   df = df, variables = variables, newpage = FALSE, annot_surv_med = FALSE,
-  vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
+  vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
 )
 res <- g_km(
   df = df, variables = variables, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
   ggtheme = theme_dark(),
-  vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
+  vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
 )
 
 # 2.1 Use case: No annotations on top, annotated graph on bottom
-grid.newpage()
-lyt <- grid.layout(nrow = 2, ncol = 1) \%>\%
-  viewport(layout = .) \%>\%
+grid::grid.newpage()
+lyt <- grid::grid.layout(nrow = 2, ncol = 1) \%>\%
+  grid::viewport(layout = .) \%>\%
   pushViewport()
 
 res <- g_km(
   df = df, variables = variables, newpage = FALSE,
   annot_surv_med = FALSE, annot_at_risk = FALSE,
-  vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
+  vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
 )
 res <- g_km(
   df = df, variables = variables, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
   annot_at_risk = TRUE,
   ggtheme = theme_dark(),
-  vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
+  vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
 )
 
 # Add annotation from a pairwise coxph analysis

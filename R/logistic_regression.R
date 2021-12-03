@@ -39,7 +39,6 @@ NULL
 #'   This will be used when fitting the (conditional) logistic regression model on the left hand
 #'   side of the formula.
 #'
-#' @importFrom stats as.formula glm
 #' @details Note this function may hang or error for certain datasets when an old version of the
 #'   survival package (< 3.2-13) is used.
 #' @export
@@ -57,7 +56,7 @@ NULL
 #'     RACE = factor(RACE),
 #'     SEX = factor(SEX)
 #'   )
-#' var_labels(adrs_f) <- c(var_labels(adrs), Response = "Response")
+#' var_labels(adrs_f) <- c(rtables::var_labels(adrs), Response = "Response")
 #' mod1 <- fit_logistic(
 #'   data = adrs_f,
 #'   variables = list(
@@ -85,7 +84,7 @@ fit_logistic <- function(data,
                            strata = NULL
                          ),
                          response_definition = "response") {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
     all(names(variables) %in% c("response", "arm", "covariates", "interaction", "strata")),
     is_df_with_variables(data, as.list(unlist(variables))),
@@ -104,7 +103,7 @@ fit_logistic <- function(data,
     form <- paste0(form, " + ", paste(variables$covariates, collapse = " + "))
   }
   if (!is.null(variables$interaction)) {
-    assert_that(
+    assertthat::assert_that(
       is.string(variables$interaction),
       variables$interaction %in% variables$covariates
     )
@@ -138,14 +137,12 @@ fit_logistic <- function(data,
 #' @describeIn logistic_regression Helper function to extract interaction variable names from a fitted
 #'   model assuming only one interaction term.
 #'
-#' @importFrom stats terms
-#'
 h_get_interaction_vars <- function(fit_glm) {
-  assert_that("glm" %in% class(fit_glm))
-  terms_name <- attr(terms(fit_glm), "term.labels")
-  terms_order <- attr(terms(fit_glm), "order")
+  assertthat::assert_that("glm" %in% class(fit_glm))
+  terms_name <- attr(stats::terms(fit_glm), "term.labels")
+  terms_order <- attr(stats::terms(fit_glm), "order")
   interaction_term <- terms_name[terms_order == 2]
-  assert_that(is.string(interaction_term))
+  assertthat::assert_that(is.string(interaction_term))
   strsplit(interaction_term, split = ":")[[1]]
 }
 
@@ -161,7 +158,7 @@ h_get_interaction_vars <- function(fit_glm) {
 h_interaction_coef_name <- function(interaction_vars,
                                     first_var_with_level,
                                     second_var_with_level) {
-  assert_that(
+  assertthat::assert_that(
     is_character_vector(interaction_vars, 2L, 2L),
     is_character_vector(first_var_with_level, 2L, 2L),
     is_character_vector(second_var_with_level, 2L, 2L),
@@ -181,22 +178,20 @@ h_interaction_coef_name <- function(interaction_vars,
 #' @param odds_ratio_var (`string`)\cr the odds ratio variable.
 #' @param interaction_var (`string`)\cr the interaction variable.
 #'
-#' @importFrom stats coef vcov
-#'
 h_or_cat_interaction <- function(odds_ratio_var,
                                  interaction_var,
                                  fit_glm,
                                  conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
-  assert_that(
+  assertthat::assert_that(
     is.string(odds_ratio_var),
     is.string(interaction_var),
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
     identical(length(interaction_vars), 2L)
   )
   xs_level <- fit_glm$xlevels
-  xs_coef <- coef(fit_glm)
-  xs_vcov <- vcov(fit_glm)
+  xs_coef <- stats::coef(fit_glm)
+  xs_vcov <- stats::vcov(fit_glm)
   y <- list()
   for (var_level in xs_level[[odds_ratio_var]][-1]) {
     x <- list()
@@ -222,7 +217,7 @@ h_or_cat_interaction <- function(odds_ratio_var,
         se <- sqrt(as.numeric(xs_vcov[coef_names, coef_names]))
       }
       or <- exp(est)
-      ci <- exp(est + c(lcl = -1, ucl = 1) * qnorm((1 + conf_level) / 2) * se)
+      ci <- exp(est + c(lcl = -1, ucl = 1) * stats::qnorm((1 + conf_level) / 2) * se)
       x[[ref_level]] <- list(or = or, ci = ci)
     }
     y[[var_level]] <- x
@@ -238,15 +233,13 @@ h_or_cat_interaction <- function(odds_ratio_var,
 #'   this does not arise in this table, as the treatment arm variable will always be involved
 #'   and categorical.
 #'
-#' @importFrom stats coef median qnorm vcov
-#'
 h_or_cont_interaction <- function(odds_ratio_var,
                                   interaction_var,
                                   fit_glm,
                                   at = NULL,
                                   conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
-  assert_that(
+  assertthat::assert_that(
     is.string(odds_ratio_var),
     is.string(interaction_var),
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
@@ -254,19 +247,19 @@ h_or_cont_interaction <- function(odds_ratio_var,
     is.null(at) || is_numeric_vector(at)
   )
   xs_level <- fit_glm$xlevels
-  xs_coef <- coef(fit_glm)
-  xs_vcov <- vcov(fit_glm)
+  xs_coef <- stats::coef(fit_glm)
+  xs_vcov <- stats::vcov(fit_glm)
   xs_class <- attr(fit_glm$terms, "dataClasses")
   model_data <- fit_glm$model
   if (!is.null(at)) {
-    assert_that(
+    assertthat::assert_that(
       xs_class[interaction_var] == "numeric"
     )
   }
   y <- list()
   if (xs_class[interaction_var] == "numeric") {
     if (is.null(at)) {
-      at <- ceiling(median(model_data[[interaction_var]]))
+      at <- ceiling(stats::median(model_data[[interaction_var]]))
     }
 
     for (var_level in xs_level[[odds_ratio_var]][-1]) {
@@ -293,13 +286,13 @@ h_or_cont_interaction <- function(odds_ratio_var,
           se <- sqrt(as.numeric(xs_vcov[coef_names, coef_names]))
         }
         or <- exp(est)
-        ci <- exp(est + c(lcl = -1, ucl = 1) * qnorm((1 + conf_level) / 2) * se)
+        ci <- exp(est + c(lcl = -1, ucl = 1) * stats::qnorm((1 + conf_level) / 2) * se)
         x[[as.character(increment)]] <- list(or = or, ci = ci)
       }
       y[[var_level]] <- x
     }
   } else {
-    assert_that(
+    assertthat::assert_that(
       xs_class[odds_ratio_var] == "numeric",
       xs_class[interaction_var] == "factor"
     )
@@ -325,7 +318,7 @@ h_or_cont_interaction <- function(odds_ratio_var,
         se <- sqrt(as.numeric(xs_vcov[coef_names, coef_names]))
       }
       or <- exp(est)
-      ci <- exp(est + c(lcl = -1, ucl = 1) * qnorm((1 + conf_level) / 2) * se)
+      ci <- exp(est + c(lcl = -1, ucl = 1) * stats::qnorm((1 + conf_level) / 2) * se)
       y[[var_level]] <- list(or = or, ci = ci)
     }
   }
@@ -369,7 +362,7 @@ h_or_interaction <- function(odds_ratio_var,
 #'
 h_simple_term_labels <- function(terms,
                                  table) {
-  assert_that(
+  assertthat::assert_that(
     is_character_or_factor(terms),
     is.table(table)
   )
@@ -389,7 +382,7 @@ h_interaction_term_labels <- function(terms1,
                                       terms2,
                                       table,
                                       any = FALSE) {
-  assert_that(
+  assertthat::assert_that(
     is_character_or_factor(terms1),
     is_character_or_factor(terms2),
     is.table(table),
@@ -398,7 +391,7 @@ h_interaction_term_labels <- function(terms1,
   terms1 <- as.character(terms1)
   terms2 <- as.character(terms2)
   if (any) {
-    assert_that(is.scalar(terms1), is.scalar(terms2))
+    assertthat::assert_that(is.scalar(terms1), is.scalar(terms2))
     paste0(
       terms1, " or ", terms2, ", n = ",
       # Note that we double count in the initial sum the cell [terms1, terms2], therefore subtract.
@@ -413,9 +406,6 @@ h_interaction_term_labels <- function(terms1,
 #' @describeIn logistic_regression Helper function to tabulate the main effect
 #'   results of a (conditional) logistic regression model.
 #'
-#' @importFrom car Anova
-#' @importFrom rtables var_labels
-#'
 #' @export
 #'
 #' @examples
@@ -423,7 +413,7 @@ h_interaction_term_labels <- function(terms1,
 #' h_glm_simple_term_extract("ARMCD", mod1)
 #'
 h_glm_simple_term_extract <- function(x, fit_glm) {
-  assert_that(
+  assertthat::assert_that(
     inherits(fit_glm, c("glm", "clogit")),
     is.string(x)
   )
@@ -436,7 +426,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     c("estimate" = "coef", "std_error" = "se(coef)", "pvalue" = "Pr(>|z|)")
   }
   # Make sure x is not an interaction term.
-  assert_that(x %in% names(xs_class))
+  assertthat::assert_that(x %in% names(xs_class))
   x_sel <- if (xs_class[x] == "numeric") x else paste0(x, xs_level[[x]][-1])
   x_stats <- as.data.frame(xs_coef[x_sel, stats, drop = FALSE], stringsAsFactors = FALSE)
   colnames(x_stats) <- names(stats)
@@ -447,7 +437,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
   if (xs_class[x] == "numeric") {
     x_stats$term <- x
     x_stats$term_label <- if (inherits(fit_glm, "glm")) {
-      var_labels(fit_glm$data[x], fill = TRUE)
+      rtables::var_labels(fit_glm$data[x], fill = TRUE)
     } else {
       # We just fill in here with the `term` itself as we don't have the data available.
       x
@@ -455,7 +445,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     x_stats$is_variable_summary <- FALSE
     x_stats$is_term_summary <- TRUE
   } else {
-    assert_that(
+    assertthat::assert_that(
       inherits(fit_glm, "glm"),
       msg = "for non-numeric variables only glm models are supported"
     )
@@ -466,7 +456,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     x_stats$term_label <- h_simple_term_labels(x_stats$term, x_numbers)
     x_stats$is_variable_summary <- FALSE
     x_stats$is_term_summary <- TRUE
-    main_effects <- Anova(fit_glm, type = 3, test.statistic = "Wald")
+    main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
     x_main <- data.frame(
       pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE],
       term = xs_level[[x]][1],
@@ -488,7 +478,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
   }
   x_stats$variable <- x
   x_stats$variable_label <- if (inherits(fit_glm, "glm")) {
-    var_labels(fit_glm$data[x], fill = TRUE)
+    rtables::var_labels(fit_glm$data[x], fill = TRUE)
   } else {
     x
   }
@@ -517,7 +507,6 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
 
 #' @describeIn logistic_regression Helper function to tabulate the interaction term
 #'   results of a logistic regression model.
-#' @importFrom car Anova
 #' @export
 #' @examples
 #' h_glm_interaction_extract("ARMCD:AGE", mod2)
@@ -525,18 +514,18 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
 h_glm_interaction_extract <- function(x, fit_glm) {
   vars <- h_get_interaction_vars(fit_glm)
   xs_class <- attr(fit_glm$terms, "dataClasses")
-  assert_that(
+  assertthat::assert_that(
     is.string(x)
   )
   # Only take two-way interaction
-  assert_that(
+  assertthat::assert_that(
     length(vars) == 2,
     # Only consider simple case: first variable in interaction is arm, a categorical variable
     xs_class[vars[1]] != "numeric"
   )
   xs_level <- fit_glm$xlevels
   xs_coef <- summary(fit_glm)$coefficients
-  main_effects <- Anova(fit_glm, type = 3, test.statistic = "Wald")
+  main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
   stats <- c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
   v1_comp <- xs_level[[vars[1]]][-1]
   if (xs_class[vars[2]] == "numeric") {
@@ -591,9 +580,9 @@ h_glm_interaction_extract <- function(x, fit_glm) {
   x_stats$variable <- x
   x_stats$variable_label <- paste(
     "Interaction of",
-    var_labels(fit_glm$data[vars[1]], fill = TRUE),
+    rtables::var_labels(fit_glm$data[vars[1]], fill = TRUE),
     "*",
-    var_labels(fit_glm$data[vars[2]], fill = TRUE)
+    rtables::var_labels(fit_glm$data[vars[2]], fill = TRUE)
   )
   x_stats$interaction <- ""
   x_stats$interaction_label <- ""
@@ -622,7 +611,6 @@ h_glm_interaction_extract <- function(x, fit_glm) {
 #'   results of a logistic regression model. This basically is a wrapper for
 #'   [h_or_interaction()] and [h_glm_simple_term_extract()] which puts the results
 #'   in the right data frame format.
-#' @importFrom rtables var_labels
 #' @export
 #' @examples
 #' h_glm_inter_term_extract("AGE", "ARMCD", mod2)
@@ -656,11 +644,11 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
     }
     or_stats <- data.frame(
       variable = odds_ratio_var,
-      variable_label = unname(var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
+      variable_label = unname(rtables::var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
       term = odds_ratio_var,
-      term_label = unname(var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
+      term_label = unname(rtables::var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
       interaction = interaction_var,
-      interaction_label = unname(var_labels(fit_glm$data[interaction_var], fill = TRUE)),
+      interaction_label = unname(rtables::var_labels(fit_glm$data[interaction_var], fill = TRUE)),
       reference = references,
       reference_label = references,
       estimate = NA,
@@ -688,11 +676,11 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
     }
     or_stats <- data.frame(
       variable = odds_ratio_var,
-      variable_label = unname(var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
+      variable_label = unname(rtables::var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
       term = rep(names(or_numbers), each = n_ref),
       term_label = h_simple_term_labels(rep(names(or_numbers), each = n_ref), table(fit_glm$data[[odds_ratio_var]])),
       interaction = interaction_var,
-      interaction_label = unname(var_labels(fit_glm$data[interaction_var], fill = TRUE)),
+      interaction_label = unname(rtables::var_labels(fit_glm$data[interaction_var], fill = TRUE)),
       reference = unlist(lapply(or_numbers, names)),
       reference_label = unlist(lapply(or_numbers, names)),
       estimate = NA,
@@ -717,27 +705,26 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 
 #' @describeIn logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of simple terms.
-#' @importFrom stats qnorm
 #' @export
 #' @examples
 #' h_logistic_simple_terms("AGE", mod1)
 #'
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
-  assert_that(inherits(fit_glm, c("glm", "clogit")))
+  assertthat::assert_that(inherits(fit_glm, c("glm", "clogit")))
   if (inherits(fit_glm, "glm")) {
-    assert_that(fit_glm$family$family == "binomial")
+    assertthat::assert_that(fit_glm$family$family == "binomial")
   }
-  terms_name <- attr(terms(fit_glm), "term.labels")
+  terms_name <- attr(stats::terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
-  assert_that(all(x %in% terms_name))
+  assertthat::assert_that(all(x %in% terms_name))
   if (length(interaction) != 0) {
     # Make sure any item in x is not part of interaction term
-    assert_that(all(!x %in% unlist(strsplit(interaction, ":"))))
+    assertthat::assert_that(all(!x %in% unlist(strsplit(interaction, ":"))))
   }
   x_stats <- lapply(x, h_glm_simple_term_extract, fit_glm)
   x_stats <- do.call(rbind, x_stats)
-  q_norm <- qnorm((1 + conf_level) / 2)
+  q_norm <- stats::qnorm((1 + conf_level) / 2)
   x_stats$odds_ratio <- lapply(x_stats$estimate, exp)
   x_stats$lcl <- Map(function(or, se) exp(log(or) - q_norm * se), x_stats$odds_ratio, x_stats$std_error)
   x_stats$ucl <- Map(function(or, se) exp(log(or) + q_norm * se), x_stats$odds_ratio, x_stats$std_error)
@@ -747,7 +734,6 @@ h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
 
 #' @describeIn logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of interaction terms.
-#' @importFrom stats qnorm
 #' @export
 #' @examples
 #' h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
@@ -758,7 +744,7 @@ h_logistic_inter_terms <- function(x,
                                    at = NULL) {
   # Find out the interaction variables and interaction term.
   inter_vars <- h_get_interaction_vars(fit_glm)
-  assert_that(identical(length(inter_vars), 2L))
+  assertthat::assert_that(identical(length(inter_vars), 2L))
   inter_term_index <- intersect(grep(inter_vars[1], x), grep(inter_vars[2], x))
   inter_term <- x[inter_term_index]
 
@@ -767,7 +753,7 @@ h_logistic_inter_terms <- function(x,
 
   x_stats <- lapply(normal_terms, h_glm_simple_term_extract, fit_glm)
   x_stats <- do.call(rbind, x_stats)
-  q_norm <- qnorm((1 + conf_level) / 2)
+  q_norm <- stats::qnorm((1 + conf_level) / 2)
   x_stats$odds_ratio <- lapply(x_stats$estimate, exp)
   x_stats$lcl <- Map(function(or, se) exp(log(or) - q_norm * se), x_stats$odds_ratio, x_stats$std_error)
   x_stats$ucl <- Map(function(or, se) exp(log(or) + q_norm * se), x_stats$odds_ratio, x_stats$std_error)
@@ -840,8 +826,6 @@ h_logistic_inter_terms <- function(x,
 #' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
 #' @method tidy glm
 #' @export
-#' @importFrom broom tidy
-#' @importFrom stats terms
 #' @examples
 #' library(broom)
 #' df <- tidy(mod1, conf_level = 0.99)
@@ -850,11 +834,11 @@ h_logistic_inter_terms <- function(x,
 tidy.glm <- function(fit_glm, #nolint #nousage
                      conf_level = 0.95,
                      at = NULL) {
-  assert_that(
+  assertthat::assert_that(
     "glm" %in% class(fit_glm),
     fit_glm$family$family == "binomial"
   )
-  terms_name <- attr(terms(fit_glm), "term.labels")
+  terms_name <- attr(stats::terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
   df <- if (length(interaction) == 0) {
@@ -906,7 +890,7 @@ logistic_regression_cols <- function(lyt,
 #' @export
 #'
 logistic_summary_by_flag <- function(flag_var) {
-  assert_that(is.string(flag_var))
+  assertthat::assert_that(is.string(flag_var))
   function(lyt) {
     cfun_list <- list(
       df = cfun_by_flag("df", flag_var, format = "xx."),

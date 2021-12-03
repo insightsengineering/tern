@@ -34,7 +34,7 @@ df <- data.frame(
   y = factor(c("A","B", "A", "B", "A"), levels = c("A", "B", "C")),
   z = factor(c("C", "C", "D", "D", "D"), levels = c("D", "C"))
 )
-var_labels(df) <- paste("label for", names(df))
+rtables::var_labels(df) <- paste("label for", names(df))
 
 h_split_by_subgroups(
   data = df,

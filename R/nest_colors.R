@@ -27,9 +27,6 @@
 #'
 #' @export
 #'
-#' @importFrom scales col_bin
-#' @importFrom viridisLite plasma
-#'
 #'
 #' @examples
 #' library(grid)
@@ -57,7 +54,7 @@ color_palette <- function(n = 10, palette = "nest") {
   set.seed(124)
   colors <- if (palette == "viridis") {
     rep(c(
-      col_bin(plasma(49), 1:49)(sample(1:49, 49)),
+      scales::col_bin(viridisLite::plasma(49), 1:49)(sample(1:49, 49)),
       ceiling(n / 49)
     ))
   } else if (palette == "stream") {

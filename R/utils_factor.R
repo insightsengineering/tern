@@ -55,7 +55,7 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),
                                       na_level = "<Missing>") {
-  assert_that(
+  assertthat::assert_that(
     is.atomic(x),
     is.string(x_name),
     is.string(na_level)
@@ -102,7 +102,6 @@ as_factor_keep_attributes <- function(x,
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
 #'
 #' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
-#' @importFrom utils head tail
 #' @export
 #'
 #' @examples
@@ -117,7 +116,7 @@ as_factor_keep_attributes <- function(x,
 #'
 bins_percent_labels <- function(probs,
                                 digits = 0) {
-  assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))
+  assertthat::assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))
   probs <- c(0, probs, 1)
   percent <- round(probs * 100, digits = digits)
   left <- paste0(utils::head(percent, -1), "%")
@@ -173,7 +172,7 @@ cut_quantile_bins <- function(x,
                               labels = bins_percent_labels(probs),
                               type = 7,
                               ordered = TRUE) {
-  assert_that(
+  assertthat::assert_that(
     is.numeric(x),
     is_quantiles_vector(probs, include_boundaries = FALSE),
     is_character_vector(labels, min_length = length(probs) + 1, max_length = length(probs) + 1),
@@ -191,7 +190,7 @@ cut_quantile_bins <- function(x,
     type = type,
     na.rm = TRUE
   )
-  assert_that(
+  assertthat::assert_that(
     !any(duplicated(quantiles)),
     msg = "Duplicate quantiles produced, please use a coarser `probs` vector"
   )
@@ -219,7 +218,7 @@ cut_quantile_bins <- function(x,
 #' fct_discard(factor(c("a", "b", "c")), "c")
 #'
 fct_discard <- function(x, discard) {
-  assert_that(
+  assertthat::assert_that(
     is.factor(x),
     is.character(discard),
     noNA(discard)
@@ -241,14 +240,13 @@ fct_discard <- function(x, discard) {
 #' @return The modified factor with inserted and existing `NA` converted to `na_level`.
 #' @seealso [forcats::fct_explicit_na()] which is used internally.
 #'
-#' @importFrom forcats fct_explicit_na
 #' @export
 #'
 #' @examples
 #' fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
 #'
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
-  assert_that(
+  assertthat::assert_that(
     is.factor(x),
     is.logical(condition),
     identical(length(x), length(condition))
@@ -275,14 +273,13 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'
 #' @export
-#' @importFrom forcats fct_collapse fct_relevel
 #'
 #' @examples
 #' fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
 #'
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   new_lvls <- names(list(...))
-  assert_that(
+  assertthat::assert_that(
     !(.na_level %in% new_lvls),
     msg = paste0(".na_level currently set to '", .na_level, "' must not be contained in the new levels")
   )

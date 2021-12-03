@@ -80,7 +80,7 @@ h_g_ipp <- function(df,
                     add_baseline_hline = FALSE,
                     yvar_baseline = "BASE",
                     ggtheme = h_set_nest_theme(10)) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.string(xvar),
     is.string(yvar),
@@ -94,18 +94,18 @@ h_g_ipp <- function(df,
     is.logical(add_baseline_hline)
   )
 
-  p <- ggplot(
+  p <- ggplot2::ggplot(
     data = df,
-    mapping = aes_string(
+    mapping = ggplot2::aes_string(
       x = xvar,
       y = yvar,
       group = id_var,
       colour = id_var
     )
   ) +
-    geom_line(size = 0.4) +
-    geom_point(size = 2) +
-    labs(
+    ggplot2::geom_line(size = 0.4) +
+    ggplot2::geom_point(size = 2) +
+    ggplot2::labs(
       x = xlab,
       y = ylab,
       title = title,
@@ -119,18 +119,18 @@ h_g_ipp <- function(df,
     baseline_df <- unique(baseline_df)
 
     p <- p +
-      geom_hline(
+      ggplot2::geom_hline(
         data = baseline_df,
-        mapping = aes_string(
+        mapping = ggplot2::aes_string(
           yintercept = yvar_baseline,
           colour = id_var
         ),
         linetype = "dotdash",
         size = 0.4
       )  +
-      geom_text(
+      ggplot2::geom_text(
         data = baseline_df,
-        mapping = aes_string(
+        mapping = ggplot2::aes_string(
           x = 1,
           y = yvar_baseline,
           label = id_var,
@@ -180,7 +180,7 @@ g_ipp <- function(df,
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
                   max_obs_per_plot = 4) {
 
-  assert_that(
+  assertthat::assert_that(
     is.count(max_obs_per_plot),
     plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
   )

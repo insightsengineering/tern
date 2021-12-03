@@ -170,7 +170,7 @@ basic_table() \%>\%
   split_rows_by("days_grouped") \%>\%
   summarize_lsmeans(show_relative = "increase") \%>\%
   build_table(
-    df = tidy(result),
+    df = broom::tidy(result),
     alt_counts_df = dat_adsl
   )
 
@@ -178,7 +178,7 @@ basic_table() \%>\%
   split_rows_by("days_grouped") \%>\%
   summarize_lsmeans(arms = FALSE) \%>\%
   build_table(
-    df = tidy(result_no_arm),
+    df = broom::tidy(result_no_arm),
     alt_counts_df = dat_adsl
   )
 

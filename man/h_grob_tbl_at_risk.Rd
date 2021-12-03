@@ -30,7 +30,7 @@ library(grid)
 
 fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
-  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+  survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 
 data_plot <- h_data_plot(fit_km = fit_km)
 
@@ -66,16 +66,16 @@ tbl <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xt
 g_el <- h_decompose_gg(gg)
 lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
 
-grid.newpage()
+grid::grid.newpage()
 pushViewport(viewport(layout = lyt, height = .95, width = .95))
-grid.rect(gp = gpar(lty = 1, col = "purple", fill = "gray85", lwd = 1))
+grid.rect(gp = grid::gpar(lty = 1, col = "purple", fill = "gray85", lwd = 1))
 pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 2))
-grid.rect(gp = gpar(lty = 1, col = "orange", fill = "gray85", lwd = 1))
-grid.draw(tbl$at_risk)
+grid.rect(gp = grid::gpar(lty = 1, col = "orange", fill = "gray85", lwd = 1))
+grid::grid.draw(tbl$at_risk)
 popViewport()
 pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 1))
-grid.rect(gp = gpar(lty = 1, col = "green3", fill = "gray85", lwd = 1))
-grid.draw(tbl$label)
+grid.rect(gp = grid::gpar(lty = 1, col = "green3", fill = "gray85", lwd = 1))
+grid::grid.draw(tbl$label)
 }
 
 }

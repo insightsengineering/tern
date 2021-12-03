@@ -20,9 +20,6 @@ NULL
 
 #' @describeIn survival_coxph_pairwise Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
 #'
-#' @importFrom stats as.formula
-#' @importFrom survival Surv
-#'
 #' @export
 #'
 #' @return The statistics are:
@@ -54,7 +51,7 @@ s_coxph_pairwise <- function(df,
                              is_event,
                              strat = NULL,
                              control = control_coxph()) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
     is.string(.var),
     is.numeric(df[[.var]]),
@@ -84,11 +81,11 @@ s_coxph_pairwise <- function(df,
     arm = group
   )
   if (is.null(strat)) {
-    formula_cox <- Surv(tte, is_event) ~ arm
+    formula_cox <- survival::Surv(tte, is_event) ~ arm
   } else {
-    formula_cox <- as.formula(
+    formula_cox <- stats::as.formula(
       paste0(
-        "Surv(tte, is_event) ~ arm + strata(",
+        "survival::Surv(tte, is_event) ~ arm + strata(",
         paste(strat, collapse = ","),
         ")"
       )

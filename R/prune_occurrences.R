@@ -39,7 +39,7 @@ NULL
 #' prune_table(tab, keep_rows(is_non_empty))
 #'}
 keep_rows <- function(row_condition) {
-  assert_that(is.function(row_condition))
+  assertthat::assert_that(is.function(row_condition))
   function(table_tree) {
     if (is(table_tree, "TableRow")) {
       return(!row_condition(table_tree))
@@ -65,7 +65,7 @@ keep_rows <- function(row_condition) {
 #' prune_table(tab, keep_content_rows(more_than_twenty))
 #'}
 keep_content_rows <- function(content_row_condition) {
-  assert_that(is.function(content_row_condition))
+  assertthat::assert_that(is.function(content_row_condition))
   function(table_tree) {
     if (is_leaf_table(table_tree)) {
       content_row <- h_content_first_row(table_tree)
@@ -96,7 +96,7 @@ keep_content_rows <- function(content_row_condition) {
 #' prune_table(tab, keep_rows(more_than_one))
 #'}
 has_count_in_cols <- function(atleast, ...) {
-  assert_that(
+  assertthat::assert_that(
     is.count(atleast)
   )
   CombinationFunction(function(table_row) {
@@ -120,7 +120,7 @@ has_count_in_cols <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(any_more_than_one))
 #'}
 has_count_in_any_col <- function(atleast, ...) {
-  assert_that(
+  assertthat::assert_that(
     is.count(atleast)
   )
   CombinationFunction(function(table_row) {
@@ -141,7 +141,7 @@ has_count_in_any_col <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_five_percent))
 #'}
 has_fraction_in_cols <- function(atleast, ...) {
-  assert_that(
+  assertthat::assert_that(
     is_proportion(atleast, include_boundaries = TRUE)
   )
   CombinationFunction(function(table_row) {
@@ -166,7 +166,7 @@ has_fraction_in_cols <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_five_percent))
 #'}
 has_fraction_in_any_col <- function(atleast, ...) {
-  assert_that(
+  assertthat::assert_that(
     is_proportion(atleast, include_boundaries = TRUE)
   )
   CombinationFunction(function(table_row) {
@@ -187,7 +187,7 @@ has_fraction_in_any_col <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_five_percent_diff))
 #'}
 has_fractions_difference <- function(atleast, ...) {
-  assert_that(
+  assertthat::assert_that(
     is_proportion(atleast, include_boundaries = TRUE)
   )
   CombinationFunction(function(table_row) {
@@ -209,7 +209,7 @@ has_fractions_difference <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_one_diff))
 #'}
 has_counts_difference <- function(atleast, ...) {
-  assert_that(
+  assertthat::assert_that(
     is.count(atleast)
   )
   CombinationFunction(function(table_row) {

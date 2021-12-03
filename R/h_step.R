@@ -17,7 +17,7 @@ NULL
 #'
 h_step_window <- function(x,
                           control = control_step()) {
-  assert_that(
+  assertthat::assert_that(
     is_numeric_vector(x),
     is_fully_named_list(control)
   )
@@ -63,34 +63,33 @@ h_step_window <- function(x,
 #'   This works for both `coxph` and `glm` models, i.e. for calculating log hazard ratio or log odds
 #'   ratio estimates. It returns a vector with elements `est` and `se`.
 #' @param model the regression model object.
-#' @importFrom stats coef delete.response model.frame model.matrix terms vcov
 #'
 h_step_trt_effect <- function(data,
                               model,
                               variables,
                               x) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(data, variables),
     is(model, "coxph") || is(model, "glm"),
     is.number(x)
   )
   arm_lvls <- levels(data[[variables$arm]])
-  assert_that(
+  assertthat::assert_that(
     identical(length(arm_lvls), 2L)
   )
   newdata <- data[c(1, 1), ]
   newdata[, variables$biomarker] <- x
   newdata[, variables$arm] <- arm_lvls
-  model_terms <- delete.response(terms(model))
-  model_frame <- model.frame(model_terms, data = newdata, xlev = model$xlevels)
-  mat <- model.matrix(model_terms, data = model_frame, contrasts.arg = model$contrasts)
-  coefs <- coef(model)
+  model_terms <- stats::delete.response(stats::terms(model))
+  model_frame <- stats::model.frame(model_terms, data = newdata, xlev = model$xlevels)
+  mat <- stats::model.matrix(model_terms, data = model_frame, contrasts.arg = model$contrasts)
+  coefs <- stats::coef(model)
   # Note: It is important to use the coef subset from matrix, otherwise intercept and
   # strata are included for coxph() models.
   mat <- mat[, names(coefs)]
   mat_diff <- diff(mat)
   est <- mat_diff %*% coefs
-  var <- mat_diff %*% vcov(model) %*% t(mat_diff)
+  var <- mat_diff %*% stats::vcov(model) %*% t(mat_diff)
   se <- sqrt(var)
   c(
     est = est,
@@ -102,7 +101,7 @@ h_step_trt_effect <- function(data,
 #'
 h_step_survival_formula <- function(variables,
                                     control = control_step()) {
-  assert_that(
+  assertthat::assert_that(
     is.null(variables$covariates) || is.character(variables$covariates),
     is_variables(variables[c("arm", "biomarker", "event", "time")])
   )
@@ -134,7 +133,7 @@ h_step_survival_est <- function(formula,
                                 x,
                                 subset = rep(TRUE, nrow(data)),
                                 control = control_coxph()) {
-  assert_that(
+  assertthat::assert_that(
     is(formula, "formula"),
     is_df_with_variables(data, variables),
     is_numeric_vector(x),
@@ -192,7 +191,7 @@ h_step_survival_est <- function(formula,
 #'
 h_step_rsp_formula <- function(variables,
                                control = c(control_step(), control_logistic())) {
-  assert_that(
+  assertthat::assert_that(
     is.null(variables$covariates) || is.character(variables$covariates),
     is_variables(variables[c("arm", "biomarker", "response")])
   )
@@ -235,7 +234,7 @@ h_step_rsp_est <- function(formula,
                            x,
                            subset = rep(TRUE, nrow(data)),
                            control = control_logistic()) {
-  assert_that(
+  assertthat::assert_that(
     is(formula, "formula"),
     is_df_with_variables(data, variables),
     is_numeric_vector(x),

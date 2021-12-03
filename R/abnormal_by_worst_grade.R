@@ -93,7 +93,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                               grade_dir = "GRADE_DIR"
                                             )) {
 
-  assert_that(
+  assertthat::assert_that(
     is.string(.var),
     is_df_with_variables(df, c(a = .var, variables)),
     is_valid_factor(df[[.var]]),
@@ -102,7 +102,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
     is_valid_factor(df[[variables$grade_dir]])
   )
   # To verify that the `split_rows_by` are performed with correct variables.
-  assert_that(
+  assertthat::assert_that(
     all(
       c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split), #nolint
     msg = paste(
