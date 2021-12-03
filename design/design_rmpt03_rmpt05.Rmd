@@ -13,7 +13,7 @@ vignette: >
   %\VignetteIndexEntry{Design of LBT05}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -80,7 +80,7 @@ s_count_patients_exposure_in_cols <- function(df, #nolint
                                               custom_label = NULL
 ) {
 
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.string(id),
     is.string(labelstr),

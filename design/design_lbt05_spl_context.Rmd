@@ -13,7 +13,7 @@ vignette: >
   %\VignetteIndexEntry{Design of LBT05}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -83,10 +83,10 @@ adlb <- df_explicit_na(adlb)
     )
     )) %>%
     select(-q1, -q2)
- 
+
   #Preprocessing steps
   adlb_f <- adlb %>% filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL))
-  
+
 # Recode ADLB parameters to so that each one has different
 # possible marked abnormalities
 adlb_f$ANRIND[adlb_f$PARAMCD == "ALT" & (adlb_f$ANRIND == "HIGH" | adlb_f$ANRIND == "HIGH HIGH")] <- "LOW"
@@ -116,7 +116,7 @@ s_count_abnormal_by_marked <- function(df,
                                        category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
                                        variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
 ) {
-  assert_that(
+  assertthat::assert_that(
     is.string(.var),
     is.character(abnormal),
     is.list(variables),
@@ -131,7 +131,7 @@ s_count_abnormal_by_marked <- function(df,
 
   df_abn_low <- df[df[[variables$direction]] %in% abnormal["Low"], ]
   df_abn_high <- df[df[[variables$direction]] %in% abnormal["High"], ]
-  assert_that(
+  assertthat::assert_that(
     nrow(df_abn_high) == 0L || nrow(df_abn_low) == 0L,
     msg = "Marked abnormalities from directions are being considered in a single estimation."
   )
@@ -220,7 +220,7 @@ count_abnormal_by_marked <- function(lyt,
                                      .formats = NULL,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.string(var)
   )
   afun <- make_afun(

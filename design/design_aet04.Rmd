@@ -73,7 +73,7 @@ Design Summary
     - ability to repeat multiple `summarize_row_groups` functions within a layout
     - `trim_rows` should not drop content rows with "" which may hold a label
     - In `make_afun` it would be nice to be able to use `.stats` to select elements to keep in the display without
-    having to also specify `.formats` and `.indent_mods`. For example see `summarize_grade_per_id` 
+    having to also specify `.formats` and `.indent_mods`. For example see `summarize_grade_per_id`
     in the [layout functions](#basic-table-functions).
   - With content rows, the sorting is easy as can apply directly rtables functions
 - Original approach
@@ -81,7 +81,7 @@ Design Summary
   - Sorting functions for term and class levels is difficult to control because it's not easy to distinguish summary rows
   from other rows in sub-tables.
 
-Approach with `summarize_row_groups`  
+Approach with `summarize_row_groups`
 ====================================
 
 Basic table functions {.tabset}
@@ -95,7 +95,7 @@ s_count_grade_per_id <- function(df,
                                  .N_col, #nolint
                                  variables = list(id = "USUBJID")) {
 
-  assert_that(
+  assertthat::assert_that(
     noNA(df[, c(.var, variables$id)]),
     is.factor(df[[.var]])
   )
@@ -126,7 +126,7 @@ s_count_grade_per_id_content <- function(
   .var,
   variables = list(id = "USUBJID", top_label = "- Any adverse events -")) {
 
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.string(.var)
   )
@@ -248,11 +248,11 @@ basic_table() %>%
   build_table(anl, col_counts = big_n)
 ```
 
-### Split by AEBODSYS and AEDECOD 
+### Split by AEBODSYS and AEDECOD
 
 - Reusing `summarize_num_patients` developed from `AET06` template.
 
-- Not able to chain multiple `summarize_row_groups`. 
+- Not able to chain multiple `summarize_row_groups`.
 
 - For now, at the SOC-level "- Any Grade -" row is part of content rows (until it's possible to chain `summarize_row_groups`).
 
@@ -282,7 +282,7 @@ basic_table() %>%
 
 - Reusing `summarize_num_patients` developed from `AET06` template.
 
-- Not able to chain multiple `summarize_row_groups`. 
+- Not able to chain multiple `summarize_row_groups`.
 
 - This example adds the top rows summarizing across all occurrences.
 
@@ -315,7 +315,7 @@ basic_table() %>%
 Sorting {.tabset}
 ------------------------
 
-Note: when trimming the table the "- Any adverse events -" row is dropped. Need to come up 
+Note: when trimming the table the "- Any adverse events -" row is dropped. Need to come up
 with a workaround.
 
 ### Table to sort
@@ -351,7 +351,7 @@ tbl
 
 ### Apply sort functions
 
-- Default functions provide provided with `rtables` work 
+- Default functions provide provided with `rtables` work
 - If total column is not present, can use `cont_n_allcols`
 - Perhaps it's helpful to wrap up this chain of functions in an easy-to-use default function?
 
@@ -414,4 +414,3 @@ basic_table() %>%
   )
 
 ```
-

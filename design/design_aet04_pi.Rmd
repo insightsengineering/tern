@@ -13,7 +13,7 @@ vignette: >
   %\VignetteIndexEntry{Design of AET04_PI}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -68,24 +68,24 @@ df <- data.frame(
 We first tackle the first variant, "Adverse Events Reported in >= 10% of Patients by Highest NCI CTCAE Grade":
 
 ````
-                                         ARM A                          ARM B            
-                                        (N=185)                        (N=180)           
+                                         ARM A                          ARM B
+                                        (N=185)                        (N=180)
                              _____________________________  _____________________________
-                                                                                         
+
   MedDRA System Organ Class  Any Grade  Grade 3-4  Grade 5  Any Grade  Grade 3-4  Grade 5
-    MedDRA Preferred Term       (%)        (%)       (%)       (%)        (%)       (%)  
+    MedDRA Preferred Term       (%)        (%)       (%)       (%)        (%)       (%)
   _______________________________________________________________________________________
-                                                                                         
-  SKIN AND SUBCUTANEOUS TISSUE DISORDERS                                                     
-    ALOPECIA                    49          1         0        57          0         0   
-    RASH                        16         <1         0        12          0         0   
-    PRURITUS                    15          0         0         7          0         0   
-                                                                                         
-  GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS                                       
-    FATIGUE                     42          4         0        44          3         0   
-    PYREXIA                     12         <1         0        10         <1         0   
-    OEDEMA PERIPHERAL           12          0         0         8         <1         0   
-    ASTHENIA                    12          2         0        10          0         0   
+
+  SKIN AND SUBCUTANEOUS TISSUE DISORDERS
+    ALOPECIA                    49          1         0        57          0         0
+    RASH                        16         <1         0        12          0         0
+    PRURITUS                    15          0         0         7          0         0
+
+  GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS
+    FATIGUE                     42          4         0        44          3         0
+    PYREXIA                     12         <1         0        10         <1         0
+    OEDEMA PERIPHERAL           12          0         0         8         <1         0
+    ASTHENIA                    12          2         0        10          0         0
 ````
 
 This table is designed for the purpose of populating special tables for the US package insert (PI) for oncology drugs.The overall implementation is based on the `AET04` template.
@@ -93,17 +93,17 @@ This table is designed for the purpose of populating special tables for the US p
 Details: (see GDSR)
 - Table entries represent percentages based on N in the column headings.
 - Multiple occurrences of the same AE in one individual are counted once at the highest grade for this patient.
-- Sorting: 
-  - Order the data by total column from the most commonly reported SOC to the least frequent one.  
-  - Within SOC, sort by decreasing frequency of PT.  
+- Sorting:
+  - Order the data by total column from the most commonly reported SOC to the least frequent one.
+  - Within SOC, sort by decreasing frequency of PT.
   - Include the option to suppress SOC and sort by descending frequency of PT overall. (This is another variant.)
 - Pruning:
-  - Different combinations depending on the variant. 
+  - Different combinations depending on the variant.
   - Rows with zero counts will be removed (default) unless overruled by the statistician.
 
 ## Design Summary
 
-- Analysis: 
+- Analysis:
   - We are going to use custom splits for the grades with `add_combo_levels` in combination with `summarize_vars`.
   - We don't need to modify the `s_summary.factor` method to only give fractions as well as a statistic (based on `.N_col`),
     since we can just take the fraction only when we do the formatting.
@@ -115,7 +115,7 @@ Details: (see GDSR)
   - Sorting the preferred terms by counts in the "Any Grade" columns is relatively simple.
 - Pruning: (can do during production)
   - We can use the pruning family functions, potentially extended to account for the different analysis columns here.
-  
+
 ## Content generation
 
 Let's first try to generate the content, which will then later be sorted and pruned.
@@ -166,7 +166,7 @@ split_cols_by_groups <- function(lyt, var, groups) {
   groups_df <- groups_list_to_df(groups)
   split_cols_by(
     lyt = lyt,
-    var = var, 
+    var = var,
     split_fun = add_combo_levels(groups_df, keep_levels = groups_df$valname)
   )
 }
@@ -177,7 +177,7 @@ split_cols_by_groups <- function(lyt, var, groups) {
 ```{r}
 # We need a special formatting here, since we only grab the second element (fraction) from the count + fraction vector.
 format_fraction_pi <- function(x, ...) {
-  ifelse(x[2] > 0.01, round(x[2] * 100), 
+  ifelse(x[2] > 0.01, round(x[2] * 100),
          ifelse(x[2] == 0, "0", "<1"))
 }
 ```
@@ -191,9 +191,9 @@ tab <- basic_table() %>%
   split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
   split_rows_by("AEBODSYS") %>%
   summarize_vars(
-    "AEDECOD", 
-    na.rm = TRUE, 
-    denom = "N_col", 
+    "AEDECOD",
+    na.rm = TRUE,
+    denom = "N_col",
     .stats = "count_fraction",
     .formats = c(count_fraction = format_fraction_pi)
   ) %>%
@@ -201,7 +201,7 @@ tab <- basic_table() %>%
 tab
 ```
 
-Note that we checked whether this can also be made working with `AEDECOD2`. However the problem is 
+Note that we checked whether this can also be made working with `AEDECOD2`. However the problem is
 when an empty cell is encountered in the table: Then  `s_summary.character` fails because it cannot
 work with length 0 character vectors. Therefore we stick to using factors here.
 
@@ -219,7 +219,7 @@ h_row_counts <- function(table_row, reg_exp_cols) {
 }
 
 score_occurrences_cols <- function(reg_exp_cols) {
-  assert_that(is.string(reg_exp_cols))
+  assertthat::assert_that(is.string(reg_exp_cols))
   function(table_row) {
     counts <- h_row_counts(table_row, reg_exp_cols)
     sum(counts)
@@ -234,7 +234,7 @@ scorefun <- score_occurrences_cols("Any Grade")
 # debug(scorefun)
 
 tab %>%
-  sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = scorefun, decreasing = TRUE) 
+  sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = scorefun, decreasing = TRUE)
 ```
 
 That seems to work.
@@ -261,7 +261,7 @@ scorefun <- score_occurrences_subtable("Any Grade")
 # debug(scorefun)
 
 tab %>%
-  sort_at_path(path = c("AEBODSYS"), scorefun = scorefun, decreasing = FALSE) 
+  sort_at_path(path = c("AEBODSYS"), scorefun = scorefun, decreasing = FALSE)
 ```
 
 That also seems to work.
@@ -273,11 +273,10 @@ Now we can put this together.
 ```{r}
 tab %>%
   sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences_cols("Any Grade"), decreasing = TRUE) %>%
-  sort_at_path(path = c("AEBODSYS"), scorefun = score_occurrences_subtable("Any Grade"), decreasing = TRUE) 
+  sort_at_path(path = c("AEBODSYS"), scorefun = score_occurrences_subtable("Any Grade"), decreasing = TRUE)
 ```
 
 
 ## Pruning
 
 We defer this to production time since then we will have the pruning functions family available.
-

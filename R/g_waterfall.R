@@ -107,7 +107,7 @@ g_waterfall <- function(height,
 
   plot_data_ord <- plot_data[order(plot_data$height, decreasing = TRUE), ]
 
-  p <- ggplot2::ggplot(plot_data_ord, aes(x = factor(id, levels = id), y = height)) +
+  p <- ggplot2::ggplot(plot_data_ord, ggplot2::aes(x = factor(id, levels = id), y = height)) +
     ggplot2::geom_col() +
     ggplot2::geom_text(
       label = format(plot_data_ord$height, digits = 2),

@@ -29,7 +29,6 @@ NULL
 #'   model the marginal residual distribution.
 #'
 #' @export
-#' @import ggplot2
 #'
 #' @seealso \code{\link{g_mmrm_lsmeans}} for plotting the LS means and contrasts.
 #'

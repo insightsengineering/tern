@@ -1,7 +1,7 @@
 ---
 title: "Design for Pruning Functions Family"
 output: html_document
-editor_options: 
+editor_options:
   chunk_output_type: console
 vignette: >
   %\VignetteIndexEntry{Design for Pruning Functions Family}
@@ -73,8 +73,8 @@ lower <- function(b) {
 }
 
 setMethod(
-  "&", 
-  signature = c(e1 = "myclass", e2 = "myclass"), 
+  "&",
+  signature = c(e1 = "myclass", e2 = "myclass"),
   definition = function(e1, e2) {
     function(x) {
       e1(x) & e2(x)
@@ -91,7 +91,7 @@ c3(7)
 
 ## Function constructors
 
-### Occurrence Pruning 
+### Occurrence Pruning
 
 In principle, for occurrence table pruning we can follow a similar approach as `prune_empty_level()` does:
 - Remove all analysis rows (`TableRow`) that should be pruned, that is, don't fulfill the requirements.
@@ -106,7 +106,7 @@ keep_occurrences <- function(keep_row_conditions, all_name = "All Patients") {
   function(tt) {
     browser()
     all_levels_index <- grep(all_name, names(tt))
-    if (is(tt, "TableRow")) 
+    if (is(tt, "TableRow"))
       return(! keep_row_conditions(
         table_row = tt,
         all_levels_index = all_levels_index
@@ -127,8 +127,8 @@ new_condition <- function(fun) {
 }
 
 setMethod(
-  "&", 
-  signature = c(e1 = "OccurrenceCondition", e2 = "OccurrenceCondition"), 
+  "&",
+  signature = c(e1 = "OccurrenceCondition", e2 = "OccurrenceCondition"),
   definition = function(e1, e2) {
     new_condition(function(...) {
       e1(...) && e2(...)
@@ -136,8 +136,8 @@ setMethod(
   })
 
 setMethod(
-  "|", 
-  signature = c(e1 = "OccurrenceCondition", e2 = "OccurrenceCondition"), 
+  "|",
+  signature = c(e1 = "OccurrenceCondition", e2 = "OccurrenceCondition"),
   definition = function(e1, e2) {
     new_condition(function(...) {
       e1(...) || e2(...)
@@ -145,8 +145,8 @@ setMethod(
   })
 
 setMethod(
-  "!", 
-  signature = c(x = "OccurrenceCondition"), 
+  "!",
+  signature = c(x = "OccurrenceCondition"),
   definition = function(x) {
     function(...) {
       !x(...)
@@ -160,18 +160,18 @@ To implement the `has_percent_all()` condition constructor, we can expect the st
 
 ```{r}
 has_percent_all <- function(above) {
-  assert_that(
+  assertthat::assert_that(
     is_proportion(above)
   )
   new_condition(function(table_row, all_levels_index, ...) {
-    assert_that(
+    assertthat::assert_that(
       is.count(all_levels_index),
       msg = "All levels column must be present to apply `has_percent_all` condition"
     )
     row_vals <- row_values(table_row)
     all_vals <- row_vals[[all_levels_index]]
     all_percent <- all_vals[2L]
-    assert_that(
+    assertthat::assert_that(
       is_proportion(all_percent, include_boundaries = TRUE)
     )
     all_percent > above
@@ -183,18 +183,18 @@ Similarly, we can do the same for the count values.
 
 ```{r}
 has_count_all <- function(above) {
-  assert_that(
+  assertthat::assert_that(
     is.count(above)
   )
   new_condition(function(table_row, all_levels_index, ...) {
-    assert_that(
+    assertthat::assert_that(
       is.count(all_levels_index),
       msg = "All levels column must be present to apply `has_counts_all` condition"
     )
     row_vals <- row_values(table_row)
     all_vals <- row_vals[[all_levels_index]]
     all_count <- all_vals[1L]
-    assert_that(
+    assertthat::assert_that(
       is_nonnegative_count(all_count)
     )
     all_count > above
@@ -206,13 +206,13 @@ has_count_all <- function(above) {
 
 ```{r}
 has_percent_difference <- function(above, arms) {
-  assert_that(
+  assertthat::assert_that(
     is_proportion(above),
     is.character(arms),
     length(arms) > 1
   )
   new_condition(function(table_row, ...) {
-    assert_that(
+    assertthat::assert_that(
       all(arms %in% names(table_row)),
       msg = "not all arms for differences found in the table column names"
     )
@@ -229,13 +229,13 @@ And again the same can be done for counts.
 
 ```{r}
 has_count_difference <- function(above, arms) {
-  assert_that(
+  assertthat::assert_that(
     is.count(above),
     is.character(arms),
     length(arms) > 1
   )
   new_condition(function(table_row, ...) {
-    assert_that(
+    assertthat::assert_that(
       all(arms %in% names(table_row)),
       msg = "not all arms for `has_count_difference` found in the table column names"
     )
@@ -256,12 +256,12 @@ Now we would like to specify minimum percentage or counts when looking at select
 
 ```{r}
 has_count_arms <- function(above, arms) {
-  assert_that(
+  assertthat::assert_that(
     is.count(above),
     is.character(arms)
   )
   new_condition(function(table_row, ...) {
-    assert_that(
+    assertthat::assert_that(
       all(arms %in% names(table_row)),
       msg = "not all arms for `has_count_arms` found in the table column names"
     )
@@ -278,12 +278,12 @@ Similar for percent. Here we can use the `col_counts` accessor function to get t
 
 ```{r}
 has_percent_arms <- function(above, arms) {
-  assert_that(
+  assertthat::assert_that(
     is_proportion(above),
     is.character(arms)
   )
   new_condition(function(table_row, ...) {
-    assert_that(
+    assertthat::assert_that(
       all(arms %in% names(table_row)),
       msg = "not all arms for `has_percent_arms` found in the table column names"
     )
@@ -332,11 +332,11 @@ result
 Let's try to apply the simplest pruning here. We can define things consecutively to be able to debug better.
 
 ```{r}
-fun_conditions <- has_percent_all(above = 0.35) & 
+fun_conditions <- has_percent_all(above = 0.35) &
   has_percent_difference(above = 0.05, arms = c("A: Drug X", "C: Combination")) &
   has_percent_arms(above = 0.2, arms = c("A: Drug X", "C: Combination"))
 prune_fun <- keep_occurrences(
-  fun_conditions      
+  fun_conditions
 )
 
 result %>%
@@ -376,7 +376,7 @@ s_count_grade_per_id <- function(df,
                                  .N_col, #nolint
                                  id = "USUBJID") {
 
-  assert_that(
+  assertthat::assert_that(
     noNA(df[, c(.var, id)]),
     is.factor(df[[.var]])
   )
@@ -406,7 +406,7 @@ s_count_grade_per_id_content <- function(
   .var,
   id = "USUBJID") {
 
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.string(.var)
   )
@@ -490,15 +490,15 @@ summarize_grade_per_id <- function(
     .stats = .stats,
     .formats = .formats,
     .indent_mods = .indent_mods,
-    .ungroup_stats = 
+    .ungroup_stats =
       `if`(
-        is.null(.stats) || "grade" %in% .stats, 
+        is.null(.stats) || "grade" %in% .stats,
         "grade",
         NULL
       )# Note that we need to ungroup only here.
     # Otherwise for the user they could no longer refer to `grade` statistic.
   )
-  
+
   summarize_row_groups(
     lyt = lyt,
     var = var,
@@ -510,7 +510,7 @@ summarize_grade_per_id <- function(
 ```
 
 
-Try this out: 
+Try this out:
 
 ```{r}
 basic_table() %>%
@@ -543,7 +543,7 @@ debug_fun <- function(tt) {
     all_levels_index <- grep("AllLevelsSentinel", names(tt))
     if (is(tt, "TableRow")) {
       # browser()
-    } 
+    }
     content <- rtables::content_table(tt)
     children <- tree_children(tt)
     child_classes <- unique(sapply(children, class))
@@ -558,7 +558,7 @@ result %>% prune_table(debug_fun)
 
 New:
 
-- Now we want to use the "Any Grade" row that is in the content table when we are in a leaf to make the decision whether to prune 
+- Now we want to use the "Any Grade" row that is in the content table when we are in a leaf to make the decision whether to prune
   this whole subtable or not.
 - Since the content row itself is again the same thing essentially as the table row we used for the pruning performed above, we can apply the same condition functions there.
 - So we just need a new wrapper pruning function that checks when we are in a leaf and then applies
@@ -569,7 +569,7 @@ New:
 is_leaf_table <- function(tt) {
   children <- tree_children(tt)
   child_classes <- unique(sapply(children, class))
-  identical(child_classes, "ElementaryTable") 
+  identical(child_classes, "ElementaryTable")
 }
 
 # Helper function to get first row of content table of current table.
@@ -603,7 +603,7 @@ Let's try this out:
 ```{r}
 fun_conditions <- has_percent_arms(above = 0.5, arms = "all obs")
 prune_fun <- keep_graded_occurrences(
-  fun_conditions      
+  fun_conditions
 )
 
 result %>%
@@ -619,7 +619,7 @@ Did not work initially without `stop_depth`, as `DataRow` objects are still acce
 If we wanted to use specific grade rows for pruning decisions (but we don't want that) then:
 
 - We can find the variable name of the current `TableTree` with `obj_name()`. If that equals the toxicity grade variable (here `AETOXGR`) we can start looking for the grade specific info in the rows of the object.
-- We can then see the toxicity grade by `row.names()` applied to the row or whole table object. 
+- We can then see the toxicity grade by `row.names()` applied to the row or whole table object.
 - It seems that a) since we need to sum across grades and b) since the pruning of the e.g. grade 1-2 rows depends on the pruning decision made on grade 3-4 rows, we can here no longer apply the concept from above, of considering each row independently.
-- Instead we will need to work on the whole subtable and prune it or not. 
+- Instead we will need to work on the whole subtable and prune it or not.
 - So we will need something like `keep_grade_occurrences()` high level pruning function, and then apply a `stop_depth` to not look at individual rows at all.

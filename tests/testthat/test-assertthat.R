@@ -204,7 +204,7 @@ test_that("is_df_with_nlevels_factor is FALSE with wrong input", {
 
 test_that("is_df_with_nlevels_factor gives expected error message for == relation", {
   df <- data.frame(a = 1, b = factor("x", levels = c("a", "b", "x")))
-  expect_error(assert_that(is_df_with_nlevels_factor(
+  expect_error(assertthat::assert_that(is_df_with_nlevels_factor(
     df = df,
     variable = "b",
     n_levels = 2
@@ -231,7 +231,7 @@ test_that("is_df_with_nlevels_factor is FALSE with wrong input for >= relation",
 
 test_that("is_df_with_nlevels_factor gives expected error message for >= relation", {
   df <- data.frame(a = 1, b = factor("x", levels = c("a", "b", "x")))
-  expect_error(assert_that(is_df_with_nlevels_factor(
+  expect_error(assertthat::assert_that(is_df_with_nlevels_factor(
     df = df,
     variable = "b",
     n_levels = 5,

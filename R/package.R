@@ -4,14 +4,13 @@
 #'
 "_PACKAGE"
 
-#' @import assertthat
 #' @import rtables
 #' @import utils.nest
+#' @importFrom assertthat assert_that
+#' @importFrom ggplot2 ggplot
 #' @importFrom magrittr %>%
 #' @importFrom methods is
 # Packages that are not imported and also not prefixed
-# ggplot2
-# grid
 # survival
 # stats
 NULL

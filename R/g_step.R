@@ -100,7 +100,7 @@ tidy.step <- function(x, ...) {  #nolint #nousage
 #' # Add the reference 1 horizontal line.
 #' library(ggplot2)
 #' g_step(step_data) +
-#'   geom_hline(aes(yintercept = 1), linetype = 2)
+#'   ggplot2::geom_hline(ggplot2::aes(yintercept = 1), linetype = 2)
 #'
 #' # Use actual values instead of percentiles, different color for estimate and no CI,
 #' # use log scale for y axis.
@@ -114,7 +114,7 @@ tidy.step <- function(x, ...) {  #nolint #nousage
 #' # Adding another curve based on additional column.
 #' step_data$extra <- exp(step_data$`Percentile Center`)
 #' g_step(step_data) +
-#'   geom_line(aes(y = extra), linetype = 2, color = "green")
+#'   ggplot2::geom_line(ggplot2::aes(y = extra), linetype = 2, color = "green")
 #'
 #' # Response example.
 #' vars <- list(

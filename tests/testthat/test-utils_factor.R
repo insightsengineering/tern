@@ -95,7 +95,7 @@ test_that("cut_quantile_bins works with custom labels", {
 
 test_that("cut_quantile_bins preserves NAs in result", {
   x <- airquality$Ozone
-  assert_that(
+  assertthat::assert_that(
     any(is.na(x)),
     !all(is.na(x))
   )

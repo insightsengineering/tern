@@ -48,7 +48,7 @@ h_adlb_worsen <- function(
   direction_var = "GRADDR"
 ){
 
-  assert_that(
+  assertthat::assert_that(
     is.string(direction_var),
     is_df_with_variables(
       adlb,
@@ -75,9 +75,9 @@ h_adlb_worsen <- function(
   #select variables of interest
   adlb_f <- adlb[position_satisfy_filters, ] %>%
     select(all_of(c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR", names(worst_flag), direction_var)))
-  
-  
-  
+
+
+
 
   #generate subsets for different directionality
   adlb_f_h <- adlb_f[adlb_f[[direction_var]] == "H", ]
@@ -124,7 +124,7 @@ df <- h_adlb_worsen(
   worst_flag_high = c("WGRHIFL" = "Y"),
   direction_var = "GRADDR"
   )
- 
+
 ```
 
 ## Elementary function: `h_worsen_counter`
@@ -141,7 +141,7 @@ df <- h_adlb_worsen(
 ```{r h_count}
 h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
 
-  assert_that(
+  assertthat::assert_that(
     is.string(id),
     is.string(.var),
     is.string(baseline_var),
@@ -228,7 +228,7 @@ result <- h_worsen_counter(
   )
 ```
 
-## Statistic function: 
+## Statistic function:
 ```{r s_function}
 s_count_abnormal_lab_worsen_by_baseline <- function(df, #nolint
                                                     .var = "ATOXGR",
@@ -238,7 +238,7 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, #nolint
                                                       direction_var = "GRADDR"
                                                     )
 ) {
-  assert_that(
+  assertthat::assert_that(
     is.string(.var),
     is_variables(variables),
     is.string(variables$id),
@@ -274,7 +274,7 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, #nolint
                                                   .formats = NULL,
                                                   .labels = NULL,
                                                   .indent_mods = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.string(var),
     setequal(names(variables), c("id", "baseline_var", "direction_var"))
   )

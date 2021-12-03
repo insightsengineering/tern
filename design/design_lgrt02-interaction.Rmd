@@ -7,7 +7,7 @@ vignette: >
   %\VignetteIndexEntry{Multi-variable Logistic Regression with Interaction (LGRT02)}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -42,7 +42,7 @@ ADRS_f <- ADRS %>% #nolint
 var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
 ```
 
-Now let's have a look at the interaction table. Basically we need another hierarchy level here in the tidied dataset and the row splits, let's call it "reference" since we are referring to a level or value of the interaction term (either treatment arm or the covariate which is interacting with treatment arm). Then the content rows at the "term" level no longer display odds ratio and CI for that, since that is then shown at the "reference" level. 
+Now let's have a look at the interaction table. Basically we need another hierarchy level here in the tidied dataset and the row splits, let's call it "reference" since we are referring to a level or value of the interaction term (either treatment arm or the covariate which is interacting with treatment arm). Then the content rows at the "term" level no longer display odds ratio and CI for that, since that is then shown at the "reference" level.
 
 Plus we have at the bottom of the interaction table a section where the interaction terms themselves are tested. This is similar to the other "term" level summaries in this table in that no odds ratio or CI are displayed. The values there can be obtained from the usual `summary` of the `glm` fit, since they refer to single coefficient estimates only.
 
@@ -95,7 +95,7 @@ Let's start simple with a categorical covariate interacting with the treatment a
 
 ```{r}
 h_get_interaction_vars <- function(fit_glm) {  # done
-  assert_that("glm" %in% class(fit_glm))
+  assertthat::assert_that("glm" %in% class(fit_glm))
   terms_name <- attr(terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction_term <- terms_name[which(!terms_name %in% names(xs_class))]
@@ -124,7 +124,7 @@ h_odds_ratio_categorical_interaction <- function( #done, renamed to h_or_cat_int
   fit_glm,
   conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
-  assert_that(
+  assertthat::assert_that(
     is.string(odds_ratio_var),
     is.string(interaction_var),
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
@@ -175,7 +175,7 @@ h_odds_ratio_categorical_interaction(odds_ratio_var = "SEX", interaction_var = "
 
 ### Continuous covariate
 
-Now we look at a continuous covariate. Here we need an additional argument to specify increments that is either `NULL` in which case we would just look at the median of the interaction variable. 
+Now we look at a continuous covariate. Here we need an additional argument to specify increments that is either `NULL` in which case we would just look at the median of the interaction variable.
 
 ```{r}
 h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_interaction
@@ -185,7 +185,7 @@ h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_int
   interaction_increments = NULL, # optional increments for interaction variable
   conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
-  assert_that(
+  assertthat::assert_that(
     is.string(odds_ratio_var),
     is.string(interaction_var),
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
@@ -198,7 +198,7 @@ h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_int
   xs_class <- attr(fit_glm$terms, "dataClasses")
   model_data <- fit_glm$model
   if (!is.null(interaction_increments)){
-    assert_that(
+    assertthat::assert_that(
       xs_class[interaction_var] == "numeric"
     )
   }
@@ -238,7 +238,7 @@ h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_int
       y[[var_level]] <- x
     }
   } else {
-    assert_that(
+    assertthat::assert_that(
       xs_class[odds_ratio_var] == "numeric",
       xs_class[interaction_var] == "factor"
     )
@@ -338,7 +338,7 @@ We also need to adapt `glm_simple_term_extract` to return the right columns `is_
 
 ```{r}
 glm_simple_term_extract <- function(x, fit_glm) { #done, renamed to h_glm_simple_term_extract
-  assert_that(
+  assertthat::assert_that(
     "glm" %in% class(fit_glm),
     is.string(x)
   )
@@ -347,7 +347,7 @@ glm_simple_term_extract <- function(x, fit_glm) { #done, renamed to h_glm_simple
   xs_coef <- summary(fit_glm)$coefficients
   stats <- c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
   # Make sure x is not interaction term
-  assert_that(x %in% names(xs_class))
+  assertthat::assert_that(x %in% names(xs_class))
   x_sel <- if (xs_class[x] == "numeric") x else paste0(x, xs_level[[x]][-1])
   x_stats <- as.data.frame(xs_coef[x_sel, stats, drop = FALSE], stringsAsFactors = FALSE)
   colnames(x_stats) <- names(stats)
@@ -385,7 +385,7 @@ glm_simple_term_extract <- function(x, fit_glm) { #done, renamed to h_glm_simple
   x_stats$variable <- x
   rownames(x_stats) <- NULL
   x_stats[c(
-    "variable", 
+    "variable",
     "term",
     "estimate",
     "std_error",
@@ -410,17 +410,17 @@ Similarly we also need to adapt the interaction extraction function to get the r
 
 ```{r}
 glm_interaction_extract <- function(x, fit_glm) { #done, renamed to h_glm_interaction_extract
-  assert_that("glm" %in% class(fit_glm))
+  assertthat::assert_that("glm" %in% class(fit_glm))
   terms_name <- attr(terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
-  assert_that(
+  assertthat::assert_that(
     is.string(x),
     # Only deal with one interaction term
     identical(x, terms_name[which(!terms_name %in% names(xs_class))])
   )
   vars <- unlist(strsplit(x, ":"))
   # Only take two-way interaction
-  assert_that(
+  assertthat::assert_that(
     length(vars) == 2,
     # Only consider simple case: first variable in interaction is arm, a categorical variable
     xs_class[vars[1]] != "numeric"
@@ -492,17 +492,17 @@ glm_inter_term_extract <- function(odds_ratio_var, #done, renamed to h_glm_inter
   main_stats$odds_ratio <- NA
   main_stats$lcl <- NA
   main_stats$ucl <- NA
-  
+
   # then we get the odds ratio estimates and put into df form
   or_numbers <- h_odds_ratio_interaction(odds_ratio_var, interaction_var, fit_glm, ...)
   is_num_or_var <- attr(fit_glm$terms, "dataClasses")[odds_ratio_var] == "numeric"
-  
+
   # this if/else below can be simplified in production
   if (is_num_or_var) {
     # numeric OR variable
     references <- names(or_numbers)
     n_ref <- length(references)
-    
+
     extract_from_list <- function(l, name, pos = 1) {
       unname(unlist(
         lapply(or_numbers, function(x) {
@@ -519,7 +519,7 @@ glm_inter_term_extract <- function(odds_ratio_var, #done, renamed to h_glm_inter
       std_error = NA,
       odds_ratio = extract_from_list(or_numbers, "or"),
       lcl = extract_from_list(or_numbers, "ci", pos = 1),
-      ucl = extract_from_list(or_numbers, "ci", pos = 2), 
+      ucl = extract_from_list(or_numbers, "ci", pos = 2),
       df = NA,
       pvalue = NA,
       is_variable_summary = FALSE,
@@ -530,7 +530,7 @@ glm_inter_term_extract <- function(odds_ratio_var, #done, renamed to h_glm_inter
     # categorical OR variable
     references <- names(or_numbers[[1]])
     n_ref <- length(references)
-    
+
     extract_from_list <- function(l, name, pos = 1) {
       unname(unlist(
         lapply(or_numbers, function(x) {
@@ -547,7 +547,7 @@ glm_inter_term_extract <- function(odds_ratio_var, #done, renamed to h_glm_inter
       std_error = NA,
       odds_ratio = extract_from_list(or_numbers, "or"),
       lcl = extract_from_list(or_numbers, "ci", pos = 1),
-      ucl = extract_from_list(or_numbers, "ci", pos = 2), 
+      ucl = extract_from_list(or_numbers, "ci", pos = 2),
       df = NA,
       pvalue = NA,
       is_variable_summary = FALSE,
@@ -555,12 +555,12 @@ glm_inter_term_extract <- function(odds_ratio_var, #done, renamed to h_glm_inter
       is_reference_summary = TRUE
     )
   }
-  
+
   df <- rbind(
     main_stats[, names(or_stats)],
     or_stats
   )
-  
+
   df[order(-df$is_variable_summary, df$term, -df$is_term_summary, df$reference), ]
 }
 ```
@@ -596,13 +596,13 @@ h_logistic_inter_terms <- function(x, fit_glm, conf_level,  #done
                                    interaction_increments = NULL) {
   # find out the interaction variables and interaction term.
   inter_vars <- h_get_interaction_vars(fit_glm)
-  assert_that(identical(length(inter_vars), 2L))
+  assertthat::assert_that(identical(length(inter_vars), 2L))
   inter_term_index <- intersect(grep(inter_vars[1], x), grep(inter_vars[2], x))
   inter_term <- x[inter_term_index]
-    
+
   # first for the non-interaction vars we need the standard stuff.
   normal_terms <- setdiff(x, union(inter_vars, inter_term))
-  
+
   # do the normal stuff. -> we need to put this in helper function in production to not
   # duplicate with `h_logistic_simple_terms`
   x_stats <- lapply(normal_terms, glm_simple_term_extract, fit_glm)
@@ -615,7 +615,7 @@ h_logistic_inter_terms <- function(x, fit_glm, conf_level,  #done
   normal_stats$interaction <- NA
   normal_stats$reference <- NA
   normal_stats$is_reference_summary <- FALSE
-  
+
   # now the interaction term itself.
   inter_term_stats <- glm_interaction_extract(inter_term, fit_glm)
   inter_term_stats$odds_ratio <- NA
@@ -624,32 +624,32 @@ h_logistic_inter_terms <- function(x, fit_glm, conf_level,  #done
   inter_term_stats$interaction <- NA
   inter_term_stats$reference <- NA
   inter_term_stats$is_reference_summary <- FALSE
-  
+
   is_intervar1_numeric <- attr(fit_glm$terms, "dataClasses")[inter_vars[1]] == "numeric"
-  
+
   # now proceed with the interaction stuff.
   inter_stats_one <- glm_inter_term_extract(
-    inter_vars[1], 
-    inter_vars[2], 
-    fit_glm, 
+    inter_vars[1],
+    inter_vars[2],
+    fit_glm,
     conf_level = conf_level,
     interaction_increments = `if`(is_intervar1_numeric, NULL, interaction_increments)
   )
   inter_stats_two <- glm_inter_term_extract(
-    inter_vars[2], 
-    inter_vars[1], 
-    fit_glm, 
+    inter_vars[2],
+    inter_vars[1],
+    fit_glm,
     conf_level = conf_level,
     interaction_increments = `if`(is_intervar1_numeric, interaction_increments, NULL)
   )
-  
+
   # put everything together
   col_names <- c(
     "variable",
     "term",
     "interaction",
     "reference",
-    "estimate", 
+    "estimate",
     "std_error",
     "df",
     "pvalue",
@@ -697,7 +697,7 @@ We need to adapt `tidy.glm` to use the new helper function:
 
 ```{r, tidy_glm}
 tidy.glm <- function(fit_glm, conf_level = 0.95, ...) { #nolint #done
-  assert_that(
+  assertthat::assert_that(
     "glm" %in% class(fit_glm),
     fit_glm$family$family == "binomial"
   )
@@ -738,8 +738,8 @@ adrs <- get_adrs()
 mod1 <- fit_logistic(
   adrs,
   variables = list(
-    response = "Response", 
-    arm = "ARMCD", 
+    response = "Response",
+    arm = "ARMCD",
     covariates = c("SEX", "RACE", "AGE"),
     interaction = "SEX"
   )

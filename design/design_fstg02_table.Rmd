@@ -13,7 +13,7 @@ vignette: >
   %\VignetteIndexEntry{Design for Table in FSTG02}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -76,23 +76,23 @@ adtte %>%
 ## Objective
 
 
-                                                                                                   
+
 ````
-                                        ARM A          ARM B                              
-                                       (N=187)        (N=182)                             
-                                    _____________  _____________                          
-                                                                                          
-                              Total        Median           Median  Hazard                   
-Baseline Risk Factors          n     n     (Days)     n     (Days)   Ratio    95% Wald CI     
+                                        ARM A          ARM B
+                                       (N=187)        (N=182)
+                                    _____________  _____________
+
+                              Total        Median           Median  Hazard
+Baseline Risk Factors          n     n     (Days)     n     (Days)   Ratio    95% Wald CI
 __________________________________________________________________________________________
-                                                                                           
+
 All Patients                  369   187    436.0    182    368.0      0.91  (0.58, 1.42)
-                                                                                        
-Sex                                                                                     
+
+Sex
   Male                        189   103    467.0    86    362.0       1.06  (0.54, 2.09)
   Female                      180    84    360.0    96    368.0       0.77  (0.43, 1.40)
-                                                                                        
-Pooled Age Group 1                                                                      
+
+Pooled Age Group 1
   <65                         267   131    388.0   136    368.0       0.92  (0.55, 1.56)
   >=65                        102    56    642.0    46      NE        0.83  (0.33, 2.11)
 ````
@@ -104,7 +104,7 @@ Details: (see GDSR)
 
 - Follow design for `ONCT05`: helper function returns two summary datasets which need to be converted to rtables separately.
 - One summary dataset is used to create a summary table by arm.
-- The second summary dataset is used to create the table of total n, hazard ratio and ci. 
+- The second summary dataset is used to create the table of total n, hazard ratio and ci.
 - In a final step, the tables are combined using `cbind_rtable`.
 
 ## Still to do
@@ -112,7 +112,7 @@ Details: (see GDSR)
 - Add stratification variables.
 - Add time unit to header.
 
-## Helper functions to create tidy dataset(s) 
+## Helper functions to create tidy dataset(s)
 
 - Reuse statistics functions from `TTET01` template: `s_surv_time` and `s_coxph_pairwise`.
 
@@ -120,7 +120,7 @@ Details: (see GDSR)
 ```{r, helpers_general}
 
 is_df_with_factors <- function(df, variables) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, variables)
   )
   all(vapply(df[, unlist(variables)], is_valid_factor, logical(1)))
@@ -129,7 +129,7 @@ is_df_with_factors <- function(df, variables) {
 # Creata data splits by subgroup.
 h_split_by_subgroups <- function(data, subgroups) {
 
-  assert_that(
+  assertthat::assert_that(
     is_character_vector(subgroups),
     is_df_with_factors(data, as.list(setNames(subgroups, subgroups)))
   )
@@ -178,7 +178,7 @@ str(split_data)
 
 h_survtime_df <- function(tte, is_event, arm) {
 
-  assert_that(
+  assertthat::assert_that(
     is_numeric_vector(tte),
     is_logical_vector(is_event),
     is_valid_factor(arm),
@@ -211,7 +211,7 @@ h_survtime_df <- function(tte, is_event, arm) {
 
 h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
@@ -261,7 +261,7 @@ h_survtime_subgroups_df(
 ```{r, helpers_hr}
 h_coxph_df <- function(tte, is_event, arm, control = control_coxph()) {
 
-  assert_that(
+  assertthat::assert_that(
     is_numeric_vector(tte),
     is_logical_vector(is_event),
     is_valid_factor(arm),
@@ -307,7 +307,7 @@ h_coxph_df <- function(tte, is_event, arm, control = control_coxph()) {
 
 h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
@@ -396,7 +396,7 @@ a_tte_subgroups <- function(.formats = list(
   pval = "x.xxxx | (<0.0001)")
 ) {
 
-  assert_that(
+  assertthat::assert_that(
     is.list(.formats),
     all_elements_in_ref(names(.formats), ref = c("n", "median", "n_tot", "hr", "ci", "pval"))
   )
@@ -432,7 +432,7 @@ Used to create the table header.
 # Helper for table header.
 d_tte_subgroups_colvars <- function(vars, control = control_coxph()) {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(vars),
     all_elements_in_ref(vars, ref = c("n", "median", "n_tot", "hr", "ci", "pval"))
   )
@@ -524,7 +524,7 @@ cbind_rtables(tbl_hr[, 1], tbl_survtime, tbl_hr[, 2:3])
 
 ```
 
-## Work in progress 
+## Work in progress
 
 Example where median is NA.
 ```{r, extereme_values}

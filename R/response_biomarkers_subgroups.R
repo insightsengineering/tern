@@ -161,7 +161,7 @@ extract_rsp_biomarkers <- function(variables,
 #' g_forest(tab, xlim = c(0.7, 1.4))
 tabulate_rsp_biomarkers <- function(df,
                                     vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.character(df$biomarker),
     is.character(df$biomarker_label),

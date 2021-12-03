@@ -13,7 +13,7 @@ vignette: >
   %\VignetteIndexEntry{Design of LBT05}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -100,7 +100,7 @@ s_count_abnormal_by_marked <- function(df,
                                        abnormal = c(Low = "low", High = "high"),
                                        variables = list(id = "USUBJID", direction = "DIRECTION")) {
 
-  assert_that(
+  assertthat::assert_that(
     is.string(.var),
     is.list(variables),
     all(names(variables) %in% c("id", "direction")),
@@ -155,7 +155,7 @@ count_abnormal_by_marked <- function(lyt,
                                      .formats = NULL,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.string(var),
     !is.null(names(abnormal)),
     is_equal_length(abnormal, table_names)

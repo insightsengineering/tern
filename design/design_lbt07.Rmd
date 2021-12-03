@@ -53,7 +53,7 @@ adlb_f <- adlb %>%
 var_labels(adlb_f) <- adlb_labels
 ```
 
-## Current `s_count_abnormal_by_worst_grade` function 
+## Current `s_count_abnormal_by_worst_grade` function
 
 ```{r}
 s_count_abnormal_by_worst_grade <- function(df, #nolint
@@ -61,7 +61,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
                                             abnormal = c("low", "high"),
                                             variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")) {
   abnormal <- match.arg(abnormal)
-  assert_that(
+  assertthat::assert_that(
     is.string(.var),
     is.string(abnormal),
     is.list(variables),
@@ -103,8 +103,8 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
 
 ## Layout with the current old statistics function
 
-We want to remove the directions where all grades are 0, which means that these directions 
-do not make sense for these parameters. 
+We want to remove the directions where all grades are 0, which means that these directions
+do not make sense for these parameters.
 
 ```{r}
  lyt <- basic_table() %>%
@@ -123,7 +123,7 @@ do not make sense for these parameters.
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
-  
+
 result <- build_table(
   lyt = lyt,
   df = adlb_f,
@@ -134,10 +134,10 @@ result
 ```
 
 ## Updating the statistics function `s_count_abnormal_by_worst_grade`
-As we have seen above, `ATOXGRADE` variable is converted to numeric as the statistics function was designed to work with numeric `ATOXGRADE`. However, our goal now within the statistics function is to be able to infer the target directions to be displayed by using `ATOXGRADE` and we need to keep it as a factor in order to retain the levels and be still able to infer in edge cases where we may not have any abnormality grade for a certain parameter. 
+As we have seen above, `ATOXGRADE` variable is converted to numeric as the statistics function was designed to work with numeric `ATOXGRADE`. However, our goal now within the statistics function is to be able to infer the target directions to be displayed by using `ATOXGRADE` and we need to keep it as a factor in order to retain the levels and be still able to infer in edge cases where we may not have any abnormality grade for a certain parameter.
 
 First, let's reconvert `ATOXGRADE` back to factor. Users should not convert `ATOXGRADE` to numeric in the future.
-The `s_*` will take care of assuring that `ATOXGRADE` is a factor by adding an assertion. 
+The `s_*` will take care of assuring that `ATOXGRADE` is a factor by adding an assertion.
 ```{r}
 adlb_f2 <- adlb_f %>%
     dplyr::mutate(
@@ -154,7 +154,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
                                               )
                                             ) {
 
-  assert_that(
+  assertthat::assert_that(
     is.string(.var),
     is.list(variables),
     all(names(variables) %in% c("id", "worst_low_flag", "worst_high_flag")),
@@ -268,7 +268,7 @@ s_count_abnormal_by_worst_grade(
  )
 
 ```
-No changes here. 
+No changes here.
 
 ```{r}
 a_count_abnormal_by_worst_grade <- make_afun(  #nolint
@@ -277,19 +277,19 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
 )
 
  afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
- 
+
  afun(
     df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels()
   )
- 
+
  afun(
     df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
   )
- 
+
  afun(
     df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels()
   )
- 
+
  afun(
     df_empty
   )
@@ -298,7 +298,7 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
 
 # New layout function
 
-Here the main change is to remove the for loop. 
+Here the main change is to remove the for loop.
 ```{r}
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
@@ -308,7 +308,7 @@ count_abnormal_by_worst_grade <- function(lyt,
                                           .formats = NULL,
                                           .labels = NULL,
                                           .indent_mods = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.string(var)
     )
   afun <- make_afun(
@@ -329,9 +329,9 @@ count_abnormal_by_worst_grade <- function(lyt,
     )
 }
 ```
-In the following chunk the `map` dataframe and three layouts are created to verify that the refactored function is still able to return the table correctly with/without the new split functions: 
+In the following chunk the `map` dataframe and three layouts are created to verify that the refactored function is still able to return the table correctly with/without the new split functions:
 
- * Layout without new split function. 
+ * Layout without new split function.
  * Layout with `trim_levels_to_map`
  * Layout with `trim_levels_in_group`
 
@@ -378,7 +378,7 @@ lyt_trim_map <- basic_table() %>%
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
-  
+
 build_table(
   lyt = lyt_trim_map,
   df = adlb_f2,
@@ -400,7 +400,7 @@ lyt_trim_group <- basic_table() %>%
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
-  
+
 build_table(
   lyt = lyt_trim_group,
   df = adlb_f2,
@@ -408,7 +408,7 @@ build_table(
 )
 ```
 
-## What if user converts ATOXGR to numeric 
+## What if user converts ATOXGR to numeric
 
 ```{r}
 #adlb_f ATOXGRADE is numeric so let's use this dataframe
@@ -421,12 +421,12 @@ build_table(
 )
 ```
 ## Edge cases
-* Example 1: All grades 0 for a param. 
-* Example 2: All grades in the target direction (none 0) for a param. 
-* Example 3: All grades in an opposite direction for a param. 
-* Example: Case where there is an arm that has no lab records. 
+* Example 1: All grades 0 for a param.
+* Example 2: All grades in the target direction (none 0) for a param.
+* Example 3: All grades in an opposite direction for a param.
+* Example: Case where there is an arm that has no lab records.
 
-Example 1: Case where all `ATOXGRADE` for ALT parameter are 0. 
+Example 1: Case where all `ATOXGRADE` for ALT parameter are 0.
 ```{r}
 adlb_f3 <- adlb_f2 %>%
   filter(PARAMCD != "ALT" | ATOXGR == 0)
@@ -446,7 +446,7 @@ empirical_map1 <- map %>% filter(
 )
 ```
 
-The following layout throws an error. 
+The following layout throws an error.
 
 ```{r}
 basic_table() %>%
@@ -467,7 +467,7 @@ basic_table() %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ```
 
-If all rows for `ALT` are removed in the `map` used, `ALT` will not appear in the table. 
+If all rows for `ALT` are removed in the `map` used, `ALT` will not appear in the table.
 
 ```{r}
 empirical_map2 <- map %>% filter(
@@ -490,9 +490,9 @@ basic_table() %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade") %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
-``` 
+```
 
-Another option would be to trim 0 rows that do not contain "-Any" as the rowname. 
+Another option would be to trim 0 rows that do not contain "-Any" as the rowname.
 
 ```{r}
 result <- basic_table() %>%
@@ -543,9 +543,9 @@ build_table(
 )
 ```
 
-Example 3: All grades in an opposite direction (in addition) from stated in map. 
+Example 3: All grades in an opposite direction (in addition) from stated in map.
 Scenario where map is incorrectly filled.
-In this scenario we are not obtaining an error but map level rows the direction stated by the map. 
+In this scenario we are not obtaining an error but map level rows the direction stated by the map.
 
 ```{r}
 map2 <- map

@@ -178,7 +178,7 @@ count_abnormal <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "fraction"
   )
-  assert_that(
+  assertthat::assert_that(
     is.string(var)
   )
 
@@ -231,9 +231,9 @@ basic_table() %>%
 Despite the fact that we drop split levels, there might be still some "0" records in the leafs of the tree as they come from count_abnormal.
 For the majority of cases we can drop these "0" leaf records too, using trim_levels_in_group split function.
 However, there is a one case when this approach does not work as `count_abnormal` requires that at least one abnormal level is present
-in a data for a given study variable. Even if we modify `count_abnormal` so that we relax this requirement, it must still return something 
-which will then appear in the final output. So if there are such specific cases to handle, the `trim_levels_to_map` should be used 
-(see the next paragraph). 
+in a data for a given study variable. Even if we modify `count_abnormal` so that we relax this requirement, it must still return something
+which will then appear in the final output. So if there are such specific cases to handle, the `trim_levels_to_map` should be used
+(see the next paragraph).
 
 # Standard layout - no "0" records at all with exception
 

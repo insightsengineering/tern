@@ -7,7 +7,7 @@ vignette: >
   %\VignetteIndexEntry{Design of LGRT02}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -21,9 +21,9 @@ knitr::opts_chunk$set(
 
 ```{r data, results = "asis", eval = TRUE}
 
-library(random.cdisc.data) 
+library(random.cdisc.data)
 library(dplyr)
-library(rtables) 
+library(rtables)
 ADRS <- radrs(cached = TRUE)
 adrs_labels <- var_labels(ADRS)
 
@@ -33,7 +33,7 @@ ADRS_f <- ADRS %>%
   dplyr::mutate(
     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
     RACE = factor(RACE),
-    SEX = factor(SEX) 
+    SEX = factor(SEX)
   )
 
 var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
@@ -41,7 +41,7 @@ var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
 
 ## Function to create a logistic model: `fit_logistic`
 ```{r}
-library(assertthat) 
+library(assertthat)
 library(tern)
 library(utils.nest)
 # variables: "interaction" is either NULL or a variable selected from "covariates".
@@ -58,29 +58,29 @@ fit_logistic <- function(data,
   arm <- variables$arm
   covariates <- variables$covariates
   interaction <- variables$interaction
-  assert_that( 
+  assertthat::assert_that(
     is.list(variables),
     all(names(variables) %in% c("response", "arm", "covariates", "interaction")),
-    is_df_with_variables(data, as.list(unlist(variables))) 
+    is_df_with_variables(data, as.list(unlist(variables)))
   )
-  
+
   forms <- paste0(response, " ~ ", arm)
   if (!is.null(covariates)) {
     forms <- paste0(forms, " + ", paste(covariates, collapse = " + "))
   }
   if (is.null(interaction)) {
-    formula <- as.formula(forms) 
+    formula <- as.formula(forms)
   } else {
-    assert_that(
+    assertthat::assert_that(
       is.string(interaction),
       interaction %in% covariates
     )
-    formula <- as.formula(paste0(forms, " + ", arm, ":", interaction)) 
+    formula <- as.formula(paste0(forms, " + ", arm, ":", interaction))
   }
-  glm(formula, family = "binomial", data = data) 
+  glm(formula, family = "binomial", data = data)
 }
 
-# Examples for fit_logistic 
+# Examples for fit_logistic
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
@@ -90,34 +90,34 @@ model_glm <- fit_logistic(
    interaction = NULL
   )
 )
-model_glm 
+model_glm
 ```
 
 ## Extract coefficients and main effects for non-interaction term and interaction term
 
   - `simple_term_extract`
   - `interaction_extract`
-  
-```{r} 
+
+```{r}
 simple_term_extract <- function(x, glm_mod) {
-  assert_that(
+  assertthat::assert_that(
     "glm" %in% class(glm_mod),
     is.string(x)
   )
   xs_class <- attr(glm_mod$terms, "dataClasses")
   xs_level <- glm_mod$xlevels
-  xs_coef <- summary(glm_mod)$coefficients 
+  xs_coef <- summary(glm_mod)$coefficients
   main_effects <- car::Anova(glm_mod, type = 3, test.statistic = "Wald")
   stats <- c("estimate" = "Estimate", "std.error" = "Std. Error", "pvalue" = "Pr(>|z|)")
   # Make sure x is not interaction term
-  assert_that(x %in% names(xs_class))
+  assertthat::assert_that(x %in% names(xs_class))
   if (xs_class[x] == "numeric") {
     x_stats <- as.data.frame(xs_coef[x, stats, drop = FALSE], stringsAsFactors = FALSE)
     colnames(x_stats) <- names(stats)
     x_stats$estimate <- as.list(x_stats$estimate)
     x_stats$std.error <- as.list(x_stats$std.error)
-    x_stats$term <- x 
-    x_stats$df <- 1 
+    x_stats$term <- x
+    x_stats$df <- 1
   } else {
     comp_lvl <- xs_level[[x]][-1]
     x_stats <- as.data.frame(xs_coef[paste0(x, comp_lvl), stats, drop = FALSE], stringsAsFactors = FALSE)
@@ -126,8 +126,8 @@ simple_term_extract <- function(x, glm_mod) {
     x_stats$std.error <- as.list(x_stats$std.error)
     x_stats$term <- comp_lvl
     x_stats$df <- 1
-    x_main <- data.frame(  
-      pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE], 
+    x_main <- data.frame(
+      pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE],
       term = paste(x, "Reference =", xs_level[[x]][1]),
       df = main_effects[x, "Df", drop = TRUE],
       stringsAsFactors = FALSE
@@ -141,7 +141,7 @@ simple_term_extract <- function(x, glm_mod) {
   x_stats[c("variable", "term", "estimate", "std.error", "df", "pvalue")]
 }
 
-# Examples  
+# Examples
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
@@ -165,34 +165,34 @@ simple_term_extract("AGE", model_glm)
 
 ```
 
- 
+
 ```{r}
 interaction_extract <- function(x, glm_mod) {
-  assert_that("glm" %in% class(glm_mod))
+  assertthat::assert_that("glm" %in% class(glm_mod))
   terms_name <- attr(terms(glm_mod), "term.labels")
   xs_class <- attr(glm_mod$terms, "dataClasses")
-  assert_that(
+  assertthat::assert_that(
     is.string(x),
     # Only deal with one interaction term
     identical(x, terms_name[which(!terms_name %in% names(xs_class))])
   )
   vars <- unlist(strsplit(x, ":"))
     # Only take two-way interaction
-  assert_that(
+  assertthat::assert_that(
     length(vars) == 2,
     # Only consider simple case: first variable in interaction is arm, a categorical variable
     xs_class[vars[1]] != "numeric"
   )
-  xs_level <- glm_mod$xlevels 
-  xs_coef <- summary(glm_mod)$coefficients 
+  xs_level <- glm_mod$xlevels
+  xs_coef <- summary(glm_mod)$coefficients
   main_effects <- car::Anova(glm_mod, type = 3, test.statistic = "Wald")
-  
+
   stats <- c("estimate" = "Estimate", "std.error" = "Std. Error", "pvalue" = "Pr(>|z|)")
   v1_comp <- xs_level[[vars[1]]][-1]
-  
+
   if (xs_class[vars[2]] == "numeric") {
     x_stats <- as.data.frame(
-      xs_coef[paste0(vars[1], v1_comp, ":", vars[2]), stats, drop = FALSE], 
+      xs_coef[paste0(vars[1], v1_comp, ":", vars[2]), stats, drop = FALSE],
       stringsAsFactors = FALSE
     )
     colnames(x_stats) <- names(stats)
@@ -205,8 +205,8 @@ interaction_extract <- function(x, glm_mod) {
     x_stats$term <- paste0(levels(interaction(v1_comp, v2_comp, sep = " * ")))
   }
   x_stats$df <- 1
-  x_main <- data.frame( 
-    pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE], 
+  x_main <- data.frame(
+    pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE],
     term = paste(vars[1], vars[2], sep = " * "),
     df = main_effects[x, "Df", drop = TRUE],
     stringsAsFactors = FALSE
@@ -229,7 +229,7 @@ model_glm <- fit_logistic(
    interaction = "RACE"
   )
 )
-interaction_extract("ARMCD:RACE", model_glm) 
+interaction_extract("ARMCD:RACE", model_glm)
 
 model_glm <- fit_logistic(
   data = ADRS_f,
@@ -240,27 +240,27 @@ model_glm <- fit_logistic(
    interaction = "AGE"
   )
 )
-interaction_extract("ARMCD:AGE", model_glm) 
+interaction_extract("ARMCD:AGE", model_glm)
 ```
 
 ## functions to get stats for simple terms not involved in interactions `h_logistic_simple_terms`
 ```{r}
 h_logistic_simple_terms <- function(x, glm_mod, conf_level = 0.95) {
-  assert_that(
+  assertthat::assert_that(
     "glm" %in% class(glm_mod),
     glm_mod$family$family == "binomial"
   )
-  terms_name <- attr(terms(glm_mod), "term.labels") 
+  terms_name <- attr(terms(glm_mod), "term.labels")
   xs_class <- attr(glm_mod$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
-  assert_that(all(x %in% terms_name))
+  assertthat::assert_that(all(x %in% terms_name))
   if (length(interaction) != 0) {
     # Make sure any item in x is not part of interaction term
-    assert_that(all(!x %in% unlist(strsplit(interaction, ":"))))
+    assertthat::assert_that(all(!x %in% unlist(strsplit(interaction, ":"))))
   }
   x_stats <- lapply(x, simple_term_extract, glm_mod)
   x_stats <- do.call(rbind, x_stats)
-  zval <- qnorm((1 + conf_level) / 2) 
+  zval <- qnorm((1 + conf_level) / 2)
   x_stats$odds_ratio <- lapply(x_stats$estimate, exp)
   x_stats$lcl <- Map(function(or, se) exp(log(or) - zval * se), x_stats$odds_ratio, x_stats$std.error)
   x_stats$ucl <- Map(function(or, se) exp(log(or) + zval * se), x_stats$odds_ratio, x_stats$std.error)
@@ -280,7 +280,7 @@ model_glm <- fit_logistic(
    interaction = NULL
   )
 )
- 
+
 h_logistic_simple_terms("AGE", model_glm)
 h_logistic_simple_terms(c("RACE", "AGE"), model_glm)
 
@@ -294,8 +294,8 @@ model_glm <- fit_logistic(
    interaction = "AGE"
   )
 )
- 
-h_logistic_simple_terms("RACE", model_glm) 
+
+h_logistic_simple_terms("RACE", model_glm)
 ```
 
 ```{r}
@@ -303,7 +303,7 @@ library(broom)
 
 # For simple case model without interaction, need to update later for model with interaction
 tidy.glm <- function(glm_mod, conf_level = 0.95) {
-  assert_that(
+  assertthat::assert_that(
     "glm" %in% class(glm_mod),
     glm_mod$family$family == "binomial"
   )
@@ -331,27 +331,27 @@ tidy(model_glm, conf_level = 0.99)
 
 ```{r}
 s_logistic <- function(df, .var) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, list(term = "term", var = .var)),
     is_character_or_factor(df$term)
   )
-  df$term <- as.character(df$term) 
+  df$term <- as.character(df$term)
   y <- split(df, f = factor(df$term, df$term), drop = FALSE)
   y <- setNames(y, nm = rep(.var, length(y)))
   if(nrow(df) == 0) {
     setNames(list(character()), "estimate")
   } else {
-    lapply(y, function(x) { 
+    lapply(y, function(x) {
       setNames(as.list(x[[.var]]), x$term)
     })
   }
 }
 
 s_logistic(tidy(model_glm), .var = "estimate")
-s_logistic(tidy(model_glm), .var = "ci") 
+s_logistic(tidy(model_glm), .var = "ci")
 s_logistic(tidy(model_glm)[0, ], .var = "ci")
 ```
- 
+
 ```{r}
 summarize_logistic <- function(lyt,
                                conf_level,
@@ -379,7 +379,7 @@ summarize_logistic <- function(lyt,
   )
   analyze_colvars(lyt = lyt, afun = afun_list[vars])
 }
- 
+
 
 model_glm <- fit_logistic(
   data = ADRS_f,
@@ -393,7 +393,7 @@ model_glm <- fit_logistic(
 df <- tidy(model_glm)
 df$variable <- factor(df$variable)
 df$term <- factor(df$term, df$term)
-result <- basic_table() %>% 
+result <- basic_table() %>%
   split_rows_by("variable") %>%
   split_rows_by("term", split_fun = drop_split_levels ) %>%
   summarize_logistic(conf_level = .95) %>%

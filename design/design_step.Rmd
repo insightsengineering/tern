@@ -87,7 +87,7 @@ control_step <- function(biomarker = NULL,
                          bandwidth,
                          degree = 0L,
                          num_points = 39L) {
-  assert_that(
+  assertthat::assert_that(
     is.null(biomarker) || is.numeric(biomarker),
     is.flag(use_percentile),
     is_nonnegative_count(degree),
@@ -104,7 +104,7 @@ control_step <- function(biomarker = NULL,
     }
   } else {
     # Check bandwidth.
-    assert_that(
+    assertthat::assert_that(
       is.null(bandwidth) ||
         (use_percentile && is_proportion(bandwidth)) ||
         (!use_percentile && is.scalar(bandwidth) && bandwidth > 0)
@@ -136,7 +136,7 @@ control_step()
 window_selection <- function(x,
                              control = control_step()) {
 
-  assert_that(
+  assertthat::assert_that(
     is.numeric(x),
     is.list(control)
   )
@@ -208,7 +208,7 @@ We will need small helper functions to create the formula. Notice that they are 
 
 ```{r, formsurvhelper}
 h_coxph_biomarker_formula <- function(variables, control = control_step()) {
-  assert_that(
+  assertthat::assert_that(
     is.null(variables$covariates) || is.character(variables$covariates),
     is_variables(variables[c("arm", "biomarker", "event", "time")])
   )
@@ -296,13 +296,13 @@ h_trt_effect_biomarker <- function(data,
                                    model,
                                    variables,
                                    x) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(data, variables),
     is(model, "coxph") || is(model, "glm"),
     is.number(x)
   )
   arm_lvls <- levels(data[[variables$arm]])
-  assert_that(
+  assertthat::assert_that(
     identical(length(arm_lvls), 2L)
   )
   newdata <- data[c(1, 1), ]
@@ -400,7 +400,7 @@ Putting all pieces together for the fitting, let's use the survival function as 
 fit_survival_step <- function(variables,
                               data,
                               control = c(control_step(), control_coxph())) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(data, variables),
     is.list(control)
   )
@@ -462,7 +462,7 @@ Then finally we can plot this. We can in production add some options and general
 
 ```{r, graphfun}
 g_step <- function(step_matrix) {
-  assert_that(is(step_matrix, "step"))
+  assertthat::assert_that(is(step_matrix, "step"))
   plot_dat <- as.data.frame(step_matrix) %>%
     dplyr::rename(x = "Interval Center") %>%
     dplyr::select(x, hr, ci_lower, ci_upper) %>%
@@ -478,13 +478,11 @@ g_step <- function(step_matrix) {
       dplyr::rename(y = "hr") %>%
       dplyr::mutate(type = "est", bound = "middle")
   )
-  ggplot(plot_dat) +
-    geom_hline(yintercept = 1, linetype = 2, color = "gray") +
-    geom_point(aes_string(x = "x", y = "y", color = "type", shape = "type")) +
-    geom_line(aes_string(x = "x", y = "y", color = "type", linetype = "type", group = "bound"))
+  ggplot2::ggplot(plot_dat) +
+    ggplot2::geom_hline(yintercept = 1, linetype = 2, color = "gray") +
+    ggplot2::geom_point(ggplot2::aes_string(x = "x", y = "y", color = "type", shape = "type")) +
+    ggplot2::geom_line(ggplot2::aes_string(x = "x", y = "y", color = "type", linetype = "type", group = "bound"))
 }
 
 g_step(step_matrix)
 ```
-
-
