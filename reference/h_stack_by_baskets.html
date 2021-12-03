@@ -197,54 +197,57 @@ The two columns of this dataset should be named <code>basket</code> and <code>ba
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-
-<span class='va'>adae</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adae</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span> , <span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='df_explicit_na.html'>df_explicit_na</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>h_stack_by_baskets</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>adae</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 × 6</span>
-#&gt;   STUDYID USUBJID              ASTDTM              AEDECOD       AESEQ SMQ      
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    
-#&gt; <span style='color: #BCBCBC;'>1</span> AB12345 AB12345-BRA-1-id-141 2021-05-24 <span style='color: #949494;'>00:00:00</span> dcd D.2.1.5.3     2 D.2.1.5.…
-#&gt; <span style='color: #BCBCBC;'>2</span> AB12345 AB12345-BRA-1-id-141 2021-11-30 <span style='color: #949494;'>00:00:00</span> dcd A.1.1.1.1     3 D.2.1.5.…
-#&gt; <span style='color: #BCBCBC;'>3</span> AB12345 AB12345-BRA-1-id-141 2022-04-21 <span style='color: #949494;'>00:00:00</span> dcd A.1.1.1.1     5 D.2.1.5.…
-#&gt; <span style='color: #BCBCBC;'>4</span> AB12345 AB12345-BRA-1-id-265 2020-11-14 <span style='color: #949494;'>00:00:00</span> dcd C.1.1.1.3     4 C.1.1.1.…</div><div class='input'>
-<span class='va'>aag</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-NAMVAR <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CQ01NAM"</span>, <span class='st'>"CQ02NAM"</span>, <span class='st'>"SMQ01NAM"</span>, <span class='st'>"SMQ02NAM"</span><span class='op'>)</span>,
-REFNAME <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D.2.1.5.3/A.1.1.1.1 AESI"</span>, <span class='st'>"X.9.9.9.9/Y.8.8.8.8 AESI"</span>,
- <span class='st'>"C.1.1.1.3/B.2.2.3.1 AESI"</span>, <span class='st'>"C.1.1.1.3/B.3.3.3.3 AESI"</span><span class='op'>)</span>,
-SCOPE <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>""</span>, <span class='st'>"BROAD"</span>, <span class='st'>"BROAD"</span><span class='op'>)</span>,
-stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>
- <span class='op'>)</span>
-
-<span class='va'>basket_name</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>aag</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>cq_pos</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"^(CQ).+NAM$"</span>, <span class='va'>aag</span><span class='op'>$</span><span class='va'>NAMVAR</span><span class='op'>)</span>
-<span class='va'>smq_pos</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"^(SMQ).+NAM$"</span>, <span class='va'>aag</span><span class='op'>$</span><span class='va'>NAMVAR</span><span class='op'>)</span>
-<span class='va'>basket_name</span><span class='op'>[</span><span class='va'>cq_pos</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>aag</span><span class='op'>$</span><span class='va'>REFNAME</span><span class='op'>[</span><span class='va'>cq_pos</span><span class='op'>]</span>
-<span class='va'>basket_name</span><span class='op'>[</span><span class='va'>smq_pos</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span>
-<span class='va'>aag</span><span class='op'>$</span><span class='va'>REFNAME</span><span class='op'>[</span><span class='va'>smq_pos</span><span class='op'>]</span>, <span class='st'>"("</span>, <span class='va'>aag</span><span class='op'>$</span><span class='va'>SCOPE</span><span class='op'>[</span><span class='va'>smq_pos</span><span class='op'>]</span>, <span class='st'>")"</span>
-<span class='op'>)</span>
-
-<span class='va'>aag_summary</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-basket <span class='op'>=</span> <span class='va'>aag</span><span class='op'>$</span><span class='va'>NAMVAR</span>,
-basket_name <span class='op'>=</span> <span class='va'>basket_name</span>,
-stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-
-<span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'>h_stack_by_baskets</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>adae</span>, aag_summary <span class='op'>=</span> <span class='va'>aag_summary</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>aag_summary</span><span class='op'>$</span><span class='va'>basket_name</span><span class='op'>)</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>result</span><span class='op'>$</span><span class='va'>SMQ</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='fu'>h_stack_by_baskets</span><span class='op'>(</span>
-df <span class='op'>=</span> <span class='va'>adae</span>,
-aag_summary <span class='op'>=</span> <span class='cn'>NULL</span>,
-keys <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STUDYID"</span>, <span class='st'>"USUBJID"</span>, <span class='st'>"AEDECOD"</span>, <span class='st'>"ARM"</span><span class='op'>)</span>,
-baskets <span class='op'>=</span> <span class='st'>"SMQ01NAM"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 5</span>
-#&gt;   STUDYID USUBJID              AEDECOD       ARM            SMQ                 
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>               
-#&gt; <span style='color: #BCBCBC;'>1</span> AB12345 AB12345-BRA-1-id-265 dcd C.1.1.1.3 C: Combination C.1.1.1.3/B.2.2.3.1…</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>adae</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adae</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span> , <span class='op'>]</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='df_explicit_na.html'>df_explicit_na</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>h_stack_by_baskets</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>adae</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 4 × 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   STUDYID USUBJID              ASTDTM              AEDECOD       AESEQ SMQ      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> AB12345 AB12345-BRA-1-id-141 2021-05-24 <span style='color: #949494;'>00:00:00</span> dcd D.2.1.5.3     2 D.2.1.5.…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> AB12345 AB12345-BRA-1-id-141 2021-11-30 <span style='color: #949494;'>00:00:00</span> dcd A.1.1.1.1     3 D.2.1.5.…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> AB12345 AB12345-BRA-1-id-141 2022-04-21 <span style='color: #949494;'>00:00:00</span> dcd A.1.1.1.1     5 D.2.1.5.…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> AB12345 AB12345-BRA-1-id-265 2020-11-14 <span style='color: #949494;'>00:00:00</span> dcd C.1.1.1.3     4 C.1.1.1.…</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>aag</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>NAMVAR <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CQ01NAM"</span>, <span class='st'>"CQ02NAM"</span>, <span class='st'>"SMQ01NAM"</span>, <span class='st'>"SMQ02NAM"</span><span class='op'>)</span>,</span>
+<span class='r-in'>REFNAME <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D.2.1.5.3/A.1.1.1.1 AESI"</span>, <span class='st'>"X.9.9.9.9/Y.8.8.8.8 AESI"</span>,</span>
+<span class='r-in'> <span class='st'>"C.1.1.1.3/B.2.2.3.1 AESI"</span>, <span class='st'>"C.1.1.1.3/B.3.3.3.3 AESI"</span><span class='op'>)</span>,</span>
+<span class='r-in'>SCOPE <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>""</span>, <span class='st'>"BROAD"</span>, <span class='st'>"BROAD"</span><span class='op'>)</span>,</span>
+<span class='r-in'>stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span class='r-in'> <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>basket_name</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>aag</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cq_pos</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"^(CQ).+NAM$"</span>, <span class='va'>aag</span><span class='op'>$</span><span class='va'>NAMVAR</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>smq_pos</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"^(SMQ).+NAM$"</span>, <span class='va'>aag</span><span class='op'>$</span><span class='va'>NAMVAR</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>basket_name</span><span class='op'>[</span><span class='va'>cq_pos</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>aag</span><span class='op'>$</span><span class='va'>REFNAME</span><span class='op'>[</span><span class='va'>cq_pos</span><span class='op'>]</span></span>
+<span class='r-in'><span class='va'>basket_name</span><span class='op'>[</span><span class='va'>smq_pos</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span></span>
+<span class='r-in'><span class='va'>aag</span><span class='op'>$</span><span class='va'>REFNAME</span><span class='op'>[</span><span class='va'>smq_pos</span><span class='op'>]</span>, <span class='st'>"("</span>, <span class='va'>aag</span><span class='op'>$</span><span class='va'>SCOPE</span><span class='op'>[</span><span class='va'>smq_pos</span><span class='op'>]</span>, <span class='st'>")"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>aag_summary</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>basket <span class='op'>=</span> <span class='va'>aag</span><span class='op'>$</span><span class='va'>NAMVAR</span>,</span>
+<span class='r-in'>basket_name <span class='op'>=</span> <span class='va'>basket_name</span>,</span>
+<span class='r-in'>stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'>h_stack_by_baskets</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>adae</span>, aag_summary <span class='op'>=</span> <span class='va'>aag_summary</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>aag_summary</span><span class='op'>$</span><span class='va'>basket_name</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>result</span><span class='op'>$</span><span class='va'>SMQ</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>h_stack_by_baskets</span><span class='op'>(</span></span>
+<span class='r-in'>df <span class='op'>=</span> <span class='va'>adae</span>,</span>
+<span class='r-in'>aag_summary <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>keys <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STUDYID"</span>, <span class='st'>"USUBJID"</span>, <span class='st'>"AEDECOD"</span>, <span class='st'>"ARM"</span><span class='op'>)</span>,</span>
+<span class='r-in'>baskets <span class='op'>=</span> <span class='st'>"SMQ01NAM"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   STUDYID USUBJID              AEDECOD       ARM            SMQ                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> AB12345 AB12345-BRA-1-id-265 dcd C.1.1.1.3 C: Combination C.1.1.1.3/B.2.2.3.1…</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

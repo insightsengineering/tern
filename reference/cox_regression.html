@@ -332,458 +332,479 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <p>When using <code>fit_coxreg_univar</code> there should be two study arms.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Testing dataset [survival::bladder].</span>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span>, kind <span class='op'>=</span> <span class='st'>"Mersenne-Twister"</span><span class='op'>)</span>
-<span class='va'>dta_bladder</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>bladder</span><span class='op'>[</span><span class='va'>bladder</span><span class='op'>$</span><span class='va'>enum</span> <span class='op'>&lt;</span> <span class='fl'>5</span>, <span class='op'>]</span>,
-  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='va'>stop</span>,
-    status <span class='op'>=</span> <span class='va'>event</span>,
-    armcd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>rx</span><span class='op'>)</span>,
-    covar1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>enum</span><span class='op'>)</span>,
-    covar2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span>
-      <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>enum</span><span class='op'>)</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"F"</span>, <span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"M"</span><span class='op'>)</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>armcd</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"ARM"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar1</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"A Covariate Label"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar2</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Sex (F/M)"</span>
-<span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>age</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>:</span><span class='fl'>60</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>+</span> <span class='va'>covar1</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span><span class='op'>)</span>,
-  lty<span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span>, xlab<span class='op'>=</span><span class='st'>"Months"</span>,
-  col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue1"</span>, <span class='st'>"blue2"</span>, <span class='st'>"blue3"</span>, <span class='st'>"blue4"</span>, <span class='st'>"red1"</span>, <span class='st'>"red2"</span>, <span class='st'>"red3"</span>, <span class='st'>"red4"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='cox_regression-1.png' alt='' width='700' height='433' /></div><div class='input'>
-
-<span class='co'># `h_coxreg_univar_formulas`</span>
-
-<span class='co'>## Simple formulas.</span>
-<span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;                              ref                                X 
-#&gt;     "Surv(time, status) ~ armcd" "Surv(time, status) ~ armcd + X" 
-#&gt;                                y 
-#&gt; "Surv(time, status) ~ armcd + y" </div><div class='input'>
-<span class='co'>## Addition of an optional strata.</span>
-<span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span>,
-    strata <span class='op'>=</span> <span class='st'>"SITE"</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;                                             ref 
-#&gt;     "Surv(time, status) ~ armcd + strata(SITE)" 
-#&gt;                                               X 
-#&gt; "Surv(time, status) ~ armcd + X + strata(SITE)" 
-#&gt;                                               y 
-#&gt; "Surv(time, status) ~ armcd + y + strata(SITE)" </div><div class='input'>
-<span class='co'>## Inclusion of the interaction term.</span>
-<span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span>,
-    strata <span class='op'>=</span> <span class='st'>"SITE"</span>
-  <span class='op'>)</span>,
-  interaction <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;                                             ref 
-#&gt;     "Surv(time, status) ~ armcd + strata(SITE)" 
-#&gt;                                               X 
-#&gt; "Surv(time, status) ~ armcd * X + strata(SITE)" 
-#&gt;                                               y 
-#&gt; "Surv(time, status) ~ armcd * y + strata(SITE)" </div><div class='input'>
-<span class='co'>## Only covariates fitted in separate models.</span>
-<span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;                            X                            y 
-#&gt; "Surv(time, status) ~ 1 + X" "Surv(time, status) ~ 1 + y" </div><div class='input'>
-
-<span class='co'># `h_coxreg_multivar_formula`</span>
-
-<span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "Surv(AVAL, event) ~ ARMCD + RACE + AGE"</div><div class='input'>
-<span class='co'># Addition of an optional strata.</span>
-<span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,
-    strata <span class='op'>=</span> <span class='st'>"SITE"</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "Surv(AVAL, event) ~ ARMCD + RACE + AGE + strata(SITE)"</div><div class='input'>
-<span class='co'># Example without treatment arm.</span>
-<span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,
-    strata <span class='op'>=</span> <span class='st'>"SITE"</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "Surv(AVAL, event) ~ 1 + RACE + AGE + strata(SITE)"</div><div class='input'>
-
-<span class='co'># fit_coxreg_univar</span>
-
-<span class='co'>## Cox regression: arm + 1 covariate.</span>
-<span class='va'>mod1</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,
-    covariates <span class='op'>=</span> <span class='st'>"covar1"</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='control_coxreg.html'>control_coxreg</a></span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.91</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'>## Cox regression: arm + 1 covariate + interaction, 2 candidate covariates.</span>
-<span class='va'>mod2</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='control_coxreg.html'>control_coxreg</a></span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.91</span>, interaction <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'>## Cox regression: arm + 1 covariate, stratified analysis.</span>
-<span class='va'>mod3</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>, strata <span class='op'>=</span> <span class='st'>"covar2"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='control_coxreg.html'>control_coxreg</a></span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.91</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'>## Cox regression: no arm, only covariates.</span>
-<span class='va'>mod4</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>
-<span class='op'>)</span>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span>
-
-<span class='va'>dta_simple</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  time <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>,
-  status <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>,
-  armcd  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span><span class='op'>)</span>,
-  var1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>45</span>, <span class='fl'>55</span>, <span class='fl'>65</span>, <span class='fl'>75</span>, <span class='fl'>55</span>, <span class='fl'>65</span>, <span class='fl'>85</span>, <span class='fl'>75</span><span class='op'>)</span>,
-  var2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>, <span class='st'>"U"</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>+</span> <span class='va'>var1</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span><span class='op'>)</span>
-<span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'>h_coxreg_univar_extract</span><span class='op'>(</span>
-  effect <span class='op'>=</span> <span class='st'>"armcd"</span>, covar <span class='op'>=</span> <span class='st'>"armcd"</span>, mod <span class='op'>=</span> <span class='va'>mod</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span>
-<span class='op'>)</span>
-<span class='va'>result</span>
-</div><div class='output co'>#&gt;       effect  term       term_label level n       hr       lcl      ucl
-#&gt; 1 Treatment: armcd B vs control (A)     B 8 6.551448 0.4606904 93.16769
-#&gt;       pval
-#&gt; 1 0.165209</div><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>mod1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;            effect   term        term_label level   n        hr       lcl
-#&gt; ref    Treatment:  armcd  2 vs control (1)     2 340 0.6386426 0.4557586
-#&gt; covar1 Covariate: covar1 A Covariate Label     2 340  0.607037 0.4324571
-#&gt;              ucl       pval                   ci
-#&gt; ref    0.8949131 0.02423805 0.4557586, 0.8949131
-#&gt; covar1 0.8520935 0.01257339 0.4324571, 0.8520935</div><div class='input'><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>mod2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                           effect   term        term_label level   n        hr
-#&gt; ref                   Treatment:  armcd  2 vs control (1)     2 340 0.6386426
-#&gt; covar1.1              Covariate: covar1 A Covariate Label       340          
-#&gt; covar1.armcd2/covar11 Covariate: covar1                 1     1     0.6284569
-#&gt; covar1.armcd2/covar12 Covariate: covar1                 2     2     0.5806499
-#&gt; covar1.armcd2/covar13 Covariate: covar1                 3     3     0.5486103
-#&gt; covar1.armcd2/covar14 Covariate: covar1                 4     4     0.6910725
-#&gt; covar2.1              Covariate: covar2         Sex (F/M)       340          
-#&gt; covar2.armcd2/covar2F Covariate: covar2                 F     F     0.6678243
-#&gt; covar2.armcd2/covar2M Covariate: covar2                 M     M     0.5954021
-#&gt;                             lcl       ucl       pval pval_inter
-#&gt; ref                   0.4557586 0.8949131 0.02423805           
-#&gt; covar1.1                     NA        NA             0.9883021
-#&gt; covar1.armcd2/covar11 0.3450471 1.1446499                      
-#&gt; covar1.armcd2/covar12 0.2684726 1.2558239                      
-#&gt; covar1.armcd2/covar13 0.2226814 1.3515868                      
-#&gt; covar1.armcd2/covar14 0.2308006 2.0692373                      
-#&gt; covar2.1                     NA        NA             0.7759013
-#&gt; covar2.armcd2/covar2F 0.3649842 1.2219413                      
-#&gt; covar2.armcd2/covar2M 0.3572772 0.9922368                      
-#&gt;                                         ci
-#&gt; ref                   0.4557586, 0.8949131
-#&gt; covar1.1                                  
-#&gt; covar1.armcd2/covar11 0.3450471, 1.1446499
-#&gt; covar1.armcd2/covar12 0.2684726, 1.2558239
-#&gt; covar1.armcd2/covar13 0.2226814, 1.3515868
-#&gt; covar1.armcd2/covar14 0.2308006, 2.0692373
-#&gt; covar2.1                                  
-#&gt; covar2.armcd2/covar2F 0.3649842, 1.2219413
-#&gt; covar2.armcd2/covar2M 0.3572772, 0.9922368</div><div class='input'>
-
-<span class='co'># fit_coxreg_multivar</span>
-
-<span class='co'>## Cox regression: multivariate Cox regression.</span>
-<span class='va'>multivar_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_multivar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>
-<span class='op'>)</span>
-
-<span class='co'># Example without treatment arm.</span>
-<span class='va'>multivar_covs_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_multivar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>
-<span class='op'>)</span>
-
-<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>+</span> <span class='va'>var1</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span><span class='op'>)</span>
-<span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'>h_coxreg_multivar_extract</span><span class='op'>(</span>
-  var <span class='op'>=</span> <span class='st'>"var1"</span>, mod <span class='op'>=</span> <span class='va'>mod</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span>
-<span class='op'>)</span>
-<span class='va'>result</span>
-</div><div class='output co'>#&gt;        pval        hr      lcl      ucl level n term term_label
-#&gt; 2 0.4456195 0.9423284 0.808931 1.097724  var1 8 var1       var1</div><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_model</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                       term         pval                        term_label
-#&gt; armcd.1              armcd                            ARM (reference = 1)
-#&gt; armcd.2                ARM   0.01232761                                 2
-#&gt; covar1.1            covar1 7.209956e-09 A Covariate Label (reference = 1)
-#&gt; covar1.2 A Covariate Label  0.001120332                                 2
-#&gt; covar1.3 A Covariate Label 6.293725e-06                                 3
-#&gt; covar1.4 A Covariate Label 3.013875e-08                                 4
-#&gt; covar2.1            covar2                      Sex (F/M) (reference = F)
-#&gt; covar2.2         Sex (F/M)    0.1910521                                 M
-#&gt;                 hr        lcl       ucl level                     ci
-#&gt; armcd.1                    NA        NA  &lt;NA&gt;                       
-#&gt; armcd.2  0.6062777 0.40970194 0.8971710     2   0.4097019, 0.8971710
-#&gt; covar1.1                   NA        NA  &lt;NA&gt;                       
-#&gt; covar1.2 0.4564763 0.28481052 0.7316115     2   0.2848105, 0.7316115
-#&gt; covar1.3 0.3069612 0.18386073 0.5124813     3   0.1838607, 0.5124813
-#&gt; covar1.4 0.1817017 0.09939435 0.3321668     4 0.09939435, 0.33216684
-#&gt; covar2.1                   NA        NA  &lt;NA&gt;                       
-#&gt; covar2.2  1.289373 0.88087820 1.8873019     M   0.8808782, 1.8873019</div><div class='input'>
-
-<span class='co'># s_coxreg</span>
-
-<span class='va'>univar_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>
-<span class='op'>)</span>
-<span class='va'>df1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>univar_model</span><span class='op'>)</span>
-<span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df1</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $hr
-#&gt; $hr$`2 vs control (1)`
-#&gt; [1] 0.6386426
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`A Covariate Label`
-#&gt; [1] 0.607037
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`Sex (F/M)`
-#&gt; [1] 0.6242738
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># Only covariates.</span>
-<span class='va'>univar_covs_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>
-<span class='op'>)</span>
-<span class='va'>df1_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>univar_covs_model</span><span class='op'>)</span>
-<span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df1_covs</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $hr
-#&gt; $hr$`2`
-#&gt; [1] 0.446633
-#&gt; 
-#&gt; $hr$`3`
-#&gt; [1] 0.3098658
-#&gt; 
-#&gt; $hr$`4`
-#&gt; [1] 0.1828626
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`A Covariate Label (reference = 1)`
-#&gt; numeric(0)
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`Sex (F/M) (reference = F)`
-#&gt; numeric(0)
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$M
-#&gt; [1] 1.3271
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># Multivariate.</span>
-<span class='va'>multivar_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_multivar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>
-<span class='op'>)</span>
-<span class='va'>df2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_model</span><span class='op'>)</span>
-<span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df2</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $hr
-#&gt; $hr$`2`
-#&gt; [1] 0.4564763
-#&gt; 
-#&gt; $hr$`3`
-#&gt; [1] 0.3069612
-#&gt; 
-#&gt; $hr$`4`
-#&gt; [1] 0.1817017
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`2`
-#&gt; [1] 0.6062777
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`ARM (reference = 1)`
-#&gt; numeric(0)
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`A Covariate Label (reference = 1)`
-#&gt; numeric(0)
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`Sex (F/M) (reference = F)`
-#&gt; numeric(0)
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$M
-#&gt; [1] 1.289373
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># Multivariate without treatment arm.</span>
-<span class='va'>multivar_covs_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_multivar</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>dta_bladder</span>
-<span class='op'>)</span>
-<span class='va'>df2_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_covs_model</span><span class='op'>)</span>
-<span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df2_covs</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $hr
-#&gt; $hr$`2`
-#&gt; [1] 0.4600728
-#&gt; 
-#&gt; $hr$`3`
-#&gt; [1] 0.3100455
-#&gt; 
-#&gt; $hr$`4`
-#&gt; [1] 0.1854177
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`A Covariate Label (reference = 1)`
-#&gt; numeric(0)
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$`Sex (F/M) (reference = F)`
-#&gt; numeric(0)
-#&gt; 
-#&gt; 
-#&gt; $hr
-#&gt; $hr$M
-#&gt; [1] 1.285406
-#&gt; 
-#&gt; </div><div class='input'>
-
-<span class='co'># summarize_coxreg</span>
-<span class='va'>result_univar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"effect"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"term"</span>, child_labels <span class='op'>=</span> <span class='st'>"hidden"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_coxreg</span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df1</span><span class='op'>)</span>
-<span class='va'>result_univar</span>
-</div><div class='output co'>#&gt;                        n    Hazard Ratio      95% CI      p-value
-#&gt; -----------------------------------------------------------------
-#&gt; Treatment:                                                       
-#&gt;   2 vs control (1)    340       0.64       (0.43, 0.94)   0.0242 
-#&gt; Covariate:                                                       
-#&gt;   A Covariate Label   340       0.61       (0.41, 0.9)    0.0126 
-#&gt;   Sex (F/M)           340       0.62       (0.42, 0.92)   0.0182 </div><div class='input'>
-<span class='va'>result_multivar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"term"</span>, child_labels <span class='op'>=</span> <span class='st'>"hidden"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_coxreg</span><span class='op'>(</span>multivar <span class='op'>=</span> <span class='cn'>TRUE</span>, conf_level <span class='op'>=</span> <span class='fl'>.95</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df2</span><span class='op'>)</span>
-<span class='va'>result_multivar</span>
-</div><div class='output co'>#&gt;                                     Hazard Ratio      95% CI      p-value
-#&gt; -------------------------------------------------------------------------
-#&gt; ARM (reference = 1)                                                      
-#&gt; 2                                       0.61       (0.41, 0.9)    0.0123 
-#&gt; A Covariate Label (reference = 1)                                 &lt;0.0001
-#&gt; 2                                       0.46       (0.28, 0.73)   0.0011 
-#&gt; 3                                       0.31       (0.18, 0.51)   &lt;0.0001
-#&gt; 4                                       0.18       (0.1, 0.33)    &lt;0.0001
-#&gt; Sex (F/M) (reference = F)                                                
-#&gt; M                                       1.29       (0.88, 1.89)   0.1911 </div><div class='input'>
-<span class='co'># When tabulating univariate models with only covariates, also `multivar = TRUE`</span>
-<span class='co'># is used.</span>
-<span class='va'>result_univar_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"term"</span>, child_labels <span class='op'>=</span> <span class='st'>"hidden"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_coxreg</span><span class='op'>(</span>multivar <span class='op'>=</span> <span class='cn'>TRUE</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df1_covs</span><span class='op'>)</span>
-<span class='va'>result_univar_covs</span>
-</div><div class='output co'>#&gt;                                     Hazard Ratio      95% CI      p-value
-#&gt; -------------------------------------------------------------------------
-#&gt; A Covariate Label (reference = 1)                                 &lt;0.0001
-#&gt; 2                                       0.45       (0.28, 0.71)   0.0007 
-#&gt; 3                                       0.31       (0.19, 0.52)   &lt;0.0001
-#&gt; 4                                       0.18       (0.1, 0.33)    &lt;0.0001
-#&gt; Sex (F/M) (reference = F)                                                
-#&gt; M                                       1.33       (0.91, 1.94)   0.1414 </div><div class='input'>
-<span class='co'># No change for the multivariate tabulation when no treatment arm is included.</span>
-<span class='va'>result_multivar_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"term"</span>, child_labels <span class='op'>=</span> <span class='st'>"hidden"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_coxreg</span><span class='op'>(</span>multivar <span class='op'>=</span> <span class='cn'>TRUE</span>, conf_level <span class='op'>=</span> <span class='fl'>.95</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df2_covs</span><span class='op'>)</span>
-<span class='va'>result_multivar_covs</span>
-</div><div class='output co'>#&gt;                                     Hazard Ratio      95% CI      p-value
-#&gt; -------------------------------------------------------------------------
-#&gt; A Covariate Label (reference = 1)                                 &lt;0.0001
-#&gt; 2                                       0.46       (0.29, 0.74)   0.0012 
-#&gt; 3                                       0.31       (0.19, 0.52)   &lt;0.0001
-#&gt; 4                                       0.19       (0.1, 0.34)    &lt;0.0001
-#&gt; Sex (F/M) (reference = F)                                                
-#&gt; M                                       1.29       (0.88, 1.88)   0.1958 </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># Testing dataset [survival::bladder].</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span>, kind <span class='op'>=</span> <span class='st'>"Mersenne-Twister"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dta_bladder</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>bladder</span><span class='op'>[</span><span class='va'>bladder</span><span class='op'>$</span><span class='va'>enum</span> <span class='op'>&lt;</span> <span class='fl'>5</span>, <span class='op'>]</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='va'>stop</span>,</span>
+<span class='r-in'>    status <span class='op'>=</span> <span class='va'>event</span>,</span>
+<span class='r-in'>    armcd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>rx</span><span class='op'>)</span>,</span>
+<span class='r-in'>    covar1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>enum</span><span class='op'>)</span>,</span>
+<span class='r-in'>    covar2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span></span>
+<span class='r-in'>      <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>enum</span><span class='op'>)</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"F"</span>, <span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"M"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>armcd</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"ARM"</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar1</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"A Covariate Label"</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar2</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Sex (F/M)"</span></span>
+<span class='r-in'><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>age</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>:</span><span class='fl'>60</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>+</span> <span class='va'>covar1</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span><span class='op'>)</span>,</span>
+<span class='r-in'>  lty<span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span>, xlab<span class='op'>=</span><span class='st'>"Months"</span>,</span>
+<span class='r-in'>  col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue1"</span>, <span class='st'>"blue2"</span>, <span class='st'>"blue3"</span>, <span class='st'>"blue4"</span>, <span class='st'>"red1"</span>, <span class='st'>"red2"</span>, <span class='st'>"red3"</span>, <span class='st'>"red4"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt img'><img src='cox_regression-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `h_coxreg_univar_formulas`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Simple formulas.</span></span>
+<span class='r-in'><span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              ref                                X </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     "Surv(time, status) ~ armcd" "Surv(time, status) ~ armcd + X" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                y </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd + y" </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Addition of an optional strata.</span></span>
+<span class='r-in'><span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    strata <span class='op'>=</span> <span class='st'>"SITE"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                             ref </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     "Surv(time, status) ~ armcd + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               X </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd + X + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               y </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd + y + strata(SITE)" </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Inclusion of the interaction term.</span></span>
+<span class='r-in'><span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    strata <span class='op'>=</span> <span class='st'>"SITE"</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  interaction <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                             ref </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     "Surv(time, status) ~ armcd + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               X </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd * X + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               y </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd * y + strata(SITE)" </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Only covariates fitted in separate models.</span></span>
+<span class='r-in'><span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            X                            y </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ 1 + X" "Surv(time, status) ~ 1 + y" </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `h_coxreg_multivar_formula`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Surv(AVAL, event) ~ ARMCD + RACE + AGE"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Addition of an optional strata.</span></span>
+<span class='r-in'><span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    strata <span class='op'>=</span> <span class='st'>"SITE"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Surv(AVAL, event) ~ ARMCD + RACE + AGE + strata(SITE)"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Example without treatment arm.</span></span>
+<span class='r-in'><span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    strata <span class='op'>=</span> <span class='st'>"SITE"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Surv(AVAL, event) ~ 1 + RACE + AGE + strata(SITE)"</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fit_coxreg_univar</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Cox regression: arm + 1 covariate.</span></span>
+<span class='r-in'><span class='va'>mod1</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='st'>"covar1"</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span>,</span>
+<span class='r-in'>  control <span class='op'>=</span> <span class='fu'><a href='control_coxreg.html'>control_coxreg</a></span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.91</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Cox regression: arm + 1 covariate + interaction, 2 candidate covariates.</span></span>
+<span class='r-in'><span class='va'>mod2</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span>,</span>
+<span class='r-in'>  control <span class='op'>=</span> <span class='fu'><a href='control_coxreg.html'>control_coxreg</a></span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.91</span>, interaction <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Cox regression: arm + 1 covariate, stratified analysis.</span></span>
+<span class='r-in'><span class='va'>mod3</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>, strata <span class='op'>=</span> <span class='st'>"covar2"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span>,</span>
+<span class='r-in'>  control <span class='op'>=</span> <span class='fu'><a href='control_coxreg.html'>control_coxreg</a></span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.91</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Cox regression: no arm, only covariates.</span></span>
+<span class='r-in'><span class='va'>mod4</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>dta_simple</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  time <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>,</span>
+<span class='r-in'>  status <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>,</span>
+<span class='r-in'>  armcd  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  var1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>45</span>, <span class='fl'>55</span>, <span class='fl'>65</span>, <span class='fl'>75</span>, <span class='fl'>55</span>, <span class='fl'>65</span>, <span class='fl'>85</span>, <span class='fl'>75</span><span class='op'>)</span>,</span>
+<span class='r-in'>  var2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>, <span class='st'>"U"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>+</span> <span class='va'>var1</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'>h_coxreg_univar_extract</span><span class='op'>(</span></span>
+<span class='r-in'>  effect <span class='op'>=</span> <span class='st'>"armcd"</span>, covar <span class='op'>=</span> <span class='st'>"armcd"</span>, mod <span class='op'>=</span> <span class='va'>mod</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       effect  term       term_label level n       hr       lcl      ucl</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 Treatment: armcd B vs control (A)     B 8 6.551448 0.4606904 93.16769</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 0.165209</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>mod1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            effect   term        term_label level   n        hr       lcl</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ref    Treatment:  armcd  2 vs control (1)     2 340 0.6386426 0.4557586</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1 Covariate: covar1 A Covariate Label     2 340  0.607037 0.4324571</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              ucl       pval                   ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ref    0.8949131 0.02423805 0.4557586, 0.8949131</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1 0.8520935 0.01257339 0.4324571, 0.8520935</span>
+<span class='r-in'><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>mod2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                           effect   term        term_label level   n        hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ref                   Treatment:  armcd  2 vs control (1)     2 340 0.6386426</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.1              Covariate: covar1 A Covariate Label       340          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar11 Covariate: covar1                 1     1     0.6284569</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar12 Covariate: covar1                 2     2     0.5806499</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar13 Covariate: covar1                 3     3     0.5486103</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar14 Covariate: covar1                 4     4     0.6910725</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.1              Covariate: covar2         Sex (F/M)       340          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.armcd2/covar2F Covariate: covar2                 F     F     0.6678243</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.armcd2/covar2M Covariate: covar2                 M     M     0.5954021</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                             lcl       ucl       pval pval_inter</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ref                   0.4557586 0.8949131 0.02423805           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.1                     NA        NA             0.9883021</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar11 0.3450471 1.1446499                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar12 0.2684726 1.2558239                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar13 0.2226814 1.3515868                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar14 0.2308006 2.0692373                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.1                     NA        NA             0.7759013</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.armcd2/covar2F 0.3649842 1.2219413                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.armcd2/covar2M 0.3572772 0.9922368                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                         ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ref                   0.4557586, 0.8949131</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.1                                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar11 0.3450471, 1.1446499</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar12 0.2684726, 1.2558239</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar13 0.2226814, 1.3515868</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.armcd2/covar14 0.2308006, 2.0692373</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.1                                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.armcd2/covar2F 0.3649842, 1.2219413</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.armcd2/covar2M 0.3572772, 0.9922368</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fit_coxreg_multivar</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Cox regression: multivariate Cox regression.</span></span>
+<span class='r-in'><span class='va'>multivar_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_multivar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Example without treatment arm.</span></span>
+<span class='r-in'><span class='va'>multivar_covs_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_multivar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>+</span> <span class='va'>var1</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'>h_coxreg_multivar_extract</span><span class='op'>(</span></span>
+<span class='r-in'>  var <span class='op'>=</span> <span class='st'>"var1"</span>, mod <span class='op'>=</span> <span class='va'>mod</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        pval        hr      lcl      ucl level n term term_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 0.4456195 0.9423284 0.808931 1.097724  var1 8 var1       var1</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_model</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                       term         pval                        term_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd.1              armcd                            ARM (reference = 1)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd.2                ARM   0.01232761                                 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.1            covar1 7.209956e-09 A Covariate Label (reference = 1)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.2 A Covariate Label  0.001120332                                 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.3 A Covariate Label 6.293725e-06                                 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.4 A Covariate Label 3.013875e-08                                 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.1            covar2                      Sex (F/M) (reference = F)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.2         Sex (F/M)    0.1910521                                 M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 hr        lcl       ucl level                     ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd.1                    NA        NA  &lt;NA&gt;                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd.2  0.6062777 0.40970194 0.8971710     2   0.4097019, 0.8971710</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.1                   NA        NA  &lt;NA&gt;                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.2 0.4564763 0.28481052 0.7316115     2   0.2848105, 0.7316115</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.3 0.3069612 0.18386073 0.5124813     3   0.1838607, 0.5124813</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar1.4 0.1817017 0.09939435 0.3321668     4 0.09939435, 0.33216684</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.1                   NA        NA  &lt;NA&gt;                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> covar2.2  1.289373 0.88087820 1.8873019     M   0.8808782, 1.8873019</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># s_coxreg</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>univar_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>univar_model</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df1</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`2 vs control (1)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.6386426</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`A Covariate Label`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.607037</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`Sex (F/M)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.6242738</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Only covariates.</span></span>
+<span class='r-in'><span class='va'>univar_covs_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_univar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df1_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>univar_covs_model</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df1_covs</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`2`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.446633</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`3`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.3098658</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`4`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1828626</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`A Covariate Label (reference = 1)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> numeric(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`Sex (F/M) (reference = F)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> numeric(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.3271</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Multivariate.</span></span>
+<span class='r-in'><span class='va'>multivar_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_multivar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_model</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df2</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`2`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.4564763</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`3`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.3069612</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`4`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1817017</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`2`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.6062777</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`ARM (reference = 1)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> numeric(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`A Covariate Label (reference = 1)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> numeric(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`Sex (F/M) (reference = F)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> numeric(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.289373</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Multivariate without treatment arm.</span></span>
+<span class='r-in'><span class='va'>multivar_covs_model</span> <span class='op'>&lt;-</span> <span class='fu'>fit_coxreg_multivar</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"covar1"</span>, <span class='st'>"covar2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df2_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_covs_model</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df2_covs</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`2`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.4600728</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`3`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.3100455</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`4`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1854177</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`A Covariate Label (reference = 1)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> numeric(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`Sex (F/M) (reference = F)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> numeric(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.285406</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># summarize_coxreg</span></span>
+<span class='r-in'><span class='va'>result_univar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"effect"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"term"</span>, child_labels <span class='op'>=</span> <span class='st'>"hidden"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_coxreg</span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result_univar</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                        n    Hazard Ratio      95% CI      p-value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Treatment:                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   2 vs control (1)    340       0.64       (0.43, 0.94)   0.0242 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Covariate:                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   A Covariate Label   340       0.61       (0.41, 0.9)    0.0126 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sex (F/M)           340       0.62       (0.42, 0.92)   0.0182 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>result_multivar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"term"</span>, child_labels <span class='op'>=</span> <span class='st'>"hidden"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_coxreg</span><span class='op'>(</span>multivar <span class='op'>=</span> <span class='cn'>TRUE</span>, conf_level <span class='op'>=</span> <span class='fl'>.95</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result_multivar</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                     Hazard Ratio      95% CI      p-value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM (reference = 1)                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                                       0.61       (0.41, 0.9)    0.0123 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A Covariate Label (reference = 1)                                 &lt;0.0001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                                       0.46       (0.28, 0.73)   0.0011 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                                       0.31       (0.18, 0.51)   &lt;0.0001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                                       0.18       (0.1, 0.33)    &lt;0.0001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sex (F/M) (reference = F)                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> M                                       1.29       (0.88, 1.89)   0.1911 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># When tabulating univariate models with only covariates, also `multivar = TRUE`</span></span>
+<span class='r-in'><span class='co'># is used.</span></span>
+<span class='r-in'><span class='va'>result_univar_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"term"</span>, child_labels <span class='op'>=</span> <span class='st'>"hidden"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_coxreg</span><span class='op'>(</span>multivar <span class='op'>=</span> <span class='cn'>TRUE</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df1_covs</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result_univar_covs</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                     Hazard Ratio      95% CI      p-value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A Covariate Label (reference = 1)                                 &lt;0.0001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                                       0.45       (0.28, 0.71)   0.0007 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                                       0.31       (0.19, 0.52)   &lt;0.0001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                                       0.18       (0.1, 0.33)    &lt;0.0001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sex (F/M) (reference = F)                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> M                                       1.33       (0.91, 1.94)   0.1414 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># No change for the multivariate tabulation when no treatment arm is included.</span></span>
+<span class='r-in'><span class='va'>result_multivar_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"term"</span>, child_labels <span class='op'>=</span> <span class='st'>"hidden"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_coxreg</span><span class='op'>(</span>multivar <span class='op'>=</span> <span class='cn'>TRUE</span>, conf_level <span class='op'>=</span> <span class='fl'>.95</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df2_covs</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result_multivar_covs</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                     Hazard Ratio      95% CI      p-value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A Covariate Label (reference = 1)                                 &lt;0.0001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                                       0.46       (0.29, 0.74)   0.0012 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                                       0.31       (0.19, 0.52)   &lt;0.0001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                                       0.19       (0.1, 0.34)    &lt;0.0001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sex (F/M) (reference = F)                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> M                                       1.29       (0.88, 1.88)   0.1958 </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

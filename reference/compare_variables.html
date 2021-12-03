@@ -392,613 +392,641 @@ functions (and possibly others in the future), we provide a constructor that doe
     <div class='dont-index'><p><code><a href='summarize_variables.html'>s_summary()</a></code> which is used internally for the summary part per column.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># `s_compare.numeric`</span>
-
-<span class='co'>## Usual case where both this and the reference group vector have more than 1 value.</span>
-<span class='fu'>s_compare</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>, .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt;  n 
-#&gt; 10 
-#&gt; 
-#&gt; $mean
-#&gt;     mean 
-#&gt; 5.115885 
-#&gt; 
-#&gt; $sd
-#&gt;        sd 
-#&gt; 0.7143188 
-#&gt; 
-#&gt; $mean_sd
-#&gt;      mean        sd 
-#&gt; 5.1158855 0.7143188 
-#&gt; 
-#&gt; $mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;    4.604893    5.626878 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;     4.889998     5.341773 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;     4.401567     5.830204 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $median
-#&gt;   median 
-#&gt; 5.082333 
-#&gt; 
-#&gt; $mad
-#&gt; mad 
-#&gt;   0 
-#&gt; 
-#&gt; $median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;      4.522784      5.878768 
-#&gt; attr(,"conf_level")
-#&gt; [1] 0.9785156
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;      4.605683      5.351563 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $iqr
-#&gt;       iqr 
-#&gt; 0.7458801 
-#&gt; 
-#&gt; $range
-#&gt;      min      max 
-#&gt; 4.112619 6.585859 
-#&gt; 
-#&gt; $pval
-#&gt; [1] 2.220933e-12
-#&gt; </div><div class='input'>
-<span class='co'>## If one group has not more than 1 value, then p-value is not calculated.</span>
-<span class='fu'>s_compare</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>, .ref_group <span class='op'>=</span> <span class='fl'>1</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt;  n 
-#&gt; 10 
-#&gt; 
-#&gt; $mean
-#&gt;     mean 
-#&gt; 4.831193 
-#&gt; 
-#&gt; $sd
-#&gt;        sd 
-#&gt; 0.4813606 
-#&gt; 
-#&gt; $mean_sd
-#&gt;      mean        sd 
-#&gt; 4.8311931 0.4813606 
-#&gt; 
-#&gt; $mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;    4.486849    5.175538 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;     4.678974     4.983413 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;     4.349833     5.312554 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $median
-#&gt;   median 
-#&gt; 4.749932 
-#&gt; 
-#&gt; $mad
-#&gt;          mad 
-#&gt; 4.440892e-16 
-#&gt; 
-#&gt; $median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;      4.537948      5.073046 
-#&gt; attr(,"conf_level")
-#&gt; [1] 0.9785156
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;      4.565740      4.953797 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $iqr
-#&gt;       iqr 
-#&gt; 0.3880567 
-#&gt; 
-#&gt; $range
-#&gt;      min      max 
-#&gt; 4.153552 5.981895 
-#&gt; 
-#&gt; $pval
-#&gt; character(0)
-#&gt; </div><div class='input'>
-<span class='co'>## Empty numeric does not fail, it returns NA-filled items and no p-value.</span>
-<span class='fu'>s_compare</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>)</span>, .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>)</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; n 
-#&gt; 0 
-#&gt; 
-#&gt; $mean
-#&gt; mean 
-#&gt;   NA 
-#&gt; 
-#&gt; $sd
-#&gt; sd 
-#&gt; NA 
-#&gt; 
-#&gt; $mean_sd
-#&gt; mean   sd 
-#&gt;   NA   NA 
-#&gt; 
-#&gt; $mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;          NA          NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $median
-#&gt; median 
-#&gt;     NA 
-#&gt; 
-#&gt; $mad
-#&gt; mad 
-#&gt;  NA 
-#&gt; 
-#&gt; $median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;            NA            NA 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $iqr
-#&gt; iqr 
-#&gt;  NA 
-#&gt; 
-#&gt; $range
-#&gt; min max 
-#&gt;  NA  NA 
-#&gt; 
-#&gt; $pval
-#&gt; character(0)
-#&gt; </div><div class='input'>
-<span class='co'># `s_compare.factor`</span>
-
-<span class='co'>## Basic usage:</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>s_compare</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 5
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0 0.6
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; 
-#&gt; $pval
-#&gt; [1] 0.7659283
-#&gt; </div><div class='input'>
-<span class='co'>## Management of NA values.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='explicit_na.html'>explicit_na</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='explicit_na.html'>explicit_na</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>s_compare</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 5
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0 0.6
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; 
-#&gt; $pval
-#&gt; [1] 0.7659283
-#&gt; </div><div class='input'><span class='fu'>s_compare</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 7
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$`&lt;Missing&gt;`
-#&gt; [1] 2
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0000000 0.4285714
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0000000 0.1428571
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0000000 0.1428571
-#&gt; 
-#&gt; $count_fraction$`&lt;Missing&gt;`
-#&gt; [1] 2.0000000 0.2857143
-#&gt; 
-#&gt; 
-#&gt; $pval
-#&gt; [1] 0.9063036
-#&gt; </div><div class='input'>
-<span class='co'># `s_compare.character`</span>
-
-<span class='co'>## Basic usage:</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span>
-<span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; $n
-#&gt; [1] 5
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0 0.6
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; 
-#&gt; $pval
-#&gt; [1] 0.7659283
-#&gt; </div><div class='input'>
-<span class='co'>## Note that missing values handling can make a large difference:</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span>, <span class='cn'>NA</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; $n
-#&gt; [1] 5
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0 0.6
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; 
-#&gt; $pval
-#&gt; [1] 0.7659283
-#&gt; </div><div class='input'><span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"x"</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; $n
-#&gt; [1] 6
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$`&lt;Missing&gt;`
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0 0.5
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0000000 0.1666667
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0000000 0.1666667
-#&gt; 
-#&gt; $count_fraction$`&lt;Missing&gt;`
-#&gt; [1] 1.0000000 0.1666667
-#&gt; 
-#&gt; 
-#&gt; $pval
-#&gt; [1] 0.005768471
-#&gt; </div><div class='input'>
-<span class='co'># `s_compare.logical`</span>
-
-<span class='co'>## Basic usage:</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 4
-#&gt; 
-#&gt; $count
-#&gt; [1] 3
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 3.00 0.75
-#&gt; 
-#&gt; $pval
-#&gt; [1] 0.2702894
-#&gt; </div><div class='input'>
-<span class='co'>## Management of NA values.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 2
-#&gt; 
-#&gt; $count
-#&gt; [1] 1
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 1.0 0.5
-#&gt; 
-#&gt; $pval
-#&gt; [1] 0.3864762
-#&gt; </div><div class='input'><span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 3
-#&gt; 
-#&gt; $count
-#&gt; [1] 1
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 1.0000000 0.3333333
-#&gt; 
-#&gt; $pval
-#&gt; [1] 0.1675463
-#&gt; </div><div class='input'>
-<span class='co'># `a_compare.numeric`</span>
-<span class='fu'>a_compare</span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>,
-  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>,
-  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  .var <span class='op'>=</span> <span class='st'>"bla"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;     row_name formatted_cell indent_mod                 row_label
-#&gt; 1          n             10          0                         n
-#&gt; 2       mean            4.9          0                      Mean
-#&gt; 3         sd            1.1          0                        SD
-#&gt; 4    mean_sd      4.9 (1.1)          0                 Mean (SD)
-#&gt; 5    mean_ci   (4.12, 5.63)          0               Mean 95% CI
-#&gt; 6   mean_sei   (4.54, 5.21)          0             Mean -/+ 1xSE
-#&gt; 7   mean_sdi   (3.82, 5.93)          0             Mean -/+ 1xSD
-#&gt; 8     median            4.7          0                    Median
-#&gt; 9        mad              0          0 Median Absolute Deviation
-#&gt; 10 median_ci   (3.86, 6.23)          0             Median 95% CI
-#&gt; 11 quantiles      4.1 - 5.3          0           25% and 75%-ile
-#&gt; 12       iqr            1.1          0                       IQR
-#&gt; 13     range      3.7 - 6.9          0                 Min - Max
-#&gt; 14      pval        &lt;0.0001          0          p-value (t-test)</div><div class='input'>
-<span class='co'># `a_compare.factor`</span>
-<span class='co'># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span>
-<span class='co'># functions can be applied correctly.</span>
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_compare"</span>, <span class='st'>"factor"</span><span class='op'>)</span>,
-  .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod                  row_label
-#&gt; 1        n              5          0                          n
-#&gt; 2        a              3          0                          a
-#&gt; 3        b              1          0                          b
-#&gt; 4        c              1          0                          c
-#&gt; 5        a        3 (60%)          0                          a
-#&gt; 6        b        1 (20%)          0                          b
-#&gt; 7        c        1 (20%)          0                          c
-#&gt; 8     pval         0.9560          0 p-value (chi-squared test)</div><div class='input'>
-<span class='co'># `a_compare.character`</span>
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_compare"</span>, <span class='st'>"character"</span><span class='op'>)</span>,
-  .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"C"</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"C"</span><span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod                  row_label
-#&gt; 1        n              4          0                          n
-#&gt; 2        A              2          0                          A
-#&gt; 3        B              1          0                          B
-#&gt; 4        C              1          0                          C
-#&gt; 5        A        2 (50%)          0                          A
-#&gt; 6        B        1 (25%)          0                          B
-#&gt; 7        C        1 (25%)          0                          C
-#&gt; 8     pval         0.9074          0 p-value (chi-squared test)</div><div class='input'>
-<span class='co'># `a_compare.logical`</span>
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_compare"</span>, <span class='st'>"logical"</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;         row_name formatted_cell indent_mod                  row_label
-#&gt; 1              n              5          0                          n
-#&gt; 2          count              3          0                      count
-#&gt; 3 count_fraction        3 (60%)          0             count_fraction
-#&gt; 4           pval         0.8091          0 p-value (chi-squared test)</div><div class='input'>
-<span class='co'># `create_afun_compare()` to create combined `afun`</span>
-
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'>create_afun_compare</span><span class='op'>(</span>
-  .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n"</span>, <span class='st'>"count_fraction"</span>, <span class='st'>"mean_sd"</span>, <span class='st'>"pval"</span><span class='op'>)</span>,
-  .indent_mods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>pval <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/analyze.html'>analyze</a></span><span class='op'>(</span>
-    <span class='st'>"AGE"</span>,
-    afun <span class='op'>=</span> <span class='va'>afun</span>,
-    show_labels <span class='op'>=</span> <span class='st'>"visible"</span>
-  <span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, df <span class='op'>=</span> <span class='va'>ex_adsl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                          ARM A        ARM B        ARM C   
-#&gt; -----------------------------------------------------------
-#&gt; AGE                                                        
-#&gt;   n                       134          134          132    
-#&gt;   Mean (SD)            33.8 (6.6)   35.4 (7.9)   35.4 (7.7)
-#&gt;     p-value (t-test)                  0.0616       0.0595  </div><div class='input'>
-<span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/analyze.html'>analyze</a></span><span class='op'>(</span>
-    <span class='st'>"SEX"</span>,
-    afun <span class='op'>=</span> <span class='va'>afun</span>,
-    show_labels <span class='op'>=</span> <span class='st'>"visible"</span>
-  <span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, df <span class='op'>=</span> <span class='va'>ex_adsl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                    ARM A        ARM B        ARM C   
-#&gt; ---------------------------------------------------------------------
-#&gt; SEX                                                                  
-#&gt;   n                                 134          134          132    
-#&gt;   F                               79 (59%)    77 (57.5%)    66 (50%) 
-#&gt;   M                              51 (38.1%)    55 (41%)    60 (45.5%)
-#&gt;   U                               3 (2.2%)     2 (1.5%)      4 (3%)  
-#&gt;   UNDIFFERENTIATED                1 (0.7%)        0         2 (1.5%) 
-#&gt;     p-value (chi-squared test)                  0.7110       0.5018  </div><div class='input'>
-
-<span class='co'># `compare_vars()` in rtables pipelines</span>
-
-<span class='co'>## Default output within a `rtables` pipeline.</span>
-<span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM B"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>compare_vars</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='st'>"SEX"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, <span class='va'>ex_adsl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                  ARM B        ARM A        ARM C   
-#&gt; -------------------------------------------------------------------
-#&gt; AGE                                                                
-#&gt;   n                               134          134          132    
-#&gt;   Mean (SD)                    35.4 (7.9)   33.8 (6.6)   35.4 (7.7)
-#&gt;   p-value (t-test)                            0.0616       0.9992  
-#&gt; SEX                                                                
-#&gt;   n                               134          134          132    
-#&gt;   F                            77 (57.5%)    79 (59%)     66 (50%) 
-#&gt;   M                             55 (41%)    51 (38.1%)   60 (45.5%)
-#&gt;   U                             2 (1.5%)     3 (2.2%)      4 (3%)  
-#&gt;   UNDIFFERENTIATED                 0         1 (0.7%)     2 (1.5%) 
-#&gt;   p-value (chi-squared test)                  0.7110       0.2939  </div><div class='input'>
-<span class='co'>## Select and format statistics output.</span>
-<span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM C"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>compare_vars</span><span class='op'>(</span>
-    vars <span class='op'>=</span> <span class='st'>"AGE"</span>,
-    .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean_sd"</span>, <span class='st'>"pval"</span><span class='op'>)</span>,
-    .formats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>mean_sd <span class='op'>=</span> <span class='st'>"xx.x, xx.x"</span><span class='op'>)</span>,
-    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>mean_sd <span class='op'>=</span> <span class='st'>"Mean, SD"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, df <span class='op'>=</span> <span class='va'>ex_adsl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                      ARM C       ARM A       ARM B  
-#&gt; ----------------------------------------------------
-#&gt; Mean, SD           35.4, 7.7   33.8, 6.6   35.4, 7.9
-#&gt; p-value (t-test)                0.0595      0.9992  </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># `s_compare.numeric`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Usual case where both this and the reference group vector have more than 1 value.</span></span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>, .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5.115885 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.7143188 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      mean        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5.1158855 0.7143188 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    4.604893    5.626878 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4.889998     5.341773 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4.401567     5.830204 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5.082333 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      4.522784      5.878768 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.9785156</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      4.605683      5.351563 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.7458801 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      min      max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4.112619 6.585859 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2.220933e-12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## If one group has not more than 1 value, then p-value is not calculated.</span></span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>, .ref_group <span class='op'>=</span> <span class='fl'>1</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4.831193 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.4813606 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      mean        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4.8311931 0.4813606 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    4.486849    5.175538 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4.678974     4.983413 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4.349833     5.312554 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4.749932 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4.440892e-16 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      4.537948      5.073046 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.9785156</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      4.565740      4.953797 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.3880567 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      min      max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4.153552 5.981895 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> character(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Empty numeric does not fail, it returns NA-filled items and no p-value.</span></span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>)</span>, .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>)</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean   sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          NA          NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> character(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `s_compare.factor`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Basic usage:</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.7659283</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Management of NA values.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='explicit_na.html'>explicit_na</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='explicit_na.html'>explicit_na</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.7659283</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$`&lt;Missing&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0000000 0.4285714</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.1428571</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.1428571</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$`&lt;Missing&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2.0000000 0.2857143</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.9063036</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `s_compare.character`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Basic usage:</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.7659283</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Note that missing values handling can make a large difference:</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span>, <span class='cn'>NA</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.7659283</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"x"</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$`&lt;Missing&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.1666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.1666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$`&lt;Missing&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.1666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.005768471</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `s_compare.logical`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Basic usage:</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.00 0.75</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.2702894</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Management of NA values.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.3864762</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_compare</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.3333333</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1675463</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `a_compare.numeric`</span></span>
+<span class='r-in'><span class='fu'>a_compare</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"bla"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     row_name formatted_cell indent_mod                 row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1          n             10          0                         n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       mean            4.9          0                      Mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         sd            1.1          0                        SD</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4    mean_sd      4.9 (1.1)          0                 Mean (SD)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    mean_ci   (4.12, 5.63)          0               Mean 95% CI</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   mean_sei   (4.54, 5.21)          0             Mean -/+ 1xSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7   mean_sdi   (3.82, 5.93)          0             Mean -/+ 1xSD</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8     median            4.7          0                    Median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9        mad              0          0 Median Absolute Deviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 median_ci   (3.86, 6.23)          0             Median 95% CI</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 quantiles      4.1 - 5.3          0           25% and 75%-ile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12       iqr            1.1          0                       IQR</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13     range      3.7 - 6.9          0                 Min - Max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14      pval        &lt;0.0001          0          p-value (t-test)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `a_compare.factor`</span></span>
+<span class='r-in'><span class='co'># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span>
+<span class='r-in'><span class='co'># functions can be applied correctly.</span></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_compare"</span>, <span class='st'>"factor"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod                  row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        n              5          0                          n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2        a              3          0                          a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        b              1          0                          b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        c              1          0                          c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5        a        3 (60%)          0                          a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6        b        1 (20%)          0                          b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7        c        1 (20%)          0                          c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8     pval         0.9560          0 p-value (chi-squared test)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `a_compare.character`</span></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_compare"</span>, <span class='st'>"character"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"C"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"C"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod                  row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        n              4          0                          n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2        A              2          0                          A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        B              1          0                          B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        C              1          0                          C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5        A        2 (50%)          0                          A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6        B        1 (25%)          0                          B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7        C        1 (25%)          0                          C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8     pval         0.9074          0 p-value (chi-squared test)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `a_compare.logical`</span></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_compare"</span>, <span class='st'>"logical"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span><span class='va'>x</span>, .ref_group <span class='op'>=</span> <span class='va'>y</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         row_name formatted_cell indent_mod                  row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1              n              5          0                          n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2          count              3          0                      count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 count_fraction        3 (60%)          0             count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4           pval         0.8091          0 p-value (chi-squared test)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `create_afun_compare()` to create combined `afun`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'>create_afun_compare</span><span class='op'>(</span></span>
+<span class='r-in'>  .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n"</span>, <span class='st'>"count_fraction"</span>, <span class='st'>"mean_sd"</span>, <span class='st'>"pval"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .indent_mods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>pval <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/analyze.html'>analyze</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"AGE"</span>,</span>
+<span class='r-in'>    afun <span class='op'>=</span> <span class='va'>afun</span>,</span>
+<span class='r-in'>    show_labels <span class='op'>=</span> <span class='st'>"visible"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, df <span class='op'>=</span> <span class='va'>ex_adsl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          ARM A        ARM B        ARM C   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AGE                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                       134          134          132    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)            33.8 (6.6)   35.4 (7.9)   35.4 (7.7)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     p-value (t-test)                  0.0616       0.0595  </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/analyze.html'>analyze</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"SEX"</span>,</span>
+<span class='r-in'>    afun <span class='op'>=</span> <span class='va'>afun</span>,</span>
+<span class='r-in'>    show_labels <span class='op'>=</span> <span class='st'>"visible"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, df <span class='op'>=</span> <span class='va'>ex_adsl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                    ARM A        ARM B        ARM C   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> SEX                                                                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                                 134          134          132    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   F                               79 (59%)    77 (57.5%)    66 (50%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   M                              51 (38.1%)    55 (41%)    60 (45.5%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   U                               3 (2.2%)     2 (1.5%)      4 (3%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   UNDIFFERENTIATED                1 (0.7%)        0         2 (1.5%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     p-value (chi-squared test)                  0.7110       0.5018  </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `compare_vars()` in rtables pipelines</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Default output within a `rtables` pipeline.</span></span>
+<span class='r-in'><span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM B"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>compare_vars</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='st'>"SEX"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, <span class='va'>ex_adsl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                  ARM B        ARM A        ARM C   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AGE                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                               134          134          132    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)                    35.4 (7.9)   33.8 (6.6)   35.4 (7.7)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   p-value (t-test)                            0.0616       0.9992  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> SEX                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                               134          134          132    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   F                            77 (57.5%)    79 (59%)     66 (50%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   M                             55 (41%)    51 (38.1%)   60 (45.5%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   U                             2 (1.5%)     3 (2.2%)      4 (3%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   UNDIFFERENTIATED                 0         1 (0.7%)     2 (1.5%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   p-value (chi-squared test)                  0.7110       0.2939  </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Select and format statistics output.</span></span>
+<span class='r-in'><span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM C"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>compare_vars</span><span class='op'>(</span></span>
+<span class='r-in'>    vars <span class='op'>=</span> <span class='st'>"AGE"</span>,</span>
+<span class='r-in'>    .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean_sd"</span>, <span class='st'>"pval"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .formats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>mean_sd <span class='op'>=</span> <span class='st'>"xx.x, xx.x"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>mean_sd <span class='op'>=</span> <span class='st'>"Mean, SD"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, df <span class='op'>=</span> <span class='va'>ex_adsl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      ARM C       ARM A       ARM B  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Mean, SD           35.4, 7.7   33.8, 6.6   35.4, 7.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value (t-test)                0.0595      0.9992  </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

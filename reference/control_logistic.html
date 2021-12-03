@@ -168,31 +168,34 @@ and not modified further.</p></td>
     <p>A list of components with the same names as the arguments.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Standard options.</span>
-<span class='fu'>control_logistic</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $response_definition
-#&gt; [1] "response"
-#&gt; 
-#&gt; $conf_level
-#&gt; [1] 0.95
-#&gt; </div><div class='input'>
-<span class='co'># Modify confidence level.</span>
-<span class='fu'>control_logistic</span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $response_definition
-#&gt; [1] "response"
-#&gt; 
-#&gt; $conf_level
-#&gt; [1] 0.9
-#&gt; </div><div class='input'>
-<span class='co'># Use a different response definition.</span>
-<span class='fu'>control_logistic</span><span class='op'>(</span>response_definition <span class='op'>=</span> <span class='st'>"I(response %in% c('CR', 'PR'))"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $response_definition
-#&gt; [1] "I(response %in% c('CR', 'PR'))"
-#&gt; 
-#&gt; $conf_level
-#&gt; [1] 0.95
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Standard options.</span></span>
+<span class='r-in'><span class='fu'>control_logistic</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $response_definition</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "response"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $conf_level</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.95</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Modify confidence level.</span></span>
+<span class='r-in'><span class='fu'>control_logistic</span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $response_definition</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "response"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $conf_level</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Use a different response definition.</span></span>
+<span class='r-in'><span class='fu'>control_logistic</span><span class='op'>(</span>response_definition <span class='op'>=</span> <span class='st'>"I(response %in% c('CR', 'PR'))"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $response_definition</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "I(response %in% c('CR', 'PR'))"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $conf_level</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.95</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

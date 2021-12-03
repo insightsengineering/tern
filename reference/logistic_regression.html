@@ -383,228 +383,236 @@ with the treatment arm is included in the model.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='va'>adrs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adrs</span>
-<span class='va'>adrs_f</span> <span class='op'>&lt;-</span> <span class='va'>adrs</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"BESRSPI"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>RACE</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ASIAN"</span>, <span class='st'>"WHITE"</span>, <span class='st'>"BLACK OR AFRICAN AMERICAN"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>
-    Response <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>AVALC</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PR"</span>, <span class='st'>"CR"</span><span class='op'>)</span> <span class='op'>~</span> <span class='fl'>1</span>, <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fl'>0</span><span class='op'>)</span>,
-    RACE <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>RACE</span><span class='op'>)</span>,
-    SEX <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>SEX</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adrs_f</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adrs</span><span class='op'>)</span>, Response <span class='op'>=</span> <span class='st'>"Response"</span><span class='op'>)</span>
-<span class='va'>mod1</span> <span class='op'>&lt;-</span> <span class='fu'>fit_logistic</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>adrs_f</span>,
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    response <span class='op'>=</span> <span class='st'>"Response"</span>,
-    arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='st'>"RACE"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>mod2</span> <span class='op'>&lt;-</span> <span class='fu'>fit_logistic</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>adrs_f</span>,
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    response <span class='op'>=</span> <span class='st'>"Response"</span>,
-    arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='st'>"RACE"</span><span class='op'>)</span>,
-    interaction <span class='op'>=</span> <span class='st'>"AGE"</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'>h_glm_simple_term_extract</span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='va'>mod1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   variable variable_label term term_label interaction interaction_label
-#&gt; 1      AGE            Age  AGE        Age                              
-#&gt;   reference reference_label   estimate  std_error df    pvalue
-#&gt; 1                           0.06746155 0.05343377  1 0.2067594
-#&gt;   is_variable_summary is_term_summary
-#&gt; 1               FALSE            TRUE</div><div class='input'><span class='fu'>h_glm_simple_term_extract</span><span class='op'>(</span><span class='st'>"ARMCD"</span>, <span class='va'>mod1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   variable   variable_label  term               term_label interaction
-#&gt; 1    ARMCD Planned Arm Code ARM A Reference ARM A, n = 126            
-#&gt; 2    ARMCD Planned Arm Code ARM B           ARM B, n = 121            
-#&gt; 3    ARMCD Planned Arm Code ARM C           ARM C, n = 126            
-#&gt;   interaction_label reference reference_label   estimate std_error df
-#&gt; 1                                                                   2
-#&gt; 2                                              -2.154975  1.083761  1
-#&gt; 3                                             -0.1274995  1.424796  1
-#&gt;       pvalue is_variable_summary is_term_summary
-#&gt; 1 0.03677249                TRUE           FALSE
-#&gt; 2 0.04676489               FALSE            TRUE
-#&gt; 3  0.9286955               FALSE            TRUE</div><div class='input'>
-<span class='fu'>h_glm_interaction_extract</span><span class='op'>(</span><span class='st'>"ARMCD:AGE"</span>, <span class='va'>mod2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    variable                        variable_label  term
-#&gt; 1 ARMCD:AGE Interaction of Planned Arm Code * Age ARM A
-#&gt; 2 ARMCD:AGE Interaction of Planned Arm Code * Age ARM B
-#&gt; 3 ARMCD:AGE Interaction of Planned Arm Code * Age ARM C
-#&gt;                 term_label interaction interaction_label reference
-#&gt; 1 Reference ARM A, n = 126                                        
-#&gt; 2           ARM B, n = 121                                        
-#&gt; 3           ARM C, n = 126                                        
-#&gt;   reference_label   estimate std_error df    pvalue is_variable_summary
-#&gt; 1                                       2 0.2306204                TRUE
-#&gt; 2                 -0.8682313 0.6298379  1 0.1680491               FALSE
-#&gt; 3                  -0.617569 0.6714418  1 0.3576953               FALSE
-#&gt;   is_term_summary
-#&gt; 1           FALSE
-#&gt; 2            TRUE
-#&gt; 3            TRUE</div><div class='input'>
-<span class='fu'>h_glm_inter_term_extract</span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='st'>"ARMCD"</span>, <span class='va'>mod2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   variable variable_label term term_label interaction interaction_label
-#&gt; 1      AGE            Age  AGE        Age                              
-#&gt; 2      AGE            Age  AGE        Age       ARMCD  Planned Arm Code
-#&gt; 3      AGE            Age  AGE        Age       ARMCD  Planned Arm Code
-#&gt; 4      AGE            Age  AGE        Age       ARMCD  Planned Arm Code
-#&gt;   reference reference_label  estimate std_error odds_ratio       lcl      ucl
-#&gt; 1                           0.8959838 0.6294275         NA        NA       NA
-#&gt; 2     ARM A           ARM A        NA        NA   2.449745 0.7134297 8.411829
-#&gt; 3     ARM B           ARM B        NA        NA   1.028141 0.9286094 1.138341
-#&gt; 4     ARM C           ARM C        NA        NA   1.321034 0.8307684 2.100622
-#&gt;   df    pvalue is_variable_summary is_term_summary is_reference_summary
-#&gt; 1  1 0.1545941               FALSE            TRUE                FALSE
-#&gt; 2 NA        NA               FALSE           FALSE                 TRUE
-#&gt; 3 NA        NA               FALSE           FALSE                 TRUE
-#&gt; 4 NA        NA               FALSE           FALSE                 TRUE</div><div class='input'>
-<span class='fu'>h_logistic_simple_terms</span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='va'>mod1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   variable variable_label term term_label interaction interaction_label
-#&gt; 1      AGE            Age  AGE        Age                              
-#&gt;   reference reference_label   estimate  std_error df    pvalue
-#&gt; 1                           0.06746155 0.05343377  1 0.2067594
-#&gt;   is_variable_summary is_term_summary odds_ratio       lcl      ucl
-#&gt; 1               FALSE            TRUE   1.069789 0.9634191 1.187903
-#&gt;                     ci
-#&gt; 1 0.9634191, 1.1879033</div><div class='input'>
-<span class='fu'>h_logistic_inter_terms</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span>, <span class='st'>"ARMCD"</span>, <span class='st'>"AGE:ARMCD"</span><span class='op'>)</span>, <span class='va'>mod2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;        variable                        variable_label                      term
-#&gt; 1          RACE                                  Race                     ASIAN
-#&gt; 2          RACE                                  Race BLACK OR AFRICAN AMERICAN
-#&gt; 3          RACE                                  Race                     WHITE
-#&gt; 13        ARMCD                      Planned Arm Code                     ARM A
-#&gt; 23        ARMCD                      Planned Arm Code                     ARM B
-#&gt; ARM B     ARMCD                      Planned Arm Code                     ARM B
-#&gt; 33        ARMCD                      Planned Arm Code                     ARM C
-#&gt; ARM C     ARMCD                      Planned Arm Code                     ARM C
-#&gt; 11          AGE                                   Age                       AGE
-#&gt; 21          AGE                                   Age                       AGE
-#&gt; 31          AGE                                   Age                       AGE
-#&gt; 4           AGE                                   Age                       AGE
-#&gt; 12    AGE:ARMCD Interaction of Planned Arm Code * Age                     ARM A
-#&gt; 22    AGE:ARMCD Interaction of Planned Arm Code * Age                     ARM B
-#&gt; 32    AGE:ARMCD Interaction of Planned Arm Code * Age                     ARM C
-#&gt;                              term_label interaction interaction_label reference
-#&gt; 1              Reference ASIAN, n = 208                                        
-#&gt; 2     BLACK OR AFRICAN AMERICAN, n = 91                                        
-#&gt; 3                         WHITE, n = 74                                        
-#&gt; 13             Reference ARM A, n = 126                                        
-#&gt; 23                       ARM B, n = 121                                        
-#&gt; ARM B                    ARM B, n = 121         AGE               Age        34
-#&gt; 33                       ARM C, n = 126                                        
-#&gt; ARM C                    ARM C, n = 126         AGE               Age        34
-#&gt; 11                                  Age                                        
-#&gt; 21                                  Age       ARMCD  Planned Arm Code     ARM A
-#&gt; 31                                  Age       ARMCD  Planned Arm Code     ARM B
-#&gt; 4                                   Age       ARMCD  Planned Arm Code     ARM C
-#&gt; 12             Reference ARM A, n = 126                                        
-#&gt; 22                       ARM B, n = 121                                        
-#&gt; 32                       ARM C, n = 126                                        
-#&gt;       reference_label   estimate std_error df    pvalue   odds_ratio
-#&gt; 1                                           2 0.6027443             
-#&gt; 2                       1.078888  1.136031  1  0.342265     2.941406
-#&gt; 3                      0.4554458 0.8997603  1 0.6127263     1.576876
-#&gt; 13                                          2 0.2890228           NA
-#&gt; 23                      20.23523   14.7874  1 0.1711835           NA
-#&gt; ARM B              34         NA        NA NA        NA 9.284028e-05
-#&gt; 33                      14.71317  16.08665  1  0.360391           NA
-#&gt; ARM C              34         NA        NA NA        NA  0.001865597
-#&gt; 11                     0.8959838 0.6294275  1 0.1545941           NA
-#&gt; 21              ARM A         NA        NA NA        NA     2.449745
-#&gt; 31              ARM B         NA        NA NA        NA     1.028141
-#&gt; 4               ARM C         NA        NA NA        NA     1.321034
-#&gt; 12                                         NA        NA           NA
-#&gt; 22                    -0.8682313 0.6298379  1 0.1680491           NA
-#&gt; 32                     -0.617569 0.6714418  1 0.3576953           NA
-#&gt;                lcl      ucl is_variable_summary is_term_summary
-#&gt; 1                                          TRUE           FALSE
-#&gt; 2        0.3173685 27.26127               FALSE            TRUE
-#&gt; 3        0.2703462  9.19761               FALSE            TRUE
-#&gt; 13              NA       NA                TRUE           FALSE
-#&gt; 23              NA       NA               FALSE            TRUE
-#&gt; ARM B 1.483171e-10 58.11413               FALSE           FALSE
-#&gt; 33              NA       NA               FALSE            TRUE
-#&gt; ARM C 1.831536e-09 1900.293               FALSE           FALSE
-#&gt; 11              NA       NA               FALSE            TRUE
-#&gt; 21       0.7134297 8.411829               FALSE           FALSE
-#&gt; 31       0.9286094 1.138341               FALSE           FALSE
-#&gt; 4        0.8307684 2.100622               FALSE           FALSE
-#&gt; 12              NA       NA                TRUE           FALSE
-#&gt; 22              NA       NA               FALSE            TRUE
-#&gt; 32              NA       NA               FALSE            TRUE
-#&gt;       is_reference_summary                         ci
-#&gt; 1                    FALSE                           
-#&gt; 2                    FALSE      0.3173685, 27.2612702
-#&gt; 3                    FALSE       0.2703462, 9.1976100
-#&gt; 13                   FALSE                     NA, NA
-#&gt; 23                   FALSE                     NA, NA
-#&gt; ARM B                 TRUE 1.483171e-10, 5.811413e+01
-#&gt; 33                   FALSE                     NA, NA
-#&gt; ARM C                 TRUE 1.831536e-09, 1.900293e+03
-#&gt; 11                   FALSE                     NA, NA
-#&gt; 21                    TRUE       0.7134297, 8.4118289
-#&gt; 31                    TRUE       0.9286094, 1.1383411
-#&gt; 4                     TRUE       0.8307684, 2.1006225
-#&gt; 12                   FALSE                     NA, NA
-#&gt; 22                   FALSE                     NA, NA
-#&gt; 32                   FALSE                     NA, NA</div><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>mod1</span>, conf_level <span class='op'>=</span> <span class='fl'>0.99</span><span class='op'>)</span>
-<span class='va'>df2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>mod2</span>, conf_level <span class='op'>=</span> <span class='fl'>0.99</span><span class='op'>)</span>
-
-<span class='va'>result1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_logistic</span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span>
-<span class='va'>result1</span>
-</div><div class='output co'>#&gt;                                       Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio    Wald 95% CI    p-value
-#&gt; -------------------------------------------------------------------------------------------------------------------------------------
-#&gt; Planned Arm Code                              2                                                                               0.0368 
-#&gt;   Reference ARM A, n = 126                                                                                                           
-#&gt;   ARM B, n = 121                              1                  -2.155             1.084           0.12      (&lt;0.01, 1.89)   0.0468 
-#&gt;   ARM C, n = 126                              1                  -0.127             1.425           0.88      (0.02, 34.55)   0.9287 
-#&gt; Age                                                                                                                                  
-#&gt;   Age                                         1                  0.067              0.053           1.07      (0.93, 1.23)    0.2068 
-#&gt; Race                                          2                                                                               0.6369 
-#&gt;   Reference ASIAN, n = 208                                                                                                           
-#&gt;   BLACK OR AFRICAN AMERICAN, n = 91           1                  1.027              1.098           2.79      (0.17, 47.24)   0.3498 
-#&gt;   WHITE, n = 74                               1                  0.294               0.85           1.34      (0.15, 11.99)   0.7294 </div><div class='input'>
-<span class='va'>result2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_logistic</span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df2</span><span class='op'>)</span>
-<span class='va'>result2</span>
-</div><div class='output co'>#&gt;                                         Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 95% CI      p-value
-#&gt; ------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; Race                                            2                                                                                  0.6027 
-#&gt;   Reference ASIAN, n = 208                                                                                                                
-#&gt;   BLACK OR AFRICAN AMERICAN, n = 91             1                  1.079              1.136           2.94       (0.16, 54.88)     0.3423 
-#&gt;   WHITE, n = 74                                 1                  0.455               0.9            1.58       (0.16, 16.01)     0.6127 
-#&gt; Planned Arm Code                                2                                                                                  0.2890 
-#&gt;   Reference ARM A, n = 126                                                                                                                
-#&gt;   ARM B, n = 121                                1                  20.235             14.787                                       0.1712 
-#&gt;     Age                                                                                                                                   
-#&gt;       34                                                                                               0        (&lt;0.01, &gt;999.99)          
-#&gt;   ARM C, n = 126                                1                  14.713             16.087                                       0.3604 
-#&gt;     Age                                                                                                                                   
-#&gt;       34                                                                                               0        (&lt;0.01, &gt;999.99)          
-#&gt; Age                                                                                                                                       
-#&gt;   Age                                           1                  0.896              0.629                                        0.1546 
-#&gt;     Planned Arm Code                                                                                                                      
-#&gt;       ARM A                                                                                           2.45       (0.48, 12.39)            
-#&gt;       ARM B                                                                                           1.03        (0.90, 1.18)            
-#&gt;       ARM C                                                                                           1.32        (0.72, 2.43)            
-#&gt; Interaction of Planned Arm Code * Age           2                                                                                  0.2306 
-#&gt;   Reference ARM A, n = 126                                                                                                                
-#&gt;   ARM B, n = 121                                1                  -0.868              0.63                                        0.1680 
-#&gt;   ARM C, n = 126                                1                  -0.618             0.671                                        0.3577 </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>adrs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adrs</span></span>
+<span class='r-in'><span class='va'>adrs_f</span> <span class='op'>&lt;-</span> <span class='va'>adrs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"BESRSPI"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>RACE</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ASIAN"</span>, <span class='st'>"WHITE"</span>, <span class='st'>"BLACK OR AFRICAN AMERICAN"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>    Response <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>AVALC</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PR"</span>, <span class='st'>"CR"</span><span class='op'>)</span> <span class='op'>~</span> <span class='fl'>1</span>, <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    RACE <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>RACE</span><span class='op'>)</span>,</span>
+<span class='r-in'>    SEX <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>SEX</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adrs_f</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adrs</span><span class='op'>)</span>, Response <span class='op'>=</span> <span class='st'>"Response"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mod1</span> <span class='op'>&lt;-</span> <span class='fu'>fit_logistic</span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adrs_f</span>,</span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    response <span class='op'>=</span> <span class='st'>"Response"</span>,</span>
+<span class='r-in'>    arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='st'>"RACE"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mod2</span> <span class='op'>&lt;-</span> <span class='fu'>fit_logistic</span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adrs_f</span>,</span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    response <span class='op'>=</span> <span class='st'>"Response"</span>,</span>
+<span class='r-in'>    arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='st'>"RACE"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    interaction <span class='op'>=</span> <span class='st'>"AGE"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>h_glm_simple_term_extract</span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='va'>mod1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   variable variable_label term term_label interaction interaction_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      AGE            Age  AGE        Age                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   reference reference_label   estimate  std_error df    pvalue</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                           0.06746155 0.05343377  1 0.2067594</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   is_variable_summary is_term_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1               FALSE            TRUE</span>
+<span class='r-in'><span class='fu'>h_glm_simple_term_extract</span><span class='op'>(</span><span class='st'>"ARMCD"</span>, <span class='va'>mod1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   variable   variable_label  term               term_label interaction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1    ARMCD Planned Arm Code ARM A Reference ARM A, n = 126            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2    ARMCD Planned Arm Code ARM B           ARM B, n = 121            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3    ARMCD Planned Arm Code ARM C           ARM C, n = 126            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   interaction_label reference reference_label   estimate std_error df</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                                                                   2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                                              -2.154975  1.083761  1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                                             -0.1274995  1.424796  1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       pvalue is_variable_summary is_term_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 0.03677249                TRUE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 0.04676489               FALSE            TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  0.9286955               FALSE            TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>h_glm_interaction_extract</span><span class='op'>(</span><span class='st'>"ARMCD:AGE"</span>, <span class='va'>mod2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    variable                        variable_label  term</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 ARMCD:AGE Interaction of Planned Arm Code * Age ARM A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 ARMCD:AGE Interaction of Planned Arm Code * Age ARM B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 ARMCD:AGE Interaction of Planned Arm Code * Age ARM C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 term_label interaction interaction_label reference</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 Reference ARM A, n = 126                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2           ARM B, n = 121                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3           ARM C, n = 126                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   reference_label   estimate std_error df    pvalue is_variable_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                                       2 0.2306204                TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                 -0.8682313 0.6298379  1 0.1680491               FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                  -0.617569 0.6714418  1 0.3576953               FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   is_term_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2            TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3            TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>h_glm_inter_term_extract</span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='st'>"ARMCD"</span>, <span class='va'>mod2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   variable variable_label term term_label interaction interaction_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      AGE            Age  AGE        Age                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2      AGE            Age  AGE        Age       ARMCD  Planned Arm Code</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3      AGE            Age  AGE        Age       ARMCD  Planned Arm Code</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4      AGE            Age  AGE        Age       ARMCD  Planned Arm Code</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   reference reference_label  estimate std_error odds_ratio       lcl      ucl</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                           0.8959838 0.6294275         NA        NA       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2     ARM A           ARM A        NA        NA   2.449745 0.7134297 8.411829</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3     ARM B           ARM B        NA        NA   1.028141 0.9286094 1.138341</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4     ARM C           ARM C        NA        NA   1.321034 0.8307684 2.100622</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   df    pvalue is_variable_summary is_term_summary is_reference_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1 0.1545941               FALSE            TRUE                FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 NA        NA               FALSE           FALSE                 TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 NA        NA               FALSE           FALSE                 TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 NA        NA               FALSE           FALSE                 TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>h_logistic_simple_terms</span><span class='op'>(</span><span class='st'>"AGE"</span>, <span class='va'>mod1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   variable variable_label term term_label interaction interaction_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      AGE            Age  AGE        Age                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   reference reference_label   estimate  std_error df    pvalue</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                           0.06746155 0.05343377  1 0.2067594</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   is_variable_summary is_term_summary odds_ratio       lcl      ucl</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1               FALSE            TRUE   1.069789 0.9634191 1.187903</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 0.9634191, 1.1879033</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>h_logistic_inter_terms</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span>, <span class='st'>"ARMCD"</span>, <span class='st'>"AGE:ARMCD"</span><span class='op'>)</span>, <span class='va'>mod2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        variable                        variable_label                      term</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1          RACE                                  Race                     ASIAN</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2          RACE                                  Race BLACK OR AFRICAN AMERICAN</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3          RACE                                  Race                     WHITE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13        ARMCD                      Planned Arm Code                     ARM A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23        ARMCD                      Planned Arm Code                     ARM B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM B     ARMCD                      Planned Arm Code                     ARM B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 33        ARMCD                      Planned Arm Code                     ARM C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM C     ARMCD                      Planned Arm Code                     ARM C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11          AGE                                   Age                       AGE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21          AGE                                   Age                       AGE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 31          AGE                                   Age                       AGE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4           AGE                                   Age                       AGE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12    AGE:ARMCD Interaction of Planned Arm Code * Age                     ARM A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22    AGE:ARMCD Interaction of Planned Arm Code * Age                     ARM B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 32    AGE:ARMCD Interaction of Planned Arm Code * Age                     ARM C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              term_label interaction interaction_label reference</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1              Reference ASIAN, n = 208                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2     BLACK OR AFRICAN AMERICAN, n = 91                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                         WHITE, n = 74                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13             Reference ARM A, n = 126                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23                       ARM B, n = 121                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM B                    ARM B, n = 121         AGE               Age        34</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 33                       ARM C, n = 126                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM C                    ARM C, n = 126         AGE               Age        34</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11                                  Age                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21                                  Age       ARMCD  Planned Arm Code     ARM A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 31                                  Age       ARMCD  Planned Arm Code     ARM B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                                   Age       ARMCD  Planned Arm Code     ARM C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12             Reference ARM A, n = 126                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22                       ARM B, n = 121                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 32                       ARM C, n = 126                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       reference_label   estimate std_error df    pvalue   odds_ratio</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                                           2 0.6027443             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                       1.078888  1.136031  1  0.342265     2.941406</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                      0.4554458 0.8997603  1 0.6127263     1.576876</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13                                          2 0.2890228           NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23                      20.23523   14.7874  1 0.1711835           NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM B              34         NA        NA NA        NA 9.284028e-05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 33                      14.71317  16.08665  1  0.360391           NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM C              34         NA        NA NA        NA  0.001865597</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11                     0.8959838 0.6294275  1 0.1545941           NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21              ARM A         NA        NA NA        NA     2.449745</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 31              ARM B         NA        NA NA        NA     1.028141</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4               ARM C         NA        NA NA        NA     1.321034</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12                                         NA        NA           NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22                    -0.8682313 0.6298379  1 0.1680491           NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 32                     -0.617569 0.6714418  1 0.3576953           NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                lcl      ucl is_variable_summary is_term_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                                          TRUE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2        0.3173685 27.26127               FALSE            TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        0.2703462  9.19761               FALSE            TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13              NA       NA                TRUE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23              NA       NA               FALSE            TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM B 1.483171e-10 58.11413               FALSE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 33              NA       NA               FALSE            TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM C 1.831536e-09 1900.293               FALSE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11              NA       NA               FALSE            TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21       0.7134297 8.411829               FALSE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 31       0.9286094 1.138341               FALSE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        0.8307684 2.100622               FALSE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12              NA       NA                TRUE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22              NA       NA               FALSE            TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 32              NA       NA               FALSE            TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       is_reference_summary                         ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                    FALSE                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                    FALSE      0.3173685, 27.2612702</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                    FALSE       0.2703462, 9.1976100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13                   FALSE                     NA, NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23                   FALSE                     NA, NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM B                 TRUE 1.483171e-10, 5.811413e+01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 33                   FALSE                     NA, NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ARM C                 TRUE 1.831536e-09, 1.900293e+03</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11                   FALSE                     NA, NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21                    TRUE       0.7134297, 8.4118289</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 31                    TRUE       0.9286094, 1.1383411</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                     TRUE       0.8307684, 2.1006225</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12                   FALSE                     NA, NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22                   FALSE                     NA, NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 32                   FALSE                     NA, NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>mod1</span>, conf_level <span class='op'>=</span> <span class='fl'>0.99</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>mod2</span>, conf_level <span class='op'>=</span> <span class='fl'>0.99</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>result1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_logistic</span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                       Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio    Wald 95% CI    p-value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Planned Arm Code                              2                                                                               0.0368 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Reference ARM A, n = 126                                                                                                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ARM B, n = 121                              1                  -2.155             1.084           0.12      (&lt;0.01, 1.89)   0.0468 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ARM C, n = 126                              1                  -0.127             1.425           0.88      (0.02, 34.55)   0.9287 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Age                                                                                                                                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Age                                         1                  0.067              0.053           1.07      (0.93, 1.23)    0.2068 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Race                                          2                                                                               0.6369 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Reference ASIAN, n = 208                                                                                                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   BLACK OR AFRICAN AMERICAN, n = 91           1                  1.027              1.098           2.79      (0.17, 47.24)   0.3498 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   WHITE, n = 74                               1                  0.294               0.85           1.34      (0.15, 11.99)   0.7294 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>result2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_logistic</span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                         Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 95% CI      p-value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Race                                            2                                                                                  0.6027 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Reference ASIAN, n = 208                                                                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   BLACK OR AFRICAN AMERICAN, n = 91             1                  1.079              1.136           2.94       (0.16, 54.88)     0.3423 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   WHITE, n = 74                                 1                  0.455               0.9            1.58       (0.16, 16.01)     0.6127 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Planned Arm Code                                2                                                                                  0.2890 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Reference ARM A, n = 126                                                                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ARM B, n = 121                                1                  20.235             14.787                                       0.1712 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Age                                                                                                                                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       34                                                                                               0        (&lt;0.01, &gt;999.99)          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ARM C, n = 126                                1                  14.713             16.087                                       0.3604 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Age                                                                                                                                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       34                                                                                               0        (&lt;0.01, &gt;999.99)          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Age                                                                                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Age                                           1                  0.896              0.629                                        0.1546 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Planned Arm Code                                                                                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       ARM A                                                                                           2.45       (0.48, 12.39)            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       ARM B                                                                                           1.03        (0.90, 1.18)            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       ARM C                                                                                           1.32        (0.72, 2.43)            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Interaction of Planned Arm Code * Age           2                                                                                  0.2306 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Reference ARM A, n = 126                                                                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ARM B, n = 121                                1                  -0.868              0.63                                        0.1680 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ARM C, n = 126                                1                  -0.618             0.671                                        0.3577 </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

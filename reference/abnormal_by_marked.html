@@ -270,141 +270,145 @@ which can take statistics function arguments and additional format arguments (se
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
-  ARMCD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ARM A"</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ARM B"</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ARM A"</span>, <span class='fl'>5</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ARM B"</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
-  ANRIND <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"NORMAL"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"HIGH HIGH"</span>,<span class='st'>"HIGH"</span>,
-  <span class='st'>"HIGH"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"HIGH HIGH"</span>, <span class='st'>"NORMAL"</span>, <span class='st'>"HIGH HIGH"</span>, <span class='st'>"NORMAL"</span>, <span class='st'>"LOW"</span>, <span class='st'>"LOW"</span>, <span class='st'>"LOW LOW"</span>,<span class='st'>"LOW"</span>,
-  <span class='st'>"LOW"</span>, <span class='st'>"LOW"</span>, <span class='st'>"LOW LOW"</span>, <span class='st'>"NORMAL"</span>, <span class='st'>"LOW LOW"</span><span class='op'>)</span><span class='op'>)</span>,
-  ONTRTFL <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span>,
-  PARAMCD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"CRP"</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ALT"</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
-  AVALCAT1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>""</span>, <span class='st'>""</span>, <span class='st'>"SINGLE"</span>, <span class='st'>"REPLICATED"</span>, <span class='st'>""</span>, <span class='st'>""</span>, <span class='st'>"LAST"</span>, <span class='st'>""</span>, <span class='st'>"SINGLE"</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
-  stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span>
-
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>abn_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span>
-  <span class='va'>ANRIND</span> <span class='op'>==</span> <span class='st'>"LOW LOW"</span> <span class='op'>~</span> <span class='st'>"Low"</span>,
-  <span class='va'>ANRIND</span> <span class='op'>==</span> <span class='st'>"HIGH HIGH"</span> <span class='op'>~</span> <span class='st'>"High"</span>,
-  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='st'>""</span>
-  <span class='op'>)</span>,
-  levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Low"</span>, <span class='st'>"High"</span><span class='op'>)</span>
- <span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'># Select only post-baseline records.</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ONTRTFL</span> <span class='op'>==</span> <span class='st'>"Y"</span><span class='op'>)</span>
-<span class='va'>df_crp</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>full_parent_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>df_crp</span>, <span class='st'>"not_needed"</span><span class='op'>)</span>
-<span class='va'>cur_col_subset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>df_crp</span><span class='op'>)</span><span class='op'>)</span>, <span class='st'>"not_needed"</span><span class='op'>)</span>
-<span class='va'>spl_context</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  split <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PARAMCD"</span>, <span class='st'>"GRADE_DIR"</span><span class='op'>)</span>,
-  full_parent_df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/AsIs.html'>I</a></span><span class='op'>(</span><span class='va'>full_parent_df</span><span class='op'>)</span>,
-  cur_col_subset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/AsIs.html'>I</a></span><span class='op'>(</span><span class='va'>cur_col_subset</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'>s_count_abnormal_by_marked</span><span class='op'>(</span>
- df <span class='op'>=</span> <span class='va'>df_crp</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>abn_dir</span> <span class='op'>==</span> <span class='st'>"High"</span><span class='op'>)</span>,
- .spl_context <span class='op'>=</span> <span class='va'>spl_context</span>,
- .var <span class='op'>=</span> <span class='st'>"AVALCAT1"</span>,
- variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"USUBJID"</span>, param <span class='op'>=</span> <span class='st'>"PARAMCD"</span>, direction <span class='op'>=</span> <span class='st'>"abn_dir"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $count_fraction
-#&gt; $count_fraction$`Single, not last`
-#&gt; [1] 1.0 0.5
-#&gt; 
-#&gt; $count_fraction$`Last or replicated`
-#&gt; [1] 1.0 0.5
-#&gt; 
-#&gt; $count_fraction$`Any Abnormality`
-#&gt; [1] 2 1
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first</span>
-<span class='co'># so that the rtables formatting function `format_count_fraction()` can be applied correctly.</span>
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'>make_afun</span><span class='op'>(</span><span class='va'>a_count_abnormal_by_marked</span>, .ungroup_stats <span class='op'>=</span> <span class='st'>"count_fraction"</span><span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span>
- df <span class='op'>=</span> <span class='va'>df_crp</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>abn_dir</span> <span class='op'>==</span> <span class='st'>"High"</span><span class='op'>)</span>,
- .spl_context <span class='op'>=</span> <span class='va'>spl_context</span>,
- variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"USUBJID"</span>, param <span class='op'>=</span> <span class='st'>"PARAMCD"</span>, direction <span class='op'>=</span> <span class='st'>"abn_dir"</span><span class='op'>)</span>
- <span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;             row_name formatted_cell indent_mod          row_label
-#&gt; 1   Single, not last        1 (50%)          0   Single, not last
-#&gt; 2 Last or replicated        1 (50%)          0 Last or replicated
-#&gt; 3    Any Abnormality       2 (100%)          0    Any Abnormality</div><div class='input'>
-
-<span class='va'>map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span>
-  <span class='va'>df</span><span class='op'>[</span><span class='va'>df</span><span class='op'>$</span><span class='va'>abn_dir</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Low"</span>, <span class='st'>"High"</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='va'>df</span><span class='op'>$</span><span class='va'>AVALCAT1</span> <span class='op'>!=</span> <span class='st'>""</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PARAMCD"</span>, <span class='st'>"abn_dir"</span><span class='op'>)</span><span class='op'>]</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>as.character</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>PARAMCD</span>, <span class='va'>abn_dir</span><span class='op'>)</span>
-
-<span class='fu'>basic_table</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>split_cols_by</span><span class='op'>(</span><span class='st'>"ARMCD"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>split_rows_by</span><span class='op'>(</span><span class='st'>"PARAMCD"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='summarize_num_patients.html'>summarize_num_patients</a></span><span class='op'>(</span>
-    var <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-    .stats <span class='op'>=</span> <span class='st'>"unique_count"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>split_rows_by</span><span class='op'>(</span>
-    <span class='st'>"abn_dir"</span>,
-    split_fun <span class='op'>=</span> <span class='fu'>trim_levels_to_map</span><span class='op'>(</span><span class='va'>map</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>count_abnormal_by_marked</span><span class='op'>(</span>
-    var <span class='op'>=</span> <span class='st'>"AVALCAT1"</span>,
-    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-      id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-      param <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
-      direction <span class='op'>=</span> <span class='st'>"abn_dir"</span><span class='op'>)</span>
-    <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>build_table</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                           ARM A      ARM B  
-#&gt; --------------------------------------------
-#&gt; ALT (n)                     1          1    
-#&gt;   Low                                       
-#&gt;     Single, not last     1 (100%)      0    
-#&gt;     Last or replicated      0       1 (100%)
-#&gt;     Any Abnormality      1 (100%)   1 (100%)
-#&gt; CRP (n)                     1          1    
-#&gt;   High                                      
-#&gt;     Single, not last     1 (100%)      0    
-#&gt;     Last or replicated      0       1 (100%)
-#&gt;     Any Abnormality      1 (100%)   1 (100%)</div><div class='input'>
-
-<span class='fu'>basic_table</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>split_cols_by</span><span class='op'>(</span><span class='st'>"ARMCD"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>split_rows_by</span><span class='op'>(</span><span class='st'>"PARAMCD"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='summarize_num_patients.html'>summarize_num_patients</a></span><span class='op'>(</span>
-    var <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-    .stats <span class='op'>=</span> <span class='st'>"unique_count"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>split_rows_by</span><span class='op'>(</span>
-    <span class='st'>"abn_dir"</span>,
-    split_fun <span class='op'>=</span> <span class='fu'>trim_levels_in_group</span><span class='op'>(</span><span class='st'>"abn_dir"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>count_abnormal_by_marked</span><span class='op'>(</span>
-    var <span class='op'>=</span> <span class='st'>"AVALCAT1"</span>,
-    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-      id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-      param <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
-      direction <span class='op'>=</span> <span class='st'>"abn_dir"</span><span class='op'>)</span>
-    <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>build_table</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                           ARM A      ARM B  
-#&gt; --------------------------------------------
-#&gt; ALT (n)                     1          1    
-#&gt;   Low                                       
-#&gt;     Single, not last     1 (100%)      0    
-#&gt;     Last or replicated      0       1 (100%)
-#&gt;     Any Abnormality      1 (100%)   1 (100%)
-#&gt; CRP (n)                     1          1    
-#&gt;   High                                      
-#&gt;     Single, not last     1 (100%)      0    
-#&gt;     Last or replicated      0       1 (100%)
-#&gt;     Any Abnormality      1 (100%)   1 (100%)</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  ARMCD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ARM A"</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ARM B"</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ARM A"</span>, <span class='fl'>5</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ARM B"</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  ANRIND <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"NORMAL"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"HIGH HIGH"</span>,<span class='st'>"HIGH"</span>,</span>
+<span class='r-in'>  <span class='st'>"HIGH"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"HIGH HIGH"</span>, <span class='st'>"NORMAL"</span>, <span class='st'>"HIGH HIGH"</span>, <span class='st'>"NORMAL"</span>, <span class='st'>"LOW"</span>, <span class='st'>"LOW"</span>, <span class='st'>"LOW LOW"</span>,<span class='st'>"LOW"</span>,</span>
+<span class='r-in'>  <span class='st'>"LOW"</span>, <span class='st'>"LOW"</span>, <span class='st'>"LOW LOW"</span>, <span class='st'>"NORMAL"</span>, <span class='st'>"LOW LOW"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  ONTRTFL <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>  PARAMCD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"CRP"</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ALT"</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AVALCAT1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>""</span>, <span class='st'>""</span>, <span class='st'>"SINGLE"</span>, <span class='st'>"REPLICATED"</span>, <span class='st'>""</span>, <span class='st'>""</span>, <span class='st'>"LAST"</span>, <span class='st'>""</span>, <span class='st'>"SINGLE"</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>abn_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>ANRIND</span> <span class='op'>==</span> <span class='st'>"LOW LOW"</span> <span class='op'>~</span> <span class='st'>"Low"</span>,</span>
+<span class='r-in'>  <span class='va'>ANRIND</span> <span class='op'>==</span> <span class='st'>"HIGH HIGH"</span> <span class='op'>~</span> <span class='st'>"High"</span>,</span>
+<span class='r-in'>  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='st'>""</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Low"</span>, <span class='st'>"High"</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Select only post-baseline records.</span></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ONTRTFL</span> <span class='op'>==</span> <span class='st'>"Y"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df_crp</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>full_parent_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>df_crp</span>, <span class='st'>"not_needed"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cur_col_subset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>df_crp</span><span class='op'>)</span><span class='op'>)</span>, <span class='st'>"not_needed"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>spl_context</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  split <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PARAMCD"</span>, <span class='st'>"GRADE_DIR"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  full_parent_df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/AsIs.html'>I</a></span><span class='op'>(</span><span class='va'>full_parent_df</span><span class='op'>)</span>,</span>
+<span class='r-in'>  cur_col_subset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/AsIs.html'>I</a></span><span class='op'>(</span><span class='va'>cur_col_subset</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>s_count_abnormal_by_marked</span><span class='op'>(</span></span>
+<span class='r-in'> df <span class='op'>=</span> <span class='va'>df_crp</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>abn_dir</span> <span class='op'>==</span> <span class='st'>"High"</span><span class='op'>)</span>,</span>
+<span class='r-in'> .spl_context <span class='op'>=</span> <span class='va'>spl_context</span>,</span>
+<span class='r-in'> .var <span class='op'>=</span> <span class='st'>"AVALCAT1"</span>,</span>
+<span class='r-in'> variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"USUBJID"</span>, param <span class='op'>=</span> <span class='st'>"PARAMCD"</span>, direction <span class='op'>=</span> <span class='st'>"abn_dir"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$`Single, not last`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$`Last or replicated`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$`Any Abnormality`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first</span></span>
+<span class='r-in'><span class='co'># so that the rtables formatting function `format_count_fraction()` can be applied correctly.</span></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'>make_afun</span><span class='op'>(</span><span class='va'>a_count_abnormal_by_marked</span>, .ungroup_stats <span class='op'>=</span> <span class='st'>"count_fraction"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span></span>
+<span class='r-in'> df <span class='op'>=</span> <span class='va'>df_crp</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>abn_dir</span> <span class='op'>==</span> <span class='st'>"High"</span><span class='op'>)</span>,</span>
+<span class='r-in'> .spl_context <span class='op'>=</span> <span class='va'>spl_context</span>,</span>
+<span class='r-in'> variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"USUBJID"</span>, param <span class='op'>=</span> <span class='st'>"PARAMCD"</span>, direction <span class='op'>=</span> <span class='st'>"abn_dir"</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             row_name formatted_cell indent_mod          row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   Single, not last        1 (50%)          0   Single, not last</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 Last or replicated        1 (50%)          0 Last or replicated</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3    Any Abnormality       2 (100%)          0    Any Abnormality</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>df</span><span class='op'>[</span><span class='va'>df</span><span class='op'>$</span><span class='va'>abn_dir</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Low"</span>, <span class='st'>"High"</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='va'>df</span><span class='op'>$</span><span class='va'>AVALCAT1</span> <span class='op'>!=</span> <span class='st'>""</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PARAMCD"</span>, <span class='st'>"abn_dir"</span><span class='op'>)</span><span class='op'>]</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>as.character</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>PARAMCD</span>, <span class='va'>abn_dir</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>basic_table</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>split_cols_by</span><span class='op'>(</span><span class='st'>"ARMCD"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>split_rows_by</span><span class='op'>(</span><span class='st'>"PARAMCD"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='summarize_num_patients.html'>summarize_num_patients</a></span><span class='op'>(</span></span>
+<span class='r-in'>    var <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>    .stats <span class='op'>=</span> <span class='st'>"unique_count"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>split_rows_by</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"abn_dir"</span>,</span>
+<span class='r-in'>    split_fun <span class='op'>=</span> <span class='fu'>trim_levels_to_map</span><span class='op'>(</span><span class='va'>map</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>count_abnormal_by_marked</span><span class='op'>(</span></span>
+<span class='r-in'>    var <span class='op'>=</span> <span class='st'>"AVALCAT1"</span>,</span>
+<span class='r-in'>    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>      id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>      param <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,</span>
+<span class='r-in'>      direction <span class='op'>=</span> <span class='st'>"abn_dir"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>build_table</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                           ARM A      ARM B  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ALT (n)                     1          1    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Low                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Single, not last     1 (100%)      0    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Last or replicated      0       1 (100%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Any Abnormality      1 (100%)   1 (100%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CRP (n)                     1          1    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   High                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Single, not last     1 (100%)      0    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Last or replicated      0       1 (100%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Any Abnormality      1 (100%)   1 (100%)</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>basic_table</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>split_cols_by</span><span class='op'>(</span><span class='st'>"ARMCD"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>split_rows_by</span><span class='op'>(</span><span class='st'>"PARAMCD"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='summarize_num_patients.html'>summarize_num_patients</a></span><span class='op'>(</span></span>
+<span class='r-in'>    var <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>    .stats <span class='op'>=</span> <span class='st'>"unique_count"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>split_rows_by</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"abn_dir"</span>,</span>
+<span class='r-in'>    split_fun <span class='op'>=</span> <span class='fu'>trim_levels_in_group</span><span class='op'>(</span><span class='st'>"abn_dir"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>count_abnormal_by_marked</span><span class='op'>(</span></span>
+<span class='r-in'>    var <span class='op'>=</span> <span class='st'>"AVALCAT1"</span>,</span>
+<span class='r-in'>    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>      id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>      param <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,</span>
+<span class='r-in'>      direction <span class='op'>=</span> <span class='st'>"abn_dir"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>build_table</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                           ARM A      ARM B  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ALT (n)                     1          1    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Low                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Single, not last     1 (100%)      0    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Last or replicated      0       1 (100%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Any Abnormality      1 (100%)   1 (100%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CRP (n)                     1          1    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   High                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Single, not last     1 (100%)      0    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Last or replicated      0       1 (100%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Any Abnormality      1 (100%)   1 (100%)</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

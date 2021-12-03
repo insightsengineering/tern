@@ -264,73 +264,76 @@ no interaction, <code><a href='cox_regression.html'>h_coxreg_univar_extract()</a
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Testing dataset [survival::bladder].</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span>, kind <span class='op'>=</span> <span class='st'>"Mersenne-Twister"</span><span class='op'>)</span>
-<span class='va'>dta_bladder</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>bladder</span><span class='op'>[</span><span class='va'>bladder</span><span class='op'>$</span><span class='va'>enum</span> <span class='op'>&lt;</span> <span class='fl'>5</span>, <span class='op'>]</span>,
-  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='va'>stop</span>,
-    status <span class='op'>=</span> <span class='va'>event</span>,
-    armcd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>rx</span><span class='op'>)</span>,
-    covar1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>enum</span><span class='op'>)</span>,
-    covar2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span>
-      <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>enum</span><span class='op'>)</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"F"</span>, <span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"M"</span><span class='op'>)</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>armcd</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"ARM"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar1</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"A Covariate Label"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar2</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Sex (F/M)"</span>
-<span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>age</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>:</span><span class='fl'>60</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>+</span> <span class='va'>covar1</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span><span class='op'>)</span>,
-  lty<span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span>, xlab<span class='op'>=</span><span class='st'>"Months"</span>,
-  col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue1"</span>, <span class='st'>"blue2"</span>, <span class='st'>"blue3"</span>, <span class='st'>"blue4"</span>, <span class='st'>"red1"</span>, <span class='st'>"red2"</span>, <span class='st'>"red3"</span>, <span class='st'>"red4"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='cox_regression_inter-1.png' alt='' width='700' height='433' /></div><div class='input'>
-
-<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>*</span> <span class='va'>covar1</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span><span class='op'>)</span>
-<span class='fu'>h_coxreg_extract_interaction</span><span class='op'>(</span>
-  mod <span class='op'>=</span> <span class='va'>mod</span>, effect <span class='op'>=</span> <span class='st'>"armcd"</span>, covar <span class='op'>=</span> <span class='st'>"covar1"</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='control_coxreg.html'>control_coxreg</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;                    effect   term        term_label level   n        hr
-#&gt; 1              Covariate: covar1 A Covariate Label       340        NA
-#&gt; armcd2/covar11 Covariate: covar1                 1     1  NA 0.6341111
-#&gt; armcd2/covar12 Covariate: covar1                 2     2  NA 0.5845305
-#&gt; armcd2/covar13 Covariate: covar1                 3     3  NA 0.5507703
-#&gt; armcd2/covar14 Covariate: covar1                 4     4  NA 0.6910643
-#&gt;                      lcl      ucl      pval pval_inter
-#&gt; 1                     NA       NA 0.1302825   0.988245
-#&gt; armcd2/covar11 0.3514676 1.144051        NA         NA
-#&gt; armcd2/covar12 0.2716689 1.257692        NA         NA
-#&gt; armcd2/covar13 0.2244668 1.351415        NA         NA
-#&gt; armcd2/covar14 0.2315248 2.062715        NA         NA</div><div class='input'>
-
-<span class='co'># Testing dataset [survival::bladder].</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span>
-
-<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>*</span> <span class='va'>covar1</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span><span class='op'>)</span>
-<span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'>h_coxreg_inter_estimations</span><span class='op'>(</span>
-  variable <span class='op'>=</span> <span class='st'>"armcd"</span>, given <span class='op'>=</span> <span class='st'>"covar1"</span>,
-  lvl_var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>armcd</span><span class='op'>)</span>,
-  lvl_given <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar1</span><span class='op'>)</span>,
-  mod <span class='op'>=</span> <span class='va'>mod</span>, conf_level <span class='op'>=</span> <span class='fl'>.95</span>
-<span class='op'>)</span>
-<span class='va'>result</span>
-</div><div class='output co'>#&gt; $armcd2
-#&gt;                      coef  se(coef)        hr       lcl      ucl
-#&gt; armcd2/covar11 -0.4555312 0.3010803 0.6341111 0.3514676 1.144051
-#&gt; armcd2/covar12 -0.5369464 0.3909383 0.5845305 0.2716689 1.257692
-#&gt; armcd2/covar13 -0.5964375 0.4579624 0.5507703 0.2244668 1.351415
-#&gt; armcd2/covar14 -0.3695225 0.5579418 0.6910643 0.2315248 2.062715
-#&gt; 
-#&gt; attr(,"details")
-#&gt; [1] "Estimations of armcd hazard ratio given the level of covar1 compared to armcd level 1."</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># Testing dataset [survival::bladder].</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span>, kind <span class='op'>=</span> <span class='st'>"Mersenne-Twister"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dta_bladder</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>bladder</span><span class='op'>[</span><span class='va'>bladder</span><span class='op'>$</span><span class='va'>enum</span> <span class='op'>&lt;</span> <span class='fl'>5</span>, <span class='op'>]</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>    time <span class='op'>=</span> <span class='va'>stop</span>,</span>
+<span class='r-in'>    status <span class='op'>=</span> <span class='va'>event</span>,</span>
+<span class='r-in'>    armcd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>rx</span><span class='op'>)</span>,</span>
+<span class='r-in'>    covar1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>enum</span><span class='op'>)</span>,</span>
+<span class='r-in'>    covar2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span></span>
+<span class='r-in'>      <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>enum</span><span class='op'>)</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"F"</span>, <span class='st'>"F"</span>, <span class='st'>"M"</span>, <span class='st'>"M"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>armcd</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"ARM"</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar1</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"A Covariate Label"</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar2</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Sex (F/M)"</span></span>
+<span class='r-in'><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>age</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>:</span><span class='fl'>60</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>+</span> <span class='va'>covar1</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span><span class='op'>)</span>,</span>
+<span class='r-in'>  lty<span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span>, xlab<span class='op'>=</span><span class='st'>"Months"</span>,</span>
+<span class='r-in'>  col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue1"</span>, <span class='st'>"blue2"</span>, <span class='st'>"blue3"</span>, <span class='st'>"blue4"</span>, <span class='st'>"red1"</span>, <span class='st'>"red2"</span>, <span class='st'>"red3"</span>, <span class='st'>"red4"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt img'><img src='cox_regression_inter-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>*</span> <span class='va'>covar1</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>h_coxreg_extract_interaction</span><span class='op'>(</span></span>
+<span class='r-in'>  mod <span class='op'>=</span> <span class='va'>mod</span>, effect <span class='op'>=</span> <span class='st'>"armcd"</span>, covar <span class='op'>=</span> <span class='st'>"covar1"</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span>,</span>
+<span class='r-in'>  control <span class='op'>=</span> <span class='fu'><a href='control_coxreg.html'>control_coxreg</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                    effect   term        term_label level   n        hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1              Covariate: covar1 A Covariate Label       340        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar11 Covariate: covar1                 1     1  NA 0.6341111</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar12 Covariate: covar1                 2     2  NA 0.5845305</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar13 Covariate: covar1                 3     3  NA 0.5507703</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar14 Covariate: covar1                 4     4  NA 0.6910643</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      lcl      ucl      pval pval_inter</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                     NA       NA 0.1302825   0.988245</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar11 0.3514676 1.144051        NA         NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar12 0.2716689 1.257692        NA         NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar13 0.2244668 1.351415        NA         NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar14 0.2315248 2.062715        NA         NA</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Testing dataset [survival::bladder].</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>*</span> <span class='va'>covar1</span>, data <span class='op'>=</span> <span class='va'>dta_bladder</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'>h_coxreg_inter_estimations</span><span class='op'>(</span></span>
+<span class='r-in'>  variable <span class='op'>=</span> <span class='st'>"armcd"</span>, given <span class='op'>=</span> <span class='st'>"covar1"</span>,</span>
+<span class='r-in'>  lvl_var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>armcd</span><span class='op'>)</span>,</span>
+<span class='r-in'>  lvl_given <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>dta_bladder</span><span class='op'>$</span><span class='va'>covar1</span><span class='op'>)</span>,</span>
+<span class='r-in'>  mod <span class='op'>=</span> <span class='va'>mod</span>, conf_level <span class='op'>=</span> <span class='fl'>.95</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>result</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $armcd2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      coef  se(coef)        hr       lcl      ucl</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar11 -0.4555312 0.3010803 0.6341111 0.3514676 1.144051</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar12 -0.5369464 0.3909383 0.5845305 0.2716689 1.257692</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar13 -0.5964375 0.4579624 0.5507703 0.2244668 1.351415</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> armcd2/covar14 -0.3695225 0.5579418 0.6910643 0.2315248 2.062715</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"details")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Estimations of armcd hazard ratio given the level of covar1 compared to armcd level 1."</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

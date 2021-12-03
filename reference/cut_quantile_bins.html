@@ -191,69 +191,74 @@ probabilities in <code>probs</code>, then this must be <code>n + 1</code> long.<
     <p>The factor variable with the appropriately labeled bins as levels.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Default is to cut into quartile bins.</span>
-<span class='fu'>cut_quantile_bins</span><span class='op'>(</span><span class='va'>cars</span><span class='op'>$</span><span class='va'>speed</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]  
-#&gt;  [7] [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]  
-#&gt; [13] [0%,25%]   [0%,25%]   [0%,25%]   (25%,50%]  (25%,50%]  (25%,50%] 
-#&gt; [19] (25%,50%]  (25%,50%]  (25%,50%]  (25%,50%]  (25%,50%]  (25%,50%] 
-#&gt; [25] (25%,50%]  (25%,50%]  (50%,75%]  (50%,75%]  (50%,75%]  (50%,75%] 
-#&gt; [31] (50%,75%]  (50%,75%]  (50%,75%]  (50%,75%]  (50%,75%]  (50%,75%] 
-#&gt; [37] (50%,75%]  (50%,75%]  (75%,100%] (75%,100%] (75%,100%] (75%,100%]
-#&gt; [43] (75%,100%] (75%,100%] (75%,100%] (75%,100%] (75%,100%] (75%,100%]
-#&gt; [49] (75%,100%] (75%,100%]
-#&gt; Levels: [0%,25%] &lt; (25%,50%] &lt; (50%,75%] &lt; (75%,100%]</div><div class='input'>
-<span class='co'># Use custom quantiles.</span>
-<span class='fu'>cut_quantile_bins</span><span class='op'>(</span><span class='va'>cars</span><span class='op'>$</span><span class='va'>speed</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.6</span>, <span class='fl'>0.88</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] [0%,10%]   [0%,10%]   [0%,10%]   [0%,10%]   [0%,10%]   (10%,20%] 
-#&gt;  [7] (10%,20%]  (10%,20%]  (10%,20%]  (10%,20%]  (10%,20%]  (20%,60%] 
-#&gt; [13] (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%] 
-#&gt; [19] (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%] 
-#&gt; [25] (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%] 
-#&gt; [31] (20%,60%]  (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%] 
-#&gt; [37] (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%] 
-#&gt; [43] (60%,88%]  (60%,88%]  (88%,100%] (88%,100%] (88%,100%] (88%,100%]
-#&gt; [49] (88%,100%] (88%,100%]
-#&gt; Levels: [0%,10%] &lt; (10%,20%] &lt; (20%,60%] &lt; (60%,88%] &lt; (88%,100%]</div><div class='input'>
-<span class='co'># Use custom labels.</span>
-<span class='fu'>cut_quantile_bins</span><span class='op'>(</span><span class='va'>cars</span><span class='op'>$</span><span class='va'>speed</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"Q"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q2 Q2 Q2 Q2 Q2 Q2 Q2 Q2 Q2 Q2
-#&gt; [26] Q2 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4
-#&gt; Levels: Q1 &lt; Q2 &lt; Q3 &lt; Q4</div><div class='input'>
-<span class='co'># NAs are preserved in result factor.</span>
-<span class='va'>ozone_binned</span> <span class='op'>&lt;-</span> <span class='fu'>cut_quantile_bins</span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>$</span><span class='va'>Ozone</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>ozone_binned</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1]   5  10  25  26  27  32  33  34  35  36  37  39  42  43  45  46  52  53  54
-#&gt; [20]  55  56  57  58  59  60  61  65  72  75  83  84 102 103 107 115 119 150</div><div class='input'><span class='co'># So you might want to make these explicit.</span>
-<span class='fu'><a href='explicit_na.html'>explicit_na</a></span><span class='op'>(</span><span class='va'>ozone_binned</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   [1] (50%,75%]  (50%,75%]  [0%,25%]   [0%,25%]   &lt;Missing&gt;  (25%,50%] 
-#&gt;   [7] (25%,50%]  (25%,50%]  [0%,25%]   &lt;Missing&gt;  [0%,25%]   [0%,25%]  
-#&gt;  [13] [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   (50%,75%]  [0%,25%]  
-#&gt;  [19] (25%,50%]  [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   (50%,75%] 
-#&gt;  [25] &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  (25%,50%]  (50%,75%]  (75%,100%]
-#&gt;  [31] (50%,75%]  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt; 
-#&gt;  [37] &lt;Missing&gt;  (25%,50%]  &lt;Missing&gt;  (75%,100%] (50%,75%]  &lt;Missing&gt; 
-#&gt;  [43] &lt;Missing&gt;  (25%,50%]  &lt;Missing&gt;  &lt;Missing&gt;  (25%,50%]  (50%,75%] 
-#&gt;  [49] (25%,50%]  [0%,25%]   [0%,25%]   &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt; 
-#&gt;  [55] &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt; 
-#&gt;  [61] &lt;Missing&gt;  (75%,100%] (50%,75%]  (50%,75%]  &lt;Missing&gt;  (75%,100%]
-#&gt;  [67] (50%,75%]  (75%,100%] (75%,100%] (75%,100%] (75%,100%] &lt;Missing&gt; 
-#&gt;  [73] [0%,25%]   (25%,50%]  &lt;Missing&gt;  [0%,25%]   (50%,75%]  (50%,75%] 
-#&gt;  [79] (50%,75%]  (75%,100%] (50%,75%]  [0%,25%]   &lt;Missing&gt;  &lt;Missing&gt; 
-#&gt;  [85] (75%,100%] (75%,100%] (25%,50%]  (50%,75%]  (75%,100%] (50%,75%] 
-#&gt;  [91] (75%,100%] (50%,75%]  (50%,75%]  [0%,25%]   [0%,25%]   (75%,100%]
-#&gt;  [97] (50%,75%]  (75%,100%] (75%,100%] (75%,100%] (75%,100%] &lt;Missing&gt; 
-#&gt; [103] &lt;Missing&gt;  (50%,75%]  (25%,50%]  (75%,100%] &lt;Missing&gt;  (25%,50%] 
-#&gt; [109] (50%,75%]  (25%,50%]  (25%,50%]  (50%,75%]  (25%,50%]  [0%,25%]  
-#&gt; [115] &lt;Missing&gt;  (50%,75%]  (75%,100%] (75%,100%] &lt;Missing&gt;  (75%,100%]
-#&gt; [121] (75%,100%] (75%,100%] (75%,100%] (75%,100%] (75%,100%] (75%,100%]
-#&gt; [127] (75%,100%] (50%,75%]  (50%,75%]  (25%,50%]  (25%,50%]  (25%,50%] 
-#&gt; [133] (25%,50%]  (50%,75%]  (25%,50%]  (25%,50%]  [0%,25%]   [0%,25%]  
-#&gt; [139] (50%,75%]  [0%,25%]   [0%,25%]   (25%,50%]  [0%,25%]   [0%,25%]  
-#&gt; [145] (25%,50%]  (50%,75%]  [0%,25%]   [0%,25%]   (25%,50%]  &lt;Missing&gt; 
-#&gt; [151] [0%,25%]   [0%,25%]   (25%,50%] 
-#&gt; Levels: [0%,25%] &lt; (25%,50%] &lt; (50%,75%] &lt; (75%,100%] &lt; &lt;Missing&gt;</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Default is to cut into quartile bins.</span></span>
+<span class='r-in'><span class='fu'>cut_quantile_bins</span><span class='op'>(</span><span class='va'>cars</span><span class='op'>$</span><span class='va'>speed</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] [0%,25%]   [0%,25%]   [0%,25%]   (25%,50%]  (25%,50%]  (25%,50%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] (25%,50%]  (25%,50%]  (25%,50%]  (25%,50%]  (25%,50%]  (25%,50%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [25] (25%,50%]  (25%,50%]  (50%,75%]  (50%,75%]  (50%,75%]  (50%,75%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [31] (50%,75%]  (50%,75%]  (50%,75%]  (50%,75%]  (50%,75%]  (50%,75%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [37] (50%,75%]  (50%,75%]  (75%,100%] (75%,100%] (75%,100%] (75%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [43] (75%,100%] (75%,100%] (75%,100%] (75%,100%] (75%,100%] (75%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [49] (75%,100%] (75%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Levels: [0%,25%] &lt; (25%,50%] &lt; (50%,75%] &lt; (75%,100%]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Use custom quantiles.</span></span>
+<span class='r-in'><span class='fu'>cut_quantile_bins</span><span class='op'>(</span><span class='va'>cars</span><span class='op'>$</span><span class='va'>speed</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.6</span>, <span class='fl'>0.88</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] [0%,10%]   [0%,10%]   [0%,10%]   [0%,10%]   [0%,10%]   (10%,20%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] (10%,20%]  (10%,20%]  (10%,20%]  (10%,20%]  (10%,20%]  (20%,60%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [25] (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%]  (20%,60%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [31] (20%,60%]  (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [37] (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%]  (60%,88%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [43] (60%,88%]  (60%,88%]  (88%,100%] (88%,100%] (88%,100%] (88%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [49] (88%,100%] (88%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Levels: [0%,10%] &lt; (10%,20%] &lt; (20%,60%] &lt; (60%,88%] &lt; (88%,100%]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Use custom labels.</span></span>
+<span class='r-in'><span class='fu'>cut_quantile_bins</span><span class='op'>(</span><span class='va'>cars</span><span class='op'>$</span><span class='va'>speed</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"Q"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q1 Q2 Q2 Q2 Q2 Q2 Q2 Q2 Q2 Q2 Q2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [26] Q2 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q3 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4 Q4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Levels: Q1 &lt; Q2 &lt; Q3 &lt; Q4</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># NAs are preserved in result factor.</span></span>
+<span class='r-in'><span class='va'>ozone_binned</span> <span class='op'>&lt;-</span> <span class='fu'>cut_quantile_bins</span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>$</span><span class='va'>Ozone</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>ozone_binned</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1]   5  10  25  26  27  32  33  34  35  36  37  39  42  43  45  46  52  53  54</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20]  55  56  57  58  59  60  61  65  72  75  83  84 102 103 107 115 119 150</span>
+<span class='r-in'><span class='co'># So you might want to make these explicit.</span></span>
+<span class='r-in'><span class='fu'><a href='explicit_na.html'>explicit_na</a></span><span class='op'>(</span><span class='va'>ozone_binned</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   [1] (50%,75%]  (50%,75%]  [0%,25%]   [0%,25%]   &lt;Missing&gt;  (25%,50%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   [7] (25%,50%]  (25%,50%]  [0%,25%]   &lt;Missing&gt;  [0%,25%]   [0%,25%]  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [13] [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   (50%,75%]  [0%,25%]  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [19] (25%,50%]  [0%,25%]   [0%,25%]   [0%,25%]   [0%,25%]   (50%,75%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [25] &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  (25%,50%]  (50%,75%]  (75%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [31] (50%,75%]  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [37] &lt;Missing&gt;  (25%,50%]  &lt;Missing&gt;  (75%,100%] (50%,75%]  &lt;Missing&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [43] &lt;Missing&gt;  (25%,50%]  &lt;Missing&gt;  &lt;Missing&gt;  (25%,50%]  (50%,75%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [49] (25%,50%]  [0%,25%]   [0%,25%]   &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [55] &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt;  &lt;Missing&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [61] &lt;Missing&gt;  (75%,100%] (50%,75%]  (50%,75%]  &lt;Missing&gt;  (75%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [67] (50%,75%]  (75%,100%] (75%,100%] (75%,100%] (75%,100%] &lt;Missing&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [73] [0%,25%]   (25%,50%]  &lt;Missing&gt;  [0%,25%]   (50%,75%]  (50%,75%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [79] (50%,75%]  (75%,100%] (50%,75%]  [0%,25%]   &lt;Missing&gt;  &lt;Missing&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [85] (75%,100%] (75%,100%] (25%,50%]  (50%,75%]  (75%,100%] (50%,75%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [91] (75%,100%] (50%,75%]  (50%,75%]  [0%,25%]   [0%,25%]   (75%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [97] (50%,75%]  (75%,100%] (75%,100%] (75%,100%] (75%,100%] &lt;Missing&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [103] &lt;Missing&gt;  (50%,75%]  (25%,50%]  (75%,100%] &lt;Missing&gt;  (25%,50%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [109] (50%,75%]  (25%,50%]  (25%,50%]  (50%,75%]  (25%,50%]  [0%,25%]  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [115] &lt;Missing&gt;  (50%,75%]  (75%,100%] (75%,100%] &lt;Missing&gt;  (75%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [121] (75%,100%] (75%,100%] (75%,100%] (75%,100%] (75%,100%] (75%,100%]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [127] (75%,100%] (50%,75%]  (50%,75%]  (25%,50%]  (25%,50%]  (25%,50%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [133] (25%,50%]  (50%,75%]  (25%,50%]  (25%,50%]  [0%,25%]   [0%,25%]  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [139] (50%,75%]  [0%,25%]   [0%,25%]   (25%,50%]  [0%,25%]   [0%,25%]  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [145] (25%,50%]  (50%,75%]  [0%,25%]   [0%,25%]   (25%,50%]  &lt;Missing&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [151] [0%,25%]   [0%,25%]   (25%,50%] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Levels: [0%,25%] &lt; (25%,50%] &lt; (50%,75%] &lt; (75%,100%] &lt; &lt;Missing&gt;</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

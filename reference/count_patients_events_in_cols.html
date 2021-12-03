@@ -239,61 +239,63 @@ statistics of patients and events in the column layout as content rows.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># `s_count_patients_and_multiple_events()`</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"id1"</span>, <span class='st'>"id2"</span>, <span class='st'>"id3"</span>, <span class='st'>"id4"</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,
-  ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span>,
-  AESER <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"Y"</span>, <span class='fl'>7</span><span class='op'>)</span>,
-  AESDTH <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='st'>"N"</span><span class='op'>)</span>,
-  AEREL <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='st'>"Y"</span><span class='op'>)</span>,
-  AEDECOD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"D"</span><span class='op'>)</span>,
-  AEBODSYS <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SOC1"</span>, <span class='st'>"SOC2"</span>, <span class='st'>"SOC3"</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='fu'>s_count_patients_and_multiple_events</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='va'>df</span>,
-  id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-  filters_list <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    serious <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AESER <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,
-    fatal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AESDTH <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $unique
-#&gt; [1] 4
-#&gt; attr(,"label")
-#&gt; [1] "counts"
-#&gt; 
-#&gt; $all
-#&gt; [1] 7
-#&gt; attr(,"label")
-#&gt; [1] "counts"
-#&gt; 
-#&gt; $serious
-#&gt; [1] 7
-#&gt; attr(,"label")
-#&gt; [1] "counts"
-#&gt; 
-#&gt; $fatal
-#&gt; [1] 4
-#&gt; attr(,"label")
-#&gt; [1] "counts"
-#&gt; </div><div class='input'>
-
-<span class='co'># `summarize_patients_events_in_cols()`</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_patients_events_in_cols</span><span class='op'>(</span>
-    filters_list <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-      related <span class='op'>=</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/with_label.html'>with_label</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AEREL <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>, <span class='st'>"Events (Related)"</span><span class='op'>)</span>,
-      fatal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AESDTH <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,
-      fatal_related <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AEREL <span class='op'>=</span> <span class='st'>"Y"</span>, AESDTH <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>
-    <span class='op'>)</span>,
-    custom_label <span class='op'>=</span> <span class='st'>"%s Total number of patients and events"</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                          Patients (All)   Events (All)   Events (Related)   fatal   fatal_related
-#&gt; -----------------------------------------------------------------------------------------------------------------
-#&gt; %s Total number of patients and events         4               7                5             4           4      </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># `s_count_patients_and_multiple_events()`</span></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"id1"</span>, <span class='st'>"id2"</span>, <span class='st'>"id3"</span>, <span class='st'>"id4"</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AESER <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"Y"</span>, <span class='fl'>7</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AESDTH <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='st'>"N"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AEREL <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='st'>"Y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AEDECOD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"D"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AEBODSYS <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SOC1"</span>, <span class='st'>"SOC2"</span>, <span class='st'>"SOC3"</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_count_patients_and_multiple_events</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='va'>df</span>,</span>
+<span class='r-in'>  id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>  filters_list <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    serious <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AESER <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    fatal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AESDTH <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $unique</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "counts"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $all</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "counts"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $serious</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "counts"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fatal</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "counts"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `summarize_patients_events_in_cols()`</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_patients_events_in_cols</span><span class='op'>(</span></span>
+<span class='r-in'>    filters_list <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>      related <span class='op'>=</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/with_label.html'>with_label</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AEREL <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>, <span class='st'>"Events (Related)"</span><span class='op'>)</span>,</span>
+<span class='r-in'>      fatal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AESDTH <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>      fatal_related <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AEREL <span class='op'>=</span> <span class='st'>"Y"</span>, AESDTH <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span>,</span>
+<span class='r-in'>    custom_label <span class='op'>=</span> <span class='st'>"%s Total number of patients and events"</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                          Patients (All)   Events (All)   Events (Related)   fatal   fatal_related</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> %s Total number of patients and events         4               7                5             4           4      </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

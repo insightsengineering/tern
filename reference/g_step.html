@@ -146,7 +146,7 @@ along the continuous biomarker value subgroups.</p>
 
     <pre class="usage"><span class='fu'>g_step</span><span class='op'>(</span>
   <span class='va'>df</span>,
-  use_percentile <span class='op'>=</span> <span class='st'>"Percentile Center"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>,
+  use_percentile <span class='op'>=</span> <span class='st'>"Percentile Center"</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>,
   est <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"black"</span>, lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
   ci_ribbon <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"lightblue"</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
@@ -179,65 +179,70 @@ ribbon area, or <code>NULL</code> to not plot a CI ribbon.</p></td>
     <p>The <code>ggplot2</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span>
-<span class='va'>lung</span><span class='op'>$</span><span class='va'>sex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>lung</span><span class='op'>$</span><span class='va'>sex</span><span class='op'>)</span>
-
-<span class='co'># Survival example.</span>
-<span class='va'>vars</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-  time <span class='op'>=</span> <span class='st'>"time"</span>,
-  event <span class='op'>=</span> <span class='st'>"status"</span>,
-  arm <span class='op'>=</span> <span class='st'>"sex"</span>,
-  biomarker <span class='op'>=</span> <span class='st'>"age"</span>
-<span class='op'>)</span>
-
-<span class='va'>step_matrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_survival_step.html'>fit_survival_step</a></span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='va'>vars</span>,
-  data <span class='op'>=</span> <span class='va'>lung</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='control_coxph.html'>control_coxph</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='control_step.html'>control_step</a></span><span class='op'>(</span>num_points <span class='op'>=</span> <span class='fl'>10</span>, degree <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>step_data</span> <span class='op'>&lt;-</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>step_matrix</span><span class='op'>)</span>
-
-<span class='co'># Default plot.</span>
-<span class='fu'>g_step</span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>)</span>
-</div><div class='img'><img src='g_step-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Add the reference 1 horizontal line.</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
-<span class='fu'>g_step</span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_hline</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='img'><img src='g_step-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Use actual values instead of percentiles, different color for estimate and no CI,</span>
-<span class='co'># use log scale for y axis.</span>
-<span class='fu'>g_step</span><span class='op'>(</span>
-  <span class='va'>step_data</span>,
-  use_percentile <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  est <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"blue"</span>, lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-  ci_ribbon <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_log10</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='img'><img src='g_step-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Adding another curve based on additional column.</span>
-<span class='va'>step_data</span><span class='op'>$</span><span class='va'>extra</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>$</span><span class='va'>`Percentile Center`</span><span class='op'>)</span>
-<span class='fu'>g_step</span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>extra</span><span class='op'>)</span>, linetype <span class='op'>=</span> <span class='fl'>2</span>, color <span class='op'>=</span> <span class='st'>"green"</span><span class='op'>)</span>
-</div><div class='img'><img src='g_step-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Response example.</span>
-<span class='va'>vars</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-  response <span class='op'>=</span> <span class='st'>"status"</span>,
-  arm <span class='op'>=</span> <span class='st'>"sex"</span>,
-  biomarker <span class='op'>=</span> <span class='st'>"age"</span>
-<span class='op'>)</span>
-
-<span class='va'>step_matrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_rsp_step.html'>fit_rsp_step</a></span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='va'>vars</span>,
-  data <span class='op'>=</span> <span class='va'>lung</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-    <span class='fu'><a href='control_logistic.html'>control_logistic</a></span><span class='op'>(</span>response_definition <span class='op'>=</span> <span class='st'>"I(response == 2)"</span><span class='op'>)</span>,
-    <span class='fu'><a href='control_step.html'>control_step</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>step_data</span> <span class='op'>&lt;-</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>step_matrix</span><span class='op'>)</span>
-<span class='fu'>g_step</span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>)</span>
-</div><div class='img'><img src='g_step-5.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>lung</span><span class='op'>$</span><span class='va'>sex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>lung</span><span class='op'>$</span><span class='va'>sex</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Survival example.</span></span>
+<span class='r-in'><span class='va'>vars</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  time <span class='op'>=</span> <span class='st'>"time"</span>,</span>
+<span class='r-in'>  event <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>  arm <span class='op'>=</span> <span class='st'>"sex"</span>,</span>
+<span class='r-in'>  biomarker <span class='op'>=</span> <span class='st'>"age"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>step_matrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_survival_step.html'>fit_survival_step</a></span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='va'>vars</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>lung</span>,</span>
+<span class='r-in'>  control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='control_coxph.html'>control_coxph</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='control_step.html'>control_step</a></span><span class='op'>(</span>num_points <span class='op'>=</span> <span class='fl'>10</span>, degree <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>step_data</span> <span class='op'>&lt;-</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>step_matrix</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Default plot.</span></span>
+<span class='r-in'><span class='fu'>g_step</span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_step-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Add the reference 1 horizontal line.</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>g_step</span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_hline</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_step-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Use actual values instead of percentiles, different color for estimate and no CI,</span></span>
+<span class='r-in'><span class='co'># use log scale for y axis.</span></span>
+<span class='r-in'><span class='fu'>g_step</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>step_data</span>,</span>
+<span class='r-in'>  use_percentile <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  est <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"blue"</span>, lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,</span>
+<span class='r-in'>  ci_ribbon <span class='op'>=</span> <span class='cn'>NULL</span></span>
+<span class='r-in'><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_log10</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_step-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Adding another curve based on additional column.</span></span>
+<span class='r-in'><span class='va'>step_data</span><span class='op'>$</span><span class='va'>extra</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>$</span><span class='va'>`Percentile Center`</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>g_step</span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>extra</span><span class='op'>)</span>, linetype <span class='op'>=</span> <span class='fl'>2</span>, color <span class='op'>=</span> <span class='st'>"green"</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_step-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Response example.</span></span>
+<span class='r-in'><span class='va'>vars</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  response <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>  arm <span class='op'>=</span> <span class='st'>"sex"</span>,</span>
+<span class='r-in'>  biomarker <span class='op'>=</span> <span class='st'>"age"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>step_matrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_rsp_step.html'>fit_rsp_step</a></span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='va'>vars</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>lung</span>,</span>
+<span class='r-in'>  control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='fu'><a href='control_logistic.html'>control_logistic</a></span><span class='op'>(</span>response_definition <span class='op'>=</span> <span class='st'>"I(response == 2)"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    <span class='fu'><a href='control_step.html'>control_step</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>step_data</span> <span class='op'>&lt;-</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>step_matrix</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>g_step</span><span class='op'>(</span><span class='va'>step_data</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_step-5.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

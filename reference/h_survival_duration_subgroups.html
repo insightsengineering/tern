@@ -236,228 +236,236 @@ groupings for <code>subgroups</code> variables.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Testing dataset.</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://forcats.tidyverse.org'>forcats</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span>
-
-<span class='va'>adtte</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adtte</span>
-
-<span class='co'># Save variable labels before data processing steps.</span>
-<span class='va'>adtte_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adtte</span><span class='op'>)</span>
-
-<span class='va'>adtte_f</span> <span class='op'>&lt;-</span> <span class='va'>adtte</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span>
-    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OS"</span>,
-    <span class='va'>ARM</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B: Placebo"</span>, <span class='st'>"A: Drug X"</span><span class='op'>)</span>,
-    <span class='va'>SEX</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>
-    <span class='co'># Reorder levels of ARM to display reference arm before treatment arm.</span>
-    ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_relevel.html'>fct_relevel</a></span><span class='op'>(</span><span class='va'>ARM</span>, <span class='st'>"B: Placebo"</span><span class='op'>)</span><span class='op'>)</span>,
-    SEX <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='va'>SEX</span><span class='op'>)</span>,
-    is_event <span class='op'>=</span> <span class='va'>CNSR</span> <span class='op'>==</span> <span class='fl'>0</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/var_relabel.html'>var_relabel</a></span><span class='op'>(</span>
-    ARM <span class='op'>=</span> <span class='va'>adtte_labels</span><span class='op'>[</span><span class='st'>"ARM"</span><span class='op'>]</span>,
-    SEX <span class='op'>=</span> <span class='va'>adtte_labels</span><span class='op'>[</span><span class='st'>"SEX"</span><span class='op'>]</span>,
-    is_event <span class='op'>=</span> <span class='st'>"Event Flag"</span>
-  <span class='op'>)</span>
-
-
-<span class='co'># Extract median survival time for one group.</span>
-<span class='fu'>h_survtime_df</span><span class='op'>(</span>
-  tte <span class='op'>=</span> <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>AVAL</span>,
-  is_event <span class='op'>=</span> <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>is_event</span>,
-  arm <span class='op'>=</span> <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>ARM</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;          arm   n n_events   median
-#&gt; 1 B: Placebo 134       87  837.428
-#&gt; 2  A: Drug X 134       79 1260.491</div><div class='input'>
-
-<span class='co'># Extract median survival time for multiple groups.</span>
-<span class='fu'>h_survtime_subgroups_df</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,
-    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,
-    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>adtte_f</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;           arm   n n_events    median     subgroup    var
-#&gt; 1  B: Placebo 134       87  837.4280 All Patients    ALL
-#&gt; 2   A: Drug X 134       79 1260.4905 All Patients    ALL
-#&gt; 3  B: Placebo  82       50  850.9208            F    SEX
-#&gt; 4   A: Drug X  79       45 1274.8047            F    SEX
-#&gt; 5  B: Placebo  52       37  527.6659            M    SEX
-#&gt; 6   A: Drug X  55       34  849.2976            M    SEX
-#&gt; 7  B: Placebo  45       30  751.4314          LOW BMRKR2
-#&gt; 8   A: Drug X  50       31 1160.6458          LOW BMRKR2
-#&gt; 9  B: Placebo  56       36  722.7926       MEDIUM BMRKR2
-#&gt; 10  A: Drug X  37       19 1269.4039       MEDIUM BMRKR2
-#&gt; 11 B: Placebo  33       21  848.2393         HIGH BMRKR2
-#&gt; 12  A: Drug X  47       29 1070.8022         HIGH BMRKR2
-#&gt;                        var_label row_type
-#&gt; 1                   All Patients  content
-#&gt; 2                   All Patients  content
-#&gt; 3                            Sex analysis
-#&gt; 4                            Sex analysis
-#&gt; 5                            Sex analysis
-#&gt; 6                            Sex analysis
-#&gt; 7  Categorical Level Biomarker 2 analysis
-#&gt; 8  Categorical Level Biomarker 2 analysis
-#&gt; 9  Categorical Level Biomarker 2 analysis
-#&gt; 10 Categorical Level Biomarker 2 analysis
-#&gt; 11 Categorical Level Biomarker 2 analysis
-#&gt; 12 Categorical Level Biomarker 2 analysis</div><div class='input'>
-<span class='co'># Define groupings for BMRKR2 levels.</span>
-<span class='fu'>h_survtime_subgroups_df</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,
-    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,
-    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>adtte_f</span>,
-  groups_lists <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    BMRKR2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-      <span class='st'>"low"</span> <span class='op'>=</span> <span class='st'>"LOW"</span>,
-      <span class='st'>"low/medium"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span><span class='op'>)</span>,
-      <span class='st'>"low/medium/high"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span>, <span class='st'>"HIGH"</span><span class='op'>)</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;           arm   n n_events    median        subgroup    var
-#&gt; 1  B: Placebo 134       87  837.4280    All Patients    ALL
-#&gt; 2   A: Drug X 134       79 1260.4905    All Patients    ALL
-#&gt; 3  B: Placebo  82       50  850.9208               F    SEX
-#&gt; 4   A: Drug X  79       45 1274.8047               F    SEX
-#&gt; 5  B: Placebo  52       37  527.6659               M    SEX
-#&gt; 6   A: Drug X  55       34  849.2976               M    SEX
-#&gt; 7  B: Placebo  45       30  751.4314             low BMRKR2
-#&gt; 8   A: Drug X  50       31 1160.6458             low BMRKR2
-#&gt; 9  B: Placebo 101       66  741.8707      low/medium BMRKR2
-#&gt; 10  A: Drug X  87       50 1269.4039      low/medium BMRKR2
-#&gt; 11 B: Placebo 134       87  837.4280 low/medium/high BMRKR2
-#&gt; 12  A: Drug X 134       79 1260.4905 low/medium/high BMRKR2
-#&gt;                        var_label row_type
-#&gt; 1                   All Patients  content
-#&gt; 2                   All Patients  content
-#&gt; 3                            Sex analysis
-#&gt; 4                            Sex analysis
-#&gt; 5                            Sex analysis
-#&gt; 6                            Sex analysis
-#&gt; 7  Categorical Level Biomarker 2 analysis
-#&gt; 8  Categorical Level Biomarker 2 analysis
-#&gt; 9  Categorical Level Biomarker 2 analysis
-#&gt; 10 Categorical Level Biomarker 2 analysis
-#&gt; 11 Categorical Level Biomarker 2 analysis
-#&gt; 12 Categorical Level Biomarker 2 analysis</div><div class='input'>
-
-<span class='co'># Extract hazard ratio for one group.</span>
-<span class='fu'>h_coxph_df</span><span class='op'>(</span><span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>AVAL</span>, <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>is_event</span>, <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>ARM</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval
-#&gt; 1       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293
-#&gt;           pval_label
-#&gt; 1 p-value (log-rank)</div><div class='input'>
-<span class='co'># Extract hazard ratio for one group with stratification factor.</span>
-<span class='fu'>h_coxph_df</span><span class='op'>(</span><span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>AVAL</span>, <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>is_event</span>, <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>ARM</span>, strata_data <span class='op'>=</span> <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>STRATA1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   arm n_tot n_tot_events        hr       lcl      ucl conf_level       pval
-#&gt; 1       268          166 0.7343822 0.5376802 1.003045       0.95 0.05142933
-#&gt;           pval_label
-#&gt; 1 p-value (log-rank)</div><div class='input'>
-
-<span class='co'># Extract hazard ratio for multiple groups.</span>
-<span class='fu'>h_coxph_subgroups_df</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,
-    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,
-    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>adtte_f</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval
-#&gt; 1       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293
-#&gt; 2       161           95 0.6979693 0.4647812 1.0481517       0.95 0.08148174
-#&gt; 3       107           71 0.7836167 0.4873444 1.2600023       0.95 0.31318347
-#&gt; 4        95           61 0.7050730 0.4243655 1.1714617       0.95 0.17526198
-#&gt; 5        93           55 0.5728069 0.3244196 1.0113683       0.95 0.05174942
-#&gt; 6        80           50 0.9769002 0.5552002 1.7189005       0.95 0.93538927
-#&gt;           pval_label     subgroup    var                     var_label row_type
-#&gt; 1 p-value (log-rank) All Patients    ALL                  All Patients  content
-#&gt; 2 p-value (log-rank)            F    SEX                           Sex analysis
-#&gt; 3 p-value (log-rank)            M    SEX                           Sex analysis
-#&gt; 4 p-value (log-rank)          LOW BMRKR2 Categorical Level Biomarker 2 analysis
-#&gt; 5 p-value (log-rank)       MEDIUM BMRKR2 Categorical Level Biomarker 2 analysis
-#&gt; 6 p-value (log-rank)         HIGH BMRKR2 Categorical Level Biomarker 2 analysis</div><div class='input'>
-<span class='co'># Define groupings of BMRKR2 levels.</span>
-<span class='fu'>h_coxph_subgroups_df</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,
-    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,
-    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>adtte_f</span>,
-  groups_lists <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    BMRKR2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-      <span class='st'>"low"</span> <span class='op'>=</span> <span class='st'>"LOW"</span>,
-      <span class='st'>"low/medium"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span><span class='op'>)</span>,
-      <span class='st'>"low/medium/high"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span>, <span class='st'>"HIGH"</span><span class='op'>)</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval
-#&gt; 1       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293
-#&gt; 2       161           95 0.6979693 0.4647812 1.0481517       0.95 0.08148174
-#&gt; 3       107           71 0.7836167 0.4873444 1.2600023       0.95 0.31318347
-#&gt; 4        95           61 0.7050730 0.4243655 1.1714617       0.95 0.17526198
-#&gt; 5       188          116 0.6453648 0.4447544 0.9364622       0.95 0.02019120
-#&gt; 6       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293
-#&gt;           pval_label        subgroup    var                     var_label
-#&gt; 1 p-value (log-rank)    All Patients    ALL                  All Patients
-#&gt; 2 p-value (log-rank)               F    SEX                           Sex
-#&gt; 3 p-value (log-rank)               M    SEX                           Sex
-#&gt; 4 p-value (log-rank)             low BMRKR2 Categorical Level Biomarker 2
-#&gt; 5 p-value (log-rank)      low/medium BMRKR2 Categorical Level Biomarker 2
-#&gt; 6 p-value (log-rank) low/medium/high BMRKR2 Categorical Level Biomarker 2
-#&gt;   row_type
-#&gt; 1  content
-#&gt; 2 analysis
-#&gt; 3 analysis
-#&gt; 4 analysis
-#&gt; 5 analysis
-#&gt; 6 analysis</div><div class='input'>
-<span class='co'># Extract hazard ratio for multiple groups with stratification factors.</span>
-<span class='fu'>h_coxph_subgroups_df</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,
-    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,
-    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>,
-    strat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STRATA1"</span>, <span class='st'>"STRATA2"</span><span class='op'>)</span>
-   <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>adtte_f</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;   arm n_tot n_tot_events        hr       lcl      ucl conf_level       pval
-#&gt; 1       268          166 0.7412854 0.5390265 1.019438       0.95 0.06468801
-#&gt; 2       161           95 0.7328179 0.4794740 1.120023       0.95 0.14954837
-#&gt; 3       107           71 0.7277226 0.4270452 1.240103       0.95 0.24075763
-#&gt; 4        95           61 0.6717712 0.3834088 1.177011       0.95 0.16224377
-#&gt; 5        93           55 0.6161793 0.3394411 1.118535       0.95 0.10874603
-#&gt; 6        80           50 1.2479396 0.6657425 2.339273       0.95 0.48884004
-#&gt;           pval_label     subgroup    var                     var_label row_type
-#&gt; 1 p-value (log-rank) All Patients    ALL                  All Patients  content
-#&gt; 2 p-value (log-rank)            F    SEX                           Sex analysis
-#&gt; 3 p-value (log-rank)            M    SEX                           Sex analysis
-#&gt; 4 p-value (log-rank)          LOW BMRKR2 Categorical Level Biomarker 2 analysis
-#&gt; 5 p-value (log-rank)       MEDIUM BMRKR2 Categorical Level Biomarker 2 analysis
-#&gt; 6 p-value (log-rank)         HIGH BMRKR2 Categorical Level Biomarker 2 analysis</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># Testing dataset.</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://forcats.tidyverse.org'>forcats</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>adtte</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adtte</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Save variable labels before data processing steps.</span></span>
+<span class='r-in'><span class='va'>adtte_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adtte</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>adtte_f</span> <span class='op'>&lt;-</span> <span class='va'>adtte</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OS"</span>,</span>
+<span class='r-in'>    <span class='va'>ARM</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B: Placebo"</span>, <span class='st'>"A: Drug X"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    <span class='va'>SEX</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='co'># Reorder levels of ARM to display reference arm before treatment arm.</span></span>
+<span class='r-in'>    ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='fu'><a href='https://forcats.tidyverse.org/reference/fct_relevel.html'>fct_relevel</a></span><span class='op'>(</span><span class='va'>ARM</span>, <span class='st'>"B: Placebo"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>    SEX <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='va'>SEX</span><span class='op'>)</span>,</span>
+<span class='r-in'>    is_event <span class='op'>=</span> <span class='va'>CNSR</span> <span class='op'>==</span> <span class='fl'>0</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/var_relabel.html'>var_relabel</a></span><span class='op'>(</span></span>
+<span class='r-in'>    ARM <span class='op'>=</span> <span class='va'>adtte_labels</span><span class='op'>[</span><span class='st'>"ARM"</span><span class='op'>]</span>,</span>
+<span class='r-in'>    SEX <span class='op'>=</span> <span class='va'>adtte_labels</span><span class='op'>[</span><span class='st'>"SEX"</span><span class='op'>]</span>,</span>
+<span class='r-in'>    is_event <span class='op'>=</span> <span class='st'>"Event Flag"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extract median survival time for one group.</span></span>
+<span class='r-in'><span class='fu'>h_survtime_df</span><span class='op'>(</span></span>
+<span class='r-in'>  tte <span class='op'>=</span> <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>AVAL</span>,</span>
+<span class='r-in'>  is_event <span class='op'>=</span> <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>is_event</span>,</span>
+<span class='r-in'>  arm <span class='op'>=</span> <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>ARM</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          arm   n n_events   median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 B: Placebo 134       87  837.428</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  A: Drug X 134       79 1260.491</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extract median survival time for multiple groups.</span></span>
+<span class='r-in'><span class='fu'>h_survtime_subgroups_df</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,</span>
+<span class='r-in'>    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adtte_f</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           arm   n n_events    median     subgroup    var</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  B: Placebo 134       87  837.4280 All Patients    ALL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   A: Drug X 134       79 1260.4905 All Patients    ALL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  B: Placebo  82       50  850.9208            F    SEX</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   A: Drug X  79       45 1274.8047            F    SEX</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  B: Placebo  52       37  527.6659            M    SEX</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   A: Drug X  55       34  849.2976            M    SEX</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7  B: Placebo  45       30  751.4314          LOW BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8   A: Drug X  50       31 1160.6458          LOW BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9  B: Placebo  56       36  722.7926       MEDIUM BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10  A: Drug X  37       19 1269.4039       MEDIUM BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 B: Placebo  33       21  848.2393         HIGH BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12  A: Drug X  47       29 1070.8022         HIGH BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                        var_label row_type</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                   All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                   All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                            Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                            Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5                            Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6                            Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7  Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8  Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9  Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12 Categorical Level Biomarker 2 analysis</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Define groupings for BMRKR2 levels.</span></span>
+<span class='r-in'><span class='fu'>h_survtime_subgroups_df</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,</span>
+<span class='r-in'>    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adtte_f</span>,</span>
+<span class='r-in'>  groups_lists <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    BMRKR2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>      <span class='st'>"low"</span> <span class='op'>=</span> <span class='st'>"LOW"</span>,</span>
+<span class='r-in'>      <span class='st'>"low/medium"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span><span class='op'>)</span>,</span>
+<span class='r-in'>      <span class='st'>"low/medium/high"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span>, <span class='st'>"HIGH"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           arm   n n_events    median        subgroup    var</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  B: Placebo 134       87  837.4280    All Patients    ALL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   A: Drug X 134       79 1260.4905    All Patients    ALL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  B: Placebo  82       50  850.9208               F    SEX</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   A: Drug X  79       45 1274.8047               F    SEX</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  B: Placebo  52       37  527.6659               M    SEX</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   A: Drug X  55       34  849.2976               M    SEX</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7  B: Placebo  45       30  751.4314             low BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8   A: Drug X  50       31 1160.6458             low BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9  B: Placebo 101       66  741.8707      low/medium BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10  A: Drug X  87       50 1269.4039      low/medium BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 B: Placebo 134       87  837.4280 low/medium/high BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12  A: Drug X 134       79 1260.4905 low/medium/high BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                        var_label row_type</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                   All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                   All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                            Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                            Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5                            Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6                            Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7  Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8  Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9  Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12 Categorical Level Biomarker 2 analysis</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extract hazard ratio for one group.</span></span>
+<span class='r-in'><span class='fu'>h_coxph_df</span><span class='op'>(</span><span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>AVAL</span>, <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>is_event</span>, <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>ARM</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           pval_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 p-value (log-rank)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extract hazard ratio for one group with stratification factor.</span></span>
+<span class='r-in'><span class='fu'>h_coxph_df</span><span class='op'>(</span><span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>AVAL</span>, <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>is_event</span>, <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>ARM</span>, strata_data <span class='op'>=</span> <span class='va'>adtte_f</span><span class='op'>$</span><span class='va'>STRATA1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   arm n_tot n_tot_events        hr       lcl      ucl conf_level       pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       268          166 0.7343822 0.5376802 1.003045       0.95 0.05142933</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           pval_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 p-value (log-rank)</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extract hazard ratio for multiple groups.</span></span>
+<span class='r-in'><span class='fu'>h_coxph_subgroups_df</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,</span>
+<span class='r-in'>    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adtte_f</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       161           95 0.6979693 0.4647812 1.0481517       0.95 0.08148174</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3       107           71 0.7836167 0.4873444 1.2600023       0.95 0.31318347</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        95           61 0.7050730 0.4243655 1.1714617       0.95 0.17526198</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5        93           55 0.5728069 0.3244196 1.0113683       0.95 0.05174942</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6        80           50 0.9769002 0.5552002 1.7189005       0.95 0.93538927</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           pval_label     subgroup    var                     var_label row_type</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 p-value (log-rank) All Patients    ALL                  All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 p-value (log-rank)            F    SEX                           Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 p-value (log-rank)            M    SEX                           Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 p-value (log-rank)          LOW BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 p-value (log-rank)       MEDIUM BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 p-value (log-rank)         HIGH BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Define groupings of BMRKR2 levels.</span></span>
+<span class='r-in'><span class='fu'>h_coxph_subgroups_df</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,</span>
+<span class='r-in'>    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adtte_f</span>,</span>
+<span class='r-in'>  groups_lists <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    BMRKR2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>      <span class='st'>"low"</span> <span class='op'>=</span> <span class='st'>"LOW"</span>,</span>
+<span class='r-in'>      <span class='st'>"low/medium"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span><span class='op'>)</span>,</span>
+<span class='r-in'>      <span class='st'>"low/medium/high"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span>, <span class='st'>"HIGH"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       161           95 0.6979693 0.4647812 1.0481517       0.95 0.08148174</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3       107           71 0.7836167 0.4873444 1.2600023       0.95 0.31318347</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        95           61 0.7050730 0.4243655 1.1714617       0.95 0.17526198</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5       188          116 0.6453648 0.4447544 0.9364622       0.95 0.02019120</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           pval_label        subgroup    var                     var_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 p-value (log-rank)    All Patients    ALL                  All Patients</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 p-value (log-rank)               F    SEX                           Sex</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 p-value (log-rank)               M    SEX                           Sex</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 p-value (log-rank)             low BMRKR2 Categorical Level Biomarker 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 p-value (log-rank)      low/medium BMRKR2 Categorical Level Biomarker 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 p-value (log-rank) low/medium/high BMRKR2 Categorical Level Biomarker 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_type</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 analysis</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extract hazard ratio for multiple groups with stratification factors.</span></span>
+<span class='r-in'><span class='fu'>h_coxph_subgroups_df</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    tte <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,</span>
+<span class='r-in'>    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>    subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SEX"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    strat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STRATA1"</span>, <span class='st'>"STRATA2"</span><span class='op'>)</span></span>
+<span class='r-in'>   <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adtte_f</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   arm n_tot n_tot_events        hr       lcl      ucl conf_level       pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       268          166 0.7412854 0.5390265 1.019438       0.95 0.06468801</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       161           95 0.7328179 0.4794740 1.120023       0.95 0.14954837</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3       107           71 0.7277226 0.4270452 1.240103       0.95 0.24075763</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        95           61 0.6717712 0.3834088 1.177011       0.95 0.16224377</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5        93           55 0.6161793 0.3394411 1.118535       0.95 0.10874603</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6        80           50 1.2479396 0.6657425 2.339273       0.95 0.48884004</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           pval_label     subgroup    var                     var_label row_type</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 p-value (log-rank) All Patients    ALL                  All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 p-value (log-rank)            F    SEX                           Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 p-value (log-rank)            M    SEX                           Sex analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 p-value (log-rank)          LOW BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 p-value (log-rank)       MEDIUM BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 p-value (log-rank)         HIGH BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

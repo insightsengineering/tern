@@ -279,88 +279,92 @@ to the input layout. Note that additional formatting arguments can be used here.
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='va'>ADTTE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adtte</span>
-<span class='va'>ADTTE_f</span> <span class='op'>&lt;-</span> <span class='va'>ADTTE</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OS"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>is_event <span class='op'>=</span> <span class='va'>CNSR</span> <span class='op'>==</span> <span class='fl'>0</span><span class='op'>)</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>ADTTE_f</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM A"</span><span class='op'>)</span>
-<span class='va'>df_ref_group</span> <span class='op'>&lt;-</span> <span class='va'>ADTTE_f</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM B"</span><span class='op'>)</span>
-
-<span class='fu'>s_coxph_pairwise</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>df_ref_group</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"AVAL"</span>, is_event <span class='op'>=</span> <span class='st'>"is_event"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $pvalue
-#&gt; [1] 0.03340293
-#&gt; attr(,"label")
-#&gt; [1] "p-value (log-rank)"
-#&gt; 
-#&gt; $hr
-#&gt; [1] 0.7173651
-#&gt; attr(,"label")
-#&gt; [1] "Hazard Ratio"
-#&gt; 
-#&gt; $hr_ci
-#&gt; [1] 0.5275231 0.9755262
-#&gt; attr(,"label")
-#&gt; [1] "95% CI"
-#&gt; 
-#&gt; $n_tot
-#&gt; [1] 268
-#&gt; attr(,"label")
-#&gt; [1] "Total n"
-#&gt; 
-#&gt; $n_tot_events
-#&gt; [1] 166
-#&gt; attr(,"label")
-#&gt; [1] "Total events"
-#&gt; </div><div class='input'>
-<span class='fu'>a_coxph_pairwise</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>df_ref_group</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"AVAL"</span>, is_event <span class='op'>=</span> <span class='st'>"is_event"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;       row_name formatted_cell indent_mod          row_label
-#&gt; 1       pvalue         0.0334          0 p-value (log-rank)
-#&gt; 2           hr           0.72          0       Hazard Ratio
-#&gt; 3        hr_ci   (0.53, 0.98)          0             95% CI
-#&gt; 4        n_tot            268          0            Total n
-#&gt; 5 n_tot_events            166          0       Total events</div><div class='input'>
-
-<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>coxph_pairwise</span><span class='op'>(</span>
-    vars <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,
-    var_labels <span class='op'>=</span> <span class='st'>"Unstratified Analysis"</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>ADTTE_f</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                          ARM A       ARM B         ARM C   
-#&gt;                         (N=134)     (N=134)       (N=132)  
-#&gt; -----------------------------------------------------------
-#&gt; Unstratified Analysis                                      
-#&gt;   p-value (log-rank)                0.0334        &lt;0.0001  
-#&gt;   Hazard Ratio                       1.39          2.75    
-#&gt;   95% CI                          (1.03, 1.9)   (2.05, 3.7)</div><div class='input'>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>coxph_pairwise</span><span class='op'>(</span>
-    vars <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,
-    var_labels <span class='op'>=</span> <span class='st'>"Stratified Analysis"</span>,
-    strat <span class='op'>=</span> <span class='st'>"SEX"</span>,
-    control <span class='op'>=</span> <span class='fu'><a href='control_coxph.html'>control_coxph</a></span><span class='op'>(</span>pval_method <span class='op'>=</span> <span class='st'>"wald"</span><span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>ADTTE_f</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                        ARM A      ARM B        ARM C    
-#&gt;                       (N=134)    (N=134)      (N=132)   
-#&gt; --------------------------------------------------------
-#&gt; Stratified Analysis                                     
-#&gt;   p-value (wald)                 0.0487       &lt;0.0001   
-#&gt;   Hazard Ratio                    1.36          2.73    
-#&gt;   95% CI                        (1, 1.86)   (2.02, 3.69)</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ADTTE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adtte</span></span>
+<span class='r-in'><span class='va'>ADTTE_f</span> <span class='op'>&lt;-</span> <span class='va'>ADTTE</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OS"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>is_event <span class='op'>=</span> <span class='va'>CNSR</span> <span class='op'>==</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>ADTTE_f</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM A"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df_ref_group</span> <span class='op'>&lt;-</span> <span class='va'>ADTTE_f</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM B"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>s_coxph_pairwise</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>df_ref_group</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"AVAL"</span>, is_event <span class='op'>=</span> <span class='st'>"is_event"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pvalue</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.03340293</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "p-value (log-rank)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.7173651</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Hazard Ratio"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hr_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.5275231 0.9755262</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n_tot</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 268</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Total n"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n_tot_events</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 166</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Total events"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>a_coxph_pairwise</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>df_ref_group</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"AVAL"</span>, is_event <span class='op'>=</span> <span class='st'>"is_event"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       row_name formatted_cell indent_mod          row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       pvalue         0.0334          0 p-value (log-rank)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2           hr           0.72          0       Hazard Ratio</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        hr_ci   (0.53, 0.98)          0             95% CI</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        n_tot            268          0            Total n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 n_tot_events            166          0       Total events</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>coxph_pairwise</span><span class='op'>(</span></span>
+<span class='r-in'>    vars <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,</span>
+<span class='r-in'>    var_labels <span class='op'>=</span> <span class='st'>"Unstratified Analysis"</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>ADTTE_f</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          ARM A       ARM B         ARM C   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                         (N=134)     (N=134)       (N=132)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Unstratified Analysis                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   p-value (log-rank)                0.0334        &lt;0.0001  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Hazard Ratio                       1.39          2.75    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   95% CI                          (1.03, 1.9)   (2.05, 3.7)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>coxph_pairwise</span><span class='op'>(</span></span>
+<span class='r-in'>    vars <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    is_event <span class='op'>=</span> <span class='st'>"is_event"</span>,</span>
+<span class='r-in'>    var_labels <span class='op'>=</span> <span class='st'>"Stratified Analysis"</span>,</span>
+<span class='r-in'>    strat <span class='op'>=</span> <span class='st'>"SEX"</span>,</span>
+<span class='r-in'>    control <span class='op'>=</span> <span class='fu'><a href='control_coxph.html'>control_coxph</a></span><span class='op'>(</span>pval_method <span class='op'>=</span> <span class='st'>"wald"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>ADTTE_f</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                        ARM A      ARM B        ARM C    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                       (N=134)    (N=134)      (N=132)   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Stratified Analysis                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   p-value (wald)                 0.0487       &lt;0.0001   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Hazard Ratio                    1.36          2.73    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   95% CI                        (1, 1.86)   (2.02, 3.69)</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

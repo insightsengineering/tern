@@ -286,110 +286,113 @@ occurrence.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>,
-  MHDECOD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"MH1"</span>, <span class='st'>"MH2"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH3"</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='va'>N_per_col</span> <span class='op'>&lt;-</span> <span class='fl'>4L</span>
-
-<span class='co'># Count unique occurrences per subject.</span>
-<span class='fu'>s_count_occurrences</span><span class='op'>(</span>
-  <span class='va'>df</span>,
-  .N_col <span class='op'>=</span> <span class='va'>N_per_col</span>,
-  .df_row <span class='op'>=</span> <span class='va'>df</span>,
-  .var <span class='op'>=</span> <span class='st'>"MHDECOD"</span>,
-  id <span class='op'>=</span> <span class='st'>"USUBJID"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $count
-#&gt; $count$MH1
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$MH2
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$MH3
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$MH1
-#&gt; [1] 3.00 0.75
-#&gt; 
-#&gt; $count_fraction$MH2
-#&gt; [1] 1.00 0.25
-#&gt; 
-#&gt; $count_fraction$MH3
-#&gt; [1] 1.00 0.25
-#&gt; 
-#&gt; 
-#&gt; $fraction
-#&gt; $fraction$MH1
-#&gt;   num denom 
-#&gt;     3     4 
-#&gt; 
-#&gt; $fraction$MH2
-#&gt;   num denom 
-#&gt;     1     4 
-#&gt; 
-#&gt; $fraction$MH3
-#&gt;   num denom 
-#&gt;     1     4 
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'>#  We need to ungroup `count_fraction` first so that the rtables formatting</span>
-<span class='co'># function `format_count_fraction()` can be applied correctly.</span>
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span><span class='va'>a_count_occurrences</span>, .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span>, <span class='st'>"fraction"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span>
-  <span class='va'>df</span>,
-  .N_col <span class='op'>=</span> <span class='va'>N_per_col</span>,
-  .df_row <span class='op'>=</span> <span class='va'>df</span>,
-  .var <span class='op'>=</span> <span class='st'>"MHDECOD"</span>,
-  id <span class='op'>=</span> <span class='st'>"USUBJID"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod row_label
-#&gt; 1      MH1              3          0       MH1
-#&gt; 2      MH2              1          0       MH2
-#&gt; 3      MH3              1          0       MH3
-#&gt; 4      MH1        3 (75%)          0       MH1
-#&gt; 5      MH2        1 (25%)          0       MH2
-#&gt; 6      MH3        1 (25%)          0       MH3
-#&gt; 7      MH1      3/4 (75%)          0       MH1
-#&gt; 8      MH2      1/4 (25%)          0       MH2
-#&gt; 9      MH3      1/4 (25%)          0       MH3</div><div class='input'>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>4</span>,
-                           <span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>7</span>, <span class='fl'>7</span>, <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span>,
-  MHDECOD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"MH1"</span>, <span class='st'>"MH2"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH3"</span>,
-              <span class='st'>"MH2"</span>, <span class='st'>"MH2"</span>, <span class='st'>"MH3"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH2"</span>, <span class='st'>"MH4"</span><span class='op'>)</span>,
-  ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each<span class='op'>=</span><span class='fl'>6</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>df_adsl</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>USUBJID</span>, <span class='va'>ARM</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='va'>unique</span>
-
-<span class='co'># Create table layout</span>
-<span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>count_occurrences</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"MHDECOD"</span>, .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count_fraction"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># Apply table layout to data and produce rtable object</span>
-<span class='va'>lyt</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df</span>, alt_counts_df <span class='op'>=</span> <span class='va'>df_adsl</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/prune_table.html'>prune_table</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;           A           B    
-#&gt;         (N=3)       (N=3)  
-#&gt; ---------------------------
-#&gt; MH1   3 (100%)    1 (33.3%)
-#&gt; MH2   1 (33.3%)   2 (66.7%)
-#&gt; MH3   1 (33.3%)   1 (33.3%)
-#&gt; MH4       0       1 (33.3%)</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  MHDECOD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"MH1"</span>, <span class='st'>"MH2"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH3"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>N_per_col</span> <span class='op'>&lt;-</span> <span class='fl'>4L</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Count unique occurrences per subject.</span></span>
+<span class='r-in'><span class='fu'>s_count_occurrences</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>df</span>,</span>
+<span class='r-in'>  .N_col <span class='op'>=</span> <span class='va'>N_per_col</span>,</span>
+<span class='r-in'>  .df_row <span class='op'>=</span> <span class='va'>df</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"MHDECOD"</span>,</span>
+<span class='r-in'>  id <span class='op'>=</span> <span class='st'>"USUBJID"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$MH1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$MH2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$MH3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$MH1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.00 0.75</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$MH2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.00 0.25</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$MH3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.00 0.25</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$MH1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3     4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$MH2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1     4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$MH3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1     4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#  We need to ungroup `count_fraction` first so that the rtables formatting</span></span>
+<span class='r-in'><span class='co'># function `format_count_fraction()` can be applied correctly.</span></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span><span class='va'>a_count_occurrences</span>, .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span>, <span class='st'>"fraction"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>df</span>,</span>
+<span class='r-in'>  .N_col <span class='op'>=</span> <span class='va'>N_per_col</span>,</span>
+<span class='r-in'>  .df_row <span class='op'>=</span> <span class='va'>df</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"MHDECOD"</span>,</span>
+<span class='r-in'>  id <span class='op'>=</span> <span class='st'>"USUBJID"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      MH1              3          0       MH1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2      MH2              1          0       MH2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3      MH3              1          0       MH3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4      MH1        3 (75%)          0       MH1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5      MH2        1 (25%)          0       MH2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6      MH3        1 (25%)          0       MH3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7      MH1      3/4 (75%)          0       MH1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8      MH2      1/4 (25%)          0       MH2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9      MH3      1/4 (25%)          0       MH3</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>4</span>,</span>
+<span class='r-in'>                           <span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>7</span>, <span class='fl'>7</span>, <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  MHDECOD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"MH1"</span>, <span class='st'>"MH2"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH3"</span>,</span>
+<span class='r-in'>              <span class='st'>"MH2"</span>, <span class='st'>"MH2"</span>, <span class='st'>"MH3"</span>, <span class='st'>"MH1"</span>, <span class='st'>"MH2"</span>, <span class='st'>"MH4"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each<span class='op'>=</span><span class='fl'>6</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df_adsl</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>USUBJID</span>, <span class='va'>ARM</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='va'>unique</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Create table layout</span></span>
+<span class='r-in'><span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>count_occurrences</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"MHDECOD"</span>, .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count_fraction"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Apply table layout to data and produce rtable object</span></span>
+<span class='r-in'><span class='va'>lyt</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>df</span>, alt_counts_df <span class='op'>=</span> <span class='va'>df_adsl</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/prune_table.html'>prune_table</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           A           B    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         (N=3)       (N=3)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH1   3 (100%)    1 (33.3%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH2   1 (33.3%)   2 (66.7%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH3   1 (33.3%)   1 (33.3%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH4       0       1 (33.3%)</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

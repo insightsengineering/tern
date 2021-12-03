@@ -307,150 +307,160 @@ should be accounted for.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Wald confidence interval</span>
-
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
-<span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span>, size <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
-<span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>prop_diff_wald</span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.90</span>, correct <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable grp to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; $diff
-#&gt; [1] 0
-#&gt; 
-#&gt; $diff_ci
-#&gt; [1] -0.3678005  0.3678005
-#&gt; </div><div class='input'>
-<span class='co'># Anderson-Hauck confidence interval</span>
-
-<span class='co'>## "Mid" case: 3/4 respond in group A, 1/2 respond in group B.</span>
-<span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"A"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>prop_diff_ha</span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.90</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $diff
-#&gt; [1] 0.25
-#&gt; 
-#&gt; $diff_ci
-#&gt; [1] -0.9195011  1.0000000
-#&gt; </div><div class='input'>
-<span class='co'>## Edge case: Same proportion of response in A and B.</span>
-<span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>prop_diff_ha</span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $diff
-#&gt; [1] 0
-#&gt; 
-#&gt; $diff_ci
-#&gt; [1] -0.8451161  0.8451161
-#&gt; </div><div class='input'>
-
-<span class='co'># Newcombe confidence interval</span>
-
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>40</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>/</span><span class='fl'>4</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
-  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>40</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>rsp</span>, <span class='va'>grp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;        grp
-#&gt; rsp      B  A
-#&gt;   FALSE 20 10
-#&gt;   TRUE  20 30</div><div class='input'><span class='fu'>prop_diff_nc</span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $diff
-#&gt; [1] 0.25
-#&gt; 
-#&gt; $diff_ci
-#&gt; [1] 0.07193388 0.40725819
-#&gt; </div><div class='input'>
-
-<span class='co'># Cochran-Mantel-Haenszel confidence interval</span>
-
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
-<span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Placebo"</span>, <span class='st'>"Treatment"</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>grp</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Placebo"</span>, <span class='st'>"Treatment"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>strata_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  <span class='st'>"f1"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
-  <span class='st'>"f2"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
-  stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-<span class='fu'>prop_diff_cmh</span><span class='op'>(</span>
-  rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, strata <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>strata_data</span><span class='op'>)</span>,
-  conf_level <span class='op'>=</span> <span class='fl'>0.90</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $prop
-#&gt;   Placebo Treatment 
-#&gt; 0.5331117 0.3954251 
-#&gt; 
-#&gt; $prop_ci
-#&gt; $prop_ci$Placebo
-#&gt; [1] 0.4306536 0.6355698
-#&gt; 
-#&gt; $prop_ci$Treatment
-#&gt; [1] 0.2890735 0.5017768
-#&gt; 
-#&gt; 
-#&gt; $diff
-#&gt; [1] -0.1376866
-#&gt; 
-#&gt; $diff_ci
-#&gt; [1] -0.285363076  0.009989872
-#&gt; </div><div class='input'>
-
-<span class='co'># Summary</span>
-
-<span class='co'>## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.</span>
-<span class='va'>dta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
-  grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"A"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'>s_proportion_diff</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,
-  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,
-  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,
-  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  conf_level <span class='op'>=</span> <span class='fl'>0.90</span>,
-  method <span class='op'>=</span> <span class='st'>"ha"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $diff
-#&gt; [1] 25
-#&gt; attr(,"label")
-#&gt; [1] "Difference in Response rate (%)"
-#&gt; 
-#&gt; $diff_ci
-#&gt; [1] -91.95011 100.00000
-#&gt; attr(,"label")
-#&gt; [1] "90% CI (Anderson-Hauck)"
-#&gt; </div><div class='input'>
-<span class='fu'>a_proportion_diff</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,
-  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,
-  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,
-  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  conf_level <span class='op'>=</span> <span class='fl'>0.90</span>,
-  method <span class='op'>=</span> <span class='st'>"ha"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod                       row_label
-#&gt; 1     diff             25          0 Difference in Response rate (%)
-#&gt; 2  diff_ci     (-92, 100)          0         90% CI (Anderson-Hauck)</div><div class='input'>
-
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>estimate_proportion_diff</span><span class='op'>(</span>
-    vars <span class='op'>=</span> <span class='st'>"rsp"</span>,
-    conf_level <span class='op'>=</span> <span class='fl'>0.90</span>,
-    method <span class='op'>=</span> <span class='st'>"ha"</span>
-  <span class='op'>)</span>
-
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                   B       A     
-#&gt; ------------------------------------------------
-#&gt; Difference in Response rate (%)           25    
-#&gt;   90% CI (Anderson-Hauck)             (-92, 100)</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># Wald confidence interval</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span>, size <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>prop_diff_wald</span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.90</span>, correct <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable grp to factor, better manually convert to factor to avoid failures</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.3678005  0.3678005</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Anderson-Hauck confidence interval</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## "Mid" case: 3/4 respond in group A, 1/2 respond in group B.</span></span>
+<span class='r-in'><span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"A"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>prop_diff_ha</span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.90</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.25</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.9195011  1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Edge case: Same proportion of response in A and B.</span></span>
+<span class='r-in'><span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>prop_diff_ha</span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.8451161  0.8451161</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Newcombe confidence interval</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>40</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>/</span><span class='fl'>4</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>40</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>rsp</span>, <span class='va'>grp</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        grp</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> rsp      B  A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   FALSE 20 10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   TRUE  20 30</span>
+<span class='r-in'><span class='fu'>prop_diff_nc</span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.25</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.07193388 0.40725819</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Cochran-Mantel-Haenszel confidence interval</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Placebo"</span>, <span class='st'>"Treatment"</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>grp</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Placebo"</span>, <span class='st'>"Treatment"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>strata_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"f1"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='st'>"f2"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span class='r-in'>  stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>prop_diff_cmh</span><span class='op'>(</span></span>
+<span class='r-in'>  rsp <span class='op'>=</span> <span class='va'>rsp</span>, grp <span class='op'>=</span> <span class='va'>grp</span>, strata <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>strata_data</span><span class='op'>)</span>,</span>
+<span class='r-in'>  conf_level <span class='op'>=</span> <span class='fl'>0.90</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $prop</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Placebo Treatment </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.5331117 0.3954251 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $prop_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $prop_ci$Placebo</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.4306536 0.6355698</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $prop_ci$Treatment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.2890735 0.5017768</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.1376866</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.285363076  0.009989872</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Summary</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.</span></span>
+<span class='r-in'><span class='va'>dta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span class='r-in'>  grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"A"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>s_proportion_diff</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  conf_level <span class='op'>=</span> <span class='fl'>0.90</span>,</span>
+<span class='r-in'>  method <span class='op'>=</span> <span class='st'>"ha"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 25</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Difference in Response rate (%)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $diff_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -91.95011 100.00000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "90% CI (Anderson-Hauck)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>a_proportion_diff</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  conf_level <span class='op'>=</span> <span class='fl'>0.90</span>,</span>
+<span class='r-in'>  method <span class='op'>=</span> <span class='st'>"ha"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod                       row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1     diff             25          0 Difference in Response rate (%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  diff_ci     (-92, 100)          0         90% CI (Anderson-Hauck)</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>estimate_proportion_diff</span><span class='op'>(</span></span>
+<span class='r-in'>    vars <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>    conf_level <span class='op'>=</span> <span class='fl'>0.90</span>,</span>
+<span class='r-in'>    method <span class='op'>=</span> <span class='st'>"ha"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   B       A     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Difference in Response rate (%)           25    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   90% CI (Anderson-Hauck)             (-92, 100)</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

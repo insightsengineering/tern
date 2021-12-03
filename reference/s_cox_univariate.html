@@ -230,47 +230,47 @@ interaction with a quantitative variable without (iii) or with a specified level
 Please use the function <code><a href='cox_regression.html'>fit_coxreg_univar()</a></code> instead.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span>
-
-<span class='va'>ADTTE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adtte</span>
-<span class='va'>ADTTE_f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ADTTE</span>, <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OS"</span><span class='op'>)</span> <span class='co'># _f: filtered</span>
-<span class='va'>ADTTE_f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>within</a></span><span class='op'>(</span> <span class='co'># nolint</span>
-  data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span>
-    <span class='va'>ADTTE_f</span>,
-    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OS"</span>
-    <span class='op'>&amp;</span> <span class='va'>ARMCD</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ARM A"</span>, <span class='st'>"ARM B"</span><span class='op'>)</span>
-    <span class='op'>&amp;</span> <span class='va'>SEX</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"F"</span>, <span class='st'>"M"</span><span class='op'>)</span>
-    <span class='op'>&amp;</span> <span class='va'>RACE</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ASIAN"</span>, <span class='st'>"BLACK OR AFRICAN AMERICAN"</span>, <span class='st'>"WHITE"</span><span class='op'>)</span>
-  <span class='op'>)</span>,
-  expr <span class='op'>=</span> <span class='op'>{</span> <span class='co'># nolint start</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
-    <span class='va'>ARMCD</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='va'>ARMCD</span><span class='op'>)</span>
-    <span class='va'>ARMCD</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/relevel.html'>relevel</a></span><span class='op'>(</span><span class='va'>ARMCD</span>, <span class='st'>"ARM B"</span><span class='op'>)</span>
-    <span class='va'>SEX</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='va'>SEX</span><span class='op'>)</span>
-    <span class='va'>RACE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='va'>RACE</span><span class='op'>)</span>
-    <span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>ARM</span><span class='op'>)</span><span class='op'>)</span>
-  <span class='op'>}</span> <span class='co'># nolint end</span>
-<span class='op'>)</span>
-
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'>s_cox_univariate</span><span class='op'>(</span>
-  formula <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span>time <span class='op'>=</span> <span class='va'>AVAL</span>, event <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>-</span> <span class='va'>CNSR</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='arm.html'>arm</a></span><span class='op'>(</span><span class='va'>ARMCD</span><span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>ADTTE_f</span>,
-  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>SEX</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'>s_cox_univariate</span><span class='op'>(</span>
-  formula <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span>time <span class='op'>=</span> <span class='va'>AVAL</span>, event <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>-</span> <span class='va'>CNSR</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='arm.html'>arm</a></span><span class='op'>(</span><span class='va'>ARMCD</span><span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>ADTTE_f</span>,
-  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"Race"</span> <span class='op'>=</span> <span class='op'>~</span><span class='va'>RACE</span>, <span class='op'>~</span><span class='va'>AGE</span>, <span class='st'>"a rand. quant var with increments"</span> <span class='op'>=</span> <span class='op'>~</span><span class='va'>X</span><span class='op'>)</span>,
-  interactions <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  increments <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>X <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,
-  conf_level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  pval_method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"wald"</span>, <span class='st'>"log-rank"</span>, <span class='st'>"likelihood"</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>
-<span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ADTTE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adtte</span></span>
+<span class='r-in'><span class='va'>ADTTE_f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ADTTE</span>, <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OS"</span><span class='op'>)</span> <span class='co'># _f: filtered</span></span>
+<span class='r-in'><span class='va'>ADTTE_f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>within</a></span><span class='op'>(</span> <span class='co'># nolint</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>ADTTE_f</span>,</span>
+<span class='r-in'>    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OS"</span></span>
+<span class='r-in'>    <span class='op'>&amp;</span> <span class='va'>ARMCD</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ARM A"</span>, <span class='st'>"ARM B"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>&amp;</span> <span class='va'>SEX</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"F"</span>, <span class='st'>"M"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>&amp;</span> <span class='va'>RACE</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ASIAN"</span>, <span class='st'>"BLACK OR AFRICAN AMERICAN"</span>, <span class='st'>"WHITE"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  expr <span class='op'>=</span> <span class='op'>{</span> <span class='co'># nolint start</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='va'>ARMCD</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='va'>ARMCD</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='va'>ARMCD</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/relevel.html'>relevel</a></span><span class='op'>(</span><span class='va'>ARMCD</span>, <span class='st'>"ARM B"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='va'>SEX</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='va'>SEX</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='va'>RACE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='va'>RACE</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>ARM</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>}</span> <span class='co'># nolint end</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'>s_cox_univariate</span><span class='op'>(</span></span>
+<span class='r-in'>  formula <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span>time <span class='op'>=</span> <span class='va'>AVAL</span>, event <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>-</span> <span class='va'>CNSR</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='arm.html'>arm</a></span><span class='op'>(</span><span class='va'>ARMCD</span><span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>ADTTE_f</span>,</span>
+<span class='r-in'>  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>SEX</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>s_cox_univariate</span><span class='op'>(</span></span>
+<span class='r-in'>  formula <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span>time <span class='op'>=</span> <span class='va'>AVAL</span>, event <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>-</span> <span class='va'>CNSR</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='arm.html'>arm</a></span><span class='op'>(</span><span class='va'>ARMCD</span><span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>ADTTE_f</span>,</span>
+<span class='r-in'>  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"Race"</span> <span class='op'>=</span> <span class='op'>~</span><span class='va'>RACE</span>, <span class='op'>~</span><span class='va'>AGE</span>, <span class='st'>"a rand. quant var with increments"</span> <span class='op'>=</span> <span class='op'>~</span><span class='va'>X</span><span class='op'>)</span>,</span>
+<span class='r-in'>  interactions <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>  increments <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>X <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  conf_level <span class='op'>=</span> <span class='fl'>0.95</span>,</span>
+<span class='r-in'>  pval_method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"wald"</span>, <span class='st'>"log-rank"</span>, <span class='st'>"likelihood"</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

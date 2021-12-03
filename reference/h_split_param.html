@@ -171,42 +171,44 @@ specific analysis function.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-  surv <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pt_at_risk"</span>, <span class='st'>"event_free_rate"</span>, <span class='st'>"rate_se"</span>, <span class='st'>"rate_ci"</span><span class='op'>)</span>,
-  surv_diff <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"rate_diff"</span>, <span class='st'>"rate_diff_ci"</span>, <span class='st'>"ztest_pval"</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='va'>.stats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pt_at_risk"</span>, <span class='st'>"rate_diff"</span><span class='op'>)</span>
-<span class='fu'>h_split_param</span><span class='op'>(</span><span class='va'>.stats</span>, <span class='va'>.stats</span>, f <span class='op'>=</span> <span class='va'>f</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $surv
-#&gt; [1] "pt_at_risk"
-#&gt; 
-#&gt; $surv_diff
-#&gt; [1] "rate_diff"
-#&gt; </div><div class='input'>
-<span class='co'># $surv</span>
-<span class='co'># [1] "pt_at_risk"</span>
-<span class='co'>#</span>
-<span class='co'># $surv_diff</span>
-<span class='co'># [1] "rate_diff"</span>
-
-<span class='va'>.formats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pt_at_risk"</span> <span class='op'>=</span> <span class='st'>"xx"</span>, <span class='st'>"event_free_rate"</span> <span class='op'>=</span> <span class='st'>"xxx"</span><span class='op'>)</span>
-<span class='fu'>h_split_param</span><span class='op'>(</span><span class='va'>.formats</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>.formats</span><span class='op'>)</span>, f <span class='op'>=</span>  <span class='va'>f</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $surv
-#&gt;      pt_at_risk event_free_rate 
-#&gt;            "xx"           "xxx" 
-#&gt; 
-#&gt; $surv_diff
-#&gt; NULL
-#&gt; </div><div class='input'>
-<span class='co'># $surv</span>
-<span class='co'># pt_at_risk event_free_rate</span>
-<span class='co'># "xx"           "xxx"</span>
-<span class='co'>#</span>
-<span class='co'># $surv_diff</span>
-<span class='co'># NULL</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  surv <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pt_at_risk"</span>, <span class='st'>"event_free_rate"</span>, <span class='st'>"rate_se"</span>, <span class='st'>"rate_ci"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  surv_diff <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"rate_diff"</span>, <span class='st'>"rate_diff_ci"</span>, <span class='st'>"ztest_pval"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>.stats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pt_at_risk"</span>, <span class='st'>"rate_diff"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>h_split_param</span><span class='op'>(</span><span class='va'>.stats</span>, <span class='va'>.stats</span>, f <span class='op'>=</span> <span class='va'>f</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $surv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "pt_at_risk"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $surv_diff</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "rate_diff"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># $surv</span></span>
+<span class='r-in'><span class='co'># [1] "pt_at_risk"</span></span>
+<span class='r-in'><span class='co'>#</span></span>
+<span class='r-in'><span class='co'># $surv_diff</span></span>
+<span class='r-in'><span class='co'># [1] "rate_diff"</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>.formats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pt_at_risk"</span> <span class='op'>=</span> <span class='st'>"xx"</span>, <span class='st'>"event_free_rate"</span> <span class='op'>=</span> <span class='st'>"xxx"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>h_split_param</span><span class='op'>(</span><span class='va'>.formats</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>.formats</span><span class='op'>)</span>, f <span class='op'>=</span>  <span class='va'>f</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $surv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      pt_at_risk event_free_rate </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            "xx"           "xxx" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $surv_diff</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># $surv</span></span>
+<span class='r-in'><span class='co'># pt_at_risk event_free_rate</span></span>
+<span class='r-in'><span class='co'># "xx"           "xxx"</span></span>
+<span class='r-in'><span class='co'>#</span></span>
+<span class='r-in'><span class='co'># $surv_diff</span></span>
+<span class='r-in'><span class='co'># NULL</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

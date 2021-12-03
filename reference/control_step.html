@@ -194,50 +194,53 @@ smallest number is 2.</p></td>
 just used to calculate the <code>bandwidth</code> in case that actual biomarker windows are requested.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Provide biomarker values and request actual values to be used,</span>
-<span class='co'># so that bandwidth is chosen from range.</span>
-<span class='fu'>control_step</span><span class='op'>(</span>biomarker <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, use_percentile <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $use_percentile
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $bandwidth
-#&gt; [1] 2.25
-#&gt; 
-#&gt; $degree
-#&gt; [1] 0
-#&gt; 
-#&gt; $num_points
-#&gt; [1] 39
-#&gt; </div><div class='input'>
-<span class='co'># Use a global model with quadratic biomarker interaction term.</span>
-<span class='fu'>control_step</span><span class='op'>(</span>bandwidth <span class='op'>=</span> <span class='cn'>NULL</span>, degree <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $use_percentile
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $bandwidth
-#&gt; NULL
-#&gt; 
-#&gt; $degree
-#&gt; [1] 2
-#&gt; 
-#&gt; $num_points
-#&gt; [1] 39
-#&gt; </div><div class='input'>
-<span class='co'># Reduce number of points to be used.</span>
-<span class='fu'>control_step</span><span class='op'>(</span>num_points <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $use_percentile
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $bandwidth
-#&gt; [1] 0.25
-#&gt; 
-#&gt; $degree
-#&gt; [1] 0
-#&gt; 
-#&gt; $num_points
-#&gt; [1] 10
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Provide biomarker values and request actual values to be used,</span></span>
+<span class='r-in'><span class='co'># so that bandwidth is chosen from range.</span></span>
+<span class='r-in'><span class='fu'>control_step</span><span class='op'>(</span>biomarker <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, use_percentile <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $use_percentile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $bandwidth</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2.25</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $degree</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $num_points</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 39</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Use a global model with quadratic biomarker interaction term.</span></span>
+<span class='r-in'><span class='fu'>control_step</span><span class='op'>(</span>bandwidth <span class='op'>=</span> <span class='cn'>NULL</span>, degree <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $use_percentile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $bandwidth</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $degree</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $num_points</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 39</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Reduce number of points to be used.</span></span>
+<span class='r-in'><span class='fu'>control_step</span><span class='op'>(</span>num_points <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $use_percentile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $bandwidth</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.25</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $degree</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $num_points</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

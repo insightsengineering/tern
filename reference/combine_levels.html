@@ -166,14 +166,16 @@
     <p>a factor</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, levels <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
-<span class='fu'>tern</span><span class='fu'>:::</span><span class='fu'>combine_levels</span><span class='op'>(</span><span class='va'>x</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'a'</span>, <span class='st'>'b'</span><span class='op'>)</span> <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] a/b a/b c   d   e  
-#&gt; Levels: e d c a/b</div><div class='input'>
-<span class='fu'>tern</span><span class='fu'>:::</span><span class='fu'>combine_levels</span><span class='op'>(</span><span class='va'>x</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'e'</span>, <span class='st'>'b'</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] a   e/b c   d   e/b
-#&gt; Levels: e/b d c a</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, levels <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tern</span><span class='fu'>:::</span><span class='fu'>combine_levels</span><span class='op'>(</span><span class='va'>x</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'a'</span>, <span class='st'>'b'</span><span class='op'>)</span> <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] a/b a/b c   d   e  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Levels: e d c a/b</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>tern</span><span class='fu'>:::</span><span class='fu'>combine_levels</span><span class='op'>(</span><span class='va'>x</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'e'</span>, <span class='st'>'b'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] a   e/b c   d   e/b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Levels: e/b d c a</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

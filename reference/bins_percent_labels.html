@@ -166,16 +166,19 @@ the boundaries 0 and 1 must not be included.</p></td>
     <p>Character vector with labels in the format <code>[0%,20%]</code>, <code>(20%,50%]</code>, etc.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Just pass the internal probability bounds, then 0 and 100% will be added automatically.</span>
-<span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "[0%,20%]"   "(20%,50%]"  "(50%,100%]"</div><div class='input'>
-<span class='co'># Determine how to round.</span>
-<span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='fl'>0.35224</span>, digits <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "[0%,35.2%]"   "(35.2%,100%]"</div><div class='input'>
-<span class='co'># Passing an empty vector just gives a single bin 0-100%.</span>
-<span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "[0%,100%]"</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Just pass the internal probability bounds, then 0 and 100% will be added automatically.</span></span>
+<span class='r-in'><span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "[0%,20%]"   "(20%,50%]"  "(50%,100%]"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Determine how to round.</span></span>
+<span class='r-in'><span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='fl'>0.35224</span>, digits <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "[0%,35.2%]"   "(35.2%,100%]"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Passing an empty vector just gives a single bin 0-100%.</span></span>
+<span class='r-in'><span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "[0%,100%]"</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -291,90 +291,97 @@ additional format arguments.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Non-stratified proportion difference test</span>
-
-<span class='co'>## Data</span>
-<span class='va'>A</span> <span class='op'>&lt;-</span> <span class='fl'>20</span>
-<span class='va'>B</span> <span class='op'>&lt;-</span> <span class='fl'>20</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='va'>A</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>/</span><span class='fl'>4</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
-  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='va'>A</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='va'>A</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='va'>B</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>grp</span>, <span class='va'>rsp</span><span class='op'>)</span>
-
-<span class='co'>## Chi-Squared test</span>
-<span class='fu'>prop_chisq</span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.05653028</div><div class='input'>
-
-<span class='co'>## Chi-Squared test + Schouten correction.</span>
-<span class='fu'>prop_schouten</span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.08434269</div><div class='input'>
-
-<span class='co'>## Fisher's exact test</span>
-<span class='fu'>prop_fisher</span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.1109695</div><div class='input'>
-
-<span class='co'># Stratified proportion difference test</span>
-
-<span class='co'>## Data</span>
-<span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>strata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"V"</span>, <span class='st'>"W"</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>, <span class='st'>"Z"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>grp</span>, <span class='va'>rsp</span>, <span class='va'>strata</span><span class='op'>)</span>
-
-<span class='co'>## Cochran-Mantel-Haenszel test</span>
-<span class='fu'>prop_cmh</span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.6613241</div><div class='input'>
-
-<span class='co'># Statistics function</span>
-<span class='va'>dta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
-  grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>,
-  strat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"V"</span>, <span class='st'>"W"</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>, <span class='st'>"Z"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'>s_test_proportion_diff</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,
-  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,
-  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,
-  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>strata <span class='op'>=</span> <span class='st'>"strat"</span><span class='op'>)</span>,
-  method <span class='op'>=</span> <span class='st'>"cmh"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $pval
-#&gt; [1] 0.3735966
-#&gt; attr(,"label")
-#&gt; [1] "p-value (Cochran-Mantel-Haenszel Test)"
-#&gt; </div><div class='input'>
-<span class='fu'>a_test_proportion_diff</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,
-  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,
-  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,
-  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>strata <span class='op'>=</span> <span class='st'>"strat"</span><span class='op'>)</span>,
-  method <span class='op'>=</span> <span class='st'>"cmh"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod                              row_label
-#&gt; 1     pval         0.3736          0 p-value (Cochran-Mantel-Haenszel Test)</div><div class='input'>
-
-<span class='co'># With rtables pipelines.</span>
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>test_proportion_diff</span><span class='op'>(</span>
-    vars <span class='op'>=</span> <span class='st'>"rsp"</span>,
-    method <span class='op'>=</span> <span class='st'>"cmh"</span>, variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>strata <span class='op'>=</span> <span class='st'>"strat"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                            B     A   
-#&gt; -----------------------------------------------------
-#&gt;   p-value (Cochran-Mantel-Haenszel Test)       0.3736</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># Non-stratified proportion difference test</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Data</span></span>
+<span class='r-in'><span class='va'>A</span> <span class='op'>&lt;-</span> <span class='fl'>20</span></span>
+<span class='r-in'><span class='va'>B</span> <span class='op'>&lt;-</span> <span class='fl'>20</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='va'>A</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>/</span><span class='fl'>4</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='va'>A</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='va'>A</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='va'>B</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>grp</span>, <span class='va'>rsp</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Chi-Squared test</span></span>
+<span class='r-in'><span class='fu'>prop_chisq</span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.05653028</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Chi-Squared test + Schouten correction.</span></span>
+<span class='r-in'><span class='fu'>prop_schouten</span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.08434269</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Fisher's exact test</span></span>
+<span class='r-in'><span class='fu'>prop_fisher</span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1109695</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stratified proportion difference test</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Data</span></span>
+<span class='r-in'><span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>strata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"V"</span>, <span class='st'>"W"</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>, <span class='st'>"Z"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>grp</span>, <span class='va'>rsp</span>, <span class='va'>strata</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Cochran-Mantel-Haenszel test</span></span>
+<span class='r-in'><span class='fu'>prop_cmh</span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.6613241</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Statistics function</span></span>
+<span class='r-in'><span class='va'>dta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span class='r-in'>  grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  strat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"V"</span>, <span class='st'>"W"</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>, <span class='st'>"Z"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>s_test_proportion_diff</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>strata <span class='op'>=</span> <span class='st'>"strat"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  method <span class='op'>=</span> <span class='st'>"cmh"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.3735966</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "p-value (Cochran-Mantel-Haenszel Test)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>a_test_proportion_diff</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>strata <span class='op'>=</span> <span class='st'>"strat"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  method <span class='op'>=</span> <span class='st'>"cmh"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod                              row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1     pval         0.3736          0 p-value (Cochran-Mantel-Haenszel Test)</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># With rtables pipelines.</span></span>
+<span class='r-in'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>test_proportion_diff</span><span class='op'>(</span></span>
+<span class='r-in'>    vars <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>    method <span class='op'>=</span> <span class='st'>"cmh"</span>, variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>strata <span class='op'>=</span> <span class='st'>"strat"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                            B     A   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   p-value (Cochran-Mantel-Haenszel Test)       0.3736</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

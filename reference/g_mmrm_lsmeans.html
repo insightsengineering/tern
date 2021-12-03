@@ -200,76 +200,76 @@ considered in the <code>mmrm</code> object considered in <code>object</code> arg
 no matter if <code>select</code> argument contains <code>contrasts</code> value.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span>
-
-<span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span>
-<span class='va'>adqs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adqs</span>
-<span class='va'>adqs_f</span> <span class='op'>&lt;-</span> <span class='va'>adqs</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span><span class='op'>==</span><span class='st'>"FKSI-FWB"</span> <span class='op'>&amp;</span> <span class='op'>!</span><span class='va'>AVISIT</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BASELINE"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ARM</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B: Placebo"</span>, <span class='st'>"A: Drug X"</span>, <span class='st'>"C: Combination"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITN <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rank.html'>rank</a></span><span class='op'>(</span><span class='va'>AVISITN</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adqs_f</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adqs</span><span class='op'>)</span>
-
-<span class='va'>mmrm_results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_mmrm.html'>fit_mmrm</a></span><span class='op'>(</span>
-  vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    response <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STRATA1"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>,
-    id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,
-    visit <span class='op'>=</span> <span class='st'>"AVISIT"</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>adqs_f</span>,
-  cor_struct <span class='op'>=</span> <span class='st'>"random-quadratic"</span>,
-  weights_emmeans <span class='op'>=</span> <span class='st'>"equal"</span>
-<span class='op'>)</span>
-<span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span><span class='va'>mmrm_results</span><span class='op'>)</span>
-<span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span><span class='va'>mmrm_results</span>, select <span class='op'>=</span> <span class='st'>"estimates"</span><span class='op'>)</span>
-<span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span>
-  <span class='va'>mmrm_results</span>,
-  select <span class='op'>=</span> <span class='st'>"contrasts"</span>,
-  titles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>contrasts <span class='op'>=</span> <span class='st'>"Contrasts of FKSI-FWB means"</span><span class='op'>)</span>,
-  show_pval <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  width <span class='op'>=</span> <span class='fl'>0.8</span>
-<span class='op'>)</span>
-
-<span class='va'>adqs_f2</span> <span class='op'>&lt;-</span> <span class='va'>adqs_f</span> <span class='op'>%&gt;%</span>
- <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM A"</span><span class='op'>)</span>
-
-<span class='va'>mmrm_results_no_arm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_mmrm.html'>fit_mmrm</a></span><span class='op'>(</span>
-  vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    response <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STRATA1"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>,
-    id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-    visit <span class='op'>=</span> <span class='st'>"AVISIT"</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>adqs_f2</span>,
-  cor_struct <span class='op'>=</span> <span class='st'>"random-quadratic"</span>,
-  weights_emmeans <span class='op'>=</span> <span class='st'>"equal"</span>
-<span class='op'>)</span>
-
-<span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span><span class='va'>mmrm_results_no_arm</span>, select <span class='op'>=</span> <span class='st'>"estimates"</span><span class='op'>)</span>
-<span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span>
-  <span class='va'>mmrm_results_no_arm</span>,
-  select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"estimates"</span>, <span class='st'>"contrasts"</span><span class='op'>)</span>,
-  titles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>estimates <span class='op'>=</span> <span class='st'>"Adjusted mean of FKSI-FWB"</span>,
-  contrasts <span class='op'>=</span> <span class='st'>"it will not be created"</span><span class='op'>)</span>,
-  show_pval <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  width <span class='op'>=</span> <span class='fl'>0.8</span>
-<span class='op'>)</span>
-
-<span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span>
-  <span class='va'>mmrm_results_no_arm</span>,
-  select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"estimates"</span><span class='op'>)</span>,
-  titles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>estimates <span class='op'>=</span> <span class='st'>"Adjusted mean of FKSI-FWB"</span><span class='op'>)</span>,
-  show_pval <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  width <span class='op'>=</span> <span class='fl'>0.8</span>
-<span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span></span>
+<span class='r-in'><span class='va'>adqs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adqs</span></span>
+<span class='r-in'><span class='va'>adqs_f</span> <span class='op'>&lt;-</span> <span class='va'>adqs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span><span class='op'>==</span><span class='st'>"FKSI-FWB"</span> <span class='op'>&amp;</span> <span class='op'>!</span><span class='va'>AVISIT</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BASELINE"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/droplevels.html'>droplevels</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ARM</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B: Placebo"</span>, <span class='st'>"A: Drug X"</span>, <span class='st'>"C: Combination"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITN <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rank.html'>rank</a></span><span class='op'>(</span><span class='va'>AVISITN</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adqs_f</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adqs</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mmrm_results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_mmrm.html'>fit_mmrm</a></span><span class='op'>(</span></span>
+<span class='r-in'>  vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    response <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STRATA1"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>    arm <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>    visit <span class='op'>=</span> <span class='st'>"AVISIT"</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adqs_f</span>,</span>
+<span class='r-in'>  cor_struct <span class='op'>=</span> <span class='st'>"random-quadratic"</span>,</span>
+<span class='r-in'>  weights_emmeans <span class='op'>=</span> <span class='st'>"equal"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span><span class='va'>mmrm_results</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span><span class='va'>mmrm_results</span>, select <span class='op'>=</span> <span class='st'>"estimates"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>mmrm_results</span>,</span>
+<span class='r-in'>  select <span class='op'>=</span> <span class='st'>"contrasts"</span>,</span>
+<span class='r-in'>  titles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>contrasts <span class='op'>=</span> <span class='st'>"Contrasts of FKSI-FWB means"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  show_pval <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>  width <span class='op'>=</span> <span class='fl'>0.8</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>adqs_f2</span> <span class='op'>&lt;-</span> <span class='va'>adqs_f</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM A"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mmrm_results_no_arm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_mmrm.html'>fit_mmrm</a></span><span class='op'>(</span></span>
+<span class='r-in'>  vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    response <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STRATA1"</span>, <span class='st'>"BMRKR2"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>    visit <span class='op'>=</span> <span class='st'>"AVISIT"</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adqs_f2</span>,</span>
+<span class='r-in'>  cor_struct <span class='op'>=</span> <span class='st'>"random-quadratic"</span>,</span>
+<span class='r-in'>  weights_emmeans <span class='op'>=</span> <span class='st'>"equal"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span><span class='va'>mmrm_results_no_arm</span>, select <span class='op'>=</span> <span class='st'>"estimates"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>mmrm_results_no_arm</span>,</span>
+<span class='r-in'>  select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"estimates"</span>, <span class='st'>"contrasts"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  titles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>estimates <span class='op'>=</span> <span class='st'>"Adjusted mean of FKSI-FWB"</span>,</span>
+<span class='r-in'>  contrasts <span class='op'>=</span> <span class='st'>"it will not be created"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  show_pval <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>  width <span class='op'>=</span> <span class='fl'>0.8</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_mmrm_lsmeans</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>mmrm_results_no_arm</span>,</span>
+<span class='r-in'>  select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"estimates"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  titles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>estimates <span class='op'>=</span> <span class='st'>"Adjusted mean of FKSI-FWB"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  show_pval <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>  width <span class='op'>=</span> <span class='fl'>0.8</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

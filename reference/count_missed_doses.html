@@ -245,67 +245,71 @@ an additional layer on top of <code>count_cumulative</code> specifically for mis
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='cn'>NA</span><span class='op'>)</span>
-<span class='fu'>s_count_nonmissing</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 10
-#&gt; </div><div class='input'>
-<span class='fu'>s_count_missed_doses</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>0</span>, <span class='fl'>2</span><span class='op'>)</span>, thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 8
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$`2`
-#&gt;    count fraction 
-#&gt;      4.0      0.4 
-#&gt; attr(,"label")
-#&gt; [1] "At least 2 missed doses"
-#&gt; 
-#&gt; $count_fraction$`5`
-#&gt;    count fraction 
-#&gt;        0        0 
-#&gt; attr(,"label")
-#&gt; [1] "At least 5 missed doses"
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'>#  We need to ungroup `count_fraction` first so that the rtables formatting</span>
-<span class='co'># function `format_count_fraction()` can be applied correctly.</span>
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span><span class='va'>a_count_missed_doses</span>, .ungroup_stats <span class='op'>=</span> <span class='st'>"count_fraction"</span><span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>0</span>, <span class='fl'>2</span><span class='op'>)</span>, thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod               row_label
-#&gt; 1        n              8          0                       n
-#&gt; 2        2        4 (40%)          0 At least 2 missed doses
-#&gt; 3        5              0          0 At least 5 missed doses</div><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='va'>adex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adex</span>
-<span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span>
-<span class='va'>anl</span> <span class='op'>&lt;-</span> <span class='va'>adex</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='va'>STUDYID</span>, <span class='va'>USUBJID</span>, <span class='va'>ARM</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>
-    PARAMCD <span class='op'>=</span> <span class='st'>"TNDOSMIS"</span>,
-    PARAM <span class='op'>=</span> <span class='st'>"Total number of missed doses during study"</span>,
-    AVAL <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>20</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>adsl</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
-    AVALC <span class='op'>=</span> <span class='st'>""</span>
-  <span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>count_missed_doses</span><span class='op'>(</span><span class='st'>"AVAL"</span>, thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span><span class='op'>)</span>, var_labels <span class='op'>=</span> <span class='st'>"Missed Doses"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>anl</span>, alt_counts_df <span class='op'>=</span> <span class='va'>adsl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                               A: Drug X    B: Placebo    C: Combination
-#&gt;                                (N=134)       (N=134)        (N=132)    
-#&gt; -----------------------------------------------------------------------
-#&gt; Missed Doses                                                           
-#&gt;   n                              134           134            132      
-#&gt;   At least 1 missed dose     127 (94.8%)   127 (94.8%)    124 (93.9%)  
-#&gt;   At least 5 missed doses    102 (76.1%)   105 (78.4%)     98 (74.2%)  
-#&gt;   At least 10 missed doses   64 (47.8%)    72 (53.7%)      65 (49.2%)  
-#&gt;   At least 15 missed doses   42 (31.3%)    41 (30.6%)      32 (24.2%)  </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='cn'>NA</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_count_nonmissing</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>s_count_missed_doses</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>0</span>, <span class='fl'>2</span><span class='op'>)</span>, thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$`2`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    count fraction </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      4.0      0.4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "At least 2 missed doses"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$`5`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    count fraction </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        0        0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "At least 5 missed doses"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#  We need to ungroup `count_fraction` first so that the rtables formatting</span></span>
+<span class='r-in'><span class='co'># function `format_count_fraction()` can be applied correctly.</span></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span><span class='va'>a_count_missed_doses</span>, .ungroup_stats <span class='op'>=</span> <span class='st'>"count_fraction"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>0</span>, <span class='fl'>2</span><span class='op'>)</span>, thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod               row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        n              8          0                       n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2        2        4 (40%)          0 At least 2 missed doses</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        5              0          0 At least 5 missed doses</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>adex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adex</span></span>
+<span class='r-in'><span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span></span>
+<span class='r-in'><span class='va'>anl</span> <span class='op'>&lt;-</span> <span class='va'>adex</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='va'>STUDYID</span>, <span class='va'>USUBJID</span>, <span class='va'>ARM</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>    PARAMCD <span class='op'>=</span> <span class='st'>"TNDOSMIS"</span>,</span>
+<span class='r-in'>    PARAM <span class='op'>=</span> <span class='st'>"Total number of missed doses during study"</span>,</span>
+<span class='r-in'>    AVAL <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>20</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>adsl</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span class='r-in'>    AVALC <span class='op'>=</span> <span class='st'>""</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>count_missed_doses</span><span class='op'>(</span><span class='st'>"AVAL"</span>, thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span><span class='op'>)</span>, var_labels <span class='op'>=</span> <span class='st'>"Missed Doses"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>anl</span>, alt_counts_df <span class='op'>=</span> <span class='va'>adsl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                               A: Drug X    B: Placebo    C: Combination</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                (N=134)       (N=134)        (N=132)    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Missed Doses                                                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                              134           134            132      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   At least 1 missed dose     127 (94.8%)   127 (94.8%)    124 (93.9%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   At least 5 missed doses    102 (76.1%)   105 (78.4%)     98 (74.2%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   At least 10 missed doses   64 (47.8%)    72 (53.7%)      65 (49.2%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   At least 15 missed doses   42 (31.3%)    41 (30.6%)      32 (24.2%)  </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

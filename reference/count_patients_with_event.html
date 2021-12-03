@@ -217,7 +217,7 @@
       <td><p>(<code>character</code>)<br /> a character vector specifying the column names and flag variables
 to be used for counting the number of unique identifiers satisfying such conditions.
 Multiple column names and flags are accepted in this format
-<code><a href='https://rdrr.io/r/base/c.html'>c("column_name1" = "flag1", "column_name2" = "flag2")</a></code>.
+<code>c("column_name1" = "flag1", "column_name2" = "flag2")</code>.
 Note that only equality is being accepted as condition.</p></td>
     </tr>
     <tr>
@@ -314,218 +314,226 @@ Adds the count statistics to the input layout for multiple flag variables at onc
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='va'>adae</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adae</span>
-<span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span>
-
-<span class='co'># `s_count_patients_with_event()`</span>
-
-<span class='fu'>s_count_patients_with_event</span><span class='op'>(</span>
-  <span class='va'>adae</span>,
-  .var <span class='op'>=</span> <span class='st'>"SUBJID"</span>,
-  filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 365
-#&gt; 
-#&gt; $count
-#&gt; [1] 364
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 364.0000000   0.9972603
-#&gt; </div><div class='input'><span class='fu'>s_count_patients_with_event</span><span class='op'>(</span>
-  <span class='va'>adae</span>,
-  .var <span class='op'>=</span> <span class='st'>"SUBJID"</span>,
-  filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span>, <span class='st'>"AEOUT"</span> <span class='op'>=</span> <span class='st'>"FATAL"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 365
-#&gt; 
-#&gt; $count
-#&gt; [1] 220
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 220.0000000   0.6027397
-#&gt; </div><div class='input'><span class='fu'>s_count_patients_with_event</span><span class='op'>(</span>
-  <span class='va'>adae</span>,
-  .var <span class='op'>=</span> <span class='st'>"SUBJID"</span>,
-  filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span>, <span class='st'>"AEOUT"</span> <span class='op'>=</span> <span class='st'>"FATAL"</span><span class='op'>)</span>,
-  denom <span class='op'>=</span> <span class='st'>"N_col"</span>,
-  .N_col <span class='op'>=</span> <span class='fl'>456</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 365
-#&gt; 
-#&gt; $count
-#&gt; [1] 220
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 220.0000000   0.4824561
-#&gt; </div><div class='input'><span class='co'># `a_count_patients_with_event()`</span>
-<span class='fu'>a_count_patients_with_event</span><span class='op'>(</span>
-  <span class='va'>adae</span>,
-  .var <span class='op'>=</span> <span class='st'>"SUBJID"</span>,
-  filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,
-  .N_col <span class='op'>=</span> <span class='fl'>100</span>,
-  .N_row <span class='op'>=</span> <span class='fl'>100</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;         row_name formatted_cell indent_mod      row_label
-#&gt; 1              n            365          0              n
-#&gt; 2          count            364          0          count
-#&gt; 3 count_fraction    364 (99.7%)          0 count_fraction</div><div class='input'>
-
-<span class='co'># `count_patients_with_event()`</span>
-
-<span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='count_values_funs.html'>count_values</a></span><span class='op'>(</span>
-    <span class='st'>"STUDYID"</span>,
-    values <span class='op'>=</span> <span class='st'>"AB12345"</span>,
-    .stats <span class='op'>=</span> <span class='st'>"count"</span>,
-    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='st'>"Total AEs"</span><span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>count_patients_with_event</span><span class='op'>(</span>
-    <span class='st'>"SUBJID"</span>,
-    filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,
-    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count_fraction <span class='op'>=</span> <span class='st'>"Total number of patients with at least one adverse event"</span><span class='op'>)</span>,
-    table_names <span class='op'>=</span> <span class='st'>"tbl_all"</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>count_patients_with_event</span><span class='op'>(</span>
-    <span class='st'>"SUBJID"</span>,
-    filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span>, <span class='st'>"AEOUT"</span> <span class='op'>=</span> <span class='st'>"FATAL"</span><span class='op'>)</span>,
-    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count_fraction <span class='op'>=</span> <span class='st'>"Total number of patients with fatal AEs"</span><span class='op'>)</span>,
-    table_names <span class='op'>=</span> <span class='st'>"tbl_fatal"</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>count_patients_with_event</span><span class='op'>(</span>
-    <span class='st'>"SUBJID"</span>,
-    filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span>, <span class='st'>"AEOUT"</span> <span class='op'>=</span> <span class='st'>"FATAL"</span>, <span class='st'>"AEREL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,
-    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count_fraction <span class='op'>=</span> <span class='st'>"Total number of patients with related fatal AEs"</span><span class='op'>)</span>,
-    .indent_mods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count_fraction <span class='op'>=</span> <span class='fl'>2L</span><span class='op'>)</span>,
-    table_names <span class='op'>=</span> <span class='st'>"tbl_rel_fatal"</span>
-  <span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, <span class='va'>adae</span>, alt_counts_df <span class='op'>=</span> <span class='va'>adsl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                                            A: Drug X    B: Placebo   C: Combination
-#&gt;                                                             (N=134)      (N=134)        (N=132)    
-#&gt; ---------------------------------------------------------------------------------------------------
-#&gt; Total AEs                                                     609          622            703      
-#&gt; Total number of patients with at least one adverse event   122 (100%)   123 (100%)    119 (99.2%)  
-#&gt; Total number of patients with fatal AEs                    76 (62.3%)   70 (56.9%)     74 (61.7%)  
-#&gt;     Total number of patients with related fatal AEs        76 (62.3%)   70 (56.9%)     74 (61.7%)  </div><div class='input'>
-
-<span class='co'># `s_count_patients_with_flags()`</span>
-
-<span class='co'># Add labelled flag variables to analysis dataset.</span>
-<span class='va'>adae</span> <span class='op'>&lt;-</span> <span class='va'>adae</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>
-    fl1 <span class='op'>=</span> <span class='cn'>TRUE</span>,
-    fl2 <span class='op'>=</span> <span class='va'>TRTEMFL</span> <span class='op'>==</span> <span class='st'>"Y"</span>,
-    fl3 <span class='op'>=</span> <span class='va'>TRTEMFL</span> <span class='op'>==</span> <span class='st'>"Y"</span> <span class='op'>&amp;</span> <span class='va'>AEOUT</span> <span class='op'>==</span> <span class='st'>"FATAL"</span>,
-    fl4 <span class='op'>=</span> <span class='va'>TRTEMFL</span> <span class='op'>==</span> <span class='st'>"Y"</span> <span class='op'>&amp;</span> <span class='va'>AEOUT</span> <span class='op'>==</span> <span class='st'>"FATAL"</span> <span class='op'>&amp;</span> <span class='va'>AEREL</span> <span class='op'>==</span> <span class='st'>"Y"</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/var_relabel.html'>var_relabel</a></span><span class='op'>(</span>
-    fl1 <span class='op'>=</span> <span class='st'>"Total AEs"</span>,
-    fl2 <span class='op'>=</span> <span class='st'>"Total number of patients with at least one adverse event"</span>,
-    fl3 <span class='op'>=</span> <span class='st'>"Total number of patients with fatal AEs"</span>,
-    fl4 <span class='op'>=</span> <span class='st'>"Total number of patients with related fatal AEs"</span>
- <span class='op'>)</span>
-
-<span class='fu'>s_count_patients_with_flags</span><span class='op'>(</span>
-  <span class='va'>adae</span>,
-  <span class='st'>"SUBJID"</span>,
-  flag_variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fl1"</span>, <span class='st'>"fl2"</span>, <span class='st'>"fl3"</span>, <span class='st'>"fl4"</span><span class='op'>)</span>,
-  denom <span class='op'>=</span> <span class='st'>"N_col"</span>,
-  .N_col <span class='op'>=</span> <span class='fl'>1000</span>
- <span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; $n$fl1
-#&gt; [1] 365
-#&gt; 
-#&gt; $n$fl2
-#&gt; [1] 365
-#&gt; 
-#&gt; $n$fl3
-#&gt; [1] 365
-#&gt; 
-#&gt; $n$fl4
-#&gt; [1] 365
-#&gt; 
-#&gt; 
-#&gt; $count
-#&gt; $count$fl1
-#&gt; [1] 365
-#&gt; 
-#&gt; $count$fl2
-#&gt; [1] 364
-#&gt; 
-#&gt; $count$fl3
-#&gt; [1] 220
-#&gt; 
-#&gt; $count$fl4
-#&gt; [1] 220
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$fl1
-#&gt; [1] 365.000   0.365
-#&gt; 
-#&gt; $count_fraction$fl2
-#&gt; [1] 364.000   0.364
-#&gt; 
-#&gt; $count_fraction$fl3
-#&gt; [1] 220.00   0.22
-#&gt; 
-#&gt; $count_fraction$fl4
-#&gt; [1] 220.00   0.22
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'>#  We need to ungroup `count_fraction` first so that the rtables formatting</span>
-<span class='co'># function `format_count_fraction()` can be applied correctly.</span>
-
-<span class='co'># `a_count_patients_with_flags()`</span>
-
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span><span class='va'>a_count_patients_with_flags</span>,
-  .stats <span class='op'>=</span> <span class='st'>"count_fraction"</span>,
-  .ungroup_stats <span class='op'>=</span> <span class='st'>"count_fraction"</span>
-<span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span>
-  <span class='va'>adae</span>,
-  .N_col <span class='op'>=</span> <span class='fl'>10L</span>, <span class='co'># nolint</span>
-  .N_row <span class='op'>=</span> <span class='fl'>10L</span>,
-  .var <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-  flag_variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fl1"</span>, <span class='st'>"fl2"</span>, <span class='st'>"fl3"</span>, <span class='st'>"fl4"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod row_label
-#&gt; 1      fl1     365 (100%)          0       fl1
-#&gt; 2      fl2    364 (99.7%)          0       fl2
-#&gt; 3      fl3    220 (60.3%)          0       fl3
-#&gt; 4      fl4    220 (60.3%)          0       fl4</div><div class='input'>
-
-<span class='co'># `count_patients_with_flags()`</span>
-
-<span class='va'>lyt2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>count_patients_with_flags</span><span class='op'>(</span>
-    <span class='st'>"SUBJID"</span>,
-    flag_variables <span class='op'>=</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adae</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fl1"</span>, <span class='st'>"fl2"</span>, <span class='st'>"fl3"</span>, <span class='st'>"fl4"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>,
-    denom <span class='op'>=</span> <span class='st'>"N_col"</span>
-  <span class='op'>)</span>
- <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt2</span>, <span class='va'>adae</span>, alt_counts_df <span class='op'>=</span> <span class='va'>adsl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                                            A: Drug X    B: Placebo    C: Combination
-#&gt;                                                             (N=134)       (N=134)        (N=132)    
-#&gt; ----------------------------------------------------------------------------------------------------
-#&gt; Total AEs                                                  122 (91%)    123 (91.8%)    120 (90.9%)  
-#&gt; Total number of patients with at least one adverse event   122 (91%)    123 (91.8%)    119 (90.2%)  
-#&gt; Total number of patients with fatal AEs                    76 (56.7%)   70 (52.2%)      74 (56.1%)  
-#&gt; Total number of patients with related fatal AEs            76 (56.7%)   70 (52.2%)      74 (56.1%)  </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>adae</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adae</span></span>
+<span class='r-in'><span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `s_count_patients_with_event()`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>s_count_patients_with_event</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>adae</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"SUBJID"</span>,</span>
+<span class='r-in'>  filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 364</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 364.0000000   0.9972603</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_count_patients_with_event</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>adae</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"SUBJID"</span>,</span>
+<span class='r-in'>  filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span>, <span class='st'>"AEOUT"</span> <span class='op'>=</span> <span class='st'>"FATAL"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 220</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 220.0000000   0.6027397</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_count_patients_with_event</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>adae</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"SUBJID"</span>,</span>
+<span class='r-in'>  filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span>, <span class='st'>"AEOUT"</span> <span class='op'>=</span> <span class='st'>"FATAL"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  denom <span class='op'>=</span> <span class='st'>"N_col"</span>,</span>
+<span class='r-in'>  .N_col <span class='op'>=</span> <span class='fl'>456</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 220</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 220.0000000   0.4824561</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'># `a_count_patients_with_event()`</span></span>
+<span class='r-in'><span class='fu'>a_count_patients_with_event</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>adae</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"SUBJID"</span>,</span>
+<span class='r-in'>  filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .N_col <span class='op'>=</span> <span class='fl'>100</span>,</span>
+<span class='r-in'>  .N_row <span class='op'>=</span> <span class='fl'>100</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         row_name formatted_cell indent_mod      row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1              n            365          0              n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2          count            364          0          count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 count_fraction    364 (99.7%)          0 count_fraction</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `count_patients_with_event()`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='count_values_funs.html'>count_values</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"STUDYID"</span>,</span>
+<span class='r-in'>    values <span class='op'>=</span> <span class='st'>"AB12345"</span>,</span>
+<span class='r-in'>    .stats <span class='op'>=</span> <span class='st'>"count"</span>,</span>
+<span class='r-in'>    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='st'>"Total AEs"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>count_patients_with_event</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"SUBJID"</span>,</span>
+<span class='r-in'>    filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count_fraction <span class='op'>=</span> <span class='st'>"Total number of patients with at least one adverse event"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    table_names <span class='op'>=</span> <span class='st'>"tbl_all"</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>count_patients_with_event</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"SUBJID"</span>,</span>
+<span class='r-in'>    filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span>, <span class='st'>"AEOUT"</span> <span class='op'>=</span> <span class='st'>"FATAL"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count_fraction <span class='op'>=</span> <span class='st'>"Total number of patients with fatal AEs"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    table_names <span class='op'>=</span> <span class='st'>"tbl_fatal"</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>count_patients_with_event</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"SUBJID"</span>,</span>
+<span class='r-in'>    filters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRTEMFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span>, <span class='st'>"AEOUT"</span> <span class='op'>=</span> <span class='st'>"FATAL"</span>, <span class='st'>"AEREL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count_fraction <span class='op'>=</span> <span class='st'>"Total number of patients with related fatal AEs"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .indent_mods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>count_fraction <span class='op'>=</span> <span class='fl'>2L</span><span class='op'>)</span>,</span>
+<span class='r-in'>    table_names <span class='op'>=</span> <span class='st'>"tbl_rel_fatal"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt</span>, <span class='va'>adae</span>, alt_counts_df <span class='op'>=</span> <span class='va'>adsl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                            A: Drug X    B: Placebo   C: Combination</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                             (N=134)      (N=134)        (N=132)    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total AEs                                                     609          622            703      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of patients with at least one adverse event   122 (100%)   123 (100%)    119 (99.2%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of patients with fatal AEs                    76 (62.3%)   70 (56.9%)     74 (61.7%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Total number of patients with related fatal AEs        76 (62.3%)   70 (56.9%)     74 (61.7%)  </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `s_count_patients_with_flags()`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Add labelled flag variables to analysis dataset.</span></span>
+<span class='r-in'><span class='va'>adae</span> <span class='op'>&lt;-</span> <span class='va'>adae</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>    fl1 <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>    fl2 <span class='op'>=</span> <span class='va'>TRTEMFL</span> <span class='op'>==</span> <span class='st'>"Y"</span>,</span>
+<span class='r-in'>    fl3 <span class='op'>=</span> <span class='va'>TRTEMFL</span> <span class='op'>==</span> <span class='st'>"Y"</span> <span class='op'>&amp;</span> <span class='va'>AEOUT</span> <span class='op'>==</span> <span class='st'>"FATAL"</span>,</span>
+<span class='r-in'>    fl4 <span class='op'>=</span> <span class='va'>TRTEMFL</span> <span class='op'>==</span> <span class='st'>"Y"</span> <span class='op'>&amp;</span> <span class='va'>AEOUT</span> <span class='op'>==</span> <span class='st'>"FATAL"</span> <span class='op'>&amp;</span> <span class='va'>AEREL</span> <span class='op'>==</span> <span class='st'>"Y"</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/var_relabel.html'>var_relabel</a></span><span class='op'>(</span></span>
+<span class='r-in'>    fl1 <span class='op'>=</span> <span class='st'>"Total AEs"</span>,</span>
+<span class='r-in'>    fl2 <span class='op'>=</span> <span class='st'>"Total number of patients with at least one adverse event"</span>,</span>
+<span class='r-in'>    fl3 <span class='op'>=</span> <span class='st'>"Total number of patients with fatal AEs"</span>,</span>
+<span class='r-in'>    fl4 <span class='op'>=</span> <span class='st'>"Total number of patients with related fatal AEs"</span></span>
+<span class='r-in'> <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>s_count_patients_with_flags</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>adae</span>,</span>
+<span class='r-in'>  <span class='st'>"SUBJID"</span>,</span>
+<span class='r-in'>  flag_variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fl1"</span>, <span class='st'>"fl2"</span>, <span class='st'>"fl3"</span>, <span class='st'>"fl4"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  denom <span class='op'>=</span> <span class='st'>"N_col"</span>,</span>
+<span class='r-in'>  .N_col <span class='op'>=</span> <span class='fl'>1000</span></span>
+<span class='r-in'> <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n$fl1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n$fl2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n$fl3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n$fl4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$fl1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$fl2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 364</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$fl3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 220</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$fl4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 220</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$fl1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 365.000   0.365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$fl2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 364.000   0.364</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$fl3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 220.00   0.22</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$fl4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 220.00   0.22</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#  We need to ungroup `count_fraction` first so that the rtables formatting</span></span>
+<span class='r-in'><span class='co'># function `format_count_fraction()` can be applied correctly.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `a_count_patients_with_flags()`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span><span class='va'>a_count_patients_with_flags</span>,</span>
+<span class='r-in'>  .stats <span class='op'>=</span> <span class='st'>"count_fraction"</span>,</span>
+<span class='r-in'>  .ungroup_stats <span class='op'>=</span> <span class='st'>"count_fraction"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>adae</span>,</span>
+<span class='r-in'>  .N_col <span class='op'>=</span> <span class='fl'>10L</span>, <span class='co'># nolint</span></span>
+<span class='r-in'>  .N_row <span class='op'>=</span> <span class='fl'>10L</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>  flag_variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fl1"</span>, <span class='st'>"fl2"</span>, <span class='st'>"fl3"</span>, <span class='st'>"fl4"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      fl1     365 (100%)          0       fl1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2      fl2    364 (99.7%)          0       fl2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3      fl3    220 (60.3%)          0       fl3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4      fl4    220 (60.3%)          0       fl4</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `count_patients_with_flags()`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>lyt2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>count_patients_with_flags</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"SUBJID"</span>,</span>
+<span class='r-in'>    flag_variables <span class='op'>=</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adae</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fl1"</span>, <span class='st'>"fl2"</span>, <span class='st'>"fl3"</span>, <span class='st'>"fl4"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>,</span>
+<span class='r-in'>    denom <span class='op'>=</span> <span class='st'>"N_col"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'> <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>lyt2</span>, <span class='va'>adae</span>, alt_counts_df <span class='op'>=</span> <span class='va'>adsl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                            A: Drug X    B: Placebo    C: Combination</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                             (N=134)       (N=134)        (N=132)    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total AEs                                                  122 (91%)    123 (91.8%)    120 (90.9%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of patients with at least one adverse event   122 (91%)    123 (91.8%)    119 (90.2%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of patients with fatal AEs                    76 (56.7%)   70 (52.2%)      74 (56.1%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of patients with related fatal AEs            76 (56.7%)   70 (52.2%)      74 (56.1%)  </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

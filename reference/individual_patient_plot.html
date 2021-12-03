@@ -258,38 +258,44 @@ values over time.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='co'># Select a small sample of data to plot.</span>
-<span class='va'>adlb</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"ALT"</span>, <span class='op'>!</span><span class='op'>(</span><span class='va'>AVISIT</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SCREENING"</span>, <span class='st'>"BASELINE"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>36</span><span class='op'>)</span>
-
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>h_g_ipp</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>adlb</span>,
-             xvar <span class='op'>=</span> <span class='st'>"AVISIT"</span>,
-             yvar <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-             xlab <span class='op'>=</span> <span class='st'>"Visit"</span>,
-             id_var <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-             ylab <span class='op'>=</span> <span class='st'>"SGOT/ALT (U/L)"</span>,
-             add_baseline_hline <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>p</span>
-</div><div class='img'><img src='individual_patient_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
-
-<span class='va'>plot_list</span> <span class='op'>&lt;-</span> <span class='fu'>g_ipp</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>adlb</span>,
-           xvar <span class='op'>=</span> <span class='st'>"AVISIT"</span>,
-           yvar <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-           xlab <span class='op'>=</span> <span class='st'>"Visit"</span> ,
-           ylab <span class='op'>=</span> <span class='st'>"SGOT/ALT (U/L)"</span>,
-           title <span class='op'>=</span> <span class='st'>"Individual Patient Plots"</span>,
-           add_baseline_hline <span class='op'>=</span> <span class='cn'>TRUE</span>,
-           plotting_choices <span class='op'>=</span> <span class='st'>"split_by_max_obs"</span>,
-           max_obs_per_plot <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-<span class='va'>plot_list</span>
-</div><div class='output co'>#&gt; [[1]]</div><div class='img'><img src='individual_patient_plot-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; [[2]]</div><div class='img'><img src='individual_patient_plot-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Select a small sample of data to plot.</span></span>
+<span class='r-in'><span class='va'>adlb</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"ALT"</span>, <span class='op'>!</span><span class='op'>(</span><span class='va'>AVISIT</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SCREENING"</span>, <span class='st'>"BASELINE"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>36</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>h_g_ipp</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>adlb</span>,</span>
+<span class='r-in'>             xvar <span class='op'>=</span> <span class='st'>"AVISIT"</span>,</span>
+<span class='r-in'>             yvar <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>             xlab <span class='op'>=</span> <span class='st'>"Visit"</span>,</span>
+<span class='r-in'>             id_var <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>             ylab <span class='op'>=</span> <span class='st'>"SGOT/ALT (U/L)"</span>,</span>
+<span class='r-in'>             add_baseline_hline <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>p</span></span>
+<span class='r-plt img'><img src='individual_patient_plot-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>plot_list</span> <span class='op'>&lt;-</span> <span class='fu'>g_ipp</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>adlb</span>,</span>
+<span class='r-in'>           xvar <span class='op'>=</span> <span class='st'>"AVISIT"</span>,</span>
+<span class='r-in'>           yvar <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>           xlab <span class='op'>=</span> <span class='st'>"Visit"</span> ,</span>
+<span class='r-in'>           ylab <span class='op'>=</span> <span class='st'>"SGOT/ALT (U/L)"</span>,</span>
+<span class='r-in'>           title <span class='op'>=</span> <span class='st'>"Individual Patient Plots"</span>,</span>
+<span class='r-in'>           add_baseline_hline <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>           plotting_choices <span class='op'>=</span> <span class='st'>"split_by_max_obs"</span>,</span>
+<span class='r-in'>           max_obs_per_plot <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>plot_list</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
+<span class='r-plt img'><img src='individual_patient_plot-2.png' alt='' width='700' height='433' /></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[2]]</span>
+<span class='r-plt img'><img src='individual_patient_plot-3.png' alt='' width='700' height='433' /></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

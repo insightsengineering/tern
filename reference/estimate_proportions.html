@@ -276,56 +276,65 @@ proportion along with its confidence interval.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>,
-  <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>
-<span class='op'>)</span>
-<span class='fu'>prop_wilson</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.2692718 0.7307282</div><div class='input'>
-
-<span class='fu'>prop_clopper_pearson</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>.95</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.187086 0.812914</div><div class='input'>
-
-<span class='fu'>prop_wald</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.1901025 0.8098975</div><div class='input'><span class='fu'>prop_wald</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span>, correct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.1401025 0.8598975</div><div class='input'>
-
-<span class='fu'>prop_agresti_coull</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.2365931 0.7634069</div><div class='input'>
-
-<span class='fu'>prop_jeffreys</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.2235287 0.7764713</div><div class='input'>
-<span class='fu'>s_proportion</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n_prop
-#&gt; [1] 2.0 0.5
-#&gt; attr(,"label")
-#&gt; [1] "Responders"
-#&gt; 
-#&gt; $prop_ci
-#&gt; [1]   0 100
-#&gt; attr(,"label")
-#&gt; [1] "95% CI (Wald, with correction)"
-#&gt; </div><div class='input'><span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"S"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span>,
-  ARM     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, each <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>,
-  AVAL    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>A <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>, B <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>, C <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>estimate_proportion</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVAL"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                       A           B           C    
-#&gt; -------------------------------------------------------------------
-#&gt; Responders                        4 (100%)     2 (50%)     0 (0%)  
-#&gt; 95% CI (Wald, with correction)   (87.5, 100)   (0, 100)   (0, 12.5)</div><div class='input'>
-<span class='fu'>a_proportion</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod                      row_label
-#&gt; 1   n_prop        2 (50%)          0                     Responders
-#&gt; 2  prop_ci       (0, 100)          0 95% CI (Wald, with correction)</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>rsp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>  <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>prop_wilson</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.2692718 0.7307282</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>prop_clopper_pearson</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>.95</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.187086 0.812914</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>prop_wald</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1901025 0.8098975</span>
+<span class='r-in'><span class='fu'>prop_wald</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span>, correct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1401025 0.8598975</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>prop_agresti_coull</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.2365931 0.7634069</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>prop_jeffreys</span><span class='op'>(</span><span class='va'>rsp</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.2235287 0.7764713</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>s_proportion</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n_prop</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2.0 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Responders"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $prop_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]   0 100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "95% CI (Wald, with correction)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"S"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span>,</span>
+<span class='r-in'>  ARM     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, each <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AVAL    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>A <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>, B <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>, C <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>estimate_proportion</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVAL"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                       A           B           C    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Responders                        4 (100%)     2 (50%)     0 (0%)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 95% CI (Wald, with correction)   (87.5, 100)   (0, 100)   (0, 12.5)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>a_proportion</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod                      row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   n_prop        2 (50%)          0                     Responders</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  prop_ci       (0, 100)          0 95% CI (Wald, with correction)</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

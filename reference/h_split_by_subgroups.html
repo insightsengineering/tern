@@ -173,110 +173,112 @@ levels that belong to it in the character vectors that are elements of the list.
     <p>Main functionality is to prepare data for use in forest plot layouts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span>
-
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>,
-  y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>,<span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span><span class='op'>)</span><span class='op'>)</span>,
-  z <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='st'>"D"</span>, <span class='st'>"D"</span>, <span class='st'>"D"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D"</span>, <span class='st'>"C"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"label for"</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>h_split_by_subgroups</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>df</span>,
-  subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"y"</span>, <span class='st'>"z"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $y.A
-#&gt; $y.A$df
-#&gt;   x y z
-#&gt; 1 1 A C
-#&gt; 2 3 A D
-#&gt; 3 5 A D
-#&gt; 
-#&gt; $y.A$df_labels
-#&gt;   subgroup var   var_label
-#&gt; 1        A   y label for y
-#&gt; 
-#&gt; 
-#&gt; $y.B
-#&gt; $y.B$df
-#&gt;   x y z
-#&gt; 1 2 B C
-#&gt; 2 4 B D
-#&gt; 
-#&gt; $y.B$df_labels
-#&gt;   subgroup var   var_label
-#&gt; 1        B   y label for y
-#&gt; 
-#&gt; 
-#&gt; $z.D
-#&gt; $z.D$df
-#&gt;   x y z
-#&gt; 1 3 A D
-#&gt; 2 4 B D
-#&gt; 3 5 A D
-#&gt; 
-#&gt; $z.D$df_labels
-#&gt;   subgroup var   var_label
-#&gt; 1        D   z label for z
-#&gt; 
-#&gt; 
-#&gt; $z.C
-#&gt; $z.C$df
-#&gt;   x y z
-#&gt; 1 1 A C
-#&gt; 2 2 B C
-#&gt; 
-#&gt; $z.C$df_labels
-#&gt;   subgroup var   var_label
-#&gt; 1        C   z label for z
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='fu'>h_split_by_subgroups</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>df</span>,
-  subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"y"</span>, <span class='st'>"z"</span><span class='op'>)</span>,
-  groups_lists <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"AB"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, <span class='st'>"C"</span> <span class='op'>=</span> <span class='st'>"C"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $y.AB
-#&gt; $y.AB$df
-#&gt;   x y z
-#&gt; 1 1 A C
-#&gt; 2 2 B C
-#&gt; 3 3 A D
-#&gt; 4 4 B D
-#&gt; 5 5 A D
-#&gt; 
-#&gt; $y.AB$df_labels
-#&gt;   subgroup var   var_label
-#&gt; 1       AB   y label for y
-#&gt; 
-#&gt; 
-#&gt; $z.D
-#&gt; $z.D$df
-#&gt;   x y z
-#&gt; 1 3 A D
-#&gt; 2 4 B D
-#&gt; 3 5 A D
-#&gt; 
-#&gt; $z.D$df_labels
-#&gt;   subgroup var   var_label
-#&gt; 1        D   z label for z
-#&gt; 
-#&gt; 
-#&gt; $z.C
-#&gt; $z.C$df
-#&gt;   x y z
-#&gt; 1 1 A C
-#&gt; 2 2 B C
-#&gt; 
-#&gt; $z.C$df_labels
-#&gt;   subgroup var   var_label
-#&gt; 1        C   z label for z
-#&gt; 
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>,</span>
+<span class='r-in'>  y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>,<span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  z <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='st'>"D"</span>, <span class='st'>"D"</span>, <span class='st'>"D"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D"</span>, <span class='st'>"C"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"label for"</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>h_split_by_subgroups</span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>df</span>,</span>
+<span class='r-in'>  subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"y"</span>, <span class='st'>"z"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $y.A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $y.A$df</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   x y z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 1 A C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 3 A D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 5 A D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $y.A$df_labels</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   subgroup var   var_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        A   y label for y</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $y.B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $y.B$df</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   x y z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 2 B C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 4 B D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $y.B$df_labels</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   subgroup var   var_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        B   y label for y</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.D$df</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   x y z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 3 A D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 4 B D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 5 A D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.D$df_labels</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   subgroup var   var_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        D   z label for z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.C$df</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   x y z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 1 A C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2 B C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.C$df_labels</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   subgroup var   var_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        C   z label for z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>h_split_by_subgroups</span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>df</span>,</span>
+<span class='r-in'>  subgroups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"y"</span>, <span class='st'>"z"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  groups_lists <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"AB"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, <span class='st'>"C"</span> <span class='op'>=</span> <span class='st'>"C"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $y.AB</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $y.AB$df</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   x y z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 1 A C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2 B C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 3 A D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 4 B D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 5 A D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $y.AB$df_labels</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   subgroup var   var_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       AB   y label for y</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.D$df</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   x y z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 3 A D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 4 B D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 5 A D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.D$df_labels</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   subgroup var   var_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        D   z label for z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.C$df</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   x y z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 1 A C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2 B C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $z.C$df_labels</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   subgroup var   var_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        C   z label for z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

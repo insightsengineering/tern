@@ -299,153 +299,157 @@ function arguments and additional format arguments (see below).</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='va'>adlb</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span>
-<span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span>
-
-<span class='co'>#The direction variable, GRADDR, is based on metadata</span>
-<span class='va'>adlb</span> <span class='op'>&lt;-</span> <span class='va'>adlb</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>
-    GRADDR <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span>
-    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"ALT"</span> <span class='op'>~</span> <span class='st'>"B"</span>,
-    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span> <span class='op'>~</span> <span class='st'>"L"</span>,
-    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"IGA"</span> <span class='op'>~</span> <span class='st'>"H"</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>SAFFL</span> <span class='op'>==</span> <span class='st'>"Y"</span> <span class='op'>&amp;</span> <span class='va'>ONTRTFL</span> <span class='op'>==</span> <span class='st'>"Y"</span> <span class='op'>&amp;</span> <span class='va'>GRADDR</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span>
-
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>h_adlb_worsen</span><span class='op'>(</span>
-  <span class='va'>adlb</span>,
-  worst_flag_low <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"WGRLOFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,
-  worst_flag_high <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"WGRHIFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,
-  direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span>
-  <span class='op'>)</span>
-
-<span class='co'># `h_worsen_counter`</span>
-<span class='fu'>h_worsen_counter</span><span class='op'>(</span><span class='va'>df</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span> <span class='op'>&amp;</span> <span class='va'>GRADDR</span> <span class='op'>==</span> <span class='st'>"Low"</span><span class='op'>)</span>,
-                 id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-                 .var <span class='op'>=</span> <span class='st'>"ATOXGR"</span>,
-                 baseline_var <span class='op'>=</span> <span class='st'>"BTOXGR"</span>,
-                 direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span>
-                 <span class='op'>)</span>
-</div><div class='output co'>#&gt; $fraction
-#&gt; $fraction$`1`
-#&gt;   num denom 
-#&gt;    44   364 
-#&gt; 
-#&gt; $fraction$`2`
-#&gt;   num denom 
-#&gt;    49   376 
-#&gt; 
-#&gt; $fraction$`3`
-#&gt;   num denom 
-#&gt;    37   383 
-#&gt; 
-#&gt; $fraction$`4`
-#&gt;   num denom 
-#&gt;    21   388 
-#&gt; 
-#&gt; $fraction$Any
-#&gt;   num denom 
-#&gt;   151   388 
-#&gt; 
-#&gt; </div><div class='input'>
-
-
-<span class='co'>#Patients with worsening lab grade for CRP in the direction of low</span>
-<span class='fu'>s_count_abnormal_lab_worsen_by_baseline</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='va'>df</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM A"</span> <span class='op'>&amp;</span> <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span><span class='op'>)</span>,
-  .var <span class='op'>=</span> <span class='st'>"ATOXGR"</span>,
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-    baseline_var <span class='op'>=</span> <span class='st'>"BTOXGR"</span>,
-    direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span>
- <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $fraction
-#&gt; $fraction$`1`
-#&gt;   num denom 
-#&gt;    14   122 
-#&gt; 
-#&gt; $fraction$`2`
-#&gt;   num denom 
-#&gt;    21   124 
-#&gt; 
-#&gt; $fraction$`3`
-#&gt;   num denom 
-#&gt;    12   129 
-#&gt; 
-#&gt; $fraction$`4`
-#&gt;   num denom 
-#&gt;    10   131 
-#&gt; 
-#&gt; $fraction$Any
-#&gt;   num denom 
-#&gt;    57   131 
-#&gt; 
-#&gt; </div><div class='input'>
-
-<span class='fu'>a_count_abnormal_lab_worsen_by_baseline</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='va'>df</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM A"</span> <span class='op'>&amp;</span> <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span><span class='op'>)</span>,
-  .var <span class='op'>=</span> <span class='st'>"ATOXGR"</span>,
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"USUBJID"</span>, baseline_var <span class='op'>=</span> <span class='st'>"BTOXGR"</span>, direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod row_label
-#&gt; 1        1 14/122 (11.5%)          0         1
-#&gt; 2        2 21/124 (16.9%)          0         2
-#&gt; 3        3  12/129 (9.3%)          0         3
-#&gt; 4        4  10/131 (7.6%)          0         4
-#&gt; 5      Any 57/131 (43.5%)          0       Any</div><div class='input'>
-<span class='fu'>basic_table</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'>split_cols_by</span><span class='op'>(</span><span class='st'>"ARMCD"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'>add_colcounts</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'>split_rows_by</span><span class='op'>(</span><span class='st'>"PARAMCD"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'>split_rows_by</span><span class='op'>(</span><span class='st'>"GRADDR"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'>count_abnormal_lab_worsen_by_baseline</span><span class='op'>(</span>
-  var <span class='op'>=</span> <span class='st'>"ATOXGR"</span>,
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,
-    baseline_var <span class='op'>=</span> <span class='st'>"BTOXGR"</span>,
-    direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span>
-    <span class='op'>)</span>
- <span class='op'>)</span> <span class='op'>%&gt;%</span>
- <span class='fu'>append_topleft</span><span class='op'>(</span><span class='st'>"Direction of Abnormality"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
- <span class='fu'>build_table</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df</span>, alt_counts_df <span class='op'>=</span> <span class='va'>adsl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Direction of Abnormality       ARM A            ARM B            ARM C     
-#&gt;                               (N=134)          (N=134)          (N=132)    
-#&gt; ---------------------------------------------------------------------------
-#&gt; ALT                                                                        
-#&gt;   High                                                                     
-#&gt;     1                      16/119 (13.4%)   13/117 (11.1%)   17/116 (14.7%)
-#&gt;     2                      14/123 (11.4%)   12/121 (9.9%)    17/119 (14.3%)
-#&gt;     3                       9/127 (7.1%)     15/125 (12%)    13/123 (10.6%)
-#&gt;     4                      12/129 (9.3%)    11/130 (8.5%)    13/128 (10.2%)
-#&gt;     Any                    51/129 (39.5%)   51/130 (39.2%)   60/128 (46.9%)
-#&gt;   Low                                                                      
-#&gt;     1                      13/124 (10.5%)   12/121 (9.9%)     9/116 (7.8%) 
-#&gt;     2                      13/127 (10.2%)   17/127 (13.4%)   11/123 (8.9%) 
-#&gt;     3                      19/128 (14.8%)   12/128 (9.4%)    10/127 (7.9%) 
-#&gt;     4                       7/130 (5.4%)     7/131 (5.3%)    10/131 (7.6%) 
-#&gt;     Any                     52/130 (40%)    48/131 (36.6%)   40/131 (30.5%)
-#&gt; CRP                                                                        
-#&gt;   Low                                                                      
-#&gt;     1                      14/122 (11.5%)   17/125 (13.6%)   13/117 (11.1%)
-#&gt;     2                      21/124 (16.9%)   12/130 (9.2%)    16/122 (13.1%)
-#&gt;     3                      12/129 (9.3%)     9/131 (6.9%)     16/123 (13%) 
-#&gt;     4                      10/131 (7.6%)     7/133 (5.3%)     4/124 (3.2%) 
-#&gt;     Any                    57/131 (43.5%)   45/133 (33.8%)   49/124 (39.5%)
-#&gt; IGA                                                                        
-#&gt;   High                                                                     
-#&gt;     1                      24/118 (20.3%)    12/120 (10%)    13/119 (10.9%)
-#&gt;     2                      13/120 (10.8%)   19/124 (15.3%)   13/125 (10.4%)
-#&gt;     3                      11/124 (8.9%)    10/128 (7.8%)    17/128 (13.3%)
-#&gt;     4                      11/129 (8.5%)     13/130 (10%)     4/130 (3.1%) 
-#&gt;     Any                    59/129 (45.7%)   54/130 (41.5%)   47/130 (36.2%)</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>adlb</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span></span>
+<span class='r-in'><span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#The direction variable, GRADDR, is based on metadata</span></span>
+<span class='r-in'><span class='va'>adlb</span> <span class='op'>&lt;-</span> <span class='va'>adlb</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>    GRADDR <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"ALT"</span> <span class='op'>~</span> <span class='st'>"B"</span>,</span>
+<span class='r-in'>    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span> <span class='op'>~</span> <span class='st'>"L"</span>,</span>
+<span class='r-in'>    <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"IGA"</span> <span class='op'>~</span> <span class='st'>"H"</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>SAFFL</span> <span class='op'>==</span> <span class='st'>"Y"</span> <span class='op'>&amp;</span> <span class='va'>ONTRTFL</span> <span class='op'>==</span> <span class='st'>"Y"</span> <span class='op'>&amp;</span> <span class='va'>GRADDR</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>h_adlb_worsen</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>adlb</span>,</span>
+<span class='r-in'>  worst_flag_low <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"WGRLOFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  worst_flag_high <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"WGRHIFL"</span> <span class='op'>=</span> <span class='st'>"Y"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `h_worsen_counter`</span></span>
+<span class='r-in'><span class='fu'>h_worsen_counter</span><span class='op'>(</span><span class='va'>df</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span> <span class='op'>&amp;</span> <span class='va'>GRADDR</span> <span class='op'>==</span> <span class='st'>"Low"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                 id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>                 .var <span class='op'>=</span> <span class='st'>"ATOXGR"</span>,</span>
+<span class='r-in'>                 baseline_var <span class='op'>=</span> <span class='st'>"BTOXGR"</span>,</span>
+<span class='r-in'>                 direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span></span>
+<span class='r-in'>                 <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$`1`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    44   364 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$`2`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    49   376 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$`3`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    37   383 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$`4`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    21   388 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$Any</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   151   388 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#Patients with worsening lab grade for CRP in the direction of low</span></span>
+<span class='r-in'><span class='fu'>s_count_abnormal_lab_worsen_by_baseline</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='va'>df</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM A"</span> <span class='op'>&amp;</span> <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"ATOXGR"</span>,</span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>    baseline_var <span class='op'>=</span> <span class='st'>"BTOXGR"</span>,</span>
+<span class='r-in'>    direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span></span>
+<span class='r-in'> <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$`1`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    14   122 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$`2`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    21   124 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$`3`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    12   129 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$`4`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    10   131 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$Any</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    57   131 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>a_count_abnormal_lab_worsen_by_baseline</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='va'>df</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ARMCD</span> <span class='op'>==</span> <span class='st'>"ARM A"</span> <span class='op'>&amp;</span> <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"CRP"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"ATOXGR"</span>,</span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"USUBJID"</span>, baseline_var <span class='op'>=</span> <span class='st'>"BTOXGR"</span>, direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        1 14/122 (11.5%)          0         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2        2 21/124 (16.9%)          0         2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        3  12/129 (9.3%)          0         3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        4  10/131 (7.6%)          0         4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5      Any 57/131 (43.5%)          0       Any</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>basic_table</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'>split_cols_by</span><span class='op'>(</span><span class='st'>"ARMCD"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'>add_colcounts</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'>split_rows_by</span><span class='op'>(</span><span class='st'>"PARAMCD"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'>split_rows_by</span><span class='op'>(</span><span class='st'>"GRADDR"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'>count_abnormal_lab_worsen_by_baseline</span><span class='op'>(</span></span>
+<span class='r-in'>  var <span class='op'>=</span> <span class='st'>"ATOXGR"</span>,</span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='st'>"USUBJID"</span>,</span>
+<span class='r-in'>    baseline_var <span class='op'>=</span> <span class='st'>"BTOXGR"</span>,</span>
+<span class='r-in'>    direction_var <span class='op'>=</span> <span class='st'>"GRADDR"</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'> <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'>append_topleft</span><span class='op'>(</span><span class='st'>"Direction of Abnormality"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'>build_table</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df</span>, alt_counts_df <span class='op'>=</span> <span class='va'>adsl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Direction of Abnormality       ARM A            ARM B            ARM C     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                               (N=134)          (N=134)          (N=132)    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ALT                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   High                                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1                      16/119 (13.4%)   13/117 (11.1%)   17/116 (14.7%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     2                      14/123 (11.4%)   12/121 (9.9%)    17/119 (14.3%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3                       9/127 (7.1%)     15/125 (12%)    13/123 (10.6%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4                      12/129 (9.3%)    11/130 (8.5%)    13/128 (10.2%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Any                    51/129 (39.5%)   51/130 (39.2%)   60/128 (46.9%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Low                                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1                      13/124 (10.5%)   12/121 (9.9%)     9/116 (7.8%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     2                      13/127 (10.2%)   17/127 (13.4%)   11/123 (8.9%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3                      19/128 (14.8%)   12/128 (9.4%)    10/127 (7.9%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4                       7/130 (5.4%)     7/131 (5.3%)    10/131 (7.6%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Any                     52/130 (40%)    48/131 (36.6%)   40/131 (30.5%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CRP                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Low                                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1                      14/122 (11.5%)   17/125 (13.6%)   13/117 (11.1%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     2                      21/124 (16.9%)   12/130 (9.2%)    16/122 (13.1%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3                      12/129 (9.3%)     9/131 (6.9%)     16/123 (13%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4                      10/131 (7.6%)     7/133 (5.3%)     4/124 (3.2%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Any                    57/131 (43.5%)   45/133 (33.8%)   49/124 (39.5%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> IGA                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   High                                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1                      24/118 (20.3%)    12/120 (10%)    13/119 (10.9%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     2                      13/120 (10.8%)   19/124 (15.3%)   13/125 (10.4%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3                      11/124 (8.9%)    10/128 (7.8%)    17/128 (13.3%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4                      11/129 (8.5%)     13/130 (10%)     4/130 (3.1%) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Any                    59/129 (45.7%)   54/130 (41.5%)   47/130 (36.2%)</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

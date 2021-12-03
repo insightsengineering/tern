@@ -161,41 +161,43 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Species</span><span class='op'>)</span>
-<span class='fu'><a href='footnotes.html'>footnotes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Species are equally distributed"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $dim
-#&gt; [1] 3
-#&gt; 
-#&gt; $dimnames
-#&gt; $dimnames[[1]]
-#&gt; [1] "setosa"     "versicolor" "virginica" 
-#&gt; 
-#&gt; 
-#&gt; $class
-#&gt; [1] "table"
-#&gt; 
-#&gt; $footnote
-#&gt; [1] "Species are equally distributed"
-#&gt; </div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Species</span><span class='op'>)</span>
-<span class='fu'><a href='footnotes.html'>footnotes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Species are equally distributed"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $dim
-#&gt; [1] 3
-#&gt; 
-#&gt; $dimnames
-#&gt; $dimnames[[1]]
-#&gt; [1] "setosa"     "versicolor" "virginica" 
-#&gt; 
-#&gt; 
-#&gt; $class
-#&gt; [1] "table"
-#&gt; 
-#&gt; $footnote
-#&gt; [1] "Species are equally distributed"
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Species</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='footnotes.html'>footnotes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Species are equally distributed"</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $dim</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $dimnames</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $dimnames[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "setosa"     "versicolor" "virginica" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $class</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "table"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $footnote</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Species are equally distributed"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Species</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='footnotes.html'>footnotes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Species are equally distributed"</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $dim</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $dimnames</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $dimnames[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "setosa"     "versicolor" "virginica" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $class</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "table"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $footnote</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Species are equally distributed"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

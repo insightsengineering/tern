@@ -449,1255 +449,1284 @@ functions (and possibly others in the future), we provide a constructor that doe
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># `s_summary.numeric`</span>
-
-<span class='co'>## Basic usage: empty numeric returns NA-filled items.</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; n 
-#&gt; 0 
-#&gt; 
-#&gt; $mean
-#&gt; mean 
-#&gt;   NA 
-#&gt; 
-#&gt; $sd
-#&gt; sd 
-#&gt; NA 
-#&gt; 
-#&gt; $mean_sd
-#&gt; mean   sd 
-#&gt;   NA   NA 
-#&gt; 
-#&gt; $mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;          NA          NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $median
-#&gt; median 
-#&gt;     NA 
-#&gt; 
-#&gt; $mad
-#&gt; mad 
-#&gt;  NA 
-#&gt; 
-#&gt; $median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;            NA            NA 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $iqr
-#&gt; iqr 
-#&gt;  NA 
-#&gt; 
-#&gt; $range
-#&gt; min max 
-#&gt;  NA  NA 
-#&gt; </div><div class='input'>
-<span class='co'>## Management of NA values.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA_real_</span>, <span class='fl'>1</span><span class='op'>)</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; n 
-#&gt; 1 
-#&gt; 
-#&gt; $mean
-#&gt; mean 
-#&gt;    1 
-#&gt; 
-#&gt; $sd
-#&gt; sd 
-#&gt; NA 
-#&gt; 
-#&gt; $mean_sd
-#&gt; mean   sd 
-#&gt;    1   NA 
-#&gt; 
-#&gt; $mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;          NA          NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $median
-#&gt; median 
-#&gt;      1 
-#&gt; 
-#&gt; $mad
-#&gt; mad 
-#&gt;   0 
-#&gt; 
-#&gt; $median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;             1             1 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $iqr
-#&gt; iqr 
-#&gt;   0 
-#&gt; 
-#&gt; $range
-#&gt; min max 
-#&gt;   1   1 
-#&gt; </div><div class='input'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; n 
-#&gt; 2 
-#&gt; 
-#&gt; $mean
-#&gt; mean 
-#&gt;   NA 
-#&gt; 
-#&gt; $sd
-#&gt; sd 
-#&gt; NA 
-#&gt; 
-#&gt; $mean_sd
-#&gt; mean   sd 
-#&gt;   NA   NA 
-#&gt; 
-#&gt; $mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;          NA          NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $median
-#&gt; median 
-#&gt;     NA 
-#&gt; 
-#&gt; $mad
-#&gt; mad 
-#&gt;  NA 
-#&gt; 
-#&gt; $median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;            NA            NA 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $iqr
-#&gt; iqr 
-#&gt;  NA 
-#&gt; 
-#&gt; $range
-#&gt; min max 
-#&gt;  NA  NA 
-#&gt; </div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA_real_</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, stats <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; n 
-#&gt; 2 
-#&gt; 
-#&gt; $mean
-#&gt; mean 
-#&gt;  1.5 
-#&gt; 
-#&gt; $sd
-#&gt;        sd 
-#&gt; 0.7071068 
-#&gt; 
-#&gt; $mean_sd
-#&gt;      mean        sd 
-#&gt; 1.5000000 0.7071068 
-#&gt; 
-#&gt; $mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;   -4.853102    7.853102 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;            1            2 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;    0.7928932    2.2071068 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $median
-#&gt; median 
-#&gt;    1.5 
-#&gt; 
-#&gt; $mad
-#&gt; mad 
-#&gt;   0 
-#&gt; 
-#&gt; $median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;             1             2 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $iqr
-#&gt; iqr 
-#&gt;   1 
-#&gt; 
-#&gt; $range
-#&gt; min max 
-#&gt;   1   2 
-#&gt; </div><div class='input'>
-<span class='co'>## Benefits in `rtables` contructions:</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span>
-<span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  Group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, each <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,
-  sub_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
-  x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>
-<span class='op'>)</span>
-
-<span class='co'>## The summary obtained in with `rtables`:</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"Group"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"sub_group"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/analyze.html'>analyze</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"x"</span>, afun <span class='op'>=</span> <span class='va'>s_summary</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                      A                      B                      C                  
-#&gt; ------------------------------------------------------------------------------------------------------
-#&gt; a                                                                                                     
-#&gt;   n                                  2                      1                      0                  
-#&gt;   mean                              1.5                     3                      NA                 
-#&gt;   sd                         0.707106781186548             NA                      NA                 
-#&gt;   mean_sd                 1.5, 0.707106781186548          3, NA                    NA                 
-#&gt;   Mean 95% CI       -4.85310236808735, 7.85310236808735    NA                      NA                 
-#&gt;   Mean -/+ 1xSE                    1, 2                    NA                      NA                 
-#&gt;   Mean -/+ 1xSD     0.792893218813452, 2.20710678118655    NA                      NA                 
-#&gt;   median                            1.5                     3                      NA                 
-#&gt;   mad                                0                      0                      NA                 
-#&gt;   Median 95% CI                     NA                     NA                      NA                 
-#&gt;   25% and 75%-ile                  1, 2                   3, 3                     NA                 
-#&gt;   iqr                                1                      0                      NA                 
-#&gt;   range                            1, 2                   3, 3                     NA                 
-#&gt; b                                                                                                     
-#&gt;   n                                  0                      1                      2                  
-#&gt;   mean                              NA                      4                     5.5                 
-#&gt;   sd                                NA                     NA              0.707106781186548          
-#&gt;   mean_sd                           NA                    4, NA          5.5, 0.707106781186548       
-#&gt;   Mean 95% CI                       NA                     NA     -0.853102368087347, 11.8531023680873
-#&gt;   Mean -/+ 1xSE                     NA                     NA                     5, 6                
-#&gt;   Mean -/+ 1xSD                     NA                     NA      4.79289321881345, 6.20710678118655 
-#&gt;   median                            NA                      4                     5.5                 
-#&gt;   mad                               NA                      0                      0                  
-#&gt;   Median 95% CI                     NA                     NA                      NA                 
-#&gt;   25% and 75%-ile                   NA                    4, 4                    5, 6                
-#&gt;   iqr                               NA                      0                      1                  
-#&gt;   range                             NA                    4, 4                    5, 6                </div><div class='input'>
-<span class='co'>## By comparison with `lapply`:</span>
-<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span><span class='op'>(</span><span class='va'>dta_test</span>, f <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span><span class='op'>(</span><span class='va'>dta_test</span>, <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>Group</span>, <span class='va'>sub_group</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>X</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $A.a
-#&gt; $A.a$n
-#&gt; n 
-#&gt; 2 
-#&gt; 
-#&gt; $A.a$mean
-#&gt; mean 
-#&gt;  1.5 
-#&gt; 
-#&gt; $A.a$sd
-#&gt;        sd 
-#&gt; 0.7071068 
-#&gt; 
-#&gt; $A.a$mean_sd
-#&gt;      mean        sd 
-#&gt; 1.5000000 0.7071068 
-#&gt; 
-#&gt; $A.a$mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;   -4.853102    7.853102 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $A.a$mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;            1            2 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $A.a$mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;    0.7928932    2.2071068 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $A.a$median
-#&gt; median 
-#&gt;    1.5 
-#&gt; 
-#&gt; $A.a$mad
-#&gt; mad 
-#&gt;   0 
-#&gt; 
-#&gt; $A.a$median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $A.a$quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;             1             2 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $A.a$iqr
-#&gt; iqr 
-#&gt;   1 
-#&gt; 
-#&gt; $A.a$range
-#&gt; min max 
-#&gt;   1   2 
-#&gt; 
-#&gt; 
-#&gt; $B.a
-#&gt; $B.a$n
-#&gt; n 
-#&gt; 1 
-#&gt; 
-#&gt; $B.a$mean
-#&gt; mean 
-#&gt;    3 
-#&gt; 
-#&gt; $B.a$sd
-#&gt; sd 
-#&gt; NA 
-#&gt; 
-#&gt; $B.a$mean_sd
-#&gt; mean   sd 
-#&gt;    3   NA 
-#&gt; 
-#&gt; $B.a$mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;          NA          NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $B.a$mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $B.a$mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $B.a$median
-#&gt; median 
-#&gt;      3 
-#&gt; 
-#&gt; $B.a$mad
-#&gt; mad 
-#&gt;   0 
-#&gt; 
-#&gt; $B.a$median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $B.a$quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;             3             3 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $B.a$iqr
-#&gt; iqr 
-#&gt;   0 
-#&gt; 
-#&gt; $B.a$range
-#&gt; min max 
-#&gt;   3   3 
-#&gt; 
-#&gt; 
-#&gt; $C.a
-#&gt; $C.a$n
-#&gt; n 
-#&gt; 0 
-#&gt; 
-#&gt; $C.a$mean
-#&gt; mean 
-#&gt;   NA 
-#&gt; 
-#&gt; $C.a$sd
-#&gt; sd 
-#&gt; NA 
-#&gt; 
-#&gt; $C.a$mean_sd
-#&gt; mean   sd 
-#&gt;   NA   NA 
-#&gt; 
-#&gt; $C.a$mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;          NA          NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $C.a$mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $C.a$mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $C.a$median
-#&gt; median 
-#&gt;     NA 
-#&gt; 
-#&gt; $C.a$mad
-#&gt; mad 
-#&gt;  NA 
-#&gt; 
-#&gt; $C.a$median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $C.a$quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;            NA            NA 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $C.a$iqr
-#&gt; iqr 
-#&gt;  NA 
-#&gt; 
-#&gt; $C.a$range
-#&gt; min max 
-#&gt;  NA  NA 
-#&gt; 
-#&gt; 
-#&gt; $A.b
-#&gt; $A.b$n
-#&gt; n 
-#&gt; 0 
-#&gt; 
-#&gt; $A.b$mean
-#&gt; mean 
-#&gt;   NA 
-#&gt; 
-#&gt; $A.b$sd
-#&gt; sd 
-#&gt; NA 
-#&gt; 
-#&gt; $A.b$mean_sd
-#&gt; mean   sd 
-#&gt;   NA   NA 
-#&gt; 
-#&gt; $A.b$mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;          NA          NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $A.b$mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $A.b$mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $A.b$median
-#&gt; median 
-#&gt;     NA 
-#&gt; 
-#&gt; $A.b$mad
-#&gt; mad 
-#&gt;  NA 
-#&gt; 
-#&gt; $A.b$median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $A.b$quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;            NA            NA 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $A.b$iqr
-#&gt; iqr 
-#&gt;  NA 
-#&gt; 
-#&gt; $A.b$range
-#&gt; min max 
-#&gt;  NA  NA 
-#&gt; 
-#&gt; 
-#&gt; $B.b
-#&gt; $B.b$n
-#&gt; n 
-#&gt; 1 
-#&gt; 
-#&gt; $B.b$mean
-#&gt; mean 
-#&gt;    4 
-#&gt; 
-#&gt; $B.b$sd
-#&gt; sd 
-#&gt; NA 
-#&gt; 
-#&gt; $B.b$mean_sd
-#&gt; mean   sd 
-#&gt;    4   NA 
-#&gt; 
-#&gt; $B.b$mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;          NA          NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $B.b$mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $B.b$mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;           NA           NA 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $B.b$median
-#&gt; median 
-#&gt;      4 
-#&gt; 
-#&gt; $B.b$mad
-#&gt; mad 
-#&gt;   0 
-#&gt; 
-#&gt; $B.b$median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $B.b$quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;             4             4 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $B.b$iqr
-#&gt; iqr 
-#&gt;   0 
-#&gt; 
-#&gt; $B.b$range
-#&gt; min max 
-#&gt;   4   4 
-#&gt; 
-#&gt; 
-#&gt; $C.b
-#&gt; $C.b$n
-#&gt; n 
-#&gt; 2 
-#&gt; 
-#&gt; $C.b$mean
-#&gt; mean 
-#&gt;  5.5 
-#&gt; 
-#&gt; $C.b$sd
-#&gt;        sd 
-#&gt; 0.7071068 
-#&gt; 
-#&gt; $C.b$mean_sd
-#&gt;      mean        sd 
-#&gt; 5.5000000 0.7071068 
-#&gt; 
-#&gt; $C.b$mean_ci
-#&gt; mean_ci_lwr mean_ci_upr 
-#&gt;  -0.8531024  11.8531024 
-#&gt; attr(,"label")
-#&gt; [1] "Mean 95% CI"
-#&gt; 
-#&gt; $C.b$mean_sei
-#&gt; mean_sei_lwr mean_sei_upr 
-#&gt;            5            6 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSE"
-#&gt; 
-#&gt; $C.b$mean_sdi
-#&gt; mean_sdi_lwr mean_sdi_upr 
-#&gt;     4.792893     6.207107 
-#&gt; attr(,"label")
-#&gt; [1] "Mean -/+ 1xSD"
-#&gt; 
-#&gt; $C.b$median
-#&gt; median 
-#&gt;    5.5 
-#&gt; 
-#&gt; $C.b$mad
-#&gt; mad 
-#&gt;   0 
-#&gt; 
-#&gt; $C.b$median_ci
-#&gt; median_ci_lwr median_ci_upr 
-#&gt;            NA            NA 
-#&gt; attr(,"conf_level")
-#&gt; [1] NA
-#&gt; attr(,"label")
-#&gt; [1] "Median 95% CI"
-#&gt; 
-#&gt; $C.b$quantiles
-#&gt; quantile_0.25 quantile_0.75 
-#&gt;             5             6 
-#&gt; attr(,"label")
-#&gt; [1] "25% and 75%-ile"
-#&gt; 
-#&gt; $C.b$iqr
-#&gt; iqr 
-#&gt;   1 
-#&gt; 
-#&gt; $C.b$range
-#&gt; min max 
-#&gt;   5   6 
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># `s_summary.factor`</span>
-
-<span class='co'>## Basic usage:</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 5
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0 0.6
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; </div><div class='input'><span class='co'># Empty factor returns NA-filled items.</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span>levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 0
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 0
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 0
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 0
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 0 0
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 0 0
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 0 0
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'>## Management of NA values.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"Female"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='explicit_na.html'>explicit_na</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 1
-#&gt; 
-#&gt; $count
-#&gt; $count$Female
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$Female
-#&gt; [1] 1 1
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 2
-#&gt; 
-#&gt; $count
-#&gt; $count$Female
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$`&lt;Missing&gt;`
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$Female
-#&gt; [1] 1.0 0.5
-#&gt; 
-#&gt; $count_fraction$`&lt;Missing&gt;`
-#&gt; [1] 1.0 0.5
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'>## Different denominators.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, denom <span class='op'>=</span> <span class='st'>"N_row"</span>, .N_row <span class='op'>=</span> <span class='fl'>10L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 5
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0 0.3
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0 0.1
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0 0.1
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, denom <span class='op'>=</span> <span class='st'>"N_col"</span>, .N_col <span class='op'>=</span> <span class='fl'>20L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 5
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.00 0.15
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.00 0.05
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.00 0.05
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># `s_summary.character`</span>
-
-<span class='co'>## Basic usage:</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span>, .var <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; $n
-#&gt; [1] 5
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0 0.6
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0 0.2
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span>, <span class='st'>""</span><span class='op'>)</span>, .var <span class='op'>=</span> <span class='st'>"x"</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; $n
-#&gt; [1] 6
-#&gt; 
-#&gt; $count
-#&gt; $count$a
-#&gt; [1] 3
-#&gt; 
-#&gt; $count$b
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$c
-#&gt; [1] 1
-#&gt; 
-#&gt; $count$`&lt;Missing&gt;`
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $count_fraction
-#&gt; $count_fraction$a
-#&gt; [1] 3.0 0.5
-#&gt; 
-#&gt; $count_fraction$b
-#&gt; [1] 1.0000000 0.1666667
-#&gt; 
-#&gt; $count_fraction$c
-#&gt; [1] 1.0000000 0.1666667
-#&gt; 
-#&gt; $count_fraction$`&lt;Missing&gt;`
-#&gt; [1] 1.0000000 0.1666667
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># `s_summary.logical`</span>
-
-<span class='co'>## Basic usage:</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 4
-#&gt; 
-#&gt; $count
-#&gt; [1] 3
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 3.00 0.75
-#&gt; </div><div class='input'>
-<span class='co'>## Management of NA values.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 2
-#&gt; 
-#&gt; $count
-#&gt; [1] 1
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 1.0 0.5
-#&gt; </div><div class='input'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 3
-#&gt; 
-#&gt; $count
-#&gt; [1] 1
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 1.0000000 0.3333333
-#&gt; </div><div class='input'>
-<span class='co'>## Different denominators.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, denom <span class='op'>=</span> <span class='st'>"N_row"</span>, .N_row <span class='op'>=</span> <span class='fl'>10L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 4
-#&gt; 
-#&gt; $count
-#&gt; [1] 3
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 3.0 0.3
-#&gt; </div><div class='input'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, denom <span class='op'>=</span> <span class='st'>"N_col"</span>, .N_col <span class='op'>=</span> <span class='fl'>20L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $n
-#&gt; [1] 4
-#&gt; 
-#&gt; $count
-#&gt; [1] 3
-#&gt; 
-#&gt; $count_fraction
-#&gt; [1] 3.00 0.15
-#&gt; </div><div class='input'>
-<span class='co'># `a_summary.numeric`</span>
-<span class='fu'>a_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span>, .N_row <span class='op'>=</span> <span class='fl'>20</span>, .var <span class='op'>=</span> <span class='st'>"bla"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;     row_name formatted_cell indent_mod                 row_label
-#&gt; 1          n             10          0                         n
-#&gt; 2       mean            0.1          0                      Mean
-#&gt; 3         sd              1          0                        SD
-#&gt; 4    mean_sd        0.1 (1)          0                 Mean (SD)
-#&gt; 5    mean_ci  (-0.63, 0.86)          0               Mean 95% CI
-#&gt; 6   mean_sei  (-0.22, 0.44)          0             Mean -/+ 1xSE
-#&gt; 7   mean_sdi  (-0.93, 1.16)          0             Mean -/+ 1xSD
-#&gt; 8     median            0.2          0                    Median
-#&gt; 9        mad              0          0 Median Absolute Deviation
-#&gt; 10 median_ci  (-0.62, 1.12)          0             Median 95% CI
-#&gt; 11 quantiles     -0.3 - 0.7          0           25% and 75%-ile
-#&gt; 12       iqr              1          0                       IQR
-#&gt; 13     range     -2.2 - 1.5          0                 Min - Max</div><div class='input'>
-<span class='co'># `a_summary.factor`</span>
-<span class='co'># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span>
-<span class='co'># functions can be applied correctly.</span>
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_summary"</span>, <span class='st'>"factor"</span><span class='op'>)</span>,
-  .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span>, .N_row <span class='op'>=</span> <span class='fl'>10</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod row_label
-#&gt; 1        n              5          0         n
-#&gt; 2        a              3          0         a
-#&gt; 3        b              1          0         b
-#&gt; 4        c              1          0         c
-#&gt; 5        a        3 (60%)          0         a
-#&gt; 6        b        1 (20%)          0         b
-#&gt; 7        c        1 (20%)          0         c</div><div class='input'>
-<span class='co'># `a_summary.character`</span>
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_summary"</span>, <span class='st'>"character"</span><span class='op'>)</span>,
-  .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"C"</span><span class='op'>)</span>, .var <span class='op'>=</span> <span class='st'>"x"</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span>, .N_row <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable x to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod row_label
-#&gt; 1        n              4          0         n
-#&gt; 2        A              2          0         A
-#&gt; 3        B              1          0         B
-#&gt; 4        C              1          0         C
-#&gt; 5        A        2 (50%)          0         A
-#&gt; 6        B        1 (25%)          0         B
-#&gt; 7        C        1 (25%)          0         C</div><div class='input'>
-<span class='co'># `a_summary.logical`</span>
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_summary"</span>, <span class='st'>"logical"</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='fu'>afun</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, .N_row <span class='op'>=</span> <span class='fl'>10</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;         row_name formatted_cell indent_mod      row_label
-#&gt; 1              n              5          0              n
-#&gt; 2          count              3          0          count
-#&gt; 3 count_fraction        3 (60%)          0 count_fraction</div><div class='input'>
-<span class='co'># `create_afun_summary()` to create combined `afun`</span>
-
-<span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'>create_afun_summary</span><span class='op'>(</span>
-  .stats <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .formats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>median <span class='op'>=</span> <span class='st'>"xx."</span><span class='op'>)</span>,
-  .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>median <span class='op'>=</span> <span class='st'>"My median"</span><span class='op'>)</span>,
-  .indent_mods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>median <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='co'>## Fabricated dataset.</span>
-<span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
-  PARAMCD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"lab"</span>, <span class='fl'>6</span><span class='op'>*</span><span class='fl'>3</span><span class='op'>)</span>,
-  AVISIT  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"V"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='fl'>6</span><span class='op'>)</span>,
-  ARM     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>,
-  AVAL    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span><span class='op'>:</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/analyze.html'>analyze</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVAL"</span>, afun <span class='op'>=</span> <span class='va'>afun</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                      A             B          C    
-#&gt; -------------------------------------------------------------------
-#&gt; V1                                                                 
-#&gt;   n                                  2             1          0    
-#&gt;   Mean                              7.5            3          NA   
-#&gt;   SD                                2.1            NA         NA   
-#&gt;   Mean (SD)                      7.5 (2.1)       3 (NA)    NA (NA) 
-#&gt;   Mean 95% CI                 (-11.56, 26.56)   (NA, NA)   (NA, NA)
-#&gt;   Mean -/+ 1xSE                   (6, 9)        (NA, NA)   (NA, NA)
-#&gt;   Mean -/+ 1xSD                (5.38, 9.62)     (NA, NA)   (NA, NA)
-#&gt;     My median                        8             3          NA   
-#&gt;   Median Absolute Deviation          0             0          NA   
-#&gt;   Median 95% CI                  (NA, NA)       (NA, NA)   (NA, NA)
-#&gt;   25% and 75%-ile                  6 - 9         3 - 3     NA - NA 
-#&gt;   IQR                                3             0          NA   
-#&gt;   Min - Max                        6 - 9         3 - 3     NA - NA 
-#&gt; V2                                                                 
-#&gt;   n                                  2             1          0    
-#&gt;   Mean                              6.5            2          NA   
-#&gt;   SD                                2.1            NA         NA   
-#&gt;   Mean (SD)                      6.5 (2.1)       2 (NA)    NA (NA) 
-#&gt;   Mean 95% CI                 (-12.56, 25.56)   (NA, NA)   (NA, NA)
-#&gt;   Mean -/+ 1xSE                   (5, 8)        (NA, NA)   (NA, NA)
-#&gt;   Mean -/+ 1xSD                (4.38, 8.62)     (NA, NA)   (NA, NA)
-#&gt;     My median                        6             2          NA   
-#&gt;   Median Absolute Deviation          0             0          NA   
-#&gt;   Median 95% CI                  (NA, NA)       (NA, NA)   (NA, NA)
-#&gt;   25% and 75%-ile                  5 - 8         2 - 2     NA - NA 
-#&gt;   IQR                                3             0          NA   
-#&gt;   Min - Max                        5 - 8         2 - 2     NA - NA 
-#&gt; V3                                                                 
-#&gt;   n                                  2             1          0    
-#&gt;   Mean                              5.5            1          NA   
-#&gt;   SD                                2.1            NA         NA   
-#&gt;   Mean (SD)                      5.5 (2.1)       1 (NA)    NA (NA) 
-#&gt;   Mean 95% CI                 (-13.56, 24.56)   (NA, NA)   (NA, NA)
-#&gt;   Mean -/+ 1xSE                   (4, 7)        (NA, NA)   (NA, NA)
-#&gt;   Mean -/+ 1xSD                (3.38, 7.62)     (NA, NA)   (NA, NA)
-#&gt;     My median                        6             1          NA   
-#&gt;   Median Absolute Deviation          0             0          NA   
-#&gt;   Median 95% CI                  (NA, NA)       (NA, NA)   (NA, NA)
-#&gt;   25% and 75%-ile                  4 - 7         1 - 1     NA - NA 
-#&gt;   IQR                                3             0          NA   
-#&gt;   Min - Max                        4 - 7         1 - 1     NA - NA </div><div class='input'>
-
-<span class='co'># `summarize_vars()` in rtables pipelines</span>
-
-<span class='co'>## Default output within a `rtables` pipeline.</span>
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_vars</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVAL"</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                   A         B         C   
-#&gt; ------------------------------------------
-#&gt; V1                                        
-#&gt;   n               2         1         0   
-#&gt;   Mean (SD)   7.5 (2.1)   3 (NA)   NA (NA)
-#&gt;   Median         7.5        3        NA   
-#&gt;   Min - Max     6 - 9     3 - 3    NA - NA
-#&gt; V2                                        
-#&gt;   n               2         1         0   
-#&gt;   Mean (SD)   6.5 (2.1)   2 (NA)   NA (NA)
-#&gt;   Median         6.5        2        NA   
-#&gt;   Min - Max     5 - 8     2 - 2    NA - NA
-#&gt; V3                                        
-#&gt;   n               2         1         0   
-#&gt;   Mean (SD)   5.5 (2.1)   1 (NA)   NA (NA)
-#&gt;   Median         5.5        1        NA   
-#&gt;   Min - Max     4 - 7     1 - 1    NA - NA</div><div class='input'>
-<span class='co'>## Select and format statistics output.</span>
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_vars</span><span class='op'>(</span>
-    vars <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-    .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n"</span>, <span class='st'>"mean_sd"</span>, <span class='st'>"quantiles"</span><span class='op'>)</span>,
-    .formats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean_sd"</span> <span class='op'>=</span> <span class='st'>"xx.x, xx.x"</span><span class='op'>)</span>,
-    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='st'>"n"</span>, mean_sd <span class='op'>=</span> <span class='st'>"Mean, SD"</span>, quantiles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Q1 - Q3"</span><span class='op'>)</span><span class='op'>)</span>
-  <span class='op'>)</span>
-
-<span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/as_html.html'>as_html</a></span><span class='op'>(</span><span class='va'>results</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;div class="rtables-all-parts-block rtables-container"&gt;
-#&gt;   &lt;table class="table table-condensed table-hover"&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;th style="white-space:pre;"&gt;&lt;/th&gt;
-#&gt;       &lt;th class="text-center"&gt;A&lt;/th&gt;
-#&gt;       &lt;th class="text-center"&gt;B&lt;/th&gt;
-#&gt;       &lt;th class="text-center"&gt;C&lt;/th&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left"&gt;V1&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;2&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;1&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;0&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;7.5, 2.1&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;3, NA&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;6 - 9&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;3 - 3&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left"&gt;V2&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;2&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;1&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;0&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;6.5, 2.1&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;2, NA&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;5 - 8&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;2 - 2&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left"&gt;V3&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;2&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;1&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;0&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;5.5, 2.1&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;1, NA&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;tr&gt;
-#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;4 - 7&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;1 - 1&lt;/td&gt;
-#&gt;       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;
-#&gt;     &lt;/tr&gt;
-#&gt;     &lt;caption style="caption-side:top;"&gt;&lt;div class="rtables-titles-block rtables-container"&gt;
-#&gt;         &lt;div class="rtables-main-titles-block rtables-container"&gt;
-#&gt;           &lt;p class="rtables-main-title"&gt;&lt;/p&gt;
-#&gt;         &lt;/div&gt;
-#&gt;         &lt;div class="rtables-subtitles-block rtables-container"&gt;&lt;/div&gt;
-#&gt;       &lt;/div&gt;
-#&gt;     &lt;/caption&gt;
-#&gt;   &lt;/table&gt;
-#&gt;   &lt;div class="rtables-footers-block rtables-container"&gt;&lt;/div&gt;
-#&gt; &lt;/div&gt;</div><div class='input'>
-<span class='co'>## Use arguments interpreted by `s_summary`.</span>
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_vars</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVAL"</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-
-<span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span>
-
-<span class='co'>## Handle `NA` levels first when summarizing factors.</span>
-<span class='va'>dta_test</span><span class='op'>$</span><span class='va'>AVISIT</span> <span class='op'>&lt;-</span> <span class='cn'>NA_character_</span>
-<span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='df_explicit_na.html'>df_explicit_na</a></span><span class='op'>(</span><span class='va'>dta_test</span><span class='op'>)</span>
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_vars</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVISIT"</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-
-<span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span>
-
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/Viewer.html'>Viewer</a></span><span class='op'>(</span><span class='va'>results</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># `s_summary.numeric`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Basic usage: empty numeric returns NA-filled items.</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean   sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          NA          NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Management of NA values.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA_real_</span>, <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean   sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    1   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          NA          NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1   1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean   sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          NA          NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA_real_</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, stats <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1.5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.7071068 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      mean        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1.5000000 0.7071068 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -4.853102    7.853102 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            1            2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    0.7928932    2.2071068 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    1.5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1   2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Benefits in `rtables` contructions:</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  Group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, each <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>  sub_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,</span>
+<span class='r-in'>  x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## The summary obtained in with `rtables`:</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"Group"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"sub_group"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/analyze.html'>analyze</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"x"</span>, afun <span class='op'>=</span> <span class='va'>s_summary</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                      A                      B                      C                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> a                                                                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                                  2                      1                      0                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   mean                              1.5                     3                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   sd                         0.707106781186548             NA                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   mean_sd                 1.5, 0.707106781186548          3, NA                    NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean 95% CI       -4.85310236808735, 7.85310236808735    NA                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSE                    1, 2                    NA                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSD     0.792893218813452, 2.20710678118655    NA                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   median                            1.5                     3                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   mad                                0                      0                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median 95% CI                     NA                     NA                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                  1, 2                   3, 3                     NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   iqr                                1                      0                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   range                            1, 2                   3, 3                     NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> b                                                                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                                  0                      1                      2                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   mean                              NA                      4                     5.5                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   sd                                NA                     NA              0.707106781186548          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   mean_sd                           NA                    4, NA          5.5, 0.707106781186548       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean 95% CI                       NA                     NA     -0.853102368087347, 11.8531023680873</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSE                     NA                     NA                     5, 6                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSD                     NA                     NA      4.79289321881345, 6.20710678118655 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   median                            NA                      4                     5.5                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   mad                               NA                      0                      0                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median 95% CI                     NA                     NA                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                   NA                    4, 4                    5, 6                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   iqr                               NA                      0                      1                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   range                             NA                    4, 4                    5, 6                </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## By comparison with `lapply`:</span></span>
+<span class='r-in'><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span><span class='op'>(</span><span class='va'>dta_test</span>, f <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span><span class='op'>(</span><span class='va'>dta_test</span>, <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>Group</span>, <span class='va'>sub_group</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>X</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1.5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.7071068 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      mean        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1.5000000 0.7071068 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -4.853102    7.853102 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            1            2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    0.7928932    2.2071068 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    1.5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1   2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean   sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    3   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          NA          NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             3             3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   3   3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean   sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          NA          NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean   sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   NA   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          NA          NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean   sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    4   NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          NA          NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           NA           NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             4             4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   4   4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  5.5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.7071068 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$mean_sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      mean        sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5.5000000 0.7071068 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$mean_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  -0.8531024  11.8531024 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$mean_sei</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sei_lwr mean_sei_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            5            6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$mean_sdi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4.792893     6.207107 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Mean -/+ 1xSD"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    5.5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$mad</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mad </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$median_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> median_ci_lwr median_ci_upr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            NA            NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"conf_level")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Median 95% CI"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$quantiles</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> quantile_0.25 quantile_0.75 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             5             6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "25% and 75%-ile"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$iqr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> iqr </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$range</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   5   6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `s_summary.factor`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Basic usage:</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'># Empty factor returns NA-filled items.</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span>levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Management of NA values.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"Female"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='explicit_na.html'>explicit_na</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$Female</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$Female</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$Female</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$`&lt;Missing&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$Female</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$`&lt;Missing&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Different denominators.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, denom <span class='op'>=</span> <span class='st'>"N_row"</span>, .N_row <span class='op'>=</span> <span class='fl'>10L</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, denom <span class='op'>=</span> <span class='st'>"N_col"</span>, .N_col <span class='op'>=</span> <span class='fl'>20L</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.00 0.15</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.00 0.05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.00 0.05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `s_summary.character`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Basic usage:</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span>, .var <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span>, <span class='st'>""</span><span class='op'>)</span>, .var <span class='op'>=</span> <span class='st'>"x"</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count$`&lt;Missing&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.1666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.1666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction$`&lt;Missing&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.1666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `s_summary.logical`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Basic usage:</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.00 0.75</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Management of NA values.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.0000000 0.3333333</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Different denominators.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, denom <span class='op'>=</span> <span class='st'>"N_row"</span>, .N_row <span class='op'>=</span> <span class='fl'>10L</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.0 0.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, denom <span class='op'>=</span> <span class='st'>"N_col"</span>, .N_col <span class='op'>=</span> <span class='fl'>20L</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $count_fraction</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3.00 0.15</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `a_summary.numeric`</span></span>
+<span class='r-in'><span class='fu'>a_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span>, .N_row <span class='op'>=</span> <span class='fl'>20</span>, .var <span class='op'>=</span> <span class='st'>"bla"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     row_name formatted_cell indent_mod                 row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1          n             10          0                         n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       mean            0.1          0                      Mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         sd              1          0                        SD</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4    mean_sd        0.1 (1)          0                 Mean (SD)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    mean_ci  (-0.63, 0.86)          0               Mean 95% CI</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   mean_sei  (-0.22, 0.44)          0             Mean -/+ 1xSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7   mean_sdi  (-0.93, 1.16)          0             Mean -/+ 1xSD</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8     median            0.2          0                    Median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9        mad              0          0 Median Absolute Deviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 median_ci  (-0.62, 1.12)          0             Median 95% CI</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 quantiles     -0.3 - 0.7          0           25% and 75%-ile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12       iqr              1          0                       IQR</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13     range     -2.2 - 1.5          0                 Min - Max</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `a_summary.factor`</span></span>
+<span class='r-in'><span class='co'># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span>
+<span class='r-in'><span class='co'># functions can be applied correctly.</span></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_summary"</span>, <span class='st'>"factor"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"a"</span><span class='op'>)</span><span class='op'>)</span>, .N_row <span class='op'>=</span> <span class='fl'>10</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        n              5          0         n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2        a              3          0         a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        b              1          0         b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        c              1          0         c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5        a        3 (60%)          0         a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6        b        1 (20%)          0         b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7        c        1 (20%)          0         c</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `a_summary.character`</span></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_summary"</span>, <span class='st'>"character"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .ungroup_stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"count_fraction"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"C"</span><span class='op'>)</span>, .var <span class='op'>=</span> <span class='st'>"x"</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span>, .N_row <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        n              4          0         n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2        A              2          0         A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        B              1          0         B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4        C              1          0         C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5        A        2 (50%)          0         A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6        B        1 (25%)          0         B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7        C        1 (25%)          0         C</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `a_summary.logical`</span></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/make_afun.html'>make_afun</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/getS3method.html'>getS3method</a></span><span class='op'>(</span><span class='st'>"a_summary"</span>, <span class='st'>"logical"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>afun</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, .N_row <span class='op'>=</span> <span class='fl'>10</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         row_name formatted_cell indent_mod      row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1              n              5          0              n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2          count              3          0          count</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 count_fraction        3 (60%)          0 count_fraction</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `create_afun_summary()` to create combined `afun`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>afun</span> <span class='op'>&lt;-</span> <span class='fu'>create_afun_summary</span><span class='op'>(</span></span>
+<span class='r-in'>  .stats <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>  .formats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>median <span class='op'>=</span> <span class='st'>"xx."</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>median <span class='op'>=</span> <span class='st'>"My median"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .indent_mods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>median <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## Fabricated dataset.</span></span>
+<span class='r-in'><span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,</span>
+<span class='r-in'>  PARAMCD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"lab"</span>, <span class='fl'>6</span><span class='op'>*</span><span class='fl'>3</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AVISIT  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"V"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>  ARM     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AVAL    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span><span class='op'>:</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/analyze.html'>analyze</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVAL"</span>, afun <span class='op'>=</span> <span class='va'>afun</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                      A             B          C    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V1                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                                  2             1          0    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean                              7.5            3          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   SD                                2.1            NA         NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)                      7.5 (2.1)       3 (NA)    NA (NA) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean 95% CI                 (-11.56, 26.56)   (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSE                   (6, 9)        (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSD                (5.38, 9.62)     (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     My median                        8             3          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median Absolute Deviation          0             0          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median 95% CI                  (NA, NA)       (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                  6 - 9         3 - 3     NA - NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   IQR                                3             0          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max                        6 - 9         3 - 3     NA - NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V2                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                                  2             1          0    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean                              6.5            2          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   SD                                2.1            NA         NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)                      6.5 (2.1)       2 (NA)    NA (NA) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean 95% CI                 (-12.56, 25.56)   (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSE                   (5, 8)        (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSD                (4.38, 8.62)     (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     My median                        6             2          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median Absolute Deviation          0             0          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median 95% CI                  (NA, NA)       (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                  5 - 8         2 - 2     NA - NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   IQR                                3             0          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max                        5 - 8         2 - 2     NA - NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V3                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n                                  2             1          0    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean                              5.5            1          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   SD                                2.1            NA         NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)                      5.5 (2.1)       1 (NA)    NA (NA) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean 95% CI                 (-13.56, 24.56)   (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSE                   (4, 7)        (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean -/+ 1xSD                (3.38, 7.62)     (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     My median                        6             1          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median Absolute Deviation          0             0          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median 95% CI                  (NA, NA)       (NA, NA)   (NA, NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                  4 - 7         1 - 1     NA - NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   IQR                                3             0          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max                        4 - 7         1 - 1     NA - NA </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `summarize_vars()` in rtables pipelines</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Default output within a `rtables` pipeline.</span></span>
+<span class='r-in'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_vars</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVAL"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   A         B         C   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ——————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V1                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n               2         1         0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)   7.5 (2.1)   3 (NA)   NA (NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median         7.5        3        NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max     6 - 9     3 - 3    NA - NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V2                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n               2         1         0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)   6.5 (2.1)   2 (NA)   NA (NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median         6.5        2        NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max     5 - 8     2 - 2    NA - NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V3                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n               2         1         0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)   5.5 (2.1)   1 (NA)   NA (NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median         5.5        1        NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max     4 - 7     1 - 1    NA - NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Select and format statistics output.</span></span>
+<span class='r-in'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_vars</span><span class='op'>(</span></span>
+<span class='r-in'>    vars <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>    .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n"</span>, <span class='st'>"mean_sd"</span>, <span class='st'>"quantiles"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .formats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean_sd"</span> <span class='op'>=</span> <span class='st'>"xx.x, xx.x"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='st'>"n"</span>, mean_sd <span class='op'>=</span> <span class='st'>"Mean, SD"</span>, quantiles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Q1 - Q3"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/as_html.html'>as_html</a></span><span class='op'>(</span><span class='va'>results</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="rtables-all-parts-block rtables-container"&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;table class="table table-condensed table-hover"&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;th style="white-space:pre;"&gt;&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;th class="text-center"&gt;A&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;th class="text-center"&gt;B&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;th class="text-center"&gt;C&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left"&gt;V1&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;2&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;1&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;0&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;7.5, 2.1&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;3, NA&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;6 - 9&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;3 - 3&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left"&gt;V2&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;2&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;1&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;0&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;6.5, 2.1&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;2, NA&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;5 - 8&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;2 - 2&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left"&gt;V3&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;2&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;1&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;0&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;5.5, 2.1&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;1, NA&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;4 - 7&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;1 - 1&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;caption style="caption-side:top;"&gt;&lt;div class="rtables-titles-block rtables-container"&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;div class="rtables-main-titles-block rtables-container"&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           &lt;p class="rtables-main-title"&gt;&lt;/p&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;div class="rtables-subtitles-block rtables-container"&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/caption&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;/table&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;div class="rtables-footers-block rtables-container"&gt;&lt;/div&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;/div&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Use arguments interpreted by `s_summary`.</span></span>
+<span class='r-in'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_vars</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVAL"</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Handle `NA` levels first when summarizing factors.</span></span>
+<span class='r-in'><span class='va'>dta_test</span><span class='op'>$</span><span class='va'>AVISIT</span> <span class='op'>&lt;-</span> <span class='cn'>NA_character_</span></span>
+<span class='r-in'><span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='df_explicit_na.html'>df_explicit_na</a></span><span class='op'>(</span><span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_vars</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVISIT"</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/Viewer.html'>Viewer</a></span><span class='op'>(</span><span class='va'>results</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -232,137 +232,141 @@ created by combining multiple subtables.</p>
 <p><code><a href='h_response_biomarkers_subgroups.html'>h_tab_rsp_one_biomarker()</a></code> which is used internally.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Testing dataset.</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://forcats.tidyverse.org'>forcats</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span>
-
-<span class='va'>adrs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adrs</span>
-<span class='va'>adrs_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adrs</span><span class='op'>)</span>
-
-<span class='va'>adrs_f</span> <span class='op'>&lt;-</span> <span class='va'>adrs</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"BESRSPI"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>AVALC</span> <span class='op'>==</span> <span class='st'>"CR"</span><span class='op'>)</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adrs_f</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>adrs_labels</span>, <span class='st'>"Response"</span><span class='op'>)</span>
-
-<span class='co'># Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,</span>
-<span class='co'># in logistic regression models with one covariate `RACE`. The subgroups</span>
-<span class='co'># are defined by the levels of `BMRKR2`.</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>extract_rsp_biomarkers</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    rsp <span class='op'>=</span> <span class='st'>"rsp"</span>,
-    biomarkers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BMRKR1"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,
-    covariates <span class='op'>=</span> <span class='st'>"SEX"</span>,
-    subgroups <span class='op'>=</span> <span class='st'>"BMRKR2"</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>adrs_f</span>
-<span class='op'>)</span>
-<span class='va'>df</span>
-</div><div class='output co'>#&gt;   biomarker             biomarker_label n_tot n_rsp      prop        or
-#&gt; 1    BMRKR1 Continous Level Biomarker 1   400   336 0.8400000 1.0573123
-#&gt; 2       AGE                         Age   400   336 0.8400000 0.9989522
-#&gt; 3    BMRKR1 Continous Level Biomarker 1   135   120 0.8888889 1.0630022
-#&gt; 4       AGE                         Age   135   120 0.8888889 1.0414591
-#&gt; 5    BMRKR1 Continous Level Biomarker 1   135   110 0.8148148 1.0224322
-#&gt; 6       AGE                         Age   135   110 0.8148148 1.0206702
-#&gt; 7    BMRKR1 Continous Level Biomarker 1   130   106 0.8153846 1.1131370
-#&gt; 8       AGE                         Age   130   106 0.8153846 0.9688377
-#&gt;         lcl      ucl conf_level      pval     pval_label     subgroup    var
-#&gt; 1 0.9715084 1.150694       0.95 0.1968485 p-value (Wald) All Patients    ALL
-#&gt; 2 0.9634618 1.035750       0.95 0.9547035 p-value (Wald) All Patients    ALL
-#&gt; 3 0.8880719 1.272390       0.95 0.5054054 p-value (Wald)          LOW BMRKR2
-#&gt; 4 0.9606402 1.129077       0.95 0.3243039 p-value (Wald)          LOW BMRKR2
-#&gt; 5 0.9016818 1.159353       0.95 0.7293672 p-value (Wald)       MEDIUM BMRKR2
-#&gt; 6 0.9562410 1.089440       0.95 0.5385665 p-value (Wald)       MEDIUM BMRKR2
-#&gt; 7 0.9550957 1.297330       0.95 0.1700950 p-value (Wald)         HIGH BMRKR2
-#&gt; 8 0.9195637 1.020752       0.95 0.2345489 p-value (Wald)         HIGH BMRKR2
-#&gt;                       var_label row_type
-#&gt; 1                  All Patients  content
-#&gt; 2                  All Patients  content
-#&gt; 3 Categorical Level Biomarker 2 analysis
-#&gt; 4 Categorical Level Biomarker 2 analysis
-#&gt; 5 Categorical Level Biomarker 2 analysis
-#&gt; 6 Categorical Level Biomarker 2 analysis
-#&gt; 7 Categorical Level Biomarker 2 analysis
-#&gt; 8 Categorical Level Biomarker 2 analysis</div><div class='input'>
-<span class='co'># Here we group the levels of `BMRKR2` manually, and we add a stratification</span>
-<span class='co'># variable `STRATA1`. We also here use a continuous variable `EOSDY`</span>
-<span class='co'># which is then binarized internally (response is defined as this variable</span>
-<span class='co'># being larger than 500).</span>
-<span class='va'>df_grouped</span> <span class='op'>&lt;-</span> <span class='fu'>extract_rsp_biomarkers</span><span class='op'>(</span>
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    rsp <span class='op'>=</span> <span class='st'>"EOSDY"</span>,
-    biomarkers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BMRKR1"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,
-    covariates <span class='op'>=</span> <span class='st'>"SEX"</span>,
-    subgroups <span class='op'>=</span> <span class='st'>"BMRKR2"</span>,
-    strat <span class='op'>=</span> <span class='st'>"STRATA1"</span>
-  <span class='op'>)</span>,
-  data <span class='op'>=</span> <span class='va'>adrs_f</span>,
-  groups_lists <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    BMRKR2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-      <span class='st'>"low"</span> <span class='op'>=</span> <span class='st'>"LOW"</span>,
-      <span class='st'>"low/medium"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span><span class='op'>)</span>,
-      <span class='st'>"low/medium/high"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span>, <span class='st'>"HIGH"</span><span class='op'>)</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='control_logistic.html'>control_logistic</a></span><span class='op'>(</span>
-    response_definition <span class='op'>=</span> <span class='st'>"I(response &gt; 500)"</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>df_grouped</span>
-</div><div class='output co'>#&gt;   biomarker             biomarker_label n_tot n_rsp      prop        or
-#&gt; 1    BMRKR1 Continous Level Biomarker 1   330   243 0.7363636 0.9908758
-#&gt; 2       AGE                         Age   330   243 0.7363636 0.9693622
-#&gt; 3    BMRKR1 Continous Level Biomarker 1   111    83 0.7477477 0.9920282
-#&gt; 4       AGE                         Age   111    83 0.7477477 0.9706655
-#&gt; 5    BMRKR1 Continous Level Biomarker 1   224   169 0.7544643 0.9665936
-#&gt; 6       AGE                         Age   224   169 0.7544643 0.9628941
-#&gt; 7    BMRKR1 Continous Level Biomarker 1   330   243 0.7363636 0.9908758
-#&gt; 8       AGE                         Age   330   243 0.7363636 0.9693622
-#&gt;         lcl      ucl conf_level       pval     pval_label        subgroup
-#&gt; 1 0.9206480 1.066461       0.95 0.80693124 p-value (Wald)    All Patients
-#&gt; 2 0.9370938 1.002742       0.95 0.07163062 p-value (Wald)    All Patients
-#&gt; 3 0.8686732 1.132900       0.95 0.90595776 p-value (Wald)             low
-#&gt; 4 0.9104004 1.034920       0.95 0.36260707 p-value (Wald)             low
-#&gt; 5 0.8848717 1.055863       0.95 0.45092396 p-value (Wald)      low/medium
-#&gt; 6 0.9206058 1.007125       0.95 0.09891562 p-value (Wald)      low/medium
-#&gt; 7 0.9206480 1.066461       0.95 0.80693124 p-value (Wald) low/medium/high
-#&gt; 8 0.9370938 1.002742       0.95 0.07163062 p-value (Wald) low/medium/high
-#&gt;      var                     var_label row_type
-#&gt; 1    ALL                  All Patients  content
-#&gt; 2    ALL                  All Patients  content
-#&gt; 3 BMRKR2 Categorical Level Biomarker 2 analysis
-#&gt; 4 BMRKR2 Categorical Level Biomarker 2 analysis
-#&gt; 5 BMRKR2 Categorical Level Biomarker 2 analysis
-#&gt; 6 BMRKR2 Categorical Level Biomarker 2 analysis
-#&gt; 7 BMRKR2 Categorical Level Biomarker 2 analysis
-#&gt; 8 BMRKR2 Categorical Level Biomarker 2 analysis</div><div class='input'>
-<span class='co'>## Table with default columns.</span>
-<span class='fu'>tabulate_rsp_biomarkers</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                   Total n   Responders   Response (%)   Odds Ratio      95% CI      p-value (Wald)
-#&gt; ------------------------------------------------------------------------------------------------------------------
-#&gt; Age                                                                                                               
-#&gt;   All Patients                      400        336           84%           1.00      (0.96, 1.04)       0.9547    
-#&gt;   Categorical Level Biomarker 2                                                                                   
-#&gt;     LOW                             135        120          88.9%          1.04      (0.96, 1.13)       0.3243    
-#&gt;     MEDIUM                          135        110          81.5%          1.02      (0.96, 1.09)       0.5386    
-#&gt;     HIGH                            130        106          81.5%          0.97      (0.92, 1.02)       0.2345    
-#&gt; Continous Level Biomarker 1                                                                                       
-#&gt;   All Patients                      400        336           84%           1.06      (0.97, 1.15)       0.1968    
-#&gt;   Categorical Level Biomarker 2                                                                                   
-#&gt;     LOW                             135        120          88.9%          1.06      (0.89, 1.27)       0.5054    
-#&gt;     MEDIUM                          135        110          81.5%          1.02      (0.90, 1.16)       0.7294    
-#&gt;     HIGH                            130        106          81.5%          1.11      (0.96, 1.30)       0.1701    </div><div class='input'>
-<span class='co'>## Table with a manually chosen set of columns: leave out "pval", reorder.</span>
-<span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'>tabulate_rsp_biomarkers</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='va'>df</span>,
-  vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n_rsp"</span>, <span class='st'>"ci"</span>, <span class='st'>"n_tot"</span>, <span class='st'>"prop"</span>, <span class='st'>"or"</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'>## Finally produce the forest plot.</span>
-<span class='fu'><a href='g_forest.html'>g_forest</a></span><span class='op'>(</span><span class='va'>tab</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.7</span>, <span class='fl'>1.4</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='response_biomarkers_subgroups-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Testing dataset.</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://forcats.tidyverse.org'>forcats</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>adrs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adrs</span></span>
+<span class='r-in'><span class='va'>adrs_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adrs</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>adrs_f</span> <span class='op'>&lt;-</span> <span class='va'>adrs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"BESRSPI"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rsp <span class='op'>=</span> <span class='va'>AVALC</span> <span class='op'>==</span> <span class='st'>"CR"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/var_labels.html'>var_labels</a></span><span class='op'>(</span><span class='va'>adrs_f</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>adrs_labels</span>, <span class='st'>"Response"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,</span></span>
+<span class='r-in'><span class='co'># in logistic regression models with one covariate `RACE`. The subgroups</span></span>
+<span class='r-in'><span class='co'># are defined by the levels of `BMRKR2`.</span></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>extract_rsp_biomarkers</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    rsp <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>    biomarkers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BMRKR1"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='st'>"SEX"</span>,</span>
+<span class='r-in'>    subgroups <span class='op'>=</span> <span class='st'>"BMRKR2"</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adrs_f</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   biomarker             biomarker_label n_tot n_rsp      prop        or</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1    BMRKR1 Continous Level Biomarker 1   400   336 0.8400000 1.0573123</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       AGE                         Age   400   336 0.8400000 0.9989522</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3    BMRKR1 Continous Level Biomarker 1   135   120 0.8888889 1.0630022</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4       AGE                         Age   135   120 0.8888889 1.0414591</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    BMRKR1 Continous Level Biomarker 1   135   110 0.8148148 1.0224322</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6       AGE                         Age   135   110 0.8148148 1.0206702</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7    BMRKR1 Continous Level Biomarker 1   130   106 0.8153846 1.1131370</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8       AGE                         Age   130   106 0.8153846 0.9688377</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         lcl      ucl conf_level      pval     pval_label     subgroup    var</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 0.9715084 1.150694       0.95 0.1968485 p-value (Wald) All Patients    ALL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 0.9634618 1.035750       0.95 0.9547035 p-value (Wald) All Patients    ALL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 0.8880719 1.272390       0.95 0.5054054 p-value (Wald)          LOW BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 0.9606402 1.129077       0.95 0.3243039 p-value (Wald)          LOW BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 0.9016818 1.159353       0.95 0.7293672 p-value (Wald)       MEDIUM BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 0.9562410 1.089440       0.95 0.5385665 p-value (Wald)       MEDIUM BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7 0.9550957 1.297330       0.95 0.1700950 p-value (Wald)         HIGH BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8 0.9195637 1.020752       0.95 0.2345489 p-value (Wald)         HIGH BMRKR2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                       var_label row_type</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                  All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                  All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8 Categorical Level Biomarker 2 analysis</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Here we group the levels of `BMRKR2` manually, and we add a stratification</span></span>
+<span class='r-in'><span class='co'># variable `STRATA1`. We also here use a continuous variable `EOSDY`</span></span>
+<span class='r-in'><span class='co'># which is then binarized internally (response is defined as this variable</span></span>
+<span class='r-in'><span class='co'># being larger than 500).</span></span>
+<span class='r-in'><span class='va'>df_grouped</span> <span class='op'>&lt;-</span> <span class='fu'>extract_rsp_biomarkers</span><span class='op'>(</span></span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    rsp <span class='op'>=</span> <span class='st'>"EOSDY"</span>,</span>
+<span class='r-in'>    biomarkers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BMRKR1"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    covariates <span class='op'>=</span> <span class='st'>"SEX"</span>,</span>
+<span class='r-in'>    subgroups <span class='op'>=</span> <span class='st'>"BMRKR2"</span>,</span>
+<span class='r-in'>    strat <span class='op'>=</span> <span class='st'>"STRATA1"</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>adrs_f</span>,</span>
+<span class='r-in'>  groups_lists <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    BMRKR2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>      <span class='st'>"low"</span> <span class='op'>=</span> <span class='st'>"LOW"</span>,</span>
+<span class='r-in'>      <span class='st'>"low/medium"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span><span class='op'>)</span>,</span>
+<span class='r-in'>      <span class='st'>"low/medium/high"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"MEDIUM"</span>, <span class='st'>"HIGH"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  control <span class='op'>=</span> <span class='fu'><a href='control_logistic.html'>control_logistic</a></span><span class='op'>(</span></span>
+<span class='r-in'>    response_definition <span class='op'>=</span> <span class='st'>"I(response &gt; 500)"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df_grouped</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   biomarker             biomarker_label n_tot n_rsp      prop        or</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1    BMRKR1 Continous Level Biomarker 1   330   243 0.7363636 0.9908758</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       AGE                         Age   330   243 0.7363636 0.9693622</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3    BMRKR1 Continous Level Biomarker 1   111    83 0.7477477 0.9920282</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4       AGE                         Age   111    83 0.7477477 0.9706655</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    BMRKR1 Continous Level Biomarker 1   224   169 0.7544643 0.9665936</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6       AGE                         Age   224   169 0.7544643 0.9628941</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7    BMRKR1 Continous Level Biomarker 1   330   243 0.7363636 0.9908758</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8       AGE                         Age   330   243 0.7363636 0.9693622</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         lcl      ucl conf_level       pval     pval_label        subgroup</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 0.9206480 1.066461       0.95 0.80693124 p-value (Wald)    All Patients</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 0.9370938 1.002742       0.95 0.07163062 p-value (Wald)    All Patients</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 0.8686732 1.132900       0.95 0.90595776 p-value (Wald)             low</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 0.9104004 1.034920       0.95 0.36260707 p-value (Wald)             low</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 0.8848717 1.055863       0.95 0.45092396 p-value (Wald)      low/medium</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 0.9206058 1.007125       0.95 0.09891562 p-value (Wald)      low/medium</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7 0.9206480 1.066461       0.95 0.80693124 p-value (Wald) low/medium/high</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8 0.9370938 1.002742       0.95 0.07163062 p-value (Wald) low/medium/high</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      var                     var_label row_type</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1    ALL                  All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2    ALL                  All Patients  content</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7 BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8 BMRKR2 Categorical Level Biomarker 2 analysis</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Table with default columns.</span></span>
+<span class='r-in'><span class='fu'>tabulate_rsp_biomarkers</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   Total n   Responders   Response (%)   Odds Ratio      95% CI      p-value (Wald)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Age                                                                                                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   All Patients                      400        336           84%           1.00      (0.96, 1.04)       0.9547    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Categorical Level Biomarker 2                                                                                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     LOW                             135        120          88.9%          1.04      (0.96, 1.13)       0.3243    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     MEDIUM                          135        110          81.5%          1.02      (0.96, 1.09)       0.5386    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     HIGH                            130        106          81.5%          0.97      (0.92, 1.02)       0.2345    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Continous Level Biomarker 1                                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   All Patients                      400        336           84%           1.06      (0.97, 1.15)       0.1968    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Categorical Level Biomarker 2                                                                                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     LOW                             135        120          88.9%          1.06      (0.89, 1.27)       0.5054    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     MEDIUM                          135        110          81.5%          1.02      (0.90, 1.16)       0.7294    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     HIGH                            130        106          81.5%          1.11      (0.96, 1.30)       0.1701    </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Table with a manually chosen set of columns: leave out "pval", reorder.</span></span>
+<span class='r-in'><span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'>tabulate_rsp_biomarkers</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='va'>df</span>,</span>
+<span class='r-in'>  vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n_rsp"</span>, <span class='st'>"ci"</span>, <span class='st'>"n_tot"</span>, <span class='st'>"prop"</span>, <span class='st'>"or"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Finally produce the forest plot.</span></span>
+<span class='r-in'><span class='fu'><a href='g_forest.html'>g_forest</a></span><span class='op'>(</span><span class='va'>tab</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.7</span>, <span class='fl'>1.4</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='response_biomarkers_subgroups-1.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

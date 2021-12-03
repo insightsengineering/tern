@@ -201,90 +201,93 @@ Additional standard formatting arguments are available.</p>
     <div class='dont-index'><p><code><a href='https://roche.github.io/rtables/reference/split_cols_by_multivar.html'>rtables::split_cols_by_multivar()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
-  PARAMCD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"lab"</span>, <span class='fl'>6</span><span class='op'>*</span><span class='fl'>3</span><span class='op'>)</span>,
-  AVISIT <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"V"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='fl'>6</span><span class='op'>)</span>,
-  ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>,
-  AVAL <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span><span class='op'>:</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>,
-  CHG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>9</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'>## Default output within a `rtables` pipeline.</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by_multivar.html'>split_cols_by_multivar</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_colvars</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>dta_test</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                         A                    B                  C        
-#&gt;                 AVAL         CHG       AVAL     CHG      AVAL       CHG  
-#&gt; -------------------------------------------------------------------------
-#&gt; V1                                                                       
-#&gt;   n               2           2         1        1         0         0   
-#&gt;   Mean (SD)   7.5 (2.1)   2.5 (2.1)   3 (NA)   7 (NA)   NA (NA)   NA (NA)
-#&gt;   Median         7.5         2.5        3        7        NA        NA   
-#&gt;   Min - Max     6 - 9       1 - 4     3 - 3    7 - 7    NA - NA   NA - NA
-#&gt; V2                                                                       
-#&gt;   n               2           2         1        1         0         0   
-#&gt;   Mean (SD)   6.5 (2.1)   3.5 (2.1)   2 (NA)   8 (NA)   NA (NA)   NA (NA)
-#&gt;   Median         6.5         3.5        2        8        NA        NA   
-#&gt;   Min - Max     5 - 8       2 - 5     2 - 2    8 - 8    NA - NA   NA - NA
-#&gt; V3                                                                       
-#&gt;   n               2           2         1        1         0         0   
-#&gt;   Mean (SD)   5.5 (2.1)   4.5 (2.1)   1 (NA)   9 (NA)   NA (NA)   NA (NA)
-#&gt;   Median         5.5         4.5        1        9        NA        NA   
-#&gt;   Min - Max     4 - 7       3 - 6     1 - 1    9 - 9    NA - NA   NA - NA</div><div class='input'>
-<span class='co'>## Selection of statistics, formats and labels also work.</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by_multivar.html'>split_cols_by_multivar</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_colvars</span><span class='op'>(</span>
-    .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n"</span>, <span class='st'>"mean_sd"</span><span class='op'>)</span>,
-    .formats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean_sd"</span> <span class='op'>=</span> <span class='st'>"xx.x, xx.x"</span><span class='op'>)</span>,
-    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='st'>"n"</span>, mean_sd <span class='op'>=</span> <span class='st'>"Mean, SD"</span><span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>dta_test</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                       A                  B                C       
-#&gt;                AVAL       CHG      AVAL     CHG     AVAL     CHG  
-#&gt; ------------------------------------------------------------------
-#&gt; V1                                                                
-#&gt;   n             2          2         1       1       0        0   
-#&gt;   Mean, SD   7.5, 2.1   2.5, 2.1   3, NA   7, NA   NA, NA   NA, NA
-#&gt; V2                                                                
-#&gt;   n             2          2         1       1       0        0   
-#&gt;   Mean, SD   6.5, 2.1   3.5, 2.1   2, NA   8, NA   NA, NA   NA, NA
-#&gt; V3                                                                
-#&gt;   n             2          2         1       1       0        0   
-#&gt;   Mean, SD   5.5, 2.1   4.5, 2.1   1, NA   9, NA   NA, NA   NA, NA</div><div class='input'>
-<span class='co'>## Use arguments interpreted by `s_summary`.</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by_multivar.html'>split_cols_by_multivar</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize_colvars</span><span class='op'>(</span>na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>dta_test</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                         A                    B                  C        
-#&gt;                 AVAL         CHG       AVAL     CHG      AVAL       CHG  
-#&gt; -------------------------------------------------------------------------
-#&gt; V1                                                                       
-#&gt;   n               2           2         1        1         0         0   
-#&gt;   Mean (SD)   7.5 (2.1)   2.5 (2.1)   3 (NA)   7 (NA)   NA (NA)   NA (NA)
-#&gt;   Median         7.5         2.5        3        7        NA        NA   
-#&gt;   Min - Max     6 - 9       1 - 4     3 - 3    7 - 7    NA - NA   NA - NA
-#&gt; V2                                                                       
-#&gt;   n               2           2         1        1         0         0   
-#&gt;   Mean (SD)   6.5 (2.1)   3.5 (2.1)   2 (NA)   8 (NA)   NA (NA)   NA (NA)
-#&gt;   Median         6.5         3.5        2        8        NA        NA   
-#&gt;   Min - Max     5 - 8       2 - 5     2 - 2    8 - 8    NA - NA   NA - NA
-#&gt; V3                                                                       
-#&gt;   n               2           2         1        1         0         0   
-#&gt;   Mean (SD)   5.5 (2.1)   4.5 (2.1)   1 (NA)   9 (NA)   NA (NA)   NA (NA)
-#&gt;   Median         5.5         4.5        1        9        NA        NA   
-#&gt;   Min - Max     4 - 7       3 - 6     1 - 1    9 - 9    NA - NA   NA - NA</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>dta_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,</span>
+<span class='r-in'>  PARAMCD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"lab"</span>, <span class='fl'>6</span><span class='op'>*</span><span class='fl'>3</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AVISIT <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"V"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>  ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  AVAL <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span><span class='op'>:</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  CHG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>9</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Default output within a `rtables` pipeline.</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by_multivar.html'>split_cols_by_multivar</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_colvars</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                         A                    B                  C        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 AVAL         CHG       AVAL     CHG      AVAL       CHG  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V1                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n               2           2         1        1         0         0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)   7.5 (2.1)   2.5 (2.1)   3 (NA)   7 (NA)   NA (NA)   NA (NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median         7.5         2.5        3        7        NA        NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max     6 - 9       1 - 4     3 - 3    7 - 7    NA - NA   NA - NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V2                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n               2           2         1        1         0         0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)   6.5 (2.1)   3.5 (2.1)   2 (NA)   8 (NA)   NA (NA)   NA (NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median         6.5         3.5        2        8        NA        NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max     5 - 8       2 - 5     2 - 2    8 - 8    NA - NA   NA - NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V3                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n               2           2         1        1         0         0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)   5.5 (2.1)   4.5 (2.1)   1 (NA)   9 (NA)   NA (NA)   NA (NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median         5.5         4.5        1        9        NA        NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max     4 - 7       3 - 6     1 - 1    9 - 9    NA - NA   NA - NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Selection of statistics, formats and labels also work.</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by_multivar.html'>split_cols_by_multivar</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_colvars</span><span class='op'>(</span></span>
+<span class='r-in'>    .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n"</span>, <span class='st'>"mean_sd"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .formats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean_sd"</span> <span class='op'>=</span> <span class='st'>"xx.x, xx.x"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    .labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='st'>"n"</span>, mean_sd <span class='op'>=</span> <span class='st'>"Mean, SD"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                       A                  B                C       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                AVAL       CHG      AVAL     CHG     AVAL     CHG  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ——————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V1                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n             2          2         1       1       0        0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean, SD   7.5, 2.1   2.5, 2.1   3, NA   7, NA   NA, NA   NA, NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V2                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n             2          2         1       1       0        0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean, SD   6.5, 2.1   3.5, 2.1   2, NA   8, NA   NA, NA   NA, NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V3                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n             2          2         1       1       0        0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean, SD   5.5, 2.1   4.5, 2.1   1, NA   9, NA   NA, NA   NA, NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Use arguments interpreted by `s_summary`.</span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span><span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by_multivar.html'>split_cols_by_multivar</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>summarize_colvars</span><span class='op'>(</span>na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                         A                    B                  C        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 AVAL         CHG       AVAL     CHG      AVAL       CHG  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> —————————————————————————————————————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V1                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n               2           2         1        1         0         0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)   7.5 (2.1)   2.5 (2.1)   3 (NA)   7 (NA)   NA (NA)   NA (NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median         7.5         2.5        3        7        NA        NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max     6 - 9       1 - 4     3 - 3    7 - 7    NA - NA   NA - NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V2                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n               2           2         1        1         0         0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)   6.5 (2.1)   3.5 (2.1)   2 (NA)   8 (NA)   NA (NA)   NA (NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median         6.5         3.5        2        8        NA        NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max     5 - 8       2 - 5     2 - 2    8 - 8    NA - NA   NA - NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> V3                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   n               2           2         1        1         0         0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean (SD)   5.5 (2.1)   4.5 (2.1)   1 (NA)   9 (NA)   NA (NA)   NA (NA)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median         5.5         4.5        1        9        NA        NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max     4 - 7       3 - 6     1 - 1    9 - 9    NA - NA   NA - NA</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

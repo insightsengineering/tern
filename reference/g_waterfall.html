@@ -199,71 +199,86 @@ Text to be displayed as plot title.</p></td>
     <p>Yuyao Song (songy24) <a href='mailto:yuyao.song@roche.com'>yuyao.song@roche.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>g_waterfall</span><span class='op'>(</span>height <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>, id <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='img'><img src='g_waterfall-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_waterfall</span><span class='op'>(</span>
-  height <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>,
-  id <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>,
-  col <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span></div><div class='img'><img src='g_waterfall-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='va'>ADSL</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span>
-<span class='va'>ADSL_f</span> <span class='op'>&lt;-</span> <span class='va'>ADSL</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>USUBJID</span>, <span class='va'>STUDYID</span>, <span class='va'>ARM</span>, <span class='va'>ARMCD</span>, <span class='va'>SEX</span><span class='op'>)</span>
-
-<span class='va'>ADRS</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adrs</span>
-<span class='va'>ADRS_f</span> <span class='op'>&lt;-</span> <span class='va'>ADRS</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OVRINV"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pchg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fl'>10</span>, <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='va'>ADRS_f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>ADRS_f</span>, <span class='fl'>30</span><span class='op'>)</span>
-<span class='va'>ADRS_f</span> <span class='op'>&lt;-</span> <span class='va'>ADRS_f</span><span class='op'>[</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/duplicated.html'>duplicated</a></span><span class='op'>(</span><span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span><span class='op'>)</span>,<span class='op'>]</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>ADRS_f</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 49</span>
-#&gt;   STUDYID USUBJID   SUBJID SITEID   AGE SEX   RACE    COUNTRY DTHFL INVID INVNAM
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
-#&gt; <span style='color: #BCBCBC;'>1</span> AB12345 AB12345-… id-105 BRA-1     38 M     BLACK … BRA     N     INV … Dr. B…
-#&gt; <span style='color: #BCBCBC;'>2</span> AB12345 AB12345-… id-134 BRA-1     47 M     WHITE   BRA     N     INV … Dr. B…
-#&gt; <span style='color: #BCBCBC;'>3</span> AB12345 AB12345-… id-141 BRA-1     35 F     WHITE   BRA     N     INV … Dr. B…
-#&gt; <span style='color: #BCBCBC;'>4</span> AB12345 AB12345-… id-236 BRA-1     32 M     BLACK … BRA     N     INV … Dr. B…
-#&gt; <span style='color: #BCBCBC;'>5</span> AB12345 AB12345-… id-265 BRA-1     25 M     WHITE   BRA     N     INV … Dr. B…
-#&gt; <span style='color: #949494;'># … with 38 more variables: ARM &lt;fct&gt;, ARMCD &lt;fct&gt;, ACTARM &lt;fct&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ACTARMCD &lt;fct&gt;, REGION1 &lt;fct&gt;, STRATA1 &lt;fct&gt;, STRATA2 &lt;fct&gt;, BMRKR1 &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   BMRKR2 &lt;fct&gt;, ITTFL &lt;fct&gt;, SAFFL &lt;fct&gt;, BMEASIFL &lt;fct&gt;, BEP01FL &lt;fct&gt;,</span>
-#&gt; <span style='color: #949494;'>#   RANDDT &lt;date&gt;, TRTSDTM &lt;dttm&gt;, TRTEDTM &lt;dttm&gt;, EOSSTT &lt;fct&gt;, EOSDT &lt;date&gt;,</span>
-#&gt; <span style='color: #949494;'>#   EOSDY &lt;int&gt;, DCSREAS &lt;fct&gt;, DTHDT &lt;date&gt;, DTHCAUS &lt;fct&gt;, DTHCAT &lt;fct&gt;,</span>
-#&gt; <span style='color: #949494;'>#   LDDTHELD &lt;int&gt;, LDDTHGR1 &lt;fct&gt;, LSTALVDT &lt;date&gt;, study_duration_secs &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ASEQ &lt;int&gt;, RSSEQ &lt;int&gt;, PARAM &lt;fct&gt;, PARAMCD &lt;fct&gt;, AVAL &lt;int&gt;, …</span></div><div class='input'>
-<span class='fu'>g_waterfall</span><span class='op'>(</span>
-  height <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>pchg</span>,
-  id <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span>,
-  col <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>AVALC</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span></div><div class='img'><img src='g_waterfall-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_waterfall</span><span class='op'>(</span>
-  height <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>pchg</span>,
-  id <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span>,
-  col <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>AVALC</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span></div><div class='img'><img src='g_waterfall-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_waterfall</span><span class='op'>(</span>
-  height <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>pchg</span>,
-  id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"asdfdsfdsfsd"</span>,<span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span><span class='op'>)</span>,
-  col <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>SEX</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span></div><div class='img'><img src='g_waterfall-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_waterfall</span><span class='op'>(</span>
-  height <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>pchg</span>,
-  id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"asdfdsfdsfsd"</span>,<span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span><span class='op'>)</span>,
-  xlab <span class='op'>=</span> <span class='st'>"ID"</span>,
-  ylab <span class='op'>=</span> <span class='st'>"Percentage Change"</span>,
-  title <span class='op'>=</span> <span class='st'>"Waterfall plot"</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='g_waterfall-6.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>g_waterfall</span><span class='op'>(</span>height <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>, id <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_waterfall-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_waterfall</span><span class='op'>(</span></span>
+<span class='r-in'>  height <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>,</span>
+<span class='r-in'>  id <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>,</span>
+<span class='r-in'>  col <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span>
+<span class='r-plt img'><img src='g_waterfall-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ADSL</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span></span>
+<span class='r-in'><span class='va'>ADSL_f</span> <span class='op'>&lt;-</span> <span class='va'>ADSL</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>USUBJID</span>, <span class='va'>STUDYID</span>, <span class='va'>ARM</span>, <span class='va'>ARMCD</span>, <span class='va'>SEX</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ADRS</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adrs</span></span>
+<span class='r-in'><span class='va'>ADRS_f</span> <span class='op'>&lt;-</span> <span class='va'>ADRS</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"OVRINV"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pchg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fl'>10</span>, <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ADRS_f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>ADRS_f</span>, <span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ADRS_f</span> <span class='op'>&lt;-</span> <span class='va'>ADRS_f</span><span class='op'>[</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/duplicated.html'>duplicated</a></span><span class='op'>(</span><span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span><span class='op'>)</span>,<span class='op'>]</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>ADRS_f</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 5 × 49</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   STUDYID USUBJID   SUBJID SITEID   AGE SEX   RACE    COUNTRY DTHFL INVID INVNAM</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> AB12345 AB12345-… id-105 BRA-1     38 M     BLACK … BRA     N     INV … Dr. B…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> AB12345 AB12345-… id-134 BRA-1     47 M     WHITE   BRA     N     INV … Dr. B…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> AB12345 AB12345-… id-141 BRA-1     35 F     WHITE   BRA     N     INV … Dr. B…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> AB12345 AB12345-… id-236 BRA-1     32 M     BLACK … BRA     N     INV … Dr. B…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> AB12345 AB12345-… id-265 BRA-1     25 M     WHITE   BRA     N     INV … Dr. B…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 38 more variables: ARM &lt;fct&gt;, ARMCD &lt;fct&gt;, ACTARM &lt;fct&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   ACTARMCD &lt;fct&gt;, REGION1 &lt;fct&gt;, STRATA1 &lt;fct&gt;, STRATA2 &lt;fct&gt;, BMRKR1 &lt;dbl&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   BMRKR2 &lt;fct&gt;, ITTFL &lt;fct&gt;, SAFFL &lt;fct&gt;, BMEASIFL &lt;fct&gt;, BEP01FL &lt;fct&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   RANDDT &lt;date&gt;, TRTSDTM &lt;dttm&gt;, TRTEDTM &lt;dttm&gt;, EOSSTT &lt;fct&gt;, EOSDT &lt;date&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   EOSDY &lt;int&gt;, DCSREAS &lt;fct&gt;, DTHDT &lt;date&gt;, DTHCAUS &lt;fct&gt;, DTHCAT &lt;fct&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   LDDTHELD &lt;int&gt;, LDDTHGR1 &lt;fct&gt;, LSTALVDT &lt;date&gt;, study_duration_secs &lt;dbl&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   ASEQ &lt;int&gt;, RSSEQ &lt;int&gt;, PARAM &lt;fct&gt;, PARAMCD &lt;fct&gt;, AVAL &lt;int&gt;, …</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_waterfall</span><span class='op'>(</span></span>
+<span class='r-in'>  height <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>pchg</span>,</span>
+<span class='r-in'>  id <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span>,</span>
+<span class='r-in'>  col <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>AVALC</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span>
+<span class='r-plt img'><img src='g_waterfall-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_waterfall</span><span class='op'>(</span></span>
+<span class='r-in'>  height <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>pchg</span>,</span>
+<span class='r-in'>  id <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span>,</span>
+<span class='r-in'>  col <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>AVALC</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span>
+<span class='r-plt img'><img src='g_waterfall-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_waterfall</span><span class='op'>(</span></span>
+<span class='r-in'>  height <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>pchg</span>,</span>
+<span class='r-in'>  id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"asdfdsfdsfsd"</span>,<span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span><span class='op'>)</span>,</span>
+<span class='r-in'>  col <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>SEX</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Use of `plot_data_ord$col` is discouraged. Use `col` instead.</span>
+<span class='r-plt img'><img src='g_waterfall-5.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_waterfall</span><span class='op'>(</span></span>
+<span class='r-in'>  height <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>pchg</span>,</span>
+<span class='r-in'>  id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"asdfdsfdsfsd"</span>,<span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span><span class='op'>)</span>,</span>
+<span class='r-in'>  xlab <span class='op'>=</span> <span class='st'>"ID"</span>,</span>
+<span class='r-in'>  ylab <span class='op'>=</span> <span class='st'>"Percentage Change"</span>,</span>
+<span class='r-in'>  title <span class='op'>=</span> <span class='st'>"Waterfall plot"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_waterfall-6.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

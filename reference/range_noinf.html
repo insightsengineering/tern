@@ -148,7 +148,7 @@ without any warnings.</h1>
 
     <div class="ref-description">
     <p>Re-implemented <code><a href='https://rdrr.io/r/base/range.html'>range.default</a></code> default S3 method for numerical objects only.
-It returns <code><a href='https://rdrr.io/r/base/c.html'>c(NA, NA)</a></code> instead of <code><a href='https://rdrr.io/r/base/c.html'>c(-Inf, Inf)</a></code> for zero-length data
+It returns <code>c(NA, NA)</code> instead of <code>c(-Inf, Inf)</code> for zero-length data
 without any warnings.</p>
     </div>
 
@@ -176,16 +176,24 @@ without any warnings.</p>
     <p>2-elements vector of class numeric.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1 5</div><div class='input'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1 5</div><div class='input'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] NA NA</div><div class='input'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='cn'>Inf</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, finite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1 5</div><div class='input'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='cn'>Inf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] Inf Inf</div><div class='input'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='cn'>Inf</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, finite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] NA NA</div><div class='input'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>Inf</span>, <span class='cn'>NA</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, finite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] NA NA</div><div class='input'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='cn'>Inf</span>, <span class='cn'>NA</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, finite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1 1</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 5</span>
+<span class='r-in'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 5</span>
+<span class='r-in'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA NA</span>
+<span class='r-in'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='cn'>Inf</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, finite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 5</span>
+<span class='r-in'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='cn'>Inf</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] Inf Inf</span>
+<span class='r-in'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='cn'>Inf</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, finite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA NA</span>
+<span class='r-in'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>Inf</span>, <span class='cn'>NA</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, finite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA NA</span>
+<span class='r-in'><span class='fu'>range_noinf</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='cn'>Inf</span>, <span class='cn'>NA</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, finite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

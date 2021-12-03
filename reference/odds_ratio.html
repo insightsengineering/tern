@@ -294,126 +294,132 @@ arguments (see below).</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Data with 2 groups.</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,
-  grp <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>,
-  strata <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>,
-  stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-
-<span class='co'># Odds ratio based on glm.</span>
-<span class='fu'>or_glm</span><span class='op'>(</span><span class='va'>data</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $or_ci
-#&gt;        est        lcl        ucl 
-#&gt; 0.33333333 0.01669735 6.65441589 
-#&gt; 
-#&gt; $n_tot
-#&gt; n_tot 
-#&gt;     8 
-#&gt; </div><div class='input'>
-
-<span class='co'># Data with 3 groups.</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>,
-  grp <span class='op'>=</span>    <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>]</span>,
-  strata <span class='op'>=</span> <span class='va'>LETTERS</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>,
-  stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-
-<span class='co'># Odds ratio based on stratified estimation by conditional logistic regression.</span>
-<span class='fu'>or_clogit</span><span class='op'>(</span><span class='va'>data</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $or_ci
-#&gt; $or_ci$b
-#&gt;        est        lcl        ucl 
-#&gt; 0.28814553 0.02981009 2.78522598 
-#&gt; 
-#&gt; $or_ci$c
-#&gt;       est       lcl       ucl 
-#&gt; 0.5367919 0.0673365 4.2791881 
-#&gt; 
-#&gt; 
-#&gt; $n_tot
-#&gt; n_tot 
-#&gt;    20 
-#&gt; </div><div class='input'>
-
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>12</span><span class='op'>)</span>
-<span class='va'>dta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
-  grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span>,
-  strata <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='st'>"D"</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'># Unstratified analysis.</span>
-<span class='fu'>s_odds_ratio</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,
-  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,
-  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,
-  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  .df_row <span class='op'>=</span> <span class='va'>dta</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $or_ci
-#&gt;       est       lcl       ucl 
-#&gt; 0.8484848 0.3831831 1.8788053 
-#&gt; attr(,"label")
-#&gt; [1] "Odds Ratio (95% CI)"
-#&gt; 
-#&gt; $n_tot
-#&gt; n_tot 
-#&gt;   100 
-#&gt; attr(,"label")
-#&gt; [1] "Total n"
-#&gt; </div><div class='input'>
-<span class='co'># Stratified analysis.</span>
-<span class='fu'>s_odds_ratio</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,
-  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,
-  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,
-  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  .df_row <span class='op'>=</span> <span class='va'>dta</span>,
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>arm <span class='op'>=</span> <span class='st'>"grp"</span>, strata <span class='op'>=</span> <span class='st'>"strata"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; $or_ci
-#&gt;       est       lcl       ucl 
-#&gt; 0.7689750 0.3424155 1.7269154 
-#&gt; attr(,"label")
-#&gt; [1] "Odds Ratio (95% CI)"
-#&gt; 
-#&gt; $n_tot
-#&gt; n_tot 
-#&gt;   100 
-#&gt; attr(,"label")
-#&gt; [1] "Total n"
-#&gt; </div><div class='input'>
-<span class='fu'>a_odds_ratio</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,
-  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,
-  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,
-  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  .df_row <span class='op'>=</span> <span class='va'>dta</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
-#&gt; ----------------------------
-#&gt;   row_name     formatted_cell indent_mod           row_label
-#&gt; 1    or_ci 0.85 (0.38 - 1.88)          0 Odds Ratio (95% CI)
-#&gt; 2    n_tot                100          0             Total n</div><div class='input'>
-
-<span class='va'>dta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
-  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
-  grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>estimate_odds_ratio</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"rsp"</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                       B           A        
-#&gt; -------------------------------------------
-#&gt; Odds Ratio (95% CI)       0.72 (0.33 - 1.6)</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># Data with 2 groups.</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  grp <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>,</span>
+<span class='r-in'>  strata <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>,</span>
+<span class='r-in'>  stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Odds ratio based on glm.</span></span>
+<span class='r-in'><span class='fu'>or_glm</span><span class='op'>(</span><span class='va'>data</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $or_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        est        lcl        ucl </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.33333333 0.01669735 6.65441589 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n_tot</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n_tot </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     8 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Data with 3 groups.</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  grp <span class='op'>=</span>    <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>]</span>,</span>
+<span class='r-in'>  strata <span class='op'>=</span> <span class='va'>LETTERS</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>,</span>
+<span class='r-in'>  stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Odds ratio based on stratified estimation by conditional logistic regression.</span></span>
+<span class='r-in'><span class='fu'>or_clogit</span><span class='op'>(</span><span class='va'>data</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $or_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $or_ci$b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        est        lcl        ucl </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.28814553 0.02981009 2.78522598 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $or_ci$c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       est       lcl       ucl </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.5367919 0.0673365 4.2791881 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n_tot</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n_tot </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    20 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>12</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span class='r-in'>  grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  strata <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='st'>"D"</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Unstratified analysis.</span></span>
+<span class='r-in'><span class='fu'>s_odds_ratio</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  .df_row <span class='op'>=</span> <span class='va'>dta</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $or_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       est       lcl       ucl </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.8484848 0.3831831 1.8788053 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Odds Ratio (95% CI)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n_tot</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n_tot </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   100 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Total n"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stratified analysis.</span></span>
+<span class='r-in'><span class='fu'>s_odds_ratio</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  .df_row <span class='op'>=</span> <span class='va'>dta</span>,</span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>arm <span class='op'>=</span> <span class='st'>"grp"</span>, strata <span class='op'>=</span> <span class='st'>"strata"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $or_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       est       lcl       ucl </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.7689750 0.3424155 1.7269154 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Odds Ratio (95% CI)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $n_tot</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> n_tot </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   100 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"label")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Total n"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>a_odds_ratio</span><span class='op'>(</span></span>
+<span class='r-in'>  df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"rsp"</span>,</span>
+<span class='r-in'>  .ref_group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"B"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  .df_row <span class='op'>=</span> <span class='va'>dta</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   row_name     formatted_cell indent_mod           row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1    or_ci 0.85 (0.38 - 1.88)          0 Odds Ratio (95% CI)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2    n_tot                100          0             Total n</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>dta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span class='r-in'>  grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>estimate_odds_ratio</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"rsp"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                       B           A        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ———————————————————————————————————————————</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Odds Ratio (95% CI)       0.72 (0.33 - 1.6)</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

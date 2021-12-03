@@ -182,71 +182,74 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>grid</span><span class='op'>)</span>
-
-<span class='va'>g1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grid/grid.circle.html'>circleGrob</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>g2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grid/grid.circle.html'>circleGrob</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>g3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grid/grid.text.html'>textGrob</a></span><span class='op'>(</span><span class='st'>"TEST TEXT"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/grid/grid.newpage.html'>grid.newpage</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/grid/grid.draw.html'>grid.draw</a></span><span class='op'>(</span><span class='fu'>stack_grobs</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='va'>g3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/grid/showViewport.html'>showViewport</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='img'><img src='stack_grobs-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/grid/grid.newpage.html'>grid.newpage</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/grid/viewports.html'>pushViewport</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grid/viewport.html'>viewport</a></span><span class='op'>(</span>layout <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/grid.layout.html'>grid.layout</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='input'><span class='va'>vp1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grid/viewport.html'>viewport</a></span><span class='op'>(</span>layout.pos.row <span class='op'>=</span> <span class='fl'>1</span>, layout.pos.col <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/grid/grid.draw.html'>grid.draw</a></span><span class='op'>(</span><span class='fu'>stack_grobs</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='va'>g3</span>, vp <span class='op'>=</span> <span class='va'>vp1</span>, name <span class='op'>=</span> <span class='st'>"test"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/grid/showViewport.html'>showViewport</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='img'><img src='stack_grobs-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/grid/grid.ls.html'>grid.ls</a></span><span class='op'>(</span>grobs <span class='op'>=</span> <span class='cn'>TRUE</span>, viewports <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ROOT
-#&gt;   GRID.VP.977
-#&gt;     GRID.VP.978
-#&gt;       test
-#&gt;         GRID.VP.979
-#&gt;           GRID.gTree.2704
-#&gt;             GRID.VP.980
-#&gt;               GRID.gTree.2701
-#&gt;                 GRID.circle.2686
-#&gt;               1
-#&gt;             GRID.VP.981
-#&gt;               GRID.gTree.2702
-#&gt;                 GRID.circle.2687
-#&gt;               1
-#&gt;             GRID.VP.982
-#&gt;               GRID.gTree.2703
-#&gt;                 GRID.text.2688
-#&gt;               1
-#&gt;           1
-#&gt;       1
-#&gt;     GRID.VP.977
-#&gt;       GRID.rect.2705
-#&gt;       GRID.VP.978
-#&gt;         GRID.rect.2706
-#&gt;         GRID.VP.979
-#&gt;           GRID.rect.2707
-#&gt;           GRID.VP.980
-#&gt;             GRID.rect.2708
-#&gt;             GRID.VP.983
-#&gt;               GRID.text.2709
-#&gt;               1
-#&gt;             1
-#&gt;           GRID.VP.981
-#&gt;             GRID.rect.2710
-#&gt;             GRID.VP.984
-#&gt;               GRID.text.2711
-#&gt;               1
-#&gt;             1
-#&gt;           GRID.VP.982
-#&gt;             GRID.rect.2712
-#&gt;             GRID.VP.985
-#&gt;               GRID.text.2713
-#&gt;               1
-#&gt;             1
-#&gt;           1
-#&gt;         1
-#&gt;       1</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>grid</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>g1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grid/grid.circle.html'>circleGrob</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>g2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grid/grid.circle.html'>circleGrob</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>g3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grid/grid.text.html'>textGrob</a></span><span class='op'>(</span><span class='st'>"TEST TEXT"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.newpage.html'>grid.newpage</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.draw.html'>grid.draw</a></span><span class='op'>(</span><span class='fu'>stack_grobs</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='va'>g3</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/showViewport.html'>showViewport</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='stack_grobs-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.newpage.html'>grid.newpage</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/viewports.html'>pushViewport</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grid/viewport.html'>viewport</a></span><span class='op'>(</span>layout <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/grid.layout.html'>grid.layout</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>vp1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grid/viewport.html'>viewport</a></span><span class='op'>(</span>layout.pos.row <span class='op'>=</span> <span class='fl'>1</span>, layout.pos.col <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.draw.html'>grid.draw</a></span><span class='op'>(</span><span class='fu'>stack_grobs</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='va'>g3</span>, vp <span class='op'>=</span> <span class='va'>vp1</span>, name <span class='op'>=</span> <span class='st'>"test"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/showViewport.html'>showViewport</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='stack_grobs-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.ls.html'>grid.ls</a></span><span class='op'>(</span>grobs <span class='op'>=</span> <span class='cn'>TRUE</span>, viewports <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ROOT</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   GRID.VP.977</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     GRID.VP.978</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       test</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         GRID.VP.979</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           GRID.gTree.2704</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             GRID.VP.980</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               GRID.gTree.2701</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 GRID.circle.2686</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             GRID.VP.981</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               GRID.gTree.2702</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 GRID.circle.2687</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             GRID.VP.982</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               GRID.gTree.2703</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 GRID.text.2688</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     GRID.VP.977</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       GRID.rect.2705</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       GRID.VP.978</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         GRID.rect.2706</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         GRID.VP.979</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           GRID.rect.2707</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           GRID.VP.980</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             GRID.rect.2708</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             GRID.VP.983</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               GRID.text.2709</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           GRID.VP.981</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             GRID.rect.2710</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             GRID.VP.984</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               GRID.text.2711</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           GRID.VP.982</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             GRID.rect.2712</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             GRID.VP.985</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               GRID.text.2713</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       1</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
