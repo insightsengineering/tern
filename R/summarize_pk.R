@@ -87,23 +87,27 @@ summarize_pk_in_cols <- function(lyt,
                                  .indent_mods = NULL,
                                  col_split = TRUE) {
 
-  sum_format <- c(n = "xx.",
-                  mean = "xx.xx",
-                  sd = "xx.xx",
-                  median = "xx.xx",
-                  cv = "xx.x",
-                  min = "xx.xx",
-                  max = "xx.xx",
-                  geom_mean = "xx.xx",
-                  geom_cv = "xx.x")
+  sum_format <- c(
+    n = "xx.",
+    mean = "xx.xx",
+    sd = "xx.xx",
+    median = "xx.xx",
+    cv = "xx.x",
+    min = "xx.xx",
+    max = "xx.xx",
+    geom_mean = "xx.xx",
+    geom_cv = "xx.x"
+  )
 
-  afun_list <- Map(function(stat) {
-    make_afun(
-      s_summary_pk,
-      .stats = stat,
-      .formats = sum_format[names(sum_format) == stat])
+  afun_list <- Map(
+    function(stat) {
+      make_afun(
+        s_summary_pk,
+        .stats = stat,
+        .formats = sum_format[names(sum_format) == stat])
     },
-    stat = .stats)
+    stat = .stats
+  )
 
   if (col_split) {
     lyt <- split_cols_by_multivar(

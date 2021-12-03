@@ -13,7 +13,7 @@ summarize_pk_in_cols(
   var,
   ...,
   .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
-  .labels = c(n = "n", mean = "mean", sd = "sd", cv = "CV \% Mean", geom_mean =
+  .labels = c(n = "n", mean = "Mean", sd = "SD", cv = "CV \% Mean", geom_mean =
     "Geometric Mean", geom_cv = "CV \% Geometric Mean", median = "Median", min =
     "Minimum", max = "Maximum"),
   .indent_mods = NULL,
