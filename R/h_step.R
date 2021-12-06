@@ -146,7 +146,7 @@ h_step_survival_est <- function(formula,
   tryCatch(
     withCallingHandlers(
       expr = {
-        fit <- coxph(
+        fit <- survival::coxph(
           formula = formula,
           data = data,
           subset = .subset,

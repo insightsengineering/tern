@@ -118,7 +118,6 @@ fit_logistic <- function(data,
     form <- paste0(form, "+ strata(", strata_arg, ")")
   }
   formula <- stats::as.formula(form)
-
   if (is.null(variables$strata)) {
     stats::glm(
       formula = formula,

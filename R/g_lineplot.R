@@ -128,7 +128,7 @@ g_lineplot <- function(df, # nolint
                        ...,
                        mid_type = "pl",
                        mid_point_size = 2,
-                       position = position_dodge(width = 0.4),
+                       position = ggplot2::position_dodge(width = 0.4),
                        legend_title = NULL,
                        legend_position = "bottom",
                        ggtheme = NULL,
@@ -311,7 +311,7 @@ g_lineplot <- function(df, # nolint
   }
 
   p <- p +
-    ggplot2::scale_y_continuous(labels = scales::comma, expand = expansion(c(0.25, .25))) +
+    ggplot2::scale_y_continuous(labels = scales::comma, expand = ggplot2::expansion(c(0.25, .25))) +
     ggplot2::labs(
       title = title,
       subtitle = subtitle,
@@ -363,7 +363,7 @@ g_lineplot <- function(df, # nolint
         names_ptypes = list(stat = factor(levels = stats_lev))
       )
 
-    tbl <- ggplot2::ggplot(df_stats_table, aes_string(x = x, y = "stat", label = "value")) +
+    tbl <- ggplot2::ggplot(df_stats_table, ggplot2::aes_string(x = x, y = "stat", label = "value")) +
       ggplot2::geom_text(size = table_font_size) +
       ggplot2::theme_bw() +
       ggplot2::theme(
@@ -373,9 +373,9 @@ g_lineplot <- function(df, # nolint
         axis.ticks = ggplot2::element_blank(),
         axis.title = ggplot2::element_blank(),
         axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_text(margin = margin(t = 0, r = 0, b = 0, l = 5)),
+        axis.text.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 5)),
         strip.text = ggplot2::element_text(hjust = 0),
-        strip.text.x = ggplot2::element_text(margin = margin(1.5, 0, 1.5, 0, "pt")),
+        strip.text.x = ggplot2::element_text(margin = ggplot2::margin(1.5, 0, 1.5, 0, "pt")),
         strip.background = ggplot2::element_rect(fill = "grey95", color = NA),
         legend.position = "none"
       )

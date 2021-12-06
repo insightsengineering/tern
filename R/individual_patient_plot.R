@@ -16,7 +16,7 @@
 #' @param yvar_baseline (`string`)\cr variable with baseline values only.
 #' Ignored when `add_baseline_hline` is FALSE.
 #' @param ggtheme (`theme`)\cr optional graphical theme function as provided
-#' by ggplot2 to control outlook of plot. Use `theme()` to tweak the display.
+#' by ggplot2 to control outlook of plot. Use `ggplot2::theme()` to tweak the display.
 #' @param plotting_choices (`character`)\cr specifies options for displaying
 #' plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
 #' @param max_obs_per_plot (`count`)\cr Number of observations to be plotted on one
@@ -31,16 +31,17 @@ NULL
 #' @export
 #'
 h_set_nest_theme <- function(font_size) {
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        panel.border = element_rect(colour = "grey", fill = NA, size = 1),
-        legend.position = "bottom",
-        legend.background = element_blank(),
-        legend.box.background = element_rect(colour = "grey", fill = NA, size = 1),
-        legend.direction = "horizontal",
-        legend.title = element_text(face = "bold"),
-        text = element_text(size = font_size)
+  ggplot2::theme(
+    panel.grid.major = ggplot2::element_blank(),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.background = ggplot2::element_blank(),
+    panel.border = ggplot2::element_rect(colour = "grey", fill = NA, size = 1),
+    legend.position = "bottom",
+    legend.background = ggplot2::element_blank(),
+    legend.box.background = ggplot2::element_rect(colour = "grey", fill = NA, size = 1),
+    legend.direction = "horizontal",
+    legend.title = ggplot2::element_text(face = "bold"),
+    text = ggplot2::element_text(size = font_size)
   )
 }
 

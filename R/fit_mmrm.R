@@ -478,8 +478,6 @@ fit_lme4 <- function(
 #' @return A list with the LS means `estimates` and `contrasts` results between the treatment
 #'   and control arm groups at the different visits.
 #'
-#' @importFrom rlang := !!
-#' @importFrom rlang .data
 #'
 get_mmrm_lsmeans <- function(fit,
                              vars,

@@ -132,7 +132,7 @@ g_waterfall <- function(height,
   if (!is.null(title)) {
     p <- p +
       ggplot2::labs(title = title) +
-      ggplot2::theme(plot.title = element_text(face = "bold"))
+      ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
   }
 
   p

@@ -91,7 +91,7 @@ g_mmrm_diagnostic <- function(
     }
     )
   )
-    tmp <- ggplot2::ggplot(amended_data, aes_string(x = ".fitted", y = ".resid")) +
+    tmp <- ggplot2::ggplot(amended_data, ggplot2::aes_string(x = ".fitted", y = ".resid")) +
       ggplot2::geom_point(colour = "blue", alpha = 0.3) +
       ggplot2::facet_grid(stats::as.formula(paste(". ~", vars$visit)), scales = "free_x") +
       ggplot2::geom_hline(yintercept = 0)
@@ -116,8 +116,8 @@ g_mmrm_diagnostic <- function(
       )
     }
     tmp <- tmp +
-      xlab("Fitted values") +
-      ylab("Residuals")
+      ggplot2::xlab("Fitted values") +
+      ggplot2::ylab("Residuals")
 
   } else if (type == "q-q-residual") {
     # We use visit specific standard deviation of marginal residuals for scaling residuals.
@@ -136,7 +136,7 @@ g_mmrm_diagnostic <- function(
         res
       }) %>%
       do.call(rbind, .)
-    tmp <- ggplot2::ggplot(plot_data, aes_string(x = "x", y = "y")) +
+    tmp <- ggplot2::ggplot(plot_data, ggplot2::aes_string(x = "x", y = "y")) +
       ggplot2::geom_point(colour = "blue", alpha = 0.3) +
       ggplot2::xlab("Standard normal quantiles") +
       ggplot2::ylab("Standardized residuals") +
@@ -312,11 +312,11 @@ g_mmrm_lsmeans <-
       )
     }
 
-    pd <- position_dodge2(width, preserve = "total", padding = .2)
+    pd <- ggplot2::position_dodge2(width, preserve = "total", padding = .2)
 
     result <- ggplot2::ggplot(
       plot_data,
-      aes_string(
+      ggplot2::aes_string(
         x = v$visit,
         y = "estimate",
         colour = if (arms) v$arm else NULL,
@@ -368,7 +368,7 @@ g_mmrm_lsmeans <-
         result <- result +
           ggplot2::geom_text(
             data = pval_data,
-            mapping = aes_string(y = "y_pval", vjust = "vjust", label = "label"),
+            mapping = ggplot2::aes_string(y = "y_pval", vjust = "vjust", label = "label"),
             position = pd,
             show.legend = FALSE
           ) +

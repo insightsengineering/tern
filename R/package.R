@@ -5,15 +5,11 @@
 "_PACKAGE"
 
 #' @import rtables
-#' @import utils.nest
-#' @importFrom assertthat assert_that
 #' @importFrom broom tidy
-#' @importFrom ggplot2 ggplot
+#' @importFrom survival strata coxph Surv
+#' @importFrom grid gList
+#' @importFrom rlang .data := !!
 #' @importFrom magrittr %>%
-#' @importFrom methods is
-# Packages that are not imported and also not prefixed
-# survival
-# stats
 NULL
 
 # We need this to avoid R CMD check warning about missing global definitions.

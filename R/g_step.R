@@ -148,7 +148,7 @@ g_step <- function(df,
   df$x <- df[[x_var]]
   attrs <- attributes(df)
   df$y <- df[[attrs$estimate]]
-  p <- ggplot2::ggplot(df, aes_string(x = "x"))
+  p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "x"))
   if (!is.null(ci_ribbon)) {
     p <- p + ggplot2::geom_ribbon(
       ggplot2::aes_string(ymin = "ci_lower", ymax = "ci_upper"),

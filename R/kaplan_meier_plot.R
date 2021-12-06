@@ -302,49 +302,49 @@ g_km <- function(df,
          )
        },
 
-        if (annot_coxph) {
-          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-            children = h_grob_coxph(
-              df = df,
-              variables = variables,
-              control_coxph_pw = control_coxph_pw,
-              x = position_coxph[1],
-              y = position_coxph[2],
-              ttheme = gridExtra::ttheme_default(
-                base_size = font_size,
-                padding = grid::unit(c(1, .5), "lines"),
-                core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
-              )
-            )
-          )
-        },
+       if (annot_coxph) {
+         grid::gTree(
+           vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
+           children = h_grob_coxph(
+             df = df,
+             variables = variables,
+             control_coxph_pw = control_coxph_pw,
+             x = position_coxph[1],
+             y = position_coxph[2],
+             ttheme = gridExtra::ttheme_default(
+               base_size = font_size,
+               padding = grid::unit(c(1, .5), "lines"),
+               core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
+             )
+           )
+         )
+       },
 
-        # Add the y-axis annotation (top-left corner).
-        grid::gTree(
-          vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 1),
-          children = h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis)
-        ),
+       # Add the y-axis annotation (top-left corner).
+       grid::gTree(
+         vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 1),
+         children = h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis)
+       ),
 
-        # Add the x-axis annotation (second row below the Kaplan Meier Curve).
-        grid::gTree(
-          vp = grid::viewport(layout.pos.row = 2 + ttl_row, layout.pos.col = 2),
-          children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
-        ),
+       # Add the x-axis annotation (second row below the Kaplan Meier Curve).
+       grid::gTree(
+         vp = grid::viewport(layout.pos.row = 2 + ttl_row, layout.pos.col = 2),
+         children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
+       ),
 
-        # Add the legend.
-        grid::gTree(
-          vp = grid::viewport(layout.pos.row = 3 + ttl_row, layout.pos.col = 2),
-          children = grid::gList(g_el$guide)
-        ),
+       # Add the legend.
+       grid::gTree(
+         vp = grid::viewport(layout.pos.row = 3 + ttl_row, layout.pos.col = 2),
+         children = grid::gList(g_el$guide)
+       ),
 
-        # Add the table with patient-at-risk numbers.
-        if (annot_at_risk) {
-          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
-            children = grobs_patient$at_risk
-          )
-        },
+       # Add the table with patient-at-risk numbers.
+       if (annot_at_risk) {
+         grid::gTree(
+           vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
+           children = grobs_patient$at_risk
+         )
+       },
 
        if (annot_at_risk) {
          grid::gTree(
@@ -354,13 +354,13 @@ g_km <- function(df,
        },
 
        if (annot_at_risk) {
-        # Add the x-axis for the table.
+         # Add the x-axis for the table.
          grid::gTree(
            vp = grid::viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
            children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
          )
        }
-      )
+     )
     )
 
     result <- grid::gTree(
@@ -602,7 +602,7 @@ h_ggkm <- function(data,
       ggplot2::geom_step(lwd = lwd, lty = lty)
   } else if (is.numeric(lty)) {
     gg +
-      ggplot2::geom_step(mapping = aes_string(linetype = "strata"), lwd = lwd) +
+      ggplot2::geom_step(mapping = ggplot2::aes_string(linetype = "strata"), lwd = lwd) +
       ggplot2::scale_linetype_manual(values = lty)
   }
 

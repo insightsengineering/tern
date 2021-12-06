@@ -259,8 +259,8 @@ s_incidence_rate <- function(df,
     assertthat::assert_that(
       is_df_with_variables(df, list(tte = .var, n_events = n_events)),
       assertthat::is.string(.var),
-      is_numeric_vector(df[[.var]], min_length = 0),
-      is_integer_vector(df[[n_events]], min_length = 0)
+      utils.nest::is_numeric_vector(df[[.var]], min_length = 0),
+      utils.nest::is_integer_vector(df[[n_events]], min_length = 0)
     )
   }
 
