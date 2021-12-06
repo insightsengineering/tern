@@ -249,7 +249,7 @@ g_forest <- function(tbl,
     width_columns,
     width_forest,
     symbol_size = symbol_size,
-    vp = plotViewport(margins = rep(1, 4))
+    vp = grid::plotViewport(margins = rep(1, 4))
   )
 
   fn <- footnotes(tbl)
@@ -301,7 +301,7 @@ g_forest <- function(tbl,
 #'
 #' p <- tern:::forest_grob(tbl, x, lower, upper, vline = 1, forest_header = c("A", "B"),
 #'   x_at = c(.1 , 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
-#'   vp = plotViewport(margins = c(1, 1, 1, 1))
+#'   vp = grid::plotViewport(margins = c(1, 1, 1, 1))
 #' )
 #'
 #'  draw_grob(p)
