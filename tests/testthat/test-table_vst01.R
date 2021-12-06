@@ -48,8 +48,8 @@ gen_advs <- function() {
   advs_f
 }
 
-testthat::test_that("VST01 default variant is produced correctly", {
-  test.nest::skip_if_too_deep(3)
+test_that("VST01 default variant is produced correctly", {
+  utils.nest::skip_if_too_deep(3)
 
   advs <- gen_advs()
   advs_baseline <- advs %>% dplyr::filter(ABLFL == "Y")   #nolint
