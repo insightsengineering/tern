@@ -417,7 +417,11 @@ forest_grob <- function(tbl,
         children = do.call(grid::gList, lapply(args_body, do.call, what = cell_in_rows)),
         vp = grid::vpPath("vp_table_layout", "vp_body")
       ),
-      grid::linesGrob(grid::unit(c(0, 1), "npc"), y = grid::unit(c(.5, .5), "npc"), vp = grid::vpPath("vp_table_layout", "vp_spacer")),
+      grid::linesGrob(
+        grid::unit(c(0, 1), "npc"),
+        y = grid::unit(c(.5, .5), "npc"),
+        vp = grid::vpPath("vp_table_layout", "vp_spacer")
+      ),
       # forest part
       if (is.null(vline)) {
         NULL
@@ -460,7 +464,7 @@ forest_grob <- function(tbl,
                   vp = data_forest_vp
                 )
               },
-              xaxisGrob(at = x_at,  label = x_labels, vp = data_forest_vp)
+              grid::xaxisGrob(at = x_at,  label = x_labels, vp = data_forest_vp)
             ),
             vp = grid::viewport(layout.pos.col = ncol(tbl) + 2)
           )
@@ -469,7 +473,7 @@ forest_grob <- function(tbl,
       ),
       grid::gTree(
         children = do.call(
-          "grid::gList",
+          "gList",
           Map(
             function(xi, li, ui, row_index, size_i) {
               forest_dot_line(
@@ -693,9 +697,9 @@ forest_viewport <- function(tbl,
 
   stopifnot(
     methods::is(tbl, "VTableTree"),
-    is.null(width_row_names) || is.unit(width_row_names),
-    is.null(width_columns) || is.unit(width_columns),
-    is.unit(width_forest)
+    is.null(width_row_names) || grid::is.unit(width_row_names),
+    is.null(width_columns) || grid::is.unit(width_columns),
+    grid::is.unit(width_forest)
   )
 
   if (is.null(mat_form)) mat_form <- matrix_form(tbl)
@@ -782,7 +786,7 @@ vp_forest_table_part <- function(nrow,
     ),
     children = grid::vpList(
       do.call(
-        vpList,
+        grid::vpList,
         lapply(
           seq_len(nrow), function(i) {
             grid::viewport(layout.pos.row = i, layout.pos.col = 1, name = paste0("rowname-", i))
@@ -790,7 +794,7 @@ vp_forest_table_part <- function(nrow,
         )
       ),
       do.call(
-        vpList,
+        grid::vpList,
         apply(
           expand.grid(seq_len(nrow), seq_len(ncol - 2)),
           1,
@@ -802,7 +806,7 @@ vp_forest_table_part <- function(nrow,
         )
       ),
       do.call(
-        vpList,
+        grid::vpList,
         lapply(
           seq_len(nrow),
           function(i) {

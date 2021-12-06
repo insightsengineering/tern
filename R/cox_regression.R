@@ -58,7 +58,8 @@ NULL
 #' @inheritParams control_coxreg
 #'
 #' @return
-#' The function `h_coxreg_univar_formulas` returns a `character` vector coercible into formulas (e.g [stats::as.formula()]).
+#' The function `h_coxreg_univar_formulas` returns a `character` vector coercible
+#' into formulas (e.g [stats::as.formula()]).
 #'
 #' @export
 #'
@@ -157,7 +158,8 @@ h_coxreg_univar_formulas <- function(variables,
 #' @inheritParams argument_convention
 #'
 #' @return
-#' The function `h_coxreg_univar_formulas` returns a `character` vector coercible into formulas (e.g [stats::as.formula()]).
+#' The function `h_coxreg_univar_formulas` returns a `character` vector coercible
+#' into formulas (e.g [stats::as.formula()]).
 #'
 #' @export
 #'

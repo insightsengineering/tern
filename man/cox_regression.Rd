@@ -98,9 +98,11 @@ of the treatment arm effect estimate across models.}
 and the covariate).}
 }
 \value{
-The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible
+into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
 
-The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible
+into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
 
 The function \code{fit_coxreg_univar} returns a \code{coxreg.univar} class object which is a named list
 with 5 elements:

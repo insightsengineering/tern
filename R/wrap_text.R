@@ -23,7 +23,7 @@ wrap_text <- function(txt, # nousage # nolint
                       gp = grid::gpar(),
                       collapse = NULL) {
 
-  if (is.unit(width)) {
+  if (grid::is.unit(width)) {
     width <- grid::convertWidth(width, "inch", TRUE)
   }
 

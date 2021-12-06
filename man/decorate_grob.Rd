@@ -111,7 +111,7 @@ grid.draw(
 
 # grid
 p <- gTree(
-  children = gList(
+  children = grid::gList(
     rectGrob(),
     xaxisGrob(),
     yaxisGrob(),

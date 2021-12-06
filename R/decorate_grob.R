@@ -71,7 +71,7 @@
 #'
 #' # grid
 #' p <- gTree(
-#'   children = gList(
+#'   children = grid::gList(
 #'     rectGrob(),
 #'     xaxisGrob(),
 #'     yaxisGrob(),
@@ -199,7 +199,10 @@ decorate_grob <- function(grob,
                 vp = grid::plotViewport(margins = padding)
               )
             ),
-            vp = grid::vpStack(grid::viewport(layout.pos.row = 2, layout.pos.col = 1), grid::plotViewport(margins = margins))
+            vp = grid::vpStack(
+              grid::viewport(layout.pos.row = 2, layout.pos.col = 1),
+              grid::plotViewport(margins = margins)
+            )
           ),
           st_footnotes,
           grid::textGrob(
@@ -242,9 +245,9 @@ validDetails.decoratedGrob <- function(x) { #nolint #nousage
     is.character(x$titles),
     is.character(x$footnotes),
     is.character(x$page) || length(x$page) != 1,
-    is.unit(x$outer_margins) || length(x$outer_margins) == 4,
-    is.unit(x$margins) || length(x$margins) == 4,
-    is.unit(x$padding) || length(x$padding) == 4
+    grid::is.unit(x$outer_margins) || length(x$outer_margins) == 4,
+    grid::is.unit(x$margins) || length(x$margins) == 4,
+    grid::is.unit(x$padding) || length(x$padding) == 4
   )
 
   x
@@ -349,14 +352,14 @@ split_text_grob <- function(text,
                             name = NULL,
                             gp = grid::gpar(),
                             vp = NULL) {
-  if (!is.unit(x)) {
+  if (!grid::is.unit(x)) {
     x <- grid::unit(x, default.units)
   }
-  if (!is.unit(y)) {
+  if (!grid::is.unit(y)) {
     y <- grid::unit(y, default.units)
   }
 
-  stopifnot(is.unit(width) && length(width) == 1)
+  stopifnot(grid::is.unit(width) && length(width) == 1)
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
   if (!methods::is(width, "unit.arithmetic") &&
@@ -385,7 +388,7 @@ split_text_grob <- function(text,
 validDetails.dynamicSplitText <- function(x) { #nolint #nousage
   stopifnot(
     is.character(x$text),
-    is.unit(x$width) && length(x$width) == 1
+    grid::is.unit(x$width) && length(x$width) == 1
   )
 
   x

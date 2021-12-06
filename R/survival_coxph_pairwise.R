@@ -92,7 +92,7 @@ s_coxph_pairwise <- function(df,
     )
     df_cox <- cbind(df_cox, data[strat])
   }
-  cox_fit <- coxph(
+  cox_fit <- survival::coxph(
     formula = formula_cox,
     data = df_cox,
     ties = ties
