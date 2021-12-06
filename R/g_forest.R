@@ -367,7 +367,7 @@ forest_grob <- function(tbl,
   data_forest_vp <- grid::dataViewport(xlim, c(0, 1))
 
   # Get table content as matrix form.
-  mf <- grid::matrix_form(tbl)
+  mf <- matrix_form(tbl)
 
   # Use rtables indent_string eventually.
   mf$strings[, 1] <- paste0(
@@ -698,7 +698,7 @@ forest_viewport <- function(tbl,
     is.unit(width_forest)
   )
 
-  if (is.null(mat_form)) mat_form <- grid::matrix_form(tbl)
+  if (is.null(mat_form)) mat_form <- matrix_form(tbl)
 
   mat_form$strings[!mat_form$display] <- ""
 
