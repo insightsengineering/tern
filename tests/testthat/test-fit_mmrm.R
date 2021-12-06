@@ -381,7 +381,7 @@ test_that("summary_all_fits works as expected", {
 
 test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
 
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
 
   original_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (factor(Days) | Subject),
@@ -427,7 +427,7 @@ test_that("refit_lme4_all_optimizers can find a working optimizer if there is on
 
 test_that("refit_lme4_all_optimizers works with parallelization", {
 
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
 
   original_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (factor(Days) | Subject),
@@ -481,7 +481,7 @@ test_that("fit_lme4 fails when there are convergence issues with a specific opti
 
 test_that("get_mmrm_lsmeans can calculate the LS mean results", {
 
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
 
   data <- data %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
@@ -511,7 +511,7 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
 
 test_that("get_mmrm_lsmeans preserves combined arm levels.", {
 
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
 
   data <- data %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
@@ -659,7 +659,7 @@ get_adqs <- function(version = c("A", "B")) {
 
 test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
 
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     skip("tests dont run with older version of lme4")
@@ -836,7 +836,7 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
 
 test_that("fit_mmrm works also with missing data", {
 
-  test.nest::skip_if_too_deep(3)
+  utils.nest::skip_if_too_deep(3)
 
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
