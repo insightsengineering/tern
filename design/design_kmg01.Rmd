@@ -91,7 +91,7 @@ library(random.cdisc.data)
 library(dplyr)
 library(survival)
 radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS") %>%
+  filter(PARAMCD == "OS") %>%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
   h_data_plot()
 ```
@@ -119,7 +119,7 @@ library(random.cdisc.data)
 library(dplyr)
 library(survival)
 data <- radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS") %>%
+  filter(PARAMCD == "OS") %>%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
   h_data_plot()
 
@@ -189,7 +189,7 @@ library(random.cdisc.data)
 library(dplyr)
 library(survival)
 fit_km <- radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS") %>%
+  filter(PARAMCD == "OS") %>%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
@@ -224,7 +224,7 @@ h_decompose_gg <- function(gg) {
     panel = "panel", yaxis = "axis-l", xaxis = "axis-b",
     xlab = "xlab-b", ylab = "ylab-l", guide = "guide"
   )
-  lapply(X = y, function(x) gtable::gtable_dplyr::filter(g_el, x))
+  lapply(X = y, function(x) gtable::gtable_filter(g_el, x))
 }
 ```
 
@@ -235,7 +235,7 @@ library(survival)
 library(grid)
 
 fit_km <- radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS") %>%
+  filter(PARAMCD == "OS") %>%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
@@ -320,7 +320,7 @@ h_km_layout <- function(data_plot, g_el) {
 
 ```{r, h_km_layout_example}
 fit_km <- radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS") %>%
+  filter(PARAMCD == "OS") %>%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
@@ -417,7 +417,7 @@ h_grob_tbl_at_risk <- function(data_plot, annot_tbl) {
 
 ```{r, h_grob_tbl_at_risk_example}
 fit_km <- radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS") %>%
+  filter(PARAMCD == "OS") %>%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 
 data_plot <- h_data_plot(fit_km = fit_km)
@@ -494,7 +494,7 @@ library(random.cdisc.data)
 library(dplyr)
 
 adtte <- radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS")
+  filter(PARAMCD == "OS")
 
 fit <- survival::survfit(
   form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD,
@@ -540,7 +540,7 @@ library(survival)
 grid.newpage()
 grid.rect(gp = gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS") %>%
+  filter(PARAMCD == "OS") %>%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
   h_grob_median_surv %>%
   grid.draw
@@ -576,7 +576,7 @@ library(random.cdisc.data)
 library(dplyr)
 
 fit_km <- radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS") %>%
+  filter(PARAMCD == "OS") %>%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
@@ -724,7 +724,7 @@ g_km <- function(fit_km,
 
 ```{r, g_km_example_1}
 fit_km <- radtte(cached = TRUE) %>%
-  dplyr::filter(PARAMCD == "OS") %>%
+  filter(PARAMCD == "OS") %>%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 res <- g_km(fit_km = fit_km)
 ```

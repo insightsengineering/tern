@@ -36,8 +36,8 @@ library(grid)
 grid::grid.newpage()
 grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 data <- synthetic_cdisc_data("latest")$adtte \%>\%
-  dplyr::filter(PARAMCD == "OS") \%>\%
-  dplyr::mutate(is_event = CNSR == 0)
+  filter(PARAMCD == "OS") \%>\%
+  mutate(is_event = CNSR == 0)
 tbl_grob <- tern:::h_grob_coxph(
    df = data,
    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),

@@ -116,7 +116,7 @@ df <- data.frame(
 )
 
 df <- df \%>\%
-dplyr::mutate(abn_dir = factor(dplyr::case_when(
+mutate(abn_dir = factor(case_when(
   ANRIND == "LOW LOW" ~ "Low",
   ANRIND == "HIGH HIGH" ~ "High",
   TRUE ~ ""
@@ -126,8 +126,8 @@ dplyr::mutate(abn_dir = factor(dplyr::case_when(
 )
 
 # Select only post-baseline records.
-df <- df \%>\% dplyr::filter(ONTRTFL == "Y")
-df_crp <- df \%>\% dplyr::filter(PARAMCD == "CRP") \%>\% droplevels()
+df <- df \%>\% filter(ONTRTFL == "Y")
+df_crp <- df \%>\% filter(PARAMCD == "CRP") \%>\% droplevels()
 full_parent_df <- list(df_crp, "not_needed")
 cur_col_subset <- list(rep(TRUE, nrow(df_crp)), "not_needed")
 spl_context <- data.frame(
@@ -137,7 +137,7 @@ spl_context <- data.frame(
 )
 
 s_count_abnormal_by_marked(
- df = df_crp \%>\% dplyr::filter(abn_dir == "High"),
+ df = df_crp \%>\% filter(abn_dir == "High"),
  .spl_context = spl_context,
  .var = "AVALCAT1",
  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
@@ -147,7 +147,7 @@ s_count_abnormal_by_marked(
 # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
 afun(
- df = df_crp \%>\% dplyr::filter(abn_dir == "High"),
+ df = df_crp \%>\% filter(abn_dir == "High"),
  .spl_context = spl_context,
  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
  )
@@ -158,7 +158,7 @@ map <- unique(
   ) \%>\%
   lapply(as.character) \%>\%
   as.data.frame() \%>\%
-  dplyr::arrange(PARAMCD, abn_dir)
+  arrange(PARAMCD, abn_dir)
 
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%

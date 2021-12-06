@@ -164,7 +164,7 @@ df <- data.frame(
   stringsAsFactors = FALSE
 )
 df_adsl <- df \%>\%
-  dplyr::select(USUBJID, ARM) \%>\%
+  select(USUBJID, ARM) \%>\%
   unique
 
 s_count_occurrences_by_grade(

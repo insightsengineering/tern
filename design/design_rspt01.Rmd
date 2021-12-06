@@ -339,15 +339,15 @@ adsl <- radsl(cached = TRUE)
 adrs <- radrs(cached = TRUE)
 
 # Select a response parameter endpoint.
-adrs <- adrs %>% dplyr::filter(PARAMCD == "INVET")
+adrs <- adrs %>% filter(PARAMCD == "INVET")
 
 # Recode multinomial response with standard oncology labels.
 levels(adrs$AVALC) <- d_onco_rsp_label(levels(adrs$AVALC))
 
 # Response variable.
 adrs <- adrs %>%
-  dplyr::select(ARMCD, AVALC, SEX, STRATA1, STRATA2) %>%
-  dplyr::mutate(
+  select(ARMCD, AVALC, SEX, STRATA1, STRATA2) %>%
+  mutate(
     is_rsp = AVALC %in% c("Complete Response (CR)", "Partial Response (PR)")
   )
 

@@ -44,35 +44,35 @@ advs <- radvs(cached = TRUE)
 advs_label <- var_labels(advs)
 
 advs <- advs %>%
-  dplyr::filter(PARAMCD == "DIABP" & PARAM == "Diastolic Blood Pressure") %>%
-  dplyr::mutate(PARAMCD = droplevels(PARAMCD), PARAM = droplevels(PARAM))
+  filter(PARAMCD == "DIABP" & PARAM == "Diastolic Blood Pressure") %>%
+  mutate(PARAMCD = droplevels(PARAMCD), PARAM = droplevels(PARAM))
 
-advs_b <- advs %>% dplyr::filter(ABLFL == "Y" | ABLFL2 == "Y") 
+advs_b <- advs %>% filter(ABLFL == "Y" | ABLFL2 == "Y") 
 N <- table(interaction(advs_b$ABLFL, advs_b$ARM))
 
 # post-baseline
-advs_pb <- advs %>% dplyr::filter(ABLFL != "Y" & ABLFL2 != "Y") 
+advs_pb <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y") 
 
 advs_pb_max <- advs_pb %>%
-  dplyr::group_by(PARAM, USUBJID) %>%
-  dplyr::arrange(dplyr::desc(AVAL)) %>%
-  dplyr::slice(1) %>% 
-  dplyr::ungroup() %>%
-  dplyr::mutate(AVISIT = "Post-Baseline Maximum")
+  group_by(PARAM, USUBJID) %>%
+  arrange(desc(AVAL)) %>%
+  slice(1) %>% 
+  ungroup() %>%
+  mutate(AVISIT = "Post-Baseline Maximum")
 
 advs_pb_min <- advs_pb %>%
-  dplyr::group_by(PARAM, USUBJID) %>%
-  dplyr::arrange(AVAL) %>%
-  dplyr::slice(1) %>% 
-  dplyr::ungroup() %>%
-  dplyr::mutate(AVISIT = "Post-Baseline Minimum")
+  group_by(PARAM, USUBJID) %>%
+  arrange(AVAL) %>%
+  slice(1) %>% 
+  ungroup() %>%
+  mutate(AVISIT = "Post-Baseline Minimum")
 
 advs_pb_last <- advs_pb %>%
-  dplyr::group_by(PARAM, USUBJID) %>%
-  dplyr::arrange(dplyr::desc(AVISITN)) %>%
-  dplyr::slice(1) %>% 
-  dplyr::ungroup() %>%
-  dplyr::mutate(AVISIT = "Post-Baseline Last")
+  group_by(PARAM, USUBJID) %>%
+  arrange(desc(AVISITN)) %>%
+  slice(1) %>% 
+  ungroup() %>%
+  mutate(AVISIT = "Post-Baseline Last")
 
 advs_f <- rbind(
   advs,
@@ -82,7 +82,7 @@ advs_f <- rbind(
 
 var_labels(advs_f) <- advs_label
 
-advs_f <- advs_f %>% dplyr::mutate(AVISIT = droplevels(AVISIT))
+advs_f <- advs_f %>% mutate(AVISIT = droplevels(AVISIT))
 
 ```
 

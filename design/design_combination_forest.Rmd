@@ -16,10 +16,10 @@ library(tern)
 library(ggplot2.utils)
 library(dplyr)
 adtte <- ex_adtte %>%
-  dplyr::filter(
+  filter(
     PARAMCD == "OS"
     ) %>%
-  dplyr::mutate(
+  mutate(
     AVAL = day2month(AVAL),
     AVALU = "Months",
     is_event = CNSR == 0,

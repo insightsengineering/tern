@@ -42,14 +42,14 @@ library(scda)
 
 adrs <- synthetic_cdisc_data("latest")$adrs
 adrs_f <- adrs \%>\%
-  dplyr::filter(
+  filter(
     PARAMCD == "BESRSPI",
     ARM \%in\% c("B: Placebo", "A: Drug X")
   ) \%>\%
-  dplyr::mutate(
+  mutate(
     # Reorder levels of ARM to have Placebo as reference arm for Odds Ratio calculations.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
-    RSP = dplyr::case_when(AVALC \%in\% c("PR", "CR") ~ 1, TRUE ~ 0),
+    RSP = case_when(AVALC \%in\% c("PR", "CR") ~ 1, TRUE ~ 0),
     SEX = factor(SEX)
   )
 

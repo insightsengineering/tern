@@ -81,7 +81,7 @@ dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
   ARM     = factor(rep(LETTERS[1:3], each = 4)),
   AVAL    = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
-) \%>\% dplyr::mutate(
+) \%>\% mutate(
    AVALC = factor(AVAL, levels = c(0, 1),
                  labels = c("Complete Response (CR)", "Partial Response (PR)"))
 )

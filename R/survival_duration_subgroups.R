@@ -30,12 +30,12 @@
 #' adtte_labels <- var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
-#'   dplyr::filter(
+#'   filter(
 #'     PARAMCD == "OS",
 #'     ARM %in% c("B: Placebo", "A: Drug X"),
 #'     SEX %in% c("M", "F")
 #'   ) %>%
-#'   dplyr::mutate(
+#'   mutate(
 #'     # Reorder levels of ARM to display reference arm before treatment arm.
 #'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
 #'     SEX = droplevels(SEX),

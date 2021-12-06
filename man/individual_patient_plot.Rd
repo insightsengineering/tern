@@ -99,8 +99,8 @@ library(dplyr)
 
 # Select a small sample of data to plot.
 adlb <- synthetic_cdisc_data("latest")$adlb \%>\%
-  dplyr::filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
-  dplyr::slice(1:36)
+  filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
+  slice(1:36)
 
 p <- h_g_ipp(df = adlb,
              xvar = "AVISIT",

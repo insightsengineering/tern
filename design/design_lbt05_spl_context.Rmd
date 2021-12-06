@@ -54,38 +54,38 @@ adlb <- df_explicit_na(adlb)
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
   qntls <- adlb %>%
-    dplyr::group_by(PARAMCD) %>%
-    dplyr::summarise(as_tibble(t(quantile(AVAL, probs = c(0.1, 0.9)))), .groups = "drop_last") %>%
-    dplyr::rename(q1 = 2, q2 = 3)
+    group_by(PARAMCD) %>%
+    summarise(as_tibble(t(quantile(AVAL, probs = c(0.1, 0.9)))), .groups = "drop_last") %>%
+    rename(q1 = 2, q2 = 3)
 
   adlb <- adlb %>%
-    dplyr::left_join(qntls, by = "PARAMCD")
+    left_join(qntls, by = "PARAMCD")
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
   set.seed(1)
   adlb <- adlb %>%
-    dplyr::group_by(USUBJID, PARAMCD, BASETYPE) %>%
-    dplyr::mutate(ANRIND = factor(dplyr::case_when(
+    group_by(USUBJID, PARAMCD, BASETYPE) %>%
+    mutate(ANRIND = factor(case_when(
       ANRIND == "LOW" & AVAL <= q1 ~ "LOW LOW",
       ANRIND == "HIGH" & AVAL >= q2 ~ "HIGH HIGH",
       TRUE ~ as.character(ANRIND)),
       levels = c("", "HIGH", "HIGH HIGH", "LOW", "LOW LOW", "NORMAL")
     ),
-    AVALCAT1 = factor(dplyr::case_when(
+    AVALCAT1 = factor(case_when(
       ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
-        sample(x = avalcat1, size = dplyr::n(), replace = TRUE, prob = c(0.3, 0.6, 0.1)),
+        sample(x = avalcat1, size = n(), replace = TRUE, prob = c(0.3, 0.6, 0.1)),
       TRUE ~ ""),
       levels = c("", avalcat1)
     ),
     PARCAT2 = factor(ifelse(ANRIND %in% c("HIGH HIGH", "LOW LOW"), "LS",
-                            sample(c("SI", "CV", "LS"), size = dplyr::n(), replace = TRUE)
+                            sample(c("SI", "CV", "LS"), size = n(), replace = TRUE)
     )
     )) %>%
-    dplyr::select(-q1, -q2)
+    select(-q1, -q2)
 
   #Preprocessing steps
-  adlb_f <- adlb %>% dplyr::filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL))
+  adlb_f <- adlb %>% filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL))
 
 # Recode ADLB parameters to so that each one has different
 # possible marked abnormalities
@@ -96,7 +96,7 @@ adlb_f$ANRIND[adlb_f$PARAMCD == "IGA" & (adlb_f$ANRIND == "LOW" | adlb_f$ANRIND 
 # that is going to be used as the split variable instead of ANRIND,
 # to have a correct split labels
 adlb_f <- adlb_f %>%
-  dplyr::mutate(abn_dir = factor(dplyr::case_when(
+  mutate(abn_dir = factor(case_when(
     ANRIND == "LOW LOW" ~ "Low",
     ANRIND == "HIGH HIGH" ~ "High",
     TRUE ~ ""
@@ -187,7 +187,7 @@ s_count_abnormal_by_marked <- function(df,
 }
 
 
-adlb_f_alt <- adlb_f %>% dplyr::filter(PARAMCD == "ALT") %>% droplevels()
+adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT") %>% droplevels()
 full_parent_df <- list(adlb_f_alt, "not_needed")
 cur_col_subset <- list(adlb_f_alt$ARMCD == "ARM A", "not_needed")
 spl_context <- data.frame(
@@ -253,7 +253,7 @@ adlb_f[adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "", c("PARAM", 
 ) %>%
   lapply(as.character) %>%
   as.data.frame() %>%
-  dplyr::arrange(PARAM, !dplyr::desc(abn_dir))
+  arrange(PARAM, !desc(abn_dir))
 
 lyt_map <- basic_table() %>%
   split_cols_by("ARM") %>%
@@ -283,7 +283,7 @@ table_in_group
 # If we want to remove the 0 cases of `Single, not last` and `Last or replicated`
 # we can achieve this with `trim_levels_in_group`
 
-table_in_group <- build_table(lyt = lyt_in_group, df = adlb_f %>% dplyr::filter(!AVALCAT1 %in% c("SINGLE")) %>% droplevels())
+table_in_group <- build_table(lyt = lyt_in_group, df = adlb_f %>% filter(!AVALCAT1 %in% c("SINGLE")) %>% droplevels())
 table_in_group
 
 ```
@@ -308,12 +308,12 @@ table_normal
 Example 1: If all rows for `ALT` are removed in the `map`.
 
 ```{r}
-empirical_map1 <- map %>% dplyr::filter(
+empirical_map1 <- map %>% filter(
   PARAM != "Alanine Aminotransferase Measurement"
 )
 
 adlb_f_no_ALT <- adlb_f %>% #nolint
-  dplyr::filter(PARAM != "Alanine Aminotransferase Measurement") %>%
+  filter(PARAM != "Alanine Aminotransferase Measurement") %>%
   droplevels()
 
 lyt_map_emp <- basic_table() %>%
@@ -350,7 +350,7 @@ Example 3:  Case where there is an arm that has no lab records. Table correctly 
 
 ```{r}
 adlb_f2 <- adlb_f %>%
-  dplyr::filter(!(ARMCD == "ARM A" & PARAMCD == "ALT")) %>%
+  filter(!(ARMCD == "ARM A" & PARAMCD == "ALT")) %>%
   droplevels()
 
 build_table(

@@ -39,13 +39,13 @@ library(survival)
 
 # Test with multiple arms
 synthetic_cdisc_data("latest")$adtte \%>\%
-  dplyr::filter(PARAMCD == "OS") \%>\%
+  filter(PARAMCD == "OS") \%>\%
   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   tern:::h_data_plot()
 
 # Test with single arm
 synthetic_cdisc_data("latest")$adtte \%>\%
-  dplyr::filter(PARAMCD == "OS", ARMCD == "ARM B") \%>\%
+  filter(PARAMCD == "OS", ARMCD == "ARM B") \%>\%
   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   tern:::h_data_plot(armval = "ARM B")
 }

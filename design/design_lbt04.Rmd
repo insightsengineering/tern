@@ -57,11 +57,11 @@ adlb$BNRIND[adlb$PARAMCD == "ALT" & adlb$BNRIND == "HIGH"] <- "LOW"
 adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
 adlb$BNRIND[adlb$PARAMCD == "IGA" & adlb$BNRIND == "LOW"] <- "HIGH"
 
-adlb_no_CRP_L <- dplyr::filter(adlb, !(PARAMCD == "CRP" & ANRIND == "LOW")) # "0" in single row only CRP -> LOW # nolintr
-adlb_no_ALT_LN <- dplyr::filter(adlb, !(PARAMCD == "ALT" & ANRIND %in% c("LOW", "NORMAL"))) # "0" for the whole ALT inner group # nolintr
-adlb_no_IGA_NH <- dplyr::filter(adlb, !(PARAMCD == "IGA" & ANRIND %in% c("HIGH", "NORMAL"))) # "0" for the whole IMMUNOLOGY outer group # nolintr
-adlb_no_ALT_LH <- dplyr::filter(adlb, PARAMCD != "ALT" | ANRIND == "NORMAL") # normal level and no any abnormal level for ALT # nolintr
-adlb_no_ALT_NH <- dplyr::filter(adlb, PARAMCD != "ALT" | ANRIND == "LOW") # normal level and no any abnormal level for ALT # nolintr
+adlb_no_CRP_L <- filter(adlb, !(PARAMCD == "CRP" & ANRIND == "LOW")) # "0" in single row only CRP -> LOW # nolintr
+adlb_no_ALT_LN <- filter(adlb, !(PARAMCD == "ALT" & ANRIND %in% c("LOW", "NORMAL"))) # "0" for the whole ALT inner group # nolintr
+adlb_no_IGA_NH <- filter(adlb, !(PARAMCD == "IGA" & ANRIND %in% c("HIGH", "NORMAL"))) # "0" for the whole IMMUNOLOGY outer group # nolintr
+adlb_no_ALT_LH <- filter(adlb, PARAMCD != "ALT" | ANRIND == "NORMAL") # normal level and no any abnormal level for ALT # nolintr
+adlb_no_ALT_NH <- filter(adlb, PARAMCD != "ALT" | ANRIND == "LOW") # normal level and no any abnormal level for ALT # nolintr
 
 # counts (no dropping)
 lyt_0 <- basic_table() %>%
@@ -133,10 +133,10 @@ s_count_abnormal <- function(df,
 }
 
 # Test it out.
-s_count_abnormal(adlb %>% dplyr::filter(PARAMCD == "ALT") %>% droplevels(), .var = "ANRIND")
-s_count_abnormal(adlb %>% dplyr::filter(PARAMCD == "CRP"), .var = "ANRIND")
+s_count_abnormal(adlb %>% filter(PARAMCD == "ALT") %>% droplevels(), .var = "ANRIND")
+s_count_abnormal(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND")
 # switch order of HIGH and LOW
-s_count_abnormal(adlb %>% dplyr::filter(PARAMCD == "CRP"), .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
+s_count_abnormal(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
 ######################
 ## a_count_abnormal
@@ -150,8 +150,8 @@ a_count_abnormal <- make_afun( # nolint
 
 # Just small update to examples:
 a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
-a_fun(adlb %>% dplyr::filter(PARAMCD == "ALT") %>% droplevels(), .var = "ANRIND")
-a_fun(adlb %>% dplyr::filter(PARAMCD == "CRP"), .var = "ANRIND")
+a_fun(adlb %>% filter(PARAMCD == "ALT") %>% droplevels(), .var = "ANRIND")
+a_fun(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND")
 
 ######################
 ## count_abnormal
@@ -299,7 +299,7 @@ build_table(lyt = lyt_map, df = adlb_no_ALT_NH, alt_counts_df = adsl)
 
 # Another example of map, here we remove ALT from the previous map.
 
-map_no_ALT <- dplyr::filter(map, PARAMCD != "ALT") # nolint
+map_no_ALT <- filter(map, PARAMCD != "ALT") # nolint
 map_no_ALT
 
 lyt_map_no_ALT <- basic_table() %>% # nolint

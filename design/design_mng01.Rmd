@@ -40,7 +40,7 @@ library(tern)
 adlb <- scda::synthetic_cdisc_data("latest")$adlb
 
 adlb <- adlb %>%
-  dplyr::filter(ANL01FL == "Y",
+  filter(ANL01FL == "Y",
          PARAMCD == "ALT",
          AVISIT != "SCREENING") %>%
   df_explicit_na()
@@ -313,7 +313,7 @@ g_lineplot <- function(df, # nolint
       grid::grid.newpage()
     }
 
-    p <- gridExtra::grid.dplyr::arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
+    p <- gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
     #p <- gridExtra::marrangeGrob(list(p_grob, tbl_grob), nrow = 2, ncol = 1, heights = c(3, 1), top = NULL) # nolint
 
   }

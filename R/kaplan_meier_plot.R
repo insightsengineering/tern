@@ -83,8 +83,8 @@ NULL
 #' library(grid)
 #'
 #' df <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
-#'   dplyr::mutate(is_event = CNSR == 0)
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(is_event = CNSR == 0)
 #' variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 #' # 1. Example - basic option
 #'
@@ -411,13 +411,13 @@ g_km <- function(df,
 #'
 #' # Test with multiple arms
 #' synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   tern:::h_data_plot()
 #'
 #' # Test with single arm
 #' synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
+#'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
 #'   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   tern:::h_data_plot(armval = "ARM B")
 #' }
@@ -482,7 +482,7 @@ h_data_plot <- function(fit_km,
 #' library(survival)
 #'
 #' data <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
 #'
@@ -533,7 +533,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' library(survival)
 #'
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- tern:::h_data_plot(fit_km = fit_km)
 #' xticks <- tern:::h_xticks(data = data_plot)
@@ -688,7 +688,7 @@ h_ggkm <- function(data,
 #' library(grid)
 #'
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
@@ -752,7 +752,7 @@ h_decompose_gg <- function(gg) {
 #' library(survival)
 #'
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
@@ -861,7 +861,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #' library(grid)
 #'
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #'
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -995,7 +995,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' library(survival)
 #'
 #' adtte <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS")
+#'   filter(PARAMCD == "OS")
 #'
 #' fit <- survival::survfit(
 #'   form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD,
@@ -1047,7 +1047,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 #' synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_grob_median_surv %>%
 #'   grid::grid.draw()
@@ -1093,7 +1093,7 @@ h_grob_median_surv <- function(fit_km,
 #' library(grid)
 #'
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
@@ -1137,8 +1137,8 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' library(dplyr)
 #'
 #' adtte <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
-#'   dplyr::mutate(is_event = CNSR == 0)
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(is_event = CNSR == 0)
 #'
 #' tern:::h_tbl_coxph_pairwise(
 #'   df = adtte,
@@ -1198,8 +1198,8 @@ h_tbl_coxph_pairwise <- function(df,
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 #' data <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
-#'   dplyr::mutate(is_event = CNSR == 0)
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(is_event = CNSR == 0)
 #' tbl_grob <- tern:::h_grob_coxph(
 #'    df = data,
 #'    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),

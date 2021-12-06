@@ -146,14 +146,14 @@ adsl <- synthetic_cdisc_data("latest")$adsl
 
 #The direction variable, GRADDR, is based on metadata
 adlb <- adlb \%>\%
-  dplyr::mutate(
-    GRADDR = dplyr::case_when(
+  mutate(
+    GRADDR = case_when(
     PARAMCD == "ALT" ~ "B",
     PARAMCD == "CRP" ~ "L",
     PARAMCD == "IGA" ~ "H"
     )
   ) \%>\%
-dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 df <- h_adlb_worsen(
   adlb,
@@ -163,7 +163,7 @@ df <- h_adlb_worsen(
   )
 
 # `h_worsen_counter`
-h_worsen_counter(df \%>\% dplyr::filter(PARAMCD == "CRP" & GRADDR == "Low"),
+h_worsen_counter(df \%>\% filter(PARAMCD == "CRP" & GRADDR == "Low"),
                  id = "USUBJID",
                  .var = "ATOXGR",
                  baseline_var = "BTOXGR",
@@ -174,7 +174,7 @@ h_worsen_counter(df \%>\% dplyr::filter(PARAMCD == "CRP" & GRADDR == "Low"),
 
 #Patients with worsening lab grade for CRP in the direction of low
 s_count_abnormal_lab_worsen_by_baseline(
-  df = df \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
+  df = df \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   variables = list(
     id = "USUBJID",
@@ -185,7 +185,7 @@ s_count_abnormal_lab_worsen_by_baseline(
 
 
 a_count_abnormal_lab_worsen_by_baseline(
-  df = df \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
+  df = df \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR")
 )

@@ -23,13 +23,13 @@ library(random.cdisc.data)
 library(dplyr)
 adlb <- radlb(cached = TRUE)
 adsl <- radsl(cached = TRUE)
-adlb <- adlb %>% dplyr::mutate(
-  GRADDR = dplyr::case_when(
+adlb <- adlb %>% mutate(
+  GRADDR = case_when(
     PARAMCD == "ALT" ~ "B",
     PARAMCD == "CRP" ~ "L",
     PARAMCD == "IGA" ~ "H"
     )
-  ) %>% dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  ) %>% filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 ```
 
 
@@ -74,7 +74,7 @@ h_adlb_worsen <- function(
 
   #select variables of interest
   adlb_f <- adlb[position_satisfy_filters, ] %>%
-    dplyr::select(all_of(c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR", names(worst_flag), direction_var)))
+    select(all_of(c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR", names(worst_flag), direction_var)))
 
 
 
@@ -109,7 +109,7 @@ h_adlb_worsen <- function(
 }
 
 # Examples
-adlb_f <- adlb %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
+adlb_f <- adlb %>% filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
 
 result <- h_adlb_worsen(
   adlb_f,

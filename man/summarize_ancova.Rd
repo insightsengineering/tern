@@ -116,19 +116,19 @@ adsl <- synthetic_cdisc_data("latest")$adsl
 adqs <- synthetic_cdisc_data("latest")$adqs
 
 adqs_single <- adqs \%>\%
-  dplyr::filter(
+  filter(
     AVISIT == "WEEK 1 DAY 8",  # single time point
     PARAMCD == "FKSI-FWB"  # single end point
   ) \%>\%
-  dplyr::mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
+  mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
 
 df <- adqs_single \%>\%
-  dplyr::filter(ARMCD == "ARM B")
+  filter(ARMCD == "ARM B")
 .var <- "CHG"
 .df_row <- adqs_single
 variables <- list(arm = "ARMCD", covariates = "SEX * AGE")
 .ref_group <- adqs_single \%>\%
-  dplyr::filter(ARMCD == "ARM A")
+  filter(ARMCD == "ARM A")
 conf_level <- 0.95
 
 s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
@@ -137,13 +137,13 @@ a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_lev
 
 
 adqs_single <- adqs \%>\%
-  dplyr::filter(
+  filter(
     AVISIT == "WEEK 1 DAY 8",  # single time point
     PARAMCD == "FKSI-FWB"  # single end point
   ) \%>\%
-  dplyr::mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
+  mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
 adqs_multi <- adqs \%>\%
-  dplyr::filter(AVISIT == "WEEK 1 DAY 8")
+  filter(AVISIT == "WEEK 1 DAY 8")
 
 basic_table() \%>\%
   split_cols_by("ARMCD", ref_group = "ARM A") \%>\%

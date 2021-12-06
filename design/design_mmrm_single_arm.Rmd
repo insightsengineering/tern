@@ -108,7 +108,7 @@ check_mmrm_vars <- function(vars,
 
   # Remove all entries where response is NA, droplevels as well.
   data_complete <- data_complete_regressors %>%
-    dplyr::filter(!is.na(data_complete_regressors[, vars$response])) %>%
+    filter(!is.na(data_complete_regressors[, vars$response])) %>%
     droplevels()
 
   if (is_specified("arm")) {
@@ -233,7 +233,7 @@ get_mmrm_lsmeans <- function(fit,
   # Adjusted estimate for each arm.
   estimates <- confint(lsmeans, level = conf_level) %>%
     as.data.frame() %>%
-    dplyr::rename(
+    rename(
       estimate = .data$emmean,
       se = .data$SE,
       lower_cl = .data$lower.CL,
@@ -241,14 +241,14 @@ get_mmrm_lsmeans <- function(fit,
     )
 
   data_n <- data_complete %>%
-    dplyr::group_by_at(.vars = c(vars$visit, vars$arm)) %>%
-    dplyr::summarise(n = dplyr::n()) %>%
-    dplyr::ungroup()
+    group_by_at(.vars = c(vars$visit, vars$arm)) %>%
+    summarise(n = n()) %>%
+    ungroup()
 
   estimates <- suppressWarnings(
     # We don't have labels in `estimates`, which triggers a warning.
     estimates %>%
-      dplyr::left_join(data_n, by = c(vars$visit, vars$arm))
+      left_join(data_n, by = c(vars$visit, vars$arm))
   )
 
   results <-  if (is.null(vars$arm)) {
@@ -261,15 +261,15 @@ get_mmrm_lsmeans <- function(fit,
     arm_levels <- levels(data_complete[[vars$arm]])
     reference_level <- arm_levels[1]
     means_at_ref <- estimates %>%
-      dplyr::filter(!!as.symbol(vars$arm) == reference_level) %>%
-      dplyr::select(c(vars$visit, "estimate")) %>%
-      dplyr::rename(ref = .data$estimate)
+      filter(!!as.symbol(vars$arm) == reference_level) %>%
+      select(c(vars$visit, "estimate")) %>%
+      rename(ref = .data$estimate)
 
     relative_reduc <- estimates %>%
-      dplyr::filter(!!as.symbol(vars$arm) != reference_level) %>%
-      dplyr::left_join(means_at_ref, by = c(vars$visit)) %>%
-      dplyr::mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
-      dplyr::select(c(vars$visit, vars$arm, "relative_reduc"))
+      filter(!!as.symbol(vars$arm) != reference_level) %>%
+      left_join(means_at_ref, by = c(vars$visit)) %>%
+      mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
+      select(c(vars$visit, vars$arm, "relative_reduc"))
 
     # Start with the differences between LS means.
     sum_fit_diff <- summary(
@@ -282,17 +282,17 @@ get_mmrm_lsmeans <- function(fit,
     # Get the comparison group name from "contrast" column,
     # e.g. "ARMB - ARMA" shall return "ARMB", i.e. remove " - ARMA" part.
     contrasts <- sum_fit_diff %>%
-      dplyr::mutate(
+      mutate(
         col_by = factor(
           gsub(paste0("\\s-\\s", reference_level), "", contrast),
           levels = arm_levels
         )
       ) %>%
-      dplyr::select(-contrast) %>%
-      dplyr::rename(!!as.symbol(vars$arm) := .data$col_by) %>%
-      dplyr::left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
-      dplyr::mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
-      dplyr::rename(
+      select(-contrast) %>%
+      rename(!!as.symbol(vars$arm) := .data$col_by) %>%
+      left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
+      mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
+      rename(
         se = .data$SE,
         lower_cl = .data$lower.CL,
         upper_cl = .data$upper.CL,

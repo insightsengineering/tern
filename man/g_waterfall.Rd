@@ -54,12 +54,12 @@ library(dplyr)
 
 ADSL <- synthetic_cdisc_data("latest")$adsl
 ADSL_f <- ADSL \%>\%
-  dplyr::select(USUBJID, STUDYID, ARM, ARMCD, SEX)
+  select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 
 ADRS <- synthetic_cdisc_data("latest")$adrs
 ADRS_f <- ADRS \%>\%
-  dplyr::filter(PARAMCD == "OVRINV") \%>\%
-  dplyr::mutate(pchg = rnorm(n(), 10, 50))
+  filter(PARAMCD == "OVRINV") \%>\%
+  mutate(pchg = rnorm(n(), 10, 50))
 
 ADRS_f <- head(ADRS_f, 30)
 ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID),]

@@ -44,7 +44,7 @@ NULL
 #'
 #' # Select only post-baseline records.
 #' df <- df %>%
-#'   dplyr::filter(ONTRTFL == "Y")
+#'   filter(ONTRTFL == "Y")
 #'
 #' # For abnormal level "HIGH" we get the following counts.
 #' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
@@ -135,7 +135,7 @@ a_count_abnormal <- make_afun(
 #'
 #' # Select only post-baseline records.
 #' df2 <- df2 %>%
-#'   dplyr::filter(ONTRTFL == "Y")
+#'   filter(ONTRTFL == "Y")
 #'
 #' basic_table() %>%
 #'   count_abnormal(

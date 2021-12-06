@@ -65,10 +65,10 @@ library(survival)
 
 ADSL <- synthetic_cdisc_data("latest")$adsl
 ADSL <- ADSL \%>\%
-  dplyr::filter(SEX \%in\% c("F", "M"))
+  filter(SEX \%in\% c("F", "M"))
 \dontrun{
 ADTTE <- synthetic_cdisc_data("latest")$adtte \%>\%
-  dplyr::filter(PARAMCD == "PFS")
+  filter(PARAMCD == "PFS")
 ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 ADTTE$SEX <- droplevels(ADTTE$SEX)
 

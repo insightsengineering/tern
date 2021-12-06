@@ -69,8 +69,8 @@ adrs <- synthetic_cdisc_data("latest")$adrs
 adrs_labels <- var_labels(adrs)
 
 adrs_f <- adrs \%>\%
-  dplyr::filter(PARAMCD == "BESRSPI") \%>\%
-  dplyr::mutate(rsp = AVALC == "CR")
+  filter(PARAMCD == "BESRSPI") \%>\%
+  mutate(rsp = AVALC == "CR")
 var_labels(adrs_f) <- c(adrs_labels, "Response")
 
 # This is how the variable list is converted internally.

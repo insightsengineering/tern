@@ -75,7 +75,7 @@ library(dplyr)
 library(survival)
 
 fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
-  dplyr::filter(PARAMCD == "OS") \%>\%
+  filter(PARAMCD == "OS") \%>\%
   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- tern:::h_data_plot(fit_km = fit_km)
 xticks <- tern:::h_xticks(data = data_plot)

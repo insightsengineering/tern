@@ -120,7 +120,7 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #'   stringsAsFactors = FALSE
 #' )
 #' df_adsl <- df %>%
-#'   dplyr::select(USUBJID, ARM) %>%
+#'   select(USUBJID, ARM) %>%
 #'   unique
 #'
 #' s_count_occurrences_by_grade(

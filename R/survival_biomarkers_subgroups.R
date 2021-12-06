@@ -24,8 +24,8 @@
 #' adtte_labels <- var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
-#'   dplyr::mutate(
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
 #'   ) %>%

@@ -390,10 +390,10 @@ rht <- function(x) {
 #'
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' ADSL <- ADSL %>%
-#'   dplyr::filter(SEX %in% c("F", "M"))
+#'   filter(SEX %in% c("F", "M"))
 #' \dontrun{
 #' ADTTE <- synthetic_cdisc_data("latest")$adtte %>%
-#'   dplyr::filter(PARAMCD == "PFS")
+#'   filter(PARAMCD == "PFS")
 #' ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 #' ADTTE$SEX <- droplevels(ADTTE$SEX)
 #'
@@ -657,7 +657,7 @@ check_increments <- function(increments, covariates) {
 #'
 #' ADTTE <- synthetic_cdisc_data("latest")$adtte
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
-#' ADTTE_f <- dplyr::filter(
+#' ADTTE_f <- filter(
 #'   ADTTE_f,
 #'   PARAMCD == "OS"
 #'   & SEX %in% c("F", "M")

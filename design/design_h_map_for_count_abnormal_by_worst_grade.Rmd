@@ -116,12 +116,12 @@ library(forcats)
 ADSL <- haven::read_sas("data/adsl.sas7bdat")
 ADLB <- haven::read_sas("data/adlb.sas7bdat")
 
-adsl <- ADSL %>% dplyr::filter(SAFFL == "Y") %>% df_explicit_na()
+adsl <- ADSL %>% filter(SAFFL == "Y") %>% df_explicit_na()
 adlb <- ADLB %>% df_explicit_na() %>%
-  dplyr::filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
+  filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
 adlb_f <- adlb %>%
-  dplyr::mutate(
-    GRADE_DIR = factor(dplyr::case_when(
+  mutate(
+    GRADE_DIR = factor(case_when(
       ATOXGR %in% c("-1", "-2", "-3") ~ "LOW",
       ATOXGR == "0" ~ "ZERO",
       ATOXGR %in% c("1", "2", "3") ~ "HIGH"),
@@ -132,7 +132,7 @@ adlb_f <- adlb %>%
       c("0", "1", "2", "3")
     )
   ) %>%
-  dplyr::filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
+  filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
   droplevels()
 levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "Any")
 #I had to add "any" into the levels of analysis variable `GRADE_ANL` for the functions to work. Not sure if there's
@@ -148,12 +148,12 @@ adsl <- synthetic_cdisc_data("latest")$adsl
 adlb <- synthetic_cdisc_data("latest")$adlb
 adlb[["PARCAT2"]] <- "SI" # only for knit to work
 
-adsl <- adsl %>% dplyr::filter(SAFFL == "Y") %>% df_explicit_na()
+adsl <- adsl %>% filter(SAFFL == "Y") %>% df_explicit_na()
 adlb <- adlb %>% df_explicit_na() %>%
-  dplyr::filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
+  filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
 adlb_f <- adlb %>%
-  dplyr::mutate(
-    GRADE_DIR = factor(dplyr::case_when(
+  mutate(
+    GRADE_DIR = factor(case_when(
       ATOXGR %in% c("-1", "-2", "-3") ~ "LOW",
       ATOXGR == "0" ~ "ZERO",
       ATOXGR %in% c("1", "2", "3") ~ "HIGH"),
@@ -164,7 +164,7 @@ adlb_f <- adlb %>%
       c("0", "1", "2", "3")
     )
   ) %>%
-  dplyr::filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
+  filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
   droplevels()
 levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "4", "Any")
 ```
@@ -172,9 +172,9 @@ levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "4", "Any")
 Build LBT07
 ```{r}
 # The commented-out codes were what used to create the map
-# map <- adlb_f %>% dplyr::select(PARAMCD, GRADE_DIR, GRADE_ANL) %>% unique() %>% dplyr::filter(GRADE_DIR != "ZERO")
-# map <- ext_ncictc4 %>% dplyr::left_join(map, by = c("PARAMCD", "GRADE_DIR")) %>% unique() %>% dplyr::arrange(PARAMCD)
-# map <- map %>% dplyr::mutate(GRADE_ANL = ifelse(is.na(GRADE_ANL), "Any", as.character(GRADE_ANL)))
+# map <- adlb_f %>% select(PARAMCD, GRADE_DIR, GRADE_ANL) %>% unique() %>% filter(GRADE_DIR != "ZERO")
+# map <- ext_ncictc4 %>% left_join(map, by = c("PARAMCD", "GRADE_DIR")) %>% unique() %>% arrange(PARAMCD)
+# map <- map %>% mutate(GRADE_ANL = ifelse(is.na(GRADE_ANL), "Any", as.character(GRADE_ANL)))
 
 map <- h_map_for_count_abnormal_by_worst_grade(
   df = adlb_f

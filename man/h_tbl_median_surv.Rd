@@ -23,7 +23,7 @@ library(dplyr)
 library(survival)
 
 adtte <- synthetic_cdisc_data("latest")$adtte \%>\%
-  dplyr::filter(PARAMCD == "OS")
+  filter(PARAMCD == "OS")
 
 fit <- survival::survfit(
   form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD,

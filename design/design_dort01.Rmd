@@ -45,13 +45,13 @@ adsl <- radsl(cached = TRUE)
 adtte <- radtte(cached = TRUE)
 
 adtte_f <- adtte %>%
-  dplyr::filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
+  filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
   dplyr::mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0,
     is_not_event = CNSR == 1,
     EVNT1 = factor(
-      dplyr::case_when(
+      case_when(
         is_event == TRUE ~ "Responders with subsequent event (%)",
         is_event == FALSE ~ "Responders without subsequent event (%)"
       )
@@ -112,13 +112,13 @@ adsl <- radsl(cached = TRUE)
 adtte <- radtte(cached = TRUE)
 
 adtte_f <- adtte %>%
-  dplyr::filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
+  filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
   dplyr::mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0,
     is_not_event = CNSR == 1,
     EVNT1 = factor(
-      dplyr::case_when(
+      case_when(
         is_event == TRUE ~ "Responders with subsequent event (%)",
         is_event == FALSE ~ "Responders without subsequent event (%)"
       )
@@ -173,13 +173,13 @@ adsl <- radsl(cached = TRUE)
 adtte <- radtte(cached = TRUE)
 
 adtte_f <- adtte %>%
-  dplyr::filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
+  filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
   dplyr::mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0,
     is_not_event = CNSR == 1,
     EVNT1 = factor(
-      dplyr::case_when(
+      case_when(
         is_event == TRUE ~ "Responders with subsequent event (%)",
         is_event == FALSE ~ "Responders without subsequent event (%)"
       )
