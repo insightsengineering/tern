@@ -199,7 +199,7 @@ testthat::test_that("fit_lme4_single_optimizer works as expected when there are 
     data = lme4::sleepstudy,
     optimizer = "nmkbw"
   )
-  testthat::expect_s4_classresult2, "lmerModLmerTest")
+  testthat::expect_s4_class(result2, "lmerModLmerTest")
   testthat::expect_identical(attr(result2, "optimizer"), "nmkbw")
   testthat::expect_identical(attr(result2, "messages"), character(0))
 
@@ -348,7 +348,7 @@ testthat::test_that("fit_lme4_single_optimizer correctly captures warnings and m
   )
   expect_s4_class(result, "lmerModLmerTest")
   expect_identical(attr(result, "optimizer"), "nloptwrap_bobyqa")
-  expect_gt(length(attr(result, "messages")), 0)
+  testthat::expect_gt(length(attr(result, "messages")), 0)
 })
 
 testthat::test_that("fit_lme4_single_optimizer fails when there is an error", {
@@ -388,8 +388,8 @@ testthat::test_that("refit_lme4_all_optimizers fails when no optimizer succeeds"
     data = lme4::sleepstudy,
     optimizer = "nloptwrap_bobyqa"
   )
-  expect_gt(length(attr(original_fit, "messages")), 0)
-  expect_error(
+  testthat::expect_gt(length(attr(original_fit, "messages")), 0)
+  testthat::expect_error(
     refit_lme4_all_optimizers(original_fit),
     "No optimizer led to a successful model fit"
   )
@@ -410,17 +410,17 @@ testthat::test_that("refit_lme4_all_optimizers can find a working optimizer if t
     data = data,
     optimizer = "nloptwrap_bobyqa"
   )
-  testthat::expect_gtlength(attr(failed_fit, "messages")), 0)
+  testthat::expect_gt(length(attr(failed_fit, "messages")), 0)
   # But this one works.
   successful_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ days_grouped + (days_grouped | Subject),
     data = data,
     optimizer = "nloptwrap_neldermead"
   )
-  testthat::expect_lengthattr(successful_fit, "messages"), 0L)
+  testthat::expect_length(attr(successful_fit, "messages"), 0L)
   # So we expect that we can find the working one (or at least one working one).
   final_fit <- refit_lme4_all_optimizers(failed_fit)
-  testthat::expect_lengthattr(final_fit, "messages"), 0L)
+  testthat::expect_length(attr(final_fit, "messages"), 0L)
   testthat::expect_equal(successful_fit, final_fit, check.attributes = FALSE)
 })
 
@@ -434,7 +434,7 @@ testthat::test_that("refit_lme4_all_optimizers works with parallelization", {
     data = lme4::sleepstudy,
     optimizer = "nloptwrap_bobyqa"
   )
-  testthat::expect_gtlength(attr(original_fit, "messages")), 0)
+  testthat::expect_gt(length(attr(original_fit, "messages")), 0)
   # Note that here we get the wrong error message somehow in devtools::check.
   # Therefore we don't compare the message text.
   testthat::expect_error(
@@ -447,7 +447,7 @@ testthat::test_that("fit_lme4 works with healthy inputs", {
     formula = Reaction ~ Days + (Days | Subject),
     data = lme4::sleepstudy
   )
-  testthat::expect_s4_classresult, "lmerModLmerTest")
+  testthat::expect_s4_class(result, "lmerModLmerTest")
 })
 
 testthat::test_that("fit_lme4 fails when there are convergence issues with all optimizers", {
