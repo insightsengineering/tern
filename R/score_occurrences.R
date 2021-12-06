@@ -110,7 +110,7 @@ score_occurrences_subtable <- function(...) {
 score_occurrences_cont_cols <- function(...) {
   score_table_row <- score_occurrences_cols(...)
   function(table_tree) {
-    if (is(table_tree, "ContentRow")) {
+    if (methods::is(table_tree, "ContentRow")) {
       return(NA)
     }
     content_row <- h_content_first_row(table_tree)

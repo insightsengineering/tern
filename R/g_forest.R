@@ -174,7 +174,7 @@ g_forest <- function(tbl,
                      draw = TRUE,
                      newpage = TRUE) {
 
-  stopifnot(is(tbl, "VTableTree"))
+  stopifnot(methods::is(tbl, "VTableTree"))
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
@@ -692,7 +692,7 @@ forest_viewport <- function(tbl,
                             mat_form = NULL) {
 
   stopifnot(
-    is(tbl, "VTableTree"),
+    methods::is(tbl, "VTableTree"),
     is.null(width_row_names) || is.unit(width_row_names),
     is.null(width_columns) || is.unit(width_columns),
     is.unit(width_forest)

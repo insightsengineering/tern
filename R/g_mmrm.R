@@ -65,7 +65,7 @@ g_mmrm_diagnostic <- function(
   type = c("fit-residual", "q-q-residual"),
   z_threshold = NULL
 ) {
-  stopifnot(is(object, "mmrm"))
+  stopifnot(methods::is(object, "mmrm"))
   type <- match.arg(type)
   stopifnot(is.null(z_threshold) || (is.numeric(z_threshold) && z_threshold > 0))
 
@@ -271,7 +271,7 @@ g_mmrm_lsmeans <-
            width = 0.6,
            show_pval = TRUE) {
 
-    stopifnot(is(object, "mmrm"))
+    stopifnot(methods::is(object, "mmrm"))
     select <- match.arg(select, several.ok = TRUE)
     if (is.null(object$vars$arm)) {
       select <- "estimates"

@@ -340,7 +340,7 @@ s_cox_univariate <- function(formula,
 
 # Get the right-hand-term of a formula
 rht <- function(x) {
-  stopifnot(is(x, "formula"))
+  stopifnot(methods::is(x, "formula"))
   y <- as.character(rev(x)[[1]])
   return(y)
 }
