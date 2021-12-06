@@ -122,7 +122,7 @@ testthat::test_that("estimate_odds_ratio estimates right OR and CI (unstratified
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("estimate_odds_ratio estimates right OR and CI (stratified analysis)", {
+testthat::test_that("estimate_odds_ratio estimates right OR and CI (stratified analysis)", {
   utils.nest::skip_if_too_deep(5)
   set.seed(12)
   data <- data.frame(

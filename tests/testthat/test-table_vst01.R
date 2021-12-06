@@ -48,7 +48,7 @@ gen_advs <- function() {
   advs_f
 }
 
-test_that("VST01 default variant is produced correctly", {
+testthat::test_that("VST01 default variant is produced correctly", {
   utils.nest::skip_if_too_deep(3)
 
   advs <- gen_advs()
