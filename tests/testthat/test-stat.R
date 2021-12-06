@@ -1,4 +1,5 @@
-testthat::test_that("stat_mean_ci works for series without NAs (including extreme case n = 1 and various n_min values)", {
+testthat::test_that("stat_mean_ci works for series without NAs
+                    (including extreme case n = 1 and various n_min values)", {
 
   # n = 1, na.rm = TRUE, n_min = 2
   result <- stat_mean_ci(x = 1, gg_helper = FALSE)

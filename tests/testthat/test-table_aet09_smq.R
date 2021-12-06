@@ -93,7 +93,8 @@ testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produ
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ <with customized queries>) is produced correctly", {
+testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
+                    <with customized queries>) is produced correctly", {
 
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)

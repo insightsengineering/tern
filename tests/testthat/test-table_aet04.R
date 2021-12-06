@@ -581,7 +581,8 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
 # No test done for variant 5 (Using Worst Grade Flags from ADAE) since it's similar to
 # variant 1 (just pre-processing the data).
 
-testthat::test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at Least 5%, totals restricted)", {
+testthat::test_that("AET04 variant 6 is produced correctly (with an
+                    Incidence Rate of at Least 5%, totals restricted)", {
 
   adae <- preproc_adae(adae)
   adae <- get_adae_trimmed(adsl, adae, cutoff_rate = 0.4) %>%

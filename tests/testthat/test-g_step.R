@@ -20,7 +20,11 @@ testthat::test_that("tidy.step works as expected for survival STEP results", {
       "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
       "Hazard Ratio", "se", "ci_lower", "ci_upper")
   )
-  testthat::expect_named(attributes(result), c("class", "row.names", "names", "estimate", "biomarker", "ci"), ignore.order = TRUE)
+  testthat::expect_named(
+    attributes(result),
+    c("class", "row.names", "names", "estimate", "biomarker", "ci"),
+    ignore.order = TRUE
+  )
   testthat::expect_equal(result[["Hazard Ratio"]], exp(step_matrix[, "loghr"]))
   testthat::expect_equal(result$ci_lower, exp(step_matrix[, "ci_lower"]))
 })
@@ -49,7 +53,11 @@ testthat::test_that("tidy.step works as expected for response STEP results", {
       "Interval Center", "Interval Lower", "Interval Upper", "n",
       "Odds Ratio", "se", "ci_lower", "ci_upper")
   )
-  testthat::expect_named(attributes(result), c("class", "row.names", "names", "estimate", "biomarker", "ci"), ignore.order = TRUE)
+  testthat::expect_named(
+    attributes(result),
+    c("class", "row.names", "names", "estimate", "biomarker", "ci"),
+    ignore.order = TRUE
+  )
   testthat::expect_equal(result[["Odds Ratio"]], exp(step_matrix[, "logor"]))
   testthat::expect_equal(result$ci_lower, exp(step_matrix[, "ci_lower"]))
 })

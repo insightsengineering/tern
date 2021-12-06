@@ -264,7 +264,8 @@ testthat::test_that("summarize_num_patients with count_by works as expected with
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-testthat::test_that("summarize_num_patients with count_by different combinations works as expected with healthy input", {
+testthat::test_that("summarize_num_patients with count_by different
+                    combinations works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
     ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
