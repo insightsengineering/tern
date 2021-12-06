@@ -72,20 +72,38 @@ summary tables for PK data sets.
 \examples{
 
 library(scda)
-ADSL <- scda::synthetic_cdisc_data("latest")$adsl
-s_summary_pk(ADSL$AGE, custom_label = "stats")
+ADPC <- scda::synthetic_cdisc_data("latest")$adpc
+s_summary_pk(ADPC$AGE, custom_label = "stats")
 
 
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM") \%>\%
   split_rows_by(var = "SEX") \%>\%
   summarize_pk_in_cols(var = "AGE", col_split = TRUE)
-  result <- build_table(lyt, df = ADSL)
-  result
+  result <- build_table(lyt, df = ADPC)
+result
 
 lyt <- basic_table() \%>\%
   summarize_pk_in_cols(var = "AGE", col_split = TRUE)
-  result <- build_table(lyt, df = ADSL)
-  result
+  result <- build_table(lyt, df = ADPC)
+result
+
+# PKPT03
+ADPC$PARAMUNIT <- paste0(ADPC$PARAM, "(", ADPC$AVALU, ")")
+lyt <- basic_table() \%>\%
+  split_rows_by(var = "PARAMUNIT") \%>\%
+  summarize_pk_in_cols(var = "AVAL", col_split = TRUE)
+  result <- build_table(lyt, df = ADPC)
+result
+
+# PKCT01
+ADPC$NRELTM1 <- as.factor(ADPC$NRELTM1)
+lyt <- basic_table() \%>\%
+  split_rows_by(var = "VISIT") \%>\%
+  split_rows_by(var = "NRELTM1") \%>\%
+  summarize_pk_in_cols(var = "AVAL", col_split = TRUE)
+  result <- build_table(lyt, df = ADPC)
+result
+
 
 }
