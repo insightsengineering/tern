@@ -395,7 +395,7 @@ g_lineplot <- function(df, # nolint
       grid::grid.newpage()
     }
 
-    gridExtra::grid.dplyr::arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
+    gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
 
   }
 
