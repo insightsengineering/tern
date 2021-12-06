@@ -56,7 +56,12 @@ summary_formats <- function(type = "numeric") {
       median_ci = "(xx.xx, xx.xx)",
       quantiles = "xx.x - xx.x",
       iqr = "xx.x",
-      range = "xx.x - xx.x"
+      range = "xx.x - xx.x",
+      cv = "xx.x",
+      min = "xx.x",
+      max = "xx",
+      geom_mean = "xx.x",
+      geom_cv = "xx.x"
     )
   }
 }
@@ -75,7 +80,12 @@ summary_labels <- function() {
     median = "Median",
     mad = "Median Absolute Deviation",
     iqr = "IQR",
-    range = "Min - Max"
+    range = "Min - Max",
+    cv = "CV (%)",
+    min = "Minimum",
+    max = "Maximum",
+    geom_mean = "Geometric Mean",
+    geom_cv = "CV Geometric"
   )
 }
 
@@ -141,6 +151,11 @@ s_summary <- function(x,
 #' - `quantiles`: two sample quantiles of `x` (from [quantile()]).
 #' - `iqr`: the [stats::IQR()] of `x`.
 #' - `range`: the [range_noinf()] of `x`.
+#' - `min`: the [max()] of `x`.
+#' - `max`: the [min()] of `x`.
+#' - `cv`: the coefficient of variation of `x`, i.e.: (`sd()/mean()*100`).
+#' - `geom_mean`: the geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).
+#' - `geom_cv`: the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x))^2) - 1)*100`).
 #'
 #' @method s_summary numeric
 #' @order 3
@@ -239,6 +254,14 @@ s_summary.numeric <- function(x, # nolint
   )
 
   y$range <- stats::setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
+  y$min <- y$range[1]
+  y$max <- y$range[2]
+
+  y$cv <- c("cv" = y$sd / y$mean * 100)
+
+  y$geom_mean <- c("geom_mean" = exp(mean(log(x))))
+
+  y$geom_cv <- c("geom_cv" = sqrt(exp(sd(log(x)) ^ 2) - 1) * 100)
 
   y
 }
