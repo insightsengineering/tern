@@ -394,7 +394,7 @@ expected_matrix <- structure(
   ), .Dim = 6:5
 )
 
-testthat::expect_identical(result_matrix, expected_matrix)
+expect_identical(result_matrix, expected_matrix)
 ```
 
 
