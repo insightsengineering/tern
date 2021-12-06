@@ -1,4 +1,4 @@
-test_that("s_change_from_baseline handles empty data (complete missing for a visit)", {
+testthat::test_that("s_change_from_baseline handles empty data (complete missing for a visit)", {
 
   test_data <- data.frame(
     chg = numeric(),
@@ -31,10 +31,10 @@ test_that("s_change_from_baseline handles empty data (complete missing for a vis
     range = c(min = NA_real_, max = NA_real_)
   )
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_change_from_baseline handles NA in baseline values", {
+testthat::test_that("s_change_from_baseline handles NA in baseline values", {
 
   test_data <- data.frame(
     chg = c(0, 0, 0, NA),
@@ -67,10 +67,10 @@ test_that("s_change_from_baseline handles NA in baseline values", {
     range = c(min = 0, max = 6)
   )
 
-  expect_equal(result, expected, tol = 1e-6)
+  testthat::expect_equal(result, expected, tol = 1e-6)
 })
 
-test_that("s_change_from_baseline handles baseline substitution", {
+testthat::test_that("s_change_from_baseline handles baseline substitution", {
 
   test_data <- data.frame(
     chg = c(3, 1, 2, 5),
@@ -126,10 +126,10 @@ test_that("s_change_from_baseline handles baseline substitution", {
     )
   )
 
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("summarize_change works as expected", {
+testthat::test_that("summarize_change works as expected", {
   library(dplyr)
   dta_test <- data.frame(
     USUBJID = rep(1:6, each = 3),
@@ -160,5 +160,5 @@ test_that("summarize_change works as expected", {
     .Dim = c(16L, 2L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

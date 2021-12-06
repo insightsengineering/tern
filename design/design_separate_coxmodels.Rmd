@@ -271,7 +271,7 @@ fit_coxreg_univar <- function(variables,
                               data,
                               at = list(),
                               control = control_coxreg()) {
-  assertthat::assert_that(is_fully_named_list(variables))
+  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -322,14 +322,14 @@ fit_coxreg_univar <- function(variables,
 
 h_coxreg_univar_formulas <- function(variables,
                                      interaction = FALSE) {
-  assertthat::assert_that(is_fully_named_list(variables))
+  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
   assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")]),
-    is.flag(interaction),
+    assertthat::is.flag(interaction),
     has_arm || (!interaction)
   )
   forms <- paste0(
@@ -452,7 +452,7 @@ We also need to be able to work without an arm variable in the multivariate case
 fit_coxreg_multivar <- function(variables,
                                 data,
                                 control = control_coxreg()) {
-  assertthat::assert_that(is_fully_named_list(variables))
+  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -487,7 +487,7 @@ fit_coxreg_multivar <- function(variables,
 }
 
 h_coxreg_multivar_formula <- function(variables) {
-  assertthat::assert_that(is_fully_named_list(variables))
+  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 

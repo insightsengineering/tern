@@ -65,9 +65,9 @@ s_adjusted_rate <- function(
 
   assertthat::assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    is.string(.var),
-    is_numeric_vector(df[[.var]]),
-    is_logical_vector(df[[is_event]])
+    assertthat::is.string(.var),
+    utils.nest::is_numeric_vector(df[[.var]]),
+    utils.nest::is_logical_vector(df[[is_event]])
   )
 
   time_unit <- control$time_unit
@@ -101,8 +101,8 @@ h_rate_ci <- function(
 ) {
 
   assertthat::assert_that(
-    is_numeric_single(person_years),
-    is_numeric_single(num_events)
+    utils.nest::is_numeric_single(person_years),
+    utils.nest::is_numeric_single(num_events)
   )
 
   conf_level <- control$conf_level
@@ -144,7 +144,7 @@ control_adjusted_rate <- function(
 ) {
   conf_type <- match.arg(conf_type)
   assertthat::assert_that(
-    is_numeric_single(time_unit),
+    utils.nest::is_numeric_single(time_unit),
     is_proportion(conf_level)
   )
   list(conf_level = conf_level, conf_type = conf_type, time_unit = time_unit)

@@ -7,7 +7,7 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
-test_that("EGT01 default variant is produced correctly", {
+testthat::test_that("EGT01 default variant is produced correctly", {
 
   adeg_f <- adeg %>%
     dplyr::filter(
@@ -78,5 +78,5 @@ test_that("EGT01 default variant is produced correctly", {
     .Dim = c(42L, 7L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

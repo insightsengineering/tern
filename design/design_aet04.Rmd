@@ -128,7 +128,7 @@ s_count_grade_per_id_content <- function(
 
   assertthat::assert_that(
     is.data.frame(df),
-    is.string(.var)
+    assertthat::is.string(.var)
   )
 
   top_label <- variables$top_label

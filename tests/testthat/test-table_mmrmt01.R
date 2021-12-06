@@ -38,7 +38,7 @@ mmrm_results <- if (too_old_lme4) {
 }
 
 
-test_that("LS means table is produced correctly", {
+testthat::test_that("LS means table is produced correctly", {
 
   skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
@@ -91,10 +91,10 @@ test_that("LS means table is produced correctly", {
       "(-2.758, 3.144)", "0.3%", "0.8977"),
     .Dim = c(50L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("Fixed effects table is produced correctly", {
+testthat::test_that("Fixed effects table is produced correctly", {
 
   skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
@@ -129,10 +129,10 @@ test_that("Fixed effects table is produced correctly", {
       "0.7150"),
     .Dim = c(23L, 6L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("Covariance matrix table is produced correctly", {
+testthat::test_that("Covariance matrix table is produced correctly", {
 
   skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
@@ -151,10 +151,10 @@ test_that("Covariance matrix table is produced correctly", {
     ),
     .Dim = c(7L, 7L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("Model diagnostics table is produced correctly", {
+testthat::test_that("Model diagnostics table is produced correctly", {
 
   skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
@@ -165,5 +165,5 @@ test_that("Model diagnostics table is produced correctly", {
       "17672.9257", "17714.9257", "17715.3179", "17798.7464"),
     .Dim = c(5L, 2L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

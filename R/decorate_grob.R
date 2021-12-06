@@ -199,7 +199,7 @@ decorate_grob <- function(grob,
                 vp = grid::plotViewport(margins = padding)
               )
             ),
-            vp = vpStack(grid::viewport(layout.pos.row = 2, layout.pos.col = 1), grid::plotViewport(margins = margins))
+            vp = grid::vpStack(grid::viewport(layout.pos.row = 2, layout.pos.col = 1), grid::plotViewport(margins = margins))
           ),
           st_footnotes,
           grid::textGrob(
@@ -215,7 +215,7 @@ decorate_grob <- function(grob,
         vp = grid::vpStack(
           grid::plotViewport(margins = outer_margins),
           grid::viewport(
-            layout = grid.layout(
+            layout = grid::grid.layout(
               nrow = 3, ncol = 1,
               heights = grid::unit.c(
                 grid::grobHeight(st_titles),

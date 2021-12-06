@@ -24,7 +24,7 @@ adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 # extract_survival_biomarkers ----
 
-test_that("extract_survival_biomarkers functions as expected with valid input and default arguments", {
+testthat::test_that("extract_survival_biomarkers functions as expected with valid input and default arguments", {
 
   adtte_f <- adtte %>%
     preprocess_adtte()
@@ -113,10 +113,10 @@ test_that("extract_survival_biomarkers functions as expected with valid input an
       "analysis", "analysis", "analysis"
     )
   )
-  expect_equal(result, expected, tolerance = 1e-5)
+  testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
-test_that("extract_survival_biomarkers works as expected with groups_lists", {
+testthat::test_that("extract_survival_biomarkers works as expected with groups_lists", {
 
   adtte_f <- adtte %>%
     preprocess_adtte()
@@ -151,12 +151,12 @@ test_that("extract_survival_biomarkers works as expected with groups_lists", {
     ),
     row.names = 7:12
   )
-  expect_identical(sub_result, expected)
+  testthat::expect_identical(sub_result, expected)
 })
 
 # tabulate_survival_biomarkers ----
 
-test_that("tabulate_survival_biomarkers works as expected with valid input", {
+testthat::test_that("tabulate_survival_biomarkers works as expected with valid input", {
 
   adtte_f <- adtte %>%
     preprocess_adtte()
@@ -198,7 +198,7 @@ test_that("tabulate_survival_biomarkers works as expected with valid input", {
       )
     )
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
   expected_attrs <- list(
     col_x = 4L,
     col_ci = 5L,
@@ -206,15 +206,15 @@ test_that("tabulate_survival_biomarkers works as expected with valid input", {
     forest_header = c("Higher\nBetter", "Lower\nBetter")
   )
   result_attrs <- attributes(result)[names(expected_attrs)]
-  expect_identical(result_attrs, expected_attrs)
+  testthat::expect_identical(result_attrs, expected_attrs)
 })
 
-test_that("tabulate_survival_biomarkers functions as expected with NULL subgroups", {
+testthat::test_that("tabulate_survival_biomarkers functions as expected with NULL subgroups", {
 
   adtte_f <- adtte %>%
     preprocess_adtte()
 
-  df <- expect_silent(extract_survival_biomarkers(
+  df <- testthat::expect_silent(extract_survival_biomarkers(
     variables = list(
       tte = "AVAL",
       is_event = "is_event",
@@ -226,10 +226,10 @@ test_that("tabulate_survival_biomarkers functions as expected with NULL subgroup
   result <- tabulate_survival_biomarkers(df, time_unit = as.character(adtte_f$AVALU[1]))
   result_matrix <- to_string_matrix(result)
   expected_first_col <- c("", "Age", "All Patients", "Continous Level Biomarker 1", "All Patients")
-  expect_identical(result_matrix[, 1L], expected_first_col)
+  testthat::expect_identical(result_matrix[, 1L], expected_first_col)
 })
 
-test_that("tabulate_survival_biomarkers works with only a single biomarker in the data frame", {
+testthat::test_that("tabulate_survival_biomarkers works with only a single biomarker in the data frame", {
   df1 <- data.frame(
     biomarker = "BMRKR1",
     biomarker_label = "Continous Level Biomarker 1",
@@ -247,7 +247,7 @@ test_that("tabulate_survival_biomarkers works with only a single biomarker in th
     var_label = "All Patients",
     row_type = "content"
   )
-  result <- expect_silent(tabulate_survival_biomarkers(df1))
+  result <- testthat::expect_silent(tabulate_survival_biomarkers(df1))
   result_matrix <- to_string_matrix(result)
   expected_matrix <- matrix(
     data = c(
@@ -259,5 +259,5 @@ test_that("tabulate_survival_biomarkers works with only a single biomarker in th
     nrow = 3,
     ncol = 7
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -22,8 +22,8 @@ adlb_raw <- local({
 
   # Here starts the real preprocessing.
   adlb_f <- adlb %>%
-    filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
-    mutate(
+    dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
+    dplyr::mutate(
       GRADE_DIR = factor(
         case_when(
           ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
@@ -43,12 +43,12 @@ adlb_raw <- local({
         c("0", "1", "2", "3", "4")
       )
     ) %>%
-    filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
+    dplyr::filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
     droplevels()
   adlb_f
 })
 
-test_that("LBT07 is produced correctly", {
+testthat::test_that("LBT07 is produced correctly", {
   adlb_f <- adlb_raw
   map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
     lapply(as.character) %>%
@@ -200,5 +200,5 @@ test_that("LBT07 is produced correctly", {
       ),
       .Dim = c(29L, 4L)
     )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

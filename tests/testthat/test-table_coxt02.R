@@ -22,13 +22,13 @@ adtte_f <- within( # nolint
     X <- rnorm(n = length(ARM))
   }  # nolint end
 ) %>%
-  mutate(event = 1 - CNSR) %>%
+  dplyr::mutate(event = 1 - CNSR) %>%
   rtables::var_relabel(
     SEX = "Sex",
     AGE = "Age"
   )
 
-test_that("COXT02 default variant 1 is produced correctly", {
+testthat::test_that("COXT02 default variant 1 is produced correctly", {
   multivar_model <- fit_coxreg_multivar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -54,10 +54,10 @@ test_that("COXT02 default variant 1 is produced correctly", {
     .Dim = c(7L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("COXT02 variant 5 is produced correctly", {
+testthat::test_that("COXT02 variant 5 is produced correctly", {
   multivar_model <- fit_coxreg_multivar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -86,5 +86,5 @@ test_that("COXT02 variant 5 is produced correctly", {
     .Dim = c(7L, 3L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

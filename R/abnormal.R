@@ -60,13 +60,13 @@ s_count_abnormal <- function(df,
 ) {
   assertthat::assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
-    is_character_list(abnormal, min_length = 2, max_length = 2),
+    utils.nest::is_character_list(abnormal, min_length = 2, max_length = 2),
     !is.null(names(abnormal)),
     any(unlist(abnormal) %in% levels(df[[.var]])),
     is_character_or_factor(df[[variables$baseline]]),
     is_character_or_factor(df[[variables$id]]),
     is.factor(df[[.var]]),
-    is.flag(exclude_base_abn)
+    assertthat::is.flag(exclude_base_abn)
   )
 
   count_abnormal_single <- function(abn_name, abn) {
@@ -163,7 +163,7 @@ count_abnormal <- function(lyt,
     .ungroup_stats = "fraction"
   )
   assertthat::assert_that(
-    is.string(var)
+    assertthat::is.string(var)
   )
 
   analyze(

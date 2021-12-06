@@ -45,7 +45,7 @@ test_that("h_survtime_df functions as expected with valid input and default argu
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 test_that("h_survtime_df functions as expected when median is NA", {
@@ -73,7 +73,7 @@ test_that("h_survtime_df functions as expected when median is NA", {
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
 })
 
@@ -102,13 +102,13 @@ test_that("h_survtime_df functions as expected when 0 records in one group", {
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 
 })
 
 test_that("h_survtime_df fails with wrong input", {
 
-  expect_error(h_survtime_df(
+  testthat::expect_error(h_survtime_df(
     tte = c(1, 2, "hello"),
     is_event = c(TRUE, FALSE, TRUE),
     arm = factor(c("A", "B", "A"), levels = c("B", "A"))
@@ -176,7 +176,7 @@ test_that("h_split_by_subgroups functions as expected with valid input and defau
     )
   )
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
 })
 
@@ -198,7 +198,7 @@ test_that("h_split_by_subgroups works as expected with groups_lists", {
       y = list("AB" = c("A", "B"), "E" = "C")
     )
   )
-  expect_named(result, c("y.AB", "z.D"))
+  testthat::expect_named(result, c("y.AB", "z.D"))
 
   df_yab <- data.frame(
     x = as.integer(c(1, 2)),
@@ -206,7 +206,7 @@ test_that("h_split_by_subgroups works as expected with groups_lists", {
     z = factor("D", levels = "D")
   )
   var_labels(df_yab) <- c("label for x", "label for y", "label for z")
-  expect_identical(
+  testthat::expect_identical(
     result$y.AB$df,
     df_yab
   )
@@ -238,7 +238,7 @@ test_that("h_survtime_subgroups_df functions as expected with valid input and de
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 
 })
 
@@ -264,7 +264,7 @@ test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 
 })
 
@@ -315,7 +315,7 @@ test_that("h_coxph_df functions as expected with valid input and default argumen
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 test_that("h_coxph_df functions as expected with one stratification factor", {
@@ -344,7 +344,7 @@ test_that("h_coxph_df functions as expected with one stratification factor", {
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 test_that("h_coxph_df functions as expected with multiple stratification factors", {
@@ -372,14 +372,14 @@ test_that("h_coxph_df functions as expected with multiple stratification factors
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 test_that("h_coxph_df functions as expected when 0 records in one group", {
 
   adtte <- adtte %>%
     preprocess_adtte() %>%
-    filter(ARM == "A: Drug X")
+    dplyr::filter(ARM == "A: Drug X")
 
   result <- h_coxph_df(
     tte = adtte$AVAL,
@@ -400,7 +400,7 @@ test_that("h_coxph_df functions as expected when 0 records in one group", {
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 test_that("h_coxph_subgroups_df functions as expected with valid input and default arguments", {
@@ -483,14 +483,14 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
       class = "data.frame"
     )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 
   # Test edge case where HR is (0, Inf)
   adtte <- adtte %>%
-    filter(COUNTRY %in% c("CAN", "GBR")) %>%
+    dplyr::filter(COUNTRY %in% c("CAN", "GBR")) %>%
     reapply_varlabels(var_labels(adtte))
 
-  result <- expect_warning(h_coxph_subgroups_df(
+  result <- testthat::expect_warning(h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "COUNTRY"),
     data = adtte
   ))
@@ -519,7 +519,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
     class = "data.frame"
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 test_that("h_coxph_subgroups_df functions as expected with stratification factors", {
@@ -557,7 +557,7 @@ test_that("h_coxph_subgroups_df functions as expected with stratification factor
       class = "data.frame"
     )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
@@ -590,7 +590,7 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
       row.names = c(NA, -1L),
       class = "data.frame"
     )
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 test_that("h_coxph_subgroups_df works as expected with groups_lists", {

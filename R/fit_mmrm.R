@@ -551,7 +551,7 @@ get_mmrm_lsmeans <- function(fit,
 
     # Start with the differences between LS means.
     sum_fit_diff <- summary(
-      contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
+      emmeans::contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
       level = conf_level,
       infer = c(TRUE, TRUE),
       adjust = "none"
@@ -718,7 +718,7 @@ fit_mmrm <- function(
   labels <- check_mmrm_vars(vars, data)
   assertthat::assert_that(
     is_proportion(conf_level),
-    is.flag(parallel)
+    assertthat::is.flag(parallel)
   )
   formula <- build_mmrm_formula(vars, cor_struct)
 

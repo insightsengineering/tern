@@ -18,7 +18,7 @@ adrs <- adrs %>%
     STRATA1 = factor(STRATA1)
   )
 
-test_that("RSPT01: 1. Best Overall Response", {
+testthat::test_that("RSPT01: 1. Best Overall Response", {
   l <- basic_table() %>%
     split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
@@ -68,10 +68,10 @@ test_that("RSPT01: 1. Best Overall Response", {
       "(0.15, 7.42)"),
     .Dim = c(19L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("RSPT01: 2. Best Overall Response (selecting sections to display)", {
+testthat::test_that("RSPT01: 2. Best Overall Response (selecting sections to display)", {
   l <- basic_table() %>%
     split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
@@ -115,10 +115,10 @@ test_that("RSPT01: 2. Best Overall Response (selecting sections to display)", {
       "(0.15, 7.42)"),
     .Dim = c(18L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
+testthat::test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
   conf_level <- 0.90
   method_prop <- "clopper-pearson"
   l <- basic_table() %>%
@@ -179,10 +179,10 @@ test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
       "33 (25%)", "(18.9, 31.97)", "5 (3.8%)"),
     .Dim = c(18L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
+testthat::test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
   l <- basic_table() %>%
     split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
@@ -254,10 +254,10 @@ test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
       "(0.15, 7.42)"),
     .Dim = c(24L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("RSPT01: 5. Best Overall Response (modifying the definition of overall response)", {
+testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition of overall response)", {
   l <- basic_table() %>%
     split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
@@ -306,14 +306,14 @@ test_that("RSPT01: 5. Best Overall Response (modifying the definition of overall
       "33 (25%)", "(17.23, 32.77)", "5 (3.8%)", "(0.15, 7.42)"),
     .Dim = c(19L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
+testthat::test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
 
   # Define study-specific response category "No Progression".
-  adrs <- adrs %>% mutate(
+  adrs <- adrs %>% dplyr::mutate(
     AVALC_NEW = case_when(
       AVALC %in% c(
         "Complete Response (CR)", "Partial Response (PR)",
@@ -322,7 +322,7 @@ test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
       TRUE ~ as.character(AVALC)
     )
   ) %>%
-    mutate(
+    dplyr::mutate(
       AVALC_NEW = factor(
         AVALC_NEW,
         levels = c("No Progression", "Progressive Disease (PD)", "Not Evaluable (NE)")
@@ -372,5 +372,5 @@ test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
       "5 (3.8%)", "(0.15, 7.42)"),
     .Dim = c(15L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

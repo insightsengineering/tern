@@ -64,7 +64,7 @@ h_adlb_worsen <- function(
   direction_var
 ) {
   assertthat::assert_that(
-    is.string(direction_var),
+    assertthat::is.string(direction_var),
     is_df_with_variables(adlb, list("Col" = direction_var)),
     all(unique(adlb[[direction_var]]) %in% c("B", "L", "H"))
   )
@@ -182,9 +182,9 @@ h_adlb_worsen <- function(
 h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 
   assertthat::assert_that(
-    is.string(id),
-    is.string(.var),
-    is.string(baseline_var),
+    assertthat::is.string(id),
+    assertthat::is.string(.var),
+    assertthat::is.string(baseline_var),
     length(unique(df[[direction_var]])) == 1,
     unique(df[[direction_var]]) %in% c("High", "Low"),
     is_df_with_variables(df, list(val = c(id, .var, baseline_var, direction_var)))
@@ -283,11 +283,11 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, #nolint
                                                     )
 ) {
   assertthat::assert_that(
-    is.string(.var),
+    assertthat::is.string(.var),
     is_variables(variables),
-    is.string(variables$id),
-    is.string(variables$baseline_var),
-    is.string(variables$direction_var),
+    assertthat::is.string(variables$id),
+    assertthat::is.string(variables$baseline_var),
+    assertthat::is.string(variables$direction_var),
     setequal(names(variables), c("id", "baseline_var", "direction_var")),
     is_df_with_variables(df, c(aval = .var, variables[1:3]))
   )
@@ -346,7 +346,7 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, #nolint
                                                   .labels = NULL,
                                                   .indent_mods = NULL) {
   assertthat::assert_that(
-    is.string(var)
+    assertthat::is.string(var)
     )
 
   afun <- make_afun(

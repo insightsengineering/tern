@@ -42,8 +42,8 @@ NULL
 h_rsp_to_logistic_variables <- function(variables, biomarker) {
   assertthat::assert_that(
     is.list(variables),
-    is.string(variables$rsp),
-    is.string(biomarker)
+    assertthat::is.string(variables$rsp),
+    assertthat::is.string(biomarker)
   )
   list(
     response = variables$rsp,
@@ -89,9 +89,9 @@ h_logistic_mult_cont_df <- function(variables,
                                     control = control_logistic()) {
   assertthat::assert_that(
     is.list(variables),
-    is_character_vector(variables$biomarkers),
+    utils.nest::is_character_vector(variables$biomarkers),
     is_df_with_variables(data, as.list(unlist(variables))),
-    is_fully_named_list(control)
+    utils.nest::is_fully_named_list(control)
   )
   conf_level <- control[["conf_level"]]
   pval_label <- "p-value (Wald)"

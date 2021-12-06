@@ -9,32 +9,32 @@ gen_advs <- function() {
   advs_label <- var_labels(advs)
 
   advs <- advs %>%
-    filter(PARAMCD == "DIABP" & PARAM == "Diastolic Blood Pressure") %>%
-    mutate(PARAMCD = droplevels(PARAMCD), PARAM = droplevels(PARAM)) #nolint
+    dplyr::filter(PARAMCD == "DIABP" & PARAM == "Diastolic Blood Pressure") %>%
+    dplyr::mutate(PARAMCD = droplevels(PARAMCD), PARAM = droplevels(PARAM)) #nolint
 
   # post-baseline
-  advs_pb <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y") #nolint
+  advs_pb <- advs %>% dplyr::filter(ABLFL != "Y" & ABLFL2 != "Y") #nolint
 
   advs_pb_max <- advs_pb %>%
-    group_by(PARAM, USUBJID) %>%
+    dplyr::group_by(PARAM, USUBJID) %>%
     arrange(desc(AVAL)) %>%
-    slice(1) %>%
-    ungroup() %>%
-    mutate(AVISIT = "Post-Baseline Maximum")
+    dplyr::slice(1) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(AVISIT = "Post-Baseline Maximum")
 
   advs_pb_min <- advs_pb %>%
-    group_by(PARAM, USUBJID) %>%
+    dplyr::group_by(PARAM, USUBJID) %>%
     arrange(AVAL) %>%
-    slice(1) %>%
-    ungroup() %>%
-    mutate(AVISIT = "Post-Baseline Minimum")
+    dplyr::slice(1) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(AVISIT = "Post-Baseline Minimum")
 
   advs_pb_last <- advs_pb %>%
-    group_by(PARAM, USUBJID) %>%
+    dplyr::group_by(PARAM, USUBJID) %>%
     arrange(desc(AVISITN)) %>%
-    slice(1) %>%
-    ungroup() %>%
-    mutate(AVISIT = "Post-Baseline Last")
+    dplyr::slice(1) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(AVISIT = "Post-Baseline Last")
 
   advs_f <- rbind(
     advs,
@@ -44,15 +44,15 @@ gen_advs <- function() {
   )
 
   var_labels(advs_f) <- advs_label
-  advs_f <- advs_f %>% mutate(AVISIT = droplevels(AVISIT))  #nolint
+  advs_f <- advs_f %>% dplyr::mutate(AVISIT = droplevels(AVISIT))  #nolint
   advs_f
 }
 
-test_that("VST01 default variant is produced correctly", {
+testthat::test_that("VST01 default variant is produced correctly", {
   test.nest::skip_if_too_deep(3)
 
   advs <- gen_advs()
-  advs_baseline <- advs %>% filter(ABLFL == "Y")   #nolint
+  advs_baseline <- advs %>% dplyr::filter(ABLFL == "Y")   #nolint
   df_adsl <- unique(advs[c("USUBJID", "ARM")])
 
   result <- basic_table() %>%
@@ -124,5 +124,5 @@ test_that("VST01 default variant is produced correctly", {
     ),
     .Dim = c(53L, 7L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

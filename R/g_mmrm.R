@@ -98,7 +98,7 @@ g_mmrm_diagnostic <- function(
     if (!is.null(amended_data_smooth)) {
       tmp <- tmp + ggplot2::geom_line(
         data = amended_data_smooth,
-        aes_string(x = "x", y = "y", group = vars$visit),
+        ggplot2::aes_string(x = "x", y = "y", group = vars$visit),
         color = "red",
         size = 1.4
       ) +
@@ -151,7 +151,7 @@ g_mmrm_diagnostic <- function(
       )
       tmp <- tmp +
         ggplot2::geom_text(
-          aes_string(x = "x", y = "y", label = "label"),
+          ggplot2::aes_string(x = "x", y = "y", label = "label"),
           data = label_data,
           hjust = "inward",
           size = 2
@@ -344,7 +344,7 @@ g_mmrm_lsmeans <-
       result <- result +
         ggplot2::geom_hline(
           data = data.frame(type = "contrasts", height = 0),
-          aes_string(yintercept = "height"),
+          ggplot2::aes_string(yintercept = "height"),
           colour = "black"
         )
       if (show_pval) {

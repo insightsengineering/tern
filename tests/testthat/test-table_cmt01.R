@@ -5,8 +5,8 @@ library(rtables)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adcm <- synthetic_cdisc_data("rcd_2021_05_05")$adcm
 
-test_that("CMT01 default variant (Concomitant medications) is produced correctly", {
-  adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
+testthat::test_that("CMT01 default variant (Concomitant medications) is produced correctly", {
+  adcm_c <- adcm %>% dplyr::filter(ATIREL == "CONCOMITANT")
 
   result <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -62,13 +62,13 @@ test_that("CMT01 default variant (Concomitant medications) is produced correctly
     .Dim = c(19L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("CMT01 variant 1 (prior medications) is produced correctly", {
+testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly", {
 
-  adcm_p <- adcm %>% filter(ATIREL == "PRIOR")
+  adcm_p <- adcm %>% dplyr::filter(ATIREL == "PRIOR")
 
   result <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -118,13 +118,13 @@ test_that("CMT01 variant 1 (prior medications) is produced correctly", {
     .Dim = c(13L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
 
-test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
-  adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
+testthat::test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
+  adcm_c <- adcm %>% dplyr::filter(ATIREL == "CONCOMITANT")
 
   result <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -174,11 +174,11 @@ test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
     .Dim = c(16L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("CMT01 variant 4 (Concomitant medications) is produced correctly", {
-  adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
+testthat::test_that("CMT01 variant 4 (Concomitant medications) is produced correctly", {
+  adcm_c <- adcm %>% dplyr::filter(ATIREL == "CONCOMITANT")
 
   result <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -226,5 +226,5 @@ test_that("CMT01 variant 4 (Concomitant medications) is produced correctly", {
     .Dim = c(19L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

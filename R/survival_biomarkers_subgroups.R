@@ -90,7 +90,7 @@ extract_survival_biomarkers <- function(variables,
   assertthat::assert_that(
     is.list(variables),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.string(label_all)
+    assertthat::is.string(label_all)
   )
   # Start with all patients.
   result_all <- h_coxreg_mult_cont_df(

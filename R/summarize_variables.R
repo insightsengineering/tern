@@ -114,7 +114,7 @@ s_summary <- function(x,
                       control,
                       ...) {
   assertthat::assert_that(
-    is.flag(na.rm)
+    assertthat::is.flag(na.rm)
   )
   UseMethod("s_summary", x)
 }
@@ -237,7 +237,7 @@ s_summary.numeric <- function(x, # nolint
     stats::IQR(x, na.rm = FALSE, type = control$quantile_type))
   )
 
-  y$range <- setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
+  y$range <- stats::setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
 
   y
 }

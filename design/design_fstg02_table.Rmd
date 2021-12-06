@@ -130,7 +130,7 @@ is_df_with_factors <- function(df, variables) {
 h_split_by_subgroups <- function(data, subgroups) {
 
   assertthat::assert_that(
-    is_character_vector(subgroups),
+    utils.nest::is_character_vector(subgroups),
     is_df_with_factors(data, as.list(setNames(subgroups, subgroups)))
   )
 
@@ -179,8 +179,8 @@ str(split_data)
 h_survtime_df <- function(tte, is_event, arm) {
 
   assertthat::assert_that(
-    is_numeric_vector(tte),
-    is_logical_vector(is_event),
+    utils.nest::is_numeric_vector(tte),
+    utils.nest::is_logical_vector(is_event),
     is_valid_factor(arm),
     is_equal_length(tte, is_event, arm)
   )
@@ -216,7 +216,7 @@ h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients")
     is.character(variables$is_event),
     is.character(variables$arm),
     is.character(variables$subgroups),
-    is_character_single(label_all),
+    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
     are_equal(nlevels(data[[variables$arm]]), 2)
@@ -262,8 +262,8 @@ h_survtime_subgroups_df(
 h_coxph_df <- function(tte, is_event, arm, control = control_coxph()) {
 
   assertthat::assert_that(
-    is_numeric_vector(tte),
-    is_logical_vector(is_event),
+    utils.nest::is_numeric_vector(tte),
+    utils.nest::is_logical_vector(is_event),
     is_valid_factor(arm),
     are_equal(nlevels(arm), 2),
     is_equal_length(tte, is_event, arm)
@@ -312,7 +312,7 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
     is.character(variables$is_event),
     is.character(variables$arm),
     is.character(variables$subgroups),
-    is_character_single(label_all),
+    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
     are_equal(nlevels(data[[variables$arm]]), 2)

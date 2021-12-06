@@ -48,9 +48,9 @@ s_surv_time <- function(df,
                         control = control_surv_time()) {
   assertthat::assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    is.string(.var),
-    is_numeric_vector(df[[.var]]),
-    is_logical_vector(df[[is_event]])
+    assertthat::is.string(.var),
+    utils.nest::is_numeric_vector(df[[.var]]),
+    utils.nest::is_logical_vector(df[[is_event]])
   )
 
   conf_type <- control$conf_type

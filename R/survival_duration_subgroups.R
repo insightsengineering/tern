@@ -338,7 +338,7 @@ d_survival_subgroups_colvars <- function(vars,
 
   assertthat::assert_that(
     is.character(vars),
-    is.string(time_unit) || is.null(time_unit),
+    assertthat::is.string(time_unit) || is.null(time_unit),
     all_elements_in_ref(c("hr", "ci"), vars),
     any(c("n_tot", "n_tot_events") %in% vars),
     all_elements_in_ref(vars, ref = c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval"))

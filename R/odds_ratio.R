@@ -223,7 +223,7 @@ s_odds_ratio <- function(df,
       )
       y_all <- or_clogit(data, conf_level = conf_level)
       assertthat::assert_that(
-        is.string(trt_grp),
+        assertthat::is.string(trt_grp),
         trt_grp %in% names(y_all$or_ci)
       )
       y$or_ci <- y_all$or_ci[[trt_grp]]

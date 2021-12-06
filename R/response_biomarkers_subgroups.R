@@ -88,9 +88,9 @@ extract_rsp_biomarkers <- function(variables,
                                    label_all = "All Patients") {
   assertthat::assert_that(
     is.list(variables),
-    is.string(variables$rsp),
+    assertthat::is.string(variables$rsp),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.string(label_all)
+    assertthat::is.string(label_all)
   )
   # Start with all patients.
   result_all <- h_logistic_mult_cont_df(

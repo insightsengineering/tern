@@ -11,8 +11,8 @@ get_adeg <- function() {
   adeg_labels <- var_labels(adeg)
 
   adeg_f <- adeg %>%
-    filter(PARAMCD == "QT" & ANL01FL == "Y") %>%
-    mutate(# Categorize AVAL and CHG
+    dplyr::filter(PARAMCD == "QT" & ANL01FL == "Y") %>%
+    dplyr::mutate(# Categorize AVAL and CHG
       AVALCAT1 = case_when(
         AVAL <= 450 ~ "<=450 msec",
         AVAL <= 480 ~ ">450 to <=480 msec",
@@ -40,7 +40,7 @@ get_adeg <- function() {
   adeg_f
 }
 
-test_that("EGT05_QTCAT default variant is produced correctly", {
+testthat::test_that("EGT05_QTCAT default variant is produced correctly", {
   adeg <- get_adeg()
 
   result <-  basic_table() %>%
@@ -102,5 +102,5 @@ test_that("EGT05_QTCAT default variant is produced correctly", {
       "", "132", "73 (55.3%)", "11 (8.3%)", "48 (36.4%)"),
     .Dim = c(70L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

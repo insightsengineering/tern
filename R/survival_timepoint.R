@@ -48,10 +48,10 @@ s_surv_timepoint <- function(df,
                              control = control_surv_timepoint()) {
   assertthat::assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    is.string(.var),
-    is_numeric_vector(df[[.var]]),
-    is_numeric_single(time_point),
-    is_logical_vector(df[[is_event]])
+    assertthat::is.string(.var),
+    utils.nest::is_numeric_vector(df[[.var]]),
+    utils.nest::is_numeric_single(time_point),
+    utils.nest::is_logical_vector(df[[is_event]])
   )
   conf_type <- control$conf_type
   conf_level <- control$conf_level
@@ -252,7 +252,7 @@ surv_timepoint <- function(lyt,
                            .indent_mods = NULL) {
 
   method <- match.arg(method)
-  assertthat::assert_that(is.string(table_names_suffix))
+  assertthat::assert_that(assertthat::is.string(table_names_suffix))
 
   f <- list(
     surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),

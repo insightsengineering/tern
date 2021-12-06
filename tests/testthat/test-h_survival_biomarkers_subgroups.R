@@ -24,8 +24,8 @@ adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 # h_surv_to_coxreg_variables ----
 
-test_that("h_surv_to_coxreg_variables works as expected", {
-  result <- expect_silent(h_surv_to_coxreg_variables(
+testthat::test_that("h_surv_to_coxreg_variables works as expected", {
+  result <- testthat::expect_silent(h_surv_to_coxreg_variables(
     variables = list(
       tte = "AVAL",
       is_event = "EVNT",
@@ -41,16 +41,16 @@ test_that("h_surv_to_coxreg_variables works as expected", {
     covariates = c("A", "B"),
     strata = "D"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 # h_coxreg_mult_cont_df ----
 
-test_that("h_coxreg_mult_cont_df works as expected", {
+testthat::test_that("h_coxreg_mult_cont_df works as expected", {
   adtte_f <- adtte %>%
     preprocess_adtte()
 
-  result <- expect_silent(h_coxreg_mult_cont_df(
+  result <- testthat::expect_silent(h_coxreg_mult_cont_df(
     variables = list(
       tte = "AVAL",
       is_event = "is_event",
@@ -73,14 +73,14 @@ test_that("h_coxreg_mult_cont_df works as expected", {
     pval = c(0.483520242485134, 0.282314224545607),
     pval_label = c("p-value (Wald)", "p-value (Wald)")
   )
-  expect_equal(result, expected, tol = 1e-5)
+  testthat::expect_equal(result, expected, tol = 1e-5)
 })
 
-test_that("h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {
+testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {
   adtte_f <- adtte %>%
     preprocess_adtte()
 
-  result <- expect_silent(h_coxreg_mult_cont_df(
+  result <- testthat::expect_silent(h_coxreg_mult_cont_df(
     variables = list(
       tte = "AVAL",
       is_event = "is_event",
@@ -103,12 +103,12 @@ test_that("h_coxreg_mult_cont_df returns missing values if data is empty (0 rows
     pval = c(NA, NA),
     pval_label = c("p-value (Wald)", "p-value (Wald)")
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 # h_tab_surv_one_biomarker ----
 
-test_that("h_tab_surv_one_biomarker works as expected", {
+testthat::test_that("h_tab_surv_one_biomarker works as expected", {
   df <- data.frame(
     n_tot = c(48L, 48L),
     n_tot_events = c(25L, 25L),
@@ -124,7 +124,7 @@ test_that("h_tab_surv_one_biomarker works as expected", {
     var = c("ALL", "ALL"),
     var_label = c("All patients", "All patients")
   )
-  result <- expect_silent(h_tab_surv_one_biomarker(
+  result <- testthat::expect_silent(h_tab_surv_one_biomarker(
     df = df,
     vars = c("n_tot", "hr", "ci"),
     time_unit = "months"
@@ -138,5 +138,5 @@ test_that("h_tab_surv_one_biomarker works as expected", {
       "(0.95, 1.06)"
     )
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

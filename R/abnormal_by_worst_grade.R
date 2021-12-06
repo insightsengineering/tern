@@ -94,7 +94,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                             )) {
 
   assertthat::assert_that(
-    is.string(.var),
+    assertthat::is.string(.var),
     is_df_with_variables(df, c(a = .var, variables)),
     is_valid_factor(df[[.var]]),
     is_character_or_factor(df[[variables$id]]),

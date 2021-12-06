@@ -7,18 +7,18 @@ get_adlb <- function() {
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
   qntls <- adlb %>%
-    group_by(.data$PARAMCD) %>%
-    summarise(
+    dplyr::group_by(.data$PARAMCD) %>%
+    dplyr::summarise(
       q1 = quantile(.data$AVAL, probs = c(0.1)),
       q2 = quantile(.data$AVAL, probs = c(0.9))
     )
 
   adlb <- adlb %>%
-    left_join(qntls, by = "PARAMCD")
+    dplyr::left_join(qntls, by = "PARAMCD")
 
   adlb_f <- adlb %>%
-    group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
-    mutate(
+    dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
+    dplyr::mutate(
       ANRIND = factor(
         case_when(
           .data$ANRIND == "LOW" & .data$AVAL <= .data$q1 ~ "LOW LOW",
@@ -30,7 +30,7 @@ get_adlb <- function() {
   adlb_f
 }
 
-test_that("LBT05 variant 1 is produced correctly", {
+testthat::test_that("LBT05 variant 1 is produced correctly", {
   adlb <- get_adlb()
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
@@ -38,7 +38,7 @@ test_that("LBT05 variant 1 is produced correctly", {
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>% mutate(
+  adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
       case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
@@ -54,7 +54,7 @@ test_that("LBT05 variant 1 is produced correctly", {
     ),
     PARCAT2 = factor("LS")
   ) %>%
-    select(-.data$q1, -.data$q2)
+    dplyr::select(-.data$q1, -.data$q2)
 
   #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   #just the `Any Abnormality` row is shown when there is no marked abonormality.
@@ -62,8 +62,8 @@ test_that("LBT05 variant 1 is produced correctly", {
 
   #Preprocessing steps
   adlb <- adlb %>%
-    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    mutate(abn_dir = factor(case_when(
+    dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    dplyr::mutate(abn_dir = factor(case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -122,10 +122,10 @@ test_that("LBT05 variant 1 is produced correctly", {
        "10 (7.6%)", "11 (8.3%)", "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"),
     .Dim = c(23L, 4L)
     )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("LBT05 variant 2 is produced correctly", {
+testthat::test_that("LBT05 variant 2 is produced correctly", {
   adlb <- get_adlb()
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
@@ -133,7 +133,7 @@ test_that("LBT05 variant 2 is produced correctly", {
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>% mutate(
+  adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
       case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
@@ -149,7 +149,7 @@ test_that("LBT05 variant 2 is produced correctly", {
     ),
     PARCAT2 = factor("LS")
   ) %>%
-    select(-.data$q1, -.data$q2)
+    dplyr::select(-.data$q1, -.data$q2)
 
   #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   #just the `Any Abnormality` row is shown when there is no marked abonormality.
@@ -157,8 +157,8 @@ test_that("LBT05 variant 2 is produced correctly", {
 
   #Preprocessing steps
   adlb <- adlb %>%
-    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    mutate(abn_dir = factor(case_when(
+    dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    dplyr::mutate(abn_dir = factor(case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -209,10 +209,10 @@ test_that("LBT05 variant 2 is produced correctly", {
       "11 (8.3%)", "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"),
     .Dim = c(25L, 4L)
     )
-    expect_identical(result_matrix, expected_matrix)
+    testthat::expect_identical(result_matrix, expected_matrix)
   })
 
-  test_that("LBT05 variant 4 is produced correctly", {
+  testthat::test_that("LBT05 variant 4 is produced correctly", {
     adlb <- get_adlb()
     adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
@@ -220,7 +220,7 @@ test_that("LBT05 variant 2 is produced correctly", {
 
     set.seed(1, kind = "Mersenne-Twister")
 
-    adlb <- adlb %>% mutate(
+    adlb <- adlb %>% dplyr::mutate(
       AVALCAT1 = factor(
         case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
@@ -236,7 +236,7 @@ test_that("LBT05 variant 2 is produced correctly", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-      select(-.data$q1, -.data$q2)
+      dplyr::select(-.data$q1, -.data$q2)
 
     #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
     #ALT rows are removed
@@ -244,8 +244,8 @@ test_that("LBT05 variant 2 is produced correctly", {
 
     #Preprocessing steps
     adlb <- adlb %>%
-      filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-      mutate(abn_dir = factor(case_when(
+      dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+      dplyr::mutate(abn_dir = factor(case_when(
         ANRIND == "LOW LOW" ~ "Low",
         ANRIND == "HIGH HIGH" ~ "High",
         TRUE ~ ""
@@ -299,5 +299,5 @@ test_that("LBT05 variant 2 is produced correctly", {
         "5 (3.8%)", "6 (4.5%)"),
       .Dim = c(20L, 4L)
       )
-    expect_identical(result_matrix, expected_matrix)
+    testthat::expect_identical(result_matrix, expected_matrix)
   })

@@ -33,7 +33,7 @@ h_ancova <- function(.var,
                      variables) {
 
   assertthat::assert_that(
-    is.string(.var),
+    assertthat::is.string(.var),
     is.list(variables),
     all(names(variables) %in% c("arm", "covariates")),
     is_df_with_variables(.df_row, list(rsp = .var))
@@ -132,7 +132,7 @@ s_ancova <- function(df,
   sum_level <- as.character(unique(df[[arm]]))
   # Ensure that there is only one element in sum_level.
   assertthat::assert_that(
-    is.scalar(sum_level)
+    assertthat::is.scalar(sum_level)
   )
   sum_fit_level <- sum_fit[sum_fit[[arm]] == sum_level, ]
 

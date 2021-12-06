@@ -52,12 +52,12 @@ s_count_patients_and_multiple_events <- function(df, #nolint
                                                  custom_label = NULL) {
   assertthat::assert_that(
     is.data.frame(df),
-    is.string(id),
-    is_fully_named_list(filters_list),
+    assertthat::is.string(id),
+    utils.nest::is_fully_named_list(filters_list),
     !(any(c("unique", "all") %in% names(filters_list))),
     is.character(empty_stats),
-    is.string(labelstr),
-    is.null(custom_label) || is.string(custom_label)
+    assertthat::is.string(labelstr),
+    is.null(custom_label) || assertthat::is.string(custom_label)
   )
   # Below we want to count each row in `df` once, therefore introducing this helper index column.
   df$.row_index <- as.character(seq_len(nrow(df)))

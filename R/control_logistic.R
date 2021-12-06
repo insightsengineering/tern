@@ -24,7 +24,7 @@
 control_logistic <- function(response_definition = "response",
                              conf_level = 0.95) {
   assertthat::assert_that(
-    is.string(response_definition),
+    assertthat::is.string(response_definition),
     grepl("response", response_definition),
     is_proportion(conf_level)
   )

@@ -56,7 +56,7 @@ s_count_occurrences <- function(df,
   assertthat::assert_that(
     is_df_with_variables(df, list(range = .var, id = id)),
     is_nonnegative_count(.N_col),
-    is.flag(drop),
+    assertthat::is.flag(drop),
     is_character_or_factor(df[[.var]]),
     is_character_or_factor(df[[id]])
   )

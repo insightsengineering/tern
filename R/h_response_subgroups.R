@@ -116,7 +116,7 @@ h_proportion_subgroups_df <- function(variables,
     is.character(variables$rsp),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is_character_single(label_all),
+    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
   )
@@ -180,7 +180,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
   assertthat::assert_that(
     is_valid_factor(arm),
     is_equal_length(rsp, arm),
-    are_equal(nlevels(arm), 2)
+    assertthat::are_equal(nlevels(arm), 2)
   )
 
   df_rsp <- data.frame(
@@ -195,7 +195,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 
     assertthat::assert_that(
       is_valid_factor(strata_var),
-      are_equal(length(strata_var), nrow(df_rsp))
+      assertthat::are_equal(length(strata_var), nrow(df_rsp))
     )
 
     df_rsp[[strata_name]] <- strata_var
@@ -342,7 +342,7 @@ h_odds_ratio_subgroups_df <- function(variables,
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
     is.character(variables$strat) || is.null(variables$strat),
-    is_character_single(label_all),
+    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
   )

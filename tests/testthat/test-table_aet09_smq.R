@@ -20,13 +20,13 @@ stack_adae_by_smq <- function(adae, smq) {
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correctly", {
+testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correctly", {
 
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
 
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       SMQ1  = case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
@@ -90,16 +90,16 @@ test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correc
     ),
     .Dim = c(9L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET09 variant 2 (AEs related to study srug by SMQ <with customized queries>) is produced correctly", {
+testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ <with customized queries>) is produced correctly", {
 
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
 
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       SMQ1  = case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
@@ -171,5 +171,5 @@ test_that("AET09 variant 2 (AEs related to study srug by SMQ <with customized qu
     ),
     .Dim = c(17L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

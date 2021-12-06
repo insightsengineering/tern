@@ -1,6 +1,6 @@
 library(dplyr)
 
-test_that("s_count_abnormal works with healthy input and default arguments", {
+testthat::test_that("s_count_abnormal works with healthy input and default arguments", {
 
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
@@ -12,7 +12,7 @@ test_that("s_count_abnormal works with healthy input and default arguments", {
     stringsAsFactors = FALSE
   )
 
-  df <- df %>% filter(
+  df <- df %>% dplyr::filter(
     ONTRTFL == "Y"
   )
 
@@ -40,10 +40,10 @@ test_that("s_count_abnormal works with healthy input and default arguments", {
   )
 
   expected <- list(fraction = expected_result)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_count_abnormal works when excluding patients with abnormality at baseline", {
+testthat::test_that("s_count_abnormal works when excluding patients with abnormality at baseline", {
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
   df <- data.frame(
@@ -54,7 +54,7 @@ test_that("s_count_abnormal works when excluding patients with abnormality at ba
     stringsAsFactors = FALSE
   )
 
-  df <- df %>% filter(
+  df <- df %>% dplyr::filter(
     ONTRTFL == "Y"
   )
 
@@ -82,10 +82,10 @@ test_that("s_count_abnormal works when excluding patients with abnormality at ba
   )
 
   expected <- list(fraction = expected_result)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_count_abnormal also works with tibble and custom arguments", {
+testthat::test_that("s_count_abnormal also works with tibble and custom arguments", {
 
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
@@ -98,7 +98,7 @@ test_that("s_count_abnormal also works with tibble and custom arguments", {
       stringsAsFactors = FALSE
     )
   )
-  df <- df %>% filter(
+  df <- df %>% dplyr::filter(
     mytrtfl == "Y"
   )
 
@@ -128,10 +128,10 @@ test_that("s_count_abnormal also works with tibble and custom arguments", {
   )
 
   expected <- list(fraction = expected_result)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("count_abnormal works with default arguments", {
+testthat::test_that("count_abnormal works with default arguments", {
 
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
@@ -143,7 +143,7 @@ test_that("count_abnormal works with default arguments", {
   )
 
   df <- df %>%
-    filter(
+    dplyr::filter(
       ONTRTFL == "Y"
     )
 
@@ -157,10 +157,10 @@ test_that("count_abnormal works with default arguments", {
     ),
     .Dim = 3:2
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_abnormal works with custom arguments", {
+testthat::test_that("count_abnormal works with custom arguments", {
 
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
@@ -173,7 +173,7 @@ test_that("count_abnormal works with custom arguments", {
   )
 
   df2 <- df2 %>%
-    filter(
+    dplyr::filter(
       ONTRTFL == "Y"
     )
 
@@ -192,10 +192,10 @@ test_that("count_abnormal works with custom arguments", {
     c("", "< LLN", "> ULN", "all obs", "1 / 2", "0 / 1"),
     .Dim = 3:2
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_abnormal works with default arguments and visit", {
+testthat::test_that("count_abnormal works with default arguments and visit", {
 
   abn_levels <- c("LOW", "NORMAL", "HIGH")
   visit_levels <- c("BASELINE", "WEEK 1", "WEEK 2")
@@ -209,7 +209,7 @@ test_that("count_abnormal works with default arguments and visit", {
   )
 
   df <- df %>%
-    filter(
+    dplyr::filter(
       ONTRTFL == "Y"
     )
 
@@ -225,10 +225,10 @@ test_that("count_abnormal works with default arguments and visit", {
       ),
     .Dim = c(7L, 2L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("s_count_abnormal works with healthy input and grouped abnormal arguments", {
+testthat::test_that("s_count_abnormal works with healthy input and grouped abnormal arguments", {
 
   abn_levels <- c("LOW", "NORMAL", "HIGH", "LOW LOW", "HIGH HIGH")
 
@@ -240,7 +240,7 @@ test_that("s_count_abnormal works with healthy input and grouped abnormal argume
     stringsAsFactors = FALSE
   )
 
-  df <- df %>% filter(
+  df <- df %>% dplyr::filter(
     ONTRTFL == "Y"
   )
 
@@ -268,5 +268,5 @@ test_that("s_count_abnormal works with healthy input and grouped abnormal argume
   )
 
   expected <- list(fraction = expected_result)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })

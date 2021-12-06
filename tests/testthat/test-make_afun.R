@@ -1,4 +1,4 @@
-test_that("make_afun works with healthy input statistics function taking `df`", {
+testthat::test_that("make_afun works with healthy input statistics function taking `df`", {
   sfun <- function(df) {
     assertthat::assert_that(is.data.frame(df))
     list(
@@ -9,7 +9,7 @@ test_that("make_afun works with healthy input statistics function taking `df`", 
   indent_mods <- c(nrows = 0L, ncols = 2L)
   formats <- c(nrows = "xx.", ncols = "xx.xx")
 
-  afun <- expect_silent(
+  afun <- testthat::expect_silent(
     make_afun(
       sfun,
       .indent_mods = indent_mods,
@@ -17,8 +17,8 @@ test_that("make_afun works with healthy input statistics function taking `df`", 
     )
   )
 
-  expect_is(afun, "function")
-  expect_identical(
+  testthat::expect_is(afun, "function")
+  testthat::expect_identical(
     names(formals(afun)),
     names(formals(sfun))
   )
@@ -37,7 +37,7 @@ test_that("make_afun works with healthy input statistics function taking `df`", 
     ),
     .indent_mods = c(0, 2)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 
   # Now call a second time to overwrite formatting.
   afun2 <- make_afun(
@@ -54,10 +54,10 @@ test_that("make_afun works with healthy input statistics function taking `df`", 
     ),
     .indent_mods = 1
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("make_afun processes additional rtables arguments correctly", {
+testthat::test_that("make_afun processes additional rtables arguments correctly", {
   sfun <- function(df, .in_ref_col, .N_col) {  #nolint
     assertthat::assert_that(is.data.frame(df))
     list(
@@ -70,7 +70,7 @@ test_that("make_afun processes additional rtables arguments correctly", {
   indent_mods <- c(nrows = 0L, ncols = 2L, incol = 0L, nincol = 0L)
   formats <- c(nrows = "xx.", ncols = "xx.xx", incol = "xx", nincol = "xx")
 
-  afun <- expect_silent(
+  afun <- testthat::expect_silent(
     make_afun(
       sfun,
       .indent_mods = indent_mods,
@@ -79,8 +79,8 @@ test_that("make_afun processes additional rtables arguments correctly", {
   )
 
   # Make sure the function signature is correct.
-  expect_is(afun, "function")
-  expect_identical(
+  testthat::expect_is(afun, "function")
+  testthat::expect_identical(
     names(formals(afun)),
     names(formals(sfun))
   )
@@ -101,10 +101,10 @@ test_that("make_afun processes additional rtables arguments correctly", {
     ),
     .indent_mods = c(0, 2, 0, 0)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("make_afun works with healthy input function taking `x`", {
+testthat::test_that("make_afun works with healthy input function taking `x`", {
   sfun <- function(x) {
     list(
       n = length(x),
@@ -115,7 +115,7 @@ test_that("make_afun works with healthy input function taking `x`", {
   indent_mods <- c(n = 0L, mean = 2L, median = 1L)
   formats <- c(n = "xx.", mean = "xx.xx", median = "xx")
 
-  afun <- expect_silent(
+  afun <- testthat::expect_silent(
     make_afun(
       sfun,
       .indent_mods = indent_mods,
@@ -124,8 +124,8 @@ test_that("make_afun works with healthy input function taking `x`", {
   )
 
   # Make sure the function signature is correct.
-  expect_is(afun, "function")
-  expect_identical(
+  testthat::expect_is(afun, "function")
+  testthat::expect_identical(
     names(formals(afun)),
     names(formals(sfun))
   )
@@ -141,7 +141,7 @@ test_that("make_afun works with healthy input function taking `x`", {
     ),
     .indent_mods = c(0, 2, 1)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 
   # And with custom overwrites.
   afun2 <- make_afun(
@@ -159,10 +159,10 @@ test_that("make_afun works with healthy input function taking `x`", {
     ),
     .indent_mods = c(0, 3)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("make_afun produces empty cells and keeps labels when applied to empty character", {
+testthat::test_that("make_afun produces empty cells and keeps labels when applied to empty character", {
   # sfun which returns empty string results when `in_ref` (toy example resembling comparison problems).
   sfun <- function(x, in_ref = FALSE) {
     list(
@@ -174,7 +174,7 @@ test_that("make_afun produces empty cells and keeps labels when applied to empty
   indent_mods <- c(n = 0L, mean = 2L, median = 1L)
   formats <- c(n = "xx.", mean = "xx.xx", median = "xx")
 
-  afun <- expect_silent(
+  afun <- testthat::expect_silent(
     make_afun(
       sfun,
       .indent_mods = indent_mods,
@@ -183,8 +183,8 @@ test_that("make_afun produces empty cells and keeps labels when applied to empty
   )
 
   # Make sure the function signature is correct.
-  expect_is(afun, "function")
-  expect_identical(
+  testthat::expect_is(afun, "function")
+  testthat::expect_identical(
     names(formals(afun)),
     names(formals(sfun))
   )
@@ -200,7 +200,7 @@ test_that("make_afun produces empty cells and keeps labels when applied to empty
     ),
     .indent_mods = c(0, 2, 1)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 
   # And now with `in_ref`.
   result <- afun(x, in_ref = TRUE)
@@ -216,7 +216,7 @@ test_that("make_afun produces empty cells and keeps labels when applied to empty
     ),
     .indent_mods = c(0, 2, 1)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 
   # Use now in table.
   sfun <- function(x, .in_ref_col) {
@@ -235,10 +235,10 @@ test_that("make_afun produces empty cells and keeps labels when applied to empty
       "50", "virginica", "50"),
     .Dim = c(2L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("make_afun by default removes results from `.in_ref_col`", {
+testthat::test_that("make_afun by default removes results from `.in_ref_col`", {
   sfun <- function(df, .var, .ref_group, .in_ref_col) {
     list(
       range = with_label(
@@ -262,10 +262,10 @@ test_that("make_afun by default removes results from `.in_ref_col`", {
       "4.9, 7", "virginica", "4.9, 7.9"),
     .Dim = c(2L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("make_afun works with nested lists", {
+testthat::test_that("make_afun works with nested lists", {
   s_grp <- function(df, .N_col, a = 1, b = 2) {  #nolint
     list(
       nrow_df = nrow(df),
@@ -291,10 +291,10 @@ test_that("make_afun works with nested lists", {
     ),
     .indent_mods = c(0, 0, 0, 0)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("make_afun can subset on non-nested results when unnesting took place", {
+testthat::test_that("make_afun can subset on non-nested results when unnesting took place", {
   sfun <- function(df, .N_col, a = 1, b = 2) {  #nolint
     list(
       nrow_df = nrow(df),
@@ -321,5 +321,5 @@ test_that("make_afun can subset on non-nested results when unnesting took place"
     ),
     .indent_mods = 0
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })

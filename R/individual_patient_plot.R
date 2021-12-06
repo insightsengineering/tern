@@ -82,15 +82,15 @@ h_g_ipp <- function(df,
                     ggtheme = h_set_nest_theme(10)) {
   assertthat::assert_that(
     is.data.frame(df),
-    is.string(xvar),
-    is.string(yvar),
-    is.string(yvar_baseline),
-    is.string(id_var),
+    assertthat::is.string(xvar),
+    assertthat::is.string(yvar),
+    assertthat::is.string(yvar_baseline),
+    assertthat::is.string(id_var),
     all(c(xvar, yvar, yvar_baseline, id_var) %in% colnames(df)),
-    is.string(xlab),
-    is.string(ylab),
-    is.string(title),
-    is.string(subtitle),
+    assertthat::is.string(xlab),
+    assertthat::is.string(ylab),
+    assertthat::is.string(title),
+    assertthat::is.string(subtitle),
     is.logical(add_baseline_hline)
   )
 
@@ -181,7 +181,7 @@ g_ipp <- function(df,
                   max_obs_per_plot = 4) {
 
   assertthat::assert_that(
-    is.count(max_obs_per_plot),
+    assertthat::is.count(max_obs_per_plot),
     plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
   )
 

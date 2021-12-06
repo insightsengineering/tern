@@ -51,10 +51,10 @@ df_explicit_na <- function(data,
 
   assertthat::assert_that(
     is.data.frame(data),
-    is.null(omit_columns) || is_character_vector(omit_columns),
-    is.flag(char_as_factor),
-    is.flag(logical_as_factor),
-    is.string(na_level)
+    is.null(omit_columns) || utils.nest::is_character_vector(omit_columns),
+    assertthat::is.flag(char_as_factor),
+    assertthat::is.flag(logical_as_factor),
+    assertthat::is.string(na_level)
   )
 
   target_vars <- if (is.null(omit_columns)) {

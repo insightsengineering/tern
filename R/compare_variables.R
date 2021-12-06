@@ -57,7 +57,7 @@ s_compare.numeric <- function(x,
   assertthat::assert_that(
     is.numeric(x),
     is.numeric(.ref_group),
-    is.flag(.in_ref_col)
+    assertthat::is.flag(.in_ref_col)
   )
 
   y <- s_summary.numeric(x = x, ...)
@@ -112,7 +112,7 @@ s_compare.factor <- function(x,
   assertthat::assert_that(
     is_factor_no_na(x),
     is_factor_no_na(.ref_group),
-    is.flag(.in_ref_col)
+    assertthat::is.flag(.in_ref_col)
   )
   denom <- match.arg(denom)
 

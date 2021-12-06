@@ -27,7 +27,7 @@ preproc_adtte <- function(adtte) {
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
-test_that("TTET01 default variant is produced correctly", {
+testthat::test_that("TTET01 default variant is produced correctly", {
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -111,10 +111,10 @@ test_that("TTET01 default variant is produced correctly", {
     .Dim = c(34L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("TTET01 variant 2: selecting sections to display", {
+testthat::test_that("TTET01 variant 2: selecting sections to display", {
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -176,10 +176,10 @@ test_that("TTET01 variant 2: selecting sections to display", {
     .Dim = c(18L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("TTET01 variant 3: modifying analysis details like conftype, ties, alpha level", {
+testthat::test_that("TTET01 variant 3: modifying analysis details like conftype, ties, alpha level", {
 
   adtte <- adtte %>%
     preproc_adtte()
@@ -268,10 +268,10 @@ test_that("TTET01 variant 3: modifying analysis details like conftype, ties, alp
     .Dim = c(27L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("TTET01 variant 4: with stratified analysis", {
+testthat::test_that("TTET01 variant 4: with stratified analysis", {
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -356,10 +356,10 @@ test_that("TTET01 variant 4: with stratified analysis", {
     .Dim = c(31L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("TTET01 variant 5: modifying time point", {
+testthat::test_that("TTET01 variant 5: modifying time point", {
 
   adtte <- adtte %>%
     preproc_adtte()
@@ -437,10 +437,10 @@ test_that("TTET01 variant 5: modifying time point", {
     .Dim = c(27L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("TTET01 variant 6: requesting more than one p-value", {
+testthat::test_that("TTET01 variant 6: requesting more than one p-value", {
 
   adtte <- adtte %>%
     preproc_adtte()
@@ -538,5 +538,5 @@ test_that("TTET01 variant 6: requesting more than one p-value", {
     .Dim = c(29L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

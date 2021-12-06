@@ -47,9 +47,9 @@
 #' plot_pal(color_palette(n = 10, palette = "viridis"))
 #'
 color_palette <- function(n = 10, palette = "nest") {
-  stopifnot(is_character_single(palette))
+  stopifnot(utils.nest::is_character_single(palette))
   match.arg(palette, c("nest", "stream", "viridis"))
-  stopifnot(is_numeric_single(n))
+  stopifnot(utils.nest::is_numeric_single(n))
 
   set.seed(124)
   colors <- if (palette == "viridis") {

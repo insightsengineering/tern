@@ -38,21 +38,21 @@ get_bladder <- function() {
 
 # h_coxreg_univar_formulas ----
 
-test_that("h_coxreg_univar_formulas creates formulas with covariate", {
+testthat::test_that("h_coxreg_univar_formulas creates formulas with covariate", {
   result <- h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("X", "y")
     )
   )
   expected <- c(
-    ref = "Surv(time, status) ~ armcd",
-    X = "Surv(time, status) ~ armcd + X",
-    y = "Surv(time, status) ~ armcd + y"
+    ref = "survival::Surv(time, status) ~ armcd",
+    X = "survival::Surv(time, status) ~ armcd + X",
+    y = "survival::Surv(time, status) ~ armcd + y"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_univar_formulas creates formulas with strata", {
+testthat::test_that("h_coxreg_univar_formulas creates formulas with strata", {
   result <- h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
@@ -60,26 +60,26 @@ test_that("h_coxreg_univar_formulas creates formulas with strata", {
     )
   )
   expected <- c(
-    ref = "Surv(time, status) ~ armcd + strata(SITE)",
-    X = "Surv(time, status) ~ armcd + X + strata(SITE)",
-    y = "Surv(time, status) ~ armcd + y + strata(SITE)"
+    ref = "survival::Surv(time, status) ~ armcd + survival::strata(SITE)",
+    X = "survival::Surv(time, status) ~ armcd + X + survival::strata(SITE)",
+    y = "survival::Surv(time, status) ~ armcd + y + survival::strata(SITE)"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_univar_formulas creates formula for reference when treatment is only considered", {
+testthat::test_that("h_coxreg_univar_formulas creates formula for reference when treatment is only considered", {
   result <- h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", arm = "armcd"
     )
   )
   expected <- c(
-    ref = "Surv(time, status) ~ armcd"
+    ref = "survival::Surv(time, status) ~ armcd"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_univar_formulas creates formulas with interactions", {
+testthat::test_that("h_coxreg_univar_formulas creates formulas with interactions", {
   result <- h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
@@ -88,14 +88,14 @@ test_that("h_coxreg_univar_formulas creates formulas with interactions", {
     interaction = TRUE
   )
   expected <- c(
-    ref = "Surv(time, status) ~ armcd + strata(SITE)",
-    X = "Surv(time, status) ~ armcd * X + strata(SITE)",
-    y = "Surv(time, status) ~ armcd * y + strata(SITE)"
+    ref = "survival::Surv(time, status) ~ armcd + survival::strata(SITE)",
+    X = "survival::Surv(time, status) ~ armcd * X + survival::strata(SITE)",
+    y = "survival::Surv(time, status) ~ armcd * y + survival::strata(SITE)"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_univar_formulas creates formula without treatment arm", {
+testthat::test_that("h_coxreg_univar_formulas creates formula without treatment arm", {
   result <- h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", covariates = c("X", "y"),
@@ -103,14 +103,14 @@ test_that("h_coxreg_univar_formulas creates formula without treatment arm", {
     )
   )
   expected <- c(
-    X = "Surv(time, status) ~ 1 + X + strata(SITE)",
-    y = "Surv(time, status) ~ 1 + y + strata(SITE)"
+    X = "survival::Surv(time, status) ~ 1 + X + survival::strata(SITE)",
+    y = "survival::Surv(time, status) ~ 1 + y + survival::strata(SITE)"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_univar_formulas fails when requesting interaction without treatment arm", {
-  expect_error(h_coxreg_univar_formulas(
+testthat::test_that("h_coxreg_univar_formulas fails when requesting interaction without treatment arm", {
+  testthat::expect_error(h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", covariates = c("X", "y"),
       strata = "SITE"
@@ -119,8 +119,8 @@ test_that("h_coxreg_univar_formulas fails when requesting interaction without tr
   ))
 })
 
-test_that("h_coxreg_univar_formulas fails when requesting interaction without covariates", {
-  expect_error(h_coxreg_univar_formulas(
+testthat::test_that("h_coxreg_univar_formulas fails when requesting interaction without covariates", {
+  testthat::expect_error(h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", arm = "armcd",
       strata = "SITE"
@@ -129,7 +129,7 @@ test_that("h_coxreg_univar_formulas fails when requesting interaction without co
   ))
 })
 
-test_that("h_coxreg_univar_formulas creates formulas with multiple strata", {
+testthat::test_that("h_coxreg_univar_formulas creates formulas with multiple strata", {
   result <- h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
@@ -137,20 +137,20 @@ test_that("h_coxreg_univar_formulas creates formulas with multiple strata", {
     )
   )
   expected <- c(
-    ref = "Surv(time, status) ~ armcd + strata(SITE, COUNTRY)",
-    X = "Surv(time, status) ~ armcd + X + strata(SITE, COUNTRY)",
-    y = "Surv(time, status) ~ armcd + y + strata(SITE, COUNTRY)"
+    ref = "survival::Surv(time, status) ~ armcd + survival::strata(SITE, COUNTRY)",
+    X = "survival::Surv(time, status) ~ armcd + X + survival::strata(SITE, COUNTRY)",
+    y = "survival::Surv(time, status) ~ armcd + y + survival::strata(SITE, COUNTRY)"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 # h_coxreg_multivar_extract ----
 
-test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate names overlap", {
+testthat::test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate names overlap", {
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_simple <- raw_data
-  mod <- coxph(Surv(time, status) ~ age + stage, data = dta_simple)
+  mod <- survival::coxph(survival::Surv(time, status) ~ age + stage, data = dta_simple)
   result <- h_coxreg_multivar_extract(var = "age", mod = mod, data = dta_simple)
   expected <- structure(
     list(
@@ -166,14 +166,14 @@ test_that("h_coxreg_multivar_extract extracts correct coxph results when covaria
     row.names = 1L,
     class = "data.frame"
   )
-  expect_equal(result, expected, tolerance = 0.2)
+  testthat::expect_equal(result, expected, tolerance = 0.2)
 })
 
-test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate is a factor", {
+testthat::test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate is a factor", {
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_simple <- raw_data
-  mod <- coxph(Surv(time, status) ~ age + stage, data = dta_simple)
+  mod <- survival::coxph(survival::Surv(time, status) ~ age + stage, data = dta_simple)
   result <- h_coxreg_multivar_extract(var = "stage", mod = mod, data = dta_simple)
   expected <- structure(
     list(
@@ -191,86 +191,86 @@ test_that("h_coxreg_multivar_extract extracts correct coxph results when covaria
     )
   attributes(result)$heading <- NULL
   attributes(expected)$heading <- NULL
-  expect_equal(result, expected, tolerance = 0.2)
+  testthat::expect_equal(result, expected, tolerance = 0.2)
 })
 
 # h_coxreg_multivar_formula ----
 
-test_that("h_coxreg_multivar_formula creates formula without covariate", {
+testthat::test_that("h_coxreg_multivar_formula creates formula without covariate", {
   result <- h_coxreg_multivar_formula(
     variables = list(arm = "ARMCD", event = "EVNT", time = "TIME", covariates = character())
   )
-  expected <- "Surv(TIME, EVNT) ~ ARMCD"
-  expect_identical(result, expected)
+  expected <- "survival::Surv(TIME, EVNT) ~ ARMCD"
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_multivar_formula creates formulas with a strata", {
+testthat::test_that("h_coxreg_multivar_formula creates formulas with a strata", {
   result <- h_coxreg_multivar_formula(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
       strata = "SITE"
     )
   )
-  expected <- "Surv(time, status) ~ armcd + X + y + strata(SITE)"
-  expect_identical(result, expected)
+  expected <- "survival::Surv(time, status) ~ armcd + X + y + survival::strata(SITE)"
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_multivar_formula creates formulas with multiple strata", {
+testthat::test_that("h_coxreg_multivar_formula creates formulas with multiple strata", {
   result <- h_coxreg_multivar_formula(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
       strata = c("SITE", "COUNTRY")
     )
   )
-  expected <- "Surv(time, status) ~ armcd + X + y + strata(SITE, COUNTRY)"
-  expect_identical(result, expected)
+  expected <- "survival::Surv(time, status) ~ armcd + X + y + survival::strata(SITE, COUNTRY)"
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_multivar_formula creates formula with covariate", {
+testthat::test_that("h_coxreg_multivar_formula creates formula with covariate", {
   result <- h_coxreg_multivar_formula(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("covar1", "covar2")
     )
   )
-  expected <- "Surv(time, status) ~ armcd + covar1 + covar2"
-  expect_identical(result, expected)
+  expected <- "survival::Surv(time, status) ~ armcd + covar1 + covar2"
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_multivar_formula creates formula without treatment arm", {
+testthat::test_that("h_coxreg_multivar_formula creates formula without treatment arm", {
   result <- h_coxreg_multivar_formula(
     variables = list(
       time = "time", event = "status", covariates = c("covar1", "covar2")
     )
   )
-  expected <- "Surv(time, status) ~ 1 + covar1 + covar2"
-  expect_identical(result, expected)
+  expected <- "survival::Surv(time, status) ~ 1 + covar1 + covar2"
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_coxreg_multivar_formula creates formulas with multiple strata and without arm", {
+testthat::test_that("h_coxreg_multivar_formula creates formulas with multiple strata and without arm", {
   result <- h_coxreg_multivar_formula(
     variables = list(
       time = "time", event = "status", covariates = c("X", "y"),
       strata = c("SITE", "COUNTRY")
     )
   )
-  expected <- "Surv(time, status) ~ 1 + X + y + strata(SITE, COUNTRY)"
-  expect_identical(result, expected)
+  expected <- "survival::Surv(time, status) ~ 1 + X + y + survival::strata(SITE, COUNTRY)"
+  testthat::expect_identical(result, expected)
 })
 
 # control_coxreg ----
 
-test_that("control_coxreg returns a standard list of parameters", {
+testthat::test_that("control_coxreg returns a standard list of parameters", {
   result <- control_coxreg()
   expected <- list(
     pval_method = "wald", ties = "exact", conf_level = 0.95,
     interaction = FALSE
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 # fit_coxreg_univar ----
 
-test_that("fit_coxreg_univar returns model results as expected", {
+testthat::test_that("fit_coxreg_univar returns model results as expected", {
   data <- get_bladder()
   control <- control_coxreg(conf_level = 0.91)
   variables <- list(
@@ -290,7 +290,7 @@ test_that("fit_coxreg_univar returns model results as expected", {
   expected <- list(
     mod = lapply(
       forms, function(x) {
-        coxph(formula = as.formula(x), data = data, ties = control$ties)
+        survival::coxph(formula = stats::as.formula(x), data = data, ties = control$ties)
       }
     ),
     data = data,
@@ -298,59 +298,59 @@ test_that("fit_coxreg_univar returns model results as expected", {
     vars = variables,
     at = list()
   )
-  expect_equal(result$mod, expected$mod)
+  testthat::expect_equal(result$mod, expected$mod)
 })
 
-test_that("fit_coxreg_univar runs with non-represented level of a factor", {
+testthat::test_that("fit_coxreg_univar runs with non-represented level of a factor", {
   data <- get_bladder() %>%
-    filter(covar1 %in% 1:3)
+    dplyr::filter(covar1 %in% 1:3)
 
   variables <- list(
     time = "time", event = "status", arm = "armcd",
     covariates = "covar1"
   )
 
-  expect_silent(fit_coxreg_univar(variables = variables, data = data))
+  testthat::expect_silent(fit_coxreg_univar(variables = variables, data = data))
 })
 
-test_that("fit_coxreg_univar is stopped when there are not 2 arms", {
+testthat::test_that("fit_coxreg_univar is stopped when there are not 2 arms", {
   data <- get_bladder() %>%
-    filter(covar1 %in% 1:3)
+    dplyr::filter(covar1 %in% 1:3)
 
   variables <- list(
     time = "time", event = "status", arm = "covar1", covariates = "covar2"
   )
 
-  expect_error(fit_coxreg_univar(variables = variables, data = data))
+  testthat::expect_error(fit_coxreg_univar(variables = variables, data = data))
 })
 
-test_that("fit_coxreg_univar is stopped when likelihood method is used together with strata", {
+testthat::test_that("fit_coxreg_univar is stopped when likelihood method is used together with strata", {
   data <- get_bladder()
 
   variables <- list(
     time = "time", event = "status", arm = "armcd", covariates = "age", strata = "covar1"
   )
 
-  expect_error(
+  testthat::expect_error(
     fit_coxreg_univar(
       variables = variables, data = data, control = control_coxreg(pval_method = "likelihood")
     )
   )
 })
 
-test_that("fit_coxreg_univar works without treatment arm", {
+testthat::test_that("fit_coxreg_univar works without treatment arm", {
   data <- get_bladder()
 
   variables <- list(
     time = "time", event = "status", covariates = "age", strata = "covar1"
   )
 
-  result <- expect_silent(fit_coxreg_univar(variables = variables, data = data))
-  expect_named(result$mod, "age")
+  result <- testthat::expect_silent(fit_coxreg_univar(variables = variables, data = data))
+  testthat::expect_named(result$mod, "age")
 })
 
 
-test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_univariate (no interaction)", {
+testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_univariate (no interaction)", {
   dta_bladder <- get_bladder()
 
   univar_model <- fit_coxreg_univar(
@@ -370,8 +370,8 @@ test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_uni
   result <- df[c("n", "hr", "pval", "ci")]
 
   expected <- with(
-    data = expect_warning(s_cox_univariate(
-      formula = Surv(time, status) ~ arm(armcd),
+    data = testthat::expect_warning(s_cox_univariate(
+      formula = survival::Surv(time, status) ~ arm(armcd),
       data = dta_bladder,
       covariates = list(~ covar1)
     )),
@@ -389,12 +389,12 @@ test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_uni
   expect_equivalent(result, expected)
 })
 
-test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_univariate (with interaction)", {
+testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_univariate (with interaction)", {
 
   dta_bladder <- get_bladder()
   expected <- with(
-    data = expect_warning(s_cox_univariate(
-      formula = Surv(time, status) ~ arm(armcd),
+    data = testthat::expect_warning(s_cox_univariate(
+      formula = survival::Surv(time, status) ~ arm(armcd),
       data = dta_bladder,
       covariates = list(~ covar1),
       interactions = TRUE,
@@ -443,9 +443,9 @@ test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_uni
 
 # tidy.summary.coxph ----
 
-test_that("tidy.summary.coxph method tidies up the Cox regression model", {
+testthat::test_that("tidy.summary.coxph method tidies up the Cox regression model", {
   dta_simple <- raw_data
-  mod <- summary(survival::coxph(Surv(time, status) ~ armcd, data = dta_simple))
+  mod <- summary(survival::coxph(survival::Surv(time, status) ~ armcd, data = dta_simple))
   result <- broom::tidy(mod)
   expected <- dplyr::tibble(
     "Pr(>|z|)" = 0.2472383,
@@ -457,14 +457,14 @@ test_that("tidy.summary.coxph method tidies up the Cox regression model", {
     "n" = 8L
   ) %>%
     as.data.frame()
-  expect_equal(result, expected, tolerance = 1e-5)
+  testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
 # h_coxreg_univar_extract ----
 
-test_that("h_coxreg_univar_extract extracts coxph results", {
+testthat::test_that("h_coxreg_univar_extract extracts coxph results", {
   dta_simple <- raw_data
-  mod <- coxph(Surv(time, status) ~ armcd, data = dta_simple)
+  mod <- survival::coxph(survival::Surv(time, status) ~ armcd, data = dta_simple)
   result <- h_coxreg_univar_extract(effect = "armcd", covar = "armcd", mod = mod, data = dta_simple)
   expected <- data.frame(
     effect = "Treatment:",
@@ -477,28 +477,28 @@ test_that("h_coxreg_univar_extract extracts coxph results", {
     pval = 0.247238279140636,
     stringsAsFactors = FALSE
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
 # muffled_car_anova ----
 
-test_that("muffled_car_anova muffles notes about dropped strata term", {
+testthat::test_that("muffled_car_anova muffles notes about dropped strata term", {
   bladder1 <- bladder[bladder$enum < 5, ]
-  mod <- coxph(
-    Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
+  mod <- survival::coxph(
+    survival::Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
     bladder1
   )
   expect_message(car::Anova(mod, test.statistic = "Wald"))
-  expect_silent(muffled_car_anova(mod, test_statistic = "Wald"))
+  testthat::expect_silent(muffled_car_anova(mod, test_statistic = "Wald"))
 })
 
-test_that("muffled_car_anova gives a hint in the error message when an error occurs", {
+testthat::test_that("muffled_car_anova gives a hint in the error message when an error occurs", {
   bladder2 <- bladder[1:20, ]
   mod <- coxph(
     Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
     bladder2
   )
-  expect_error(
+  testthat::expect_error(
     muffled_car_anova(mod, test_statistic = "Wald"),
     "the model seems to have convergence problems"
   )
@@ -506,7 +506,7 @@ test_that("muffled_car_anova gives a hint in the error message when an error occ
 
 # tidy.coxreg.univar ----
 
-test_that("tidy.coxreg.univar method tidies up the univariate Cox regression model", {
+testthat::test_that("tidy.coxreg.univar method tidies up the univariate Cox regression model", {
   univar_model <- fit_coxreg_univar(
     variables = list(
       time = "time", event = "status", arm = "armcd",
@@ -536,10 +536,10 @@ test_that("tidy.coxreg.univar method tidies up the univariate Cox regression mod
     class = "data.frame",
     conf_level = 0.95
   )
-  expect_equal(result, expected, tolerance = 1e-5)
+  testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
-test_that("tidy.coxreg.univar method works with only numeric covariates with strata", {
+testthat::test_that("tidy.coxreg.univar method works with only numeric covariates with strata", {
   univar_model <- fit_coxreg_univar(
     variables = list(
       time = "time", event = "status", arm = "armcd",
@@ -568,10 +568,10 @@ test_that("tidy.coxreg.univar method works with only numeric covariates with str
     class = "data.frame",
     conf_level = 0.95
   )
-  expect_equal(result, expected, tolerance = 1e-5)
+  testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
-test_that("tidy.coxreg.univar method works without treatment arm", {
+testthat::test_that("tidy.coxreg.univar method works without treatment arm", {
   univar_model <- fit_coxreg_univar(
     variables = list(
       time = "time", event = "status",
@@ -579,21 +579,21 @@ test_that("tidy.coxreg.univar method works without treatment arm", {
     ),
     data = get_bladder()
   )
-  result <- expect_silent(broom::tidy(univar_model))
-  expect_identical(result$term, c("age", "covar1", rep("A Covariate Label", 3)))
+  result <- testthat::expect_silent(broom::tidy(univar_model))
+  testthat::expect_identical(result$term, c("age", "covar1", rep("A Covariate Label", 3)))
 })
 
 # h_coxreg_extract_interaction ----
 
-test_that("h_coxreg_extract_interaction works with factor as covariate", {
-  mod <- coxph(Surv(time, status) ~ armcd * covar1, data = get_bladder())
-  expect_silent(
+testthat::test_that("h_coxreg_extract_interaction works with factor as covariate", {
+  mod <- survival::coxph(survival::Surv(time, status) ~ armcd * covar1, data = get_bladder())
+  testthat::expect_silent(
     h_coxreg_extract_interaction(
       effect = "armcd", covar = "covar1", mod = mod, data = get_bladder(),
       control = control_coxreg()
     )
   )
-  expect_silent(
+  testthat::expect_silent(
     h_coxreg_inter_effect(
       x = get_bladder()[["covar1"]],
       effect = "armcd", covar = "covar1", mod = mod, data = get_bladder(),
@@ -604,15 +604,15 @@ test_that("h_coxreg_extract_interaction works with factor as covariate", {
 
 # h_coxreg_inter_effect ----
 
-test_that("h_coxreg_inter_effect works with numerics as covariate", {
-  mod1 <- coxph(Surv(time, status) ~ armcd * age, data = get_bladder())
-  expect_silent(
+testthat::test_that("h_coxreg_inter_effect works with numerics as covariate", {
+  mod1 <- survival::coxph(survival::Surv(time, status) ~ armcd * age, data = get_bladder())
+  testthat::expect_silent(
     h_coxreg_extract_interaction(
       effect = "armcd", covar = "age", mod = mod1, control = control_coxreg(),
       at = list(), data = get_bladder()
     )
   )
-  expect_silent(
+  testthat::expect_silent(
     h_coxreg_inter_effect(
       x = get_bladder()[["age"]],
       effect = "armcd", covar = "age", mod = mod1, control = control_coxreg(),
@@ -620,8 +620,8 @@ test_that("h_coxreg_inter_effect works with numerics as covariate", {
     )
   )
 
-  mod2 <- coxph(Surv(time, status) ~ armcd * age + strata(covar1), data = get_bladder())
-  expect_silent(
+  mod2 <- survival::coxph(survival::Surv(time, status) ~ armcd * age + strata(covar1), data = get_bladder())
+  testthat::expect_silent(
     h_coxreg_inter_effect(
       x = get_bladder()[["age"]],
       effect = "armcd", covar = "age", mod = mod2, data = get_bladder(),
@@ -630,35 +630,35 @@ test_that("h_coxreg_inter_effect works with numerics as covariate", {
   )
 })
 
-test_that("h_coxreg_inter_effect.numerics works with _:_ in effect levels", {
-  mod <- coxph(Surv(time, status) ~ armcd * age, data = get_bladder())
-  expected <- expect_silent(
+testthat::test_that("h_coxreg_inter_effect.numerics works with _:_ in effect levels", {
+  mod <- survival::coxph(survival::Surv(time, status) ~ armcd * age, data = get_bladder())
+  expected <- testthat::expect_silent(
     h_coxreg_extract_interaction(
       effect = "armcd", covar = "age", mod = mod, control = control_coxreg(),
       at = list(), data = get_bladder()
     )
   )
 
-  mod <- coxph(Surv(time, status) ~ arm * age, data = get_bladder())
-  result <-  expect_silent(
+  mod <- survival::coxph(survival::Surv(time, status) ~ arm * age, data = get_bladder())
+  result <-  testthat::expect_silent(
     h_coxreg_extract_interaction(
       effect = "arm", covar = "age", mod = mod, control = control_coxreg(),
       at = list(), data = get_bladder()
     )
   )
   # The first column in the effect (arm/armcd) and expected to vary.
-  expect_equal(result[, -1], expected[, -1], check.attributes = FALSE)
+  testthat::expect_equal(result[, -1], expected[, -1], check.attributes = FALSE)
 })
 
 # h_coxreg_inter_estimations ----
 
-test_that("h_coxreg_inter_estimations' results identical to soon deprecated estimate_coef", {
+testthat::test_that("h_coxreg_inter_estimations' results identical to soon deprecated estimate_coef", {
   # Testing dataset [survival::bladder].
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- get_bladder()
 
-  mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
+  mod <- survival::coxph(survival::Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 
   result <- h_coxreg_inter_estimations(
     variable = "armcd", given = "covar1",
@@ -677,12 +677,12 @@ test_that("h_coxreg_inter_estimations' results identical to soon deprecated esti
     coef = coef(mod), mmat = mmat, vcov = vcov(mod),
     conf_level = .95
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 # fit_coxreg_multivar ----
 
-test_that("fit_coxreg_multivar returns model results as expected", {
+testthat::test_that("fit_coxreg_multivar returns model results as expected", {
   data <- get_bladder()
   control <- control_coxreg(conf_level = 0.91)
   variables <- list(
@@ -699,24 +699,24 @@ test_that("fit_coxreg_multivar returns model results as expected", {
 
   expected <- list(
     mod = coxph(
-      formula = as.formula(form),
+      formula = stats::as.formula(form),
       data = data, ties = control$ties
     ),
     data = data,
     control = control,
     vars = variables
   )
-  expect_equal(result$mod, expected$mod)
+  testthat::expect_equal(result$mod, expected$mod)
 })
 
-test_that("fit_coxreg_multivar is stopped when likelihood method is used together with strata", {
+testthat::test_that("fit_coxreg_multivar is stopped when likelihood method is used together with strata", {
   data <- get_bladder()
 
   variables <- list(
     time = "time", event = "status", arm = "armcd", covariates = "age", strata = "covar1"
   )
 
-  expect_error(
+  testthat::expect_error(
     fit_coxreg_multivar(
       variables = variables, data = data, control = control_coxreg(pval_method = "likelihood")
     )
@@ -724,25 +724,25 @@ test_that("fit_coxreg_multivar is stopped when likelihood method is used togethe
 })
 
 
-test_that("fit_coxreg_multivar works correctly also without treatment arm", {
+testthat::test_that("fit_coxreg_multivar works correctly also without treatment arm", {
   data <- get_bladder()
   control <- control_coxreg(conf_level = 0.9)
   variables <- list(
     time = "time", event = "status",
     covariates = c("covar1", "covar2")
   )
-  result <- expect_silent(fit_coxreg_multivar(
+  result <- testthat::expect_silent(fit_coxreg_multivar(
     variables = variables,
     data = data,
     control = control
   ))
-  expect_is(result$mod, "coxph")
-  expect_equal(formula(result$mod), Surv(time, status) ~ 1 + covar1 + covar2)
+  testthat::expect_is(result$mod, "coxph")
+  testthat::expect_equal(formula(result$mod), survival::Surv(time, status) ~ 1 + covar1 + covar2)
 })
 
 # tidy.coxreg.multivar ----
 
-test_that("tidy.coxreg.multivar method tidies up the multi-variable Cox regression model", {
+testthat::test_that("tidy.coxreg.multivar method tidies up the multi-variable Cox regression model", {
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- get_bladder()
@@ -790,12 +790,12 @@ test_that("tidy.coxreg.multivar method tidies up the multi-variable Cox regressi
     conf_level = 0.95
   )
   attr(expected, "conf_level") <- 0.95
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
 # s_coxreg ----
 
-test_that("s_coxreg converts tabulated results in a list", {
+testthat::test_that("s_coxreg converts tabulated results in a list", {
   univar_model <- fit_coxreg_univar(
     variables = list(
       time = "time", event = "status", arm = "armcd",
@@ -810,12 +810,12 @@ test_that("s_coxreg converts tabulated results in a list", {
     hr = list(`A Covariate Label` = 0.607036963131032),
     hr = list(`Sex (F/M)` = 0.62427)
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
 # summarize_coxreg ----
 
-test_that("summarize_coxreg adds the univariate Cox regression layer to rtables", {
+testthat::test_that("summarize_coxreg adds the univariate Cox regression layer to rtables", {
   conf_level <- 0.90
   univar_model <- fit_coxreg_univar(
     variables = list(
@@ -841,10 +841,10 @@ test_that("summarize_coxreg adds the univariate Cox regression layer to rtables"
     ),
     .Dim = 6:5
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtables", {
+testthat::test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtables", {
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- get_bladder()
@@ -874,10 +874,10 @@ test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtab
     ),
     .Dim = c(9L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("summarize_coxreg works without treatment arm in univariate case", {
+testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- get_bladder()
@@ -904,5 +904,5 @@ test_that("summarize_coxreg works without treatment arm in univariate case", {
       "<0.0001", "<0.0001", "", "0.1414"),
     .Dim = c(7L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -153,7 +153,7 @@ extract_survival_biomarkers <- function(variables,
   assertthat::assert_that(
     is.list(variables),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.string(label_all)
+    assertthat::is.string(label_all)
   )
 
   # Start with all patients.
@@ -236,9 +236,9 @@ h_coxreg_mult_cont_df <- function(variables,
                                   control = control_coxreg()) {
   assertthat::assert_that(
     is.list(variables),
-    is_character_vector(variables$biomarkers),
+    utils.nest::is_character_vector(variables$biomarkers),
     is_df_with_variables(data, as.list(unlist(variables))),
-    is_fully_named_list(control)
+    utils.nest::is_fully_named_list(control)
   )
 
   # If there is any data, run model, otherwise return empty results.

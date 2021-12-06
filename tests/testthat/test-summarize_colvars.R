@@ -17,7 +17,7 @@ get_dta <- function() {
     dplyr::ungroup()
 }
 
-test_that("summarize_colvars works as expected without column split and default behavior", {
+testthat::test_that("summarize_colvars works as expected without column split and default behavior", {
   dta <- get_dta()
 
   l <- basic_table() %>%
@@ -36,10 +36,10 @@ test_that("summarize_colvars works as expected without column split and default 
       "-1 - -1", "", "3", "-2 (0)", "-2", "-2 - -2"),
     .Dim = c(16L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("summarize_colvars works as expected with column split", {
+testthat::test_that("summarize_colvars works as expected with column split", {
   dta <- get_dta()
 
   l <- basic_table() %>%
@@ -63,11 +63,11 @@ test_that("summarize_colvars works as expected with column split", {
       "", "1", "-2 (NA)", "-2", "-2 - -2"),
     .Dim = c(17L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("summarize_colvars works when selecting statistics and custom formatting", {
+testthat::test_that("summarize_colvars works when selecting statistics and custom formatting", {
   dta <- get_dta()
 
   l <- basic_table() %>%
@@ -92,5 +92,5 @@ test_that("summarize_colvars works when selecting statistics and custom formatti
       "", "1", "0, NA", "", "2", "-1, 0", "", "1", "-2, NA"),
     .Dim = c(11L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

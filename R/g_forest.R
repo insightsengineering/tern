@@ -411,13 +411,13 @@ forest_grob <- function(tbl,
     children = grid::gList(
       grid::gTree(
         children = do.call(grid::gList, lapply(args_header, do.call, what = cell_in_rows)),
-        vp = vpPath("vp_table_layout", "vp_header")
+        vp = grid::vpPath("vp_table_layout", "vp_header")
       ),
       grid::gTree(
         children = do.call(grid::gList, lapply(args_body, do.call, what = cell_in_rows)),
-        vp = vpPath("vp_table_layout", "vp_body")
+        vp = grid::vpPath("vp_table_layout", "vp_body")
       ),
-      linesGrob(grid::unit(c(0, 1), "npc"), y = grid::unit(c(.5, .5), "npc"), vp = vpPath("vp_table_layout", "vp_spacer")),
+      grid::linesGrob(grid::unit(c(0, 1), "npc"), y = grid::unit(c(.5, .5), "npc"), vp = grid::vpPath("vp_table_layout", "vp_spacer")),
       # forest part
       if (is.null(vline)) {
         NULL
@@ -439,10 +439,10 @@ forest_grob <- function(tbl,
                   just = c("left", "center")
                 )
               ),
-              vp = vpStack(grid::viewport(layout.pos.col = ncol(tbl) + 2), data_forest_vp)
+              vp = grid::vpStack(grid::viewport(layout.pos.col = ncol(tbl) + 2), data_forest_vp)
             )
           ),
-          vp = vpPath("vp_table_layout", "vp_header")
+          vp = grid::vpPath("vp_table_layout", "vp_header")
         )
       },
       grid::gTree(
@@ -453,7 +453,7 @@ forest_grob <- function(tbl,
               if (is.null(vline)) {
                 NULL
               } else {
-                linesGrob(
+                grid::linesGrob(
                   x = grid::unit(rep(vline, 2), "native"),
                   y = grid::unit(c(0, 1), "npc"),
                   gp = grid::gpar(lwd = 2),
@@ -465,7 +465,7 @@ forest_grob <- function(tbl,
             vp = grid::viewport(layout.pos.col = ncol(tbl) + 2)
           )
         ),
-        vp = vpPath("vp_table_layout", "vp_body")
+        vp = grid::vpPath("vp_table_layout", "vp_body")
       ),
       grid::gTree(
         children = do.call(
@@ -489,7 +489,7 @@ forest_grob <- function(tbl,
             symbol_size, USE.NAMES = FALSE
           )
         ),
-        vp = vpPath("vp_table_layout", "vp_body")
+        vp = grid::vpPath("vp_table_layout", "vp_body")
       )
     ),
     childrenvp = forest_viewport(tbl, width_row_names, width_columns, width_forest),
@@ -507,12 +507,12 @@ cell_in_rows <- function(row_name,
                          underline_colspan = FALSE) {
 
   stopifnot(
-    is_character_single(row_name),
-    is_character_vector(cells),
-    is_numeric_vector(cell_spans),
+    utils.nest::is_character_single(row_name),
+    utils.nest::is_character_vector(cells),
+    utils.nest::is_numeric_vector(cell_spans),
     length(cells) == length(cell_spans),
-    is_numeric_single(row_index),
-    is_logical_single(underline_colspan)
+    utils.nest::is_numeric_single(row_index),
+    utils.nest::is_logical_single(underline_colspan)
   )
 
   vp_name_rn <- paste0("rowname-", row_index)
@@ -522,7 +522,7 @@ cell_in_rows <- function(row_name,
       label = row_name,
       x = grid::unit(0, "npc"),
       just = c("left", "center"),
-      vp = vpPath(paste0("rowname-", row_index))
+      vp = grid::vpPath(paste0("rowname-", row_index))
     )
   } else {
     NULL
@@ -551,7 +551,7 @@ cell_in_rows <- function(row_name,
           grid::textGrob(
             label = cell_ascii,
             name = cell_name,
-            vp = vpPath(paste0("cell-", row_index, "-", j))
+            vp = grid::vpPath(paste0("cell-", row_index, "-", j))
           )
         } else {
           # +1 because of rowname
@@ -568,7 +568,7 @@ cell_in_rows <- function(row_name,
           } else {
             grid::gList(
               lab,
-              linesGrob(
+              grid::linesGrob(
                 x = grid::unit.c(grid::unit(.2, "lines"), grid::unit(1, "npc") - grid::unit(.2, "lines")),
                 y = grid::unit(c(0, 0), "npc"),
                 vp = vp_joined_cols
@@ -609,29 +609,29 @@ forest_dot_line <- function(x,
     g_line <- if (all(!is.na(ci)) && ci[2] > xlim[1] && ci[1] < xlim[2]) {
       # -
       if (ci[1] >= xlim[1] && ci[2] <= xlim[2]) {
-        linesGrob(x = grid::unit(c(ci[1], ci[2]), "native"), y = y)
+        grid::linesGrob(x = grid::unit(c(ci[1], ci[2]), "native"), y = y)
       } else if (ci[1] < xlim[1] && ci[2] > xlim[2]) {
         # <->
-        linesGrob(
+        grid::linesGrob(
           x = grid::unit(xlim, "native"),
           y = y,
-          arrow = arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "both")
+          arrow = grid::arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "both")
         )
       } else if (ci[1] < xlim[1] && ci[2] <= xlim[2]) {
         # <-
-        linesGrob(x = grid::unit(c(xlim[1], ci[2]), "native"), y = y,
-                  arrow = arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "first"))
+        grid::linesGrob(x = grid::unit(c(xlim[1], ci[2]), "native"), y = y,
+                        arrow = grid::arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "first"))
       } else if (ci[1] >= xlim[1] && ci[2] > xlim[2]) {
         # ->
-        linesGrob(x = grid::unit(c(ci[1], xlim[2]), "native"), y = y,
-                  arrow = arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "last"))
+        grid::linesGrob(x = grid::unit(c(ci[1], xlim[2]), "native"), y = y,
+                        arrow = grid::arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "last"))
       }
     } else {
       NULL
     }
 
     g_circle <- if (!is.na(x) && x >= xlim[1] && x <= xlim[2]) {
-      circleGrob(
+      grid::circleGrob(
         x = grid::unit(x, "native"),
         y = y,
         r = grid::unit(1 / 3.5 * symbol_size, "lines"),
@@ -654,7 +654,7 @@ forest_dot_line <- function(x,
           gp = grid::gpar(col = "blue", fill = "blue")
         )
       ),
-      vp = vpPath(paste0("forest-", row_index))
+      vp = grid::vpPath(paste0("forest-", row_index))
     )
   } else {
     NULL

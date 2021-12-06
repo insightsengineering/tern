@@ -6,7 +6,7 @@ library(dplyr)
 preproc_adtte <- function(adtte) {
 
   anl <- adtte %>%
-    filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
+    dplyr::filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0,
@@ -27,7 +27,7 @@ preproc_adtte <- function(adtte) {
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
-test_that("DORT01 variant 1 is produced correctly", {
+testthat::test_that("DORT01 variant 1 is produced correctly", {
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -102,10 +102,10 @@ test_that("DORT01 variant 1 is produced correctly", {
     .Dim = c(21L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
+testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -181,10 +181,10 @@ test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
     .Dim = c(21L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced correctly", {
+testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced correctly", {
 
   adtte <- adtte %>%
     preproc_adtte()
@@ -261,10 +261,10 @@ test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced cor
     .Dim = c(21L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("DORT01 variant 4 (modifying time point for the “xx duration”) is produced correctly", {
+testthat::test_that("DORT01 variant 4 (modifying time point for the “xx duration”) is produced correctly", {
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -338,5 +338,5 @@ test_that("DORT01 variant 4 (modifying time point for the “xx duration”) is 
     .Dim = c(21L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

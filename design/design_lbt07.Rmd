@@ -62,13 +62,13 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
                                             variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")) {
   abnormal <- match.arg(abnormal)
   assertthat::assert_that(
-    is.string(.var),
-    is.string(abnormal),
+    assertthat::is.string(.var),
+    assertthat::is.string(abnormal),
     is.list(variables),
     all(names(variables) %in% c("id", "worst_grade_flag")),
     is_df_with_variables(df, c(aval = .var, variables)),
-    is_numeric_vector(df[[.var]]),
-    is_logical_vector(df[[variables$worst_grade_flag]]),
+    utils.nest::is_numeric_vector(df[[.var]]),
+    utils.nest::is_logical_vector(df[[variables$worst_grade_flag]]),
     is_character_or_factor(df[[variables$id]])
   )
 
@@ -155,15 +155,15 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
                                             ) {
 
   assertthat::assert_that(
-    is.string(.var),
+    assertthat::is.string(.var),
     is.list(variables),
     all(names(variables) %in% c("id", "worst_low_flag", "worst_high_flag")),
     !is.null(names(variables$worst_low_flag)),
     !is.null(names(variables$worst_high_flag)),
     is_df_with_variables(df, c(aval = .var, variables)),
     is.factor(df[[.var]]),
-    is_logical_vector(df[[variables$worst_low_flag]]) || is_logical_empty(df[[variables$worst_low_flag]]),
-    is_logical_vector(df[[variables$worst_high_flag]]) || is_logical_empty(df[[variables$worst_high_flag]]),
+    utils.nest::is_logical_vector(df[[variables$worst_low_flag]]) || is_logical_empty(df[[variables$worst_low_flag]]),
+    utils.nest::is_logical_vector(df[[variables$worst_high_flag]]) || is_logical_empty(df[[variables$worst_high_flag]]),
     is_character_or_factor(df[[variables$id]])
   )
 
@@ -309,7 +309,7 @@ count_abnormal_by_worst_grade <- function(lyt,
                                           .labels = NULL,
                                           .indent_mods = NULL) {
   assertthat::assert_that(
-    is.string(var)
+    assertthat::is.string(var)
     )
   afun <- make_afun(
     a_count_abnormal_by_worst_grade,

@@ -8,7 +8,7 @@ raw_data <- data.frame(
     AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
   )
 
-test_that("s_count_patients_and_multiple_events works as expected", {
+testthat::test_that("s_count_patients_and_multiple_events works as expected", {
   df <- raw_data
   result <- s_count_patients_and_multiple_events(
     df = df,
@@ -24,10 +24,10 @@ test_that("s_count_patients_and_multiple_events works as expected", {
     serious = with_label(7, "counts"),
     fatal = with_label(4, "counts")
   )
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("s_count_patients_and_multiple_events can have empty stats if requested", {
+testthat::test_that("s_count_patients_and_multiple_events can have empty stats if requested", {
   df <- raw_data
   result <- s_count_patients_and_multiple_events(
     df = df,
@@ -44,10 +44,10 @@ test_that("s_count_patients_and_multiple_events can have empty stats if requeste
     serious = with_label(character(), "counts"),
     fatal = with_label(4, "counts")
   )
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("summarize_patients_events_in_cols works well with default arguments", {
+testthat::test_that("summarize_patients_events_in_cols works well with default arguments", {
   df <- raw_data
   result <- basic_table() %>%
     summarize_patients_events_in_cols(
@@ -66,10 +66,10 @@ test_that("summarize_patients_events_in_cols works well with default arguments",
       "4"),
     .Dim = c(2L, 6L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("summarize_patients_events_in_cols works well with custom arguments", {
+testthat::test_that("summarize_patients_events_in_cols works well with custom arguments", {
   df <- raw_data
   result <- basic_table() %>%
     summarize_patients_events_in_cols(
@@ -90,5 +90,5 @@ test_that("summarize_patients_events_in_cols works well with custom arguments", 
     c("", "bla", "Related", "5", "All", ""),
     .Dim = c(2L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -18,8 +18,8 @@ NULL
 h_step_window <- function(x,
                           control = control_step()) {
   assertthat::assert_that(
-    is_numeric_vector(x),
-    is_fully_named_list(control)
+    utils.nest::is_numeric_vector(x),
+    utils.nest::is_fully_named_list(control)
   )
   sel <- matrix(FALSE, length(x), control$num_points)
   out <- matrix(0, control$num_points, 3)
@@ -71,7 +71,7 @@ h_step_trt_effect <- function(data,
   assertthat::assert_that(
     is_df_with_variables(data, variables),
     is(model, "coxph") || is(model, "glm"),
-    is.number(x)
+    assertthat::is.number(x)
   )
   arm_lvls <- levels(data[[variables$arm]])
   assertthat::assert_that(
@@ -115,7 +115,7 @@ h_step_survival_formula <- function(variables,
   if (!is.null(variables$strata)) {
     form <- paste0(form, " + strata(", paste0(variables$strata, collapse = ", "), ")")
   }
-  as.formula(form)
+  stats::as.formula(form)
 }
 
 #' @describeIn h_step estimates the model with `formula` built based on
@@ -136,9 +136,9 @@ h_step_survival_est <- function(formula,
   assertthat::assert_that(
     is(formula, "formula"),
     is_df_with_variables(data, variables),
-    is_numeric_vector(x),
-    is_logical_vector(subset),
-    is_fully_named_list(control)
+    utils.nest::is_numeric_vector(x),
+    utils.nest::is_logical_vector(subset),
+    utils.nest::is_fully_named_list(control)
   )
   # Note: `subset` in `coxph` needs to be an expression referring to `data` variables.
   data$.subset <- subset
@@ -237,9 +237,9 @@ h_step_rsp_est <- function(formula,
   assertthat::assert_that(
     is(formula, "formula"),
     is_df_with_variables(data, variables),
-    is_numeric_vector(x),
-    is_logical_vector(subset),
-    is_fully_named_list(control)
+    utils.nest::is_numeric_vector(x),
+    utils.nest::is_logical_vector(subset),
+    utils.nest::is_fully_named_list(control)
   )
   # Note: `subset` in `glm` needs to be an expression referring to `data` variables.
   data$.subset <- subset

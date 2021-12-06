@@ -150,8 +150,8 @@ g_lineplot <- function(df, # nolint
   assertthat::assert_that(is.character(interval) || is.null(interval))
   assertthat::assert_that(ifelse(is.character(interval), length(whiskers) <= 2, TRUE))
   assertthat::assert_that(ifelse(length(whiskers) == 1, is.character(mid), TRUE))
-  assertthat::assert_that(is.string(title) || is.null(title))
-  assertthat::assert_that(is.string(subtitle) || is.null(subtitle))
+  assertthat::assert_that(assertthat::is.string(title) || is.null(title))
+  assertthat::assert_that(assertthat::is.string(subtitle) || is.null(subtitle))
   assertthat::assert_that(
     ifelse(
       is.character(mid),

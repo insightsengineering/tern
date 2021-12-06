@@ -103,37 +103,37 @@ NULL
 #' # 2. Example - Arrange several KM curve on a single graph device
 #'
 #' # 2.1 Use case: A general graph on the top, a zoom on the bottom.
-#' grid::grid.newpage()
-#' lyt <- grid::grid.layout(nrow = 2, ncol = 1) %>%
-#'   grid::viewport(layout = .) %>%
+#' grid.newpage()
+#' lyt <- grid.layout(nrow = 2, ncol = 1) %>%
+#'   viewport(layout = .) %>%
 #'   pushViewport()
 #'
 #' res <- g_km(
 #'   df = df, variables = variables, newpage = FALSE, annot_surv_med = FALSE,
-#'   vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
+#'   vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
 #' )
 #' res <- g_km(
 #'   df = df, variables = variables, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
 #'   ggtheme = theme_dark(),
-#'   vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
+#'   vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
 #' )
 #'
 #' # 2.1 Use case: No annotations on top, annotated graph on bottom
-#' grid::grid.newpage()
-#' lyt <- grid::grid.layout(nrow = 2, ncol = 1) %>%
-#'   grid::viewport(layout = .) %>%
+#' grid.newpage()
+#' lyt <- grid.layout(nrow = 2, ncol = 1) %>%
+#'   viewport(layout = .) %>%
 #'   pushViewport()
 #'
 #' res <- g_km(
 #'   df = df, variables = variables, newpage = FALSE,
 #'   annot_surv_med = FALSE, annot_at_risk = FALSE,
-#'   vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
+#'   vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
 #' )
 #' res <- g_km(
 #'   df = df, variables = variables, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
 #'   annot_at_risk = TRUE,
 #'   ggtheme = theme_dark(),
-#'   vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
+#'   vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
 #' )
 #'
 #' # Add annotation from a pairwise coxph analysis
@@ -191,16 +191,16 @@ g_km <- function(df,
   assertthat::assert_that(
     is.list(variables),
     all(c("tte", "arm", "is_event") %in% names(variables)),
-    is.string(title) || is.null(title)
+    assertthat::is.string(title) || is.null(title)
   )
   tte <- variables$tte
   is_event <- variables$is_event
   arm <- variables$arm
   assertthat::assert_that(
     is_df_with_variables(df, list(tte = tte, is_event = is_event, arm = arm)),
-    is_numeric_vector(df[[tte]]),
+    utils.nest::is_numeric_vector(df[[tte]]),
     is_valid_factor(df[[arm]]),
-    is_logical_vector(df[[is_event]])
+    utils.nest::is_logical_vector(df[[is_event]])
   )
   armval <- as.character(unique(df[[arm]]))
   if (length(armval) > 1) {
@@ -501,7 +501,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
     } else {
       labeling::extended(range(data$time)[1], max(range(data$time)[2], max_time), m = 5)
     }
-  } else if (is.number(xticks)) {
+  } else if (assertthat::is.number(xticks)) {
     if (is.null(max_time)) {
       seq(0, max(data$time), xticks)
     } else {
@@ -567,7 +567,7 @@ h_ggkm <- function(data,
                    ggtheme = NULL) {
 
   assertthat::assert_that(
-    (is.null(lty) || is.number(lty) || is.numeric(lty))
+    (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty))
   )
 
   # change estimates of survival to estimates of failure (1 - survival)
@@ -599,7 +599,7 @@ h_ggkm <- function(data,
   gg <- if (is.null(lty)) {
     gg +
       ggplot2::geom_step(lwd = lwd)
-  } else if (is.number(lty)) {
+  } else if (assertthat::is.number(lty)) {
     gg +
       ggplot2::geom_step(lwd = lwd, lty = lty)
   } else if (is.numeric(lty)) {

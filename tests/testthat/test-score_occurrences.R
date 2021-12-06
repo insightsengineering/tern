@@ -15,7 +15,7 @@ get_df_ae <- function() {
     AESUPSYS = sample(c("AESS1", "AESS2"), 20, replace = TRUE)
   )
   dfae <- dfae %>% arrange(USUBJID, AEBODSYS, AEDECOD) #nolint
-  dfae <- left_join(dfae, dfsl, by = "USUBJID")
+  dfae <- dplyr::left_join(dfae, dfsl, by = "USUBJID")
   structure(
     dfae,
     dfsl = dfsl
@@ -76,7 +76,7 @@ get_full_table_with_empty <- function() {
   build_table(lyt, dfae, alt_counts_df = attr(dfae, "dfsl"))
 }
 
-test_that("score_occurrences functions as expected", {
+testthat::test_that("score_occurrences functions as expected", {
   full_table <- get_full_table()
 
   sorted_table <- full_table %>%
@@ -103,10 +103,10 @@ test_that("score_occurrences functions as expected", {
     c("AEPT3", "0", "0", "1 (100%)")
   )
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("score_occurrences functions as expected with empty analysis rows", {
+testthat::test_that("score_occurrences functions as expected with empty analysis rows", {
   full_table <- get_full_table_with_empty()
 
   sorted_table <- full_table %>%
@@ -135,14 +135,14 @@ test_that("score_occurrences functions as expected with empty analysis rows", {
     .Dim = c(17L, 4L)
   )
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("score_occurrences_cols functions as expected", {
+testthat::test_that("score_occurrences_cols functions as expected", {
   full_table <- get_full_table()
 
   score_col_c <- score_occurrences_cols(col_names = "C")
-  expect_is(score_col_c, "function")
+  testthat::expect_is(score_col_c, "function")
 
   sorted_table <- full_table %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_col_c)
@@ -163,10 +163,10 @@ test_that("score_occurrences_cols functions as expected", {
       "1 (100%)", "", "1 (100%)", "1", "1 (100%)", "0", "0"),
     .Dim = c(16L, 4L)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("score_occurrences_subtable functions as expected", {
+testthat::test_that("score_occurrences_subtable functions as expected", {
   dfae <- get_df_ae()
 
   full_table <- basic_table() %>%
@@ -178,7 +178,7 @@ test_that("score_occurrences_subtable functions as expected", {
     prune_table()
 
   score_subtable_all <- score_occurrences_subtable(col_names = names(full_table))
-  expect_is(score_subtable_all, "function")
+  testthat::expect_is(score_subtable_all, "function")
 
   sorted_table <- full_table %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
@@ -194,10 +194,10 @@ test_that("score_occurrences_subtable functions as expected", {
       "1 (100%)"),
     .Dim = c(10L, 4L)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("score_occurrences_cont_cols functions as expected", {
+testthat::test_that("score_occurrences_cont_cols functions as expected", {
   set.seed(12)
   dfae <- get_df_ae()
   dfae <- dfae %>%
@@ -210,7 +210,7 @@ test_that("score_occurrences_cont_cols functions as expected", {
     build_table(df = dfae)
 
   score_cont_cols <- score_occurrences_cont_cols(col_names = c("A", "B"))
-  expect_is(score_cont_cols, "function")
+  testthat::expect_is(score_cont_cols, "function")
 
   sorted_table <- full_table %>%
     sort_at_path(path =  c("AESUPSYS"), scorefun = score_cont_cols, decreasing = TRUE)
@@ -225,5 +225,5 @@ test_that("score_occurrences_cont_cols functions as expected", {
       "3", "3", "C", "", "4 (80%)", "5", "4", "", "0", "0", "0"),
     .Dim = c(9L, 4L)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })

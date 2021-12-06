@@ -219,7 +219,7 @@ h_row_counts <- function(table_row, reg_exp_cols) {
 }
 
 score_occurrences_cols <- function(reg_exp_cols) {
-  assertthat::assert_that(is.string(reg_exp_cols))
+  assertthat::assert_that(assertthat::is.string(reg_exp_cols))
   function(table_row) {
     counts <- h_row_counts(table_row, reg_exp_cols)
     sum(counts)
