@@ -278,7 +278,7 @@ aesi_label <- function(aesi, scope = NULL) {
     scope <- sas_na(scope)
     scope <- unique(scope)[!is.na(unique(scope))]
     assertthat::assert_that(
-      is.string(scope)
+      assertthat::is.string(scope)
     )
     paste0(aesi, " (", scope, ")")
 
@@ -318,8 +318,8 @@ arm <- function(x) {
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
   assertthat::assert_that(is.data.frame(df))
   df_cols <- colnames(df)
-  assertthat::assert_that(is.string(x) && (x %in% df_cols) && is.numeric(df[[x]]))
-  assertthat::assert_that(is.string(y) && (y %in% df_cols) && is.numeric(df[[y]]))
+  assertthat::assert_that(assertthat::is.string(x) && (x %in% df_cols) && is.numeric(df[[x]]))
+  assertthat::assert_that(assertthat::is.string(y) && (y %in% df_cols) && is.numeric(df[[y]]))
   assertthat::assert_that(is.null(groups) || (is.character(groups) && all(groups %in% df_cols)))
 
   smooths <- function(x, y) {

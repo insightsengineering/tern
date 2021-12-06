@@ -88,7 +88,7 @@ fit_logistic <- function(data,
     is.list(variables),
     all(names(variables) %in% c("response", "arm", "covariates", "interaction", "strata")),
     is_df_with_variables(data, as.list(unlist(variables))),
-    is.string(response_definition),
+    assertthat::is.string(response_definition),
     grepl("response", response_definition)
   )
 
@@ -104,7 +104,7 @@ fit_logistic <- function(data,
   }
   if (!is.null(variables$interaction)) {
     assertthat::assert_that(
-      is.string(variables$interaction),
+      assertthat::is.string(variables$interaction),
       variables$interaction %in% variables$covariates
     )
     form <- paste0(form, " + ", variables$arm, ":", variables$interaction)
@@ -142,7 +142,7 @@ h_get_interaction_vars <- function(fit_glm) {
   terms_name <- attr(stats::terms(fit_glm), "term.labels")
   terms_order <- attr(stats::terms(fit_glm), "order")
   interaction_term <- terms_name[terms_order == 2]
-  assertthat::assert_that(is.string(interaction_term))
+  assertthat::assert_that(assertthat::is.string(interaction_term))
   strsplit(interaction_term, split = ":")[[1]]
 }
 
@@ -184,8 +184,8 @@ h_or_cat_interaction <- function(odds_ratio_var,
                                  conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
   assertthat::assert_that(
-    is.string(odds_ratio_var),
-    is.string(interaction_var),
+    assertthat::is.string(odds_ratio_var),
+    assertthat::is.string(interaction_var),
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
     identical(length(interaction_vars), 2L)
   )
@@ -240,8 +240,8 @@ h_or_cont_interaction <- function(odds_ratio_var,
                                   conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
   assertthat::assert_that(
-    is.string(odds_ratio_var),
-    is.string(interaction_var),
+    assertthat::is.string(odds_ratio_var),
+    assertthat::is.string(interaction_var),
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
     identical(length(interaction_vars), 2L),
     is.null(at) || is_numeric_vector(at)
@@ -386,12 +386,12 @@ h_interaction_term_labels <- function(terms1,
     is_character_or_factor(terms1),
     is_character_or_factor(terms2),
     is.table(table),
-    is.flag(any)
+    assertthat::is.flag(any)
   )
   terms1 <- as.character(terms1)
   terms2 <- as.character(terms2)
   if (any) {
-    assertthat::assert_that(is.scalar(terms1), is.scalar(terms2))
+    assertthat::assert_that(assertthat::is.scalar(terms1), assertthat::is.scalar(terms2))
     paste0(
       terms1, " or ", terms2, ", n = ",
       # Note that we double count in the initial sum the cell [terms1, terms2], therefore subtract.
@@ -415,7 +415,7 @@ h_interaction_term_labels <- function(terms1,
 h_glm_simple_term_extract <- function(x, fit_glm) {
   assertthat::assert_that(
     inherits(fit_glm, c("glm", "clogit")),
-    is.string(x)
+    assertthat::is.string(x)
   )
   xs_class <- attr(fit_glm$terms, "dataClasses")
   xs_level <- fit_glm$xlevels
@@ -515,7 +515,7 @@ h_glm_interaction_extract <- function(x, fit_glm) {
   vars <- h_get_interaction_vars(fit_glm)
   xs_class <- attr(fit_glm$terms, "dataClasses")
   assertthat::assert_that(
-    is.string(x)
+    assertthat::is.string(x)
   )
   # Only take two-way interaction
   assertthat::assert_that(
@@ -890,7 +890,7 @@ logistic_regression_cols <- function(lyt,
 #' @export
 #'
 logistic_summary_by_flag <- function(flag_var) {
-  assertthat::assert_that(is.string(flag_var))
+  assertthat::assert_that(assertthat::is.string(flag_var))
   function(lyt) {
     cfun_list <- list(
       df = cfun_by_flag("df", flag_var, format = "xx."),

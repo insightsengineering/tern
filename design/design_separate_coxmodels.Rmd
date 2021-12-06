@@ -329,7 +329,7 @@ h_coxreg_univar_formulas <- function(variables,
   assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")]),
-    is.flag(interaction),
+    assertthat::is.flag(interaction),
     has_arm || (!interaction)
   )
   forms <- paste0(

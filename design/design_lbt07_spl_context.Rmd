@@ -90,11 +90,11 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                             )) {
 
   assertthat::assert_that(
-    is.string(.var),
+    assertthat::is.string(.var),
     is.list(variables),
-    is.string(variables$id),
-    is.string(variables$param),
-    is.string(variables$grade_dir),
+    assertthat::is.string(variables$id),
+    assertthat::is.string(variables$param),
+    assertthat::is.string(variables$grade_dir),
     all(names(variables) %in% c("id", "param", "grade_dir")),
     is_df_with_variables(df, c(a = .var, variables)),
     is.factor(df[[.var]]),

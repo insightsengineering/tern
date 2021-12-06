@@ -40,9 +40,9 @@ h_count_cumulative <- function(x,
   assertthat::assert_that(
     is.numeric(x),
     is.numeric(threshold),
-    is.flag(lower_tail),
-    is.flag(include_eq),
-    is.flag(na.rm),
+    assertthat::is.flag(lower_tail),
+    assertthat::is.flag(include_eq),
+    assertthat::is.flag(na.rm),
     is.numeric(.N_col)
   )
 

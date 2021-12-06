@@ -67,7 +67,7 @@ combine_groups <- function(fct,
   assertthat::assert_that(
     (is.null(ref) || is_valid_character(ref)),
     is_character_or_factor(fct),
-    is.string(collapse)
+    assertthat::is.string(collapse)
   )
 
   fct <- as_factor_keep_attributes(fct)

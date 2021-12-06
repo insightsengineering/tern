@@ -80,7 +80,7 @@ s_count_abnormal_by_marked <- function(df,
                                        variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
 ) {
   assertthat::assert_that(
-    is.string(.var),
+    assertthat::is.string(.var),
     is.list(variables),
     is.list(category),
     all(names(category) %in% c("single", "last_replicated")),
@@ -205,7 +205,7 @@ count_abnormal_by_marked <- function(lyt,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
   assertthat::assert_that(
-    is.string(var)
+    assertthat::is.string(var)
   )
   afun <- make_afun(
     a_count_abnormal_by_marked,

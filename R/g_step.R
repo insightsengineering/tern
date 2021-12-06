@@ -140,7 +140,7 @@ g_step <- function(df,
                    ci_ribbon = list(fill = "lightblue", alpha = 0.5)) {
   assertthat::assert_that(
     tibble::is_tibble(df),
-    is.flag(use_percentile),
+    assertthat::is.flag(use_percentile),
     is_fully_named_list(est),
     is.null(ci_ribbon) || is_fully_named_list(ci_ribbon)
   )

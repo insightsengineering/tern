@@ -53,7 +53,7 @@ s_coxph_pairwise <- function(df,
                              control = control_coxph()) {
   assertthat::assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    is.string(.var),
+    assertthat::is.string(.var),
     is.numeric(df[[.var]]),
     is.logical(df[[is_event]])
   )

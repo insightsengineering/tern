@@ -136,8 +136,8 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
   ties <- match.arg(ties)
   assertthat::assert_that(
     is_proportion(conf_level),
-    is.flag(interaction),
-    is.flag(multivar)
+    assertthat::is.flag(interaction),
+    assertthat::is.flag(multivar)
   )
   list(
     pval_method = pval_method,
@@ -178,7 +178,7 @@ h_coxreg_multivar_extract <- function(var,
 
   assertthat::assert_that(
     class(mod) == "coxph",
-    is.string(var),
+    assertthat::is.string(var),
     is_df_with_variables(data, list(var = var))
   )
 

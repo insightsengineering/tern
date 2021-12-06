@@ -30,7 +30,7 @@ check_diff_prop_ci <- function(rsp,
     conf_level <= 1
   )
 
-  if (!is.null(correct)) assertthat::assert_that(is.flag(correct))
+  if (!is.null(correct)) assertthat::assert_that(assertthat::is.flag(correct))
 
   if (!is.null(strata)) assertthat::assert_that(is_equal_length(rsp, strata))
 

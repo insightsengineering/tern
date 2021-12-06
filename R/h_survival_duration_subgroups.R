@@ -199,7 +199,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
     is.numeric(tte),
     is.logical(is_event),
     is.factor(arm),
-    are_equal(nlevels(arm), 2),
+    assertthat::are_equal(nlevels(arm), 2),
     is_equal_length(tte, is_event, arm)
   )
 
@@ -210,13 +210,13 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
     if (is.data.frame(strata_data)) {
       strata_vars <- names(strata_data)
       assertthat::assert_that(
-        are_equal(nrow(strata_data), nrow(df_tte)),
+        assertthat::are_equal(nrow(strata_data), nrow(df_tte)),
         is_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
       )
     } else {
       assertthat::assert_that(
         is_valid_factor(strata_data),
-        are_equal(length(strata_data), nrow(df_tte))
+        assertthat::are_equal(length(strata_data), nrow(df_tte))
       )
       strata_vars <- "strata_data"
     }

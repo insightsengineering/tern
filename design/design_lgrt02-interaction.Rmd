@@ -125,8 +125,8 @@ h_odds_ratio_categorical_interaction <- function( #done, renamed to h_or_cat_int
   conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
   assertthat::assert_that(
-    is.string(odds_ratio_var),
-    is.string(interaction_var),
+    assertthat::is.string(odds_ratio_var),
+    assertthat::is.string(interaction_var),
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
     identical(length(interaction_vars), 2L)
   )
@@ -186,8 +186,8 @@ h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_int
   conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
   assertthat::assert_that(
-    is.string(odds_ratio_var),
-    is.string(interaction_var),
+    assertthat::is.string(odds_ratio_var),
+    assertthat::is.string(interaction_var),
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
     identical(length(interaction_vars), 2L),
     is.null(interaction_increments) || is_numeric_vector(interaction_increments)
@@ -340,7 +340,7 @@ We also need to adapt `glm_simple_term_extract` to return the right columns `is_
 glm_simple_term_extract <- function(x, fit_glm) { #done, renamed to h_glm_simple_term_extract
   assertthat::assert_that(
     "glm" %in% class(fit_glm),
-    is.string(x)
+    assertthat::is.string(x)
   )
   xs_class <- attr(fit_glm$terms, "dataClasses")
   xs_level <- fit_glm$xlevels
@@ -414,7 +414,7 @@ glm_interaction_extract <- function(x, fit_glm) { #done, renamed to h_glm_intera
   terms_name <- attr(terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   assertthat::assert_that(
-    is.string(x),
+    assertthat::is.string(x),
     # Only deal with one interaction term
     identical(x, terms_name[which(!terms_name %in% names(xs_class))])
   )

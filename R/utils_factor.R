@@ -57,8 +57,8 @@ as_factor_keep_attributes <- function(x,
                                       na_level = "<Missing>") {
   assertthat::assert_that(
     is.atomic(x),
-    is.string(x_name),
-    is.string(na_level)
+    assertthat::is.string(x_name),
+    assertthat::is.string(na_level)
   )
   if (is.factor(x)) {
     return(x)
@@ -177,7 +177,7 @@ cut_quantile_bins <- function(x,
     is_quantiles_vector(probs, include_boundaries = FALSE),
     is_character_vector(labels, min_length = length(probs) + 1, max_length = length(probs) + 1),
     !any(duplicated(labels)),
-    is.flag(ordered)
+    assertthat::is.flag(ordered)
   )
   if (all(is.na(x))) {
     # Early return if there are only NAs in input.

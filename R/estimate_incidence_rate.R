@@ -46,7 +46,7 @@ control_incidence_rate <- function(conf_level = 0.95,
   time_unit_input <- match.arg(time_unit_input)
   assertthat::assert_that(
     is_proportion(conf_level),
-    is.number(time_unit_output)
+    assertthat::is.number(time_unit_output)
   )
 
   list(
@@ -71,8 +71,8 @@ h_incidence_rate_normal <- function(person_years,
                                     alpha = 0.05) {
 
   assertthat::assert_that(
-    is.number(person_years),
-    is.number(n_events),
+    assertthat::is.number(person_years),
+    assertthat::is.number(n_events),
     is_proportion(alpha)
   )
 
@@ -97,8 +97,8 @@ h_incidence_rate_normal_log <- function(person_years,
                                         alpha = 0.05) {
 
   assertthat::assert_that(
-    is.number(person_years),
-    is.number(n_events),
+    assertthat::is.number(person_years),
+    assertthat::is.number(n_events),
     is_proportion(alpha)
   )
 
@@ -124,8 +124,8 @@ h_incidence_rate_exact <- function(person_years,
                                    alpha = 0.05) {
 
   assertthat::assert_that(
-    is.number(person_years),
-    is.number(n_events),
+    assertthat::is.number(person_years),
+    assertthat::is.number(n_events),
     is_proportion(alpha)
   )
 
@@ -149,8 +149,8 @@ h_incidence_rate_byar <- function(person_years,
                                   alpha = 0.05) {
 
   assertthat::assert_that(
-    is.number(person_years),
-    is.number(n_events),
+    assertthat::is.number(person_years),
+    assertthat::is.number(n_events),
     is_proportion(alpha)
   )
 
@@ -247,7 +247,7 @@ s_incidence_rate <- function(df,
     if (missing(n_events)) {
       assertthat::assert_that(
         is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-        is.string(.var),
+        assertthat::is.string(.var),
         is_numeric_vector(df[[.var]], min_length = 0),
         is_logical_vector(df[[is_event]], min_length = 0)
       )
@@ -258,7 +258,7 @@ s_incidence_rate <- function(df,
   } else {
     assertthat::assert_that(
       is_df_with_variables(df, list(tte = .var, n_events = n_events)),
-      is.string(.var),
+      assertthat::is.string(.var),
       is_numeric_vector(df[[.var]], min_length = 0),
       is_integer_vector(df[[n_events]], min_length = 0)
     )

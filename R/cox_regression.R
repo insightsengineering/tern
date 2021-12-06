@@ -109,7 +109,7 @@ h_coxreg_univar_formulas <- function(variables,
 
   assertthat::assert_that(
     is_variables(variables[c(arm_name, "event", "time")]),
-    is.flag(interaction),
+    assertthat::is.flag(interaction),
     (has_arm || (!interaction)),
     (!is.null(variables$covariates) || (!interaction))
   )
@@ -243,7 +243,7 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
   ties <- match.arg(ties)
   assertthat::assert_that(
     is_proportion(conf_level),
-    is.flag(interaction)
+    assertthat::is.flag(interaction)
   )
   list(
     pval_method = pval_method,
@@ -452,8 +452,8 @@ h_coxreg_univar_extract <- function(effect,
                                     mod,
                                     control = control_coxreg()) {
   assertthat::assert_that(
-    is.string(covar),
-    is.string(effect),
+    assertthat::is.string(covar),
+    assertthat::is.string(effect),
     class(mod) == "coxph"
   )
   test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]

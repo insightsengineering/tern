@@ -180,7 +180,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
   assertthat::assert_that(
     is_valid_factor(arm),
     is_equal_length(rsp, arm),
-    are_equal(nlevels(arm), 2)
+    assertthat::are_equal(nlevels(arm), 2)
   )
 
   df_rsp <- data.frame(
@@ -195,7 +195,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 
     assertthat::assert_that(
       is_valid_factor(strata_var),
-      are_equal(length(strata_var), nrow(df_rsp))
+      assertthat::are_equal(length(strata_var), nrow(df_rsp))
     )
 
     df_rsp[[strata_name]] <- strata_var

@@ -47,8 +47,8 @@ cfun_by_flag <- function(analysis_var,
                          flag_var,
                          format = "xx") {
   assertthat::assert_that(
-    is.string(analysis_var),
-    is.string(flag_var)
+    assertthat::is.string(analysis_var),
+    assertthat::is.string(flag_var)
   )
   function(df, labelstr) {
     row_index <- which(df[[flag_var]])
@@ -297,7 +297,7 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'
 append_varlabels <- function(lyt, df, vars, indent = 0L) {
 
-  if (is.flag(indent)) {
+  if (assertthat::is.flag(indent)) {
     warning("indent argument is now accepting integers. Boolean indent will be converted to integers.")
     indent <- as.integer(indent)
   }

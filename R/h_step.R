@@ -71,7 +71,7 @@ h_step_trt_effect <- function(data,
   assertthat::assert_that(
     is_df_with_variables(data, variables),
     is(model, "coxph") || is(model, "glm"),
-    is.number(x)
+    assertthat::is.number(x)
   )
   arm_lvls <- levels(data[[variables$arm]])
   assertthat::assert_that(

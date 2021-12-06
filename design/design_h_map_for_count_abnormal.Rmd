@@ -54,7 +54,7 @@ New assert functions.
 is_df_with_no_na_level <- function(df, variables, na_level) {
   assertthat::assert_that(
     is_df_with_variables(df, variables),
-    is.string(na_level)
+    assertthat::is.string(na_level)
   )
   !any(df[, unlist(variables)] == na_level)
 }

@@ -97,7 +97,7 @@ keep_content_rows <- function(content_row_condition) {
 #'}
 has_count_in_cols <- function(atleast, ...) {
   assertthat::assert_that(
-    is.count(atleast)
+    assertthat::is.count(atleast)
   )
   CombinationFunction(function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
@@ -121,7 +121,7 @@ has_count_in_cols <- function(atleast, ...) {
 #'}
 has_count_in_any_col <- function(atleast, ...) {
   assertthat::assert_that(
-    is.count(atleast)
+    assertthat::is.count(atleast)
   )
   CombinationFunction(function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
@@ -210,7 +210,7 @@ has_fractions_difference <- function(atleast, ...) {
 #'}
 has_counts_difference <- function(atleast, ...) {
   assertthat::assert_that(
-    is.count(atleast)
+    assertthat::is.count(atleast)
   )
   CombinationFunction(function(table_row) {
     counts <- h_row_counts(table_row, ...)

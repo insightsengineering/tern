@@ -42,8 +42,8 @@ NULL
 h_rsp_to_logistic_variables <- function(variables, biomarker) {
   assertthat::assert_that(
     is.list(variables),
-    is.string(variables$rsp),
-    is.string(biomarker)
+    assertthat::is.string(variables$rsp),
+    assertthat::is.string(biomarker)
   )
   list(
     response = variables$rsp,

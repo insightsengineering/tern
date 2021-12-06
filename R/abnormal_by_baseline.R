@@ -74,9 +74,9 @@ s_count_abnormal_by_baseline <- function(df,
                                          na_level = "<Missing>",
                                          variables = list(id = "USUBJID", baseline = "BNRIND")) {
   assertthat::assert_that(
-    is.string(.var),
-    is.string(abnormal),
-    is.string(na_level),
+    assertthat::is.string(.var),
+    assertthat::is.string(abnormal),
+    assertthat::is.string(na_level),
     is.list(variables),
     all(names(variables) %in% c("id", "baseline")),
     is_df_with_variables(df, c(range = .var, variables)),
@@ -191,7 +191,7 @@ count_abnormal_by_baseline <- function(lyt,
                                        .labels = NULL,
                                        .indent_mods = NULL) {
   assertthat::assert_that(
-    is.string(var),
+    assertthat::is.string(var),
     !is.null(names(abnormal)),
     is_equal_length(abnormal, table_names)
   )

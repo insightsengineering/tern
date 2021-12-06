@@ -165,7 +165,7 @@ has_percent_all <- function(above) {
   )
   new_condition(function(table_row, all_levels_index, ...) {
     assertthat::assert_that(
-      is.count(all_levels_index),
+      assertthat::is.count(all_levels_index),
       msg = "All levels column must be present to apply `has_percent_all` condition"
     )
     row_vals <- row_values(table_row)
@@ -184,11 +184,11 @@ Similarly, we can do the same for the count values.
 ```{r}
 has_count_all <- function(above) {
   assertthat::assert_that(
-    is.count(above)
+    assertthat::is.count(above)
   )
   new_condition(function(table_row, all_levels_index, ...) {
     assertthat::assert_that(
-      is.count(all_levels_index),
+      assertthat::is.count(all_levels_index),
       msg = "All levels column must be present to apply `has_counts_all` condition"
     )
     row_vals <- row_values(table_row)
@@ -230,7 +230,7 @@ And again the same can be done for counts.
 ```{r}
 has_count_difference <- function(above, arms) {
   assertthat::assert_that(
-    is.count(above),
+    assertthat::is.count(above),
     is.character(arms),
     length(arms) > 1
   )
@@ -257,7 +257,7 @@ Now we would like to specify minimum percentage or counts when looking at select
 ```{r}
 has_count_arms <- function(above, arms) {
   assertthat::assert_that(
-    is.count(above),
+    assertthat::is.count(above),
     is.character(arms)
   )
   new_condition(function(table_row, ...) {
@@ -408,7 +408,7 @@ s_count_grade_per_id_content <- function(
 
   assertthat::assert_that(
     is.data.frame(df),
-    is.string(.var)
+    assertthat::is.string(.var)
   )
 
   result <- s_count_grade_per_id(

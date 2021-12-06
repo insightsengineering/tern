@@ -136,9 +136,9 @@ is_df_with_nlevels_factor <- function(df,
                                       n_levels,
                                       relation = c("==", ">=")) {
   assertthat::assert_that(
-    is.string(variable),
+    assertthat::is.string(variable),
     is_df_with_factors(df, variables = list(factor = variable)),
-    is.count(n_levels)
+    assertthat::is.count(n_levels)
   )
   relation <- match.arg(relation)
   do.call(relation, list(x = nlevels(df[[variable]]), y = n_levels))
@@ -319,8 +319,8 @@ all_elements_in_ref <- function(x, ref) {
   assertthat::assert_that(
     is.vector(x),
     is.vector(ref),
-    not_empty(x),
-    not_empty(ref)
+    assertthat::not_empty(x),
+    assertthat::not_empty(ref)
   )
 
   all(x %in% ref)
@@ -369,7 +369,7 @@ assertthat::on_failure(has_tabletree_colnames) <- function(call, env) {
 is_df_with_no_na_level <- function(df, variables, na_level) {
   assertthat::assert_that(
     is_df_with_variables(df, variables),
-    is.string(na_level)
+    assertthat::is.string(na_level)
   )
   !any(df[, unlist(variables)] == na_level)
 }

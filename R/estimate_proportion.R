@@ -176,7 +176,7 @@ s_proportion <- function(x,
   assertthat::assert_that(
     conf_level >= 0,
     conf_level <= 1,
-    is.flag(long)
+    assertthat::is.flag(long)
   )
 
   rsp <- x

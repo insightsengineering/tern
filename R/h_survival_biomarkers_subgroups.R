@@ -52,9 +52,9 @@ NULL
 h_surv_to_coxreg_variables <- function(variables, biomarker) {
   assertthat::assert_that(
     is.list(variables),
-    is.string(variables$tte),
-    is.string(variables$is_event),
-    is.string(biomarker)
+    assertthat::is.string(variables$tte),
+    assertthat::is.string(variables$is_event),
+    assertthat::is.string(biomarker)
   )
   list(
     time = variables$tte,

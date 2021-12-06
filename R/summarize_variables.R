@@ -114,7 +114,7 @@ s_summary <- function(x,
                       control,
                       ...) {
   assertthat::assert_that(
-    is.flag(na.rm)
+    assertthat::is.flag(na.rm)
   )
   UseMethod("s_summary", x)
 }

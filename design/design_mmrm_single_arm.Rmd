@@ -333,7 +333,7 @@ fit_mmrm <- function(
   labels <- check_mmrm_vars(vars, data)
   assertthat::assert_that(
     is_proportion(conf_level),
-    is.flag(parallel)
+    assertthat::is.flag(parallel)
   )
   formula <- build_mmrm_formula(vars, cor_struct)
 

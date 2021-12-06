@@ -158,7 +158,7 @@ h_coxuniv_formulas <- function(variables,
   assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c("arm", "event", "time")]),
-    is.flag(interaction)
+    assertthat::is.flag(interaction)
   )
 
   ref <- paste(
@@ -214,7 +214,7 @@ control_coxuniv <- function(pval_method = c("wald", "likelihood"),
   ties <- match.arg(ties)
   assertthat::assert_that(
     is_proportion(conf_level),
-    is.flag(interaction)
+    assertthat::is.flag(interaction)
     )
 
   list(
@@ -242,7 +242,7 @@ h_coxuniv_extract <- function(mod,
                               effect = "armcd") {
   assertthat::assert_that(
     class(mod) == "coxph",
-    is.string(effect)
+    assertthat::is.string(effect)
   )
 
   mod_aov <- car::Anova(
