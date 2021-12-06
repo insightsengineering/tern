@@ -60,9 +60,9 @@ testthat::test_that("h_coxreg_univar_formulas creates formulas with strata", {
     )
   )
   expected <- c(
-    ref = "survival::Surv(time, status) ~ armcd + survival::strata(SITE)",
-    X = "survival::Surv(time, status) ~ armcd + X + survival::strata(SITE)",
-    y = "survival::Surv(time, status) ~ armcd + y + survival::strata(SITE)"
+    ref = "survival::Surv(time, status) ~ armcd + strata(SITE)",
+    X = "survival::Surv(time, status) ~ armcd + X + strata(SITE)",
+    y = "survival::Surv(time, status) ~ armcd + y + strata(SITE)"
   )
   testthat::expect_identical(result, expected)
 })
@@ -88,9 +88,9 @@ testthat::test_that("h_coxreg_univar_formulas creates formulas with interactions
     interaction = TRUE
   )
   expected <- c(
-    ref = "survival::Surv(time, status) ~ armcd + survival::strata(SITE)",
-    X = "survival::Surv(time, status) ~ armcd * X + survival::strata(SITE)",
-    y = "survival::Surv(time, status) ~ armcd * y + survival::strata(SITE)"
+    ref = "survival::Surv(time, status) ~ armcd + strata(SITE)",
+    X = "survival::Surv(time, status) ~ armcd * X + strata(SITE)",
+    y = "survival::Surv(time, status) ~ armcd * y + strata(SITE)"
   )
   testthat::expect_identical(result, expected)
 })
@@ -103,8 +103,8 @@ testthat::test_that("h_coxreg_univar_formulas creates formula without treatment 
     )
   )
   expected <- c(
-    X = "survival::Surv(time, status) ~ 1 + X + survival::strata(SITE)",
-    y = "survival::Surv(time, status) ~ 1 + y + survival::strata(SITE)"
+    X = "survival::Surv(time, status) ~ 1 + X + strata(SITE)",
+    y = "survival::Surv(time, status) ~ 1 + y + strata(SITE)"
   )
   testthat::expect_identical(result, expected)
 })
@@ -137,9 +137,9 @@ testthat::test_that("h_coxreg_univar_formulas creates formulas with multiple str
     )
   )
   expected <- c(
-    ref = "survival::Surv(time, status) ~ armcd + survival::strata(SITE, COUNTRY)",
-    X = "survival::Surv(time, status) ~ armcd + X + survival::strata(SITE, COUNTRY)",
-    y = "survival::Surv(time, status) ~ armcd + y + survival::strata(SITE, COUNTRY)"
+    ref = "survival::Surv(time, status) ~ armcd + strata(SITE, COUNTRY)",
+    X = "survival::Surv(time, status) ~ armcd + X + strata(SITE, COUNTRY)",
+    y = "survival::Surv(time, status) ~ armcd + y + strata(SITE, COUNTRY)"
   )
   testthat::expect_identical(result, expected)
 })
@@ -211,7 +211,7 @@ testthat::test_that("h_coxreg_multivar_formula creates formulas with a strata", 
       strata = "SITE"
     )
   )
-  expected <- "survival::Surv(time, status) ~ armcd + X + y + survival::strata(SITE)"
+  expected <- "survival::Surv(time, status) ~ armcd + X + y + strata(SITE)"
   testthat::expect_identical(result, expected)
 })
 
@@ -222,7 +222,7 @@ testthat::test_that("h_coxreg_multivar_formula creates formulas with multiple st
       strata = c("SITE", "COUNTRY")
     )
   )
-  expected <- "survival::Surv(time, status) ~ armcd + X + y + survival::strata(SITE, COUNTRY)"
+  expected <- "survival::Surv(time, status) ~ armcd + X + y + strata(SITE, COUNTRY)"
   testthat::expect_identical(result, expected)
 })
 
@@ -253,7 +253,7 @@ testthat::test_that("h_coxreg_multivar_formula creates formulas with multiple st
       strata = c("SITE", "COUNTRY")
     )
   )
-  expected <- "survival::Surv(time, status) ~ 1 + X + y + survival::strata(SITE, COUNTRY)"
+  expected <- "survival::Surv(time, status) ~ 1 + X + y + strata(SITE, COUNTRY)"
   testthat::expect_identical(result, expected)
 })
 

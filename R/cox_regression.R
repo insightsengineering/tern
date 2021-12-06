@@ -122,7 +122,7 @@ h_coxreg_univar_formulas <- function(variables,
     variables$covariates,
     ifelse(
       !is.null(variables$strata),
-      paste0(" + survival::strata(", paste0(variables$strata, collapse = ", "), ")"),
+      paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
       ""
     )
   )
@@ -137,7 +137,7 @@ h_coxreg_univar_formulas <- function(variables,
       ifelse(
         !is.null(variables$strata),
         paste0(
-          " + survival::strata(", paste0(variables$strata, collapse = ", "), ")"
+          " + strata(", paste0(variables$strata, collapse = ", "), ")"
         ),
         ""
       )
@@ -208,7 +208,7 @@ h_coxreg_multivar_formula <- function(variables) {
     y <- paste(y, paste(variables$covariates, collapse = " + "), sep = " + ")
   }
   if (!is.null(variables$strata)) {
-    y <- paste0(y, " + survival::strata(", paste0(variables$strata, collapse = ", "), ")")
+    y <- paste0(y, " + strata(", paste0(variables$strata, collapse = ", "), ")")
   }
   y
 }
