@@ -348,7 +348,7 @@ testthat::test_that("fit_lme4_single_optimizer correctly captures warnings and m
   )
   expect_s4_class(result, "lmerModLmerTest")
   expect_identical(attr(result, "optimizer"), "nloptwrap_bobyqa")
-  expect_gt(length(attr(result, "messages")), 0)
+  testthat::expect_gt(length(attr(result, "messages")), 0)
 })
 
 testthat::test_that("fit_lme4_single_optimizer fails when there is an error", {
@@ -388,8 +388,8 @@ testthat::test_that("refit_lme4_all_optimizers fails when no optimizer succeeds"
     data = lme4::sleepstudy,
     optimizer = "nloptwrap_bobyqa"
   )
-  expect_gt(length(attr(original_fit, "messages")), 0)
-  expect_error(
+  testthat::expect_gt(length(attr(original_fit, "messages")), 0)
+  testthat::expect_error(
     refit_lme4_all_optimizers(original_fit),
     "No optimizer led to a successful model fit"
   )
