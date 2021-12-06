@@ -84,7 +84,7 @@ with the new Analyze Function summarize_vars()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9007</span>
       </span>
     </div>
 
@@ -114,30 +114,6 @@ with the new Analyze Function summarize_vars()." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../pre-release/index.html">pre-release</a></li>
-   <li><a href="../v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -391,6 +367,11 @@ to avoid warnings from <code>rtables</code>.</p></td>
 <li><p><code>quantiles</code>: two sample quantiles of <code>x</code> (from <code><a href='https://rdrr.io/r/stats/quantile.html'>quantile()</a></code>).</p></li>
 <li><p><code>iqr</code>: the <code><a href='https://rdrr.io/r/stats/IQR.html'>IQR()</a></code> of <code>x</code>.</p></li>
 <li><p><code>range</code>: the <code><a href='range_noinf.html'>range_noinf()</a></code> of <code>x</code>.</p></li>
+<li><p><code>min</code>: the <code><a href='https://rdrr.io/r/base/Extremes.html'>max()</a></code> of <code>x</code>.</p></li>
+<li><p><code>max</code>: the <code><a href='https://rdrr.io/r/base/Extremes.html'>min()</a></code> of <code>x</code>.</p></li>
+<li><p><code>cv</code>: the coefficient of variation of <code>x</code>, i.e.: (<code>sd()/mean()*100</code>).</p></li>
+<li><p><code>geom_mean</code>: the geometric mean of <code>x</code>, i.e.: (<code>exp(mean(log(x)))</code>).</p></li>
+<li><p><code>geom_cv</code>: the geometric coefficient of variation of <code>x</code>, i.e.: (<code>sqrt(exp(sd(log(x))^2) - 1)*100</code>).</p></li>
 </ul>
 
 <p>If <code>x</code> is of class <code>factor</code> or converted from <code>character</code>, returns a list with
@@ -541,6 +522,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  NA  NA </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       NaN </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Management of NA values.</span></span>
 <span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA_real_</span>, <span class='fl'>1</span><span class='op'>)</span></span>
@@ -609,6 +610,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   1   1 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-in'><span class='fu'>s_summary</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $n</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> n </span>
@@ -673,6 +694,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $range</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  NA  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      NA </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA_real_</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span></span>
@@ -741,6 +782,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   1   2 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 47.14045 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1.414214 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 52.10922 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Benefits in `rtables` contructions:</span></span>
 <span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/roche/rtables'>rtables</a></span><span class='op'>)</span></span>
@@ -772,6 +833,11 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                  1, 2                   3, 3                     NA                 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   iqr                                1                      0                      NA                 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   range                            1, 2                   3, 3                     NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   min                                1                      3                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   max                                2                      3                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   cv                         47.1404520791032              NA                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   geom_mean                  1.41421356237309               3                      NA                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   geom_cv                    52.1092246837487              NA                      NA                 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> b                                                                                                     </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   n                                  0                      1                      2                  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   mean                              NA                      4                     5.5                 </span>
@@ -786,6 +852,11 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                   NA                    4, 4                    5, 6                </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   iqr                               NA                      0                      1                  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   range                             NA                    4, 4                    5, 6                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   min                               NA                      4                      5                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   max                               NA                      4                      6                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   cv                                NA                     NA               12.8564869306645          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   geom_mean                         NA                      4               5.47722557505166          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   geom_cv                           NA                     NA               12.945835316564           </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## By comparison with `lapply`:</span></span>
 <span class='r-in'><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span><span class='op'>(</span><span class='va'>dta_test</span>, f <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span><span class='op'>(</span><span class='va'>dta_test</span>, <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>Group</span>, <span class='va'>sub_group</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
@@ -855,6 +926,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   1   2 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 47.14045 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1.414214 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.a$geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 52.10922 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$n</span>
@@ -920,6 +1011,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$range</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   3   3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.a$geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      NA </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a</span>
@@ -987,6 +1098,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  NA  NA </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       NaN </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.a$geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$n</span>
@@ -1052,6 +1183,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$range</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  NA  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       NaN </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A.b$geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      NA </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b</span>
@@ -1119,6 +1270,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   4   4 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B.b$geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$n</span>
@@ -1184,6 +1355,26 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$range</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   5   6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12.85649 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  5.477226 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C.b$geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12.94584 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-in'></span>
@@ -1463,22 +1654,29 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># `a_summary.numeric`</span></span>
 <span class='r-in'><span class='fu'>a_summary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>, .N_col <span class='op'>=</span> <span class='fl'>10</span>, .N_row <span class='op'>=</span> <span class='fl'>20</span>, .var <span class='op'>=</span> <span class='st'>"bla"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     row_name formatted_cell indent_mod                 row_label</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1          n             10          0                         n</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       mean            0.1          0                      Mean</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         sd              1          0                        SD</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4    mean_sd        0.1 (1)          0                 Mean (SD)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    mean_ci  (-0.63, 0.86)          0               Mean 95% CI</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   mean_sei  (-0.22, 0.44)          0             Mean -/+ 1xSE</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 7   mean_sdi  (-0.93, 1.16)          0             Mean -/+ 1xSD</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 8     median            0.2          0                    Median</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 9        mad              0          0 Median Absolute Deviation</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 median_ci  (-0.62, 1.12)          0             Median 95% CI</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 quantiles     -0.3 - 0.7          0           25% and 75%-ile</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 12       iqr              1          0                       IQR</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 13     range     -2.2 - 1.5          0                 Min - Max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     row_name   formatted_cell indent_mod                 row_label</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1          n               10          0                         n</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       mean              0.1          0                      Mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         sd                1          0                        SD</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4    mean_sd          0.1 (1)          0                 Mean (SD)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    mean_ci    (-0.63, 0.86)          0               Mean 95% CI</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   mean_sei    (-0.22, 0.44)          0             Mean -/+ 1xSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7   mean_sdi    (-0.93, 1.16)          0             Mean -/+ 1xSD</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8     median              0.2          0                    Median</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9        mad                0          0 Median Absolute Deviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 median_ci    (-0.62, 1.12)          0             Median 95% CI</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 quantiles       -0.3 - 0.7          0           25% and 75%-ile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12       iqr                1          0                       IQR</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13     range       -2.2 - 1.5          0                 Min - Max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14       min             -2.2          0                   Minimum</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15       max 1.51178116845085          0                   Maximum</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16        cv            918.5          0                    CV (%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17 geom_mean              NaN          0            Geometric Mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18   geom_cv             &lt;NA&gt;          0              CV Geometric</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># `a_summary.factor`</span></span>
 <span class='r-in'><span class='co'># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span>
@@ -1568,6 +1766,11 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                  6 - 9         3 - 3     NA - NA </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   IQR                                3             0          NA   </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max                        6 - 9         3 - 3     NA - NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   CV (%)                           28.3            NA         NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Minimum                            6             3          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Maximum                            9             3          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Geometric Mean                    7.3            3         NaN   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   CV Geometric                     29.3            NA         NA   </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> V2                                                                 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   n                                  2             1          0    </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean                              6.5            2          NA   </span>
@@ -1582,6 +1785,11 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                  5 - 8         2 - 2     NA - NA </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   IQR                                3             0          NA   </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max                        5 - 8         2 - 2     NA - NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   CV (%)                           32.6            NA         NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Minimum                            5             2          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Maximum                            8             2          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Geometric Mean                    6.3            2         NaN   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   CV Geometric                     34.2            NA         NA   </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> V3                                                                 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   n                                  2             1          0    </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean                              5.5            1          NA   </span>
@@ -1596,6 +1804,11 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   25% and 75%-ile                  4 - 7         1 - 1     NA - NA </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   IQR                                3             0          NA   </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Min - Max                        4 - 7         1 - 1     NA - NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   CV (%)                           38.6            NA         NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Minimum                            4             1          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Maximum                            7             1          NA   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Geometric Mean                    5.3            1         NaN   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   CV Geometric                     41.2            NA         NA   </span>
 <span class='r-in'></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># `summarize_vars()` in rtables pipelines</span></span>

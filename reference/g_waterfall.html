@@ -83,7 +83,7 @@ markup." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9007</span>
       </span>
     </div>
 
@@ -113,30 +113,6 @@ markup." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../pre-release/index.html">pre-release</a></li>
-   <li><a href="../v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -250,7 +226,7 @@ Text to be displayed as plot title.</p></td>
 <span class='r-in'><span class='va'>ADRS_f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>ADRS_f</span>, <span class='fl'>30</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ADRS_f</span> <span class='op'>&lt;-</span> <span class='va'>ADRS_f</span><span class='op'>[</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/duplicated.html'>duplicated</a></span><span class='op'>(</span><span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>USUBJID</span><span class='op'>)</span>,<span class='op'>]</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>ADRS_f</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 5 × 49</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 5 × 50</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   STUDYID USUBJID   SUBJID SITEID   AGE SEX   RACE    COUNTRY DTHFL INVID INVNAM</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> AB12345 AB12345-… id-105 BRA-1     38 M     BLACK … BRA     N     INV … Dr. B…</span>
@@ -258,13 +234,13 @@ Text to be displayed as plot title.</p></td>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> AB12345 AB12345-… id-141 BRA-1     35 F     WHITE   BRA     N     INV … Dr. B…</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> AB12345 AB12345-… id-236 BRA-1     32 M     BLACK … BRA     N     INV … Dr. B…</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> AB12345 AB12345-… id-265 BRA-1     25 M     WHITE   BRA     N     INV … Dr. B…</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 38 more variables: ARM &lt;fct&gt;, ARMCD &lt;fct&gt;, ACTARM &lt;fct&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 39 more variables: ARM &lt;fct&gt;, ARMCD &lt;fct&gt;, ACTARM &lt;fct&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   ACTARMCD &lt;fct&gt;, REGION1 &lt;fct&gt;, STRATA1 &lt;fct&gt;, STRATA2 &lt;fct&gt;, BMRKR1 &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   BMRKR2 &lt;fct&gt;, ITTFL &lt;fct&gt;, SAFFL &lt;fct&gt;, BMEASIFL &lt;fct&gt;, BEP01FL &lt;fct&gt;,</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   RANDDT &lt;date&gt;, TRTSDTM &lt;dttm&gt;, TRTEDTM &lt;dttm&gt;, EOSSTT &lt;fct&gt;, EOSDT &lt;date&gt;,</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   EOSDY &lt;int&gt;, DCSREAS &lt;fct&gt;, DTHDT &lt;date&gt;, DTHCAUS &lt;fct&gt;, DTHCAT &lt;fct&gt;,</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   LDDTHELD &lt;int&gt;, LDDTHGR1 &lt;fct&gt;, LSTALVDT &lt;date&gt;, study_duration_secs &lt;dbl&gt;,</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   ASEQ &lt;int&gt;, RSSEQ &lt;int&gt;, PARAM &lt;fct&gt;, PARAMCD &lt;fct&gt;, AVAL &lt;int&gt;, …</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   RANDDT &lt;date&gt;, TRTSDTM &lt;dttm&gt;, TRTEDTM &lt;dttm&gt;, EOSSTT &lt;fct&gt;, EOTSTT &lt;fct&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   EOSDT &lt;date&gt;, EOSDY &lt;int&gt;, DCSREAS &lt;fct&gt;, DTHDT &lt;date&gt;, DTHCAUS &lt;fct&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   DTHCAT &lt;fct&gt;, LDDTHELD &lt;int&gt;, LDDTHGR1 &lt;fct&gt;, LSTALVDT &lt;date&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   study_duration_secs &lt;dbl&gt;, ASEQ &lt;int&gt;, RSSEQ &lt;int&gt;, PARAM &lt;fct&gt;, …</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'>g_waterfall</span><span class='op'>(</span></span>
 <span class='r-in'>  height <span class='op'>=</span> <span class='va'>ADRS_f</span><span class='op'>$</span><span class='va'>pchg</span>,</span>

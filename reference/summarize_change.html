@@ -85,7 +85,7 @@ or the change from baseline values (post-baseline) are then summarized." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9007</span>
       </span>
     </div>
 
@@ -115,30 +115,6 @@ or the change from baseline values (post-baseline) are then summarized." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../pre-release/index.html">pre-release</a></li>
-   <li><a href="../v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -337,6 +313,26 @@ an error will be thrown.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> min max </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   4   6 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cv.sd </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    20 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> geom_mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  4.932424 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $geom_cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  geom_cv </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 20.51865 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'>a_change_from_baseline</span><span class='op'>(</span></span>
 <span class='r-in'>  <span class='va'>df</span>,</span>
@@ -359,6 +355,11 @@ an error will be thrown.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 11 quantiles                               4, 6          0 25% and 75%-ile</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 12       iqr                                  2          0             iqr</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 13     range                              4 - 6          0       Min - Max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14       min                                  4          0             min</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15       max                                  6          0             max</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16        cv                                 20          0              cv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17 geom_mean                   4.93242414866094          0       geom_mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18   geom_cv                   20.5186527600433          0         geom_cv</span>
 <span class='r-in'></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># `summarize_change()`</span></span>
@@ -385,6 +386,14 @@ an error will be thrown.</p>
 <span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>summarize_change</span><span class='op'>(</span><span class='st'>"CHG"</span>, variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>value <span class='op'>=</span> <span class='st'>"AVAL"</span>, baseline_flag <span class='op'>=</span> <span class='st'>"ABLFLL"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>dta_test</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span class='r-in'><span class='fu'><a href='https://roche.github.io/rtables/reference/Viewer.html'>Viewer</a></span><span class='op'>(</span><span class='va'>results</span><span class='op'>)</span></span>
