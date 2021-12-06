@@ -64,13 +64,13 @@ adsl <- radsl(cached = TRUE)
 adqs <- radqs(cached = TRUE)
 
 adqs_single <- adqs %>%
-  filter(
+  dplyr::filter(
     AVISIT == "WEEK 1 DAY 8",  # single time point
     PARAMCD == "FKSI-FWB"  # single end point
   ) %>%
-  mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
+  dplyr::mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
 
-adqs_multi <- filter(adqs, AVISIT == "WEEK 1 DAY 8")
+adqs_multi <- dplyr::filter(adqs, AVISIT == "WEEK 1 DAY 8")
 ```
 
 Design

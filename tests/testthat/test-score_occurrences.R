@@ -14,8 +14,8 @@ get_df_ae <- function() {
     AEDECOD = sample(c("AEPT1", "AEPT2", "AEPT3"), 20, replace = TRUE),
     AESUPSYS = sample(c("AESS1", "AESS2"), 20, replace = TRUE)
   )
-  dfae <- dfae %>% arrange(USUBJID, AEBODSYS, AEDECOD) #nolint
-  dfae <- left_join(dfae, dfsl, by = "USUBJID")
+  dfae <- dfae %>% dplyr::arrange(USUBJID, AEBODSYS, AEDECOD) #nolint
+  dfae <- dplyr::left_join(dfae, dfsl, by = "USUBJID")
   structure(
     dfae,
     dfsl = dfsl

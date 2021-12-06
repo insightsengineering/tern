@@ -92,12 +92,12 @@ library(dplyr)
 
 ADTTE <- synthetic_cdisc_data("latest")$adtte
 ADTTE_f <- ADTTE \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  mutate(
+  dplyr::filter(PARAMCD == "OS") \%>\%
+  dplyr::mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
-df <- ADTTE_f \%>\% filter(ARMCD == "ARM A")
+df <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM A")
 s_surv_time(df, .var = "AVAL", is_event = "is_event")
 
 a_surv_time(df, .var = "AVAL", is_event = "is_event")

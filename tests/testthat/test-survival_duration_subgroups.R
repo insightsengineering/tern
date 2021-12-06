@@ -365,7 +365,7 @@ test_that("tabulate_survival_subgroups functions as expected with extreme values
 
   adtte <- adtte %>%
     preprocess_adtte() %>%
-    slice(1:30) %>%
+    dplyr::slice(1:30) %>%
     reapply_varlabels(var_labels(adtte))
 
   df <- expect_warning(extract_survival_subgroups(

@@ -76,8 +76,8 @@ test_that("s_incidence_rate works as expected with healthy input", {
     AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
     ARM = factor(c("A", "A", "A", "B", "B", "B"))
   ) %>%
-    mutate(is_event = CNSR == 0) %>%
-    mutate(n_events = as.integer(is_event))
+    dplyr::mutate(is_event = CNSR == 0) %>%
+    dplyr::mutate(n_events = as.integer(is_event))
   result <- s_incidence_rate(
     df,
     .var = "AVAL",
@@ -107,8 +107,8 @@ test_that("estimate_incidence_rate works as expected with healthy input", {
     AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
     ARM = factor(c("A", "A", "A", "B", "B", "B"))
   ) %>%
-    mutate(is_event = CNSR == 0) %>%
-    mutate(n_events = as.integer(is_event))
+    dplyr::mutate(is_event = CNSR == 0) %>%
+    dplyr::mutate(n_events = as.integer(is_event))
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%

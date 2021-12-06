@@ -38,18 +38,18 @@ adhy <- haven::read_sas(data_file = "adhy.sas7bdat")
 adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
 
 # Used for population N's shown in table header.
-adsl <- adsl %>% filter(SAFFL == "Y")
+adsl <- adsl %>% dplyr::filter(SAFFL == "Y")
 
 # Select LBT10_BL parameters
 anl <- adhy %>%
-  filter(SAFFL == "Y") %>%
-  filter(PARAMCD %in% c("BL2AL2CB", "BL2AS2CB", "BG2AL2CB", "BG2AS2CB",
+  dplyr::filter(SAFFL == "Y") %>%
+  dplyr::filter(PARAMCD %in% c("BL2AL2CB", "BL2AS2CB", "BG2AL2CB", "BG2AS2CB",
                         "B2A2L2CB", "B2A2S2CB", "B2A5L2CB", "B2A5S2CB"))
 
 # Create TBILI_CAT - this is needed so we get the right nesting in the table.
 anl <- anl %>%
-  mutate(
-    TBILI_CAT = factor(case_when(
+  dplyr::mutate(
+    TBILI_CAT = factor(dplyr::case_when(
       PARAMCD %in% c("BL2AL2CB", "BL2AS2CB") ~ "Total Bilirubin <= 2xULN",
       PARAMCD %in% c("BG2AL2CB", "BG2AS2CB") ~ "Total Bilirubin > 2xULN",
       PARAMCD %in% c("B2A2L2CB", "B2A2S2CB") ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 2xULN",
@@ -59,8 +59,8 @@ anl <- anl %>%
 
 # Create ALTAST_IND - this will be the labels for the ALT/AST categories displayed in the table.
 anl <- anl %>%
-  mutate(
-    ALTAST_IND = factor(case_when(
+  dplyr::mutate(
+    ALTAST_IND = factor(dplyr::case_when(
       PARAMCD %in% c("BL2AL2CB", "BG2AL2CB", "B2A2L2CB", "B2A5L2CB") & AVALC == "Y" ~ "ALT >3xULN at 2 Visits",
       PARAMCD %in% c("BL2AS2CB", "BG2AS2CB", "B2A2S2CB", "B2A5S2CB") & AVALC == "Y" ~ "AST >3xULN at 2 Visits",
       TRUE ~ "Criteria not met"

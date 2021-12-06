@@ -592,7 +592,7 @@ test_that("`summarize_vars` works with empty named numeric variables", {
     foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
     boo = 1:6
   )
-  dta <- dta %>% filter(foo != "a")
+  dta <- dta %>% dplyr::filter(foo != "a")
   names(dta$boo) <- dta$foo
 
   result <- basic_table() %>%

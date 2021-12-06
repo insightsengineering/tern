@@ -36,8 +36,8 @@ library(scda)
 library(dplyr)
 
 adtte <- synthetic_cdisc_data("latest")$adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  mutate(is_event = CNSR == 0)
+  dplyr::filter(PARAMCD == "OS") \%>\%
+  dplyr::mutate(is_event = CNSR == 0)
 
 tern:::h_tbl_coxph_pairwise(
   df = adtte,

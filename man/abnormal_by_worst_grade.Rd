@@ -117,9 +117,9 @@ adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 
 # Here starts the real pre-processing.
 adlb_f <- adlb \%>\%
-  filter(!AVISIT \%in\% c("SCREENING", "BASELINE")) \%>\%
-  mutate(
-    GRADE_DIR = factor(case_when(
+  dplyr::filter(!AVISIT \%in\% c("SCREENING", "BASELINE")) \%>\%
+  dplyr::mutate(
+    GRADE_DIR = factor(dplyr::case_when(
      ATOXGR \%in\% c("-1", "-2", "-3", "-4") ~ "LOW",
      ATOXGR == "0" ~ "ZERO",
      ATOXGR \%in\% c("1", "2", "3", "4") ~ "HIGH"),
@@ -130,10 +130,10 @@ adlb_f <- adlb \%>\%
        c("0", "1", "2", "3", "4")
      )
    ) \%>\%
-  filter(WGRLOFL == "Y" | WGRHIFL == "Y") \%>\%
+  dplyr::filter(WGRLOFL == "Y" | WGRHIFL == "Y") \%>\%
   droplevels()
 
-adlb_f_alt <- adlb_f \%>\% filter(PARAMCD == "ALT") \%>\% droplevels()
+adlb_f_alt <- adlb_f \%>\% dplyr::filter(PARAMCD == "ALT") \%>\% droplevels()
 full_parent_df <- list(adlb_f_alt, "not_needed")
 cur_col_subset <- list(rep(TRUE, nrow(adlb_f_alt)), "not_needed")
 
@@ -161,7 +161,7 @@ afun(df = adlb_f_alt, .spl_context = spl_context)
 map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) \%>\%
  lapply(as.character) \%>\%
  as.data.frame() \%>\%
- arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
+ dplyr::arrange(PARAM, dplyr::desc(GRADE_DIR), GRADE_ANL)
 
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%

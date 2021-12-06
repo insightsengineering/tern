@@ -27,11 +27,11 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' adtte_f <- adtte %>%
-#'   filter(
+#'   dplyr::filter(
 #'     PARAMCD == "OS",
 #'     ARM %in% c("B: Placebo", "A: Drug X")
 #'   ) %>%
-#'   mutate(
+#'   dplyr::mutate(
 #'     # Reorder levels of ARM to display reference arm before treatment arm.
 #'     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
 #'     is_event = CNSR == 0

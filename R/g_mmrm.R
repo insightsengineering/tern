@@ -40,10 +40,10 @@ NULL
 #' adsl <- synthetic_cdisc_data("latest")$adsl
 #' adqs <- synthetic_cdisc_data("latest")$adqs
 #' adqs_f <- adqs %>%
-#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%
-#'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-#'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
@@ -197,10 +197,10 @@ g_mmrm_diagnostic <- function(
 #' adsl <- synthetic_cdisc_data("latest")$adsl
 #' adqs <- synthetic_cdisc_data("latest")$adqs
 #' adqs_f <- adqs %>%
-#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%
-#'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-#'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #' var_labels(adqs_f) <- var_labels(adqs)
 #'
 #' mmrm_results <- fit_mmrm(
@@ -226,7 +226,7 @@ g_mmrm_diagnostic <- function(
 #' )
 #'
 #'adqs_f2 <- adqs_f %>%
-#'  filter(ARMCD == "ARM A")
+#'  dplyr::filter(ARMCD == "ARM A")
 #'
 #'mmrm_results_no_arm <- fit_mmrm(
 #'   vars = list(

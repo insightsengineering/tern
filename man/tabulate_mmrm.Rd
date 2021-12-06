@@ -117,7 +117,7 @@ library(dplyr)
 library(lme4)
 
 dat <- sleepstudy \%>\%
-  mutate(
+  dplyr::mutate(
     group = factor(rep(c("A", "B"), length = nrow(sleepstudy))),
     days_grouped = cut(
       Days,
@@ -162,7 +162,7 @@ s_mmrm_lsmeans_single(df_no_arm[4, ])
 
 
 dat_adsl <- dat \%>\%
-  select(Subject, group) \%>\%
+  dplyr::select(Subject, group) \%>\%
   unique
 basic_table() \%>\%
   split_cols_by("group", ref_group = result$ref_level) \%>\%

@@ -151,8 +151,8 @@ library(survival)
 library(grid)
 
 df <- synthetic_cdisc_data("latest")$adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  mutate(is_event = CNSR == 0)
+  dplyr::filter(PARAMCD == "OS") \%>\%
+  dplyr::mutate(is_event = CNSR == 0)
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 # 1. Example - basic option
 

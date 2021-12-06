@@ -48,7 +48,7 @@ adcm <- radcm(cached = TRUE)
 
 # Update ADCM to follow structure with WHODrug treatment coding.
 adcm_path1 <- adcm %>%
-  mutate(
+  dplyr::mutate(
     ATC1 = paste0("ATCCLAS1 ", substr(CMDECOD,  9, 9)),
     ATC2 = paste0("ATCCLAS2 ", substr(CMDECOD,  9, 9)),
     ATC3 = paste0("ATCCLAS3 ", substr(CMDECOD,  9, 9)),
@@ -56,8 +56,8 @@ adcm_path1 <- adcm %>%
   )
 
 adcm_path2 <- adcm_path1 %>%
-  filter(CMDECOD %in% c("medname A_1/3", "medname B_2/4", "medname B_3/4", "medname C_1/2")) %>%
-  mutate(
+  dplyr::filter(CMDECOD %in% c("medname A_1/3", "medname B_2/4", "medname B_3/4", "medname C_1/2")) %>%
+  dplyr::mutate(
     ATC1 = paste(ATC1, "p2"),
     ATC2 = paste(ATC2, "p2"),
     ATC3 = paste(ATC3, "p2"),
@@ -65,8 +65,8 @@ adcm_path2 <- adcm_path1 %>%
   )
 
 adcm_path3 <- adcm_path2 %>%
-  filter(CMDECOD %in% c("medname B_2/4", "medname C_1/2")) %>%
-  mutate(
+  dplyr::filter(CMDECOD %in% c("medname B_2/4", "medname C_1/2")) %>%
+  dplyr::mutate(
     ATC1 = paste(ATC1, "p3"),
     ATC2 = paste(ATC2, "p3"),
     ATC3 = paste(ATC3, "p3"),
@@ -82,8 +82,8 @@ adcm <- rbind(
  
 # Process VAD based on keys and keep only one treatment path per CMDECOD.
 adcm <- adcm %>%
-  group_by(STUDYID, USUBJID, CMDECOD) %>%
-  slice(1) %>%
+  dplyr::group_by(STUDYID, USUBJID, CMDECOD) %>%
+  dplyr::slice(1) %>%
   ungroup
 ```
 

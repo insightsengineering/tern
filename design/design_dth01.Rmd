@@ -62,7 +62,7 @@ adsl$DTHCAT <- factor(adsl$DTHCAT, level = c("ADVERSE EVENT", "PROGRESSIVE DISEA
 
 #Create DTHCAUS with reasons for "Other" specified.
 #Death flag variable (Y or N)
-adsl <- adsl %>% mutate(DTHCAUS = ifelse(!is.na(DTHCAT) & DTHCAT == "OTHER",
+adsl <- adsl %>% dplyr::mutate(DTHCAUS = ifelse(!is.na(DTHCAT) & DTHCAT == "OTHER",
                                           sample(
                                             x = c(
                                               "Post-study reporting of death",
@@ -215,7 +215,7 @@ tbl3
 #preprocessing steps
 l <- levels(adsl[adsl$dthcat == "OTHER", ]$DTHCAUS)
 adsl <- adsl %>%
-  mutate(DTHCAUS_other = ifelse(
+  dplyr::mutate(DTHCAUS_other = ifelse(
     DTHCAT == "OTHER" & DTHCAUS != "Post-study reporting of death",
     as.character(DTHCAUS), NA)
   )

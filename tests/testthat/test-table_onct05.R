@@ -60,7 +60,7 @@ test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly",
     preprocess_adrs(n_records = 200)
 
   adrs <- adrs %>%
-    mutate(
+    dplyr::mutate(
       # Reorder levels of SEX.
       SEX = forcats::fct_relevel(SEX, "M", "F"),
       # Reorder levels of STRATA1 by frequency.
@@ -133,7 +133,7 @@ test_that("ONCT05 variant 4 (setting values indicating response) is produced cor
   # Define new criteria for responder.
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200) %>%
-    mutate(
+    dplyr::mutate(
       new_rsp = AVALC %in% c("CR", "PR")
     )
 

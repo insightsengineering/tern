@@ -44,17 +44,17 @@ adeg <- radeg(cached = TRUE)
 adeg_labels <- var_labels(adeg)
 
 adeg_f <- adeg %>%
-  filter(PARAMCD == "QT" & # Filtering QT Duration
+  dplyr::filter(PARAMCD == "QT" & # Filtering QT Duration
            ANL01FL == "Y"  # "Analysis Flag 01 Baseline Post-Baseline"
          ) %>%
   # Categorize AVAL and CHG
-  mutate(
-    AVALCAT1 = case_when(
+  dplyr::mutate(
+    AVALCAT1 = dplyr::case_when(
       AVAL <= 450 ~ "<=450 msec",
       AVAL <= 480 ~ ">450 to <=480 msec",
       AVAL <= 500 ~ ">480 to <= 500 msec",
       AVAL > 500 ~ ">500 msec"),
-    CHGCAT1 = case_when(
+    CHGCAT1 = dplyr::case_when(
       CHG <= 30 ~ "<=30 msec",
       CHG <= 60 ~ ">30 to <=60 msec",
       CHG > 60 ~ ">60 msec")

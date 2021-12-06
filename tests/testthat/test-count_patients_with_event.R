@@ -137,7 +137,7 @@ test_that("count_patients_with_flags works as expected", {
     AEOUT = c("", "", "", "", "", "", "FATAL", "", "FATAL")
   )
   test_data <- test_data %>%
-    mutate(
+    dplyr::mutate(
       flag1 = TRTEMFL == "Y",
       flag2 = TRTEMFL == "Y" & AEOUT == "FATAL",
     ) %>%
@@ -188,7 +188,7 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
     AEOUT = c("", "", "", "", "", "", "FATAL", "", "FATAL")
   )
   test_data <- test_data %>%
-    mutate(
+    dplyr::mutate(
       flag1 = TRTEMFL == "Y",
       flag2 = TRTEMFL == "Y" & AEOUT == "FATAL",
     ) %>%
@@ -241,7 +241,7 @@ test_that("count_patients_with_flags works with label row specified", {
 
   # Create custom flags:
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       SER = AESER == "Y",
       REL = AEREL == "Y",
       CTC35 = AETOXGR %in% c("3", "4", "5"),

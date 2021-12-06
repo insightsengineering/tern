@@ -146,7 +146,7 @@ df <- data.frame(
   ARM = rep(c("A", "B"), each=6)
 )
 df_adsl <- df \%>\%
-  select(USUBJID, ARM) \%>\%
+  dplyr::select(USUBJID, ARM) \%>\%
   unique
 
 # Create table layout

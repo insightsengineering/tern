@@ -49,7 +49,7 @@ library(dplyr)
 
 ADTTE <- synthetic_cdisc_data("latest")$adtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
-ADTTE_f <- filter(
+ADTTE_f <- dplyr::filter(
   ADTTE_f,
   PARAMCD == "OS"
   & SEX \%in\% c("F", "M")

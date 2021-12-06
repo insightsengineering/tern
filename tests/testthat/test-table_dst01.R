@@ -8,7 +8,7 @@ get_adsl0 <- function() {
 
   #nolint start
   adsl0 <- ex_adsl %>%
-    mutate(
+    dplyr::mutate(
       COMPSTUD = sample(
         c("Y", "N"),
         size = nrow(ex_adsl),
@@ -40,12 +40,12 @@ get_adsl0 <- function() {
         size = nrow(ex_adsl),
         replace = TRUE
       ) %>% as.factor(),
-      STUDONS = case_when(COMPSTUD == "N" ~ STUDONS),
-      STDDRS = case_when(COMPSTUD == "N" & is.na(STUDONS) ~ STDDRS),
-      DISSTDFL = case_when(!is.na(STDDRS) ~ "Y"),
-      DISTRTFL = case_when(GOTTRT == "Y" ~ DISTRTFL),
-      TRTDRS = case_when(DISTRTFL == "Y" ~ TRTDRS),
-      DRSCAT = case_when(
+      STUDONS = dplyr::case_when(COMPSTUD == "N" ~ STUDONS),
+      STDDRS = dplyr::case_when(COMPSTUD == "N" & is.na(STUDONS) ~ STDDRS),
+      DISSTDFL = dplyr::case_when(!is.na(STDDRS) ~ "Y"),
+      DISTRTFL = dplyr::case_when(GOTTRT == "Y" ~ DISTRTFL),
+      TRTDRS = dplyr::case_when(DISTRTFL == "Y" ~ TRTDRS),
+      DRSCAT = dplyr::case_when(
         TRTDRS %in% c("ADVERSE EVENT", "PHYSICIAN DECISION") ~ "Safety",
         !is.na(TRTDRS) ~ "Other"
       )

@@ -281,7 +281,7 @@ g_lineplot <- function(df, # nolint
     # further conditions in if are to ensure that not all of the groups consist of only one observation
     if (grepl("l", mid_type, fixed = TRUE) &&
         !is.null(strata) &&
-        !all(dplyr::summarise(df_grp, count_n = n())[["count_n"]] == 1L)) {
+        !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) {
       p <- p + ggplot2::geom_line(position = position, na.rm = TRUE)
     }
 
@@ -395,7 +395,7 @@ g_lineplot <- function(df, # nolint
       grid::grid.newpage()
     }
 
-    gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
+    gridExtra::grid.dplyr::arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
 
   }
 

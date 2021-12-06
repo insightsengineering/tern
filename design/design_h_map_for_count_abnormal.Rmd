@@ -209,7 +209,7 @@ h_map_with_count_abnormal(
 ```
 see difference between default and both
 ```{r}
-df <- df %>% mutate(ANRIND = ifelse(PARAM == "ALT", "NORMAL", as.character(ANRIND)))
+df <- df %>% dplyr::mutate(ANRIND = ifelse(PARAM == "ALT", "NORMAL", as.character(ANRIND)))
 df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
 h_map_for_count_abnormal(
   df = df,
@@ -233,12 +233,12 @@ test with new method and stream data for lbt15.
 ```{r eval=FALSE}
 # ADSL and ADLB are stream source data read in with haven::read_sas()
 
-adsl <- ADSL %>% df_explicit_na() %>% filter(SAFFL == "Y")
-adlb_f <- ADLB %>% df_explicit_na() %>% filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI") %>%
-  mutate(ATOXGR = factor(ATOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")),
+adsl <- ADSL %>% df_explicit_na() %>% dplyr::filter(SAFFL == "Y")
+adlb_f <- ADLB %>% df_explicit_na() %>% dplyr::filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI") %>%
+  dplyr::mutate(ATOXGR = factor(ATOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")),
          BTOXGR = factor(BTOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")))
 adlb_f <- adlb_f %>%
-  mutate(
+  dplyr::mutate(
     ATOXGR_CAT = fct_collapse(ATOXGR,
                               "LOW" = c("-3", "-4"),
                               "NORMAL" = c("-2", "-1", "0", "1", "2"),
@@ -273,11 +273,11 @@ lyt <- basic_table() %>%
   ) %>%
   append_topleft("    Direction of Abnormality")
 
-build_table(lyt, adlb_f %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+build_table(lyt, adlb_f %>% dplyr::filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
 
 # variant 2
 adlb_f_2 <- adlb_f %>%
-  mutate(
+  dplyr::mutate(
     ATOXGR_CAT = fct_collapse(ATOXGR,
                               "LOW" = c("-2", "-3", "-4"),
                               "NORMAL" = c("-1", "0", "1"),
@@ -290,16 +290,16 @@ adlb_f_2 <- adlb_f %>%
     )
   )
 
-build_table(lyt, adlb_f_2 %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+build_table(lyt, adlb_f_2 %>% dplyr::filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
 ```
 
 replace stream data with scda so that knit will work
 ```{r}
 ADLB <- haven::read_sas("../adlb.sas7bdat") %>% df_explicit_na() #nolint
-adlb_f <- ADLB %>% filter(ONTRTFL == "Y" & ANRIND != "<Missing>" & PARCAT2 == "SI")
+adlb_f <- ADLB %>% dplyr::filter(ONTRTFL == "Y" & ANRIND != "<Missing>" & PARCAT2 == "SI")
 
 h_map_with_count_abnormal(
-  df = adlb_f %>% filter(LBCAT != "<Missing>"),
+  df = adlb_f %>% dplyr::filter(LBCAT != "<Missing>"),
   split_rows_varibles = c("LBCAT", "PARAM"),
   anl_variable = "ANRIND",
   abnormal = list(low = "LOW", high = "HIGH"),
@@ -325,8 +325,8 @@ build_table(lyt, adlb_f, alt_counts_df = adsl)
 
 As discussed in the design PR #255, how should we deal with some PARAMCDs that are not in the input dataset.
 ```{r}
-adlb_f_noALTSI <- adlb_f %>% filter(PARAMCD != "ALTSI")
-build_table(lyt, adlb_f_noALTSI %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+adlb_f_noALTSI <- adlb_f %>% dplyr::filter(PARAMCD != "ALTSI")
+build_table(lyt, adlb_f_noALTSI %>% dplyr::filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
 ```
 
 ```{r}
@@ -351,5 +351,5 @@ lyt_test <- basic_table() %>%
   ) %>%
   append_topleft("    Direction of Abnormality")
 
-build_table(lyt_test, adlb_f_noALTSI %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+build_table(lyt_test, adlb_f_noALTSI %>% dplyr::filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
 ```

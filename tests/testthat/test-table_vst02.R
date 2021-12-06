@@ -9,7 +9,7 @@ advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs
 test_that("1. Vital Sign Abnormalities (Regardless of Abnormality at Baseline, VST02_1)", {
 
   # Note: We keep only post-baseline for analysis.
-  advs_f <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y")
+  advs_f <- advs %>% dplyr::filter(ABLFL != "Y" & ABLFL2 != "Y")
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -47,7 +47,7 @@ test_that("1. Vital Sign Abnormalities (Regardless of Abnormality at Baseline, V
 test_that("2. Vital Sign Abnormalities (Among Subject Without Abnormality at Baseline, VST02_2)", {
 
   # Note: We keep only post-baseline for analysis.
-  advs_f <- advs %>% filter(AVISITN > 0)
+  advs_f <- advs %>% dplyr::filter(AVISITN > 0)
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%

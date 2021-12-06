@@ -49,8 +49,8 @@ test_that("h_ancova fails wrong inputs", {
 })
 
 test_that("s_ancova works with healthy input", {
-  df_col <- iris %>% filter(Species == "versicolor")
-  df_ref <- iris %>% filter(Species == "setosa")
+  df_col <- iris %>% dplyr::filter(Species == "versicolor")
+  df_ref <- iris %>% dplyr::filter(Species == "setosa")
   result <- s_ancova(
     df = df_col,
     .var = "Sepal.Length",

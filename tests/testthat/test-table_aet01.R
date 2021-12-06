@@ -8,7 +8,7 @@ test_that("Safety Summary Variant 1 works as expected", {
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       FATAL = AESDTH == "Y",
       SER = AESER == "Y",
       SERWD = AESER == "Y" & AEACN == "DRUG WITHDRAWN",
@@ -126,7 +126,7 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       FATAL = AESDTH == "Y",
       SER = AESER == "Y",
       SERWD = AESER == "Y" & AEACN == "DRUG WITHDRAWN",
@@ -155,7 +155,7 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
 
   # Add flags (TRUE/FALSE) for select AE basket variables.
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       SMQ01 = SMQ01NAM != "",
       SMQ02 = SMQ02NAM != "",
       CQ01 = CQ01NAM != ""
@@ -272,7 +272,7 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
 
   # Add flags (TRUE/FALSE) for select AEs of interest -- custom groups.
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       FATAL = AESDTH == "Y",
       SER = AESER == "Y",
       WD = AEACN == "DRUG WITHDRAWN",
@@ -380,13 +380,13 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
 test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
 
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       USUBJID_AESEQ = paste(USUBJID, AESEQ, sep = "@@") # Create unique ID per AE in dataset.
     )
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       FATAL = AESDTH == "Y",
       SER = AESER == "Y",
       WD = AEACN == "DRUG WITHDRAWN",

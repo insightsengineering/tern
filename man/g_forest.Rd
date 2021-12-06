@@ -81,11 +81,11 @@ adrs <- synthetic_cdisc_data("latest")$adrs
 n_records <- 20
 adrs_labels <- var_labels(adrs)
 adrs <- adrs \%>\%
-  filter(PARAMCD == "BESRSPI") \%>\%
-  filter(ARM \%in\% c("A: Drug X", "B: Placebo")) \%>\%
-  slice(seq_len(n_records)) \%>\%
+  dplyr::filter(PARAMCD == "BESRSPI") \%>\%
+  dplyr::filter(ARM \%in\% c("A: Drug X", "B: Placebo")) \%>\%
+  dplyr::slice(seq_len(n_records)) \%>\%
   droplevels() \%>\%
-  mutate(
+  dplyr::mutate(
     # Reorder levels of factor to make the placebo group the reference arm.
     ARM = fct_relevel(ARM, "B: Placebo"),
     rsp = AVALC == "CR"
@@ -125,12 +125,12 @@ adtte <- synthetic_cdisc_data("latest")$adtte
 adtte_labels <- var_labels(adtte)
 
 adtte_f <- adtte \%>\%
-  filter(
+  dplyr::filter(
     PARAMCD == "OS",
     ARM \%in\% c("B: Placebo", "A: Drug X"),
     SEX \%in\% c("M", "F")
   ) \%>\%
-  mutate(
+  dplyr::mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
     SEX = droplevels(SEX),

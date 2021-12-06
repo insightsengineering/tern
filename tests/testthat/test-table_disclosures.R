@@ -8,18 +8,18 @@ get_adsl <- function() {
   set.seed(1)
   #nolint start
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y") %>% # Safety Evaluable Population
-    mutate(
-      STSTFL = case_when(
+    dplyr::filter(SAFFL == "Y") %>% # Safety Evaluable Population
+    dplyr::mutate(
+      STSTFL = dplyr::case_when(
         is.na(RANDDT) ~ "N", # derive flag for "Started Study",
         TRUE ~ "Y"),
-      COMPSTUD = case_when(
+      COMPSTUD = dplyr::case_when(
         EOSSTT == "COMPLETED" ~ "Y", # derive flag for "Completed Study"
         TRUE ~ "N"),
-      DISCSTUD = case_when(
+      DISCSTUD = dplyr::case_when(
         EOSSTT == "DISCONTINUED" ~ "Y", # derive flag for "Discontinued study"
         TRUE ~ "N"),
-      AGEGRP = case_when(
+      AGEGRP = dplyr::case_when(
         AGE < 65 ~ "< 65 yrs",
         AGE >= 65 ~ ">= 65 yrs"),
       ETHNIC = sample(
@@ -50,7 +50,7 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   anl_terms <- adae %>%
     dplyr::group_by(ARM, AEBODSYS, AEDECOD) %>%
     dplyr::summarise(
-      unique_terms = n_distinct(USUBJID)
+      unique_terms = dplyr::n_distinct(USUBJID)
     ) %>%
     dplyr::ungroup()
 
@@ -224,8 +224,8 @@ test_that("Death table is produced correctly", {
 
 test_that("Table of Serious Adverse Events is produced correctly (for one specific treatment arm)", {
 
-  adae_serious <- adae %>% filter(AESER == "Y", SAFFL == "Y")
-  adae_serious_arm <- adae_serious %>% filter(ARM == "A: Drug X")
+  adae_serious <- adae %>% dplyr::filter(AESER == "Y", SAFFL == "Y")
+  adae_serious_arm <- adae_serious %>% dplyr::filter(ARM == "A: Drug X")
 
   filters_list <- list(
     related = with_label(c(AEREL = "Y"), "Events (Related)"),
@@ -264,7 +264,7 @@ test_that("Table of Serious Adverse Events is produced correctly (for one specif
 
 test_that("Table of Non-Serious Adverse Events is produced correctly", {
   adsl <- get_adsl()
-  adae_nonser <- adae %>% filter(AESER != "Y", SAFFL == "Y")
+  adae_nonser <- adae %>% dplyr::filter(AESER != "Y", SAFFL == "Y")
   adae_trim <- get_adae_trimmed(adsl, adae_nonser, cutoff_rate = 0.05)
 
   result <- basic_table() %>%

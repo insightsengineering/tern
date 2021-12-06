@@ -84,7 +84,7 @@ adtte_f <- within( # nolint
     X <- rnorm(n = length(ARM))
   }  # nolint end
 ) %>%
-  mutate(event = 1 - CNSR)
+  dplyr::mutate(event = 1 - CNSR)
 ```
 
 Design
@@ -204,7 +204,7 @@ h_coxreg_multivar_extract <- function(var,
     ret <- merge(ret_anova, ret_cox)
   } else {
     ret_cox$level <- gsub(var, "", ret_cox$level)
-    ret <- bind_rows(ret_anova, ret_cox)
+    ret <- dplyr::bind_rows(ret_anova, ret_cox)
   }
 
   ret$term_label <- ifelse(

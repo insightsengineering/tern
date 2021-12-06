@@ -22,7 +22,7 @@ adtte_f <- within( # nolint
     X <- rnorm(n = length(ARM))
   }  # nolint end
 ) %>%
-  mutate(event = 1 - CNSR) %>%
+  dplyr::mutate(event = 1 - CNSR) %>%
   rtables::var_relabel(
     SEX = "Sex",
     AGE = "Age"

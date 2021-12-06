@@ -50,12 +50,12 @@ adtte <- radtte(cached = TRUE)
 adtte_labels <- var_labels(adtte)
 
 adtte <- adtte %>%
-  filter(
+  dplyr::filter(
     PARAMCD == "OS",
     ARMCD %in% c("ARM B", "ARM A"),
     SEX %in% c("M", "F")
   ) %>%
-  mutate(
+  dplyr::mutate(
     # Reorder levels of ARMCD to display reference arm before treatment arm.
     ARMCD = fct_relevel(droplevels(ARMCD), "Arm B"),
     SEX = droplevels(SEX),
@@ -68,7 +68,7 @@ adtte <- adtte %>%
   )
 
 adtte %>%
-  select(USUBJID, ARMCD, AVAL, is_event, SEX, BMRKR2) %>%
+  dplyr::select(USUBJID, ARMCD, AVAL, is_event, SEX, BMRKR2) %>%
   glimpse()
 
 ```
@@ -167,7 +167,7 @@ h_split_by_subgroups <- function(data, subgroups) {
 }
 
 split_data <- h_split_by_subgroups(
-  data  = adtte %>% select(AVAL, is_event, SEX, BMRKR2),
+  data  = adtte %>% dplyr::select(AVAL, is_event, SEX, BMRKR2),
   subgroups = c("SEX", "BMRKR2")
 )
 str(split_data)

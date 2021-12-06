@@ -4,14 +4,14 @@ library(dplyr)
 
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adlb <- adlb %>% mutate(
-  GRADDR = case_when(
+adlb <- adlb %>% dplyr::mutate(
+  GRADDR = dplyr::case_when(
     PARAMCD == "ALT" ~ "B",
     PARAMCD == "CRP" ~ "L",
     PARAMCD == "IGA" ~ "H"
   )
 ) %>%
-filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 test_that("h_adlb_worsen stacks data correctly (simple case)", {
   set.seed(42)
@@ -22,23 +22,23 @@ test_that("h_adlb_worsen stacks data correctly (simple case)", {
   )
 
   input_data <- input_data %>%
-    group_by(USUBJID, PARAMCD) %>%
-    mutate(
+    dplyr::group_by(USUBJID, PARAMCD) %>%
+    dplyr::mutate(
       MIN = min(VALUES),
       MAX = max(VALUES),
-      WGRLOFL = case_when(
+      WGRLOFL = dplyr::case_when(
         VALUES == MIN ~ "Y",
         TRUE ~ ""
         ),
-      WGRHIFL = case_when(
+      WGRHIFL = dplyr::case_when(
         VALUES == MAX ~ "Y",
         TRUE ~ ""
         )
       )
 
   input_data <- input_data %>%
-    mutate(
-      GRADDR = case_when(
+    dplyr::mutate(
+      GRADDR = dplyr::case_when(
         PARAMCD == "ABC" ~ "L",
         PARAMCD == "OPQ" ~ "B",
         PARAMCD == "XYZ" ~ "H"
@@ -56,10 +56,10 @@ test_that("h_adlb_worsen stacks data correctly (simple case)", {
   result <- result[order(result$VALUES), ]
 
 
-  p1 <- input_data %>% filter(WGRLOFL == "Y" & GRADDR == "L")
-  p2 <- input_data %>% filter(WGRHIFL == "Y" & GRADDR == "H")
-  p3 <- input_data %>% filter(WGRLOFL == "Y" & GRADDR == "B")
-  p4 <- input_data %>% filter(WGRHIFL == "Y" & GRADDR == "B")
+  p1 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "L")
+  p2 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "H")
+  p3 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "B")
+  p4 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "B")
 
   p1$GRADDR <- "Low"  #nolint
   p2$GRADDR <- "High" #nolint
@@ -74,7 +74,7 @@ test_that("h_adlb_worsen stacks data correctly (simple case)", {
 })
 
 test_that("h_adlb_worsen stacks data correctly", {
-  adlb_f <- adlb %>% filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
+  adlb_f <- adlb %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
 
   result <- h_adlb_worsen(
     adlb_f,
@@ -83,7 +83,7 @@ test_that("h_adlb_worsen stacks data correctly", {
     direction_var = "GRADDR"
     )
 
-  result <- result %>% select(USUBJID, ARMCD, AVISIT, PARAMCD, ATOXGR, BTOXGR, WGRLOFL, WGRHIFL, GRADDR)
+  result <- result %>% dplyr::select(USUBJID, ARMCD, AVISIT, PARAMCD, ATOXGR, BTOXGR, WGRLOFL, WGRHIFL, GRADDR)
   result_matrix <- matrix(c(as.matrix(result)), 8L, 9L)
 
   expected_matrix <- structure(
@@ -314,14 +314,14 @@ test_that("count_abnormal_lab_worsen_by_baseline", {
 test_that("h_adlb_worsen all high", {
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-  adlb <- adlb %>% mutate(
-    GRADDR = case_when(
+  adlb <- adlb %>% dplyr::mutate(
+    GRADDR = dplyr::case_when(
       PARAMCD == "ALT" ~ "H",
       PARAMCD == "CRP" ~ "H",
       PARAMCD == "IGA" ~ "H"
     )
   ) %>%
-  filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
     adlb,
@@ -344,14 +344,14 @@ test_that("h_adlb_worsen all high", {
 test_that("h_adlb_worsen all low", {
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-  adlb <- adlb %>% mutate(
-    GRADDR = case_when(
+  adlb <- adlb %>% dplyr::mutate(
+    GRADDR = dplyr::case_when(
       PARAMCD == "ALT" ~ "L",
       PARAMCD == "CRP" ~ "L",
       PARAMCD == "IGA" ~ "L"
     )
   ) %>%
-  filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
     adlb,

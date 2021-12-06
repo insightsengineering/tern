@@ -219,7 +219,7 @@ build_table(lyt, adae, alt_counts_df = adsl)
 
 # Add labelled flag variables to analysis dataset.
 adae <- adae \%>\%
-  mutate(
+  dplyr::mutate(
     fl1 = TRUE,
     fl2 = TRTEMFL == "Y",
     fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",

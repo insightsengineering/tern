@@ -104,7 +104,7 @@ adex <- synthetic_cdisc_data("latest")$adex
 adsl <- synthetic_cdisc_data("latest")$adsl
 anl <- adex \%>\%
   distinct(STUDYID, USUBJID, ARM) \%>\%
-  mutate(
+  dplyr::mutate(
     PARAMCD = "TNDOSMIS",
     PARAM = "Total number of missed doses during study",
     AVAL = sample(0:20, size = nrow(adsl), replace = TRUE),

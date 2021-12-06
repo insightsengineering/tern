@@ -8,7 +8,7 @@ adcm <- synthetic_cdisc_data("rcd_2021_05_05")$adcm
 
 test_that("CMT02_PT default variant is produced correctly", {
   adcm <- adcm %>%
-    mutate(
+    dplyr::mutate(
       ASEQ = as.factor(ASEQ)
     )
 

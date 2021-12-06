@@ -585,7 +585,7 @@ test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at L
 
   adae <- preproc_adae(adae)
   adae <- get_adae_trimmed(adsl, adae, cutoff_rate = 0.4) %>%
-    mutate(AETOXGR = droplevels(AETOXGR))
+    dplyr::mutate(AETOXGR = droplevels(AETOXGR))
 
   gr_grp <-  list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),

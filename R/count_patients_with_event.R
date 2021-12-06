@@ -181,7 +181,7 @@ count_patients_with_event <- function(lyt,
 #'
 #' # Add labelled flag variables to analysis dataset.
 #' adae <- adae %>%
-#'   mutate(
+#'   dplyr::mutate(
 #'     fl1 = TRUE,
 #'     fl2 = TRTEMFL == "Y",
 #'     fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",

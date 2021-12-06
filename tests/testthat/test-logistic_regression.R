@@ -14,7 +14,7 @@ adrs_example <- local({
       PARAMCD == "BESRSPI",
       RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
     ) %>%
-    dplyr::mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
+    dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
     reapply_varlabels(var_labels(adrs_cached))
 })
 

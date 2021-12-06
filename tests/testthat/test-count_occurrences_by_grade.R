@@ -385,7 +385,7 @@ test_that("count_occurrences_by_grade works with trim_levels_in_group split func
     AETOXGR = factor(c(rep(1, 10), rep(2, 20)), levels = c(1:5))
   )
   df_adsl <- df %>%
-    select(USUBJID, ARM) %>%
+    dplyr::select(USUBJID, ARM) %>%
     unique()
 
   # Define additional grade groupings

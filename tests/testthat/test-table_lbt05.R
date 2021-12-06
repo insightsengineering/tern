@@ -7,20 +7,20 @@ get_adlb <- function() {
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
   qntls <- adlb %>%
-    group_by(.data$PARAMCD) %>%
-    summarise(
+    dplyr::group_by(.data$PARAMCD) %>%
+    dplyr::summarise(
       q1 = quantile(.data$AVAL, probs = c(0.1)),
       q2 = quantile(.data$AVAL, probs = c(0.9))
     )
 
   adlb <- adlb %>%
-    left_join(qntls, by = "PARAMCD")
+    dplyr::left_join(qntls, by = "PARAMCD")
 
   adlb_f <- adlb %>%
-    group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
-    mutate(
+    dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
+    dplyr::mutate(
       ANRIND = factor(
-        case_when(
+        dplyr::case_when(
           .data$ANRIND == "LOW" & .data$AVAL <= .data$q1 ~ "LOW LOW",
           .data$ANRIND == "HIGH" & .data$AVAL >= .data$q2 ~ "HIGH HIGH",
           TRUE ~ as.character(ANRIND)
@@ -38,13 +38,13 @@ test_that("LBT05 variant 1 is produced correctly", {
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>% mutate(
+  adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
-      case_when(
+      dplyr::case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
-            size = n(),
+            size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
@@ -54,7 +54,7 @@ test_that("LBT05 variant 1 is produced correctly", {
     ),
     PARCAT2 = factor("LS")
   ) %>%
-    select(-.data$q1, -.data$q2)
+    dplyr::select(-.data$q1, -.data$q2)
 
   #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   #just the `Any Abnormality` row is shown when there is no marked abonormality.
@@ -62,8 +62,8 @@ test_that("LBT05 variant 1 is produced correctly", {
 
   #Preprocessing steps
   adlb <- adlb %>%
-    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    mutate(abn_dir = factor(case_when(
+    dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -77,7 +77,7 @@ test_that("LBT05 variant 1 is produced correctly", {
     ) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
-    arrange(PARAMCD, desc(abn_dir)) %>%
+    dplyr::arrange(PARAMCD, dplyr::desc(abn_dir)) %>%
   add_row(PARAMCD = "ALT", abn_dir = "Low")
 
   lyt <- basic_table() %>%
@@ -133,13 +133,13 @@ test_that("LBT05 variant 2 is produced correctly", {
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>% mutate(
+  adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
-      case_when(
+      dplyr::case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
-            size = n(),
+            size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
@@ -149,7 +149,7 @@ test_that("LBT05 variant 2 is produced correctly", {
     ),
     PARCAT2 = factor("LS")
   ) %>%
-    select(-.data$q1, -.data$q2)
+    dplyr::select(-.data$q1, -.data$q2)
 
   #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   #just the `Any Abnormality` row is shown when there is no marked abonormality.
@@ -157,8 +157,8 @@ test_that("LBT05 variant 2 is produced correctly", {
 
   #Preprocessing steps
   adlb <- adlb %>%
-    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    mutate(abn_dir = factor(case_when(
+    dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -172,7 +172,7 @@ test_that("LBT05 variant 2 is produced correctly", {
   ) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
-    arrange(PARAMCD, desc(abn_dir)) %>%
+    dplyr::arrange(PARAMCD, dplyr::desc(abn_dir)) %>%
     add_row(PARAMCD = "ALT", abn_dir = "Low")
 
   lyt <- basic_table() %>%
@@ -220,13 +220,13 @@ test_that("LBT05 variant 2 is produced correctly", {
 
     set.seed(1, kind = "Mersenne-Twister")
 
-    adlb <- adlb %>% mutate(
+    adlb <- adlb %>% dplyr::mutate(
       AVALCAT1 = factor(
-        case_when(
+        dplyr::case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
             sample(
               x = avalcat1,
-              size = n(),
+              size = dplyr::n(),
               replace = TRUE,
               prob = c(0.3, 0.6, 0.1)
             ),
@@ -236,7 +236,7 @@ test_that("LBT05 variant 2 is produced correctly", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-      select(-.data$q1, -.data$q2)
+      dplyr::select(-.data$q1, -.data$q2)
 
     #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
     #ALT rows are removed
@@ -244,8 +244,8 @@ test_that("LBT05 variant 2 is produced correctly", {
 
     #Preprocessing steps
     adlb <- adlb %>%
-      filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-      mutate(abn_dir = factor(case_when(
+      dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+      dplyr::mutate(abn_dir = factor(dplyr::case_when(
         ANRIND == "LOW LOW" ~ "Low",
         ANRIND == "HIGH HIGH" ~ "High",
         TRUE ~ ""
@@ -260,7 +260,7 @@ test_that("LBT05 variant 2 is produced correctly", {
     ) %>%
       lapply(as.character) %>%
       as.data.frame() %>%
-      arrange(PARAMCD, desc(abn_dir))
+      dplyr::arrange(PARAMCD, dplyr::desc(abn_dir))
 
     lyt <- basic_table() %>%
       split_cols_by("ACTARMCD") %>%

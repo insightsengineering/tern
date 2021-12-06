@@ -38,7 +38,7 @@ library(grid)
 grid::grid.newpage()
 grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 synthetic_cdisc_data("latest")$adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
+  dplyr::filter(PARAMCD == "OS") \%>\%
   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_grob_median_surv \%>\%
   grid::grid.draw()

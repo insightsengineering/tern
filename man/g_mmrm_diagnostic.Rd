@@ -44,10 +44,10 @@ library(scda)
 adsl <- synthetic_cdisc_data("latest")$adsl
 adqs <- synthetic_cdisc_data("latest")$adqs
 adqs_f <- adqs \%>\%
-  filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
+  dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
   droplevels() \%>\%
-  mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
-  mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
+  dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
+  dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
 mmrm_results <- fit_mmrm(
   vars = list(

@@ -7,19 +7,19 @@ preprocess_adae <- function(adae) {
 
   set.seed(1, kind = "Mersenne-Twister")
   adae %>%
-    mutate(
+    dplyr::mutate(
       # Convert AESDTH to character for next step.
       AESDTH = as.character(AESDTH),
       # For demonstration purpose only,
       # make "A: Drug X" as the arm without AE leading to death.
-      AESDTH = case_when(
+      AESDTH = dplyr::case_when(
         ARM == "A: Drug X" ~ NA_character_,
         TRUE ~ AESDTH
       ),
       AESDTH = as.factor(AESDTH),
       SOC_PT = factor(paste(AEBODSYS, "/", AEDECOD))
     ) %>%
-    filter(AESDTH == "Y")
+    dplyr::filter(AESDTH == "Y")
 }
 
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl

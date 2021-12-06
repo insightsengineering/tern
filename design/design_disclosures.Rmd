@@ -40,15 +40,15 @@ set.seed(1)
 
 #nolint start
 adsl_f <- adsl %>%
-  filter(SAFFL == "Y") %>% # Safety Evaluable Population
-  mutate(
-    STSTFL = case_when(is.na(RANDDT) ~ "N", # derive flag for "Started Study",
+  dplyr::filter(SAFFL == "Y") %>% # Safety Evaluable Population
+  dplyr::mutate(
+    STSTFL = dplyr::case_when(is.na(RANDDT) ~ "N", # derive flag for "Started Study",
                      TRUE ~ "Y"),
-    COMPSTUD = case_when(EOSSTT == "COMPLETED" ~ "Y", # derive flag for "Completed Study"
+    COMPSTUD = dplyr::case_when(EOSSTT == "COMPLETED" ~ "Y", # derive flag for "Completed Study"
                          TRUE ~ "N"),
-    DISCSTUD = case_when(EOSSTT == "DISCONTINUED" ~ "Y", # derive flag for "Discontinued study"
+    DISCSTUD = dplyr::case_when(EOSSTT == "DISCONTINUED" ~ "Y", # derive flag for "Discontinued study"
                          TRUE ~ "N"),
-    AGEGRP = case_when(AGE < 65 ~ "< 65 yrs",
+    AGEGRP = dplyr::case_when(AGE < 65 ~ "< 65 yrs",
                        AGE >= 65 ~ ">= 65 yrs"),
     ETHNIC = sample(c("Ethnicity 1", "Ethnicity 2", "Unknown"), nrow(.), replace = TRUE),
     DTHFL = ifelse(is.na(DTHDT), "N", "Y")
@@ -64,8 +64,8 @@ adsl_f$AGEGRP <- factor(adsl_f$AGEGRP, levels = c("< 65 yrs", ">= 65 yrs"))
 adsl_f$ETHNIC <- factor(adsl_f$ETHNIC, levels = c("Ethnicity 1", "Ethnicity 2", "Unknown"))
 adsl_f$DTHFL <- factor(adsl_f$DTHFL, levels = c("Y", "N"))
 
-adae_serious <- adae %>% filter(AESER == "Y", SAFFL == "Y") #Filtering for only serious AEs
-adae_nonser <- adae %>% filter(AESER != "Y", SAFFL == "Y")#Filtering for only non-serious AEs
+adae_serious <- adae %>% dplyr::filter(AESER == "Y", SAFFL == "Y") #Filtering for only serious AEs
+adae_nonser <- adae %>% dplyr::filter(AESER != "Y", SAFFL == "Y")#Filtering for only non-serious AEs
 #nolint end
 ```
 
@@ -380,7 +380,7 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   anl_terms <- adae %>%
     dplyr::group_by(ARM, AEBODSYS, AEDECOD) %>%
     dplyr::count(
-      unique_terms = n_distinct(USUBJID)
+      unique_terms = dplyr::n_distinct(USUBJID)
     ) %>%
     dplyr::select(-n) %>%
     dplyr::ungroup()

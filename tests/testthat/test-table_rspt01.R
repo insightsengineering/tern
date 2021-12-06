@@ -313,8 +313,8 @@ test_that("RSPT01: 5. Best Overall Response (modifying the definition of overall
 test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
 
   # Define study-specific response category "No Progression".
-  adrs <- adrs %>% mutate(
-    AVALC_NEW = case_when(
+  adrs <- adrs %>% dplyr::mutate(
+    AVALC_NEW = dplyr::case_when(
       AVALC %in% c(
         "Complete Response (CR)", "Partial Response (PR)",
         "Stable Disease (SD)"
@@ -322,7 +322,7 @@ test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
       TRUE ~ as.character(AVALC)
     )
   ) %>%
-    mutate(
+    dplyr::mutate(
       AVALC_NEW = factor(
         AVALC_NEW,
         levels = c("No Progression", "Progressive Disease (PD)", "Not Evaluable (NE)")

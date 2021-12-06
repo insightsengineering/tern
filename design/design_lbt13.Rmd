@@ -38,12 +38,12 @@ adlb <- haven::read_sas(data_file = "adlb.sas7bdat")
 adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
 
 # Filter datasets based on STREAM conditions
-adsl <- adsl %>% filter(SAFFL == "Y") %>% df_explicit_na()
-adlb <- adlb %>% filter(PARCAT2 == "SI" & WGRLOVFL == "Y" & SAFFL == "Y") %>% df_explicit_na()
+adsl <- adsl %>% dplyr::filter(SAFFL == "Y") %>% df_explicit_na()
+adlb <- adlb %>% dplyr::filter(PARCAT2 == "SI" & WGRLOVFL == "Y" & SAFFL == "Y") %>% df_explicit_na()
 
 # Create ATOXGR_GP and BTOXGR_GP to get rid of helpfer function
-adlb <- adlb %>% mutate(
-  ATOXGR_GP = case_when(
+adlb <- adlb %>% dplyr::mutate(
+  ATOXGR_GP = dplyr::case_when(
     ATOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
     ATOXGR == -1 ~ "1",
     ATOXGR == -2 ~ "2",
@@ -52,8 +52,8 @@ adlb <- adlb %>% mutate(
     ATOXGR == "<Missing>" ~ "Missing"
   )
 ) %>%
-  mutate(
-    BTOXGR_GP = case_when(
+  dplyr::mutate(
+    BTOXGR_GP = dplyr::case_when(
       BTOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
       BTOXGR == -1 ~ "1",
       BTOXGR == -2 ~ "2",
@@ -65,7 +65,7 @@ adlb <- adlb %>% mutate(
 
 # adjust factor levels for correct order of AVISIT and Grouping to show
 ## maybe there should be some function in tern to take care of AVISIT factor level according to AVISITN?
-adlb <- adlb %>% mutate(
+adlb <- adlb %>% dplyr::mutate(
   AVISIT = factor(AVISIT, levels = c("WEEK 1", "WEEK 2", "WEEK 3", "WEEK 4", "WEEK 5", "WEEK 7",
                                      "WEEK 9", "WEEK 13", "WEEK 17", "WEEK 21", "UNSCHEDULED")),
   ATOXGR_GP = factor(ATOXGR_GP, levels = c("Not Low", "1", "2", "3", "4", "Missing")),

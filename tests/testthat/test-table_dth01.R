@@ -205,7 +205,7 @@ test_that("DTH01 variant 4 is produced correctly", {
 
   #create a helper variable DTHCAUS_other for part3
   adsl <- adsl %>%
-    mutate(
+    dplyr::mutate(
       DTHCAUS_other = ifelse(
         DTHCAT == "OTHER" & DTHCAUS != "Post-study reporting of death", as.character(DTHCAUS), NA)
     )

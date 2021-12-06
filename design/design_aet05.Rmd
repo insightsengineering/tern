@@ -35,7 +35,7 @@ library(random.cdisc.data)
 adsl <- radsl(cached = TRUE)
 anl <- radaette(cached = TRUE) %>%
   dplyr::filter(PARAM == "Time to first occurrence of any adverse event") %>%
-  mutate(is_event = CNSR == 0)
+  dplyr::mutate(is_event = CNSR == 0)
 
 df <- data.frame(
   USUBJID = as.character(seq(6)),
@@ -43,7 +43,7 @@ df <- data.frame(
   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
   ARM = factor(c("A", "A", "A", "B", "B", "B"))
 ) %>%
-  mutate(is_event = CNSR == 0)
+  dplyr::mutate(is_event = CNSR == 0)
 ```
 
 ## Design Summary

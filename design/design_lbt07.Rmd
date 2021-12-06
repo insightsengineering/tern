@@ -45,8 +45,8 @@ adlb_f <- adlb %>%
     dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
     dplyr::mutate(
       ATOXGR = as.numeric(as.character(ATOXGR)),
-      WGRLOFL = case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
-      WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
+      WGRLOFL = dplyr::case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
+      WGRHIFL = dplyr::case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
     ) %>%
     droplevels()
 
@@ -224,12 +224,12 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
 
 
 s_count_abnormal_by_worst_grade(
-   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
+   df = adlb_f2 %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .var = "ATOXGR",
    variables = list(id = "USUBJID", worst_low_flag = c(Looooow = "WGRLOFL"), worst_high_flag = c(High = "WGRHIFL")))
 
 s_count_abnormal_by_worst_grade(
-   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels(),
+   df = adlb_f2 %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels(),
    .var = "ATOXGR",
    variables = list(
    id = "USUBJID",
@@ -239,13 +239,13 @@ s_count_abnormal_by_worst_grade(
   )
 
 s_count_abnormal_by_worst_grade(
-   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
+   df = adlb_f2 %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
    .var = "ATOXGR",
    variables = list(id = "USUBJID", worst_low_flag = c(Low = "WGRLOFL"), worst_high_flag = c("Very High" = "WGRHIFL")))
 
 # The following example throws an error as we are introducing a worst_low_flag value that is not in df.
 s_count_abnormal_by_worst_grade(
-   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
+   df = adlb_f2 %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
    .var = "ATOXGR",
    variables = list(
    id = "USUBJID",
@@ -279,15 +279,15 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
  afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 
  afun(
-    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels()
+    df = adlb_f2 %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels()
   )
 
  afun(
-    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
+    df = adlb_f2 %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
   )
 
  afun(
-    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels()
+    df = adlb_f2 %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels()
   )
 
  afun(
@@ -429,9 +429,9 @@ build_table(
 Example 1: Case where all `ATOXGRADE` for ALT parameter are 0.
 ```{r}
 adlb_f3 <- adlb_f2 %>%
-  filter(PARAMCD != "ALT" | ATOXGR == 0)
+  dplyr::filter(PARAMCD != "ALT" | ATOXGR == 0)
 
-adlb_f3 %>% count(PARAMCD, ATOXGR)
+adlb_f3 %>% dplyr::count(PARAMCD, ATOXGR)
 
 #This is the expected output. 0 records are shown for different grades.
 build_table(
@@ -441,7 +441,7 @@ build_table(
 )
 
 #Let's remove ALT/negative grade rows from the map and create a new empirical map
-empirical_map1 <- map %>% filter(
+empirical_map1 <- map %>% dplyr::filter(
   !(PARAMCD == "ALT" & ATOXGR < 0)
 )
 ```
@@ -470,7 +470,7 @@ basic_table() %>%
 If all rows for `ALT` are removed in the `map` used, `ALT` will not appear in the table.
 
 ```{r}
-empirical_map2 <- map %>% filter(
+empirical_map2 <- map %>% dplyr::filter(
   PARAMCD != "ALT"
 )
 
@@ -531,8 +531,8 @@ Example 2: All grades in the target direction (none 0) for a param.
 
 ```{r}
 adlb_f4 <- adlb_f2 %>%
-  filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
-adlb_f4 %>% count(PARAMCD, ATOXGR)
+  dplyr::filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
+adlb_f4 %>% dplyr::count(PARAMCD, ATOXGR)
 ```
 
 ```{r}
@@ -572,7 +572,7 @@ basic_table() %>%
 Example 4:  Case where there is an arm that has no lab records.
 
 ```{r}
-adlb_f3 <- adlb_f2 %>% filter(!(ARMCD == "ARM A" & PARAMCD == "ALT"))
+adlb_f3 <- adlb_f2 %>% dplyr::filter(!(ARMCD == "ARM A" & PARAMCD == "ALT"))
 
 basic_table() %>%
   split_cols_by("ARMCD") %>%

@@ -28,10 +28,10 @@
 #' adrs_labels <- var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%
-#'   filter(PARAMCD == "BESRSPI") %>%
-#'   filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
+#'   dplyr::filter(PARAMCD == "BESRSPI") %>%
+#'   dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
 #'   droplevels() %>%
-#'   mutate(
+#'   dplyr::mutate(
 #'     # Reorder levels of factor to make the placebo group the reference arm.
 #'     ARM = fct_relevel(ARM, "B: Placebo"),
 #'     rsp = AVALC == "CR"

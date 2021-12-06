@@ -241,7 +241,7 @@ df <- data.frame(
 )
 
 df_adsl <- df %>%
- select(USUBJID, ARM) %>%
+ dplyr::select(USUBJID, ARM) %>%
  unique()
 
 # Grades 3+ are not returned since not observed in the data

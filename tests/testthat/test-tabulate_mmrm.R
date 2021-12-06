@@ -217,7 +217,7 @@ get_anl <- function() {
 
 get_mmrm <- function() {
   anl <- get_anl() %>%
-    mutate(
+    dplyr::mutate(
       ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
       AVISIT = factor(AVISIT)
     )
@@ -237,7 +237,7 @@ get_mmrm <- function() {
 
 get_mmrm_no_arm <- function() {
   anl <- get_anl() %>%
-    mutate(
+    dplyr::mutate(
       ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
       AVISIT = factor(AVISIT)
     )

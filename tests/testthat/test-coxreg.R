@@ -303,7 +303,7 @@ test_that("fit_coxreg_univar returns model results as expected", {
 
 test_that("fit_coxreg_univar runs with non-represented level of a factor", {
   data <- get_bladder() %>%
-    filter(covar1 %in% 1:3)
+    dplyr::filter(covar1 %in% 1:3)
 
   variables <- list(
     time = "time", event = "status", arm = "armcd",
@@ -315,7 +315,7 @@ test_that("fit_coxreg_univar runs with non-represented level of a factor", {
 
 test_that("fit_coxreg_univar is stopped when there are not 2 arms", {
   data <- get_bladder() %>%
-    filter(covar1 %in% 1:3)
+    dplyr::filter(covar1 %in% 1:3)
 
   variables <- list(
     time = "time", event = "status", arm = "covar1", covariates = "covar2"

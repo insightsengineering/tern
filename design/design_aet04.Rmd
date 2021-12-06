@@ -50,7 +50,7 @@ adae$AEDECOD2 <- as.character(adae$AEDECOD) #nolint
 adae$AEBODSYS2 <- as.character(adae$AEBODSYS) #nolint
 
 anl <- adae %>%
-  filter(AEDECOD %in% c("dcd A.1.1.1.1", "dcd A.1.1.1.2") | AEBODSYS == "cl B.1")
+  dplyr::filter(AEDECOD %in% c("dcd A.1.1.1.1", "dcd A.1.1.1.2") | AEBODSYS == "cl B.1")
 
 df <- data.frame(
   USUBJID = as.character(c(1:5, 1)),

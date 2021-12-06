@@ -34,7 +34,7 @@ ADRS_f <- ADRS %>% #nolint
   dplyr::filter(PARAMCD == "BESRSPI") %>%
   dplyr::filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
   dplyr::mutate(
-    Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+    Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
     RACE = factor(RACE),
     SEX = factor(SEX)
   )

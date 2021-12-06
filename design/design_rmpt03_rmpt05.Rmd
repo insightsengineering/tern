@@ -49,18 +49,18 @@ adsl <- haven::read_sas(paste0(pth, "adsl.sas7bdat"))
 adex <- df_explicit_na(adex)
 adsl <- df_explicit_na(adsl)
 
-adex_f <- adex %>% filter(PARAMCD == "TDURD" &
+adex_f <- adex %>% dplyr::filter(PARAMCD == "TDURD" &
                             PARCAT2 == "MPDL3280A/PLACEBO INFUSION" &
                             SAFFL == "Y") %>%
-mutate(SEX = factor(case_when(
+dplyr::mutate(SEX = factor(dplyr::case_when(
     SEX == "F" ~ "Female",
     SEX == "M" ~ "Male"
   )))
 
 
 adsl_f <- adsl %>%
-  filter(adsl$SAFFL == "Y") %>%
-  mutate(SEX = factor(case_when(
+  dplyr::filter(adsl$SAFFL == "Y") %>%
+  dplyr::mutate(SEX = factor(dplyr::case_when(
     SEX == "F" ~ "Female",
     SEX == "M" ~ "Male"
   )))

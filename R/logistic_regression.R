@@ -49,10 +49,10 @@ NULL
 #'
 #' adrs <- synthetic_cdisc_data("latest")$adrs
 #' adrs_f <- adrs %>%
-#'   filter(PARAMCD == "BESRSPI") %>%
-#'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
-#'   mutate(
-#'     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+#'   dplyr::filter(PARAMCD == "BESRSPI") %>%
+#'   dplyr::filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+#'   dplyr::mutate(
+#'     Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
 #'     RACE = factor(RACE),
 #'     SEX = factor(SEX)
 #'   )

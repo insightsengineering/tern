@@ -105,8 +105,8 @@ test_that("h_tbl_median_surv estimates median survival time with CI", {
 
 test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
   df <- adtte %>%
-    filter(PARAMCD == "OS") %>%
-    mutate(is_event = CNSR == 0)
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
   result1 <- h_tbl_coxph_pairwise(
     df = df,

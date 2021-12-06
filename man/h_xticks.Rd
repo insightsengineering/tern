@@ -32,7 +32,7 @@ library(dplyr)
 library(survival)
 
 data <- synthetic_cdisc_data("latest")$adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
+  dplyr::filter(PARAMCD == "OS") \%>\%
   survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_data_plot()
 

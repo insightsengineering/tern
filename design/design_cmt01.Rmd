@@ -50,8 +50,8 @@ names(n_per_arm)[4] <- "All Patients"
 
 adcm <- radcm(cached = TRUE)
 
-adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
-adcm_p <- adcm %>% filter(ATIREL == "PRIOR")
+adcm_c <- adcm %>% dplyr::filter(ATIREL == "CONCOMITANT")
+adcm_p <- adcm %>% dplyr::filter(ATIREL == "PRIOR")
 ```
 
 

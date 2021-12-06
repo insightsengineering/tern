@@ -71,7 +71,7 @@ advs_label <- var_labels(advs)
 
 # This table intends to only provide during treatment abnormalities.
 # Hence, we keep treatment abnormalities only and remove baseline/screening abnormalities.
-advs_f <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y")
+advs_f <- advs %>% dplyr::filter(ABLFL != "Y" & ABLFL2 != "Y")
 
 n_col_counts <- table(adsl$ARM)
 n_col_counts <- c(n_col_counts, sum(n_col_counts))

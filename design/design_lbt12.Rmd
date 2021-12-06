@@ -38,20 +38,20 @@ adhy <- haven::read_sas(data_file = "/home/rstudio/nest_projects/tern/temp/adhy.
 adsl <- haven::read_sas(data_file = "/home/rstudio/nest_projects/tern/temp/adsl.sas7bdat")
 
 # Used for population N's shown in table header.
-adsl <- adsl %>% filter(SAFFL == "Y")
+adsl <- adsl %>% dplyr::filter(SAFFL == "Y")
 
 # Select LBT12 parameters
 anl <- adhy %>%
-  filter(SAFFL == "Y") %>%
-  filter(PARAMCD %in% c("ASTPULN", "ALTPULN", "ALTASTPU") & AVISIT == "POST-BASELINE") %>%
-  mutate(ARM_AVALC = case_when(
+  dplyr::filter(SAFFL == "Y") %>%
+  dplyr::filter(PARAMCD %in% c("ASTPULN", "ALTPULN", "ALTASTPU") & AVISIT == "POST-BASELINE") %>%
+  dplyr::mutate(ARM_AVALC = dplyr::case_when(
     AVALC == "Y" & ACTARMCD == "A" ~ "ARM A",
     AVALC == "Y" & ACTARMCD == "B" ~ "ARM B",
     AVALC == "Y" & ACTARMCD == "C" ~ "ARM C"
   ))
 
 anl <- df_explicit_na(anl) %>%
-  mutate(
+  dplyr::mutate(
     TITLE = "First Elevated Result Occurring During"
   )
 ```

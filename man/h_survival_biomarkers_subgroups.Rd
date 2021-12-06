@@ -74,8 +74,8 @@ adtte <- synthetic_cdisc_data("latest")$adtte
 adtte_labels <- var_labels(adtte)
 
 adtte_f <- adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  mutate(
+  dplyr::filter(PARAMCD == "OS") \%>\%
+  dplyr::mutate(
     AVALU = as.character(AVALU),
     is_event = CNSR == 0
   ) \%>\%

@@ -379,7 +379,7 @@ test_that("h_coxph_df functions as expected when 0 records in one group", {
 
   adtte <- adtte %>%
     preprocess_adtte() %>%
-    filter(ARM == "A: Drug X")
+    dplyr::filter(ARM == "A: Drug X")
 
   result <- h_coxph_df(
     tte = adtte$AVAL,
@@ -487,7 +487,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
 
   # Test edge case where HR is (0, Inf)
   adtte <- adtte %>%
-    filter(COUNTRY %in% c("CAN", "GBR")) %>%
+    dplyr::filter(COUNTRY %in% c("CAN", "GBR")) %>%
     reapply_varlabels(var_labels(adtte))
 
   result <- expect_warning(h_coxph_subgroups_df(

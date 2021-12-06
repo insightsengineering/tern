@@ -148,20 +148,20 @@ library(dplyr)
 
 ADTTE <- synthetic_cdisc_data("latest")$adtte
 ADTTE_f <- ADTTE \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  mutate(
+  dplyr::filter(PARAMCD == "OS") \%>\%
+  dplyr::mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
 df <- ADTTE_f \%>\%
-  filter(ARMCD == "ARM A")
+  dplyr::filter(ARMCD == "ARM A")
 
 s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
 
 a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
 
 df_ref_group <- ADTTE_f \%>\%
-  filter(ARMCD == "ARM B")
+  dplyr::filter(ARMCD == "ARM B")
 
 s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 s_surv_timepoint_diff(

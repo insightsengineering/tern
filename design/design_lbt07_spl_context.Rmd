@@ -48,8 +48,8 @@ adlb_labels <- var_labels(adlb)
 adlb_f <- adlb %>%
     dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
     dplyr::mutate(
-      WGRLOFL = case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
-      WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
+      WGRLOFL = dplyr::case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
+      WGRHIFL = dplyr::case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
     ) %>%
     droplevels()
 
@@ -61,8 +61,8 @@ var_labels(adlb_f) <- adlb_labels
 ## This latter step is optional but I like it since it really simplifies the analysis
 
 adlb_f <- adlb_f %>%
-  mutate(
-    GRADE_DIR = factor(case_when(
+  dplyr::mutate(
+    GRADE_DIR = factor(dplyr::case_when(
       ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
       ATOXGR == "0" ~ "ZERO",
       ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
@@ -140,7 +140,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
 # We can create a full_parent_df within .spl_context but this is not the scope of this design doc.
 # We can see the correct denominators later in the user-faced function.
 
-adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT") %>% droplevels()
+adlb_f_alt <- adlb_f %>% dplyr::filter(PARAMCD == "ALT") %>% droplevels()
 full_parent_df <- list(adlb_f_alt, "not_needed")
 cur_col_subset <- list(adlb_f_alt$ARMCD == "ARM A", "not_needed")
 spl_context <- data.frame(
@@ -150,7 +150,7 @@ spl_context <- data.frame(
   )
 
 s_count_abnormal_by_worst_grade(
-   df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
+   df = adlb_f %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .spl_context = spl_context,
    .var = "GRADE_ANL",
    variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR")
@@ -182,7 +182,7 @@ s_count_abnormal_by_worst_grade,
 )
  afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
  afun(
-    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
+    df = adlb_f %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
     .spl_context = spl_context,
     variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR")
   )
@@ -256,7 +256,7 @@ lyt_no_trim <- basic_table() %>%
 
 build_table(
   lyt = lyt_no_trim,
-  df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
+  df = adlb_f %>% dplyr::filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 )
 
@@ -266,7 +266,7 @@ build_table(
 map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
   lapply(as.character) %>%
   as.data.frame() %>%
-  arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
+  dplyr::arrange(PARAM, dplyr::desc(GRADE_DIR), GRADE_ANL)
 
 ###### Using `trim_levels_to_map`
 
@@ -299,7 +299,7 @@ lyt_trim_map <- basic_table() %>%
 
 build_table(
   lyt = lyt_trim_map,
-  df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
+  df = adlb_f %>% dplyr::filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 )
 
@@ -327,7 +327,7 @@ lyt_trim_group <- basic_table() %>%
 
 build_table(
   lyt = lyt_trim_group,
-  df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
+  df = adlb_f %>% dplyr::filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 ) %>%
 prune_table()
@@ -343,12 +343,12 @@ Example 1: If all rows for `ALT` are removed in the `map`.
 
 We can only generate the table if all ALT rows are also removed from the dataset.
 ```{r}
-empirical_map2 <- map %>% filter(
+empirical_map2 <- map %>% dplyr::filter(
   PARAM != "Alanine Aminotransferase Measurement"
 )
 
 adlb_f_no_ALT <- adlb_f %>% #nolint
-  filter(PARAM != "Alanine Aminotransferase Measurement") %>%
+  dplyr::filter(PARAM != "Alanine Aminotransferase Measurement") %>%
   droplevels()
 
 ###### Using `trim_levels_to_map`
@@ -379,7 +379,7 @@ lyt_trim_map2 <- basic_table() %>%
 
 build_table(
   lyt = lyt_trim_map2,
-  df = adlb_f_no_ALT %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
+  df = adlb_f_no_ALT %>% dplyr::filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 )
 ```
@@ -389,14 +389,14 @@ Example 2: All grades in the target direction (none 0) for a param.
 Numerator counts are the same BUT denominator is different since 0 grade records are removed.
 ```{r}
 adlb_f2 <- adlb_f %>%
-  filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
-adlb_f2 %>% count(PARAMCD, ATOXGR, GRADE_ANL)
+  dplyr::filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
+adlb_f2 %>% dplyr::count(PARAMCD, ATOXGR, GRADE_ANL)
 ```
 
 ```{r}
 build_table(
   lyt = lyt_trim_map,
-  df = adlb_f2 %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
+  df = adlb_f2 %>% dplyr::filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 )
 ```
@@ -436,7 +436,7 @@ lyt_trim_map3 <- basic_table() %>%
 
 build_table(
   lyt = lyt_trim_map3,
-  df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
+  df = adlb_f %>% dplyr::filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 )
 ```
@@ -445,12 +445,12 @@ Example 4:  Case where there is an arm that has no lab records. Table correctly 
 
 ```{r}
 adlb_f3 <- adlb_f %>%
-  filter(!(ARMCD == "ARM A" & PARAMCD == "ALT")) %>%
+  dplyr::filter(!(ARMCD == "ARM A" & PARAMCD == "ALT")) %>%
   droplevels()
 
 build_table(
   lyt = lyt_trim_map,
-  df = adlb_f3 %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
+  df = adlb_f3 %>% dplyr::filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 )
 ```

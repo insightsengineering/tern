@@ -12,7 +12,7 @@ test_that("s_count_abnormal works with healthy input and default arguments", {
     stringsAsFactors = FALSE
   )
 
-  df <- df %>% filter(
+  df <- df %>% dplyr::filter(
     ONTRTFL == "Y"
   )
 
@@ -54,7 +54,7 @@ test_that("s_count_abnormal works when excluding patients with abnormality at ba
     stringsAsFactors = FALSE
   )
 
-  df <- df %>% filter(
+  df <- df %>% dplyr::filter(
     ONTRTFL == "Y"
   )
 
@@ -98,7 +98,7 @@ test_that("s_count_abnormal also works with tibble and custom arguments", {
       stringsAsFactors = FALSE
     )
   )
-  df <- df %>% filter(
+  df <- df %>% dplyr::filter(
     mytrtfl == "Y"
   )
 
@@ -143,7 +143,7 @@ test_that("count_abnormal works with default arguments", {
   )
 
   df <- df %>%
-    filter(
+    dplyr::filter(
       ONTRTFL == "Y"
     )
 
@@ -173,7 +173,7 @@ test_that("count_abnormal works with custom arguments", {
   )
 
   df2 <- df2 %>%
-    filter(
+    dplyr::filter(
       ONTRTFL == "Y"
     )
 
@@ -209,7 +209,7 @@ test_that("count_abnormal works with default arguments and visit", {
   )
 
   df <- df %>%
-    filter(
+    dplyr::filter(
       ONTRTFL == "Y"
     )
 
@@ -240,7 +240,7 @@ test_that("s_count_abnormal works with healthy input and grouped abnormal argume
     stringsAsFactors = FALSE
   )
 
-  df <- df %>% filter(
+  df <- df %>% dplyr::filter(
     ONTRTFL == "Y"
   )
 

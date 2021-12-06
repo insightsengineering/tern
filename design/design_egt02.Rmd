@@ -60,8 +60,8 @@ adsl <- radsl(cached = TRUE)
 
 # Only keep post baseline visits
 adeg <- radeg(cached = TRUE) %>%
-  filter(ONTRTFL == "Y" & !is.na(ANRIND) & AVISITN >= 1) %>%
-  mutate(PARAM = droplevels(PARAM))
+  dplyr::filter(ONTRTFL == "Y" & !is.na(ANRIND) & AVISITN >= 1) %>%
+  dplyr::mutate(PARAM = droplevels(PARAM))
 
 n_col_counts <- table(adsl$ARM)
 n_col_counts <- c(n_col_counts, Total = sum(n_col_counts))
@@ -94,8 +94,8 @@ will not be accounted for.
 adsl <- radsl(cached = TRUE)
 
 adeg <- radeg(cached = TRUE) %>%
-  filter(ONTRTFL == "Y" & !is.na(ANRIND) & AVISITN >= 0) %>%
-  mutate(PARAM = droplevels(PARAM))
+  dplyr::filter(ONTRTFL == "Y" & !is.na(ANRIND) & AVISITN >= 0) %>%
+  dplyr::mutate(PARAM = droplevels(PARAM))
 
 n_col_counts <- table(adsl$ARM)
 n_col_counts <- c(n_col_counts, Total = sum(n_col_counts))

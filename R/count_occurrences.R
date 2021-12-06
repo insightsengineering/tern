@@ -142,7 +142,7 @@ a_count_occurrences <- make_afun(
 #'   ARM = rep(c("A", "B"), each=6)
 #' )
 #' df_adsl <- df %>%
-#'   select(USUBJID, ARM) %>%
+#'   dplyr::select(USUBJID, ARM) %>%
 #'   unique
 #'
 #' # Create table layout

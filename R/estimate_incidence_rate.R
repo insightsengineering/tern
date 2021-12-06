@@ -221,8 +221,8 @@ h_incidence_rate <- function(person_years,
 #'   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
 #'   ARM = factor(c("A", "A", "A", "B", "B", "B"))
 #' ) %>%
-#'   mutate(is_event = CNSR == 0) %>%
-#'   mutate(n_events = as.integer(is_event))
+#'   dplyr::mutate(is_event = CNSR == 0) %>%
+#'   dplyr::mutate(n_events = as.integer(is_event))
 #'
 #' s_incidence_rate(
 #'   df,

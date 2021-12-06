@@ -11,10 +11,10 @@ admh <- synthetic_cdisc_data("rcd_2021_05_05")$admh
 test_that("MHT01 variant 1 is produced accurately", {
 
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y")
+    dplyr::filter(SAFFL == "Y")
 
   admh_f <- admh %>%
-    filter(
+    dplyr::filter(
       SAFFL == "Y",
       MHBODSYS != "",
       MHDECOD != ""
@@ -75,17 +75,17 @@ test_that("MHT01 variant 1 is produced accurately", {
 test_that("MHT01 variant 2 is produced accurately", {
 
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y")
+    dplyr::filter(SAFFL == "Y")
 
   admh_f <- admh %>%
-    filter(
+    dplyr::filter(
       SAFFL == "Y",
       MHBODSYS != "",
       MHDECOD != ""
     )
 
   admh_f_prior <- admh_f %>%
-    filter(ASTDY <= 0)
+    dplyr::filter(ASTDY <= 0)
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -131,10 +131,10 @@ test_that("MHT01 variant 2 is produced accurately", {
 test_that("MHT01 variant 3 is produced accurately", {
 
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y")
+    dplyr::filter(SAFFL == "Y")
 
   admh_f <- admh %>%
-    filter(
+    dplyr::filter(
       SAFFL == "Y",
       MHBODSYS != "",
       MHDECOD != ""
@@ -195,10 +195,10 @@ test_that("MHT01 variant 3 is produced accurately", {
 test_that("MHT01 variant 5 is produced accurately", {
 
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y")
+    dplyr::filter(SAFFL == "Y")
 
   admh_f <- admh %>%
-    filter(
+    dplyr::filter(
       SAFFL == "Y",
       MHBODSYS != "",
       MHDECOD != ""

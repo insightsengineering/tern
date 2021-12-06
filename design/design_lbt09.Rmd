@@ -35,20 +35,20 @@ paramcd_tbili_ast <- c("BLAS", "BGAS", "BA2AS", "BA5AS")
 
 # Select LBT09 parameters.
 adhy_liver <- adhy_liver %>%
-  filter(SAFFL == "Y",
+  dplyr::filter(SAFFL == "Y",
          AVISIT %in% c("BASELINE", "POST-BASELINE"),
          PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast))
 
 # Let's be explicit about factor levels for AVISIT and PARAMCD.
 adhy_liver <- adhy_liver %>%
-  mutate(AVISIT = factor(AVISIT, levels = c("BASELINE", "POST-BASELINE")),
+  dplyr::mutate(AVISIT = factor(AVISIT, levels = c("BASELINE", "POST-BASELINE")),
          PARAMCD = factor(PARAMCD, levels = c(paramcd_tbili_alt, paramcd_tbili_ast)))
 
 # Create TBILI_CAT categories variable
 # this is needed so we get the right nesting in the table.
 adhy_liver <- adhy_liver %>%
-  mutate(TBILI_CAT = factor(
-    case_when(
+  dplyr::mutate(TBILI_CAT = factor(
+    dplyr::case_when(
       PARAMCD %in% c(paramcd_tbili_alt[1], paramcd_tbili_ast[1]) ~ "Total Bilirubin <= 2xULN",
       PARAMCD %in% c(paramcd_tbili_alt[2], paramcd_tbili_ast[2]) ~ "Total Bilirubin > 2xULN",
       PARAMCD %in% c(
@@ -72,9 +72,9 @@ adhy_liver <- adhy_liver %>%
 # this will be the labels for different
 # ALT/AST categories displayed in the table.
 adhy_liver <- adhy_liver %>%
-  mutate(
+  dplyr::mutate(
     ALTAST_CAT = factor(
-      case_when(
+      dplyr::case_when(
         PARAMCD %in% paramcd_tbili_alt & AVALC == ">3-5ULN" ~ "ALT >3 - <= 5xULN",
         PARAMCD %in% paramcd_tbili_alt & AVALC == ">5-10ULN" ~ "ALT >5 - <= 10xULN",
         PARAMCD %in% paramcd_tbili_alt & AVALC == ">10-20ULN" ~ "ALT >10 - <= 20xULN",
@@ -138,20 +138,20 @@ paramcd_tbili_ast <- c("BLAS", "BGAS", "BA2AS", "BA5AS")
 
 # Select LBT09 parameters.
 adhy_liver <- adhy_liver %>%
-  filter(SAFFL == "Y",
+  dplyr::filter(SAFFL == "Y",
          AVISIT %in% c("BASELINE", "POST-BASELINE"),
          PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast))
 
 # Let's be explicit about factor levels for AVISIT and PARAMCD.
 adhy_liver <- adhy_liver %>%
-  mutate(AVISIT = factor(AVISIT, levels = c("BASELINE", "POST-BASELINE")),
+  dplyr::mutate(AVISIT = factor(AVISIT, levels = c("BASELINE", "POST-BASELINE")),
          PARAMCD = factor(PARAMCD, levels = c(paramcd_tbili_alt, paramcd_tbili_ast)))
 
 # Create indicator and category variables.
 adhy_liver <- adhy_liver %>%
-  mutate(
+  dplyr::mutate(
     TBILI_CAT = factor( # Create TBILI_CAT categories variable - this is needed so we get the right nesting in the table. # nolint
-      case_when(
+      dplyr::case_when(
         PARAMCD %in% c(paramcd_tbili_alt[1], paramcd_tbili_ast[1]) ~ "Total Bilirubin <= 2xULN",
         PARAMCD %in% c(paramcd_tbili_alt[2], paramcd_tbili_ast[2]) ~ "Total Bilirubin > 2xULN",
         PARAMCD %in% c(paramcd_tbili_alt[3], paramcd_tbili_ast[3]) ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 2xULN", # nolint
@@ -165,7 +165,7 @@ adhy_liver <- adhy_liver %>%
       )
     ),
     ALTAST_CAT = factor( # Create ALTAST_CAT categories variable - this will be the labels for different ALT/AST categories displayed in the table. # nolint
-      case_when(
+      dplyr::case_when(
         PARAMCD %in% paramcd_tbili_alt & AVALC == ">3-5ULN" ~ "ALT >3 - <= 5xULN",
         PARAMCD %in% paramcd_tbili_alt & AVALC == ">5-10ULN" ~ "ALT >5 - <= 10xULN",
         PARAMCD %in% paramcd_tbili_alt & AVALC == ">10-20ULN" ~ "ALT >10 - <= 20xULN",
@@ -183,7 +183,7 @@ adhy_liver <- adhy_liver %>%
       )
     ),
     ALTAST_ind = factor(
-      case_when(
+      dplyr::case_when(
         PARAMCD %in% paramcd_tbili_alt ~ "ALT",
         PARAMCD %in% paramcd_tbili_ast ~ "AST"
       ),

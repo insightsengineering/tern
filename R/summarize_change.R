@@ -101,13 +101,13 @@ a_change_from_baseline <- make_afun(
 #'   ARM = rep(LETTERS[1:3], rep(6, 3)),
 #'   AVAL = c(9:1, rep(NA, 9))
 #'   ) %>%
-#'   mutate(ABLFLL = AVISIT == "V1") %>%
-#'   group_by(USUBJID) %>%
-#'   mutate(
+#'   dplyr::mutate(ABLFLL = AVISIT == "V1") %>%
+#'   dplyr::group_by(USUBJID) %>%
+#'   dplyr::mutate(
 #'     BLVAL = AVAL[ABLFLL],
 #'     CHG = AVAL - BLVAL
 #'   ) %>%
-#'   ungroup()
+#'   dplyr::ungroup()
 #'
 #' results <- basic_table() %>%
 #'   split_cols_by("ARM") %>%

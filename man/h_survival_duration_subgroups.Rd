@@ -97,12 +97,12 @@ adtte <- synthetic_cdisc_data("latest")$adtte
 adtte_labels <- rtables::var_labels(adtte)
 
 adtte_f <- adtte \%>\%
-  filter(
+  dplyr::filter(
     PARAMCD == "OS",
     ARM \%in\% c("B: Placebo", "A: Drug X"),
     SEX \%in\% c("M", "F")
   ) \%>\%
-  mutate(
+  dplyr::mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
     SEX = droplevels(SEX),

@@ -21,8 +21,8 @@
 #' adrs_labels <- var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%
-#'   filter(PARAMCD == "BESRSPI") %>%
-#'   mutate(rsp = AVALC == "CR")
+#'   dplyr::filter(PARAMCD == "BESRSPI") %>%
+#'   dplyr::mutate(rsp = AVALC == "CR")
 #' var_labels(adrs_f) <- c(adrs_labels, "Response")
 #'
 NULL

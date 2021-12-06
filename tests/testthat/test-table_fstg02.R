@@ -76,7 +76,7 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
 
   anl2 <- adtte %>%
     preprocess_adtte() %>%
-    mutate(
+    dplyr::mutate(
       # Recode levels of arm.
       ARM = forcats::fct_recode(
         ARM,

@@ -57,28 +57,28 @@ adlb <- df_explicit_na(adlb)
 
 
 adlb_f <-
-  adlb %>% filter(ONTRTFL == "Y" &
+  adlb %>% dplyr::filter(ONTRTFL == "Y" &
                     PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL)) %>%
-  mutate(
-    DIRECTION = case_when(
+  dplyr::mutate(
+    DIRECTION = dplyr::case_when(
       ANRIND %in% c("LOW LOW") ~ "LL",
       ANRIND %in% c("HIGH HIGH") ~ "HH",
       TRUE ~ "<Missing>"
     ),
-    AVALCAT1_NUM = case_when(
+    AVALCAT1_NUM = dplyr::case_when(
       AVALCAT1 == "SINGLE" ~ 1,
       AVALCAT1 == "REPLICATED" ~ 2,
       AVALCAT1 == "LAST" ~ 3,
       TRUE ~ 0
     )
   ) %>%
-  group_by(USUBJID, PARAMCD, DIRECTION) %>%
-  mutate(MAX_AVALCAT1 = max(AVALCAT1_NUM)) %>%
-  ungroup() %>%
-  mutate(
+  dplyr::group_by(USUBJID, PARAMCD, DIRECTION) %>%
+  dplyr::mutate(MAX_AVALCAT1 = max(AVALCAT1_NUM)) %>%
+  dplyr::ungroup() %>%
+  dplyr::mutate(
     AVALCAT1_NUM = ifelse(AVALCAT1_NUM == 1 &
                             AVALCAT1_NUM < MAX_AVALCAT1, 0, AVALCAT1_NUM),
-    AVALCAT1_FL = case_when(
+    AVALCAT1_FL = dplyr::case_when(
       AVALCAT1_NUM == 1 ~ "Single, not last",
       AVALCAT1_NUM == 2 ~ "Last or replicated",
       AVALCAT1_NUM == 3 ~ "Last or replicated",
@@ -86,7 +86,7 @@ adlb_f <-
     )
   )
 
-adsl_f <- adsl %>% filter(SAFFL == "Y")
+adsl_f <- adsl %>% dplyr::filter(SAFFL == "Y")
 
 adsl_f <- df_explicit_na(adsl)
 adlb_f <- df_explicit_na(adlb_f)
