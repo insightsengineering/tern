@@ -12,7 +12,7 @@ testthat::test_that("DMT01 default and alternative variants are produced correct
 
   # Change description in variable SEX.
   adsl <- adsl %>%
-    dplyr::mutate(SEX = factor(case_when(
+    dplyr::mutate(SEX = factor(dplyr::case_when(
       SEX == "M" ~ "Male",
       SEX == "F" ~ "Female",
       SEX == "U" ~ "Unknown",
@@ -20,9 +20,9 @@ testthat::test_that("DMT01 default and alternative variants are produced correct
     )))
 
   adsl <- adsl %>%
-    dplyr::mutate(AGEGRP = factor(case_when(
-      between(AGE, 18, 40) ~ "18-40",
-      between(AGE, 41, 64) ~ "41-64",
+    dplyr::mutate(AGEGRP = factor(dplyr::case_when(
+      dplyr::between(AGE, 18, 40) ~ "18-40",
+      dplyr::between(AGE, 41, 64) ~ "41-64",
       AGE > 64 ~ ">=65"
     ),
     levels = c("18-40", "41-64", ">=65")
@@ -42,9 +42,9 @@ testthat::test_that("DMT01 default and alternative variants are produced correct
   }
 
   adsl <- adsl %>%
-    inner_join(get_param_advs("SBP", "Systolic Blood Pressure")) %>%
-    inner_join(get_param_advs("DBP", "Diastolic Blood Pressure")) %>%
-    inner_join(get_param_advs("WGT", "Weight"))
+    dplyr::inner_join(get_param_advs("SBP", "Systolic Blood Pressure")) %>%
+    dplyr::inner_join(get_param_advs("DBP", "Diastolic Blood Pressure")) %>%
+    dplyr::inner_join(get_param_advs("WGT", "Weight"))
 
   vars <- c("AGE", "AGEGRP", "SEX", "RACE", "WGT", "SBP", "DBP")
   var_labels <- c(

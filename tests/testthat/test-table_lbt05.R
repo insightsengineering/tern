@@ -20,7 +20,7 @@ get_adlb <- function() {
     dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
     dplyr::mutate(
       ANRIND = factor(
-        case_when(
+        dplyr::case_when(
           .data$ANRIND == "LOW" & .data$AVAL <= .data$q1 ~ "LOW LOW",
           .data$ANRIND == "HIGH" & .data$AVAL >= .data$q2 ~ "HIGH HIGH",
           TRUE ~ as.character(ANRIND)
@@ -40,11 +40,11 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
 
   adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
-      case_when(
+      dplyr::case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
-            size = n(),
+            size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
@@ -63,7 +63,7 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
   #Preprocessing steps
   adlb <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(case_when(
+    dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -77,7 +77,7 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
     ) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
-    arrange(PARAMCD, desc(abn_dir)) %>%
+    dplyr::arrange(PARAMCD, dplyr::desc(abn_dir)) %>%
   add_row(PARAMCD = "ALT", abn_dir = "Low")
 
   lyt <- basic_table() %>%
@@ -135,11 +135,11 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
 
   adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
-      case_when(
+      dplyr::case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
-            size = n(),
+            size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
@@ -158,7 +158,7 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
   #Preprocessing steps
   adlb <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(case_when(
+    dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -172,7 +172,7 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
   ) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
-    arrange(PARAMCD, desc(abn_dir)) %>%
+    dplyr::arrange(PARAMCD, dplyr::desc(abn_dir)) %>%
     add_row(PARAMCD = "ALT", abn_dir = "Low")
 
   lyt <- basic_table() %>%
@@ -222,11 +222,11 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
 
     adlb <- adlb %>% dplyr::mutate(
       AVALCAT1 = factor(
-        case_when(
+        dplyr::case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
             sample(
               x = avalcat1,
-              size = n(),
+              size = dplyr::n(),
               replace = TRUE,
               prob = c(0.3, 0.6, 0.1)
             ),
@@ -245,7 +245,7 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
     #Preprocessing steps
     adlb <- adlb %>%
       dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-      dplyr::mutate(abn_dir = factor(case_when(
+      dplyr::mutate(abn_dir = factor(dplyr::case_when(
         ANRIND == "LOW LOW" ~ "Low",
         ANRIND == "HIGH HIGH" ~ "High",
         TRUE ~ ""
@@ -260,7 +260,7 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
     ) %>%
       lapply(as.character) %>%
       as.data.frame() %>%
-      arrange(PARAMCD, desc(abn_dir))
+      dplyr::arrange(PARAMCD, dplyr::desc(abn_dir))
 
     lyt <- basic_table() %>%
       split_cols_by("ACTARMCD") %>%

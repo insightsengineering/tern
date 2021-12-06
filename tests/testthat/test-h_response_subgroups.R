@@ -153,7 +153,7 @@ testthat::test_that("h_proportion_subgroups_df works as expected with groups_lis
     )
   )
 
-  expect_setequal(
+  testthat::expect_setequal(
     result[result$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )
@@ -371,7 +371,7 @@ testthat::test_that("h_odds_ratio_subgroups_df works as expected with groups_lis
     )
   )
 
-  expect_setequal(
+  testthat::expect_setequal(
     result[result$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )

@@ -23,7 +23,7 @@ testthat::test_that("EXT01 default variant with numeric parameters is produced c
       PARAMCD = "TDURD",
       PARAM = "Treatment duration (days)",
       AVAL = sample(1:150, size = nrow(adsl), replace = TRUE),
-      AVALC = case_when(
+      AVALC = dplyr::case_when(
         0 <= AVAL & AVAL <= 30 ~ "0 - 30",
         31 <= AVAL & AVAL <= 60 ~ "31 - 60",
         61 <= AVAL & AVAL <= 90 ~ "61 - 90",
@@ -96,7 +96,7 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
       PARAMCD = "TDURD",
       PARAM = "Treatment duration (days)",
       AVAL = sample(1:150, size = nrow(adsl), replace = TRUE),
-      AVALC = case_when(
+      AVALC = dplyr::case_when(
         0 <= AVAL & AVAL <= 30 ~ "0 - 30",
         31 <= AVAL & AVAL <= 60 ~ "31 - 60",
         61 <= AVAL & AVAL <= 90 ~ "61 - 90",
@@ -203,7 +203,7 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
       PARAMCD = "TDURD",
       PARAM = "Treatment duration (days)",
       AVAL = sample(1:150, size = nrow(adsl), replace = TRUE),
-      AVALC = case_when(
+      AVALC = dplyr::case_when(
         0 <= AVAL & AVAL <= 30 ~ "0 - 30",
         31 <= AVAL & AVAL <= 60 ~ "31 - 60",
         61 <= AVAL & AVAL <= 90 ~ "61 - 90",

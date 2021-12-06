@@ -258,7 +258,7 @@ get_mmrm_no_arm <- function() {
 testthat::test_that("h_mmrm_fixed works as expected", {
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
+    testthat::skip("tests dont run with older version of lme4")
   }
 
   mmrm <- get_mmrm()
@@ -299,7 +299,7 @@ testthat::test_that("h_mmrm_fixed works as expected", {
 testthat::test_that("h_mmrm_cov works as expected", {
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
+    testthat::skip("tests dont run with older version of lme4")
   }
 
   test.nest::skip_if_too_deep(3)
@@ -421,7 +421,7 @@ testthat::test_that("tidy.mmrm works as expected when treatment is not considere
     conf_level = 0.95
   )
   testthat::expect_is(result_one_row, "tbl_df")
-  expect_equivalent(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
+  testthat::expect_equivalent(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
 })
 
 testthat::test_that("s_mmrm_lsmeans works as expected when not in reference column", {
@@ -479,7 +479,7 @@ testthat::test_that("summarize_lsmeans works as expected", {
   test.nest::skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
+    testthat::skip("tests dont run with older version of lme4")
   }
 
   mmrm <- get_mmrm()
@@ -551,7 +551,7 @@ testthat::test_that("summarize_lsmeans works as expected when treatment is not c
   test.nest::skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
+    testthat::skip("tests dont run with older version of lme4")
   }
 
   mmrm <- get_mmrm_no_arm()

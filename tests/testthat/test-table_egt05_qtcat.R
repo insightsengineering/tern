@@ -13,12 +13,12 @@ get_adeg <- function() {
   adeg_f <- adeg %>%
     dplyr::filter(PARAMCD == "QT" & ANL01FL == "Y") %>%
     dplyr::mutate(# Categorize AVAL and CHG
-      AVALCAT1 = case_when(
+      AVALCAT1 = dplyr::case_when(
         AVAL <= 450 ~ "<=450 msec",
         AVAL <= 480 ~ ">450 to <=480 msec",
         AVAL <= 500 ~ ">480 to <= 500 msec",
         AVAL > 500 ~ ">500 msec"),
-      CHGCAT1 = case_when(
+      CHGCAT1 = dplyr::case_when(
         CHG <= 30 ~ "<=30 msec",
         CHG <= 60 ~ ">30 to <=60 msec",
         CHG > 60 ~ ">60 msec")

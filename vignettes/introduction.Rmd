@@ -124,9 +124,9 @@ lyt <- basic_table() %>%
     var_labels = var_labels
   )
 
-build_table(lyt, df = adsl %>% filter(COUNTRY == "BRA"))
+build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "BRA"))
 
-build_table(lyt, df = adsl %>% filter(COUNTRY == "CHN"))
+build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "CHN"))
 ```
 
 ## Adverse Event Table 
@@ -290,8 +290,8 @@ First we start with some data preparation steps to set up the analysis dataset. 
 ```{r}
 # Preprocessing to select an analysis endpoint.
 anl <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
-  mutate(is_rsp = AVALC %in% c("CR", "PR"))
+  dplyr::filter(PARAMCD == "BESRSPI") %>%
+  dplyr::mutate(is_rsp = AVALC %in% c("CR", "PR"))
 ```
 
 To create a summary of the proportion of responders in each treatment group, use the `estimate_proportion()` layout creating function:

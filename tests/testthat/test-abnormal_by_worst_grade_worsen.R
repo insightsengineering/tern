@@ -5,13 +5,13 @@ library(dplyr)
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- adlb %>% dplyr::mutate(
-  GRADDR = case_when(
+  GRADDR = dplyr::case_when(
     PARAMCD == "ALT" ~ "B",
     PARAMCD == "CRP" ~ "L",
     PARAMCD == "IGA" ~ "H"
   )
 ) %>%
-  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   set.seed(42)
@@ -26,11 +26,11 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
     dplyr::mutate(
       MIN = min(VALUES),
       MAX = max(VALUES),
-      WGRLOFL = case_when(
+      WGRLOFL = dplyr::case_when(
         VALUES == MIN ~ "Y",
         TRUE ~ ""
         ),
-      WGRHIFL = case_when(
+      WGRHIFL = dplyr::case_when(
         VALUES == MAX ~ "Y",
         TRUE ~ ""
         )
@@ -38,7 +38,7 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
 
   input_data <- input_data %>%
     dplyr::mutate(
-      GRADDR = case_when(
+      GRADDR = dplyr::case_when(
         PARAMCD == "ABC" ~ "L",
         PARAMCD == "OPQ" ~ "B",
         PARAMCD == "XYZ" ~ "H"
@@ -315,13 +315,13 @@ testthat::test_that("h_adlb_worsen all high", {
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
   adlb <- adlb %>% dplyr::mutate(
-    GRADDR = case_when(
+    GRADDR = dplyr::case_when(
       PARAMCD == "ALT" ~ "H",
       PARAMCD == "CRP" ~ "H",
       PARAMCD == "IGA" ~ "H"
     )
   ) %>%
-    dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
     adlb,
@@ -345,13 +345,13 @@ testthat::test_that("h_adlb_worsen all low", {
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
   adlb <- adlb %>% dplyr::mutate(
-    GRADDR = case_when(
+    GRADDR = dplyr::case_when(
       PARAMCD == "ALT" ~ "L",
       PARAMCD == "CRP" ~ "L",
       PARAMCD == "IGA" ~ "L"
     )
   ) %>%
-    dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
     adlb,

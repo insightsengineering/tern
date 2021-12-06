@@ -16,7 +16,7 @@ get_adrs <- function() {
       PARAMCD == "BESRSPI"
     ) %>%
     dplyr::mutate(
-      Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+      Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
       SEX = factor(SEX, c("M", "F")),
       RACE = as.character(RACE),
       RACE = factor(

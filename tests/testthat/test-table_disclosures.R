@@ -10,16 +10,16 @@ get_adsl <- function() {
   adsl_f <- adsl %>%
     dplyr::filter(SAFFL == "Y") %>% # Safety Evaluable Population
     dplyr::mutate(
-      STSTFL = case_when(
+      STSTFL = dplyr::case_when(
         is.na(RANDDT) ~ "N", # derive flag for "Started Study",
         TRUE ~ "Y"),
-      COMPSTUD = case_when(
+      COMPSTUD = dplyr::case_when(
         EOSSTT == "COMPLETED" ~ "Y", # derive flag for "Completed Study"
         TRUE ~ "N"),
-      DISCSTUD = case_when(
+      DISCSTUD = dplyr::case_when(
         EOSSTT == "DISCONTINUED" ~ "Y", # derive flag for "Discontinued study"
         TRUE ~ "N"),
-      AGEGRP = case_when(
+      AGEGRP = dplyr::case_when(
         AGE < 65 ~ "< 65 yrs",
         AGE >= 65 ~ ">= 65 yrs"),
       ETHNIC = sample(
@@ -50,7 +50,7 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   anl_terms <- adae %>%
     dplyr::group_by(ARM, AEBODSYS, AEDECOD) %>%
     dplyr::summarise(
-      unique_terms = n_distinct(USUBJID)
+      unique_terms = dplyr::n_distinct(USUBJID)
     ) %>%
     dplyr::ungroup()
 

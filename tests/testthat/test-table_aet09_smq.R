@@ -27,15 +27,15 @@ testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produ
 
   adae <- adae %>%
     dplyr::mutate(
-      SMQ1  = case_when(
+      SMQ1  = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
       ),
-      SMQ2 = case_when(
+      SMQ2 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1",  "cl D.1") ~ "SMQ 1 (narrow)",
         TRUE ~ NA_character_
       ),
-      SMQ3 = case_when(
+      SMQ3 = dplyr::case_when(
         AEDECOD %in% c("dcd B.2.1.2.1", "dcd A.1.1.1.2", "dcd C.2.1.2.1", "dcd B.2.2.3.1") ~ "AESI",
         TRUE ~ NA_character_
       )
@@ -100,15 +100,15 @@ testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ <with cus
 
   adae <- adae %>%
     dplyr::mutate(
-      SMQ1  = case_when(
+      SMQ1  = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
       ),
-      SMQ2 = case_when(
+      SMQ2 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1",  "cl D.1") ~ "SMQ 1 (narrow)",
         TRUE ~ NA_character_
       ),
-      SMQ3 = case_when(
+      SMQ3 = dplyr::case_when(
         AEDECOD %in% c("dcd B.2.1.2.1", "dcd A.1.1.1.2", "dcd C.2.1.2.1", "dcd B.2.2.3.1") ~ "AESI",
         TRUE ~ NA_character_
       )

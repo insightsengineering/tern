@@ -12,7 +12,7 @@ preproc_adtte <- function(adtte) {
       is_event = CNSR == 0,
       is_not_event = CNSR == 1,
       EVNT1 = factor(
-        case_when(
+        dplyr::case_when(
           is_event == TRUE ~ "Responders with subsequent event (%)",
           is_event == FALSE ~ "Responders without subsequent event (%)"
         ),

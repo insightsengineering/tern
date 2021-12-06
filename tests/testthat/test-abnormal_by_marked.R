@@ -21,7 +21,7 @@ adlb_raw <- local({
     dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
     dplyr::mutate(
       ANRIND = factor(
-        case_when(
+        dplyr::case_when(
           .data$ANRIND == "LOW" & .data$AVAL <= .data$q1 ~ "LOW LOW",
           .data$ANRIND == "HIGH" & .data$AVAL >= .data$q2 ~ "HIGH HIGH",
           TRUE ~ as.character(ANRIND)
@@ -40,11 +40,11 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
 
   adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
-      case_when(
+      dplyr::case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
-            size = n(),
+            size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
@@ -58,7 +58,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
   #Preprocessing steps
   adlb_f <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(case_when(
+    dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -100,11 +100,11 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
 
   adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
-      case_when(
+      dplyr::case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
-            size = n(),
+            size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
@@ -117,8 +117,8 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     dplyr::select(-.data$q1, -.data$q2)
   #Preprocessing steps
   adlb_f <- adlb %>%
-    dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(case_when(
+    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    mutate(abn_dir = factor(case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -161,11 +161,11 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
 
   adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
-      case_when(
+      dplyr::case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
-            size = n(),
+            size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
@@ -178,8 +178,8 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
     dplyr::select(-.data$q1, -.data$q2)
   #Preprocessing steps
   adlb_f <- adlb %>%
-    dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(case_when(
+    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    mutate(abn_dir = factor(case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -216,11 +216,11 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
 
   adlb <- adlb %>% dplyr::mutate(
     AVALCAT1 = factor(
-      case_when(
+      dplyr::case_when(
         .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
-            size = n(),
+            size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
@@ -233,8 +233,8 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
     dplyr::select(-.data$q1, -.data$q2)
   #Preprocessing steps
   adlb_f <- adlb %>%
-    dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(case_when(
+    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    mutate(abn_dir = factor(case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
@@ -254,7 +254,7 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
     ) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
-    arrange(PARAMCD, !desc(abn_dir))
+    dplyr::arrange(PARAMCD, !dplyr::desc(abn_dir))
 
 
   result <- basic_table() %>%

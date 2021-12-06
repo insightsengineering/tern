@@ -25,7 +25,7 @@ adlb_raw <- local({
     dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
     dplyr::mutate(
       GRADE_DIR = factor(
-        case_when(
+        dplyr::case_when(
           ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
           ATOXGR == "0" ~ "ZERO",
           ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
@@ -53,7 +53,7 @@ testthat::test_that("LBT07 is produced correctly", {
   map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
-    arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
+    dplyr::arrange(PARAM, dplyr::desc(GRADE_DIR), GRADE_ANL)
 
   lyt <- basic_table() %>%
     split_cols_by("ARMCD") %>%

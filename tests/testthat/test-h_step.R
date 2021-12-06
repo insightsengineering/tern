@@ -86,7 +86,7 @@ testthat::test_that("h_step_trt_effect works for Cox models without interaction"
     x = 100  # Note: this does not have any effect on results, because there is no interaction.
   )
   coef_sum <- summary(mod)$coefficients
-  expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
+  testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
 })
 
 testthat::test_that("h_step_trt_effect works for Cox models with interaction", {
@@ -104,7 +104,7 @@ testthat::test_that("h_step_trt_effect works for Cox models with interaction", {
     x = 0
   )
   coef_sum <- summary(mod)$coefficients
-  expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
+  testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
   # Then at age = 50. Compare point estimate with manual calculation.
   result <- h_step_trt_effect(
     data = dta_simple,
@@ -113,9 +113,9 @@ testthat::test_that("h_step_trt_effect works for Cox models with interaction", {
     x = 50
   )
   est_manual <- sum(coef(mod)[c("armcdB", "age", "armcdB:age")] * (c(1, 50, 50) - c(0, 50, 0)))
-  expect_equivalent(result["est"], est_manual)
+  testthat::expect_equivalent(result["est"], est_manual)
   # Regression test for se.
-  expect_equivalent(result["se"], 1.322242, tol = 1e-5)
+  testthat::expect_equivalent(result["se"], 1.322242, tol = 1e-5)
 })
 
 testthat::test_that("h_step_trt_effect works for Cox models with strata", {
@@ -136,7 +136,7 @@ testthat::test_that("h_step_trt_effect works for Cox models with strata", {
     x = 0
   ))
   coef_sum <- summary(mod)$coefficients
-  expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
+  testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
 })
 
 testthat::test_that("h_step_trt_effect works for logistic regression models without interaction", {
@@ -154,7 +154,7 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
     x = 100  # Note: this does not have any effect on results, because there is no interaction.
   )
   coef_sum <- summary(mod)$coefficients
-  expect_equivalent(result, coef_sum["armcdB", c("Estimate", "Std. Error")])
+  testthat::expect_equivalent(result, coef_sum["armcdB", c("Estimate", "Std. Error")])
 })
 
 testthat::test_that("h_step_trt_effect works for logistic regression models with interaction", {
@@ -172,7 +172,7 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
     x = 0
   )
   coef_sum <- summary(mod)$coefficients
-  expect_equivalent(result, coef_sum["ARMBINARM B", c("Estimate", "Std. Error")])
+  testthat::expect_equivalent(result, coef_sum["ARMBINARM B", c("Estimate", "Std. Error")])
   # Then at age = 50. Compare point estimate with manual calculation.
   result <- h_step_trt_effect(
     data = dta,
@@ -181,9 +181,9 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
     x = 50
   )
   est_manual <- sum(coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
-  expect_equivalent(result["est"], est_manual)
+  testthat::expect_equivalent(result["est"], est_manual)
   # Regression test for se.
-  expect_equivalent(result["se"], 0.2153840, tol = 1e-5)
+  testthat::expect_equivalent(result["se"], 0.2153840, tol = 1e-5)
 })
 
 testthat::test_that("h_step_trt_effect works for conditional logistic regression without interaction", {
@@ -201,7 +201,7 @@ testthat::test_that("h_step_trt_effect works for conditional logistic regression
     x = 0
   )
   coef_sum <- summary(mod)$coefficients
-  expect_equivalent(result, coef_sum["ARMBINARM B", c("coef", "se(coef)")])
+  testthat::expect_equivalent(result, coef_sum["ARMBINARM B", c("coef", "se(coef)")])
 })
 
 testthat::test_that("h_step_trt_effect works for conditional logistic regression with interaction", {
@@ -219,9 +219,9 @@ testthat::test_that("h_step_trt_effect works for conditional logistic regression
     x = 50
   )
   est_manual <- sum(coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
-  expect_equivalent(result["est"], est_manual)
+  testthat::expect_equivalent(result["est"], est_manual)
   # Regression test for se.
-  expect_equivalent(result["se"], 0.2100507, tol = 1e-5)
+  testthat::expect_equivalent(result["se"], 0.2100507, tol = 1e-5)
 })
 
 # h_step_survival_formula ----

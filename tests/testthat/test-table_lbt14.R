@@ -14,7 +14,7 @@ testthat::test_that("LBT14 variant 1: HIGH works as expected", {
   adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIFL" = "Y"))
   adlb_out <- adlb_out %>%
     dplyr::mutate(
-      ATOXGR_GP = case_when(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, -1, -2, -3, -4) ~ "Not High",
         ATOXGR == 1 ~ "1",
         ATOXGR == 2 ~ "2",
@@ -24,7 +24,7 @@ testthat::test_that("LBT14 variant 1: HIGH works as expected", {
       )
     ) %>%
     dplyr::mutate(
-      BTOXGR_GP = case_when(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, -1, -2, -3, -4) ~ "Not High",
         BTOXGR == 1 ~ "1",
         BTOXGR == 2 ~ "2",
@@ -88,7 +88,7 @@ testthat::test_that("LBT14 variant 2: LOW works as expected", {
   adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRLOFL" = "Y"))
   adlb_out <- adlb_out %>%
     dplyr::mutate(
-      ATOXGR_GP = case_when(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         ATOXGR == -1 ~ "1",
         ATOXGR == -2 ~ "2",
@@ -98,7 +98,7 @@ testthat::test_that("LBT14 variant 2: LOW works as expected", {
       )
     ) %>%
     dplyr::mutate(
-      BTOXGR_GP = case_when(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         BTOXGR == -1 ~ "1",
         BTOXGR == -2 ~ "2",
@@ -162,7 +162,7 @@ testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expe
   adlb_out <- adlb_out %>%
     dplyr::filter(BTOXGR != "<Missing>") %>%
     dplyr::mutate(
-      ATOXGR_GP = case_when(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         ATOXGR == -1 ~ "1",
         ATOXGR == -2 ~ "2",
@@ -172,7 +172,7 @@ testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expe
       )
     ) %>%
     dplyr::mutate(
-      BTOXGR_GP = case_when(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         BTOXGR == -1 ~ "1",
         BTOXGR == -2 ~ "2",
@@ -236,7 +236,7 @@ testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and 
 
   adlb_out <- adlb_out %>%
     dplyr::mutate(
-      ATOXGR_GP = case_when(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         ATOXGR == -1 ~ "1",
         ATOXGR == -2 ~ "2",
@@ -246,7 +246,7 @@ testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and 
       )
     ) %>%
     dplyr::mutate(
-      BTOXGR_GP = case_when(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, 1, 2, 3, 4, "<Missing>") ~ "Not Low",
         BTOXGR == -1 ~ "1",
         BTOXGR == -2 ~ "2",
@@ -309,7 +309,7 @@ testthat::test_that("LBT14 variant 5: HIGH with fillings works as expected", {
   adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIFL" = "Y"))
   adlb_out <- adlb_out %>%
     dplyr::mutate(
-      ATOXGR_GP = case_when(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, -1, -2, -3, -4) ~ "Not High",
         ATOXGR == 1 ~ "1",
         ATOXGR == 2 ~ "2",
@@ -319,7 +319,7 @@ testthat::test_that("LBT14 variant 5: HIGH with fillings works as expected", {
       )
     ) %>%
     dplyr::mutate(
-      BTOXGR_GP = case_when(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, -1, -2, -3, -4) ~ "Not High",
         BTOXGR == 1 ~ "1",
         BTOXGR == 2 ~ "2",

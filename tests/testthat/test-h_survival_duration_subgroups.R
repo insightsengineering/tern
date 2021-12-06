@@ -27,7 +27,7 @@ adtte_preprop <- adtte %>%
   preprocess_adtte()
 
 
-test_that("h_survtime_df functions as expected with valid input and default arguments", {
+testthat::test_that("h_survtime_df functions as expected with valid input and default arguments", {
 
   adtte <- adtte_preprop
 
@@ -48,7 +48,7 @@ test_that("h_survtime_df functions as expected with valid input and default argu
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-test_that("h_survtime_df functions as expected when median is NA", {
+testthat::test_that("h_survtime_df functions as expected when median is NA", {
 
   adtte <- adtte_preprop
 
@@ -77,7 +77,7 @@ test_that("h_survtime_df functions as expected when median is NA", {
 
 })
 
-test_that("h_survtime_df functions as expected when 0 records in one group", {
+testthat::test_that("h_survtime_df functions as expected when 0 records in one group", {
 
   adtte <- adtte_preprop
 
@@ -106,7 +106,7 @@ test_that("h_survtime_df functions as expected when 0 records in one group", {
 
 })
 
-test_that("h_survtime_df fails with wrong input", {
+testthat::test_that("h_survtime_df fails with wrong input", {
 
   testthat::expect_error(h_survtime_df(
     tte = c(1, 2, "hello"),
@@ -116,7 +116,7 @@ test_that("h_survtime_df fails with wrong input", {
 
 })
 
-test_that("h_split_by_subgroups functions as expected with valid input and default arguments", {
+testthat::test_that("h_split_by_subgroups functions as expected with valid input and default arguments", {
 
   lvls_y <- c("B", "A", "C")
 
@@ -180,7 +180,7 @@ test_that("h_split_by_subgroups functions as expected with valid input and defau
 
 })
 
-test_that("h_split_by_subgroups works as expected with groups_lists", {
+testthat::test_that("h_split_by_subgroups works as expected with groups_lists", {
 
   lvls_y <- c("B", "A", "C")
 
@@ -212,7 +212,7 @@ test_that("h_split_by_subgroups works as expected with groups_lists", {
   )
 })
 
-test_that("h_survtime_subgroups_df functions as expected with valid input and default arguments", {
+testthat::test_that("h_survtime_subgroups_df functions as expected with valid input and default arguments", {
 
   adtte <- adtte_preprop
 
@@ -242,7 +242,7 @@ test_that("h_survtime_subgroups_df functions as expected with valid input and de
 
 })
 
-test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.", {
+testthat::test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -268,7 +268,7 @@ test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.
 
 })
 
-test_that("h_survtime_subgroups_df works as expected with groups_lists", {
+testthat::test_that("h_survtime_subgroups_df works as expected with groups_lists", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -285,13 +285,13 @@ test_that("h_survtime_subgroups_df works as expected with groups_lists", {
     )
   )
 
-  expect_setequal(
+  testthat::expect_setequal(
     result[result$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )
 })
 
-test_that("h_coxph_df functions as expected with valid input and default arguments", {
+testthat::test_that("h_coxph_df functions as expected with valid input and default arguments", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -318,7 +318,7 @@ test_that("h_coxph_df functions as expected with valid input and default argumen
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("h_coxph_df functions as expected with one stratification factor", {
+testthat::test_that("h_coxph_df functions as expected with one stratification factor", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -347,7 +347,7 @@ test_that("h_coxph_df functions as expected with one stratification factor", {
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("h_coxph_df functions as expected with multiple stratification factors", {
+testthat::test_that("h_coxph_df functions as expected with multiple stratification factors", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -375,7 +375,7 @@ test_that("h_coxph_df functions as expected with multiple stratification factors
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("h_coxph_df functions as expected when 0 records in one group", {
+testthat::test_that("h_coxph_df functions as expected when 0 records in one group", {
 
   adtte <- adtte %>%
     preprocess_adtte() %>%
@@ -403,7 +403,7 @@ test_that("h_coxph_df functions as expected when 0 records in one group", {
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("h_coxph_subgroups_df functions as expected with valid input and default arguments", {
+testthat::test_that("h_coxph_subgroups_df functions as expected with valid input and default arguments", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -522,7 +522,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("h_coxph_subgroups_df functions as expected with stratification factors", {
+testthat::test_that("h_coxph_subgroups_df functions as expected with stratification factors", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -560,7 +560,7 @@ test_that("h_coxph_subgroups_df functions as expected with stratification factor
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
+testthat::test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -593,7 +593,7 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("h_coxph_subgroups_df works as expected with groups_lists", {
+testthat::test_that("h_coxph_subgroups_df works as expected with groups_lists", {
 
   adtte <- adtte_preprop
 
@@ -609,7 +609,7 @@ test_that("h_coxph_subgroups_df works as expected with groups_lists", {
     )
   )
 
-  expect_setequal(
+  testthat::expect_setequal(
     result[result$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )

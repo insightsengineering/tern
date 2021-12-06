@@ -13,15 +13,15 @@ testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
 
   adae <- adae %>%
     dplyr::mutate(
-      SMQ1 = case_when(
+      SMQ1 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
       ),
-      SMQ2 = case_when(
+      SMQ2 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl D.1") ~ "SMQ 1 (narrow)",
         TRUE ~ NA_character_
       ),
-      SMQ3 = case_when(
+      SMQ3 = dplyr::case_when(
         AEDECOD %in% c("dcd B.2.1.2.1", "dcd A.1.1.1.2", "dcd C.2.1.2.1", "dcd B.2.2.3.1") ~ "AESI",
         TRUE ~ NA_character_
       )
@@ -30,17 +30,17 @@ testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
 
   adae_smq1 <- adae %>%
     dplyr::filter(!is.na(SMQ1)) %>%
-    rename(SMQ = SMQ1) %>%
+    dplyr::rename(SMQ = SMQ1) %>%
     dplyr::select(-SMQ2, -SMQ3)
 
   adae_smq2 <- adae %>%
     dplyr::filter(!is.na(SMQ2)) %>%
-    rename(SMQ = SMQ2) %>%
+    dplyr::rename(SMQ = SMQ2) %>%
     dplyr::select(-SMQ1, -SMQ3)
 
   adae_smq3 <- adae %>%
     dplyr::filter(!is.na(SMQ3)) %>%
-    rename(SMQ = SMQ3) %>%
+    dplyr::rename(SMQ = SMQ3) %>%
     dplyr::select(-SMQ1, -SMQ2)
 
   adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)
@@ -132,7 +132,7 @@ testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
 
   adsl <- adsl %>%
     dplyr::mutate(
-      AGE65 = case_when(
+      AGE65 = dplyr::case_when(
         AGE >= 65 ~ ">= 65",
         TRUE ~ "< 65"
       ),
@@ -143,19 +143,19 @@ testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
 
   adae <- adae %>%
     dplyr::mutate(
-      SMQ1 = case_when(
+      SMQ1 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
       ),
-      SMQ2 = case_when(
+      SMQ2 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl D.1") ~ "SMQ 1 (narrow)",
         TRUE ~ NA_character_
       ),
-      SMQ3 = case_when(
+      SMQ3 = dplyr::case_when(
         AEDECOD %in% c("dcd B.2.1.2.1", "dcd A.1.1.1.2", "dcd C.2.1.2.1", "dcd B.2.2.3.1") ~ "AESI",
         TRUE ~ NA_character_
       ),
-      AGE65 = case_when(
+      AGE65 = dplyr::case_when(
         AGE >= 65 ~ ">= 65",
         TRUE ~ "< 65"
       ),
@@ -164,17 +164,17 @@ testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
 
   adae_smq1 <- adae %>%
     dplyr::filter(!is.na(SMQ1)) %>%
-    rename(SMQ = SMQ1) %>%
+    dplyr::rename(SMQ = SMQ1) %>%
     dplyr::select(-SMQ2, -SMQ3)
 
   adae_smq2 <- adae %>%
     dplyr::filter(!is.na(SMQ2)) %>%
-    rename(SMQ = SMQ2) %>%
+    dplyr::rename(SMQ = SMQ2) %>%
     dplyr::select(-SMQ1, -SMQ3)
 
   adae_smq3 <- adae %>%
     dplyr::filter(!is.na(SMQ3)) %>%
-    rename(SMQ = SMQ3) %>%
+    dplyr::rename(SMQ = SMQ3) %>%
     dplyr::select(-SMQ1, -SMQ2)
 
   adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)

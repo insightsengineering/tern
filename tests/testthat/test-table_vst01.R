@@ -17,21 +17,21 @@ gen_advs <- function() {
 
   advs_pb_max <- advs_pb %>%
     dplyr::group_by(PARAM, USUBJID) %>%
-    arrange(desc(AVAL)) %>%
+    dplyr::arrange(dplyr::desc(AVAL)) %>%
     dplyr::slice(1) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(AVISIT = "Post-Baseline Maximum")
 
   advs_pb_min <- advs_pb %>%
     dplyr::group_by(PARAM, USUBJID) %>%
-    arrange(AVAL) %>%
+    dplyr::arrange(AVAL) %>%
     dplyr::slice(1) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(AVISIT = "Post-Baseline Minimum")
 
   advs_pb_last <- advs_pb %>%
     dplyr::group_by(PARAM, USUBJID) %>%
-    arrange(desc(AVISITN)) %>%
+    dplyr::arrange(dplyr::desc(AVISITN)) %>%
     dplyr::slice(1) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(AVISIT = "Post-Baseline Last")

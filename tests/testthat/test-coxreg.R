@@ -386,7 +386,7 @@ testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated
     }
   )
 
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 })
 
 testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_univariate (with interaction)", {
@@ -438,7 +438,7 @@ testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated
     clear
   )
 
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 })
 
 # tidy.summary.coxph ----

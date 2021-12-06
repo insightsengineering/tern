@@ -314,7 +314,7 @@ testthat::test_that("RSPT01: 6. Best Overall Response (define new sections to di
 
   # Define study-specific response category "No Progression".
   adrs <- adrs %>% dplyr::mutate(
-    AVALC_NEW = case_when(
+    AVALC_NEW = dplyr::case_when(
       AVALC %in% c(
         "Complete Response (CR)", "Partial Response (PR)",
         "Stable Disease (SD)"

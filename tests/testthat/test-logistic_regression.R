@@ -14,7 +14,7 @@ adrs_example <- local({
       PARAMCD == "BESRSPI",
       RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
     ) %>%
-    dplyr::mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
+    dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
     reapply_varlabels(var_labels(adrs_cached))
 })
 
@@ -100,7 +100,7 @@ testthat::test_that("fit_logistic works with a single stratification variable", 
       strata = "STRATA1"
     )
   ))
-  expect_s3_class(result, c("clogit", "coxph"))
+  testthat::expect_s3_class(result, c("clogit", "coxph"))
 
   expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE + strata(STRATA1)
   result_formula <- result$formula
@@ -127,7 +127,7 @@ testthat::test_that("fit_logistic works with two stratification variables", {
       strata = c("STRATA1", "STRATA2")
     )
   ))
-  expect_s3_class(result, c("clogit", "coxph"))
+  testthat::expect_s3_class(result, c("clogit", "coxph"))
 
   expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE +
     strata(I(interaction(STRATA1, STRATA2)))
@@ -149,7 +149,7 @@ testthat::test_that("h_get_interaction_vars works as expected", {
   )
   result <- h_get_interaction_vars(model)
   expected <- c("ARMCD", "RACE")
-  expect_setequal(result, expected)
+  testthat::expect_setequal(result, expected)
 })
 
 # h_interaction_coef_name ----
@@ -192,7 +192,7 @@ testthat::test_that("h_or_cat_interaction works as expected", {
     testthat::expect_is(res, "list")
     testthat::expect_named(res, levels(droplevels(data$RACE)))
   }
-  expect_equivalent(
+  testthat::expect_equivalent(
     result_armcd[["ARM B"]][["ASIAN"]],
     list(
       or = 0.1503174,
@@ -229,7 +229,7 @@ testthat::test_that("h_or_cont_interaction works as expected with median increme
     testthat::expect_is(res, "list")
     testthat::expect_named(res, as.character(median(data$AGE)))
   }
-  expect_equivalent(
+  testthat::expect_equivalent(
     result_armcd[["ARM B"]][["34"]],
     list(
       or = 9.284028e-05,
@@ -244,7 +244,7 @@ testthat::test_that("h_or_cont_interaction works as expected with median increme
     testthat::expect_is(res, "list")
     testthat::expect_named(res, c("or", "ci"))
   }
-  expect_equivalent(
+  testthat::expect_equivalent(
     result_age[["ARM B"]],
     list(
       or = 1.028141,
@@ -452,7 +452,7 @@ testthat::test_that("h_glm_simple_term_extract can extract continuous variable r
     is_term_summary = TRUE,
     stringsAsFactors = FALSE
   )
-  expect_equivalent(result, expected, tolerance = 0.000001)
+  testthat::expect_equivalent(result, expected, tolerance = 0.000001)
 })
 
 # h_glm_interaction_extract ----
@@ -526,7 +526,7 @@ testthat::test_that("h_glm_interaction_extract works for continuous interaction"
     row.names = c(NA, -3L),
     class = "data.frame"
   )
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 })
 
 # h_logistic_simple_terms ----
@@ -643,7 +643,7 @@ testthat::test_that("h_logistic_simple_terms can extract continuous variable res
     0.9712424,
     1.0682798
   ))
-  expect_equivalent(result, expected, tolerance = 0.000001)
+  testthat::expect_equivalent(result, expected, tolerance = 0.000001)
 })
 
 # h_glm_inter_term_extract ----
@@ -767,7 +767,7 @@ testthat::test_that("h_glm_inter_term_extract works as expected with categorical
     ),
     class = "data.frame"
   )
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 })
 
 testthat::test_that("h_glm_inter_term_extract works as expected with continuous interaction", {

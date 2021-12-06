@@ -38,7 +38,7 @@ testthat::test_that("s_summary return NA for x length 0L", {
     iqr = c(iqr = NA_real_),
     range = c(min = NA_real_, max = NA_real_)
   )
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 })
 
 testthat::test_that("s_summary handles NA", {
@@ -62,7 +62,7 @@ testthat::test_that("s_summary handles NA", {
     iqr = c(iqr = 0),
     range = c(min = 1, max = 1)
   )
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 
   # With `na.rm = FALSE`.
   result <- s_summary(x, na.rm = FALSE)
@@ -81,7 +81,7 @@ testthat::test_that("s_summary handles NA", {
     iqr = c(iqr = NA_real_),
     range = c(min = NA_real_, max = NA_real_)
   )
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 })
 
 testthat::test_that("s_summary returns right results for n = 2", {
@@ -103,7 +103,7 @@ testthat::test_that("s_summary returns right results for n = 2", {
     iqr = c(iqr = 1),
     range = c(min = 1, max = 2)
   )
-  expect_equivalent(result, expected, tolerance = .00001)
+  testthat::expect_equivalent(result, expected, tolerance = .00001)
 })
 
 testthat::test_that("s_summary returns right results for n = 8", {
@@ -125,7 +125,7 @@ testthat::test_that("s_summary returns right results for n = 8", {
     iqr = c(iqr = 5),
     range = c(min = 1, max = 10)
   )
-  expect_equivalent(result, expected, tolerance = .00001)
+  testthat::expect_equivalent(result, expected, tolerance = .00001)
 })
 
 testthat::test_that("s_summary works with factors", {

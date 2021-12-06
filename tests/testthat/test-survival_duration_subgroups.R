@@ -209,13 +209,13 @@ testthat::test_that("extract_survival_subgroups works as expected with groups_li
   )
 
   survtime <- result$survtime
-  expect_setequal(
+  testthat::expect_setequal(
     survtime[survtime$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )
 
   hr <- result$hr
-  expect_setequal(
+  testthat::expect_setequal(
     hr[hr$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )

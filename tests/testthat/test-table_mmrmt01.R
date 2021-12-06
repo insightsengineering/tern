@@ -40,7 +40,7 @@ mmrm_results <- if (too_old_lme4) {
 
 testthat::test_that("LS means table is produced correctly", {
 
-  skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
+  testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
   df <- broom::tidy(mmrm_results)
   result <- basic_table() %>%
@@ -96,7 +96,7 @@ testthat::test_that("LS means table is produced correctly", {
 
 testthat::test_that("Fixed effects table is produced correctly", {
 
-  skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
+  testthat::skip_iftoo_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
   result <- as.rtable(mmrm_results, type = "fixed")
   result_matrix <- to_string_matrix(result)
@@ -134,7 +134,7 @@ testthat::test_that("Fixed effects table is produced correctly", {
 
 testthat::test_that("Covariance matrix table is produced correctly", {
 
-  skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
+  testthat::skip_iftoo_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
   result <- as.rtable(mmrm_results, type = "cov")
   result_matrix <- to_string_matrix(result)
@@ -156,7 +156,7 @@ testthat::test_that("Covariance matrix table is produced correctly", {
 
 testthat::test_that("Model diagnostics table is produced correctly", {
 
-  skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
+  testthat::skip_iftoo_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
   result <- as.rtable(mmrm_results, type = "diagnostic")
   result_matrix <- to_string_matrix(result)

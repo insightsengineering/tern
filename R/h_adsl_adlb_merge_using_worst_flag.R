@@ -89,7 +89,7 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
     adlb_btoxgr <- adlb %>%
       dplyr::select(c("USUBJID", "PARAMCD", "BTOXGR")) %>%
       unique() %>%
-      rename("BTOXGR_MAP" = "BTOXGR")
+      dplyr::rename("BTOXGR_MAP" = "BTOXGR")
 
     adlb_out <- merge(
       adlb_f,
@@ -100,7 +100,7 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       )
     adlb_out <- adlb_out %>%
       dplyr::left_join(adlb_btoxgr, by = c("USUBJID", "PARAMCD")) %>%
-      mutate(BTOXGR = .data$BTOXGR_MAP) %>%
+      dplyr::mutate(BTOXGR = .data$BTOXGR_MAP) %>%
       dplyr::select(-.data$BTOXGR_MAP)
 
     adlb_var_labels <- c(var_labels(adlb[by_variables_from_adlb]),

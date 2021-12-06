@@ -123,13 +123,13 @@ testthat::test_that("extract_rsp_subgroups works as expected with groups_lists",
   )
 
   prop <- result$prop
-  expect_setequal(
+  testthat::expect_setequal(
     prop[prop$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )
 
   or <- result$or
-  expect_setequal(
+  testthat::expect_setequal(
     or[or$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )

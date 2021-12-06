@@ -12,7 +12,7 @@ preprocess_adae <- function(adae) {
       AESDTH = as.character(AESDTH),
       # For demonstration purpose only,
       # make "A: Drug X" as the arm without AE leading to death.
-      AESDTH = case_when(
+      AESDTH = dplyr::case_when(
         ARM == "A: Drug X" ~ NA_character_,
         TRUE ~ AESDTH
       ),
