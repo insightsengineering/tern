@@ -102,7 +102,7 @@ or_clogit <- function(data, conf_level) {
   data$strata <- as_factor_keep_attributes(data$strata)
 
   # Deviation from convention: `survival::strata` must be simply `strata`.
-  formula <- stats::as.formula("rsp ~ grp + survival::strata(strata)")
+  formula <- stats::as.formula("rsp ~ grp + strata(strata)")
   model_fit <- survival::clogit(formula = formula, data = data)
 
   # Create a list with one set of OR estimates and CI per coefficient, i.e.
