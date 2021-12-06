@@ -123,7 +123,7 @@ test_that("estimate_odds_ratio estimates right OR and CI (unstratified analysis)
 })
 
 test_that("estimate_odds_ratio estimates right OR and CI (stratified analysis)", {
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
   set.seed(12)
   data <- data.frame(
     rsp = sample(c(TRUE, FALSE), 100, TRUE),
