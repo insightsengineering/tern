@@ -26,7 +26,7 @@
 #' broom::tidy(step_matrix)
 #'
 tidy.step <- function(x, ...) {  #nolint #nousage
-  assertthat::assert_that(is(x, "step"))
+  assertthat::assert_that(methods::is(x, "step"))
   dat <- as.data.frame(x)
   nams <- names(dat)
   is_surv <- "loghr" %in% names(dat)

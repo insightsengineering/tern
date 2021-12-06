@@ -45,7 +45,7 @@ full_table_aet04_pi <- function(adsl, adae_max) {
 }
 
 criteria_fun <- function(tr) {
-  is(tr, "ContentRow")
+  methods::is(tr, "ContentRow")
 }
 
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl

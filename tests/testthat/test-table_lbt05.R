@@ -95,7 +95,7 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
   result <- build_table(lyt, df = adlb, alt_counts_df = adsl)
 
   all_zero_or_na_not_any <- function(tr) {
-    if (!is(tr, "TableRow") || is(tr, "LabelRow") || obj_label(tr) == "Any Abnormality")
+    if (!methods::is(tr, "TableRow") || methods::is(tr, "LabelRow") || obj_label(tr) == "Any Abnormality")
       return(FALSE)
     rvs <- unlist(unname(row_values(tr)))
     all(is.na(rvs) | rvs == 0 | !is.finite(rvs))

@@ -359,7 +359,7 @@ split_text_grob <- function(text,
   stopifnot(is.unit(width) && length(width) == 1)
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
-  if (!is(width, "unit.arithmetic") &&
+  if (!methods::is(width, "unit.arithmetic") &&
     !is.null(attr(width, "unit")) &&
     attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts", "dida", "cicero", "scaledpts")) {
     attr(text, "fixed_text") <- paste(vapply(text, split_string, character(1), width = width), collapse = "\n")
