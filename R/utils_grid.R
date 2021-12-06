@@ -61,7 +61,7 @@ stack_grobs <- function(...,
 
   nested_grobs <- Map(function(g, i) {
     grid::gTree(
-      children = grid::gList(g),
+      children = grid::grid::gList(g),
       vp = grid::viewport(layout.pos.row = i, layout.pos.col = 1)
     )
   }, grobs, seq_along(grobs) * 2 - 1)
@@ -72,7 +72,7 @@ stack_grobs <- function(...,
   )
 
   grid::gTree(
-    children = grid::gList(grobs_mainvp),
+    children = grid::grid::gList(grobs_mainvp),
     vp = vp,
     gp = gp,
     name = name
@@ -119,7 +119,7 @@ stack_grobs <- function(...,
 #'
 #' showViewport()
 #'
-arrange_grobs <- function(...,
+arrange_grobs <- function(..., # nolint
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
                           padding_ht = grid::unit(2, "line"),
@@ -188,7 +188,7 @@ arrange_grobs <- function(...,
       if (k <= length(grobs)) {
         nested_grobs <- c(nested_grobs,
                           list(grid::gTree(
-                            children = grid::gList(grobs[[k]]),
+                            children = grid::grid::gList(grobs[[k]]),
                             vp = grid::viewport(layout.pos.row = i, layout.pos.col = j)
                           )))
       }
@@ -200,7 +200,7 @@ arrange_grobs <- function(...,
   )
 
   grid::gTree(
-    children = grid::gList(grobs_mainvp),
+    children = grid::grid::gList(grobs_mainvp),
     vp = vp,
     gp = gp,
     name = name

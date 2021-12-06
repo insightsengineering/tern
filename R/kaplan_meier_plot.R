@@ -291,18 +291,16 @@ g_km <- function(df,
        # Survfit summary table (top-right corner).
        if (annot_surv_med) {
          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-            children = h_grob_median_surv(
-              fit_km = fit_km,
-              armval = armval,
-              x = position_surv_med[1],
-              y = position_surv_med[2],
-              ttheme = gridExtra::ttheme_default(
-                base_size = font_size
-              )
-            )
-          )
-        },
+           vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
+           children = h_grob_median_surv(
+             fit_km = fit_km,
+             armval = armval,
+             x = position_surv_med[1],
+             y = position_surv_med[2],
+             ttheme = gridExtra::ttheme_default(base_size = font_size)
+           )
+         )
+       },
 
         if (annot_coxph) {
           grid::gTree(

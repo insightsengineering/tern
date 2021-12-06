@@ -255,7 +255,7 @@ h_step_rsp_est <- function(formula,
             family = binomial("logit")
           )
         } else {
-          clogit(
+          survival::clogit(
             formula = formula,
             data = data,
             subset = .subset

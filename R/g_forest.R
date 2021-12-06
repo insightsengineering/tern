@@ -159,7 +159,7 @@
 #'   forest_header = c("Hello", "World")
 #' )
 #'}
-g_forest <- function(tbl,
+g_forest <- function(tbl, # nolint
                      col_x = attr(tbl, "col_x"),
                      col_ci = attr(tbl, "col_ci"),
                      vline = 1,
@@ -598,7 +598,7 @@ cell_in_rows <- function(row_name,
 #' Calculate the `grob` corresponding to the dot line within the forest plot.
 #' @noRd
 #'
-forest_dot_line <- function(x,
+forest_dot_line <- function(x, # nolint
                             lower,
                             upper,
                             row_index,
