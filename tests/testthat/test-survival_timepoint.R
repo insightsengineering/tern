@@ -3,7 +3,7 @@ library(dplyr)
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
-test_that("s_surv_timepoint works with default arguments", {
+testthat::test_that("s_surv_timepoint works with default arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -24,10 +24,10 @@ test_that("s_surv_timepoint works with default arguments", {
     rate_se = with_label(2.73767719947927, label = "Standard Error of Event Free Rate"),
     rate_ci = with_label(c(83.7969275999491, 94.5284250245007), label = "95% CI")
   )
-  expect_equal(result, expected, tolerance = 0.0000001)
+  testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-test_that("s_surv_timepoint works with customized arguments", {
+testthat::test_that("s_surv_timepoint works with customized arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -51,10 +51,10 @@ test_that("s_surv_timepoint works with customized arguments", {
     rate_se = with_label(4.17892667633869, label = "Standard Error of Event Free Rate"),
     rate_ci = with_label(c(57.0335300760197, 78.6547298143104), label = "99% CI")
   )
-  expect_equal(result, expected, tolerance = 0.0000001)
+  testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-test_that("s_surv_timepoint also works when there are 0 patients at risk", {
+testthat::test_that("s_surv_timepoint also works when there are 0 patients at risk", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -66,7 +66,7 @@ test_that("s_surv_timepoint also works when there are 0 patients at risk", {
     # such that no patients are at risk anymore beyond 6 months.
     dplyr::filter(ARMCD == "ARM A", AVAL <= 6)
 
-  result <- expect_silent(s_surv_timepoint(
+  result <- testthat::expect_silent(s_surv_timepoint(
     adtte_f,
     .var = "AVAL",
     time_point = 6,
@@ -78,10 +78,10 @@ test_that("s_surv_timepoint also works when there are 0 patients at risk", {
     rate_se = with_label(NA_real_, "Standard Error of Event Free Rate"),
     rate_ci = with_label(c(NA_real_, NA_real_), "95% CI")
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("surv_timepoint works with default arguments", {
+testthat::test_that("surv_timepoint works with default arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -112,10 +112,10 @@ test_that("surv_timepoint works with default arguments", {
     ),
     .Dim = 5:4
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("surv_timepoint works with customized arguments", {
+testthat::test_that("surv_timepoint works with customized arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -147,11 +147,11 @@ test_that("surv_timepoint works with customized arguments", {
     ),
     .Dim = 5:4
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("s_surv_timepoint_diff works with default arguments for comparison group", {
+testthat::test_that("s_surv_timepoint_diff works with default arguments for comparison group", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -177,11 +177,11 @@ test_that("s_surv_timepoint_diff works with default arguments for comparison gro
     rate_diff_ci = with_label(c(-13.6362446145953, 2.96935372186064), label = "95% CI"),
     ztest_pval = with_label(0.208024379170235, label = "p-value (Z-test)")
   )
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 
-test_that("s_surv_timepoint_diff works with customized arguments for comparison arm", {
+testthat::test_that("s_surv_timepoint_diff works with customized arguments for comparison arm", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -207,10 +207,10 @@ test_that("s_surv_timepoint_diff works with customized arguments for comparison 
     rate_diff_ci = with_label(c(-8.53787765104722, 7.41262773280429), label = "90% CI"),
     ztest_pval = with_label(0.907622094366106, label = "p-value (Z-test)")
   )
-  expect_equal(result, expected, tolerance = 0.0000001)
+  testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-test_that("surv_timepoint for survival diff works with default arguments", {
+testthat::test_that("surv_timepoint for survival diff works with default arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -243,10 +243,10 @@ test_that("surv_timepoint for survival diff works with default arguments", {
     .Dim = 5:4
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("surv_timepoint for survival diff works with customized arguments", {
+testthat::test_that("surv_timepoint for survival diff works with customized arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -280,11 +280,11 @@ test_that("surv_timepoint for survival diff works with customized arguments", {
     .Dim = 5:4
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("surv_timepoint no warning when multipled layers generated", {
+testthat::test_that("surv_timepoint no warning when multipled layers generated", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -292,7 +292,7 @@ test_that("surv_timepoint no warning when multipled layers generated", {
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
-  expect_silent(
+  testthat::expect_silent(
     basic_table() %>%
       split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
       add_colcounts() %>%

@@ -29,7 +29,7 @@ var_labels(ADTTE_f) <- saved_labels
 ADTTE_f$event <- 1 - ADTTE_f$CNSR
 # nolint end
 
-test_that("1. Cox Regression", {
+testthat::test_that("1. Cox Regression", {
   mod1 <- fit_coxreg_univar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -55,11 +55,11 @@ test_that("1. Cox Regression", {
     .Dim = c(7L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("2. Cox Regression (with Interaction Term)", {
+testthat::test_that("2. Cox Regression (with Interaction Term)", {
   mod2 <- fit_coxreg_univar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -91,11 +91,11 @@ test_that("2. Cox Regression (with Interaction Term)", {
     .Dim = c(13L, 6L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("3. Cox Regression (specifying covariates)", {
+testthat::test_that("3. Cox Regression (specifying covariates)", {
   mod3 <- fit_coxreg_univar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -131,11 +131,11 @@ test_that("3. Cox Regression (specifying covariates)", {
     .Dim = c(15L, 6L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
+testthat::test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
   conf_level <- 0.90
   mod4 <- fit_coxreg_univar(
     variables = list(
@@ -176,5 +176,5 @@ test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
     .Dim = c(15L, 6L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -10,86 +10,86 @@ test_fit <- local({
 })
 
 # h_data_plot ----
-test_that("h_data_plot works as expected", {
+testthat::test_that("h_data_plot works as expected", {
   data <- test_fit
   result <- h_data_plot(data)
-  expect_is(result, "tbl_df")
-  expect_identical(
+  testthat::expect_is(result, "tbl_df")
+  testthat::expect_identical(
     names(result),
     c("time", "n.risk", "n.event", "n.censor", "estimate", "std.error",
       "conf.high", "conf.low", "strata", "censor")
   )
 })
 
-test_that("h_data_plot respects the ordering of the arm variable factor levels", {
+testthat::test_that("h_data_plot respects the ordering of the arm variable factor levels", {
   data <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
     survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
   result <- h_data_plot(data)
-  expect_is(result, "tbl_df")
-  expect_is(result$strata, "factor")
-  expect_identical(levels(result$strata), c("ARM B", "ARM C", "ARM A"))
+  testthat::expect_is(result, "tbl_df")
+  testthat::expect_is(result$strata, "factor")
+  testthat::expect_identical(levels(result$strata), c("ARM B", "ARM C", "ARM A"))
 })
 
-test_that("h_data_plot adds rows that have time 0 and estimate 1", {
+testthat::test_that("h_data_plot adds rows that have time 0 and estimate 1", {
   data <- test_fit
   result <- h_data_plot(data)
   result_corner <- result %>%
     dplyr::filter(time == 0, estimate == 1)
-  expect_identical(result_corner$strata, factor(c("ARM A", "ARM B", "ARM C")))
-  expect_true(with(
+  testthat::expect_identical(result_corner$strata, factor(c("ARM A", "ARM B", "ARM C")))
+  testthat::expect_true(with(
     result_corner,
     all(conf.high == 1) && all(conf.low == 1) && all(n.event == 0) && all(n.censor == 0)
   ))
 })
 
 # h_xticks ----
-test_that("h_xticks works with default settings", {
+testthat::test_that("h_xticks works with default settings", {
   result <- h_data_plot(test_fit) %>%
     h_xticks()
   expected <- seq(0, 5000, 1000)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_xticks works with xticks number", {
+testthat::test_that("h_xticks works with xticks number", {
   result <- h_data_plot(test_fit) %>%
     h_xticks(xticks = 100)
   expected <- seq(0, 4700, 100)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_xticks works with xticks numeric", {
+testthat::test_that("h_xticks works with xticks numeric", {
   expected <- c(0, 365, 1000)
   result <- h_data_plot(test_fit) %>%
     h_xticks(xticks = expected)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_xticks works with max_time only", {
+testthat::test_that("h_xticks works with max_time only", {
   expected <- c(0, 1000, 2000, 3000)
   result <- h_data_plot(test_fit, max_time = 3000) %>%
     h_xticks(max_time = 3000)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_xticks works with xticks numeric when max_time is not NULL", {
+testthat::test_that("h_xticks works with xticks numeric when max_time is not NULL", {
   expected <- c(0, 365, 1000)
   result <- h_data_plot(test_fit, max_time = 1500) %>%
     h_xticks(xticks = expected, max_time = 1500)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_xticks works with xticks number when max_time is not NULL", {
+testthat::test_that("h_xticks works with xticks number when max_time is not NULL", {
   expected <- c(0, 500, 1000, 1500)
   result <- h_data_plot(test_fit, max_time = 1500) %>%
     h_xticks(xticks = 500, max_time = 1500)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 
 # h_tbl_median_surv ----
-test_that("h_tbl_median_surv estimates median survival time with CI", {
+testthat::test_that("h_tbl_median_surv estimates median survival time with CI", {
   result <- h_tbl_median_surv(fit_km = test_fit)
   expected <- structure(
     list(
@@ -100,10 +100,10 @@ test_that("h_tbl_median_surv estimates median survival time with CI", {
     row.names = c("ARM A", "ARM B", "ARM C"),
     class = "data.frame"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
+testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
   df <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -122,7 +122,7 @@ test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
     row.names = c("ARM B", "ARM C"),
     class = "data.frame"
   )
-  expect_identical(result1, expected1)
+  testthat::expect_identical(result1, expected1)
 
   result2 <- h_tbl_coxph_pairwise(
     df = df,
@@ -138,5 +138,5 @@ test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
     row.names = c("ARM B", "ARM C"),
     class = "data.frame"
   )
-  expect_identical(result2, expected2)
+  testthat::expect_identical(result2, expected2)
 })

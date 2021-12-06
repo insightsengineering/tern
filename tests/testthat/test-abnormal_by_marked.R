@@ -32,7 +32,7 @@ adlb_raw <- local({
 })
 
 
-test_that("s_count_abnormal_by_marked works as expected", {
+testthat::test_that("s_count_abnormal_by_marked works as expected", {
   adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -88,11 +88,11 @@ test_that("s_count_abnormal_by_marked works as expected", {
     `Last or replicated` = c(10.00000000, 0.07462687),
     `Any Abnormality` = c(12.00000000, 0.08955224)
   ))
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 
-test_that("s_count_abnormal_by_marked works as expected", {
+testthat::test_that("s_count_abnormal_by_marked works as expected", {
   adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -148,11 +148,11 @@ test_that("s_count_abnormal_by_marked works as expected", {
     `Last or replicated` = c(10.00000000, 0.07462687),
     `Any Abnormality` = c(11.00000000, 0.08208955)
   ))
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 
-test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
+testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
           two direction values", {
   adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
@@ -197,7 +197,7 @@ test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
     cur_col_subset = I(cur_col_subset)
   )
 
-  expect_error(s_count_abnormal_by_marked(
+  testthat::expect_error(s_count_abnormal_by_marked(
     df = adlb_crp,
     .spl_context = spl_context,
     .var = "AVALCAT1",
@@ -207,7 +207,7 @@ test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
 })
 
 
-test_that("count_abnormal_by_marked works as expected", {
+testthat::test_that("count_abnormal_by_marked works as expected", {
   adlb <- adlb_raw
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
@@ -280,5 +280,5 @@ test_that("count_abnormal_by_marked works as expected", {
       "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)"),
     .Dim = c(10L, 4L)
     )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -13,7 +13,7 @@ adlb <- adlb %>% dplyr::mutate(
 ) %>%
 dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
-test_that("LBT08 produce correctly", {
+testthat::test_that("LBT08 produce correctly", {
   df <- h_adlb_worsen(
     adlb,
     worst_flag_low = c("WGRLOFL" = "Y"),
@@ -64,5 +64,5 @@ test_that("LBT08 produce correctly", {
     ),
     .Dim = c(29L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

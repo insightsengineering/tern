@@ -9,7 +9,7 @@ df <- data.frame(
 )
 df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
 
-test_that("h_map_for_count_abnormal returns the correct map for default method with healthy single input", {
+testthat::test_that("h_map_for_count_abnormal returns the correct map for default method with healthy single input", {
 
   result <- h_map_for_count_abnormal(
     df = df,
@@ -26,10 +26,10 @@ test_that("h_map_for_count_abnormal returns the correct map for default method w
     PARAM = c(rep("ALT", 3), rep("CPR", 3)),
     ANRIND = rep(c("HIGH", "LOW", "NORMAL"), 2)
   )
-  expect_identical(as.matrix(result), as.matrix(expected))
+  testthat::expect_identical(as.matrix(result), as.matrix(expected))
 })
 
-test_that("h_map_for_count_abnormal returns the correct map for range method with healthy single input", {
+testthat::test_that("h_map_for_count_abnormal returns the correct map for range method with healthy single input", {
 
   df$ANRLO <- 5 #nolint
   df$ANRHI <- 20 #nolint
@@ -49,11 +49,11 @@ test_that("h_map_for_count_abnormal returns the correct map for range method wit
     PARAM = c(rep("ALT", 3), rep("CPR", 3)),
     ANRIND = rep(c("HIGH", "LOW", "NORMAL"), 2)
   )
-  expect_identical(as.matrix(result), as.matrix(expected))
+  testthat::expect_identical(as.matrix(result), as.matrix(expected))
 })
 
 # for default method, if LOW LOW and HIGH HIGH are not observed in the input dataset, they are dropped
-test_that(
+testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input", {
     result <- h_map_for_count_abnormal(
       df = df,
@@ -70,13 +70,13 @@ test_that(
       PARAM = c(rep("ALT", 3), rep("CPR", 3)),
       ANRIND = rep(c("HIGH", "LOW", "NORMAL"), 2)
     )
-    expect_identical(as.matrix(result), as.matrix(expected))
+    testthat::expect_identical(as.matrix(result), as.matrix(expected))
   }
 )
 
 # for range method, if LOW LOW and HIGH HIGH are not observed in the input dataset but specified in the abnormal,
 # they are kept in the map.
-test_that(
+testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input", {
     df$ANRLO <- 5 #nolint
     df$ANRHI <- 20 #nolint
@@ -96,12 +96,12 @@ test_that(
       PARAM = c(rep("ALT", 5), rep("CPR", 5)),
       ANRIND = rep(c("HIGH", "HIGH HIGH", "LOW", "LOW LOW", "NORMAL"), 2)
     )
-    expect_identical(as.matrix(result), as.matrix(expected))
+    testthat::expect_identical(as.matrix(result), as.matrix(expected))
   }
 )
 
 # for default method, if only LOW LOW/HIGH HIGH is observed in the input dataset, the observed one will be kept.
-test_that(
+testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input", {
     df <- df %>% dplyr::mutate(
       ANRIND = ifelse(PARAM == "ALT" & ANRIND == "LOW" & USUBJID == "1", "LOW LOW", as.character(ANRIND))
@@ -122,13 +122,13 @@ test_that(
       PARAM = c(rep("ALT", 4), rep("CPR", 3)),
       ANRIND = c(c("HIGH", "LOW", "LOW LOW", "NORMAL"), c("HIGH", "LOW", "NORMAL"))
     )
-    expect_identical(as.matrix(result), as.matrix(expected))
+    testthat::expect_identical(as.matrix(result), as.matrix(expected))
   }
 )
 
 # for range method, a theoretical map should be returned even that direction has zero counts, for the below example,
 # every record is normal
-test_that(
+testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input", {
     df$ANRLO <- 5 #nolint
     df$ANRHI <- 20 #nolint
@@ -150,12 +150,12 @@ test_that(
       PARAM = c(rep("ALT", 3), rep("CPR", 3)),
       ANRIND = rep(c("HIGH", "LOW", "NORMAL"), 2)
     )
-    expect_identical(as.matrix(result), as.matrix(expected))
+    testthat::expect_identical(as.matrix(result), as.matrix(expected))
   }
 )
 
 # for range method, a theoretical map is built based on the rule at least one ANRLO >0 and one ANRHI not missing
-test_that(
+testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input", {
     df$ANRLO <- 5 #nolint
     df$ANRHI <- 20 #nolint
@@ -177,6 +177,6 @@ test_that(
       PARAM = c(rep("ALT", 2), rep("CPR", 2)),
       ANRIND = c("HIGH", "NORMAL", "LOW", "NORMAL")
     )
-    expect_identical(as.matrix(result), as.matrix(expected))
+    testthat::expect_identical(as.matrix(result), as.matrix(expected))
   }
 )

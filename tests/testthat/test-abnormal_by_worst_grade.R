@@ -44,7 +44,7 @@ adlb_raw <- local({
   adlb_f
 })
 
-test_that("s_count_abnormal_by_worst_grade works as expected", {
+testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
   adlb <- adlb_raw
 
   adlb_alt <- adlb %>% dplyr::filter(PARAMCD == "ALT") %>% droplevels()
@@ -72,10 +72,10 @@ test_that("s_count_abnormal_by_worst_grade works as expected", {
     `4` = with_label(c(count = 7, fraction = 0.05223881), "4"),
     Any = with_label(c(count = 54, fraction = 0.4029851), "Any")
   ))
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-test_that("count_abnormal_by_worst_grade works as expected", {
+testthat::test_that("count_abnormal_by_worst_grade works as expected", {
   adlb <- adlb_raw
   adlb_f <- adlb %>% dplyr::filter(
     PARAMCD == "IGA") %>%
@@ -137,10 +137,10 @@ test_that("count_abnormal_by_worst_grade works as expected", {
       ),
       .Dim = c(8L, 4L)
     )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that(
+testthat::test_that(
   "count_abnormal_by_worst_grade returns an error when variables$param
   and variables$grade_dir are taking variable names not used
   for splitting the layout in rows.", {
@@ -149,7 +149,7 @@ test_that(
     PARAMCD == "IGA") %>%
     droplevels()
 
-  expect_error(result <- basic_table() %>%
+  testthat::expect_error(result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     split_rows_by("PARAM") %>%
     split_rows_by("GRADE_DIR") %>%

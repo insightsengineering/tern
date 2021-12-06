@@ -17,7 +17,7 @@ raw_data <- local({
   df
 })
 
-test_that("h_append_grade_groups works with valid input", {
+testthat::test_that("h_append_grade_groups works with valid input", {
   result <- h_append_grade_groups(
     list(
       "Any Grade" = as.character(1:5),
@@ -37,10 +37,10 @@ test_that("h_append_grade_groups works with valid input", {
     "4" = 40L,
     "5" = 50L
   )
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("h_append_grade_groups works with valid input with revers order and one-element grade groups", {
+testthat::test_that("h_append_grade_groups works with valid input with revers order and one-element grade groups", {
   result <- h_append_grade_groups(
     list(
       "Any Grade" = as.character(5:1),
@@ -59,10 +59,10 @@ test_that("h_append_grade_groups works with valid input with revers order and on
     "2" = 20L,
     "1" = 10L
   )
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("s_count_occurrences_by_grade works with valid input and default arguments for grade", {
+testthat::test_that("s_count_occurrences_by_grade works with valid input and default arguments for grade", {
   df <- raw_data
   result <- s_count_occurrences_by_grade(df = df, .var = "AETOXGR", .N_col = 10)
 
@@ -74,7 +74,7 @@ test_that("s_count_occurrences_by_grade works with valid input and default argum
     "5" = list(c(0, 0))
   ))
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
   # Test with empty input.
   df_empty <- raw_data %>%
@@ -90,11 +90,11 @@ test_that("s_count_occurrences_by_grade works with valid input and default argum
     "5" = list(c(0, 0))
   ))
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
 })
 
-test_that("s_count_occurrences_by_grade works with valid input for grade grouping", {
+testthat::test_that("s_count_occurrences_by_grade works with valid input for grade grouping", {
   df <- raw_data
   result <- s_count_occurrences_by_grade(
     df = df,
@@ -117,7 +117,7 @@ test_that("s_count_occurrences_by_grade works with valid input for grade groupin
     "4" = list(c(0, 0)),
     "5" = list(c(0, 0))
   ))
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
   # Test with empyt input.
   df_empty <- raw_data %>%
@@ -144,11 +144,11 @@ test_that("s_count_occurrences_by_grade works with valid input for grade groupin
     "4" = list(c(0, 0)),
     "5" = list(c(0, 0))
   ))
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
 })
 
-test_that("s_count_occurrences_by_grade works with valid input for intensity and custom arguments", {
+testthat::test_that("s_count_occurrences_by_grade works with valid input for intensity and custom arguments", {
   df <- raw_data
 
   result <- s_count_occurrences_by_grade(
@@ -167,11 +167,11 @@ test_that("s_count_occurrences_by_grade works with valid input for intensity and
     "MODERATE" = list(c(2L, 0.2)),
     "SEVERE" = list(c(2L, 0.2))
   ))
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
 })
 
-test_that("count_occurrences_by_grade works with default arguments for intensity", {
+testthat::test_that("count_occurrences_by_grade works with default arguments for intensity", {
 
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
@@ -192,7 +192,7 @@ test_that("count_occurrences_by_grade works with default arguments for intensity
     .Dim = c(5L, 3L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Test with empty column.
   result <- basic_table() %>%
@@ -213,7 +213,7 @@ test_that("count_occurrences_by_grade works with default arguments for intensity
 
 })
 
-test_that("count_occurrences_by_grade label works when more than one variables are analyzed", {
+testthat::test_that("count_occurrences_by_grade label works when more than one variables are analyzed", {
 
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
@@ -238,12 +238,12 @@ test_that("count_occurrences_by_grade label works when more than one variables a
     .Dim = c(12L, 3L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
 
-test_that("count_occurrences_by_grade works with custom arguments for grade", {
+testthat::test_that("count_occurrences_by_grade works with custom arguments for grade", {
 
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
@@ -276,10 +276,10 @@ test_that("count_occurrences_by_grade works with custom arguments for grade", {
     .Dim = c(10L, 3L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("summarize_occurrences_by_grade works with default arguments for intensity", {
+testthat::test_that("summarize_occurrences_by_grade works with default arguments for intensity", {
 
   df <- raw_data
   df_adsl <- data.frame(
@@ -304,7 +304,7 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
     ),
     .Dim = c(10L, 2L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Test with empty input.
   df <- raw_data
@@ -337,7 +337,7 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
 
 })
 
-test_that("summarize_occurrences_by_grade works with custom arguments for grade", {
+testthat::test_that("summarize_occurrences_by_grade works with custom arguments for grade", {
 
   df <- raw_data
   df_adsl <- data.frame(
@@ -373,10 +373,10 @@ test_that("summarize_occurrences_by_grade works with custom arguments for grade"
     ),
     .Dim = c(20L, 2L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_occurrences_by_grade works with trim_levels_in_group split function", {
+testthat::test_that("count_occurrences_by_grade works with trim_levels_in_group split function", {
 
   df <- data.frame(
     USUBJID = as.character(1:30),
@@ -415,5 +415,5 @@ test_that("count_occurrences_by_grade works with trim_levels_in_group split func
     ),
     .Dim = c(7L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

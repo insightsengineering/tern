@@ -1,6 +1,6 @@
 library(dplyr)
 
-test_that("h_ancova works with healthy input", {
+testthat::test_that("h_ancova works with healthy input", {
   result <- h_ancova(
     .var = "Sepal.Length",
     .df_row = iris,
@@ -27,11 +27,11 @@ test_that("h_ancova works with healthy input", {
     mesg = "Confidence level used: 0.95"
   )
 
-  expect_equal(result, expected, tolerance = 0.0000001)
+  testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-test_that("h_ancova fails wrong inputs", {
-  expect_error(
+testthat::test_that("h_ancova fails wrong inputs", {
+  testthat::expect_error(
     h_ancova(
       .var = "Wrong.Var",
       .df_row = iris,
@@ -39,7 +39,7 @@ test_that("h_ancova fails wrong inputs", {
     )
   )
 
-  expect_error(
+  testthat::expect_error(
     h_ancova(
       .var = "Sepal.Length",
       .df_row = iris,
@@ -48,7 +48,7 @@ test_that("h_ancova fails wrong inputs", {
   )
 })
 
-test_that("s_ancova works with healthy input", {
+testthat::test_that("s_ancova works with healthy input", {
   df_col <- iris %>% dplyr::filter(Species == "versicolor")
   df_ref <- iris %>% dplyr::filter(Species == "setosa")
   result <- s_ancova(
@@ -69,11 +69,11 @@ test_that("s_ancova works with healthy input", {
     pval = with_label(0.2503574, "p-value")
   )
 
-  expect_equal(result, expected, tolerance = 0.0000001)
+  testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-test_that("s_ancova fails wrong inputs", {
-  expect_error(
+testthat::test_that("s_ancova fails wrong inputs", {
+  testthat::expect_error(
     s_ancova(
       df = iris,
       .var = "Sepal.Length",
@@ -85,7 +85,7 @@ test_that("s_ancova fails wrong inputs", {
   )
 })
 
-test_that("summarize_ancova works with healthy inputs", {
+testthat::test_that("summarize_ancova works with healthy inputs", {
   result <- basic_table() %>%
     split_cols_by("Species", ref_group = "setosa") %>%
     add_colcounts() %>%
@@ -119,5 +119,5 @@ test_that("summarize_ancova works with healthy inputs", {
     .Dim = c(14L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

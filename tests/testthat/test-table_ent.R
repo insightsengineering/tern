@@ -4,7 +4,7 @@ library(scda)
 
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
-test_that("ENT01_IT is produced correctly", {
+testthat::test_that("ENT01_IT is produced correctly", {
 
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
   adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
@@ -154,10 +154,10 @@ test_that("ENT01_IT is produced correctly", {
     ),
     .Dim = c(112L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("ENT01a_IT is produced correctly", {
+testthat::test_that("ENT01a_IT is produced correctly", {
 
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
   adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
@@ -298,10 +298,10 @@ test_that("ENT01a_IT is produced correctly", {
 
     .Dim = c(106L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("ENT02_IT is produced correctly", {
+testthat::test_that("ENT02_IT is produced correctly", {
 
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
   adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
@@ -609,10 +609,10 @@ test_that("ENT02_IT is produced correctly", {
     ),
     .Dim = c(112L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("ENT02a_IT is produced correctly", {
+testthat::test_that("ENT02a_IT is produced correctly", {
 
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
   adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
@@ -849,5 +849,5 @@ test_that("ENT02a_IT is produced correctly", {
     ),
     .Dim = c(106L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

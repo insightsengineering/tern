@@ -3,7 +3,7 @@ library(dplyr)
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
-test_that("g_km default plot works", {
+testthat::test_that("g_km default plot works", {
 
   df <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -11,7 +11,7 @@ test_that("g_km default plot works", {
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
-  result <- expect_silent(
+  result <- testthat::expect_silent(
     g_km(
       df = df,
       variables = variables,
@@ -21,7 +21,7 @@ test_that("g_km default plot works", {
   )
 })
 
-test_that("g_km default plot witch ci_ribbon = TRUE works", {
+testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
 
   df <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -29,7 +29,7 @@ test_that("g_km default plot witch ci_ribbon = TRUE works", {
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
-  result <- expect_silent(
+  result <- testthat::expect_silent(
     g_km(
       df = df,
       variables = variables,
@@ -39,7 +39,7 @@ test_that("g_km default plot witch ci_ribbon = TRUE works", {
   )
 })
 
-test_that("g_km plot with < = > in group labels works", {
+testthat::test_that("g_km plot with < = > in group labels works", {
 
   df <- ex_adtte %>%
     df_explicit_na() %>%
@@ -49,7 +49,7 @@ test_that("g_km plot with < = > in group labels works", {
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "group")
 
-  result <- expect_silent(
+  result <- testthat::expect_silent(
     g_km(
       df = df,
       variables = variables,

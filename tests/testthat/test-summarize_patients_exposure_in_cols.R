@@ -18,7 +18,7 @@ get_adsl <- function() {
   )
 }
 
-test_that("s_count_patients_sum_exposure works as expected", {
+testthat::test_that("s_count_patients_sum_exposure works as expected", {
   df <- get_anl()
   adsl <- get_adsl()
   result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl)) #nolintr
@@ -26,11 +26,11 @@ test_that("s_count_patients_sum_exposure works as expected", {
     n_patients = with_label(c(12, 1), "Total patients numbers/person time"),
     sum_exposure = with_label(35, "Total patients numbers/person time")
   )
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
 
-test_that("summarize_patients_exposure_in_cols works well with default arguments", {
+testthat::test_that("summarize_patients_exposure_in_cols works well with default arguments", {
 
   df <- get_anl()
   adsl <- get_adsl()
@@ -52,10 +52,10 @@ test_that("summarize_patients_exposure_in_cols works well with default arguments
       "Total", "Person time", "35", "16", "19"),
     .Dim = c(5L, 7L)
     )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("summarize_patients_exposure_in_cols works well with custom arguments", {
+testthat::test_that("summarize_patients_exposure_in_cols works well with custom arguments", {
 
   df <- get_anl()
   adsl <- get_adsl()
@@ -82,10 +82,10 @@ test_that("summarize_patients_exposure_in_cols works well with custom arguments"
       "Person time", "35", "16", "19"),
     .Dim = 5:4
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that(
+testthat::test_that(
   "summarize_patients_exposure_in_cols returns the correct column label when there is no variable split
           and when just one statistics is shown", {
 
@@ -103,5 +103,5 @@ test_that(
 
   result <- col_paths_summary(table)$label
   expected_string <- "Patients"
-  expect_identical(result, expected_string)
+  testthat::expect_identical(result, expected_string)
 })

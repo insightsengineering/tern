@@ -8,7 +8,7 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs
 
 
-test_that("DMT01 default and alternative variants are produced correctly", {
+testthat::test_that("DMT01 default and alternative variants are produced correctly", {
 
   # Change description in variable SEX.
   adsl <- adsl %>%
@@ -107,7 +107,7 @@ test_that("DMT01 default and alternative variants are produced correctly", {
     .Dim = c(41L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Alternative variant for DMT01 (Optional Subgrouping Analysis).
   result <- basic_table() %>%
@@ -179,5 +179,5 @@ test_that("DMT01 default and alternative variants are produced correctly", {
     .Dim = c(68L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

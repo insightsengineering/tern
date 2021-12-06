@@ -4,7 +4,7 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("Safety Summary Variant 1 works as expected", {
+testthat::test_that("Safety Summary Variant 1 works as expected", {
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -118,11 +118,11 @@ test_that("Safety Summary Variant 1 works as expected", {
     .Dim = c(18L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
+testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -264,11 +264,11 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
     .Dim = c(22L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
+testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
 
   # Add flags (TRUE/FALSE) for select AEs of interest -- custom groups.
   adae <- adae %>%
@@ -373,11 +373,11 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
     ),
     .Dim = c(14L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
+testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
 
   adae <- adae %>%
     dplyr::mutate(
@@ -513,6 +513,6 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
     .Dim = c(25L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })

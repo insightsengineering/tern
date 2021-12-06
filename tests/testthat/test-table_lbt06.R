@@ -6,7 +6,7 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
-test_that("LBT06 default variant is produced correctly", {
+testthat::test_that("LBT06 default variant is produced correctly", {
 
   adlb <- adlb %>%
     dplyr::filter(PARAMCD == "ALT") %>%
@@ -65,5 +65,5 @@ test_that("LBT06 default variant is produced correctly", {
     ),
     .Dim = c(48L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

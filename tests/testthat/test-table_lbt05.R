@@ -30,7 +30,7 @@ get_adlb <- function() {
   adlb_f
 }
 
-test_that("LBT05 variant 1 is produced correctly", {
+testthat::test_that("LBT05 variant 1 is produced correctly", {
   adlb <- get_adlb()
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
@@ -122,10 +122,10 @@ test_that("LBT05 variant 1 is produced correctly", {
        "10 (7.6%)", "11 (8.3%)", "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"),
     .Dim = c(23L, 4L)
     )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("LBT05 variant 2 is produced correctly", {
+testthat::test_that("LBT05 variant 2 is produced correctly", {
   adlb <- get_adlb()
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
@@ -209,10 +209,10 @@ test_that("LBT05 variant 2 is produced correctly", {
       "11 (8.3%)", "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"),
     .Dim = c(25L, 4L)
     )
-    expect_identical(result_matrix, expected_matrix)
+    testthat::expect_identical(result_matrix, expected_matrix)
   })
 
-  test_that("LBT05 variant 4 is produced correctly", {
+  testthat::test_that("LBT05 variant 4 is produced correctly", {
     adlb <- get_adlb()
     adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
@@ -299,5 +299,5 @@ test_that("LBT05 variant 2 is produced correctly", {
         "5 (3.8%)", "6 (4.5%)"),
       .Dim = c(20L, 4L)
       )
-    expect_identical(result_matrix, expected_matrix)
+    testthat::expect_identical(result_matrix, expected_matrix)
   })

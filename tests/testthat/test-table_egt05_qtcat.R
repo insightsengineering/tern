@@ -40,7 +40,7 @@ get_adeg <- function() {
   adeg_f
 }
 
-test_that("EGT05_QTCAT default variant is produced correctly", {
+testthat::test_that("EGT05_QTCAT default variant is produced correctly", {
   adeg <- get_adeg()
 
   result <-  basic_table() %>%
@@ -102,5 +102,5 @@ test_that("EGT05_QTCAT default variant is produced correctly", {
       "", "132", "73 (55.3%)", "11 (8.3%)", "48 (36.4%)"),
     .Dim = c(70L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

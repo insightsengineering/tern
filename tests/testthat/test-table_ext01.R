@@ -6,7 +6,7 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adex <- synthetic_cdisc_data("rcd_2021_05_05")$adex
 
-test_that("EXT01 default variant with numeric parameters is produced correctly", {
+testthat::test_that("EXT01 default variant with numeric parameters is produced correctly", {
   adex <- adex %>%
     dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
@@ -76,10 +76,10 @@ test_that("EXT01 default variant with numeric parameters is produced correctly",
     ),
     .Dim = c(22L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("EXT01 variant: with both numeric and categorical parameters", {
+testthat::test_that("EXT01 variant: with both numeric and categorical parameters", {
   adex <- adex %>%
     dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
@@ -183,10 +183,10 @@ test_that("EXT01 variant: with both numeric and categorical parameters", {
     ),
     .Dim = c(23L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("EXT01 variant: with user specified categories for missed doses", {
+testthat::test_that("EXT01 variant: with user specified categories for missed doses", {
   adex <- adex %>%
     dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
@@ -297,5 +297,5 @@ test_that("EXT01 variant: with user specified categories for missed doses", {
       "16 (12.1%)"),
     .Dim = c(29L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

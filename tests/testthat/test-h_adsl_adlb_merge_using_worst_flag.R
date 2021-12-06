@@ -5,7 +5,7 @@ library(dplyr)
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
-test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients without any lab", {
+testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients without any lab", {
   adsl_f <- adsl %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
   adlb_f <- adlb %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128"))
 
@@ -32,10 +32,10 @@ test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients wit
 
   expected_matrix <- matrix(c(expected_matrix), 6L, 7L)
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients missing baseline lab", {
+testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients missing baseline lab", {
   adsl_f <- adsl %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
   adlb_f <- adlb %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
 
@@ -65,10 +65,10 @@ test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients mis
 
   expected_matrix <- matrix(c(expected_matrix), 6L, 7L)
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients missing post-baseline lab", {
+testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients missing post-baseline lab", {
   adsl_f <- adsl %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
   adlb_f <- adlb %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
 
@@ -98,10 +98,10 @@ test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients mis
 
   expected_matrix <- matrix(c(expected_matrix), 6L, 7L)
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that(
+testthat::test_that(
   "h_adsl_adlb_merge_using_worst_flag generates missing for patients without
   any post-baseline values flagged as the worst",
   { #nolint
@@ -134,10 +134,10 @@ test_that(
 
   expected_matrix <- matrix(c(expected_matrix), 6L, 7L)
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("h_adsl_adlb_merge_using_worst_flag generates missing and by visit lab results", {
+testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing and by visit lab results", {
   adsl_f <- adsl %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
   adlb_f <- adlb %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128"))
 
@@ -204,5 +204,5 @@ test_that("h_adsl_adlb_merge_using_worst_flag generates missing and by visit lab
 
   expected_matrix <- matrix(c(expected_matrix), 30L, 7L)
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -48,7 +48,7 @@ gen_advs <- function() {
   advs_f
 }
 
-test_that("VST01 default variant is produced correctly", {
+testthat::test_that("VST01 default variant is produced correctly", {
   test.nest::skip_if_too_deep(3)
 
   advs <- gen_advs()
@@ -124,5 +124,5 @@ test_that("VST01 default variant is produced correctly", {
     ),
     .Dim = c(53L, 7L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

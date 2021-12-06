@@ -6,7 +6,7 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("AET06_SMQ variant 1 is produced correctly", {
+testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
 
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
@@ -121,10 +121,10 @@ test_that("AET06_SMQ variant 1 is produced correctly", {
     .Dim = c(27L, 7L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET06_SMQ variant 2 is produced correctly", {
+testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
 
 
   adsl_labels <- var_labels(adsl)
@@ -250,5 +250,5 @@ test_that("AET06_SMQ variant 2 is produced correctly", {
     .Dim = c(27L, 7L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

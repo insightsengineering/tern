@@ -21,8 +21,8 @@ adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
 # h_rsp_to_logistic_variables ----
 
-test_that("h_rsp_to_logistic_variables works as expected", {
-  result <- expect_silent(h_rsp_to_logistic_variables(
+testthat::test_that("h_rsp_to_logistic_variables works as expected", {
+  result <- testthat::expect_silent(h_rsp_to_logistic_variables(
     variables = list(
       rsp = "RSP",
       covariates = c("A", "B"),
@@ -36,16 +36,16 @@ test_that("h_rsp_to_logistic_variables works as expected", {
     covariates = c("A", "B"),
     strata = "D"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 # h_logistic_mult_cont_df ----
 
-test_that("h_logistic_mult_cont_df works as expected", {
+testthat::test_that("h_logistic_mult_cont_df works as expected", {
   adrs_f <- adrs %>%
     preprocess_adrs()
 
-  result <- expect_silent(h_logistic_mult_cont_df(
+  result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
       rsp = "rsp",
       biomarkers = c("BMRKR1", "AGE"),
@@ -67,14 +67,14 @@ test_that("h_logistic_mult_cont_df works as expected", {
     pval = c(0.195658638331358, 0.949797749266217),
     pval_label = c("p-value (Wald)", "p-value (Wald)")
   )
-  expect_equal(result, expected, tol = 1e-5)
+  testthat::expect_equal(result, expected, tol = 1e-5)
 })
 
-test_that("h_logistic_mult_cont_df returns missing values if data is empty (0 rows)", {
+testthat::test_that("h_logistic_mult_cont_df returns missing values if data is empty (0 rows)", {
   adrs_f <- adrs %>%
     preprocess_adrs()
 
-  result <- expect_silent(h_logistic_mult_cont_df(
+  result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
       rsp = "rsp",
       biomarkers = c("BMRKR1", "AGE"),
@@ -96,15 +96,15 @@ test_that("h_logistic_mult_cont_df returns missing values if data is empty (0 ro
     pval = c(NA, NA),
     pval_label = c("p-value (Wald)", "p-value (Wald)")
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_logistic_mult_cont_df also works with response not being called rsp", {
+testthat::test_that("h_logistic_mult_cont_df also works with response not being called rsp", {
   adrs_f <- adrs %>%
     preprocess_adrs() %>%
     dplyr::rename(RESP = rsp)
 
-  result <- expect_silent(h_logistic_mult_cont_df(
+  result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
       rsp = "RESP",
       biomarkers = c("BMRKR1", "AGE"),
@@ -126,12 +126,12 @@ test_that("h_logistic_mult_cont_df also works with response not being called rsp
     pval = c(0.195658638331358, 0.949797749266217),
     pval_label = c("p-value (Wald)", "p-value (Wald)")
   )
-  expect_equal(result, expected, tol = 1e-5)
+  testthat::expect_equal(result, expected, tol = 1e-5)
 })
 
 # h_tab_rsp_one_biomarker ----
 
-test_that("h_tab_rsp_one_biomarker works as expected", {
+testthat::test_that("h_tab_rsp_one_biomarker works as expected", {
   df <- data.frame(
     n_tot = c(48L, 48L),
     n_rsp = c(24L, 24L),
@@ -147,7 +147,7 @@ test_that("h_tab_rsp_one_biomarker works as expected", {
     var = c("ALL", "ALL"),
     var_label = c("All patients", "All patients")
   )
-  result <- expect_silent(h_tab_rsp_one_biomarker(
+  result <- testthat::expect_silent(h_tab_rsp_one_biomarker(
     df = df,
     vars = c("n_tot", "or", "ci")
   ))
@@ -160,5 +160,5 @@ test_that("h_tab_rsp_one_biomarker works as expected", {
       "(0.95, 1.06)"
     )
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
