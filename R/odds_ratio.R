@@ -106,7 +106,11 @@ or_clogit <- function(data, conf_level) {
 
   # Deviation from convention: `survival::strata` must be simply `strata`.
   formula <- as.formula("rsp ~ grp + strata(strata)")
-  model_fit <- clogit(formula = formula, data = data)
+  # model_fit <- clogit(formula = formula, data = data)
+  tryCatch(
+    model_fit <- clogit(formula = formula, data = data),
+    error = function(e) stop("model not built successfully with survival::clogit")
+  )
 
   # Create a list with one set of OR estimates and CI per coefficient, i.e.
   # comparison of one group vs. the reference group.
