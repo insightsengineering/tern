@@ -23,7 +23,7 @@ adtte_f <- within( # nolint
   }  # nolint end
 ) %>%
   dplyr::mutate(event = 1 - CNSR) %>%
-  rtables::var_relabel(
+  var_relabel(
     SEX = "Sex",
     AGE = "Age"
   )

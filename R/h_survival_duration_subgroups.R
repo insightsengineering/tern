@@ -22,7 +22,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- rtables::var_labels(adtte)
+#' adtte_labels <- var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(
@@ -425,7 +425,7 @@ h_coxph_subgroups_df <- function(variables,
 #'   y = factor(c("A","B", "A", "B", "A"), levels = c("A", "B", "C")),
 #'   z = factor(c("C", "C", "D", "D", "D"), levels = c("D", "C"))
 #' )
-#' rtables::var_labels(df) <- paste("label for", names(df))
+#' var_labels(df) <- paste("label for", names(df))
 #'
 #' h_split_by_subgroups(
 #'   data = df,
@@ -450,9 +450,9 @@ h_split_by_subgroups <- function(data,
     utils.nest::is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups)
   )
 
-  data_labels <- unname(rtables::var_labels(data))
+  data_labels <- unname(var_labels(data))
   df_subgroups <- data[, subgroups, drop = FALSE]
-  subgroup_labels <- rtables::var_labels(df_subgroups, fill = TRUE)
+  subgroup_labels <- var_labels(df_subgroups, fill = TRUE)
 
   l_labels <- Map(function(grp_i, name_i) {
     existing_levels <- levels(droplevels(grp_i))
@@ -487,7 +487,7 @@ h_split_by_subgroups <- function(data,
     }
     df <- data[which_row, ]
     rownames(df) <- NULL
-    rtables::var_labels(df) <- data_labels
+    var_labels(df) <- data_labels
 
     list(
       df = df,

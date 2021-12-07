@@ -72,7 +72,7 @@ ADTTE <- synthetic_cdisc_data("latest")$adtte \%>\%
 ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 ADTTE$SEX <- droplevels(ADTTE$SEX)
 
-mod <- survival::coxph(
+mod <- coxph(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
   data = ADTTE
 )

@@ -42,7 +42,7 @@
 #' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 #'
 #' plot(
-#'   survfit(survival::Surv(time, status) ~ armcd + covar1, data = dta_bladder),
+#'   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
 #'   lty= 2:4, xlab="Months",
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
@@ -533,7 +533,7 @@ h_coxreg_univar_extract <- function(effect,
 #' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 #'
 #' plot(
-#'   survfit(survival::Surv(time, status) ~ armcd + covar1, data = dta_bladder),
+#'   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
 #'   lty= 2:4, xlab="Months",
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
@@ -728,7 +728,7 @@ h_coxreg_extract_interaction <- function(effect,
 #' # Testing dataset [survival::bladder].
 #' library(survival)
 #'
-#' mod <- coxph(survival::Surv(time, status) ~ armcd * covar1, data = dta_bladder)
+#' mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 #' result <- h_coxreg_inter_estimations(
 #'   variable = "armcd", given = "covar1",
 #'   lvl_var = levels(dta_bladder$armcd),

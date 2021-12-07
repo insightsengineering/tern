@@ -41,7 +41,7 @@ library(survival)
 
 fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
-  survival::survfit(form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
 gg <- h_ggkm(

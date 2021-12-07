@@ -157,7 +157,7 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
     add_colcounts() %>%
     summarize_vars(
       vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
-      var_labels = rtables::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
+      var_labels = var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
     ) %>%
     build_table(anl, alt_counts_df = adsl)
 
@@ -264,7 +264,7 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
     add_colcounts() %>%
     summarize_vars(
       vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
-      var_labels = rtables::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
+      var_labels = var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
     ) %>%
     count_missed_doses(
       "TNDOSMIS",

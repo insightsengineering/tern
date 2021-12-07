@@ -56,7 +56,7 @@ NULL
 #'     RACE = factor(RACE),
 #'     SEX = factor(SEX)
 #'   )
-#' var_labels(adrs_f) <- c(rtables::var_labels(adrs), Response = "Response")
+#' var_labels(adrs_f) <- c(var_labels(adrs), Response = "Response")
 #' mod1 <- fit_logistic(
 #'   data = adrs_f,
 #'   variables = list(
@@ -436,7 +436,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
   if (xs_class[x] == "numeric") {
     x_stats$term <- x
     x_stats$term_label <- if (inherits(fit_glm, "glm")) {
-      rtables::var_labels(fit_glm$data[x], fill = TRUE)
+      var_labels(fit_glm$data[x], fill = TRUE)
     } else {
       # We just fill in here with the `term` itself as we don't have the data available.
       x
@@ -477,7 +477,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
   }
   x_stats$variable <- x
   x_stats$variable_label <- if (inherits(fit_glm, "glm")) {
-    rtables::var_labels(fit_glm$data[x], fill = TRUE)
+    var_labels(fit_glm$data[x], fill = TRUE)
   } else {
     x
   }
@@ -579,9 +579,9 @@ h_glm_interaction_extract <- function(x, fit_glm) {
   x_stats$variable <- x
   x_stats$variable_label <- paste(
     "Interaction of",
-    rtables::var_labels(fit_glm$data[vars[1]], fill = TRUE),
+    var_labels(fit_glm$data[vars[1]], fill = TRUE),
     "*",
-    rtables::var_labels(fit_glm$data[vars[2]], fill = TRUE)
+    var_labels(fit_glm$data[vars[2]], fill = TRUE)
   )
   x_stats$interaction <- ""
   x_stats$interaction_label <- ""
@@ -643,11 +643,11 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
     }
     or_stats <- data.frame(
       variable = odds_ratio_var,
-      variable_label = unname(rtables::var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
+      variable_label = unname(var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
       term = odds_ratio_var,
-      term_label = unname(rtables::var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
+      term_label = unname(var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
       interaction = interaction_var,
-      interaction_label = unname(rtables::var_labels(fit_glm$data[interaction_var], fill = TRUE)),
+      interaction_label = unname(var_labels(fit_glm$data[interaction_var], fill = TRUE)),
       reference = references,
       reference_label = references,
       estimate = NA,
@@ -675,11 +675,11 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
     }
     or_stats <- data.frame(
       variable = odds_ratio_var,
-      variable_label = unname(rtables::var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
+      variable_label = unname(var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
       term = rep(names(or_numbers), each = n_ref),
       term_label = h_simple_term_labels(rep(names(or_numbers), each = n_ref), table(fit_glm$data[[odds_ratio_var]])),
       interaction = interaction_var,
-      interaction_label = unname(rtables::var_labels(fit_glm$data[interaction_var], fill = TRUE)),
+      interaction_label = unname(var_labels(fit_glm$data[interaction_var], fill = TRUE)),
       reference = unlist(lapply(or_numbers, names)),
       reference_label = unlist(lapply(or_numbers, names)),
       estimate = NA,

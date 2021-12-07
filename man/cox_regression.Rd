@@ -207,7 +207,7 @@ attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
 dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 plot(
-  survfit(survival::Surv(time, status) ~ armcd + covar1, data = dta_bladder),
+  survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
   lty= 2:4, xlab="Months",
   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 )

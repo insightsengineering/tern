@@ -397,7 +397,7 @@ rht <- function(x) {
 #' ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 #' ADTTE$SEX <- droplevels(ADTTE$SEX)
 #'
-#' mod <- survival::coxph(
+#' mod <- coxph(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
 #'   data = ADTTE
 #' )
@@ -494,7 +494,7 @@ estimate_coef <- function(variable, given,
 #' # accepted.
 #' \dontrun{
 #' library(survival)
-#' mod <- survival::coxph(
+#' mod <- coxph(
 #'   formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
 #'   data = ovarian
 #' )

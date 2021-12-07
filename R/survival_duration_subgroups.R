@@ -138,7 +138,7 @@ a_survival_subgroups <- function(.formats = list(
   afun_lst <- Map(function(stat, fmt) {
     if (stat == "ci") {
       function(df, labelstr = "", ...) {
-        rtables::in_rows(
+        in_rows(
           .list = combine_vectors(df$lcl, df$ucl),
           .labels = as.character(df$subgroup),
           .formats = fmt
@@ -146,7 +146,7 @@ a_survival_subgroups <- function(.formats = list(
       }
     } else {
       function(df, labelstr = "", ...) {
-        rtables::in_rows(
+        in_rows(
           .list = as.list(df[[stat]]),
           .labels = as.character(df$subgroup),
           .formats = fmt
