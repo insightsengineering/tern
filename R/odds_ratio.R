@@ -106,7 +106,7 @@ or_clogit <- function(data, conf_level) {
 
   # Deviation from convention: `survival::strata` must be simply `strata`.
   formula <- as.formula("rsp ~ grp + strata(strata)")
-  # model_fit <- clogit(formula = formula, data = data)
+  # Try catch the model fitting error.
   tryCatch(
     model_fit <- clogit(formula = formula, data = data),
     error = function(e) stop("model not built successfully with survival::clogit")
