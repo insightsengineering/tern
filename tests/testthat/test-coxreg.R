@@ -488,7 +488,7 @@ testthat::test_that("muffled_car_anova muffles notes about dropped strata term",
     survival::Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
     bladder1
   )
-  expect_message(car::Anova(mod, test.statistic = "Wald"))
+  testthat::expect_message(car::Anova(mod, test.statistic = "Wald"))
   testthat::expect_silent(muffled_car_anova(mod, test_statistic = "Wald"))
 })
 
