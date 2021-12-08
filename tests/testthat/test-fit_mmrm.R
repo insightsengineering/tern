@@ -340,8 +340,8 @@ testthat::test_that("fit_lme4_single_optimizer correctly captures warnings and m
       data = data
     )
   )
-  expect_s4_class(result, "lmerModLmerTest")
-  expect_identical(attr(result, "optimizer"), "nloptwrap_bobyqa")
+  testthat::expect_s4_class(result, "lmerModLmerTest")
+  testthat::expect_identical(attr(result, "optimizer"), "nloptwrap_bobyqa")
   testthat::expect_gt(length(attr(result, "messages")), 0)
 })
 
