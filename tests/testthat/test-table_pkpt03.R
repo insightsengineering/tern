@@ -2,7 +2,7 @@
 library(scda)
 library(dplyr)
 adpc <- synthetic_cdisc_data("rcd_2021_10_13")$adpc
-adpc <- adpc %>% filter(AVAL != 0)
+adpc <- adpc %>% dplyr::filter(AVAL != 0)
 
 testthat::test_that("PKPT03 is produced correctly", {
 
