@@ -405,7 +405,7 @@ heightDetails.dynamicSplitText <- function(x) { #nolint #nousage
   } else {
     paste(vapply(x$text, split_string, character(1), width = x$width), collapse = "\n")
   }
-  stringHeight(txt)
+  grid::stringHeight(txt)
 }
 
 #' @importFrom grid widthDetails
