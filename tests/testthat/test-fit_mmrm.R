@@ -70,7 +70,7 @@ testthat::test_that("check_mmrm_vars works with interaction terms in `covariates
     id = c(USUBJID = "Unique Subject Identifier"),
     arm = c(ARM = "ARM"),
     visit = c(AVISIT = "Analysis Visit"),
-    parts = c(ARM = "ARM", BMRKR1= "Continous Level Biomarker 1", STRATA1 = "Stratification Factor 1")
+    parts = c(ARM = "ARM", BMRKR1 = "Continous Level Biomarker 1", STRATA1 = "Stratification Factor 1")
   )
   testthat::expect_identical(result, expected)
 })
@@ -107,7 +107,7 @@ testthat::test_that("check_mmrm_vars works when there are missing values", {
     id = c(USUBJID = "Unique Subject Identifier"),
     arm = c(ARM = "ARM"),
     visit = c(AVISIT = "Analysis Visit"),
-    parts = c(ARM = "ARM", BMRKR1= "BMRKR1", STRATA1 = "Stratification Factor 1")
+    parts = c(ARM = "ARM", BMRKR1 = "BMRKR1", STRATA1 = "Stratification Factor 1")
   )
   testthat::expect_identical(result, expected)
 })
