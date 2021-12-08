@@ -132,7 +132,7 @@ build_mmrm_formula <- function(
   random_effects_part <- cor_struct %>%
     switch(
       "unstructured" = "(0 + visit_var | id_var)",
-      "random-quadratic" = "(poly(as.numeric(visit_var), df=2) | id_var)",
+      "random-quadratic" = "(stats::poly(as.numeric(visit_var), df=2) | id_var)",
       "random-slope" = "(as.numeric(visit_var) | id_var)",
       "compound-symmetry" = "(1 | id_var)"
     ) %>%
@@ -367,7 +367,7 @@ refit_lme4_all_optimizers <- function(original_fit,
   stopifnot(is.integer(n_cores), n_cores > 0, identical(length(n_cores), 1L))
 
   # Extract the components of the original fit.
-  formula <- formula(original_fit)
+  formula <- stats::formula(original_fit)
   data <- original_fit@frame
   optimizer <- attr(original_fit, "optimizer")
 

@@ -72,8 +72,8 @@ testthat::test_that("prop_schouten returns right result", {
     function(x) {
 
       set.seed(x, kind = "Wichmann-Hill")
-      n <- runif(2)
-      N <- runif(2, min = 5, max = 100) # nolint
+      n <- stats::runif(2)
+      N <- stats::runif(2, min = 5, max = 100) # nolint
 
       rsp <- c(
         sample(c(TRUE, FALSE), size = N[1], prob = c(n[1], 1 - n[1]), replace = TRUE),

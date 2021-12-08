@@ -667,14 +667,14 @@ testthat::test_that("h_coxreg_inter_estimations' results identical to soon depre
     mod = mod, conf_level = .95
   )
 
-  mmat <- model.matrix(mod)[1, ]
+  mmat <- stats::model.matrix(mod)[1, ]
   mmat[!mmat == 0] <- 0
 
   expected <- estimate_coef(
     variable = "armcd", given = "covar1",
     lvl_var = levels(dta_bladder$armcd),
     lvl_given = levels(dta_bladder$covar1),
-    coef = coef(mod), mmat = mmat, vcov = vcov(mod),
+    coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod),
     conf_level = .95
   )
   testthat::expect_identical(result, expected)
@@ -737,7 +737,7 @@ testthat::test_that("fit_coxreg_multivar works correctly also without treatment 
     control = control
   ))
   testthat::expect_is(result$mod, "coxph")
-  testthat::expect_equal(formula(result$mod), survival::Surv(time, status) ~ 1 + covar1 + covar2)
+  testthat::expect_equal(stats::formula(result$mod), survival::Surv(time, status) ~ 1 + covar1 + covar2)
 })
 
 # tidy.coxreg.multivar ----

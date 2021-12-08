@@ -20,7 +20,7 @@ ADTTE_f <- within(
   ),
   expr = {
     ARMCD <- droplevels(ARMCD)
-    ARMCD <- relevel(ARMCD, "ARM B")
+    ARMCD <- stats::relevel(ARMCD, "ARM B")
     SEX <- droplevels(SEX)
     RACE <- droplevels(RACE)
   }

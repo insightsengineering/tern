@@ -85,7 +85,7 @@ stat_median_ci <- function(x,
   if (na.rm)
     x <- x[!is.na(x)]
   n <- length(x)
-  med <- median(x)
+  med <- stats::median(x)
 
   k <- stats::qbinom(p = (1 - conf_level) / 2, size = n, prob = 0.5, lower.tail = TRUE)
 

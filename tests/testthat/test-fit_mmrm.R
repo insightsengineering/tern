@@ -173,7 +173,7 @@ testthat::test_that("build_mmrm_formula builds the correct formula", {
   vars3$arm <- NULL
   cor_struct3 <- "random-quadratic"
   result3 <- build_mmrm_formula(vars3, cor_struct3)
-  expected3 <- AVAL ~ AVISIT + (poly(as.numeric(AVISIT), df = 2) | USUBJID)
+  expected3 <- AVAL ~ AVISIT + (stats::poly(as.numeric(AVISIT), df = 2) | USUBJID)
 
 })
 

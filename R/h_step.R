@@ -107,7 +107,7 @@ h_step_survival_formula <- function(variables,
   )
   form <- paste0("Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm)
   if (control$degree > 0) {
-    form <- paste0(form, " * poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
+    form <- paste0(form, " * stats::poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
   }
   if (!is.null(variables$covariates)) {
     form <- paste(form, "+", paste(variables$covariates, collapse = "+"))
@@ -203,7 +203,7 @@ h_step_rsp_formula <- function(variables,
   )
   form <- paste0(response_definition, " ~ ", variables$arm)
   if (control$degree > 0) {
-    form <- paste0(form, " * poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
+    form <- paste0(form, " * stats::poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
   }
   if (!is.null(variables$covariates)) {
     form <- paste(form, "+", paste(variables$covariates, collapse = "+"))

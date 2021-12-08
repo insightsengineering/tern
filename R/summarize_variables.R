@@ -148,7 +148,7 @@ s_summary <- function(x,
 #' - `mad`:
 #' the median absolute deviation of `x`, i.e.: ([stats::median()] of `xc`, where `xc` = `x` - [stats::median()]).
 #' - `median_ci`: the CI for the median of `x` (from [stat_median_ci()]).
-#' - `quantiles`: two sample quantiles of `x` (from [quantile()]).
+#' - `quantiles`: two sample quantiles of `x` (from [stats::quantile()]).
 #' - `iqr`: the [stats::IQR()] of `x`.
 #' - `range`: the [range_noinf()] of `x`.
 #' - `min`: the [max()] of `x`.

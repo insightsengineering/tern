@@ -33,8 +33,8 @@ testthat::test_that("fit_logistic works with default paramters", {
   expected2 <- car::Anova(expected_model, type = 3, test.statistic = "Wald")
   testthat::expect_identical(result2, expected2)
 
-  result3 <- vcov(result_model)
-  expected3 <- vcov(expected_model)
+  result3 <- stats::vcov(result_model)
+  expected3 <- stats::vcov(expected_model)
   testthat::expect_identical(result3, expected3)
 
 })
@@ -60,8 +60,8 @@ testthat::test_that("fit_logistic works with covariates and interaction", {
   expected2 <- car::Anova(expected_model, type = 3, test.statistic = "Wald")
   testthat::expect_identical(result2, expected2)
 
-  result3 <- vcov(result_model)
-  expected3 <- vcov(expected_model)
+  result3 <- stats::vcov(result_model)
+  expected3 <- stats::vcov(expected_model)
   testthat::expect_identical(result3, expected3)
 })
 
@@ -227,7 +227,7 @@ testthat::test_that("h_or_cont_interaction works as expected with median increme
   testthat::expect_named(result_armcd, levels(data$ARMCD)[-1])
   for (res in result_armcd) {
     testthat::expect_is(res, "list")
-    testthat::expect_named(res, as.character(median(data$AGE)))
+    testthat::expect_named(res, as.character(stats::median(data$AGE)))
   }
   testthat::expect_equivalent(
     result_armcd[["ARM B"]][["34"]],

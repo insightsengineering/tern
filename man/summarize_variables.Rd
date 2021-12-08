@@ -186,7 +186,7 @@ If \code{x} is of class \code{numeric}, returns a list with named items: \cr
 \item \code{mad}:
 the median absolute deviation of \code{x}, i.e.: (\code{\link[stats:median]{stats::median()}} of \code{xc}, where \code{xc} = \code{x} - \code{\link[stats:median]{stats::median()}}).
 \item \code{median_ci}: the CI for the median of \code{x} (from \code{\link[=stat_median_ci]{stat_median_ci()}}).
-\item \code{quantiles}: two sample quantiles of \code{x} (from \code{\link[=quantile]{quantile()}}).
+\item \code{quantiles}: two sample quantiles of \code{x} (from \code{\link[stats:quantile]{stats::quantile()}}).
 \item \code{iqr}: the \code{\link[stats:IQR]{stats::IQR()}} of \code{x}.
 \item \code{range}: the \code{\link[=range_noinf]{range_noinf()}} of \code{x}.
 \item \code{min}: the \code{\link[=max]{max()}} of \code{x}.

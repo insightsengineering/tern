@@ -112,7 +112,7 @@ testthat::test_that("h_step_trt_effect works for Cox models with interaction", {
     variables = vars,
     x = 50
   )
-  est_manual <- sum(coef(mod)[c("armcdB", "age", "armcdB:age")] * (c(1, 50, 50) - c(0, 50, 0)))
+  est_manual <- sum(stats::coef(mod)[c("armcdB", "age", "armcdB:age")] * (c(1, 50, 50) - c(0, 50, 0)))
   testthat::expect_equivalent(result["est"], est_manual)
   # Regression test for se.
   testthat::expect_equivalent(result["se"], 1.322242, tol = 1e-5)
@@ -180,7 +180,7 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
     variables = vars,
     x = 50
   )
-  est_manual <- sum(coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
+  est_manual <- sum(stats::coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
   testthat::expect_equivalent(result["est"], est_manual)
   # Regression test for se.
   testthat::expect_equivalent(result["se"], 0.2153840, tol = 1e-5)
@@ -218,7 +218,7 @@ testthat::test_that("h_step_trt_effect works for conditional logistic regression
     variables = vars,
     x = 50
   )
-  est_manual <- sum(coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
+  est_manual <- sum(stats::coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
   testthat::expect_equivalent(result["est"], est_manual)
   # Regression test for se.
   testthat::expect_equivalent(result["se"], 0.2100507, tol = 1e-5)
@@ -232,7 +232,7 @@ testthat::test_that("h_step_survival_formula works correctly without covariates 
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME"),
       control = control_step(degree = 3)
     ),
-    Surv(TIME, EV) ~ TRT * poly(BM, degree = 3, raw = TRUE)
+    Surv(TIME, EV) ~ TRT * stats::poly(BM, degree = 3, raw = TRUE)
   )
   testthat::expect_equal(
     h_step_survival_formula(
@@ -249,7 +249,7 @@ testthat::test_that("h_step_survival_formula works correctly with covariates", {
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME", covariates = c("A", "B")),
       control = control_step(degree = 2)
     ),
-    Surv(TIME, EV) ~ TRT * poly(BM, degree = 2, raw = TRUE) + A + B
+    Surv(TIME, EV) ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + A + B
   )
 })
 
@@ -324,7 +324,7 @@ testthat::test_that("h_step_rsp_formula works correctly without covariates", {
       list(arm = "TRT", biomarker = "BM", response = "RSP"),
       control = c(control_step(degree = 3), control_logistic())
     ),
-    RSP ~ TRT * poly(BM, degree = 3, raw = TRUE)
+    RSP ~ TRT * stats::poly(BM, degree = 3, raw = TRUE)
   )
   testthat::expect_equal(
     h_step_rsp_formula(
@@ -340,7 +340,7 @@ testthat::test_that("h_step_rsp_formula works correctly with covariates", {
       list(arm = "TRT", biomarker = "BM", response = "RSP", covariates = c("A", "B")),
       control = c(control_logistic(), control_step(degree = 2))
     ),
-    RSP ~ TRT * poly(BM, degree = 2, raw = TRUE) + A + B
+    RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + A + B
   )
 })
 
@@ -353,7 +353,7 @@ testthat::test_that("h_step_rsp_formula works correctly with different response 
         control_step(degree = 1)
       )
     ),
-    I(AVAL == "CR") ~ TRT * poly(BM, degree = 1, raw = TRUE)
+    I(AVAL == "CR") ~ TRT * stats::poly(BM, degree = 1, raw = TRUE)
   )
 })
 
@@ -363,14 +363,14 @@ testthat::test_that("h_step_rsp_formula works correctly with strata", {
       list(arm = "TRT", biomarker = "BM", response = "RSP", strata = c("A", "B")),
       control = c(control_logistic(), control_step(degree = 2))
     ),
-    RSP ~ TRT * poly(BM, degree = 2, raw = TRUE) + strata(I(interaction(A, B)))
+    RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + strata(I(interaction(A, B)))
   )
   testthat::expect_equal(
     h_step_rsp_formula(
       list(arm = "TRT", biomarker = "BM", response = "RSP", strata = "A"),
       control = c(control_logistic(), control_step(degree = 2))
     ),
-    RSP ~ TRT * poly(BM, degree = 2, raw = TRUE) + strata(A)
+    RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + strata(A)
   )
 })
 

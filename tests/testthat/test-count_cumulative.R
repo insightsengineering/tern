@@ -18,7 +18,7 @@ testthat::test_that("h_count_cumulative works with healthy input and default arg
 
 testthat::test_that("h_count_cumulative works with customized arguments", {
   set.seed(1, kind = "Mersenne-Twister")
-  rand <- rnorm(10, 5, 5)
+  rand <- stats::rnorm(10, 5, 5)
   x <- c(rand[1:5], NA, rand[6:10])
 
   result <- h_count_cumulative(
@@ -58,7 +58,7 @@ testthat::test_that("s_count_cumulative works with healthy input and default arg
 
 testthat::test_that("s_count_cumulative works with customized arguments", {
   set.seed(1, kind = "Mersenne-Twister")
-  rand <- rnorm(10, 5, 5)
+  rand <- stats::rnorm(10, 5, 5)
   x <- c(rand[1:5], NA, rand[6:10])
 
   result <- s_count_cumulative(

@@ -16,10 +16,10 @@ adtte_f <- within( # nolint
   ),
   expr = { # nolint start
     set.seed(1)
-    ARMCD <- relevel(ARMCD, "ARM B")
+    ARMCD <- stats::relevel(ARMCD, "ARM B")
     SEX <- droplevels(SEX)
     RACE <- droplevels(RACE)
-    X <- rnorm(n = length(ARM))
+    X <- stats::rnorm(n = length(ARM))
   }  # nolint end
 ) %>%
   dplyr::mutate(event = 1 - CNSR) %>%

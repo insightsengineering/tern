@@ -18,7 +18,7 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   input_data <- data.frame(
     USUBJID = as.character(rep(1:5, each = 30)),
     PARAMCD = rep(rep(c("ABC", "OPQ", "XYZ"), each = 10), 5),
-    VALUES = runif(150, 0, 200)
+    VALUES = stats::runif(150, 0, 200)
   )
 
   input_data <- input_data %>%

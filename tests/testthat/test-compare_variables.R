@@ -1,7 +1,7 @@
 testthat::test_that("s_compare works for numeric", {
   result <- testthat::expect_silent(s_compare(
-    rnorm(10, 5, 1),
-    .ref_group = rnorm(5, -5, 1),
+    stats::rnorm(10, 5, 1),
+    .ref_group = stats::rnorm(5, -5, 1),
     .in_ref_col = FALSE
   ))
   testthat::expect_named(result, c(
@@ -13,7 +13,7 @@ testthat::test_that("s_compare works for numeric", {
 
 testthat::test_that("s_compare for numeric does not give p-value when not at least 2 values in each group", {
   result <- testthat::expect_silent(s_compare(
-    rnorm(10, 5, 1),
+    stats::rnorm(10, 5, 1),
     .ref_group = 1,
     .in_ref_col = FALSE
   ))
