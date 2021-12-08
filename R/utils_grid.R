@@ -238,7 +238,7 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (!is.null(vp)) {
     grid::pushViewport(vp)
   }
-  grid.draw(grob)
+  grid::grid.draw(grob)
 }
 
 tern_grob <- function(x) { # nousage # nolint
@@ -248,5 +248,5 @@ tern_grob <- function(x) { # nousage # nolint
 
 print.ternGrob <- function(x, ...) { # nousage # nolint
   grid::grid.newpage()
-  grid.draw(x)
+  grid::grid.draw(x)
 }
