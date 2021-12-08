@@ -242,7 +242,7 @@ s_summary.numeric <- function(x, # nolint
   if (any(is.na(x))) {
     qnts <- rep(NA_real_, length(q))
   } else {
-    qnts <- quantile(x, probs = q, type = control$quantile_type, na.rm = FALSE)
+    qnts <- stats::quantile(x, probs = q, type = control$quantile_type, na.rm = FALSE)
   }
   names(qnts) <- paste("quantile", q, sep = "_")
   y$quantiles <- with_label(qnts, paste0(paste(paste0(q * 100, "%"), collapse = " and "), "-ile"))
@@ -261,7 +261,7 @@ s_summary.numeric <- function(x, # nolint
 
   y$geom_mean <- c("geom_mean" = exp(mean(log(x))))
 
-  y$geom_cv <- c("geom_cv" = sqrt(exp(sd(log(x)) ^ 2) - 1) * 100)
+  y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x)) ^ 2) - 1) * 100)
 
   y
 }

@@ -23,7 +23,7 @@ adrs_example <- local({
 testthat::test_that("fit_logistic works with default paramters", {
   data <- adrs_example
   result_model <- fit_logistic(data, variables = list(response = "Response", arm = "ARMCD"))
-  expected_model <- glm(formula = Response ~ ARMCD, data = data, family = "binomial")
+  expected_model <- stats::glm(formula = Response ~ ARMCD, data = data, family = "binomial")
 
   result1 <- summary(result_model)$coefficients
   expected1 <- summary(expected_model)$coefficients
@@ -48,7 +48,7 @@ testthat::test_that("fit_logistic works with covariates and interaction", {
       covariates = c("AGE", "RACE"), interaction = "RACE"
     )
   )
-  expected_model <- glm(
+  expected_model <- stats::glm(
     formula = Response ~ ARMCD + AGE + RACE + ARMCD:RACE,
     data = data, family = "binomial"
   )

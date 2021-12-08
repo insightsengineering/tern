@@ -42,7 +42,7 @@ stat_mean_ci <- function(x,
   if (n < n_min || is.na(m)) {
     ci <- c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_)
   } else {
-    hci <- stats::qt((1 + conf_level) / 2, df = n - 1) * sd(x) / sqrt(n)
+    hci <- stats::qt((1 + conf_level) / 2, df = n - 1) * stats::sd(x) / sqrt(n)
     ci <- c(mean_ci_lwr = m - hci, mean_ci_upr = m + hci)
   }
 

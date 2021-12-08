@@ -17,10 +17,10 @@ testthat::test_that("check_mmrm_vars passes with healthy inputs and returns corr
   )
   testthat::expect_silent(result1 <- check_mmrm_vars(vars1, data))
   expected1 <- list(
-    response = setNames("Analysis Value", "AVAL"),
-    id = setNames("Unique Subject Identifier", "USUBJID"),
-    arm = setNames("ARM", "ARM"),
-    visit = setNames("Analysis Visit", "AVISIT")
+    response = c(AVAL = "Analysis Value"),
+    id = c(USUBJID = "Unique Subject Identifier"),
+    arm = c(ARM = "ARM"),
+    visit = c(AVISIT = "Analysis Visit")
   )
   testthat::expect_identical(result1, expected1)
 
@@ -31,9 +31,9 @@ testthat::test_that("check_mmrm_vars passes with healthy inputs and returns corr
   expected2 <- c(
     expected1,
     list(
-      parts = setNames(
-        c("Stratification Factor 1", "Categorical Level Biomarker 2"),
-        c("STRATA1", "BMRKR2")
+      parts = c(
+        STRATA1 = "Stratification Factor 1",
+        BMRKR2 = "Categorical Level Biomarker 2"
       )
     )
   )
@@ -45,9 +45,9 @@ testthat::test_that("check_mmrm_vars passes with healthy inputs and returns corr
   testthat::expect_silent(result3 <- check_mmrm_vars(vars3, data))
 
   expected3 <- list(
-    response = setNames("Analysis Value", "AVAL"),
-    id = setNames("Unique Subject Identifier", "USUBJID"),
-    visit = setNames("Analysis Visit", "AVISIT")
+    response = c(AVAL = "Analysis Value"),
+    id = c(USUBJID = "Unique Subject Identifier"),
+    visit = c(AVISIT = "Analysis Visit")
   )
   testthat::expect_identical(result3, expected3)
 
@@ -66,14 +66,11 @@ testthat::test_that("check_mmrm_vars works with interaction terms in `covariates
   )
   testthat::expect_silent(result <- check_mmrm_vars(vars, data))
   expected <- list(
-    response = setNames("Analysis Value", "AVAL"),
-    id = setNames("Unique Subject Identifier", "USUBJID"),
-    arm = setNames("ARM", "ARM"),
-    visit = setNames("Analysis Visit", "AVISIT"),
-    parts = setNames(
-      c("ARM", "Continous Level Biomarker 1", "Stratification Factor 1"),
-      c("ARM", "BMRKR1", "STRATA1")
-    )
+    response = c(AVAL = "Analysis Value"),
+    id = c(USUBJID = "Unique Subject Identifier"),
+    arm = c(ARM = "ARM"),
+    visit = c(AVISIT = "Analysis Visit"),
+    parts = c(ARM = "ARM", BMRKR1= "Continous Level Biomarker 1", STRATA1 = "Stratification Factor 1")
   )
   testthat::expect_identical(result, expected)
 })
@@ -106,14 +103,11 @@ testthat::test_that("check_mmrm_vars works when there are missing values", {
   )
   testthat::expect_silent(result <- check_mmrm_vars(vars, data))
   expected <- list(
-    response = setNames("AVAL", "AVAL"),
-    id = setNames("Unique Subject Identifier", "USUBJID"),
-    arm = setNames("ARM", "ARM"),
-    visit = setNames("Analysis Visit", "AVISIT"),
-    parts = setNames(
-      c("ARM", "BMRKR1", "Stratification Factor 1"),
-      c("ARM", "BMRKR1", "STRATA1")
-    )
+    response = c(AVAL = "AVAL"),
+    id = c(USUBJID = "Unique Subject Identifier"),
+    arm = c(ARM = "ARM"),
+    visit = c(AVISIT = "Analysis Visit"),
+    parts = c(ARM = "ARM", BMRKR1= "BMRKR1", STRATA1 = "Stratification Factor 1")
   )
   testthat::expect_identical(result, expected)
 })
@@ -840,7 +834,7 @@ testthat::test_that("fit_mmrm works also with missing data", {
 
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
-    nrow(na.omit(adqs_f)),
+    nrow(stats::na.omit(adqs_f)),
     265L
   ))
 
@@ -1010,7 +1004,7 @@ testthat::test_that("fit_mmrm works also with missing data", {
 testthat::test_that("fit_mmrm works with compound symmetry covariance structure", {
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
-    nrow(na.omit(adqs_f)),
+    nrow(stats::na.omit(adqs_f)),
     265L
   ))
 

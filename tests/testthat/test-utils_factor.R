@@ -74,7 +74,7 @@ testthat::test_that("cut_quantile_bins works as expected with default settings",
   testthat::expect_is(result, "ordered")
   testthat::expect_identical(levels(result), c("[0%,25%]", "(25%,50%]", "(50%,75%]", "(75%,100%]"))
   testthat::expect_identical(length(result), length(cars$speed))
-  q1 <- quantile(cars$speed, probs = 0.25)
+  q1 <- stats::quantile(cars$speed, probs = 0.25)
   testthat::expect_true(identical(result == "[0%,25%]", cars$speed <= q1))
   testthat::expect_true(identical(result != "[0%,25%]", cars$speed > q1))
 })

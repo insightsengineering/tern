@@ -34,12 +34,12 @@ h_step_window <- function(x,
         max(xs[i] - control$bandwidth, 0),
         min(xs[i] + control$bandwidth, 1)
       )
-      out[i, 5:6] <- quantile(x, out[i, 2:3])
+      out[i, 5:6] <- stats::quantile(x, out[i, 2:3])
       sel[, i] <- x >= out[i, 5] & x <= out[i, 6]
     }
     # Center is the middle point of the percentile window.
     out[, 1] <- xs[-control$num_points - 1]
-    out[, 4] <- quantile(x, out[, 1])
+    out[, 4] <- stats::quantile(x, out[, 1])
   } else {
     # Create windows according to cutoffs.
     m <- c(min(x), max(x))
@@ -176,7 +176,7 @@ h_step_survival_est <- function(formula,
     model = fit,
     variables = variables
   ))
-  q_norm <- qnorm((1 + control$conf_level) / 2)
+  q_norm <- stats::qnorm((1 + control$conf_level) / 2)
   cbind(
     n = fit$n,
     events = fit$nevent,
@@ -216,7 +216,7 @@ h_step_rsp_formula <- function(variables,
     }
     form <- paste0(form, "+ strata(", strata_arg, ")")
   }
-  as.formula(form)
+  stats::as.formula(form)
 }
 
 #' @describeIn h_step estimates the model with `formula` built based on
@@ -247,11 +247,11 @@ h_step_rsp_est <- function(formula,
     withCallingHandlers(
       expr = {
         fit <- if (is.null(variables$strata)) {
-          glm(
+          stats::glm(
             formula = formula,
             data = data,
             subset = .subset,
-            family = binomial("logit")
+            family = stats::binomial("logit")
           )
         } else {
           # clogit needs coxph and strata imported
@@ -285,7 +285,7 @@ h_step_rsp_est <- function(formula,
     model = fit,
     variables = variables
   ))
-  q_norm <- qnorm((1 + control$conf_level) / 2)
+  q_norm <- stats::qnorm((1 + control$conf_level) / 2)
   cbind(
     n = length(fit$y),
     logor = estimates[, "est"],

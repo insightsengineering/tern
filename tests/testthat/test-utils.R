@@ -106,20 +106,20 @@ testthat::test_that("aesi_label works as expected when input includes multiple v
 testthat::test_that("get_smooths dimensions without grouping", {
   air_smooths <- get_smooths(df = airquality, x = "Solar.R", y = "Ozone")
 
-  testthat::expect_identical(nrow(air_smooths), sum(complete.cases(airquality[, c("Solar.R", "Ozone")])))
+  testthat::expect_identical(nrow(air_smooths), sum(stats::complete.cases(airquality[, c("Solar.R", "Ozone")])))
   testthat::expect_identical(ncol(air_smooths), 4L)
 })
 
 testthat::test_that("get_smooths dimensions with grouping", {
   mt_smooths <- get_smooths(mtcars, "wt", "mpg", c("am"))
 
-  testthat::expect_identical(nrow(mt_smooths), sum(complete.cases(mtcars[, c("wt", "mpg", "am")])))
+  testthat::expect_identical(nrow(mt_smooths), sum(stats::complete.cases(mtcars[, c("wt", "mpg", "am")])))
   testthat::expect_identical(ncol(mt_smooths), 5L)
 })
 
 testthat::test_that("get_smooths proper splits across groups", {
   air_smooths2 <- get_smooths(df = airquality, x = "Solar.R", y = "Ozone", groups = "Month")
-  air_full <- airquality[complete.cases(airquality[, c("Solar.R", "Ozone", "Month")]), ]
+  air_full <- airquality[stats::complete.cases(airquality[, c("Solar.R", "Ozone", "Month")]), ]
 
   testthat::expect_identical(
     unlist(by(air_full, air_full$Month, function(d) range(d$`Solar.R`, na.rm = TRUE))),

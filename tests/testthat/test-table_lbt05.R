@@ -9,8 +9,8 @@ get_adlb <- function() {
   qntls <- adlb %>%
     dplyr::group_by(.data$PARAMCD) %>%
     dplyr::summarise(
-      q1 = quantile(.data$AVAL, probs = c(0.1)),
-      q2 = quantile(.data$AVAL, probs = c(0.9))
+      q1 = stats::quantile(.data$AVAL, probs = c(0.1)),
+      q2 = stats::quantile(.data$AVAL, probs = c(0.9))
     )
 
   adlb <- adlb %>%

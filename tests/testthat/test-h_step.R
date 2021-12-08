@@ -142,7 +142,7 @@ testthat::test_that("h_step_trt_effect works for Cox models with strata", {
 testthat::test_that("h_step_trt_effect works for logistic regression models without interaction", {
   dta_simple <- raw_data
   # Use a model without biomarker interaction, then we can compare with summary results.
-  mod <- glm(status ~ armcd + age, data = dta_simple, family = binomial())
+  mod <- stats::glm(status ~ armcd + age, data = dta_simple, family = stats::binomial())
   vars <- list(
     arm = "armcd",
     biomarker = "age"
@@ -159,7 +159,7 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
 
 testthat::test_that("h_step_trt_effect works for logistic regression models with interaction", {
   dta <- get_adrs()
-  mod <- glm(formula = RSP ~ ARMBIN * AGE + RACE, data = dta, family = binomial())
+  mod <- stats::glm(formula = RSP ~ ARMBIN * AGE + RACE, data = dta, family = stats::binomial())
   vars <- list(
     arm = "ARMBIN",
     biomarker = "AGE"

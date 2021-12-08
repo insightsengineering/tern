@@ -184,7 +184,7 @@ cut_quantile_bins <- function(x,
     return(factor(x, ordered = ordered, levels = labels))
   }
   probs <- c(0, probs, 1)
-  quantiles <- quantile(
+  quantiles <- stats::quantile(
     x,
     probs = probs,
     type = type,

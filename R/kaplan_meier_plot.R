@@ -1017,7 +1017,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
   y$`CI` <- paste0( # nolint
     "(", signif(y[[paste0(conf.int, "LCL")]], 4), ", ", signif(y[[paste0(conf.int, "UCL")]], 4), ")"
   )
-  setNames(
+  stats::setNames(
     y[c("records", "median", "CI")],
     c("N", "Median", f_conf_level(conf.int))
   )

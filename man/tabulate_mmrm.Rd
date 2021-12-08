@@ -121,7 +121,7 @@ dat <- sleepstudy \%>\%
     group = factor(rep(c("A", "B"), length = nrow(sleepstudy))),
     days_grouped = cut(
       Days,
-      breaks = quantile(Days, probs = seq(0, 1, length = 5)),
+      breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
       include.lowest = TRUE
     )
   )

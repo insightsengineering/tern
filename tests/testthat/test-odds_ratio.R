@@ -15,7 +15,7 @@ testthat::test_that("or_glm estimates right OR and CI", {
   # Because `rtables` works by column (compared to the reference), we verified
   # that the model fitted on the complete dataset (grp: a, b, c) provides equal
   # estimations to the model fitted to the subset group and reference (grp: a, b).
-  model_fit <- glm(rsp ~ grp, data, family = stats::binomial(link = "logit"))
+  model_fit <- stats::glm(rsp ~ grp, data, family = stats::binomial(link = "logit"))
   expected <- c(
     exp(stats::coef(model_fit)[-1])["grpb"],
     exp(stats::confint.default(model_fit, level = 0.95)["grpb", ])
@@ -37,7 +37,7 @@ testthat::test_that("or_clogit estimates right OR and CI", {
       b = c(est = 0.288, lcl = 0.036, ucl = 2.272),
       c = c(est = 0.780, lcl = 0.075, ucl = 8.146)
     ),
-    n_tot = setNames(20, "n_tot")
+    n_tot = c(n_tot = 20)
   )
   testthat::expect_equal(result, expected, tolerance = 1e-3)
 })
@@ -61,7 +61,7 @@ testthat::test_that("s_odds_ratio estimates right OR and CI (unstratified analys
       c(est = 1 / 2 / 2 / 1, lcl = 0.0083, ucl = 7.4518),
       "Odds Ratio (95% CI)"
     ),
-    n_tot = with_label(setNames(6, "n_tot"), "Total n")
+    n_tot = with_label(c(n_tot = 6), "Total n")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -89,7 +89,7 @@ testthat::test_that("s_odds_ratio estimates right OR and CI (stratified analysis
       c(est = 0.76898, lcl = 0.34242, ucl = 1.72692),
       "Odds Ratio (95% CI)"
     ),
-    n_tot = with_label(setNames(100, "n_tot"), "Total n")
+    n_tot = with_label(c(n_tot = 100), "Total n")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })

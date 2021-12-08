@@ -109,7 +109,7 @@ testthat::test_that("make_afun works with healthy input function taking `x`", {
     list(
       n = length(x),
       mean = mean(x),
-      median = median(x)
+      median = stats::median(x)
     )
   }
   indent_mods <- c(n = 0L, mean = 2L, median = 1L)
@@ -168,7 +168,7 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
     list(
       n = with_label(`if`(in_ref, character(), length(x)), "Number of patients"),
       mean = with_label(`if`(in_ref, character(), mean(x)), "Mean"),
-      median = with_label(`if`(in_ref, character(), median(x)), "Median")
+      median = with_label(`if`(in_ref, character(), stats::median(x)), "Median")
     )
   }
   indent_mods <- c(n = 0L, mean = 2L, median = 1L)

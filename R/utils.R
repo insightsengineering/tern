@@ -323,11 +323,11 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
   assertthat::assert_that(is.null(groups) || (is.character(groups) && all(groups %in% df_cols)))
 
   smooths <- function(x, y) {
-    predict(stats::loess(y ~ x), se = TRUE)
+    stats::predict(stats::loess(y ~ x), se = TRUE)
   }
 
   if (!is.null(groups)) {
-    cc <- complete.cases(df[c(x, y, groups)])
+    cc <- stats::complete.cases(df[c(x, y, groups)])
     df_c <- df[cc, c(x, y, groups)]
     df_c_ordered <- df_c[do.call("order", as.list(df_c[, groups, drop = FALSE])), , drop = FALSE]
     df_c_g <- data.frame(Map(as.factor, df_c_ordered[groups]))
@@ -338,8 +338,8 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
         data.frame(
           x = d[[x]],
           y = plx$fit,
-          ylow = plx$fit - qt(level, plx$df) * plx$se,
-          yhigh = plx$fit + qt(level, plx$df) * plx$se
+          ylow = plx$fit - stats::qt(level, plx$df) * plx$se,
+          yhigh = plx$fit + stats::qt(level, plx$df) * plx$se
         )
       })
 
@@ -348,15 +348,15 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 
     df_smooth
   } else {
-    cc <- complete.cases(df[c(x, y)])
+    cc <- stats::complete.cases(df[c(x, y)])
     df_c <- df[cc, ]
     plx <- smooths(df_c[[x]], df_c[[y]])
 
     df_smooth <- data.frame(
       x = df_c[[x]],
       y = plx$fit,
-      ylow = plx$fit - qt(level, plx$df) * plx$se,
-      yhigh = plx$fit + qt(level, plx$df) * plx$se
+      ylow = plx$fit - stats::qt(level, plx$df) * plx$se,
+      yhigh = plx$fit + stats::qt(level, plx$df) * plx$se
     )
 
     df_smooth

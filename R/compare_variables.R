@@ -231,7 +231,7 @@ s_compare.logical <- function(x,
   )
 
   if (na.rm) {
-    x <- na.omit(x)
+    x <- stats::na.omit(x)
     .ref_group <- na.omit(.ref_group)
   } else {
     x[is.na(x)] <- FALSE

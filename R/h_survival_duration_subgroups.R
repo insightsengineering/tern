@@ -72,7 +72,7 @@ h_survtime_df <- function(tte, is_event, arm) {
   )
 
   #Delete NAs
-  non_missing_rows <- complete.cases(df_tte)
+  non_missing_rows <- stats::complete.cases(df_tte)
   df_tte <- df_tte[non_missing_rows, ]
   arm <- arm[non_missing_rows]
 
@@ -257,7 +257,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
     (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
   ) {
 
-    df_tte_complete <- df_tte[complete.cases(df_tte), ]
+    df_tte_complete <- df_tte[stats::complete.cases(df_tte), ]
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",

@@ -6,7 +6,7 @@
 
 #' @import rtables
 #' @import ggplot2
-#' @importFrom survival coxph strata
+#' @importFrom survival coxph strata Surv
 #' @importFrom broom tidy
 #' @importFrom rlang .data := !!
 #' @importFrom magrittr %>%

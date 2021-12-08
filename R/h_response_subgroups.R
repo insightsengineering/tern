@@ -254,7 +254,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",
-      n_tot = sum(complete.cases(df_rsp)),
+      n_tot = sum(stats::complete.cases(df_rsp)),
       or = NA,
       lcl = NA,
       ucl = NA,
