@@ -37,6 +37,7 @@ Captures warnings when executing \link[car:Anova]{car::Anova}.
 # accepted.
 \dontrun{
 library(survival)
+
 mod <- coxph(
   formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
   data = ovarian

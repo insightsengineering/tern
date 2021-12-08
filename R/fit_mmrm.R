@@ -179,7 +179,7 @@ build_mmrm_formula <- function(
 #'   `id`'s observations in the original data set.
 #'
 get_lme4_cov_estimate <- function(fit) {
-  stopifnot(methods::is(fit, "merMod"))
+  stopifnot(inherits(fit, "merMod"))
   # A list of the grouping variables (factors) involved in the random effect terms.
   grouping_factors <- lme4::getME(fit, "flist")
   # We only have one here (id).
@@ -237,7 +237,7 @@ get_lme4_cov_estimate <- function(fit) {
 #'
 get_lme4_diagnostics <- function(fit,
                                  cov_est = get_lme4_cov_estimate(fit)) {
-  stopifnot(methods::is(fit, "lmerModLmerTest"))
+  stopifnot(inherits(fit, "lmerModLmerTest"))
   stopifnot(lme4::isREML(fit))
 
   n_obs <- lme4::getME(fit, "n")

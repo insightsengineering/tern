@@ -238,10 +238,11 @@ decorate_grob <- function(grob,
 }
 
 
+#' @importFrom grid validDetails
 #' @export
 validDetails.decoratedGrob <- function(x) { #nolint #nousage
   stopifnot(
-    is.grob(x$grob) || is.null(x$grob),
+    grid::is.grob(x$grob) || is.null(x$grob),
     is.character(x$titles),
     is.character(x$footnotes),
     is.character(x$page) || length(x$page) != 1,
@@ -253,12 +254,13 @@ validDetails.decoratedGrob <- function(x) { #nolint #nousage
   x
 }
 
-
+#' @importFrom grid widthDetails
 #' @export
 widthDetails.decoratedGrob <- function(x) { #nolint #nousage
   grid::unit(1, "null")
 }
 
+#' @importFrom grid heightDetails
 #' @export
 heightDetails.decoratedGrob <- function(x) { #nolint #nousage
   grid::unit(1, "null")
@@ -362,7 +364,7 @@ split_text_grob <- function(text,
   stopifnot(grid::is.unit(width) && length(width) == 1)
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
-  if (!methods::is(width, "unit.arithmetic") &&
+  if (!inherits(width, "unit.arithmetic") &&
     !is.null(attr(width, "unit")) &&
     attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts", "dida", "cicero", "scaledpts")) {
     attr(text, "fixed_text") <- paste(vapply(text, split_string, character(1), width = width), collapse = "\n")
@@ -384,6 +386,7 @@ split_text_grob <- function(text,
   )
 }
 
+#' @importFrom grid validDetails
 #' @export
 validDetails.dynamicSplitText <- function(x) { #nolint #nousage
   stopifnot(
@@ -394,6 +397,7 @@ validDetails.dynamicSplitText <- function(x) { #nolint #nousage
   x
 }
 
+#' @importFrom grid heightDetails
 #' @export
 heightDetails.dynamicSplitText <- function(x) { #nolint #nousage
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
@@ -404,11 +408,13 @@ heightDetails.dynamicSplitText <- function(x) { #nolint #nousage
   stringHeight(txt)
 }
 
+#' @importFrom grid widthDetails
 #' @export
 widthDetails.dynamicSplitText <- function(x) { #nolint #nousage
   x$width
 }
 
+#' @importFrom grid drawDetails
 #' @export
 drawDetails.dynamicSplitText <- function(x, recording) { #nolint #nousage
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {

@@ -5,9 +5,9 @@
 "_PACKAGE"
 
 #' @import rtables
+#' @import ggplot2
+#' @importFrom survival coxph strata
 #' @importFrom broom tidy
-#' @importFrom survival strata coxph Surv
-#' @importFrom grid gList
 #' @importFrom rlang .data := !!
 #' @importFrom magrittr %>%
 NULL

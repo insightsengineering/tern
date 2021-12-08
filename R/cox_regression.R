@@ -642,8 +642,9 @@ h_coxreg_inter_effect.factor <- function(x,  # nousage # nolint
 #'   no interaction, [h_coxreg_univar_extract()] is applied.
 #' @export
 #' @examples
+#' library(survival)
 #'
-#' mod <- coxph(survival::Surv(time, status) ~ armcd * covar1, data = dta_bladder)
+#' mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 #' h_coxreg_extract_interaction(
 #'   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
 #'   control = control_coxreg()
@@ -927,7 +928,7 @@ fit_coxreg_multivar <- function(variables,
   }
 
   form <- h_coxreg_multivar_formula(variables)
-  mod <- coxph(
+  mod <- survival::coxph(
     formula = stats::as.formula(form),
     data = data,
     ties = control$ties
@@ -953,7 +954,9 @@ fit_coxreg_multivar <- function(variables,
 #' @export
 #'
 #' @examples
-#' mod <- coxph(survival::Surv(time, status) ~ armcd + var1, data = dta_simple)
+#' library(survival)
+#'
+#' mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
 #' result <- h_coxreg_multivar_extract(
 #'   var = "var1", mod = mod, data = dta_simple
 #' )

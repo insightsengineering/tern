@@ -494,8 +494,8 @@ testthat::test_that("muffled_car_anova muffles notes about dropped strata term",
 
 testthat::test_that("muffled_car_anova gives a hint in the error message when an error occurs", {
   bladder2 <- bladder[1:20, ]
-  mod <- coxph(
-    Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
+  mod <- survival::coxph(
+    survival::Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
     bladder2
   )
   testthat::expect_error(
@@ -698,7 +698,7 @@ testthat::test_that("fit_coxreg_multivar returns model results as expected", {
   )
 
   expected <- list(
-    mod = coxph(
+    mod = survival::coxph(
       formula = stats::as.formula(form),
       data = data, ties = control$ties
     ),

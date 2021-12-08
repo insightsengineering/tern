@@ -353,7 +353,9 @@ multivar_covs_model <- fit_coxreg_multivar(
   data = dta_bladder
 )
 
-mod <- coxph(survival::Surv(time, status) ~ armcd + var1, data = dta_simple)
+library(survival)
+
+mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
 result <- h_coxreg_multivar_extract(
   var = "var1", mod = mod, data = dta_simple
 )

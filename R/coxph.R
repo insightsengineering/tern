@@ -340,7 +340,7 @@ s_cox_univariate <- function(formula,
 
 # Get the right-hand-term of a formula
 rht <- function(x) {
-  stopifnot(methods::is(x, "formula"))
+  stopifnot(inherits(x, "formula"))
   y <- as.character(rev(x)[[1]])
   return(y)
 }
@@ -494,6 +494,7 @@ estimate_coef <- function(variable, given,
 #' # accepted.
 #' \dontrun{
 #' library(survival)
+#'
 #' mod <- coxph(
 #'   formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
 #'   data = ovarian

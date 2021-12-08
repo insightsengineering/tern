@@ -70,7 +70,7 @@ h_step_trt_effect <- function(data,
                               x) {
   assertthat::assert_that(
     is_df_with_variables(data, variables),
-    methods::is(model, "coxph") || methods::is(model, "glm"),
+    inherits(model, "coxph") || inherits(model, "glm"),
     assertthat::is.number(x)
   )
   arm_lvls <- levels(data[[variables$arm]])
@@ -134,7 +134,7 @@ h_step_survival_est <- function(formula,
                                 subset = rep(TRUE, nrow(data)),
                                 control = control_coxph()) {
   assertthat::assert_that(
-    methods::is(formula, "formula"),
+    inherits(formula, "formula"),
     is_df_with_variables(data, variables),
     utils.nest::is_numeric_vector(x),
     utils.nest::is_logical_vector(subset),
@@ -227,7 +227,6 @@ h_step_rsp_formula <- function(variables,
 #'   included here for each biomarker value in `x`.
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
-#'
 h_step_rsp_est <- function(formula,
                            data,
                            variables,
@@ -235,7 +234,7 @@ h_step_rsp_est <- function(formula,
                            subset = rep(TRUE, nrow(data)),
                            control = control_logistic()) {
   assertthat::assert_that(
-    methods::is(formula, "formula"),
+    inherits(formula, "formula"),
     is_df_with_variables(data, variables),
     utils.nest::is_numeric_vector(x),
     utils.nest::is_logical_vector(subset),
@@ -255,6 +254,7 @@ h_step_rsp_est <- function(formula,
             family = binomial("logit")
           )
         } else {
+          # clogit needs coxph and strata imported
           survival::clogit(
             formula = formula,
             data = data,

@@ -26,6 +26,7 @@
 #' @examples
 #'
 #' # Testing dataset with just two treatment arms.
+#' library(survival)
 #' library(dplyr)
 #' library(scda)
 #'

@@ -41,7 +41,7 @@ NULL
 keep_rows <- function(row_condition) {
   assertthat::assert_that(is.function(row_condition))
   function(table_tree) {
-    if (methods::is(table_tree, "TableRow")) {
+    if (inherits(table_tree, "TableRow")) {
       return(!row_condition(table_tree))
     }
     children <- tree_children(table_tree)
@@ -71,7 +71,7 @@ keep_content_rows <- function(content_row_condition) {
       content_row <- h_content_first_row(table_tree)
       return(!content_row_condition(content_row))
     }
-    if (methods::is(table_tree, "DataRow")) {
+    if (inherits(table_tree, "DataRow")) {
       return(FALSE)
     }
     children <- tree_children(table_tree)

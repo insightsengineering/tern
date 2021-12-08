@@ -174,7 +174,7 @@ g_forest <- function(tbl, # nolint
                      draw = TRUE,
                      newpage = TRUE) {
 
-  stopifnot(methods::is(tbl, "VTableTree"))
+  stopifnot(inherits(tbl, "VTableTree"))
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
@@ -473,7 +473,7 @@ forest_grob <- function(tbl,
       ),
       grid::gTree(
         children = do.call(
-          "gList",
+          grid::gList,
           Map(
             function(xi, li, ui, row_index, size_i) {
               forest_dot_line(
@@ -696,7 +696,7 @@ forest_viewport <- function(tbl,
                             mat_form = NULL) {
 
   stopifnot(
-    methods::is(tbl, "VTableTree"),
+    inherits(tbl, "VTableTree"),
     is.null(width_row_names) || grid::is.unit(width_row_names),
     is.null(width_columns) || grid::is.unit(width_columns),
     grid::is.unit(width_forest)

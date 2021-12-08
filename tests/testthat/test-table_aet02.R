@@ -949,7 +949,7 @@ testthat::test_that("AET02 variant 6 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    methods::is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1012,7 +1012,7 @@ testthat::test_that("AET02 variant 7 is produced correctly", {
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences, decreasing = TRUE)
 
   criteria_fun <- function(tr) {
-    methods::is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1065,7 +1065,7 @@ testthat::test_that("AET02 variant 8 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    methods::is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1114,7 +1114,7 @@ testthat::test_that("AET02 variant 9 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    methods::is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1165,7 +1165,7 @@ testthat::test_that("AET02 variant 10 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    methods::is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1218,7 +1218,7 @@ testthat::test_that("AET02 variant 11 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    methods::is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1263,7 +1263,7 @@ testthat::test_that("AET02 variant 12 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    methods::is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
