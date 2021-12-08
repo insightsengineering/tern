@@ -71,13 +71,13 @@
 #'
 #' # grid
 #' p <- gTree(
-#'   children = grid::gList(
+#'   children = gList(
 #'     rectGrob(),
 #'     xaxisGrob(),
 #'     yaxisGrob(),
-#'     textGrob("Sepal.Length", y = grid::unit(-4, "lines")),
-#'     textGrob("Petal.Length", x = grid::unit(-3.5, "lines"), rot = 90),
-#'     pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = grid::gpar(col = iris$Species), pch = 16)
+#'     textGrob("Sepal.Length", y = unit(-4, "lines")),
+#'     textGrob("Petal.Length", x = unit(-3.5, "lines"), rot = 90),
+#'     pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col = iris$Species), pch = 16)
 #'   ),
 #'   vp = vpStack(plotViewport(), dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
 #' )
