@@ -613,7 +613,7 @@ testthat::test_that("`summarize_vars` works with logical input", {
 
 testthat::test_that("`summarize_vars` works with empty named numeric variables", {
 
-  dta <- tibble(
+  dta <- tibble::tibble(
     foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
     boo = 1:6
   )

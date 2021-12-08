@@ -89,7 +89,7 @@ testthat::test_that("s_count_abnormal also works with tibble and custom argument
 
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
-  df <- dplyr::as_tibble(
+  df <- tibble::as_tibble(
     data.frame(
       myid = as.character(c(1, 1, 1, 2, 2, 2)),
       myrange = factor(c("LOW", "NORMAL", "LOW", "NORMAL", "HIGH", "HIGH"), levels = abn_levels),

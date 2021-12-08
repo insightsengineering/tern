@@ -32,8 +32,8 @@ adlb_raw <- local({
         ),
         levels = c("LOW", "ZERO", "HIGH")
       ),
-      GRADE_ANL = fct_relevel(
-        fct_recode(
+      GRADE_ANL = forcats::fct_relevel(
+        forcats::fct_relevel(
           ATOXGR,
           `1` = "-1",
           `2` = "-2",

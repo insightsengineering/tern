@@ -2,7 +2,7 @@ testthat::test_that("CombinationFunction class can be used with standard constru
   fun <- function(x) {
     x == 5
   }
-  comb_fun <- new("CombinationFunction", fun)
+  comb_fun <- methods::new("CombinationFunction", fun)
   testthat::expect_is(comb_fun, "CombinationFunction")
   testthat::expect_identical(fun(5), comb_fun(5))
   testthat::expect_identical(fun(3), comb_fun(3))
@@ -13,7 +13,7 @@ testthat::test_that("CombinationFunction custom constructor works", {
     x == 5
   }
   result <- CombinationFunction(fun)
-  expected <- new("CombinationFunction", fun)
+  expected <- methods::new("CombinationFunction", fun)
   testthat::expect_identical(result, expected)
 })
 

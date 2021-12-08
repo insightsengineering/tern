@@ -338,7 +338,7 @@ g_mmrm_lsmeans <-
         ~ type,
         nrow = length(select),
         scales = "free_y",  # Since estimates and contrasts need to have different y scales.
-        labeller = as_labeller(titles)
+        labeller = ggplot2::as_labeller(titles)
       )
     if ("contrasts" %in% select) {
       result <- result +

@@ -78,7 +78,7 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
     lapply(as.character) %>%
     as.data.frame() %>%
     dplyr::arrange(PARAMCD, dplyr::desc(abn_dir)) %>%
-  add_row(PARAMCD = "ALT", abn_dir = "Low")
+  tibble::add_row(PARAMCD = "ALT", abn_dir = "Low")
 
   lyt <- basic_table() %>%
     split_cols_by("ACTARMCD") %>%
@@ -173,7 +173,7 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
     lapply(as.character) %>%
     as.data.frame() %>%
     dplyr::arrange(PARAMCD, dplyr::desc(abn_dir)) %>%
-    add_row(PARAMCD = "ALT", abn_dir = "Low")
+    tibble::add_row(PARAMCD = "ALT", abn_dir = "Low")
 
   lyt <- basic_table() %>%
     split_cols_by("ACTARMCD") %>%

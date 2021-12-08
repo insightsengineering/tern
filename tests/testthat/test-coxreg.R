@@ -447,7 +447,7 @@ testthat::test_that("tidy.summary.coxph method tidies up the Cox regression mode
   dta_simple <- raw_data
   mod <- summary(survival::coxph(survival::Surv(time, status) ~ armcd, data = dta_simple))
   result <- broom::tidy(mod)
-  expected <- dplyr::tibble(
+  expected <- tibble::tibble(
     "Pr(>|z|)" = 0.2472383,
     "exp(coef)" = 3.846606,
     "exp(-coef)" = 0.2599694,

@@ -35,7 +35,7 @@ testthat::test_that("s_count_abnormal_by_baseline works with healthy input and d
 })
 
 testthat::test_that("s_count_abnormal_by_baseline also works with tibble and custom arguments", {
-  df <- dplyr::as_tibble(
+  df <- tibble::as_tibble(
     data.frame(
       myid = as.character(c(1:6)),
       myrange = factor(c("LOW", "NORMAL", "LOW", "NORMAL", "HIGH", "NORMAL")),
@@ -74,7 +74,7 @@ testthat::test_that("s_count_abnormal_by_baseline also works with tibble and cus
 })
 
 testthat::test_that("count_abnormal_by_baseline throws warning with character var", {
-  df <- dplyr::as_tibble(
+  df <- tibble::as_tibble(
     data.frame(
       myid = as.character(c(1:6)),
       myrange = c("LOW", "NORMAL", "LOW", "NORMAL", "HIGH", NA),

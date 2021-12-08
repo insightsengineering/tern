@@ -130,7 +130,7 @@ testthat::test_that("count_patients_with_event works as expected for different c
 
 testthat::test_that("count_patients_with_flags works as expected", {
 
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     ARM = factor(c("A", "A", "A", "A", "A", "A", "B", "B", "B"), levels = c("A", "B")),
     TRTEMFL = c("Y", "", "", "NA", "", "", "Y", "", ""),
@@ -150,7 +150,7 @@ testthat::test_that("count_patients_with_flags works as expected", {
       flag2 = "Total number of patients with fatal AEs"
     )
 
-  test_adsl_like <- tibble(
+  test_adsl_like <- tibble::tibble(
     SUBJID = as.character(1001:1010),
     ARM = factor(c("A", "A", "B", "B", "A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
     stringsAsFactors = FALSE
@@ -180,7 +180,7 @@ testthat::test_that("count_patients_with_flags works as expected", {
 
 testthat::test_that("count_patients_with_flags works as expected when specifying table_names", {
 
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     USUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     ARM = factor(c("A", "A", "A", "A", "A", "A", "B", "B", "B"), levels = c("A", "B")),
@@ -197,7 +197,7 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
       flag2 = "Total number of patients with fatal AEs"
     )
 
-  test_adsl_like <- tibble(
+  test_adsl_like <- tibble::tibble(
     USUBJID = as.character(1001:1010),
     SUBJID = as.character(1001:1010),
     ARM = factor(c("A", "A", "B", "B", "A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
