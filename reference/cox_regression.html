@@ -113,30 +113,6 @@ size in a survival analysis." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../pre-release/index.html">pre-release</a></li>
-   <li><a href="../v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -293,8 +269,10 @@ and the covariate).</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function <code>h_coxreg_univar_formulas</code> returns a <code>character</code> vector coercible into formulas (e.g <code><a href='https://rdrr.io/r/stats/formula.html'>as.formula()</a></code>).</p>
-<p>The function <code>h_coxreg_univar_formulas</code> returns a <code>character</code> vector coercible into formulas (e.g <code><a href='https://rdrr.io/r/stats/formula.html'>as.formula()</a></code>).</p>
+    <p>The function <code>h_coxreg_univar_formulas</code> returns a <code>character</code> vector coercible
+into formulas (e.g <code><a href='https://rdrr.io/r/stats/formula.html'>stats::as.formula()</a></code>).</p>
+<p>The function <code>h_coxreg_univar_formulas</code> returns a <code>character</code> vector coercible
+into formulas (e.g <code><a href='https://rdrr.io/r/stats/formula.html'>stats::as.formula()</a></code>).</p>
 <p>The function <code>fit_coxreg_univar</code> returns a <code>coxreg.univar</code> class object which is a named list
 with 5 elements:</p><ul>
 <li><p><code>mod</code>: Cox regression models fitted by <code><a href='https://rdrr.io/pkg/survival/man/coxph.html'>survival::coxph()</a></code>.</p></li>
@@ -394,10 +372,12 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, arm <span class='op'>=</span> <span class='st'>"armcd"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                              ref                                X </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     "Surv(time, status) ~ armcd" "Surv(time, status) ~ armcd + X" </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                                y </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd + y" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                        ref </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     "survival::Surv(time, status) ~ armcd" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                          X </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "survival::Surv(time, status) ~ armcd + X" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                          y </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "survival::Surv(time, status) ~ armcd + y" </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Addition of an optional strata.</span></span>
 <span class='r-in'><span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span></span>
@@ -406,12 +386,12 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>    strata <span class='op'>=</span> <span class='st'>"SITE"</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                                             ref </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     "Surv(time, status) ~ armcd + strata(SITE)" </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               X </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd + X + strata(SITE)" </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               y </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd + y + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                       ref </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     "survival::Surv(time, status) ~ armcd + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                         X </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "survival::Surv(time, status) ~ armcd + X + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                         y </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "survival::Surv(time, status) ~ armcd + y + strata(SITE)" </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Inclusion of the interaction term.</span></span>
 <span class='r-in'><span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span></span>
@@ -421,12 +401,12 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>  <span class='op'>)</span>,</span>
 <span class='r-in'>  interaction <span class='op'>=</span> <span class='cn'>TRUE</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                                             ref </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     "Surv(time, status) ~ armcd + strata(SITE)" </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               X </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd * X + strata(SITE)" </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               y </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ armcd * y + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                       ref </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     "survival::Surv(time, status) ~ armcd + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                         X </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "survival::Surv(time, status) ~ armcd * X + strata(SITE)" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                         y </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "survival::Surv(time, status) ~ armcd * y + strata(SITE)" </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Only covariates fitted in separate models.</span></span>
 <span class='r-in'><span class='fu'>h_coxreg_univar_formulas</span><span class='op'>(</span></span>
@@ -434,8 +414,8 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>    time <span class='op'>=</span> <span class='st'>"time"</span>, event <span class='op'>=</span> <span class='st'>"status"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='st'>"y"</span><span class='op'>)</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                            X                            y </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> "Surv(time, status) ~ 1 + X" "Surv(time, status) ~ 1 + y" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                      X                                      y </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "survival::Surv(time, status) ~ 1 + X" "survival::Surv(time, status) ~ 1 + y" </span>
 <span class='r-in'></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># `h_coxreg_multivar_formula`</span></span>
@@ -445,7 +425,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Surv(AVAL, event) ~ ARMCD + RACE + AGE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "survival::Surv(AVAL, event) ~ ARMCD + RACE + AGE"</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Addition of an optional strata.</span></span>
 <span class='r-in'><span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span></span>
@@ -454,7 +434,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>    strata <span class='op'>=</span> <span class='st'>"SITE"</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Surv(AVAL, event) ~ ARMCD + RACE + AGE + strata(SITE)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "survival::Surv(AVAL, event) ~ ARMCD + RACE + AGE + strata(SITE)"</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Example without treatment arm.</span></span>
 <span class='r-in'><span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span></span>
@@ -463,7 +443,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>    strata <span class='op'>=</span> <span class='st'>"SITE"</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Surv(AVAL, event) ~ 1 + RACE + AGE + strata(SITE)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "survival::Surv(AVAL, event) ~ 1 + RACE + AGE + strata(SITE)"</span>
 <span class='r-in'></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># fit_coxreg_univar</span></span>
@@ -587,6 +567,8 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
 <span class='r-in'><span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>armcd</span> <span class='op'>+</span> <span class='va'>var1</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'>h_coxreg_multivar_extract</span><span class='op'>(</span></span>
 <span class='r-in'>  var <span class='op'>=</span> <span class='st'>"var1"</span>, mod <span class='op'>=</span> <span class='va'>mod</span>, data <span class='op'>=</span> <span class='va'>dta_simple</span></span>
@@ -596,7 +578,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2 0.4456195 0.9423284 0.808931 1.097724  var1 8 var1       var1</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_model</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_model</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                       term         pval                        term_label</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> armcd.1              armcd                            ARM (reference = 1)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> armcd.2                ARM   0.01232761                                 2</span>
@@ -626,7 +608,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>  <span class='op'>)</span>,</span>
 <span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>df1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>univar_model</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df1</span> <span class='op'>&lt;-</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>univar_model</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df1</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`2 vs control (1)`</span>
@@ -652,7 +634,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>  <span class='op'>)</span>,</span>
 <span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>df1_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>univar_covs_model</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df1_covs</span> <span class='op'>&lt;-</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>univar_covs_model</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df1_covs</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`2`</span>
@@ -689,7 +671,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>  <span class='op'>)</span>,</span>
 <span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>df2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_model</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df2</span> <span class='op'>&lt;-</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_model</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df2</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`2`</span>
@@ -736,7 +718,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class='r-in'>  <span class='op'>)</span>,</span>
 <span class='r-in'>  data <span class='op'>=</span> <span class='va'>dta_bladder</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>df2_covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_covs_model</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>df2_covs</span> <span class='op'>&lt;-</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>multivar_covs_model</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>s_coxreg</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>df2_covs</span>, .var <span class='op'>=</span> <span class='st'>"hr"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $hr</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $hr$`2`</span>

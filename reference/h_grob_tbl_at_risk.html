@@ -113,30 +113,6 @@ the second to the number of patient at risk." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../pre-release/index.html">pre-release</a></li>
-   <li><a href="../v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -237,16 +213,16 @@ ensure the at risk table aligns with the KM graph).</p></td>
 <span class='r-in'><span class='va'>g_el</span> <span class='op'>&lt;-</span> <span class='fu'><a href='h_decompose_gg.html'>h_decompose_gg</a></span><span class='op'>(</span><span class='va'>gg</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>lyt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='h_km_layout.html'>h_km_layout</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>data_plot</span>, g_el <span class='op'>=</span> <span class='va'>g_el</span>, title <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.newpage.html'>grid.newpage</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/grid.newpage.html'>grid.newpage</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/viewports.html'>pushViewport</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grid/viewport.html'>viewport</a></span><span class='op'>(</span>layout <span class='op'>=</span> <span class='va'>lyt</span>, height <span class='op'>=</span> <span class='fl'>.95</span>, width <span class='op'>=</span> <span class='fl'>.95</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.rect.html'>grid.rect</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>lty <span class='op'>=</span> <span class='fl'>1</span>, col <span class='op'>=</span> <span class='st'>"purple"</span>, fill <span class='op'>=</span> <span class='st'>"gray85"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.rect.html'>grid.rect</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>lty <span class='op'>=</span> <span class='fl'>1</span>, col <span class='op'>=</span> <span class='st'>"purple"</span>, fill <span class='op'>=</span> <span class='st'>"gray85"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/viewports.html'>pushViewport</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grid/viewport.html'>viewport</a></span><span class='op'>(</span>layout.pos.row <span class='op'>=</span> <span class='fl'>4</span>, layout.pos.col <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.rect.html'>grid.rect</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>lty <span class='op'>=</span> <span class='fl'>1</span>, col <span class='op'>=</span> <span class='st'>"orange"</span>, fill <span class='op'>=</span> <span class='st'>"gray85"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.draw.html'>grid.draw</a></span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>$</span><span class='va'>at_risk</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.rect.html'>grid.rect</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>lty <span class='op'>=</span> <span class='fl'>1</span>, col <span class='op'>=</span> <span class='st'>"orange"</span>, fill <span class='op'>=</span> <span class='st'>"gray85"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/grid.draw.html'>grid.draw</a></span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>$</span><span class='va'>at_risk</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/viewports.html'>popViewport</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/viewports.html'>pushViewport</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grid/viewport.html'>viewport</a></span><span class='op'>(</span>layout.pos.row <span class='op'>=</span> <span class='fl'>4</span>, layout.pos.col <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.rect.html'>grid.rect</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>lty <span class='op'>=</span> <span class='fl'>1</span>, col <span class='op'>=</span> <span class='st'>"green3"</span>, fill <span class='op'>=</span> <span class='st'>"gray85"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.draw.html'>grid.draw</a></span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/grid/grid.rect.html'>grid.rect</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>lty <span class='op'>=</span> <span class='fl'>1</span>, col <span class='op'>=</span> <span class='st'>"green3"</span>, fill <span class='op'>=</span> <span class='st'>"gray85"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/grid.draw.html'>grid.draw</a></span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
 <span class='r-in'></span>
 </pre>

@@ -113,30 +113,6 @@ fit_mmrm()." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../pre-release/index.html">pre-release</a></li>
-   <li><a href="../v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -299,7 +275,7 @@ which can be further customized by calling
 <span class='r-in'>    group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, length <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>sleepstudy</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,</span>
 <span class='r-in'>    days_grouped <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cut.html'>cut</a></span><span class='op'>(</span></span>
 <span class='r-in'>      <span class='va'>Days</span>,</span>
-<span class='r-in'>      breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>Days</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, length <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>      breaks <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>Days</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, length <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>,</span>
 <span class='r-in'>      include.lowest <span class='op'>=</span> <span class='cn'>TRUE</span></span>
 <span class='r-in'>    <span class='op'>)</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
@@ -410,7 +386,7 @@ which can be further customized by calling
 <span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"days_grouped"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>summarize_lsmeans</span><span class='op'>(</span>show_relative <span class='op'>=</span> <span class='st'>"increase"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span></span>
-<span class='r-in'>    df <span class='op'>=</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>result</span><span class='op'>)</span>,</span>
+<span class='r-in'>    df <span class='op'>=</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>result</span><span class='op'>)</span>,</span>
 <span class='r-in'>    alt_counts_df <span class='op'>=</span> <span class='va'>dat_adsl</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                                               A                    B         </span>
@@ -453,7 +429,7 @@ which can be further customized by calling
 <span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span><span class='st'>"days_grouped"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>summarize_lsmeans</span><span class='op'>(</span>arms <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span></span>
-<span class='r-in'>    df <span class='op'>=</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>result_no_arm</span><span class='op'>)</span>,</span>
+<span class='r-in'>    df <span class='op'>=</span> <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>result_no_arm</span><span class='op'>)</span>,</span>
 <span class='r-in'>    alt_counts_df <span class='op'>=</span> <span class='va'>dat_adsl</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                             all obs      </span>

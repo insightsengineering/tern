@@ -114,30 +114,6 @@ with the new Analyze Function summarize_vars()." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../pre-release/index.html">pre-release</a></li>
-   <li><a href="../v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -380,16 +356,17 @@ to avoid warnings from <code>rtables</code>.</p></td>
     <p>If <code>x</code> is of class <code>numeric</code>, returns a list with named items: <br /></p><ul>
 <li><p><code>n</code>: the <code><a href='https://rdrr.io/r/base/length.html'>length()</a></code> of <code>x</code>.</p></li>
 <li><p><code>mean</code>: the <code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code> of <code>x</code>.</p></li>
-<li><p><code>sd</code>: the <code><a href='https://rdrr.io/r/stats/sd.html'>sd()</a></code> of <code>x</code>.</p></li>
-<li><p><code>mean_sd</code>: the <code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code> and <code><a href='https://rdrr.io/r/stats/sd.html'>sd()</a></code> of <code>x</code>.</p></li>
+<li><p><code>sd</code>: the <code><a href='https://rdrr.io/r/stats/sd.html'>stats::sd()</a></code> of <code>x</code>.</p></li>
+<li><p><code>mean_sd</code>: the <code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code> and <code><a href='https://rdrr.io/r/stats/sd.html'>stats::sd()</a></code> of <code>x</code>.</p></li>
 <li><p><code>mean_ci</code>: the CI for the mean of <code>x</code> (from <code><a href='stat_mean_ci.html'>stat_mean_ci()</a></code>).</p></li>
-<li><p><code>mean_sei</code>: the SE interval for the mean of <code>x</code>, i.e.: (<code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code> -/+ <code><a href='https://rdrr.io/r/stats/sd.html'>sd()</a></code>/<code><a href='https://rdrr.io/r/base/MathFun.html'>sqrt()</a></code>).</p></li>
-<li><p><code>mean_sdi</code>: the SD interval for the mean of <code>x</code>, i.e.: (<code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code> -/+ <code><a href='https://rdrr.io/r/stats/sd.html'>sd()</a></code>).</p></li>
-<li><p><code>median</code>: the <code><a href='https://rdrr.io/r/stats/median.html'>median()</a></code> of <code>x</code>.</p></li>
-<li><p><code>mad</code>: the median absolute deviation of <code>x</code>, i.e.: (<code><a href='https://rdrr.io/r/stats/median.html'>median()</a></code> of <code>xc</code>, where <code>xc</code> = <code>x</code> - <code><a href='https://rdrr.io/r/stats/median.html'>median()</a></code>).</p></li>
+<li><p><code>mean_sei</code>: the SE interval for the mean of <code>x</code>, i.e.: (<code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code> -/+ <code><a href='https://rdrr.io/r/stats/sd.html'>stats::sd()</a></code>/<code><a href='https://rdrr.io/r/base/MathFun.html'>sqrt()</a></code>).</p></li>
+<li><p><code>mean_sdi</code>: the SD interval for the mean of <code>x</code>, i.e.: (<code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code> -/+ <code><a href='https://rdrr.io/r/stats/sd.html'>stats::sd()</a></code>).</p></li>
+<li><p><code>median</code>: the <code><a href='https://rdrr.io/r/stats/median.html'>stats::median()</a></code> of <code>x</code>.</p></li>
+<li><p><code>mad</code>:
+the median absolute deviation of <code>x</code>, i.e.: (<code><a href='https://rdrr.io/r/stats/median.html'>stats::median()</a></code> of <code>xc</code>, where <code>xc</code> = <code>x</code> - <code><a href='https://rdrr.io/r/stats/median.html'>stats::median()</a></code>).</p></li>
 <li><p><code>median_ci</code>: the CI for the median of <code>x</code> (from <code><a href='stat_median_ci.html'>stat_median_ci()</a></code>).</p></li>
-<li><p><code>quantiles</code>: two sample quantiles of <code>x</code> (from <code><a href='https://rdrr.io/r/stats/quantile.html'>quantile()</a></code>).</p></li>
-<li><p><code>iqr</code>: the <code><a href='https://rdrr.io/r/stats/IQR.html'>IQR()</a></code> of <code>x</code>.</p></li>
+<li><p><code>quantiles</code>: two sample quantiles of <code>x</code> (from <code><a href='https://rdrr.io/r/stats/quantile.html'>stats::quantile()</a></code>).</p></li>
+<li><p><code>iqr</code>: the <code><a href='https://rdrr.io/r/stats/IQR.html'>stats::IQR()</a></code> of <code>x</code>.</p></li>
 <li><p><code>range</code>: the <code><a href='range_noinf.html'>range_noinf()</a></code> of <code>x</code>.</p></li>
 <li><p><code>min</code>: the <code><a href='https://rdrr.io/r/base/Extremes.html'>max()</a></code> of <code>x</code>.</p></li>
 <li><p><code>max</code>: the <code><a href='https://rdrr.io/r/base/Extremes.html'>min()</a></code> of <code>x</code>.</p></li>
