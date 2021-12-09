@@ -8,7 +8,7 @@ get_adsl0 <- function() {
 
   #nolint start
   adsl0 <- ex_adsl %>%
-    mutate(
+    dplyr::mutate(
       COMPSTUD = sample(
         c("Y", "N"),
         size = nrow(ex_adsl),
@@ -40,12 +40,12 @@ get_adsl0 <- function() {
         size = nrow(ex_adsl),
         replace = TRUE
       ) %>% as.factor(),
-      STUDONS = case_when(COMPSTUD == "N" ~ STUDONS),
-      STDDRS = case_when(COMPSTUD == "N" & is.na(STUDONS) ~ STDDRS),
-      DISSTDFL = case_when(!is.na(STDDRS) ~ "Y"),
-      DISTRTFL = case_when(GOTTRT == "Y" ~ DISTRTFL),
-      TRTDRS = case_when(DISTRTFL == "Y" ~ TRTDRS),
-      DRSCAT = case_when(
+      STUDONS = dplyr::case_when(COMPSTUD == "N" ~ STUDONS),
+      STDDRS = dplyr::case_when(COMPSTUD == "N" & is.na(STUDONS) ~ STDDRS),
+      DISSTDFL = dplyr::case_when(!is.na(STDDRS) ~ "Y"),
+      DISTRTFL = dplyr::case_when(GOTTRT == "Y" ~ DISTRTFL),
+      TRTDRS = dplyr::case_when(DISTRTFL == "Y" ~ TRTDRS),
+      DRSCAT = dplyr::case_when(
         TRTDRS %in% c("ADVERSE EVENT", "PHYSICIAN DECISION") ~ "Safety",
         !is.na(TRTDRS) ~ "Other"
       )
@@ -63,7 +63,7 @@ get_adsl0 <- function() {
   adsl0
 }
 
-test_that("DST01 default variant is produced correctly", {
+testthat::test_that("DST01 default variant is produced correctly", {
   adsl0 <- get_adsl0()
 
   result <- basic_table() %>%
@@ -89,10 +89,10 @@ test_that("DST01 default variant is produced correctly", {
       "13 (19.4%)", "12 (17.9%)", "15 (22.4%)"),
     .Dim = c(9L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("DST01 variant with grouping of reasons is produced correctly", {
+testthat::test_that("DST01 variant with grouping of reasons is produced correctly", {
   adsl0 <- get_adsl0()
 
   result <- basic_table() %>%
@@ -123,10 +123,10 @@ test_that("DST01 variant with grouping of reasons is produced correctly", {
       "45 (35.2%)"),
     .Dim = c(11L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("DST01 variant with adding other optional rows is produced correctly", {
+testthat::test_that("DST01 variant with adding other optional rows is produced correctly", {
   adsl0 <- get_adsl0()
 
   result <- basic_table() %>%
@@ -154,5 +154,5 @@ test_that("DST01 variant with adding other optional rows is produced correctly",
       "13 (19.4%)", "12 (17.9%)", "15 (22.4%)"),
     .Dim = c(10L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

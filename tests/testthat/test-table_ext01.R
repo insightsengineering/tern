@@ -6,11 +6,11 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adex <- synthetic_cdisc_data("rcd_2021_05_05")$adex
 
-test_that("EXT01 default variant with numeric parameters is produced correctly", {
+testthat::test_that("EXT01 default variant with numeric parameters is produced correctly", {
   adex <- adex %>%
-    filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
-    select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
-    mutate(
+    dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
+    dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
+    dplyr::mutate(
       PARAMCD = as.character(PARAMCD),
       AVALC = ""
     ) %>%
@@ -18,12 +18,12 @@ test_that("EXT01 default variant with numeric parameters is produced correctly",
   # Add new param tdurd for treatment duration.
   set.seed(99)
   tdurd <- adsl %>%
-    select(STUDYID, USUBJID, ARM) %>%
-    mutate(
+    dplyr::select(STUDYID, USUBJID, ARM) %>%
+    dplyr::mutate(
       PARAMCD = "TDURD",
       PARAM = "Treatment duration (days)",
       AVAL = sample(1:150, size = nrow(adsl), replace = TRUE),
-      AVALC = case_when(
+      AVALC = dplyr::case_when(
         0 <= AVAL & AVAL <= 30 ~ "0 - 30",
         31 <= AVAL & AVAL <= 60 ~ "31 - 60",
         61 <= AVAL & AVAL <= 90 ~ "61 - 90",
@@ -31,23 +31,23 @@ test_that("EXT01 default variant with numeric parameters is produced correctly",
       )
     )
   tdurd <- adex %>%
-    filter(PARAMCD == "TNDOSE") %>%
-    select(STUDYID, USUBJID) %>%
-    left_join(tdurd, by = c("STUDYID", "USUBJID"))
+    dplyr::filter(PARAMCD == "TNDOSE") %>%
+    dplyr::select(STUDYID, USUBJID) %>%
+    dplyr::left_join(tdurd, by = c("STUDYID", "USUBJID"))
 
   # Add new param tndosmis for missed doses.
   tndosmis <- adsl %>%
-    select(STUDYID, USUBJID, ARM) %>%
-    mutate(
+    dplyr::select(STUDYID, USUBJID, ARM) %>%
+    dplyr::mutate(
       PARAMCD = "TNDOSMIS",
       PARAM = "Total number of missed doses during study",
       AVAL = sample(0:20, size = nrow(adsl), replace = TRUE),
       AVALC = ""
     )
   tndosmis <- adex %>%
-    filter(PARAMCD == "TNDOSE") %>%
-    select(STUDYID, USUBJID) %>%
-    left_join(tndosmis, by = c("STUDYID", "USUBJID"))
+    dplyr::filter(PARAMCD == "TNDOSE") %>%
+    dplyr::select(STUDYID, USUBJID) %>%
+    dplyr::left_join(tndosmis, by = c("STUDYID", "USUBJID"))
   adex <- rbind(adex, tdurd, tndosmis)
 
   result <- basic_table() %>%
@@ -76,14 +76,14 @@ test_that("EXT01 default variant with numeric parameters is produced correctly",
     ),
     .Dim = c(22L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("EXT01 variant: with both numeric and categorical parameters", {
+testthat::test_that("EXT01 variant: with both numeric and categorical parameters", {
   adex <- adex %>%
-    filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
-    select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
-    mutate(
+    dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
+    dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
+    dplyr::mutate(
       PARAMCD = as.character(PARAMCD),
       AVALC = ""
     ) %>%
@@ -91,12 +91,12 @@ test_that("EXT01 variant: with both numeric and categorical parameters", {
   # Add new param tdurd for treatment duration.
   set.seed(99)
   tdurd <- adsl %>%
-    select(STUDYID, USUBJID, ARM) %>%
-    mutate(
+    dplyr::select(STUDYID, USUBJID, ARM) %>%
+    dplyr::mutate(
       PARAMCD = "TDURD",
       PARAM = "Treatment duration (days)",
       AVAL = sample(1:150, size = nrow(adsl), replace = TRUE),
-      AVALC = case_when(
+      AVALC = dplyr::case_when(
         0 <= AVAL & AVAL <= 30 ~ "0 - 30",
         31 <= AVAL & AVAL <= 60 ~ "31 - 60",
         61 <= AVAL & AVAL <= 90 ~ "61 - 90",
@@ -104,46 +104,46 @@ test_that("EXT01 variant: with both numeric and categorical parameters", {
       )
     )
   tdurd <- adex %>%
-    filter(PARAMCD == "TNDOSE") %>%
-    select(STUDYID, USUBJID) %>%
-    left_join(tdurd, by = c("STUDYID", "USUBJID"))
+    dplyr::filter(PARAMCD == "TNDOSE") %>%
+    dplyr::select(STUDYID, USUBJID) %>%
+    dplyr::left_join(tdurd, by = c("STUDYID", "USUBJID"))
 
   # Add new param tndosmis for missed doses.
   tndosmis <- adsl %>%
-    select(STUDYID, USUBJID, ARM) %>%
-    mutate(
+    dplyr::select(STUDYID, USUBJID, ARM) %>%
+    dplyr::mutate(
       PARAMCD = "TNDOSMIS",
       PARAM = "Total number of missed doses during study",
       AVAL = sample(0:20, size = nrow(adsl), replace = TRUE),
       AVALC = ""
     )
   tndosmis <- adex %>%
-    filter(PARAMCD == "TNDOSE") %>%
-    select(STUDYID, USUBJID) %>%
-    left_join(tndosmis, by = c("STUDYID", "USUBJID"))
+    dplyr::filter(PARAMCD == "TNDOSE") %>%
+    dplyr::select(STUDYID, USUBJID) %>%
+    dplyr::left_join(tndosmis, by = c("STUDYID", "USUBJID"))
   adex <- rbind(adex, tdurd, tndosmis)
 
   # need to transpose data to wide when both numeric and categorical parameters
   # are to be summarized
   adex_avalc_wide <- adex %>%
-    filter(PARAMCD == "TDURD") %>%
-    select(STUDYID, USUBJID, PARAMCD, AVALC) %>%
+    dplyr::filter(PARAMCD == "TDURD") %>%
+    dplyr::select(STUDYID, USUBJID, PARAMCD, AVALC) %>%
     tidyr::pivot_wider(
       id_cols = c(STUDYID, USUBJID),
       names_from = PARAMCD,
       values_from = AVALC
     ) %>%
-    mutate(
+    dplyr::mutate(
       TDURDC = factor(TDURD, levels = c("0 - 30", "31 - 60", "61 - 90", ">= 91"))
     ) %>%
-    select(-TDURD)
+    dplyr::select(-TDURD)
   anl <- adex %>%
-    select(STUDYID, USUBJID, ARM, PARAMCD, AVAL) %>%
+    dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, AVAL) %>%
     tidyr::pivot_wider(
       id_cols = c(STUDYID, USUBJID, ARM),
       names_from = PARAMCD,
       values_from = AVAL) %>%
-    left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
+    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
     var_relabel(
       TDOSE = "Total dose administered",
       TNDOSE = "Total number of doses administered",
@@ -157,7 +157,7 @@ test_that("EXT01 variant: with both numeric and categorical parameters", {
     add_colcounts() %>%
     summarize_vars(
       vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
-      var_labels = rtables::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
+      var_labels = var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
     ) %>%
     build_table(anl, alt_counts_df = adsl)
 
@@ -183,14 +183,14 @@ test_that("EXT01 variant: with both numeric and categorical parameters", {
     ),
     .Dim = c(23L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("EXT01 variant: with user specified categories for missed doses", {
+testthat::test_that("EXT01 variant: with user specified categories for missed doses", {
   adex <- adex %>%
-    filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
-    select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
-    mutate(
+    dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
+    dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
+    dplyr::mutate(
       PARAMCD = as.character(PARAMCD),
       AVALC = ""
     ) %>%
@@ -198,12 +198,12 @@ test_that("EXT01 variant: with user specified categories for missed doses", {
   # Add new param tdurd for treatment duration.
   set.seed(99)
   tdurd <- adsl %>%
-    select(STUDYID, USUBJID, ARM) %>%
-    mutate(
+    dplyr::select(STUDYID, USUBJID, ARM) %>%
+    dplyr::mutate(
       PARAMCD = "TDURD",
       PARAM = "Treatment duration (days)",
       AVAL = sample(1:150, size = nrow(adsl), replace = TRUE),
-      AVALC = case_when(
+      AVALC = dplyr::case_when(
         0 <= AVAL & AVAL <= 30 ~ "0 - 30",
         31 <= AVAL & AVAL <= 60 ~ "31 - 60",
         61 <= AVAL & AVAL <= 90 ~ "61 - 90",
@@ -211,46 +211,46 @@ test_that("EXT01 variant: with user specified categories for missed doses", {
       )
     )
   tdurd <- adex %>%
-    filter(PARAMCD == "TNDOSE") %>%
-    select(STUDYID, USUBJID) %>%
-    left_join(tdurd, by = c("STUDYID", "USUBJID"))
+    dplyr::filter(PARAMCD == "TNDOSE") %>%
+    dplyr::select(STUDYID, USUBJID) %>%
+    dplyr::left_join(tdurd, by = c("STUDYID", "USUBJID"))
 
   # Add new param tndosmis for missed doses.
   tndosmis <- adsl %>%
-    select(STUDYID, USUBJID, ARM) %>%
-    mutate(
+    dplyr::select(STUDYID, USUBJID, ARM) %>%
+    dplyr::mutate(
       PARAMCD = "TNDOSMIS",
       PARAM = "Total number of missed doses during study",
       AVAL = sample(0:20, size = nrow(adsl), replace = TRUE),
       AVALC = ""
     )
   tndosmis <- adex %>%
-    filter(PARAMCD == "TNDOSE") %>%
-    select(STUDYID, USUBJID) %>%
-    left_join(tndosmis, by = c("STUDYID", "USUBJID"))
+    dplyr::filter(PARAMCD == "TNDOSE") %>%
+    dplyr::select(STUDYID, USUBJID) %>%
+    dplyr::left_join(tndosmis, by = c("STUDYID", "USUBJID"))
   adex <- rbind(adex, tdurd, tndosmis)
 
   # need to transpose data to wide when both numeric and categorical parameters
   # are to be summarized
   adex_avalc_wide <- adex %>%
-    filter(PARAMCD == "TDURD") %>%
-    select(STUDYID, USUBJID, PARAMCD, AVALC) %>%
+    dplyr::filter(PARAMCD == "TDURD") %>%
+    dplyr::select(STUDYID, USUBJID, PARAMCD, AVALC) %>%
     tidyr::pivot_wider(
       id_cols = c(STUDYID, USUBJID),
       names_from = PARAMCD,
       values_from = AVALC
     ) %>%
-    mutate(
+    dplyr::mutate(
       TDURDC = factor(TDURD, levels = c("0 - 30", "31 - 60", "61 - 90", ">= 91"))
     ) %>%
-    select(-TDURD)
+    dplyr::select(-TDURD)
   anl <- adex %>%
-    select(STUDYID, USUBJID, ARM, PARAMCD, AVAL) %>%
+    dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, AVAL) %>%
     tidyr::pivot_wider(
       id_cols = c(STUDYID, USUBJID, ARM),
       names_from = PARAMCD,
       values_from = AVAL) %>%
-    left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
+    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
     var_relabel(
       TDOSE = "Total dose administered",
       TNDOSE = "Total number of doses administered",
@@ -264,7 +264,7 @@ test_that("EXT01 variant: with user specified categories for missed doses", {
     add_colcounts() %>%
     summarize_vars(
       vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
-      var_labels = rtables::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
+      var_labels = var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
     ) %>%
     count_missed_doses(
       "TNDOSMIS",
@@ -297,5 +297,5 @@ test_that("EXT01 variant: with user specified categories for missed doses", {
       "16 (12.1%)"),
     .Dim = c(29L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

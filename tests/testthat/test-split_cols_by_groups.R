@@ -1,6 +1,6 @@
 
 # groups_list_to_df ----
-test_that("groups_list_to_df works as expected", {
+testthat::test_that("groups_list_to_df works as expected", {
   grade_groups <- list(
     "Any Grade (%)" = c("1", "2", "3", "4", "5"),
     "Grade 3-4 (%)" = c("3", "4"),
@@ -17,53 +17,53 @@ test_that("groups_list_to_df works as expected", {
     row.names = c(NA, -3L),
     class = c("tbl_df", "tbl", "data.frame")
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 # combine_groups ----
 
-test_that("combine_groups combines character vectors", {
-  result <- expect_warning(combine_groups(fct = c("A", "B", "C")))
+testthat::test_that("combine_groups combines character vectors", {
+  result <- testthat::expect_warning(combine_groups(fct = c("A", "B", "C")))
   expected <- list(A = "A", `B/C` = c("B", "C"))
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("combine_groups combines factors", {
-  result <- expect_silent(combine_groups(fct = factor(c("A", "B", "C"))))
+testthat::test_that("combine_groups combines factors", {
+  result <- testthat::expect_silent(combine_groups(fct = factor(c("A", "B", "C"))))
   expected <- list(A = "A", `B/C` = c("B", "C"))
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("combine_groups combines factors with given reference", {
+testthat::test_that("combine_groups combines factors with given reference", {
   result <- combine_groups(
     fct = factor(c("A", "B", "C")),
     ref = "B"
   )
   expected <- list(B = "B", `A/C` = c("A", "C"))
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("combine_groups use good separator", {
+testthat::test_that("combine_groups use good separator", {
   result <- combine_groups(
     fct = factor(c("A", "B", "C")),
     collapse = "||"
   )
   expected <- list(A = "A", `B||C` = c("B", "C"))
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("combine_groups can use multiple reference", {
+testthat::test_that("combine_groups can use multiple reference", {
   result <- combine_groups(
     fct = factor(c("A", "B", "C")),
     ref = c("C", "B"),
     collapse = "&"
   )
   expected <- list(`B&C` = c("B", "C"), A = "A")
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 # split_cols_by_groups ----
-test_that("split_cols_by_groups manages combinations of columns", {
+testthat::test_that("split_cols_by_groups manages combinations of columns", {
   groups <- list(
     "Arms A+B" = c("A: Drug X", "B: Placebo"),
     "Arms A+C" = c("A: Drug X", "C: Combination")
@@ -81,10 +81,10 @@ test_that("split_cols_by_groups manages combinations of columns", {
     ),
     .Dim = c(3L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("split_cols_by_groups manages combinations of columns with reference", {
+testthat::test_that("split_cols_by_groups manages combinations of columns with reference", {
   groups <- list(
     "Arms A+B" = c("A: Drug X", "B: Placebo"),
     "Arms A+C" = c("A: Drug X", "C: Combination")
@@ -110,10 +110,10 @@ test_that("split_cols_by_groups manages combinations of columns with reference",
     ),
     .Dim = 2:3
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("split_cols_by_groups equivalent to split_cols_by when no groups", {
+testthat::test_that("split_cols_by_groups equivalent to split_cols_by when no groups", {
   result <- basic_table() %>%
     split_cols_by_groups("ARM") %>%
     add_colcounts() %>%
@@ -126,10 +126,10 @@ test_that("split_cols_by_groups equivalent to split_cols_by when no groups", {
     analyze("AGE") %>%
     build_table(DM)
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("split_cols_by_groups equivalent to split_cols_by with ref_col but no groups", {
+testthat::test_that("split_cols_by_groups equivalent to split_cols_by with ref_col but no groups", {
   afun <- function(x, .ref_group, .in_ref_col) {
     if (.in_ref_col) {
       in_rows("Diff. of Averages" = rcell(NULL))
@@ -149,10 +149,10 @@ test_that("split_cols_by_groups equivalent to split_cols_by with ref_col but no 
     analyze("AGE", afun = afun) %>%
     build_table(DM)
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("split_cols_by_groups manages combinations of columns with reference and alt_counts_df", {
+testthat::test_that("split_cols_by_groups manages combinations of columns with reference and alt_counts_df", {
   groups <- list(
     "Arms A+B" = c("A: Drug X", "B: Placebo"),
     "Arms A+C" = c("A: Drug X", "C: Combination")
@@ -183,38 +183,38 @@ test_that("split_cols_by_groups manages combinations of columns with reference a
       ),
     .Dim = c(3L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 # combine_counts ----
-test_that("combine_counts combines character vectors", {
+testthat::test_that("combine_counts combines character vectors", {
   fct <- c("A", "A", "A", "B", "B", "C")
-  grp <- expect_warning(combine_groups(fct = fct))
-  result <- expect_warning(combine_counts(fct, grp))
+  grp <- testthat::expect_warning(combine_groups(fct = fct))
+  result <- testthat::expect_warning(combine_counts(fct, grp))
   expected <- c(A = 3, `B/C` = 3)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("combine_counts combines factors", {
+testthat::test_that("combine_counts combines factors", {
   fct <- factor(c("A", "A", "A", "B", "B", "C"))
   grp <- combine_groups(fct = fct)
   result <- combine_counts(fct, grp)
   expected <- c(A = 3, `B/C` = 3)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("combine_counts combines factors", {
+testthat::test_that("combine_counts combines factors", {
   fct <- factor(c("A", "A", "A", "B", "B", "C"))
   grp <- combine_groups(fct = fct, ref = c("A", "C"))
   result <- combine_counts(fct, grp)
   expected <- c(`A/C` = 4, B = 2)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("combine_counts with groups_list NULL", {
+testthat::test_that("combine_counts with groups_list NULL", {
   fct <- factor(c("A", "A", "A", "B", "B", "C"))
   grp <- combine_groups(fct = fct, ref = c("A", "C"))
   result <- combine_counts(fct)
   expected <- c(A = 3, B = 2, C = 1)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })

@@ -6,14 +6,14 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adqs <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
 
-test_that("AOVT01 variant with single endpoint is produced correctly", {
+testthat::test_that("AOVT01 variant with single endpoint is produced correctly", {
 
   adqs_single <- adqs %>%
-    filter(
+    dplyr::filter(
       AVISIT == "WEEK 1 DAY 8",  # single time point
       PARAMCD == "FKSI-FWB"  # single end point
     ) %>%
-    mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
+    dplyr::mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
 
   result <- basic_table() %>%
     split_cols_by("ARMCD", ref_group = "ARM A") %>%
@@ -48,11 +48,11 @@ test_that("AOVT01 variant with single endpoint is produced correctly", {
     .Dim = c(14L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AOVT01 variant with multiple endpoints is produced correctly", {
-  adqs_multi <- filter(adqs, AVISIT == "WEEK 1 DAY 8")
+testthat::test_that("AOVT01 variant with multiple endpoints is produced correctly", {
+  adqs_multi <- dplyr::filter(adqs, AVISIT == "WEEK 1 DAY 8")
   n_per_arm <- table(adsl$ARM)
 
   result <- basic_table() %>%
@@ -91,5 +91,5 @@ test_that("AOVT01 variant with multiple endpoints is produced correctly", {
     .Dim = c(37L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

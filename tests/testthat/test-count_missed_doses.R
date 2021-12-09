@@ -1,27 +1,27 @@
-test_that("s_count_nonmissing works with numeric input", {
+testthat::test_that("s_count_nonmissing works with numeric input", {
   set.seed(1)
   x <- c(sample(1:10, 10), NA)
 
   result <- s_count_nonmissing(x = x)
   expected <- list(n = 10)
-  expect_equal(result, expected, tolerance = .00001)
+  testthat::expect_equal(result, expected, tolerance = .00001)
 })
 
-test_that("s_count_nonmissing also works with character input", {
+testthat::test_that("s_count_nonmissing also works with character input", {
   x <- c("a", "b", NA, "c", "d")
 
   result <- s_count_nonmissing(x = x)
   expected <- list(n = 4)
-  expect_equal(result, expected, tolerance = .00001)
+  testthat::expect_equal(result, expected, tolerance = .00001)
 })
 
-test_that("d_count_missed_doses works as expected", {
+testthat::test_that("d_count_missed_doses works as expected", {
   result <- d_count_missed_doses(c(1, 5))
   expected <- c("At least 1 missed dose", "At least 5 missed doses")
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_count_missed_doses works as expected", {
+testthat::test_that("s_count_missed_doses works as expected", {
   result <- s_count_missed_doses(
     x = c(0, 1, 0, 2, 3, 4, 0, 2),
     thresholds = c(2, 5),
@@ -34,10 +34,10 @@ test_that("s_count_missed_doses works as expected", {
       "5" = with_label(c(count = 0, fraction = 0), label = "At least 5 missed doses")
     )
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("count_missed_doses works as expected", {
+testthat::test_that("count_missed_doses works as expected", {
   set.seed(1)
   df <- data.frame(
     a = c(sample(1:10, 10), NA),
@@ -61,5 +61,5 @@ test_that("count_missed_doses works as expected", {
     ),
     .Dim = c(5L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

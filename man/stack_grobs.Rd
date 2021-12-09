@@ -7,7 +7,7 @@
 stack_grobs(
   ...,
   grobs = list(...),
-  padding = unit(2, "line"),
+  padding = grid::unit(2, "line"),
   vp = NULL,
   gp = NULL,
   name = NULL

@@ -18,9 +18,6 @@ NULL
 
 #' @describeIn survival_timepoint Statistics Function which analyzes survival rate.
 #'
-#' @importFrom stats as.formula
-#' @importFrom survival Surv survfit
-#'
 #' @export
 #'
 #' @return The statistics are:
@@ -49,18 +46,18 @@ s_surv_timepoint <- function(df,
                              time_point,
                              is_event,
                              control = control_surv_timepoint()) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    is.string(.var),
-    is_numeric_vector(df[[.var]]),
-    is_numeric_single(time_point),
-    is_logical_vector(df[[is_event]])
+    assertthat::is.string(.var),
+    utils.nest::is_numeric_vector(df[[.var]]),
+    utils.nest::is_numeric_single(time_point),
+    utils.nest::is_logical_vector(df[[is_event]])
   )
   conf_type <- control$conf_type
   conf_level <- control$conf_level
 
-  formula <- as.formula(paste0("Surv(", .var, ", ", is_event, ") ~ 1"))
-  srv_fit <- survfit(
+  formula <- stats::as.formula(paste0("survival::Surv(", .var, ", ", is_event, ") ~ 1"))
+  srv_fit <- survival::survfit(
     formula = formula,
     data = df,
     conf.int = conf_level,
@@ -113,7 +110,6 @@ a_surv_timepoint <- make_afun(
 #' * `rate_diff` : event free rate difference between two groups.
 #' * `rate_diff_ci` : confidence interval for the difference.
 #' * `ztest_pval` : p-value to test the difference is 0.
-#' @importFrom stats pnorm qnorm
 #' @export
 #' @examples
 #' df_ref_group <- ADTTE_f %>%
@@ -153,12 +149,12 @@ s_surv_timepoint_diff <- function(df,
   rate_diff <- res_x$event_free_rate - res_ref$event_free_rate
   se_diff <- sqrt(res_x$rate_se^2 + res_ref$rate_se^2)
 
-  qs <- c(-1, 1) * qnorm(1 - (1 - control$conf_level) / 2)
+  qs <- c(-1, 1) * stats::qnorm(1 - (1 - control$conf_level) / 2)
   rate_diff_ci <- rate_diff + qs * se_diff
   ztest_pval <- if (is.na(rate_diff)) {
     NA
   } else {
-    2 * (1 - pnorm(abs(rate_diff) / se_diff))
+    2 * (1 - stats::pnorm(abs(rate_diff) / se_diff))
   }
   list(
     rate_diff = with_label(rate_diff, "Difference in Event Free Rate"),
@@ -256,7 +252,7 @@ surv_timepoint <- function(lyt,
                            .indent_mods = NULL) {
 
   method <- match.arg(method)
-  assert_that(is.string(table_names_suffix))
+  assertthat::assert_that(assertthat::is.string(table_names_suffix))
 
   f <- list(
     surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),

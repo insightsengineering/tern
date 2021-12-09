@@ -19,8 +19,6 @@
 #'
 #' @export
 #'
-#' @importFrom stats reshape
-#'
 #' @examples
 #'
 #' library(scda)
@@ -73,23 +71,23 @@ h_stack_by_baskets <- function(df,
   smq_nam <- baskets[startsWith(baskets, "SMQ")]
   # SC corresponding to NAM
   smq_sc <- gsub(pattern = "NAM", replacement = "SC", x = smq_nam, fixed = TRUE)
-  smq <- setNames(smq_sc, smq_nam)
+  smq <- stats::setNames(smq_sc, smq_nam)
 
-  assert_that(
+  assertthat::assert_that(
     is.character(baskets),
-    is.string(smq_varlabel),
+    assertthat::is.string(smq_varlabel),
     is.data.frame(df),
     all(startsWith(baskets, "SMQ") | startsWith(baskets, "CQ")),
     all(endsWith(baskets, "NAM")),
     all(baskets %in% names(df)),
     all(keys %in% names(df)),
     all(smq_sc %in% names(df)),
-    is.string(na_level),
+    assertthat::is.string(na_level),
     sum(baskets %in% names(df)) > 0
   )
 
   if (!is.null(aag_summary)) {
-    assert_that(
+    assertthat::assert_that(
     is_df_with_variables(
       df = aag_summary,
       variables = list(val = c("basket", "basket_name"))
@@ -128,7 +126,7 @@ h_stack_by_baskets <- function(df,
       # as it throws a warning otherwise about rownames.
       # tibble do not support rownames and reshape creates rownames
 
-      df_long <- reshape(
+      df_long <- stats::reshape(
         data = as.data.frame(df_cnct),
         varying = var_cols,
         v.names = "SMQ",

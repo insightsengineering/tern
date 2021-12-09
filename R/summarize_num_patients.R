@@ -32,9 +32,9 @@ NULL
 #'                )
 s_num_patients <- function(x, labelstr, .N_col, count_by = NULL){ # nolint
 
-  assert_that(
+  assertthat::assert_that(
     is_character_or_factor(x),
-    is.string(labelstr),
+    assertthat::is.string(labelstr),
     is_nonnegative_count(.N_col)
   )
 
@@ -42,7 +42,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL){ # nolint
   count2 <- n_available(x)
 
   if (!is.null(count_by)) {
-    assert_that(
+    assertthat::assert_that(
       is_character_or_factor(count_by),
       is_equal_length(count_by, x)
     )
@@ -83,9 +83,9 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL){ # nolint
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 s_num_patients_content <- function(df, labelstr="", .N_col, .var, required = NULL, count_by = NULL) { # nolint
 
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
-    is.string(.var),
+    assertthat::is.string(.var),
     ifelse(
       is.null(count_by),
       is_df_with_variables(df, list(id = .var)),
@@ -94,9 +94,9 @@ s_num_patients_content <- function(df, labelstr="", .N_col, .var, required = NUL
   )
 
   if (!is.null(required)) {
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(df, list(required = required)),
-      is.string(required)
+      assertthat::is.string(required)
     )
     df <- df[!is.na(df[[required]]), , drop = FALSE]
   }

@@ -18,18 +18,18 @@ adlb_raw <- local({
 
   # Here starts the real preprocessing.
   adlb_f <- adlb %>%
-    filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
-    mutate(
+    dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
+    dplyr::mutate(
       GRADE_DIR = factor(
-        case_when(
+        dplyr::case_when(
           ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
           ATOXGR == "0" ~ "ZERO",
           ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
         ),
         levels = c("LOW", "ZERO", "HIGH")
       ),
-      GRADE_ANL = fct_relevel(
-        fct_recode(
+      GRADE_ANL = forcats::fct_relevel(
+        forcats::fct_recode(
           ATOXGR,
           `1` = "-1",
           `2` = "-2",
@@ -39,15 +39,15 @@ adlb_raw <- local({
         c("0", "1", "2", "3", "4")
       )
     ) %>%
-    filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
+    dplyr::filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
     droplevels()
   adlb_f
 })
 
-test_that("s_count_abnormal_by_worst_grade works as expected", {
+testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
   adlb <- adlb_raw
 
-  adlb_alt <- adlb %>% filter(PARAMCD == "ALT") %>% droplevels()
+  adlb_alt <- adlb %>% dplyr::filter(PARAMCD == "ALT") %>% droplevels()
   full_parent_df <- list(adlb_alt, "not_needed")
   cur_col_subset <- list(adlb_alt$ARMCD == "ARM A", "not_needed")
 
@@ -58,7 +58,7 @@ test_that("s_count_abnormal_by_worst_grade works as expected", {
   )
 
   result <- s_count_abnormal_by_worst_grade(
-    df = adlb %>% filter(
+    df = adlb %>% dplyr::filter(
     ARMCD == "ARM A" & PARAMCD == "ALT" & GRADE_DIR == "LOW") %>%
       droplevels(),
     .spl_context = spl_context,
@@ -72,12 +72,12 @@ test_that("s_count_abnormal_by_worst_grade works as expected", {
     `4` = with_label(c(count = 7, fraction = 0.05223881), "4"),
     Any = with_label(c(count = 54, fraction = 0.4029851), "Any")
   ))
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-test_that("count_abnormal_by_worst_grade works as expected", {
+testthat::test_that("count_abnormal_by_worst_grade works as expected", {
   adlb <- adlb_raw
-  adlb_f <- adlb %>% filter(
+  adlb_f <- adlb %>% dplyr::filter(
     PARAMCD == "IGA") %>%
     droplevels()
 
@@ -86,7 +86,7 @@ test_that("count_abnormal_by_worst_grade works as expected", {
     ) %>%
    lapply(as.character) %>%
    as.data.frame() %>%
-   arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
+   dplyr::arrange(PARAM, dplyr::desc(GRADE_DIR), GRADE_ANL)
 
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
@@ -137,19 +137,19 @@ test_that("count_abnormal_by_worst_grade works as expected", {
       ),
       .Dim = c(8L, 4L)
     )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that(
+testthat::test_that(
   "count_abnormal_by_worst_grade returns an error when variables$param
   and variables$grade_dir are taking variable names not used
   for splitting the layout in rows.", {
   adlb <- adlb_raw
-  adlb_f <- adlb %>% filter(
+  adlb_f <- adlb %>% dplyr::filter(
     PARAMCD == "IGA") %>%
     droplevels()
 
-  expect_error(result <- basic_table() %>%
+  testthat::expect_error(result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     split_rows_by("PARAM") %>%
     split_rows_by("GRADE_DIR") %>%

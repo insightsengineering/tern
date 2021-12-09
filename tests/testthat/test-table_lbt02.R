@@ -6,7 +6,7 @@ library(magrittr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
-test_that("LBT02 default variant is produced correctly", {
+testthat::test_that("LBT02 default variant is produced correctly", {
   adlb <- subset(adlb, AVISIT != "SCREENING" & PARAMCD == "ALT")
   adlb$AVISIT <- droplevels(adlb$AVISIT) # nolint snake_case
 
@@ -42,6 +42,6 @@ test_that("LBT02 default variant is produced correctly", {
     ),
     .Dim = c(32L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })

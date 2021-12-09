@@ -6,15 +6,15 @@
 \usage{
 split_text_grob(
   text,
-  x = unit(0.5, "npc"),
-  y = unit(0.5, "npc"),
-  width = unit(1, "npc"),
+  x = grid::unit(0.5, "npc"),
+  y = grid::unit(0.5, "npc"),
+  width = grid::unit(1, "npc"),
   just = "centre",
   hjust = NULL,
   vjust = NULL,
   default.units = "npc",
   name = NULL,
-  gp = gpar(),
+  gp = grid::gpar(),
   vp = NULL
 )
 }

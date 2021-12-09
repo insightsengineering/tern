@@ -1,4 +1,4 @@
-test_that("control_incidence_rate works with customized parameters", {
+testthat::test_that("control_incidence_rate works with customized parameters", {
   result <- control_incidence_rate(
     conf_level = 0.9,
     conf_type = "exact",
@@ -11,53 +11,53 @@ test_that("control_incidence_rate works with customized parameters", {
     time_unit_input = "month",
     time_unit_output = 100
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("control_incidence_rate fails with wrong input", {
-  expect_error(control_incidence_rate(conf_level = 1.1))
-  expect_error(control_incidence_rate(conf_type = "wald"))
-  expect_error(control_incidence_rate(time_unit_input = "decade"))
-  expect_error(control_incidence_rate(time_unit_output = "one"))
+testthat::test_that("control_incidence_rate fails with wrong input", {
+  testthat::expect_error(control_incidence_rate(conf_level = 1.1))
+  testthat::expect_error(control_incidence_rate(conf_type = "wald"))
+  testthat::expect_error(control_incidence_rate(time_unit_input = "decade"))
+  testthat::expect_error(control_incidence_rate(time_unit_output = "one"))
 })
 
-test_that("h_incidence_rate_normal works as expected with healthy input", {
+testthat::test_that("h_incidence_rate_normal works as expected with healthy input", {
   result <- h_incidence_rate_normal(200, 2, 0.1)
   expected <- list(
     rate = 0.01,
     rate_ci = c(-0.001630872, 0.021630872)
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("h_incidence_rate_normal_log works as expected with healthy input", {
+testthat::test_that("h_incidence_rate_normal_log works as expected with healthy input", {
   result <- h_incidence_rate_normal_log(200, 2, 0.1)
   expected <- list(
     rate = 0.01,
     rate_ci = c(0.003125199, 0.031997963)
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("h_incidence_rate_exact works as expected with healthy input", {
+testthat::test_that("h_incidence_rate_exact works as expected with healthy input", {
   result <- h_incidence_rate_exact(200, 2, 0.1)
   expected <- list(
     rate = 0.01,
     rate_ci = c(0.001776808, 0.031478968)
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("h_incidence_rate_byar works as expected with healthy input", {
+testthat::test_that("h_incidence_rate_byar works as expected with healthy input", {
   result <- h_incidence_rate_byar(200, 2, 0.1)
   expected <- list(
     rate = 0.01,
     rate_ci = c(0.002820411, 0.027609866)
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("h_incidence_rate works as expected with healthy input", {
+testthat::test_that("h_incidence_rate works as expected with healthy input", {
   result <- h_incidence_rate(
     200,
     2,
@@ -66,18 +66,18 @@ test_that("h_incidence_rate works as expected with healthy input", {
     rate = 1,
     rate_ci = c(0.3125199, 3.1997963)
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_incidence_rate works as expected with healthy input", {
+testthat::test_that("s_incidence_rate works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(seq(6)),
     CNSR = c(0, 1, 1, 0, 0, 0),
     AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
     ARM = factor(c("A", "A", "A", "B", "B", "B"))
   ) %>%
-    mutate(is_event = CNSR == 0) %>%
-    mutate(n_events = as.integer(is_event))
+    dplyr::mutate(is_event = CNSR == 0) %>%
+    dplyr::mutate(n_events = as.integer(is_event))
   result <- s_incidence_rate(
     df,
     .var = "AVAL",
@@ -97,18 +97,18 @@ test_that("s_incidence_rate works as expected with healthy input", {
     rate_ci = with_label(c(19.40154, 100.50487), "90% CI")
   )
 
-  expect_equal(result, expected, tolerance = 1e-4, check.attributes = TRUE)
+  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = TRUE)
 })
 
-test_that("estimate_incidence_rate works as expected with healthy input", {
+testthat::test_that("estimate_incidence_rate works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(seq(6)),
     CNSR = c(0, 1, 1, 0, 0, 0),
     AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
     ARM = factor(c("A", "A", "A", "B", "B", "B"))
   ) %>%
-    mutate(is_event = CNSR == 0) %>%
-    mutate(n_events = as.integer(is_event))
+    dplyr::mutate(is_event = CNSR == 0) %>%
+    dplyr::mutate(n_events = as.integer(is_event))
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -134,5 +134,5 @@ test_that("estimate_incidence_rate works as expected with healthy input", {
     .Dim = c(6L, 3L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

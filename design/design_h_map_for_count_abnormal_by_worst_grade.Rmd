@@ -44,7 +44,7 @@ LBT07 used the function `count_abnormal_by_worst_grade` which will need a map fo
 For STREAM, there's a meta data called ext_ncitct4 which is the grading criteria for lab abnormality, see reference here
 https://pages.github.roche.com/MDIS/stream_doc/um/vad_concept_grading.html
 
-Based on the above grading criteria, two reference datasets were created called `__atoxgr_low_ref.sas7bdat` and 
+Based on the above grading criteria, two reference datasets were created called `__atoxgr_low_ref.sas7bdat` and
 `__atoxgr_high_ref.sas7bdat` which were used as the lab abnormal direction reference for both LBT07 and LBT15. All the
 three meta datasets can be found on bee with the path `/opt/bee/analyses/stream2/master/current/stream2/app/metadata/`
 
@@ -69,7 +69,7 @@ h_map_for_count_abnormal_by_worst_grade <- function(
   na_level = "<Missing>"
 ) {
   last_split_var <- variables$split_rows[-1]
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, variables),
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
@@ -188,7 +188,7 @@ basic_table() %>%
     var = "USUBJID",
     required = "GRADE_DIR",
     .stats = "unique_count"
-  ) %>% 
+  ) %>%
   split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",

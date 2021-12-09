@@ -7,8 +7,6 @@
 #' @param e2 (`CombinationFunction`)\cr right hand side of logical operator.
 #' @param x (`CombinationFunction`)\cr the function which should be negated.
 #'
-#' @importFrom methods new setClass
-#'
 #' @exportClass CombinationFunction
 #' @export CombinationFunction
 #'
@@ -44,7 +42,6 @@ CombinationFunction <- methods::setClass("CombinationFunction", contains = "func
 #' @describeIn combination_function Logical "AND" combination of `CombinationFunction` functions.
 #'   The resulting object is of the same class, and evaluates the two argument functions. The result
 #'   is then the "AND" of the two individual results.
-#' @importFrom methods setMethod
 #' @export
 #'
 methods::setMethod(
@@ -59,7 +56,6 @@ methods::setMethod(
 #' @describeIn combination_function Logical "OR" combination of `CombinationFunction` functions.
 #'   The resulting object is of the same class, and evaluates the two argument functions. The result
 #'   is then the "OR" of the two individual results.
-#' @importFrom methods setMethod
 #' @export
 #'
 methods::setMethod(
@@ -74,7 +70,6 @@ methods::setMethod(
 #' @describeIn combination_function Logical negation of `CombinationFunction` functions.
 #'   The resulting object is of the same class, and evaluates the original function. The result
 #'   is then the opposite of this results.
-#' @importFrom methods setMethod
 #' @export
 #'
 methods::setMethod(

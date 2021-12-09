@@ -45,11 +45,11 @@ s_count_patients_sum_exposure <- function(df, #nolintr
                                           labelstr = "",
                                           .N_col, #nolintr
                                           custom_label = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
-    is.string(id),
-    is.string(labelstr),
-    is.null(custom_label) || is.string(custom_label),
+    assertthat::is.string(id),
+    assertthat::is.string(labelstr),
+    is.null(custom_label) || assertthat::is.string(custom_label),
     is_df_with_variables(df, list(.var = .var, id = id)),
     is.numeric(df[[.var]])
   )

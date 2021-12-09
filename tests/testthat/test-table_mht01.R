@@ -8,13 +8,13 @@ library(tern)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 admh <- synthetic_cdisc_data("rcd_2021_05_05")$admh
 
-test_that("MHT01 variant 1 is produced accurately", {
+testthat::test_that("MHT01 variant 1 is produced accurately", {
 
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y")
+    dplyr::filter(SAFFL == "Y")
 
   admh_f <- admh %>%
-    filter(
+    dplyr::filter(
       SAFFL == "Y",
       MHBODSYS != "",
       MHDECOD != ""
@@ -68,24 +68,24 @@ test_that("MHT01 variant 1 is produced accurately", {
     .Dim = c(26L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("MHT01 variant 2 is produced accurately", {
+testthat::test_that("MHT01 variant 2 is produced accurately", {
 
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y")
+    dplyr::filter(SAFFL == "Y")
 
   admh_f <- admh %>%
-    filter(
+    dplyr::filter(
       SAFFL == "Y",
       MHBODSYS != "",
       MHDECOD != ""
     )
 
   admh_f_prior <- admh_f %>%
-    filter(ASTDY <= 0)
+    dplyr::filter(ASTDY <= 0)
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -125,16 +125,16 @@ test_that("MHT01 variant 2 is produced accurately", {
     .Dim = c(14L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("MHT01 variant 3 is produced accurately", {
+testthat::test_that("MHT01 variant 3 is produced accurately", {
 
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y")
+    dplyr::filter(SAFFL == "Y")
 
   admh_f <- admh %>%
-    filter(
+    dplyr::filter(
       SAFFL == "Y",
       MHBODSYS != "",
       MHDECOD != ""
@@ -185,20 +185,20 @@ test_that("MHT01 variant 3 is produced accurately", {
     .Dim = c(21L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 # MHT01 variant 4 can not be produced by current rtables
 # Medical History with total number of conditions per body system after the summary of patients
 # Not a blocker given it's just a cosmetic variant
 
-test_that("MHT01 variant 5 is produced accurately", {
+testthat::test_that("MHT01 variant 5 is produced accurately", {
 
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y")
+    dplyr::filter(SAFFL == "Y")
 
   admh_f <- admh %>%
-    filter(
+    dplyr::filter(
       SAFFL == "Y",
       MHBODSYS != "",
       MHDECOD != ""
@@ -256,5 +256,5 @@ test_that("MHT01 variant 5 is produced accurately", {
     .Dim = c(26L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

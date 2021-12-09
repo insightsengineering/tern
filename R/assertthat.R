@@ -24,13 +24,12 @@ NULL
 is_character_or_factor <- function(x) {
   is.character(x) || is.factor(x)
 }
-on_failure(is_character_or_factor) <- function(call, env) {
+assertthat::on_failure(is_character_or_factor) <- function(call, env) {
   paste0(deparse(call$x), " is not a character or factor vector")
 }
 
 
 #' @describeIn assertions Check whether `x` is a nonnegative count.
-#' @importFrom rlang is_integerish
 #' @export
 #' @examples
 #'
@@ -47,7 +46,7 @@ is_nonnegative_count <- function(x) {
     return(FALSE)
   x >= 0 && !is.na(x)
 }
-on_failure(is_nonnegative_count) <- function(call, env) {
+assertthat::on_failure(is_nonnegative_count) <- function(call, env) {
   paste0(deparse(call$x), " is not a non-negative count (a single integer greater than or equal to 0)")
 }
 
@@ -61,10 +60,10 @@ on_failure(is_nonnegative_count) <- function(call, env) {
 #' is_variables(list(1, 2))
 #' is_variables(list("bla"))
 is_variables <- function(x) {
-  is_fully_named_list(x) &&
-    all(vapply(x, is_character_vector, TRUE))
+  utils.nest::is_fully_named_list(x) &&
+    all(vapply(x, utils.nest::is_character_vector, TRUE))
 }
-on_failure(is_variables) <- function(call, env) {
+assertthat::on_failure(is_variables) <- function(call, env) {
   paste0(deparse(call$x), " is not a list of variable names")
 }
 
@@ -77,13 +76,13 @@ on_failure(is_variables) <- function(call, env) {
 #' is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 #'
 is_df_with_variables <- function(df, variables) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is_variables(variables)
   )
   all(unlist(variables) %in% names(df))
 }
-on_failure(is_df_with_variables) <- function(call, env) {
+assertthat::on_failure(is_df_with_variables) <- function(call, env) {
   var_df <- colnames(eval(call$df, envir = env))
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
@@ -103,13 +102,13 @@ on_failure(is_df_with_variables) <- function(call, env) {
 #' )
 #'
 is_df_with_factors <- function(df, variables) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, variables)
   )
   all(vapply(df[, unlist(variables)], is_valid_factor, logical(1)))
 }
 
-on_failure(is_df_with_factors) <- function(call, env) {
+assertthat::on_failure(is_df_with_factors) <- function(call, env) {
   var_df <- colnames(eval(call$df, envir = env))
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
@@ -136,16 +135,16 @@ is_df_with_nlevels_factor <- function(df,
                                       variable,
                                       n_levels,
                                       relation = c("==", ">=")) {
-  assert_that(
-    is.string(variable),
+  assertthat::assert_that(
+    assertthat::is.string(variable),
     is_df_with_factors(df, variables = list(factor = variable)),
-    is.count(n_levels)
+    assertthat::is.count(n_levels)
   )
   relation <- match.arg(relation)
   do.call(relation, list(x = nlevels(df[[variable]]), y = n_levels))
 }
 
-on_failure(is_df_with_nlevels_factor) <- function(call, env) {
+assertthat::on_failure(is_df_with_nlevels_factor) <- function(call, env) {
   variable <- eval(call$variable, envir = env)
   n_levels <- eval(call$n_levels, envir = env)
   actual_levels <- levels(eval(call$df, envir = env)[[variable]])
@@ -177,11 +176,10 @@ is_equal_length <- function(...) {
   all(y == y[1])
 }
 
-#' @importFrom stats setNames
-on_failure(is_equal_length) <- function(call, env) {
+assertthat::on_failure(is_equal_length) <- function(call, env) {
 
   y <- unlist(as.list(call)[-1])
-  y <- setNames(y, nm = y)
+  y <- stats::setNames(y, nm = y)
   y <- mapply(
     FUN = function(expr) eval(expr, envir = parent.frame(n = 2)),
     expr = y
@@ -206,10 +204,10 @@ on_failure(is_equal_length) <- function(call, env) {
 #' is_proportion(x = 0, include_boundaries = TRUE)
 #'
 is_proportion <- function(x, include_boundaries = FALSE) {
-  is_numeric_single(x) &&
+  utils.nest::is_numeric_single(x) &&
     is_proportion_vector(x, include_boundaries = include_boundaries)
 }
-on_failure(is_proportion) <- function(call, env) {
+assertthat::on_failure(is_proportion) <- function(call, env) {
   paste(deparse(call$x), "is not a proportion: number between 0 and 1")
 }
 
@@ -229,7 +227,7 @@ is_proportion_vector <- function(x, include_boundaries = FALSE) {
     all(x > 0 & x < 1)
   }
 }
-on_failure(is_proportion_vector) <- function(call, env) {
+assertthat::on_failure(is_proportion_vector) <- function(call, env) {
   paste(deparse(call$x), "is not a vector of proportions (numbers between 0 and 1)")
 }
 
@@ -249,7 +247,7 @@ is_quantiles_vector <- function(x, include_boundaries = FALSE) {
     !is.unsorted(x) &&
     !any(duplicated(x))
 }
-on_failure(is_quantiles_vector) <- function(call, env) {
+assertthat::on_failure(is_quantiles_vector) <- function(call, env) {
   paste(deparse(call$x), "is not a sorted vector of unique quantile proportions")
 }
 
@@ -268,7 +266,7 @@ is_valid_factor <- function(x) {
     length(levels(x)) > 0 &&
     all(is.na(levels(x)) | levels(x) != "")
 }
-on_failure(is_valid_factor) <- function(call, env) {
+assertthat::on_failure(is_valid_factor) <- function(call, env) {
   paste0(deparse(call$x), " is not a valid factor, please check the factor levels (no empty strings allowed)")
 }
 
@@ -283,7 +281,7 @@ on_failure(is_valid_factor) <- function(call, env) {
 is_factor_no_na <- function(x) {
   is_valid_factor(x) & !any(is.na(x))
 }
-on_failure(is_factor_no_na) <- function(call, env) {
+assertthat::on_failure(is_factor_no_na) <- function(call, env) {
   paste0("NA in ", deparse(call$x), " has not been conveyed to na_level, please use explicit factor levels.")
 }
 
@@ -302,7 +300,7 @@ is_valid_character <- function(x) {
   all(x != "") &&
   all(!(is.na(x)))
 }
-on_failure(is_valid_character) <- function(call, env) {
+assertthat::on_failure(is_valid_character) <- function(call, env) {
   paste0(deparse(call$x), " is not a valid character vector, please check contents (no NAs or empty strings allowed)")
 }
 
@@ -318,16 +316,16 @@ on_failure(is_valid_character) <- function(call, env) {
 #'
 all_elements_in_ref <- function(x, ref) {
 
-  assert_that(
+  assertthat::assert_that(
     is.vector(x),
     is.vector(ref),
-    not_empty(x),
-    not_empty(ref)
+    assertthat::not_empty(x),
+    assertthat::not_empty(ref)
   )
 
   all(x %in% ref)
 }
-on_failure(all_elements_in_ref) <- function(call, env) {
+assertthat::on_failure(all_elements_in_ref) <- function(call, env) {
 
   x <- eval(call$x, envir = env)
   ref <- eval(call$ref, envir = env)
@@ -341,11 +339,11 @@ on_failure(all_elements_in_ref) <- function(call, env) {
 #' @param col_names (`character`)\cr column names which should be present in the table.
 #'
 has_tabletree_colnames <- function(x, col_names) {
-  is(x, "VTableNodeInfo") &&
+  inherits(x, "VTableNodeInfo") &&
     !is.null(names(x)) &&
     all(col_names %in% names(x))
 }
-on_failure(has_tabletree_colnames) <- function(call, env) {
+assertthat::on_failure(has_tabletree_colnames) <- function(call, env) {
   x <- eval(call$x, envir = env)
   col_names <- eval(call$col_names, envir = env)
   missing_col_names <- x[!(x %in% col_names)]
@@ -369,12 +367,12 @@ on_failure(has_tabletree_colnames) <- function(call, env) {
 #' is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
 #'
 is_df_with_no_na_level <- function(df, variables, na_level) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, variables),
-    is.string(na_level)
+    assertthat::is.string(na_level)
   )
   !any(df[, unlist(variables)] == na_level)
 }
-on_failure(is_df_with_no_na_level) <- function(call, env) {
+assertthat::on_failure(is_df_with_no_na_level) <- function(call, env) {
   paste(deparse(call$df), "contains missing data as defined by the argument na_level")
 }

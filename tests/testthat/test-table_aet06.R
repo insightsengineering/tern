@@ -8,7 +8,7 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 
-test_that("AET06 variant 1 is produced correctly", {
+testthat::test_that("AET06 variant 1 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -89,11 +89,11 @@ test_that("AET06 variant 1 is produced correctly", {
     .Dim = c(36L, 7L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("AET06 variant 5 is produced correctly", {
+testthat::test_that("AET06 variant 5 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -211,6 +211,6 @@ test_that("AET06 variant 5 is produced correctly", {
     .Dim = c(63L, 7L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })

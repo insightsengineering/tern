@@ -68,11 +68,6 @@
 #' controls the font size of values in the table.
 #' @param newpage (`logical` scalar) \cr should plot be drawn on new page?
 #'
-#' @import ggplot2
-#' @importFrom dplyr group_by_at summarise all_of full_join
-#' @importFrom grid grid.newpage unit.pmax
-#' @importFrom gridExtra grid.arrange
-#'
 #' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 #'
 #' @return \code{ggplot} or \code{gtable} object,
@@ -133,7 +128,7 @@ g_lineplot <- function(df, # nolint
                        ...,
                        mid_type = "pl",
                        mid_point_size = 2,
-                       position = position_dodge(width = 0.4),
+                       position = ggplot2::position_dodge(width = 0.4),
                        legend_title = NULL,
                        legend_position = "bottom",
                        ggtheme = NULL,
@@ -150,14 +145,14 @@ g_lineplot <- function(df, # nolint
                        table_font_size = 3,
                        newpage = TRUE) {
 
-  assert_that(is.character(variables) || is.na(variables))
-  assert_that(is.character(mid) || is.null(mid))
-  assert_that(is.character(interval) || is.null(interval))
-  assert_that(ifelse(is.character(interval), length(whiskers) <= 2, TRUE))
-  assert_that(ifelse(length(whiskers) == 1, is.character(mid), TRUE))
-  assert_that(is.string(title) || is.null(title))
-  assert_that(is.string(subtitle) || is.null(subtitle))
-  assert_that(
+  assertthat::assert_that(is.character(variables) || is.na(variables))
+  assertthat::assert_that(is.character(mid) || is.null(mid))
+  assertthat::assert_that(is.character(interval) || is.null(interval))
+  assertthat::assert_that(ifelse(is.character(interval), length(whiskers) <= 2, TRUE))
+  assertthat::assert_that(ifelse(length(whiskers) == 1, is.character(mid), TRUE))
+  assertthat::assert_that(assertthat::is.string(title) || is.null(title))
+  assertthat::assert_that(assertthat::is.string(subtitle) || is.null(subtitle))
+  assertthat::assert_that(
     ifelse(
       is.character(mid),
       (length(mid_type) == 1) && mid_type %in% c("pl", "p", "l"),
@@ -171,23 +166,23 @@ g_lineplot <- function(df, # nolint
   y_unit <- variables["y_unit"] # NA if y_unit == NA or it is not in variables # nolint
   strata <- if (!is.na(variables["strata"])) variables[["strata"]] # NULL if strata == NA or it is not in variables # nolint
 
-  assert_that(
+  assertthat::assert_that(
     ifelse(
       (!is.null(y_lab) && y_lab_add_paramcd) || (!is.null(subtitle) && subtitle_add_paramcd),
       !is.na(paramcd),
       TRUE
     )
   )
-  assert_that(
+  assertthat::assert_that(
     ifelse(
       (!is.null(y_lab) && y_lab_add_unit) || (!is.null(subtitle) && subtitle_add_unit),
       !is.na(y_unit),
       TRUE
     )
   )
-  assert_that(ifelse(!is.na(paramcd), length(unique(df[[paramcd]])) == 1, TRUE))
-  assert_that(ifelse(!is.na(y_unit), length(unique(df[[y_unit]])) == 1, TRUE))
-  assert_that(
+  assertthat::assert_that(ifelse(!is.na(paramcd), length(unique(df[[paramcd]])) == 1, TRUE))
+  assertthat::assert_that(ifelse(!is.na(y_unit), length(unique(df[[y_unit]])) == 1, TRUE))
+  assertthat::assert_that(
     ifelse(
       !is.null(strata) && !is.null(alt_counts_df),
       all(unique(alt_counts_df[[strata]]) %in% unique(df[[strata]])),
@@ -222,7 +217,7 @@ g_lineplot <- function(df, # nolint
     colnames(df_N) <- c(strata, "N")
     df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")")
 
-    assert_that(!(strata_N %in% colnames(df_stats)))
+    assertthat::assert_that(!(strata_N %in% colnames(df_stats)))
     df_stats <- merge(x = df_stats, y = df_N[, c(strata, strata_N)], by = strata)
 
   } else if (!is.null(strata)) {
@@ -270,24 +265,24 @@ g_lineplot <- function(df, # nolint
   ##################################################
   ## Build plot object.
   ##################################################
-  p <- ggplot(
+  p <- ggplot2::ggplot(
     data = df_stats,
-    mapping = aes_string(
+    mapping = ggplot2::aes_string(
       x = x, y = mid, color = strata_N, shape = strata_N, lty = strata_N, group = strata_N
     ))
 
   if (!is.null(mid)) {
     # points
     if (grepl("p", mid_type, fixed = TRUE)) {
-      p <- p + geom_point(position = position, size = mid_point_size, na.rm = TRUE)
+      p <- p + ggplot2::geom_point(position = position, size = mid_point_size, na.rm = TRUE)
     }
 
     # lines
     # further conditions in if are to ensure that not all of the groups consist of only one observation
     if (grepl("l", mid_type, fixed = TRUE) &&
         !is.null(strata) &&
-        !all(dplyr::summarise(df_grp, count_n = n())[["count_n"]] == 1L)) {
-      p <- p + geom_line(position = position, na.rm = TRUE)
+        !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) {
+      p <- p + ggplot2::geom_line(position = position, na.rm = TRUE)
     }
 
   }
@@ -296,8 +291,8 @@ g_lineplot <- function(df, # nolint
   if (!is.null(interval)) {
 
     p <- p +
-      geom_errorbar(
-        aes_string(ymin = whiskers[1], ymax = whiskers[max(1, length(whiskers))]),
+      ggplot2::geom_errorbar(
+        ggplot2::aes_string(ymin = whiskers[1], ymax = whiskers[max(1, length(whiskers))]),
         width = 0.45,
         position = position
       )
@@ -305,9 +300,9 @@ g_lineplot <- function(df, # nolint
     if (length(whiskers) == 1) { # lwr or upr only; mid is then required
       # workaround as geom_errorbar does not provide single-direction whiskers
       p <- p +
-        geom_linerange(
+        ggplot2::geom_linerange(
           data = df_stats[!is.na(df_stats[[whiskers]]), ], # as na.rm =TRUE does not suppress warnings
-          aes_string(ymin = mid, ymax = whiskers),
+          ggplot2::aes_string(ymin = mid, ymax = whiskers),
           position = position,
           na.rm = TRUE,
           show.legend = FALSE
@@ -316,8 +311,8 @@ g_lineplot <- function(df, # nolint
   }
 
   p <- p +
-    scale_y_continuous(labels = scales::comma, expand = expansion(c(0.25, .25))) +
-    labs(
+    ggplot2::scale_y_continuous(labels = scales::comma, expand = ggplot2::expansion(c(0.25, .25))) +
+    ggplot2::labs(
       title = title,
       subtitle = subtitle,
       caption = caption,
@@ -332,9 +327,9 @@ g_lineplot <- function(df, # nolint
     p <- p + ggtheme
   } else {
     p <- p +
-      theme_bw() +
-      theme(
-        legend.key.width = unit(1, "cm"),
+      ggplot2::theme_bw() +
+      ggplot2::theme(
+        legend.key.width = grid::unit(1, "cm"),
         legend.position = legend_position,
         legend.direction = ifelse(
           legend_position %in% c("top", "bottom"),
@@ -368,30 +363,30 @@ g_lineplot <- function(df, # nolint
         names_ptypes = list(stat = factor(levels = stats_lev))
       )
 
-    tbl <- ggplot(df_stats_table, aes_string(x = x, y = "stat", label = "value")) +
-      geom_text(size = table_font_size) +
-      theme_bw() +
-      theme(
-        panel.border = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.ticks = element_blank(),
-        axis.title = element_blank(),
-        axis.text.x = element_blank(),
-        axis.text.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 5)),
-        strip.text = element_text(hjust = 0),
-        strip.text.x = element_text(margin = margin(1.5, 0, 1.5, 0, "pt")),
-        strip.background = element_rect(fill = "grey95", color = NA),
+    tbl <- ggplot2::ggplot(df_stats_table, ggplot2::aes_string(x = x, y = "stat", label = "value")) +
+      ggplot2::geom_text(size = table_font_size) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(
+        panel.border = ggplot2::element_blank(),
+        panel.grid.major = ggplot2::element_blank(),
+        panel.grid.minor = ggplot2::element_blank(),
+        axis.ticks = ggplot2::element_blank(),
+        axis.title = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank(),
+        axis.text.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 5)),
+        strip.text = ggplot2::element_text(hjust = 0),
+        strip.text.x = ggplot2::element_text(margin = ggplot2::margin(1.5, 0, 1.5, 0, "pt")),
+        strip.background = ggplot2::element_rect(fill = "grey95", color = NA),
         legend.position = "none"
       )
 
     if (!is.null(strata)) {
-      tbl <- tbl + facet_wrap(facets = strata, ncol = 1)
+      tbl <- tbl + ggplot2::facet_wrap(facets = strata, ncol = 1)
     }
 
     # align plot and table
-    p_grob <- ggplotGrob(p)
-    tbl_grob <- ggplotGrob(tbl)
+    p_grob <- ggplot2::ggplotGrob(p)
+    tbl_grob <- ggplot2::ggplotGrob(tbl)
     maxWidth <- grid::unit.pmax(p_grob$widths, tbl_grob$widths) # nolint
     p_grob$widths <- maxWidth
     tbl_grob$widths <- maxWidth
@@ -449,7 +444,7 @@ h_format_row <- function(x, format, labels = NULL) {
 
   # cell: one row, one column data.frame
   format_cell <- function(x, format, label = NULL) {
-    fc <- rtables::format_rcell(x = x, format = format)
+    fc <- format_rcell(x = x, format = format)
     if (is.na(fc))
       fc <- "NA"
     x_label <- attr(x, "label")
@@ -496,11 +491,11 @@ h_format_row <- function(x, format, labels = NULL) {
 #'
 control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU") {
 
-  assert_that(is.character(x))
-  assert_that(is.character(y))
-  assert_that(is.character(strata) || is.na(strata))
-  assert_that(is.character(paramcd) || is.na(paramcd))
-  assert_that(is.character(y_unit) || is.na(y_unit))
+  assertthat::assert_that(is.character(x))
+  assertthat::assert_that(is.character(y))
+  assertthat::assert_that(is.character(strata) || is.na(strata))
+  assertthat::assert_that(is.character(paramcd) || is.na(paramcd))
+  assertthat::assert_that(is.character(y_unit) || is.na(y_unit))
 
   variables <- c(x = x, y = y, strata = strata, paramcd = paramcd, y_unit = y_unit)
   return(variables)

@@ -21,7 +21,7 @@ preprocess_adrs <- function(adrs, n_records = 20) {
 
 adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
-test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced correctly", {
+testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced correctly", {
 
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
@@ -50,17 +50,17 @@ test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced co
       ),
     .Dim = 9:8
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
 })
 
-test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly", {
+testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly", {
 
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
   adrs <- adrs %>%
-    mutate(
+    dplyr::mutate(
       # Reorder levels of SEX.
       SEX = forcats::fct_relevel(SEX, "M", "F"),
       # Reorder levels of STRATA1 by frequency.
@@ -93,11 +93,11 @@ test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly",
     .Dim = c(10L, 8L)
     )
 
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
 })
 
-test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is produced correctly", {
+testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is produced correctly", {
 
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
@@ -124,16 +124,16 @@ test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is 
       "0.0007", "", "0.0004", "0.4150", "", "0.0154", "0.0178"),
     .Dim = c(9L, 5L)
     )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
 })
 
-test_that("ONCT05 variant 4 (setting values indicating response) is produced correctly", {
+testthat::test_that("ONCT05 variant 4 (setting values indicating response) is produced correctly", {
 
   # Define new criteria for responder.
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200) %>%
-    mutate(
+    dplyr::mutate(
       new_rsp = AVALC %in% c("CR", "PR")
     )
 
@@ -163,6 +163,6 @@ test_that("ONCT05 variant 4 (setting values indicating response) is produced cor
       ),
     .Dim = 9:8
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
 })

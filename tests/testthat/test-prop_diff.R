@@ -1,4 +1,4 @@
-test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", {
+testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", {
 
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
@@ -9,7 +9,7 @@ test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", {
     diff = 0.25,
     diff_ci = c(-0.9195, 1)
   )
-  expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tol = 0.0001)
 
 
   # Edge case: Same proportion of response in A and B.
@@ -21,12 +21,12 @@ test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", {
     diff = 0,
     diff_ci = c(-0.8451, 0.8451)
   )
-  expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tol = 0.0001)
 
 })
 
 
-test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
+testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
 
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
@@ -39,24 +39,24 @@ test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
     diff = 0.25,
     diff_ci = c(-0.2967, 0.6750)
   )
-  expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tol = 0.0001)
 
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
-  result <- expect_warning(
+  result <- testthat::expect_warning(
     prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.6)
   )
   expected <- list(# according to SAS.
     diff = 0,
     diff_ci = c(-0.3616, 0.3616)
   )
-  expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tol = 0.0001)
 
 })
 
 
-test_that("`prop_diff_cmh` (proportion difference by CMH)", {
+testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
 
   set.seed(2, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
@@ -81,11 +81,11 @@ test_that("`prop_diff_cmh` (proportion difference by CMH)", {
     diff = -0.1376866,
     diff_ci = c(-0.285363076, 0.009989872)
   )
-  expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tol = 0.0001)
 
 })
 
-test_that("prop_diff_cmh works correctly when some strata don't have both groups", {
+testthat::test_that("prop_diff_cmh works correctly when some strata don't have both groups", {
 
   set.seed(2, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
@@ -99,13 +99,13 @@ test_that("prop_diff_cmh works correctly when some strata don't have both groups
   # Deliberately remove all `Treatment` patients from one stratum.
   grp[strata_data$f1 == "a" & strata_data$f2 == "x"] <- "Placebo"
 
-  result <- expect_silent(prop_diff_cmh(
+  result <- testthat::expect_silent(prop_diff_cmh(
     rsp = rsp, grp = grp, strata = interaction(strata_data),
     conf_level = 0.90
   ))
 
-  expect_false(is.na(result$diff))
-  expect_false(any(is.na(result$diff_ci)))
+  testthat::expect_false(is.na(result$diff))
+  testthat::expect_false(any(is.na(result$diff_ci)))
 
   expected <- list(
     prop = c(Placebo = 0.569842, Treatment = 0.398075),
@@ -116,11 +116,11 @@ test_that("prop_diff_cmh works correctly when some strata don't have both groups
     diff = -0.171767,
     diff_ci = c(-0.32786094, -0.01567301)
   )
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 
-test_that("`estimate_proportion_diff` is compatible with `rtables`", {
+testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
 
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   dta <- data.frame(
@@ -145,5 +145,5 @@ test_that("`estimate_proportion_diff` is compatible with `rtables`", {
     .Dim = c(3L, 3L)
   )
 
-  expect_identical(to_string_matrix(result), expected)
+  testthat::expect_identical(to_string_matrix(result), expected)
 })

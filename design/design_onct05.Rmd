@@ -13,7 +13,7 @@ vignette: >
   %\VignetteIndexEntry{Design of ONCT05}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -61,23 +61,23 @@ var_labels(adrs) <- c(adrs_labels, "Response")
 ## Objective
 
 
-                                                                                                   
+
 ````
-                                        ARM A          ARM B                              
-                                       (N=187)        (N=182)                             
-                                    _____________  _____________                          
-                                                                                          
-                              Total       Response       Response   Odds                   
-Baseline Risk Factors          n     n     (%)      n     (%)      Ratio       95% CI     
+                                        ARM A          ARM B
+                                       (N=187)        (N=182)
+                                    _____________  _____________
+
+                              Total       Response       Response   Odds
+Baseline Risk Factors          n     n     (%)      n     (%)      Ratio       95% CI
 __________________________________________________________________________________________
-                                                                                          
+
 All Patients                  369   187    49.7    182    50.0       1.01  (0.67,    1.52)
-                                                                                          
-Sex                                                                                       
+
+Sex
   Male                        189   103    49.5     86    53.5       1.17  (0.66,    2.08)
   Female                      180    84    50.0     96    46.9       0.88  (0.49,    1.59)
-                                                                                          
-Pooled Age Group 1                                                                        
+
+Pooled Age Group 1
   <65                         267   131    48.1    136    49.3       1.05  (0.65,    1.69)
   >=65                        102    56    53.6     46    52.2       0.95  (0.43,    2.07)
 ````
@@ -89,11 +89,11 @@ Details: (see GDSR)
 
 - Helper function returns two summary datasets which need to be converted to rtables separately.
 - One summary dataset is used to create a summary table by arm.
-- The second summary dataset is used to create the table of total n, odds ratio and ci. 
+- The second summary dataset is used to create the table of total n, odds ratio and ci.
 - In a final step, the tables are combined using `cbind_rtable`.
 
 
-## Helper function to create tidy dataset(s) 
+## Helper function to create tidy dataset(s)
 
 - Reuse as many functions from `RSPT01` template.
 
@@ -103,7 +103,7 @@ Details: (see GDSR)
 
 h_extract_subgroup_or <- function(variables, data) {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
     is.character(variables$subsets),
@@ -175,7 +175,7 @@ h_extract_subgroup_or(variables = list(rsp = "rsp", arm = "ARM", subsets = c("SE
 
 h_extract_subgroup_prop <- function(variables, data) {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
     is.character(variables$subsets),
@@ -261,7 +261,7 @@ format_pct <- function(x, ...) {
     return("NA")
   }
 
-  assert_that(
+  assertthat::assert_that(
     is.vector(x),
     is_proportion(x, include_boundaries = TRUE)
   )

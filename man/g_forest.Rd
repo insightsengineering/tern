@@ -15,7 +15,7 @@ g_forest(
   x_at = c(0.1, 1, 10),
   width_row_names = NULL,
   width_columns = NULL,
-  width_forest = unit(1, "null"),
+  width_forest = grid::unit(1, "null"),
   col_symbol_size = attr(tbl, "col_symbol_size"),
   draw = TRUE,
   newpage = TRUE
