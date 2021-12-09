@@ -4,12 +4,12 @@
 #'
 "_PACKAGE"
 
-#' @import rtables
-#' @import ggplot2
-#' @importFrom survival coxph strata Surv
+#' @import rtables ggplot2
 #' @importFrom broom tidy
-#' @importFrom rlang .data := !!
+#' @importFrom methods new
 #' @importFrom magrittr %>%
+#' @importFrom rlang .data := !!
+#' @importFrom survival coxph strata Surv
 NULL
 
 # We need this to avoid R CMD check warning about missing global definitions.

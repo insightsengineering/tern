@@ -560,11 +560,11 @@ get_mmrm_lsmeans <- function(fit,
     contrasts <- sum_fit_diff %>%
       dplyr::mutate(
         col_by = factor(
-          gsub(paste0("\\s-\\s", reference_level), "", contrast),
+          gsub(paste0("\\s-\\s", reference_level), "", .data$contrast),
           levels = arm_levels
         )
       ) %>%
-      dplyr::select(-contrast) %>%
+      dplyr::select(-.data$contrast) %>%
       dplyr::rename(!!as.symbol(vars$arm) := .data$col_by) %>%
       dplyr::left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
       dplyr::mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%

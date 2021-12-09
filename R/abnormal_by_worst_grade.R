@@ -84,7 +84,7 @@ NULL
 #'   .var = "GRADE_ANL"
 #' )
 #'
-s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
+s_count_abnormal_by_worst_grade <- function(df,
                                             .var = "GRADE_ANL",
                                             .spl_context,
                                             variables = list(

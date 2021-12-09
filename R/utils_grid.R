@@ -36,7 +36,7 @@ stack_grobs <- function(...,
                         vp = NULL,
                         gp = NULL,
                         name = NULL) {
-  stopifnot(all(vapply(grobs, is.grob, logical(1))))
+  stopifnot(all(vapply(grobs, grid::is.grob, logical(1))))
 
   if (length(grobs) == 1) {
     return(grobs[[1]])
@@ -53,7 +53,7 @@ stack_grobs <- function(...,
       }
     }
   )
-  hts <- do.call(unit.c, hts)
+  hts <- do.call(grid::unit.c, hts)
 
   main_vp <- grid::viewport(
     layout = grid::grid.layout(nrow = n_layout, ncol = 1, heights = hts)
@@ -67,7 +67,7 @@ stack_grobs <- function(...,
   }, grobs, seq_along(grobs) * 2 - 1)
 
   grobs_mainvp <- grid::gTree(
-    children = do.call(gList, nested_grobs),
+    children = do.call(grid::gList, nested_grobs),
     vp = main_vp
   )
 
@@ -127,7 +127,7 @@ arrange_grobs <- function(..., # nolint
                           vp = NULL,
                           gp = NULL,
                           name = NULL) {
-  stopifnot(all(vapply(grobs, is.grob, logical(1))))
+  stopifnot(all(vapply(grobs, grid::is.grob, logical(1))))
 
   if (length(grobs) == 1) {
     return(grobs[[1]])
@@ -162,7 +162,7 @@ arrange_grobs <- function(..., # nolint
       }
     }
   )
-  hts <- do.call(unit.c, hts)
+  hts <- do.call(grid::unit.c, hts)
 
   wts <- lapply(
     seq(1, n_col),
@@ -174,7 +174,7 @@ arrange_grobs <- function(..., # nolint
       }
     }
   )
-  wts <- do.call(unit.c, wts)
+  wts <- do.call(grid::unit.c, wts)
 
   main_vp <- grid::viewport(
     layout = grid::grid.layout(nrow = n_row, ncol = n_col, widths = wts, heights = hts)
@@ -195,7 +195,7 @@ arrange_grobs <- function(..., # nolint
     }
   }
   grobs_mainvp <- grid::gTree(
-    children = do.call(gList, nested_grobs),
+    children = do.call(grid::gList, nested_grobs),
     vp = main_vp
   )
 

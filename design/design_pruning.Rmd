@@ -54,7 +54,7 @@ setClass("myclass", contains = "function")
 
 higher <- function(a) {
   force(a)
-  new(
+  methods::new(
     "myclass",
     function(x) {
       x > a
@@ -64,7 +64,7 @@ higher <- function(a) {
 
 lower <- function(b) {
   force(b)
-  new(
+  methods::new(
     "myclass",
     function(x) {
       x < b
@@ -123,7 +123,7 @@ We define a custom S4 class for the condition functions and define logical opera
 setClass("OccurrenceCondition", contains = "function")
 
 new_condition <- function(fun) {
-  new("OccurrenceCondition", fun)
+  methods::new("OccurrenceCondition", fun)
 }
 
 setMethod(
