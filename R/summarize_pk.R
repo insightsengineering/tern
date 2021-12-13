@@ -1,13 +1,14 @@
-#' Summary of PK datasets
+#' Summary numeric variables in columns
 #'
 #' These functions can be used to produce summary tables for PK datasets.
 #'
-#' @name summarize_pk
+#' @name summarize_numeric_in_columns
 #'
 NULL
 
-#' @describeIn summarize_pk Statistics function that produces a named list of statistics
-#'   to include as columns in the PK table.
+#' @describeIn summarize_numeric_in_columns Statistics function that produces a named list of statistics
+#'   to include as columns.
+#'
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as the row label.
@@ -28,9 +29,9 @@ NULL
 #'
 #' library(scda)
 #' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
-#' s_summary_pk(ADPC$AGE, custom_label = "stats")
+#' s_summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
 #'
-s_summary_pk <- function(x,
+s_summary_numeric_in_cols <- function(x,
                          labelstr = "",
                          custom_label = NULL,
                          ...) {
@@ -41,18 +42,20 @@ s_summary_pk <- function(x,
   } else {
     "Statistics"
   }
-  pk_stats <- c("n", "mean", "sd", "cv", "min", "max", "median", "geom_mean", "geom_cv")
+  stats_list <- c("n", "mean", "sd", "cv", "min", "max", "median", "geom_mean", "geom_cv")
 
   # Calling s_summary.numeric
   results <- s_summary.numeric(x)
 
-  lapply(results[pk_stats], with_label, row_label)
+  lapply(results[stats_list], with_label, row_label)
 }
 
-#' @describeIn summarize_pk Layout creating function which can be used for creating
-#'   summary tables for PK data sets.
+#' @describeIn summarize_numeric_in_columns Layout creating function which can be used for creating
+#'   summary tables in columns, primarily used for PK data sets.
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
+#'
+#' @seealso summarize_vars.
 #'
 #' @export
 #' @examples
@@ -60,12 +63,12 @@ s_summary_pk <- function(x,
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM") %>%
 #'   split_rows_by(var = "SEX") %>%
-#'   summarize_pk_in_cols(var = "AGE", col_split = TRUE)
+#'   summarize_vars_numeric_in_cols(var = "AGE", col_split = TRUE)
 #'   result <- build_table(lyt, df = ADPC)
 #' result
 #'
 #' lyt <- basic_table() %>%
-#'   summarize_pk_in_cols(var = "AGE", col_split = TRUE)
+#'   summarize_vars_numeric_in_cols(var = "AGE", col_split = TRUE)
 #'   result <- build_table(lyt, df = ADPC)
 #' result
 #'
@@ -73,21 +76,29 @@ s_summary_pk <- function(x,
 #' ADPC$PARAMUNIT <- paste0(ADPC$PARAM, "(", ADPC$AVALU, ")")
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "PARAMUNIT") %>%
-#'   summarize_pk_in_cols(var = "AVAL", col_split = TRUE)
+#'   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
 #'   result <- build_table(lyt, df = ADPC)
 #' result
 #'
-#' # PKCT01
+#' # PKCT01FDS
 #' ADPC$NRELTM1 <- as.factor(ADPC$NRELTM1)
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "VISIT") %>%
 #'   split_rows_by(var = "NRELTM1") %>%
-#'   summarize_pk_in_cols(var = "AVAL", col_split = TRUE)
+#'   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
 #'   result <- build_table(lyt, df = ADPC)
 #' result
 #'
+#' # PKCT01MRD
+#' ADPC$NRELTM1 <- as.factor(ADPC$NRELTM1)
+#' lyt <- basic_table() %>%
+#'   split_rows_by(var = "VISIT") %>%
+#'   split_rows_by(var = "NRELTM2") %>%
+#'   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
+#'   result <- build_table(lyt, df = ADPC)
+#' result
 #'
-summarize_pk_in_cols <- function(lyt,
+summarize_vars_numeric_in_cols <- function(lyt,
                                  var,
                                  ...,
                                  .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
@@ -120,7 +131,7 @@ summarize_pk_in_cols <- function(lyt,
   afun_list <- Map(
     function(stat) {
       make_afun(
-        s_summary_pk,
+        s_summary_numeric_in_cols,
         .stats = stat,
         .formats = sum_format[names(sum_format) == stat])
     },
