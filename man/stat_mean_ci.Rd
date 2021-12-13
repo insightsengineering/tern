@@ -27,16 +27,14 @@ It can be used as a ggplot helper function for plotting.
 
 stat_mean_ci(sample(10), gg_helper = FALSE)
 
-require(ggplot2)
+p <- ggplot2::ggplot(mtcars, ggplot2::aes(cyl, mpg)) + ggplot2::geom_point()
 
-p <- ggplot(mtcars, aes(cyl, mpg)) + geom_point()
-
-p + stat_summary(
+p + ggplot2::stat_summary(
   fun.data = stat_mean_ci,
   geom = "errorbar"
 )
 
-p + stat_summary(
+p + ggplot2::stat_summary(
   fun.data = stat_mean_ci,
   fun.args = list(conf_level = 0.5),
   geom = "errorbar"

@@ -15,7 +15,7 @@ raw_data <- local({
     )
 })
 
-test_that("fit_rsp_step works as expected with default options", {
+testthat::test_that("fit_rsp_step works as expected with default options", {
   data <- raw_data
   variables <- list(
     arm = "ARM",
@@ -23,13 +23,13 @@ test_that("fit_rsp_step works as expected with default options", {
     covariates = "AGE",
     response = "RSP"
   )
-  result <- expect_silent(fit_rsp_step(
+  result <- testthat::expect_silent(fit_rsp_step(
     variables = variables,
     data = data
   ))
-  expect_is(result, c("matrix", "step"))
-  expect_identical(ncol(result), 11L)
-  expect_identical(
+  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_identical(ncol(result), 11L)
+  testthat::expect_identical(
     colnames(result),
     c("Percentile Center", "Percentile Lower", "Percentile Upper",
       "Interval Center", "Interval Lower", "Interval Upper", "n",
@@ -37,7 +37,7 @@ test_that("fit_rsp_step works as expected with default options", {
   )
 })
 
-test_that("fit_rsp_step works as expected with global model fit", {
+testthat::test_that("fit_rsp_step works as expected with global model fit", {
   data <- raw_data
   variables <- list(
     arm = "ARM",
@@ -45,7 +45,7 @@ test_that("fit_rsp_step works as expected with global model fit", {
     covariates = "AGE",
     response = "RSP"
   )
-  result <- expect_silent(fit_rsp_step(
+  result <- testthat::expect_silent(fit_rsp_step(
     variables = variables,
     data = data,
     control = c(
@@ -57,16 +57,16 @@ test_that("fit_rsp_step works as expected with global model fit", {
       )
     )
   ))
-  expect_is(result, c("matrix", "step"))
-  expect_identical(ncol(result), 8L)
-  expect_identical(
+  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_identical(ncol(result), 8L)
+  testthat::expect_identical(
     colnames(result),
     c("Interval Center", "Interval Lower", "Interval Upper", "n",
       "logor", "se", "ci_lower", "ci_upper")
   )
 })
 
-test_that("fit_rsp_step works as expected with strata", {
+testthat::test_that("fit_rsp_step works as expected with strata", {
   data <- raw_data
   variables <- list(
     arm = "ARM",
@@ -75,14 +75,14 @@ test_that("fit_rsp_step works as expected with strata", {
     response = "RSP",
     strata = c("STRATA1", "STRATA2")
   )
-  result <- expect_silent(fit_rsp_step(
+  result <- testthat::expect_silent(fit_rsp_step(
     variables = variables,
     data = data,
     control = c(control_logistic(), control_step(bandwidth = 0.6))
   ))
-  expect_is(result, c("matrix", "step"))
-  expect_identical(ncol(result), 11L)
-  expect_identical(
+  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_identical(ncol(result), 11L)
+  testthat::expect_identical(
     colnames(result),
     c("Percentile Center", "Percentile Lower", "Percentile Upper",
       "Interval Center", "Interval Lower", "Interval Upper", "n",

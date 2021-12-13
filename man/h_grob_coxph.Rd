@@ -9,8 +9,8 @@ h_grob_coxph(
   ...,
   x = 0,
   y = 0,
-  ttheme = ttheme_default(base_size = 12, padding = unit(c(1, 0.5), "lines"), core =
-    list(bg_params = list(fill = c("grey95", "grey90"), alpha = 0.5)))
+  ttheme = gridExtra::ttheme_default(base_size = 12, padding = grid::unit(c(1, 0.5),
+    "lines"), core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = 0.5)))
 )
 }
 \arguments{
@@ -33,8 +33,8 @@ library(dplyr)
 library(survival)
 library(grid)
 
-grid.newpage()
-grid.rect(gp = gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
+grid::grid.newpage()
+grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 data <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
@@ -42,7 +42,7 @@ tbl_grob <- tern:::h_grob_coxph(
    df = data,
    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),
    control_coxph_pw = control_coxph(conf_level = 0.9), x = 0.5, y = 0.5)
-grid.draw(tbl_grob)
+grid::grid.draw(tbl_grob)
 }
 
 }

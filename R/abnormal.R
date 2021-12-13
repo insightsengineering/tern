@@ -1,8 +1,8 @@
 #' Patient Counts with Abnormal Range Values
 #'
 #' Primary analysis variable `.var` indicates the abnormal range result (character or factor)
-#' and additional analysis variables are `id` (character or factor) and `baseline` (character or factor).
-#' For each direction specified in `abnormal` (e.g. high or low) count patients in the
+#' and additional analysis variables are `id` (character or factor) and `baseline` (character or
+#' factor). For each direction specified in `abnormal` (e.g. high or low) count patients in the
 #' numerator and denominator as follows:
 #' \describe{
 #'   \item{`num`}{the number of patients with this abnormality recorded while on treatment.}
@@ -16,8 +16,8 @@
 #'
 #' @inheritParams argument_convention
 #' @param abnormal (`named list`)\cr identifying the abnormal range level(s) in `var`. Default to
-#' `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the name list, for example,
-#' `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`
+#' `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the name list,
+#' for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`
 #'
 #' @name abnormal
 #' @include formats.R
@@ -50,7 +50,9 @@ NULL
 #' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 #'
 #' # Optionally exclude patients with abnormality at baseline.
-#' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE)
+#' s_count_abnormal(
+#'   df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE
+#'  )
 #'
 s_count_abnormal <- function(df,
                              .var,
@@ -58,15 +60,15 @@ s_count_abnormal <- function(df,
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
-    is_character_list(abnormal, min_length = 2, max_length = 2),
+    utils.nest::is_character_list(abnormal, min_length = 2, max_length = 2),
     !is.null(names(abnormal)),
     any(unlist(abnormal) %in% levels(df[[.var]])),
     is_character_or_factor(df[[variables$baseline]]),
     is_character_or_factor(df[[variables$id]]),
     is.factor(df[[.var]]),
-    is.flag(exclude_base_abn)
+    assertthat::is.flag(exclude_base_abn)
   )
 
   count_abnormal_single <- function(abn_name, abn) {
@@ -92,7 +94,7 @@ s_count_abnormal <- function(df,
   # This will define the abnormal levels theoretically possible for a specific lab parameter
   # within a split level of a layout.
   abnormal_lev <- lapply(abnormal, intersect, levels(df[[.var]]))
-  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, is_empty)]
+  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, utils.nest::is_empty)]
 
   result <- sapply(names(abnormal_lev), function(i) count_abnormal_single(i, abnormal_lev[[i]]), simplify = FALSE)
   result <- list(fraction = result)
@@ -162,8 +164,8 @@ count_abnormal <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "fraction"
   )
-  assert_that(
-    is.string(var)
+  assertthat::assert_that(
+    assertthat::is.string(var)
   )
 
   analyze(

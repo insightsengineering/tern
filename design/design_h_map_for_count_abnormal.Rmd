@@ -52,13 +52,13 @@ New assert functions.
 @Joe, this is legacy function from last sprint, please ignore it.
 ```{r eval=FALSE}
 is_df_with_no_na_level <- function(df, variables, na_level) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, variables),
-    is.string(na_level)
+    assertthat::is.string(na_level)
   )
   !any(df[, unlist(variables)] == na_level)
 }
-on_failure(is_df_with_no_na_level) <- function(call, env) {
+assertthat::on_failure(is_df_with_no_na_level) <- function(call, env) {
   paste(deparse(call$df), "contains missing data as defined by the argument na_level")
 }
 ```
@@ -84,7 +84,7 @@ h_map_with_count_abnormal <- function(
 ) {
   method <- match.arg(method)
 
-  assert_that(
+  assertthat::assert_that(
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
     is_variables(variables),
@@ -102,7 +102,7 @@ h_map_with_count_abnormal <- function(
   df <- droplevels(df)
 
   normal_value <- setdiff(levels(df[[variables$anl]]), unlist(abnormal))
-  assert_that(
+  assertthat::assert_that(
     length(normal_value) == 1,
     all_elements_in_ref(setdiff(levels(df[[variables$anl]]), normal_value), unlist(abnormal))
   )
@@ -110,7 +110,7 @@ h_map_with_count_abnormal <- function(
   # default method will only have what is observed in the df, and records with all normals will be excluded to avoid
   # error in rtable building.
   if (method == "default") {
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(df, variables = list(anl = variables$anl, split_row = variables$split_rows))
     )
     df_abnormal <- subset(df, df[[variables$anl]] %in% unlist(abnormal))
@@ -122,7 +122,7 @@ h_map_with_count_abnormal <- function(
   } else if (method == "range") {
     #range method follows the rule that at least one observation with ANRLO > 0 for low
     #direction and at least one observation with ANRHI is not missing for high direction.
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(df, variables),
       "range_low" %in% names(variables),
       "range_high" %in% names(variables)
@@ -152,7 +152,7 @@ h_map_with_count_abnormal <- function(
     map <- rbind(map_low, map_high, map_normal)
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
   } else if (method == "meta_ext_ncictc4") {
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(df, variables = list(paramcd = "PARAMCD")),
       any(lengths(abnormal) < 2) # I want to make sure LOW LOW/HIGH HIGH doesn't go into abnormal for this method #nolint
     )
@@ -235,8 +235,8 @@ test with new method and stream data for lbt15.
 
 adsl <- ADSL %>% df_explicit_na() %>% filter(SAFFL == "Y")
 adlb_f <- ADLB %>% df_explicit_na() %>% filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI") %>%
-  mutate(ATOXGR = factor(ATOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")), 
-         BTOXGR = factor(BTOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>"))) 
+  mutate(ATOXGR = factor(ATOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")),
+         BTOXGR = factor(BTOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")))
 adlb_f <- adlb_f %>%
   mutate(
     ATOXGR_CAT = fct_collapse(ATOXGR,
@@ -353,4 +353,3 @@ lyt_test <- basic_table() %>%
 
 build_table(lyt_test, adlb_f_noALTSI %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
 ```
-

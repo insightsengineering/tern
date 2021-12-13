@@ -1,4 +1,4 @@
-test_that("or_glm estimates right OR and CI", {
+testthat::test_that("or_glm estimates right OR and CI", {
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
     grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
@@ -10,20 +10,20 @@ test_that("or_glm estimates right OR and CI", {
 
   result <- or_glm(data_ab, conf_level = 0.95)[[1]]
   expected <- c(est = 1 / 2 / 2 / 1, lcl = 0.0083, ucl = 7.4518)
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 
   # Because `rtables` works by column (compared to the reference), we verified
   # that the model fitted on the complete dataset (grp: a, b, c) provides equal
   # estimations to the model fitted to the subset group and reference (grp: a, b).
-  model_fit <- glm(rsp ~ grp, data, family = stats::binomial(link = "logit"))
+  model_fit <- stats::glm(rsp ~ grp, data, family = stats::binomial(link = "logit"))
   expected <- c(
     exp(stats::coef(model_fit)[-1])["grpb"],
     exp(stats::confint.default(model_fit, level = 0.95)["grpb", ])
   )
-  expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 })
 
-test_that("or_clogit estimates right OR and CI", {
+testthat::test_that("or_clogit estimates right OR and CI", {
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
     grp =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
@@ -37,12 +37,12 @@ test_that("or_clogit estimates right OR and CI", {
       b = c(est = 0.288, lcl = 0.036, ucl = 2.272),
       c = c(est = 0.780, lcl = 0.075, ucl = 8.146)
     ),
-    n_tot = setNames(20, "n_tot")
+    n_tot = c(n_tot = 20)
   )
-  expect_equal(result, expected, tolerance = 1e-3)
+  testthat::expect_equal(result, expected, tolerance = 1e-3)
 })
 
-test_that("s_odds_ratio estimates right OR and CI (unstratified analysis)", {
+testthat::test_that("s_odds_ratio estimates right OR and CI (unstratified analysis)", {
 
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
@@ -61,12 +61,12 @@ test_that("s_odds_ratio estimates right OR and CI (unstratified analysis)", {
       c(est = 1 / 2 / 2 / 1, lcl = 0.0083, ucl = 7.4518),
       "Odds Ratio (95% CI)"
     ),
-    n_tot = with_label(setNames(6, "n_tot"), "Total n")
+    n_tot = with_label(c(n_tot = 6), "Total n")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_odds_ratio estimates right OR and CI (stratified analysis)", {
+testthat::test_that("s_odds_ratio estimates right OR and CI (stratified analysis)", {
 
   set.seed(12)
   dta <- data.frame(
@@ -89,12 +89,12 @@ test_that("s_odds_ratio estimates right OR and CI (stratified analysis)", {
       c(est = 0.76898, lcl = 0.34242, ucl = 1.72692),
       "Odds Ratio (95% CI)"
     ),
-    n_tot = with_label(setNames(100, "n_tot"), "Total n")
+    n_tot = with_label(c(n_tot = 100), "Total n")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("estimate_odds_ratio estimates right OR and CI (unstratified analysis)", {
+testthat::test_that("estimate_odds_ratio estimates right OR and CI (unstratified analysis)", {
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
     grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3)]
@@ -119,10 +119,10 @@ test_that("estimate_odds_ratio estimates right OR and CI (unstratified analysis)
     ),
     .Dim = c(2L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("estimate_odds_ratio estimates right OR and CI (stratified analysis)", {
+testthat::test_that("estimate_odds_ratio estimates right OR and CI (stratified analysis)", {
   utils.nest::skip_if_too_deep(5)
   set.seed(12)
   data <- data.frame(
@@ -149,10 +149,10 @@ test_that("estimate_odds_ratio estimates right OR and CI (stratified analysis)",
       ),
       .Dim = 2:3
     )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("estimate_odds_ratio works with strata and combined groups", {
+testthat::test_that("estimate_odds_ratio works with strata and combined groups", {
   set.seed(1, kind = "Mersenne-Twister")
   anl <- data.frame(
     rsp = sample(x = c(TRUE, FALSE), size = 100, replace = TRUE),
@@ -191,5 +191,5 @@ test_that("estimate_odds_ratio works with strata and combined groups", {
       ),
       .Dim = 2:3
     )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

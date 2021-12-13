@@ -27,7 +27,6 @@ NULL
 #' @return [s_count_abnormal_by_marked()] the single statistic `count_fraction`
 #' with `Single, not last`, `Last or replicated` and `Any` results.
 #'
-#' @importFrom stats setNames
 #' @export
 #'
 #' @examples
@@ -80,8 +79,8 @@ s_count_abnormal_by_marked <- function(df,
                                        category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
                                        variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
 ) {
-  assert_that(
-    is.string(.var),
+  assertthat::assert_that(
+    assertthat::is.string(.var),
     is.list(variables),
     is.list(category),
     all(names(category) %in% c("single", "last_replicated")),
@@ -205,8 +204,8 @@ count_abnormal_by_marked <- function(lyt,
                                      .formats = NULL,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
-  assert_that(
-    is.string(var)
+  assertthat::assert_that(
+    assertthat::is.string(var)
   )
   afun <- make_afun(
     a_count_abnormal_by_marked,

@@ -63,26 +63,26 @@ h_adlb_worsen <- function(
   worst_flag_high = NULL,
   direction_var
 ) {
-  assert_that(
-    is.string(direction_var),
+  assertthat::assert_that(
+    assertthat::is.string(direction_var),
     is_df_with_variables(adlb, list("Col" = direction_var)),
     all(unique(adlb[[direction_var]]) %in% c("B", "L", "H"))
   )
 
   if (any(unique(adlb[[direction_var]]) == "H")) {
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(adlb, list("High" = names(worst_flag_high)))
       )
   }
 
   if (any(unique(adlb[[direction_var]]) == "L")) {
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(adlb, list("Low" = names(worst_flag_low)))
       )
   }
 
   if (any(unique(adlb[[direction_var]]) == "B")) {
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(
         adlb,
         list(
@@ -181,10 +181,10 @@ h_adlb_worsen <- function(
 #'
 h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 
-  assert_that(
-    is.string(id),
-    is.string(.var),
-    is.string(baseline_var),
+  assertthat::assert_that(
+    assertthat::is.string(id),
+    assertthat::is.string(.var),
+    assertthat::is.string(baseline_var),
     length(unique(df[[direction_var]])) == 1,
     unique(df[[direction_var]]) %in% c("High", "Low"),
     is_df_with_variables(df, list(val = c(id, .var, baseline_var, direction_var)))
@@ -258,8 +258,6 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' counts and fraction of patients whose worst post-baseline lab grades are worse than
 #' their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
-#' @importFrom stats setNames
-#'
 #' @export
 #'
 #' @examples
@@ -284,12 +282,12 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, #nolint
                                                       direction_var = "GRADDR"
                                                     )
 ) {
-  assert_that(
-    is.string(.var),
+  assertthat::assert_that(
+    assertthat::is.string(.var),
     is_variables(variables),
-    is.string(variables$id),
-    is.string(variables$baseline_var),
-    is.string(variables$direction_var),
+    assertthat::is.string(variables$id),
+    assertthat::is.string(variables$baseline_var),
+    assertthat::is.string(variables$direction_var),
     setequal(names(variables), c("id", "baseline_var", "direction_var")),
     is_df_with_variables(df, c(aval = .var, variables[1:3]))
   )
@@ -347,8 +345,8 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, #nolint
                                                   .formats = NULL,
                                                   .labels = NULL,
                                                   .indent_mods = NULL) {
-  assert_that(
-    is.string(var)
+  assertthat::assert_that(
+    assertthat::is.string(var)
     )
 
   afun <- make_afun(

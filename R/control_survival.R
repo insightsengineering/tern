@@ -18,7 +18,7 @@ control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
 
   pval_method <- match.arg(pval_method)
   ties <- match.arg(ties)
-  assert_that(is_proportion(conf_level))
+  assertthat::assert_that(is_proportion(conf_level))
 
   list(pval_method = pval_method, ties = ties, conf_level = conf_level)
 }
@@ -40,7 +40,7 @@ control_surv_time <- function(conf_level = 0.95,
                               conf_type = c("plain", "log", "log-log"),
                               quantiles = c(0.25, 0.75)) {
   conf_type <- match.arg(conf_type)
-  assert_that(
+  assertthat::assert_that(
     all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
     identical(length(quantiles), 2L),
     is_proportion(conf_level)
@@ -63,7 +63,7 @@ control_surv_timepoint <- function(conf_level = 0.95,
                                    conf_type = c("plain", "log", "log-log")
 ) {
   conf_type <- match.arg(conf_type)
-  assert_that(is_proportion(conf_level))
+  assertthat::assert_that(is_proportion(conf_level))
   list(
     conf_level = conf_level,
     conf_type = conf_type

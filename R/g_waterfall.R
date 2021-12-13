@@ -20,8 +20,6 @@
 #'
 #' @template author_song24
 #'
-#' @import ggplot2
-#'
 #' @export
 #'
 #' @examples
@@ -109,32 +107,32 @@ g_waterfall <- function(height,
 
   plot_data_ord <- plot_data[order(plot_data$height, decreasing = TRUE), ]
 
-  p <- ggplot(plot_data_ord, aes(x = factor(id, levels = id), y = height)) +
-    geom_col() +
-    geom_text(
+  p <- ggplot2::ggplot(plot_data_ord, ggplot2::aes(x = factor(id, levels = id), y = height)) +
+    ggplot2::geom_col() +
+    ggplot2::geom_text(
       label = format(plot_data_ord$height, digits = 2),
       vjust = ifelse(plot_data_ord$height >= 0, -0.5, 1.5)) +
-    xlab(xlab) +
-    ylab(ylab) +
-    theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = .5))
+    ggplot2::xlab(xlab) +
+    ggplot2::ylab(ylab) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0, vjust = .5))
 
   if (!is.null(col)) {
     p <- p +
-      aes(fill = plot_data_ord$col) +
-      labs(fill = col_legend_title) +
-      theme(
+      ggplot2::aes(fill = plot_data_ord$col) +
+      ggplot2::labs(fill = col_legend_title) +
+      ggplot2::theme(
         legend.position = "bottom",
-        legend.background = element_blank(),
-        legend.title = element_text(face = "bold"),
-        legend.box.background = element_rect(colour = "black")
+        legend.background = ggplot2::element_blank(),
+        legend.title = ggplot2::element_text(face = "bold"),
+        legend.box.background = ggplot2::element_rect(colour = "black")
       ) +
-      scale_fill_manual(values = color_palette())
+      ggplot2::scale_fill_manual(values = color_palette())
   }
 
   if (!is.null(title)) {
     p <- p +
-      labs(title = title) +
-      theme(plot.title = element_text(face = "bold"))
+      ggplot2::labs(title = title) +
+      ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
   }
 
   p

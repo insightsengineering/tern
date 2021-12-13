@@ -6,9 +6,9 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adcm <- synthetic_cdisc_data("rcd_2021_05_05")$adcm
 
-test_that("CMT02_PT default variant is produced correctly", {
+testthat::test_that("CMT02_PT default variant is produced correctly", {
   adcm <- adcm %>%
-    mutate(
+    dplyr::mutate(
       ASEQ = as.factor(ASEQ)
     )
 
@@ -47,5 +47,5 @@ test_that("CMT02_PT default variant is produced correctly", {
     .Dim = c(13L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

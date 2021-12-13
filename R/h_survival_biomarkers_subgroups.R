@@ -50,11 +50,11 @@ NULL
 #'   biomarker = "AGE"
 #' )
 h_surv_to_coxreg_variables <- function(variables, biomarker) {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
-    is.string(variables$tte),
-    is.string(variables$is_event),
-    is.string(biomarker)
+    assertthat::is.string(variables$tte),
+    assertthat::is.string(variables$is_event),
+    assertthat::is.string(biomarker)
   )
   list(
     time = variables$tte,
@@ -101,11 +101,11 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 h_coxreg_mult_cont_df <- function(variables,
                                   data,
                                   control = control_coxreg()) {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
-    is_character_vector(variables$biomarkers),
+    utils.nest::is_character_vector(variables$biomarkers),
     is_df_with_variables(data, as.list(unlist(variables))),
-    is_fully_named_list(control)
+    utils.nest::is_fully_named_list(control)
   )
   conf_level <- control[["conf_level"]]
   pval_label <- paste0(

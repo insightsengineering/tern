@@ -19,9 +19,6 @@ NULL
 #'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'
-#' @importFrom emmeans emmeans
-#' @importFrom stats as.formula lm
-#'
 #' @export
 #'
 #' @examples
@@ -35,8 +32,8 @@ h_ancova <- function(.var,
                      .df_row,
                      variables) {
 
-  assert_that(
-    is.string(.var),
+  assertthat::assert_that(
+    assertthat::is.string(.var),
     is.list(variables),
     all(names(variables) %in% c("arm", "covariates")),
     is_df_with_variables(.df_row, list(rsp = .var))
@@ -47,23 +44,23 @@ h_ancova <- function(.var,
   if (!is.null(covariates)) {
     # Get all covariate variable names in the model.
     var_list <- get_covariates(covariates)
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(.df_row, var_list)
     )
   }
 
   covariates_part <- paste(covariates, collapse = " + ")
   if (covariates_part != "") {
-    formula <- as.formula(paste0(.var, " ~ ", covariates_part, " + ", arm))
+    formula <- stats::as.formula(paste0(.var, " ~ ", covariates_part, " + ", arm))
   } else {
-    formula <- as.formula(paste0(.var, " ~ ", arm))
+    formula <- stats::as.formula(paste0(.var, " ~ ", arm))
   }
 
-  lm_fit <- lm(
+  lm_fit <- stats::lm(
     formula = formula,
     data = .df_row
   )
-  emmeans_fit <- emmeans(
+  emmeans_fit <- emmeans::emmeans(
     lm_fit,
     # Specify here the group variable over which EMM are desired.
     specs = arm,
@@ -87,7 +84,6 @@ h_ancova <- function(.var,
 #'   comparison to the reference group.
 #'   - `pval`: p-value (not adjusted for multiple comparisons).
 #'
-#' @importFrom emmeans contrast
 #' @export
 #'
 #' @examples
@@ -135,8 +131,8 @@ s_ancova <- function(df,
   y <- df[[.var]]
   sum_level <- as.character(unique(df[[arm]]))
   # Ensure that there is only one element in sum_level.
-  assert_that(
-    is.scalar(sum_level)
+  assertthat::assert_that(
+    assertthat::is.scalar(sum_level)
   )
   sum_fit_level <- sum_fit[sum_fit[[arm]] == sum_level, ]
 
@@ -150,7 +146,7 @@ s_ancova <- function(df,
     )
   } else {
     # Estimate the differences between the marginal means.
-    emmeans_contrasts <- contrast(
+    emmeans_contrasts <- emmeans::contrast(
       emmeans_fit,
       # Compare all arms versus the control arm.
       method = "trt.vs.ctrl",

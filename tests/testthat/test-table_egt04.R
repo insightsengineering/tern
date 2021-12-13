@@ -6,7 +6,7 @@ library(rtables)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
-test_that("EGT04 default variant is produced correctly", {
+testthat::test_that("EGT04 default variant is produced correctly", {
   adeg_labels <- var_labels(adeg)
   adeg_f <- subset(
     adeg,
@@ -60,5 +60,5 @@ test_that("EGT04 default variant is produced correctly", {
       "0", "0"),
     .Dim = c(13L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -43,14 +43,12 @@ unlist_and_blank_na <- function(x) {
 #' @return Content function which just gives `df$analysis_var` at the row identified by
 #'   `.df_row$flag` in the given format.
 #'
-#' @importFrom rtables rcell with_label
-#'
 cfun_by_flag <- function(analysis_var,
                          flag_var,
                          format = "xx") {
-  assert_that(
-    is.string(analysis_var),
-    is.string(flag_var)
+  assertthat::assert_that(
+    assertthat::is.string(analysis_var),
+    assertthat::is.string(flag_var)
   )
   function(df, labelstr) {
     row_index <- which(df[[flag_var]])
@@ -122,7 +120,7 @@ add_rowcounts <- function(lyt) {
 #' @return the vector of column indices.
 #'
 h_col_indices <- function(table_tree, col_names) {
-  assert_that(has_tabletree_colnames(table_tree, col_names))
+  assertthat::assert_that(has_tabletree_colnames(table_tree, col_names))
   match(col_names, names(table_tree))
 }
 
@@ -135,9 +133,8 @@ h_col_indices <- function(table_tree, col_names) {
 #'
 #' @return a character vector with the labels or names for the list elements
 #'
-#' @importFrom rlang names2
 labels_or_names <- function(x) {
-  assert_that(is.list(x))
+  assertthat::assert_that(is.list(x))
   labs <- sapply(x, obj_label)
   nams <- rlang::names2(x)
   label_is_null <- sapply(labs, is.null)
@@ -172,7 +169,7 @@ as.rtable <- function(x, ...) {  #nolint
 #' as.rtable(x)
 #'
 as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nousage # nolint
-  assert_that(all(sapply(x, is.numeric)), msg = "only works with numeric data frame columns")
+  assertthat::assert_that(all(sapply(x, is.numeric)), msg = "only works with numeric data frame columns")
   do.call(
     rtable,
     c(
@@ -250,7 +247,7 @@ h_split_param <- function(param,
 #' @return Character vector with the selected statistics.
 #'
 afun_selected_stats <- function(.stats, all_stats) {
-  assert_that(
+  assertthat::assert_that(
     is.null(.stats) || is.character(.stats),
     is.character(all_stats)
   )
@@ -279,8 +276,6 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'
 #' @return The modified layout.
 #'
-#' @importFrom rtables var_labels
-#'
 #' @export
 #'
 #' @examples
@@ -302,12 +297,12 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'
 append_varlabels <- function(lyt, df, vars, indent = 0L) {
 
-  if (is.flag(indent)) {
+  if (assertthat::is.flag(indent)) {
     warning("indent argument is now accepting integers. Boolean indent will be converted to integers.")
     indent <- as.integer(indent)
   }
 
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.character(vars),
     is_nonnegative_count(indent)

@@ -44,7 +44,7 @@ And for both:
 - 95% CI
 - p-value
 
-For the model, we would propose to have one model per output plot. 
+For the model, we would propose to have one model per output plot.
 Then we can just look at multiple plots to see the effect of the models.
 
 ## Design
@@ -132,7 +132,7 @@ adtte_f <- adtte %>%
 
 ### High-level extract function
 
-Let's start with `extract_survival_biomarkers()`. 
+Let's start with `extract_survival_biomarkers()`.
 
 Here we can leave out one helper function level, so the code here is actually
 more similar to `h_coxph_subgroups_df()`.
@@ -150,10 +150,10 @@ extract_survival_biomarkers <- function(variables,
                                         groups_lists = list(),
                                         control = control_coxreg(),
                                         label_all = "All Patients") {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.string(label_all)
+    assertthat::is.string(label_all)
   )
 
   # Start with all patients.
@@ -234,15 +234,15 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 h_coxreg_mult_cont_df <- function(variables,
                                   data,
                                   control = control_coxreg()) {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
-    is_character_vector(variables$biomarkers),
+    utils.nest::is_character_vector(variables$biomarkers),
     is_df_with_variables(data, as.list(unlist(variables))),
-    is_fully_named_list(control)
+    utils.nest::is_fully_named_list(control)
   )
 
   # If there is any data, run model, otherwise return empty results.
-  result_df <- if (nrow(data) > 0) { 
+  result_df <- if (nrow(data) > 0) {
     bm_cols <- match(variables$biomarkers, names(data))
     data_constant <- data[, - bm_cols]
     l_result <- lapply(variables$biomarkers, function(bm) {
@@ -256,12 +256,12 @@ h_coxreg_mult_cont_df <- function(variables,
         control = control
       )
       result <- do.call(
-        h_coxreg_multivar_extract, 
+        h_coxreg_multivar_extract,
         c(list(var = bm), coxreg_list[c("mod", "data", "control")])
       )
       median <- s_surv_time(
-        df = data, 
-        .var = variables$tte, 
+        df = data,
+        .var = variables$tte,
         is_event = variables$is_event
       )$median
       data.frame(
@@ -308,10 +308,10 @@ Let's try this out first.
 ```{r}
 h_coxreg_mult_cont_df(
   variables = list(
-    tte = "AVAL", 
-    is_event = "is_event", 
-    biomarkers = c("BMRKR1", "AGE"), 
-    covariates = "REGION1", 
+    tte = "AVAL",
+    is_event = "is_event",
+    biomarkers = c("BMRKR1", "AGE"),
+    covariates = "REGION1",
     strata = c("STRATA1", "STRATA2")
   ),
   data = adtte_f
@@ -347,7 +347,7 @@ df <- extract_survival_biomarkers(
 
 ### Tabulation function
 
-Now we come to the tabulation. 
+Now we come to the tabulation.
 See https://docs.google.com/spreadsheets/d/1vztLvMWvlGygL2DITqkNTNf_AJh1zN0YdiX1MkkqCaU
 for the layout of the table we want to achieve.
 
@@ -382,10 +382,10 @@ h_tab_surv_one_biomarker <- function(df_sub,
     vars = colvars$vars,
     varlabels = colvars$labels
   )
-  
+
   # If there is any subgroup variables, we extend the layout accordingly.
   if ("analysis" %in% df$row_type) {
-    
+
     # Now only continue with the subgroup rows.
     lyt_sub <- split_rows_by(
       lyt = lyt_sub,
@@ -393,10 +393,10 @@ h_tab_surv_one_biomarker <- function(df_sub,
       split_fun = keep_split_levels("analysis"),
       nested = FALSE,
       child_labels = "hidden"
-    ) 
+    )
     # Split by the subgroup variable.
     lyt_sub <- split_rows_by(
-      lyt = lyt_sub, 
+      lyt = lyt_sub,
       var = "var",
       labels_var = "var_label",
       nested = TRUE,
@@ -410,8 +410,8 @@ h_tab_surv_one_biomarker <- function(df_sub,
       var = "subgroup"
     )
   }
-  
-  result <- build_table(lyt_sub, df = df_sub) 
+
+  result <- build_table(lyt_sub, df = df_sub)
 }
 ```
 
@@ -424,7 +424,7 @@ tabulate_survival_biomarkers <- function(lyt,
                                          df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {
-  
+
   conf_level <- df$conf_level[1]
   method <-  df$pval_label[1]
 
@@ -435,7 +435,7 @@ tabulate_survival_biomarkers <- function(lyt,
     method = method,
     time_unit = time_unit
   )
-  
+
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {
     tab_sub <- h_tab_surv_one_biomarker(
@@ -446,7 +446,7 @@ tabulate_survival_biomarkers <- function(lyt,
     insert_rrow(tab_sub, rrow(df_sub$biomarker_label[1]))
   })
   result <- do.call(rbind, tabs)
-  
+
   n_tot_ids <- grep("^n_tot", colvars$vars)
   hr_id <- match("hr", colvars$vars)
   ci_id <- match("lcl", colvars$vars)
@@ -482,6 +482,6 @@ g_forest(tab, xlim = c(0.9, 1.1))
 
 ## Production Notes
 
-- We need to make `h_coxreg_multivar_extract()` more robust. Currently if there is 
+- We need to make `h_coxreg_multivar_extract()` more robust. Currently if there is
 a small subgroup data set and e.g. a covariate with small numbers of categories in the
 model then this can easily fail.

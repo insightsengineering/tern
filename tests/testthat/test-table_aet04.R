@@ -96,7 +96,7 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("AET04 variant 1 is produced correctly", {
+testthat::test_that("AET04 variant 1 is produced correctly", {
 
   adae <- preproc_adae(adae)
 
@@ -209,10 +209,10 @@ test_that("AET04 variant 1 is produced correctly", {
     .Dim = c(79L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)", {
+testthat::test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)", {
 
   adae <- adae %>%
     preproc_adae() %>%
@@ -313,10 +313,10 @@ test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)",
     .Dim = c(79L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
+testthat::test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
 
   adae <- preproc_adae(adae)
 
@@ -458,10 +458,10 @@ test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
     ),
   .Dim = c(163L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1&2, grades 3&4&5)", {
+testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1&2, grades 3&4&5)", {
 
   adae <- preproc_adae(adae)
 
@@ -575,17 +575,18 @@ test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1
   .Dim = c(82L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 # No test done for variant 5 (Using Worst Grade Flags from ADAE) since it's similar to
 # variant 1 (just pre-processing the data).
 
-test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at Least 5%, totals restricted)", {
+testthat::test_that("AET04 variant 6 is produced correctly (with an
+                    Incidence Rate of at Least 5%, totals restricted)", {
 
   adae <- preproc_adae(adae)
   adae <- get_adae_trimmed(adsl, adae, cutoff_rate = 0.4) %>%
-    mutate(AETOXGR = droplevels(AETOXGR))
+    dplyr::mutate(AETOXGR = droplevels(AETOXGR))
 
   gr_grp <-  list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
@@ -667,7 +668,7 @@ test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at L
     ),
   .Dim = c(38L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 # No test done for variant 7, Adverse Events by Highest NCI CTCAE Grade
@@ -675,7 +676,7 @@ test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at L
 # With this variant, the SOC level is not trimmed (even if there are no terms left).
 
 # NOTE: STREAM logic will only trim at term level
-test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at Least X Patients)", {
+testthat::test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at Least X Patients)", {
 
   adae <- preproc_adae(adae)
 
@@ -711,11 +712,11 @@ test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at L
   ),
   .Dim = c(27L, 4L)
  )
- expect_identical(result_matrix, expected_matrix)
+ testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 # NOTE: STREAM logic will only tream at term level
-test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence Rate of at Least X%)", {
+testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence Rate of at Least X%)", {
 
   adae <- preproc_adae(adae)
 
@@ -753,7 +754,7 @@ test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence
   .Dim = c(27L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 # No test done for variant 10, Adverse Events by Highest NCI CTCAE Grade
@@ -761,7 +762,7 @@ test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence
 # With this variant, SOC levels above the threshold are still in the table even if
 # there are no terms left.
 
-test_that(
+testthat::test_that(
   "AET04 variant 11 is produced correctly
   (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)", {
 
@@ -812,5 +813,5 @@ test_that(
     "55 (41.7%)", "55 (41.7%)"),
   .Dim = c(45L, 4L)
  )
- expect_identical(result_matrix, expected_matrix)
+ testthat::expect_identical(result_matrix, expected_matrix)
 })

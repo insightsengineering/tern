@@ -26,7 +26,7 @@ adrs_100 <- adrs %>%
 adrs_200 <- adrs %>%
   preprocess_adrs(n_records = 200)
 
-test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {
+testthat::test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {
 
   adrs <- adrs_100
 
@@ -62,11 +62,11 @@ test_that("extract_rsp_subgroups functions as expected with valid input and defa
     )
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 
 })
 
-test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
+testthat::test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
 
   adrs <- adrs_100
 
@@ -102,11 +102,11 @@ test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
     )
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 
 })
 
-test_that("extract_rsp_subgroups works as expected with groups_lists", {
+testthat::test_that("extract_rsp_subgroups works as expected with groups_lists", {
 
   adrs <- adrs_100
 
@@ -123,19 +123,19 @@ test_that("extract_rsp_subgroups works as expected with groups_lists", {
   )
 
   prop <- result$prop
-  expect_setequal(
+  testthat::expect_setequal(
     prop[prop$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )
 
   or <- result$or
-  expect_setequal(
+  testthat::expect_setequal(
     or[or$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )
 })
 
-test_that("extract_rsp_subgroups functions as expected with strata", {
+testthat::test_that("extract_rsp_subgroups functions as expected with strata", {
 
   adrs <- adrs_100
 
@@ -176,11 +176,11 @@ test_that("extract_rsp_subgroups functions as expected with strata", {
     )
   )
 
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 
 })
 
-test_that("a_response_subgroups functions as expected with valid input", {
+testthat::test_that("a_response_subgroups functions as expected with valid input", {
 
   df <- data.frame(
     prop = c(0.1234, 0.5678),
@@ -204,11 +204,11 @@ test_that("a_response_subgroups functions as expected with valid input", {
       "0.9838"),
     .Dim = c(3L, 3L)
     )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
 })
 
-test_that("tabulate_rsp_subgroups functions as expected with valid input", {
+testthat::test_that("tabulate_rsp_subgroups functions as expected with valid input", {
 
   adrs <- adrs_200
 
@@ -244,10 +244,10 @@ test_that("tabulate_rsp_subgroups functions as expected with valid input", {
     .Dim = c(9L, 9L)
   )
 
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 })
 
-test_that("tabulate_rsp_subgroups correctly calculates column indices", {
+testthat::test_that("tabulate_rsp_subgroups correctly calculates column indices", {
 
   adrs <- adrs_200
 
@@ -266,7 +266,7 @@ test_that("tabulate_rsp_subgroups correctly calculates column indices", {
     )
   result_both_cols <- attributes(result_both)[c("col_x", "col_ci", "col_symbol_size")]
   expected_both_cols <- list(col_x = 6L, col_ci = 7L, col_symbol_size = 1L)
-  expect_identical(result_both_cols, expected_both_cols)
+  testthat::expect_identical(result_both_cols, expected_both_cols)
 
   # Case with just OR results.
   result_or <- basic_table() %>%
@@ -276,10 +276,10 @@ test_that("tabulate_rsp_subgroups correctly calculates column indices", {
     )
   result_or_cols <- attributes(result_or)[c("col_x", "col_ci", "col_symbol_size")]
   expected_or_cols <- list(col_x = 1L, col_ci = 3L, col_symbol_size = 2L)
-  expect_identical(result_or_cols, expected_or_cols)
+  testthat::expect_identical(result_or_cols, expected_or_cols)
 })
 
-test_that("tabulate_rsp_subgroups functions as expected with valid input extreme values in OR table", {
+testthat::test_that("tabulate_rsp_subgroups functions as expected with valid input extreme values in OR table", {
 
   var1 <- data.frame(
     rsp = c(rep(TRUE, 30), rep(FALSE, 20)),
@@ -318,11 +318,11 @@ test_that("tabulate_rsp_subgroups functions as expected with valid input extreme
       ),
     .Dim = c(6L, 8L)
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
 })
 
-test_that("tabulate_rsp_subgroups functions as expected with NULL subgroups", {
+testthat::test_that("tabulate_rsp_subgroups functions as expected with NULL subgroups", {
 
   adrs <- adrs_200
 
@@ -351,14 +351,14 @@ test_that("tabulate_rsp_subgroups functions as expected with NULL subgroups", {
     ),
     .Dim = c(3L, 9L)
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 })
 
-test_that("tabulate_rsp_subgroups functions as expected when 0 obs in one arm", {
+testthat::test_that("tabulate_rsp_subgroups functions as expected when 0 obs in one arm", {
 
   adrs <- adrs_200
 
-  df <- expect_warning(extract_rsp_subgroups(
+  df <- testthat::expect_warning(extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = "RACE"),
     data = adrs,
     method = "chisq",
@@ -389,10 +389,10 @@ test_that("tabulate_rsp_subgroups functions as expected when 0 obs in one arm", 
     ),
     .Dim = c(9L, 9L)
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 })
 
-test_that("d_rsp_subgroups_colvars functions as expected with valid input", {
+testthat::test_that("d_rsp_subgroups_colvars functions as expected with valid input", {
 
   vars <- c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
 
@@ -415,6 +415,6 @@ test_that("d_rsp_subgroups_colvars functions as expected with valid input", {
     )
   )
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
 })

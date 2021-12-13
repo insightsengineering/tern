@@ -1,4 +1,4 @@
-test_that("s_count_occurrences functions as expected with valid input and default arguments", {
+testthat::test_that("s_count_occurrences functions as expected with valid input and default arguments", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
     MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
@@ -25,10 +25,10 @@ test_that("s_count_occurrences functions as expected with valid input and defaul
     )
 
   )
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("s_count_occurrences drops non appearing levels by default", {
+testthat::test_that("s_count_occurrences drops non appearing levels by default", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
     MHDECOD = factor(
@@ -37,10 +37,10 @@ test_that("s_count_occurrences drops non appearing levels by default", {
      )
   )
   result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df)
-  expect_false("MHX" %in% c(names(result$count), names(result$count_fraction), names(result$fraction)))
+  testthat::expect_false("MHX" %in% c(names(result$count), names(result$count_fraction), names(result$fraction)))
 })
 
-test_that("s_count_occurrences keeps non appearing levels if requested", {
+testthat::test_that("s_count_occurrences keeps non appearing levels if requested", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
     MHDECOD = factor(
@@ -49,12 +49,12 @@ test_that("s_count_occurrences keeps non appearing levels if requested", {
     )
   )
   result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df, drop = FALSE)
-  expect_true("MHX" %in% names(result$count))
-  expect_true("MHX" %in% names(result$count_fraction))
-  expect_true("MHX" %in% names(result$fraction))
+  testthat::expect_true("MHX" %in% names(result$count))
+  testthat::expect_true("MHX" %in% names(result$count_fraction))
+  testthat::expect_true("MHX" %in% names(result$fraction))
 })
 
-test_that("s_count_occurrences fails when it receives empty .df_row and drop = TRUE", {
+testthat::test_that("s_count_occurrences fails when it receives empty .df_row and drop = TRUE", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
     MHDECOD = factor(
@@ -63,7 +63,7 @@ test_that("s_count_occurrences fails when it receives empty .df_row and drop = T
     )
   )
   df_sub <- df[df$USUBJID == "5", ]
-  expect_error(s_count_occurrences(
+  testthat::expect_error(s_count_occurrences(
     df = df_sub,
     .N_col = 4L,
     .df_row = df_sub,
@@ -71,7 +71,7 @@ test_that("s_count_occurrences fails when it receives empty .df_row and drop = T
   ))
 })
 
-test_that("s_count_occurrences functions as expected when requesting different denominator", {
+testthat::test_that("s_count_occurrences functions as expected when requesting different denominator", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
     MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
@@ -96,10 +96,10 @@ test_that("s_count_occurrences functions as expected when requesting different d
       MH3 = c("num" = 1L, "denom" = 3)
     )
   )
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("count_occurrences functions as expected with valid input and default arguments", {
+testthat::test_that("count_occurrences functions as expected with valid input and default arguments", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 4, 4, 4, 6, 6, 6, 7, 7, 8)),
     MHDECOD = factor(
@@ -129,10 +129,10 @@ test_that("count_occurrences functions as expected with valid input and default 
       "2 (50%)", "1 (25%)", "1 (25%)"),
     .Dim = c(6L, 3L))
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_occurrences functions as expected with label row specified", {
+testthat::test_that("count_occurrences functions as expected with label row specified", {
   df <- data.frame(
     USUBJID = as.character(c(1, 4, 4, 6, 6, 6, 7, 7, 8)),
     MHDECOD = factor(
@@ -161,5 +161,5 @@ test_that("count_occurrences functions as expected with label row specified", {
       "", "4 (44.4%)", "3 (33.3%)"),
     .Dim = c(4L, 2L))
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -24,8 +24,6 @@
 #'  * patients who do not have any post-baseline lab values
 #'  * patients without any post-baseline values flagged as the worst
 #'
-#' @importFrom dplyr filter left_join pull select
-#'
 #' @examples
 #' library(scda)
 #' adlb <- synthetic_cdisc_data("latest")$adlb
@@ -64,12 +62,12 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
   columns_from_adlb <- c("USUBJID", "PARAM", "PARAMCD", "AVISIT", "AVISITN", "ATOXGR", "BTOXGR")
 
   adlb_f <- adlb[position_satisfy_filters, ] %>%
-    filter(!.data[["AVISIT"]] %in% no_fillin_visits)
+    dplyr::filter(!.data[["AVISIT"]] %in% no_fillin_visits)
   adlb_f <- adlb_f[, columns_from_adlb]
 
   avisits_grid <- adlb %>%
-    filter(!.data[["AVISIT"]] %in% no_fillin_visits) %>%
-    pull(.data[["AVISIT"]]) %>%
+    dplyr::filter(!.data[["AVISIT"]] %in% no_fillin_visits) %>%
+    dplyr::pull(.data[["AVISIT"]]) %>%
     unique()
 
   if (by_visit) {
@@ -80,8 +78,8 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
     )
 
     adsl_lb <- adsl_lb %>%
-      left_join(unique(adlb[c("AVISIT", "AVISITN")]), by = "AVISIT") %>%
-      left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
+      dplyr::left_join(unique(adlb[c("AVISIT", "AVISITN")]), by = "AVISIT") %>%
+      dplyr::left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
 
     adsl1 <- adsl[, adsl_adlb_common_columns]
     adsl_lb <- adsl1 %>% merge(adsl_lb, by = "USUBJID")
@@ -89,9 +87,9 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
     by_variables_from_adlb <- c("USUBJID", "AVISIT", "AVISITN", "PARAMCD", "PARAM")
 
     adlb_btoxgr <- adlb %>%
-      select(c("USUBJID", "PARAMCD", "BTOXGR")) %>%
+      dplyr::select(c("USUBJID", "PARAMCD", "BTOXGR")) %>%
       unique() %>%
-      rename("BTOXGR_MAP" = "BTOXGR")
+      dplyr::rename("BTOXGR_MAP" = "BTOXGR")
 
     adlb_out <- merge(
       adlb_f,
@@ -101,9 +99,9 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       sort = FALSE
       )
     adlb_out <- adlb_out %>%
-      left_join(adlb_btoxgr, by = c("USUBJID", "PARAMCD")) %>%
-      mutate(BTOXGR = .data$BTOXGR_MAP) %>%
-      select(-.data$BTOXGR_MAP)
+      dplyr::left_join(adlb_btoxgr, by = c("USUBJID", "PARAMCD")) %>%
+      dplyr::mutate(BTOXGR = .data$BTOXGR_MAP) %>%
+      dplyr::select(-.data$BTOXGR_MAP)
 
     adlb_var_labels <- c(var_labels(adlb[by_variables_from_adlb]),
                          var_labels(adlb[columns_from_adlb[! columns_from_adlb %in% by_variables_from_adlb]]),
@@ -116,7 +114,7 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       PARAMCD = unique(adlb$PARAMCD)
       )
 
-    adsl_lb <- adsl_lb %>% left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
+    adsl_lb <- adsl_lb %>% dplyr::left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
 
     adsl1 <- adsl[, adsl_adlb_common_columns]
     adsl_lb <- adsl1 %>% merge(adsl_lb, by = "USUBJID")

@@ -7,25 +7,25 @@ preprocess_adae <- function(adae) {
 
   set.seed(1, kind = "Mersenne-Twister")
   adae %>%
-    mutate(
+    dplyr::mutate(
       # Convert AESDTH to character for next step.
       AESDTH = as.character(AESDTH),
       # For demonstration purpose only,
       # make "A: Drug X" as the arm without AE leading to death.
-      AESDTH = case_when(
+      AESDTH = dplyr::case_when(
         ARM == "A: Drug X" ~ NA_character_,
         TRUE ~ AESDTH
       ),
       AESDTH = as.factor(AESDTH),
       SOC_PT = factor(paste(AEBODSYS, "/", AEDECOD))
     ) %>%
-    filter(AESDTH == "Y")
+    dplyr::filter(AESDTH == "Y")
 }
 
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("AET07 variant 1 is produced correctly", {
+testthat::test_that("AET07 variant 1 is produced correctly", {
 
   adae <- adae %>%
     preprocess_adae()
@@ -62,11 +62,11 @@ test_that("AET07 variant 1 is produced correctly", {
   .Dim = c(5L, 3L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("AET07 variant 2 is produced correctly", {
+testthat::test_that("AET07 variant 2 is produced correctly", {
 
   adae <- adae %>%
     preprocess_adae()
@@ -104,6 +104,6 @@ test_that("AET07 variant 2 is produced correctly", {
   .Dim = 5:4
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })

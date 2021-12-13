@@ -5,16 +5,16 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
-test_that("LBT14 variant 1: HIGH works as expected", {
+testthat::test_that("LBT14 variant 1: HIGH works as expected", {
   adlb_f <- adlb %>%
-    filter(PARAMCD %in% "ALT") %>%
+    dplyr::filter(PARAMCD %in% "ALT") %>%
     droplevels()
   adsl_f <- adsl
 
   adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIFL" = "Y"))
   adlb_out <- adlb_out %>%
-    mutate(
-      ATOXGR_GP = case_when(
+    dplyr::mutate(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, -1, -2, -3, -4) ~ "Not High",
         ATOXGR == 1 ~ "1",
         ATOXGR == 2 ~ "2",
@@ -23,8 +23,8 @@ test_that("LBT14 variant 1: HIGH works as expected", {
         ATOXGR == "<Missing>" ~ "Missing"
       )
     ) %>%
-    mutate(
-      BTOXGR_GP = case_when(
+    dplyr::mutate(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, -1, -2, -3, -4) ~ "Not High",
         BTOXGR == 1 ~ "1",
         BTOXGR == 2 ~ "2",
@@ -34,7 +34,7 @@ test_that("LBT14 variant 1: HIGH works as expected", {
       )
     )
   adlb_out <- adlb_out %>%
-    mutate(
+    dplyr::mutate(
       ATOXGR_GP = factor(ATOXGR_GP, levels = c("Not High", "1", "2", "3", "4", "Missing")),
       BTOXGR_GP = factor(BTOXGR_GP, levels = c("Not High", "1", "2", "3", "4", "Missing"))
     )
@@ -76,19 +76,19 @@ test_that("LBT14 variant 1: HIGH works as expected", {
     ),
     .Dim = c(28L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("LBT14 variant 2: LOW works as expected", {
+testthat::test_that("LBT14 variant 2: LOW works as expected", {
   adlb_f <- adlb %>%
-    filter(PARAMCD %in% "ALT") %>%
+    dplyr::filter(PARAMCD %in% "ALT") %>%
     droplevels()
   adsl_f <- adsl
 
   adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRLOFL" = "Y"))
   adlb_out <- adlb_out %>%
-    mutate(
-      ATOXGR_GP = case_when(
+    dplyr::mutate(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         ATOXGR == -1 ~ "1",
         ATOXGR == -2 ~ "2",
@@ -97,8 +97,8 @@ test_that("LBT14 variant 2: LOW works as expected", {
         ATOXGR == "<Missing>" ~ "Missing"
       )
     ) %>%
-    mutate(
-      BTOXGR_GP = case_when(
+    dplyr::mutate(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         BTOXGR == -1 ~ "1",
         BTOXGR == -2 ~ "2",
@@ -108,7 +108,7 @@ test_that("LBT14 variant 2: LOW works as expected", {
       )
     )
   adlb_out <- adlb_out %>%
-    mutate(
+    dplyr::mutate(
       ATOXGR_GP = factor(ATOXGR_GP, levels = c("Not Low", "1", "2", "3", "4", "Missing")),
       BTOXGR_GP = factor(BTOXGR_GP, levels = c("Not Low", "1", "2", "3", "4", "Missing"))
     )
@@ -149,20 +149,20 @@ test_that("LBT14 variant 2: LOW works as expected", {
     ),
     .Dim = c(26L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("LBT14 variant 3: LOW without baseline missing works as expected", {
+testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expected", {
   adlb_f <- adlb %>%
-    filter(PARAMCD %in% "ALT") %>%
+    dplyr::filter(PARAMCD %in% "ALT") %>%
     droplevels()
   adsl_f <- adsl
 
   adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRLOFL" = "Y"))
   adlb_out <- adlb_out %>%
-    filter(BTOXGR != "<Missing>") %>%
-    mutate(
-      ATOXGR_GP = case_when(
+    dplyr::filter(BTOXGR != "<Missing>") %>%
+    dplyr::mutate(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         ATOXGR == -1 ~ "1",
         ATOXGR == -2 ~ "2",
@@ -171,8 +171,8 @@ test_that("LBT14 variant 3: LOW without baseline missing works as expected", {
         ATOXGR == "<Missing>" ~ "Missing"
       )
     ) %>%
-    mutate(
-      BTOXGR_GP = case_when(
+    dplyr::mutate(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         BTOXGR == -1 ~ "1",
         BTOXGR == -2 ~ "2",
@@ -180,7 +180,7 @@ test_that("LBT14 variant 3: LOW without baseline missing works as expected", {
         BTOXGR == -4 ~ "4"
       )
     )
-  adlb_out <- adlb_out %>% mutate(
+  adlb_out <- adlb_out %>% dplyr::mutate(
     ATOXGR_GP = factor(ATOXGR_GP, levels = c("Not Low", "1", "2", "3", "4", "Missing")),
     BTOXGR_GP = factor(BTOXGR_GP, levels = c("Not Low", "1", "2", "3", "4"))
   )
@@ -222,21 +222,21 @@ test_that("LBT14 variant 3: LOW without baseline missing works as expected", {
     ),
     .Dim = c(26L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-baseline, then force the missing baseline as 0 as expected", { #nolint
+testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-baseline, then force the missing baseline as 0 as expected", { #nolint
   adlb_f <- adlb %>%
-    filter(PARAMCD %in% "ALT") %>%
-    filter(!USUBJID %in% c("AB12345-CHN-3-id-128")) %>%
+    dplyr::filter(PARAMCD %in% "ALT") %>%
+    dplyr::filter(!USUBJID %in% c("AB12345-CHN-3-id-128")) %>%
     droplevels()
   adsl_f <- adsl
 
   adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRLOFL" = "Y"))
 
   adlb_out <- adlb_out %>%
-    mutate(
-      ATOXGR_GP = case_when(
+    dplyr::mutate(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
         ATOXGR == -1 ~ "1",
         ATOXGR == -2 ~ "2",
@@ -245,8 +245,8 @@ test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-basel
         ATOXGR == "<Missing>" ~ "Missing"
       )
     ) %>%
-    mutate(
-      BTOXGR_GP = case_when(
+    dplyr::mutate(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, 1, 2, 3, 4, "<Missing>") ~ "Not Low",
         BTOXGR == -1 ~ "1",
         BTOXGR == -2 ~ "2",
@@ -255,7 +255,7 @@ test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-basel
       )
     )
   adlb_out <- adlb_out %>%
-    mutate(
+    dplyr::mutate(
       ATOXGR_GP = factor(ATOXGR_GP, levels = c("Not Low", "1", "2", "3", "4", "Missing")),
       BTOXGR_GP = factor(BTOXGR_GP, levels = c("Not Low", "1", "2", "3", "4"))
     )
@@ -297,19 +297,19 @@ test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-basel
     ),
     .Dim = c(27L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("LBT14 variant 5: HIGH with fillings works as expected", {
+testthat::test_that("LBT14 variant 5: HIGH with fillings works as expected", {
   adlb_f <- adlb %>%
-    filter(PARAMCD %in% "ALT") %>%
+    dplyr::filter(PARAMCD %in% "ALT") %>%
     droplevels()
   adsl_f <- adsl
 
   adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIFL" = "Y"))
   adlb_out <- adlb_out %>%
-    mutate(
-      ATOXGR_GP = case_when(
+    dplyr::mutate(
+      ATOXGR_GP = dplyr::case_when(
         ATOXGR %in% c(0, -1, -2, -3, -4) ~ "Not High",
         ATOXGR == 1 ~ "1",
         ATOXGR == 2 ~ "2",
@@ -318,8 +318,8 @@ test_that("LBT14 variant 5: HIGH with fillings works as expected", {
         ATOXGR == "<Missing>" ~ "Missing"
       )
     ) %>%
-    mutate(
-      BTOXGR_GP = case_when(
+    dplyr::mutate(
+      BTOXGR_GP = dplyr::case_when(
         BTOXGR %in% c(0, -1, -2, -3, -4) ~ "Not High",
         BTOXGR == 1 ~ "1",
         BTOXGR == 2 ~ "2",
@@ -329,7 +329,7 @@ test_that("LBT14 variant 5: HIGH with fillings works as expected", {
       )
     )
   adlb_out <- adlb_out %>%
-    mutate(
+    dplyr::mutate(
       ATOXGR_GP = factor(ATOXGR_GP, levels = c("Not High", "1", "2", "3", "4", "Missing")),
       BTOXGR_GP = factor(BTOXGR_GP, levels = c("Not High", "1", "2", "3", "4", "Missing"))
     )
@@ -375,5 +375,5 @@ test_that("LBT14 variant 5: HIGH with fillings works as expected", {
     ),
     .Dim = c(45L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -6,7 +6,7 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
-test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
+testthat::test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
 
   # Note: We exclude "SCREENING" and "BASELINE" visits here
   # so to keep only post-baseline for analysis.
@@ -45,10 +45,10 @@ test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
     .Dim = c(12L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
+testthat::test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
 
   adeg <- adeg %>%
     dplyr::filter(AVISIT != "SCREENING") %>%
@@ -85,5 +85,5 @@ test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
       "95/374 (25.4%)"),
     .Dim = c(12L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

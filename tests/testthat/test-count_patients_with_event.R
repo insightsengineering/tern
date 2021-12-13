@@ -1,6 +1,6 @@
 library(dplyr)
 
-test_that("s_count_patients_with_event handles NA", {
+testthat::test_that("s_count_patients_with_event handles NA", {
 
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002"),
@@ -15,10 +15,10 @@ test_that("s_count_patients_with_event handles NA", {
   )
 
   expected <- list(n = 2L, count = 1L, count_fraction = c(1.0, 0.5))
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_count_patients_with_event handles multiple columns", {
+testthat::test_that("s_count_patients_with_event handles multiple columns", {
 
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
@@ -35,10 +35,10 @@ test_that("s_count_patients_with_event handles multiple columns", {
 
   expected <- list(n = 3L, count = 1L, count_fraction = c(1.0, 0.3333333))
 
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("count_patients_with_event works as expected", {
+testthat::test_that("count_patients_with_event works as expected", {
 
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
@@ -78,10 +78,10 @@ test_that("count_patients_with_event works as expected", {
     .Dim = c(4L, 3L)
   )
 
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("count_patients_with_event works as expected for different column count", {
+testthat::test_that("count_patients_with_event works as expected for different column count", {
 
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
@@ -125,19 +125,19 @@ test_that("count_patients_with_event works as expected for different column coun
     ),
     .Dim = c(4L, 3L)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("count_patients_with_flags works as expected", {
+testthat::test_that("count_patients_with_flags works as expected", {
 
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     ARM = factor(c("A", "A", "A", "A", "A", "A", "B", "B", "B"), levels = c("A", "B")),
     TRTEMFL = c("Y", "", "", "NA", "", "", "Y", "", ""),
     AEOUT = c("", "", "", "", "", "", "FATAL", "", "FATAL")
   )
   test_data <- test_data %>%
-    mutate(
+    dplyr::mutate(
       flag1 = TRTEMFL == "Y",
       flag2 = TRTEMFL == "Y" & AEOUT == "FATAL",
     ) %>%
@@ -150,7 +150,7 @@ test_that("count_patients_with_flags works as expected", {
       flag2 = "Total number of patients with fatal AEs"
     )
 
-  test_adsl_like <- tibble(
+  test_adsl_like <- tibble::tibble(
     SUBJID = as.character(1001:1010),
     ARM = factor(c("A", "A", "B", "B", "A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
     stringsAsFactors = FALSE
@@ -175,12 +175,12 @@ test_that("count_patients_with_flags works as expected", {
     ),
     .Dim = c(4L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_patients_with_flags works as expected when specifying table_names", {
+testthat::test_that("count_patients_with_flags works as expected when specifying table_names", {
 
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     USUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     ARM = factor(c("A", "A", "A", "A", "A", "A", "B", "B", "B"), levels = c("A", "B")),
@@ -188,7 +188,7 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
     AEOUT = c("", "", "", "", "", "", "FATAL", "", "FATAL")
   )
   test_data <- test_data %>%
-    mutate(
+    dplyr::mutate(
       flag1 = TRTEMFL == "Y",
       flag2 = TRTEMFL == "Y" & AEOUT == "FATAL",
     ) %>%
@@ -197,7 +197,7 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
       flag2 = "Total number of patients with fatal AEs"
     )
 
-  test_adsl_like <- tibble(
+  test_adsl_like <- tibble::tibble(
     USUBJID = as.character(1001:1010),
     SUBJID = as.character(1001:1010),
     ARM = factor(c("A", "A", "B", "B", "A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
@@ -232,16 +232,16 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
       "1 (25%)", "1 (25%)"),
     .Dim = c(6L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_patients_with_flags works with label row specified", {
+testthat::test_that("count_patients_with_flags works with label row specified", {
   adsl <- scda::synthetic_cdisc_data("rcd_2021_07_07")$adsl
   adae <- scda::synthetic_cdisc_data("rcd_2021_07_07")$adae
 
   # Create custom flags:
   adae <- adae %>%
-    mutate(
+    dplyr::mutate(
       SER = AESER == "Y",
       REL = AEREL == "Y",
       CTC35 = AETOXGR %in% c("3", "4", "5"),
@@ -290,10 +290,10 @@ test_that("count_patients_with_flags works with label row specified", {
       ),
     .Dim = c(4L, 8L)
   ))
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("s_count_patients_with_event works with factor filters", {
+testthat::test_that("s_count_patients_with_event works with factor filters", {
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     AEOUT = c(
@@ -309,5 +309,5 @@ test_that("s_count_patients_with_event works with factor filters", {
     filters = c("AEOUT" = "FATAL")
   )
   expected <- list(n = 3, count = 1, count_fraction = c(1.0000000, 0.3333333))
-  expect_equal(result, expected, tolerance = 1e-7)
+  testthat::expect_equal(result, expected, tolerance = 1e-7)
 })
