@@ -16,7 +16,7 @@ g_lineplot(
   ...,
   mid_type = "pl",
   mid_point_size = 2,
-  position = position_dodge(width = 0.4),
+  position = ggplot2::position_dodge(width = 0.4),
   legend_title = NULL,
   legend_position = "bottom",
   ggtheme = NULL,

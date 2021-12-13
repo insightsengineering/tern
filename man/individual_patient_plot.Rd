@@ -65,7 +65,7 @@ plot when TRUE.}
 Ignored when \code{add_baseline_hline} is FALSE.}
 
 \item{ggtheme}{(\code{theme})\cr optional graphical theme function as provided
-by ggplot2 to control outlook of plot. Use \code{theme()} to tweak the display.}
+by ggplot2 to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
 
 \item{plotting_choices}{(\code{character})\cr specifies options for displaying
 plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}

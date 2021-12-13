@@ -16,7 +16,7 @@
 #' @param yvar_baseline (`string`)\cr variable with baseline values only.
 #' Ignored when `add_baseline_hline` is FALSE.
 #' @param ggtheme (`theme`)\cr optional graphical theme function as provided
-#' by ggplot2 to control outlook of plot. Use `theme()` to tweak the display.
+#' by ggplot2 to control outlook of plot. Use `ggplot2::theme()` to tweak the display.
 #' @param plotting_choices (`character`)\cr specifies options for displaying
 #' plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
 #' @param max_obs_per_plot (`count`)\cr Number of observations to be plotted on one
@@ -31,16 +31,17 @@ NULL
 #' @export
 #'
 h_set_nest_theme <- function(font_size) {
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        panel.border = element_rect(colour = "grey", fill = NA, size = 1),
-        legend.position = "bottom",
-        legend.background = element_blank(),
-        legend.box.background = element_rect(colour = "grey", fill = NA, size = 1),
-        legend.direction = "horizontal",
-        legend.title = element_text(face = "bold"),
-        text = element_text(size = font_size)
+  ggplot2::theme(
+    panel.grid.major = ggplot2::element_blank(),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.background = ggplot2::element_blank(),
+    panel.border = ggplot2::element_rect(colour = "grey", fill = NA, size = 1),
+    legend.position = "bottom",
+    legend.background = ggplot2::element_blank(),
+    legend.box.background = ggplot2::element_rect(colour = "grey", fill = NA, size = 1),
+    legend.direction = "horizontal",
+    legend.title = ggplot2::element_text(face = "bold"),
+    text = ggplot2::element_text(size = font_size)
   )
 }
 
@@ -80,32 +81,32 @@ h_g_ipp <- function(df,
                     add_baseline_hline = FALSE,
                     yvar_baseline = "BASE",
                     ggtheme = h_set_nest_theme(10)) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
-    is.string(xvar),
-    is.string(yvar),
-    is.string(yvar_baseline),
-    is.string(id_var),
+    assertthat::is.string(xvar),
+    assertthat::is.string(yvar),
+    assertthat::is.string(yvar_baseline),
+    assertthat::is.string(id_var),
     all(c(xvar, yvar, yvar_baseline, id_var) %in% colnames(df)),
-    is.string(xlab),
-    is.string(ylab),
-    is.string(title),
-    is.string(subtitle),
+    assertthat::is.string(xlab),
+    assertthat::is.string(ylab),
+    assertthat::is.string(title),
+    assertthat::is.string(subtitle),
     is.logical(add_baseline_hline)
   )
 
-  p <- ggplot(
+  p <- ggplot2::ggplot(
     data = df,
-    mapping = aes_string(
+    mapping = ggplot2::aes_string(
       x = xvar,
       y = yvar,
       group = id_var,
       colour = id_var
     )
   ) +
-    geom_line(size = 0.4) +
-    geom_point(size = 2) +
-    labs(
+    ggplot2::geom_line(size = 0.4) +
+    ggplot2::geom_point(size = 2) +
+    ggplot2::labs(
       x = xlab,
       y = ylab,
       title = title,
@@ -119,18 +120,18 @@ h_g_ipp <- function(df,
     baseline_df <- unique(baseline_df)
 
     p <- p +
-      geom_hline(
+      ggplot2::geom_hline(
         data = baseline_df,
-        mapping = aes_string(
+        mapping = ggplot2::aes_string(
           yintercept = yvar_baseline,
           colour = id_var
         ),
         linetype = "dotdash",
         size = 0.4
       )  +
-      geom_text(
+      ggplot2::geom_text(
         data = baseline_df,
-        mapping = aes_string(
+        mapping = ggplot2::aes_string(
           x = 1,
           y = yvar_baseline,
           label = id_var,
@@ -180,8 +181,8 @@ g_ipp <- function(df,
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
                   max_obs_per_plot = 4) {
 
-  assert_that(
-    is.count(max_obs_per_plot),
+  assertthat::assert_that(
+    assertthat::is.count(max_obs_per_plot),
     plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
   )
 

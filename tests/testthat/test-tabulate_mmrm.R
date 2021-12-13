@@ -217,7 +217,7 @@ get_anl <- function() {
 
 get_mmrm <- function() {
   anl <- get_anl() %>%
-    mutate(
+    dplyr::mutate(
       ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
       AVISIT = factor(AVISIT)
     )
@@ -237,7 +237,7 @@ get_mmrm <- function() {
 
 get_mmrm_no_arm <- function() {
   anl <- get_anl() %>%
-    mutate(
+    dplyr::mutate(
       ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
       AVISIT = factor(AVISIT)
     )
@@ -255,16 +255,16 @@ get_mmrm_no_arm <- function() {
 }
 
 
-test_that("h_mmrm_fixed works as expected", {
+testthat::test_that("h_mmrm_fixed works as expected", {
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
+    testthat::skip("tests dont run with older version of lme4")
   }
 
   mmrm <- get_mmrm()
   result <- h_mmrm_fixed(mmrm, format = "xx.xxxx")
   result2 <- as.rtable(mmrm, type = "fixed", format = "xx.xxxx")
-  expect_identical(result, result2)
+  testthat::expect_identical(result, result2)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("", "(Intercept)", "BMRKR2LOW", "BMRKR2MEDIUM", "ARMA: Drug X",
@@ -293,13 +293,13 @@ test_that("h_mmrm_fixed works as expected", {
   result_numbers <- as.numeric(result_matrix[grepl("^-?\\d+", result_matrix)])
   expected_numbers <- as.numeric(expected_matrix[grepl("^-?\\d+", result_matrix)])
 
-  expect_equal(result_numbers, expected_numbers, tolerance = 1e-3)
+  testthat::expect_equal(result_numbers, expected_numbers, tolerance = 1e-3)
 })
 
-test_that("h_mmrm_cov works as expected", {
+testthat::test_that("h_mmrm_cov works as expected", {
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
+    testthat::skip("tests dont run with older version of lme4")
   }
 
   utils.nest::skip_if_too_deep(3)
@@ -307,7 +307,7 @@ test_that("h_mmrm_cov works as expected", {
   mmrm <- get_mmrm()
   result <- h_mmrm_cov(mmrm, format = "xx.xxxx")
   result2 <- as.rtable(mmrm, type = "cov", format = "xx.xxxx")
-  expect_identical(result, result2)
+  testthat::expect_identical(result, result2)
 
   expected_tibble <- tibble::tribble(
     ~"1", ~"2", ~"3", ~"4", ~"5",
@@ -325,55 +325,55 @@ test_that("h_mmrm_cov works as expected", {
       unname()
   }
 
-  expect_equal(
+  testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 1 DAY 8")),
     as.list(expected_tibble[, "1"][[1]]),
     tolerance = 5e-2
   )
 
-  expect_equal(
+  testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 2 DAY 15")),
     as.list(expected_tibble[, "2"][[1]]),
     tolerance = 5e-2
   )
 
-  expect_equal(
+  testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 3 DAY 22")),
     as.list(expected_tibble[, "3"][[1]]),
     tolerance = 5e-2
   )
 
-  expect_equal(
+  testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 4 DAY 29")),
     as.list(expected_tibble[, "4"][[1]]),
     tolerance = 5e-2
   )
 
-  expect_equal(
+  testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 5 DAY 36")),
     as.list(expected_tibble[, "5"][[1]]),
     tolerance = 5e-2
   )
 })
 
-test_that("h_mmrm_diagnostic works as expected", {
+testthat::test_that("h_mmrm_diagnostic works as expected", {
 
   utils.nest::skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
   result <- h_mmrm_diagnostic(mmrm, format = "xx.x")
   result2 <- as.rtable(mmrm, type = "diagnostic", format = "xx.x")
-  expect_identical(result, result2)
+  testthat::expect_identical(result, result2)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
       "1351.4", "1365.4", "1366", "1377.4"),
     .Dim = c(5L, 2L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("tidy.mmrm works as expected", {
+testthat::test_that("tidy.mmrm works as expected", {
 
   utils.nest::skip_if_too_deep(3)
 
@@ -399,11 +399,11 @@ test_that("tidy.mmrm works as expected", {
     relative_reduc = -0.0233534667084426,
     conf_level = 0.95
   )
-  expect_is(result_one_row, "tbl_df")
-  expect_equal(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
+  testthat::expect_is(result_one_row, "tbl_df")
+  testthat::expect_equal(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
 })
 
-test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
+testthat::test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
 
   utils.nest::skip_if_too_deep(3)
 
@@ -420,11 +420,11 @@ test_that("tidy.mmrm works as expected when treatment is not considered in the m
     upper_cl_est = 53.36269, n = 41L,
     conf_level = 0.95
   )
-  expect_is(result_one_row, "tbl_df")
-  expect_equivalent(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
+  testthat::expect_is(result_one_row, "tbl_df")
+  testthat::expect_equivalent(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
 })
 
-test_that("s_mmrm_lsmeans works as expected when not in reference column", {
+testthat::test_that("s_mmrm_lsmeans works as expected when not in reference column", {
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans(df[8, ], FALSE)
@@ -437,10 +437,10 @@ test_that("s_mmrm_lsmeans works as expected when not in reference column", {
     change = with_label(-0.0233534667084426, label = "Relative Reduction (%)"),
     p_value = 0.698170225099465
   )
-  expect_equal(result, expected, tolerance = 0.001)
+  testthat::expect_equal(result, expected, tolerance = 0.001)
 })
 
-test_that("s_mmrm_lsmeans works as expected when in reference column", {
+testthat::test_that("s_mmrm_lsmeans works as expected when in reference column", {
 
   utils.nest::skip_if_too_deep(3)
 
@@ -456,10 +456,10 @@ test_that("s_mmrm_lsmeans works as expected when in reference column", {
     change = with_label(character(0), label = "Relative Reduction (%)"),
     p_value = character(0)
   )
-  expect_equal(result, expected, tolerance = 0.001)
+  testthat::expect_equal(result, expected, tolerance = 0.001)
 })
 
-test_that("s_mmrm_lsmeans_single works as expected", {
+testthat::test_that("s_mmrm_lsmeans_single works as expected", {
 
   utils.nest::skip_if_too_deep(3)
 
@@ -471,15 +471,15 @@ test_that("s_mmrm_lsmeans_single works as expected", {
     adj_mean_se = c(48.703420, 1.180417),
     adj_mean_ci = with_label(c(46.37198, 51.03486), label = "95% CI")
   )
-  expect_equal(result, expected, tolerance = 0.001)
+  testthat::expect_equal(result, expected, tolerance = 0.001)
 })
 
-test_that("summarize_lsmeans works as expected", {
+testthat::test_that("summarize_lsmeans works as expected", {
 
   utils.nest::skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
+    testthat::skip("tests dont run with older version of lme4")
   }
 
   mmrm <- get_mmrm()
@@ -537,21 +537,21 @@ test_that("summarize_lsmeans works as expected", {
   }
 
   result_b <- cell_values_to_list(result, colpath = c("ARM", "B: Placebo"))
-  expect_equal(result_b, as.list(expected_tibble[, "b"][[1]]), tolerance = 1e-3)
+  testthat::expect_equal(result_b, as.list(expected_tibble[, "b"][[1]]), tolerance = 1e-3)
 
   result_a <- cell_values_to_list(result, colpath = c("ARM", "A: Drug X"))
-  expect_equal(result_a, as.list(expected_tibble[, "a"][[1]]), tolerance = 1e-3)
+  testthat::expect_equal(result_a, as.list(expected_tibble[, "a"][[1]]), tolerance = 1e-3)
 
   result_c <- cell_values_to_list(result, colpath = c("ARM", "C: Combination"))
-  expect_equal(result_c, as.list(expected_tibble[, "c"][[1]]), tolerance = 1e-3)
+  testthat::expect_equal(result_c, as.list(expected_tibble[, "c"][[1]]), tolerance = 1e-3)
 })
 
-test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
+testthat::test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
 
   utils.nest::skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
+    testthat::skip("tests dont run with older version of lme4")
   }
 
   mmrm <- get_mmrm_no_arm()
@@ -572,5 +572,5 @@ test_that("summarize_lsmeans works as expected when treatment is not considered 
       "", "41", "50.843 (1.263)", "(48.323, 53.363)"),
     .Dim = c(21L, 2L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

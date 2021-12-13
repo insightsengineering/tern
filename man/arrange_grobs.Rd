@@ -9,8 +9,8 @@ arrange_grobs(
   grobs = list(...),
   ncol = NULL,
   nrow = NULL,
-  padding_ht = unit(2, "line"),
-  padding_wt = unit(2, "line"),
+  padding_ht = grid::unit(2, "line"),
+  padding_wt = grid::unit(2, "line"),
   vp = NULL,
   gp = NULL,
   name = NULL
@@ -42,7 +42,7 @@ Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout.
 library(grid)
 
 num <- lapply(1:9, textGrob)
-grid.newpage()
+grid::grid.newpage()
 grid.draw(arrange_grobs(grobs = num, ncol = 2))
 
 showViewport()
@@ -50,17 +50,17 @@ showViewport()
 g1 <- circleGrob(gp = gpar(col = "blue"))
 g2 <- circleGrob(gp = gpar(col = "red"))
 g3 <- textGrob("TEST TEXT")
-grid.newpage()
+grid::grid.newpage()
 grid.draw(arrange_grobs(g1, g2, g3, nrow = 2))
 
 showViewport()
 
-grid.newpage()
+grid::grid.newpage()
 grid.draw(arrange_grobs(g1, g2, g3, ncol = 3))
 
-grid.newpage()
-pushViewport(viewport(layout = grid.layout(1,2)))
-vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
+grid::grid.newpage()
+grid::pushViewport(grid::viewport(layout = grid::grid.layout(1,2)))
+vp1 <- grid::viewport(layout.pos.row = 1, layout.pos.col = 2)
 grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 
 showViewport()

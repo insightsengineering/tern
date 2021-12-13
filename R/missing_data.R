@@ -5,8 +5,6 @@
 #' @param x factor or character vector
 #' @param label character string that missing data should be replaced with
 #'
-#' @importFrom forcats fct_explicit_na
-#'
 #' @export
 #'
 #' @examples
@@ -20,10 +18,10 @@
 #' explicit_na(sas_na(c("a", "")))
 #'
 explicit_na <- function(x, label = "<Missing>") {
-  stopifnot(is_character_single(label))
+  stopifnot(utils.nest::is_character_single(label))
 
   if (is.factor(x)) {
-    fct_explicit_na(x, label)
+    forcats::fct_explicit_na(x, label)
   } else if (is.character(x)) {
     x[is.na(x)] <- label
     x
@@ -52,7 +50,7 @@ explicit_na <- function(x, label = "<Missing>") {
 #' is.na(sas_na(c("1", "", " ", "   ", "b")))
 sas_na <- function(x, empty = TRUE, whitespaces = TRUE) {
 
-  stopifnot(is_logical_single(empty), is_logical_single(whitespaces))
+  stopifnot(utils.nest::is_logical_single(empty), utils.nest::is_logical_single(whitespaces))
 
   if (is.factor(x)) {
 

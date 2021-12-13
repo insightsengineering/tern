@@ -1,4 +1,4 @@
-test_that("to_string_matrix works correctly", {
+testthat::test_that("to_string_matrix works correctly", {
   x <- basic_table() %>%
     analyze("AGE", mean, var_labels = "Age", format = "xx.xx") %>%
     build_table(DM)
@@ -9,26 +9,26 @@ test_that("to_string_matrix works correctly", {
     nrow = 2,
     ncol = 2
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("unlist_and_blank_na works as expected if not all missing", {
+testthat::test_that("unlist_and_blank_na works as expected if not all missing", {
   x <- list(1, 3, 5, NA)
   result <- unlist_and_blank_na(x)
   expected <- c(1, 3, 5, NA)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("unlist_and_blank_na works as expected if all missing", {
+testthat::test_that("unlist_and_blank_na works as expected if all missing", {
   x <- c(NA, NA)
   result <- unlist_and_blank_na(x)
   expected <- character()
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("cfun_by_flag works as expected", {
+testthat::test_that("cfun_by_flag works as expected", {
   result_fun <- cfun_by_flag(analysis_var = "aval", flag_var = "is_result", format = "xx.xxxx")
-  expect_is(result_fun, "function")
+  testthat::expect_is(result_fun, "function")
   df <- data.frame(
     aval = c(1, 2, 3, 4, 5),
     arm = c("a", "a", "b", "b", "b"),
@@ -42,35 +42,35 @@ test_that("cfun_by_flag works as expected", {
     indent_mod = 0L,
     label = "bla"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("labels_or_names works correctly", {
-  expect_identical(
+testthat::test_that("labels_or_names works correctly", {
+  testthat::expect_identical(
     labels_or_names(list(a = 5, b = with_label(3, "bla"))),
     c(a = "a", b = "bla")
   )
-  expect_identical(
+  testthat::expect_identical(
     labels_or_names(list(5, b = 3)),
     c("", b = "b")
   )
-  expect_identical(
+  testthat::expect_identical(
     labels_or_names(list(with_label(1, "bli"), b = 3)),
     c("bli", b = "b")
   )
-  expect_identical(
+  testthat::expect_identical(
     labels_or_names(list(1, 2)),
     c("", "")
   )
 })
 
-test_that("c_label_n works as expected", {
+testthat::test_that("c_label_n works as expected", {
   result <- c_label_n(data.frame(a = c(1, 2)), "female", .N_row = 4)
   expected <- CellValue(val = NULL, label = "female (N=4)")
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("add_rowcounts works with one row split", {
+testthat::test_that("add_rowcounts works with one row split", {
   result <- basic_table() %>%
     split_rows_by("SEX", split_fun = drop_split_levels) %>%
     add_rowcounts() %>%
@@ -80,10 +80,10 @@ test_that("add_rowcounts works with one row split", {
     c("", "F (N=187)", "M (N=169)", "all obs", "", ""),
     .Dim = 3:2
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("add_rowcounts works with multiple column and row splits", {
+testthat::test_that("add_rowcounts works with multiple column and row splits", {
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_cols_by("STRATA1") %>%
@@ -141,20 +141,20 @@ test_that("add_rowcounts works with multiple column and row splits", {
       "NaN", "", "", "NaN", "", "NaN", "", "", "NaN", "", "NaN"),
     .Dim = c(47L, 10L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("h_col_indices works as expected", {
+testthat::test_that("h_col_indices works as expected", {
   tab <- basic_table() %>%
     split_cols_by("ARM") %>%
     build_table(DM)
   result <- h_col_indices(tab, c("B: Placebo", "C: Combination"))
   expected <- c(2L, 3L)
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
 
-test_that("as.rtable.data.frame works correctly", {
+testthat::test_that("as.rtable.data.frame works correctly", {
   x <- data.frame(
     a = 1:10,
     b = seq(from = 10000, to = 20000, length = 10) / 1000
@@ -169,18 +169,18 @@ test_that("as.rtable.data.frame works correctly", {
       "18.9", "20"),
     .Dim = c(11L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("as.rtable.data.frame fails when a column is not numeric", {
+testthat::test_that("as.rtable.data.frame fails when a column is not numeric", {
   x <- data.frame(
     a = 1:10,
     b = LETTERS[1:10]
   )
-  expect_error(as.rtable(x))
+  testthat::expect_error(as.rtable(x))
 })
 
-test_that("as.rtable.data.frame uses variable labels for column headers when they are available", {
+testthat::test_that("as.rtable.data.frame uses variable labels for column headers when they are available", {
   x <- data.frame(
     a = 1:10,
     b = seq(from = 10000, to = 20000, length = 10) / 1000
@@ -188,10 +188,10 @@ test_that("as.rtable.data.frame uses variable labels for column headers when the
   var_labels(x) <- paste("label for", names(x))
   rownames(x) <- LETTERS[1:10]
   result <- as.rtable(x, format = "xx.x")
-  expect_identical(names(result), c("label for a", "label for b"))
+  testthat::expect_identical(names(result), c("label for a", "label for b"))
 })
 
-test_that("h_split_param divides param values", {
+testthat::test_that("h_split_param divides param values", {
   f <- list(
     surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),
     surv_diff = c("rate_diff", "rate_diff_ci", "ztest_pval")
@@ -203,7 +203,7 @@ test_that("h_split_param divides param values", {
     surv = "pt_at_risk",
     surv_diff = "rate_diff"
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 
   .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
   result <- h_split_param(.formats, names(.formats), f =  f)
@@ -211,22 +211,22 @@ test_that("h_split_param divides param values", {
     surv = c("pt_at_risk" = "xx", "event_free_rate" = "xxx"),
     surv_diff = NULL
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("afun_selected_stats works for NULL input", {
+testthat::test_that("afun_selected_stats works for NULL input", {
   result <- afun_selected_stats(NULL, "b")
   expected <- "b"
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("afun_selected_stats works for character input", {
+testthat::test_that("afun_selected_stats works for character input", {
   result <- afun_selected_stats(c("a", "c"), c("b", "c"))
   expected <- "c"
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("append_varlabels works as expected", {
+testthat::test_that("append_varlabels works as expected", {
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
@@ -245,10 +245,10 @@ test_that("append_varlabels works as expected", {
       "NA", "", "NA"),
     .Dim = c(10L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("append_varlabels correctly concatenates multiple variable labels", {
+testthat::test_that("append_varlabels correctly concatenates multiple variable labels", {
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_rows_by("SEX") %>%
@@ -265,5 +265,5 @@ test_that("append_varlabels correctly concatenates multiple variable labels", {
       "NA"),
     .Dim = c(9L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

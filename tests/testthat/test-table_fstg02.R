@@ -27,7 +27,7 @@ preprocess_adtte <- function(adtte) {
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
-test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is produced correctly", {
+testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is produced correctly", {
 
   anl1 <- adtte %>%
     preprocess_adtte()
@@ -62,7 +62,7 @@ test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is pr
     ),
     .Dim = c(10L, 8L)
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
   # Add plot.
   g_forest(
@@ -72,11 +72,11 @@ test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is pr
 
 })
 
-test_that("FSTG02 table variant 2 (specifying class variables and options for the treatment variable)", {
+testthat::test_that("FSTG02 table variant 2 (specifying class variables and options for the treatment variable)", {
 
   anl2 <- adtte %>%
     preprocess_adtte() %>%
-    mutate(
+    dplyr::mutate(
       # Recode levels of arm.
       ARM = forcats::fct_recode(
         ARM,
@@ -119,7 +119,7 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
   )
 
   #expected_matrix
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
   # Add plot.
   g_forest(
@@ -129,7 +129,7 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
 
 })
 
-test_that("FSTG02 table variant 3 (selecting columns and changing the alpha level)", {
+testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the alpha level)", {
 
   anl3 <- adtte %>%
     preprocess_adtte()
@@ -159,7 +159,7 @@ test_that("FSTG02 table variant 3 (selecting columns and changing the alpha leve
     .Dim = c(10L, 4L)
   )
 
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
   # Add plot.
   g_forest(
@@ -168,7 +168,7 @@ test_that("FSTG02 table variant 3 (selecting columns and changing the alpha leve
   )
 })
 
-test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
+testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
 
   anl4 <- adtte %>%
     preprocess_adtte()
@@ -202,7 +202,7 @@ test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
       "", "(0.42, 1.17)", "(0.32, 1.01)", "(0.56, 1.72)"),
     .Dim = c(10L, 8L)
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 
   # Add plot.
   g_forest(

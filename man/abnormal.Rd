@@ -41,8 +41,8 @@ count_abnormal(
 by a statistics function.}
 
 \item{abnormal}{(\verb{named list})\cr identifying the abnormal range level(s) in \code{var}. Default to
-\code{list(Low = "LOW", High = "HIGH")} but you can also group different levels into the name list, for example,
-\code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))}}
+\code{list(Low = "LOW", High = "HIGH")} but you can also group different levels into the name list,
+for example, \code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))}}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -76,8 +76,8 @@ vector with \code{num} and \code{denom} counts of patients.
 }
 \description{
 Primary analysis variable \code{.var} indicates the abnormal range result (character or factor)
-and additional analysis variables are \code{id} (character or factor) and \code{baseline} (character or factor).
-For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
+and additional analysis variables are \code{id} (character or factor) and \code{baseline} (character or
+factor). For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
 numerator and denominator as follows:
 \describe{
 \item{\code{num}}{the number of patients with this abnormality recorded while on treatment.}
@@ -122,7 +122,9 @@ df <- df \%>\%
 s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
 # Optionally exclude patients with abnormality at baseline.
-s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE)
+s_count_abnormal(
+  df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE
+ )
 
 # Use the Formatted Analysis function for `analyze()`.
 a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")

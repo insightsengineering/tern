@@ -6,22 +6,22 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("AET06_SMQ variant 1 is produced correctly", {
+testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
 
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
 
   adae <- adae %>%
-    mutate(
-      SMQ1 = case_when(
+    dplyr::mutate(
+      SMQ1 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
       ),
-      SMQ2 = case_when(
+      SMQ2 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl D.1") ~ "SMQ 1 (narrow)",
         TRUE ~ NA_character_
       ),
-      SMQ3 = case_when(
+      SMQ3 = dplyr::case_when(
         AEDECOD %in% c("dcd B.2.1.2.1", "dcd A.1.1.1.2", "dcd C.2.1.2.1", "dcd B.2.2.3.1") ~ "AESI",
         TRUE ~ NA_character_
       )
@@ -29,19 +29,19 @@ test_that("AET06_SMQ variant 1 is produced correctly", {
 
 
   adae_smq1 <- adae %>%
-    filter(!is.na(SMQ1)) %>%
-    rename(SMQ = SMQ1) %>%
-    select(-SMQ2, -SMQ3)
+    dplyr::filter(!is.na(SMQ1)) %>%
+    dplyr::rename(SMQ = SMQ1) %>%
+    dplyr::select(-SMQ2, -SMQ3)
 
   adae_smq2 <- adae %>%
-    filter(!is.na(SMQ2)) %>%
-    rename(SMQ = SMQ2) %>%
-    select(-SMQ1, -SMQ3)
+    dplyr::filter(!is.na(SMQ2)) %>%
+    dplyr::rename(SMQ = SMQ2) %>%
+    dplyr::select(-SMQ1, -SMQ3)
 
   adae_smq3 <- adae %>%
-    filter(!is.na(SMQ3)) %>%
-    rename(SMQ = SMQ3) %>%
-    select(-SMQ1, -SMQ2)
+    dplyr::filter(!is.na(SMQ3)) %>%
+    dplyr::rename(SMQ = SMQ3) %>%
+    dplyr::select(-SMQ1, -SMQ2)
 
   adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)
 
@@ -121,18 +121,18 @@ test_that("AET06_SMQ variant 1 is produced correctly", {
     .Dim = c(27L, 7L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET06_SMQ variant 2 is produced correctly", {
+testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
 
 
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
 
   adsl <- adsl %>%
-    mutate(
-      AGE65 = case_when(
+    dplyr::mutate(
+      AGE65 = dplyr::case_when(
         AGE >= 65 ~ ">= 65",
         TRUE ~ "< 65"
       ),
@@ -142,20 +142,20 @@ test_that("AET06_SMQ variant 2 is produced correctly", {
   var_labels(adsl) <- c(adsl_labels, "AGE65" = "AGE65 GROUP")
 
   adae <- adae %>%
-    mutate(
-      SMQ1 = case_when(
+    dplyr::mutate(
+      SMQ1 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
       ),
-      SMQ2 = case_when(
+      SMQ2 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl D.1") ~ "SMQ 1 (narrow)",
         TRUE ~ NA_character_
       ),
-      SMQ3 = case_when(
+      SMQ3 = dplyr::case_when(
         AEDECOD %in% c("dcd B.2.1.2.1", "dcd A.1.1.1.2", "dcd C.2.1.2.1", "dcd B.2.2.3.1") ~ "AESI",
         TRUE ~ NA_character_
       ),
-      AGE65 = case_when(
+      AGE65 = dplyr::case_when(
         AGE >= 65 ~ ">= 65",
         TRUE ~ "< 65"
       ),
@@ -163,19 +163,19 @@ test_that("AET06_SMQ variant 2 is produced correctly", {
     )
 
   adae_smq1 <- adae %>%
-    filter(!is.na(SMQ1)) %>%
-    rename(SMQ = SMQ1) %>%
-    select(-SMQ2, -SMQ3)
+    dplyr::filter(!is.na(SMQ1)) %>%
+    dplyr::rename(SMQ = SMQ1) %>%
+    dplyr::select(-SMQ2, -SMQ3)
 
   adae_smq2 <- adae %>%
-    filter(!is.na(SMQ2)) %>%
-    rename(SMQ = SMQ2) %>%
-    select(-SMQ1, -SMQ3)
+    dplyr::filter(!is.na(SMQ2)) %>%
+    dplyr::rename(SMQ = SMQ2) %>%
+    dplyr::select(-SMQ1, -SMQ3)
 
   adae_smq3 <- adae %>%
-    filter(!is.na(SMQ3)) %>%
-    rename(SMQ = SMQ3) %>%
-    select(-SMQ1, -SMQ2)
+    dplyr::filter(!is.na(SMQ3)) %>%
+    dplyr::rename(SMQ = SMQ3) %>%
+    dplyr::select(-SMQ1, -SMQ2)
 
   adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)
 
@@ -250,5 +250,5 @@ test_that("AET06_SMQ variant 2 is produced correctly", {
     .Dim = c(27L, 7L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

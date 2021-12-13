@@ -3,7 +3,7 @@ library(dplyr)
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
-test_that("s_coxph_pairwise works with default arguments and no stratification factors", {
+testthat::test_that("s_coxph_pairwise works with default arguments and no stratification factors", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -27,10 +27,10 @@ test_that("s_coxph_pairwise works with default arguments and no stratification f
     n_tot = with_label(268L, "Total n"),
     n_tot_events = with_label(166L, "Total events")
   )
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-test_that("s_coxph_pairwise works with customized arguments and no stratification factors", {
+testthat::test_that("s_coxph_pairwise works with customized arguments and no stratification factors", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -55,10 +55,10 @@ test_that("s_coxph_pairwise works with customized arguments and no stratificatio
     n_tot = with_label(268L, "Total n"),
     n_tot_events = with_label(166L, "Total events")
   )
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-test_that("s_coxph_pairwise works with default arguments and stratification factors", {
+testthat::test_that("s_coxph_pairwise works with default arguments and stratification factors", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -82,10 +82,10 @@ test_that("s_coxph_pairwise works with default arguments and stratification fact
     n_tot = with_label(268L, "Total n"),
     n_tot_events = with_label(166L, "Total events")
   )
-  expect_equal(result, expected, tolerance = 0.00001)
+  testthat::expect_equal(result, expected, tolerance = 0.00001)
 })
 
-test_that("s_coxph_pairwise works with customized arguments and stratification factors", {
+testthat::test_that("s_coxph_pairwise works with customized arguments and stratification factors", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -110,11 +110,11 @@ test_that("s_coxph_pairwise works with customized arguments and stratification f
     n_tot = with_label(268L, "Total n"),
     n_tot_events = with_label(166L, "Total events")
   )
-  expect_equal(result, expected, tolerance = 0.00001)
+  testthat::expect_equal(result, expected, tolerance = 0.00001)
 })
 
 
-test_that("coxph_pairwise works with default arguments and no stratification factors", {
+testthat::test_that("coxph_pairwise works with default arguments and no stratification factors", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -143,10 +143,10 @@ test_that("coxph_pairwise works with default arguments and no stratification fac
     ),
     .Dim = 5:4
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("coxph_pairwise works with customized arguments and no stratification factors", {
+testthat::test_that("coxph_pairwise works with customized arguments and no stratification factors", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -176,11 +176,11 @@ test_that("coxph_pairwise works with customized arguments and no stratification 
     ),
     .Dim = 5:4
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("coxph_pairwise works with default arguments and stratification factors", {
+testthat::test_that("coxph_pairwise works with default arguments and stratification factors", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -210,10 +210,10 @@ test_that("coxph_pairwise works with default arguments and stratification factor
     .Dim = 5:4
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("coxph_pairwise works with customized arguments and stratification factors", {
+testthat::test_that("coxph_pairwise works with customized arguments and stratification factors", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -245,5 +245,5 @@ test_that("coxph_pairwise works with customized arguments and stratification fac
     .Dim = c(4L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -8,11 +8,11 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs
 
 
-test_that("DMT01 default and alternative variants are produced correctly", {
+testthat::test_that("DMT01 default and alternative variants are produced correctly", {
 
   # Change description in variable SEX.
   adsl <- adsl %>%
-    mutate(SEX = factor(case_when(
+    dplyr::mutate(SEX = factor(dplyr::case_when(
       SEX == "M" ~ "Male",
       SEX == "F" ~ "Female",
       SEX == "U" ~ "Unknown",
@@ -20,9 +20,9 @@ test_that("DMT01 default and alternative variants are produced correctly", {
     )))
 
   adsl <- adsl %>%
-    mutate(AGEGRP = factor(case_when(
-      between(AGE, 18, 40) ~ "18-40",
-      between(AGE, 41, 64) ~ "41-64",
+    dplyr::mutate(AGEGRP = factor(dplyr::case_when(
+      dplyr::between(AGE, 18, 40) ~ "18-40",
+      dplyr::between(AGE, 41, 64) ~ "41-64",
       AGE > 64 ~ ">=65"
     ),
     levels = c("18-40", "41-64", ">=65")
@@ -33,8 +33,8 @@ test_that("DMT01 default and alternative variants are produced correctly", {
 
   get_param_advs <- function(pname, plabel) {
     ds <- advs %>%
-      filter(PARAM == plabel & AVISIT == "BASELINE") %>%
-      select(USUBJID, AVAL)
+      dplyr::filter(PARAM == plabel & AVISIT == "BASELINE") %>%
+      dplyr::select(USUBJID, AVAL)
 
     colnames(ds) <- c("USUBJID", pname)
 
@@ -42,9 +42,9 @@ test_that("DMT01 default and alternative variants are produced correctly", {
   }
 
   adsl <- adsl %>%
-    inner_join(get_param_advs("SBP", "Systolic Blood Pressure")) %>%
-    inner_join(get_param_advs("DBP", "Diastolic Blood Pressure")) %>%
-    inner_join(get_param_advs("WGT", "Weight"))
+    dplyr::inner_join(get_param_advs("SBP", "Systolic Blood Pressure")) %>%
+    dplyr::inner_join(get_param_advs("DBP", "Diastolic Blood Pressure")) %>%
+    dplyr::inner_join(get_param_advs("WGT", "Weight"))
 
   vars <- c("AGE", "AGEGRP", "SEX", "RACE", "WGT", "SBP", "DBP")
   var_labels <- c(
@@ -107,7 +107,7 @@ test_that("DMT01 default and alternative variants are produced correctly", {
     .Dim = c(41L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Alternative variant for DMT01 (Optional Subgrouping Analysis).
   result <- basic_table() %>%
@@ -179,5 +179,5 @@ test_that("DMT01 default and alternative variants are produced correctly", {
     .Dim = c(68L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

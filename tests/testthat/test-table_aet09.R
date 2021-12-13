@@ -4,7 +4,7 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 
-test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
+testthat::test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
 
   adae_r <- adae[adae$AEREL == "Y", ]
 
@@ -168,11 +168,11 @@ test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
     ),
     .Dim = c(24L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("AET09 variant 2 is produced correctly, AE related to study drug (including high-level terms)", {
+testthat::test_that("AET09 variant 2 is produced correctly, AE related to study drug (including high-level terms)", {
 
   adae_r <- adae[adae$AEREL == "Y", ]
 
@@ -388,5 +388,5 @@ test_that("AET09 variant 2 is produced correctly, AE related to study drug (incl
     ),
     .Dim = c(39L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

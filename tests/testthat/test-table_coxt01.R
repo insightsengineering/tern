@@ -20,7 +20,7 @@ ADTTE_f <- within(
   ),
   expr = {
     ARMCD <- droplevels(ARMCD)
-    ARMCD <- relevel(ARMCD, "ARM B")
+    ARMCD <- stats::relevel(ARMCD, "ARM B")
     SEX <- droplevels(SEX)
     RACE <- droplevels(RACE)
   }
@@ -29,7 +29,7 @@ var_labels(ADTTE_f) <- saved_labels
 ADTTE_f$event <- 1 - ADTTE_f$CNSR
 # nolint end
 
-test_that("1. Cox Regression", {
+testthat::test_that("1. Cox Regression", {
   mod1 <- fit_coxreg_univar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -37,7 +37,7 @@ test_that("1. Cox Regression", {
     ),
     data = ADTTE_f
   )
-  df <- tidy(mod1)
+  df <- broom::tidy(mod1)
   result <- basic_table() %>%
     split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
@@ -55,11 +55,11 @@ test_that("1. Cox Regression", {
     .Dim = c(7L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("2. Cox Regression (with Interaction Term)", {
+testthat::test_that("2. Cox Regression (with Interaction Term)", {
   mod2 <- fit_coxreg_univar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -68,7 +68,7 @@ test_that("2. Cox Regression (with Interaction Term)", {
     data = ADTTE_f,
     control = control_coxreg(interaction = TRUE)
   )
-  df <- tidy(mod2)
+  df <- broom::tidy(mod2)
   result <- basic_table() %>%
     split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
@@ -91,11 +91,11 @@ test_that("2. Cox Regression (with Interaction Term)", {
     .Dim = c(13L, 6L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("3. Cox Regression (specifying covariates)", {
+testthat::test_that("3. Cox Regression (specifying covariates)", {
   mod3 <- fit_coxreg_univar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -105,7 +105,7 @@ test_that("3. Cox Regression (specifying covariates)", {
     control = control_coxreg(interaction = TRUE),
     at = list(AGE = c(30, 40, 50))
   )
-  df <- tidy(mod3)
+  df <- broom::tidy(mod3)
   result <- basic_table() %>%
     split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
@@ -131,11 +131,11 @@ test_that("3. Cox Regression (specifying covariates)", {
     .Dim = c(15L, 6L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
+testthat::test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
   conf_level <- 0.90
   mod4 <- fit_coxreg_univar(
     variables = list(
@@ -150,7 +150,7 @@ test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
     ),
     at = list(AGE = c(30, 40, 50))
   )
-  df <- tidy(mod4)
+  df <- broom::tidy(mod4)
   result <- basic_table() %>%
     split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
@@ -176,5 +176,5 @@ test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
     .Dim = c(15L, 6L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

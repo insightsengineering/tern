@@ -95,7 +95,7 @@ helper function `h_coxph_formulas()` to generate the list of models to fit and
 h_coxuniv <- function(variables,
                       data,
                       control = control_coxuniv()) {
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c("arm", "event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables)))
@@ -155,10 +155,10 @@ str(dta_test)
 #'
 h_coxuniv_formulas <- function(variables,
                                interaction = FALSE) {
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c("arm", "event", "time")]),
-    is.flag(interaction)
+    assertthat::is.flag(interaction)
   )
 
   ref <- paste(
@@ -212,9 +212,9 @@ control_coxuniv <- function(pval_method = c("wald", "likelihood"),
                             interaction = FALSE) {
   pval_method <- match.arg(pval_method)
   ties <- match.arg(ties)
-  assert_that(
+  assertthat::assert_that(
     is_proportion(conf_level),
-    is.flag(interaction)
+    assertthat::is.flag(interaction)
     )
 
   list(
@@ -240,9 +240,9 @@ control_coxuniv()
 h_coxuniv_extract <- function(mod,
                               control = control_coxuniv(),
                               effect = "armcd") {
-  assert_that(
+  assertthat::assert_that(
     class(mod) == "coxph",
-    is.string(effect)
+    assertthat::is.string(effect)
   )
 
   mod_aov <- car::Anova(
@@ -298,7 +298,7 @@ Render the results
 #'  be used by the layout creating function.
 s_coxreg <- function(df, .var) {
 
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, list(term = "term", var = .var)),
     is_character_or_factor(df$term)
   )

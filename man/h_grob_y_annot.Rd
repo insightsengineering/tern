@@ -37,11 +37,11 @@ gg <- h_ggkm(
 
 g_el <- h_decompose_gg(gg)
 
-grid.newpage()
-pvp <- plotViewport(margins = c(5, 4, 2, 20))
+grid::grid.newpage()
+pvp <- grid::plotViewport(margins = c(5, 4, 2, 20))
 pushViewport(pvp)
-grid.draw(h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
-grid.rect(gp = gpar(lty = 1, col = "gray35", fill = NA))
+grid::grid.draw(h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
+grid.rect(gp = grid::gpar(lty = 1, col = "gray35", fill = NA))
 }
 
 }

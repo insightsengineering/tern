@@ -105,7 +105,6 @@ extract_rsp_subgroups <- function(variables,
 
 #' @describeIn response_subgroups Formatted Analysis function used to format the results of [extract_rsp_subgroups()].
 #'   Returns is a list of Formatted Analysis functions with one element per statistic.
-#' @importFrom rtables in_rows
 #' @export
 #' @examples
 #' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
@@ -120,7 +119,7 @@ a_response_subgroups <- function(.formats = list(
   pval = "x.xxxx | (<0.0001)")
 ) {
 
-  assert_that(
+  assertthat::assert_that(
     is.list(.formats),
     all_elements_in_ref(
       names(.formats),
@@ -308,7 +307,7 @@ d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,
                                     method = NULL) {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(vars),
     all_elements_in_ref(c("n_tot", "or", "ci"), vars),
     all_elements_in_ref(vars, ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
@@ -325,7 +324,7 @@ d_rsp_subgroups_colvars <- function(vars,
 
   if ("ci" %in% colvars) {
 
-    assert_that(!is.null(conf_level))
+    assertthat::assert_that(!is.null(conf_level))
 
     varlabels <- c(
       varlabels,

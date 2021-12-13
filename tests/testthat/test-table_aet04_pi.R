@@ -45,13 +45,13 @@ full_table_aet04_pi <- function(adsl, adae_max) {
 }
 
 criteria_fun <- function(tr) {
-  is(tr, "ContentRow")
+  inherits(tr, "ContentRow")
 }
 
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("AET04_PI full table is produced correctly", {
+testthat::test_that("AET04_PI full table is produced correctly", {
   adae_max <- adae %>%
     preprocess_adae()
   result <- full_table_aet04_pi(adsl, adae_max) %>%
@@ -104,10 +104,10 @@ test_that("AET04_PI full table is produced correctly", {
       "", "0", "0"),
     .Dim = c(27L, 10L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04_PI variant 1 is produced correctly", {
+testthat::test_that("AET04_PI variant 1 is produced correctly", {
 
   adae_max <- adae %>%
     preprocess_adae()
@@ -153,10 +153,10 @@ test_that("AET04_PI variant 1 is produced correctly", {
       "", "33", "", "0", "", "0"),
     .Dim = c(20L, 10L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04_PI variant 2 is produced correctly", {
+testthat::test_that("AET04_PI variant 2 is produced correctly", {
 
   adae_max <- adae %>%
     preprocess_adae()
@@ -191,10 +191,10 @@ test_that("AET04_PI variant 2 is produced correctly", {
       "", "39"),
     .Dim = c(7L, 10L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04_PI variant 3 is produced correctly", {
+testthat::test_that("AET04_PI variant 3 is produced correctly", {
 
   adae_max <- adae %>%
     preprocess_adae()
@@ -233,10 +233,10 @@ test_that("AET04_PI variant 3 is produced correctly", {
       "", "0", "", "0"),
     .Dim = 11:10
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04_PI variant 4 is produced correctly", {
+testthat::test_that("AET04_PI variant 4 is produced correctly", {
 
   adae_max <- adae %>%
     preprocess_adae()
@@ -270,10 +270,10 @@ test_that("AET04_PI variant 4 is produced correctly", {
       "C: Combination", "Grade 5 (%)", "(N=132)", "", "0"),
     .Dim = c(5L, 10L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04_PI variant 5 is produced correctly", {
+testthat::test_that("AET04_PI variant 5 is produced correctly", {
 
   adae_max <- adae %>%
     preprocess_adae()
@@ -316,10 +316,10 @@ test_that("AET04_PI variant 5 is produced correctly", {
       "", "39", "", "0", "", "33", "", "0"),
     .Dim = c(15L, 10L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04_PI variant 6 is produced correctly", {
+testthat::test_that("AET04_PI variant 6 is produced correctly", {
 
   adae_max <- adae %>%
     preprocess_adae()
@@ -389,10 +389,10 @@ test_that("AET04_PI variant 6 is produced correctly", {
       "Grade 5 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0"),
     .Dim = c(11L, 13L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04_PI variant 7 is produced correctly", {
+testthat::test_that("AET04_PI variant 7 is produced correctly", {
 
   adae_max <- adae %>%
     preprocess_adae()
@@ -462,10 +462,10 @@ test_that("AET04_PI variant 7 is produced correctly", {
       "Grade 5 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0"),
     .Dim = c(11L, 13L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04_PI variant 8 is produced correctly", {
+testthat::test_that("AET04_PI variant 8 is produced correctly", {
 
   adae_max <- adae %>%
     preprocess_adae()
@@ -518,5 +518,5 @@ test_that("AET04_PI variant 8 is produced correctly", {
       "33", "0", "0"),
     .Dim = c(13L, 10L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

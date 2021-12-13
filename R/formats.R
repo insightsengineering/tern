@@ -25,7 +25,7 @@ format_fraction <- function(x, ...) {
 
   attr(x, "label") <- NULL
 
-  assert_that(
+  assertthat::assert_that(
     is.vector(x),
     is_nonnegative_count(x["num"]),
     is_nonnegative_count(x["denom"])
@@ -53,7 +53,6 @@ format_fraction <- function(x, ...) {
 #'
 #' @param x (`integer`)\cr vector of length 2, count and fraction.
 #' @param ... required for rtables interface.
-#' @importFrom rlang is_integerish
 #' @return a string in the format `count (fraction %)`. If `count` is 0 the format is `0`.
 #'
 #' @family formatting functions
@@ -71,9 +70,9 @@ format_count_fraction <- function(x, ...) {
     return("NA")
   }
 
-  assert_that(
+  assertthat::assert_that(
     is.vector(x),
-    is_integerish(x[1]),
+    rlang::is_integerish(x[1]),
     is_proportion(x[2], include_boundaries = TRUE)
   )
 
@@ -153,12 +152,12 @@ format_xx <- function(str) {
 #' format_fun(x = c(2, 0.01))
 #' format_fun(x = c(0, 0))
 format_fraction_threshold <- function(threshold) {
-  assert_that(
+  assertthat::assert_that(
     is_proportion(threshold)
   )
   string_below_threshold <- paste0("<", round(threshold * 100))
   function(x, ...) {
-    assert_that(is_proportion(x[2], include_boundaries = TRUE))
+    assertthat::assert_that(is_proportion(x[2], include_boundaries = TRUE))
     ifelse(
       x[2] > 0.01,
       round(x[2] * 100),
@@ -195,7 +194,7 @@ NULL
 #' h_get_format_threshold(2L)
 h_get_format_threshold <- function(digits = 2L) {
 
-  assert_that(
+  assertthat::assert_that(
     is.integer(digits)
   )
 
@@ -225,7 +224,7 @@ h_format_threshold <- function(x, digits = 2L) {
     return(x)
   }
 
-  assert_that(
+  assertthat::assert_that(
     is.numeric(x),
     x >= 0
   )
@@ -256,7 +255,7 @@ h_format_threshold <- function(x, digits = 2L) {
 format_extreme_values <- function(digits = 2L) {
 
   function(x, ...) {
-    assert_that(length(x) == 1)
+    assertthat::assert_that(length(x) == 1)
 
     h_format_threshold(x = x, digits = digits)
 
@@ -275,7 +274,7 @@ format_extreme_values <- function(digits = 2L) {
 format_extreme_values_ci <- function(digits = 2L) {
 
   function(x, ...) {
-    assert_that(length(x) == 2)
+    assertthat::assert_that(length(x) == 2)
 
     l_result <- h_format_threshold(x = x[1], digits = digits)
     h_result <- h_format_threshold(x = x[2], digits = digits)

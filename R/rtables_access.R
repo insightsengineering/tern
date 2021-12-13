@@ -17,7 +17,6 @@ NULL
 #'   then these are inferred from the names of `table_row`. (Note that this currently only works well with a single
 #'   column split.)
 #' @export
-#' @importFrom rlang is_integerish
 #'
 h_row_counts <- function(table_row,
                          col_names = NULL,
@@ -30,7 +29,7 @@ h_row_counts <- function(table_row,
       rv[1L]
     }
   }, FUN.VALUE = numeric(1))
-  assert_that(is_integerish(counts))
+  assertthat::assert_that(rlang::is_integerish(counts))
   counts
 }
 
@@ -43,21 +42,20 @@ h_row_fractions <- function(table_row,
                             col_indices = h_col_indices(table_row, col_names)) {
   row_vals <- row_values(table_row)[col_indices]
   fractions <- sapply(row_vals, "[", 2L)
-  assert_that(is_proportion_vector(fractions, include_boundaries = TRUE))
+  assertthat::assert_that(is_proportion_vector(fractions, include_boundaries = TRUE))
   fractions
 }
 
 #' @describeIn rtables_access Helper function to extract column counts from specified columns
 #'   in a table.
 #' @param table (`VTableNodeInfo`)\cr an occurrence table or row.
-#' @importFrom stats setNames
 #' @export
 #'
 h_col_counts <- function(table,
                          col_names = NULL,
                          col_indices = h_col_indices(table, col_names)) {
   counts <- col_counts(table)[col_indices]
-  setNames(counts, col_names)
+  stats::setNames(counts, col_names)
 }
 
 #' @describeIn rtables_access Helper function which says whether current table is a leaf in the tree.

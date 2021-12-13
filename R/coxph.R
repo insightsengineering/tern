@@ -82,9 +82,6 @@ univariate <- function(x) {
 #' Note that `s_cox_univariate()` function is deprecated and will be removed in the coming releases.
 #' Please use the function `fit_coxreg_univar()` instead.
 #'
-#' @importFrom stats anova coef median model.matrix qnorm setNames terms update vcov
-#' @import survival
-#'
 #' @export
 #'
 #' @md
@@ -158,14 +155,14 @@ s_cox_univariate <- function(formula,
   )
 
   check_covariate_formulas(covariates)
-  assert_that(is_proportion(conf_level, include_boundaries = TRUE))
+  assertthat::assert_that(is_proportion(conf_level, include_boundaries = TRUE))
   pval_method <- match.arg(pval_method)
 
   covariates <- name_covariate_names(covariates)
   check_increments(increments, covariates)
 
   # Formula univariate survival model, terms (t) and term index (i) for conveniency
-  tf <- terms(formula, specials = c("arm", "strata"))
+  tf <- stats::terms(formula, specials = c("arm", "strata"))
   iarm <- attr(tf, "specials")$arm
   tarm <- rownames(attr(tf, "factors"))[iarm]
   istr <- attr(tf, "specials")$strata
@@ -179,11 +176,11 @@ s_cox_univariate <- function(formula,
   ## List all models to be fitted ---
   formulas <- c(
     ref_mod = formula,
-    lapply(covariates, function(x) update(formula, paste(" ~ . +", rht(x))))
+    lapply(covariates, function(x) stats::update(formula, paste(" ~ . +", rht(x))))
   )
 
   if (interactions) {
-    f_cov_x <- lapply(covariates, function(x) update(formula, paste(" ~ . +", rht(x), " + ", tarm, ":", rht(x))))
+    f_cov_x <- lapply(covariates, function(x) stats::update(formula, paste(" ~ . +", rht(x), " + ", tarm, ":", rht(x))))
     names(f_cov_x) <- paste0(tarm, "|(", tarm, " * ", names(f_cov_x), ")")
     formulas <- c(formulas, f_cov_x)
   }
@@ -221,9 +218,9 @@ s_cox_univariate <- function(formula,
           coef_narm <- paste0(tarm, levels(with(data, eval(parse(text = tarm))))[2])
           coef_ninter <- paste0(coef_narm, ":", rht(covariates))
 
-          betas <- coef(fit$mod)[c(coef_narm, coef_ninter)]
-          var_betas <- diag(vcov(fit$mod))[c(coef_narm, coef_ninter)]
-          cov_betas <- vcov(fit$mod)[coef_narm, coef_ninter]
+          betas <- stats::coef(fit$mod)[c(coef_narm, coef_ninter)]
+          var_betas <- diag(stats::vcov(fit$mod))[c(coef_narm, coef_ninter)]
+          cov_betas <- stats::vcov(fit$mod)[coef_narm, coef_ninter]
 
           xvals <- increments[[rht(covariates)]]
           names(xvals) <- xvals
@@ -238,16 +235,16 @@ s_cox_univariate <- function(formula,
           y <- matrix(
             fit$msum$coefficients[paste0(tarm, arms[-1], ":", rht(covariates)), c("coef", "se(coef)")],
             ncol = 2,
-            dimnames = list(median(data[[rht(covariates)]]), c("coef", "se(coef)"))
+            dimnames = list(stats::median(data[[rht(covariates)]]), c("coef", "se(coef)"))
           )
         } else {
           # [^3]: If not a numeric: build contrasts
 
-          mmat <- model.matrix(fit$mod)[1, ]
+          mmat <- stats::model.matrix(fit$mod)[1, ]
           mmat[!mmat == 0] <- 0
           y <- estimate_coef(
             variable = tarm, given = rht(covariates),
-            coef = coef(fit$mod), mmat = mmat, vcov = vcov(fit$mod),
+            coef = stats::coef(fit$mod), mmat = mmat, vcov = stats::vcov(fit$mod),
             lvl_var = levels(data[[gsub(".*\\((.*)\\).*", "\\1", tarm)]]),
             lvl_given = levels(data[[rht(covariates)]]),
             conf_level = 0.95
@@ -292,7 +289,7 @@ s_cox_univariate <- function(formula,
   # Confidence interval of Hazard ratio for treatment
   ci <- lapply(
     coef, function(x) {
-      q_norm <- qnorm((1 + conf_level) / 2)
+      q_norm <- stats::qnorm((1 + conf_level) / 2)
       y <- t(apply(x, 1, function(y) exp(y["coef"] + c(-1, +1) * q_norm * y["se(coef)"])))
       return(y)
     }
@@ -314,7 +311,7 @@ s_cox_univariate <- function(formula,
       f = function(
                    without_interaction,
                    with_interaction) {
-        anova(without_interaction$mod, with_interaction$mod)[2, "P(>|Chi|)"]
+        stats::anova(without_interaction$mod, with_interaction$mod)[2, "P(>|Chi|)"]
       },
       without_interaction = fit[2:(length(covariates) + 1)],
       with_interaction = fit[- (1:(length(covariates) + 1))]
@@ -333,7 +330,7 @@ s_cox_univariate <- function(formula,
     covariates = names(covariates),
     tstr = tstr,
     pval_method = pval_method,
-    treatment = setNames(arms, c("ref", "tested")),
+    treatment = stats::setNames(arms, c("ref", "tested")),
     method = fit$ref_mod$mod$method
   )
 
@@ -343,7 +340,7 @@ s_cox_univariate <- function(formula,
 
 # Get the right-hand-term of a formula
 rht <- function(x) {
-  stopifnot(is(x, "formula"))
+  stopifnot(inherits(x, "formula"))
   y <- as.character(rev(x)[[1]])
   return(y)
 }
@@ -384,8 +381,6 @@ rht <- function(x) {
 #'   \item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
 #' }
 #'
-#' @importFrom stats qnorm
-#'
 #' @export
 #'
 #' @examples
@@ -407,12 +402,12 @@ rht <- function(x) {
 #'   data = ADTTE
 #' )
 #'
-#' mmat <- model.matrix(mod)[1, ]
+#' mmat <- stats::model.matrix(mod)[1, ]
 #' mmat[!mmat == 0] <- 0
 #'
 #' estimate_coef(
 #'   variable = "ARMCD", given = "SEX",
-#'   coef = coef(mod), mmat = mmat, vcov = vcov(mod), data = ADTTE, conf_level = .95
+#'   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), data = ADTTE, conf_level = .95
 #' )
 #' }
 #'
@@ -459,7 +454,7 @@ estimate_coef <- function(variable, given,
     return(y)
   })
 
-  q_norm <- qnorm((1 + conf_level) / 2)
+  q_norm <- stats::qnorm((1 + conf_level) / 2)
   y <- cbind(coef_hat, `se(coef)` = coef_se)
 
   y <- apply(y, 1, function(x) {
@@ -489,8 +484,6 @@ estimate_coef <- function(variable, given,
 #'
 #' @inheritParams car::Anova
 #'
-#' @importFrom car Anova
-#'
 #' @md
 #' @return A list with item `aov` for the result of the model and
 #'   `error_text` for the captured warnings.
@@ -501,6 +494,7 @@ estimate_coef <- function(variable, given,
 #' # accepted.
 #' \dontrun{
 #' library(survival)
+#'
 #' mod <- coxph(
 #'   formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
 #'   data = ovarian
@@ -517,7 +511,7 @@ try_car_anova <- function(mod,
       expr = {
         warn_text <- c()
         list(
-          aov = Anova(
+          aov = car::Anova(
             mod,
             test.statistic = test.statistic,
             type = "III"
@@ -550,7 +544,6 @@ try_car_anova <- function(mod,
 #' @inheritParams t_coxreg
 #' @noRd
 #' @md
-#' @importFrom survival coxph
 #'
 #' @return A list with items `mod` (results of [survival::coxph()]),
 #'   `msum` (result of `summary`) and `aov` (result of [car::Anova]).
@@ -564,7 +557,7 @@ fit_n_aov <- function(formula,
   environment(formula) <- environment()
   suppressWarnings({
     # We expect some warnings due to coxph which fails strict programming.
-    mod <- coxph(formula, data = data, ...)
+    mod <- survival::coxph(formula, data = data, ...)
     msum <- summary(mod, conf.int = conf_level)
   })
 
@@ -659,8 +652,6 @@ check_increments <- function(increments, covariates) {
 #'
 #' @export
 #'
-#' @importFrom stats model.matrix coef terms vcov
-#'
 #' @examples
 #' library(scda)
 #' library(dplyr)
@@ -684,7 +675,7 @@ s_cox_multivariate <- function(formula, data,
                                conf_level = 0.95,
                                pval_method = c("wald", "likelihood"),
                                ...) {
-  tf <- terms(formula, specials = c("strata"))
+  tf <- stats::terms(formula, specials = c("strata"))
   covariates <- rownames(attr(tf, "factors"))[-c(1, unlist(attr(tf, "specials")))]
   lapply(
     X = covariates,
@@ -718,10 +709,10 @@ s_cox_multivariate <- function(formula, data,
   if (any(attr(mod$terms, "order") > 1)) {
     for_inter <- all_term_labs[attr(mod$terms, "order") > 1]
     names(for_inter) <- for_inter
-    mmat <- model.matrix(mod)[1, ]
+    mmat <- stats::model.matrix(mod)[1, ]
     mmat[!mmat == 0] <- 0
-    mcoef <- coef(mod)
-    mvcov <- vcov(mod)
+    mcoef <- stats::coef(mod)
+    mvcov <- stats::vcov(mod)
 
     estimate_coef_local <- function(variable, given) {
       estimate_coef(

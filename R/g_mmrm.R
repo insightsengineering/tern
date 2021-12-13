@@ -29,8 +29,6 @@ NULL
 #'   model the marginal residual distribution.
 #'
 #' @export
-#' @import ggplot2
-#' @importFrom stats predict as.formula ppoints qnorm
 #'
 #' @seealso \code{\link{g_mmrm_lsmeans}} for plotting the LS means and contrasts.
 #'
@@ -67,14 +65,14 @@ g_mmrm_diagnostic <- function(
   type = c("fit-residual", "q-q-residual"),
   z_threshold = NULL
 ) {
-  stopifnot(is(object, "mmrm"))
+  stopifnot(inherits(object, "mmrm"))
   type <- match.arg(type)
   stopifnot(is.null(z_threshold) || (is.numeric(z_threshold) && z_threshold > 0))
 
   model <- object$fit
   vars <- object$vars
   amended_data <- object$fit@frame
-  amended_data$.fitted <- predict(
+  amended_data$.fitted <- stats::predict(
     model,
     re.form = NA  # Don't include random effects. We want marginal fitted values.
   )
@@ -93,20 +91,20 @@ g_mmrm_diagnostic <- function(
     }
     )
   )
-    tmp <- ggplot(amended_data, aes_string(x = ".fitted", y = ".resid")) +
-      geom_point(colour = "blue", alpha = 0.3) +
-      facet_grid(as.formula(paste(". ~", vars$visit)), scales = "free_x") +
-      geom_hline(yintercept = 0)
+    tmp <- ggplot2::ggplot(amended_data, ggplot2::aes_string(x = ".fitted", y = ".resid")) +
+      ggplot2::geom_point(colour = "blue", alpha = 0.3) +
+      ggplot2::facet_grid(stats::as.formula(paste(". ~", vars$visit)), scales = "free_x") +
+      ggplot2::geom_hline(yintercept = 0)
     if (!is.null(amended_data_smooth)) {
-      tmp <- tmp + geom_line(
+      tmp <- tmp + ggplot2::geom_line(
         data = amended_data_smooth,
-        aes_string(x = "x", y = "y", group = vars$visit),
+        ggplot2::aes_string(x = "x", y = "y", group = vars$visit),
         color = "red",
         size = 1.4
       ) +
-      geom_ribbon(
+        ggplot2::geom_ribbon(
         data = amended_data_smooth,
-        aes_string(
+        ggplot2::aes_string(
           x = "x",
           y = NULL,
           ymin = "ylow",
@@ -118,8 +116,8 @@ g_mmrm_diagnostic <- function(
       )
     }
     tmp <- tmp +
-      xlab("Fitted values") +
-      ylab("Residuals")
+      ggplot2::xlab("Fitted values") +
+      ggplot2::ylab("Residuals")
 
   } else if (type == "q-q-residual") {
     # We use visit specific standard deviation of marginal residuals for scaling residuals.
@@ -131,19 +129,19 @@ g_mmrm_diagnostic <- function(
     plot_data <- split(amended_data, amended_data[[vars$visit]]) %>%
       lapply(function(data) {
         res <- data.frame(
-          x = qnorm(ppoints(data$.scaled_resid)),
+          x = stats::qnorm(stats::ppoints(data$.scaled_resid)),
           y = sort(data$.scaled_resid)
         )
         res[[vars$visit]] <- data[[vars$visit]]  # Note that these are all the same.
         res
       }) %>%
       do.call(rbind, .)
-    tmp <- ggplot(plot_data, aes_string(x = "x", y = "y")) +
-      geom_point(colour = "blue", alpha = 0.3) +
-      xlab("Standard normal quantiles") +
-      ylab("Standardized residuals") +
-      geom_abline(intercept = 0, slope = 1) +
-      facet_grid(as.formula(paste(". ~", vars$visit)))
+    tmp <- ggplot2::ggplot(plot_data, ggplot2::aes_string(x = "x", y = "y")) +
+      ggplot2::geom_point(colour = "blue", alpha = 0.3) +
+      ggplot2::xlab("Standard normal quantiles") +
+      ggplot2::ylab("Standardized residuals") +
+      ggplot2::geom_abline(intercept = 0, slope = 1) +
+      ggplot2::facet_grid(stats::as.formula(paste(". ~", vars$visit)))
     if (!is.null(z_threshold)) {
       label_data <- plot_data
       label_data$label <- ifelse(
@@ -152,13 +150,13 @@ g_mmrm_diagnostic <- function(
         ""
       )
       tmp <- tmp +
-        geom_text(
-          aes_string(x = "x", y = "y", label = "label"),
+        ggplot2::geom_text(
+          ggplot2::aes_string(x = "x", y = "y", label = "label"),
           data = label_data,
           hjust = "inward",
           size = 2
         ) +
-        coord_cartesian(clip = "off")
+        ggplot2::coord_cartesian(clip = "off")
     }
     tmp
   }
@@ -189,7 +187,6 @@ g_mmrm_diagnostic <- function(
 #' no matter if `select` argument contains `contrasts` value.
 #'
 #' @export
-#' @import ggplot2
 #'
 #' @examples
 #' \dontrun{
@@ -274,7 +271,7 @@ g_mmrm_lsmeans <-
            width = 0.6,
            show_pval = TRUE) {
 
-    stopifnot(is(object, "mmrm"))
+    stopifnot(inherits(object, "mmrm"))
     select <- match.arg(select, several.ok = TRUE)
     if (is.null(object$vars$arm)) {
       select <- "estimates"
@@ -315,11 +312,11 @@ g_mmrm_lsmeans <-
       )
     }
 
-    pd <- position_dodge2(width, preserve = "total", padding = .2)
+    pd <- ggplot2::position_dodge2(width, preserve = "total", padding = .2)
 
-    result <- ggplot(
+    result <- ggplot2::ggplot(
       plot_data,
-      aes_string(
+      ggplot2::aes_string(
         x = v$visit,
         y = "estimate",
         colour = if (arms) v$arm else NULL,
@@ -328,26 +325,26 @@ g_mmrm_lsmeans <-
         ymax = "upper_cl"
       )
     ) +
-      geom_errorbar(width = width, position = pd) +
-      geom_point(position = pd) +
-      expand_limits(x = 0) +
-      scale_color_discrete(
+      ggplot2::geom_errorbar(width = width, position = pd) +
+      ggplot2::geom_point(position = pd) +
+      ggplot2::expand_limits(x = 0) +
+      ggplot2::scale_color_discrete(
         name = if (arms) object$labels$arm else NULL,
         drop = FALSE  # To ensure same colors for only contrasts plot.
       ) +
-      ylab(ylab) +
-      xlab(object$labels$visit) +
-      facet_wrap(
+      ggplot2::ylab(ylab) +
+      ggplot2::xlab(object$labels$visit) +
+      ggplot2::facet_wrap(
         ~ type,
         nrow = length(select),
         scales = "free_y",  # Since estimates and contrasts need to have different y scales.
-        labeller = as_labeller(titles)
+        labeller = ggplot2::as_labeller(titles)
       )
     if ("contrasts" %in% select) {
       result <- result +
-        geom_hline(
+        ggplot2::geom_hline(
           data = data.frame(type = "contrasts", height = 0),
-          aes_string(yintercept = "height"),
+          ggplot2::aes_string(yintercept = "height"),
           colour = "black"
         )
       if (show_pval) {
@@ -369,13 +366,13 @@ g_mmrm_lsmeans <-
           sprintf("%.4f", pval_data$p_value)
         )
         result <- result +
-          geom_text(
+          ggplot2::geom_text(
             data = pval_data,
-            mapping = aes_string(y = "y_pval", vjust = "vjust", label = "label"),
+            mapping = ggplot2::aes_string(y = "y_pval", vjust = "vjust", label = "label"),
             position = pd,
             show.legend = FALSE
           ) +
-          coord_cartesian(clip = "off")
+          ggplot2::coord_cartesian(clip = "off")
       }
     }
     return(result)

@@ -9,7 +9,7 @@ h_grob_median_surv(
   armval = "All",
   x = 0.9,
   y = 0.9,
-  ttheme = ttheme_default()
+  ttheme = gridExtra::ttheme_default()
 )
 }
 \arguments{
@@ -35,13 +35,13 @@ library(dplyr)
 library(survival)
 library(grid)
 
-grid.newpage()
-grid.rect(gp = gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
+grid::grid.newpage()
+grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_grob_median_surv \%>\%
-  grid.draw()
+  grid::grid.draw()
 }
 
 }
