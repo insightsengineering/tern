@@ -17,6 +17,7 @@ NULL
 #'   - `n`: count of complete sample size for the group.
 #'   - `mean`: group data mean.
 #'   - `sd`: standard deviation of the group data.
+#'   - `se`: standard error of the group data.
 #'   - `cv`: coefficient of variation of the group.
 #'   - `min`: minimum value among the group.
 #'   - `max`: maximum value among the group.
@@ -34,7 +35,6 @@ NULL
 summary_numeric_in_cols <- function(x,
                          labelstr = "",
                          custom_label = NULL,
-                         #.stats =  c("n", "mean", "sd", "se", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
                          ...) {
   row_label <- if (labelstr != "") {
     labelstr
@@ -67,6 +67,18 @@ summary_numeric_in_cols <- function(x,
 #' result <- build_table(lyt = lyt, df = ADPC)
 #' result
 #'
+#' # By selecting just some statistics
+#' lyt <- basic_table() %>%
+#'   split_rows_by(var = "ARM") %>%
+#'   split_rows_by(var = "SEX") %>%
+#'   summarize_vars_numeric_in_cols(
+#'   var = "AGE",
+#'   .stats = c("n", "cv"),
+#'   .labels = c(n = "myN", "cv" = "myCV"),
+#'   col_split = TRUE)
+#' result <- build_table(lyt = lyt, df = ADPC)
+#' result
+#'
 #' lyt <- basic_table() %>%
 #'   summarize_vars_numeric_in_cols(var = "AGE", col_split = TRUE)
 #'   result <- build_table(lyt, df = ADPC)
@@ -89,31 +101,11 @@ summary_numeric_in_cols <- function(x,
 #'   result <- build_table(lyt, df = ADPC)
 #' result
 #'
-#' # PKCT01MRD
-#' ADPC$NRELTM1 <- as.factor(ADPC$NRELTM1)
-#' lyt <- basic_table() %>%
-#'   split_rows_by(var = "VISIT") %>%
-#'   split_rows_by(var = "NRELTM2") %>%
-#'   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
-#'   result <- build_table(lyt, df = ADPC)
-#' result
-#'
 summarize_vars_numeric_in_cols <- function(lyt,
                                  var,
                                  ...,
-                                 .stats = c("n", "mean", "sd", "se", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
-                                 .labels = c(
-                                 n = "n",
-                                 mean = "Mean",
-                                 sd = "SD",
-                                 se = "SE",
-                                 cv = "CV % Mean",
-                                 geom_mean = "Geometric Mean",
-                                 geom_cv = "CV % Geometric Mean",
-                                 median = "Median",
-                                 min = "Minimum",
-                                 max = "Maximum"
-                                 ),
+                                 .stats = names(summary_labels()),
+                                 .labels = summary_labels(),
                                  .indent_mods = NULL,
                                  col_split = TRUE) {
 

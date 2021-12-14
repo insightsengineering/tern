@@ -87,7 +87,8 @@ summary_labels <- function() {
     min = "Minimum",
     max = "Maximum",
     geom_mean = "Geometric Mean",
-    geom_cv = "CV Geometric"
+    geom_cv = "CV % Geometric Mean",
+    n = "n"
   )
 }
 
