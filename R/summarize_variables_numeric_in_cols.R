@@ -29,12 +29,12 @@ NULL
 #'
 #' library(scda)
 #' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
-#' s_summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
+#' summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
 #'
-s_summary_numeric_in_cols <- function(x,
+summary_numeric_in_cols <- function(x,
                          labelstr = "",
                          custom_label = NULL,
-                         .stats = c("n", "mean", "sd", "cv", "min", "max", "median", "geom_mean", "geom_cv"),
+                         #.stats =  c("n", "mean", "sd", "se", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
                          ...) {
   row_label <- if (labelstr != "") {
     labelstr
@@ -47,7 +47,7 @@ s_summary_numeric_in_cols <- function(x,
   # Calling s_summary.numeric
   results <- s_summary.numeric(x)
 
-  lapply(results[.stats], with_label, row_label)
+  lapply(results, with_label, row_label)
 }
 
 #' @describeIn summarize_numeric_in_columns Layout creating function which can be used for creating
@@ -64,7 +64,7 @@ s_summary_numeric_in_cols <- function(x,
 #'   split_rows_by(var = "ARM") %>%
 #'   split_rows_by(var = "SEX") %>%
 #'   summarize_vars_numeric_in_cols(var = "AGE", col_split = TRUE)
-#'   result <- build_table(lyt, df = ADPC)
+#' result <- build_table(lyt = lyt, df = ADPC)
 #' result
 #'
 #' lyt <- basic_table() %>%
@@ -117,25 +117,13 @@ summarize_vars_numeric_in_cols <- function(lyt,
                                  .indent_mods = NULL,
                                  col_split = TRUE) {
 
-  sum_format <- c(
-    n = "xx.",
-    mean = "xx.xx",
-    sd = "xx.xx",
-    se = "xx.xx",
-    median = "xx.xx",
-    cv = "xx.x",
-    min = "xx.xx",
-    max = "xx.xx",
-    geom_mean = "xx.xx",
-    geom_cv = "xx.x"
-  )
 
   afun_list <- Map(
     function(stat) {
       make_afun(
-        s_summary_numeric_in_cols,
+       summary_numeric_in_cols,
         .stats = stat,
-        .formats = sum_format[names(sum_format) == stat])
+        .formats = summary_formats()[names(summary_formats()) == stat])
     },
     stat = .stats
   )

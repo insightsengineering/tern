@@ -262,7 +262,7 @@ s_summary.numeric <- function(x, # nolint
   y$min <- y$range[1]
   y$max <- y$range[2]
 
-  y$cv <- c("cv" = y$sd / y$mean * 100)
+  y$cv <- c("cv" = unname(y$sd) / unname(y$mean) * 100)
 
   y$geom_mean <- c("geom_mean" = exp(mean(log(x))))
 

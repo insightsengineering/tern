@@ -139,7 +139,7 @@ Collate:
     'summarize_colvars.R'
     'summarize_num_patients.R'
     'summarize_patients_exposure_in_cols.R'
-    'summarize_pk.R'
+    'summarize_variables_numeric_in_cols.R'
     'survival_biomarkers_subgroups.R'
     'survival_coxph_pairwise.R'
     'survival_duration_subgroups.R'
