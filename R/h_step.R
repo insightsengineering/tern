@@ -255,7 +255,7 @@ h_step_rsp_est <- function(formula,
           )
         } else {
           # clogit needs coxph and strata imported
-          survival::clogit(
+          clogit_with_tryCatch(
             formula = formula,
             data = data,
             subset = .subset
