@@ -47,6 +47,7 @@ summary_formats <- function(type = "numeric") {
     c(n = "xx.",
       mean = "xx.x",
       sd = "xx.x",
+      se = "xx.x",
       mean_sd = "xx.x (xx.x)",
       mean_ci = "(xx.xx, xx.xx)",
       mean_sei = "(xx.xx, xx.xx)",
@@ -76,6 +77,7 @@ summary_labels <- function() {
 
   c(mean = "Mean",
     sd = "SD",
+    se = "SE",
     mean_sd = "Mean (SD)",
     median = "Median",
     mad = "Median Absolute Deviation",
@@ -140,6 +142,7 @@ s_summary <- function(x,
 #' - `n`: the [length()] of `x`.
 #' - `mean`: the [mean()] of `x`.
 #' - `sd`: the [stats::sd()] of `x`.
+#' - `se`: the standard error of `x` mean, i.e.: ([stats::sd()]/[sqrt(length())]).
 #' - `mean_sd`: the [mean()] and [stats::sd()] of `x`.
 #' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
 #' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]/[sqrt()]).
@@ -217,6 +220,8 @@ s_summary.numeric <- function(x, # nolint
   y$mean <- c("mean" = ifelse(length(x) == 0, NA_real_, mean(x, na.rm = FALSE)))
 
   y$sd <- c("sd" = stats::sd(x, na.rm = FALSE))
+
+  y$se <- c("se" = stats::sd(x, na.rm=FALSE)/sqrt(length(na.omit(x))))
 
   y$mean_sd <- c(y$mean, "sd" = stats::sd(x, na.rm = FALSE))
 

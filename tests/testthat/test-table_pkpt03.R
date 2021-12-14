@@ -12,7 +12,7 @@ testthat::test_that("PKPT03 is produced correctly", {
       split_fun = keep_split_levels(c("A: Drug X", "C: Combination"))
     ) %>%
     split_rows_by(var = "PARAM") %>%
-    summarize_pk_in_cols(var = "AVAL", col_split = TRUE)
+    summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
 
   result <- build_table(l, df = adpc)
 

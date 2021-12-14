@@ -34,6 +34,7 @@ NULL
 s_summary_numeric_in_cols <- function(x,
                          labelstr = "",
                          custom_label = NULL,
+                         .stats = c("n", "mean", "sd", "cv", "min", "max", "median", "geom_mean", "geom_cv"),
                          ...) {
   row_label <- if (labelstr != "") {
     labelstr
@@ -42,12 +43,11 @@ s_summary_numeric_in_cols <- function(x,
   } else {
     "Statistics"
   }
-  stats_list <- c("n", "mean", "sd", "cv", "min", "max", "median", "geom_mean", "geom_cv")
 
   # Calling s_summary.numeric
   results <- s_summary.numeric(x)
 
-  lapply(results[stats_list], with_label, row_label)
+  lapply(results[.stats], with_label, row_label)
 }
 
 #' @describeIn summarize_numeric_in_columns Layout creating function which can be used for creating
@@ -101,11 +101,12 @@ s_summary_numeric_in_cols <- function(x,
 summarize_vars_numeric_in_cols <- function(lyt,
                                  var,
                                  ...,
-                                 .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
+                                 .stats = c("n", "mean", "sd", "se", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
                                  .labels = c(
                                  n = "n",
                                  mean = "Mean",
                                  sd = "SD",
+                                 se = "SE",
                                  cv = "CV % Mean",
                                  geom_mean = "Geometric Mean",
                                  geom_cv = "CV % Geometric Mean",
@@ -120,6 +121,7 @@ summarize_vars_numeric_in_cols <- function(lyt,
     n = "xx.",
     mean = "xx.xx",
     sd = "xx.xx",
+    se = "xx.xx",
     median = "xx.xx",
     cv = "xx.x",
     min = "xx.xx",
