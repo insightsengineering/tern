@@ -66,8 +66,8 @@ Unlike noted in the documentation, to match SAS need type = 2.
 control_summarize_vars <- function(conf_level = 0.95,
                               quantiles = c(0.25, 0.75),
                               quantile_type = 2) {
-  
-  assert_that(
+
+  assertthat::assert_that(
     all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
     identical(length(quantiles), 2L),
     is_proportion(conf_level),
@@ -95,8 +95,8 @@ s_summary.numeric <- function(x,
                               .var,
                               control = control_summarize_vars(),
                               ...) {
-  assert_that(is.numeric(x))
-  
+  assertthat::assert_that(is.numeric(x))
+
   conf_level <- control$conf_level
   quantiles <- control$quantiles
   quantile_type <- control$quantile_type
@@ -112,11 +112,11 @@ s_summary.numeric <- function(x,
     sd = sd(x)
   )
   y$median <- median(x)
-  
+
   qts <- if (!na.rm && any(is.na(x))) {
     c(NA_real_, NA_real_)
   } else {
-    quantile(x, probs = quantiles, type = quantile_type, na.rm = na.rm)  
+    quantile(x, probs = quantiles, type = quantile_type, na.rm = na.rm)
   }
   y$quantiles <- with_label(unname(qts), paste0(quantiles[1] * 100, "% and ", quantiles[2] * 100, "%-ile"))
 
@@ -128,7 +128,7 @@ s_summary.numeric <- function(x,
   # c() to remove conf_level attribute from stat_median_ci output
   median_ci <- c(stat_median_ci(x, conf_level = conf_level, na.rm = na.rm))
   y$median_ci <- with_label(median_ci, paste("Median", tern:::f_conf_level(conf_level)))
-  
+
   y
 }
 
@@ -285,4 +285,3 @@ basic_table() %>%
 
 # Testing other layout functions
 Note that `compare_vars`, `summarize_change` and `summarize_colvars` also depend on `s_summary.numeric`. During production will test if everything is working well there too.
-

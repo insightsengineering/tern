@@ -6,7 +6,7 @@ library(magrittr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("AET02 variant 1 is produced correctly", {
+testthat::test_that("AET02 variant 1 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -151,11 +151,11 @@ test_that("AET02 variant 1 is produced correctly", {
     ),
     .Dim = c(35L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("AET02 variant 2 is produced correctly", {
+testthat::test_that("AET02 variant 2 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -377,11 +377,11 @@ test_that("AET02 variant 2 is produced correctly", {
     ),
     .Dim = c(35L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("AET02 variant 3 is produced correctly", {
+testthat::test_that("AET02 variant 3 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -683,11 +683,11 @@ test_that("AET02 variant 3 is produced correctly", {
     ),
     .Dim = c(62L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 })
 
-test_that("AET02 variant 4 is produced correctly", {
+testthat::test_that("AET02 variant 4 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -740,10 +740,10 @@ test_that("AET02 variant 4 is produced correctly", {
     ),
     .Dim = c(14L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET02 variant 5 is produced correctly", {
+testthat::test_that("AET02 variant 5 is produced correctly", {
   adae_5 <- adae %>% dplyr::filter(ARM != "C: Combination")
 
   lyt <- basic_table() %>%
@@ -923,10 +923,10 @@ test_that("AET02 variant 5 is produced correctly", {
     ),
     .Dim = c(35L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET02 variant 6 is produced correctly", {
+testthat::test_that("AET02 variant 6 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -949,7 +949,7 @@ test_that("AET02 variant 6 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -972,10 +972,10 @@ test_that("AET02 variant 6 is produced correctly", {
     ),
     .Dim = c(10L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET02 variant 7 is produced correctly", {
+testthat::test_that("AET02 variant 7 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -1012,7 +1012,7 @@ test_that("AET02 variant 7 is produced correctly", {
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences, decreasing = TRUE)
 
   criteria_fun <- function(tr) {
-    is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1039,10 +1039,10 @@ test_that("AET02 variant 7 is produced correctly", {
     ),
     .Dim = c(14L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET02 variant 8 is produced correctly", {
+testthat::test_that("AET02 variant 8 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -1065,7 +1065,7 @@ test_that("AET02 variant 8 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1088,10 +1088,10 @@ test_that("AET02 variant 8 is produced correctly", {
     ),
     .Dim = c(10L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET02 variant 9 is produced correctly", {
+testthat::test_that("AET02 variant 9 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -1114,7 +1114,7 @@ test_that("AET02 variant 9 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1139,10 +1139,10 @@ test_that("AET02 variant 9 is produced correctly", {
     ),
     .Dim = c(11, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET02 variant 10 is produced correctly", {
+testthat::test_that("AET02 variant 10 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -1165,7 +1165,7 @@ test_that("AET02 variant 10 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1192,10 +1192,10 @@ test_that("AET02 variant 10 is produced correctly", {
     ),
     .Dim = c(13L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET02 variant 11 is produced correctly", {
+testthat::test_that("AET02 variant 11 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -1218,7 +1218,7 @@ test_that("AET02 variant 11 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1237,10 +1237,10 @@ test_that("AET02 variant 11 is produced correctly", {
     ),
     .Dim = c(6L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET02 variant 12 is produced correctly", {
+testthat::test_that("AET02 variant 12 is produced correctly", {
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
@@ -1263,7 +1263,7 @@ test_that("AET02 variant 12 is produced correctly", {
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
-    is(tr, "ContentRow")
+    inherits(tr, "ContentRow")
   }
   result <- trim_rows(result, criteria = criteria_fun)
 
@@ -1287,5 +1287,5 @@ test_that("AET02 variant 12 is produced correctly", {
     ),
     .Dim = c(8L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

@@ -1,6 +1,6 @@
 library(dplyr)
 
-test_that("h_count_cumulative works with healthy input and default arguments", {
+testthat::test_that("h_count_cumulative works with healthy input and default arguments", {
   set.seed(1, kind = "Mersenne-Twister")
   x <- c(sample(1:10, 10), NA)
 
@@ -13,12 +13,12 @@ test_that("h_count_cumulative works with healthy input and default arguments", {
     count = 5,
     fraction = 5 / 11
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("h_count_cumulative works with customized arguments", {
+testthat::test_that("h_count_cumulative works with customized arguments", {
   set.seed(1, kind = "Mersenne-Twister")
-  rand <- rnorm(10, 5, 5)
+  rand <- stats::rnorm(10, 5, 5)
   x <- c(rand[1:5], NA, rand[6:10])
 
   result <- h_count_cumulative(
@@ -33,10 +33,10 @@ test_that("h_count_cumulative works with customized arguments", {
     count = 7,
     fraction = 7 / 11
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_count_cumulative works with healthy input and default arguments", {
+testthat::test_that("s_count_cumulative works with healthy input and default arguments", {
   set.seed(1, kind = "Mersenne-Twister")
   x <- c(sample(1:10, 10), NA)
 
@@ -53,12 +53,12 @@ test_that("s_count_cumulative works with healthy input and default arguments", {
   )
   attr(expected$count_fraction$`4`, "label") <- "<= 4"
   attr(expected$count_fraction$`7`, "label") <- "<= 7"
-  expect_equal(result, expected, tolerance = .00001)
+  testthat::expect_equal(result, expected, tolerance = .00001)
 })
 
-test_that("s_count_cumulative works with customized arguments", {
+testthat::test_that("s_count_cumulative works with customized arguments", {
   set.seed(1, kind = "Mersenne-Twister")
-  rand <- rnorm(10, 5, 5)
+  rand <- stats::rnorm(10, 5, 5)
   x <- c(rand[1:5], NA, rand[6:10])
 
   result <- s_count_cumulative(
@@ -77,10 +77,10 @@ test_that("s_count_cumulative works with customized arguments", {
   )
   attr(expected$count_fraction$`4`, "label") <- "> 4"
   attr(expected$count_fraction$`7`, "label") <- "> 7"
-  expect_equal(result, expected, tolerance = .00001)
+  testthat::expect_equal(result, expected, tolerance = .00001)
 })
 
-test_that("count_cumulative works with default arguments", {
+testthat::test_that("count_cumulative works with default arguments", {
   set.seed(1, kind = "Mersenne-Twister")
   df <- data.frame(
     a = c(sample(1:10, 10), NA),
@@ -104,10 +104,10 @@ test_that("count_cumulative works with default arguments", {
     ),
     .Dim = 4:3
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_cumulative works with customized arguments", {
+testthat::test_that("count_cumulative works with customized arguments", {
   set.seed(1, kind = "Mersenne-Twister")
   df <- data.frame(
     a = c(sample(1:10, 10), NA),
@@ -133,5 +133,5 @@ test_that("count_cumulative works with customized arguments", {
     ),
     .Dim = 4:3
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

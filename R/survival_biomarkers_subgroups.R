@@ -87,10 +87,10 @@ extract_survival_biomarkers <- function(variables,
                                         groups_lists = list(),
                                         control = control_coxreg(),
                                         label_all = "All Patients") {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.string(label_all)
+    assertthat::is.string(label_all)
   )
   # Start with all patients.
   result_all <- h_coxreg_mult_cont_df(
@@ -164,7 +164,7 @@ extract_survival_biomarkers <- function(variables,
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.character(df$biomarker),
     is.character(df$biomarker_label),

@@ -16,7 +16,7 @@ get_adrs <- function() {
       PARAMCD == "BESRSPI"
     ) %>%
     dplyr::mutate(
-      Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+      Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
       SEX = factor(SEX, c("M", "F")),
       RACE = as.character(RACE),
       RACE = factor(
@@ -31,7 +31,7 @@ get_adrs <- function() {
   adrs_f
 }
 
-test_that("LGRT02 without interaction term is produced correctly", {
+testthat::test_that("LGRT02 without interaction term is produced correctly", {
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -65,10 +65,10 @@ test_that("LGRT02 without interaction term is produced correctly", {
       "", "0.9936", "0.9940", "0.9937", "1.0000", "0.9999", "", "0.1866"),
     .Dim = c(17L, 7L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("LGRT02 with categorical interaction is produced correctly", {
+testthat::test_that("LGRT02 with categorical interaction is produced correctly", {
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -108,10 +108,10 @@ test_that("LGRT02 with categorical interaction is produced correctly", {
       "", "", "", "", "0.9999", "", "0.9945", "0.9918"),
     .Dim = c(24L, 7L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("LGRT02 with continuous interaction is produced correctly", {
+testthat::test_that("LGRT02 with continuous interaction is produced correctly", {
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -152,10 +152,10 @@ test_that("LGRT02 with continuous interaction is produced correctly", {
        "0.3034"),
     .Dim = c(24L, 7L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("LGRT02 with setting values indicating an event and custom alpha level is produced correctly", {
+testthat::test_that("LGRT02 with setting values indicating an event and custom alpha level is produced correctly", {
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -194,5 +194,5 @@ test_that("LGRT02 with setting values indicating an event and custom alpha level
        "0.9685", "", "0.9936", "0.9940", "0.9937", "1.0000", "0.9999"),
     .Dim = c(17L, 7L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

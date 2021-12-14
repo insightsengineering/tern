@@ -18,7 +18,7 @@ stack_adae_by_smq <- function(adae, smq) {
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("AET02SMQ variant 1 is produced correctly", {
+testthat::test_that("AET02SMQ variant 1 is produced correctly", {
 
   adae <- stack_adae_by_smq(adae, c("SMQ01NAM"))
 
@@ -75,10 +75,10 @@ test_that("AET02SMQ variant 1 is produced correctly", {
     ),
     .Dim = c(8L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET02SMQ variant 2 is produced correctly", {
+testthat::test_that("AET02SMQ variant 2 is produced correctly", {
 
   adae <- stack_adae_by_smq(adae, c("SMQ01NAM", "CQ01NAM"))
 
@@ -171,5 +171,5 @@ test_that("AET02SMQ variant 2 is produced correctly", {
     ),
     .Dim = c(13L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

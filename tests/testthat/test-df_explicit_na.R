@@ -14,7 +14,7 @@ example_data <- {
   my_data
 }
 
-test_that("Default fill in of missing values and conversion to factor works as expected", {
+testthat::test_that("Default fill in of missing values and conversion to factor works as expected", {
 
   my_data <- example_data
   result <- df_explicit_na(data = my_data, omit_columns = NULL, char_as_factor = TRUE)
@@ -50,10 +50,10 @@ test_that("Default fill in of missing values and conversion to factor works as e
   )
   var_labels(expected) <- paste0("Variable ", 1:8)
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("Default settings work when input data does not have labels", {
+testthat::test_that("Default settings work when input data does not have labels", {
 
   my_data <- example_data %>%
     var_labels_remove()
@@ -90,10 +90,10 @@ test_that("Default settings work when input data does not have labels", {
     stringsAsFactors = FALSE
   )
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })
 
-test_that("Only replace missing values without modifying character or logical variables", {
+testthat::test_that("Only replace missing values without modifying character or logical variables", {
 
   my_data <- example_data
   result <- df_explicit_na(data = my_data, omit_columns = NULL, char_as_factor = FALSE)
@@ -120,11 +120,11 @@ test_that("Only replace missing values without modifying character or logical va
   )
   var_labels(expected) <- paste0("Variable ", 1:8)
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
 })
 
-test_that("Conversion to factor works with some variables omitted", {
+testthat::test_that("Conversion to factor works with some variables omitted", {
 
   my_data <- example_data
   result <- df_explicit_na(
@@ -165,11 +165,11 @@ test_that("Conversion to factor works with some variables omitted", {
   )
   var_labels(expected) <- paste0("Variable ", 1:8)
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
 })
 
-test_that("Only convert logical variables but not character variables", {
+testthat::test_that("Only convert logical variables but not character variables", {
 
   my_data <- example_data
   result <- df_explicit_na(
@@ -204,31 +204,31 @@ test_that("Only convert logical variables but not character variables", {
   )
   var_labels(expected) <- paste0("Variable ", 1:8)
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 
 })
 
-test_that("Check Errors", {
+testthat::test_that("Check Errors", {
 
   my_data <- example_data
 
-  expect_error(df_explicit_na(my_data, na_level = NA), "na_level")
-  expect_error(df_explicit_na(my_data, char_as_factor = "TRUE"), "logical")
-  expect_error(df_explicit_na(my_data, omit_columns = 1), "character")
-  expect_error(df_explicit_na(my_data, na_level = NULL), "character")
-  expect_error(df_explicit_na(c("A")), "data.frame")
+  testthat::expect_error(df_explicit_na(my_data, na_level = NA), "na_level")
+  testthat::expect_error(df_explicit_na(my_data, char_as_factor = "TRUE"), "logical")
+  testthat::expect_error(df_explicit_na(my_data, omit_columns = 1), "character")
+  testthat::expect_error(df_explicit_na(my_data, na_level = NULL), "character")
+  testthat::expect_error(df_explicit_na(c("A")), "data.frame")
 
 })
 
-test_that("df_explicit_na just returns unmodified data if all columns are omitted", {
+testthat::test_that("df_explicit_na just returns unmodified data if all columns are omitted", {
 
   my_data <- example_data
-  result <- expect_silent(df_explicit_na(
+  result <- testthat::expect_silent(df_explicit_na(
     data = my_data,
     omit_columns = names(my_data),
     char_as_factor = FALSE,
     logical_as_factor = TRUE
   ))
-  expect_identical(result, my_data)
+  testthat::expect_identical(result, my_data)
 
 })

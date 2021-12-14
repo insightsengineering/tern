@@ -51,7 +51,7 @@ NULL
 #'
 h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 
-  assert_that(
+  assertthat::assert_that(
     is.list(grade_groups),
     is.list(refs)
   )
@@ -105,7 +105,6 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #' @describeIn count_occurrences_by_grade Statistics function which given occurrence data counts the
 #'  number of patients by highest grade. Returns a list of counts and fractions with one element
 #'  per grade level or grade level grouping.
-#' @importFrom stats aggregate
 #' @export
 #' @examples
 #'
@@ -140,7 +139,7 @@ s_count_occurrences_by_grade <- function(df,
                                          remove_single = TRUE,
                                          labelstr = "") {
 
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, list(grade = .var, id = id)),
     is_valid_factor(df[[.var]])
   )
@@ -153,9 +152,9 @@ s_count_occurrences_by_grade <- function(df,
 
   } else {
 
-    assert_that(
+    assertthat::assert_that(
       is_nonnegative_count(.N_col),
-      noNA(df[[id]]),
+      assertthat::noNA(df[[id]]),
       is_valid_character(df[[id]]) || is_valid_factor(df[[id]])
     )
 
@@ -169,7 +168,7 @@ s_count_occurrences_by_grade <- function(df,
 
     }
 
-    df_max <- aggregate(grade ~ id, FUN = max, drop = FALSE)
+    df_max <- stats::aggregate(grade ~ id, FUN = max, drop = FALSE)
     l_count <- as.list(table(df_max$grade))
   }
 

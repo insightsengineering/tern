@@ -1,4 +1,4 @@
-test_that("s_num_patients works as expected with healthy input", {
+testthat::test_that("s_num_patients works as expected with healthy input", {
   x <- as.character(c(1, 2, 1, 4, NA))
   result <- s_num_patients(x = x, labelstr = "", .N_col = 5)
   expected <- list(
@@ -6,10 +6,10 @@ test_that("s_num_patients works as expected with healthy input", {
     nonunique = 4,
     unique_count = with_label(3, " (n)")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_num_patients works as expected with empty input", {
+testthat::test_that("s_num_patients works as expected with empty input", {
   x <- as.character()
   result <- s_num_patients(x = x, labelstr = "", .N_col = 0)
   expected <- list(
@@ -17,10 +17,10 @@ test_that("s_num_patients works as expected with empty input", {
     nonunique = 0,
     unique_count = with_label(0, " (n)")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_num_patients_content works as expected with healthy input", {
+testthat::test_that("s_num_patients_content works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA)),
     AGE = c(10, 15, 10, 17, 8)
@@ -31,10 +31,10 @@ test_that("s_num_patients_content works as expected with healthy input", {
     nonunique = 4,
     unique_count = with_label(3, " (n)")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("summarize_num_patients works as expected with healthy input", {
+testthat::test_that("summarize_num_patients works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
     ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
@@ -56,7 +56,7 @@ test_that("summarize_num_patients works as expected with healthy input", {
     ),
     .Dim = c(5L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Check with number of unique patients only
   result <- basic_table() %>%
@@ -73,7 +73,7 @@ test_that("summarize_num_patients works as expected with healthy input", {
     ),
     .Dim = c(3L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Check with number of non-unique patients only
   result <- basic_table() %>%
@@ -90,7 +90,7 @@ test_that("summarize_num_patients works as expected with healthy input", {
     ),
     .Dim = c(3L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Check with number of unique patients count only
   result <- basic_table() %>%
@@ -107,10 +107,10 @@ test_that("summarize_num_patients works as expected with healthy input", {
     ),
     .Dim = c(3L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("s_num_patients count_by works as expected with healthy input", {
+testthat::test_that("s_num_patients count_by works as expected with healthy input", {
   x <- as.character(c(1, 2, 1, 4, 1))
   y <- as.character(c(6, 7, 8, 9, 6))
   result <- s_num_patients(x = x, labelstr = "", .N_col = 5, count_by = y)
@@ -119,10 +119,10 @@ test_that("s_num_patients count_by works as expected with healthy input", {
     nonunique = 4,
     unique_count = with_label(3, " (n)")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_num_patients count_by with missing works as expected with healthy input", {
+testthat::test_that("s_num_patients count_by with missing works as expected with healthy input", {
   x <- as.character(c(1, 2, 1, 4, NA))
   y <- as.character(c(6, 7, 8, 9, 6))
   result <- s_num_patients(x = x, labelstr = "", .N_col = 5, count_by = y)
@@ -131,10 +131,10 @@ test_that("s_num_patients count_by with missing works as expected with healthy i
     nonunique = 4,
     unique_count = with_label(3, " (n)")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_num_patients count_by with missing case 2 works as expected with healthy input", {
+testthat::test_that("s_num_patients count_by with missing case 2 works as expected with healthy input", {
   x <- as.character(c(1, 2, 1, 4, 1))
   y <- as.character(c(6, 7, NA, 9, 6))
   result <- s_num_patients(x = x, labelstr = "", .N_col = 5, count_by = y)
@@ -143,10 +143,10 @@ test_that("s_num_patients count_by with missing case 2 works as expected with he
     nonunique = 3,
     unique_count = with_label(3, " (n)")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_num_patients_content with count_by works as expected with healthy input", {
+testthat::test_that("s_num_patients_content with count_by works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA)),
     AGE = as.character(c(10, 15, 10, 17, 8))
@@ -157,10 +157,10 @@ test_that("s_num_patients_content with count_by works as expected with healthy i
     nonunique = 3,
     unique_count = with_label(3, " (n)")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_num_patients_content with count_by case 2 works as expected with healthy input", {
+testthat::test_that("s_num_patients_content with count_by case 2 works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA)),
     AGE = as.character(c(10, 15, 11, 17, 8))
@@ -171,10 +171,10 @@ test_that("s_num_patients_content with count_by case 2 works as expected with he
     nonunique = 4,
     unique_count = with_label(3, " (n)")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_num_patients_content with count_by trivial cases, identical to without count_by", {
+testthat::test_that("s_num_patients_content with count_by trivial cases, identical to without count_by", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, 9)),
     AGE = as.character(c(10, 15, 11, 17, 8))
@@ -185,10 +185,10 @@ test_that("s_num_patients_content with count_by trivial cases, identical to with
     nonunique = 4,
     unique_count = with_label(4, " (n)")
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("summarize_num_patients with count_by works as expected with healthy input", {
+testthat::test_that("summarize_num_patients with count_by works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
     ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
@@ -210,7 +210,7 @@ test_that("summarize_num_patients with count_by works as expected with healthy i
     ),
     .Dim = c(5L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Check with number of unique patients only
   result <- basic_table() %>%
@@ -227,7 +227,7 @@ test_that("summarize_num_patients with count_by works as expected with healthy i
     ),
     .Dim = c(3L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Check with number of non-unique patients only
   result <- basic_table() %>%
@@ -244,7 +244,7 @@ test_that("summarize_num_patients with count_by works as expected with healthy i
     ),
     .Dim = c(3L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   # Check with number of unique patients count only
   result <- basic_table() %>%
@@ -261,10 +261,11 @@ test_that("summarize_num_patients with count_by works as expected with healthy i
     ),
     .Dim = c(3L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("summarize_num_patients with count_by different combinations works as expected with healthy input", {
+testthat::test_that("summarize_num_patients with count_by different
+                    combinations works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
     ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
@@ -286,7 +287,7 @@ test_that("summarize_num_patients with count_by different combinations works as 
     ),
     .Dim = c(5L, 3L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 
 
 })

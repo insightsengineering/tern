@@ -8,18 +8,18 @@ get_adsl <- function() {
   set.seed(1)
   #nolint start
   adsl_f <- adsl %>%
-    filter(SAFFL == "Y") %>% # Safety Evaluable Population
-    mutate(
-      STSTFL = case_when(
+    dplyr::filter(SAFFL == "Y") %>% # Safety Evaluable Population
+    dplyr::mutate(
+      STSTFL = dplyr::case_when(
         is.na(RANDDT) ~ "N", # derive flag for "Started Study",
         TRUE ~ "Y"),
-      COMPSTUD = case_when(
+      COMPSTUD = dplyr::case_when(
         EOSSTT == "COMPLETED" ~ "Y", # derive flag for "Completed Study"
         TRUE ~ "N"),
-      DISCSTUD = case_when(
+      DISCSTUD = dplyr::case_when(
         EOSSTT == "DISCONTINUED" ~ "Y", # derive flag for "Discontinued study"
         TRUE ~ "N"),
-      AGEGRP = case_when(
+      AGEGRP = dplyr::case_when(
         AGE < 65 ~ "< 65 yrs",
         AGE >= 65 ~ ">= 65 yrs"),
       ETHNIC = sample(
@@ -50,7 +50,7 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   anl_terms <- adae %>%
     dplyr::group_by(ARM, AEBODSYS, AEDECOD) %>%
     dplyr::summarise(
-      unique_terms = n_distinct(USUBJID)
+      unique_terms = dplyr::n_distinct(USUBJID)
     ) %>%
     dplyr::ungroup()
 
@@ -75,7 +75,7 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
 }
 
 
-test_that("Patient Disposition table is produced correctly", {
+testthat::test_that("Patient Disposition table is produced correctly", {
   adsl <- get_adsl()
 
   result <- basic_table() %>%
@@ -123,10 +123,10 @@ test_that("Patient Disposition table is produced correctly", {
     ),
     .Dim = c(12L, 5L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("Demographic table is produced correctly", {
+testthat::test_that("Demographic table is produced correctly", {
   adsl <- get_adsl()
   vars <- c("AGE", "AGEGRP", "SEX", "RACE", "ETHNIC")
   var_labels <- c(
@@ -168,10 +168,10 @@ test_that("Demographic table is produced correctly", {
       "74 (18.5%)", "25 (6.2%)", "1 (0.2%)", "1 (0.2%)", "", "400",
       "147 (36.8%)", "125 (31.2%)", "128 (32%)"),
     .Dim = c(28L, 5L))
-    expect_identical(result_matrix, expected_matrix)
+    testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("Enrollment by Country Table is produced correctly", {
+testthat::test_that("Enrollment by Country Table is produced correctly", {
   adsl <- get_adsl()
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -195,10 +195,10 @@ test_that("Enrollment by Country Table is produced correctly", {
       "0 (0%)"),
     .Dim = c(13L, 5L)
     )
-    expect_identical(result_matrix, expected_matrix)
+    testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("Death table is produced correctly", {
+testthat::test_that("Death table is produced correctly", {
   adsl <- get_adsl()
 
   result <- basic_table() %>%
@@ -219,13 +219,13 @@ test_that("Death table is produced correctly", {
     .Dim = c(3L, 5L)
   )
 
-    expect_identical(result_matrix, expected_matrix)
+    testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("Table of Serious Adverse Events is produced correctly (for one specific treatment arm)", {
+testthat::test_that("Table of Serious Adverse Events is produced correctly (for one specific treatment arm)", {
 
-  adae_serious <- adae %>% filter(AESER == "Y", SAFFL == "Y")
-  adae_serious_arm <- adae_serious %>% filter(ARM == "A: Drug X")
+  adae_serious <- adae %>% dplyr::filter(AESER == "Y", SAFFL == "Y")
+  adae_serious_arm <- adae_serious %>% dplyr::filter(ARM == "A: Drug X")
 
   filters_list <- list(
     related = with_label(c(AEREL = "Y"), "Events (Related)"),
@@ -259,12 +259,12 @@ test_that("Table of Serious Adverse Events is produced correctly (for one specif
       "", "", "0", "", "56", "", "0", "", "61"),
     .Dim = c(10L, 6L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("Table of Non-Serious Adverse Events is produced correctly", {
+testthat::test_that("Table of Non-Serious Adverse Events is produced correctly", {
   adsl <- get_adsl()
-  adae_nonser <- adae %>% filter(AESER != "Y", SAFFL == "Y")
+  adae_nonser <- adae %>% dplyr::filter(AESER != "Y", SAFFL == "Y")
   adae_trim <- get_adae_trimmed(adsl, adae_nonser, cutoff_rate = 0.05)
 
   result <- basic_table() %>%
@@ -298,5 +298,5 @@ test_that("Table of Non-Serious Adverse Events is produced correctly", {
       "", "65", "", "64", "", "74"),
     .Dim = c(16L, 7L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

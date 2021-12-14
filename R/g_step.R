@@ -7,7 +7,6 @@
 #' @return A `tibble` with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,
 #'   respectively. Additional attributes carry meta data also used for plotting.
 #' @seealso [g_step()] which consumes the result from this function.
-#' @importFrom tibble as_tibble
 #' @method tidy step
 #' @export
 #' @examples
@@ -27,7 +26,7 @@
 #' broom::tidy(step_matrix)
 #'
 tidy.step <- function(x, ...) {  #nolint #nousage
-  assert_that(is(x, "step"))
+  assertthat::assert_that(inherits(x, "step"))
   dat <- as.data.frame(x)
   nams <- names(dat)
   is_surv <- "loghr" %in% names(dat)
@@ -74,8 +73,6 @@ tidy.step <- function(x, ...) {  #nolint #nousage
 #'   ribbon area, or `NULL` to not plot a CI ribbon.
 #'
 #' @return The `ggplot2` object.
-#' @importFrom tibble is_tibble
-#' @importFrom scales percent
 #' @export
 #'
 #' @examples
@@ -103,7 +100,7 @@ tidy.step <- function(x, ...) {  #nolint #nousage
 #' # Add the reference 1 horizontal line.
 #' library(ggplot2)
 #' g_step(step_data) +
-#'   geom_hline(aes(yintercept = 1), linetype = 2)
+#'   ggplot2::geom_hline(ggplot2::aes(yintercept = 1), linetype = 2)
 #'
 #' # Use actual values instead of percentiles, different color for estimate and no CI,
 #' # use log scale for y axis.
@@ -117,7 +114,7 @@ tidy.step <- function(x, ...) {  #nolint #nousage
 #' # Adding another curve based on additional column.
 #' step_data$extra <- exp(step_data$`Percentile Center`)
 #' g_step(step_data) +
-#'   geom_line(aes(y = extra), linetype = 2, color = "green")
+#'   ggplot2::geom_line(ggplot2::aes(y = extra), linetype = 2, color = "green")
 #'
 #' # Response example.
 #' vars <- list(
@@ -141,32 +138,32 @@ g_step <- function(df,
                    use_percentile = "Percentile Center" %in% names(df),
                    est = list(col = "black", lty = 1),
                    ci_ribbon = list(fill = "lightblue", alpha = 0.5)) {
-  assert_that(
+  assertthat::assert_that(
     tibble::is_tibble(df),
-    is.flag(use_percentile),
-    is_fully_named_list(est),
-    is.null(ci_ribbon) || is_fully_named_list(ci_ribbon)
+    assertthat::is.flag(use_percentile),
+    utils.nest::is_fully_named_list(est),
+    is.null(ci_ribbon) || utils.nest::is_fully_named_list(ci_ribbon)
   )
   x_var <- ifelse(use_percentile, "Percentile Center", "Interval Center")
   df$x <- df[[x_var]]
   attrs <- attributes(df)
   df$y <- df[[attrs$estimate]]
-  p <- ggplot(df, aes_string(x = "x"))
+  p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "x"))
   if (!is.null(ci_ribbon)) {
-    p <- p + geom_ribbon(
-      aes_string(ymin = "ci_lower", ymax = "ci_upper"),
+    p <- p + ggplot2::geom_ribbon(
+      ggplot2::aes_string(ymin = "ci_lower", ymax = "ci_upper"),
       fill = ci_ribbon$fill,
       alpha = ci_ribbon$alpha
     )
   }
-  p <- p + geom_line(
-    aes_string(y = "y"),
+  p <- p + ggplot2::geom_line(
+    ggplot2::aes_string(y = "y"),
     color = est$col,
     linetype = est$lty
   )
-  p <- p + labs(x = attrs$biomarker, y = attrs$estimate)
+  p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate)
   if (use_percentile) {
-    p <- p + scale_x_continuous(labels = scales::percent)
+    p <- p + ggplot2::scale_x_continuous(labels = scales::percent)
   }
   p
 }

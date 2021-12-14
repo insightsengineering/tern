@@ -10,8 +10,6 @@
 #'   specification) is included. If a label is not found, the variable name is
 #'   instead used.
 #'
-#' @importFrom dplyr filter
-#' @importFrom stats complete.cases setNames
 check_mmrm_vars <- function(vars,
                             data) {
   stopifnot(is.list(vars))
@@ -31,7 +29,7 @@ check_mmrm_vars <- function(vars,
     for (v in vars[[var]]) {
       label <- attr(data[[v]], "label")
       string <- ifelse(!is.null(label), label, v)
-      res <- c(res, setNames(string, v))
+      res <- c(res, stats::setNames(string, v))
     }
     labels[[var]] <<- res  # Saves the result under the `var` element of `labels`.
   }
@@ -49,7 +47,7 @@ check_mmrm_vars <- function(vars,
   # Subset data to observations with complete regressors.
   regressor_vars <- c(vars$arm, vars$visit, vars$parts)
   data_complete_regressors <- data %>%
-    dplyr::filter(complete.cases(data[, regressor_vars])) %>%
+    dplyr::filter(stats::complete.cases(data[, regressor_vars])) %>%
     droplevels()
 
   # Check variable values in this complete data set.
@@ -58,7 +56,7 @@ check_mmrm_vars <- function(vars,
 
   if (is_specified("arm")) {
     arm_values <- data_complete_regressors[[vars$arm]]
-    assert_that(is_df_with_nlevels_factor(
+    assertthat::assert_that(is_df_with_nlevels_factor(
       data_complete_regressors,
       variable = vars$arm,
       n_levels = 2,
@@ -71,12 +69,12 @@ check_mmrm_vars <- function(vars,
 
   # Remove all entries where response is NA, droplevels as well.
   data_complete <- data_complete_regressors %>%
-    filter(!is.na(data_complete_regressors[, vars$response])) %>%
+    dplyr::filter(!is.na(data_complete_regressors[, vars$response])) %>%
     droplevels()
 
   if (is_specified("arm")) {
     # Check all arms will still be present after NA filtering.
-    assert_that(is_df_with_nlevels_factor(
+    assertthat::assert_that(is_df_with_nlevels_factor(
       data_complete,
       variable = vars$arm,
       n_levels = nlevels(arm_values),
@@ -102,8 +100,6 @@ check_mmrm_vars <- function(vars,
 #' Helper function to build the MMRM formula.
 #'
 #' @inheritParams fit_mmrm
-#'
-#' @importFrom stats as.formula
 #'
 #' @return the complete MMRM formula to use with [lme4::lmer()].
 #'
@@ -136,7 +132,7 @@ build_mmrm_formula <- function(
   random_effects_part <- cor_struct %>%
     switch(
       "unstructured" = "(0 + visit_var | id_var)",
-      "random-quadratic" = "(poly(as.numeric(visit_var), df=2) | id_var)",
+      "random-quadratic" = "(stats::poly(as.numeric(visit_var), df=2) | id_var)",
       "random-slope" = "(as.numeric(visit_var) | id_var)",
       "compound-symmetry" = "(1 | id_var)"
     ) %>%
@@ -156,7 +152,7 @@ build_mmrm_formula <- function(
     )
   }
 
-  full_formula <- as.formula(paste(
+  full_formula <- stats::as.formula(paste(
     vars$response,
     "~",
     rhs_formula
@@ -182,13 +178,10 @@ build_mmrm_formula <- function(
 #'   Note that the order of rows/columns in the returned matrix corresponds to the order of the
 #'   `id`'s observations in the original data set.
 #'
-#' @importFrom lme4 getME
-#' @importFrom stats sigma
-#'
 get_lme4_cov_estimate <- function(fit) {
-  stopifnot(is(fit, "merMod"))
+  stopifnot(inherits(fit, "merMod"))
   # A list of the grouping variables (factors) involved in the random effect terms.
-  grouping_factors <- getME(fit, "flist")
+  grouping_factors <- lme4::getME(fit, "flist")
   # We only have one here (id).
   stopifnot(identical(length(grouping_factors), 1L))
   id_var <- grouping_factors[[1L]]
@@ -202,7 +195,7 @@ get_lme4_cov_estimate <- function(fit) {
   # Lambda = relative covariance factor Lambda of the random effects
   # (note "relative", i.e. it does not include the sigma yet, therefore it is multiplied
   # below in the last step)
-  a_mat <- as.matrix(getME(fit, "A"))
+  a_mat <- as.matrix(lme4::getME(fit, "A"))
   # Find out where in the row space id1 random effects are.
   a_mat_id1_cols <- a_mat[, id1_indices]
   row_indices_with_id1 <- which(apply(a_mat_id1_cols, 1L, function(x) any(x != 0)))
@@ -212,11 +205,11 @@ get_lme4_cov_estimate <- function(fit) {
   # We account for the residual variance.
   id1_dim <- length(id1_indices)
   identity_id1 <- diag(1, id1_dim)
-  cov_estimate <- sigma(fit)^2 * (crossprod(a_mat_id1) + identity_id1)
+  cov_estimate <- stats::sigma(fit)^2 * (crossprod(a_mat_id1) + identity_id1)
   # Get the number of variance paramaters. Note: The sigma2 is not counted in "m",
   # and for the unstructured case we have effectively one parameter too much.
   # However, this does not have any effect on the covariance matrix estimate itself.
-  n_parameters <- as.integer(min(getME(fit, "m") + 1, id1_dim * (id1_dim + 1) / 2))
+  n_parameters <- as.integer(min(lme4::getME(fit, "m") + 1, id1_dim * (id1_dim + 1) / 2))
   # Finally, we add the attributes.
   result <- structure(
     unname(cov_estimate),
@@ -242,18 +235,15 @@ get_lme4_cov_estimate <- function(fit) {
 #' than that. The same \code{df} is used for AIC and BIC. Note that for BIC, the \code{n} used is the number of
 #' subjects (instead of the number of observations as in AIC and AICc). This matches the definitions in SAS.
 #'
-#' @importFrom lme4 isREML getME
-#' @importFrom stats logLik
-#'
 get_lme4_diagnostics <- function(fit,
                                  cov_est = get_lme4_cov_estimate(fit)) {
-  stopifnot(is(fit, "lmerModLmerTest"))
-  stopifnot(isREML(fit))
+  stopifnot(inherits(fit, "lmerModLmerTest"))
+  stopifnot(lme4::isREML(fit))
 
-  n_obs <- getME(fit, "n")
+  n_obs <- lme4::getME(fit, "n")
   df <- attr(cov_est, "n_parameters")
   m <- max(df + 2, n_obs - lme4::getME(fit, "p"))
-  log_lik <- as.numeric(logLik(fit))
+  log_lik <- as.numeric(stats::logLik(fit))
   n_subjects <- as.numeric(lme4::getME(fit, "l_i"))
 
   result <- list(
@@ -277,12 +267,6 @@ get_lme4_diagnostics <- function(fit,
 #' @note While we are not directly importing functions from `dfoptim` or `optimx` here, we rely on them
 #'   being available to `lme4` (which has these packages only in "Suggests"). Therefore we note the imports below.
 #'
-#' @importFrom lmerTest lmer
-#' @importFrom lme4 lmerControl
-#' @importFrom purrr quietly
-#' @importFrom dfoptim nmkb
-#' @importFrom optimx optimx
-#'
 fit_lme4_single_optimizer <- function(
   formula,
   data,
@@ -302,7 +286,7 @@ fit_lme4_single_optimizer <- function(
   if (optimizer == "automatic") {
     optimizer <- "nloptwrap_bobyqa"
   }
-  control <- lmerControl(
+  control <- lme4::lmerControl(
     # We need this to be able to fit unstructured covariance matrix models.
     check.nobs.vs.nRE = "ignore",
     optimizer = switch(
@@ -323,7 +307,7 @@ fit_lme4_single_optimizer <- function(
       list()
     )
   )
-  quiet_lmer <- purrr::quietly(lmer)
+  quiet_lmer <- purrr::quietly(lmerTest::lmer)
   quiet_fit <- quiet_lmer(
     formula = formula,
     REML = TRUE,
@@ -348,13 +332,11 @@ fit_lme4_single_optimizer <- function(
 #' @return A list with elements `messages` (list of all messages), `fixef` (list of all fixed effects),
 #'   `llik` (vector of all log-likelihood values), `feval` (vector of number of function evaluations).
 #'
-#' @importFrom lme4 fixef
-#' @importFrom stats logLik
 #'
 summary_all_fits <- function(all_fits) {
   messages <- lapply(all_fits, function(x) attr(x, "messages"))
   fixef <- lapply(all_fits, lme4::fixef)
-  llik <- vapply(all_fits, logLik, numeric(1))
+  llik <- vapply(all_fits, stats::logLik, numeric(1))
   feval <- vapply(all_fits, function(x) x@optinfo$feval, numeric(1))
   res <- list(
     messages = messages,
@@ -380,15 +362,12 @@ summary_all_fits <- function(all_fits) {
 #'   only 6 additional optimizer runs need to be done. Thus the maximum number of parallel runs is 6.
 #'   For Windows, no parallelization is currently implemented.
 #'
-#' @importFrom parallel mclapply
-#' @importFrom purrr quietly
-#'
 refit_lme4_all_optimizers <- function(original_fit,
                                       n_cores = 1L) {
   stopifnot(is.integer(n_cores), n_cores > 0, identical(length(n_cores), 1L))
 
   # Extract the components of the original fit.
-  formula <- formula(original_fit)
+  formula <- stats::formula(original_fit)
   data <- original_fit@frame
   optimizer <- attr(original_fit, "optimizer")
 
@@ -414,7 +393,7 @@ refit_lme4_all_optimizers <- function(original_fit,
       n_cores
     )
   )
-  quiet_mclapply <- quietly(mclapply)
+  quiet_mclapply <- purrr::quietly(parallel::mclapply)
   all_fits <- quiet_mclapply(
     X = all_optimizers,
     FUN = function(opt) {
@@ -499,11 +478,6 @@ fit_lme4 <- function(
 #' @return A list with the LS means `estimates` and `contrasts` results between the treatment
 #'   and control arm groups at the different visits.
 #'
-#' @importFrom emmeans emmeans contrast
-#' @importFrom dplyr filter group_by_at left_join mutate n select summarise rename ungroup
-#' @importFrom rlang := !!
-#' @importFrom rlang .data
-#' @importFrom stats as.formula confint
 #'
 get_mmrm_lsmeans <- function(fit,
                              vars,
@@ -512,12 +486,12 @@ get_mmrm_lsmeans <- function(fit,
   data_complete <- fit@frame
 
   specs <- if (is.null(vars$arm)) {
-    as.formula(paste("~ 1 |", vars$visit))
+    stats::as.formula(paste("~ 1 |", vars$visit))
   } else {
-    as.formula(paste("~ ", vars$arm, "|", vars$visit))
+    stats::as.formula(paste("~ ", vars$arm, "|", vars$visit))
   }
 
-  lsmeans <- emmeans(
+  lsmeans <- emmeans::emmeans(
     fit,
     mode = "satterthwaite",
     specs = specs,
@@ -533,9 +507,9 @@ get_mmrm_lsmeans <- function(fit,
   # baseline in Control Pooled group.
 
   # Adjusted estimate for each arm.
-  estimates <- confint(lsmeans, level = conf_level) %>%
+  estimates <- stats::confint(lsmeans, level = conf_level) %>%
     as.data.frame() %>%
-    rename(
+    dplyr::rename(
       estimate = .data$emmean,
       se = .data$SE,
       lower_cl = .data$lower.CL,
@@ -543,14 +517,14 @@ get_mmrm_lsmeans <- function(fit,
     )
 
   data_n <- data_complete %>%
-    group_by_at(.vars = c(vars$visit, vars$arm)) %>%
-    summarise(n = n()) %>%
-    ungroup()
+    dplyr::group_by_at(.vars = c(vars$visit, vars$arm)) %>%
+    dplyr::summarise(n = dplyr::n()) %>%
+    dplyr::ungroup()
 
   estimates <- suppressWarnings(
     # We don't have labels in `estimates`, which triggers a warning.
     estimates %>%
-      left_join(data_n, by = c(vars$visit, vars$arm))
+      dplyr::left_join(data_n, by = c(vars$visit, vars$arm))
   )
 
   results <-  if (is.null(vars$arm)) {
@@ -563,19 +537,19 @@ get_mmrm_lsmeans <- function(fit,
     arm_levels <- levels(data_complete[[vars$arm]])
     reference_level <- arm_levels[1]
     means_at_ref <- estimates %>%
-      filter(!!as.symbol(vars$arm) == reference_level) %>%
-      select(c(vars$visit, "estimate")) %>%
-      rename(ref = .data$estimate)
+      dplyr::filter(!!as.symbol(vars$arm) == reference_level) %>%
+      dplyr::select(c(vars$visit, "estimate")) %>%
+      dplyr::rename(ref = .data$estimate)
 
     relative_reduc <- estimates %>%
-      filter(!!as.symbol(vars$arm) != reference_level) %>%
-      left_join(means_at_ref, by = c(vars$visit)) %>%
-      mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
-      select(c(vars$visit, vars$arm, "relative_reduc"))
+      dplyr::filter(!!as.symbol(vars$arm) != reference_level) %>%
+      dplyr::left_join(means_at_ref, by = c(vars$visit)) %>%
+      dplyr::mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
+      dplyr::select(c(vars$visit, vars$arm, "relative_reduc"))
 
     # Start with the differences between LS means.
     sum_fit_diff <- summary(
-      contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
+      emmeans::contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
       level = conf_level,
       infer = c(TRUE, TRUE),
       adjust = "none"
@@ -584,17 +558,17 @@ get_mmrm_lsmeans <- function(fit,
     # Get the comparison group name from "contrast" column,
     # e.g. "ARMB - ARMA" shall return "ARMB", i.e. remove " - ARMA" part.
     contrasts <- sum_fit_diff %>%
-      mutate(
+      dplyr::mutate(
         col_by = factor(
-          gsub(paste0("\\s-\\s", reference_level), "", contrast),
+          gsub(paste0("\\s-\\s", reference_level), "", .data$contrast),
           levels = arm_levels
         )
       ) %>%
-      select(-contrast) %>%
-      rename(!!as.symbol(vars$arm) := .data$col_by) %>%
-      left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
-      mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
-      rename(
+      dplyr::select(-.data$contrast) %>%
+      dplyr::rename(!!as.symbol(vars$arm) := .data$col_by) %>%
+      dplyr::left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
+      dplyr::mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
+      dplyr::rename(
         se = .data$SE,
         lower_cl = .data$lower.CL,
         upper_cl = .data$upper.CL,
@@ -633,7 +607,7 @@ get_mmrm_lsmeans <- function(fit,
 #' @inheritParams argument_convention
 #' @param cor_struct a string specifying the correlation structure, defaults to
 #'   \code{"unstructured"}. See the details.
-#' @param weights_emmeans argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.
+#' @param weights_emmeans argument from [emmeans::emmeans()], "proportional" by default.
 #' @param optimizer a string specifying the optimization algorithm which should be used. By default, "automatic"
 #'   will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
 #'   is chosen and does not give a valid result, an error will occur.
@@ -687,7 +661,6 @@ get_mmrm_lsmeans <- function(fit,
 #' numerical precision.
 #'
 #' @export
-#' @importFrom utils.nest get_free_cores
 #'
 #' @examples
 #' library(scda)
@@ -741,9 +714,9 @@ fit_mmrm <- function(
   parallel = FALSE
 ) {
   labels <- check_mmrm_vars(vars, data)
-  assert_that(
+  assertthat::assert_that(
     is_proportion(conf_level),
-    is.flag(parallel)
+    assertthat::is.flag(parallel)
   )
   formula <- build_mmrm_formula(vars, cor_struct)
 
@@ -751,7 +724,7 @@ fit_mmrm <- function(
     formula = formula,
     data = data,
     optimizer = optimizer,
-    n_cores = ifelse(parallel, get_free_cores(), 1L)
+    n_cores = ifelse(parallel, utils.nest::get_free_cores(), 1L)
   )
 
   lsmeans <- get_mmrm_lsmeans(

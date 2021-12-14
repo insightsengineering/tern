@@ -37,6 +37,7 @@ Note that for the default degree 0 the \code{biomarker} variable is not included
 \examples{
 
 # Testing dataset with just two treatment arms.
+library(survival)
 library(dplyr)
 library(scda)
 

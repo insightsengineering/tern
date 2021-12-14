@@ -59,7 +59,7 @@ vars <- c("AGE", "SEX")
 var_labels <- c("Age (yr)", "Sex")
 
 basic_table() %>%
-  split_cols_by(var = "ARM") %>% 
+  split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%
   add_colcounts() %>%
   summarize_vars(
@@ -73,13 +73,13 @@ To change the display order of categorical variables in a table use factor varia
 
 ```{r}
 # Reorder the levels in the ARM variable.
-adsl$ARM <- factor(adsl$ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))
+adsl$ARM <- factor(adsl$ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")) # nolint
 
 # Reorder the levels in the SEX variable.
-adsl$SEX <- factor(adsl$SEX, levels = c("M", "F", "U", "UNDIFFERENTIATED"))
+adsl$SEX <- factor(adsl$SEX, levels = c("M", "F", "U", "UNDIFFERENTIATED")) # nolint
 
 basic_table() %>%
-  split_cols_by(var = "ARM") %>% 
+  split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%
   add_colcounts() %>%
   summarize_vars(
@@ -98,7 +98,7 @@ For this example we will change the default summary for numeric variables to inc
 ```{r}
 # Select statistics and modify default formats.
 basic_table() %>%
-  split_cols_by(var = "ARM") %>% 
+  split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%
   add_colcounts() %>%
   summarize_vars(
@@ -116,7 +116,7 @@ One feature of a `layout` is that it can be used with different datasets to crea
 ```{r}
 
 lyt <- basic_table() %>%
-  split_cols_by(var = "ARM") %>% 
+  split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%
   add_colcounts() %>%
   summarize_vars(
@@ -124,9 +124,9 @@ lyt <- basic_table() %>%
     var_labels = var_labels
   )
 
-build_table(lyt, df = adsl %>% filter(COUNTRY == "BRA"))
+build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "BRA"))
 
-build_table(lyt, df = adsl %>% filter(COUNTRY == "CHN"))
+build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "CHN"))
 ```
 
 ## Adverse Event Table 
@@ -150,7 +150,7 @@ basic_table() %>%
     )
   ) %>%
   build_table(
-    df = adae, 
+    df = adae,
     alt_counts_df = adsl
 )
 ```
@@ -182,7 +182,7 @@ basic_table() %>%
     .labels = c(unique_count = "Total number of patients with at least one AE")
   ) %>%
   build_table(
-    df = adae, 
+    df = adae,
     alt_counts_df = adsl
 )
 ```
@@ -219,7 +219,7 @@ basic_table() %>%
     )
   ) %>%
   build_table(
-    df = adae, 
+    df = adae,
     alt_counts_df = adsl
 )
 ```
@@ -233,7 +233,7 @@ basic_table() %>%
   add_overall_col(label = "All Patients") %>%
   count_occurrences(vars = "AEDECOD") %>%
   build_table(
-    df = adae, 
+    df = adae,
     alt_counts_df = adsl
   )
 ```
@@ -270,7 +270,7 @@ basic_table() %>%
   ) %>%
   count_occurrences(vars = "AEDECOD") %>%
   build_table(
-    df = adae, 
+    df = adae,
     alt_counts_df = adsl
 )
 ```
@@ -290,8 +290,8 @@ First we start with some data preparation steps to set up the analysis dataset. 
 ```{r}
 # Preprocessing to select an analysis endpoint.
 anl <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
-  mutate(is_rsp = AVALC %in% c("CR", "PR"))
+  dplyr::filter(PARAMCD == "BESRSPI") %>%
+  dplyr::mutate(is_rsp = AVALC %in% c("CR", "PR"))
 ```
 
 To create a summary of the proportion of responders in each treatment group, use the `estimate_proportion()` layout creating function:

@@ -7,7 +7,7 @@ library(scda)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
-test_that("EGT03 variant 1 is produced correctly", {
+testthat::test_that("EGT03 variant 1 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")
   adeg_labels <- var_labels(adeg)
 
@@ -72,12 +72,12 @@ test_that("EGT03 variant 1 is produced correctly", {
     .Dim = c(19L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
 
-test_that("EGT03 variant 2 is produced correctly", {
+testthat::test_that("EGT03 variant 2 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")
   adeg_labels <- var_labels(adeg)
 
@@ -134,11 +134,11 @@ test_that("EGT03 variant 2 is produced correctly", {
     .Dim = c(19L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("EGT03 variant 3 is produced correctly", {
+testthat::test_that("EGT03 variant 3 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")
   adeg_labels <- var_labels(adeg)
 
@@ -194,11 +194,11 @@ test_that("EGT03 variant 3 is produced correctly", {
     .Dim = c(16L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("EGT03 variant 4 is produced correctly", {
+testthat::test_that("EGT03 variant 4 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")
   adeg_labels <- var_labels(adeg)
 
@@ -264,5 +264,5 @@ test_that("EGT03 variant 4 is produced correctly", {
     .Dim = c(19L, 5L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

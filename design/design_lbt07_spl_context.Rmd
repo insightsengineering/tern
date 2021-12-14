@@ -89,12 +89,12 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                               grade_dir = "GRADE_DIR"
                                             )) {
 
-  assert_that(
-    is.string(.var),
+  assertthat::assert_that(
+    assertthat::is.string(.var),
     is.list(variables),
-    is.string(variables$id),
-    is.string(variables$param),
-    is.string(variables$grade_dir),
+    assertthat::is.string(variables$id),
+    assertthat::is.string(variables$param),
+    assertthat::is.string(variables$grade_dir),
     all(names(variables) %in% c("id", "param", "grade_dir")),
     is_df_with_variables(df, c(a = .var, variables)),
     is.factor(df[[.var]]),
@@ -105,7 +105,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
   # The correct denominator depends on users using the collect layout, so here
   # we verify that two `split_rows_by` are performed with correct variables and
   # if not return an informative message.
-  assert_that(all(c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split),
+  assertthat::assert_that(all(c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split),
               msg = "variabes$param and variables$grade_dir must match
               the variables used for splitting rows in the layout.")
 
@@ -296,7 +296,7 @@ lyt_trim_map <- basic_table() %>%
     variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
-  
+
 build_table(
   lyt = lyt_trim_map,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
@@ -324,7 +324,7 @@ lyt_trim_group <- basic_table() %>%
     variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
-  
+
 build_table(
   lyt = lyt_trim_group,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
@@ -376,7 +376,7 @@ lyt_trim_map2 <- basic_table() %>%
     variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
-  
+
 build_table(
   lyt = lyt_trim_map2,
   df = adlb_f_no_ALT %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
@@ -433,7 +433,7 @@ lyt_trim_map3 <- basic_table() %>%
     variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
-  
+
 build_table(
   lyt = lyt_trim_map3,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),

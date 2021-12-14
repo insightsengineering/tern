@@ -1,4 +1,4 @@
-test_that("prop_chisq returns right result", {
+testthat::test_that("prop_chisq returns right result", {
 
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- c(
@@ -10,11 +10,11 @@ test_that("prop_chisq returns right result", {
 
   result <- prop_chisq(tbl)
   expected <- 0.0565
-  expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 
 })
 
-test_that("prop_cmh returns right result", {
+testthat::test_that("prop_cmh returns right result", {
 
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
@@ -24,11 +24,11 @@ test_that("prop_cmh returns right result", {
 
   result <- prop_cmh(tbl)
   expected <- 0.6477
-  expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 
 })
 
-test_that("prop_cmh also works when there are strata with just one observation", {
+testthat::test_that("prop_cmh also works when there are strata with just one observation", {
   tbl <- structure(
     c(20L, 17L, 7L, 10L, 0L, 0L, 2L, 3L, 21L, 14L, 3L,
       0L, 0L, 0L, 1L, 0L, 21L, 18L, 3L, 4L, 79L, 16L, 30L, 9L, 1L,
@@ -42,15 +42,15 @@ test_that("prop_cmh also works when there are strata with just one observation",
     class = "table"
   )
 
-  result <- expect_warning(
+  result <- testthat::expect_warning(
     prop_cmh(tbl),
     "<5 data points in some strata. CMH test may be incorrect."
   )
   expected <- 0.3326
-  expect_equal(result, expected, tol = 1e-4)
+  testthat::expect_equal(result, expected, tol = 1e-4)
 })
 
-test_that("prop_fisher returns right result", {
+testthat::test_that("prop_fisher returns right result", {
 
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- c(
@@ -62,18 +62,18 @@ test_that("prop_fisher returns right result", {
 
   result <- prop_fisher(tbl)
   expected <- 0.1110
-  expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 
 })
 
-test_that("prop_schouten returns right result", {
+testthat::test_that("prop_schouten returns right result", {
   result <- sapply(
     1:100,
     function(x) {
 
       set.seed(x, kind = "Wichmann-Hill")
-      n <- runif(2)
-      N <- runif(2, min = 5, max = 100) # nolint
+      n <- stats::runif(2)
+      N <- stats::runif(2, min = 5, max = 100) # nolint
 
       rsp <- c(
         sample(c(TRUE, FALSE), size = N[1], prob = c(n[1], 1 - n[1]), replace = TRUE),
@@ -101,10 +101,10 @@ test_that("prop_schouten returns right result", {
     0, 0.9758, 0, 6e-05, 0, 0.10609, 0.01319, 0.44322, 1e-05, 0.00041,
     0.05099, 0.00112, 0, 0, 0.56411, 0.00532, 0.00029
   )
-  expect_equal(result, expected, tolerance = 1e-5)
+  testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
-test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {
+testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {
 
   set.seed(1984, kind = "Mersenne-Twister")
   dta <- data.frame(
@@ -130,10 +130,10 @@ test_that("s_test_proportion_diff and d_test_proportion_diff return right result
     d = "p-value (Cochran-Mantel-Haenszel Test)",
     s = list(pval = with_label(0.6477, result$d))
   )
-  expect_equal(result, expected, tolerance = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("test_proportion_diff returns right result", {
+testthat::test_that("test_proportion_diff returns right result", {
   set.seed(1984, kind = "Mersenne-Twister")
   dta <- data.frame(
     rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -156,10 +156,10 @@ test_that("test_proportion_diff returns right result", {
       "", "A", "0.6477"
     ), .Dim = 2:3
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("test_proportion_diff edge case: all responder by chisq", {
+testthat::test_that("test_proportion_diff edge case: all responder by chisq", {
   dta <- data.frame(
     rsp = rep(TRUE, each = 100),
     grp = factor(rep(c("A", "B"), each = 50))
@@ -176,10 +176,10 @@ test_that("test_proportion_diff edge case: all responder by chisq", {
   expected_matrix <- structure(
     c("", "p-value (Chi-Squared Test)", "B", "", "A", "1.0000"), .Dim = 2:3
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("test_proportion_diff edge case: all responder by schouten", {
+testthat::test_that("test_proportion_diff edge case: all responder by schouten", {
   dta <- data.frame(
     rsp = rep(TRUE, each = 100),
     grp = factor(rep(c("A", "B"), each = 50))
@@ -200,10 +200,10 @@ test_that("test_proportion_diff edge case: all responder by schouten", {
     ),
     .Dim = 2:3
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("test_proportion_diff edge case: all responder by fisher", {
+testthat::test_that("test_proportion_diff edge case: all responder by fisher", {
   dta <- data.frame(
     rsp = rep(TRUE, each = 100),
     grp = factor(rep(c("A", "B"), each = 50))
@@ -220,10 +220,10 @@ test_that("test_proportion_diff edge case: all responder by fisher", {
   expected_matrix <- structure(
     c("", "p-value (Fisher's Exact Test)", "B", "", "A", "1.0000"), .Dim = 2:3
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("test_proportion_diff edge case: all responder by CMH", {
+testthat::test_that("test_proportion_diff edge case: all responder by CMH", {
   dta <- data.frame(
     rsp = rep(TRUE, each = 100),
     grp = factor(rep(c("A", "B"), each = 50)),
@@ -243,5 +243,5 @@ test_that("test_proportion_diff edge case: all responder by CMH", {
     c("", "p-value (Cochran-Mantel-Haenszel Test)", "B", "", "A", "NA"),
     .Dim = 2:3
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

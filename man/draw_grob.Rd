@@ -20,8 +20,8 @@ Draw grob on device page.
 library(dplyr)
 library(grid)
 
-rect <- rectGrob(width = unit(0.5, "npc"), height = unit(0.5, "npc"))
-rect \%>\% draw_grob(vp = viewport(angle = 45))
+rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
+rect \%>\% draw_grob(vp = grid::viewport(angle = 45))
 
 num <- lapply(1:10, textGrob)
 num \%>\%

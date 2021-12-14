@@ -5,7 +5,7 @@ library(dplyr)
 
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
-test_that("DTH01 variant 1 is produced correctly", {
+testthat::test_that("DTH01 variant 1 is produced correctly", {
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -34,10 +34,10 @@ test_that("DTH01 variant 1 is produced correctly", {
     ),
     .Dim = c(8L, 5L)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("DTH01 variant 2 is produced correctly", {
+testthat::test_that("DTH01 variant 2 is produced correctly", {
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -117,10 +117,10 @@ test_that("DTH01 variant 2 is produced correctly", {
     ),
     .Dim = c(27L, 5L)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("DTH01 variant 3 is produced correctly", {
+testthat::test_that("DTH01 variant 3 is produced correctly", {
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -191,10 +191,10 @@ test_that("DTH01 variant 3 is produced correctly", {
     ),
     .Dim = c(10L, 5L)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("DTH01 variant 4 is produced correctly", {
+testthat::test_that("DTH01 variant 4 is produced correctly", {
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -205,7 +205,7 @@ test_that("DTH01 variant 4 is produced correctly", {
 
   #create a helper variable DTHCAUS_other for part3
   adsl <- adsl %>%
-    mutate(
+    dplyr::mutate(
       DTHCAUS_other = ifelse(
         DTHCAT == "OTHER" & DTHCAUS != "Post-study reporting of death", as.character(DTHCAUS), NA)
     )
@@ -287,5 +287,5 @@ test_that("DTH01 variant 4 is produced correctly", {
     ),
     .Dim = c(14L, 5L)
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })

@@ -14,9 +14,9 @@ vignette: >
   %\VignetteIndexEntry{Design of COXT02}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  
+
 ---
-  
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
 collapse = TRUE,
@@ -95,7 +95,7 @@ Some special considerations:
 
 * Only consider the first variant of `COXT02` of main effect as it is the only one in GDSR.
 
-* Try to leverage `COXT01` functions for main effect of `COXT02`, but did not really work as elementary functions are specific to univariate analyses. 
+* Try to leverage `COXT01` functions for main effect of `COXT02`, but did not really work as elementary functions are specific to univariate analyses.
   + `h_coxreg_univ_formulas` creates a list of formulas for the comparison of univariate Cox regression models
   + `h_coxreg_univ_extract` is specific for one level of pairwise comparisons.
   + Therefore might not be elegant to make functions more lengthy by adding if conditions. So the approach taken here will be to add  separate functions for multivariate cox regression, and modify overall `h_coxreg`, `s_coxreg` and `fit_coxreg` functions when needed.
@@ -112,7 +112,7 @@ Some special considerations:
 #'
 h_coxreg_multivar_formulas <- function(variables) {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c("arm", "event", "time")])
   )
@@ -134,10 +134,10 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
                            multivar = FALSE) {
   pval_method <- match.arg(pval_method)
   ties <- match.arg(ties)
-  assert_that(
+  assertthat::assert_that(
     is_proportion(conf_level),
-    is.flag(interaction),
-    is.flag(multivar)
+    assertthat::is.flag(interaction),
+    assertthat::is.flag(multivar)
   )
   list(
     pval_method = pval_method,
@@ -176,9 +176,9 @@ h_coxreg_multivar_extract <- function(var,
                                       data,
                                       control = control_coxreg()) {
 
-  assert_that(
+  assertthat::assert_that(
     class(mod) == "coxph",
-    is.string(var),
+    assertthat::is.string(var),
     is_df_with_variables(data, list(var = var))
   )
 
@@ -230,7 +230,7 @@ h_coxreg_multivar <- function(variables,
                               data,
                               at = list(),
                               control = control_coxreg()) {
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c("arm", "event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables)))

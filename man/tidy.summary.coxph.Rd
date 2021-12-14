@@ -38,8 +38,8 @@ attr(dta_bladder$covar1, "label") <- "A Covariate Label"
 attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
 dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
-formula <- "Surv(time, status) ~ armcd + covar1"
-msum <- summary(coxph(as.formula(formula), data = dta_bladder))
+formula <- "survival::Surv(time, status) ~ armcd + covar1"
+msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 tidy(msum)
 
 }

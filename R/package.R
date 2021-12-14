@@ -4,22 +4,17 @@
 #'
 "_PACKAGE"
 
-#' @import assertthat
-#' @import rtables
-#' @import utils.nest
+#' @import rtables ggplot2
+#' @importFrom broom tidy
+#' @importFrom methods new
 #' @importFrom magrittr %>%
-#' @importFrom methods is
-# Packages that are not imported and also not prefixed
-# ggplot2
-# grid
-# survival
-# stats
+#' @importFrom rlang .data := !!
+#' @importFrom survival coxph strata Surv
 NULL
 
 # We need this to avoid R CMD check warning about missing global definitions.
-#' @importFrom utils globalVariables
 if (getRversion() >= "2.15.1") {
-  globalVariables(c(
+  utils::globalVariables(c(
     ".",
     "x",
     "control_coxph",

@@ -53,10 +53,10 @@ s_count_occurrences <- function(df,
                                 .var = "MHDECOD",
                                 id = "USUBJID") {
 
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, list(range = .var, id = id)),
     is_nonnegative_count(.N_col),
-    is.flag(drop),
+    assertthat::is.flag(drop),
     is_character_or_factor(df[[.var]]),
     is_character_or_factor(df[[id]])
   )
@@ -66,7 +66,7 @@ s_count_occurrences <- function(df,
     # Note that we don't try to preserve original level order here since a) that would required
     # more time to look up in large original levels and b) that would fail for character input variable.
     occurrence_levels <- sort(unique(.df_row[[.var]]))
-    assert_that(
+    assertthat::assert_that(
       length(occurrence_levels) > 0,
       msg = paste(
         "no empty `.df_row` input allowed when `drop = TRUE`,",
