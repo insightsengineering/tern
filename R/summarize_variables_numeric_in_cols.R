@@ -24,9 +24,9 @@ NULL
 #' summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
 #'
 summary_numeric_in_cols <- function(x,
-                         labelstr = "",
-                         custom_label = NULL,
-                         ...) {
+                                    labelstr = "",
+                                    custom_label = NULL,
+                                    ...) {
   row_label <- if (labelstr != "") {
     labelstr
   } else if (!is.null(custom_label)) {
@@ -96,27 +96,33 @@ summary_numeric_in_cols <- function(x,
 #' result
 #'
 summarize_vars_numeric_in_cols <- function(lyt,
-                                 var,
-                                 ...,
-                                 .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
-                                 .labels = c(
-                                   n = "n",
-                                   mean = "Mean",
-                                   sd = "SD",
-                                   se = "SE",
-                                   cv = "CV (%)",
-                                   geom_cv = "CV % Geometric Mean"),
-                                 .indent_mods = NULL,
-                                 col_split = TRUE) {
+                                           var,
+                                           ...,
+                                           .stats = c(
+                                             "n",
+                                             "mean",
+                                             "sd",
+                                             "se",
+                                             "cv",
+                                             "geom_cv"),
+                                           .labels = c(
+                                             n = "n",
+                                             mean = "Mean",
+                                             sd = "SD",
+                                             se = "SE",
+                                             cv = "CV (%)",
+                                             geom_cv = "CV % Geometric Mean"),
+                                           .indent_mods = NULL,
+                                           col_split = TRUE) {
 
 
   afun_list <- Map(
     function(stat) {
       make_afun(
        summary_numeric_in_cols,
-        .stats = stat,
-        .formats = summary_formats()[names(summary_formats()) == stat])
-    },
+       .stats = stat,
+       .formats = summary_formats()[names(summary_formats()) == stat])
+      },
     stat = .stats
   )
 
