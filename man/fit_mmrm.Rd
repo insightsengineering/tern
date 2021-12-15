@@ -37,7 +37,7 @@ will be excluded.}
 \item{cor_struct}{a string specifying the correlation structure, defaults to
 \code{"unstructured"}. See the details.}
 
-\item{weights_emmeans}{argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.}
+\item{weights_emmeans}{argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}, "proportional" by default.}
 
 \item{optimizer}{a string specifying the optimization algorithm which should be used. By default, "automatic"
 will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm

@@ -192,7 +192,7 @@ test_asl <- data.frame(
 
 ```{r helper functions}
 h_count_patients <- function(df, variables = list()) {
-  assert_that(
+  assertthat::assert_that(
     is_variables(variables[c("id")]),
     is_df_with_variables(df, as.list(unlist(variables)))
   )
@@ -200,7 +200,7 @@ h_count_patients <- function(df, variables = list()) {
   }
 
 h_count_rows <- function(df, variables = list()) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(df, as.list(unlist(variables)))
   )
       nrow(df)

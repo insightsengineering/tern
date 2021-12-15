@@ -25,7 +25,7 @@ preprocess_adtte <- function(adtte) {
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
-test_that("extract_survival_subgroups functions as expected with valid input and default arguments", {
+testthat::test_that("extract_survival_subgroups functions as expected with valid input and default arguments", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -188,10 +188,10 @@ test_that("extract_survival_subgroups functions as expected with valid input and
       ),
       row.names = c(NA, -6L), class = "data.frame")
   )
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("extract_survival_subgroups works as expected with groups_lists", {
+testthat::test_that("extract_survival_subgroups works as expected with groups_lists", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -209,19 +209,19 @@ test_that("extract_survival_subgroups works as expected with groups_lists", {
   )
 
   survtime <- result$survtime
-  expect_setequal(
+  testthat::expect_setequal(
     survtime[survtime$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )
 
   hr <- result$hr
-  expect_setequal(
+  testthat::expect_setequal(
     hr[hr$var == "BMRKR2", "subgroup"],
     c("low", "low/medium", "low/medium/high")
   )
 })
 
-test_that("extract_survival_subgroups functions as expected with NULL subgroups", {
+testthat::test_that("extract_survival_subgroups functions as expected with NULL subgroups", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -270,10 +270,10 @@ test_that("extract_survival_subgroups functions as expected with NULL subgroups"
         row.names = c(NA, -1L),
         class = "data.frame")
     )
-  expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("a_survival_subgroups functions as expected with valid input", {
+testthat::test_that("a_survival_subgroups functions as expected with valid input", {
 
   df <- data.frame(
     hr = c(0.1234, 0.5678),
@@ -296,10 +296,10 @@ test_that("a_survival_subgroups functions as expected with valid input", {
       "", "M", "F", "hr", "0.12", "0.57", "pval", "<0.0001", "1.3023"),
     .Dim = c(3L, 3L)
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 })
 
-test_that("tabulate_survival_subgroups functions as expected with valid input", {
+testthat::test_that("tabulate_survival_subgroups functions as expected with valid input", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -329,10 +329,10 @@ test_that("tabulate_survival_subgroups functions as expected with valid input", 
     ),
     .Dim = c(10L, 8L)
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 })
 
-test_that("tabulate_survival_subgroups functions as expected with NULL subgroups", {
+testthat::test_that("tabulate_survival_subgroups functions as expected with NULL subgroups", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -358,17 +358,17 @@ test_that("tabulate_survival_subgroups functions as expected with NULL subgroups
     .Dim = c(3L, 8L)
   )
 
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 })
 
-test_that("tabulate_survival_subgroups functions as expected with extreme values in subgroups", {
+testthat::test_that("tabulate_survival_subgroups functions as expected with extreme values in subgroups", {
 
   adtte <- adtte %>%
     preprocess_adtte() %>%
-    slice(1:30) %>%
+    dplyr::slice(1:30) %>%
     reapply_varlabels(var_labels(adtte))
 
-  df <- expect_warning(extract_survival_subgroups(
+  df <- testthat::expect_warning(extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "REGION1"),
     data = adtte
   ))
@@ -393,10 +393,10 @@ test_that("tabulate_survival_subgroups functions as expected with extreme values
     .Dim = 7:8
   )
 
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 })
 
-test_that("tabulate_survival_subgroups functions as expected when one arm has 0 records", {
+testthat::test_that("tabulate_survival_subgroups functions as expected when one arm has 0 records", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -436,10 +436,10 @@ test_that("tabulate_survival_subgroups functions as expected when one arm has 0 
     ),
     .Dim = 10:11
   )
-  expect_equal(result_matrix, expected_matrix)
+  testthat::expect_equal(result_matrix, expected_matrix)
 })
 
-test_that("tabulate_survival_subgroups works correctly with both `n_tot` and `n_tot_events` in `vars`", {
+testthat::test_that("tabulate_survival_subgroups works correctly with both `n_tot` and `n_tot_events` in `vars`", {
 
   adtte <- adtte %>%
     preprocess_adtte()
@@ -459,7 +459,7 @@ test_that("tabulate_survival_subgroups works correctly with both `n_tot` and `n_
   # Check that the column indices attributes are correct.
   expected_cols_both <- list(col_x = 1L, col_ci = 2L, col_symbol_size = 3L)
   result_cols_both <- attributes(result_both)[c("col_x", "col_ci", "col_symbol_size")]
-  expect_identical(result_cols_both, expected_cols_both)
+  testthat::expect_identical(result_cols_both, expected_cols_both)
 
   # Both n_tot variables and also surv time vars, so we have a reordering of the vars in the table.
   result_both_survtime <- basic_table() %>%
@@ -471,7 +471,7 @@ test_that("tabulate_survival_subgroups works correctly with both `n_tot` and `n_
   # Check that the column indices attributes are correct.
   expected_cols_both_survtime <- list(col_x = 9L, col_ci = 10L, col_symbol_size = 1L)
   result_cols_both_survtime <- attributes(result_both_survtime)[c("col_x", "col_ci", "col_symbol_size")]
-  expect_identical(result_cols_both_survtime, expected_cols_both_survtime)
+  testthat::expect_identical(result_cols_both_survtime, expected_cols_both_survtime)
   # Check header of table.
   result_header_both_survtime <- to_string_matrix(result_both_survtime)[2, ]
   expected_header_both_survtime <- c(
@@ -479,10 +479,10 @@ test_that("tabulate_survival_subgroups works correctly with both `n_tot` and `n_
     "Median (DAYS)", "Events", "n", "Hazard Ratio", "95% Wald CI",
     "p-value (log-rank)"
   )
-  expect_identical(result_header_both_survtime, expected_header_both_survtime)
+  testthat::expect_identical(result_header_both_survtime, expected_header_both_survtime)
 })
 
-test_that("d_survival_subgroups_colvars functions as expected with valid input", {
+testthat::test_that("d_survival_subgroups_colvars functions as expected with valid input", {
 
   vars <- c("n", "n_events", "median", "n_tot_events", "hr", "ci", "pval")
 
@@ -506,5 +506,5 @@ test_that("d_survival_subgroups_colvars functions as expected with valid input",
     )
   )
 
-  expect_equal(result, expected)
+  testthat::expect_equal(result, expected)
 })

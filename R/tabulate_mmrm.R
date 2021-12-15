@@ -28,7 +28,7 @@ NULL
 #'     group = factor(rep(c("A", "B"), length = nrow(sleepstudy))),
 #'     days_grouped = cut(
 #'       Days,
-#'       breaks = quantile(Days, probs = seq(0, 1, length = 5)),
+#'       breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
 #'       include.lowest = TRUE
 #'     ),
 #'     Subject = case_when(
@@ -79,11 +79,10 @@ as.rtable.mmrm <- function(x,  #nolint
 
 #' @describeIn tabulate_mmrm Helper function to produce fixed effects table.
 #' @param format (`string`)\cr format for the numbers in the table.
-#' @importFrom stats coef
 #' @export
 #'
 h_mmrm_fixed <- function(x, format = "xx.xxxx") {
-  fixed_table <- as.data.frame(coef(summary(x$fit)))
+  fixed_table <- as.data.frame(stats::coef(summary(x$fit)))
   pvalue_column <- match("Pr(>|t|)", names(fixed_table))
   df_column <- match("df", names(fixed_table))
   pvalue_table <- as.rtable(fixed_table[, pvalue_column, drop = FALSE], format = "x.xxxx | (<0.0001)")
@@ -123,8 +122,6 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
 #'   `mmrm` object containing the LS means and contrasts.
 #' @method tidy mmrm
 #' @export
-#' @importFrom broom tidy
-#' @importFrom tibble as_tibble
 #' @examples
 #' library(broom)
 #' df <- tidy(result)
@@ -150,7 +147,7 @@ tidy.mmrm <- function(x) {  #nolint #nousage
     )
   }
   df$conf_level <- x$conf_level
-  as_tibble(df)
+  tibble::as_tibble(df)
 }
 
 #' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied LS means
@@ -258,7 +255,7 @@ a_mmrm_lsmeans_single <- make_afun(
 #'   split_rows_by("days_grouped") %>%
 #'   summarize_lsmeans(show_relative = "increase") %>%
 #'   build_table(
-#'     df = tidy(result),
+#'     df = broom::tidy(result),
 #'     alt_counts_df = dat_adsl
 #'   )
 #'
@@ -266,7 +263,7 @@ a_mmrm_lsmeans_single <- make_afun(
 #'   split_rows_by("days_grouped") %>%
 #'   summarize_lsmeans(arms = FALSE) %>%
 #'   build_table(
-#'     df = tidy(result_no_arm),
+#'     df = broom::tidy(result_no_arm),
 #'     alt_counts_df = dat_adsl
 #'   )
 #'

@@ -37,12 +37,12 @@ h_count_cumulative <- function(x,
                                include_eq = TRUE,
                                na.rm = TRUE, # nolint
                                .N_col) { # nolint
-  assert_that(
+  assertthat::assert_that(
     is.numeric(x),
     is.numeric(threshold),
-    is.flag(lower_tail),
-    is.flag(include_eq),
-    is.flag(na.rm),
+    assertthat::is.flag(lower_tail),
+    assertthat::is.flag(include_eq),
+    assertthat::is.flag(na.rm),
     is.numeric(.N_col)
   )
 
@@ -68,7 +68,7 @@ h_count_cumulative <- function(x,
 #' @return a `string`
 #'
 d_count_cumulative <- function(threshold, lower_tail, include_eq) {
-  assert_that(
+  assertthat::assert_that(
     is.numeric(threshold)
   )
   lg <- if (lower_tail) "<" else ">"
@@ -94,8 +94,8 @@ s_count_cumulative <- function(x,
                                include_eq = TRUE,
                                .N_col, # nolint
                                ...) {
-  assert_that(
-    is_numeric_vector(thresholds)
+  assertthat::assert_that(
+    utils.nest::is_numeric_vector(thresholds)
   )
 
   count_fraction_list <- Map(function(thres) {

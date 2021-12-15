@@ -1,6 +1,6 @@
 library(dplyr)
 
-test_that("control_summarize_vars works with customized parameters", {
+testthat::test_that("control_summarize_vars works with customized parameters", {
   result <- control_summarize_vars(
     conf_level = 0.9,
     quantiles = c(0.1, 0.9)
@@ -10,15 +10,15 @@ test_that("control_summarize_vars works with customized parameters", {
     quantiles = c(0.1, 0.9),
     quantile_type = 2
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("control_summarize_vars fails wrong inputs", {
-  expect_error(control_summarize_vars(quantiles = c(25, 75)))
-  expect_error(control_summarize_vars(conf_level = 95))
+testthat::test_that("control_summarize_vars fails wrong inputs", {
+  testthat::expect_error(control_summarize_vars(quantiles = c(25, 75)))
+  testthat::expect_error(control_summarize_vars(conf_level = 95))
 })
 
-test_that("s_summary return NA for x length 0L", {
+testthat::test_that("s_summary return NA for x length 0L", {
 
   x <- numeric()
 
@@ -36,12 +36,17 @@ test_that("s_summary return NA for x length 0L", {
     median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = NA_real_, quantile_0.75 = NA_real_), "25% and 75%-ile"),
     iqr = c(iqr = NA_real_),
-    range = c(min = NA_real_, max = NA_real_)
+    range = c(min = NA_real_, max = NA_real_),
+    min = c(min = NA_real_),
+    max = c(max = NA_real_),
+    cv = c(cv.sd = NA_real_),
+    geom_mean = c(geom_mean = NA_real_),
+    geom_cv = c(geom_cv = NA_real_)
   )
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 })
 
-test_that("s_summary handles NA", {
+testthat::test_that("s_summary handles NA", {
 
   x <- c(NA_real_, 1)
 
@@ -60,9 +65,14 @@ test_that("s_summary handles NA", {
     median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 1), "25% and 75%-ile"),
     iqr = c(iqr = 0),
-    range = c(min = 1, max = 1)
+    range = c(min = 1, max = 1),
+    min = c(min = 1),
+    max = c(max = 1),
+    cv = c(cv.sd = NA_real_),
+    geom_mean = c(geom_mean = 1),
+    geom_cv = c(geom_cv = NA_real_)
   )
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 
   # With `na.rm = FALSE`.
   result <- s_summary(x, na.rm = FALSE)
@@ -79,12 +89,17 @@ test_that("s_summary handles NA", {
     median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = NA_real_, quantile_0.75 = NA_real_), "25% and 75%-ile"),
     iqr = c(iqr = NA_real_),
-    range = c(min = NA_real_, max = NA_real_)
+    range = c(min = NA_real_, max = NA_real_),
+    min = c(min = NA_real_),
+    max = c(max = NA_real_),
+    cv = c(cv.sd = NA_real_),
+    geom_mean = c(geom_mean = NA_real_),
+    geom_cv = c(geom_cv = NA_real_)
   )
-  expect_equivalent(result, expected)
+  testthat::expect_equivalent(result, expected)
 })
 
-test_that("s_summary returns right results for n = 2", {
+testthat::test_that("s_summary returns right results for n = 2", {
 
   x <- c(NA_real_, 1, 2)
   result <- s_summary(x)
@@ -101,12 +116,17 @@ test_that("s_summary returns right results for n = 2", {
     median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 2), "25% and 75%-ile"),
     iqr = c(iqr = 1),
-    range = c(min = 1, max = 2)
+    range = c(min = 1, max = 2),
+    min = c(min = 1),
+    max = c(max = 2),
+    cv = c(cv.sd = 47.14045),
+    geom_mean = c(geom_mean = 1.414214),
+    geom_cv = c(geom_cv = 52.10922)
   )
-  expect_equivalent(result, expected, tolerance = .00001)
+  testthat::expect_equivalent(result, expected, tolerance = .00001)
 })
 
-test_that("s_summary returns right results for n = 8", {
+testthat::test_that("s_summary returns right results for n = 8", {
 
   x <- c(NA_real_, 1, 2, 5, 6, 7, 8, 9, 10)
   result <- s_summary(x)
@@ -123,12 +143,17 @@ test_that("s_summary returns right results for n = 8", {
     median_ci = with_label(c(median_ci_lwr = 1, median_ci_upr = 10), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = 3.5, quantile_0.75 = 8.5), "25% and 75%-ile"),
     iqr = c(iqr = 5),
-    range = c(min = 1, max = 10)
+    range = c(min = 1, max = 10),
+    min = c(min = 1),
+    max = c(max = 10),
+    cv = c(cv.sd = 53.45225),
+    geom_mean = c(geom_mean = 4.842534),
+    geom_cv = c(geom_cv = 96.61307)
   )
-  expect_equivalent(result, expected, tolerance = .00001)
+  testthat::expect_equivalent(result, expected, tolerance = .00001)
 })
 
-test_that("s_summary works with factors", {
+testthat::test_that("s_summary works with factors", {
 
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown"))
 
@@ -147,30 +172,30 @@ test_that("s_summary works with factors", {
     )
   )
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_summary fails with factors that have no levels or have empty string levels", {
+testthat::test_that("s_summary fails with factors that have no levels or have empty string levels", {
 
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", ""))
-  expect_error(
+  testthat::expect_error(
     s_summary(x),
     "x is not a valid factor, please check the factor levels (no empty strings allowed)",
     fixed = TRUE
   )
 
   x <- factor()
-  expect_error(
+  testthat::expect_error(
     s_summary(x),
     "x is not a valid factor, please check the factor levels (no empty strings allowed)",
     fixed = TRUE
   )
 })
 
-test_that("s_summary fails when factors have NA levels", {
+testthat::test_that("s_summary fails when factors have NA levels", {
 
   x <- factor(c("Female", "Male", "Female", "Male", "Unknown", "Unknown", NA))
-  expect_error(
+  testthat::expect_error(
     s_summary(x, na.rm = FALSE),
     "NA in x has not been conveyed to na_level, please use explicit factor levels.",
     fixed = TRUE
@@ -178,7 +203,7 @@ test_that("s_summary fails when factors have NA levels", {
 
 })
 
-test_that("s_summary works with factors with NA values handled and correctly removes them by default", {
+testthat::test_that("s_summary works with factors with NA values handled and correctly removes them by default", {
 
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", NA))
   x <- explicit_na(x)
@@ -198,10 +223,10 @@ test_that("s_summary works with factors with NA values handled and correctly rem
     )
   )
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_summary works with length 0 factors that have levels", {
+testthat::test_that("s_summary works with length 0 factors that have levels", {
 
   x <- factor(levels = c("a", "b", "c"))
 
@@ -220,10 +245,10 @@ test_that("s_summary works with length 0 factors that have levels", {
     )
   )
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_summary works with factors and different denominator choices", {
+testthat::test_that("s_summary works with factors and different denominator choices", {
 
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown"))
 
@@ -241,7 +266,7 @@ test_that("s_summary works with factors and different denominator choices", {
       Unknown = c(4, 4 / 20)
     )
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 
   result <- s_summary(x, denom = "N_col", .N_col = 30)
   expected <- list(
@@ -257,24 +282,24 @@ test_that("s_summary works with factors and different denominator choices", {
       Unknown = c(4, 4 / 30)
     )
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_summary works with characters by converting to character", {
+testthat::test_that("s_summary works with characters by converting to character", {
 
   x <- c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown")
 
-  result <- expect_warning(s_summary(x, denom = "N_row", .N_row = 20, .var = "SEX"))
+  result <- testthat::expect_warning(s_summary(x, denom = "N_row", .N_row = 20, .var = "SEX"))
   expected <- s_summary(factor(x), denom = "N_row", .N_row = 20)
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_summary works with characters by converting to character and handling empty strings", {
+testthat::test_that("s_summary works with characters by converting to character and handling empty strings", {
 
   x <- c("Female", "Male", "Female", "Male", "Male", "", "Unknown", "Unknown", "Unknown", "Unknown")
 
-  result <- expect_warning(s_summary(x, .var = "foo", na.rm = FALSE, denom = "N_row", .N_row = 10))
+  result <- testthat::expect_warning(s_summary(x, .var = "foo", na.rm = FALSE, denom = "N_row", .N_row = 10))
   expected <- list(
     n = 10L,
     count = list(
@@ -291,15 +316,15 @@ test_that("s_summary works with characters by converting to character and handli
     )
   )
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_summary does not work for length 0 character vectors", {
+testthat::test_that("s_summary does not work for length 0 character vectors", {
   x <- character()
-  expect_warning(expect_error(s_summary(x, denom = "n", .var = "foo")))
+  testthat::expect_warning(testthat::expect_error(s_summary(x, denom = "n", .var = "foo")))
 })
 
-test_that("s_summary works with logical vectors", {
+testthat::test_that("s_summary works with logical vectors", {
   x <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE)
 
   result <- s_summary(x)
@@ -309,10 +334,10 @@ test_that("s_summary works with logical vectors", {
     count_fraction = c(4, 4 / 6)
   )
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_summary works with logical vectors and by default removes NA", {
+testthat::test_that("s_summary works with logical vectors and by default removes NA", {
   x <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, NA, NA)
 
   result <- s_summary(x)
@@ -322,10 +347,10 @@ test_that("s_summary works with logical vectors and by default removes NA", {
     count_fraction = c(4, 4 / 6)
   )
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_summary works with logical vectors and by if requested does not remove NA from n", {
+testthat::test_that("s_summary works with logical vectors and by if requested does not remove NA from n", {
   x <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, NA, NA)
 
   result <- s_summary(x, na.rm = FALSE)
@@ -335,10 +360,10 @@ test_that("s_summary works with logical vectors and by if requested does not rem
     count_fraction = c(4, 4 / 8)
   )
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("create_afun_summary creates an `afun` that works", {
+testthat::test_that("create_afun_summary creates an `afun` that works", {
   afun <- create_afun_summary(
     .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
     .formats = c(median = "xx."),
@@ -379,10 +404,10 @@ test_that("create_afun_summary creates an `afun` that works", {
       "", "2", "0", "0", "2 (100%)"),
     .Dim = c(34L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", {
+testthat::test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", {
 
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
@@ -398,10 +423,10 @@ test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", 
     .Dim = c(5L, 2L)
   )
 
-  expect_identical(to_string_matrix(result), expected)
+  testthat::expect_identical(to_string_matrix(result), expected)
 })
 
-test_that("`summarize_vars` works with healthy input, and control function.", {
+testthat::test_that("`summarize_vars` works with healthy input, and control function.", {
 
   dta_test <- data.frame(AVAL = c(1:9))
 
@@ -421,10 +446,10 @@ test_that("`summarize_vars` works with healthy input, and control function.", {
     .Dim = c(5L, 2L)
   )
 
-  expect_identical(to_string_matrix(result), expected)
+  testthat::expect_identical(to_string_matrix(result), expected)
 })
 
-test_that("`summarize_vars` works with healthy input, alternative `na.rm = FALSE`", {
+testthat::test_that("`summarize_vars` works with healthy input, alternative `na.rm = FALSE`", {
 
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
@@ -440,10 +465,10 @@ test_that("`summarize_vars` works with healthy input, alternative `na.rm = FALSE
     .Dim = c(5L, 2L)
   )
 
-  expect_identical(to_string_matrix(result), expected)
+  testthat::expect_identical(to_string_matrix(result), expected)
 })
 
-test_that("`summarize_vars` works with healthy factor input", {
+testthat::test_that("`summarize_vars` works with healthy factor input", {
 
   dta <- data.frame(foo = factor(c("a", "b", "a")))
 
@@ -456,10 +481,10 @@ test_that("`summarize_vars` works with healthy factor input", {
     .Dim = c(4L, 2L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("`summarize_vars` works with healthy factor input, alternative `na.rm = FALSE`", {
+testthat::test_that("`summarize_vars` works with healthy factor input, alternative `na.rm = FALSE`", {
 
   dta <- data.frame(foo = factor(c("a", NA, "b", "a", NA)))
   dta <- df_explicit_na(dta)
@@ -473,10 +498,10 @@ test_that("`summarize_vars` works with healthy factor input, alternative `na.rm 
     .Dim = c(5L, 2L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("`summarize_vars` works with factors and different denominators", {
+testthat::test_that("`summarize_vars` works with factors and different denominators", {
 
   start <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -496,9 +521,9 @@ test_that("`summarize_vars` works with factors and different denominators", {
     summarize_vars("RACE", denom = "N_row") %>%
     build_table(DM)
 
-  expect_false(identical(result_n, result_ncol))
-  expect_false(identical(result_n, result))
-  expect_false(identical(result_ncol, result))
+  testthat::expect_false(identical(result_n, result_ncol))
+  testthat::expect_false(identical(result_n, result))
+  testthat::expect_false(identical(result_ncol, result))
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -519,19 +544,19 @@ test_that("`summarize_vars` works with factors and different denominators", {
       "0", "0", "0"),
     .Dim = c(22L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("summarize_vars works in demographic table example", {
+testthat::test_that("summarize_vars works in demographic table example", {
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_rows_by("RACE") %>%
     summarize_vars("COUNTRY", .stats = "count_fraction") %>%
     build_table(DM)
-  expect_silent(to_string_matrix(result))
+  testthat::expect_silent(to_string_matrix(result))
 })
 
-test_that("`summarize_vars` works with character input and gives the same result as with factor", {
+testthat::test_that("`summarize_vars` works with character input and gives the same result as with factor", {
 
   dta <- data.frame(
     foo = c("a", "b", "a"),
@@ -540,16 +565,16 @@ test_that("`summarize_vars` works with character input and gives the same result
 
   l <- basic_table() %>%
     summarize_vars(vars = "foo")
-  result <- expect_warning(build_table(l, dta))
+  result <- testthat::expect_warning(build_table(l, dta))
 
   dta_factor <- dta %>%
     dplyr::mutate(foo = factor(foo))
   expected <- build_table(l, dta_factor)
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("`summarize_vars` does not work with sparse character input due to missing statistics", {
+testthat::test_that("`summarize_vars` does not work with sparse character input due to missing statistics", {
 
   dta <- data.frame(
     foo = c("a", "b", "a"),
@@ -560,15 +585,15 @@ test_that("`summarize_vars` does not work with sparse character input due to mis
   l <- basic_table() %>%
     split_cols_by("boo") %>%
     summarize_vars(vars = "foo")
-  expect_error(expect_warning(build_table(l, dta)))
+  testthat::expect_error(testthat::expect_warning(build_table(l, dta)))
 
   # But when converting to factor, it works because we keep the levels information across columns.
   dta_factor <- dta %>%
     dplyr::mutate(foo = factor(foo))
-  expect_silent(build_table(l, dta_factor))
+  testthat::expect_silent(build_table(l, dta_factor))
 })
 
-test_that("`summarize_vars` works with logical input", {
+testthat::test_that("`summarize_vars` works with logical input", {
 
   dta <- data.frame(
     boo = c(TRUE, FALSE, FALSE, TRUE, TRUE)
@@ -583,16 +608,16 @@ test_that("`summarize_vars` works with logical input", {
     .Dim = 3:2
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("`summarize_vars` works with empty named numeric variables", {
+testthat::test_that("`summarize_vars` works with empty named numeric variables", {
 
-  dta <- tibble(
+  dta <- tibble::tibble(
     foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
     boo = 1:6
   )
-  dta <- dta %>% filter(foo != "a")
+  dta <- dta %>% dplyr::filter(foo != "a")
   names(dta$boo) <- dta$foo
 
   result <- basic_table() %>%
@@ -606,5 +631,5 @@ test_that("`summarize_vars` works with empty named numeric variables", {
     .Dim = c(5:4)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

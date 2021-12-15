@@ -58,7 +58,7 @@ NULL
 #'
 h_survtime_df <- function(tte, is_event, arm) {
 
-  assert_that(
+  assertthat::assert_that(
     is.numeric(tte),
     is.logical(is_event),
     is.factor(arm),
@@ -72,7 +72,7 @@ h_survtime_df <- function(tte, is_event, arm) {
   )
 
   #Delete NAs
-  non_missing_rows <- complete.cases(df_tte)
+  non_missing_rows <- stats::complete.cases(df_tte)
   df_tte <- df_tte[non_missing_rows, ]
   arm <- arm[non_missing_rows]
 
@@ -145,12 +145,12 @@ h_survtime_subgroups_df <- function(variables,
                                     groups_lists = list(),
                                     label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is_character_single(label_all),
+    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables)))
   )
 
@@ -184,7 +184,6 @@ h_survtime_subgroups_df <- function(variables,
 #'   treatment hazard ratio.
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
 #'   required if stratified analysis is performed.
-#' @importFrom stats setNames
 #' @export
 #' @examples
 #'
@@ -196,11 +195,11 @@ h_survtime_subgroups_df <- function(variables,
 #'
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
 
-  assert_that(
+  assertthat::assert_that(
     is.numeric(tte),
     is.logical(is_event),
     is.factor(arm),
-    are_equal(nlevels(arm), 2),
+    assertthat::are_equal(nlevels(arm), 2),
     is_equal_length(tte, is_event, arm)
   )
 
@@ -210,14 +209,14 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   if (!is.null(strata_data)) {
     if (is.data.frame(strata_data)) {
       strata_vars <- names(strata_data)
-      assert_that(
-        are_equal(nrow(strata_data), nrow(df_tte)),
-        is_df_with_factors(strata_data, as.list(setNames(strata_vars, strata_vars)))
+      assertthat::assert_that(
+        assertthat::are_equal(nrow(strata_data), nrow(df_tte)),
+        is_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
       )
     } else {
-      assert_that(
+      assertthat::assert_that(
         is_valid_factor(strata_data),
-        are_equal(length(strata_data), nrow(df_tte))
+        assertthat::are_equal(length(strata_data), nrow(df_tte))
       )
       strata_vars <- "strata_data"
     }
@@ -258,7 +257,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
     (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
   ) {
 
-    df_tte_complete <- df_tte[complete.cases(df_tte), ]
+    df_tte_complete <- df_tte[stats::complete.cases(df_tte), ]
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",
@@ -349,13 +348,13 @@ h_coxph_subgroups_df <- function(variables,
                                  control = control_coxph(),
                                  label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
     is.character(variables$strat) || is.null(variables$strat),
-    is_character_single(label_all),
+    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
   )
@@ -416,10 +415,6 @@ h_coxph_subgroups_df <- function(variables,
 #'
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
 #'
-#' @importFrom rtables var_labels var_labels<-
-#' @importFrom stats setNames
-#' @importFrom utils.nest is_fully_named_list
-#'
 #' @export
 #'
 #' @examples
@@ -449,10 +444,10 @@ h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {
 
-  assert_that(
-    is_character_vector(subgroups),
-    is_df_with_factors(data, as.list(setNames(subgroups, subgroups))),
-    is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups)
+  assertthat::assert_that(
+    utils.nest::is_character_vector(subgroups),
+    is_df_with_factors(data, as.list(stats::setNames(subgroups, subgroups))),
+    utils.nest::is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups)
   )
 
   data_labels <- unname(var_labels(data))

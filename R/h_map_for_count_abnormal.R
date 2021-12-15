@@ -71,11 +71,11 @@ h_map_for_count_abnormal <- function(
   na_level = "<Missing>"
 ) {
   method <- match.arg(method)
-  assert_that(
+  assertthat::assert_that(
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
     is_variables(variables),
-    is_character_list(abnormal, min_length = 2, max_length = 2),
+    utils.nest::is_character_list(abnormal, min_length = 2, max_length = 2),
     is_df_with_factors(df, list(val = variables$anl)),
     is_df_with_no_na_level(
       df, variables = list(anl = variables$anl, split_rows = variables$split_rows), na_level = na_level
@@ -88,7 +88,7 @@ h_map_for_count_abnormal <- function(
   df <- droplevels(df)
 
   normal_value <- setdiff(levels(df[[variables$anl]]), unlist(abnormal))
-  assert_that(
+  assertthat::assert_that(
     # Based on the understanding of clinical data, there should only be one level of normal which is "NORMAL"
     length(normal_value) == 1
   )
@@ -104,7 +104,7 @@ h_map_for_count_abnormal <- function(
   } else if (method == "range") {
     #range method follows the rule that at least one observation with ANRLO > 0 for low
     #direction and at least one observation with ANRHI is not missing for high direction.
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(df, variables = list(range_low = variables$range_low, range_high = variables$range_high)),
       "range_low" %in% names(variables),
       "range_high" %in% names(variables),

@@ -86,11 +86,11 @@ extract_rsp_biomarkers <- function(variables,
                                    groups_lists = list(),
                                    control = control_logistic(),
                                    label_all = "All Patients") {
-  assert_that(
+  assertthat::assert_that(
     is.list(variables),
-    is.string(variables$rsp),
+    assertthat::is.string(variables$rsp),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.string(label_all)
+    assertthat::is.string(label_all)
   )
   # Start with all patients.
   result_all <- h_logistic_mult_cont_df(
@@ -161,7 +161,7 @@ extract_rsp_biomarkers <- function(variables,
 #' g_forest(tab, xlim = c(0.7, 1.4))
 tabulate_rsp_biomarkers <- function(df,
                                     vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")) {
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(df),
     is.character(df$biomarker),
     is.character(df$biomarker_label),

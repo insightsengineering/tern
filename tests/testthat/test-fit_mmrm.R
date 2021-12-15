@@ -3,7 +3,7 @@ library(dplyr)
 
 data <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
 
-test_that("check_mmrm_vars passes with healthy inputs and returns correct labels", {
+testthat::test_that("check_mmrm_vars passes with healthy inputs and returns correct labels", {
   data <-  data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE"))
@@ -16,45 +16,45 @@ test_that("check_mmrm_vars passes with healthy inputs and returns correct labels
     arm = "ARM",
     visit = "AVISIT"
   )
-  expect_silent(result1 <- check_mmrm_vars(vars1, data))
+  testthat::expect_silent(result1 <- check_mmrm_vars(vars1, data))
   expected1 <- list(
-    response = setNames("Analysis Value", "AVAL"),
-    id = setNames("Unique Subject Identifier", "USUBJID"),
-    arm = setNames("ARM", "ARM"),
-    visit = setNames("Analysis Visit", "AVISIT")
+    response = c(AVAL = "Analysis Value"),
+    id = c(USUBJID = "Unique Subject Identifier"),
+    arm = c(ARM = "ARM"),
+    visit = c(AVISIT = "Analysis Visit")
   )
-  expect_identical(result1, expected1)
+  testthat::expect_identical(result1, expected1)
 
   # Additional covariates.
   vars2 <- vars1
   vars2$covariates <- c("STRATA1", "BMRKR2")
-  expect_silent(result2 <- check_mmrm_vars(vars2, data))
+  testthat::expect_silent(result2 <- check_mmrm_vars(vars2, data))
   expected2 <- c(
     expected1,
     list(
-      parts = setNames(
-        c("Stratification Factor 1", "Categorical Level Biomarker 2"),
-        c("STRATA1", "BMRKR2")
+      parts = c(
+        STRATA1 = "Stratification Factor 1",
+        BMRKR2 = "Categorical Level Biomarker 2"
       )
     )
   )
-  expect_identical(result2, expected2)
+  testthat::expect_identical(result2, expected2)
 
   # Without arm
   vars3 <- vars1
   vars3$arm <- NULL
-  expect_silent(result3 <- check_mmrm_vars(vars3, data))
+  testthat::expect_silent(result3 <- check_mmrm_vars(vars3, data))
 
   expected3 <- list(
-    response = setNames("Analysis Value", "AVAL"),
-    id = setNames("Unique Subject Identifier", "USUBJID"),
-    visit = setNames("Analysis Visit", "AVISIT")
+    response = c(AVAL = "Analysis Value"),
+    id = c(USUBJID = "Unique Subject Identifier"),
+    visit = c(AVISIT = "Analysis Visit")
   )
-  expect_identical(result3, expected3)
+  testthat::expect_identical(result3, expected3)
 
 })
 
-test_that("check_mmrm_vars works with interaction terms in `covariates`", {
+testthat::test_that("check_mmrm_vars works with interaction terms in `covariates`", {
   data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE"))
@@ -66,21 +66,18 @@ test_that("check_mmrm_vars works with interaction terms in `covariates`", {
     arm = "ARM",
     visit = "AVISIT"
   )
-  expect_silent(result <- check_mmrm_vars(vars, data))
+  testthat::expect_silent(result <- check_mmrm_vars(vars, data))
   expected <- list(
-    response = setNames("Analysis Value", "AVAL"),
-    id = setNames("Unique Subject Identifier", "USUBJID"),
-    arm = setNames("ARM", "ARM"),
-    visit = setNames("Analysis Visit", "AVISIT"),
-    parts = setNames(
-      c("ARM", "Continous Level Biomarker 1", "Stratification Factor 1"),
-      c("ARM", "BMRKR1", "STRATA1")
-    )
+    response = c(AVAL = "Analysis Value"),
+    id = c(USUBJID = "Unique Subject Identifier"),
+    arm = c(ARM = "ARM"),
+    visit = c(AVISIT = "Analysis Visit"),
+    parts = c(ARM = "ARM", BMRKR1 = "Continous Level Biomarker 1", STRATA1 = "Stratification Factor 1")
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("check_mmrm_vars works when there are missing values", {
+testthat::test_that("check_mmrm_vars works when there are missing values", {
   set.seed(123)
   data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
@@ -107,21 +104,18 @@ test_that("check_mmrm_vars works when there are missing values", {
     arm = "ARM",
     visit = "AVISIT"
   )
-  expect_silent(result <- check_mmrm_vars(vars, data))
+  testthat::expect_silent(result <- check_mmrm_vars(vars, data))
   expected <- list(
-    response = setNames("AVAL", "AVAL"),
-    id = setNames("Unique Subject Identifier", "USUBJID"),
-    arm = setNames("ARM", "ARM"),
-    visit = setNames("Analysis Visit", "AVISIT"),
-    parts = setNames(
-      c("ARM", "BMRKR1", "Stratification Factor 1"),
-      c("ARM", "BMRKR1", "STRATA1")
-    )
+    response = c(AVAL = "AVAL"),
+    id = c(USUBJID = "Unique Subject Identifier"),
+    arm = c(ARM = "ARM"),
+    visit = c(AVISIT = "Analysis Visit"),
+    parts = c(ARM = "ARM", BMRKR1 = "BMRKR1", STRATA1 = "Stratification Factor 1")
   )
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("check_mmrm_vars fails if a variable is missing", {
+testthat::test_that("check_mmrm_vars fails if a variable is missing", {
   data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
   full_vars <- list(
@@ -133,11 +127,11 @@ test_that("check_mmrm_vars fails if a variable is missing", {
   for (var in names(full_vars)) {
     incomplete_vars <- full_vars
     incomplete_vars[[var]] <- NULL
-    expect_error(check_mmrm_vars(incomplete_vars, data))
+    testthat::expect_error(check_mmrm_vars(incomplete_vars, data))
   }
 })
 
-test_that("check_mmrm_vars fails if a variable is not included in `data`", {
+testthat::test_that("check_mmrm_vars fails if a variable is not included in `data`", {
   data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
   vars <- list(
@@ -151,11 +145,11 @@ test_that("check_mmrm_vars fails if a variable is not included in `data`", {
     var_name <- vars[[var]]
     incomplete_data <- data
     incomplete_data[[var_name]] <- NULL
-    expect_error(check_mmrm_vars(vars, incomplete_data))
+    testthat::expect_error(check_mmrm_vars(vars, incomplete_data))
   }
 })
 
-test_that("build_mmrm_formula builds the correct formula", {
+testthat::test_that("build_mmrm_formula builds the correct formula", {
   # No additional covariates.
   vars1 <- list(
     response = "AVAL",
@@ -167,7 +161,7 @@ test_that("build_mmrm_formula builds the correct formula", {
   cor_struct1 <- "unstructured"
   result1 <- build_mmrm_formula(vars1, cor_struct1)
   expected1 <- AVAL ~ ARM * AVISIT + (0 + AVISIT | USUBJID)
-  expect_equal(result1, expected1)
+  testthat::expect_equal(result1, expected1)
 
   # Additional covariates.
   vars2 <- vars1
@@ -175,26 +169,26 @@ test_that("build_mmrm_formula builds the correct formula", {
   cor_struct2 <- "compound-symmetry"
   result2 <- build_mmrm_formula(vars2, cor_struct2)
   expected2 <- AVAL ~ STRATA1 + BMRKR2 + ARM * AVISIT + (1 | USUBJID)
-  expect_equal(result2, expected2)
+  testthat::expect_equal(result2, expected2)
 
   # Without arm
   vars3 <- vars1
   vars3$arm <- NULL
   cor_struct3 <- "random-quadratic"
   result3 <- build_mmrm_formula(vars3, cor_struct3)
-  expected3 <- AVAL ~ AVISIT + (poly(as.numeric(AVISIT), df = 2) | USUBJID)
+  expected3 <- AVAL ~ AVISIT + (stats::poly(as.numeric(AVISIT), df = 2) | USUBJID)
 
 })
 
-test_that("fit_lme4_single_optimizer works as expected when there are no warnings or messages", {
+testthat::test_that("fit_lme4_single_optimizer works as expected when there are no warnings or messages", {
   # Default optimizer used.
   result1 <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (Days | Subject),
     data = lme4::sleepstudy
   )
-  expect_s4_class(result1, "lmerModLmerTest")
-  expect_identical(attr(result1, "optimizer"), "nloptwrap_bobyqa")
-  expect_identical(attr(result1, "messages"), character(0))
+  testthat::expect_s4_class(result1, "lmerModLmerTest")
+  testthat::expect_identical(attr(result1, "optimizer"), "nloptwrap_bobyqa")
+  testthat::expect_identical(attr(result1, "messages"), character(0))
 
   # Non-default optimizer used.
   result2 <- fit_lme4_single_optimizer(
@@ -202,12 +196,12 @@ test_that("fit_lme4_single_optimizer works as expected when there are no warning
     data = lme4::sleepstudy,
     optimizer = "nmkbw"
   )
-  expect_s4_class(result2, "lmerModLmerTest")
-  expect_identical(attr(result2, "optimizer"), "nmkbw")
-  expect_identical(attr(result2, "messages"), character(0))
+  testthat::expect_s4_class(result2, "lmerModLmerTest")
+  testthat::expect_identical(attr(result2, "optimizer"), "nmkbw")
+  testthat::expect_identical(attr(result2, "messages"), character(0))
 
   # Results should be equal (without attributes which capture optimizer details).
-  expect_equal(result1, result2, check.attributes = FALSE)
+  testthat::expect_equal(result1, result2, check.attributes = FALSE)
 })
 
 # Helper function which is another implementation of the covariance matrix estimate from
@@ -225,15 +219,15 @@ alternative_cov_estimate <- function(fit) {
   #nolint end
 }
 
-test_that("get_lme4_cov_estimate works as expected with a random slope model", {
+testthat::test_that("get_lme4_cov_estimate works as expected with a random slope model", {
   fit <- fit_lme4(
     formula = Reaction ~ Days + (Days | Subject),
     data = lme4::sleepstudy
   )
   result <- get_lme4_cov_estimate(fit)
   expected <- as.matrix(alternative_cov_estimate(fit)[1:10, 1:10])  # We use first 10 obs.
-  expect_equal(result, expected, check.attributes = FALSE)
-  expect_identical(
+  testthat::expect_equal(result, expected, check.attributes = FALSE)
+  testthat::expect_identical(
     attributes(result),
     list(
       dim = c(10L, 10L),
@@ -243,15 +237,15 @@ test_that("get_lme4_cov_estimate works as expected with a random slope model", {
   )
 })
 
-test_that("get_lme4_cov_estimate works with a random intercept model", {
+testthat::test_that("get_lme4_cov_estimate works with a random intercept model", {
   fit <- fit_lme4(
     formula = Reaction ~ Days + (1 | Subject),
     data = lme4::sleepstudy
   )
-  expect_silent(result <- get_lme4_cov_estimate(fit))
+  testthat::expect_silent(result <- get_lme4_cov_estimate(fit))
 })
 
-test_that("get_lme4_cov_estimate works as expected with unbalanced data and independent of sorting", {
+testthat::test_that("get_lme4_cov_estimate works as expected with unbalanced data and independent of sorting", {
   # Obtain unbalanced data set.
   set.seed(123, kind = "Mersenne-Twister")
   data_unsorted <- lme4::sleepstudy %>%
@@ -263,7 +257,7 @@ test_that("get_lme4_cov_estimate works as expected with unbalanced data and inde
     data = data_unsorted
   )
   result_unsorted <- get_lme4_cov_estimate(fit_unsorted)
-  expect_identical(
+  testthat::expect_identical(
     attributes(result_unsorted),
     list(
       dim = c(10L, 10L),
@@ -280,7 +274,7 @@ test_that("get_lme4_cov_estimate works as expected with unbalanced data and inde
     data = data_sorted
   )
   result_sorted <- get_lme4_cov_estimate(fit_sorted)
-  expect_identical(
+  testthat::expect_identical(
     attributes(result_sorted),
     list(
       dim = c(10L, 10L),
@@ -294,14 +288,14 @@ test_that("get_lme4_cov_estimate works as expected with unbalanced data and inde
     dplyr::filter(Subject == "372") %>%
     dplyr::pull(Days) %>%
     order()
-  expect_equal(
+  testthat::expect_equal(
     result_unsorted[order_index, order_index],
     result_sorted,
     check.attributes = FALSE
   )
 })
 
-test_that("get_lme4_cov_estimate works as expected with a random intercept model and unbalanced data", {
+testthat::test_that("get_lme4_cov_estimate works as expected with a random intercept model and unbalanced data", {
   set.seed(123, kind = "Mersenne-Twister")
   data <- lme4::sleepstudy %>%
     dplyr::sample_frac(0.5)
@@ -312,8 +306,8 @@ test_that("get_lme4_cov_estimate works as expected with a random intercept model
   result <- get_lme4_cov_estimate(fit)
   id_indices <- which(data$Subject == "372")  # We get id 372 here.
   expected <- as.matrix(alternative_cov_estimate(fit)[id_indices, id_indices])
-  expect_equal(result, expected, check.attributes = FALSE)
-  expect_identical(
+  testthat::expect_equal(result, expected, check.attributes = FALSE)
+  testthat::expect_identical(
     attributes(result),
     list(
       dim = c(10L, 10L),
@@ -323,7 +317,7 @@ test_that("get_lme4_cov_estimate works as expected with a random intercept model
   )
 })
 
-test_that("get_lme4_diagnostics works as expected with a random slope model", {
+testthat::test_that("get_lme4_diagnostics works as expected with a random slope model", {
   fit <- fit_lme4(
     formula = Reaction ~ Days + (Days | Subject),
     data = lme4::sleepstudy
@@ -336,26 +330,26 @@ test_that("get_lme4_diagnostics works as expected with a random slope model", {
     AICc = 1751.9,
     BIC = 1755.2
   )
-  expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tol = 0.0001)
 })
 
-test_that("fit_lme4_single_optimizer correctly captures warnings and messages", {
+testthat::test_that("fit_lme4_single_optimizer correctly captures warnings and messages", {
   data <- lme4::sleepstudy
   data$days_copy <- data$Days
 
-  expect_silent(
+  testthat::expect_silent(
     result <- fit_lme4_single_optimizer(
       formula = Reaction ~ Days + (Days + days_copy | Subject),
       data = data
     )
   )
-  expect_s4_class(result, "lmerModLmerTest")
-  expect_identical(attr(result, "optimizer"), "nloptwrap_bobyqa")
-  expect_gt(length(attr(result, "messages")), 0)
+  testthat::expect_s4_class(result, "lmerModLmerTest")
+  testthat::expect_identical(attr(result, "optimizer"), "nloptwrap_bobyqa")
+  testthat::expect_gt(length(attr(result, "messages")), 0)
 })
 
-test_that("fit_lme4_single_optimizer fails when there is an error", {
-  expect_error(
+testthat::test_that("fit_lme4_single_optimizer fails when there is an error", {
+  testthat::expect_error(
     fit_lme4_single_optimizer(
       formula = Reaction ~ Days + (Days | Subject),
       data = does_not_exist
@@ -364,15 +358,15 @@ test_that("fit_lme4_single_optimizer fails when there is an error", {
   )
 })
 
-test_that("summary_all_fits works as expected", {
+testthat::test_that("summary_all_fits works as expected", {
   single_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (Days | Subject),
     data = lme4::sleepstudy
   )
   all_fits <- list(a = single_fit, b = single_fit, c = single_fit)
   result <- summary_all_fits(all_fits)
-  expect_is(result, "list")
-  expect_named(result, c("messages", "fixef", "llik", "feval"))
+  testthat::expect_is(result, "list")
+  testthat::expect_named(result, c("messages", "fixef", "llik", "feval"))
   lapply(
     result,
     expect_named,
@@ -381,22 +375,22 @@ test_that("summary_all_fits works as expected", {
 })
 
 test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
-
-  test.nest::skip_if_too_deep(5)
+  
+  utils.nest::skip_if_too_deep(5)
 
   original_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (factor(Days) | Subject),
     data = lme4::sleepstudy,
     optimizer = "nloptwrap_bobyqa"
   )
-  expect_gt(length(attr(original_fit, "messages")), 0)
-  expect_error(
+  testthat::expect_gt(length(attr(original_fit, "messages")), 0)
+  testthat::expect_error(
     refit_lme4_all_optimizers(original_fit),
     "No optimizer led to a successful model fit"
   )
 })
 
-test_that("refit_lme4_all_optimizers can find a working optimizer if there is one", {
+testthat::test_that("refit_lme4_all_optimizers can find a working optimizer if there is one", {
   data <- lme4::sleepstudy %>%
     dplyr::mutate(
       days_grouped = cut(
@@ -411,52 +405,52 @@ test_that("refit_lme4_all_optimizers can find a working optimizer if there is on
     data = data,
     optimizer = "nloptwrap_bobyqa"
   )
-  expect_gt(length(attr(failed_fit, "messages")), 0)
+  testthat::expect_gt(length(attr(failed_fit, "messages")), 0)
   # But this one works.
   successful_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ days_grouped + (days_grouped | Subject),
     data = data,
     optimizer = "nloptwrap_neldermead"
   )
-  expect_length(attr(successful_fit, "messages"), 0L)
+  testthat::expect_length(attr(successful_fit, "messages"), 0L)
   # So we expect that we can find the working one (or at least one working one).
   final_fit <- refit_lme4_all_optimizers(failed_fit)
-  expect_length(attr(final_fit, "messages"), 0L)
-  expect_equal(successful_fit, final_fit, check.attributes = FALSE)
+  testthat::expect_length(attr(final_fit, "messages"), 0L)
+  testthat::expect_equal(successful_fit, final_fit, check.attributes = FALSE)
 })
 
 
-test_that("refit_lme4_all_optimizers works with parallelization", {
+testthat::test_that("refit_lme4_all_optimizers works with parallelization", {
 
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
 
   original_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (factor(Days) | Subject),
     data = lme4::sleepstudy,
     optimizer = "nloptwrap_bobyqa"
   )
-  expect_gt(length(attr(original_fit, "messages")), 0)
+  testthat::expect_gt(length(attr(original_fit, "messages")), 0)
   # Note that here we get the wrong error message somehow in devtools::check.
   # Therefore we don't compare the message text.
-  expect_error(
+  testthat::expect_error(
     refit_lme4_all_optimizers(original_fit, n_cores = 4L)
   )
 })
 
-test_that("fit_lme4 works with healthy inputs", {
+testthat::test_that("fit_lme4 works with healthy inputs", {
   result <- fit_lme4(
     formula = Reaction ~ Days + (Days | Subject),
     data = lme4::sleepstudy
   )
-  expect_s4_class(result, "lmerModLmerTest")
+  testthat::expect_s4_class(result, "lmerModLmerTest")
 })
 
-test_that("fit_lme4 fails when there are convergence issues with all optimizers", {
+testthat::test_that("fit_lme4 fails when there are convergence issues with all optimizers", {
 
   data <- lme4::sleepstudy
   data$days_copy <- data$Days
 
-  expect_error(
+  testthat::expect_error(
     fit_lme4(
       formula = Reaction ~ Days + (Days + days_copy | Subject),
       data = data,
@@ -466,11 +460,11 @@ test_that("fit_lme4 fails when there are convergence issues with all optimizers"
   )
 })
 
-test_that("fit_lme4 fails when there are convergence issues with a specific optimizer", {
+testthat::test_that("fit_lme4 fails when there are convergence issues with a specific optimizer", {
   data <- lme4::sleepstudy
   data$days_copy <- data$Days
 
-  expect_error(
+  testthat::expect_error(
     fit_lme4(
       formula = Reaction ~ Days + (Days + days_copy | Subject),
       data = data,
@@ -480,9 +474,9 @@ test_that("fit_lme4 fails when there are convergence issues with a specific opti
   )
 })
 
-test_that("get_mmrm_lsmeans can calculate the LS mean results", {
+testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
 
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
 
   data <- data %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
@@ -499,20 +493,20 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
     data = data,
     optimizer = "bobyqa"
   )
-  expect_silent(result <- get_mmrm_lsmeans(
+  testthat::expect_silent(result <- get_mmrm_lsmeans(
     fit = fit,
     vars = vars,
     conf_level = 0.95,
     weights = "proportional"
   ))
-  expect_is(result, "list")
-  expect_is(result$estimates, "data.frame")
-  expect_is(result$contrasts, "data.frame")
+  testthat::expect_is(result, "list")
+  testthat::expect_is(result$estimates, "data.frame")
+  testthat::expect_is(result$contrasts, "data.frame")
 })
 
-test_that("get_mmrm_lsmeans preserves combined arm levels.", {
+testthat::test_that("get_mmrm_lsmeans preserves combined arm levels.", {
 
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
 
   data <- data %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
@@ -550,13 +544,13 @@ test_that("get_mmrm_lsmeans preserves combined arm levels.", {
     weights = "proportional"
   )
 
-  expect_identical(levels(data$ARM), levels(result$estimates$ARM))
-  expect_identical(levels(data$ARM)[-1], levels(result$contrasts$ARM))
+  testthat::expect_identical(levels(data$ARM), levels(result$estimates$ARM))
+  testthat::expect_identical(levels(data$ARM)[-1], levels(result$contrasts$ARM))
 
 })
 
 
-test_that("fit_mmrm works with parallelization", {
+testthat::test_that("fit_mmrm works with parallelization", {
 
   dat <- lme4::sleepstudy %>%
     dplyr::mutate(
@@ -596,7 +590,7 @@ expect_equal_result_tables <- function(result,
   pval_col <- match(pval_name, colnames(result))
 
   # Compare first non-pvalue columns.
-  expect_equal(
+  testthat::expect_equal(
     result[, -pval_col],
     expected[, -pval_col],
     tol = tol
@@ -604,7 +598,7 @@ expect_equal_result_tables <- function(result,
 
   # Then compare p-values which are not below the threshold in the expected table.
   exp_pval_is_below_thresh <- expected[, pval_col] == 0
-  expect_equal(
+  testthat::expect_equal(
     result[, pval_col][!exp_pval_is_below_thresh],
     expected[, pval_col][!exp_pval_is_below_thresh],
     tol = tol
@@ -612,7 +606,7 @@ expect_equal_result_tables <- function(result,
 
   # Now expect that the same p-values are below the thresholds in both tables.
   res_pval_is_below_thresh <- result[, pval_col] < pval_threshold
-  expect_identical(
+  testthat::expect_identical(
     exp_pval_is_below_thresh,
     res_pval_is_below_thresh
   )
@@ -664,12 +658,12 @@ get_adqs <- function(version = c("A", "B")) {
   return(adqs_f)
 }
 
-test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
+testthat::test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
 
-  test.nest::skip_if_too_deep(5)
+  utils.nest::skip_if_too_deep(5)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
+    testthat::skip("tests dont run with older version of lme4")
   }
 
   adqs_f <- get_adqs(version = "A")
@@ -698,7 +692,7 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
   # RUN;
 
   # REML criterion value.
-  expect_equal(
+  testthat::expect_equal(
     lme4::REMLcrit(mmrm_results$fit),
     17672.9,
     tol = 0.0001
@@ -768,7 +762,7 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
       72.2929, 76.4033, 77.797, 76.611
     )
   )
-  expect_equal(
+  testthat::expect_equal(
     lsmeans_estimates,
     expected_lsmeans_estimates,
     tol = 0.00001
@@ -822,7 +816,7 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
     nrow = 6L,
     ncol = 6L
   )
-  expect_equal(
+  testthat::expect_equal(
     cov_estimate,
     expected_cov_estimate,
     check.attributes = FALSE,
@@ -833,7 +827,7 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
   diagnostics <- mmrm_results$diagnostics
   diagnostics_values <- unlist(diagnostics)
   expected_diagnostics_values <- c(17672.9, 17714.9, 17715.3, 17798.7)
-  expect_equal(
+  testthat::expect_equal(
     diagnostics_values,
     expected_diagnostics_values,
     tol = 0.00001,
@@ -841,13 +835,13 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
   )
 })
 
-test_that("fit_mmrm works also with missing data", {
+testthat::test_that("fit_mmrm works also with missing data", {
 
-  test.nest::skip_if_too_deep(3)
+  utils.nest::skip_if_too_deep(3)
 
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
-    nrow(na.omit(adqs_f)),
+    nrow(stats::na.omit(adqs_f)),
     265L
   ))
 
@@ -875,7 +869,7 @@ test_that("fit_mmrm works also with missing data", {
   # RUN;
 
   # REML criterion value.
-  expect_equal(
+  testthat::expect_equal(
     lme4::REMLcrit(mmrm_results$fit),
     12003.9,
     tol = 0.00001
@@ -942,7 +936,7 @@ test_that("fit_mmrm works also with missing data", {
       78.8876
     )
   )
-  expect_equal(
+  testthat::expect_equal(
     lsmeans_estimates,
     expected_lsmeans_estimates,
     tol = 0.00001
@@ -995,7 +989,7 @@ test_that("fit_mmrm works also with missing data", {
     nrow = 5L,
     ncol = 5L
   )
-  expect_equal(
+  testthat::expect_equal(
     cov_estimate,
     expected_cov_estimate,
     check.attributes = FALSE,
@@ -1006,7 +1000,7 @@ test_that("fit_mmrm works also with missing data", {
   diagnostics <- mmrm_results$diagnostics
   diagnostics_values <- unlist(diagnostics)
   expected_diagnostics_values <- c(12003.9, 12033.9, 12034.2, 12093.8)
-  expect_equal(
+  testthat::expect_equal(
     diagnostics_values,
     expected_diagnostics_values,
     tol = 0.00001,
@@ -1014,10 +1008,10 @@ test_that("fit_mmrm works also with missing data", {
   )
 })
 
-test_that("fit_mmrm works with compound symmetry covariance structure", {
+testthat::test_that("fit_mmrm works with compound symmetry covariance structure", {
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
-    nrow(na.omit(adqs_f)),
+    nrow(stats::na.omit(adqs_f)),
     265L
   ))
 
@@ -1044,7 +1038,7 @@ test_that("fit_mmrm works with compound symmetry covariance structure", {
   # RUN;
 
   # REML criterion value.
-  expect_equal(
+  testthat::expect_equal(
     lme4::REMLcrit(mmrm_results$fit),
     12088.3,
     tol = 0.0001
@@ -1110,7 +1104,7 @@ test_that("fit_mmrm works with compound symmetry covariance structure", {
       78.2709
     )
   )
-  expect_equal(
+  testthat::expect_equal(
     lsmeans_estimates,
     expected_lsmeans_estimates,
     tol = 0.00001
@@ -1163,7 +1157,7 @@ test_that("fit_mmrm works with compound symmetry covariance structure", {
     nrow = 5L,
     ncol = 5L
   )
-  expect_equal(
+  testthat::expect_equal(
     cov_estimate,
     expected_cov_estimate,
     check.attributes = FALSE,
@@ -1174,7 +1168,7 @@ test_that("fit_mmrm works with compound symmetry covariance structure", {
   diagnostics <- mmrm_results$diagnostics
   diagnostics_values <- unlist(diagnostics)
   expected_diagnostics_values <- c(12088.3, 12092.3, 12092.4, 12100.3)
-  expect_equal(
+  testthat::expect_equal(
     diagnostics_values,
     expected_diagnostics_values,
     tol = 0.00001,

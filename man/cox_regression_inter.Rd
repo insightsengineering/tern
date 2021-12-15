@@ -130,6 +130,7 @@ plot(
   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 )
 
+library(survival)
 
 mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 h_coxreg_extract_interaction(

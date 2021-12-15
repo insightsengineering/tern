@@ -1,7 +1,7 @@
 ---
 title: "Allow grouping of factor levels in forest plot functions"
 output: html_document
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -15,21 +15,21 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tern)
 library(ggplot2.utils)
 library(dplyr)
-adtte <- ex_adtte %>% 
+adtte <- ex_adtte %>%
   filter(
     PARAMCD == "OS"
     ) %>%
   mutate(
     AVAL = day2month(AVAL),
     AVALU = "Months",
-    is_event = CNSR == 0, 
+    is_event = CNSR == 0,
     ARM_BIN = forcats::fct_collapse(
       ARM,
       CTRL = c("B: Placebo"),
       TRT = c("A: Drug X", "C: Combination")
       ),
     ARM_BIN = droplevels(forcats::fct_relevel(ARM_BIN, "CTRL"))
-  ) %>% 
+  ) %>%
   var_relabel(BEP01FL = "BEP",
               BMRKR2 = "Biomarker (Categorical)")
 ```
@@ -80,23 +80,23 @@ The current structure is as follows:
 We can just pass `groups_lists` from top level to helper functions.
 
 ```{r, toplevel}
-extract_survival_subgroups <- function(variables, 
-                                        data, 
+extract_survival_subgroups <- function(variables,
+                                        data,
                                         groups_lists = NULL,
-                                        control = control_coxph(), 
+                                        control = control_coxph(),
                                         label_all = "All Patients") {
 
   df_survtime <- h_survtime_subgroups_df(
-    variables, 
-    data, 
+    variables,
+    data,
     groups_lists = groups_lists,
     label_all = label_all
   )
   df_hr <- h_coxph_subgroups_df(
-    variables, 
-    data, 
-    groups_lists = groups_lists, 
-    control = control, 
+    variables,
+    data,
+    groups_lists = groups_lists,
+    control = control,
     label_all = label_all
   )
 
@@ -109,20 +109,20 @@ extract_survival_subgroups <- function(variables,
 Also here we just pass on.
 
 ```{r, helper1}
-h_survtime_subgroups_df <- function(variables, 
-                                    data, 
+h_survtime_subgroups_df <- function(variables,
+                                    data,
                                     groups_lists = NULL,
                                     label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is_character_single(label_all),
+    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
-    are_equal(nlevels(data[[variables$arm]]), 2)
+    assertthat::are_equal(nlevels(data[[variables$arm]]), 2)
   )
 
   # Add All Patients.
@@ -139,8 +139,8 @@ if (is.null(variables$subgroups)) {
     l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
     l_result <- lapply(l_data, function(grp) {
       result <- h_survtime_df(
-        grp$df[[variables$tte]], 
-        grp$df[[variables$is_event]], 
+        grp$df[[variables$tte]],
+        grp$df[[variables$is_event]],
         grp$df[[variables$arm]]
       )
       result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
@@ -161,22 +161,22 @@ if (is.null(variables$subgroups)) {
 Same here
 
 ```{r, helper2}
-h_coxph_subgroups_df <- function(variables, 
-                                 data, 
+h_coxph_subgroups_df <- function(variables,
+                                 data,
                                  groups_lists = NULL,
-                                 control = control_coxph(), 
+                                 control = control_coxph(),
                                  label_all = "All Patients") {
 
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
     is.character(variables$strat) || is.null(variables$strat),
-    is_character_single(label_all),
+    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
-    are_equal(nlevels(data[[variables$arm]]), 2)
+    assertthat::are_equal(nlevels(data[[variables$arm]]), 2)
   )
 
   # Add All Patients.
@@ -227,15 +227,15 @@ h_coxph_subgroups_df <- function(variables,
 Here the actual work happens.
 
 ```{r, splitfun}
-h_split_by_subgroups <- function(data, 
-                                 subgroups, 
+h_split_by_subgroups <- function(data,
+                                 subgroups,
                                  groups_lists) {
 
-  assert_that(
-    is_character_vector(subgroups),
+  assertthat::assert_that(
+    utils.nest::is_character_vector(subgroups),
     is_df_with_factors(data, as.list(setNames(subgroups, subgroups))),
-    is.null(groups_lists) || 
-      (is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups))
+    is.null(groups_lists) ||
+      (utils.nest::is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups))
   )
 
   data_labels <- unname(var_labels(data))
@@ -265,7 +265,7 @@ h_split_by_subgroups <- function(data,
   # Create a list of data subsets.
   lapply(split(df_labels, row_split_var), function(row_i) {
     which_row <- if (row_i$var %in% names(groups_lists)) {
-      data[[row_i$var]] %in% groups_lists[[row_i$var]][[row_i$subgroup]] 
+      data[[row_i$var]] %in% groups_lists[[row_i$var]][[row_i$subgroup]]
     } else {
       data[[row_i$var]] == row_i$subgroup
     }
@@ -288,9 +288,9 @@ h_split_by_subgroups <- function(data,
 ```{r, tryout}
 tbl <- extract_survival_subgroups(
    variables = list(
-    tte = "AVAL", 
-    is_event = "is_event", 
-    arm = "ARM_BIN", 
+    tte = "AVAL",
+    is_event = "is_event",
+    arm = "ARM_BIN",
     subgroups = c("BEP01FL", "BMRKR2")
     ),
   label_all = "ITT",
@@ -303,7 +303,7 @@ tbl
 So this works as expected. Downstream check:
 
 ```{r, downstream}
-result <- basic_table() %>% 
+result <- basic_table() %>%
   tabulate_survival_subgroups(
     df = tbl,
     vars = c("n_tot", "n", "n_events", "median", "hr", "ci"),

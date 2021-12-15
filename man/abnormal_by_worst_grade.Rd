@@ -8,14 +8,14 @@
 \title{Patient Counts with the Most Extreme Post-baseline Toxicity Grade per Direction of Abnormality}
 \usage{
 s_count_abnormal_by_worst_grade(
-  df = adlb_f,
+  df,
   .var = "GRADE_ANL",
   .spl_context,
   variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
 )
 
 a_count_abnormal_by_worst_grade(
-  df = adlb_f,
+  df,
   .var = "GRADE_ANL",
   .spl_context,
   variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")

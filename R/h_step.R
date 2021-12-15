@@ -17,9 +17,9 @@ NULL
 #'
 h_step_window <- function(x,
                           control = control_step()) {
-  assert_that(
-    is_numeric_vector(x),
-    is_fully_named_list(control)
+  assertthat::assert_that(
+    utils.nest::is_numeric_vector(x),
+    utils.nest::is_fully_named_list(control)
   )
   sel <- matrix(FALSE, length(x), control$num_points)
   out <- matrix(0, control$num_points, 3)
@@ -34,12 +34,12 @@ h_step_window <- function(x,
         max(xs[i] - control$bandwidth, 0),
         min(xs[i] + control$bandwidth, 1)
       )
-      out[i, 5:6] <- quantile(x, out[i, 2:3])
+      out[i, 5:6] <- stats::quantile(x, out[i, 2:3])
       sel[, i] <- x >= out[i, 5] & x <= out[i, 6]
     }
     # Center is the middle point of the percentile window.
     out[, 1] <- xs[-control$num_points - 1]
-    out[, 4] <- quantile(x, out[, 1])
+    out[, 4] <- stats::quantile(x, out[, 1])
   } else {
     # Create windows according to cutoffs.
     m <- c(min(x), max(x))
@@ -63,34 +63,33 @@ h_step_window <- function(x,
 #'   This works for both `coxph` and `glm` models, i.e. for calculating log hazard ratio or log odds
 #'   ratio estimates. It returns a vector with elements `est` and `se`.
 #' @param model the regression model object.
-#' @importFrom stats coef delete.response model.frame model.matrix terms vcov
 #'
 h_step_trt_effect <- function(data,
                               model,
                               variables,
                               x) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(data, variables),
-    is(model, "coxph") || is(model, "glm"),
-    is.number(x)
+    inherits(model, "coxph") || inherits(model, "glm"),
+    assertthat::is.number(x)
   )
   arm_lvls <- levels(data[[variables$arm]])
-  assert_that(
+  assertthat::assert_that(
     identical(length(arm_lvls), 2L)
   )
   newdata <- data[c(1, 1), ]
   newdata[, variables$biomarker] <- x
   newdata[, variables$arm] <- arm_lvls
-  model_terms <- delete.response(terms(model))
-  model_frame <- model.frame(model_terms, data = newdata, xlev = model$xlevels)
-  mat <- model.matrix(model_terms, data = model_frame, contrasts.arg = model$contrasts)
-  coefs <- coef(model)
+  model_terms <- stats::delete.response(stats::terms(model))
+  model_frame <- stats::model.frame(model_terms, data = newdata, xlev = model$xlevels)
+  mat <- stats::model.matrix(model_terms, data = model_frame, contrasts.arg = model$contrasts)
+  coefs <- stats::coef(model)
   # Note: It is important to use the coef subset from matrix, otherwise intercept and
   # strata are included for coxph() models.
   mat <- mat[, names(coefs)]
   mat_diff <- diff(mat)
   est <- mat_diff %*% coefs
-  var <- mat_diff %*% vcov(model) %*% t(mat_diff)
+  var <- mat_diff %*% stats::vcov(model) %*% t(mat_diff)
   se <- sqrt(var)
   c(
     est = est,
@@ -102,13 +101,13 @@ h_step_trt_effect <- function(data,
 #'
 h_step_survival_formula <- function(variables,
                                     control = control_step()) {
-  assert_that(
+  assertthat::assert_that(
     is.null(variables$covariates) || is.character(variables$covariates),
     is_variables(variables[c("arm", "biomarker", "event", "time")])
   )
   form <- paste0("Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm)
   if (control$degree > 0) {
-    form <- paste0(form, " * poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
+    form <- paste0(form, " * stats::poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
   }
   if (!is.null(variables$covariates)) {
     form <- paste(form, "+", paste(variables$covariates, collapse = "+"))
@@ -116,7 +115,7 @@ h_step_survival_formula <- function(variables,
   if (!is.null(variables$strata)) {
     form <- paste0(form, " + strata(", paste0(variables$strata, collapse = ", "), ")")
   }
-  as.formula(form)
+  stats::as.formula(form)
 }
 
 #' @describeIn h_step estimates the model with `formula` built based on
@@ -134,12 +133,12 @@ h_step_survival_est <- function(formula,
                                 x,
                                 subset = rep(TRUE, nrow(data)),
                                 control = control_coxph()) {
-  assert_that(
-    is(formula, "formula"),
+  assertthat::assert_that(
+    inherits(formula, "formula"),
     is_df_with_variables(data, variables),
-    is_numeric_vector(x),
-    is_logical_vector(subset),
-    is_fully_named_list(control)
+    utils.nest::is_numeric_vector(x),
+    utils.nest::is_logical_vector(subset),
+    utils.nest::is_fully_named_list(control)
   )
   # Note: `subset` in `coxph` needs to be an expression referring to `data` variables.
   data$.subset <- subset
@@ -147,7 +146,7 @@ h_step_survival_est <- function(formula,
   tryCatch(
     withCallingHandlers(
       expr = {
-        fit <- coxph(
+        fit <- survival::coxph(
           formula = formula,
           data = data,
           subset = .subset,
@@ -177,7 +176,7 @@ h_step_survival_est <- function(formula,
     model = fit,
     variables = variables
   ))
-  q_norm <- qnorm((1 + control$conf_level) / 2)
+  q_norm <- stats::qnorm((1 + control$conf_level) / 2)
   cbind(
     n = fit$n,
     events = fit$nevent,
@@ -192,7 +191,7 @@ h_step_survival_est <- function(formula,
 #'
 h_step_rsp_formula <- function(variables,
                                control = c(control_step(), control_logistic())) {
-  assert_that(
+  assertthat::assert_that(
     is.null(variables$covariates) || is.character(variables$covariates),
     is_variables(variables[c("arm", "biomarker", "response")])
   )
@@ -204,7 +203,7 @@ h_step_rsp_formula <- function(variables,
   )
   form <- paste0(response_definition, " ~ ", variables$arm)
   if (control$degree > 0) {
-    form <- paste0(form, " * poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
+    form <- paste0(form, " * stats::poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
   }
   if (!is.null(variables$covariates)) {
     form <- paste(form, "+", paste(variables$covariates, collapse = "+"))
@@ -217,7 +216,7 @@ h_step_rsp_formula <- function(variables,
     }
     form <- paste0(form, "+ strata(", strata_arg, ")")
   }
-  as.formula(form)
+  stats::as.formula(form)
 }
 
 #' @describeIn h_step estimates the model with `formula` built based on
@@ -228,19 +227,18 @@ h_step_rsp_formula <- function(variables,
 #'   included here for each biomarker value in `x`.
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
-#'
 h_step_rsp_est <- function(formula,
                            data,
                            variables,
                            x,
                            subset = rep(TRUE, nrow(data)),
                            control = control_logistic()) {
-  assert_that(
-    is(formula, "formula"),
+  assertthat::assert_that(
+    inherits(formula, "formula"),
     is_df_with_variables(data, variables),
-    is_numeric_vector(x),
-    is_logical_vector(subset),
-    is_fully_named_list(control)
+    utils.nest::is_numeric_vector(x),
+    utils.nest::is_logical_vector(subset),
+    utils.nest::is_fully_named_list(control)
   )
   # Note: `subset` in `glm` needs to be an expression referring to `data` variables.
   data$.subset <- subset
@@ -249,14 +247,15 @@ h_step_rsp_est <- function(formula,
     withCallingHandlers(
       expr = {
         fit <- if (is.null(variables$strata)) {
-          glm(
+          stats::glm(
             formula = formula,
             data = data,
             subset = .subset,
-            family = binomial("logit")
+            family = stats::binomial("logit")
           )
         } else {
-          clogit(
+          # clogit needs coxph and strata imported
+          survival::clogit(
             formula = formula,
             data = data,
             subset = .subset
@@ -286,7 +285,7 @@ h_step_rsp_est <- function(formula,
     model = fit,
     variables = variables
   ))
-  q_norm <- qnorm((1 + control$conf_level) / 2)
+  q_norm <- stats::qnorm((1 + control$conf_level) / 2)
   cbind(
     n = length(fit$y),
     logor = estimates[, "est"],

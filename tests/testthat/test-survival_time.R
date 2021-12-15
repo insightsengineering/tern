@@ -3,7 +3,7 @@ library(dplyr)
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
-test_that("s_surv_time works with default arguments", {
+testthat::test_that("s_surv_time works with default arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -25,10 +25,10 @@ test_that("s_surv_time works with default arguments", {
     range_event = with_label(c(0.0104370446088212, 122.357382022329), label = "Range (event)"),
     range = with_label(c(0.0104370446088212, 122.357382022329), label = "Range")
   )
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-test_that("s_surv_time works with customized arguments", {
+testthat::test_that("s_surv_time works with customized arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -53,10 +53,10 @@ test_that("s_surv_time works with customized arguments", {
     range_event = with_label(c(0.0104370446088212, 122.357382022329), label = "Range (event)"),
     range = with_label(c(0.0104370446088212, 122.357382022329), label = "Range")
   )
-  expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-test_that("surv_time works with default arguments", {
+testthat::test_that("surv_time works with default arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -88,11 +88,11 @@ test_that("surv_time works with default arguments", {
     .Dim = c(7L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 
-test_that("surv_time works with customized arguments", {
+testthat::test_that("surv_time works with customized arguments", {
 
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -123,5 +123,5 @@ test_that("surv_time works with customized arguments", {
     .Dim = c(7L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

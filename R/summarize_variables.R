@@ -16,7 +16,7 @@ control_summarize_vars <- function(conf_level = 0.95,
                                    quantiles = c(0.25, 0.75),
                                    quantile_type = 2) {
 
-  assert_that(
+  assertthat::assert_that(
     all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
     identical(length(quantiles), 2L),
     is_proportion(conf_level),
@@ -56,7 +56,12 @@ summary_formats <- function(type = "numeric") {
       median_ci = "(xx.xx, xx.xx)",
       quantiles = "xx.x - xx.x",
       iqr = "xx.x",
-      range = "xx.x - xx.x"
+      range = "xx.x - xx.x",
+      cv = "xx.x",
+      min = "xx.x",
+      max = "xx",
+      geom_mean = "xx.x",
+      geom_cv = "xx.x"
     )
   }
 }
@@ -75,7 +80,12 @@ summary_labels <- function() {
     median = "Median",
     mad = "Median Absolute Deviation",
     iqr = "IQR",
-    range = "Min - Max"
+    range = "Min - Max",
+    cv = "CV (%)",
+    min = "Minimum",
+    max = "Maximum",
+    geom_mean = "Geometric Mean",
+    geom_cv = "CV Geometric"
   )
 }
 
@@ -113,8 +123,8 @@ s_summary <- function(x,
                       .var,
                       control,
                       ...) {
-  assert_that(
-    is.flag(na.rm)
+  assertthat::assert_that(
+    assertthat::is.flag(na.rm)
   )
   UseMethod("s_summary", x)
 }
@@ -129,22 +139,27 @@ s_summary <- function(x,
 #' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.
 #' - `mean`: the [mean()] of `x`.
-#' - `sd`: the [sd()] of `x`.
-#' - `mean_sd`: the [mean()] and [sd()] of `x`.
+#' - `sd`: the [stats::sd()] of `x`.
+#' - `mean_sd`: the [mean()] and [stats::sd()] of `x`.
 #' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
-#' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]/[sqrt()]).
-#' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]).
-#' - `median`: the [median()] of `x`.
-#' - `mad`: the median absolute deviation of `x`, i.e.: ([median()] of `xc`, where `xc` = `x` - [median()]).
+#' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]/[sqrt()]).
+#' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]).
+#' - `median`: the [stats::median()] of `x`.
+#' - `mad`:
+#' the median absolute deviation of `x`, i.e.: ([stats::median()] of `xc`, where `xc` = `x` - [stats::median()]).
 #' - `median_ci`: the CI for the median of `x` (from [stat_median_ci()]).
-#' - `quantiles`: two sample quantiles of `x` (from [quantile()]).
-#' - `iqr`: the [IQR()] of `x`.
+#' - `quantiles`: two sample quantiles of `x` (from [stats::quantile()]).
+#' - `iqr`: the [stats::IQR()] of `x`.
 #' - `range`: the [range_noinf()] of `x`.
+#' - `min`: the [max()] of `x`.
+#' - `max`: the [min()] of `x`.
+#' - `cv`: the coefficient of variation of `x`, i.e.: (`sd()/mean()*100`).
+#' - `geom_mean`: the geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).
+#' - `geom_cv`: the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x))^2) - 1)*100`).
 #'
 #' @method s_summary numeric
 #' @order 3
 #'
-#' @importFrom stats sd median IQR
 #' @export
 #'
 #' @examples
@@ -189,7 +204,7 @@ s_summary.numeric <- function(x, # nolint
                               .var,
                               control = control_summarize_vars(),
                               ...) {
-  assert_that(is.numeric(x))
+  assertthat::assert_that(is.numeric(x))
 
   if (na.rm) {
     x <- x[!is.na(x)]
@@ -201,24 +216,24 @@ s_summary.numeric <- function(x, # nolint
 
   y$mean <- c("mean" = ifelse(length(x) == 0, NA_real_, mean(x, na.rm = FALSE)))
 
-  y$sd <- c("sd" = sd(x, na.rm = FALSE))
+  y$sd <- c("sd" = stats::sd(x, na.rm = FALSE))
 
-  y$mean_sd <- c(y$mean, "sd" = sd(x, na.rm = FALSE))
+  y$mean_sd <- c(y$mean, "sd" = stats::sd(x, na.rm = FALSE))
 
   mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
   y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
 
-  mean_sei <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE) / sqrt(y$n)
+  mean_sei <- y$mean[[1]] + c(-1, 1) * stats::sd(x, na.rm = FALSE) / sqrt(y$n)
   names(mean_sei) <- c("mean_sei_lwr", "mean_sei_upr")
   y$mean_sei <- with_label(mean_sei, "Mean -/+ 1xSE")
 
-  mean_sdi <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE)
+  mean_sdi <- y$mean[[1]] + c(-1, 1) * stats::sd(x, na.rm = FALSE)
   names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
   y$mean_sdi <- with_label(mean_sdi, "Mean -/+ 1xSD")
 
-  y$median <- c("median" = median(x, na.rm = FALSE))
+  y$median <- c("median" = stats::median(x, na.rm = FALSE))
 
-  y$mad <- c("mad" = median(x - y$median, na.rm = FALSE))
+  y$mad <- c("mad" = stats::median(x - y$median, na.rm = FALSE))
 
   median_ci <- stat_median_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
   y$median_ci <- with_label(median_ci, paste("Median", f_conf_level(control$conf_level)))
@@ -227,7 +242,7 @@ s_summary.numeric <- function(x, # nolint
   if (any(is.na(x))) {
     qnts <- rep(NA_real_, length(q))
   } else {
-    qnts <- quantile(x, probs = q, type = control$quantile_type, na.rm = FALSE)
+    qnts <- stats::quantile(x, probs = q, type = control$quantile_type, na.rm = FALSE)
   }
   names(qnts) <- paste("quantile", q, sep = "_")
   y$quantiles <- with_label(qnts, paste0(paste(paste0(q * 100, "%"), collapse = " and "), "-ile"))
@@ -235,10 +250,18 @@ s_summary.numeric <- function(x, # nolint
   y$iqr <- c("iqr" = ifelse(
     any(is.na(x)),
     NA_real_,
-    IQR(x, na.rm = FALSE, type = control$quantile_type))
+    stats::IQR(x, na.rm = FALSE, type = control$quantile_type))
   )
 
-  y$range <- setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
+  y$range <- stats::setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
+  y$min <- y$range[1]
+  y$max <- y$range[2]
+
+  y$cv <- c("cv" = y$sd / y$mean * 100)
+
+  y$geom_mean <- c("geom_mean" = exp(mean(log(x))))
+
+  y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x)) ^ 2) - 1) * 100)
 
   y
 }
@@ -290,7 +313,7 @@ s_summary.factor <- function(x,
                              .N_col, #nolint
                              na_level = "<Missing>",
                              ...) {
-  assert_that(
+  assertthat::assert_that(
     is_valid_factor(x),
     is_factor_no_na(x)
   )

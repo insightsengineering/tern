@@ -21,7 +21,7 @@ check_diff_prop_ci <- function(rsp,
                                strata = NULL,
                                conf_level,
                                correct = NULL) {
-  assert_that(
+  assertthat::assert_that(
     is.logical(rsp),
     !anyNA(c(rsp, grp)),
     is_equal_length(rsp, grp),
@@ -30,9 +30,9 @@ check_diff_prop_ci <- function(rsp,
     conf_level <= 1
   )
 
-  if (!is.null(correct)) assert_that(is.flag(correct))
+  if (!is.null(correct)) assertthat::assert_that(assertthat::is.flag(correct))
 
-  if (!is.null(strata)) assert_that(is_equal_length(rsp, strata))
+  if (!is.null(strata)) assertthat::assert_that(is_equal_length(rsp, strata))
 
   invisible()
 }
@@ -81,7 +81,6 @@ d_proportion_diff <- function(conf_level,
 #'
 #' @param correct `logical`\cr
 #'   include the continuity correction.
-#' @importFrom stats prop.test
 #' @export
 #' @examples
 #'
@@ -120,7 +119,6 @@ prop_diff_wald <- function(rsp,
 
 
 #' @describeIn prop_difference Anderson-Hauck confidence interval.
-#' @importFrom stats qnorm
 #' @export
 #' @examples
 #' # Anderson-Hauck confidence interval
@@ -144,7 +142,7 @@ prop_diff_ha <- function(rsp,
   n_grp <- tapply(rsp, grp, length)
   p_grp <- tapply(rsp, grp, mean)
   diff_p <- unname(diff(p_grp))
-  z <- qnorm((1 + conf_level) / 2)
+  z <- stats::qnorm((1 + conf_level) / 2)
   err <- 1 /
     (2 * min(n_grp)) + z * sqrt(sum(p_grp * (1 - p_grp) / (n_grp - 1)))
   l_ci <- max(-1, diff_p - err)
@@ -205,7 +203,6 @@ prop_diff_nc <- function(rsp,
 #'
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
-#' @importFrom stats qnorm
 #' @export
 #' @examples
 #'
@@ -265,7 +262,7 @@ prop_diff_cmh <- function(rsp,
   names(estimate) <- levels(grp)
   se1 <- sqrt(sum(wt^2 * p1 * (1 - p1) / n1))
   se2 <- sqrt(sum(wt^2 * p2 * (1 - p2) / n2))
-  z <- qnorm((1 + conf_level) / 2)
+  z <- stats::qnorm((1 + conf_level) / 2)
   err1 <- z * se1
   err2 <- z * se2
   ci1 <- c((est1 - err1), (est1 + err1))
@@ -289,7 +286,6 @@ prop_diff_cmh <- function(rsp,
 #'   in terms of responder proportion.
 #' @param method (`string`)\cr
 #'   the method used for the confidence interval estimation.
-#' @importFrom stats setNames
 #' @export
 #' @examples
 #'
@@ -337,8 +333,8 @@ s_proportion_diff <- function(df,
 
     if (!is.null(variables$strata)) {
       strata <- variables$strata
-      strata_vars <- setNames(as.list(strata), strata)
-      assert_that(
+      strata_vars <- stats::setNames(as.list(strata), strata)
+      assertthat::assert_that(
         !is.null(strata),
         is_df_with_variables(df, strata_vars),
         is_df_with_variables(.ref_group, strata_vars)

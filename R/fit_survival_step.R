@@ -75,7 +75,7 @@
 fit_survival_step <- function(variables,
                               data,
                               control = c(control_step(), control_coxph())) {
-  assert_that(
+  assertthat::assert_that(
     is_df_with_variables(data, variables),
     is.list(control)
   )

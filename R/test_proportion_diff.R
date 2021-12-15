@@ -14,7 +14,6 @@ NULL
 
 #' @describeIn prop_diff_test performs Chi-Squared test.
 #'   Internally calls [stats::prop.test()].
-#' @importFrom stats prop.test
 #' @export
 #' @order 2
 #' @examples
@@ -36,10 +35,10 @@ NULL
 #' prop_chisq(tbl)
 #'
 prop_chisq <- function(tbl) {
-  assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
+  assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
   if (any(colSums(tbl) == 0)) return(1)
-  prop.test(tbl, correct = FALSE)$p.value
+  stats::prop.test(tbl, correct = FALSE)$p.value
 }
 
 #' @describeIn prop_diff_test performs stratified Cochran-Mantel-Haenszel test.
@@ -48,7 +47,6 @@ prop_chisq <- function(tbl) {
 #' @param ary (`array`, 3 dimensions)\cr
 #'   with two groups in rows, the binary response (`TRUE`/`FALSE`) in
 #'   columns, the strata in the third dimension.
-#' @importFrom stats mantelhaen.test
 #' @export
 #' @order 3
 #' @examples
@@ -66,7 +64,7 @@ prop_chisq <- function(tbl) {
 #'
 prop_cmh <- function(ary) {
 
-  assert_that(
+  assertthat::assert_that(
     is.array(ary),
     ncol(ary) == 2, nrow(ary) == 2,
     length(dim(ary)) == 3
@@ -78,14 +76,13 @@ prop_cmh <- function(ary) {
     ary <- ary[, , strata_sizes > 1]
   }
 
-  mantelhaen.test(ary, correct = FALSE)$p.value
+  stats::mantelhaen.test(ary, correct = FALSE)$p.value
 }
 
 
 #' @describeIn prop_diff_test performs the Chi-Squared test with Schouten
 #'   correction ([Schouten 1980](
 #'   https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305)).
-#' @importFrom stats pchisq
 #' @export
 #' @order 2
 #' @examples
@@ -94,7 +91,7 @@ prop_cmh <- function(ary) {
 #' prop_schouten(tbl)
 #'
 prop_schouten <- function(tbl) {
-  assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
+  assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
 
   tbl <- tbl[, c("TRUE", "FALSE")]
   if (any(colSums(tbl) == 0)) return(1)
@@ -112,13 +109,12 @@ prop_schouten <- function(tbl) {
     (abs(prod(ad) - prod(bc)) - 0.5 * min(n1, n2))^2 /
     (n1 * n2 * sum(ac) * sum(bd))
 
-  1 - pchisq(t_schouten, df = 1)
+  1 - stats::pchisq(t_schouten, df = 1)
 }
 
 
 #' @describeIn prop_diff_test performs the Fisher's exact test.
 #'   Internally calls [stats::fisher.test()].
-#' @importFrom stats fisher.test
 #' @export
 #' @order 2
 #' @examples
@@ -127,9 +123,9 @@ prop_schouten <- function(tbl) {
 #' prop_fisher(tbl)
 #'
 prop_fisher <- function(tbl) {
-  assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
+  assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
-  fisher.test(tbl)$p.value
+  stats::fisher.test(tbl)$p.value
 }
 
 
@@ -145,7 +141,6 @@ prop_fisher <- function(tbl) {
 #'   describing the method used. The p-value tests the null hypothesis that
 #'   proportions in two groups are the same.
 #'
-#' @importFrom stats setNames
 #' @export
 #' @order 4
 #' @examples
@@ -177,7 +172,7 @@ s_test_proportion_diff <- function(df,
   y <- list(pval = "")
 
   if (!.in_ref_col) {
-    assert_that(
+    assertthat::assert_that(
       is_df_with_variables(df, list(rsp = .var)),
       is_df_with_variables(.ref_group, list(rsp = .var))
     )
@@ -192,8 +187,8 @@ s_test_proportion_diff <- function(df,
 
     if (!is.null(variables$strata) || method == "cmh") {
       strata <- variables$strata
-      strata_vars <- setNames(as.list(strata), strata)
-      assert_that(
+      strata_vars <- stats::setNames(as.list(strata), strata)
+      assertthat::assert_that(
         !is.null(strata),
         is_df_with_variables(df, strata_vars),
         is_df_with_variables(.ref_group, strata_vars)
@@ -230,7 +225,7 @@ s_test_proportion_diff <- function(df,
 #' @return `string` describing the test from which the p-value is derived.
 #'
 d_test_proportion_diff <- function(method) {
-  assert_that(is.string(method))
+  assertthat::assert_that(assertthat::is.string(method))
   meth_part <- switch(
     method,
     "schouten" = "Chi-Squared Test with Schouten Correction",

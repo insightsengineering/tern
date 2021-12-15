@@ -1,4 +1,4 @@
-test_that("s_count_abnormal_by_baseline works with healthy input and default arguments", {
+testthat::test_that("s_count_abnormal_by_baseline works with healthy input and default arguments", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 3, 4)),
     ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
@@ -18,7 +18,7 @@ test_that("s_count_abnormal_by_baseline works with healthy input and default arg
     "total" = with_label(c(num = 1L, denom = 4L), "Total")
   ))
 
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 
   # Check with HIGH abnormality.
   result <- s_count_abnormal_by_baseline(
@@ -31,11 +31,11 @@ test_that("s_count_abnormal_by_baseline works with healthy input and default arg
     "abnormal" = with_label(c(num = 1L, denom = 1L), "High baseline status"),
     "total" = with_label(c(num = 2L, denom = 4L), "Total")
   ))
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("s_count_abnormal_by_baseline also works with tibble and custom arguments", {
-  df <- dplyr::as_tibble(
+testthat::test_that("s_count_abnormal_by_baseline also works with tibble and custom arguments", {
+  df <- tibble::as_tibble(
     data.frame(
       myid = as.character(c(1:6)),
       myrange = factor(c("LOW", "NORMAL", "LOW", "NORMAL", "HIGH", "NORMAL")),
@@ -56,7 +56,7 @@ test_that("s_count_abnormal_by_baseline also works with tibble and custom argume
     "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
     "total" = with_label(c(num = 2L, denom = 6L), "Total")
   ))
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 
   # Check with HIGH abnormality.
   result <- s_count_abnormal_by_baseline(
@@ -70,11 +70,11 @@ test_that("s_count_abnormal_by_baseline also works with tibble and custom argume
     "abnormal" = with_label(c(num = 0L, denom = 1L), "High baseline status"),
     "total" = with_label(c(num = 1L, denom = 6L), "Total")
   ))
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("count_abnormal_by_baseline throws warning with character var", {
-  df <- dplyr::as_tibble(
+testthat::test_that("count_abnormal_by_baseline throws warning with character var", {
+  df <- tibble::as_tibble(
     data.frame(
       myid = as.character(c(1:6)),
       myrange = c("LOW", "NORMAL", "LOW", "NORMAL", "HIGH", NA),
@@ -84,7 +84,7 @@ test_that("count_abnormal_by_baseline throws warning with character var", {
   )
 
   # Check with LOW abnormality.
-  result <- expect_warning(
+  result <- testthat::expect_warning(
       s_count_abnormal_by_baseline(
         df = df,
         .var = "myrange",
@@ -97,10 +97,10 @@ test_that("count_abnormal_by_baseline throws warning with character var", {
     "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
     "total" = with_label(c(num = 2L, denom = 5L), "Total")
   ))
-  expect_identical(result, expected)
+  testthat::expect_identical(result, expected)
 })
 
-test_that("count_abnormal_by_baseline works with default arguments", {
+testthat::test_that("count_abnormal_by_baseline works with default arguments", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 3, 4)),
     ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
@@ -119,10 +119,10 @@ test_that("count_abnormal_by_baseline works with default arguments", {
   .Dim = c(9L, 2L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_abnormal_by_baseline works with custom arguments", {
+testthat::test_that("count_abnormal_by_baseline works with custom arguments", {
   df2 <- data.frame(
     ID = as.character(c(1, 2, 3, 4)),
     RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
@@ -144,10 +144,10 @@ test_that("count_abnormal_by_baseline works with custom arguments", {
       "1 / 2", "2 / 4"),
     .Dim = c(9L, 2L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("s_count_abnormal_by_baseline gives error for NA input", {
+testthat::test_that("s_count_abnormal_by_baseline gives error for NA input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 3, 4)),
     ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
@@ -155,7 +155,7 @@ test_that("s_count_abnormal_by_baseline gives error for NA input", {
     stringsAsFactors = FALSE
   )
 
-  expect_error(s_count_abnormal_by_baseline(
+  testthat::expect_error(s_count_abnormal_by_baseline(
     df = df,
     .var = "ANRIND",
     abnormal = "LOW"
@@ -168,7 +168,7 @@ test_that("s_count_abnormal_by_baseline gives error for NA input", {
     stringsAsFactors = FALSE
   )
 
-  expect_error(s_count_abnormal_by_baseline(
+  testthat::expect_error(s_count_abnormal_by_baseline(
     df = df,
     .var = "ANRIND",
     abnormal = "LOW"

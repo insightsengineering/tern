@@ -1,7 +1,7 @@
 ---
 title: "Allow easy Cox model fitting per covariate / without arm variable"
 output: html_document
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -120,7 +120,7 @@ fit_coxreg_univar <- function(variables,
   if (is.na(variables$arm)) {
     variables <- variables[names(variables) != "arm"]
   }
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$covariates),
     # but then here we would still want to check arm...
     is_variables(variables[c("event", "time")]),
@@ -143,7 +143,7 @@ fit_coxreg_biomarker <- function(variables,
                                  data,
                                  at = list(),
                                  control = control_coxreg()) {
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c("event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables))),
@@ -151,7 +151,7 @@ fit_coxreg_biomarker <- function(variables,
   )
 
   if (!is.null(variables$strata)) {
-    assert_that(
+    assertthat::assert_that(
       control$pval_method != "likelihood"
     )
   }
@@ -188,7 +188,7 @@ We don't have `interaction` argument here.
 
 ```{r, formulas}
 h_coxreg_biomarker_formulas <- function(variables) {
-  assert_that(
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c("event", "time")])
   )
@@ -210,7 +210,7 @@ And then of course we also need the tidy method. We can reuse the `h_coxreg_mult
 ```{r, tidymethod}
 tidy.coxreg.biomarker <- function(x, # nousage # nolint
                                   ...) {
-  assert_that(
+  assertthat::assert_that(
     class(x) == "coxreg.biomarker"
   )
 
@@ -271,25 +271,25 @@ fit_coxreg_univar <- function(variables,
                               data,
                               at = list(),
                               control = control_coxreg()) {
-  assert_that(is_fully_named_list(variables))
+  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
-  
-  assert_that(
+
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables)))
   )
 
   if (!is.null(variables$strata)) {
-    assert_that(
+    assertthat::assert_that(
       control$pval_method != "likelihood"
     )
   }
 
   if (has_arm) {
     n_arms <- nlevels(data[[variables$arm]])
-    assert_that(
+    assertthat::assert_that(
       n_arms == 2
     )
   }
@@ -322,20 +322,20 @@ fit_coxreg_univar <- function(variables,
 
 h_coxreg_univar_formulas <- function(variables,
                                      interaction = FALSE) {
-  assert_that(is_fully_named_list(variables))
+  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
-  
-  assert_that(
+
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")]),
-    is.flag(interaction),
+    assertthat::is.flag(interaction),
     has_arm || (!interaction)
   )
   forms <- paste0(
     "Surv(", variables$time, ", ", variables$event, ") ~ ",
     ifelse(
-      has_arm, 
+      has_arm,
       paste0(variables$arm, ifelse(interaction, " * ", " + ")),
       ""
     ),
@@ -349,7 +349,7 @@ h_coxreg_univar_formulas <- function(variables,
   nams <- variables$covariates
   if (has_arm) {
     ref <- paste0(
-      "Surv(", variables$time, ", ", variables$event, ") ~ ", 
+      "Surv(", variables$time, ", ", variables$event, ") ~ ",
       variables$arm,
       ifelse(
         !is.null(variables$strata),
@@ -367,14 +367,14 @@ h_coxreg_univar_formulas <- function(variables,
 
 tidy.coxreg.univar <- function(x, # nousage # nolint
                                ...) {
-  assert_that(
+  assertthat::assert_that(
     class(x) == "coxreg.univar"
   )
 
   mod <- x$mod
   vars <- c(x$vars$arm, x$vars$covariates)
   has_arm <- "arm" %in% names(x$vars)
-  
+
   result <- if (!has_arm) {
     Map(
       mod = mod, vars = vars,
@@ -452,11 +452,11 @@ We also need to be able to work without an arm variable in the multivariate case
 fit_coxreg_multivar <- function(variables,
                                 data,
                                 control = control_coxreg()) {
-  assert_that(is_fully_named_list(variables))
+  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
-  
-  assert_that(
+
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables))),
@@ -464,7 +464,7 @@ fit_coxreg_multivar <- function(variables,
   )
 
   if (!is.null(variables$strata)) {
-    assert_that(
+    assertthat::assert_that(
       control$pval_method != "likelihood"
     )
   }
@@ -487,17 +487,17 @@ fit_coxreg_multivar <- function(variables,
 }
 
 h_coxreg_multivar_formula <- function(variables) {
-  assert_that(is_fully_named_list(variables))
+  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
-  
-  assert_that(
+
+  assertthat::assert_that(
     is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")])
   )
 
   y <- paste0(
-    "Surv(", variables$time, ", ", variables$event, ") ~ ", 
+    "Surv(", variables$time, ", ", variables$event, ") ~ ",
     ifelse(has_arm, variables$arm, "1")
   )
   if (length(variables$covariates) > 0) {

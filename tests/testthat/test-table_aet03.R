@@ -3,7 +3,7 @@ library(scda)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-test_that("AET03 variant 1 is produced correctly", {
+testthat::test_that("AET03 variant 1 is produced correctly", {
 
   adae$AEDECOD <- as.character(adae$AEDECOD) #nolint
   adae$AEBODSYS <- as.character(adae$AEBODSYS) #nolint
@@ -114,5 +114,5 @@ test_that("AET03 variant 1 is produced correctly", {
     .Dim = c(75L, 4L)
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })

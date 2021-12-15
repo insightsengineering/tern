@@ -4,16 +4,16 @@ library(dplyr)
 
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
-adlb <- adlb %>% mutate(
-  GRADDR = case_when(
+adlb <- adlb %>% dplyr::mutate(
+  GRADDR = dplyr::case_when(
     PARAMCD == "ALT" ~ "B",
     PARAMCD == "CRP" ~ "L",
     PARAMCD == "IGA" ~ "H"
   )
 ) %>%
-filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
-test_that("LBT08 produce correctly", {
+testthat::test_that("LBT08 produce correctly", {
   df <- h_adlb_worsen(
     adlb,
     worst_flag_low = c("WGRLOFL" = "Y"),
@@ -64,5 +64,5 @@ test_that("LBT08 produce correctly", {
     ),
     .Dim = c(29L, 4L)
   )
-  expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
