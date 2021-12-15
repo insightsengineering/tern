@@ -25,8 +25,8 @@ summarize_vars_numeric_in_cols(
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
 
-\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will
-be used as the row label.}
+\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is
+empty then this will be used as the row label.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -51,8 +51,8 @@ These functions can be used to produce summary tables for PK datasets.
 }
 \section{Functions}{
 \itemize{
-\item \code{summary_numeric_in_cols}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}} function that produces a named list of statistics
-to include as columns.
+\item \code{summary_numeric_in_cols}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}}
+function that produces a named list of statistics to include as columns.
 
 \item \code{summarize_vars_numeric_in_cols}: Layout creating function which can be used for creating
 summary tables in columns, primarily used for PK data sets.

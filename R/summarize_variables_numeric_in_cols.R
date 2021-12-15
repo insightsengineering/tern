@@ -6,12 +6,12 @@
 #'
 NULL
 
-#' @describeIn summarize_numeric_in_columns a wrapper of [s_summary.numeric()] function that produces a named list of statistics
-#'   to include as columns.
+#' @describeIn summarize_numeric_in_columns a wrapper of [s_summary.numeric()]
+#'  function that produces a named list of statistics to include as columns.
 #'
 #' @inheritParams argument_convention
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
-#'   be used as the row label.
+#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
+#'  empty then this will be used as the row label.
 #'
 #' @return A named list of all statistics returned by [s_summary.numeric()].
 #' See [s_summary.numeric()] to be aware of all available statistics.
