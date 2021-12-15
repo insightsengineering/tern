@@ -265,9 +265,12 @@ s_summary.numeric <- function(x, # nolint
 
   y$cv <- c("cv" = unname(y$sd) / unname(y$mean) * 100)
 
-  y$geom_mean <- c("geom_mean" = exp(mean(log(x))))
+  #Convert negative values to NA for log calculation.
+  x_no_negative_vals <- x
+  x_no_negative_vals[x_no_negative_vals < 0] <- NA
+  y$geom_mean <- c("geom_mean" = exp(mean(log(x_no_negative_vals))))
 
-  y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x)) ^ 2) - 1) * 100)
+  y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals)) ^ 2) - 1) * 100)
 
   y
 }

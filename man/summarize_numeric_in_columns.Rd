@@ -12,9 +12,9 @@ summarize_vars_numeric_in_cols(
   lyt,
   var,
   ...,
-  .stats = c("n", "mean", "sd", "se", "cv", "geom_mean", "geom_cv", "median", "min",
-    "max"),
-  .labels = summary_labels(),
+  .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
+  .labels = c(n = "n", mean = "Mean", sd = "SD", se = "SE", cv = "CV (\%)", geom_cv =
+    "CV \% Geometric Mean"),
   .indent_mods = NULL,
   col_split = TRUE
 )
@@ -43,25 +43,15 @@ be used as the row label.}
 \item{col_split}{(\code{flag})\cr whether the columns should be split.}
 }
 \value{
-A named list of 9 statistics:
-\itemize{
-\item \code{n}: count of complete sample size for the group.
-\item \code{mean}: group data mean.
-\item \code{sd}: standard deviation of the group data.
-\item \code{cv}: coefficient of variation of the group.
-\item \code{min}: minimum value among the group.
-\item \code{max}: maximum value among the group.
-\item \code{median}: median of the group data.
-\item \code{geom_mean}: geometric mean of the group.
-\item \code{geom_cv}: geometric coefficient of variation of the group.
-}
+A named list of all statistics returned by \code{\link[=s_summary.numeric]{s_summary.numeric()}}.
+See \code{\link[=s_summary.numeric]{s_summary.numeric()}} to be aware of all available statistics.
 }
 \description{
 These functions can be used to produce summary tables for PK datasets.
 }
 \section{Functions}{
 \itemize{
-\item \code{summary_numeric_in_cols}: Statistics function that produces a named list of statistics
+\item \code{summary_numeric_in_cols}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}} function that produces a named list of statistics
 to include as columns.
 
 \item \code{summarize_vars_numeric_in_cols}: Layout creating function which can be used for creating
@@ -82,20 +72,23 @@ lyt <- basic_table() \%>\%
 result <- build_table(lyt = lyt, df = ADPC)
 result
 
-# By selecting just some statistics
+# By selecting just some statistics and ad-hoc labels
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM") \%>\%
   split_rows_by(var = "SEX") \%>\%
   summarize_vars_numeric_in_cols(
   var = "AGE",
-  .stats = c("n", "cv"),
-  .labels = c(n = "myN", "cv" = "myCV"),
+  .stats = c("n", "cv", "geom_mean", "mean_ci"),
+  .labels = c(n = "myN", cv = "myCV", geom_mean = "myGeomMean", mean_ci = "Mean (95\%CI)"),
   col_split = TRUE)
 result <- build_table(lyt = lyt, df = ADPC)
 result
 
 lyt <- basic_table() \%>\%
-  summarize_vars_numeric_in_cols(var = "AGE", col_split = TRUE)
+  summarize_vars_numeric_in_cols(
+  var = "AGE",
+  col_split = TRUE,
+  custom_label = "some custom label")
   result <- build_table(lyt, df = ADPC)
 result
 
@@ -118,5 +111,5 @@ result
 
 }
 \seealso{
-summarize_vars.
+\link{summarize_vars}.
 }

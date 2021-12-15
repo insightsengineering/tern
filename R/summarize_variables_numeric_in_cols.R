@@ -6,24 +6,15 @@
 #'
 NULL
 
-#' @describeIn summarize_numeric_in_columns Statistics function that produces a named list of statistics
+#' @describeIn summarize_numeric_in_columns a wrapper of [s_summary.numeric()] function that produces a named list of statistics
 #'   to include as columns.
 #'
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as the row label.
 #'
-#' @return A named list of 9 statistics:
-#'   - `n`: count of complete sample size for the group.
-#'   - `mean`: group data mean.
-#'   - `sd`: standard deviation of the group data.
-#'   - `se`: standard error of the group data.
-#'   - `cv`: coefficient of variation of the group.
-#'   - `min`: minimum value among the group.
-#'   - `max`: maximum value among the group.
-#'   - `median`: median of the group data.
-#'   - `geom_mean`: geometric mean of the group.
-#'   - `geom_cv`: geometric coefficient of variation of the group.
+#' @return A named list of all statistics returned by [s_summary.numeric()].
+#' See [s_summary.numeric()] to be aware of all available statistics.
 #'
 #' @export
 #' @examples
@@ -55,7 +46,7 @@ summary_numeric_in_cols <- function(x,
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'
-#' @seealso summarize_vars.
+#' @seealso [summarize_vars].
 #'
 #' @export
 #' @examples
@@ -116,7 +107,6 @@ summarize_vars_numeric_in_cols <- function(lyt,
                                    cv = "CV (%)",
                                    geom_cv = "CV % Geometric Mean"),
                                  .indent_mods = NULL,
-
                                  col_split = TRUE) {
 
 
