@@ -143,7 +143,7 @@ s_summary <- function(x,
 #' - `n`: the [length()] of `x`.
 #' - `mean`: the [mean()] of `x`.
 #' - `sd`: the [stats::sd()] of `x`.
-#' - `se`: the standard error of `x` mean, i.e.: ([stats::sd()]/[sqrt(length())]).
+#' - `se`: the standard error of `x` mean, i.e.: (`sd()/sqrt(length())]`).
 #' - `mean_sd`: the [mean()] and [stats::sd()] of `x`.
 #' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
 #' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]/[sqrt()]).
@@ -157,7 +157,7 @@ s_summary <- function(x,
 #' - `range`: the [range_noinf()] of `x`.
 #' - `min`: the [max()] of `x`.
 #' - `max`: the [min()] of `x`.
-#' - `cv`: the coefficient of variation of `x`, i.e.: (`sd()/mean()*100`).
+#' - `cv`: the coefficient of variation of `x`, i.e.: (`sd()/mean() * 100`).
 #' - `geom_mean`: the geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).
 #' - `geom_cv`: the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x))^2) - 1)*100`).
 #'
@@ -222,7 +222,7 @@ s_summary.numeric <- function(x, # nolint
 
   y$sd <- c("sd" = stats::sd(x, na.rm = FALSE))
 
-  y$se <- c("se" = stats::sd(x, na.rm = FALSE) / sqrt(length(na.omit(x))))
+  y$se <- c("se" = stats::sd(x, na.rm = FALSE) / sqrt(length(stats::na.omit(x))))
 
   y$mean_sd <- c(y$mean, "sd" = stats::sd(x, na.rm = FALSE))
 
@@ -267,7 +267,7 @@ s_summary.numeric <- function(x, # nolint
 
   #Convert negative values to NA for log calculation.
   x_no_negative_vals <- x
-  x_no_negative_vals[x_no_negative_vals < 0] <- NA
+  x_no_negative_vals[x_no_negative_vals <= 0] <- NA
   y$geom_mean <- c("geom_mean" = exp(mean(log(x_no_negative_vals), na.rm = FALSE)))
 
   y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals), na.rm = FALSE) ^ 2) - 1) * 100)

@@ -66,16 +66,16 @@ summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
 
 
 lyt <- basic_table() \%>\%
-  split_rows_by(var = "ARM") \%>\%
-  split_rows_by(var = "SEX") \%>\%
+  split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
+  split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
   summarize_vars_numeric_in_cols(var = "AGE", col_split = TRUE)
 result <- build_table(lyt = lyt, df = ADPC)
 result
 
 # By selecting just some statistics and ad-hoc labels
 lyt <- basic_table() \%>\%
-  split_rows_by(var = "ARM") \%>\%
-  split_rows_by(var = "SEX") \%>\%
+  split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
+  split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
   summarize_vars_numeric_in_cols(
   var = "AGE",
   .stats = c("n", "cv", "geom_mean", "mean_ci"),
@@ -95,7 +95,7 @@ result
 # PKPT03
 ADPC$PARAMUNIT <- paste0(ADPC$PARAM, "(", ADPC$AVALU, ")")
 lyt <- basic_table() \%>\%
-  split_rows_by(var = "PARAMUNIT") \%>\%
+  split_rows_by(var = "PARAMUNIT", label_pos = "topleft") \%>\%
   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
   result <- build_table(lyt, df = ADPC)
 result
