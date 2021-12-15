@@ -73,8 +73,8 @@ summary_numeric_in_cols <- function(x,
 #'   split_rows_by(var = "SEX") %>%
 #'   summarize_vars_numeric_in_cols(
 #'   var = "AGE",
-#'   .stats = c("n", "cv", "geom_mean"),
-#'   .labels = c(n = "myN", cv = "myCV", geom_mean = "myGeomMean"),
+#'   .stats = c("n", "cv", "geom_mean", "mean_ci"),
+#'   .labels = c(n = "myN", cv = "myCV", geom_mean = "myGeomMean", mean_ci = "Mean (95%CI)"),
 #'   col_split = TRUE)
 #' result <- build_table(lyt = lyt, df = ADPC)
 #' result
