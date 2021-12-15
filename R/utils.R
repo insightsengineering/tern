@@ -384,9 +384,7 @@ reapply_varlabels <- function(x, varlables, ...) { # nolintr # nousage
   do.call(var_relabel, c(list(x = x), as.list(varlables), list(...)))
 }
 
-#' Wrapper function of survival::clogit so that when model fitting failed, a more useful message would show
-#'
-#'
+# Wrapper function of survival::clogit so that when model fitting failed, a more useful message would show
 clogit_with_tryCatch <- function(formula, data, ...) { #nolint
   tryCatch(
     survival::clogit(formula = formula, data = data, ...),
