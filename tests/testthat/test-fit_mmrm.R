@@ -85,20 +85,20 @@ test_that("check_mmrm_vars works when there are missing values", {
   data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
-  dplyr::mutate(
-      # Introduce extra missing response variable values.
-      AVAL = ifelse(
-        sample(c(TRUE, FALSE), size = length(AVAL), replace = TRUE, prob = c(0.1, 0.9)),
-        NA,
-        AVAL
-      ),
-      # And also covariate values.
-      BMRKR1 = ifelse(
-        sample(c(TRUE, FALSE), size = length(BMRKR1), replace = TRUE, prob = c(0.1, 0.9)),
-        NA,
-        BMRKR1
+    dplyr::mutate(
+        # Introduce extra missing response variable values.
+        AVAL = ifelse(
+          sample(c(TRUE, FALSE), size = length(AVAL), replace = TRUE, prob = c(0.1, 0.9)),
+          NA,
+          AVAL
+        ),
+        # And also covariate values.
+        BMRKR1 = ifelse(
+          sample(c(TRUE, FALSE), size = length(BMRKR1), replace = TRUE, prob = c(0.1, 0.9)),
+          NA,
+          BMRKR1
+        )
       )
-    )
 
   vars <- list(
     response = "AVAL",
