@@ -76,9 +76,9 @@ h_map_for_count_abnormal(
    split_rows = c("PARAM"),
    range_low = "ANRLO",
    range_high = "ANRHI"),
-   abnormal = list(low = c("LOW"), high = c("HIGH")),
-   method = "range",
-   na_level = "<Missing>"
+  abnormal = list(low = c("LOW"), high = c("HIGH")),
+  method = "range",
+  na_level = "<Missing>"
 )
 
 }
