@@ -67,20 +67,23 @@ summary_numeric_in_cols <- function(x,
 #' result <- build_table(lyt = lyt, df = ADPC)
 #' result
 #'
-#' # By selecting just some statistics
+#' # By selecting just some statistics and ad-hoc labels
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM") %>%
 #'   split_rows_by(var = "SEX") %>%
 #'   summarize_vars_numeric_in_cols(
 #'   var = "AGE",
-#'   .stats = c("n", "cv"),
-#'   .labels = c(n = "myN", "cv" = "myCV"),
+#'   .stats = c("n", "cv", "geom_mean"),
+#'   .labels = c(n = "myN", cv = "myCV", geom_mean = "myGeomMean"),
 #'   col_split = TRUE)
 #' result <- build_table(lyt = lyt, df = ADPC)
 #' result
 #'
 #' lyt <- basic_table() %>%
-#'   summarize_vars_numeric_in_cols(var = "AGE", col_split = TRUE)
+#'   summarize_vars_numeric_in_cols(
+#'   var = "AGE",
+#'   col_split = TRUE,
+#'   custom_label = "some custom label")
 #'   result <- build_table(lyt, df = ADPC)
 #' result
 #'
@@ -104,9 +107,16 @@ summary_numeric_in_cols <- function(x,
 summarize_vars_numeric_in_cols <- function(lyt,
                                  var,
                                  ...,
-                                 .stats = names(summary_labels()),
-                                 .labels = summary_labels(),
+                                 .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
+                                 .labels = c(
+                                   n = "n",
+                                   mean = "Mean",
+                                   sd = "SD",
+                                   se = "SE",
+                                   cv = "CV (%)",
+                                   geom_cv = "CV % Geometric Mean"),
                                  .indent_mods = NULL,
+
                                  col_split = TRUE) {
 
 
