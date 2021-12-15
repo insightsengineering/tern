@@ -75,7 +75,7 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
     min = c(min = 0),
     max = c(max = 6),
     cv = c(cv = 100),
-    geom_mean = c(geom_mean = NA),
+    geom_mean = c(geom_mean = NA_real_),
     geom_cv = c(geom_cv = NA_real_)
   )
 
