@@ -68,7 +68,6 @@ reference:
       - s_proportion
       - s_proportion_diff
       - s_summary
-      - s_summary_pk
       - s_surv_time
       - s_surv_timepoint
       - s_surv_timepoint_diff
@@ -137,7 +136,7 @@ reference:
        - summarize_occurrences_by_grade
        - summarize_patients_events_in_cols
        - summarize_patients_exposure_in_cols
-       - summarize_pk_in_cols
+       - summarize_vars_numeric_in_cols
        - summarize_vars
        - tabulate_rsp_subgroups
        - tabulate_survival_biomarkers
@@ -221,6 +220,7 @@ reference:
       - prop_schouten
       - summary_formats
       - summary_labels
+      - summary_numeric_in_cols
 
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models

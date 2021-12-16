@@ -123,9 +123,11 @@ s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"
 
 # Optionally exclude patients with abnormality at baseline.
 s_count_abnormal(
-  df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE
- )
-
+  df,
+  .var = "ANRIND",
+  abnormal = list(high = "HIGH", low = "LOW"),
+  exclude_base_abn = TRUE
+  )
 # Use the Formatted Analysis function for `analyze()`.
 a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
 a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))

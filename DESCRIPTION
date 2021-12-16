@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.5.9008
+Version: 0.7.5.9010
 Date: 2021-10-13
 Authors@R: c(
     person("NEST", , , "nestcicd@roche.com", role = c("aut", "cre")),
@@ -139,7 +139,7 @@ Collate:
     'summarize_colvars.R'
     'summarize_num_patients.R'
     'summarize_patients_exposure_in_cols.R'
-    'summarize_pk.R'
+    'summarize_variables_numeric_in_cols.R'
     'survival_biomarkers_subgroups.R'
     'survival_coxph_pairwise.R'
     'survival_duration_subgroups.R'

@@ -16,6 +16,7 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
     n = c(n = 0L),
     mean = c(mean = NA_real_),
     sd = c(sd = NA_real_),
+    se = c(se = NA_real_),
     mean_sd = c(mean = NA_real_, sd = NA_real_),
     mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
@@ -31,7 +32,7 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
     range = c(min = NA_real_, max = NA_real_),
     min = c(min = NA_real_),
     max = c(max = NA_real_),
-    cv = c(cv.sd = NA_real_),
+    cv = c(cv = NA_real_),
     geom_mean = c(geom_mean = NaN),
     geom_cv = c(geom_cv = NA_real_)
   )
@@ -57,6 +58,7 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
     n = c(n = 3L),
     mean = c(mean = 3),
     sd = c(sd = 3),
+    se = c(se = 1.732051),
     mean_sd = c(mean = 3, sd = 3),
     mean_ci = with_label(c(mean_ci_lwr = -4.452413, mean_ci_upr = 10.452413), "Mean 95% CI"),
     mean_sei = with_label(c(mean_sei_lwr = 1.267949, mean_sei_upr = 4.732051), "Mean -/+ 1xSE"),
@@ -72,8 +74,8 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
     range = c(min = 0, max = 6),
     min = c(min = 0),
     max = c(max = 6),
-    cv = c(cv.sd = 100),
-    geom_mean = c(geom_mean = 0),
+    cv = c(cv = 100),
+    geom_mean = c(geom_mean = NA_real_),
     geom_cv = c(geom_cv = NA_real_)
   )
 
@@ -101,6 +103,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       n = c(n = 2L),
       mean = c(mean = 1.5),
       sd = c(sd = 0.7071068),
+      se = c(se = 0.5),
       mean_sd = c(mean = 1.5, sd = 0.7071068),
       mean_ci = with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
       mean_sei = with_label(c(mean_sei_lwr = 1, mean_sei_upr = 2), "Mean -/+ 1xSE"),
@@ -116,7 +119,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       range = c(min = 1, max = 2),
       min = c(min = 1),
       max = c(max = 2),
-      cv = c(cv.sd = 47.14045),
+      cv = c(cv = 47.14045),
       geom_mean = c(geom_mean = 1.414214),
       geom_cv = c(geom_cv = 52.10922)
     ),
@@ -125,6 +128,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       n = c(n = 2L),
       mean = c(mean = 2.5),
       sd = c(sd = 2.12132),
+      se = c(se = 1.5),
       mean_sd = c(mean = 2.5, sd = 2.12132),
       mean_ci = with_label(c(mean_ci_lwr = -16.55931, mean_ci_upr = 21.55931), "Mean 95% CI"),
       mean_sei = with_label(c(mean_sei_lwr = 1, mean_sei_upr = 4), "Mean -/+ 1xSE"),
@@ -140,7 +144,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       range = c(min = 1, max = 4),
       min = c(min = 1),
       max = c(max = 4),
-      cv = c(cv.sd = 84.85281),
+      cv = c(cv = 84.85281),
       geom_mean = c(geom_mean = 2),
       geom_cv = c(geom_cv = 127.0458)
 

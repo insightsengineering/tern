@@ -53,19 +53,29 @@ h_map_for_count_abnormal(
 df <- data.frame(
  USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
  AVISIT = c(
-  rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2),
-  rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2)
+  rep("WEEK 1", 2),
+  rep("WEEK 2", 2),
+  rep("WEEK 1", 2),
+  rep("WEEK 2", 2),
+  rep("WEEK 1", 2),
+  rep("WEEK 2", 2)
   ),
  PARAM = rep(c("ALT", "CPR"), 6),
- ANRIND = c("NORMAL", "NORMAL", "LOW", "HIGH", "LOW", "LOW", "HIGH", "HIGH", rep("NORMAL", 4)),
+ ANRIND = c(
+  "NORMAL", "NORMAL", "LOW",
+  "HIGH", "LOW", "LOW", "HIGH", "HIGH", rep("NORMAL", 4)
+  ),
  ANRLO = rep(5, 12),
  ANRHI = rep(20, 12)
 )
 df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL"))
 h_map_for_count_abnormal(
   df = df,
-  variables = list(anl = "ANRIND", split_rows = c("PARAM"),
-                   range_low = "ANRLO", range_high = "ANRHI"),
+  variables = list(
+   anl = "ANRIND",
+   split_rows = c("PARAM"),
+   range_low = "ANRLO",
+   range_high = "ANRHI"),
   abnormal = list(low = c("LOW"), high = c("HIGH")),
   method = "range",
   na_level = "<Missing>"
