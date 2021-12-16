@@ -83,7 +83,7 @@ trim_levels_to_map split function. Based on different method, the map is constru
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9008</span>
       </span>
     </div>
 
@@ -113,30 +113,6 @@ trim_levels_to_map split function. Based on different method, the map is constru
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../pre-release/index.html">pre-release</a></li>
-   <li><a href="../v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -238,19 +214,29 @@ for low direction and at least one observation with high range is not missing fo
 <span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
 <span class='r-in'> USUBJID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"1"</span>, <span class='fl'>4</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"2"</span>, <span class='fl'>4</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"3"</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>,</span>
 <span class='r-in'> AVISIT <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 1"</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 2"</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 1"</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 2"</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 1"</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 2"</span>, <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 1"</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 2"</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 1"</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 2"</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 1"</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"WEEK 2"</span>, <span class='fl'>2</span><span class='op'>)</span></span>
 <span class='r-in'>  <span class='op'>)</span>,</span>
 <span class='r-in'> PARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ALT"</span>, <span class='st'>"CPR"</span><span class='op'>)</span>, <span class='fl'>6</span><span class='op'>)</span>,</span>
-<span class='r-in'> ANRIND <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"NORMAL"</span>, <span class='st'>"NORMAL"</span>, <span class='st'>"LOW"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"LOW"</span>, <span class='st'>"LOW"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"HIGH"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"NORMAL"</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'> ANRIND <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"NORMAL"</span>, <span class='st'>"NORMAL"</span>, <span class='st'>"LOW"</span>,</span>
+<span class='r-in'>  <span class='st'>"HIGH"</span>, <span class='st'>"LOW"</span>, <span class='st'>"LOW"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"HIGH"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"NORMAL"</span>, <span class='fl'>4</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
 <span class='r-in'> ANRLO <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>12</span><span class='op'>)</span>,</span>
 <span class='r-in'> ANRHI <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='fl'>12</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>df</span><span class='op'>$</span><span class='va'>ANRIND</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>ANRIND</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span>, <span class='st'>"HIGH"</span>, <span class='st'>"NORMAL"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>h_map_for_count_abnormal</span><span class='op'>(</span></span>
 <span class='r-in'>  df <span class='op'>=</span> <span class='va'>df</span>,</span>
-<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>anl <span class='op'>=</span> <span class='st'>"ANRIND"</span>, split_rows <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PARAM"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                   range_low <span class='op'>=</span> <span class='st'>"ANRLO"</span>, range_high <span class='op'>=</span> <span class='st'>"ANRHI"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>   anl <span class='op'>=</span> <span class='st'>"ANRIND"</span>,</span>
+<span class='r-in'>   split_rows <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PARAM"</span><span class='op'>)</span>,</span>
+<span class='r-in'>   range_low <span class='op'>=</span> <span class='st'>"ANRLO"</span>,</span>
+<span class='r-in'>   range_high <span class='op'>=</span> <span class='st'>"ANRHI"</span><span class='op'>)</span>,</span>
 <span class='r-in'>  abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>low <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LOW"</span><span class='op'>)</span>, high <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"HIGH"</span><span class='op'>)</span><span class='op'>)</span>,</span>
 <span class='r-in'>  method <span class='op'>=</span> <span class='st'>"range"</span>,</span>
 <span class='r-in'>  na_level <span class='op'>=</span> <span class='st'>"&lt;Missing&gt;"</span></span>

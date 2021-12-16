@@ -91,7 +91,7 @@ baseline can be excluded from numerator and denominator." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9008</span>
       </span>
     </div>
 
@@ -121,30 +121,6 @@ baseline can be excluded from numerator and denominator." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../pre-release/index.html">pre-release</a></li>
-   <li><a href="../v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -337,8 +313,11 @@ works with a single variable but multiple abnormal levels.</p></li>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Optionally exclude patients with abnormality at baseline.</span></span>
 <span class='r-in'><span class='fu'>s_count_abnormal</span><span class='op'>(</span></span>
-<span class='r-in'>  <span class='va'>df</span>, .var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"HIGH"</span>, low <span class='op'>=</span> <span class='st'>"LOW"</span><span class='op'>)</span>, exclude_base_abn <span class='op'>=</span> <span class='cn'>TRUE</span></span>
-<span class='r-in'> <span class='op'>)</span></span>
+<span class='r-in'>  <span class='va'>df</span>,</span>
+<span class='r-in'>  .var <span class='op'>=</span> <span class='st'>"ANRIND"</span>,</span>
+<span class='r-in'>  abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"HIGH"</span>, low <span class='op'>=</span> <span class='st'>"LOW"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  exclude_base_abn <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fraction$high</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   num denom </span>
@@ -353,7 +332,6 @@ works with a single variable but multiple abnormal levels.</p></li>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "low"</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-in'></span>
 <span class='r-in'><span class='co'># Use the Formatted Analysis function for `analyze()`.</span></span>
 <span class='r-in'><span class='va'>a_fun</span> <span class='op'>&lt;-</span> <span class='fu'>make_afun</span><span class='op'>(</span><span class='va'>a_count_abnormal</span>, .ungroup_stats <span class='op'>=</span> <span class='st'>"fraction"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>a_fun</span><span class='op'>(</span><span class='va'>df</span>, .var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>low <span class='op'>=</span> <span class='st'>"LOW"</span>, high <span class='op'>=</span> <span class='st'>"HIGH"</span><span class='op'>)</span><span class='op'>)</span></span>
