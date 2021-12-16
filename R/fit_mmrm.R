@@ -58,7 +58,7 @@ check_mmrm_vars <- function(vars,
     n_dupl_subjects <- length(grouped_visit_usubjid[[vars$id]][grouped_visit_usubjid$n > 1]) # nolint
   }
 
-  assert_that(
+  assertthat::assert_that(
     !any(grouped_visit_usubjid$n > 1),
     msg = sprintf(
       "There are %s subjects with more than one record per visit",
