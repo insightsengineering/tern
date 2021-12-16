@@ -12,20 +12,20 @@ testthat::test_that("PKPT03 is produced correctly", {
       split_fun = keep_split_levels(c("A: Drug X", "C: Combination"))
     ) %>%
     split_rows_by(var = "PARAM") %>%
-    summarize_pk_in_cols(var = "AVAL", col_split = TRUE)
+    summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
 
   result <- build_table(l, df = adpc)
 
   result_matrix <- to_string_matrix(result)
-  expected_matrix <- t(structure(
-    c("", "n", "Mean", "SD", "CV % Mean", "Geometric Mean", "CV % Geometric Mean", "Median", "Minimum", "Maximum",
-      "A: Drug X", "", "", "", "", "", "", "", "", "",
-      "Plasma Drug X", "1072", "8.94", "6.26", "70", "3.06", "1687.8", "10.33", "0", "19.86",
-      "Plasma Drug Y", "0", "NA", "NA", "NA", "NaN", "NA", "NA", "NA", "NA",
-      "C: Combination", "", "", "", "", "", "", "", "", "",
-      "Plasma Drug X", "1056", "8.98", "6.37", "70.9", "2.95", "1971.1", "10.44", "0", "19.73",
-      "Plasma Drug Y", "1056", "17.97", "12.74", "70.9", "5.9", "1972.3", "20.88", "0", "39.47"),
-    .Dim = c(10L, 7L)
-  ))
+  expected_matrix <- structure(
+    c("", "A: Drug X", "Plasma Drug X", "Plasma Drug Y",
+      "C: Combination", "Plasma Drug X", "Plasma Drug Y", "n", "",
+      "1072", "0", "", "1056", "1056", "Mean", "", "8.9", "NA", "",
+      "9", "18", "SD", "", "6.3", "NA", "", "6.4", "12.7", "SE", "",
+      "0.2", "NA", "", "0.2", "0.4", "CV (%)", "", "70", "NA", "",
+      "70.9", "70.9", "CV % Geometric Mean", "", "1687.8", "NA", "",
+      "1971.1", "1972.3"),
+    .Dim = c(7L, 7L)
+    )
   testthat::expect_identical(result_matrix, expected_matrix)
 })

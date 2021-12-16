@@ -7,8 +7,8 @@ efficient layout with `trim_levels_to_map` split function under `split_rows_by` 
 `abnormal` argument to be able to consider more than one level for each direction. This is a breaking change.
 * Added `h_map_for_count_abnormal` so that the map used in `trim_levels_to_map` split function can be created by calling this helper function. Currently it supports two methods: one with all observed mapping, one with at least low limit above zero and at least one non missing high limit.
 * Fixed bug in `assertthat` functions that output wrong data frame names and limited length of failure message outputs.
-* Added `s_summary_pk` and `summarize_pk_in_cols` functions to generate summary tables for PK datasets.
-* Added five statistics to `s_summary.numeric` to use in `s_summary_pk`.
+* Added `s_summary_numeric_in_cols` and `summarize_vars_numeric_in_cols` functions to generate summary statistics in columns, mainly used for PK datasets.
+* Added five statistics to `s_summary.numeric` to use in `s_summary_numeric_in_cols`.
 
 
 # tern 0.7.5
