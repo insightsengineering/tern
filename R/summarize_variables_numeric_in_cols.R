@@ -20,6 +20,7 @@ NULL
 #' @examples
 #'
 #' library(scda)
+#' library(dplyr)
 #' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
 #' summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
 #'
@@ -79,18 +80,18 @@ summary_numeric_in_cols <- function(x,
 #' result
 #'
 #' # PKPT03
-#' ADPC$PARAMUNIT <- paste0(ADPC$PARAM, "(", ADPC$AVALU, ")")
+#' ADPC <- mutate(ADPC, PARAMUNIT = paste0(.data$PARAM, "(", .data$AVALU, ")"))
 #' lyt <- basic_table() %>%
-#'   split_rows_by(var = "PARAMUNIT", label_pos = "topleft") %>%
+#'   split_rows_by(var = "PARAMUNIT", split_label = "PK Parameter", label_pos = "topleft") %>%
 #'   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
 #'   result <- build_table(lyt, df = ADPC)
 #' result
 #'
 #' # PKCT01FDS
-#' ADPC$NRELTM1 <- as.factor(ADPC$NRELTM1)
+#' ADPC <- mutate(ADPC, as.factor(.data$NRELTM1))
 #' lyt <- basic_table() %>%
-#'   split_rows_by(var = "VISIT") %>%
-#'   split_rows_by(var = "NRELTM1") %>%
+#'   split_rows_by(var = "VISIT", split_label = "Visit", label_pos = "topleft") %>%
+#'   split_rows_by(var = "NRELTM1", split_label = "Norminal time from first dose", label_pos = "topleft") %>%
 #'   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
 #'   result <- build_table(lyt, df = ADPC)
 #' result
