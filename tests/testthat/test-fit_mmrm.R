@@ -375,7 +375,7 @@ testthat::test_that("summary_all_fits works as expected", {
 })
 
 test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
-  
+
   utils.nest::skip_if_too_deep(5)
 
   original_fit <- fit_lme4_single_optimizer(
