@@ -30,8 +30,14 @@ NULL
 #'       Days,
 #'       breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
 #'       include.lowest = TRUE
-#'     )
-#'   )
+#'     ),
+#'     Subject = case_when(
+#'        group == "A" ~ as.character(Subject),
+#'        TRUE ~ as.character(as.numeric(as.character(Subject)) + 50)
+#'      )
+#'   ) %>%
+#'   distinct_at(.vars = c("Subject", "days_grouped", "group"), .keep_all = TRUE)
+#'
 #' result <- fit_mmrm(
 #'   vars = list(
 #'     response = "Reaction",

@@ -1,8 +1,8 @@
-# tern 0.7.5.9008
-* Refactored `count_abnormal_by_marked` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change.
-* Refactored `count_abnormal_by_worst_grade` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change.
-* Enhanced `tern` functions `tabulate_survival_subgroups` and `tabulate_rsp_subgroups` (Survival Duration and Best Overall Response analyses) to calculate `N`-s based on the records considered to create the model.
-* Refactored `count_abnormal` function and related statistics and formatting functions to use a more
+# tern 0.7.5.9009
+* Refactored `count_abnormal_by_marked` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change. 
+* Refactored `count_abnormal_by_worst_grade` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change. 
+* Enhanced `tern` functions `tabulate_survival_subgroups` and `tabulate_rsp_subgroups` (Survival Duration and Best Overall Response analyses) to calculate `N`-s based on the records considered to create the model. 
+* Refactored `count_abnormal` function and related statistics and formatting functions to use a more 
 efficient layout with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. Also updated
 `abnormal` argument to be able to consider more than one level for each direction. This is a breaking change.
 * Added `h_map_for_count_abnormal` so that the map used in `trim_levels_to_map` split function can be created by calling this helper function. Currently it supports two methods: one with all observed mapping, one with at least low limit above zero and at least one non missing high limit.

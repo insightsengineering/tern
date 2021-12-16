@@ -51,9 +51,11 @@ NULL
 #'
 #' # Optionally exclude patients with abnormality at baseline.
 #' s_count_abnormal(
-#'   df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE
-#'  )
-#'
+#'   df,
+#'   .var = "ANRIND",
+#'   abnormal = list(high = "HIGH", low = "LOW"),
+#'   exclude_base_abn = TRUE
+#'   )
 s_count_abnormal <- function(df,
                              .var,
                              abnormal = list(Low = "LOW", High = "HIGH"),

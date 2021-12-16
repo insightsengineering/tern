@@ -5,7 +5,8 @@ data <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
 
 testthat::test_that("check_mmrm_vars passes with healthy inputs and returns correct labels", {
   data <-  data %>%
-    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
+    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE"))
 
   # No additional covariates.
   vars1 <- list(
@@ -55,7 +56,8 @@ testthat::test_that("check_mmrm_vars passes with healthy inputs and returns corr
 
 testthat::test_that("check_mmrm_vars works with interaction terms in `covariates`", {
   data <- data %>%
-    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
+    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE"))
 
   vars <- list(
     response = "AVAL",
@@ -79,20 +81,21 @@ testthat::test_that("check_mmrm_vars works when there are missing values", {
   set.seed(123)
   data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
     dplyr::mutate(
-      # Introduce extra missing response variable values.
-      AVAL = ifelse(
-        sample(c(TRUE, FALSE), size = length(AVAL), replace = TRUE, prob = c(0.1, 0.9)),
-        NA,
-        AVAL
-      ),
-      # And also covariate values.
-      BMRKR1 = ifelse(
-        sample(c(TRUE, FALSE), size = length(BMRKR1), replace = TRUE, prob = c(0.1, 0.9)),
-        NA,
-        BMRKR1
+        # Introduce extra missing response variable values.
+        AVAL = ifelse(
+          sample(c(TRUE, FALSE), size = length(AVAL), replace = TRUE, prob = c(0.1, 0.9)),
+          NA,
+          AVAL
+        ),
+        # And also covariate values.
+        BMRKR1 = ifelse(
+          sample(c(TRUE, FALSE), size = length(BMRKR1), replace = TRUE, prob = c(0.1, 0.9)),
+          NA,
+          BMRKR1
+        )
       )
-    )
 
   vars <- list(
     response = "AVAL",
@@ -371,9 +374,7 @@ testthat::test_that("summary_all_fits works as expected", {
   )
 })
 
-
-
-testthat::test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
+test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
 
   utils.nest::skip_if_too_deep(5)
 
@@ -558,9 +559,15 @@ testthat::test_that("fit_mmrm works with parallelization", {
         Days,
         breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
         include.lowest = TRUE
+      ),
+      Subject = case_when(
+        group == "A" ~ as.character(Subject),
+        TRUE ~ as.character(as.numeric(as.character(Subject)) + 50)
       )
-    )
-  testthat::expect_silent(result <- fit_mmrm(
+    ) %>%
+    dplyr::distinct_at(.vars = c("Subject", "days_grouped", "group"), .keep_all = TRUE)
+
+  expect_silent(result <- fit_mmrm(
     vars = list(
       response = "Reaction",
       covariates = c(),
@@ -849,7 +856,7 @@ testthat::test_that("fit_mmrm works also with missing data", {
     data = adqs_f,
     cor_struct = "unstructured",
     weights_emmeans = "equal",
-    optimizer = "bobyqa"
+    optimizer = "automatic"
   )
 
   # Compare vs. SAS results calculated with the following statements:
