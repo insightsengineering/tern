@@ -125,7 +125,7 @@ fit_logistic <- function(data,
       family = stats::binomial("logit")
     )
   } else {
-    survival::clogit(
+    clogit_with_tryCatch(
       formula = formula,
       data = data,
       x = TRUE
