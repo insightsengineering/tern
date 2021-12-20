@@ -3,7 +3,7 @@ Title: Create Common TLGs used in Clinical Trials
 Version: 0.7.5.9011
 Date: 2021-10-13
 Authors@R: c(
-    person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre")),
+    person("NEST", , , "basel.basel.nestcicd@roche.com", role = c("aut", "cre")),
     person("Roche", role = c("cph", "fnd")),
     person("Audrey", "Boruvka", , "audrey.boruvka@roche.com", role = "ctb"),
     person("Saibah", "Chohan", , "saibah.chohan@roche.com", role = "aut"),
