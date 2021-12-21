@@ -24,14 +24,18 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
 
   x <- as.character(x)
   desc <- c(
-    CR          = "Complete Response (CR)",
-    PR          = "Partial Response (PR)",
-    SD          = "Stable Disease (SD)",
-    `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
-    PD          = "Progressive Disease (PD)",
-    NE          = "Not Evaluable (NE)",
-    Missing     = "Missing",
-    `NE/Missing` = "Missing or unevaluable"
+    CR           = "Complete Response (CR)",
+    Missing      = "Missing",
+    MR           = "Minimal/Minor Response (MR)",
+    MRD          = "Minimal Residual Disease (MRD)",
+    `NA`         = "Not Applicable (NA)",
+    ND           = "Not Done (ND)",
+    NE           = "Not Evaluable (NE)",
+    `NE/Missing` = "Missing or unevaluable",
+    `NON CR/PD`  = "Non-CR or Non-PD (NON CR/PD)",
+    PD           = "Progressive Disease (PD)",
+    PR           = "Partial Response (PR)",
+    SD           = "Stable Disease (SD)"
   )
 
   assertthat::assert_that(all(x %in% names(desc)))
