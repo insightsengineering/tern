@@ -17,7 +17,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: NEST \email{nestcicd@roche.com}
+\strong{Maintainer}: NEST \email{basel.nestcicd@roche.com}
 
 Authors:
 \itemize{
