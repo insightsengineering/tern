@@ -208,7 +208,7 @@ s_cox_univariate <- function(formula,
     is_covar_num <- lapply(covariates, function(x) is.numeric(data[[rht(x)]]))
     coef_cov <- Map(
       # work on model fits with interaction
-      fit = fit[-(1:(length(covariates) + 1))], is_covar_num = is_covar_num, covariates = covariates,
+      fit = fit[-(1:(length(covariates) + 1))], is_covar_num = is_covar_num, covariates = covariates, # nolint
       f = function(fit, is_covar_num, covariates) {
         if (is_covar_num & rht(covariates) %in% names(increments)) {
           # [^1]: If covar is a numeric and increments are specified,
@@ -315,9 +315,9 @@ s_cox_univariate <- function(formula,
         stats::anova(without_interaction$mod, with_interaction$mod)[2, "P(>|Chi|)"]
       },
       without_interaction = fit[2:(length(covariates) + 1)],
-      with_interaction = fit[-(1:(length(covariates) + 1))]
+      with_interaction = fit[-(1:(length(covariates) + 1))] # nolint
     )
-    names(lrt) <- names(fit[-(1:(length(covariates) + 1))])
+    names(lrt) <- names(fit[-(1:(length(covariates) + 1))]) # nolint
   } else if (!interactions) {
     lrt <- NULL
   }
