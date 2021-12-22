@@ -32,8 +32,9 @@ testthat::test_that("or_clogit estimates right OR and CI", {
   )
 
   result <- or_clogit(data, conf_level = 0.95)
+  # from SAS
   expected <- list(
-    or_ci = list( # from SAS
+    or_ci = list(
       b = c(est = 0.288, lcl = 0.036, ucl = 2.272),
       c = c(est = 0.780, lcl = 0.075, ucl = 8.146)
     ),

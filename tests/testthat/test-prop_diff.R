@@ -5,7 +5,8 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
 
   result <- prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
-  expected <- list( # according to SAS.
+  # according to SAS.
+  expected <- list(
     diff = 0.25,
     diff_ci = c(-0.9195, 1)
   )
@@ -16,8 +17,8 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
   result <- prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
-
-  expected <- list( # according to SAS.
+  # according to SAS.
+  expected <- list(
     diff = 0,
     diff_ci = c(-0.8451, 0.8451)
   )
@@ -34,7 +35,8 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
   result <- suppressWarnings(
     prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
   )
-  expected <- list( # according to SAS.
+  # according to SAS.
+  expected <- list(
     diff = 0.25,
     diff_ci = c(-0.2967, 0.6750)
   )
@@ -46,7 +48,8 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
   result <- testthat::expect_warning(
     prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.6)
   )
-  expected <- list( # according to SAS.
+  # according to SAS.
+  expected <- list(
     diff = 0,
     diff_ci = c(-0.3616, 0.3616)
   )

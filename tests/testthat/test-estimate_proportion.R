@@ -78,7 +78,8 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
     conf_level = 0.9,
     method = "jeffreys"
   )
-  expected <- list( # according to SAS.
+  # according to SAS.
+  expected <- list(
     n_prop = c(4, 4 / 6),
     prop_ci = with_label(
       c(34.0802, 89.5730),
@@ -94,7 +95,8 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
     conf_level = 0.95,
     method = "jeffreys"
   )
-  expected <- list( # according to SAS.
+  # according to SAS.
+  expected <- list(
     n_prop = c(4, 1),
     prop_ci = with_label(
       x = c(55.5237, 100),
@@ -113,7 +115,8 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
     conf_level = 0.9,
     method = "agresti-coull"
   )
-  expected <- list( # according to SAS.
+  # according to SAS.
+  expected <- list(
     n_prop = c(4, 4 / 6),
     prop_ci = with_label(
       c(34.3585, 88.6154),
@@ -129,7 +132,8 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
     conf_level = 0.95,
     method = "agresti-coull"
   )
-  expected <- list( # according to SAS.
+  # according to SAS.
+  expected <- list(
     n_prop = c(4, 1),
     prop_ci = with_label(
       x = c(45.4050, 100),
