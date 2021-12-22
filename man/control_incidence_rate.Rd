@@ -31,5 +31,4 @@ internally to specify details in \code{\link[=s_incidence_rate]{s_incidence_rate
 }
 \examples{
 control_incidence_rate(0.9, "exact", "month", 100)
-
 }

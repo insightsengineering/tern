@@ -127,11 +127,10 @@ s_count_abnormal(
   .var = "ANRIND",
   abnormal = list(high = "HIGH", low = "LOW"),
   exclude_base_abn = TRUE
-  )
+)
 # Use the Formatted Analysis function for `analyze()`.
 a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
 a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
-
 # Layout creating function.
 basic_table() \%>\%
   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) \%>\%
@@ -157,5 +156,4 @@ basic_table() \%>\%
     variables = list(id = "ID", baseline = "BL_RANGE")
   ) \%>\%
   build_table(df2)
-
 }

@@ -34,5 +34,4 @@ x <- data.frame(
   b = rnorm(10)
 )
 as.rtable(x)
-
 }

@@ -36,5 +36,4 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   summarize_vars("AGE") \%>\%
   build_table(DM)
-
 }

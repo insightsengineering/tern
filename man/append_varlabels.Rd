@@ -45,5 +45,4 @@ lyt <- basic_table() \%>\%
   analyze("AGE", afun = mean) \%>\%
   append_varlabels(DM, c("SEX", "AGE"))
 build_table(lyt, DM)
-
 }

@@ -3,7 +3,7 @@ library(scda)
 raw_data <- data.frame(
   time = c(5, 5, 10, 10, 5, 5, 5, 10, 10, 5),
   status = c(0, 0, 1, 0, 1, 0, 1, 1, 1, 0),
-  armcd  = factor(LETTERS[c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2)], levels = c("A", "B")),
+  armcd = factor(LETTERS[c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2)], levels = c("A", "B")),
   age = c(15, 68, 65, 17, 52, 12, 33, 45, 20, 17),
   stage = factor(
     c("1", "2", "1", "1", "1", "1", "2", "1", "2", "1"),
@@ -38,8 +38,10 @@ testthat::test_that("h_step_window works as expected for percentiles", {
   testthat::expect_is(interval, "matrix")
   testthat::expect_identical(
     colnames(interval),
-    c("Percentile Center", "Percentile Lower", "Percentile Upper",
-      "Interval Center", "Interval Lower", "Interval Upper")
+    c(
+      "Percentile Center", "Percentile Lower", "Percentile Upper",
+      "Interval Center", "Interval Lower", "Interval Upper"
+    )
   )
   testthat::expect_identical(nrow(interval), control$num_points)
 })
@@ -83,7 +85,7 @@ testthat::test_that("h_step_trt_effect works for Cox models without interaction"
     data = dta_simple,
     model = mod,
     variables = vars,
-    x = 100  # Note: this does not have any effect on results, because there is no interaction.
+    x = 100 # Note: this does not have any effect on results, because there is no interaction.
   )
   coef_sum <- summary(mod)$coefficients
   testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
@@ -151,7 +153,7 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
     data = dta_simple,
     model = mod,
     variables = vars,
-    x = 100  # Note: this does not have any effect on results, because there is no interaction.
+    x = 100 # Note: this does not have any effect on results, because there is no interaction.
   )
   coef_sum <- summary(mod)$coefficients
   testthat::expect_equivalent(result, coef_sum["armcdB", c("Estimate", "Std. Error")])

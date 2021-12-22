@@ -48,7 +48,6 @@
 #'     AVALU = adtte_labels["AVALU"],
 #'     is_event = "Event Flag"
 #'   )
-#'
 NULL
 
 #' @describeIn survival_duration_subgroups prepares estimates of median survival times and treatment hazard ratios for
@@ -86,13 +85,11 @@ NULL
 #'   )
 #' )
 #' df_grouped
-#'
 extract_survival_subgroups <- function(variables,
                                        data,
                                        groups_lists = list(),
                                        control = control_coxph(),
                                        label_all = "All Patients") {
-
   df_survtime <- h_survtime_subgroups_df(
     variables,
     data,
@@ -115,18 +112,16 @@ extract_survival_subgroups <- function(variables,
 #' @export
 #' @examples
 #' a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
-#'
 a_survival_subgroups <- function(.formats = list(
-  n = "xx",
-  n_events = "xx",
-  n_tot_events = "xx",
-  median = "xx.x",
-  n_tot = "xx",
-  hr = list(format_extreme_values(2L)),
-  ci = list(format_extreme_values_ci(2L)),
-  pval = "x.xxxx | (<0.0001)")
-) {
-
+                                   n = "xx",
+                                   n_events = "xx",
+                                   n_tot_events = "xx",
+                                   median = "xx.x",
+                                   n_tot = "xx",
+                                   hr = list(format_extreme_values(2L)),
+                                   ci = list(format_extreme_values_ci(2L)),
+                                   pval = "x.xxxx | (<0.0001)"
+                                 )) {
   assertthat::assert_that(
     is.list(.formats),
     all_elements_in_ref(
@@ -189,14 +184,12 @@ a_survival_subgroups <- function(.formats = list(
 #'     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
 #'     time_unit = adtte_f$AVALU[1]
 #'   )
-#'
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
                                         time_unit = NULL) {
-
   conf_level <- df$hr$conf_level[1]
-  method <-  df$hr$pval_label[1]
+  method <- df$hr$pval_label[1]
 
   afun_lst <- a_survival_subgroups()
   colvars <- d_survival_subgroups_colvars(
@@ -217,7 +210,6 @@ tabulate_survival_subgroups <- function(lyt,
 
   # Columns from table_survtime are optional.
   if (length(colvars_survtime$vars) > 0) {
-
     lyt_survtime <- split_cols_by(lyt = lyt, var = "arm")
     lyt_survtime <- split_rows_by(
       lyt = lyt_survtime,
@@ -253,7 +245,6 @@ tabulate_survival_subgroups <- function(lyt,
     }
 
     table_survtime <- build_table(lyt_survtime, df = df$survtime)
-
   } else {
     table_survtime <- NULL
   }
@@ -335,7 +326,6 @@ d_survival_subgroups_colvars <- function(vars,
                                          conf_level,
                                          method,
                                          time_unit = NULL) {
-
   assertthat::assert_that(
     is.character(vars),
     assertthat::is.string(time_unit) || is.null(time_unit),
@@ -345,7 +335,7 @@ d_survival_subgroups_colvars <- function(vars,
   )
 
   propcase_time_label <- if (!is.null(time_unit)) {
-     paste0("Median (", time_unit, ")")
+    paste0("Median (", time_unit, ")")
   } else {
     "Median"
   }

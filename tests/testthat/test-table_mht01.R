@@ -9,7 +9,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 admh <- synthetic_cdisc_data("rcd_2021_05_05")$admh
 
 testthat::test_that("MHT01 variant 1 is produced accurately", {
-
   adsl_f <- adsl %>%
     dplyr::filter(SAFFL == "Y")
 
@@ -33,7 +32,8 @@ testthat::test_that("MHT01 variant 1 is produced accurately", {
       split_fun = drop_split_levels,
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L) %>%
+      indent_mod = -1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -64,16 +64,15 @@ testthat::test_that("MHT01 variant 1 is produced accurately", {
     "703", "", "89 (67.4%)", "160", "63 (47.7%)", "50 (37.9%)", "",
     "97 (73.5%)", "205", "43 (32.6%)", "52 (39.4%)", "51 (38.6%)",
     "", "79 (59.8%)", "129", "43 (32.6%)", "55 (41.7%)", "", "98 (74.2%)",
-    "209", "51 (38.6%)", "50 (37.9%)", "57 (43.2%)"),
-    .Dim = c(26L, 4L)
+    "209", "51 (38.6%)", "50 (37.9%)", "57 (43.2%)"
+  ),
+  .Dim = c(26L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("MHT01 variant 2 is produced accurately", {
-
   adsl_f <- adsl %>%
     dplyr::filter(SAFFL == "Y")
 
@@ -100,7 +99,8 @@ testthat::test_that("MHT01 variant 2 is produced accurately", {
       split_fun = drop_split_levels,
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L) %>%
+      indent_mod = -1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -121,15 +121,15 @@ testthat::test_that("MHT01 variant 2 is produced accurately", {
     "(N=134)", "0", "0", "", "0", "0", "0", "0",
     "", "0", "0", "0", "0", "C: Combination", "(N=132)",
     "2 (1.5%)", "2", "", "0", "0", "0", "0", "", "2 (1.5%)",
-    "2", "1 (0.8%)", "1 (0.8%)"),
-    .Dim = c(14L, 4L)
+    "2", "1 (0.8%)", "1 (0.8%)"
+  ),
+  .Dim = c(14L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("MHT01 variant 3 is produced accurately", {
-
   adsl_f <- adsl %>%
     dplyr::filter(SAFFL == "Y")
 
@@ -153,7 +153,8 @@ testthat::test_that("MHT01 variant 3 is produced accurately", {
       split_fun = drop_split_levels,
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L) %>%
+      indent_mod = -1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -165,7 +166,8 @@ testthat::test_that("MHT01 variant 3 is produced accurately", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "", "Total number of patients with at least one event",
+    c(
+      "", "", "Total number of patients with at least one event",
       "cl A", "Total number of patients with at least one event", "trm A_1/2",
       "trm A_2/2", "cl B", "Total number of patients with at least one event",
       "trm B_1/3", "trm B_2/3", "trm B_3/3", "cl C", "Total number of patients with at least one event",
@@ -181,7 +183,8 @@ testthat::test_that("MHT01 variant 3 is produced accurately", {
       "(N=132)", "120 (90.9%)", "", "89 (67.4%)", "63 (47.7%)", "50 (37.9%)",
       "", "97 (73.5%)", "43 (32.6%)", "52 (39.4%)", "51 (38.6%)", "",
       "79 (59.8%)", "43 (32.6%)", "55 (41.7%)", "", "98 (74.2%)", "51 (38.6%)",
-      "50 (37.9%)", "57 (43.2%)"),
+      "50 (37.9%)", "57 (43.2%)"
+    ),
     .Dim = c(21L, 4L)
   )
 
@@ -193,7 +196,6 @@ testthat::test_that("MHT01 variant 3 is produced accurately", {
 # Not a blocker given it's just a cosmetic variant
 
 testthat::test_that("MHT01 variant 5 is produced accurately", {
-
   adsl_f <- adsl %>%
     dplyr::filter(SAFFL == "Y")
 
@@ -211,7 +213,8 @@ testthat::test_that("MHT01 variant 5 is produced accurately", {
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
-      .labels = c(unique = "Total number of patients with at least one event")) %>%
+      .labels = c(unique = "Total number of patients with at least one event")
+    ) %>%
     split_rows_by(
       var = "MHBODSYS",
       split_fun = drop_split_levels,
@@ -222,14 +225,16 @@ testthat::test_that("MHT01 variant 5 is produced accurately", {
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
-      .labels = c(unique = "Total number of patients with at least one event")) %>%
+      .labels = c(unique = "Total number of patients with at least one event")
+    ) %>%
     count_occurrences(vars = "MHDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "", "Total number of patients with at least one event",
+    c(
+      "", "", "Total number of patients with at least one event",
       "Number of events", "cl A", "Total number of patients with at least one event",
       "Number of events", "trm A_1/2", "trm A_2/2", "cl B", "Total number of patients with at least one event",
       "Number of events", "trm B_1/3", "trm B_2/3", "trm B_3/3", "cl C",
@@ -252,7 +257,8 @@ testthat::test_that("MHT01 variant 5 is produced accurately", {
       "1934", "", "242 (60.5%)", "422", "158 (39.5%)", "146 (36.5%)",
       "", "282 (70.5%)", "588", "139 (34.8%)", "145 (36.2%)", "153 (38.2%)",
       "", "221 (55.2%)", "348", "132 (33%)", "138 (34.5%)", "", "284 (71%)",
-      "576", "143 (35.8%)", "140 (35%)", "162 (40.5%)"),
+      "576", "143 (35.8%)", "140 (35%)", "162 (40.5%)"
+    ),
     .Dim = c(26L, 5L)
   )
 

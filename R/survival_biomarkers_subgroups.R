@@ -33,7 +33,6 @@
 #'     AVALU = adtte_labels["AVALU"],
 #'     is_event = "Event Flag"
 #'   )
-#'
 NULL
 
 #' @describeIn survival_biomarkers_subgroups prepares estimates for number of events, patients and median survival

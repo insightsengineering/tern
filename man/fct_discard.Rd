@@ -19,5 +19,4 @@ This discards the observations as well as the levels specified from a factor.
 }
 \examples{
 fct_discard(factor(c("a", "b", "c")), "c")
-
 }

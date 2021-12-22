@@ -26,7 +26,7 @@ NULL
 #'
 #' @examples
 #'
-
+#'
 #' library(dplyr)
 #' library(scda)
 #' adae <- synthetic_cdisc_data("latest")$adae
@@ -54,8 +54,8 @@ NULL
 s_count_patients_with_event <- function(df,
                                         .var,
                                         filters,
-                                        .N_col, #nolint
-                                        .N_row, #nolint
+                                        .N_col, # nolint
+                                        .N_row, # nolint
                                         denom = c("n", "N_row", "N_col")) {
   col_names <- names(filters)
   filter_values <- filters
@@ -92,7 +92,6 @@ s_count_patients_with_event <- function(df,
 #'   .N_col = 100,
 #'   .N_row = 100
 #' )
-#'
 a_count_patients_with_event <- make_afun(
   s_count_patients_with_event,
   .formats = c(count_fraction = format_count_fraction)
@@ -137,7 +136,6 @@ a_count_patients_with_event <- make_afun(
 #'     table_names = "tbl_rel_fatal"
 #'   )
 #' build_table(lyt, adae, alt_counts_df = adsl)
-#'
 count_patients_with_event <- function(lyt,
                                       vars,
                                       ...,
@@ -146,7 +144,6 @@ count_patients_with_event <- function(lyt,
                                       .formats = NULL,
                                       .labels = NULL,
                                       .indent_mods = NULL) {
-
   afun <- make_afun(
     a_count_patients_with_event,
     .stats = .stats,
@@ -192,7 +189,7 @@ count_patients_with_event <- function(lyt,
 #'     fl2 = "Total number of patients with at least one adverse event",
 #'     fl3 = "Total number of patients with fatal AEs",
 #'     fl4 = "Total number of patients with related fatal AEs"
-#'  )
+#'   )
 #'
 #' s_count_patients_with_flags(
 #'   adae,
@@ -200,15 +197,13 @@ count_patients_with_event <- function(lyt,
 #'   flag_variables = c("fl1", "fl2", "fl3", "fl4"),
 #'   denom = "N_col",
 #'   .N_col = 1000
-#'  )
-#'
+#' )
 s_count_patients_with_flags <- function(df,
                                         .var,
                                         flag_variables,
-                                        .N_col, #nolint
-                                        .N_row, #nolint
+                                        .N_col, # nolint
+                                        .N_row, # nolint
                                         denom = c("n", "N_row", "N_col")) {
-
   if (is.null(names(flag_variables))) flag_variables <- stats::setNames(flag_variables, flag_variables)
   flag_names <- unname(flag_variables)
   flag_variables <- names(flag_variables)
@@ -228,7 +223,7 @@ s_count_patients_with_flags <- function(df,
   })
   colnames(temp) <- flag_names
   temp <- data.frame(t(temp))
-  result <- temp %>% as.list
+  result <- temp %>% as.list()
   if (length(flag_variables) == 1) {
     for (i in 1:3) names(result[[i]]) <- flag_names[1]
   }
@@ -256,7 +251,6 @@ s_count_patients_with_flags <- function(df,
 #'   .var = "USUBJID",
 #'   flag_variables = c("fl1", "fl2", "fl3", "fl4")
 #' )
-#'
 a_count_patients_with_flags <- make_afun(
   s_count_patients_with_flags,
   .formats = c("count_fraction" = format_count_fraction)
@@ -281,8 +275,7 @@ a_count_patients_with_flags <- make_afun(
 #'     flag_variables = var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
 #'     denom = "N_col"
 #'   )
-#'  build_table(lyt2, adae, alt_counts_df = adsl)
-#'
+#' build_table(lyt2, adae, alt_counts_df = adsl)
 count_patients_with_flags <- function(lyt,
                                       var,
                                       var_labels = var,
@@ -292,14 +285,13 @@ count_patients_with_flags <- function(lyt,
                                       .stats = "count_fraction",
                                       .formats = NULL,
                                       .indent_mods = NULL) {
-
-    afun <- make_afun(
-      a_count_patients_with_flags,
-      .stats = .stats,
-      .formats = .formats,
-      .indent_mods = .indent_mods,
-      .ungroup_stats = .stats
-    )
+  afun <- make_afun(
+    a_count_patients_with_flags,
+    .stats = .stats,
+    .formats = .formats,
+    .indent_mods = .indent_mods,
+    .ungroup_stats = .stats
+  )
 
   lyt <- analyze(
     lyt = lyt,

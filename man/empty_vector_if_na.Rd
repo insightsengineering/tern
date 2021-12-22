@@ -18,5 +18,4 @@ Return an empty numeric if all elements are \code{NA}.
 \examples{
 x <- c(NA, NA, NA)
 empty_vector_if_na(x)
-
 }

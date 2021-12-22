@@ -71,7 +71,6 @@
 #'   data = adtte_f,
 #'   control = c(control_coxph(), control_step(bandwidth = NULL, degree = 3, num_points = 5L))
 #' )
-#'
 fit_survival_step <- function(variables,
                               data,
                               control = c(control_step(), control_coxph())) {

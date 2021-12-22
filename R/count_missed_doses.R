@@ -14,7 +14,6 @@ NULL
 #' set.seed(1)
 #' x <- c(sample(1:10, 10), NA)
 #' s_count_nonmissing(x)
-#'
 s_count_nonmissing <- function(x) {
   list(n = n_available(x))
 }
@@ -36,10 +35,9 @@ d_count_missed_doses <- function(thresholds) {
 #' @export
 #' @examples
 #' s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
-#'
 s_count_missed_doses <- function(x,
                                  thresholds,
-                                 .N_col) { #nolint
+                                 .N_col) { # nolint
   stat <- s_count_cumulative(
     x = x,
     thresholds = thresholds,
@@ -62,7 +60,6 @@ s_count_missed_doses <- function(x,
 #' # function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
 #' afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
-#'
 a_count_missed_doses <- make_afun(
   s_count_missed_doses,
   .formats = c(n = "xx", count_fraction = format_count_fraction)
@@ -92,7 +89,6 @@ a_count_missed_doses <- make_afun(
 #'   add_colcounts() %>%
 #'   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") %>%
 #'   build_table(anl, alt_counts_df = adsl)
-#'
 count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,

@@ -33,7 +33,6 @@ A variable's default value can be overwritten for any variable.
 \examples{
 control_lineplot_vars()
 control_lineplot_vars(strata = NA)
-
 }
 \author{
 Wojciech Wojciak wojciech.wojciak@contractors.roche.com

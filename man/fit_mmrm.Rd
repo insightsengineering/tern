@@ -111,12 +111,11 @@ adqs_f <- adqs \%>\%
   mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) \%>\%
   mutate(
     AVISITN = rank(AVISITN) \%>\%
-    as.factor() \%>\%
-    as.numeric() \%>\%
-    as.factor()
+      as.factor() \%>\%
+      as.numeric() \%>\%
+      as.factor()
   )
 var_labels(adqs_f) <- var_labels(adqs)
-
 \dontrun{
 # sometimes results in failure to converge with 1 negative eigenvalue
 mmrm_results <- fit_mmrm(
@@ -130,7 +129,7 @@ mmrm_results <- fit_mmrm(
   data = adqs_f,
   cor_struct = "unstructured",
   weights_emmeans = "equal",
-  optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
+  optimizer = "nloptwrap_neldermead" # Only to speed up this example.
 )
 }
 

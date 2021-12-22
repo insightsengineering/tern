@@ -7,7 +7,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
-
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
 
@@ -125,8 +124,6 @@ testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
 })
 
 testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
-
-
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
 

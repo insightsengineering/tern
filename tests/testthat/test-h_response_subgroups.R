@@ -1,7 +1,6 @@
 library(scda)
 
 preprocess_adrs <- function(adrs, n_records = 20) {
-
   adrs_labels <- var_labels(adrs)
   adrs <- adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
@@ -24,7 +23,6 @@ adrs_20 <- preprocess_adrs(adrs, 20)
 adrs_100 <- preprocess_adrs(adrs, 100)
 
 testthat::test_that("h_proportion_df functions as expected with valid input and default arguments", {
-
   rsp <- c(TRUE, FALSE, FALSE, TRUE, FALSE, FALSE)
   arm <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
 
@@ -42,7 +40,6 @@ testthat::test_that("h_proportion_df functions as expected with valid input and 
 })
 
 testthat::test_that("h_proportion_df functions as expected when 0 responses in one group", {
-
   rsp <- c(TRUE, FALSE, FALSE, FALSE)
   arm <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
 
@@ -57,20 +54,16 @@ testthat::test_that("h_proportion_df functions as expected when 0 responses in o
   )
 
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("h_proportion_df fails with wrong input", {
-
   testthat::expect_error(h_proportion_df(
     rsp = c(TRUE, FALSE, Inf),
     arm = factor(c("A", "B", "A"), levels = c("B", "A"))
   ))
-
 })
 
 testthat::test_that("h_proportion_df functions when 0 obs in one arm", {
-
   rsp <- c(TRUE, FALSE, FALSE, TRUE, FALSE, FALSE)
   arm <- factor(rep("A", 6), levels = c("B", "A"))
 
@@ -88,7 +81,6 @@ testthat::test_that("h_proportion_df functions when 0 obs in one arm", {
 })
 
 testthat::test_that("h_proportion_subgroups_df functions as expected with valid input and default arguments", {
-
   adrs <- adrs_20
 
   result <- h_proportion_subgroups_df(
@@ -109,11 +101,9 @@ testthat::test_that("h_proportion_subgroups_df functions as expected with valid 
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_proportion_subgroups_df functions as expected when subgroups is NULL.", {
-
   adrs <- adrs_20
 
   result <- h_proportion_subgroups_df(
@@ -134,11 +124,9 @@ testthat::test_that("h_proportion_subgroups_df functions as expected when subgro
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_proportion_subgroups_df works as expected with groups_lists", {
-
   adrs <- adrs_20
 
   result <- h_proportion_subgroups_df(
@@ -160,7 +148,6 @@ testthat::test_that("h_proportion_subgroups_df works as expected with groups_lis
 })
 
 testthat::test_that("h_odds_ratio_df functions as expected with valid input and default arguments", {
-
   result <- h_odds_ratio_df(
     c(TRUE, FALSE, FALSE, TRUE),
     arm = factor(c("A", "A", "B", "B"), levels = c("A", "B"))
@@ -177,11 +164,9 @@ testthat::test_that("h_odds_ratio_df functions as expected with valid input and 
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_odds_ratio_df functions as expected with valid input and non-default arguments", {
-
   adrs <- adrs_100
 
   result <- h_odds_ratio_df(
@@ -204,11 +189,9 @@ testthat::test_that("h_odds_ratio_df functions as expected with valid input and 
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_odds_ratio_df functions as expected with strata", {
-
   adrs <- adrs_100
 
   result <- h_odds_ratio_df(
@@ -232,11 +215,9 @@ testthat::test_that("h_odds_ratio_df functions as expected with strata", {
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_odds_ratio_df functions when 0 obs in one arm", {
-
   rsp <- c(TRUE, FALSE, FALSE, TRUE, FALSE, FALSE)
   arm <- factor(rep("A", 6), levels = c("B", "A"))
 
@@ -259,11 +240,9 @@ testthat::test_that("h_odds_ratio_df functions when 0 obs in one arm", {
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_odds_ratio_subgroups_df functions as expected with valid input and default arguments", {
-
   adrs <- adrs_100
 
   result <- h_odds_ratio_subgroups_df(
@@ -286,11 +265,9 @@ testthat::test_that("h_odds_ratio_subgroups_df functions as expected with valid 
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_odds_ratio_subgroups_df functions as expected when subgroups is NULL.", {
-
   adrs <- adrs_100
 
   result <- h_odds_ratio_subgroups_df(
@@ -313,11 +290,9 @@ testthat::test_that("h_odds_ratio_subgroups_df functions as expected when subgro
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_odds_ratio_subgroups_df functions as expected with strata", {
-
   adrs <- adrs_100
 
   result <- h_odds_ratio_subgroups_df(
@@ -348,11 +323,9 @@ testthat::test_that("h_odds_ratio_subgroups_df functions as expected with strata
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_odds_ratio_subgroups_df works as expected with groups_lists", {
-
   adrs <- adrs_20
 
   result <- h_odds_ratio_subgroups_df(

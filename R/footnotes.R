@@ -9,7 +9,6 @@
 #' x <- table(iris$Species)
 #' footnotes(x) <- "Species are equally distributed"
 #' attributes(x)
-#'
 `footnotes<-` <- function(x, value = NULL) { # nolint
   attr(x, "footnote") <- value
   x
@@ -26,7 +25,6 @@
 #' x <- table(iris$Species)
 #' footnotes(x) <- "Species are equally distributed"
 #' footnotes(x)
-#'
 footnotes <- function(x) {
   attr(x, "footnote")
 }
@@ -44,7 +42,6 @@ footnotes <- function(x) {
 #' footnotes(x)
 #' add_footnotes(x) <- "Add more footnotes"
 #' footnotes(x)
-#'
 `add_footnotes<-` <- function(x, value) { # nolint
   footnotes(x) <- c(footnotes(x), value)
   x

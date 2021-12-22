@@ -16,8 +16,10 @@ testthat::test_that("h_data_plot works as expected", {
   testthat::expect_is(result, "tbl_df")
   testthat::expect_identical(
     names(result),
-    c("time", "n.risk", "n.event", "n.censor", "estimate", "std.error",
-      "conf.high", "conf.low", "strata", "censor")
+    c(
+      "time", "n.risk", "n.event", "n.censor", "estimate", "std.error",
+      "conf.high", "conf.low", "strata", "censor"
+    )
   )
 })
 

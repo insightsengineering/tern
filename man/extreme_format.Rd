@@ -57,11 +57,9 @@ format_fun(x = Inf)
 format_fun(x = 0)
 format_fun(x = 0.009)
 
-
 format_fun <- format_extreme_values_ci(2L)
 format_fun(x = c(0.127, Inf))
 format_fun(x = c(0, 0.009))
-
 }
 \seealso{
 Other formatting functions: 

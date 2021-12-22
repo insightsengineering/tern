@@ -75,7 +75,7 @@ NULL
 #' @export
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' library(scda)
 #' library(dplyr)
 #' library(ggplot2)
@@ -158,7 +158,7 @@ NULL
 #'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
 #'   position_surv_med = c(1, 0.7)
 #' )
-#'}
+#' }
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
@@ -236,131 +236,127 @@ g_km <- function(df,
     lty = lty,
     col = col,
     ggtheme = ggtheme,
-    ci_ribbon = ci_ribbon)
+    ci_ribbon = ci_ribbon
+  )
 
-  g_el <- h_decompose_gg(gg) #nolint
+  g_el <- h_decompose_gg(gg) # nolint
 
   if (annot_at_risk) {
-   # This is the content of the table that will be below the graph.
-   annot_tbl <- summary(fit_km, time = xticks)
-   annot_tbl <- if (is.null(fit_km$strata)) {
-     data.frame(
-       n.risk = annot_tbl$n.risk,
-       time = annot_tbl$time,
-       strata = as.factor(armval)
-     )
-   } else {
-     strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
-     levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
-     data.frame(
-       n.risk = annot_tbl$n.risk,
-       time = annot_tbl$time,
-       strata = annot_tbl$strata
-     )
- }
+    # This is the content of the table that will be below the graph.
+    annot_tbl <- summary(fit_km, time = xticks)
+    annot_tbl <- if (is.null(fit_km$strata)) {
+      data.frame(
+        n.risk = annot_tbl$n.risk,
+        time = annot_tbl$time,
+        strata = as.factor(armval)
+      )
+    } else {
+      strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
+      levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
+      data.frame(
+        n.risk = annot_tbl$n.risk,
+        time = annot_tbl$time,
+        strata = annot_tbl$strata
+      )
+    }
 
-   grobs_patient <- h_grob_tbl_at_risk(
-     data = data_plot,
-     annot_tbl = annot_tbl,
-     xlim = max(max_time, data_plot$time, xticks)
-   )
+    grobs_patient <- h_grob_tbl_at_risk(
+      data = data_plot,
+      annot_tbl = annot_tbl,
+      xlim = max(max_time, data_plot$time, xticks)
+    )
+  }
 
- }
+  if (annot_at_risk || annot_surv_med || annot_coxph) {
+    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, annot_at_risk = annot_at_risk) # nolint
+    ttl_row <- as.numeric(!is.null(title))
+    km_grob <- grid::gTree(
+      vp = grid::viewport(layout = lyt, height = .95, width = .95),
+      children = grid::gList(
+        # Title.
+        if (!is.null(ttl_row)) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
+            children = grid::gList(grid::textGrob(label = title, x = grid::unit(0, "npc"), hjust = 0))
+          )
+        },
 
- if (annot_at_risk || annot_surv_med || annot_coxph) {
+        # The Kaplan - Meier curve (top-right corner).
+        grid::gTree(
+          vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
+          children = grid::gList(g_el$panel)
+        ),
 
-   lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, annot_at_risk = annot_at_risk) # nolint
-   ttl_row <- as.numeric(!is.null(title))
-   km_grob <- grid::gTree(
-     vp = grid::viewport(layout = lyt, height = .95, width = .95),
-     children = grid::gList(
-       # Title.
-       if (!is.null(ttl_row)) {
-         grid::gTree(
-           vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
-           children =  grid::gList(grid::textGrob(label = title, x = grid::unit(0, "npc"), hjust = 0))
-         )
-       },
+        # Survfit summary table (top-right corner).
+        if (annot_surv_med) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
+            children = h_grob_median_surv(
+              fit_km = fit_km,
+              armval = armval,
+              x = position_surv_med[1],
+              y = position_surv_med[2],
+              ttheme = gridExtra::ttheme_default(base_size = font_size)
+            )
+          )
+        },
+        if (annot_coxph) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
+            children = h_grob_coxph(
+              df = df,
+              variables = variables,
+              control_coxph_pw = control_coxph_pw,
+              x = position_coxph[1],
+              y = position_coxph[2],
+              ttheme = gridExtra::ttheme_default(
+                base_size = font_size,
+                padding = grid::unit(c(1, .5), "lines"),
+                core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
+              )
+            )
+          )
+        },
 
-       # The Kaplan - Meier curve (top-right corner).
-       grid::gTree(
-         vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-         children = grid::gList(g_el$panel)
-       ),
+        # Add the y-axis annotation (top-left corner).
+        grid::gTree(
+          vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 1),
+          children = h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis)
+        ),
 
-       # Survfit summary table (top-right corner).
-       if (annot_surv_med) {
-         grid::gTree(
-           vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-           children = h_grob_median_surv(
-             fit_km = fit_km,
-             armval = armval,
-             x = position_surv_med[1],
-             y = position_surv_med[2],
-             ttheme = gridExtra::ttheme_default(base_size = font_size)
-           )
-         )
-       },
+        # Add the x-axis annotation (second row below the Kaplan Meier Curve).
+        grid::gTree(
+          vp = grid::viewport(layout.pos.row = 2 + ttl_row, layout.pos.col = 2),
+          children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
+        ),
 
-       if (annot_coxph) {
-         grid::gTree(
-           vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-           children = h_grob_coxph(
-             df = df,
-             variables = variables,
-             control_coxph_pw = control_coxph_pw,
-             x = position_coxph[1],
-             y = position_coxph[2],
-             ttheme = gridExtra::ttheme_default(
-               base_size = font_size,
-               padding = grid::unit(c(1, .5), "lines"),
-               core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
-             )
-           )
-         )
-       },
+        # Add the legend.
+        grid::gTree(
+          vp = grid::viewport(layout.pos.row = 3 + ttl_row, layout.pos.col = 2),
+          children = grid::gList(g_el$guide)
+        ),
 
-       # Add the y-axis annotation (top-left corner).
-       grid::gTree(
-         vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 1),
-         children = h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis)
-       ),
-
-       # Add the x-axis annotation (second row below the Kaplan Meier Curve).
-       grid::gTree(
-         vp = grid::viewport(layout.pos.row = 2 + ttl_row, layout.pos.col = 2),
-         children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
-       ),
-
-       # Add the legend.
-       grid::gTree(
-         vp = grid::viewport(layout.pos.row = 3 + ttl_row, layout.pos.col = 2),
-         children = grid::gList(g_el$guide)
-       ),
-
-       # Add the table with patient-at-risk numbers.
-       if (annot_at_risk) {
-         grid::gTree(
-           vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
-           children = grobs_patient$at_risk
-         )
-       },
-
-       if (annot_at_risk) {
-         grid::gTree(
-           vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
-           children = grobs_patient$label
-         )
-       },
-
-       if (annot_at_risk) {
-         # Add the x-axis for the table.
-         grid::gTree(
-           vp = grid::viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
-           children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
-         )
-       }
-     )
+        # Add the table with patient-at-risk numbers.
+        if (annot_at_risk) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
+            children = grobs_patient$at_risk
+          )
+        },
+        if (annot_at_risk) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
+            children = grobs_patient$label
+          )
+        },
+        if (annot_at_risk) {
+          # Add the x-axis for the table.
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
+            children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
+          )
+        }
+      )
     )
 
     result <- grid::gTree(
@@ -369,7 +365,6 @@ g_km <- function(df,
       name = name,
       children = grid::gList(km_grob)
     )
-
   } else {
     result <- grid::gTree(
       vp = vp,
@@ -401,7 +396,6 @@ g_km <- function(df,
 #' @param armval (`string`) \cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
 #' @examples
-#'
 #' \dontrun{
 #' library(scda)
 #' library(dplyr)
@@ -473,7 +467,6 @@ h_data_plot <- function(fit_km,
 #' @inheritParams kaplan_meier
 #'
 #' @examples
-#'
 #' \dontrun{
 #' library(scda)
 #' library(dplyr)
@@ -563,7 +556,6 @@ h_ggkm <- function(data,
                    col = NULL,
                    ci_ribbon = FALSE,
                    ggtheme = NULL) {
-
   assertthat::assert_that(
     (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty))
   )
@@ -640,15 +632,13 @@ h_ggkm <- function(data,
 
   if (!is.null(max_time) && !is.null(xticks)) {
     gg <- gg + ggplot2::scale_x_continuous(breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time))))
-  }
-  else if (!is.null(xticks)) {
+  } else if (!is.null(xticks)) {
     if (max(data$time) <= max(xticks)) {
       gg <- gg + ggplot2::scale_x_continuous(breaks = xticks, limits = c(min(0, min(xticks)), max(xticks)))
     } else {
       gg <- gg + ggplot2::scale_x_continuous(breaks = xticks)
     }
-  }
-  else if (!is.null(max_time)) {
+  } else if (!is.null(max_time)) {
     gg <- gg + ggplot2::scale_x_continuous(limits = c(0, max_time))
   }
 
@@ -662,7 +652,6 @@ h_ggkm <- function(data,
     legend.title = ggplot2::element_blank(),
     panel.grid.major.x = ggplot2::element_line(size = 2)
   )
-
 }
 
 
@@ -678,7 +667,6 @@ h_ggkm <- function(data,
 #' @param gg (`ggplot`)\cr a graphic to decompose.
 #'
 #' @examples
-#'
 #' \dontrun{
 #' library(scda)
 #' library(dplyr)
@@ -851,7 +839,6 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'   ensure the at risk table aligns with the KM graph).
 #'
 #' @examples
-#'
 #' \dontrun{
 #' library(scda)
 #' library(dplyr)
@@ -885,7 +872,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'     n.risk = annot_tbl$n.risk,
 #'     time = annot_tbl$time,
 #'     strata = annot_tbl$strata
-#'     )
+#'   )
 #' }
 #'
 #' # The annotation table is transformed into a grob.
@@ -940,8 +927,8 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
       label = annot_tbl$n.risk,
       x = grid::unit(annot_tbl$time, "native"),
       y = grid::unit(
-        (max(y_str_unit) - y_str_unit) + .5
-        , "line"
+        (max(y_str_unit) - y_str_unit) + .5,
+        "line"
       ) # maybe native
     )
   )
@@ -1011,7 +998,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
     rownames(tbl) <- matrix(unlist(rownames_lst), ncol = 2, byrow = TRUE)[, 2]
     as.data.frame(tbl)
   }
-  conf.int <- summary(fit_km)$conf.int #nolint
+  conf.int <- summary(fit_km)$conf.int # nolint
   y$records <- round(y$records)
   y$median <- signif(y$median, 4)
   y$`CI` <- paste0( # nolint
@@ -1047,7 +1034,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   h_grob_median_surv %>%
+#'   h_grob_median_surv() %>%
 #'   grid::grid.draw()
 #' }
 #'
@@ -1141,13 +1128,13 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' tern:::h_tbl_coxph_pairwise(
 #'   df = adtte,
 #'   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
-#'   control_coxph_pw = control_coxph(conf_level = 0.9))
+#'   control_coxph_pw = control_coxph(conf_level = 0.9)
+#' )
 #' }
 #'
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
-                                 control_coxph_pw = control_coxph()
-) {
+                                 control_coxph_pw = control_coxph()) {
   assertthat::assert_that(is_df_with_variables(df, as.list(unlist(variables))))
   arm <- variables$arm
   df[[arm]] <- factor(df[[arm]])
@@ -1199,9 +1186,10 @@ h_tbl_coxph_pairwise <- function(df,
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' tbl_grob <- tern:::h_grob_coxph(
-#'    df = data,
-#'    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),
-#'    control_coxph_pw = control_coxph(conf_level = 0.9), x = 0.5, y = 0.5)
+#'   df = data,
+#'   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),
+#'   control_coxph_pw = control_coxph(conf_level = 0.9), x = 0.5, y = 0.5
+#' )
 #' grid::grid.draw(tbl_grob)
 #' }
 #'
@@ -1212,37 +1200,38 @@ h_grob_coxph <- function(...,
                            base_size = 12,
                            padding = grid::unit(c(1, .5), "lines"),
                            core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
-                         )
-) {
+                         )) {
   data <- h_tbl_coxph_pairwise(...) # nolint
-  tryCatch({
-  gt <- gridExtra::tableGrob(d = data, theme = ttheme) #ERROR 'data' must be of a vector type, was 'NULL'
-  vp <- grid::viewport(
-    x = grid::unit(x, "npc") + grid::unit(1, "lines"),
-    y = grid::unit(y, "npc") + grid::unit(1.5, "lines"),
-    height =  sum(gt$heights),
-    width =  sum(gt$widths),
-    just = c("left", "bottom")
-  )
-  grid::gList(
-    grid::gTree(
-      vp = vp,
-      children = grid::gList(gt)
-    )
-  )
-  },
-  error = function(w) {
-   message(paste(
-     "Warning: Cox table will not be displayed as there is",
-     "not any level to be compared in the arm variable."))
-   return(
-     grid::gList(
-       grid::gTree(
-         vp = NULL,
-         children = NULL
-       )
-     )
-   )
-  }
+  tryCatch(
+    { # nolint
+      gt <- gridExtra::tableGrob(d = data, theme = ttheme) # ERROR 'data' must be of a vector type, was 'NULL'
+      vp <- grid::viewport(
+        x = grid::unit(x, "npc") + grid::unit(1, "lines"),
+        y = grid::unit(y, "npc") + grid::unit(1.5, "lines"),
+        height = sum(gt$heights),
+        width = sum(gt$widths),
+        just = c("left", "bottom")
+      )
+      grid::gList(
+        grid::gTree(
+          vp = vp,
+          children = grid::gList(gt)
+        )
+      )
+    },
+    error = function(w) {
+      message(paste(
+        "Warning: Cox table will not be displayed as there is",
+        "not any level to be compared in the arm variable."
+      ))
+      return(
+        grid::gList(
+          grid::gTree(
+            vp = NULL,
+            children = NULL
+          )
+        )
+      )
+    }
   )
 }

@@ -4,7 +4,7 @@ library(dplyr)
 data <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
 
 testthat::test_that("check_mmrm_vars passes with healthy inputs and returns correct labels", {
-  data <-  data %>%
+  data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE"))
 
@@ -51,7 +51,6 @@ testthat::test_that("check_mmrm_vars passes with healthy inputs and returns corr
     visit = c(AVISIT = "Analysis Visit")
   )
   testthat::expect_identical(result3, expected3)
-
 })
 
 testthat::test_that("check_mmrm_vars works with interaction terms in `covariates`", {
@@ -83,19 +82,19 @@ testthat::test_that("check_mmrm_vars works when there are missing values", {
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
     dplyr::mutate(
-        # Introduce extra missing response variable values.
-        AVAL = ifelse(
-          sample(c(TRUE, FALSE), size = length(AVAL), replace = TRUE, prob = c(0.1, 0.9)),
-          NA,
-          AVAL
-        ),
-        # And also covariate values.
-        BMRKR1 = ifelse(
-          sample(c(TRUE, FALSE), size = length(BMRKR1), replace = TRUE, prob = c(0.1, 0.9)),
-          NA,
-          BMRKR1
-        )
+      # Introduce extra missing response variable values.
+      AVAL = ifelse(
+        sample(c(TRUE, FALSE), size = length(AVAL), replace = TRUE, prob = c(0.1, 0.9)),
+        NA,
+        AVAL
+      ),
+      # And also covariate values.
+      BMRKR1 = ifelse(
+        sample(c(TRUE, FALSE), size = length(BMRKR1), replace = TRUE, prob = c(0.1, 0.9)),
+        NA,
+        BMRKR1
       )
+    )
 
   vars <- list(
     response = "AVAL",
@@ -177,7 +176,6 @@ testthat::test_that("build_mmrm_formula builds the correct formula", {
   cor_struct3 <- "random-quadratic"
   result3 <- build_mmrm_formula(vars3, cor_struct3)
   expected3 <- AVAL ~ AVISIT + (stats::poly(as.numeric(AVISIT), df = 2) | USUBJID)
-
 })
 
 testthat::test_that("fit_lme4_single_optimizer works as expected when there are no warnings or messages", {
@@ -208,7 +206,7 @@ testthat::test_that("fit_lme4_single_optimizer works as expected when there are 
 # https://stackoverflow.com/questions/45650548/get-residual-variance-covariance-matrix-in-lme4
 alternative_cov_estimate <- function(fit) {
   # We want to keep the same variable names etc. as in the reference above, therefore no linting here.
-  #nolint start
+  # nolint start
   var.d <- Matrix::crossprod(lme4::getME(fit, "Lambdat"))
   Zt <- lme4::getME(fit, "Zt")
   vr <- stats::sigma(fit)^2
@@ -216,7 +214,7 @@ alternative_cov_estimate <- function(fit) {
   sI <- vr * Matrix::Diagonal(nrow(fit@frame))
   var.y <- var.b + sI
   return(var.y)
-  #nolint end
+  # nolint end
 }
 
 testthat::test_that("get_lme4_cov_estimate works as expected with a random slope model", {
@@ -225,7 +223,7 @@ testthat::test_that("get_lme4_cov_estimate works as expected with a random slope
     data = lme4::sleepstudy
   )
   result <- get_lme4_cov_estimate(fit)
-  expected <- as.matrix(alternative_cov_estimate(fit)[1:10, 1:10])  # We use first 10 obs.
+  expected <- as.matrix(alternative_cov_estimate(fit)[1:10, 1:10]) # We use first 10 obs.
   testthat::expect_equal(result, expected, check.attributes = FALSE)
   testthat::expect_identical(
     attributes(result),
@@ -249,7 +247,7 @@ testthat::test_that("get_lme4_cov_estimate works as expected with unbalanced dat
   # Obtain unbalanced data set.
   set.seed(123, kind = "Mersenne-Twister")
   data_unsorted <- lme4::sleepstudy %>%
-    dplyr::sample_frac(0.5)  # This randomly samples 50% of the rows of the data set.
+    dplyr::sample_frac(0.5) # This randomly samples 50% of the rows of the data set.
 
   # Fit with unsorted data.
   fit_unsorted <- fit_lme4(
@@ -304,7 +302,7 @@ testthat::test_that("get_lme4_cov_estimate works as expected with a random inter
     data = data
   )
   result <- get_lme4_cov_estimate(fit)
-  id_indices <- which(data$Subject == "372")  # We get id 372 here.
+  id_indices <- which(data$Subject == "372") # We get id 372 here.
   expected <- as.matrix(alternative_cov_estimate(fit)[id_indices, id_indices])
   testthat::expect_equal(result, expected, check.attributes = FALSE)
   testthat::expect_identical(
@@ -370,12 +368,11 @@ testthat::test_that("summary_all_fits works as expected", {
   lapply(
     result,
     expect_named,
-    expected = c("a", "b", "c")  # Note that is also implicitly tests the length of the result elements.
+    expected = c("a", "b", "c") # Note that is also implicitly tests the length of the result elements.
   )
 })
 
 test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
-
   utils.nest::skip_if_too_deep(5)
 
   original_fit <- fit_lme4_single_optimizer(
@@ -421,7 +418,6 @@ testthat::test_that("refit_lme4_all_optimizers can find a working optimizer if t
 
 
 testthat::test_that("refit_lme4_all_optimizers works with parallelization", {
-
   utils.nest::skip_if_too_deep(5)
 
   original_fit <- fit_lme4_single_optimizer(
@@ -446,7 +442,6 @@ testthat::test_that("fit_lme4 works with healthy inputs", {
 })
 
 testthat::test_that("fit_lme4 fails when there are convergence issues with all optimizers", {
-
   data <- lme4::sleepstudy
   data$days_copy <- data$Days
 
@@ -475,7 +470,6 @@ testthat::test_that("fit_lme4 fails when there are convergence issues with a spe
 })
 
 testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
-
   utils.nest::skip_if_too_deep(5)
 
   data <- data %>%
@@ -505,7 +499,6 @@ testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
 })
 
 testthat::test_that("get_mmrm_lsmeans preserves combined arm levels.", {
-
   utils.nest::skip_if_too_deep(5)
 
   data <- data %>%
@@ -546,12 +539,10 @@ testthat::test_that("get_mmrm_lsmeans preserves combined arm levels.", {
 
   testthat::expect_identical(levels(data$ARM), levels(result$estimates$ARM))
   testthat::expect_identical(levels(data$ARM)[-1], levels(result$contrasts$ARM))
-
 })
 
 
 testthat::test_that("fit_mmrm works with parallelization", {
-
   dat <- lme4::sleepstudy %>%
     dplyr::mutate(
       group = factor(rep(c("A", "B"), length = nrow(lme4::sleepstudy))),
@@ -616,14 +607,15 @@ expect_equal_result_tables <- function(result,
 get_adqs <- function(version = c("A", "B")) {
   version <- match.arg(version)
   adqs <- data
-  set.seed(123, kind = "Mersenne-Twister")  # Because of `sample` below.
-  adqs_f <- adqs %>% {
-    if (version == "A") {
-      dplyr::filter(., .data$PARAMCD == "FKSI-FWB" & !.data$AVISIT %in% c("BASELINE"))
-    } else {
-      dplyr::filter(., .data$PARAMCD == "FATIGI" & !.data$AVISIT %in% c("BASELINE", "SCREENING"))
-    }
-  } %>%
+  set.seed(123, kind = "Mersenne-Twister") # Because of `sample` below.
+  adqs_f <- adqs %>%
+    { # nolint
+      if (version == "A") {
+        dplyr::filter(., .data$PARAMCD == "FKSI-FWB" & !.data$AVISIT %in% c("BASELINE"))
+      } else {
+        dplyr::filter(., .data$PARAMCD == "FATIGI" & !.data$AVISIT %in% c("BASELINE", "SCREENING"))
+      }
+    } %>%
     droplevels() %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
     dplyr::mutate(
@@ -659,7 +651,6 @@ get_adqs <- function(version = c("A", "B")) {
 }
 
 testthat::test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
-
   utils.nest::skip_if_too_deep(5)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
@@ -679,7 +670,7 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
     data = adqs_f,
     cor_struct = "unstructured",
     weights_emmeans = "equal",
-    optimizer = "nloptwrap_neldermead"  # To speed up this test.
+    optimizer = "nloptwrap_neldermead" # To speed up this test.
   )
 
   # Compare vs. SAS results calculated with the following statements:
@@ -727,7 +718,7 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
       "ARMCDARM A:AVISITWEEK 4 DAY 29", "ARMCDARM C:AVISITWEEK 4 DAY 29",
       "ARMCDARM A:AVISITWEEK 5 DAY 36", "ARMCDARM C:AVISITWEEK 5 DAY 36"
     ),
-    check.names = FALSE  # Necessary to get right p-value column name.
+    check.names = FALSE # Necessary to get right p-value column name.
   )
 
   expect_equal_result_tables(
@@ -836,7 +827,6 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
 })
 
 testthat::test_that("fit_mmrm works also with missing data", {
-
   utils.nest::skip_if_too_deep(3)
 
   adqs_f <- get_adqs(version = "B")
@@ -901,7 +891,7 @@ testthat::test_that("fit_mmrm works also with missing data", {
       "ARMCDARM A:AVISITWEEK 4 DAY 29", "ARMCDARM C:AVISITWEEK 4 DAY 29",
       "ARMCDARM A:AVISITWEEK 5 DAY 36", "ARMCDARM C:AVISITWEEK 5 DAY 36"
     ),
-    check.names = FALSE  # Necessary to get right p-value column name.
+    check.names = FALSE # Necessary to get right p-value column name.
   )
 
   expect_equal_result_tables(
@@ -1070,7 +1060,7 @@ testthat::test_that("fit_mmrm works with compound symmetry covariance structure"
       "ARMCDARM A:AVISITWEEK 4 DAY 29", "ARMCDARM C:AVISITWEEK 4 DAY 29",
       "ARMCDARM A:AVISITWEEK 5 DAY 36", "ARMCDARM C:AVISITWEEK 5 DAY 36"
     ),
-    check.names = FALSE  # Necessary to get right p-value column name.
+    check.names = FALSE # Necessary to get right p-value column name.
   )
 
   expect_equal_result_tables(

@@ -1,6 +1,5 @@
 
 testthat::test_that("prop_wilson returns right result", {
-
   rsp <- c(
     TRUE, TRUE, TRUE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, FALSE
@@ -10,11 +9,9 @@ testthat::test_that("prop_wilson returns right result", {
   result <- prop_wilson(rsp, conf_level = 0.9)
 
   testthat::expect_equal(expected, result, tolerance = 1e-5)
-
 })
 
 testthat::test_that("prop_clopper_pearson returns right result", {
-
   rsp <- c(
     TRUE, TRUE, TRUE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, FALSE
@@ -23,11 +20,9 @@ testthat::test_that("prop_clopper_pearson returns right result", {
   result <- prop_clopper_pearson(rsp, conf_level = .95)
   expected <- c(0.1871, 0.8129)
   testthat::expect_equal(expected, result, tolerance = 1e-4)
-
 })
 
 testthat::test_that("prop_wald returns right result", {
-
   rsp <- c(
     TRUE, TRUE, TRUE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, FALSE
@@ -40,11 +35,9 @@ testthat::test_that("prop_wald returns right result", {
   result <- prop_wald(rsp, conf_level = 0.95, correct = FALSE)
   expected <- c(0.1901, 0.8099)
   testthat::expect_equal(expected, result, tolerance = 1e-4)
-
 })
 
 testthat::test_that("prop_agresti_coull returns right result", {
-
   rsp <- c(
     TRUE, TRUE, TRUE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, FALSE
@@ -53,12 +46,10 @@ testthat::test_that("prop_agresti_coull returns right result", {
   result <- prop_agresti_coull(rsp, conf_level = 0.95)
   expected <- c(0.2366, 0.7634)
   testthat::expect_equal(expected, result, tolerance = 1e-4)
-
 })
 
 
 testthat::test_that("prop_jeffreys returns right result", {
-
   rsp <- c(
     TRUE, TRUE, TRUE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, FALSE
@@ -67,18 +58,15 @@ testthat::test_that("prop_jeffreys returns right result", {
   result <- prop_jeffreys(rsp, conf_level = 0.95)
   expected <- c(0.2235, 0.7765)
   testthat::expect_equal(expected, result, tolerance = 1e-4)
-
 })
 
 testthat::test_that("s_proportion returns right result", {
-
   result <- s_proportion(c(1, 0, 1, 0))
   expected <- list(
     n_prop = c(2, .5),
     prop_ci = c(0, 100)
   )
   testthat::expect_equal(expected, result, tolerance = 1e-4, check.attributes = FALSE)
-
 })
 
 testthat::test_that("`s_proportion` works with Jeffreys CI", {
@@ -90,7 +78,7 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
     conf_level = 0.9,
     method = "jeffreys"
   )
-  expected <- list(# according to SAS.
+  expected <- list( # according to SAS.
     n_prop = c(4, 4 / 6),
     prop_ci = with_label(
       c(34.0802, 89.5730),
@@ -106,7 +94,7 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
     conf_level = 0.95,
     method = "jeffreys"
   )
-  expected <- list(# according to SAS.
+  expected <- list( # according to SAS.
     n_prop = c(4, 1),
     prop_ci = with_label(
       x = c(55.5237, 100),
@@ -114,7 +102,6 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
     )
   )
   testthat::expect_equal(result, expected, tol = 0.0001, check.attributes = FALSE)
-
 })
 
 testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
@@ -126,7 +113,7 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
     conf_level = 0.9,
     method = "agresti-coull"
   )
-  expected <- list(# according to SAS.
+  expected <- list( # according to SAS.
     n_prop = c(4, 4 / 6),
     prop_ci = with_label(
       c(34.3585, 88.6154),
@@ -142,7 +129,7 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
     conf_level = 0.95,
     method = "agresti-coull"
   )
-  expected <- list(# according to SAS.
+  expected <- list( # according to SAS.
     n_prop = c(4, 1),
     prop_ci = with_label(
       x = c(45.4050, 100),

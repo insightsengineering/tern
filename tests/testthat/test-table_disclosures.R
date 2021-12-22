@@ -6,26 +6,31 @@ adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 get_adsl <- function() {
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl # nolintr
   set.seed(1)
-  #nolint start
+  # nolint start
   adsl_f <- adsl %>%
     dplyr::filter(SAFFL == "Y") %>% # Safety Evaluable Population
     dplyr::mutate(
       STSTFL = dplyr::case_when(
         is.na(RANDDT) ~ "N", # derive flag for "Started Study",
-        TRUE ~ "Y"),
+        TRUE ~ "Y"
+      ),
       COMPSTUD = dplyr::case_when(
         EOSSTT == "COMPLETED" ~ "Y", # derive flag for "Completed Study"
-        TRUE ~ "N"),
+        TRUE ~ "N"
+      ),
       DISCSTUD = dplyr::case_when(
         EOSSTT == "DISCONTINUED" ~ "Y", # derive flag for "Discontinued study"
-        TRUE ~ "N"),
+        TRUE ~ "N"
+      ),
       AGEGRP = dplyr::case_when(
         AGE < 65 ~ "< 65 yrs",
-        AGE >= 65 ~ ">= 65 yrs"),
+        AGE >= 65 ~ ">= 65 yrs"
+      ),
       ETHNIC = sample(
         c("Ethnicity 1", "Ethnicity 2", "Unknown"),
         nrow(.),
-        replace = TRUE)
+        replace = TRUE
+      )
     ) %>%
     var_relabel(
       STSTFL = "Start Study",
@@ -37,13 +42,12 @@ get_adsl <- function() {
 
   adsl_f$AGEGRP <- factor(adsl_f$AGEGRP, levels = c("< 65 yrs", ">= 65 yrs"))
   adsl_f$ETHNIC <- factor(adsl_f$ETHNIC, levels = c("Ethnicity 1", "Ethnicity 2", "Unknown"))
-  #nolint end
+  # nolint end
   adsl_f <- df_explicit_na(adsl_f)
   adsl_f
 }
 
 get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
-
   n_per_arm <- adsl %>%
     dplyr::count(ARM)
 
@@ -85,24 +89,28 @@ testthat::test_that("Patient Disposition table is produced correctly", {
       "STSTFL",
       values = "Y",
       .labels = c(count_fraction = "Started Study"),
-      .formats = c(count_fraction = "xx (xx.xx%)")) %>%
+      .formats = c(count_fraction = "xx (xx.xx%)")
+    ) %>%
     count_values(
       "COMPSTUD",
       values = "Y",
       .labels = c(count_fraction = "Completed Study"),
-      .formats = c(count_fraction = "xx (xx.xx%)")) %>%
+      .formats = c(count_fraction = "xx (xx.xx%)")
+    ) %>%
     count_values(
       "DISCSTUD",
       values = "Y",
       .labels = c(count_fraction = "Discontinued Study"),
-      .formats = "xx (xx.xx%)") %>%
+      .formats = "xx (xx.xx%)"
+    ) %>%
     summarize_vars(
       "DCSREAS",
       .stats = "count_fraction",
       show_labels = "hidden",
       .indent_mods = c(count_fraction = 2L),
       .formats = c(count_fraction = "xx (xx.xx%)"),
-      denom = "N_col") %>%
+      denom = "N_col"
+    ) %>%
     build_table(adsl)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -145,7 +153,8 @@ testthat::test_that("Demographic table is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Age (yr)", "n", "Mean (SD)", "Median", "Min - Max",
+    c(
+      "", "", "Age (yr)", "n", "Mean (SD)", "Median", "Min - Max",
       "Age group (yr)", "n", "< 65 yrs", ">= 65 yrs", "Sex", "n", "F",
       "M", "Race", "n", "ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE",
       "AMERICAN INDIAN OR ALASKA NATIVE", "MULTIPLE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
@@ -166,9 +175,11 @@ testthat::test_that("Demographic table is produced correctly", {
       "34", "20 - 69", "", "400", "399 (99.8%)", "1 (0.2%)", "", "400",
       "231 (57.8%)", "169 (42.2%)", "", "400", "208 (52%)", "91 (22.8%)",
       "74 (18.5%)", "25 (6.2%)", "1 (0.2%)", "1 (0.2%)", "", "400",
-      "147 (36.8%)", "125 (31.2%)", "128 (32%)"),
-    .Dim = c(28L, 5L))
-    testthat::expect_identical(result_matrix, expected_matrix)
+      "147 (36.8%)", "125 (31.2%)", "128 (32%)"
+    ),
+    .Dim = c(28L, 5L)
+  )
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("Enrollment by Country Table is produced correctly", {
@@ -181,7 +192,8 @@ testthat::test_that("Enrollment by Country Table is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "n", "CHN", "USA", "BRA", "PAK", "NGA", "RUS",
+    c(
+      "", "", "n", "CHN", "USA", "BRA", "PAK", "NGA", "RUS",
       "JPN", "GBR", "CAN", "CHE", "A: Drug X", "(N=134)", "134", "74 (55.22%)",
       "10 (7.46%)", "13 (9.7%)", "12 (8.96%)", "8 (5.97%)", "5 (3.73%)",
       "5 (3.73%)", "4 (2.99%)", "3 (2.24%)", "0 (0%)", "B: Placebo",
@@ -192,10 +204,11 @@ testthat::test_that("Enrollment by Country Table is produced correctly", {
       "9 (6.82%)", "2 (1.52%)", "3 (2.27%)", "0 (0%)", "All Patients",
       "(N=400)", "400", "219 (54.75%)", "40 (10%)", "30 (7.5%)", "31 (7.75%)",
       "26 (6.5%)", "19 (4.75%)", "18 (4.5%)", "9 (2.25%)", "8 (2%)",
-      "0 (0%)"),
+      "0 (0%)"
+    ),
     .Dim = c(13L, 5L)
-    )
-    testthat::expect_identical(result_matrix, expected_matrix)
+  )
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("Death table is produced correctly", {
@@ -208,22 +221,24 @@ testthat::test_that("Death table is produced correctly", {
       "USUBJID",
       filters = c("AESDTH" = "Y"),
       .labels = c(count_fraction = "Total Number of Deaths"),
-      .formats = c(count_fraction = "xx (xx.xx%)")) %>%
+      .formats = c(count_fraction = "xx (xx.xx%)")
+    ) %>%
     build_table(adae, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Total Number of Deaths", "A: Drug X", "(N=134)",
+    c(
+      "", "", "Total Number of Deaths", "A: Drug X", "(N=134)",
       "76 (62.3%)", "B: Placebo", "(N=134)", "70 (56.91%)", "C: Combination",
-      "(N=132)", "75 (62.5%)", "All Patients", "(N=400)", "221 (60.55%)"),
+      "(N=132)", "75 (62.5%)", "All Patients", "(N=400)", "221 (60.55%)"
+    ),
     .Dim = c(3L, 5L)
   )
 
-    testthat::expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("Table of Serious Adverse Events is produced correctly (for one specific treatment arm)", {
-
   adae_serious <- adae %>% dplyr::filter(AESER == "Y", SAFFL == "Y")
   adae_serious_arm <- adae_serious %>% dplyr::filter(ARM == "A: Drug X")
 
@@ -249,14 +264,16 @@ testthat::test_that("Table of Serious Adverse Events is produced correctly (for 
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Total number of patients with at least one serious adverse event",
+    c(
+      "", "Total number of patients with at least one serious adverse event",
       "cl A.1", "dcd A.1.1.1.2", "cl B.1", "dcd B.1.1.1.1", "cl B.2",
       "dcd B.2.2.3.1", "cl D.1", "dcd D.1.1.1.1", "Patients (All)",
       "104", "", "48", "", "47", "", "48", "", "50", "Events (All)",
       "", "", "68", "", "56", "", "64", "", "61", "Events (Related)",
       "", "", "0", "", "56", "", "0", "", "61", "Events (Fatal)",
       "", "", "0", "", "56", "", "0", "", "61", "Events (Fatal & Related)",
-      "", "", "0", "", "56", "", "0", "", "61"),
+      "", "", "0", "", "56", "", "0", "", "61"
+    ),
     .Dim = c(10L, 6L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -282,7 +299,8 @@ testthat::test_that("Table of Non-Serious Adverse Events is produced correctly",
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "Total number of patients with at least one non-SAE and number of events",
+    c(
+      "", "", "", "Total number of patients with at least one non-SAE and number of events",
       "cl A.1", "dcd A.1.1.1.1", "cl B.2", "dcd B.2.1.2.1", "cl C.1",
       "dcd C.1.1.1.3", "cl C.2", "dcd C.2.1.2.1", "cl D.1", "dcd D.1.1.4.2",
       "cl D.2", "dcd D.2.1.5.3", "A: Drug X", "Patients (All)", "(N=134)",
@@ -295,7 +313,8 @@ testthat::test_that("Table of Non-Serious Adverse Events is produced correctly",
       "72", "C: Combination", "Patients (All)", "(N=132)", "112", "",
       "63", "", "52", "", "43", "", "55", "", "50", "", "57", "C: Combination",
       "Events (All)", "(N=132)", "421", "", "88", "", "66", "", "64",
-      "", "65", "", "64", "", "74"),
+      "", "65", "", "64", "", "74"
+    ),
     .Dim = c(16L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

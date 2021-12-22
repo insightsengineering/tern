@@ -8,13 +8,13 @@ library(broom)
 adqs <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
-#nolint start
+# nolint start
 adqs_f <- adqs %>%
   dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
   droplevels() %>%
   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
-#nolint end
+# nolint end
 
 too_old_lme4 <- compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0
 
@@ -39,7 +39,6 @@ mmrm_results <- if (too_old_lme4) {
 
 
 testthat::test_that("LS means table is produced correctly", {
-
   testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
   df <- broom::tidy(mmrm_results)
@@ -51,7 +50,8 @@ testthat::test_that("LS means table is produced correctly", {
     build_table(df, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "SCREENING", "n", "Adjusted Mean (SE)", "95% CI",
+    c(
+      "", "", "SCREENING", "n", "Adjusted Mean (SE)", "95% CI",
       "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
       "p-value (MMRM)", "WEEK 1 DAY 8", "n", "Adjusted Mean (SE)",
       "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
@@ -88,20 +88,21 @@ testthat::test_that("LS means table is produced correctly", {
       "(-0.194, 4.663)", "3.5%", "0.0712", "", "132", "70.322 (1.001)",
       "(68.354, 72.29)", "1.401 (1.411)", "(-1.373, 4.175)", "2%",
       "0.3214", "", "132", "74.515 (1.065)", "(72.422, 76.608)", "0.193 (1.501)",
-      "(-2.758, 3.144)", "0.3%", "0.8977"),
+      "(-2.758, 3.144)", "0.3%", "0.8977"
+    ),
     .Dim = c(50L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("Fixed effects table is produced correctly", {
-
   testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
   result <- as.rtable(mmrm_results, type = "fixed")
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "(Intercept)", "STRATA1B", "STRATA1C", "BMRKR2MEDIUM",
+    c(
+      "", "(Intercept)", "STRATA1B", "STRATA1C", "BMRKR2MEDIUM",
       "BMRKR2HIGH", "ARMA: Drug X", "ARMC: Combination", "AVISITWEEK 1 DAY 8",
       "AVISITWEEK 2 DAY 15", "AVISITWEEK 3 DAY 22", "AVISITWEEK 4 DAY 29",
       "AVISITWEEK 5 DAY 36", "ARMA: Drug X:AVISITWEEK 1 DAY 8", "ARMC: Combination:AVISITWEEK 1 DAY 8",
@@ -126,20 +127,21 @@ testthat::test_that("Fixed effects table is produced correctly", {
       "0.5014", "0.4167", "0.0688", "0.5583", "0.6630", "<0.0001",
       "<0.0001", "<0.0001", "<0.0001", "<0.0001", "0.3412", "0.9298",
       "0.7601", "0.9074", "0.0607", "0.0985", "0.2619", "0.2881", "0.2581",
-      "0.7150"),
+      "0.7150"
+    ),
     .Dim = c(23L, 6L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("Covariance matrix table is produced correctly", {
-
   testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
   result <- as.rtable(mmrm_results, type = "cov")
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "SCREENING", "WEEK 1 DAY 8", "WEEK 2 DAY 15",
+    c(
+      "", "SCREENING", "WEEK 1 DAY 8", "WEEK 2 DAY 15",
       "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36", "SCREENING",
       "72.7364", "2.1266", "-0.9311", "-0.8374", "1.0434", "6.0506",
       "WEEK 1 DAY 8", "2.1266", "63.3894", "-0.6225", "2.7514", "-1.5364",
@@ -155,14 +157,15 @@ testthat::test_that("Covariance matrix table is produced correctly", {
 })
 
 testthat::test_that("Model diagnostics table is produced correctly", {
-
   testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
   result <- as.rtable(mmrm_results, type = "diagnostic")
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
-      "17672.9257", "17714.9257", "17715.3179", "17798.7464"),
+    c(
+      "", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
+      "17672.9257", "17714.9257", "17715.3179", "17798.7464"
+    ),
     .Dim = c(5L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

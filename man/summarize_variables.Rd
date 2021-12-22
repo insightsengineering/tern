@@ -324,7 +324,6 @@ basic_table() \%>\%
 ## By comparison with `lapply`:
 X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 lapply(X, function(x) s_summary(x$x))
-
 # `s_summary.factor`
 
 ## Basic usage:
@@ -342,13 +341,11 @@ s_summary(x, na.rm = FALSE)
 x <- factor(c("a", "a", "b", "c", "a"))
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
-
 # `s_summary.character`
 
 ## Basic usage:
 s_summary(c("a", "a", "b", "c", "a"), .var = "x")
 s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
-
 # `s_summary.logical`
 
 ## Basic usage:
@@ -363,10 +360,8 @@ s_summary(x, na.rm = FALSE)
 x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
-
 # `a_summary.numeric`
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-
 # `a_summary.factor`
 # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
 # functions can be applied correctly.
@@ -375,20 +370,17 @@ afun <- make_afun(
   .ungroup_stats = c("count", "count_fraction")
 )
 afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-
 # `a_summary.character`
 afun <- make_afun(
   getS3method("a_summary", "character"),
   .ungroup_stats = c("count", "count_fraction")
 )
 afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
-
 # `a_summary.logical`
 afun <- make_afun(
   getS3method("a_summary", "logical")
 )
 afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
-
 # `create_afun_summary()` to create combined `afun`
 
 afun <- create_afun_summary(
@@ -400,19 +392,18 @@ afun <- create_afun_summary(
 ## Fabricated dataset.
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
-  PARAMCD = rep("lab", 6*3),
+  PARAMCD = rep("lab", 6 * 3),
   AVISIT  = rep(paste0("V", 1:3), 6),
   ARM     = rep(LETTERS[1:3], rep(6, 3)),
   AVAL    = c(9:1, rep(NA, 9))
 )
 
 l <- basic_table() \%>\%
-split_cols_by(var = "ARM") \%>\%
+  split_cols_by(var = "ARM") \%>\%
   split_rows_by(var = "AVISIT") \%>\%
   analyze(vars = "AVAL", afun = afun)
 
 build_table(l, df = dta_test)
-
 
 # `summarize_vars()` in rtables pipelines
 
@@ -454,7 +445,6 @@ l <- basic_table() \%>\%
   summarize_vars(vars = "AVISIT", na.rm = FALSE)
 
 results <- build_table(l, df = dta_test)
-
 \dontrun{
 Viewer(results)
 }

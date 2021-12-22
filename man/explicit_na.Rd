@@ -23,5 +23,4 @@ explicit_na(factor(c(NA, "a", "b")))
 is.na(explicit_na(factor(c(NA, "a", "b"))))
 
 explicit_na(sas_na(c("a", "")))
-
 }

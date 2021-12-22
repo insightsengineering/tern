@@ -157,23 +157,21 @@ df <- ADTTE_f \%>\%
   filter(ARMCD == "ARM A")
 
 s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-
 a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-
 df_ref_group <- ADTTE_f \%>\%
   filter(ARMCD == "ARM B")
 
 s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 s_surv_timepoint_diff(
-  df, df_ref_group, .in_ref_col = FALSE,
+  df, df_ref_group,
+  .in_ref_col = FALSE,
   .var = "AVAL", time_point = 7, is_event = "is_event"
 )
-
 a_surv_timepoint_diff(
-  df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", time_point = 7,
+  df, df_ref_group,
+  .in_ref_col = FALSE, .var = "AVAL", time_point = 7,
   is_event = "is_event"
 )
-
 
 # Survival at given time points.
 basic_table() \%>\%
@@ -213,5 +211,4 @@ basic_table() \%>\%
     method = "both"
   ) \%>\%
   build_table(df = ADTTE_f)
-
 }

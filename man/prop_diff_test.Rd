@@ -136,8 +136,8 @@ A <- 20
 B <- 20
 set.seed(1)
 rsp <- c(
-  sample(c(TRUE, FALSE), size = A, prob = c(3/4, 1/4), replace = TRUE),
-  sample(c(TRUE, FALSE), size = A, prob = c(1/2, 1/2), replace = TRUE)
+  sample(c(TRUE, FALSE), size = A, prob = c(3 / 4, 1 / 4), replace = TRUE),
+  sample(c(TRUE, FALSE), size = A, prob = c(1 / 2, 1 / 2), replace = TRUE)
 )
 grp <- c(rep("A", A), rep("B", B))
 tbl <- table(grp, rsp)
@@ -145,14 +145,11 @@ tbl <- table(grp, rsp)
 ## Chi-Squared test
 prop_chisq(tbl)
 
-
 ## Chi-Squared test + Schouten correction.
 prop_schouten(tbl)
 
-
 ## Fisher's exact test
 prop_fisher(tbl)
-
 
 # Stratified proportion difference test
 
@@ -164,7 +161,6 @@ tbl <- table(grp, rsp, strata)
 
 ## Cochran-Mantel-Haenszel test
 prop_cmh(tbl)
-
 
 # Statistics function
 dta <- data.frame(
@@ -181,7 +177,6 @@ s_test_proportion_diff(
   variables = list(strata = "strat"),
   method = "cmh"
 )
-
 a_test_proportion_diff(
   df = subset(dta, grp == "A"),
   .var = "rsp",
@@ -191,15 +186,13 @@ a_test_proportion_diff(
   method = "cmh"
 )
 
-
 # With rtables pipelines.
 l <- basic_table() \%>\%
-split_cols_by(var = "grp", ref_group = "B") \%>\%
+  split_cols_by(var = "grp", ref_group = "B") \%>\%
   test_proportion_diff(
     vars = "rsp",
     method = "cmh", variables = list(strata = "strat")
   )
 
 build_table(l, df = dta)
-
 }

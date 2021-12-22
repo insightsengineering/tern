@@ -25,12 +25,13 @@ NULL
 #' @examples
 #' # Use the statistics function to count number of unique and nonunique patients.
 #' s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)), labelstr = "", .N_col = 6L)
-#' s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)),
-#'                labelstr = "",
-#'                .N_col = 6L,
-#'                count_by = as.character(c(1, 1, 2, 1, 1, 1))
-#'                )
-s_num_patients <- function(x, labelstr, .N_col, count_by = NULL){ # nolint
+#' s_num_patients(
+#'   x = as.character(c(1, 1, 1, 2, 4, NA)),
+#'   labelstr = "",
+#'   .N_col = 6L,
+#'   count_by = as.character(c(1, 1, 2, 1, 1, 1))
+#' )
+s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
 
   assertthat::assert_that(
     is_character_or_factor(x),
@@ -81,7 +82,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL){ # nolint
 #' )
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
-s_num_patients_content <- function(df, labelstr="", .N_col, .var, required = NULL, count_by = NULL) { # nolint
+s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = NULL, count_by = NULL) { # nolint
 
   assertthat::assert_that(
     is.data.frame(df),
@@ -102,7 +103,10 @@ s_num_patients_content <- function(df, labelstr="", .N_col, .var, required = NUL
   }
 
   x <- df[[.var]]
-  y <- switch(as.numeric(!is.null(count_by)) + 1, NULL, df[[count_by]])
+  y <- switch(as.numeric(!is.null(count_by)) + 1,
+    NULL,
+    df[[count_by]]
+  )
 
   s_num_patients(
     x = x,
@@ -116,8 +120,10 @@ c_num_patients <- make_afun(
   s_num_patients_content,
   .stats = c("unique", "nonunique", "unique_count"),
   .formats = c(unique = format_count_fraction, nonunique = "xx", unique_count = "xx"),
-  .labels = c(unique = "Number of patients with at least one event",
-              nonunique = "Number of events")
+  .labels = c(
+    unique = "Number of patients with at least one event",
+    nonunique = "Number of events"
+  )
 )
 
 #' @describeIn summarize_num_patients Layout creating function which adds content rows using the statistics
@@ -126,14 +132,12 @@ c_num_patients <- make_afun(
 #' @export
 #'
 #' @examples
-#'
 summarize_num_patients <- function(lyt,
                                    var,
                                    .stats = NULL,
                                    .formats = NULL,
                                    .labels = NULL,
                                    ...) {
-
   cfun <- make_afun(
     c_num_patients,
     .stats = .stats,
@@ -147,5 +151,4 @@ summarize_num_patients <- function(lyt,
     cfun = cfun,
     extra_args = list(...)
   )
-
 }

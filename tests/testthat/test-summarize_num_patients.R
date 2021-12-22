@@ -288,6 +288,4 @@ testthat::test_that("summarize_num_patients with count_by different
     .Dim = c(5L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
-
-
 })

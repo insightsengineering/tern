@@ -158,7 +158,7 @@ testthat::test_that("split_cols_by_groups manages combinations of columns with r
     "Arms A+C" = c("A: Drug X", "C: Combination")
   )
 
-  DM_ANL <- DM[1:100, ] #nolint
+  DM_ANL <- DM[1:100, ] # nolint
 
   result <- basic_table() %>%
     split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
@@ -180,7 +180,7 @@ testthat::test_that("split_cols_by_groups manages combinations of columns with r
     c(
       "", "", "Diff. of Averages", "Arms A+B", "(N=227)",
       "", "Arms A+C", "(N=250)", "-0.75"
-      ),
+    ),
     .Dim = c(3L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

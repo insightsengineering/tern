@@ -25,7 +25,6 @@ exists it is kept as is. It is based on the same function \code{ggplot2} relies 
 and is required in the graphic and the patient-at-risk annotation table.
 }
 \examples{
-
 \dontrun{
 library(scda)
 library(dplyr)

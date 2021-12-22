@@ -4,7 +4,6 @@ library(dplyr)
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("s_surv_timepoint works with default arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -28,7 +27,6 @@ testthat::test_that("s_surv_timepoint works with default arguments", {
 })
 
 testthat::test_that("s_surv_timepoint works with customized arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -55,7 +53,6 @@ testthat::test_that("s_surv_timepoint works with customized arguments", {
 })
 
 testthat::test_that("s_surv_timepoint also works when there are 0 patients at risk", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -82,7 +79,6 @@ testthat::test_that("s_surv_timepoint also works when there are 0 patients at ri
 })
 
 testthat::test_that("surv_timepoint works with default arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -94,7 +90,7 @@ testthat::test_that("surv_timepoint works with default arguments", {
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-  ) %>%
+    ) %>%
     surv_timepoint(
       vars = "AVAL",
       var_labels = "Months",
@@ -116,7 +112,6 @@ testthat::test_that("surv_timepoint works with default arguments", {
 })
 
 testthat::test_that("surv_timepoint works with customized arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -128,7 +123,7 @@ testthat::test_that("surv_timepoint works with customized arguments", {
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-  ) %>%
+    ) %>%
     surv_timepoint(
       vars = "AVAL",
       var_labels = "Months",
@@ -152,7 +147,6 @@ testthat::test_that("surv_timepoint works with customized arguments", {
 
 
 testthat::test_that("s_surv_timepoint_diff works with default arguments for comparison group", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -182,7 +176,6 @@ testthat::test_that("s_surv_timepoint_diff works with default arguments for comp
 
 
 testthat::test_that("s_surv_timepoint_diff works with customized arguments for comparison arm", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -211,7 +204,6 @@ testthat::test_that("s_surv_timepoint_diff works with customized arguments for c
 })
 
 testthat::test_that("surv_timepoint for survival diff works with default arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -223,7 +215,7 @@ testthat::test_that("surv_timepoint for survival diff works with default argumen
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-  ) %>%
+    ) %>%
     surv_timepoint(
       vars = "AVAL",
       var_labels = "Months",
@@ -247,7 +239,6 @@ testthat::test_that("surv_timepoint for survival diff works with default argumen
 })
 
 testthat::test_that("surv_timepoint for survival diff works with customized arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -259,7 +250,7 @@ testthat::test_that("surv_timepoint for survival diff works with customized argu
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-  ) %>%
+    ) %>%
     surv_timepoint(
       vars = "AVAL",
       var_labels = "Months",
@@ -285,7 +276,6 @@ testthat::test_that("surv_timepoint for survival diff works with customized argu
 
 
 testthat::test_that("surv_timepoint no warning when multipled layers generated", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(

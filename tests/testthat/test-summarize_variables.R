@@ -19,7 +19,6 @@ testthat::test_that("control_summarize_vars fails wrong inputs", {
 })
 
 testthat::test_that("s_summary return NA for x length 0L", {
-
   x <- numeric()
 
   result <- s_summary(x)
@@ -48,7 +47,6 @@ testthat::test_that("s_summary return NA for x length 0L", {
 })
 
 testthat::test_that("s_summary handles NA", {
-
   x <- c(NA_real_, 1)
 
   # With `na.rm = TRUE`.
@@ -103,7 +101,6 @@ testthat::test_that("s_summary handles NA", {
 })
 
 testthat::test_that("s_summary returns right results for n = 2", {
-
   x <- c(NA_real_, 1, 2)
   result <- s_summary(x)
   expected <- list(
@@ -131,7 +128,6 @@ testthat::test_that("s_summary returns right results for n = 2", {
 })
 
 testthat::test_that("s_summary returns right results for n = 8", {
-
   x <- c(NA_real_, 1, 2, 5, 6, 7, 8, 9, 10)
   result <- s_summary(x)
   expected <- list(
@@ -159,7 +155,6 @@ testthat::test_that("s_summary returns right results for n = 8", {
 })
 
 testthat::test_that("s_summary works with factors", {
-
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown"))
 
   result <- s_summary(x)
@@ -181,7 +176,6 @@ testthat::test_that("s_summary works with factors", {
 })
 
 testthat::test_that("s_summary fails with factors that have no levels or have empty string levels", {
-
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", ""))
   testthat::expect_error(
     s_summary(x),
@@ -198,18 +192,15 @@ testthat::test_that("s_summary fails with factors that have no levels or have em
 })
 
 testthat::test_that("s_summary fails when factors have NA levels", {
-
   x <- factor(c("Female", "Male", "Female", "Male", "Unknown", "Unknown", NA))
   testthat::expect_error(
     s_summary(x, na.rm = FALSE),
     "NA in x has not been conveyed to na_level, please use explicit factor levels.",
     fixed = TRUE
   )
-
 })
 
 testthat::test_that("s_summary works with factors with NA values handled and correctly removes them by default", {
-
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", NA))
   x <- explicit_na(x)
 
@@ -232,7 +223,6 @@ testthat::test_that("s_summary works with factors with NA values handled and cor
 })
 
 testthat::test_that("s_summary works with length 0 factors that have levels", {
-
   x <- factor(levels = c("a", "b", "c"))
 
   result <- s_summary(x)
@@ -254,7 +244,6 @@ testthat::test_that("s_summary works with length 0 factors that have levels", {
 })
 
 testthat::test_that("s_summary works with factors and different denominator choices", {
-
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown"))
 
   result <- s_summary(x, denom = "N_row", .N_row = 20)
@@ -291,7 +280,6 @@ testthat::test_that("s_summary works with factors and different denominator choi
 })
 
 testthat::test_that("s_summary works with characters by converting to character", {
-
   x <- c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown")
 
   result <- testthat::expect_warning(s_summary(x, denom = "N_row", .N_row = 20, .var = "SEX"))
@@ -301,7 +289,6 @@ testthat::test_that("s_summary works with characters by converting to character"
 })
 
 testthat::test_that("s_summary works with characters by converting to character and handling empty strings", {
-
   x <- c("Female", "Male", "Female", "Male", "Male", "", "Unknown", "Unknown", "Unknown", "Unknown")
 
   result <- testthat::expect_warning(s_summary(x, .var = "foo", na.rm = FALSE, denom = "N_row", .N_row = 10))
@@ -378,9 +365,9 @@ testthat::test_that("create_afun_summary creates an `afun` that works", {
   dta_test <- data.frame(
     USUBJID = rep(1:6, each = 3),
     PARAMCD = rep("lab", 6 * 3),
-    AVISIT  = rep(paste0("V", 1:3), 6),
-    ARM     = rep(LETTERS[1:3], rep(6, 3)),
-    AVAL    = c(9:1, rep(NA, 9)),
+    AVISIT = rep(paste0("V", 1:3), 6),
+    ARM = rep(LETTERS[1:3], rep(6, 3)),
+    AVAL = c(9:1, rep(NA, 9)),
     stringsAsFactors = TRUE
   )
 
@@ -392,7 +379,8 @@ testthat::test_that("create_afun_summary creates an `afun` that works", {
   result <- build_table(l, df = dta_test)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "V1", "AVAL", "n", "My median", "Min - Max",
+    c(
+      "", "V1", "AVAL", "n", "My median", "Min - Max",
       "Mean 95% CI", "ARM", "n", "A", "B", "C", "V2", "AVAL", "n",
       "My median", "Min - Max", "Mean 95% CI", "ARM", "n", "A", "B",
       "C", "V3", "AVAL", "n", "My median", "Min - Max", "Mean 95% CI",
@@ -406,14 +394,14 @@ testthat::test_that("create_afun_summary creates an `afun` that works", {
       "", "", "0", "NA", "NA - NA", "(NA, NA)", "", "2", "0", "0",
       "2 (100%)", "", "", "0", "NA", "NA - NA", "(NA, NA)", "", "2",
       "0", "0", "2 (100%)", "", "", "0", "NA", "NA - NA", "(NA, NA)",
-      "", "2", "0", "0", "2 (100%)"),
+      "", "2", "0", "0", "2 (100%)"
+    ),
     .Dim = c(34L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", {
-
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
   l <- basic_table() %>%
@@ -432,7 +420,6 @@ testthat::test_that("`summarize_vars` works with healthy input, default `na.rm =
 })
 
 testthat::test_that("`summarize_vars` works with healthy input, and control function.", {
-
   dta_test <- data.frame(AVAL = c(1:9))
 
   l <- basic_table() %>%
@@ -455,7 +442,6 @@ testthat::test_that("`summarize_vars` works with healthy input, and control func
 })
 
 testthat::test_that("`summarize_vars` works with healthy input, alternative `na.rm = FALSE`", {
-
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
   l <- basic_table() %>%
@@ -474,7 +460,6 @@ testthat::test_that("`summarize_vars` works with healthy input, alternative `na.
 })
 
 testthat::test_that("`summarize_vars` works with healthy factor input", {
-
   dta <- data.frame(foo = factor(c("a", "b", "a")))
 
   result <- basic_table() %>%
@@ -490,7 +475,6 @@ testthat::test_that("`summarize_vars` works with healthy factor input", {
 })
 
 testthat::test_that("`summarize_vars` works with healthy factor input, alternative `na.rm = FALSE`", {
-
   dta <- data.frame(foo = factor(c("a", NA, "b", "a", NA)))
   dta <- df_explicit_na(dta)
 
@@ -507,7 +491,6 @@ testthat::test_that("`summarize_vars` works with healthy factor input, alternati
 })
 
 testthat::test_that("`summarize_vars` works with factors and different denominators", {
-
   start <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
@@ -532,7 +515,8 @@ testthat::test_that("`summarize_vars` works with factors and different denominat
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "F (N=187)", "n", "ASIAN", "BLACK OR AFRICAN AMERICAN",
+    c(
+      "", "", "F (N=187)", "n", "ASIAN", "BLACK OR AFRICAN AMERICAN",
       "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE", "MULTIPLE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
       "OTHER", "UNKNOWN", "M (N=169)", "n", "ASIAN", "BLACK OR AFRICAN AMERICAN",
       "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE", "MULTIPLE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
@@ -546,7 +530,8 @@ testthat::test_that("`summarize_vars` works with factors and different denominat
       "C: Combination", "(N=129)", "", "61", "40 (21.4%)", "13 (7%)",
       "8 (4.3%)", "0", "0", "0", "0", "0",
       "", "68", "44 (26%)", "14 (8.3%)", "10 (5.9%)", "0", "0",
-      "0", "0", "0"),
+      "0", "0", "0"
+    ),
     .Dim = c(22L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -562,7 +547,6 @@ testthat::test_that("summarize_vars works in demographic table example", {
 })
 
 testthat::test_that("`summarize_vars` works with character input and gives the same result as with factor", {
-
   dta <- data.frame(
     foo = c("a", "b", "a"),
     stringsAsFactors = FALSE
@@ -580,7 +564,6 @@ testthat::test_that("`summarize_vars` works with character input and gives the s
 })
 
 testthat::test_that("`summarize_vars` does not work with sparse character input due to missing statistics", {
-
   dta <- data.frame(
     foo = c("a", "b", "a"),
     boo = c("e", "e", "f"),
@@ -599,7 +582,6 @@ testthat::test_that("`summarize_vars` does not work with sparse character input 
 })
 
 testthat::test_that("`summarize_vars` works with logical input", {
-
   dta <- data.frame(
     boo = c(TRUE, FALSE, FALSE, TRUE, TRUE)
   )
@@ -617,7 +599,6 @@ testthat::test_that("`summarize_vars` works with logical input", {
 })
 
 testthat::test_that("`summarize_vars` works with empty named numeric variables", {
-
   dta <- tibble::tibble(
     foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
     boo = 1:6
@@ -631,8 +612,10 @@ testthat::test_that("`summarize_vars` works with empty named numeric variables",
     build_table(dta)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "n", "Mean (SD)", "Median", "Min - Max",  "a", "0", "NA (NA)", "NA", "NA - NA",
-      "b", "2", "3.5 (0.7)", "3.5", "3 - 4", "c", "2", "5.5 (0.7)", "5.5", "5 - 6"),
+    c(
+      "", "n", "Mean (SD)", "Median", "Min - Max", "a", "0", "NA (NA)", "NA", "NA - NA",
+      "b", "2", "3.5 (0.7)", "3.5", "3 - 4", "c", "2", "5.5 (0.7)", "5.5", "5 - 6"
+    ),
     .Dim = c(5:4)
   )
 

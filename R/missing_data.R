@@ -16,7 +16,6 @@
 #' is.na(explicit_na(factor(c(NA, "a", "b"))))
 #'
 #' explicit_na(sas_na(c("a", "")))
-#'
 explicit_na <- function(x, label = "<Missing>") {
   stopifnot(utils.nest::is_character_single(label))
 
@@ -49,11 +48,9 @@ explicit_na <- function(x, label = "<Missing>") {
 #'
 #' is.na(sas_na(c("1", "", " ", "   ", "b")))
 sas_na <- function(x, empty = TRUE, whitespaces = TRUE) {
-
   stopifnot(utils.nest::is_logical_single(empty), utils.nest::is_logical_single(whitespaces))
 
   if (is.factor(x)) {
-
     empty_levels <- levels(x) == ""
     if (empty && any(empty_levels)) levels(x)[empty_levels] <- NA
 
@@ -62,7 +59,6 @@ sas_na <- function(x, empty = TRUE, whitespaces = TRUE) {
 
     x
   } else if (is.character(x)) {
-
     if (empty) x[x == ""] <- NA_character_
 
     if (whitespaces) x[grepl("^\\s+$", x)] <- NA_character_
@@ -71,5 +67,4 @@ sas_na <- function(x, empty = TRUE, whitespaces = TRUE) {
   } else {
     stop("only factors and character vectors allowed")
   }
-
 }

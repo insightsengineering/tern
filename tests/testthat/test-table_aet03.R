@@ -4,16 +4,15 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 testthat::test_that("AET03 variant 1 is produced correctly", {
-
-  adae$AEDECOD <- as.character(adae$AEDECOD) #nolint
-  adae$AEBODSYS <- as.character(adae$AEBODSYS) #nolint
-  adae$ASEV <- as.character(adae$AESEV) #nolint
+  adae$AEDECOD <- as.character(adae$AEDECOD) # nolint
+  adae$AEBODSYS <- as.character(adae$AEBODSYS) # nolint
+  adae$ASEV <- as.character(adae$AESEV) # nolint
   adae$ASEV[1:15] <- "LIFE THREATENING"
-  adae$ASEV <- factor(adae$ASEV, levels = c("MILD", "MODERATE", "SEVERE", "LIFE THREATENING")) #nolint
+  adae$ASEV <- factor(adae$ASEV, levels = c("MILD", "MODERATE", "SEVERE", "LIFE THREATENING")) # nolint
 
   n_per_arm <- table(adsl$ACTARM)
 
-  gr_grp <-  list(
+  gr_grp <- list(
     "- Any Intensity -" = c("MILD", "MODERATE", "SEVERE", "LIFE THREATENING")
   )
 
@@ -24,14 +23,18 @@ testthat::test_that("AET03 variant 1 is produced correctly", {
       var = "ASEV",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("ASEV"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEBODSYS",
+      split_fun = trim_levels_in_group("ASEV"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_occurrences_by_grade(
       var = "ASEV",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEDECOD", split_fun = trim_levels_in_group("ASEV"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEDECOD",
+      split_fun = trim_levels_in_group("ASEV"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",

@@ -39,14 +39,12 @@
 #'   worst_flag = c("WGRLOVFL" = "Y"),
 #'   by_visit = TRUE
 #' )
-#'
-h_adsl_adlb_merge_using_worst_flag <- function( #nolint
-  adsl,
-  adlb,
-  worst_flag = c("WGRHIFL" = "Y"),
-  by_visit = FALSE,
-  no_fillin_visits = c("SCREENING", "BASELINE")
-) {
+h_adsl_adlb_merge_using_worst_flag <- function( # nolint
+                                               adsl,
+                                               adlb,
+                                               worst_flag = c("WGRHIFL" = "Y"),
+                                               by_visit = FALSE,
+                                               no_fillin_visits = c("SCREENING", "BASELINE")) {
   col_names <- names(worst_flag)
   filter_values <- worst_flag
 
@@ -97,22 +95,22 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       by = by_variables_from_adlb,
       all = TRUE,
       sort = FALSE
-      )
+    )
     adlb_out <- adlb_out %>%
       dplyr::left_join(adlb_btoxgr, by = c("USUBJID", "PARAMCD")) %>%
       dplyr::mutate(BTOXGR = .data$BTOXGR_MAP) %>%
       dplyr::select(-.data$BTOXGR_MAP)
 
-    adlb_var_labels <- c(var_labels(adlb[by_variables_from_adlb]),
-                         var_labels(adlb[columns_from_adlb[! columns_from_adlb %in% by_variables_from_adlb]]),
-                         var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
-                         )
-
-    }else{
+    adlb_var_labels <- c(
+      var_labels(adlb[by_variables_from_adlb]),
+      var_labels(adlb[columns_from_adlb[!columns_from_adlb %in% by_variables_from_adlb]]),
+      var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
+    )
+  } else {
     adsl_lb <- expand.grid(
       USUBJID = unique(adsl$USUBJID),
       PARAMCD = unique(adlb$PARAMCD)
-      )
+    )
 
     adsl_lb <- adsl_lb %>% dplyr::left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
 
@@ -129,14 +127,15 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       sort = FALSE
     )
 
-    adlb_var_labels <- c(var_labels(adlb[by_variables_from_adlb]),
-                         var_labels(adlb[columns_from_adlb[! columns_from_adlb %in% by_variables_from_adlb]]),
-                         var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
+    adlb_var_labels <- c(
+      var_labels(adlb[by_variables_from_adlb]),
+      var_labels(adlb[columns_from_adlb[!columns_from_adlb %in% by_variables_from_adlb]]),
+      var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
     )
   }
 
-  adlb_out$ATOXGR <- as.factor(adlb_out$ATOXGR) #nolint
-  adlb_out$BTOXGR <- as.factor(adlb_out$BTOXGR) #nolint
+  adlb_out$ATOXGR <- as.factor(adlb_out$ATOXGR) # nolint
+  adlb_out$BTOXGR <- as.factor(adlb_out$BTOXGR) # nolint
 
   adlb_out <- df_explicit_na(adlb_out)
   var_labels(adlb_out) <- adlb_var_labels

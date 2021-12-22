@@ -26,9 +26,10 @@ full_table_aet04_pi <- function(adsl, adae_max) {
     split_cols_by("ACTARM") %>%
     split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
     split_rows_by(
-      "AEBODSYS", child_labels = "visible", nested = FALSE,
+      "AEBODSYS",
+      child_labels = "visible", nested = FALSE,
       indent_mod = -1L, split_fun = trim_levels_in_group("AEDECOD")
-      ) %>%
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -56,7 +57,7 @@ testthat::test_that("AET04_PI full table is produced correctly", {
     preprocess_adae()
   result <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
-      path =  c("AEBODSYS"),
+      path = c("AEBODSYS"),
       scorefun = score_occurrences_cont_cols(col_indices = c(1, 4, 7)),
       decreasing = TRUE
     ) %>%
@@ -67,7 +68,8 @@ testthat::test_that("AET04_PI full table is produced correctly", {
     )
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "cl A.1", "Total number of patients with at least one adverse event",
+    c(
+      "", "", "", "cl A.1", "Total number of patients with at least one adverse event",
       "dcd A.1.1.1.1", "dcd A.1.1.1.2", "cl B.2", "Total number of patients with at least one adverse event",
       "dcd B.2.2.3.1", "dcd B.2.1.2.1", "cl D.1", "Total number of patients with at least one adverse event",
       "dcd D.1.1.1.1", "dcd D.1.1.4.2", "cl D.2", "Total number of patients with at least one adverse event",
@@ -101,19 +103,19 @@ testthat::test_that("AET04_PI full table is produced correctly", {
       "0", "", "43 (32.6%)", "33", "C: Combination", "Grade 5 (%)",
       "(N=132)", "", "0", "0", "0", "", "0", "0", "0", "", "51 (38.6%)",
       "39", "0", "", "0", "0", "", "43 (32.6%)", "33", "", "0", "0",
-      "", "0", "0"),
+      "", "0", "0"
+    ),
     .Dim = c(27L, 10L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("AET04_PI variant 1 is produced correctly", {
-
   adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
-      path =  c("AEBODSYS"),
+      path = c("AEBODSYS"),
       scorefun = score_occurrences_cont_cols(col_indices = c(1, 4, 7)),
       decreasing = TRUE
     ) %>%
@@ -129,7 +131,8 @@ testthat::test_that("AET04_PI variant 1 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "", "", "cl A.1", "dcd A.1.1.1.1", "dcd A.1.1.1.2",
+    c(
+      "", "", "", "cl A.1", "dcd A.1.1.1.1", "dcd A.1.1.1.2",
       "cl B.2", "dcd B.2.2.3.1", "dcd B.2.1.2.1", "cl D.1", "dcd D.1.1.1.1",
       "dcd D.1.1.4.2", "cl D.2", "dcd D.2.1.5.3", "cl B.1", "dcd B.1.1.1.1",
       "cl C.2", "dcd C.2.1.2.1", "cl C.1", "dcd C.1.1.1.3", "A: Drug X",
@@ -150,19 +153,19 @@ testthat::test_that("AET04_PI variant 1 is produced correctly", {
       "(N=132)", "", "0", "0", "", "0", "39", "", "0", "38", "", "0",
       "", "0", "", "0", "", "33", "C: Combination", "Grade 5 (%)",
       "(N=132)", "", "0", "0", "", "0", "0", "", "39", "0", "", "0",
-      "", "33", "", "0", "", "0"),
+      "", "33", "", "0", "", "0"
+    ),
     .Dim = c(20L, 10L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("AET04_PI variant 2 is produced correctly", {
-
   adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
-      path =  c("AEBODSYS"),
+      path = c("AEBODSYS"),
       scorefun = score_occurrences_cont_cols(col_indices = c(1, 4, 7)),
       decreasing = TRUE
     ) %>%
@@ -173,12 +176,13 @@ testthat::test_that("AET04_PI variant 2 is produced correctly", {
     )
 
   at_least_37percent_any_drugx <- has_fraction_in_cols(atleast = 0.37, col_indices = 1)
-  result <- full_table  %>%
+  result <- full_table %>%
     trim_rows(criteria = criteria_fun) %>%
     prune_table(keep_rows(at_least_37percent_any_drugx))
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "cl A.1", "dcd A.1.1.1.1", "cl D.1",
+    c(
+      "", "", "", "cl A.1", "dcd A.1.1.1.1", "cl D.1",
       "dcd D.1.1.1.1", "A: Drug X", "Any Grade (%)", "(N=134)", "",
       "37", "", "37", "A: Drug X", "Grade 3-4 (%)", "(N=134)", "",
       "0", "", "0", "A: Drug X", "Grade 5 (%)", "(N=134)", "", "0",
@@ -188,19 +192,19 @@ testthat::test_that("AET04_PI variant 2 is produced correctly", {
       "31", "C: Combination", "Any Grade (%)", "(N=132)", "", "48",
       "", "39", "C: Combination", "Grade 3-4 (%)", "(N=132)", "", "0",
       "", "0", "C: Combination", "Grade 5 (%)", "(N=132)", "", "0",
-      "", "39"),
+      "", "39"
+    ),
     .Dim = c(7L, 10L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("AET04_PI variant 3 is produced correctly", {
-
   adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
-      path =  c("AEBODSYS"),
+      path = c("AEBODSYS"),
       scorefun = score_occurrences_cont_cols(col_indices = c(1, 4, 7)),
       decreasing = TRUE
     ) %>%
@@ -211,13 +215,14 @@ testthat::test_that("AET04_PI variant 3 is produced correctly", {
     )
 
   at_least_40percent_any <- has_fraction_in_any_col(atleast = 0.40, col_indices = c(1, 4, 7))
-  result <- full_table  %>%
+  result <- full_table %>%
     trim_rows(criteria = criteria_fun) %>%
     prune_table(keep_rows(at_least_40percent_any))
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "cl A.1", "dcd A.1.1.1.1", "cl B.2",
+    c(
+      "", "", "", "cl A.1", "dcd A.1.1.1.1", "cl B.2",
       "dcd B.2.2.3.1", "cl D.2", "dcd D.2.1.5.3", "cl C.2", "dcd C.2.1.2.1",
       "A: Drug X", "Any Grade (%)", "(N=134)", "", "37", "", "36",
       "", "35", "", "26", "A: Drug X", "Grade 3-4 (%)", "(N=134)",
@@ -230,19 +235,19 @@ testthat::test_that("AET04_PI variant 3 is produced correctly", {
       "(N=132)", "", "48", "", "39", "", "43", "", "42", "C: Combination",
       "Grade 3-4 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0",
       "C: Combination", "Grade 5 (%)", "(N=132)", "", "0", "", "0",
-      "", "0", "", "0"),
+      "", "0", "", "0"
+    ),
     .Dim = 11:10
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("AET04_PI variant 4 is produced correctly", {
-
   adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
-      path =  c("AEBODSYS"),
+      path = c("AEBODSYS"),
       scorefun = score_occurrences_cont_cols(col_indices = c(1, 4, 7)),
       decreasing = TRUE
     ) %>%
@@ -260,26 +265,27 @@ testthat::test_that("AET04_PI variant 4 is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "cl C.2", "dcd C.2.1.2.1", "A: Drug X",
+    c(
+      "", "", "", "cl C.2", "dcd C.2.1.2.1", "A: Drug X",
       "Any Grade (%)", "(N=134)", "", "26", "A: Drug X", "Grade 3-4 (%)",
       "(N=134)", "", "0", "A: Drug X", "Grade 5 (%)", "(N=134)", "",
       "0", "B: Placebo", "Any Grade (%)", "(N=134)", "", "36", "B: Placebo",
       "Grade 3-4 (%)", "(N=134)", "", "0", "B: Placebo", "Grade 5 (%)",
       "(N=134)", "", "0", "C: Combination", "Any Grade (%)", "(N=132)",
       "", "42", "C: Combination", "Grade 3-4 (%)", "(N=132)", "", "0",
-      "C: Combination", "Grade 5 (%)", "(N=132)", "", "0"),
+      "C: Combination", "Grade 5 (%)", "(N=132)", "", "0"
+    ),
     .Dim = c(5L, 10L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("AET04_PI variant 5 is produced correctly", {
-
   adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
-      path =  c("AEBODSYS"),
+      path = c("AEBODSYS"),
       scorefun = score_occurrences_cont_cols(col_indices = c(1, 4, 7)),
       decreasing = TRUE
     ) %>%
@@ -297,7 +303,8 @@ testthat::test_that("AET04_PI variant 5 is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "cl A.1", "dcd A.1.1.1.1", "cl B.2",
+    c(
+      "", "", "", "cl A.1", "dcd A.1.1.1.1", "cl B.2",
       "dcd B.2.2.3.1", "cl D.1", "dcd D.1.1.1.1", "cl D.2", "dcd D.2.1.5.3",
       "cl B.1", "dcd B.1.1.1.1", "cl C.2", "dcd C.2.1.2.1", "A: Drug X",
       "Any Grade (%)", "(N=134)", "", "37", "", "36", "", "37", "",
@@ -313,14 +320,14 @@ testthat::test_that("AET04_PI variant 5 is produced correctly", {
       "43", "", "33", "", "42", "C: Combination", "Grade 3-4 (%)",
       "(N=132)", "", "0", "", "0", "", "0", "", "0", "", "0", "", "0",
       "C: Combination", "Grade 5 (%)", "(N=132)", "", "0", "", "0",
-      "", "39", "", "0", "", "33", "", "0"),
+      "", "39", "", "0", "", "33", "", "0"
+    ),
     .Dim = c(15L, 10L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("AET04_PI variant 6 is produced correctly", {
-
   adae_max <- adae %>%
     preprocess_adae()
 
@@ -336,9 +343,10 @@ testthat::test_that("AET04_PI variant 6 is produced correctly", {
     split_cols_by("ACTARM") %>%
     split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
     split_rows_by(
-      "AEBODSYS", child_labels = "visible", nested = FALSE,
+      "AEBODSYS",
+      child_labels = "visible", nested = FALSE,
       indent_mod = -1L, split_fun = trim_levels_in_group("AEDECOD")
-      ) %>%
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -353,7 +361,7 @@ testthat::test_that("AET04_PI variant 6 is produced correctly", {
     ) %>%
     build_table(adae_max, col_counts = col_counts) %>%
     sort_at_path(
-      path =  c("AEBODSYS"),
+      path = c("AEBODSYS"),
       scorefun = score_occurrences_cont_cols(col_indices = c(1, 5, 9)),
       decreasing = TRUE
     ) %>%
@@ -370,7 +378,8 @@ testthat::test_that("AET04_PI variant 6 is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "cl A.1", "dcd A.1.1.1.1", "cl B.2",
+    c(
+      "", "", "", "cl A.1", "dcd A.1.1.1.1", "cl B.2",
       "dcd B.2.2.3.1", "cl D.2", "dcd D.2.1.5.3", "cl C.2", "dcd C.2.1.2.1",
       "A: Drug X", "Any Grade (%)", "(N=134)", "", "37", "", "36",
       "", "35", "", "26", "A: Drug X", "Grade 1-2 (%)", "(N=134)",
@@ -386,14 +395,14 @@ testthat::test_that("AET04_PI variant 6 is produced correctly", {
       "42", "C: Combination", "Grade 1-2 (%)", "(N=132)", "", "48",
       "", "39", "", "43", "", "42", "C: Combination", "Grade 3-4 (%)",
       "(N=132)", "", "0", "", "0", "", "0", "", "0", "C: Combination",
-      "Grade 5 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0"),
+      "Grade 5 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0"
+    ),
     .Dim = c(11L, 13L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("AET04_PI variant 7 is produced correctly", {
-
   adae_max <- adae %>%
     preprocess_adae()
 
@@ -409,9 +418,10 @@ testthat::test_that("AET04_PI variant 7 is produced correctly", {
     split_cols_by("ACTARM") %>%
     split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
     split_rows_by(
-      "AEBODSYS", child_labels = "visible", nested = FALSE,
+      "AEBODSYS",
+      child_labels = "visible", nested = FALSE,
       indent_mod = -1L, split_fun = trim_levels_in_group("AEDECOD")
-      ) %>%
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -426,7 +436,7 @@ testthat::test_that("AET04_PI variant 7 is produced correctly", {
     ) %>%
     build_table(adae_max, col_counts = col_counts) %>%
     sort_at_path(
-      path =  c("AEBODSYS"),
+      path = c("AEBODSYS"),
       scorefun = score_occurrences_cont_cols(col_indices = c(1, 5, 9)),
       decreasing = TRUE
     ) %>%
@@ -443,7 +453,8 @@ testthat::test_that("AET04_PI variant 7 is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "cl A.1", "dcd A.1.1.1.1", "cl B.2",
+    c(
+      "", "", "", "cl A.1", "dcd A.1.1.1.1", "cl B.2",
       "dcd B.2.2.3.1", "cl D.2", "dcd D.2.1.5.3", "cl C.2", "dcd C.2.1.2.1",
       "A: Drug X", "Any Grade (%)", "(N=134)", "", "37", "", "36",
       "", "35", "", "26", "A: Drug X", "Grade 3-4 (%)", "(N=134)",
@@ -459,14 +470,14 @@ testthat::test_that("AET04_PI variant 7 is produced correctly", {
       "42", "C: Combination", "Grade 3-4 (%)", "(N=132)", "", "0",
       "", "0", "", "0", "", "0", "C: Combination", "Grade 3-5 (%)",
       "(N=132)", "", "0", "", "0", "", "0", "", "0", "C: Combination",
-      "Grade 5 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0"),
+      "Grade 5 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0"
+    ),
     .Dim = c(11L, 13L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("AET04_PI variant 8 is produced correctly", {
-
   adae_max <- adae %>%
     preprocess_adae()
 
@@ -499,7 +510,8 @@ testthat::test_that("AET04_PI variant 8 is produced correctly", {
     )
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "dcd D.2.1.5.3", "dcd A.1.1.1.1", "dcd B.2.2.3.1",
+    c(
+      "", "", "", "dcd D.2.1.5.3", "dcd A.1.1.1.1", "dcd B.2.2.3.1",
       "dcd A.1.1.1.2", "dcd B.2.1.2.1", "dcd D.1.1.1.1", "dcd D.1.1.4.2",
       "dcd B.1.1.1.1", "dcd C.2.1.2.1", "dcd C.1.1.1.3", "A: Drug X",
       "Any Grade (%)", "(N=134)", "35", "37", "36", "36", "37", "37",
@@ -515,7 +527,8 @@ testthat::test_that("AET04_PI variant 8 is produced correctly", {
       "38", "33", "42", "33", "C: Combination", "Grade 3-4 (%)", "(N=132)",
       "0", "0", "0", "0", "39", "0", "38", "0", "0", "33", "C: Combination",
       "Grade 5 (%)", "(N=132)", "0", "0", "0", "0", "0", "39", "0",
-      "33", "0", "0"),
+      "33", "0", "0"
+    ),
     .Dim = c(13L, 10L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

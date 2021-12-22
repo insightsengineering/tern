@@ -39,30 +39,27 @@ NULL
 #' adlb <- synthetic_cdisc_data("latest")$adlb
 #' adsl <- synthetic_cdisc_data("latest")$adsl
 #'
-#' #The direction variable, GRADDR, is based on metadata
+#' # The direction variable, GRADDR, is based on metadata
 #' adlb <- adlb %>%
 #'   mutate(
 #'     GRADDR = case_when(
-#'     PARAMCD == "ALT" ~ "B",
-#'     PARAMCD == "CRP" ~ "L",
-#'     PARAMCD == "IGA" ~ "H"
+#'       PARAMCD == "ALT" ~ "B",
+#'       PARAMCD == "CRP" ~ "L",
+#'       PARAMCD == "IGA" ~ "H"
 #'     )
 #'   ) %>%
-#' filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 #'
 #' df <- h_adlb_worsen(
 #'   adlb,
 #'   worst_flag_low = c("WGRLOFL" = "Y"),
 #'   worst_flag_high = c("WGRHIFL" = "Y"),
 #'   direction_var = "GRADDR"
-#'   )
-#'
-h_adlb_worsen <- function(
-  adlb,
-  worst_flag_low = NULL,
-  worst_flag_high = NULL,
-  direction_var
-) {
+#' )
+h_adlb_worsen <- function(adlb,
+                          worst_flag_low = NULL,
+                          worst_flag_high = NULL,
+                          direction_var) {
   assertthat::assert_that(
     assertthat::is.string(direction_var),
     is_df_with_variables(adlb, list("Col" = direction_var)),
@@ -72,13 +69,13 @@ h_adlb_worsen <- function(
   if (any(unique(adlb[[direction_var]]) == "H")) {
     assertthat::assert_that(
       is_df_with_variables(adlb, list("High" = names(worst_flag_high)))
-      )
+    )
   }
 
   if (any(unique(adlb[[direction_var]]) == "L")) {
     assertthat::assert_that(
       is_df_with_variables(adlb, list("Low" = names(worst_flag_low)))
-      )
+    )
   }
 
   if (any(unique(adlb[[direction_var]]) == "B")) {
@@ -88,12 +85,12 @@ h_adlb_worsen <- function(
         list(
           "Low" = names(worst_flag_low),
           "High" = names(worst_flag_high)
-          )
         )
+      )
     )
-    }
+  }
 
-  #extract patients with worst post-baseline lab, either low or high or both
+  # extract patients with worst post-baseline lab, either low or high or both
   worst_flag <- c(worst_flag_low, worst_flag_high)
   col_names <- names(worst_flag)
   filter_values <- worst_flag
@@ -104,26 +101,26 @@ h_adlb_worsen <- function(
   )
   position_satisfy_filters <- Reduce(union, temp)
 
-  #select variables of interest
+  # select variables of interest
   adlb_f <- adlb[position_satisfy_filters, ]
 
-  #generate subsets for different directionality
+  # generate subsets for different directionality
   adlb_f_h <- adlb_f[which(adlb_f[[direction_var]] == "H"), ]
   adlb_f_l <- adlb_f[which(adlb_f[[direction_var]] == "L"), ]
   adlb_f_b <- adlb_f[which(adlb_f[[direction_var]] == "B"), ]
 
-  #for labs requiring both high and low, data is duplicated and will be stacked on top of each other
+  # for labs requiring both high and low, data is duplicated and will be stacked on top of each other
   adlb_f_b_h <- adlb_f_b
   adlb_f_b_l <- adlb_f_b
 
-  #extract data with worst lab
+  # extract data with worst lab
   if (!is.null(worst_flag_high) && !is.null(worst_flag_low)) {
 
-    #change H to High, L to Low
+    # change H to High, L to Low
     adlb_f_h[[direction_var]] <- rep("High", nrow(adlb_f_h))
     adlb_f_l[[direction_var]] <- rep("Low", nrow(adlb_f_l))
 
-    #change, B to High and Low
+    # change, B to High and Low
     adlb_f_b_h[[direction_var]] <- rep("High", nrow(adlb_f_b_h))
     adlb_f_b_l[[direction_var]] <- rep("Low", nrow(adlb_f_b_l))
 
@@ -134,7 +131,6 @@ h_adlb_worsen <- function(
 
     out <- rbind(adlb_out_h, adlb_out_b_h, adlb_out_l, adlb_out_b_l)
   } else if (!is.null(worst_flag_high)) {
-
     adlb_f_h[[direction_var]] <- rep("High", nrow(adlb_f_h))
     adlb_f_b_h[[direction_var]] <- rep("High", nrow(adlb_f_b_h))
 
@@ -143,7 +139,6 @@ h_adlb_worsen <- function(
 
     out <- rbind(adlb_out_h, adlb_out_b_h)
   } else if (!is.null(worst_flag_low)) {
-
     adlb_f_l[[direction_var]] <- rep("Low", nrow(adlb_f_l))
     adlb_f_b_l[[direction_var]] <- rep("Low", nrow(adlb_f_b_l))
 
@@ -153,9 +148,9 @@ h_adlb_worsen <- function(
     out <- rbind(adlb_out_l, adlb_out_b_l)
   }
 
-  #label
+  # label
   var_labels(out) <- var_labels(adlb_f)
-  #NA
+  # NA
   out
 }
 
@@ -173,14 +168,12 @@ h_adlb_worsen <- function(
 #' @examples
 #' # `h_worsen_counter`
 #' h_worsen_counter(df %>% filter(PARAMCD == "CRP" & GRADDR == "Low"),
-#'                  id = "USUBJID",
-#'                  .var = "ATOXGR",
-#'                  baseline_var = "BTOXGR",
-#'                  direction_var = "GRADDR"
-#'                  )
-#'
+#'   id = "USUBJID",
+#'   .var = "ATOXGR",
+#'   baseline_var = "BTOXGR",
+#'   direction_var = "GRADDR"
+#' )
 h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
-
   assertthat::assert_that(
     assertthat::is.string(id),
     assertthat::is.string(.var),
@@ -190,10 +183,10 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
     is_df_with_variables(df, list(val = c(id, .var, baseline_var, direction_var)))
   )
 
-  #remove post-baseline missing
+  # remove post-baseline missing
   df <- df[df[[.var]] != "<Missing>", ]
 
-  #obtain directionality
+  # obtain directionality
   direction <- unique(df[[direction_var]])
 
   if (direction == "Low") {
@@ -206,16 +199,16 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 
   if (nrow(df) > 0) {
     by_grade <- lapply(grade, function(i) {
-      #filter baseline values that is less than i or <Missing>
+      # filter baseline values that is less than i or <Missing>
       df_temp <- df[df[[baseline_var]] %in% c((i + sign(i) * -1):(-1 * worst_grade), "<Missing>"), ]
-      #num: number of patients with post-baseline worst lab equal to i
+      # num: number of patients with post-baseline worst lab equal to i
       num <- length(unique(df_temp[df_temp[[.var]] %in% i, id, drop = TRUE]))
-      #denom: number of patients with baseline values less than i or <missing> and post-baseline in the same direction
+      # denom: number of patients with baseline values less than i or <missing> and post-baseline in the same direction
       denom <- length(unique(df_temp[[id]]))
       rm(df_temp)
       c(num = num, denom = denom)
     })
-  }else{
+  } else {
     by_grade <- lapply(1, function(i) {
       c(num = 0, denom = 0)
     })
@@ -223,24 +216,24 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 
   names(by_grade) <- as.character(seq_along(by_grade))
 
-  #baseline grade less 4 or missing
+  # baseline grade less 4 or missing
   df_temp <- df[!df[[baseline_var]] %in% worst_grade, ]
 
-  #denom: number of patients with baseline values less than 4 or <missing> and post-baseline in the same direction
+  # denom: number of patients with baseline values less than 4 or <missing> and post-baseline in the same direction
   denom <- length(unique(df_temp[, id, drop = TRUE]))
 
-  #condition 1: missing baseline and in the direction of abnormality
+  # condition 1: missing baseline and in the direction of abnormality
   con1 <- which(df_temp[[baseline_var]] == "<Missing>" & df_temp[[.var]] %in% grade)
   df_temp_nm <- df_temp[which(df_temp[[baseline_var]] != "<Missing>" & df_temp[[.var]] %in% grade), ]
 
-  #condition 2: if post-baseline values are present then post-baseline values must be worse than baseline
+  # condition 2: if post-baseline values are present then post-baseline values must be worse than baseline
   if (direction == "Low") {
     con2 <- which(as.numeric(as.character(df_temp_nm[[.var]])) < as.numeric(as.character(df_temp_nm[[baseline_var]])))
   } else {
     con2 <- which(as.numeric(as.character(df_temp_nm[[.var]])) > as.numeric(as.character(df_temp_nm[[baseline_var]])))
   }
 
-  #number of patients satisfy either conditions 1 or 2
+  # number of patients satisfy either conditions 1 or 2
   num <- length(unique(df_temp[union(con1, con2), id, drop = TRUE]))
 
   list(fraction = c(by_grade, list("Any" = c(num = num, denom = denom))))
@@ -263,7 +256,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' @examples
 #'
 #'
-#' #Patients with worsening lab grade for CRP in the direction of low
+#' # Patients with worsening lab grade for CRP in the direction of low
 #' s_count_abnormal_lab_worsen_by_baseline(
 #'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
 #'   .var = "ATOXGR",
@@ -271,17 +264,15 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #'     id = "USUBJID",
 #'     baseline_var = "BTOXGR",
 #'     direction_var = "GRADDR"
-#'  )
-#')
-#'
-s_count_abnormal_lab_worsen_by_baseline <- function(df, #nolint
+#'   )
+#' )
+s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
                                                     .var = "ATOXGR",
                                                     variables = list(
                                                       id = "USUBJID",
                                                       baseline_var = "BTOXGR",
                                                       direction_var = "GRADDR"
-                                                    )
-) {
+                                                    )) {
   assertthat::assert_that(
     assertthat::is.string(.var),
     is_variables(variables),
@@ -309,8 +300,7 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, #nolint
 #'   .var = "ATOXGR",
 #'   variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR")
 #' )
-#'
-a_count_abnormal_lab_worsen_by_baseline <- make_afun(  #nolint
+a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
   s_count_abnormal_lab_worsen_by_baseline,
   .formats = c(fraction = format_fraction),
   .ungroup_stats = "fraction"
@@ -322,22 +312,21 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun(  #nolint
 #' @export
 #' @examples
 #' basic_table() %>%
-#' split_cols_by("ARMCD") %>%
-#' add_colcounts() %>%
-#' split_rows_by("PARAMCD") %>%
-#' split_rows_by("GRADDR") %>%
-#' count_abnormal_lab_worsen_by_baseline(
-#'   var = "ATOXGR",
-#'   variables = list(
-#'     id = "USUBJID",
-#'     baseline_var = "BTOXGR",
-#'     direction_var = "GRADDR"
+#'   split_cols_by("ARMCD") %>%
+#'   add_colcounts() %>%
+#'   split_rows_by("PARAMCD") %>%
+#'   split_rows_by("GRADDR") %>%
+#'   count_abnormal_lab_worsen_by_baseline(
+#'     var = "ATOXGR",
+#'     variables = list(
+#'       id = "USUBJID",
+#'       baseline_var = "BTOXGR",
+#'       direction_var = "GRADDR"
 #'     )
-#'  ) %>%
-#'  append_topleft("Direction of Abnormality") %>%
-#'  build_table(df = df, alt_counts_df = adsl)
-#'
-count_abnormal_lab_worsen_by_baseline <- function(lyt, #nolint
+#'   ) %>%
+#'   append_topleft("Direction of Abnormality") %>%
+#'   build_table(df = df, alt_counts_df = adsl)
+count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                   var,
                                                   ...,
                                                   table_names = NULL,
@@ -347,7 +336,7 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, #nolint
                                                   .indent_mods = NULL) {
   assertthat::assert_that(
     assertthat::is.string(var)
-    )
+  )
 
   afun <- make_afun(
     a_count_abnormal_lab_worsen_by_baseline,

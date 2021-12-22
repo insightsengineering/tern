@@ -126,19 +126,14 @@ rsp <- c(
 )
 prop_wilson(rsp, conf_level = 0.9)
 
-
 prop_clopper_pearson(rsp, conf_level = .95)
-
 
 prop_wald(rsp, conf_level = 0.95)
 prop_wald(rsp, conf_level = 0.95, correct = TRUE)
 
-
 prop_agresti_coull(rsp, conf_level = 0.95)
 
-
 prop_jeffreys(rsp, conf_level = 0.95)
-
 s_proportion(c(1, 0, 1, 0))
 dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
@@ -147,10 +142,8 @@ dta_test <- data.frame(
 )
 
 basic_table() \%>\%
-split_cols_by("ARM") \%>\%
+  split_cols_by("ARM") \%>\%
   estimate_proportion(vars = "AVAL") \%>\%
   build_table(df = dta_test)
-
 a_proportion(c(1, 0, 1, 0))
-
 }

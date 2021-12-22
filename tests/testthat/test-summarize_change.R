@@ -1,5 +1,4 @@
 testthat::test_that("s_change_from_baseline handles empty data (complete missing for a visit)", {
-
   test_data <- data.frame(
     chg = numeric(),
     aval = numeric(),
@@ -12,7 +11,7 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
     variables = list(value = "aval", baseline_flag = "ablfl"),
     na.rm = TRUE
   )
-  expected <-  list(
+  expected <- list(
     n = c(n = 0L),
     mean = c(mean = NA_real_),
     sd = c(sd = NA_real_),
@@ -41,7 +40,6 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
 })
 
 testthat::test_that("s_change_from_baseline handles NA in baseline values", {
-
   test_data <- data.frame(
     chg = c(0, 0, 0, NA),
     aval = c(0, 3, 6, NA),
@@ -54,7 +52,7 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
     variables = list(value = "aval", baseline_flag = "ablfl"),
     na.rm = TRUE
   )
-  expected <-  list(
+  expected <- list(
     n = c(n = 3L),
     mean = c(mean = 3),
     sd = c(sd = 3),
@@ -83,7 +81,6 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
 })
 
 testthat::test_that("s_change_from_baseline handles baseline substitution", {
-
   test_data <- data.frame(
     chg = c(3, 1, 2, 5),
     aval = c(1, 3, 6, 4),
@@ -98,7 +95,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       variables = list(value = "aval", baseline_flag = "ablfl")
     )
   expected <- list(
-     # Here we take the summary of the 2 change values.
+    # Here we take the summary of the 2 change values.
     `FALSE` = list(
       n = c(n = 2L),
       mean = c(mean = 1.5),
@@ -147,7 +144,6 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       cv = c(cv = 84.85281),
       geom_mean = c(geom_mean = 2),
       geom_cv = c(geom_cv = 127.0458)
-
     )
   )
 
@@ -160,7 +156,7 @@ testthat::test_that("summarize_change works as expected", {
     USUBJID = rep(1:6, each = 3),
     AVISIT = rep(paste0("V", 1:3), 6),
     AVAL = c(9:1, rep(NA, 9))
-    ) %>%
+  ) %>%
     dplyr::mutate(
       ABLFLL = AVISIT == "V1"
     ) %>%
@@ -177,11 +173,13 @@ testthat::test_that("summarize_change works as expected", {
     build_table(dta_test)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "V1", "n", "Mean (SD)", "Median", "Min - Max",
+    c(
+      "", "V1", "n", "Mean (SD)", "Median", "Min - Max",
       "V2", "n", "Mean (SD)", "Median", "Min - Max", "V3", "n", "Mean (SD)",
       "Median", "Min - Max", "all obs", "", "3", "6 (3)", "6", "3 - 9",
       "", "3", "-1 (0)", "-1", "-1 - -1", "", "3", "-2 (0)", "-2",
-      "-2 - -2"),
+      "-2 - -2"
+    ),
     .Dim = c(16L, 2L)
   )
 

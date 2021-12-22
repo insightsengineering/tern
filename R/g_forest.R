@@ -34,7 +34,7 @@
 #' @export
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
@@ -158,7 +158,7 @@
 #'   vline = 1,
 #'   forest_header = c("Hello", "World")
 #' )
-#'}
+#' }
 g_forest <- function(tbl, # nolint
                      col_x = attr(tbl, "col_x"),
                      col_ci = attr(tbl, "col_ci"),
@@ -173,7 +173,6 @@ g_forest <- function(tbl, # nolint
                      col_symbol_size = attr(tbl, "col_symbol_size"),
                      draw = TRUE,
                      newpage = TRUE) {
-
   stopifnot(inherits(tbl, "VTableTree"))
 
   nr <- nrow(tbl)
@@ -184,7 +183,7 @@ g_forest <- function(tbl, # nolint
   stopifnot(
     col_x > 0 && col_x <= nc,
     col_ci > 0 && col_ci <= nc,
-    is.null(col_symbol_size) ||  col_symbol_size > 0 && col_symbol_size <= nc
+    is.null(col_symbol_size) || col_symbol_size > 0 && col_symbol_size <= nc
   )
 
   x_e <- vapply(seq_len(nr), function(i) {
@@ -230,7 +229,6 @@ g_forest <- function(tbl, # nolint
     # Biggest points have radius is 2 * (1/3.5) lines not to overlap.
     # See forest_dot_line.
     2 * tmp_symbol_size / max_size
-
   } else {
     NULL
   }
@@ -284,8 +282,8 @@ g_forest <- function(tbl, # nolint
 #' @examples
 #' tbl <- rtable(
 #'   header = rheader(
-#'    rrow("", "E", rcell("CI", colspan = 2), "N"),
-#'    rrow("", "A", "B", "C", "D")
+#'     rrow("", "E", rcell("CI", colspan = 2), "N"),
+#'     rrow("", "A", "B", "C", "D")
 #'   ),
 #'   rrow("row 1", 1, 0.8, 1.1, 16),
 #'   rrow("row 2", 1.4, 0.8, 1.6, 25),
@@ -299,13 +297,13 @@ g_forest <- function(tbl, # nolint
 #' # default radius is 1/3.5 lines
 #' symbol_scale <- c(1, 1.25, 1.5)
 #'
-#' p <- tern:::forest_grob(tbl, x, lower, upper, vline = 1, forest_header = c("A", "B"),
-#'   x_at = c(.1 , 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
+#' p <- tern:::forest_grob(tbl, x, lower, upper,
+#'   vline = 1, forest_header = c("A", "B"),
+#'   x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
 #'   vp = grid::plotViewport(margins = c(1, 1, 1, 1))
 #' )
 #'
-#'  draw_grob(p)
-#'
+#' draw_grob(p)
 forest_grob <- function(tbl,
                         x,
                         lower,
@@ -322,7 +320,6 @@ forest_grob <- function(tbl,
                         name = NULL,
                         gp = NULL,
                         vp = NULL) {
-
   stopifnot(
     !is.null(vline) || is.null(forest_header),
     is.null(forest_header) || length(forest_header) == 2,
@@ -464,7 +461,7 @@ forest_grob <- function(tbl,
                   vp = data_forest_vp
                 )
               },
-              grid::xaxisGrob(at = x_at,  label = x_labels, vp = data_forest_vp)
+              grid::xaxisGrob(at = x_at, label = x_labels, vp = data_forest_vp)
             ),
             vp = grid::viewport(layout.pos.col = ncol(tbl) + 2)
           )
@@ -490,7 +487,8 @@ forest_grob <- function(tbl,
             lower,
             upper,
             seq_along(x),
-            symbol_size, USE.NAMES = FALSE
+            symbol_size,
+            USE.NAMES = FALSE
           )
         ),
         vp = grid::vpPath("vp_table_layout", "vp_body")
@@ -500,7 +498,6 @@ forest_grob <- function(tbl,
     vp = vp,
     gp = gp
   )
-
 }
 
 
@@ -509,7 +506,6 @@ cell_in_rows <- function(row_name,
                          cell_spans,
                          row_index,
                          underline_colspan = FALSE) {
-
   stopifnot(
     utils.nest::is_character_single(row_name),
     utils.nest::is_character_vector(cells),
@@ -538,7 +534,6 @@ cell_in_rows <- function(row_name,
     j <- 1 # column index of cell
 
     lapply(seq_along(cells), function(k) {
-
       cell_ascii <- cells[[k]]
       cs <- cell_spans[[k]]
 
@@ -623,12 +618,16 @@ forest_dot_line <- function(x, # nolint
         )
       } else if (ci[1] < xlim[1] && ci[2] <= xlim[2]) {
         # <-
-        grid::linesGrob(x = grid::unit(c(xlim[1], ci[2]), "native"), y = y,
-                        arrow = grid::arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "first"))
+        grid::linesGrob(
+          x = grid::unit(c(xlim[1], ci[2]), "native"), y = y,
+          arrow = grid::arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "first")
+        )
       } else if (ci[1] >= xlim[1] && ci[2] > xlim[2]) {
         # ->
-        grid::linesGrob(x = grid::unit(c(ci[1], xlim[2]), "native"), y = y,
-                        arrow = grid::arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "last"))
+        grid::linesGrob(
+          x = grid::unit(c(ci[1], xlim[2]), "native"), y = y,
+          arrow = grid::arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "last")
+        )
       }
     } else {
       NULL
@@ -674,8 +673,8 @@ forest_dot_line <- function(x, # nolint
 #'
 #' tbl <- rtable(
 #'   header = rheader(
-#'    rrow("", "E", rcell("CI", colspan = 2)),
-#'    rrow("", "A", "B", "C")
+#'     rrow("", "E", rcell("CI", colspan = 2)),
+#'     rrow("", "A", "B", "C")
 #'   ),
 #'   rrow("row 1", 1, 0.8, 1.1),
 #'   rrow("row 2", 1.4, 0.8, 1.6),
@@ -686,7 +685,6 @@ forest_dot_line <- function(x, # nolint
 #'
 #' grid::grid.newpage()
 #' showViewport(v)
-#'
 forest_viewport <- function(tbl,
                             width_row_names = NULL,
                             width_columns = NULL,
@@ -694,7 +692,6 @@ forest_viewport <- function(tbl,
                             gap_column = grid::unit(1, "lines"),
                             gap_header = grid::unit(1, "lines"),
                             mat_form = NULL) {
-
   stopifnot(
     inherits(tbl, "VTableTree"),
     is.null(width_row_names) || grid::is.unit(width_row_names),
@@ -742,7 +739,7 @@ forest_viewport <- function(tbl,
   height_body_rows <- grid::unit(n_lines_per_row[-i_header] * 1.2, "lines")
   height_header_rows <- grid::unit(n_lines_per_row[i_header] * 1.2, "lines")
 
-  height_body <-  grid::unit(sum(n_lines_per_row[-i_header]) * 1.2, "lines")
+  height_body <- grid::unit(sum(n_lines_per_row[-i_header]) * 1.2, "lines")
   height_header <- grid::unit(sum(n_lines_per_row[i_header]) * 1.2, "lines")
 
   nc_g <- nc + 2 # number of columns incl. row names and forest
@@ -824,7 +821,7 @@ vp_forest_table_part <- function(nrow,
 #'
 #' @noRd
 #'
-grid.forest <- function(...) {# nousage # nolint
+grid.forest <- function(...) { # nousage # nolint
   grid::grid.draw(forest_grob(...)) # nolint
 }
 
@@ -841,7 +838,6 @@ grid.forest <- function(...) {# nousage # nolint
 #' x <- table(iris$Species)
 #' footnotes(x) <- "Species are equally distributed"
 #' attributes(x)
-#'
 `footnotes<-` <- function(x, value = NULL) { # nolint
   attr(x, "footnote") <- value
   x
@@ -859,7 +855,7 @@ grid.forest <- function(...) {# nousage # nolint
 #' x <- table(iris$Species)
 #' footnotes(x) <- "Species are equally distributed"
 #' footnotes(x)
-#'}
+#' }
 footnotes <- function(x) {
   attr(x, "footnote")
 }
@@ -877,8 +873,6 @@ footnotes <- function(x) {
 #' footnotes(x)
 #' add_footnotes(x) <- "Add more footnotes"
 #' footnotes(x)
-#'
-
 `add_footnotes<-` <- function(x, value) { # nolint
   footnotes(x) <- c(footnotes(x), value)
   x

@@ -4,7 +4,6 @@ library(dplyr)
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("g_km default plot works", {
-
   df <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -22,7 +21,6 @@ testthat::test_that("g_km default plot works", {
 })
 
 testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
-
   df <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -40,12 +38,13 @@ testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
 })
 
 testthat::test_that("g_km plot with < = > in group labels works", {
-
   df <- ex_adtte %>%
     df_explicit_na() %>%
     dplyr::filter(PARAMCD == "OS", ARM == "A: Drug X", BEP01FL == "Y") %>%
-    dplyr::mutate(is_event = CNSR == 0,
-      group = as.factor(ifelse(AGE > 34, ">Median", "<=Median")))
+    dplyr::mutate(
+      is_event = CNSR == 0,
+      group = as.factor(ifelse(AGE > 34, ">Median", "<=Median"))
+    )
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "group")
 

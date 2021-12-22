@@ -1,5 +1,4 @@
 testthat::test_that("prop_chisq returns right result", {
-
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- c(
     sample(c(TRUE, FALSE), size = 20, prob = c(3 / 4, 1 / 4), replace = TRUE),
@@ -11,11 +10,9 @@ testthat::test_that("prop_chisq returns right result", {
   result <- prop_chisq(tbl)
   expected <- 0.0565
   testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
-
 })
 
 testthat::test_that("prop_cmh returns right result", {
-
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
   grp <- factor(rep(c("A", "B"), each = 50))
@@ -25,14 +22,15 @@ testthat::test_that("prop_cmh returns right result", {
   result <- prop_cmh(tbl)
   expected <- 0.6477
   testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
-
 })
 
 testthat::test_that("prop_cmh also works when there are strata with just one observation", {
   tbl <- structure(
-    c(20L, 17L, 7L, 10L, 0L, 0L, 2L, 3L, 21L, 14L, 3L,
+    c(
+      20L, 17L, 7L, 10L, 0L, 0L, 2L, 3L, 21L, 14L, 3L,
       0L, 0L, 0L, 1L, 0L, 21L, 18L, 3L, 4L, 79L, 16L, 30L, 9L, 1L,
-      0L, 13L, 4L),
+      0L, 13L, 4L
+    ),
     .Dim = c(2L, 2L, 7L),
     .Dimnames = list(
       grp = c("Placebo", "Treatment"),
@@ -51,7 +49,6 @@ testthat::test_that("prop_cmh also works when there are strata with just one obs
 })
 
 testthat::test_that("prop_fisher returns right result", {
-
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- c(
     sample(c(TRUE, FALSE), size = 20, prob = c(3 / 4, 1 / 4), replace = TRUE),
@@ -63,14 +60,12 @@ testthat::test_that("prop_fisher returns right result", {
   result <- prop_fisher(tbl)
   expected <- 0.1110
   testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
-
 })
 
 testthat::test_that("prop_schouten returns right result", {
   result <- sapply(
     1:100,
     function(x) {
-
       set.seed(x, kind = "Wichmann-Hill")
       n <- stats::runif(2)
       N <- stats::runif(2, min = 5, max = 100) # nolint
@@ -82,7 +77,9 @@ testthat::test_that("prop_schouten returns right result", {
       grp <- c(rep("A", N[1]), rep("B", N[2]))
 
       tbl <- table(grp, rsp)
-      if (ncol(tbl) < 2 | nrow(tbl) < 2) return(NA_real_)
+      if (ncol(tbl) < 2 | nrow(tbl) < 2) {
+        return(NA_real_)
+      }
       prop_schouten(tbl)
     }
   )
@@ -105,7 +102,6 @@ testthat::test_that("prop_schouten returns right result", {
 })
 
 testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {
-
   set.seed(1984, kind = "Mersenne-Twister")
   dta <- data.frame(
     rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -154,7 +150,8 @@ testthat::test_that("test_proportion_diff returns right result", {
     c(
       "", "p-value (Cochran-Mantel-Haenszel Test)", "B",
       "", "A", "0.6477"
-    ), .Dim = 2:3
+    ),
+    .Dim = 2:3
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -174,7 +171,8 @@ testthat::test_that("test_proportion_diff edge case: all responder by chisq", {
     build_table(df = dta)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "p-value (Chi-Squared Test)", "B", "", "A", "1.0000"), .Dim = 2:3
+    c("", "p-value (Chi-Squared Test)", "B", "", "A", "1.0000"),
+    .Dim = 2:3
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -218,7 +216,8 @@ testthat::test_that("test_proportion_diff edge case: all responder by fisher", {
     build_table(df = dta)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "p-value (Fisher's Exact Test)", "B", "", "A", "1.0000"), .Dim = 2:3
+    c("", "p-value (Fisher's Exact Test)", "B", "", "A", "1.0000"),
+    .Dim = 2:3
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })

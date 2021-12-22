@@ -1,6 +1,5 @@
 library(scda)
 testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
-
   adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
   result <- h_stack_by_baskets(df = adae)
 
@@ -64,8 +63,8 @@ testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
 
 testthat::test_that(
   "h_stack_by_baskets fails when selecting Standardized/Customized query names
-  that do not start with 'SMQ' or 'CQ' ", {
-
+  that do not start with 'SMQ' or 'CQ' ",
+  { # nolint
     adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
 
     testthat::expect_error(
@@ -74,12 +73,13 @@ testthat::test_that(
         baskets = c("NOT_SMQ01NAM")
       )
     )
-  })
+  }
+)
 
 testthat::test_that(
   "h_stack_by_baskets fails when selecting Standardized/Customized
-  query names that do not end with 'NAM' ", {
-
+  query names that do not end with 'NAM' ",
+  { # nolint
     adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
 
     testthat::expect_error(
@@ -88,13 +88,13 @@ testthat::test_that(
         baskets = c("SMQ01NAM_NOT")
       )
     )
-
-  })
+  }
+)
 
 testthat::test_that(
   "h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no
-  adverse events falling within any of the baskets selected", {
-
+  adverse events falling within any of the baskets selected",
+  { # nolint
     adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
 
@@ -116,17 +116,20 @@ testthat::test_that(
     expected_var_labels <- c(
       STUDYID = "Study Identifier", USUBJID = "Unique Subject Identifier", ASTDTM = "Analysis Start Datetime",
       AEDECOD = "Dictionary-Derived Term", AESEQ = "Sponsor-Defined Identifier",
-      SMQ  = "Standardized MedDRA Query")
+      SMQ = "Standardized MedDRA Query"
+    )
     testthat::expect_identical(result_var_labels, expected_var_labels)
 
     result_smq_levels <- levels(result$SMQ)
     expected_smq_levels <- c("CQ01NAM", "SMQ01NAM", "SMQ02NAM")
     testthat::expect_identical(result_smq_levels, expected_smq_levels)
-  })
+  }
+)
 
 testthat::test_that(
   "The levels of the SMQ column does also
-  include the options from aag_summary not observed in ADAE", {
+  include the options from aag_summary not observed in ADAE",
+  { # nolint
     adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
 
@@ -135,7 +138,7 @@ testthat::test_that(
       basket_name = c(
         "D.2.1.5.3/A.1.1.1.1 AESI", "level1_not_in_adae",
         "C.1.1.1.3/B.2.2.3.1 AESI(BROAD)", "level2_not_in_adae"
-        )
+      )
     )
 
     result <- h_stack_by_baskets(df = adae, aag_summary = aag_summary)
@@ -144,7 +147,7 @@ testthat::test_that(
     expected_levels <- c(
       "C.1.1.1.3/B.2.2.3.1 AESI(BROAD)", "D.2.1.5.3/A.1.1.1.1 AESI",
       "level1_not_in_adae", "level2_not_in_adae"
-      )
+    )
     testthat::expect_identical(result_levels, expected_levels)
   }
 )

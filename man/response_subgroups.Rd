@@ -103,7 +103,6 @@ adrs_f <- adrs \%>\%
   )
 var_labels(adrs_f) <- c(adrs_labels, "Response")
 
-
 # Unstratified analysis.
 df <- extract_rsp_subgroups(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -131,9 +130,7 @@ df_grouped <- extract_rsp_subgroups(
   )
 )
 df_grouped
-
 a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
-
 
 ## Table with default columns.
 basic_table() \%>\%
@@ -145,5 +142,4 @@ basic_table() \%>\%
     df = df,
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
   )
-
 }

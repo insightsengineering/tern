@@ -55,13 +55,12 @@ NULL
 #'   .var = "ANRIND",
 #'   abnormal = list(high = "HIGH", low = "LOW"),
 #'   exclude_base_abn = TRUE
-#'   )
+#' )
 s_count_abnormal <- function(df,
                              .var,
                              abnormal = list(Low = "LOW", High = "HIGH"),
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
-                             exclude_base_abn = FALSE
-) {
+                             exclude_base_abn = FALSE) {
   assertthat::assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
     utils.nest::is_character_list(abnormal, min_length = 2, max_length = 2),
@@ -111,7 +110,6 @@ s_count_abnormal <- function(df,
 #' # Use the Formatted Analysis function for `analyze()`.
 #' a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
 #' a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
-#'
 a_count_abnormal <- make_afun(
   s_count_abnormal,
   .formats = c(fraction = format_fraction)
@@ -148,7 +146,6 @@ a_count_abnormal <- make_afun(
 #'     variables = list(id = "ID", baseline = "BL_RANGE")
 #'   ) %>%
 #'   build_table(df2)
-#'
 count_abnormal <- function(lyt,
                            var,
                            ...,
@@ -157,7 +154,6 @@ count_abnormal <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
-
   afun <- make_afun(
     a_count_abnormal,
     .stats = .stats,

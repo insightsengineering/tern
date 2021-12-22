@@ -96,8 +96,10 @@ testthat::test_that("count_values works as expected with multiple values and var
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "x", "a, f", "y", "a, f", "all obs", "", "2 (50%)",
-      "", "3 (75%)"),
+    c(
+      "", "x", "a, f", "y", "a, f", "all obs", "", "2 (50%)",
+      "", "3 (75%)"
+    ),
     .Dim = c(5L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

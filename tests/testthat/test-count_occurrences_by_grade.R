@@ -9,7 +9,7 @@ raw_data <- local({
       levels = c("MILD", "MODERATE", "SEVERE")
     ),
     ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
-    ARM_EMPTY =  factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B", "D")),
+    ARM_EMPTY = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B", "D")),
     BMRKR = factor(rep(c("HIGH", "LOW"), 4)[-1], levels = c("LOW", "HIGH")),
     stringsAsFactors = FALSE
   )
@@ -91,7 +91,6 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input and def
   ))
 
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("s_count_occurrences_by_grade works with valid input for grade grouping", {
@@ -145,7 +144,6 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input for gra
     "5" = list(c(0, 0))
   ))
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("s_count_occurrences_by_grade works with valid input for intensity and custom arguments", {
@@ -168,11 +166,9 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input for int
     "SEVERE" = list(c(2L, 0.2))
   ))
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("count_occurrences_by_grade works with default arguments for intensity", {
-
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
@@ -210,11 +206,9 @@ testthat::test_that("count_occurrences_by_grade works with default arguments for
     ),
     .Dim = 5:4
   )
-
 })
 
 testthat::test_that("count_occurrences_by_grade label works when more than one variables are analyzed", {
-
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
@@ -239,17 +233,15 @@ testthat::test_that("count_occurrences_by_grade label works when more than one v
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 
 testthat::test_that("count_occurrences_by_grade works with custom arguments for grade", {
-
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
   # Define additional grade groupings
-  grade_groups <-  list(
+  grade_groups <- list(
     "-Any-" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-5" = c("3", "4", "5")
@@ -261,7 +253,8 @@ testthat::test_that("count_occurrences_by_grade works with custom arguments for 
     count_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups,
-      .formats = "xx.xx (xx.xx%)") %>%
+      .formats = "xx.xx (xx.xx%)"
+    ) %>%
     build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
@@ -280,7 +273,6 @@ testthat::test_that("count_occurrences_by_grade works with custom arguments for 
 })
 
 testthat::test_that("summarize_occurrences_by_grade works with default arguments for intensity", {
-
   df <- raw_data
   df_adsl <- data.frame(
     USUBJID = 1:9,
@@ -292,7 +284,8 @@ testthat::test_that("summarize_occurrences_by_grade works with default arguments
     split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
     summarize_occurrences_by_grade(
       var = "AESEV",
-      .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
+      .formats = c("count_fraction" = "xx.xx (xx.xx%)")
+    ) %>%
     build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
@@ -319,7 +312,8 @@ testthat::test_that("summarize_occurrences_by_grade works with default arguments
     split_rows_by("BMRKR", child_labels = "visible", nested = TRUE) %>%
     summarize_occurrences_by_grade(
       var = "AESEV",
-      .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
+      .formats = c("count_fraction" = "xx.xx (xx.xx%)")
+    ) %>%
     build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
@@ -334,11 +328,9 @@ testthat::test_that("summarize_occurrences_by_grade works with default arguments
     ),
     .Dim = c(10L, 4L)
   )
-
 })
 
 testthat::test_that("summarize_occurrences_by_grade works with custom arguments for grade", {
-
   df <- raw_data
   df_adsl <- data.frame(
     USUBJID = 1:10,
@@ -346,7 +338,7 @@ testthat::test_that("summarize_occurrences_by_grade works with custom arguments 
   )
 
   # Define additional grade groupings
-  grade_groups <-  list(
+  grade_groups <- list(
     "-Any-" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-5" = c("3", "4", "5")
@@ -377,7 +369,6 @@ testthat::test_that("summarize_occurrences_by_grade works with custom arguments 
 })
 
 testthat::test_that("count_occurrences_by_grade works with trim_levels_in_group split function", {
-
   df <- data.frame(
     USUBJID = as.character(1:30),
     ARM = factor(c(rep("ARM A", 15), rep("ARM B", 15)), levels = c("ARM A", "ARM B")),

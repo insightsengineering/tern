@@ -197,7 +197,8 @@ dta_bladder <- with(
     armcd = as.factor(rx),
     covar1 = as.factor(enum),
     covar2 = factor(
-      sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")
+      sample(as.factor(enum)),
+      levels = 1:4, labels = c("F", "F", "M", "M")
     )
   )
 )
@@ -208,10 +209,9 @@ dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 plot(
   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
-  lty= 2:4, xlab="Months",
+  lty = 2:4, xlab = "Months",
   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 )
-
 
 # `h_coxreg_univar_formulas`
 
@@ -246,7 +246,6 @@ h_coxreg_univar_formulas(
   )
 )
 
-
 # `h_coxreg_multivar_formula`
 
 h_coxreg_multivar_formula(
@@ -270,7 +269,6 @@ h_coxreg_multivar_formula(
     strata = "SITE"
   )
 )
-
 
 # fit_coxreg_univar
 
@@ -312,13 +310,12 @@ mod4 <- fit_coxreg_univar(
   ),
   data = dta_bladder
 )
-
 library(survival)
 
-dta_simple <-  data.frame(
+dta_simple <- data.frame(
   time = c(5, 5, 10, 10, 5, 5, 10, 10),
   status = c(0, 0, 1, 0, 0, 1, 1, 1),
-  armcd  = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
+  armcd = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
   var1 = c(45, 55, 65, 75, 55, 65, 85, 75),
   var2 = c("F", "M", "F", "M", "F", "M", "F", "U")
 )
@@ -327,11 +324,9 @@ result <- h_coxreg_univar_extract(
   effect = "armcd", covar = "armcd", mod = mod, data = dta_simple
 )
 result
-
 library(broom)
 tidy(mod1)
 tidy(mod2)
-
 
 # fit_coxreg_multivar
 
@@ -352,7 +347,6 @@ multivar_covs_model <- fit_coxreg_multivar(
   ),
   data = dta_bladder
 )
-
 library(survival)
 
 mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
@@ -360,10 +354,8 @@ result <- h_coxreg_multivar_extract(
   var = "var1", mod = mod, data = dta_simple
 )
 result
-
 library(broom)
 broom::tidy(multivar_model)
-
 
 # s_coxreg
 
@@ -410,7 +402,6 @@ multivar_covs_model <- fit_coxreg_multivar(
 df2_covs <- broom::tidy(multivar_covs_model)
 s_coxreg(df = df2_covs, .var = "hr")
 
-
 # summarize_coxreg
 result_univar <- basic_table() \%>\%
   split_rows_by("effect") \%>\%
@@ -439,5 +430,4 @@ result_multivar_covs <- basic_table() \%>\%
   summarize_coxreg(multivar = TRUE, conf_level = .95) \%>\%
   build_table(df2_covs)
 result_multivar_covs
-
 }

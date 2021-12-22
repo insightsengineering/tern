@@ -25,7 +25,6 @@ adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 # extract_survival_biomarkers ----
 
 testthat::test_that("extract_survival_biomarkers functions as expected with valid input and default arguments", {
-
   adtte_f <- adtte %>%
     preprocess_adtte()
 
@@ -63,7 +62,7 @@ testthat::test_that("extract_survival_biomarkers functions as expected with vali
     hr = c(
       1.01074759635401, 0.987751007622262, 1.02115033217801, 0.997575735079561,
       0.993668902444139, 0.972576110467666, 1.00440570861299, 1.02441843858899,
-      1.01879356004854,  0.978041588357075, 1.0108727138524, 0.957905456915515
+      1.01879356004854, 0.978041588357075, 1.0108727138524, 0.957905456915515
     ),
     lcl = c(
       0.995863824494579,
@@ -117,7 +116,6 @@ testthat::test_that("extract_survival_biomarkers functions as expected with vali
 })
 
 testthat::test_that("extract_survival_biomarkers works as expected with groups_lists", {
-
   adtte_f <- adtte %>%
     preprocess_adtte()
 
@@ -157,7 +155,6 @@ testthat::test_that("extract_survival_biomarkers works as expected with groups_l
 # tabulate_survival_biomarkers ----
 
 testthat::test_that("tabulate_survival_biomarkers works as expected with valid input", {
-
   adtte_f <- adtte %>%
     preprocess_adtte()
 
@@ -210,7 +207,6 @@ testthat::test_that("tabulate_survival_biomarkers works as expected with valid i
 })
 
 testthat::test_that("tabulate_survival_biomarkers functions as expected with NULL subgroups", {
-
   adtte_f <- adtte %>%
     preprocess_adtte()
 

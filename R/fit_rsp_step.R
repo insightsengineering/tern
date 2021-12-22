@@ -89,7 +89,6 @@
 #'   data = adrs_f,
 #'   control = c(control_logistic(), control_step(bandwidth = 0.6))
 #' )
-#'
 fit_rsp_step <- function(variables,
                          data,
                          control = c(control_step(), control_logistic())) {

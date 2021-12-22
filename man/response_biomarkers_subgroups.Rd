@@ -89,7 +89,6 @@ adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   mutate(rsp = AVALC == "CR")
 var_labels(adrs_f) <- c(adrs_labels, "Response")
-
 # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 # in logistic regression models with one covariate `RACE`. The subgroups
 # are defined by the levels of `BMRKR2`.

@@ -4,7 +4,6 @@ library(dplyr)
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("s_surv_time works with default arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -29,7 +28,6 @@ testthat::test_that("s_surv_time works with default arguments", {
 })
 
 testthat::test_that("s_surv_time works with customized arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -57,7 +55,6 @@ testthat::test_that("s_surv_time works with customized arguments", {
 })
 
 testthat::test_that("surv_time works with default arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -68,7 +65,7 @@ testthat::test_that("surv_time works with default arguments", {
   result <- basic_table() %>%
     split_cols_by(
       var = "ARMCD"
-  ) %>%
+    ) %>%
     surv_time(
       vars = "AVAL",
       var_labels = "Survival Time (Months)",
@@ -93,7 +90,6 @@ testthat::test_that("surv_time works with default arguments", {
 
 
 testthat::test_that("surv_time works with customized arguments", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(

@@ -183,12 +183,14 @@ testthat::test_that("combination of pruning functions works", {
     )
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "ASIAN", "A", "CHN", "C", "RUS", "WHITE", "B",
+    c(
+      "", "ASIAN", "A", "CHN", "C", "RUS", "WHITE", "B",
       "CHN", "A: Drug X", "", "27 (22.3%)", "14 (51.9%)", "28 (23.1%)",
       "4 (14.3%)", "", "7 (5.8%)", "4 (57.1%)", "B: Placebo", "", "20 (18.9%)",
       "9 (45%)", "19 (17.9%)", "2 (10.5%)", "", "5 (4.7%)", "1 (20%)",
       "C: Combination", "", "31 (24%)", "12 (38.7%)", "31 (24%)", "1 (3.2%)",
-      "", "4 (3.1%)", "3 (75%)"),
+      "", "4 (3.1%)", "3 (75%)"
+    ),
     .Dim = c(9L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

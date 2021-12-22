@@ -49,7 +49,6 @@ s_compare <- function(x,
 #'
 #' ## Empty numeric does not fail, it returns NA-filled items and no p-value.
 #' s_compare(numeric(), .ref_group = numeric(), .in_ref_col = FALSE)
-#'
 s_compare.numeric <- function(x,
                               .ref_group,
                               .in_ref_col,
@@ -101,12 +100,11 @@ s_compare.numeric <- function(x,
 #' y <- explicit_na(factor(c("a", "b", "c", NA)))
 #' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 #' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
-#'
 s_compare.factor <- function(x,
                              .ref_group,
                              .in_ref_col,
                              denom = "n",
-                             na.rm = TRUE, #nolint
+                             na.rm = TRUE, # nolint
                              na_level = "<Missing>",
                              ...) {
   assertthat::assert_that(
@@ -169,12 +167,11 @@ s_compare.factor <- function(x,
 #' y <- c("a", "b", "c", rep(NA, 20))
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", na.rm = FALSE)
-#'
 s_compare.character <- function(x,
                                 .ref_group,
                                 .in_ref_col,
                                 denom = "n",
-                                na.rm = TRUE, #nolint
+                                na.rm = TRUE, # nolint
                                 na_level = "<Missing>",
                                 .var,
                                 ...) {
@@ -214,7 +211,6 @@ s_compare.character <- function(x,
 #' y <- c(NA, NA, NA, NA, FALSE)
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
-#'
 s_compare.logical <- function(x,
                               .ref_group,
                               .in_ref_col,
@@ -277,7 +273,6 @@ a_compare <- function(x,
 #'   .in_ref_col = FALSE,
 #'   .var = "bla"
 #' )
-#'
 a_compare.numeric <- make_afun(
   s_compare.numeric,
   .formats = c(
@@ -314,7 +309,6 @@ a_compare.numeric <- make_afun(
 #' x <- factor(c("a", "a", "b", "c", "a"))
 #' y <- factor(c("a", "a", "b", "c"))
 #' afun(x, .ref_group = y, .in_ref_col = FALSE)
-#'
 a_compare.factor <- make_afun(
   s_compare.factor,
   .formats = .a_compare_counts_formats,
@@ -334,7 +328,6 @@ a_compare.factor <- make_afun(
 #' x <- c("A", "B", "A", "C")
 #' y <- c("B", "A", "C")
 #' afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
-#'
 a_compare.character <- make_afun(
   s_compare.character,
   .formats = .a_compare_counts_formats,
@@ -353,7 +346,6 @@ a_compare.character <- make_afun(
 #' x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
 #' y <- c(TRUE, FALSE)
 #' afun(x, .ref_group = y, .in_ref_col = FALSE)
-#'
 a_compare.logical <- make_afun(
   s_compare.logical,
   .formats = .a_compare_counts_formats,
@@ -396,18 +388,15 @@ a_compare.logical <- make_afun(
 #'     show_labels = "visible"
 #'   )
 #' build_table(lyt, df = ex_adsl)
-#'
 create_afun_compare <- function(.stats = NULL,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
-
   function(x,
            .ref_group,
            .in_ref_col,
            ...,
            .var) {
-
     afun <- function(x, ...) {
       UseMethod("afun", x)
     }
@@ -416,7 +405,7 @@ create_afun_compare <- function(.stats = NULL,
       .stats,
       all_stats = c(names(.a_summary_numeric_formats), "pval")
     )
-    afun.numeric <- make_afun( #nolint
+    afun.numeric <- make_afun( # nolint
       a_compare.numeric,
       .stats = numeric_stats,
       .formats = extract(.formats, numeric_stats),
@@ -430,7 +419,7 @@ create_afun_compare <- function(.stats = NULL,
       all_stats = names(.a_compare_counts_formats)
     )
     ungroup_stats <- afun_selected_stats(.stats, c("count", "count_fraction"))
-    afun.factor <- make_afun( #nolint
+    afun.factor <- make_afun( # nolint
       a_compare.factor,
       .stats = factor_stats,
       .formats = extract(.formats, factor_stats),
@@ -440,7 +429,7 @@ create_afun_compare <- function(.stats = NULL,
       .null_ref_cells = FALSE
     )
 
-    afun.character <- make_afun( #nolint
+    afun.character <- make_afun( # nolint
       a_compare.character,
       .stats = factor_stats,
       .formats = extract(.formats, factor_stats),
@@ -450,7 +439,7 @@ create_afun_compare <- function(.stats = NULL,
       .null_ref_cells = FALSE
     )
 
-    afun.logical <- make_afun( #nolint
+    afun.logical <- make_afun( # nolint
       a_compare.logical,
       .stats = factor_stats,
       .formats = extract(.formats, factor_stats),
@@ -503,7 +492,6 @@ create_afun_compare <- function(.stats = NULL,
 #'     .labels = c(mean_sd = "Mean, SD")
 #'   )
 #' build_table(lyt, df = ex_adsl)
-#'
 compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,
@@ -515,7 +503,6 @@ compare_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-
   afun <- create_afun_compare(.stats, .formats, .labels, .indent_mods)
 
   analyze(

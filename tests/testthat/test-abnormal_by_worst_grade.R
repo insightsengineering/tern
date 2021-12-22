@@ -4,7 +4,7 @@ library(dplyr)
 library(forcats)
 
 adlb_raw <- local({
-  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb #nolintr
+  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolintr
 
   # Data set is modified in order to have some parameters with grades only in one direction
   # and simulate the real data.
@@ -47,7 +47,9 @@ adlb_raw <- local({
 testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
   adlb <- adlb_raw
 
-  adlb_alt <- adlb %>% dplyr::filter(PARAMCD == "ALT") %>% droplevels()
+  adlb_alt <- adlb %>%
+    dplyr::filter(PARAMCD == "ALT") %>%
+    droplevels()
   full_parent_df <- list(adlb_alt, "not_needed")
   cur_col_subset <- list(adlb_alt$ARMCD == "ARM A", "not_needed")
 
@@ -59,11 +61,13 @@ testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
 
   result <- s_count_abnormal_by_worst_grade(
     df = adlb %>% dplyr::filter(
-    ARMCD == "ARM A" & PARAMCD == "ALT" & GRADE_DIR == "LOW") %>%
+      ARMCD == "ARM A" & PARAMCD == "ALT" & GRADE_DIR == "LOW"
+    ) %>%
       droplevels(),
     .spl_context = spl_context,
     .var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR"))
+    variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
+  )
 
   expected <- list(count_fraction = list(
     `1` = with_label(c(count = 14, fraction = 0.1044776), "1"),
@@ -77,16 +81,18 @@ testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
 
 testthat::test_that("count_abnormal_by_worst_grade works as expected", {
   adlb <- adlb_raw
-  adlb_f <- adlb %>% dplyr::filter(
-    PARAMCD == "IGA") %>%
+  adlb_f <- adlb %>%
+    dplyr::filter(
+      PARAMCD == "IGA"
+    ) %>%
     droplevels()
 
   map <- unique(
     adlb[adlb$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]
-    ) %>%
-   lapply(as.character) %>%
-   as.data.frame() %>%
-   dplyr::arrange(PARAM, dplyr::desc(GRADE_DIR), GRADE_ANL)
+  ) %>%
+    lapply(as.character) %>%
+    as.data.frame() %>%
+    dplyr::arrange(PARAM, dplyr::desc(GRADE_DIR), GRADE_ANL)
 
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
@@ -94,7 +100,7 @@ testthat::test_that("count_abnormal_by_worst_grade works as expected", {
     split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
     count_abnormal_by_worst_grade(
       var = "GRADE_ANL",
-      variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
+      variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
     ) %>%
     build_table(df = adlb_f)
 
@@ -143,20 +149,23 @@ testthat::test_that("count_abnormal_by_worst_grade works as expected", {
 testthat::test_that(
   "count_abnormal_by_worst_grade returns an error when variables$param
   and variables$grade_dir are taking variable names not used
-  for splitting the layout in rows.", {
-  adlb <- adlb_raw
-  adlb_f <- adlb %>% dplyr::filter(
-    PARAMCD == "IGA") %>%
-    droplevels()
+  for splitting the layout in rows.",
+  { # nolint
+    adlb <- adlb_raw
+    adlb_f <- adlb %>%
+      dplyr::filter(
+        PARAMCD == "IGA"
+      ) %>%
+      droplevels()
 
-  testthat::expect_error(result <- basic_table() %>%
-    split_cols_by("ARMCD") %>%
-    split_rows_by("PARAM") %>%
-    split_rows_by("GRADE_DIR") %>%
-    count_abnormal_by_worst_grade(
-      var = "GRADE_ANL",
-      variables = list(id = "USUBJID", param  = "PARAMCD", grade_dir = "ANRIND")
-    ) %>%
-    build_table(df = adlb_f)
-  )
-  })
+    testthat::expect_error(result <- basic_table() %>%
+      split_cols_by("ARMCD") %>%
+      split_rows_by("PARAM") %>%
+      split_rows_by("GRADE_DIR") %>%
+      count_abnormal_by_worst_grade(
+        var = "GRADE_ANL",
+        variables = list(id = "USUBJID", param = "PARAMCD", grade_dir = "ANRIND")
+      ) %>%
+      build_table(df = adlb_f))
+  }
+)

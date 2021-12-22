@@ -3,10 +3,14 @@ library(rtables)
 library(dplyr)
 
 adsl_cached <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adsl_cached <- adsl_cached %>% dplyr::filter(SEX %in% c("F", "M")) %>% reapply_varlabels(var_labels(adsl_cached))
+adsl_cached <- adsl_cached %>%
+  dplyr::filter(SEX %in% c("F", "M")) %>%
+  reapply_varlabels(var_labels(adsl_cached))
 
 adrs_cached <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
-adrs_cached <- adrs_cached %>% dplyr::filter(SEX %in% c("F", "M")) %>% reapply_varlabels(var_labels(adrs_cached))
+adrs_cached <- adrs_cached %>%
+  dplyr::filter(SEX %in% c("F", "M")) %>%
+  reapply_varlabels(var_labels(adrs_cached))
 
 adrs_example <- local({
   adrs_cached %>%
@@ -36,7 +40,6 @@ testthat::test_that("fit_logistic works with default paramters", {
   result3 <- stats::vcov(result_model)
   expected3 <- stats::vcov(expected_model)
   testthat::expect_identical(result3, expected3)
-
 })
 
 testthat::test_that("fit_logistic works with covariates and interaction", {
@@ -76,14 +79,12 @@ testthat::test_that("fit_logistic works with different response definition", {
     result_model$formula,
     1 - Response ~ ARMCD
   )
-
 })
 
 testthat::test_that("fit_logistic works with a single stratification variable", {
-
   data <- data.frame(
     Response = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-    ARMCD =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
+    ARMCD = letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
     STRATA1 = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
     STRATA2 = LETTERS[c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)],
     AGE = c(45, 67, 23, 17, 87, 66, 45, 34, 32, 34, 67, 65, 64, 66, 24, 35, 46, 78, 10, 45),
@@ -110,7 +111,7 @@ testthat::test_that("fit_logistic works with a single stratification variable", 
 testthat::test_that("fit_logistic works with two stratification variables", {
   data <- data.frame(
     Response = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-    ARMCD =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
+    ARMCD = letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
     STRATA1 = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
     STRATA2 = LETTERS[c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)],
     AGE = c(45, 67, 23, 17, 87, 66, 45, 34, 32, 34, 67, 65, 64, 66, 24, 35, 46, 78, 10, 45),
@@ -416,7 +417,7 @@ testthat::test_that("h_glm_simple_term_extract works for factor and numeric vari
 testthat::test_that("h_glm_simple_term_extract can extract continuous variable results from clogit objects", {
   data <- data.frame(
     Response = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-    ARMCD =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
+    ARMCD = letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
     STRATA1 = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
     STRATA2 = LETTERS[c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)],
     AGE = c(45, 67, 23, 17, 87, 66, 45, 34, 32, 34, 67, 65, 64, 66, 24, 35, 46, 78, 10, 45),
@@ -532,7 +533,6 @@ testthat::test_that("h_glm_interaction_extract works for continuous interaction"
 # h_logistic_simple_terms ----
 
 testthat::test_that("h_logistic_simple_terms works", {
-
   utils.nest::skip_if_too_deep(3)
 
   adrs <- adrs_example
@@ -596,12 +596,11 @@ testthat::test_that("h_logistic_simple_terms works", {
 })
 
 testthat::test_that("h_logistic_simple_terms can extract continuous variable results from clogit objects", {
-
   utils.nest::skip_if_too_deep(3)
 
   data <- data.frame(
     Response = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-    ARMCD =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
+    ARMCD = letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
     STRATA1 = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
     STRATA2 = LETTERS[c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)],
     AGE = c(45, 67, 23, 17, 87, 66, 45, 34, 32, 34, 67, 65, 64, 66, 24, 35, 46, 78, 10, 45),
@@ -814,17 +813,21 @@ testthat::test_that("h_logistic_inter_terms works as expected", {
   testthat::expect_is(result_cat, "data.frame")
   testthat::expect_identical(
     result_cat$variable,
-    c("AGE", "ARMCD", "ARMCD", "ARMCD", "ARMCD", "ARMCD", "ARMCD",
+    c(
+      "AGE", "ARMCD", "ARMCD", "ARMCD", "ARMCD", "ARMCD", "ARMCD",
       "ARMCD", "SEX", "SEX", "SEX", "SEX", "SEX", "ARMCD:SEX", "ARMCD:SEX",
-      "ARMCD:SEX")
+      "ARMCD:SEX"
+    )
   )
   testthat::expect_identical(
     result_cat$term_label,
-    c("Age", "Reference ARM A, n = 126", "ARM B, n = 121", "ARM B, n = 121",
+    c(
+      "Age", "Reference ARM A, n = 126", "ARM B, n = 121", "ARM B, n = 121",
       "ARM B, n = 121", "ARM C, n = 126", "ARM C, n = 126", "ARM C, n = 126",
       "Reference F, n = 216", "M, n = 157", "M, n = 157", "M, n = 157",
       "M, n = 157", "Reference ARM A or F, n = 266", "ARM B * M, n = 47",
-      "ARM C * M, n = 60")
+      "ARM C * M, n = 60"
+    )
   )
   model_cont <- fit_logistic(
     adrs,
@@ -843,23 +846,26 @@ testthat::test_that("h_logistic_inter_terms works as expected", {
   testthat::expect_is(result_cont, "data.frame")
   testthat::expect_identical(
     result_cont$term,
-    c("F", "M", "ARM A", "ARM B",
+    c(
+      "F", "M", "ARM A", "ARM B",
       "ARM B", "ARM C", "ARM C", "AGE", "AGE", "AGE", "AGE", "ARM A",
-      "ARM B", "ARM C")
+      "ARM B", "ARM C"
+    )
   )
   testthat::expect_identical(
     result_cont$term_label,
-    c("Reference F, n = 216", "M, n = 157", "Reference ARM A, n = 126",
+    c(
+      "Reference F, n = 216", "M, n = 157", "Reference ARM A, n = 126",
       "ARM B, n = 121", "ARM B, n = 121", "ARM C, n = 126", "ARM C, n = 126",
       "Age", "Age", "Age", "Age", "Reference ARM A, n = 126", "ARM B, n = 121",
-      "ARM C, n = 126")
+      "ARM C, n = 126"
+    )
   )
 })
 
 # tidy.glm ----
 
 testthat::test_that("tidy.glm works as expected for simple case", {
-
   utils.nest::skip_if_too_deep(3)
 
   adrs <- adrs_example
@@ -946,8 +952,10 @@ testthat::test_that("tidy.glm works as expected for interaction case", {
       levels = c("SEX", "ARMCD", "AGE", "ARMCD:AGE")
     ),
     term = factor(
-      c("F", "M", "ARM A", "ARM B", "ARM B", "ARM C", "ARM C",
-        rep("AGE", 4), "ARM A", "ARM B", "ARM C"),
+      c(
+        "F", "M", "ARM A", "ARM B", "ARM B", "ARM C", "ARM C",
+        rep("AGE", 4), "ARM A", "ARM B", "ARM C"
+      ),
       levels = c("F", "M", "ARM A", "ARM B", "ARM C", "AGE")
     ),
     interaction = factor(
@@ -995,9 +1003,11 @@ testthat::test_that("logistic_regression_cols works as expected", {
     ))
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Degrees of Freedom", "df", "Parameter Estimate",
+    c(
+      "", "", "Degrees of Freedom", "df", "Parameter Estimate",
       "estimate", "Standard Error", "se", "Odds Ratio", "or", "Wald 75% CI",
-      "ci", "p-value", "p"),
+      "ci", "p-value", "p"
+    ),
     .Dim = c(2L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -1029,7 +1039,8 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Sex", "Reference F, n = 216", "M, n = 157",
+    c(
+      "", "Sex", "Reference F, n = 216", "M, n = 157",
       "Planned Arm Code", "Reference ARM A, n = 126", "ARM B, n = 121",
       "Age", "34", "ARM C, n = 126", "Age", "34", "Age", "Age", "Planned Arm Code",
       "ARM A", "ARM B", "ARM C", "Interaction of Planned Arm Code * Age",
@@ -1046,7 +1057,8 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       "", "", "", "(0.53, 10.54)", "(0.90, 1.18)", "(0.74, 2.18)",
       "", "", "", "", "p-value", "", "", "0.5938", "0.2910", "", "0.1506",
       "", "", "0.2948", "", "", "", "0.1355", "", "", "", "", "0.2297",
-      "", "0.1497", "0.3075"),
+      "", "0.1497", "0.3075"
+    ),
     .Dim = c(22L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -1068,7 +1080,8 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Age", "Age", "Planned Arm Code", "Reference ARM A, n = 126",
+    c(
+      "", "Age", "Age", "Planned Arm Code", "Reference ARM A, n = 126",
       "ARM B, n = 121", "Sex", "F", "M", "ARM C, n = 126", "Sex", "F",
       "M", "Sex", "Reference F, n = 216", "M, n = 157", "Planned Arm Code",
       "ARM A", "ARM B", "ARM C", "Interaction of Planned Arm Code * Sex",
@@ -1086,7 +1099,8 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       "(0.00, >999.99)", "", "", "", "", "(0.00, >999.99)", "(0.09, 5.59)",
       "(0.00, >999.99)", "", "", "", "", "p-value", "", "0.2109", "0.3932",
       "", "0.1719", "", "", "", "0.9940", "", "", "", "", "", "0.9948",
-      "", "", "", "", "0.9999", "", "0.9947", "0.9921"),
+      "", "", "", "", "0.9999", "", "0.9947", "0.9921"
+    ),
     .Dim = c(24L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -1104,14 +1118,16 @@ testthat::test_that("summarize_logistic works as expected for simple model witho
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Planned Arm Code", "Reference ARM A, n = 126",
+    c(
+      "", "Planned Arm Code", "Reference ARM A, n = 126",
       "ARM B, n = 121", "ARM C, n = 126", "Age", "Age", "Degrees of Freedom",
       "2", "", "1", "1", "", "1", "Parameter Estimate", "", "", "-2.133",
       "-0.093", "", "0.066", "Standard Error", "", "", "1.08", "1.422",
       "", "0.053", "Odds Ratio", "", "", "0.12", "0.91", "", "1.07",
       "Wald 99% CI", "", "", "(<0.01, 1.91)", "(0.02, 35.52)", "",
       "(0.93, 1.23)", "p-value", "0.0367", "", "0.0483", "0.9481",
-      "", "0.2185"),
+      "", "0.2185"
+    ),
     .Dim = c(7L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

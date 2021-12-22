@@ -24,5 +24,4 @@ basic_table() \%>\%
   add_rowcounts() \%>\%
   analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") \%>\%
   build_table(DM)
-
 }

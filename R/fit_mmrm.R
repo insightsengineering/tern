@@ -31,7 +31,7 @@ check_mmrm_vars <- function(vars,
       string <- ifelse(!is.null(label), label, v)
       res <- c(res, stats::setNames(string, v))
     }
-    labels[[var]] <<- res  # Saves the result under the `var` element of `labels`.
+    labels[[var]] <<- res # Saves the result under the `var` element of `labels`.
   }
   check_and_get_label("response")
   check_and_get_label("id")
@@ -62,9 +62,9 @@ check_mmrm_vars <- function(vars,
     !any(grouped_visit_usubjid$n > 1),
     msg = sprintf(
       "There are %s subjects with more than one record per visit",
-      paste(n_dupl_subjects, collapse=", ") # nolint
-      )
+      paste(n_dupl_subjects, collapse = ", ") # nolint
     )
+  )
 
   # Check variable values in this complete data set.
   response_values <- data_complete_regressors[[vars$response]]
@@ -119,15 +119,13 @@ check_mmrm_vars <- function(vars,
 #'
 #' @return the complete MMRM formula to use with [lme4::lmer()].
 #'
-build_mmrm_formula <- function(
-  vars,
-  cor_struct = c(
-    "unstructured",
-    "random-quadratic",
-    "random-slope",
-    "compound-symmetry"
-  )
-) {
+build_mmrm_formula <- function(vars,
+                               cor_struct = c(
+                                 "unstructured",
+                                 "random-quadratic",
+                                 "random-slope",
+                                 "compound-symmetry"
+                               )) {
   cor_struct <- match.arg(cor_struct)
 
   covariates_part <- paste(
@@ -152,8 +150,8 @@ build_mmrm_formula <- function(
       "random-slope" = "(as.numeric(visit_var) | id_var)",
       "compound-symmetry" = "(1 | id_var)"
     ) %>%
-    gsub("visit_var", vars$visit, x = .) %>% #nolint
-    gsub("id_var", vars$id, x = .) #nolint
+    gsub("visit_var", vars$visit, x = .) %>% # nolint
+    gsub("id_var", vars$id, x = .) # nolint
 
   rhs_formula <- paste(
     arm_visit_part,
@@ -217,7 +215,7 @@ get_lme4_cov_estimate <- function(fit) {
   row_indices_with_id1 <- which(apply(a_mat_id1_cols, 1L, function(x) any(x != 0)))
   id1_row_indices <- seq(from = min(row_indices_with_id1), to = max(row_indices_with_id1))
   # We can now extract the relevant submatrix of A.
-  a_mat_id1 <- a_mat[id1_row_indices, id1_indices, drop = FALSE]  # Make sure we don't get vector here.
+  a_mat_id1 <- a_mat[id1_row_indices, id1_indices, drop = FALSE] # Make sure we don't get vector here.
   # We account for the residual variance.
   id1_dim <- length(id1_indices)
   identity_id1 <- diag(1, id1_dim)
@@ -283,20 +281,18 @@ get_lme4_diagnostics <- function(fit,
 #' @note While we are not directly importing functions from `dfoptim` or `optimx` here, we rely on them
 #'   being available to `lme4` (which has these packages only in "Suggests"). Therefore we note the imports below.
 #'
-fit_lme4_single_optimizer <- function(
-  formula,
-  data,
-  optimizer = c(
-    "automatic",
-    "nloptwrap_neldermead",
-    "nloptwrap_bobyqa",
-    "nlminbwrap",
-    "bobyqa",
-    "neldermead",
-    "nmkbw",
-    "optimx_lbfgsb"
-  )
-) {
+fit_lme4_single_optimizer <- function(formula,
+                                      data,
+                                      optimizer = c(
+                                        "automatic",
+                                        "nloptwrap_neldermead",
+                                        "nloptwrap_bobyqa",
+                                        "nlminbwrap",
+                                        "bobyqa",
+                                        "neldermead",
+                                        "nmkbw",
+                                        "optimx_lbfgsb"
+                                      )) {
   optimizer <- match.arg(optimizer)
 
   if (optimizer == "automatic") {
@@ -305,8 +301,7 @@ fit_lme4_single_optimizer <- function(
   control <- lme4::lmerControl(
     # We need this to be able to fit unstructured covariance matrix models.
     check.nobs.vs.nRE = "ignore",
-    optimizer = switch(
-      optimizer,
+    optimizer = switch(optimizer,
       "nloptwrap_neldermead" = "nloptwrap",
       "nloptwrap_bobyqa" = "nloptwrap",
       "nlminbwrap" = "nlminbwrap",
@@ -315,8 +310,7 @@ fit_lme4_single_optimizer <- function(
       "nmkbw" = "nmkbw",
       "optimx_lbfgsb" = "optimx"
     ),
-    optCtrl = switch(
-      optimizer,
+    optCtrl = switch(optimizer,
       "nloptwrap_neldermead" = list(algorithm = "NLOPT_LN_NELDERMEAD"),
       "nloptwrap_bobyqa" = list(algorithm = "NLOPT_LN_BOBYQA"),
       "optimx_lbfgsb" = list(method = "L-BFGS-B"),
@@ -451,12 +445,10 @@ refit_lme4_all_optimizers <- function(original_fit,
 #'
 #' @return the [`lmerTest::lmerModLmerTest`] object.
 #'
-fit_lme4 <- function(
-  formula,
-  data,
-  optimizer = "automatic",
-  n_cores = 1L
-) {
+fit_lme4 <- function(formula,
+                     data,
+                     optimizer = "automatic",
+                     n_cores = 1L) {
   # First fit.
   fit <- fit_lme4_single_optimizer(
     formula = formula,
@@ -543,7 +535,7 @@ get_mmrm_lsmeans <- function(fit,
       dplyr::left_join(data_n, by = c(vars$visit, vars$arm))
   )
 
-  results <-  if (is.null(vars$arm)) {
+  results <- if (is.null(vars$arm)) {
     list(
       estimates = estimates
     )
@@ -691,12 +683,11 @@ get_mmrm_lsmeans <- function(fit,
 #'   mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
 #'   mutate(
 #'     AVISITN = rank(AVISITN) %>%
-#'     as.factor() %>%
-#'     as.numeric() %>%
-#'     as.factor()
+#'       as.factor() %>%
+#'       as.numeric() %>%
+#'       as.factor()
 #'   )
 #' var_labels(adqs_f) <- var_labels(adqs)
-#'
 #' \dontrun{
 #' # sometimes results in failure to converge with 1 negative eigenvalue
 #' mmrm_results <- fit_mmrm(
@@ -710,25 +701,23 @@ get_mmrm_lsmeans <- function(fit,
 #'   data = adqs_f,
 #'   cor_struct = "unstructured",
 #'   weights_emmeans = "equal",
-#'   optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
+#'   optimizer = "nloptwrap_neldermead" # Only to speed up this example.
 #' )
 #' }
 #'
-fit_mmrm <- function(
-  vars = list(
-    response = "AVAL",
-    covariates = c(),
-    id = "USUBJID",
-    arm = "ARM",
-    visit = "AVISIT"
-  ),
-  data,
-  conf_level = 0.95,
-  cor_struct = "unstructured",
-  weights_emmeans = "proportional",
-  optimizer = "automatic",
-  parallel = FALSE
-) {
+fit_mmrm <- function(vars = list(
+                       response = "AVAL",
+                       covariates = c(),
+                       id = "USUBJID",
+                       arm = "ARM",
+                       visit = "AVISIT"
+                     ),
+                     data,
+                     conf_level = 0.95,
+                     cor_struct = "unstructured",
+                     weights_emmeans = "proportional",
+                     optimizer = "automatic",
+                     parallel = FALSE) {
   labels <- check_mmrm_vars(vars, data)
   assertthat::assert_that(
     is_proportion(conf_level),

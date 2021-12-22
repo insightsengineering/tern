@@ -28,7 +28,6 @@ adtte_preprop <- adtte %>%
 
 
 testthat::test_that("h_survtime_df functions as expected with valid input and default arguments", {
-
   adtte <- adtte_preprop
 
   result <- h_survtime_df(
@@ -49,7 +48,6 @@ testthat::test_that("h_survtime_df functions as expected with valid input and de
 })
 
 testthat::test_that("h_survtime_df functions as expected when median is NA", {
-
   adtte <- adtte_preprop
 
   # Edge case: median cannot be estimated.
@@ -74,11 +72,9 @@ testthat::test_that("h_survtime_df functions as expected when median is NA", {
   )
 
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("h_survtime_df functions as expected when 0 records in one group", {
-
   adtte <- adtte_preprop
 
   # Edge case: 0 records in one group.
@@ -103,21 +99,17 @@ testthat::test_that("h_survtime_df functions as expected when 0 records in one g
   )
 
   testthat::expect_equal(result, expected, tolerance = 0.000001)
-
 })
 
 testthat::test_that("h_survtime_df fails with wrong input", {
-
   testthat::expect_error(h_survtime_df(
     tte = c(1, 2, "hello"),
     is_event = c(TRUE, FALSE, TRUE),
     arm = factor(c("A", "B", "A"), levels = c("B", "A"))
   ))
-
 })
 
 testthat::test_that("h_split_by_subgroups functions as expected with valid input and default arguments", {
-
   lvls_y <- c("B", "A", "C")
 
   df_test <- data.frame(
@@ -128,7 +120,7 @@ testthat::test_that("h_split_by_subgroups functions as expected with valid input
   var_labels(df_test) <- paste("label for", names(df_test))
 
   result <- h_split_by_subgroups(
-    data  = df_test,
+    data = df_test,
     subgroups = c("y", "z")
   )
 
@@ -177,11 +169,9 @@ testthat::test_that("h_split_by_subgroups functions as expected with valid input
   )
 
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("h_split_by_subgroups works as expected with groups_lists", {
-
   lvls_y <- c("B", "A", "C")
 
   df_test <- data.frame(
@@ -192,7 +182,7 @@ testthat::test_that("h_split_by_subgroups works as expected with groups_lists", 
   var_labels(df_test) <- paste("label for", names(df_test))
 
   result <- h_split_by_subgroups(
-    data  = df_test,
+    data = df_test,
     subgroups = c("y", "z"),
     groups_lists = list(
       y = list("AB" = c("A", "B"), "E" = "C")
@@ -213,7 +203,6 @@ testthat::test_that("h_split_by_subgroups works as expected with groups_lists", 
 })
 
 testthat::test_that("h_survtime_subgroups_df functions as expected with valid input and default arguments", {
-
   adtte <- adtte_preprop
 
 
@@ -239,11 +228,9 @@ testthat::test_that("h_survtime_subgroups_df functions as expected with valid in
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -265,11 +252,9 @@ testthat::test_that("h_survtime_subgroups_df functions as expected when subgroup
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("h_survtime_subgroups_df works as expected with groups_lists", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -292,7 +277,6 @@ testthat::test_that("h_survtime_subgroups_df works as expected with groups_lists
 })
 
 testthat::test_that("h_coxph_df functions as expected with valid input and default arguments", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -319,7 +303,6 @@ testthat::test_that("h_coxph_df functions as expected with valid input and defau
 })
 
 testthat::test_that("h_coxph_df functions as expected with one stratification factor", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -335,7 +318,7 @@ testthat::test_that("h_coxph_df functions as expected with one stratification fa
     arm = " ",
     n_tot = 268L,
     n_tot_events = 166L,
-    hr =  0.7343822,
+    hr = 0.7343822,
     lcl = 0.5376802,
     ucl = 1.003045,
     conf_level = 0.95,
@@ -348,7 +331,6 @@ testthat::test_that("h_coxph_df functions as expected with one stratification fa
 })
 
 testthat::test_that("h_coxph_df functions as expected with multiple stratification factors", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -376,7 +358,6 @@ testthat::test_that("h_coxph_df functions as expected with multiple stratificati
 })
 
 testthat::test_that("h_coxph_df functions as expected when 0 records in one group", {
-
   adtte <- adtte %>%
     preprocess_adtte() %>%
     dplyr::filter(ARM == "A: Drug X")
@@ -404,7 +385,6 @@ testthat::test_that("h_coxph_df functions as expected when 0 records in one grou
 })
 
 testthat::test_that("h_coxph_subgroups_df functions as expected with valid input and default arguments", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -523,7 +503,6 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with valid input
 })
 
 testthat::test_that("h_coxph_subgroups_df functions as expected with stratification factors", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -561,7 +540,6 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with stratificat
 })
 
 testthat::test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -594,7 +572,6 @@ testthat::test_that("h_coxph_subgroups_df functions as expected when subgroups i
 })
 
 testthat::test_that("h_coxph_subgroups_df works as expected with groups_lists", {
-
   adtte <- adtte_preprop
 
   result <- h_coxph_subgroups_df(

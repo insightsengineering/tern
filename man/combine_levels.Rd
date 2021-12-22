@@ -21,8 +21,7 @@ Combine specified old factor Levels in a single new level.
 }
 \examples{
 x <- factor(letters[1:5], levels = letters[5:1])
-tern:::combine_levels(x, levels = c('a', 'b') )
+tern:::combine_levels(x, levels = c("a", "b"))
 
-tern:::combine_levels(x, c('e', 'b'))
-
+tern:::combine_levels(x, c("e", "b"))
 }

@@ -118,22 +118,19 @@ statistics function arguments and additional format arguments (see below).
 
 \examples{
 d_count_abnormal_by_baseline("LOW")
-
 df <- data.frame(
- USUBJID = as.character(c(1:6)),
- ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
- BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
- )
+  USUBJID = as.character(c(1:6)),
+  ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
+  BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
+)
 df <- df_explicit_na(df)
 
 # Just for one abnormal level.
 s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
-
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
 # so that the rtables formatting function `format_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 afun(df, .var = "ANRIND", abnormal = "LOW")
-
 
 # Layout creating function.
 basic_table() \%>\%
@@ -156,5 +153,4 @@ basic_table() \%>\%
     .indent_mods = c(fraction = 2L)
   ) \%>\%
   build_table(df2)
-
 }

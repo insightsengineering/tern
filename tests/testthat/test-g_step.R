@@ -16,9 +16,11 @@ testthat::test_that("tidy.step works as expected for survival STEP results", {
   testthat::expect_true(tibble::is_tibble(result))
   testthat::expect_named(
     result,
-    c("Percentile Center", "Percentile Lower", "Percentile Upper",
+    c(
+      "Percentile Center", "Percentile Lower", "Percentile Upper",
       "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
-      "Hazard Ratio", "se", "ci_lower", "ci_upper")
+      "Hazard Ratio", "se", "ci_lower", "ci_upper"
+    )
   )
   testthat::expect_named(
     attributes(result),
@@ -49,9 +51,11 @@ testthat::test_that("tidy.step works as expected for response STEP results", {
   testthat::expect_true(tibble::is_tibble(result))
   testthat::expect_named(
     result,
-    c("Percentile Center", "Percentile Lower", "Percentile Upper",
+    c(
+      "Percentile Center", "Percentile Lower", "Percentile Upper",
       "Interval Center", "Interval Lower", "Interval Upper", "n",
-      "Odds Ratio", "se", "ci_lower", "ci_upper")
+      "Odds Ratio", "se", "ci_lower", "ci_upper"
+    )
   )
   testthat::expect_named(
     attributes(result),

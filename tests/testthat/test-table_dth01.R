@@ -16,7 +16,8 @@ testthat::test_that("DTH01 variant 1 is produced correctly", {
       "DTHFL",
       values = "Y",
       .labels =  c(count_fraction = "Total number of deaths"),
-      .formats = c(count_fraction = "xx (xx.x%)"))  %>%
+      .formats = c(count_fraction = "xx (xx.x%)")
+    ) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
     build_table(df = adsl)
 
@@ -48,7 +49,8 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
       "DTHFL",
       values = "Y",
       .labels =  c(count_fraction = "Total number of deaths"),
-      .formats = c(count_fraction = "xx (xx.x%)"))  %>%
+      .formats = c(count_fraction = "xx (xx.x%)")
+    ) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
     build_table(df = adsl)
 
@@ -60,7 +62,8 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
       "DTHCAUS",
       nested = TRUE,
       .stats = "count_fraction",
-      .indent_mods = c("count_fraction" = 4L)) %>%
+      .indent_mods = c("count_fraction" = 4L)
+    ) %>%
     build_table(df = adsl) %>%
     prune_table()
   part3 <- basic_table() %>%
@@ -69,7 +72,8 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
     summarize_vars(
       vars = "LDDTHGR1",
       var_labels = "Days from last drug administration",
-      show_labels = "visible")  %>%
+      show_labels = "visible"
+    ) %>%
     build_table(df = adsl)
   part4 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -78,7 +82,8 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
       "LDDTHGR1",
       split_fun = remove_split_levels("<Missing>"),
       split_label = "Primary cause by days from last study drug administration",
-      label_pos = "visible") %>%
+      label_pos = "visible"
+    ) %>%
     summarize_vars("DTHCAT") %>%
     build_table(df = adsl)
   col_info(part2) <- col_info(part1)
@@ -125,7 +130,7 @@ testthat::test_that("DTH01 variant 3 is produced correctly", {
     df_explicit_na()
 
   # Reorder the levels in "DTHCAT" to put Other category at the end.
-  adsl$DTHCAT <- factor(adsl$DTHCAT, levels = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "<Missing>")) #nolint
+  adsl$DTHCAT <- factor(adsl$DTHCAT, levels = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "<Missing>")) # nolint
 
   dthcaus_levels <- levels(adsl[adsl$DTHCAT == "OTHER", ]$DTHCAUS)
 
@@ -137,7 +142,7 @@ testthat::test_that("DTH01 variant 3 is produced correctly", {
       values = "Y",
       .labels =  c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
-    )  %>%
+    ) %>%
     summarize_vars(
       vars = c("DTHCAT"),
       var_labels = c("Primary cause of death"),
@@ -198,22 +203,23 @@ testthat::test_that("DTH01 variant 4 is produced correctly", {
   adsl <- adsl %>%
     df_explicit_na()
 
-  #Reorder the levels in "DTHCAT" to put Other category at the end.
-  adsl$DTHCAT <- factor(adsl$DTHCAT, levels = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "<Missing>")) #nolint
+  # Reorder the levels in "DTHCAT" to put Other category at the end.
+  adsl$DTHCAT <- factor(adsl$DTHCAT, levels = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "<Missing>")) # nolint
 
   dthcaus_levels <- levels(adsl[adsl$DTHCAT == "OTHER", ]$DTHCAUS)
 
-  #create a helper variable DTHCAUS_other for part3
+  # create a helper variable DTHCAUS_other for part3
   adsl <- adsl %>%
     dplyr::mutate(
       DTHCAUS_other = ifelse(
-        DTHCAT == "OTHER" & DTHCAUS != "Post-study reporting of death", as.character(DTHCAUS), NA)
+        DTHCAT == "OTHER" & DTHCAUS != "Post-study reporting of death", as.character(DTHCAUS), NA
+      )
     )
-  adsl$DTHCAUS_other <- factor( #nolint
+  adsl$DTHCAUS_other <- factor( # nolint
     adsl$DTHCAUS_other,
     levels = c("LOST TO FOLLOW UP", "SUICIDE", "UNKNOWN", "MISSING")
   )
-  adsl$DTHCAUS_other <- explicit_na(adsl$DTHCAUS_other) #nolint
+  adsl$DTHCAUS_other <- explicit_na(adsl$DTHCAUS_other) # nolint
 
   lyt1 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%

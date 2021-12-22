@@ -59,10 +59,9 @@ grid::grid.newpage()
 grid.draw(arrange_grobs(g1, g2, g3, ncol = 3))
 
 grid::grid.newpage()
-grid::pushViewport(grid::viewport(layout = grid::grid.layout(1,2)))
+grid::pushViewport(grid::viewport(layout = grid::grid.layout(1, 2)))
 vp1 <- grid::viewport(layout.pos.row = 1, layout.pos.col = 2)
 grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 
 showViewport()
-
 }

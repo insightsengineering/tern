@@ -23,10 +23,10 @@
 #' @export
 #'
 #' @examples
-#' g_waterfall(height = c(3,5,-1), id = letters[1:3])
+#' g_waterfall(height = c(3, 5, -1), id = letters[1:3])
 #'
 #' g_waterfall(
-#'   height = c(3,5,-1),
+#'   height = c(3, 5, -1),
 #'   id = letters[1:3],
 #'   col = letters[1:3]
 #' )
@@ -44,7 +44,7 @@
 #'   mutate(pchg = rnorm(n(), 10, 50))
 #'
 #' ADRS_f <- head(ADRS_f, 30)
-#' ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID),]
+#' ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID), ]
 #' head(ADRS_f)
 #'
 #' g_waterfall(
@@ -61,18 +61,17 @@
 #'
 #' g_waterfall(
 #'   height = ADRS_f$pchg,
-#'   id = paste("asdfdsfdsfsd",ADRS_f$USUBJID),
+#'   id = paste("asdfdsfdsfsd", ADRS_f$USUBJID),
 #'   col = ADRS_f$SEX
 #' )
 #'
 #' g_waterfall(
 #'   height = ADRS_f$pchg,
-#'   id = paste("asdfdsfdsfsd",ADRS_f$USUBJID),
+#'   id = paste("asdfdsfdsfsd", ADRS_f$USUBJID),
 #'   xlab = "ID",
 #'   ylab = "Percentage Change",
 #'   title = "Waterfall plot"
 #' )
-#'
 g_waterfall <- function(height,
                         id,
                         col = NULL,
@@ -80,7 +79,6 @@ g_waterfall <- function(height,
                         ylab = NULL,
                         col_legend_title = NULL,
                         title = NULL) {
-
   if (!is.null(col)) {
     check_same_n(height = height, id = id, col = col)
   } else {
@@ -111,7 +109,8 @@ g_waterfall <- function(height,
     ggplot2::geom_col() +
     ggplot2::geom_text(
       label = format(plot_data_ord$height, digits = 2),
-      vjust = ifelse(plot_data_ord$height >= 0, -0.5, 1.5)) +
+      vjust = ifelse(plot_data_ord$height >= 0, -0.5, 1.5)
+    ) +
     ggplot2::xlab(xlab) +
     ggplot2::ylab(ylab) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0, vjust = .5))

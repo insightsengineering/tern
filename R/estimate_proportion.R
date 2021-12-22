@@ -18,9 +18,7 @@ NULL
 #'   FALSE, FALSE, FALSE, FALSE, FALSE
 #' )
 #' prop_wilson(rsp, conf_level = 0.9)
-#'
 prop_wilson <- function(rsp, conf_level) {
-
   y <- stats::prop.test(
     sum(rsp),
     length(rsp),
@@ -40,10 +38,8 @@ prop_wilson <- function(rsp, conf_level) {
 #' @examples
 #'
 #' prop_clopper_pearson(rsp, conf_level = .95)
-#'
 prop_clopper_pearson <- function(rsp,
                                  conf_level) {
-
   y <- stats::binom.test(
     x = sum(rsp),
     n = length(rsp),
@@ -63,9 +59,7 @@ prop_clopper_pearson <- function(rsp,
 #'
 #' prop_wald(rsp, conf_level = 0.95)
 #' prop_wald(rsp, conf_level = 0.95, correct = TRUE)
-#'
 prop_wald <- function(rsp, conf_level, correct = FALSE) {
-
   n <- length(rsp)
   p_hat <- mean(rsp)
   z <- stats::qnorm((1 + conf_level) / 2)
@@ -90,9 +84,7 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
 #' @examples
 #'
 #' prop_agresti_coull(rsp, conf_level = 0.95)
-#'
 prop_agresti_coull <- function(rsp, conf_level) {
-
   n <- length(rsp)
   x_sum <- sum(rsp)
   z <- stats::qnorm((1 + conf_level) / 2)
@@ -121,10 +113,8 @@ prop_agresti_coull <- function(rsp, conf_level) {
 #' @examples
 #'
 #' prop_jeffreys(rsp, conf_level = 0.95)
-#'
 prop_jeffreys <- function(rsp,
                           conf_level) {
-
   n <- length(rsp)
   x_sum <- sum(rsp)
 
@@ -167,9 +157,7 @@ s_proportion <- function(x,
                            "waldcc", "wald", "clopper-pearson",
                            "wilson", "agresti-coull", "jeffreys"
                          ),
-                         long = FALSE
-) {
-
+                         long = FALSE) {
   x <- as.logical(x)
 
   method <- match.arg(method)
@@ -183,8 +171,7 @@ s_proportion <- function(x,
   n <- sum(rsp)
   p_hat <- mean(rsp)
 
-  prop_ci <- switch(
-    method,
+  prop_ci <- switch(method,
     "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
     wilson = prop_wilson(rsp, conf_level),
     wald = prop_wald(rsp, conf_level),
@@ -194,7 +181,7 @@ s_proportion <- function(x,
   )
 
   list(
-    "n_prop"  = with_label(c(n, p_hat), "Responders"),
+    "n_prop" = with_label(c(n, p_hat), "Responders"),
     "prop_ci" = with_label(
       x = 100 * prop_ci, label = d_proportion(conf_level, method, long = long)
     )
@@ -207,7 +194,6 @@ s_proportion <- function(x,
 #'
 #' @examples
 #' a_proportion(c(1, 0, 1, 0))
-#'
 a_proportion <- make_afun(
   s_proportion,
   .formats = c(n_prop = "xx (xx.x%)", prop_ci = "(xx.x, xx.x)")
@@ -227,10 +213,9 @@ a_proportion <- make_afun(
 #' )
 #'
 #' basic_table() %>%
-#' split_cols_by("ARM") %>%
+#'   split_cols_by("ARM") %>%
 #'   estimate_proportion(vars = "AVAL") %>%
 #'   build_table(df = dta_test)
-#'
 estimate_proportion <- function(lyt,
                                 vars,
                                 ...,
@@ -271,13 +256,11 @@ estimate_proportion <- function(lyt,
 d_proportion <- function(conf_level,
                          method,
                          long = FALSE) {
-
   label <- paste0(conf_level * 100, "% CI")
 
   if (long) label <- paste(label, "for Response Rates")
 
-  method_part <- switch(
-    method,
+  method_part <- switch(method,
     "clopper-pearson" = "Clopper-Pearson",
     "waldcc" = "Wald, with correction",
     "wald" = "Wald, without correction",

@@ -1,7 +1,6 @@
 library(scda)
 
 preprocess_adrs <- function(adrs, n_records = 20) {
-
   adrs_labels <- var_labels(adrs)
   adrs <- adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
@@ -27,7 +26,6 @@ adrs_200 <- adrs %>%
   preprocess_adrs(n_records = 200)
 
 testthat::test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {
-
   adrs <- adrs_100
 
   result <- extract_rsp_subgroups(
@@ -63,11 +61,9 @@ testthat::test_that("extract_rsp_subgroups functions as expected with valid inpu
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
-
   adrs <- adrs_100
 
   result <- extract_rsp_subgroups(
@@ -103,11 +99,9 @@ testthat::test_that("extract_rsp_subgroups functions as expected with NULL subgr
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("extract_rsp_subgroups works as expected with groups_lists", {
-
   adrs <- adrs_100
 
   result <- extract_rsp_subgroups(
@@ -136,7 +130,6 @@ testthat::test_that("extract_rsp_subgroups works as expected with groups_lists",
 })
 
 testthat::test_that("extract_rsp_subgroups functions as expected with strata", {
-
   adrs <- adrs_100
 
   result <- extract_rsp_subgroups(
@@ -177,11 +170,9 @@ testthat::test_that("extract_rsp_subgroups functions as expected with strata", {
   )
 
   testthat::expect_equal(result, expected, tol = 0.000001)
-
 })
 
 testthat::test_that("a_response_subgroups functions as expected with valid input", {
-
   df <- data.frame(
     prop = c(0.1234, 0.5678),
     pval = c(0.00001, 0.983758),
@@ -201,15 +192,14 @@ testthat::test_that("a_response_subgroups functions as expected with valid input
   expected_matrix <- structure(
     c(
       "", "M", "F", "prop", "0.12", "0.57", "pval", "<0.0001",
-      "0.9838"),
+      "0.9838"
+    ),
     .Dim = c(3L, 3L)
-    )
+  )
   testthat::expect_equal(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("tabulate_rsp_subgroups functions as expected with valid input", {
-
   adrs <- adrs_200
 
   df <- extract_rsp_subgroups(
@@ -240,7 +230,7 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
       "", "(2.03, 16.73)", "(0.48, 5.79)", "", "(1.22, 10.00)", "(1.20, 13.01)",
       " ", "p-value (Chi-Squared Test)", "0.0007", "", "0.0004", "0.4150",
       "", "0.0154", "0.0178"
-      ),
+    ),
     .Dim = c(9L, 9L)
   )
 
@@ -248,7 +238,6 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
 })
 
 testthat::test_that("tabulate_rsp_subgroups correctly calculates column indices", {
-
   adrs <- adrs_200
 
   df <- extract_rsp_subgroups(
@@ -280,7 +269,6 @@ testthat::test_that("tabulate_rsp_subgroups correctly calculates column indices"
 })
 
 testthat::test_that("tabulate_rsp_subgroups functions as expected with valid input extreme values in OR table", {
-
   var1 <- data.frame(
     rsp = c(rep(TRUE, 30), rep(FALSE, 20)),
     arm = factor(c(rep("REF", 30), rep("COMP", 20)), levels = c("REF", "COMP")),
@@ -315,15 +303,13 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
       "n", "22", "", "20", "2", "COMP", "Response (%)", "9.1%", "",
       "0%", "100%", " ", "Odds Ratio", "0.02", "", "<0.01", ">999.99",
       " ", "95% CI", "(<0.01, 0.11)", "", "(0.00, >999.99)", "(0.00, >999.99)"
-      ),
+    ),
     .Dim = c(6L, 8L)
   )
   testthat::expect_equal(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("tabulate_rsp_subgroups functions as expected with NULL subgroups", {
-
   adrs <- adrs_200
 
   df <- extract_rsp_subgroups(
@@ -355,7 +341,6 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with NULL subg
 })
 
 testthat::test_that("tabulate_rsp_subgroups functions as expected when 0 obs in one arm", {
-
   adrs <- adrs_200
 
   df <- testthat::expect_warning(extract_rsp_subgroups(
@@ -393,7 +378,6 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected when 0 obs in 
 })
 
 testthat::test_that("d_rsp_subgroups_colvars functions as expected with valid input", {
-
   vars <- c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
 
   result <- d_rsp_subgroups_colvars(
@@ -416,5 +400,4 @@ testthat::test_that("d_rsp_subgroups_colvars functions as expected with valid in
   )
 
   testthat::expect_equal(result, expected)
-
 })

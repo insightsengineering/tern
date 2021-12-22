@@ -120,7 +120,6 @@ basic_table() \%>\%
     }
   ) \%>\%
   build_table(DM)
-
 }
 \seealso{
 \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}

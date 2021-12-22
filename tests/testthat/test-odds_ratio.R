@@ -26,14 +26,14 @@ testthat::test_that("or_glm estimates right OR and CI", {
 testthat::test_that("or_clogit estimates right OR and CI", {
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-    grp =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
+    grp = letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
     strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
     stringsAsFactors = TRUE
   )
 
   result <- or_clogit(data, conf_level = 0.95)
   expected <- list(
-    or_ci = list(# from SAS
+    or_ci = list( # from SAS
       b = c(est = 0.288, lcl = 0.036, ucl = 2.272),
       c = c(est = 0.780, lcl = 0.075, ucl = 8.146)
     ),
@@ -43,7 +43,6 @@ testthat::test_that("or_clogit estimates right OR and CI", {
 })
 
 testthat::test_that("s_odds_ratio estimates right OR and CI (unstratified analysis)", {
-
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
     grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3)]
@@ -67,7 +66,6 @@ testthat::test_that("s_odds_ratio estimates right OR and CI (unstratified analys
 })
 
 testthat::test_that("s_odds_ratio estimates right OR and CI (stratified analysis)", {
-
   set.seed(12)
   dta <- data.frame(
     rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -157,7 +155,7 @@ testthat::test_that("estimate_odds_ratio works with strata and combined groups",
   anl <- data.frame(
     rsp = sample(x = c(TRUE, FALSE), size = 100, replace = TRUE),
     ARM = factor(
-      sample(x =  c("C: Combination", "A: Drug X", "B: Placebo"), size = 100, replace = TRUE),
+      sample(x = c("C: Combination", "A: Drug X", "B: Placebo"), size = 100, replace = TRUE),
       levels = c("C: Combination", "A: Drug X", "B: Placebo")
     ),
     SEX = factor(sample(x = c("D", "E"), size = 100, replace = TRUE))

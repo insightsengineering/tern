@@ -42,7 +42,8 @@ adtte <- synthetic_cdisc_data("latest")$adtte \%>\%
 tern:::h_tbl_coxph_pairwise(
   df = adtte,
   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
-  control_coxph_pw = control_coxph(conf_level = 0.9))
+  control_coxph_pw = control_coxph(conf_level = 0.9)
+)
 }
 
 }

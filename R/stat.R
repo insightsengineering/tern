@@ -15,7 +15,8 @@
 #'
 #' stat_mean_ci(sample(10), gg_helper = FALSE)
 #'
-#' p <- ggplot2::ggplot(mtcars, ggplot2::aes(cyl, mpg)) + ggplot2::geom_point()
+#' p <- ggplot2::ggplot(mtcars, ggplot2::aes(cyl, mpg)) +
+#'   ggplot2::geom_point()
 #'
 #' p + ggplot2::stat_summary(
 #'   fun.data = stat_mean_ci,
@@ -27,15 +28,14 @@
 #'   fun.args = list(conf_level = 0.5),
 #'   geom = "errorbar"
 #' )
-#'
 stat_mean_ci <- function(x,
                          conf_level = 0.95,
-                         na.rm = TRUE,  # nolint
+                         na.rm = TRUE, # nolint
                          n_min = 2,
                          gg_helper = TRUE) {
-
-  if (na.rm)
+  if (na.rm) {
     x <- x[!is.na(x)]
+  }
   n <- length(x)
   m <- mean(x)
 
@@ -51,7 +51,6 @@ stat_mean_ci <- function(x,
   }
 
   return(ci)
-
 }
 
 #' Confidence Interval for Median
@@ -71,19 +70,20 @@ stat_mean_ci <- function(x,
 #'
 #' stat_median_ci(sample(10), gg_helper = FALSE)
 #'
-#' p <- ggplot2::ggplot(mtcars, ggplot2::aes(cyl, mpg)) + ggplot2::geom_point()
+#' p <- ggplot2::ggplot(mtcars, ggplot2::aes(cyl, mpg)) +
+#'   ggplot2::geom_point()
 #' p + ggplot2::stat_summary(
 #'   fun.data = stat_median_ci,
 #'   geom = "errorbar"
 #' )
-#'
 stat_median_ci <- function(x,
                            conf_level = 0.95,
                            na.rm = TRUE, # nolint
                            gg_helper = TRUE) {
   x <- unname(x)
-  if (na.rm)
+  if (na.rm) {
     x <- x[!is.na(x)]
+  }
   n <- length(x)
   med <- stats::median(x)
 
@@ -103,8 +103,7 @@ stat_median_ci <- function(x,
     ci <- data.frame(y = med, ymin = ci[[1]], ymax = ci[[2]])
   }
 
-  attr(ci, "conf_level")  <- empir_conf_level
+  attr(ci, "conf_level") <- empir_conf_level
 
   return(ci)
-
 }

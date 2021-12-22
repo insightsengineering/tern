@@ -2,7 +2,7 @@
 raw_data <- data.frame(
   time = c(5, 5, 10, 10, 5, 5, 10, 10),
   status = c(0, 0, 1, 0, 0, 1, 1, 1),
-  armcd  = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
+  armcd = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
   age = c(15, 68, 65, 17, 12, 33, 45, 20),
   stage = factor(
     c("1", "2", "1", "1", "1", "2", "1", "2"),
@@ -23,7 +23,8 @@ get_bladder <- function() {
       armcd = as.factor(rx),
       covar1 = as.factor(enum),
       covar2 = factor(
-        sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")
+        sample(as.factor(enum)),
+        levels = 1:4, labels = c("F", "F", "M", "M")
       )
     )
   )
@@ -31,7 +32,8 @@ get_bladder <- function() {
   attr(dta_bladder$covar1, "label") <- "A Covariate Label"
   attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
   dta_bladder$age <- sample( # nolint
-    20:60, size = nrow(dta_bladder), replace = TRUE
+    20:60,
+    size = nrow(dta_bladder), replace = TRUE
   )
   dta_bladder
 }
@@ -185,10 +187,10 @@ testthat::test_that("h_coxreg_multivar_extract extracts correct coxph results wh
       ucl = c(NA, 56.6584822609408),
       level = c(NA, "2"),
       n = c(NA, 8L)
-      ),
+    ),
     row.names = c(NA, -2L),
     class = "data.frame"
-    )
+  )
   attributes(result)$heading <- NULL
   attributes(expected)$heading <- NULL
   testthat::expect_equal(result, expected, tolerance = 0.2)
@@ -373,7 +375,7 @@ testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated
     data = testthat::expect_warning(s_cox_univariate(
       formula = survival::Surv(time, status) ~ arm(armcd),
       data = dta_bladder,
-      covariates = list(~ covar1)
+      covariates = list(~covar1)
     )),
     expr = {
       y <- list(
@@ -390,13 +392,12 @@ testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated
 })
 
 testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_univariate (with interaction)", {
-
   dta_bladder <- get_bladder()
   expected <- with(
     data = testthat::expect_warning(s_cox_univariate(
       formula = survival::Surv(time, status) ~ arm(armcd),
       data = dta_bladder,
-      covariates = list(~ covar1),
+      covariates = list(~covar1),
       interactions = TRUE,
       pval_method = c("wald", "likelihood")[2]
     )),
@@ -527,9 +528,10 @@ testthat::test_that("tidy.coxreg.univar method tidies up the univariate Cox regr
       lcl = c(0.432384366384154, 0.410167532672898, 0.422242256428962),
       ucl = c(0.943291086683029, 0.898398447595346, 0.922972071975087),
       pval = list(0.0242380486470984, 0.012573389581111, 0.0181887572605306),
-      ci = list(c(0.432384366384154, 0.943291086683029),
-                c(0.410167532672898, 0.898398447595346),
-                c(0.422242256428962, 0.922972071975087)
+      ci = list(
+        c(0.432384366384154, 0.943291086683029),
+        c(0.410167532672898, 0.898398447595346),
+        c(0.422242256428962, 0.922972071975087)
       )
     ),
     row.names = c("ref", "covar1", "covar2"),
@@ -560,8 +562,9 @@ testthat::test_that("tidy.coxreg.univar method works with only numeric covariate
       lcl = c(0.4164994, 0.4072018),
       ucl = c(0.9254162, 0.9068879),
       pval = list(0.01925561, 0.01475084),
-      ci = list(c(0.4164994, 0.9254162),
-                c(0.4072018, 0.9068879)
+      ci = list(
+        c(0.4164994, 0.9254162),
+        c(0.4072018, 0.9068879)
       )
     ),
     row.names = c("ref", "age"),
@@ -640,7 +643,7 @@ testthat::test_that("h_coxreg_inter_effect.numerics works with _:_ in effect lev
   )
 
   mod <- survival::coxph(survival::Surv(time, status) ~ arm * age, data = get_bladder())
-  result <-  testthat::expect_silent(
+  result <- testthat::expect_silent(
     h_coxreg_extract_interaction(
       effect = "arm", covar = "age", mod = mod, control = control_coxreg(),
       at = list(), data = get_bladder()
@@ -897,11 +900,13 @@ testthat::test_that("summarize_coxreg works without treatment arm in univariate 
     build_table(df = df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "A Covariate Label (reference = 1)", "2", "3",
+    c(
+      "", "A Covariate Label (reference = 1)", "2", "3",
       "4", "Sex (F/M) (reference = F)", "M", "Hazard Ratio", "", "0.45",
       "0.31", "0.18", "", "1.33", "90% CI", "", "(0.28, 0.71)", "(0.19, 0.52)",
       "(0.1, 0.33)", "", "(0.91, 1.94)", "p-value", "<0.0001", "0.0007",
-      "<0.0001", "<0.0001", "", "0.1414"),
+      "<0.0001", "<0.0001", "", "0.1414"
+    ),
     .Dim = c(7L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

@@ -30,9 +30,11 @@ testthat::test_that("fit_survival_step works as expected with default options", 
   testthat::expect_identical(ncol(result), 12L)
   testthat::expect_identical(
     colnames(result),
-    c("Percentile Center", "Percentile Lower", "Percentile Upper",
+    c(
+      "Percentile Center", "Percentile Lower", "Percentile Upper",
       "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
-      "loghr", "se", "ci_lower", "ci_upper")
+      "loghr", "se", "ci_lower", "ci_upper"
+    )
   )
 })
 
@@ -62,7 +64,9 @@ testthat::test_that("fit_survival_step works as expected with global model fit",
   testthat::expect_identical(ncol(result), 9L)
   testthat::expect_identical(
     colnames(result),
-    c("Interval Center", "Interval Lower", "Interval Upper", "n", "events",
-      "loghr", "se", "ci_lower", "ci_upper")
+    c(
+      "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
+      "loghr", "se", "ci_lower", "ci_upper"
+    )
   )
 })

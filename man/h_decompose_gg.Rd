@@ -18,7 +18,6 @@ idem for the x-axis (\code{xaxis}, \code{xlab}),
 the legend (\code{guide}).
 }
 \examples{
-
 \dontrun{
 library(scda)
 library(dplyr)

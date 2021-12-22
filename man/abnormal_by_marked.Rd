@@ -105,10 +105,12 @@ library(dplyr)
 
 df <- data.frame(
   USUBJID = as.character(c(rep(1, 5), rep(2, 5), rep(1, 5), rep(2, 5))),
-  ARMCD = factor(c(rep("ARM A", 5), rep("ARM B", 5), rep("ARM A", 5),rep("ARM B", 5))),
-  ANRIND = factor(c("NORMAL", "HIGH", "HIGH", "HIGH HIGH","HIGH",
-  "HIGH", "HIGH", "HIGH HIGH", "NORMAL", "HIGH HIGH", "NORMAL", "LOW", "LOW", "LOW LOW","LOW",
-  "LOW", "LOW", "LOW LOW", "NORMAL", "LOW LOW")),
+  ARMCD = factor(c(rep("ARM A", 5), rep("ARM B", 5), rep("ARM A", 5), rep("ARM B", 5))),
+  ANRIND = factor(c(
+    "NORMAL", "HIGH", "HIGH", "HIGH HIGH", "HIGH",
+    "HIGH", "HIGH", "HIGH HIGH", "NORMAL", "HIGH HIGH", "NORMAL", "LOW", "LOW", "LOW LOW", "LOW",
+    "LOW", "LOW", "LOW LOW", "NORMAL", "LOW LOW"
+  )),
   ONTRTFL = rep(c("", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y"), 2),
   PARAMCD = factor(c(rep("CRP", 10), rep("ALT", 10))),
   AVALCAT1 = factor(rep(c("", "", "", "SINGLE", "REPLICATED", "", "", "LAST", "", "SINGLE"), 2)),
@@ -116,18 +118,19 @@ df <- data.frame(
 )
 
 df <- df \%>\%
-mutate(abn_dir = factor(case_when(
-  ANRIND == "LOW LOW" ~ "Low",
-  ANRIND == "HIGH HIGH" ~ "High",
-  TRUE ~ ""
+  mutate(abn_dir = factor(case_when(
+    ANRIND == "LOW LOW" ~ "Low",
+    ANRIND == "HIGH HIGH" ~ "High",
+    TRUE ~ ""
   ),
   levels = c("Low", "High")
- )
-)
+  ))
 
 # Select only post-baseline records.
 df <- df \%>\% filter(ONTRTFL == "Y")
-df_crp <- df \%>\% filter(PARAMCD == "CRP") \%>\% droplevels()
+df_crp <- df \%>\%
+  filter(PARAMCD == "CRP") \%>\%
+  droplevels()
 full_parent_df <- list(df_crp, "not_needed")
 cur_col_subset <- list(rep(TRUE, nrow(df_crp)), "not_needed")
 spl_context <- data.frame(
@@ -137,25 +140,23 @@ spl_context <- data.frame(
 )
 
 s_count_abnormal_by_marked(
- df = df_crp \%>\% filter(abn_dir == "High"),
- .spl_context = spl_context,
- .var = "AVALCAT1",
- variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+  df = df_crp \%>\% filter(abn_dir == "High"),
+  .spl_context = spl_context,
+  .var = "AVALCAT1",
+  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 )
-
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
 afun(
- df = df_crp \%>\% filter(abn_dir == "High"),
- .spl_context = spl_context,
- variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
- )
-
+  df = df_crp \%>\% filter(abn_dir == "High"),
+  .spl_context = spl_context,
+  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+)
 
 map <- unique(
   df[df$abn_dir \%in\% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
-  ) \%>\%
+) \%>\%
   lapply(as.character) \%>\%
   as.data.frame() \%>\%
   arrange(PARAMCD, abn_dir)
@@ -165,17 +166,20 @@ basic_table() \%>\%
   split_rows_by("PARAMCD") \%>\%
   summarize_num_patients(
     var = "USUBJID",
-    .stats = "unique_count") \%>\%
+    .stats = "unique_count"
+  ) \%>\%
   split_rows_by(
     "abn_dir",
-    split_fun = trim_levels_to_map(map)) \%>\%
+    split_fun = trim_levels_to_map(map)
+  ) \%>\%
   count_abnormal_by_marked(
     var = "AVALCAT1",
     variables = list(
       id = "USUBJID",
       param = "PARAMCD",
-      direction = "abn_dir")
-    ) \%>\%
+      direction = "abn_dir"
+    )
+  ) \%>\%
   build_table(df = df)
 
 
@@ -184,17 +188,19 @@ basic_table() \%>\%
   split_rows_by("PARAMCD") \%>\%
   summarize_num_patients(
     var = "USUBJID",
-    .stats = "unique_count") \%>\%
+    .stats = "unique_count"
+  ) \%>\%
   split_rows_by(
     "abn_dir",
-    split_fun = trim_levels_in_group("abn_dir")) \%>\%
+    split_fun = trim_levels_in_group("abn_dir")
+  ) \%>\%
   count_abnormal_by_marked(
     var = "AVALCAT1",
     variables = list(
       id = "USUBJID",
       param = "PARAMCD",
-      direction = "abn_dir")
-    ) \%>\%
+      direction = "abn_dir"
+    )
+  ) \%>\%
   build_table(df = df)
-
 }

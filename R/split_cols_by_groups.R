@@ -16,7 +16,6 @@
 #'   "Grade 5 (%)" = "5"
 #' )
 #' groups_list_to_df(grade_groups)
-#'
 groups_list_to_df <- function(groups_list) {
   assertthat::assert_that(
     utils.nest::is_fully_named_list(groups_list),
@@ -59,11 +58,9 @@ groups_list_to_df <- function(groups_list) {
 #'   add_colcounts() %>%
 #'   summarize_vars("AGE") %>%
 #'   build_table(DM)
-#'
 combine_groups <- function(fct,
                            ref = NULL,
                            collapse = "/") {
-
   assertthat::assert_that(
     (is.null(ref) || is_valid_character(ref)),
     is_character_or_factor(fct),
@@ -191,13 +188,11 @@ combine_groups <- function(fct,
 #'     }
 #'   ) %>%
 #'   build_table(DM)
-#'
 split_cols_by_groups <- function(lyt,
                                  var,
                                  groups_list = NULL,
                                  ref_group = NULL,
                                  ...) {
-
   if (is.null(groups_list)) {
     split_cols_by(
       lyt = lyt,
@@ -260,9 +255,7 @@ split_cols_by_groups <- function(lyt,
 #'   add_colcounts() %>%
 #'   summarize_vars("AGE") %>%
 #'   build_table(DM, col_counts = col_counts)
-#'
 combine_counts <- function(fct, groups_list = NULL) {
-
   assertthat::assert_that(is_character_or_factor(fct))
 
   fct <- as_factor_keep_attributes(fct)

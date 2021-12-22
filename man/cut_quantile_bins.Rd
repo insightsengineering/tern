@@ -52,5 +52,4 @@ ozone_binned <- cut_quantile_bins(airquality$Ozone)
 which(is.na(ozone_binned))
 # So you might want to make these explicit.
 explicit_na(ozone_binned)
-
 }

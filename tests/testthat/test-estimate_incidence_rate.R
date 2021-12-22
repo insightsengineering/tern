@@ -61,7 +61,8 @@ testthat::test_that("h_incidence_rate works as expected with healthy input", {
   result <- h_incidence_rate(
     200,
     2,
-    control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", time_unit_output = 100))
+    control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", time_unit_output = 100)
+  )
   expected <- list(
     rate = 1,
     rate_ci = c(0.3125199, 3.1997963)
@@ -127,10 +128,12 @@ testthat::test_that("estimate_incidence_rate works as expected with healthy inpu
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Total patient-years at risk", "Number of adverse events observed",
+    c(
+      "", "", "Total patient-years at risk", "Number of adverse events observed",
       "AE rate per 100 patient-years", "90% CI", "A", "(N=3)", "3.8",
       "1", "26.2", "(5.06, 135.73)", "B", "(N=3)", "5.2", "3", "57.23",
-      "(22.14, 147.94)"),
+      "(22.14, 147.94)"
+    ),
     .Dim = c(6L, 3L)
   )
 

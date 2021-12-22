@@ -23,7 +23,6 @@ NULL
 #' library(dplyr)
 #' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
 #' summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
-#'
 summary_numeric_in_cols <- function(x,
                                     labelstr = "",
                                     custom_label = NULL,
@@ -64,19 +63,21 @@ summary_numeric_in_cols <- function(x,
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
 #'   summarize_vars_numeric_in_cols(
-#'   var = "AGE",
-#'   .stats = c("n", "cv", "geom_mean", "mean_ci"),
-#'   .labels = c(n = "myN", cv = "myCV", geom_mean = "myGeomMean", mean_ci = "Mean (95%CI)"),
-#'   col_split = TRUE)
+#'     var = "AGE",
+#'     .stats = c("n", "cv", "geom_mean", "mean_ci"),
+#'     .labels = c(n = "myN", cv = "myCV", geom_mean = "myGeomMean", mean_ci = "Mean (95%CI)"),
+#'     col_split = TRUE
+#'   )
 #' result <- build_table(lyt = lyt, df = ADPC)
 #' result
 #'
 #' lyt <- basic_table() %>%
 #'   summarize_vars_numeric_in_cols(
-#'   var = "AGE",
-#'   col_split = TRUE,
-#'   custom_label = "some custom label")
-#'   result <- build_table(lyt, df = ADPC)
+#'     var = "AGE",
+#'     col_split = TRUE,
+#'     custom_label = "some custom label"
+#'   )
+#' result <- build_table(lyt, df = ADPC)
 #' result
 #'
 #' # PKPT03
@@ -84,7 +85,7 @@ summary_numeric_in_cols <- function(x,
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "PARAMUNIT", split_label = "PK Parameter", label_pos = "topleft") %>%
 #'   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
-#'   result <- build_table(lyt, df = ADPC)
+#' result <- build_table(lyt, df = ADPC)
 #' result
 #'
 #' # PKCT01FDS
@@ -93,9 +94,8 @@ summary_numeric_in_cols <- function(x,
 #'   split_rows_by(var = "VISIT", split_label = "Visit", label_pos = "topleft") %>%
 #'   split_rows_by(var = "NRELTM1", split_label = "Norminal time from first dose", label_pos = "topleft") %>%
 #'   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
-#'   result <- build_table(lyt, df = ADPC)
+#' result <- build_table(lyt, df = ADPC)
 #' result
-#'
 summarize_vars_numeric_in_cols <- function(lyt,
                                            var,
                                            ...,
@@ -105,25 +105,26 @@ summarize_vars_numeric_in_cols <- function(lyt,
                                              "sd",
                                              "se",
                                              "cv",
-                                             "geom_cv"),
+                                             "geom_cv"
+                                           ),
                                            .labels = c(
                                              n = "n",
                                              mean = "Mean",
                                              sd = "SD",
                                              se = "SE",
                                              cv = "CV (%)",
-                                             geom_cv = "CV % Geometric Mean"),
+                                             geom_cv = "CV % Geometric Mean"
+                                           ),
                                            .indent_mods = NULL,
                                            col_split = TRUE) {
-
-
   afun_list <- Map(
     function(stat) {
       make_afun(
-       summary_numeric_in_cols,
-       .stats = stat,
-       .formats = summary_formats()[names(summary_formats()) == stat])
-      },
+        summary_numeric_in_cols,
+        .stats = stat,
+        .formats = summary_formats()[names(summary_formats()) == stat]
+      )
+    },
     stat = .stats
   )
 
@@ -131,12 +132,14 @@ summarize_vars_numeric_in_cols <- function(lyt,
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = rep(var, length(.stats)),
-      varlabels = .labels[.stats])
+      varlabels = .labels[.stats]
+    )
   }
 
   summarize_row_groups(
     lyt = lyt,
     var = var,
     cfun = afun_list,
-    extra_args = list(...))
+    extra_args = list(...)
+  )
 }

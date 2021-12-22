@@ -4,7 +4,6 @@ library(scda)
 library(dplyr)
 
 preproc_adtte <- function(adtte) {
-
   anl <- adtte %>%
     dplyr::filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
     dplyr::mutate(
@@ -185,7 +184,6 @@ testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly"
 })
 
 testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced correctly", {
-
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -334,7 +332,7 @@ testthat::test_that("DORT01 variant 4 (modifying time point for the “xx durati
       "62", "53 (85.5%)", "", "11", "12", "11", "12", "7", "9 (14.5%)",
       "", "6.6", "(4.4, 9.2)", "3, 15.7", "0.2 to 39.6", "0.2 to 53.8",
       "", "28", "50.57", "(37.68, 63.46)"
-      ),
+    ),
     .Dim = c(21L, 4L)
   )
 

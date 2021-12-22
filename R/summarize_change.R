@@ -28,11 +28,10 @@ NULL
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
-#'
 s_change_from_baseline <- function(df,
                                    .var,
                                    variables,
-                                   na.rm = TRUE,  #nolint
+                                   na.rm = TRUE, # nolint
                                    ...) {
   assertthat::assert_that(
     is_df_with_variables(df, c(variables, list(chg = .var))),
@@ -63,7 +62,6 @@ s_change_from_baseline <- function(df,
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
-#'
 a_change_from_baseline <- make_afun(
   s_change_from_baseline,
   .formats = c(
@@ -100,7 +98,7 @@ a_change_from_baseline <- make_afun(
 #'   AVISIT = rep(paste0("V", 1:3), 6),
 #'   ARM = rep(LETTERS[1:3], rep(6, 3)),
 #'   AVAL = c(9:1, rep(NA, 9))
-#'   ) %>%
+#' ) %>%
 #'   mutate(ABLFLL = AVISIT == "V1") %>%
 #'   group_by(USUBJID) %>%
 #'   mutate(
@@ -114,7 +112,6 @@ a_change_from_baseline <- make_afun(
 #'   split_rows_by("AVISIT") %>%
 #'   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
 #'   build_table(dta_test)
-#'
 #' \dontrun{
 #' Viewer(results)
 #' }

@@ -90,14 +90,11 @@ an additional layer on top of \code{count_cumulative} specifically for missed do
 set.seed(1)
 x <- c(sample(1:10, 10), NA)
 s_count_nonmissing(x)
-
 s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
-
 #  We need to ungroup `count_fraction` first so that the rtables formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
 afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
-
 library(dplyr)
 library(scda)
 adex <- synthetic_cdisc_data("latest")$adex
@@ -115,5 +112,4 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") \%>\%
   build_table(anl, alt_counts_df = adsl)
-
 }

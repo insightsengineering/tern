@@ -61,15 +61,16 @@ h_set_nest_theme <- function(font_size) {
 #'   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
 #'   slice(1:36)
 #'
-#' p <- h_g_ipp(df = adlb,
-#'              xvar = "AVISIT",
-#'              yvar = "AVAL",
-#'              xlab = "Visit",
-#'              id_var = "USUBJID",
-#'              ylab = "SGOT/ALT (U/L)",
-#'              add_baseline_hline = TRUE)
+#' p <- h_g_ipp(
+#'   df = adlb,
+#'   xvar = "AVISIT",
+#'   yvar = "AVAL",
+#'   xlab = "Visit",
+#'   id_var = "USUBJID",
+#'   ylab = "SGOT/ALT (U/L)",
+#'   add_baseline_hline = TRUE
+#' )
 #' p
-#'
 h_g_ipp <- function(df,
                     xvar,
                     yvar,
@@ -111,11 +112,10 @@ h_g_ipp <- function(df,
       y = ylab,
       title = title,
       subtitle = subtitle
-      ) +
+    ) +
     ggtheme
 
   if (add_baseline_hline) {
-
     baseline_df <- df[, c(id_var, yvar_baseline)]
     baseline_df <- unique(baseline_df)
 
@@ -128,7 +128,7 @@ h_g_ipp <- function(df,
         ),
         linetype = "dotdash",
         size = 0.4
-      )  +
+      ) +
       ggplot2::geom_text(
         data = baseline_df,
         mapping = ggplot2::aes_string(
@@ -156,17 +156,18 @@ h_g_ipp <- function(df,
 #' @export
 #' @examples
 #'
-#' plot_list <- g_ipp(df = adlb,
-#'            xvar = "AVISIT",
-#'            yvar = "AVAL",
-#'            xlab = "Visit" ,
-#'            ylab = "SGOT/ALT (U/L)",
-#'            title = "Individual Patient Plots",
-#'            add_baseline_hline = TRUE,
-#'            plotting_choices = "split_by_max_obs",
-#'            max_obs_per_plot = 5)
+#' plot_list <- g_ipp(
+#'   df = adlb,
+#'   xvar = "AVISIT",
+#'   yvar = "AVAL",
+#'   xlab = "Visit",
+#'   ylab = "SGOT/ALT (U/L)",
+#'   title = "Individual Patient Plots",
+#'   add_baseline_hline = TRUE,
+#'   plotting_choices = "split_by_max_obs",
+#'   max_obs_per_plot = 5
+#' )
 #' plot_list
-#'
 g_ipp <- function(df,
                   xvar,
                   yvar,
@@ -180,7 +181,6 @@ g_ipp <- function(df,
                   ggtheme = h_set_nest_theme(10),
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
                   max_obs_per_plot = 4) {
-
   assertthat::assert_that(
     assertthat::is.count(max_obs_per_plot),
     plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
@@ -189,7 +189,6 @@ g_ipp <- function(df,
   plotting_choices <- match.arg(plotting_choices)
 
   if (plotting_choices == "all_in_one") {
-
     p <- h_g_ipp(
       df = df,
       xvar = xvar,
@@ -205,22 +204,21 @@ g_ipp <- function(df,
     )
 
     return(p)
-
   } else if (plotting_choices == "split_by_max_obs") {
     id_vec <- unique(df[[id_var]])
     id_list <- split(
       id_vec,
       rep(1:ceiling(length(id_vec) / max_obs_per_plot),
-          each = max_obs_per_plot,
-          length.out = length(id_vec)
-          )
+        each = max_obs_per_plot,
+        length.out = length(id_vec)
       )
+    )
 
     df_list <- list()
     plot_list <- list()
 
     for (i in seq_along(id_list)) {
-      df_list[[i]] <-  df[df[[id_var]] %in% id_list[[i]], ]
+      df_list[[i]] <- df[df[[id_var]] %in% id_list[[i]], ]
 
       plots <- h_g_ipp(
         df = df_list[[i]],
@@ -257,7 +255,8 @@ g_ipp <- function(df,
           yvar_baseline = yvar_baseline,
           ggtheme = ggtheme
         )
-      })
+      }
+    )
 
     return(plot_list)
   }

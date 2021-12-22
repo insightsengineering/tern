@@ -254,22 +254,15 @@ mod2 <- fit_logistic(
     interaction = "AGE"
   )
 )
-
 h_glm_simple_term_extract("AGE", mod1)
 h_glm_simple_term_extract("ARMCD", mod1)
-
 h_glm_interaction_extract("ARMCD:AGE", mod2)
-
 h_glm_inter_term_extract("AGE", "ARMCD", mod2)
-
 h_logistic_simple_terms("AGE", mod1)
-
 h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
-
 library(broom)
 df <- tidy(mod1, conf_level = 0.99)
 df2 <- tidy(mod2, conf_level = 0.99)
-
 result1 <- basic_table() \%>\%
   summarize_logistic(conf_level = 0.95) \%>\%
   build_table(df = df)
@@ -279,5 +272,4 @@ result2 <- basic_table() \%>\%
   summarize_logistic(conf_level = 0.95) \%>\%
   build_table(df = df2)
 result2
-
 }

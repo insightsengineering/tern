@@ -13,8 +13,10 @@ testthat::test_that("d_onco_rsp_label describe label with x being a factor", {
   a <- factor(c("CR", "SD", "PR", "PD", "NE"))
   result <- d_onco_rsp_label(a)
   expected <- factor(
-    c(CR = "Complete Response (CR)", SD = "Stable Disease (SD)", PR = "Partial Response (PR)",
-      PD = "Progressive Disease (PD)", NE = "Not Evaluable (NE)")
+    c(
+      CR = "Complete Response (CR)", SD = "Stable Disease (SD)", PR = "Partial Response (PR)",
+      PD = "Progressive Disease (PD)", NE = "Not Evaluable (NE)"
+    )
   )
   testthat::expect_identical(result, expected)
 })

@@ -142,7 +142,8 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
     tidyr::pivot_wider(
       id_cols = c(STUDYID, USUBJID, ARM),
       names_from = PARAMCD,
-      values_from = AVAL) %>%
+      values_from = AVAL
+    ) %>%
     dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
     var_relabel(
       TDOSE = "Total dose administered",
@@ -249,7 +250,8 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
     tidyr::pivot_wider(
       id_cols = c(STUDYID, USUBJID, ARM),
       names_from = PARAMCD,
-      values_from = AVAL) %>%
+      values_from = AVAL
+    ) %>%
     dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
     var_relabel(
       TDOSE = "Total dose administered",
@@ -275,7 +277,8 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Treatment duration (days)", "n", "Mean (SD)",
+    c(
+      "", "", "Treatment duration (days)", "n", "Mean (SD)",
       "Median", "Min - Max", "Treatment duration (days)", "n", "0 - 30",
       "31 - 60", "61 - 90", ">= 91", "Total dose administered", "n",
       "Mean (SD)", "Median", "Min - Max", "Total number of doses administered",
@@ -294,7 +297,8 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
       "15 (20%)", "14 (18.7%)", "18 (24%)", "28 (37.3%)", "", "75",
       "6982.4 (1272.5)", "7200", "4320 - 9360", "", "75", "7 (0)",
       "7", "7 - 7", "", "75", "73 (55.3%)", "59 (44.7%)", "37 (28%)",
-      "16 (12.1%)"),
+      "16 (12.1%)"
+    ),
     .Dim = c(29L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

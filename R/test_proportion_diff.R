@@ -25,19 +25,20 @@ NULL
 #' B <- 20
 #' set.seed(1)
 #' rsp <- c(
-#'   sample(c(TRUE, FALSE), size = A, prob = c(3/4, 1/4), replace = TRUE),
-#'   sample(c(TRUE, FALSE), size = A, prob = c(1/2, 1/2), replace = TRUE)
+#'   sample(c(TRUE, FALSE), size = A, prob = c(3 / 4, 1 / 4), replace = TRUE),
+#'   sample(c(TRUE, FALSE), size = A, prob = c(1 / 2, 1 / 2), replace = TRUE)
 #' )
 #' grp <- c(rep("A", A), rep("B", B))
 #' tbl <- table(grp, rsp)
 #'
 #' ## Chi-Squared test
 #' prop_chisq(tbl)
-#'
 prop_chisq <- function(tbl) {
   assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
-  if (any(colSums(tbl) == 0)) return(1)
+  if (any(colSums(tbl) == 0)) {
+    return(1)
+  }
   stats::prop.test(tbl, correct = FALSE)$p.value
 }
 
@@ -61,9 +62,7 @@ prop_chisq <- function(tbl) {
 #'
 #' ## Cochran-Mantel-Haenszel test
 #' prop_cmh(tbl)
-#'
 prop_cmh <- function(ary) {
-
   assertthat::assert_that(
     is.array(ary),
     ncol(ary) == 2, nrow(ary) == 2,
@@ -89,12 +88,13 @@ prop_cmh <- function(ary) {
 #'
 #' ## Chi-Squared test + Schouten correction.
 #' prop_schouten(tbl)
-#'
 prop_schouten <- function(tbl) {
   assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
 
   tbl <- tbl[, c("TRUE", "FALSE")]
-  if (any(colSums(tbl) == 0)) return(1)
+  if (any(colSums(tbl) == 0)) {
+    return(1)
+  }
 
   n <- sum(tbl)
   n1 <- sum(tbl[1, ])
@@ -121,7 +121,6 @@ prop_schouten <- function(tbl) {
 #'
 #' ## Fisher's exact test
 #' prop_fisher(tbl)
-#'
 prop_fisher <- function(tbl) {
   assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
@@ -160,14 +159,12 @@ prop_fisher <- function(tbl) {
 #'   variables = list(strata = "strat"),
 #'   method = "cmh"
 #' )
-#'
 s_test_proportion_diff <- function(df,
                                    .var,
                                    .ref_group,
                                    .in_ref_col,
                                    variables = list(strata = NULL),
                                    method = c("chisq", "schouten", "fisher", "cmh")) {
-
   method <- match.arg(method)
   y <- list(pval = "")
 
@@ -196,14 +193,12 @@ s_test_proportion_diff <- function(df,
       strata <- c(interaction(.ref_group[strata]), interaction(df[strata]))
     }
 
-    tbl <- switch(
-      method,
+    tbl <- switch(method,
       cmh = table(grp, rsp, strata),
       table(grp, rsp)
     )
 
-    y$pval <- switch(
-      method,
+    y$pval <- switch(method,
       chisq = prop_chisq(tbl),
       cmh = prop_cmh(tbl),
       fisher = prop_fisher(tbl),
@@ -226,8 +221,7 @@ s_test_proportion_diff <- function(df,
 #'
 d_test_proportion_diff <- function(method) {
   assertthat::assert_that(assertthat::is.string(method))
-  meth_part <- switch(
-    method,
+  meth_part <- switch(method,
     "schouten" = "Chi-Squared Test with Schouten Correction",
     "chisq" = "Chi-Squared Test",
     "cmh" = "Cochran-Mantel-Haenszel Test",
@@ -250,7 +244,6 @@ d_test_proportion_diff <- function(method) {
 #'   variables = list(strata = "strat"),
 #'   method = "cmh"
 #' )
-#'
 a_test_proportion_diff <- make_afun(
   s_test_proportion_diff,
   .formats = c(pval = "x.xxxx | (<0.0001)"),
@@ -267,14 +260,13 @@ a_test_proportion_diff <- make_afun(
 #'
 #' # With rtables pipelines.
 #' l <- basic_table() %>%
-#' split_cols_by(var = "grp", ref_group = "B") %>%
+#'   split_cols_by(var = "grp", ref_group = "B") %>%
 #'   test_proportion_diff(
 #'     vars = "rsp",
 #'     method = "cmh", variables = list(strata = "strat")
 #'   )
 #'
 #' build_table(l, df = dta)
-#'
 test_proportion_diff <- function(lyt,
                                  vars,
                                  ...,

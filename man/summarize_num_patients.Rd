@@ -87,11 +87,12 @@ function \code{\link[=s_num_patients_content]{s_num_patients_content()}} and des
 \examples{
 # Use the statistics function to count number of unique and nonunique patients.
 s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)), labelstr = "", .N_col = 6L)
-s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)),
-               labelstr = "",
-               .N_col = 6L,
-               count_by = as.character(c(1, 1, 2, 1, 1, 1))
-               )
+s_num_patients(
+  x = as.character(c(1, 1, 1, 2, 4, NA)),
+  labelstr = "",
+  .N_col = 6L,
+  count_by = as.character(c(1, 1, 2, 1, 1, 1))
+)
 # Count number of unique and non-unique patients.
 df <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA)),
@@ -105,5 +106,4 @@ df_by_event <- data.frame(
 )
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
-
 }

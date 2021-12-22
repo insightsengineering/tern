@@ -33,7 +33,6 @@
 #'
 #' # Reduce number of points to be used.
 #' control_step(num_points = 10)
-#'
 control_step <- function(biomarker = NULL,
                          use_percentile = TRUE,
                          bandwidth,

@@ -120,20 +120,25 @@ adlb_f <- adlb \%>\%
   filter(!AVISIT \%in\% c("SCREENING", "BASELINE")) \%>\%
   mutate(
     GRADE_DIR = factor(case_when(
-     ATOXGR \%in\% c("-1", "-2", "-3", "-4") ~ "LOW",
-     ATOXGR == "0" ~ "ZERO",
-     ATOXGR \%in\% c("1", "2", "3", "4") ~ "HIGH"),
-     levels = c("LOW", "ZERO", "HIGH")),
+      ATOXGR \%in\% c("-1", "-2", "-3", "-4") ~ "LOW",
+      ATOXGR == "0" ~ "ZERO",
+      ATOXGR \%in\% c("1", "2", "3", "4") ~ "HIGH"
+    ),
+    levels = c("LOW", "ZERO", "HIGH")
+    ),
     GRADE_ANL = fct_relevel(
-     fct_recode(ATOXGR,
-      `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
-       c("0", "1", "2", "3", "4")
-     )
-   ) \%>\%
+      fct_recode(ATOXGR,
+        `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"
+      ),
+      c("0", "1", "2", "3", "4")
+    )
+  ) \%>\%
   filter(WGRLOFL == "Y" | WGRHIFL == "Y") \%>\%
   droplevels()
 
-adlb_f_alt <- adlb_f \%>\% filter(PARAMCD == "ALT") \%>\% droplevels()
+adlb_f_alt <- adlb_f \%>\%
+  filter(PARAMCD == "ALT") \%>\%
+  droplevels()
 full_parent_df <- list(adlb_f_alt, "not_needed")
 cur_col_subset <- list(rep(TRUE, nrow(adlb_f_alt)), "not_needed")
 
@@ -149,19 +154,17 @@ s_count_abnormal_by_worst_grade(
   .spl_context = spl_context,
   .var = "GRADE_ANL"
 )
-
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 afun(df = adlb_f_alt, .spl_context = spl_context)
 
-
 # Map excludes records without abnormal grade since they should not be displayed
 # in the table.
 map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) \%>\%
- lapply(as.character) \%>\%
- as.data.frame() \%>\%
- arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
+  lapply(as.character) \%>\%
+  as.data.frame() \%>\%
+  arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
 
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%
@@ -169,9 +172,7 @@ basic_table() \%>\%
   split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) \%>\%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
+    variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
   ) \%>\%
   build_table(df = adlb_f)
-
-
 }

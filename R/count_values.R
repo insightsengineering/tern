@@ -18,9 +18,9 @@ NULL
 #'
 s_count_values <- function(x,
                            values,
-                           na.rm = TRUE, #nolint
-                           .N_col, #nolint
-                           .N_row, #nolint
+                           na.rm = TRUE, # nolint
+                           .N_col, # nolint
+                           .N_row, # nolint
                            denom = c("n", "N_row", "N_col")) {
   UseMethod("s_count_values", x)
 }
@@ -35,10 +35,9 @@ s_count_values <- function(x,
 #' # `s_count_values.character`
 #' s_count_values(x = c("a", "b", "a"), values = "a")
 #' s_count_values(x = c("a", "b", "a", NA, NA), values = "b", na.rm = FALSE)
-#'
 s_count_values.character <- function(x,
                                      values = "Y",
-                                     na.rm = TRUE, #nolint
+                                     na.rm = TRUE, # nolint
                                      ...) {
   assertthat::assert_that(
     is.character(values)
@@ -62,7 +61,6 @@ s_count_values.character <- function(x,
 #' @examples
 #' # `s_count_values.factor`
 #' s_count_values(x = factor(c("a", "b", "a")), values = "a")
-#'
 s_count_values.factor <- function(x,
                                   values = "Y",
                                   ...) {
@@ -76,10 +74,8 @@ s_count_values.factor <- function(x,
 #' @order 5
 #'
 #' @examples
-#'  # `s_count_values.logical`
-#'  s_count_values(x = c(TRUE, FALSE, TRUE))
-#'
-#'
+#' # `s_count_values.logical`
+#' s_count_values(x = c(TRUE, FALSE, TRUE))
 s_count_values.logical <- function(x, values = TRUE, ...) {
   assertthat::assert_that(is.logical(values))
   s_count_values(as.character(x), values = as.character(values), ...)
@@ -93,7 +89,6 @@ s_count_values.logical <- function(x, values = TRUE, ...) {
 #' @examples
 #' # `a_count_values`
 #' a_count_values(x = factor(c("a", "b", "a")), values = "a", .N_col = 10, .N_row = 10)
-#'
 a_count_values <- make_afun(
   s_count_values,
   .formats = c(count_fraction = "xx (xx.xx%)", count = "xx")
@@ -115,7 +110,6 @@ a_count_values <- make_afun(
 #' basic_table() %>%
 #'   count_values("Species", values = "setosa") %>%
 #'   build_table(iris)
-#'
 count_values <- function(lyt,
                          vars,
                          values,

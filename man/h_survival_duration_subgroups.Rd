@@ -114,14 +114,12 @@ adtte_f <- adtte \%>\%
     is_event = "Event Flag"
   )
 
-
 # Extract median survival time for one group.
 h_survtime_df(
   tte = adtte_f$AVAL,
   is_event = adtte_f$is_event,
   arm = adtte_f$ARM
 )
-
 
 # Extract median survival time for multiple groups.
 h_survtime_subgroups_df(
@@ -152,13 +150,11 @@ h_survtime_subgroups_df(
   )
 )
 
-
 # Extract hazard ratio for one group.
 h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
 
 # Extract hazard ratio for one group with stratification factor.
 h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
-
 
 # Extract hazard ratio for multiple groups.
 h_coxph_subgroups_df(
@@ -197,8 +193,7 @@ h_coxph_subgroups_df(
     arm = "ARM",
     subgroups = c("SEX", "BMRKR2"),
     strat = c("STRATA1", "STRATA2")
-   ),
+  ),
   data = adtte_f
 )
-
 }

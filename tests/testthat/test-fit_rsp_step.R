@@ -1,7 +1,7 @@
 library(scda)
 
 raw_data <- local({
-  adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs #nolint
+  adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs # nolint
   adrs %>%
     dplyr::filter(
       PARAMCD == "BESRSPI",
@@ -31,9 +31,11 @@ testthat::test_that("fit_rsp_step works as expected with default options", {
   testthat::expect_identical(ncol(result), 11L)
   testthat::expect_identical(
     colnames(result),
-    c("Percentile Center", "Percentile Lower", "Percentile Upper",
+    c(
+      "Percentile Center", "Percentile Lower", "Percentile Upper",
       "Interval Center", "Interval Lower", "Interval Upper", "n",
-      "logor", "se", "ci_lower", "ci_upper")
+      "logor", "se", "ci_lower", "ci_upper"
+    )
   )
 })
 
@@ -61,8 +63,10 @@ testthat::test_that("fit_rsp_step works as expected with global model fit", {
   testthat::expect_identical(ncol(result), 8L)
   testthat::expect_identical(
     colnames(result),
-    c("Interval Center", "Interval Lower", "Interval Upper", "n",
-      "logor", "se", "ci_lower", "ci_upper")
+    c(
+      "Interval Center", "Interval Lower", "Interval Upper", "n",
+      "logor", "se", "ci_lower", "ci_upper"
+    )
   )
 })
 
@@ -84,8 +88,10 @@ testthat::test_that("fit_rsp_step works as expected with strata", {
   testthat::expect_identical(ncol(result), 11L)
   testthat::expect_identical(
     colnames(result),
-    c("Percentile Center", "Percentile Lower", "Percentile Upper",
+    c(
+      "Percentile Center", "Percentile Lower", "Percentile Upper",
       "Interval Center", "Interval Lower", "Interval Upper", "n",
-      "logor", "se", "ci_lower", "ci_upper")
+      "logor", "se", "ci_lower", "ci_upper"
+    )
   )
 })

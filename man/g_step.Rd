@@ -87,5 +87,4 @@ step_matrix <- fit_rsp_step(
 )
 step_data <- broom::tidy(step_matrix)
 g_step(step_data)
-
 }

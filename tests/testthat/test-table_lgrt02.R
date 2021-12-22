@@ -6,8 +6,12 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
-adsl_cached <- adsl %>% dplyr::filter(SEX %in% c("F", "M")) %>% reapply_varlabels(var_labels(adsl))
-adrs_cached <- adrs %>% dplyr::filter(SEX %in% c("F", "M")) %>% reapply_varlabels(var_labels(adrs))
+adsl_cached <- adsl %>%
+  dplyr::filter(SEX %in% c("F", "M")) %>%
+  reapply_varlabels(var_labels(adsl))
+adrs_cached <- adrs %>%
+  dplyr::filter(SEX %in% c("F", "M")) %>%
+  reapply_varlabels(var_labels(adrs))
 
 
 get_adrs <- function() {
@@ -27,7 +31,7 @@ get_adrs <- function() {
         )
       )
     )
-  var_labels(adrs_f) <- c(var_labels(adrs_cached), Response = "Response")  #nolint
+  var_labels(adrs_f) <- c(var_labels(adrs_cached), Response = "Response") # nolint
   adrs_f
 }
 
@@ -45,7 +49,8 @@ testthat::test_that("LGRT02 without interaction term is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Planned Arm Code", "Reference ARM A, n = 134",
+    c(
+      "", "Planned Arm Code", "Reference ARM A, n = 134",
       "ARM B, n = 134", "ARM C, n = 132", "Sex", "Reference M, n = 169",
       "F, n = 231", "Race", "Reference AMERICAN INDIAN OR ALASKA NATIVE, n = 25",
       "ASIAN, n = 208", "BLACK OR AFRICAN AMERICAN, n = 91", "WHITE, n = 74",
@@ -62,7 +67,8 @@ testthat::test_that("LGRT02 without interaction term is produced correctly", {
       "", "", "(0.00, >999.99)", "(0.00, >999.99)", "(0.00, >999.99)",
       "(0.00, >999.99)", "(0.00, >999.99)", "", "(0.97, 1.19)", "p-value",
       "0.0346", "", "0.0461", "0.9499", "", "", "0.6032", "0.9685",
-      "", "0.9936", "0.9940", "0.9937", "1.0000", "0.9999", "", "0.1866"),
+      "", "0.9936", "0.9940", "0.9937", "1.0000", "0.9999", "", "0.1866"
+    ),
     .Dim = c(17L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -87,7 +93,8 @@ testthat::test_that("LGRT02 with categorical interaction is produced correctly",
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Age", "Age", "Planned Arm Code", "Reference ARM A, n = 134",
+    c(
+      "", "Age", "Age", "Planned Arm Code", "Reference ARM A, n = 134",
       "ARM B, n = 134", "Sex", "F", "M", "ARM C, n = 132", "Sex", "F",
       "M", "Sex", "Reference M, n = 169", "F, n = 231", "Planned Arm Code",
       "ARM A", "ARM B", "ARM C", "Interaction of Planned Arm Code * Sex",
@@ -105,7 +112,8 @@ testthat::test_that("LGRT02 with categorical interaction is produced correctly",
       "(0.00, >999.99)", "", "", "", "", "(0.00, >999.99)", "(0.29, 6.59)",
       "(0.00, >999.99)", "", "", "", "", "p-value", "", "0.2084", "0.4882",
       "", "0.9940", "", "", "", "0.9944", "", "", "", "", "", "0.9946",
-      "", "", "", "", "0.9999", "", "0.9945", "0.9918"),
+      "", "", "", "", "0.9999", "", "0.9945", "0.9918"
+    ),
     .Dim = c(24L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -130,26 +138,28 @@ testthat::test_that("LGRT02 with continuous interaction is produced correctly", 
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Sex", "Reference M, n = 169", "F, n = 231",
+    c(
+      "", "Sex", "Reference M, n = 169", "F, n = 231",
       "Planned Arm Code", "Reference ARM A, n = 134", "ARM B, n = 134",
-       "Age", "18", "65", "ARM C, n = 132", "Age", "18", "65", "Age",
-       "Age", "Planned Arm Code", "ARM A", "ARM B", "ARM C", "Interaction of Planned Arm Code * Age",
-       "Reference ARM A, n = 134", "ARM B, n = 134", "ARM C, n = 132",
-       "Degrees of Freedom", "", "", "1", "2", "", "1", "", "", "",
-       "1", "", "", "", "", "1", "", "", "", "", "2", "", "1", "1",
-       "Parameter Estimate", "", "", "0.381", "", "", "20.02", "", "",
-       "", "15.622", "", "", "", "", "0.877", "", "", "", "", "", "",
-       "-0.849", "-0.636", "Standard Error", "", "", "0.71", "", "",
-       "13.714", "", "", "", "14.81", "", "", "", "", "0.581", "", "",
-       "", "", "", "", "0.583", "0.618", "Odds Ratio", "", "", "1.46",
-       "", "", "", "", "113.59", "0", "", "", "64.74", "0", "", "",
-       "", "2.4", "1.03", "1.27", "", "", "", "", "Wald 95% CI", "",
-       "", "(0.36, 5.88)", "", "", "", "", "(0.14, >999.99)", "(<0.01, >999.99)",
-       "", "", "(0.03, >999.99)", "(<0.01, >999.99)", "", "", "", "(0.77, 7.50)",
-       "(0.93, 1.14)", "(0.84, 1.93)", "", "", "", "", "p-value", "",
-       "", "0.5915", "0.2768", "", "0.1443", "", "", "", "0.2915", "",
-       "", "", "", "0.1309", "", "", "", "", "0.2213", "", "0.1449",
-       "0.3034"),
+      "Age", "18", "65", "ARM C, n = 132", "Age", "18", "65", "Age",
+      "Age", "Planned Arm Code", "ARM A", "ARM B", "ARM C", "Interaction of Planned Arm Code * Age",
+      "Reference ARM A, n = 134", "ARM B, n = 134", "ARM C, n = 132",
+      "Degrees of Freedom", "", "", "1", "2", "", "1", "", "", "",
+      "1", "", "", "", "", "1", "", "", "", "", "2", "", "1", "1",
+      "Parameter Estimate", "", "", "0.381", "", "", "20.02", "", "",
+      "", "15.622", "", "", "", "", "0.877", "", "", "", "", "", "",
+      "-0.849", "-0.636", "Standard Error", "", "", "0.71", "", "",
+      "13.714", "", "", "", "14.81", "", "", "", "", "0.581", "", "",
+      "", "", "", "", "0.583", "0.618", "Odds Ratio", "", "", "1.46",
+      "", "", "", "", "113.59", "0", "", "", "64.74", "0", "", "",
+      "", "2.4", "1.03", "1.27", "", "", "", "", "Wald 95% CI", "",
+      "", "(0.36, 5.88)", "", "", "", "", "(0.14, >999.99)", "(<0.01, >999.99)",
+      "", "", "(0.03, >999.99)", "(<0.01, >999.99)", "", "", "", "(0.77, 7.50)",
+      "(0.93, 1.14)", "(0.84, 1.93)", "", "", "", "", "p-value", "",
+      "", "0.5915", "0.2768", "", "0.1443", "", "", "", "0.2915", "",
+      "", "", "", "0.1309", "", "", "", "", "0.2213", "", "0.1449",
+      "0.3034"
+    ),
     .Dim = c(24L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -174,24 +184,26 @@ testthat::test_that("LGRT02 with setting values indicating an event and custom a
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Planned Arm Code", "Reference ARM A, n = 134",
+    c(
+      "", "Planned Arm Code", "Reference ARM A, n = 134",
       "ARM B, n = 134", "ARM C, n = 132", "Sex", "Reference M, n = 169",
-       "F, n = 231", "Age", "Age", "Race", "Reference AMERICAN INDIAN OR ALASKA NATIVE, n = 25",
-       "ASIAN, n = 208", "BLACK OR AFRICAN AMERICAN, n = 91", "WHITE, n = 74",
-       "MULTIPLE, n = 1", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER, n = 1",
-       "Degrees of Freedom", "2", "", "1", "1", "", "", "1", "", "1",
-       "5", "", "1", "1", "1", "1", "1", "Parameter Estimate", "", "",
-       "2.162", "0.09", "", "", "-0.364", "", "-0.071", "", "", "16.246",
-       "15.205", "15.955", "0.363", "-1.036", "Standard Error", "",
-       "", "1.084", "1.426", "", "", "0.701", "", "0.053", "", "", "2017.122",
-       "2017.122", "2017.122", "10941.553", "10941.553", "Odds Ratio",
-       "", "", "8.69", "1.09", "", "", "0.69", "", "0.93", "", "", ">999.99",
-       ">999.99", ">999.99", "1.44", "0.35", "Wald 90% CI", "", "",
-       "(1.46, 51.66)", "(0.10, 11.43)", "", "", "(0.22, 2.20)", "",
-       "(0.85, 1.02)", "", "", "(0.00, >999.99)", "(0.00, >999.99)",
-       "(0.00, >999.99)", "(0.00, >999.99)", "(0.00, >999.99)", "p-value",
-       "0.0346", "", "0.0461", "0.9499", "", "", "0.6032", "", "0.1866",
-       "0.9685", "", "0.9936", "0.9940", "0.9937", "1.0000", "0.9999"),
+      "F, n = 231", "Age", "Age", "Race", "Reference AMERICAN INDIAN OR ALASKA NATIVE, n = 25",
+      "ASIAN, n = 208", "BLACK OR AFRICAN AMERICAN, n = 91", "WHITE, n = 74",
+      "MULTIPLE, n = 1", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER, n = 1",
+      "Degrees of Freedom", "2", "", "1", "1", "", "", "1", "", "1",
+      "5", "", "1", "1", "1", "1", "1", "Parameter Estimate", "", "",
+      "2.162", "0.09", "", "", "-0.364", "", "-0.071", "", "", "16.246",
+      "15.205", "15.955", "0.363", "-1.036", "Standard Error", "",
+      "", "1.084", "1.426", "", "", "0.701", "", "0.053", "", "", "2017.122",
+      "2017.122", "2017.122", "10941.553", "10941.553", "Odds Ratio",
+      "", "", "8.69", "1.09", "", "", "0.69", "", "0.93", "", "", ">999.99",
+      ">999.99", ">999.99", "1.44", "0.35", "Wald 90% CI", "", "",
+      "(1.46, 51.66)", "(0.10, 11.43)", "", "", "(0.22, 2.20)", "",
+      "(0.85, 1.02)", "", "", "(0.00, >999.99)", "(0.00, >999.99)",
+      "(0.00, >999.99)", "(0.00, >999.99)", "(0.00, >999.99)", "p-value",
+      "0.0346", "", "0.0461", "0.9499", "", "", "0.6032", "", "0.1866",
+      "0.9685", "", "0.9936", "0.9940", "0.9937", "1.0000", "0.9999"
+    ),
     .Dim = c(17L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

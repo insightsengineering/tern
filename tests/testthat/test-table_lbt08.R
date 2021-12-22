@@ -4,14 +4,15 @@ library(dplyr)
 
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
-adlb <- adlb %>% dplyr::mutate(
-  GRADDR = dplyr::case_when(
-    PARAMCD == "ALT" ~ "B",
-    PARAMCD == "CRP" ~ "L",
-    PARAMCD == "IGA" ~ "H"
-  )
-) %>%
-dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+adlb <- adlb %>%
+  dplyr::mutate(
+    GRADDR = dplyr::case_when(
+      PARAMCD == "ALT" ~ "B",
+      PARAMCD == "CRP" ~ "L",
+      PARAMCD == "IGA" ~ "H"
+    )
+  ) %>%
+  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 testthat::test_that("LBT08 produce correctly", {
   df <- h_adlb_worsen(

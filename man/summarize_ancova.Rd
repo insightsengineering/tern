@@ -108,7 +108,6 @@ h_ancova(
   .df_row = iris,
   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 )
-
 library(scda)
 library(dplyr)
 
@@ -117,10 +116,10 @@ adqs <- synthetic_cdisc_data("latest")$adqs
 
 adqs_single <- adqs \%>\%
   filter(
-    AVISIT == "WEEK 1 DAY 8",  # single time point
-    PARAMCD == "FKSI-FWB"  # single end point
+    AVISIT == "WEEK 1 DAY 8", # single time point
+    PARAMCD == "FKSI-FWB" # single end point
   ) \%>\%
-  mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
+  mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
 
 df <- adqs_single \%>\%
   filter(ARMCD == "ARM B")
@@ -132,16 +131,14 @@ variables <- list(arm = "ARMCD", covariates = "SEX * AGE")
 conf_level <- 0.95
 
 s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
-
 a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
-
 
 adqs_single <- adqs \%>\%
   filter(
-    AVISIT == "WEEK 1 DAY 8",  # single time point
-    PARAMCD == "FKSI-FWB"  # single end point
+    AVISIT == "WEEK 1 DAY 8", # single time point
+    PARAMCD == "FKSI-FWB" # single end point
   ) \%>\%
-  mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
+  mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
 adqs_multi <- adqs \%>\%
   filter(AVISIT == "WEEK 1 DAY 8")
 
@@ -162,7 +159,6 @@ basic_table() \%>\%
     conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)"
   ) \%>\%
   build_table(adqs_single, alt_counts_df = adsl)
-
 \dontrun{
 basic_table() \%>\%
   split_cols_by("ARMCD", ref_group = "ARM A") \%>\%

@@ -36,12 +36,10 @@ NULL
 #' @export
 #' @examples
 #' control_incidence_rate(0.9, "exact", "month", 100)
-#'
 control_incidence_rate <- function(conf_level = 0.95,
                                    conf_type = c("normal", "normal_log", "exact", "byar"),
                                    time_unit_input = c("year", "day", "month"),
                                    time_unit_output = 1) {
-
   conf_type <- match.arg(conf_type)
   time_unit_input <- match.arg(time_unit_input)
   assertthat::assert_that(
@@ -55,7 +53,6 @@ control_incidence_rate <- function(conf_level = 0.95,
     time_unit_input = time_unit_input,
     time_unit_output = time_unit_output
   )
-
 }
 
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
@@ -65,11 +62,9 @@ control_incidence_rate <- function(conf_level = 0.95,
 #' @order 2
 #' @examples
 #' h_incidence_rate_normal(200, 2)
-#'
 h_incidence_rate_normal <- function(person_years,
                                     n_events,
                                     alpha = 0.05) {
-
   assertthat::assert_that(
     assertthat::is.number(person_years),
     assertthat::is.number(n_events),
@@ -81,7 +76,6 @@ h_incidence_rate_normal <- function(person_years,
   ci <- est + c(-1, 1) * stats::qnorm(1 - alpha / 2) * se
 
   list(rate = est, rate_ci = ci)
-
 }
 
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
@@ -91,11 +85,9 @@ h_incidence_rate_normal <- function(person_years,
 #' @order 2
 #' @examples
 #' h_incidence_rate_normal_log(200, 2)
-#'
 h_incidence_rate_normal_log <- function(person_years,
                                         n_events,
                                         alpha = 0.05) {
-
   assertthat::assert_that(
     assertthat::is.number(person_years),
     assertthat::is.number(n_events),
@@ -109,7 +101,6 @@ h_incidence_rate_normal_log <- function(person_years,
   ci <- exp(lrate_est + c(-1, 1) * stats::qnorm(1 - alpha / 2) * lrate_se)
 
   list(rate = rate_est, rate_ci = ci)
-
 }
 
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
@@ -118,11 +109,9 @@ h_incidence_rate_normal_log <- function(person_years,
 #' @order 2
 #' @examples
 #' h_incidence_rate_exact(200, 2)
-#'
 h_incidence_rate_exact <- function(person_years,
                                    n_events,
                                    alpha = 0.05) {
-
   assertthat::assert_that(
     assertthat::is.number(person_years),
     assertthat::is.number(n_events),
@@ -134,7 +123,6 @@ h_incidence_rate_exact <- function(person_years,
   ucl <- stats::qchisq(p = 1 - (alpha) / 2, df = 2 * n_events + 2) / (2 * person_years)
 
   list(rate = est, rate_ci = c(lcl, ucl))
-
 }
 
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
@@ -143,11 +131,9 @@ h_incidence_rate_exact <- function(person_years,
 #' @order 2
 #' @examples
 #' h_incidence_rate_byar(200, 2)
-#'
 h_incidence_rate_byar <- function(person_years,
                                   n_events,
                                   alpha = 0.05) {
-
   assertthat::assert_that(
     assertthat::is.number(person_years),
     assertthat::is.number(n_events),
@@ -162,7 +148,6 @@ h_incidence_rate_byar <- function(person_years,
   ucl <- seg_1 * ((seg_2 + seg_3)^3) / person_years
 
   list(rate = est, rate_ci = c(lcl, ucl))
-
 }
 
 #' @describeIn incidence_rate incidence_rate helper function to estimate the incidence rate and
@@ -178,16 +163,14 @@ h_incidence_rate_byar <- function(person_years,
 #'   control_incidence_rate(
 #'     conf_level = 0.9,
 #'     conf_type = "normal_log",
-#'     time_unit_output = 100)
+#'     time_unit_output = 100
+#'   )
 #' )
-#'
 h_incidence_rate <- function(person_years,
                              n_events,
                              control = control_incidence_rate()) {
-
   alpha <- 1 - control$conf_level
-  est <- switch(
-    control$conf_type,
+  est <- switch(control$conf_type,
     normal = h_incidence_rate_normal(person_years, n_events, alpha),
     normal_log = h_incidence_rate_normal_log(person_years, n_events, alpha),
     exact = h_incidence_rate_exact(person_years, n_events, alpha),
@@ -199,7 +182,6 @@ h_incidence_rate <- function(person_years,
     rate = est$rate * time_unit_output,
     rate_ci = est$rate_ci * time_unit_output
   )
-
 }
 
 #' @describeIn incidence_rate statistics function which estimates the incidence rate and the
@@ -233,15 +215,12 @@ h_incidence_rate <- function(person_years,
 #'     time_unit_output = 100
 #'   )
 #' )
-#'
 s_incidence_rate <- function(df,
                              .var,
                              n_events,
                              is_event,
                              control = control_incidence_rate()) {
-
   if (!missing(is_event)) {
-
     warning("argument is_event will be deprecated. Please use n_events.")
 
     if (missing(n_events)) {
@@ -254,7 +233,6 @@ s_incidence_rate <- function(df,
 
       n_events <- is_event
     }
-
   } else {
     assertthat::assert_that(
       is_df_with_variables(df, list(tte = .var, n_events = n_events)),
@@ -298,7 +276,6 @@ s_incidence_rate <- function(df,
 #'   n_events = "n_events",
 #'   control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
 #' )
-#'
 a_incidence_rate <- make_afun(
   s_incidence_rate,
   .formats = c(
@@ -326,7 +303,6 @@ a_incidence_rate <- make_afun(
 #'     )
 #'   ) %>%
 #'   build_table(df)
-#'
 estimate_incidence_rate <- function(lyt,
                                     vars,
                                     ...,

@@ -37,7 +37,6 @@
 #'     rsp = AVALC == "CR"
 #'   )
 #' var_labels(adrs_f) <- c(adrs_labels, "Response")
-#'
 NULL
 
 #' @describeIn response_subgroups prepares response rates and odds ratios for
@@ -77,14 +76,12 @@ NULL
 #'   )
 #' )
 #' df_grouped
-#'
 extract_rsp_subgroups <- function(variables,
                                   data,
                                   groups_lists = list(),
                                   conf_level = 0.95,
                                   method = NULL,
                                   label_all = "All Patients") {
-
   df_prop <- h_proportion_subgroups_df(
     variables,
     data,
@@ -108,17 +105,15 @@ extract_rsp_subgroups <- function(variables,
 #' @export
 #' @examples
 #' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
-#'
 a_response_subgroups <- function(.formats = list(
-  n = "xx",
-  n_rsp = "xx",
-  prop = "xx.x%",
-  n_tot = "xx",
-  or = list(format_extreme_values(2L)),
-  ci = list(format_extreme_values_ci(2L)),
-  pval = "x.xxxx | (<0.0001)")
-) {
-
+                                   n = "xx",
+                                   n_rsp = "xx",
+                                   prop = "xx.x%",
+                                   n_tot = "xx",
+                                   or = list(format_extreme_values(2L)),
+                                   ci = list(format_extreme_values_ci(2L)),
+                                   pval = "x.xxxx | (<0.0001)"
+                                 )) {
   assertthat::assert_that(
     is.list(.formats),
     all_elements_in_ref(
@@ -170,11 +165,9 @@ a_response_subgroups <- function(.formats = list(
 #'     df = df,
 #'     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
 #'   )
-#'
 tabulate_rsp_subgroups <- function(lyt,
                                    df,
                                    vars = c("n_tot", "n", "prop", "or", "ci")) {
-
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) {
     df$or$pval_label[1]
@@ -196,7 +189,6 @@ tabulate_rsp_subgroups <- function(lyt,
 
   # Columns from table_prop are optional.
   if (length(colvars_prop$vars) > 0) {
-
     lyt_prop <- split_cols_by(lyt = lyt, var = "arm")
     lyt_prop <- split_rows_by(
       lyt = lyt_prop,
@@ -216,7 +208,6 @@ tabulate_rsp_subgroups <- function(lyt,
     )
 
     if ("analysis" %in% df$prop$row_type) {
-
       lyt_prop <- split_rows_by(
         lyt = lyt_prop,
         var = "row_type",
@@ -233,7 +224,6 @@ tabulate_rsp_subgroups <- function(lyt,
     }
 
     table_prop <- build_table(lyt_prop, df = df$prop)
-
   } else {
     table_prop <- NULL
   }
@@ -306,7 +296,6 @@ tabulate_rsp_subgroups <- function(lyt,
 d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,
                                     method = NULL) {
-
   assertthat::assert_that(
     is.character(vars),
     all_elements_in_ref(c("n_tot", "or", "ci"), vars),
@@ -323,7 +312,6 @@ d_rsp_subgroups_colvars <- function(vars,
   colvars <- vars
 
   if ("ci" %in% colvars) {
-
     assertthat::assert_that(!is.null(conf_level))
 
     varlabels <- c(

@@ -66,12 +66,14 @@ lyt <- basic_table() \%>\%
     .stats = c("unique"),
     .labels = c("Total number of patients with at least one event")
   ) \%>\%
-  split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE)  \%>\%
+  split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE) \%>\%
   summarize_num_patients(
     var = "USUBJID",
     .stats = c("unique", "nonunique"),
-    .labels = c("Total number of patients with at least one event",
-                "Total number of events")
+    .labels = c(
+      "Total number of patients with at least one event",
+      "Total number of events"
+    )
   ) \%>\%
   count_occurrences(vars = "AEDECOD")
 
@@ -79,19 +81,17 @@ rtable_object <- build_table(lyt, adae, alt_counts_df = adsl) \%>\%
   prune_table()
 
 rtable_object_sorted <- rtable_object \%>\%
-  sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+  sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
 rtable_object_sorted
-
 score_cols_a_and_b <- score_occurrences_cols(col_names = c("A: Drug X", "B: Placebo"))
 
 # Note that this here just sorts the AEDECOD inside the AEBODSYS. The AEBODSYS are not sorted.
 # That would require a second pass of `sort_at_path`.
 rtable_object_sorted <- rtable_object \%>\%
-  sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_cols_a_and_b)
+  sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_cols_a_and_b)
 
 rtable_object_sorted
-
 score_subtable_all <- score_occurrences_subtable(col_names = names(rtable_object))
 
 # Note that this code just sorts the AEBODSYS, not the AEDECOD within AEBODSYS. That
@@ -100,5 +100,4 @@ rtable_object_sorted <- rtable_object \%>\%
   sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 
 rtable_object_sorted
-
 }

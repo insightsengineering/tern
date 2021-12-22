@@ -95,7 +95,8 @@ testthat::test_that("add_rowcounts works with multiple column and row splits", {
     build_table(DM)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "CHN (N=179)", "F (N=94)", "mean", "M (N=85)",
+    c(
+      "", "", "CHN (N=179)", "F (N=94)", "mean", "M (N=85)",
       "mean", "USA (N=44)", "F (N=24)", "mean", "M (N=20)", "mean",
       "BRA (N=29)", "F (N=15)", "mean", "M (N=14)", "mean", "PAK (N=28)",
       "F (N=12)", "mean", "M (N=16)", "mean", "NGA (N=24)", "F (N=13)",
@@ -138,7 +139,8 @@ testthat::test_that("add_rowcounts works with multiple column and row splits", {
       "C", "", "", "34.75", "", "31.87", "", "", "36", "", "39.5",
       "", "", "34", "", "31.67", "", "", "34", "", "36.33", "", "",
       "30.5", "", "NaN", "", "", "NaN", "", "27", "", "", "32.5", "",
-      "NaN", "", "", "NaN", "", "NaN", "", "", "NaN", "", "NaN"),
+      "NaN", "", "", "NaN", "", "NaN", "", "", "NaN", "", "NaN"
+    ),
     .Dim = c(47L, 10L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -163,10 +165,12 @@ testthat::test_that("as.rtable.data.frame works correctly", {
   result <- as.rtable(x, format = "xx.x")
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "A", "B", "C", "D", "E", "F", "G", "H", "I",
+    c(
+      "", "A", "B", "C", "D", "E", "F", "G", "H", "I",
       "J", "a", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
       "b", "10", "11.1", "12.2", "13.3", "14.4", "15.6", "16.7", "17.8",
-      "18.9", "20"),
+      "18.9", "20"
+    ),
     .Dim = c(11L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -206,7 +210,7 @@ testthat::test_that("h_split_param divides param values", {
   testthat::expect_identical(result, expected)
 
   .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
-  result <- h_split_param(.formats, names(.formats), f =  f)
+  result <- h_split_param(.formats, names(.formats), f = f)
   expected <- list(
     surv = c("pt_at_risk" = "xx", "event_free_rate" = "xxx"),
     surv_diff = NULL
@@ -237,12 +241,14 @@ testthat::test_that("append_varlabels works as expected", {
   result <- build_table(lyt, DM)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("SEX", "  Age", "F", "mean", "M", "mean", "U", "mean",
+    c(
+      "SEX", "  Age", "F", "mean", "M", "mean", "U", "mean",
       "UNDIFFERENTIATED", "mean", "A: Drug X", "(N=121)", "", "33.7142857142857",
       "", "36.5490196078431", "", "NA", "", "NA", "B: Placebo", "(N=106)",
       "", "33.8392857142857", "", "32.1", "", "NA", "", "NA", "C: Combination",
       "(N=129)", "", "34.8852459016393", "", "34.2794117647059", "",
-      "NA", "", "NA"),
+      "NA", "", "NA"
+    ),
     .Dim = c(10L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -257,12 +263,14 @@ testthat::test_that("append_varlabels correctly concatenates multiple variable l
   result <- build_table(lyt, DM)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("SEX / Age", "F", "mean", "M", "mean", "U", "mean",
+    c(
+      "SEX / Age", "F", "mean", "M", "mean", "U", "mean",
       "UNDIFFERENTIATED", "mean", "A: Drug X", "", "33.7142857142857",
       "", "36.5490196078431", "", "NA", "", "NA", "B: Placebo", "",
       "33.8392857142857", "", "32.1", "", "NA", "", "NA", "C: Combination",
       "", "34.8852459016393", "", "34.2794117647059", "", "NA", "",
-      "NA"),
+      "NA"
+    ),
     .Dim = c(9L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

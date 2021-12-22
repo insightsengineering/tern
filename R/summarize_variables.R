@@ -15,7 +15,6 @@
 control_summarize_vars <- function(conf_level = 0.95,
                                    quantiles = c(0.25, 0.75),
                                    quantile_type = 2) {
-
   assertthat::assert_that(
     all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
     identical(length(quantiles), 2L),
@@ -37,14 +36,15 @@ control_summarize_vars <- function(conf_level = 0.95,
 #' @export
 #'
 summary_formats <- function(type = "numeric") {
-
   if (type == "counts") {
-    c(n = "xx.",
+    c(
+      n = "xx.",
       count = "xx.",
       count_fraction = format_count_fraction
     )
   } else {
-    c(n = "xx.",
+    c(
+      n = "xx.",
       mean = "xx.x",
       sd = "xx.x",
       se = "xx.x",
@@ -74,8 +74,8 @@ summary_formats <- function(type = "numeric") {
 #' @export
 #'
 summary_labels <- function() {
-
-  c(mean = "Mean",
+  c(
+    mean = "Mean",
     sd = "SD",
     se = "SE",
     mean_sd = "Mean (SD)",
@@ -118,10 +118,10 @@ NULL
 #' @order 2
 #'
 s_summary <- function(x,
-                      na.rm = TRUE,  # nolint
+                      na.rm = TRUE, # nolint
                       denom,
-                      .N_row,  # nolint
-                      .N_col,  # nolint
+                      .N_row, # nolint
+                      .N_col, # nolint
                       na_level,
                       .var,
                       control,
@@ -198,12 +198,11 @@ s_summary <- function(x,
 #' ## By comparison with `lapply`:
 #' X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 #' lapply(X, function(x) s_summary(x$x))
-#'
 s_summary.numeric <- function(x, # nolint
                               na.rm = TRUE, # nolint
                               denom,
                               .N_row, # nolint
-                              .N_col, #nolint
+                              .N_col, # nolint
                               na_level,
                               .var,
                               control = control_summarize_vars(),
@@ -256,8 +255,8 @@ s_summary.numeric <- function(x, # nolint
   y$iqr <- c("iqr" = ifelse(
     any(is.na(x)),
     NA_real_,
-    stats::IQR(x, na.rm = FALSE, type = control$quantile_type))
-  )
+    stats::IQR(x, na.rm = FALSE, type = control$quantile_type)
+  ))
 
   y$range <- stats::setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
   y$min <- y$range[1]
@@ -265,12 +264,12 @@ s_summary.numeric <- function(x, # nolint
 
   y$cv <- c("cv" = unname(y$sd) / unname(y$mean) * 100)
 
-  #Convert negative values to NA for log calculation.
+  # Convert negative values to NA for log calculation.
   x_no_negative_vals <- x
   x_no_negative_vals[x_no_negative_vals <= 0] <- NA
   y$geom_mean <- c("geom_mean" = exp(mean(log(x_no_negative_vals), na.rm = FALSE)))
 
-  y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals), na.rm = FALSE) ^ 2) - 1) * 100)
+  y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals), na.rm = FALSE)^2) - 1) * 100)
 
   y
 }
@@ -314,12 +313,11 @@ s_summary.numeric <- function(x, # nolint
 #' x <- factor(c("a", "a", "b", "c", "a"))
 #' s_summary(x, denom = "N_row", .N_row = 10L)
 #' s_summary(x, denom = "N_col", .N_col = 20L)
-#'
 s_summary.factor <- function(x,
-                             na.rm = TRUE, #nolint
+                             na.rm = TRUE, # nolint
                              denom = c("n", "N_row", "N_col"),
-                             .N_row, #nolint
-                             .N_col, #nolint
+                             .N_row, # nolint
+                             .N_col, # nolint
                              na_level = "<Missing>",
                              ...) {
   assertthat::assert_that(
@@ -335,8 +333,7 @@ s_summary.factor <- function(x,
   y$n <- length(x)
 
   y$count <- as.list(table(x, useNA = "ifany"))
-  dn <- switch(
-    denom,
+  dn <- switch(denom,
     n = length(x),
     N_row = .N_row,
     N_col = .N_col
@@ -368,12 +365,11 @@ s_summary.factor <- function(x,
 #' ## Basic usage:
 #' s_summary(c("a", "a", "b", "c", "a"), .var = "x")
 #' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
-#'
 s_summary.character <- function(x,
-                                na.rm = TRUE, #nolint
+                                na.rm = TRUE, # nolint
                                 denom = c("n", "N_row", "N_col"),
-                                .N_row, #nolint
-                                .N_col, #nolint
+                                .N_row, # nolint
+                                .N_col, # nolint
                                 na_level = "<Missing>",
                                 .var,
                                 ...) {
@@ -420,7 +416,6 @@ s_summary.character <- function(x,
 #' x <- c(TRUE, FALSE, TRUE, TRUE)
 #' s_summary(x, denom = "N_row", .N_row = 10L)
 #' s_summary(x, denom = "N_col", .N_col = 20L)
-#'
 s_summary.logical <- function(x,
                               na.rm = TRUE, # nolint
                               denom = c("n", "N_row", "N_col"),
@@ -432,8 +427,7 @@ s_summary.logical <- function(x,
   y <- list()
   y$n <- length(x)
   count <- sum(x, na.rm = TRUE)
-  dn <- switch(
-    denom,
+  dn <- switch(denom,
     n = length(x),
     N_row = .N_row,
     N_col = .N_col
@@ -451,8 +445,8 @@ s_summary.logical <- function(x,
 #'
 a_summary <- function(x,
                       ...,
-                      .N_row,  # nolint
-                      .N_col,  # nolint
+                      .N_row, # nolint
+                      .N_col, # nolint
                       .var) {
   UseMethod("a_summary", x)
 }
@@ -466,7 +460,6 @@ a_summary <- function(x,
 #' @examples
 #' # `a_summary.numeric`
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-#'
 a_summary.numeric <- make_afun(
   s_summary.numeric,
   .formats = .a_summary_numeric_formats,
@@ -487,7 +480,6 @@ a_summary.numeric <- make_afun(
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
 #' afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-#'
 a_summary.factor <- make_afun(
   s_summary.factor,
   .formats = .a_summary_counts_formats
@@ -503,7 +495,6 @@ a_summary.factor <- make_afun(
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
 #' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
-#'
 a_summary.character <- make_afun(
   s_summary.character,
   .formats = .a_summary_counts_formats
@@ -518,7 +509,6 @@ a_summary.character <- make_afun(
 #'   getS3method("a_summary", "logical")
 #' )
 #' afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
-#'
 a_summary.logical <- make_afun(
   s_summary.logical,
   .formats = .a_summary_counts_formats
@@ -547,27 +537,24 @@ a_summary.logical <- make_afun(
 #' ## Fabricated dataset.
 #' dta_test <- data.frame(
 #'   USUBJID = rep(1:6, each = 3),
-#'   PARAMCD = rep("lab", 6*3),
+#'   PARAMCD = rep("lab", 6 * 3),
 #'   AVISIT  = rep(paste0("V", 1:3), 6),
 #'   ARM     = rep(LETTERS[1:3], rep(6, 3)),
 #'   AVAL    = c(9:1, rep(NA, 9))
 #' )
 #'
 #' l <- basic_table() %>%
-#' split_cols_by(var = "ARM") %>%
+#'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
 #'   analyze(vars = "AVAL", afun = afun)
 #'
 #' build_table(l, df = dta_test)
-#'
 create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
-
   function(x,
            ...,
-           .N_row,  # nolint
-           .N_col,  # nolint
+           .N_row, # nolint
+           .N_col, # nolint
            .var) {
-
     afun <- function(x, ...) {
       UseMethod("afun", x)
     }
@@ -576,7 +563,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
       .stats,
       all_stats = names(.a_summary_numeric_formats)
     )
-    afun.numeric <- make_afun( #nolint
+    afun.numeric <- make_afun( # nolint
       a_summary.numeric,
       .stats = numeric_stats,
       .formats = extract(.formats, numeric_stats),
@@ -586,7 +573,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 
     factor_stats <- afun_selected_stats(.stats, c("n", "count", "count_fraction"))
     ungroup_stats <- afun_selected_stats(.stats, c("count", "count_fraction"))
-    afun.factor <- make_afun( #nolint
+    afun.factor <- make_afun( # nolint
       a_summary.factor,
       .stats = factor_stats,
       .formats = extract(.formats, factor_stats),
@@ -595,7 +582,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
       .ungroup_stats = ungroup_stats
     )
 
-    afun.character <- make_afun( #nolint
+    afun.character <- make_afun( # nolint
       a_summary.character,
       .stats = factor_stats,
       .formats = extract(.formats, factor_stats),
@@ -604,7 +591,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
       .ungroup_stats = ungroup_stats
     )
 
-    afun.logical <- make_afun( #nolint
+    afun.logical <- make_afun( # nolint
       a_summary.logical,
       .stats = factor_stats,
       .formats = extract(.formats, factor_stats),
@@ -678,7 +665,6 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   summarize_vars(vars = "AVISIT", na.rm = FALSE)
 #'
 #' results <- build_table(l, df = dta_test)
-#'
 #' \dontrun{
 #' Viewer(results)
 #' }
@@ -694,7 +680,6 @@ summarize_vars <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
-
   afun <- create_afun_summary(.stats, .formats, .labels, .indent_mods)
 
   analyze(

@@ -19,7 +19,6 @@ NULL
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "NE/Missing")
 #' )
-#'
 d_onco_rsp_label <- function(x) { # nousage # nolint
 
   x <- as.character(x)
@@ -54,7 +53,7 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
 #' s_length_proportion(rep("CR", 10), .N_col = 100)
 #' s_length_proportion(factor(character(0)), .N_col = 100)
 s_length_proportion <- function(x,
-                                .N_col, #nolint snake_case
+                                .N_col, # nolint snake_case
                                 ...) {
   assertthat::assert_that(
     is_character_or_factor(x),
@@ -98,8 +97,10 @@ a_length_proportion <- make_afun(
 #'   ARM     = factor(rep(LETTERS[1:3], each = 4)),
 #'   AVAL    = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
 #' ) %>% mutate(
-#'    AVALC = factor(AVAL, levels = c(0, 1),
-#'                  labels = c("Complete Response (CR)", "Partial Response (PR)"))
+#'   AVALC = factor(AVAL,
+#'     levels = c(0, 1),
+#'     labels = c("Complete Response (CR)", "Partial Response (PR)")
+#'   )
 #' )
 #'
 #'
@@ -111,7 +112,6 @@ a_length_proportion <- make_afun(
 #'
 #' html <- as_html(tbl)
 #' html
-#'
 #' \dontrun{
 #' Viewer(html)
 #' }
@@ -124,7 +124,6 @@ estimate_multinomial_response <- function(lyt,
                                           .formats = NULL,
                                           .labels = NULL,
                                           .indent_mods = NULL) {
-
   afun <- make_afun(
     a_length_proportion,
     .stats = .stats,

@@ -7,10 +7,9 @@ df <- data.frame(
   PARAM = rep(c("ALT", "CPR"), 6),
   ANRIND = c("NORMAL", "NORMAL", "LOW", "HIGH", "LOW", "LOW", "HIGH", "HIGH", rep("NORMAL", 4))
 )
-df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
+df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) # nolint
 
 testthat::test_that("h_map_for_count_abnormal returns the correct map for default method with healthy single input", {
-
   result <- h_map_for_count_abnormal(
     df = df,
     variables = list(anl = "ANRIND", split_rows = "PARAM"),
@@ -20,7 +19,9 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for defaul
 
   # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
   # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-  result <- result %>% dplyr::group_by(PARAM) %>% dplyr::arrange(ANRIND, .by_group = TRUE)
+  result <- result %>%
+    dplyr::group_by(PARAM) %>%
+    dplyr::arrange(ANRIND, .by_group = TRUE)
 
   expected <- data.frame(
     PARAM = c(rep("ALT", 3), rep("CPR", 3)),
@@ -30,9 +31,8 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for defaul
 })
 
 testthat::test_that("h_map_for_count_abnormal returns the correct map for range method with healthy single input", {
-
-  df$ANRLO <- 5 #nolint
-  df$ANRHI <- 20 #nolint
+  df$ANRLO <- 5 # nolint
+  df$ANRHI <- 20 # nolint
 
   result <- h_map_for_count_abnormal(
     df = df,
@@ -43,7 +43,9 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for range 
 
   # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
   # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-  result <- result %>% dplyr::group_by(PARAM) %>% dplyr::arrange(ANRIND, .by_group = TRUE)
+  result <- result %>%
+    dplyr::group_by(PARAM) %>%
+    dplyr::arrange(ANRIND, .by_group = TRUE)
 
   expected <- data.frame(
     PARAM = c(rep("ALT", 3), rep("CPR", 3)),
@@ -54,7 +56,8 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for range 
 
 # for default method, if LOW LOW and HIGH HIGH are not observed in the input dataset, they are dropped
 testthat::test_that(
-  "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input", {
+  "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input",
+  { # nolint
     result <- h_map_for_count_abnormal(
       df = df,
       variables = list(anl = "ANRIND", split_rows = "PARAM"),
@@ -64,7 +67,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>% dplyr::group_by(PARAM) %>% dplyr::arrange(ANRIND, .by_group = TRUE)
+    result <- result %>%
+      dplyr::group_by(PARAM) %>%
+      dplyr::arrange(ANRIND, .by_group = TRUE)
 
     expected <- data.frame(
       PARAM = c(rep("ALT", 3), rep("CPR", 3)),
@@ -77,9 +82,10 @@ testthat::test_that(
 # for range method, if LOW LOW and HIGH HIGH are not observed in the input dataset but specified in the abnormal,
 # they are kept in the map.
 testthat::test_that(
-  "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input", {
-    df$ANRLO <- 5 #nolint
-    df$ANRHI <- 20 #nolint
+  "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input",
+  { # nolint
+    df$ANRLO <- 5 # nolint
+    df$ANRHI <- 20 # nolint
 
     result <- h_map_for_count_abnormal(
       df = df,
@@ -90,7 +96,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>% dplyr::group_by(PARAM) %>% dplyr::arrange(ANRIND, .by_group = TRUE)
+    result <- result %>%
+      dplyr::group_by(PARAM) %>%
+      dplyr::arrange(ANRIND, .by_group = TRUE)
 
     expected <- data.frame(
       PARAM = c(rep("ALT", 5), rep("CPR", 5)),
@@ -102,11 +110,12 @@ testthat::test_that(
 
 # for default method, if only LOW LOW/HIGH HIGH is observed in the input dataset, the observed one will be kept.
 testthat::test_that(
-  "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input", {
+  "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input",
+  { # nolint
     df <- df %>% dplyr::mutate(
       ANRIND = ifelse(PARAM == "ALT" & ANRIND == "LOW" & USUBJID == "1", "LOW LOW", as.character(ANRIND))
     )
-    df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL", "LOW LOW", "HIGH HIGH")) #nolint
+    df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL", "LOW LOW", "HIGH HIGH")) # nolint
     result <- h_map_for_count_abnormal(
       df = df,
       variables = list(anl = "ANRIND", split_rows = "PARAM"),
@@ -116,7 +125,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>% dplyr::group_by(PARAM) %>% dplyr::arrange(ANRIND, .by_group = TRUE)
+    result <- result %>%
+      dplyr::group_by(PARAM) %>%
+      dplyr::arrange(ANRIND, .by_group = TRUE)
 
     expected <- data.frame(
       PARAM = c(rep("ALT", 4), rep("CPR", 3)),
@@ -129,11 +140,12 @@ testthat::test_that(
 # for range method, a theoretical map should be returned even that direction has zero counts, for the below example,
 # every record is normal
 testthat::test_that(
-  "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input", {
-    df$ANRLO <- 5 #nolint
-    df$ANRHI <- 20 #nolint
-    df$ANRIND = "NORMAL" #nolint
-    df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
+  "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input",
+  { # nolint
+    df$ANRLO <- 5 # nolint
+    df$ANRHI <- 20 # nolint
+    df$ANRIND <- "NORMAL" # nolint
+    df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) # nolint
 
     result <- h_map_for_count_abnormal(
       df = df,
@@ -144,7 +156,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>% dplyr::group_by(PARAM) %>% dplyr::arrange(ANRIND, .by_group = TRUE)
+    result <- result %>%
+      dplyr::group_by(PARAM) %>%
+      dplyr::arrange(ANRIND, .by_group = TRUE)
 
     expected <- data.frame(
       PARAM = c(rep("ALT", 3), rep("CPR", 3)),
@@ -156,11 +170,12 @@ testthat::test_that(
 
 # for range method, a theoretical map is built based on the rule at least one ANRLO >0 and one ANRHI not missing
 testthat::test_that(
-  "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input", {
-    df$ANRLO <- 5 #nolint
-    df$ANRHI <- 20 #nolint
-    df$ANRLO <- ifelse(df$PARAM == "ALT", 0, df$ANRLO) #nolint
-    df$ANRHI <- ifelse(df$PARAM == "CPR", NA, df$ANRHI) #nolint
+  "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input",
+  { # nolint
+    df$ANRLO <- 5 # nolint
+    df$ANRHI <- 20 # nolint
+    df$ANRLO <- ifelse(df$PARAM == "ALT", 0, df$ANRLO) # nolint
+    df$ANRHI <- ifelse(df$PARAM == "CPR", NA, df$ANRHI) # nolint
 
     result <- h_map_for_count_abnormal(
       df = df,
@@ -171,7 +186,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>% dplyr::group_by(PARAM) %>% dplyr::arrange(ANRIND, .by_group = TRUE)
+    result <- result %>%
+      dplyr::group_by(PARAM) %>%
+      dplyr::arrange(ANRIND, .by_group = TRUE)
 
     expected <- data.frame(
       PARAM = c(rep("ALT", 2), rep("CPR", 2)),

@@ -20,9 +20,7 @@ NULL
 #' @examples
 #' format_fraction(x = c(num = 2L, denom = 3L))
 #' format_fraction(x = c(num = 0L, denom = 3L))
-#'
 format_fraction <- function(x, ...) {
-
   attr(x, "label") <- NULL
 
   assertthat::assert_that(
@@ -32,16 +30,12 @@ format_fraction <- function(x, ...) {
   )
 
   result <- if (x["num"] == 0) {
-
     paste0(x["num"], "/", x["denom"])
-
   } else {
-
     paste0(
       x["num"], "/", x["denom"],
       " (", round(x["num"] / x["denom"] * 100, 1), "%)"
     )
-
   }
 
   return(result)
@@ -61,9 +55,7 @@ format_fraction <- function(x, ...) {
 #' @examples
 #' format_count_fraction(x = c(2, 0.6667))
 #' format_count_fraction(x = c(0, 0))
-#'
 format_count_fraction <- function(x, ...) {
-
   attr(x, "label") <- NULL
 
   if (any(is.na(x))) {
@@ -105,7 +97,6 @@ format_count_fraction <- function(x, ...) {
 #'
 #' z <- format_xx("xx.x, incl. xx.x% NE")
 #' sapply(test, z)
-#'
 format_xx <- function(str) {
 
   # Find position in the string.
@@ -117,8 +108,9 @@ format_xx <- function(str) {
     X = x_positions,
     function(x) {
       y <- strsplit(split = "\\.", x = x)[[1]]
-      rounding <- function(x)
+      rounding <- function(x) {
         round(x, digits = ifelse(length(y) > 1, nchar(y[2]), 0))
+      }
       return(rounding)
     }
   )
@@ -193,13 +185,12 @@ NULL
 #'
 #' h_get_format_threshold(2L)
 h_get_format_threshold <- function(digits = 2L) {
-
   assertthat::assert_that(
     is.integer(digits)
   )
 
-  low_threshold <- 1 / (10 ^ digits)
-  high_threshold <- 1000 - (1 / (10 ^ digits))
+  low_threshold <- 1 / (10^digits)
+  high_threshold <- 1000 - (1 / (10^digits))
 
   string_below_threshold <- paste0("<", low_threshold)
   string_above_threshold <- paste0(">", high_threshold)
@@ -219,7 +210,6 @@ h_get_format_threshold <- function(digits = 2L) {
 #' h_format_threshold(0.001)
 #' h_format_threshold(1000)
 h_format_threshold <- function(x, digits = 2L) {
-
   if (is.na(x)) {
     return(x)
   }
@@ -251,14 +241,11 @@ h_format_threshold <- function(x, digits = 2L) {
 #' format_fun(x = Inf)
 #' format_fun(x = 0)
 #' format_fun(x = 0.009)
-#'
 format_extreme_values <- function(digits = 2L) {
-
   function(x, ...) {
     assertthat::assert_that(length(x) == 1)
 
     h_format_threshold(x = x, digits = digits)
-
   }
 }
 
@@ -270,9 +257,7 @@ format_extreme_values <- function(digits = 2L) {
 #' format_fun <- format_extreme_values_ci(2L)
 #' format_fun(x = c(0.127, Inf))
 #' format_fun(x = c(0, 0.009))
-#'
 format_extreme_values_ci <- function(digits = 2L) {
-
   function(x, ...) {
     assertthat::assert_that(length(x) == 2)
 
@@ -280,6 +265,5 @@ format_extreme_values_ci <- function(digits = 2L) {
     h_result <- h_format_threshold(x = x[2], digits = digits)
 
     paste0("(", l_result, ", ", h_result, ")")
-
   }
 }

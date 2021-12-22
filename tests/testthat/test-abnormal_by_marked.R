@@ -27,7 +27,8 @@ adlb_raw <- local({
           TRUE ~ as.character(ANRIND)
         ),
         levels = c("", "HIGH", "HIGH HIGH", "LOW", "LOW LOW", "NORMAL")
-      ))
+      )
+    )
   adlb_f
 })
 
@@ -38,35 +39,36 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>% dplyr::mutate(
-    AVALCAT1 = factor(
-      dplyr::case_when(
-        .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
+  adlb <- adlb %>%
+    dplyr::mutate(
+      AVALCAT1 = factor(
+        dplyr::case_when(
+          .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
             size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
-        TRUE ~ ""
+          TRUE ~ ""
+        ),
+        levels = c("", avalcat1)
       ),
-      levels = c("", avalcat1)
-    ),
-    PARCAT2 = factor("LS")
-  ) %>%
+      PARCAT2 = factor("LS")
+    ) %>%
     dplyr::select(-.data$q1, -.data$q2)
-  #Preprocessing steps
+  # Preprocessing steps
   adlb_f <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
     dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
-      )
-    )
-  )
+    )))
 
-  adlb_crp <- adlb_f %>% dplyr::filter(PARAMCD == "CRP") %>% droplevels()
+  adlb_crp <- adlb_f %>%
+    dplyr::filter(PARAMCD == "CRP") %>%
+    droplevels()
   full_parent_df <- list(adlb_crp, "not_needed")
   cur_col_subset <- list(adlb_crp$ARMCD == "ARM A", "not_needed")
 
@@ -81,7 +83,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     .spl_context = spl_context,
     .var = "AVALCAT1",
     variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-    )
+  )
 
   expected <- list(count_fraction = list(
     `Single, not last` = c(2.00000000, 0.01492537),
@@ -98,35 +100,36 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>% dplyr::mutate(
-    AVALCAT1 = factor(
-      dplyr::case_when(
-        .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
+  adlb <- adlb %>%
+    dplyr::mutate(
+      AVALCAT1 = factor(
+        dplyr::case_when(
+          .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
             size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
-        TRUE ~ ""
+          TRUE ~ ""
+        ),
+        levels = c("", avalcat1)
       ),
-      levels = c("", avalcat1)
-    ),
-    PARCAT2 = factor("LS")
-  ) %>%
+      PARCAT2 = factor("LS")
+    ) %>%
     dplyr::select(-.data$q1, -.data$q2)
-  #Preprocessing steps
+  # Preprocessing steps
   adlb_f <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
     dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
-    )
-    )
-    )
+    )))
 
-  adlb_crp <- adlb_f %>% dplyr::filter(PARAMCD == "CRP") %>% droplevels()
+  adlb_crp <- adlb_f %>%
+    dplyr::filter(PARAMCD == "CRP") %>%
+    droplevels()
   full_parent_df <- list(adlb_crp, "not_needed")
   cur_col_subset <- list(adlb_crp$ARMCD == "ARM A", "not_needed")
 
@@ -159,35 +162,36 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>% dplyr::mutate(
-    AVALCAT1 = factor(
-      dplyr::case_when(
-        .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
+  adlb <- adlb %>%
+    dplyr::mutate(
+      AVALCAT1 = factor(
+        dplyr::case_when(
+          .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
             size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
-        TRUE ~ ""
+          TRUE ~ ""
+        ),
+        levels = c("", avalcat1)
       ),
-      levels = c("", avalcat1)
-    ),
-    PARCAT2 = factor("LS")
-  ) %>%
+      PARCAT2 = factor("LS")
+    ) %>%
     dplyr::select(-.data$q1, -.data$q2)
-  #Preprocessing steps
+  # Preprocessing steps
   adlb_f <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
     dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
-    )
-    )
-    )
+    )))
 
-  adlb_crp <- adlb_f %>% dplyr::filter(PARAMCD == "CRP") %>% droplevels()
+  adlb_crp <- adlb_f %>%
+    dplyr::filter(PARAMCD == "CRP") %>%
+    droplevels()
   full_parent_df <- list(adlb_crp, "not_needed")
   cur_col_subset <- list(adlb_crp$ARMCD == "ARM A", "not_needed")
 
@@ -203,7 +207,6 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
     .var = "AVALCAT1",
     variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
   ))
-
 })
 
 
@@ -214,44 +217,43 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>% dplyr::mutate(
-    AVALCAT1 = factor(
-      dplyr::case_when(
-        .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
+  adlb <- adlb %>%
+    dplyr::mutate(
+      AVALCAT1 = factor(
+        dplyr::case_when(
+          .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
           sample(
             x = avalcat1,
             size = dplyr::n(),
             replace = TRUE,
             prob = c(0.3, 0.6, 0.1)
           ),
-        TRUE ~ ""
+          TRUE ~ ""
+        ),
+        levels = c("", avalcat1)
       ),
-      levels = c("", avalcat1)
-    ),
-    PARCAT2 = factor("LS")
-  ) %>%
+      PARCAT2 = factor("LS")
+    ) %>%
     dplyr::select(-.data$q1, -.data$q2)
-  #Preprocessing steps
+  # Preprocessing steps
   adlb_f <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
     dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
-      )
-      )
-      )
+    )))
 
   adlb_f <- adlb_f %>%
     dplyr::filter(PARAMCD == "CRP") %>%
-     droplevels()
+    droplevels()
 
   map <- unique(
     adlb_f[
       adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "" & adlb_f$PARAMCD == "CRP",
       c("PARAMCD", "abn_dir")
     ]
-    ) %>%
+  ) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
     dplyr::arrange(PARAMCD, !dplyr::desc(abn_dir))
@@ -271,14 +273,16 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "CRP (n)", "Low", "Single, not last", "Last or replicated",
+    c(
+      "", "CRP (n)", "Low", "Single, not last", "Last or replicated",
       "Any Abnormality", "High", "Single, not last", "Last or replicated",
       "Any Abnormality", "ARM A", "134", "", "2 (1.5%)", "10 (7.5%)",
       "12 (9%)", "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "ARM B",
       "134", "", "0", "7 (5.2%)", "7 (5.2%)", "", "2 (1.5%)", "9 (6.7%)",
       "11 (8.2%)", "ARM C", "132", "", "0", "7 (5.3%)", "7 (5.3%)",
-      "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)"),
+      "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)"
+    ),
     .Dim = c(10L, 4L)
-    )
+  )
   testthat::expect_identical(result_matrix, expected_matrix)
 })

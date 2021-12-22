@@ -29,7 +29,8 @@ dta_bladder <- with(
     armcd = as.factor(rx),
     covar1 = as.factor(enum),
     covar2 = factor(
-      sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")
+      sample(as.factor(enum)),
+      levels = 1:4, labels = c("F", "F", "M", "M")
     )
   )
 )
@@ -41,5 +42,4 @@ dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 formula <- "survival::Surv(time, status) ~ armcd + covar1"
 msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 tidy(msum)
-
 }

@@ -129,7 +129,7 @@ h_append_grade_groups(
     "Any Grade" = as.character(1:5),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-4" = c("3", "4")
-    ),
+  ),
   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
 )
 
@@ -138,7 +138,7 @@ h_append_grade_groups(
     "Any Grade" = as.character(5:1),
     "Grade A" = "5",
     "Grade B" = c("4", "3")
-    ),
+  ),
   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
 )
 
@@ -147,10 +147,9 @@ h_append_grade_groups(
     "Any Grade" = as.character(1:5),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-4" = c("3", "4")
-    ),
+  ),
   list("1" = 10, "2" = 5, "3" = 0)
 )
-
 
 library(dplyr)
 df <- data.frame(
@@ -158,14 +157,14 @@ df <- data.frame(
   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
   AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
   AESEV = factor(
-    x = c("MILD", "MODERATE", "SEVERE", "MILD",  "MILD", "MODERATE", "SEVERE"),
+    x = c("MILD", "MODERATE", "SEVERE", "MILD", "MILD", "MODERATE", "SEVERE"),
     levels = c("MILD", "MODERATE", "SEVERE")
   ),
   stringsAsFactors = FALSE
 )
 df_adsl <- df \%>\%
   select(USUBJID, ARM) \%>\%
-  unique
+  unique()
 
 s_count_occurrences_by_grade(
   df,
@@ -174,7 +173,6 @@ s_count_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list("ANY" = levels(df$AETOXGR))
 )
-
 #  We need to ungroup `count_fraction` first so that the rtables formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")
@@ -185,7 +183,6 @@ afun(
   id = "USUBJID",
   grade_groups = list("ANY" = levels(df$AETOXGR))
 )
-
 
 # Layout creating function with custom format.
 basic_table() \%>\%
@@ -198,7 +195,7 @@ basic_table() \%>\%
   build_table(df, alt_counts_df = df_adsl)
 
 # Define additional grade groupings.
-grade_groups <-  list(
+grade_groups <- list(
   "-Any-" = c("1", "2", "3", "4", "5"),
   "Grade 1-2" = c("1", "2"),
   "Grade 3-5" = c("3", "4", "5")
@@ -213,14 +210,14 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
 
-
 # Layout creating function with custom format.
 basic_table() \%>\%
   add_colcounts() \%>\%
   split_rows_by("ARM", child_labels = "visible", nested = TRUE) \%>\%
   summarize_occurrences_by_grade(
-  var = "AESEV",
-  .formats = c("count_fraction" = "xx.xx (xx.xx\%)")) \%>\%
+    var = "AESEV",
+    .formats = c("count_fraction" = "xx.xx (xx.xx\%)")
+  ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
 
 basic_table() \%>\%
@@ -231,5 +228,4 @@ basic_table() \%>\%
     grade_groups = grade_groups
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
-
 }

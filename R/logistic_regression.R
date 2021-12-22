@@ -74,7 +74,6 @@ NULL
 #'     interaction = "AGE"
 #'   )
 #' )
-#'
 fit_logistic <- function(data,
                          variables = list(
                            response = "Response",
@@ -410,7 +409,6 @@ h_interaction_term_labels <- function(terms1,
 #' @examples
 #' h_glm_simple_term_extract("AGE", mod1)
 #' h_glm_simple_term_extract("ARMCD", mod1)
-#'
 h_glm_simple_term_extract <- function(x, fit_glm) {
   assertthat::assert_that(
     inherits(fit_glm, c("glm", "clogit")),
@@ -509,7 +507,6 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
 #' @export
 #' @examples
 #' h_glm_interaction_extract("ARMCD:AGE", mod2)
-#'
 h_glm_interaction_extract <- function(x, fit_glm) {
   vars <- h_get_interaction_vars(fit_glm)
   xs_class <- attr(fit_glm$terms, "dataClasses")
@@ -613,7 +610,6 @@ h_glm_interaction_extract <- function(x, fit_glm) {
 #' @export
 #' @examples
 #' h_glm_inter_term_extract("AGE", "ARMCD", mod2)
-#'
 h_glm_inter_term_extract <- function(odds_ratio_var,
                                      interaction_var,
                                      fit_glm,
@@ -707,7 +703,6 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 #' @export
 #' @examples
 #' h_logistic_simple_terms("AGE", mod1)
-#'
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
   assertthat::assert_that(inherits(fit_glm, c("glm", "clogit")))
   if (inherits(fit_glm, "glm")) {
@@ -736,7 +731,6 @@ h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
 #' @export
 #' @examples
 #' h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
-#'
 h_logistic_inter_terms <- function(x,
                                    fit_glm,
                                    conf_level = 0.95,
@@ -829,8 +823,7 @@ h_logistic_inter_terms <- function(x,
 #' library(broom)
 #' df <- tidy(mod1, conf_level = 0.99)
 #' df2 <- tidy(mod2, conf_level = 0.99)
-#'
-tidy.glm <- function(fit_glm, #nolint #nousage
+tidy.glm <- function(fit_glm, # nolint #nousage
                      conf_level = 0.95,
                      at = NULL) {
   assertthat::assert_that(
@@ -918,7 +911,6 @@ logistic_summary_by_flag <- function(flag_var) {
 #'   summarize_logistic(conf_level = 0.95) %>%
 #'   build_table(df = df2)
 #' result2
-#'
 summarize_logistic <- function(lyt,
                                conf_level) {
   sum_logistic_variable_test <- logistic_summary_by_flag("is_variable_summary")

@@ -17,5 +17,4 @@ Small utility function for better readability.
 }
 \examples{
 n_available(c(1, NA, 2))
-
 }

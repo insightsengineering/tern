@@ -7,13 +7,12 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adqs <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
 
 testthat::test_that("AOVT01 variant with single endpoint is produced correctly", {
-
   adqs_single <- adqs %>%
     dplyr::filter(
-      AVISIT == "WEEK 1 DAY 8",  # single time point
-      PARAMCD == "FKSI-FWB"  # single end point
+      AVISIT == "WEEK 1 DAY 8", # single time point
+      PARAMCD == "FKSI-FWB" # single end point
     ) %>%
-    dplyr::mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
+    dplyr::mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
 
   result <- basic_table() %>%
     split_cols_by("ARMCD", ref_group = "ARM A") %>%
@@ -40,7 +39,7 @@ testthat::test_that("AOVT01 variant with single endpoint is produced correctly",
       "Adjusted comparison (covariates BASE and STRATA1)", "n", "Adjusted Mean",
       "Difference in Adjusted Means", "95% CI", "p-value",
       "ARM A", "(N=134)", "", "68", "3.68", "", "", "", "", "68", "4.06", "", "", "",
-      "ARM B",  "(N=134)", "", "73", "5.07", "1.38", "(-2.76, 5.53)", "0.5113", "",
+      "ARM B", "(N=134)", "", "73", "5.07", "1.38", "(-2.76, 5.53)", "0.5113", "",
       "73", "3.57", "-0.49", "(-3.28, 2.29)", "0.7277",
       "ARM C", "(N=132)", "", "62", "3.09", "-0.59", "(-4.91, 3.73)", "0.7873", "",
       "62", "3.34", "-0.72", "(-3.57, 2.12)", "0.6165"
@@ -69,7 +68,7 @@ testthat::test_that("AOVT01 variant with multiple endpoints is produced correctl
 
   expected_matrix <- structure(
     c(
-      "", "",  "BFIALL", "Adjusted mean",  "n", "Adjusted Mean",
+      "", "", "BFIALL", "Adjusted mean", "n", "Adjusted Mean",
       "Difference in Adjusted Means", "95% CI", "p-value",
       "FATIGI", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "95% CI", "p-value",
       "FKSI-FWB", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "95% CI", "p-value",

@@ -27,7 +27,7 @@ NULL
 #'     "Any Grade" = as.character(1:5),
 #'     "Grade 1-2" = c("1", "2"),
 #'     "Grade 3-4" = c("3", "4")
-#'     ),
+#'   ),
 #'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
 #' )
 #'
@@ -36,7 +36,7 @@ NULL
 #'     "Any Grade" = as.character(5:1),
 #'     "Grade A" = "5",
 #'     "Grade B" = c("4", "3")
-#'     ),
+#'   ),
 #'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
 #' )
 #'
@@ -45,12 +45,10 @@ NULL
 #'     "Any Grade" = as.character(1:5),
 #'     "Grade 1-2" = c("1", "2"),
 #'     "Grade 3-4" = c("3", "4")
-#'     ),
+#'   ),
 #'   list("1" = 10, "2" = 5, "3" = 0)
 #' )
-#'
 h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
-
   assertthat::assert_that(
     is.list(grade_groups),
     is.list(refs)
@@ -114,14 +112,14 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #'   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
 #'   AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
 #'   AESEV = factor(
-#'     x = c("MILD", "MODERATE", "SEVERE", "MILD",  "MILD", "MODERATE", "SEVERE"),
+#'     x = c("MILD", "MODERATE", "SEVERE", "MILD", "MILD", "MODERATE", "SEVERE"),
 #'     levels = c("MILD", "MODERATE", "SEVERE")
 #'   ),
 #'   stringsAsFactors = FALSE
 #' )
 #' df_adsl <- df %>%
 #'   select(USUBJID, ARM) %>%
-#'   unique
+#'   unique()
 #'
 #' s_count_occurrences_by_grade(
 #'   df,
@@ -130,28 +128,23 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))
 #' )
-#'
 s_count_occurrences_by_grade <- function(df,
                                          .var,
-                                         .N_col, #nolint
+                                         .N_col, # nolint
                                          id = "USUBJID",
                                          grade_groups = list(),
                                          remove_single = TRUE,
                                          labelstr = "") {
-
   assertthat::assert_that(
     is_df_with_variables(df, list(grade = .var, id = id)),
     is_valid_factor(df[[.var]])
   )
 
   if (nrow(df) < 1) {
-
     grade_levels <- levels(df[[.var]])
     l_count <- as.list(rep(0, length(grade_levels)))
     names(l_count) <- grade_levels
-
   } else {
-
     assertthat::assert_that(
       is_nonnegative_count(.N_col),
       assertthat::noNA(df[[id]]),
@@ -162,10 +155,8 @@ s_count_occurrences_by_grade <- function(df,
     grade <- df[[.var]]
 
     if (!is.ordered(grade)) {
-
       grade_lbl <- obj_label(grade)
       grade <- with_label(factor(grade, levels = levels(grade), ordered = TRUE), grade_lbl)
-
     }
 
     df_max <- stats::aggregate(grade ~ id, FUN = max, drop = FALSE)
@@ -181,7 +172,6 @@ s_count_occurrences_by_grade <- function(df,
   list(
     count_fraction = l_count_fraction
   )
-
 }
 
 #' @describeIn count_occurrences_by_grade Formatted Analysis function which can be further customized by calling
@@ -199,7 +189,6 @@ s_count_occurrences_by_grade <- function(df,
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))
 #' )
-#'
 a_count_occurrences_by_grade <- make_afun(
   s_count_occurrences_by_grade,
   .formats = c("count_fraction" = format_count_fraction)
@@ -223,7 +212,7 @@ a_count_occurrences_by_grade <- make_afun(
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' # Define additional grade groupings.
-#' grade_groups <-  list(
+#' grade_groups <- list(
 #'   "-Any-" = c("1", "2", "3", "4", "5"),
 #'   "Grade 1-2" = c("1", "2"),
 #'   "Grade 3-5" = c("3", "4", "5")
@@ -237,7 +226,6 @@ a_count_occurrences_by_grade <- make_afun(
 #'     grade_groups = grade_groups
 #'   ) %>%
 #'   build_table(df, alt_counts_df = df_adsl)
-#'
 count_occurrences_by_grade <- function(lyt,
                                        var,
                                        var_labels = var,
@@ -277,8 +265,9 @@ count_occurrences_by_grade <- function(lyt,
 #'   add_colcounts() %>%
 #'   split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
 #'   summarize_occurrences_by_grade(
-#'   var = "AESEV",
-#'   .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
+#'     var = "AESEV",
+#'     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
+#'   ) %>%
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' basic_table() %>%
@@ -289,7 +278,6 @@ count_occurrences_by_grade <- function(lyt,
 #'     grade_groups = grade_groups
 #'   ) %>%
 #'   build_table(df, alt_counts_df = df_adsl)
-#'
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
                                            ...,
