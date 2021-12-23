@@ -39,8 +39,7 @@
 #'   worst_flag = c("WGRLOVFL" = "Y"),
 #'   by_visit = TRUE
 #' )
-h_adsl_adlb_merge_using_worst_flag <- function( # nolint
-                                               adsl,
+h_adsl_adlb_merge_using_worst_flag <- function(adsl, # nolint
                                                adlb,
                                                worst_flag = c("WGRHIFL" = "Y"),
                                                by_visit = FALSE,
