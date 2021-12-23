@@ -163,13 +163,19 @@ df_ref_group <- ADTTE_f \%>\%
 
 s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 s_surv_timepoint_diff(
-  df, df_ref_group,
+  df,
+  df_ref_group,
   .in_ref_col = FALSE,
-  .var = "AVAL", time_point = 7, is_event = "is_event"
+  .var = "AVAL",
+  time_point = 7,
+  is_event = "is_event"
 )
 a_surv_timepoint_diff(
-  df, df_ref_group,
-  .in_ref_col = FALSE, .var = "AVAL", time_point = 7,
+  df,
+  df_ref_group,
+  .in_ref_col = FALSE,
+  .var = "AVAL",
+  time_point = 7,
   is_event = "is_event"
 )
 

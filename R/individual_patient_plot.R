@@ -252,8 +252,8 @@ g_ipp <- function(df,
           title = title,
           subtitle = subtitle,
           add_baseline_hline = add_baseline_hline,
-        yvar_baseline = yvar_baseline,
-        ggtheme = ggtheme
+          yvar_baseline = yvar_baseline,
+          ggtheme = ggtheme
         )
       }
     )

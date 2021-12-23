@@ -171,8 +171,7 @@ s_proportion <- function(x,
   n <- sum(rsp)
   p_hat <- mean(rsp)
 
-  prop_ci <- switch(
-    method,
+  prop_ci <- switch(method,
     "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
     wilson = prop_wilson(rsp, conf_level),
     wald = prop_wald(rsp, conf_level),

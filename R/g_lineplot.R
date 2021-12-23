@@ -95,7 +95,7 @@
 #'
 #' # Median with CI
 #' g_lineplot(
-#'   adlb, 
+#'   adlb,
 #'   adsl,
 #'   mid = "median",
 #'   interval = "median_ci",
@@ -115,7 +115,7 @@
 #'
 #' # Mean with CI, table and customized confidence level
 #' g_lineplot(
-#'   adlb, 
+#'   adlb,
 #'   adsl,
 #'   table = c("n", "mean", "mean_ci"),
 #'   control = control_summarize_vars(conf_level = 0.80),

@@ -299,8 +299,7 @@ s_cox_univariate <- function(formula,
   pval <- c(
     ref_mod = with(
       fit$ref_mod,
-      unname(switch(
-        pval_method,
+      unname(switch(pval_method,
         "wald" = msum$waldtest["pvalue"],
         "likelihood" = msum$logtest["pvalue"]
       ))
@@ -565,8 +564,7 @@ fit_n_aov <- function(formula,
 
   aov <- try_car_anova(
     mod,
-    test.statistic = switch(
-      pval_method,
+    test.statistic = switch(pval_method,
       "wald" = "Wald",
       "likelihood" = "LR"
     )

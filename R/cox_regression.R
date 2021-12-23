@@ -44,7 +44,7 @@
 #'
 #' plot(
 #'   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
-#'   lty = 2:4, 
+#'   lty = 2:4,
 #'   xlab = "Months",
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
@@ -520,7 +520,7 @@ h_coxreg_univar_extract <- function(effect,
 #'     covar1 = as.factor(enum),
 #'     covar2 = factor(
 #'       sample(as.factor(enum)),
-#'       levels = 1:4, 
+#'       levels = 1:4,
 #'       labels = c("F", "F", "M", "M")
 #'     )
 #'   )
@@ -532,7 +532,7 @@ h_coxreg_univar_extract <- function(effect,
 #'
 #' plot(
 #'   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
-#'   lty = 2:4, 
+#'   lty = 2:4,
 #'   xlab = "Months",
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
@@ -579,7 +579,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
   coef_hat <- betas[effect_index] + xval * betas[!effect_index]
   coef_se <- sqrt(
     betas_var[effect_index] +
-      xval ^ 2 * betas_var[!effect_index] +
+      xval^2 * betas_var[!effect_index] +
       2 * xval * betas_cov
   )
   q_norm <- stats::qnorm((1 + control$conf_level) / 2)
@@ -680,8 +680,8 @@ h_coxreg_extract_interaction <- function(effect,
     # Estimate the interaction.
     y <- h_coxreg_inter_effect(
       data[[covar]],
-      covar = covar, 
-      effect = effect, 
+      covar = covar,
+      effect = effect,
       mod = mod,
       label = unname(labels_or_names(data[covar])),
       at = at,

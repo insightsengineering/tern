@@ -149,21 +149,26 @@ g_lineplot(adlb, adsl, subtitle = "Laboratory Test:")
 g_lineplot(adlb, variables = control_lineplot_vars(strata = NA))
 
 # Mean, upper whisker of CI, no strata counts N
-g_lineplot(adlb,
+g_lineplot(
+  adlb,
   whiskers = "mean_ci_upr",
   title = "Plot of Mean and Upper 95\% Confidence Limit by Visit"
 )
 
 # Median with CI
-g_lineplot(adlb, adsl,
-  mid = "median", interval = "median_ci",
+g_lineplot(
+  adlb,
+  adsl,
+  mid = "median",
+  interval = "median_ci",
   whiskers = c("median_ci_lwr", "median_ci_upr"),
   title = "Plot of Median and 95\% Confidence Limits by Visit"
 )
 
 # Mean, +/- SD
 g_lineplot(adlb, adsl,
-  interval = "mean_sdi", whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
+  interval = "mean_sdi",
+  whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
   title = "Plot of Median +/- SD by Visit"
 )
 
@@ -172,7 +177,8 @@ g_lineplot(adlb, adsl, table = c("n", "mean", "mean_ci"))
 
 # Mean with CI, table and customized confidence level
 g_lineplot(
-  adlb, adsl,
+  adlb,
+  adsl,
   table = c("n", "mean", "mean_ci"),
   control = control_summarize_vars(conf_level = 0.80),
   title = "Plot of Mean and 80\% Confidence Limits by Visit"

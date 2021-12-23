@@ -189,8 +189,8 @@ h_get_format_threshold <- function(digits = 2L) {
     is.integer(digits)
   )
 
-  low_threshold <- 1 / (10 ^ digits)
-  high_threshold <- 1000 - (1 / (10 ^ digits))
+  low_threshold <- 1 / (10^digits)
+  high_threshold <- 1000 - (1 / (10^digits))
 
   string_below_threshold <- paste0("<", low_threshold)
   string_above_threshold <- paste0(">", high_threshold)

@@ -116,7 +116,8 @@ dta_bladder <- with(
     covar1 = as.factor(enum),
     covar2 = factor(
       sample(as.factor(enum)),
-      levels = 1:4, labels = c("F", "F", "M", "M")
+      levels = 1:4,
+      labels = c("F", "F", "M", "M")
     )
   )
 )
@@ -127,7 +128,8 @@ dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 plot(
   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
-  lty = 2:4, xlab = "Months",
+  lty = 2:4,
+  xlab = "Months",
   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 )
 library(survival)

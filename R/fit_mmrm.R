@@ -301,8 +301,7 @@ fit_lme4_single_optimizer <- function(formula,
   control <- lme4::lmerControl(
     # We need this to be able to fit unstructured covariance matrix models.
     check.nobs.vs.nRE = "ignore",
-    optimizer = switch(
-      optimizer,
+    optimizer = switch(optimizer,
       "nloptwrap_neldermead" = "nloptwrap",
       "nloptwrap_bobyqa" = "nloptwrap",
       "nlminbwrap" = "nlminbwrap",
@@ -311,8 +310,7 @@ fit_lme4_single_optimizer <- function(formula,
       "nmkbw" = "nmkbw",
       "optimx_lbfgsb" = "optimx"
     ),
-    optCtrl = switch(
-      optimizer,
+    optCtrl = switch(optimizer,
       "nloptwrap_neldermead" = list(algorithm = "NLOPT_LN_NELDERMEAD"),
       "nloptwrap_bobyqa" = list(algorithm = "NLOPT_LN_BOBYQA"),
       "optimx_lbfgsb" = list(method = "L-BFGS-B"),

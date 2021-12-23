@@ -169,7 +169,7 @@ s_surv_timepoint_diff <- function(df,
 #'
 #' @examples
 #' a_surv_timepoint_diff(
-#'   df, 
+#'   df,
 #'   df_ref_group,
 #'   .in_ref_col = FALSE,
 #'   .var = "AVAL",
