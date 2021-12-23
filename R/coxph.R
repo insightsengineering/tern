@@ -169,7 +169,7 @@ s_cox_univariate <- function(formula,
 
   if (is.null(iarm)) stop("Check `formula`, the arm variable needs to be wrapped in arm()")
 
-  arms <- levels(with(data, eval(parse(text = tarm))))
+  arms <- levels(with(data, eval(parse(text = tarm, keep.source = FALSE))))
   if (length(arms) != 2) stop("Check `formula`, the arm variable needs 2 levels.")
 
   ## List all models to be fitted ---
@@ -214,7 +214,7 @@ s_cox_univariate <- function(formula,
           # [^1]: If covar is a numeric and increments are specified,
           # SE and COEF must be estimated for every level
 
-          coef_narm <- paste0(tarm, levels(with(data, eval(parse(text = tarm))))[2])
+          coef_narm <- paste0(tarm, levels(with(data, eval(parse(text = tarm, keep.source = FALSE))))[2])
           coef_ninter <- paste0(coef_narm, ":", rht(covariates))
 
           betas <- stats::coef(fit$mod)[c(coef_narm, coef_ninter)]
