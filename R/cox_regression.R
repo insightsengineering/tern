@@ -680,7 +680,9 @@ h_coxreg_extract_interaction <- function(effect,
     # Estimate the interaction.
     y <- h_coxreg_inter_effect(
       data[[covar]],
-      covar = covar, effect = effect, mod = mod,
+      covar = covar, 
+      effect = effect, 
+      mod = mod,
       label = unname(labels_or_names(data[covar])),
       at = at, control = control, data = data
     )
