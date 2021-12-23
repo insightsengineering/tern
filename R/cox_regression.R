@@ -684,7 +684,9 @@ h_coxreg_extract_interaction <- function(effect,
       effect = effect, 
       mod = mod,
       label = unname(labels_or_names(data[covar])),
-      at = at, control = control, data = data
+      at = at,
+      control = control,
+      data = data
     )
     rbind(covar_test, y)
   }
