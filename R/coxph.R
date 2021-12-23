@@ -564,7 +564,8 @@ fit_n_aov <- function(formula,
 
   aov <- try_car_anova(
     mod,
-    test.statistic = switch(pval_method,
+    test.statistic = switch(
+      pval_method,
       "wald" = "Wald",
       "likelihood" = "LR"
     )
