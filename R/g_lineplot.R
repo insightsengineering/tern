@@ -94,7 +94,9 @@
 #' )
 #'
 #' # Median with CI
-#' g_lineplot(adlb, adsl,
+#' g_lineplot(
+#'   adlb, 
+#'   adsl,
 #'   mid = "median", interval = "median_ci",
 #'   whiskers = c("median_ci_lwr", "median_ci_upr"),
 #'   title = "Plot of Median and 95% Confidence Limits by Visit"
