@@ -532,7 +532,8 @@ h_coxreg_univar_extract <- function(effect,
 #'
 #' plot(
 #'   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
-#'   lty = 2:4, xlab = "Months",
+#'   lty = 2:4, 
+#'   xlab = "Months",
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
 h_coxreg_inter_effect <- function(x,
