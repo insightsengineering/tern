@@ -115,9 +115,12 @@ a_surv_timepoint <- make_afun(
 #'
 #' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 #' s_surv_timepoint_diff(
-#'   df, df_ref_group,
+#'   df,
+#'   df_ref_group,
 #'   .in_ref_col = FALSE,
-#'   .var = "AVAL", time_point = 7, is_event = "is_event"
+#'   .var = "AVAL",
+#'   time_point = 7,
+#'   is_event = "is_event"
 #' )
 s_surv_timepoint_diff <- function(df,
                                   .var,
