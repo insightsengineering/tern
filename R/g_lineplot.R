@@ -87,7 +87,8 @@
 #' g_lineplot(adlb, variables = control_lineplot_vars(strata = NA))
 #'
 #' # Mean, upper whisker of CI, no strata counts N
-#' g_lineplot(adlb,
+#' g_lineplot(
+#'   adlb,
 #'   whiskers = "mean_ci_upr",
 #'   title = "Plot of Mean and Upper 95% Confidence Limit by Visit"
 #' )
