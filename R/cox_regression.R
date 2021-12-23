@@ -579,7 +579,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
   coef_hat <- betas[effect_index] + xval * betas[!effect_index]
   coef_se <- sqrt(
     betas_var[effect_index] +
-      xval^2 * betas_var[!effect_index] +
+      xval ^ 2 * betas_var[!effect_index] + # styler: off
       2 * xval * betas_cov
   )
   q_norm <- stats::qnorm((1 + control$conf_level) / 2)

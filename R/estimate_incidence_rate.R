@@ -145,7 +145,7 @@ h_incidence_rate_byar <- function(person_years,
   seg_2 <- 1 - 1 / (9 * (n_events + 0.5))
   seg_3 <- stats::qnorm(1 - alpha / 2) * sqrt(1 / (n_events + 0.5)) / 3
   lcl <- seg_1 * ((seg_2 - seg_3)^3) / person_years
-  ucl <- seg_1 * ((seg_2 + seg_3)^3) / person_years
+  ucl <- seg_1 * ((seg_2 + seg_3) ^ 3) / person_years # styler: off
 
   list(rate = est, rate_ci = c(lcl, ucl))
 }

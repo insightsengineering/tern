@@ -269,7 +269,7 @@ s_summary.numeric <- function(x, # nolint
   x_no_negative_vals[x_no_negative_vals <= 0] <- NA
   y$geom_mean <- c("geom_mean" = exp(mean(log(x_no_negative_vals), na.rm = FALSE)))
 
-  y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals), na.rm = FALSE)^2) - 1) * 100)
+  y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals), na.rm = FALSE) ^ 2) - 1) * 100) # styler: off
 
   y
 }
