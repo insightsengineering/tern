@@ -130,8 +130,6 @@ c_num_patients <- make_afun(
 #' function [s_num_patients_content()] and desired format.
 #'
 #' @export
-#'
-#' @examples
 summarize_num_patients <- function(lyt,
                                    var,
                                    .stats = NULL,

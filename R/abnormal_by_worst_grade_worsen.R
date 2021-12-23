@@ -168,7 +168,7 @@ h_adlb_worsen <- function(adlb,
 #' @examples
 #' # `h_worsen_counter`
 #' h_worsen_counter(
-      df %>% filter(PARAMCD == "CRP" & GRADDR == "Low"),
+#'   df %>% filter(PARAMCD == "CRP" & GRADDR == "Low"),
 #'   id = "USUBJID",
 #'   .var = "ATOXGR",
 #'   baseline_var = "BTOXGR",
