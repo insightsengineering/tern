@@ -310,7 +310,8 @@ fit_lme4_single_optimizer <- function(formula,
       "nmkbw" = "nmkbw",
       "optimx_lbfgsb" = "optimx"
     ),
-    optCtrl = switch(optimizer,
+    optCtrl = switch(
+      optimizer,
       "nloptwrap_neldermead" = list(algorithm = "NLOPT_LN_NELDERMEAD"),
       "nloptwrap_bobyqa" = list(algorithm = "NLOPT_LN_BOBYQA"),
       "optimx_lbfgsb" = list(method = "L-BFGS-B"),
