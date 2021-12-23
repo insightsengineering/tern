@@ -299,7 +299,8 @@ s_cox_univariate <- function(formula,
   pval <- c(
     ref_mod = with(
       fit$ref_mod,
-      unname(switch(pval_method,
+      unname(switch(
+        pval_method,
         "wald" = msum$waldtest["pvalue"],
         "likelihood" = msum$logtest["pvalue"]
       ))
