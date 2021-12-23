@@ -619,7 +619,8 @@ forest_dot_line <- function(x, # nolint
       } else if (ci[1] < xlim[1] && ci[2] <= xlim[2]) {
         # <-
         grid::linesGrob(
-          x = grid::unit(c(xlim[1], ci[2]), "native"), y = y,
+          x = grid::unit(c(xlim[1], ci[2]), "native"),
+          y = y,
           arrow = grid::arrow(angle = 30, length = grid::unit(0.5, "lines"), ends = "first")
         )
       } else if (ci[1] >= xlim[1] && ci[2] > xlim[2]) {
