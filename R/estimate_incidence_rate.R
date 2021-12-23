@@ -170,7 +170,8 @@ h_incidence_rate <- function(person_years,
                              n_events,
                              control = control_incidence_rate()) {
   alpha <- 1 - control$conf_level
-  est <- switch(control$conf_type,
+  est <- switch(
+    control$conf_type,
     normal = h_incidence_rate_normal(person_years, n_events, alpha),
     normal_log = h_incidence_rate_normal_log(person_years, n_events, alpha),
     exact = h_incidence_rate_exact(person_years, n_events, alpha),
