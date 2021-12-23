@@ -106,7 +106,7 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
   assertthat::assert_that(
     all(
       c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split
-    ), # nolint
+    ),
     msg = paste(
       "variabes$param and variables$grade_dir must match",
       "the variables used for splitting rows in the layout."
