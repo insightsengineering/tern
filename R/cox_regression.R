@@ -520,7 +520,8 @@ h_coxreg_univar_extract <- function(effect,
 #'     covar1 = as.factor(enum),
 #'     covar2 = factor(
 #'       sample(as.factor(enum)),
-#'       levels = 1:4, labels = c("F", "F", "M", "M")
+#'       levels = 1:4, 
+#'       labels = c("F", "F", "M", "M")
 #'     )
 #'   )
 #' )
