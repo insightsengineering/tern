@@ -1203,7 +1203,7 @@ h_grob_coxph <- function(...,
                          )) {
   data <- h_tbl_coxph_pairwise(...) # nolint
   tryCatch(
-    { # nolint
+    expr = { # nolint
       gt <- gridExtra::tableGrob(d = data, theme = ttheme) # ERROR 'data' must be of a vector type, was 'NULL'
       vp <- grid::viewport(
         x = grid::unit(x, "npc") + grid::unit(1, "lines"),

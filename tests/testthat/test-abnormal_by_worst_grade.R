@@ -150,7 +150,7 @@ testthat::test_that(
   "count_abnormal_by_worst_grade returns an error when variables$param
   and variables$grade_dir are taking variable names not used
   for splitting the layout in rows.",
-  { # nolint
+  code = {
     adlb <- adlb_raw
     adlb_f <- adlb %>%
       dplyr::filter(

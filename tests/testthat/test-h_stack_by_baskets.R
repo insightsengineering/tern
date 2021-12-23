@@ -64,7 +64,7 @@ testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
 testthat::test_that(
   "h_stack_by_baskets fails when selecting Standardized/Customized query names
   that do not start with 'SMQ' or 'CQ' ",
-  { # nolint
+  code = {
     adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
 
     testthat::expect_error(
@@ -79,7 +79,7 @@ testthat::test_that(
 testthat::test_that(
   "h_stack_by_baskets fails when selecting Standardized/Customized
   query names that do not end with 'NAM' ",
-  { # nolint
+  code = {
     adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
 
     testthat::expect_error(
@@ -94,7 +94,7 @@ testthat::test_that(
 testthat::test_that(
   "h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no
   adverse events falling within any of the baskets selected",
-  { # nolint
+  code = {
     adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
 
@@ -129,7 +129,7 @@ testthat::test_that(
 testthat::test_that(
   "The levels of the SMQ column does also
   include the options from aag_summary not observed in ADAE",
-  { # nolint
+  code = {
     adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
 

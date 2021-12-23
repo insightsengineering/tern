@@ -111,7 +111,7 @@ testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing for pa
 testthat::test_that(
   "h_adsl_adlb_merge_using_worst_flag generates missing for patients without
   any post-baseline values flagged as the worst",
-  { # nolint
+  code = {
     adsl_f <- adsl %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
     adlb_f <- adlb %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
 

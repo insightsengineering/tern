@@ -775,7 +775,7 @@ testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in
 testthat::test_that(
   "AET04 variant 11 is produced correctly
   (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)",
-  { # nolint
+  code = {
     adae <- preproc_adae(adae)
 
     raw_result <- raw_table(adae, adsl)

@@ -78,7 +78,7 @@ g_mmrm_diagnostic <- function(object,
 
   result <- if (type == "fit-residual") {
     amended_data_smooth <- suppressWarnings(tryCatch(
-      { # nolint
+      expr = { # nolint
         get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
       },
       error = function(msg) {

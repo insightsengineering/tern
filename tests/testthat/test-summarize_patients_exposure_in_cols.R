@@ -91,7 +91,7 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with custom 
 testthat::test_that(
   "summarize_patients_exposure_in_cols returns the correct column label when there is no variable split
           and when just one statistics is shown",
-  { # nolint
+  code = {
     df <- get_anl()
     adsl <- get_adsl()
 

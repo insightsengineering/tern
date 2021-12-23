@@ -57,7 +57,7 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for range 
 # for default method, if LOW LOW and HIGH HIGH are not observed in the input dataset, they are dropped
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input",
-  { # nolint
+  code = {
     result <- h_map_for_count_abnormal(
       df = df,
       variables = list(anl = "ANRIND", split_rows = "PARAM"),
@@ -83,7 +83,7 @@ testthat::test_that(
 # they are kept in the map.
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input",
-  { # nolint
+  code = {
     df$ANRLO <- 5 # nolint
     df$ANRHI <- 20 # nolint
 
@@ -111,7 +111,7 @@ testthat::test_that(
 # for default method, if only LOW LOW/HIGH HIGH is observed in the input dataset, the observed one will be kept.
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input",
-  { # nolint
+  code = {
     df <- df %>% dplyr::mutate(
       ANRIND = ifelse(PARAM == "ALT" & ANRIND == "LOW" & USUBJID == "1", "LOW LOW", as.character(ANRIND))
     )
@@ -141,7 +141,7 @@ testthat::test_that(
 # every record is normal
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input",
-  { # nolint
+  code = {
     df$ANRLO <- 5 # nolint
     df$ANRHI <- 20 # nolint
     df$ANRIND <- "NORMAL" # nolint
@@ -171,7 +171,7 @@ testthat::test_that(
 # for range method, a theoretical map is built based on the rule at least one ANRLO >0 and one ANRHI not missing
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input",
-  { # nolint
+  code = {
     df$ANRLO <- 5 # nolint
     df$ANRHI <- 20 # nolint
     df$ANRLO <- ifelse(df$PARAM == "ALT", 0, df$ANRLO) # nolint
