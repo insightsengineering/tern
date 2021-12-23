@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.5.9013
+Version: 0.7.5.9014
 Date: 2021-10-13
 Authors@R: c(
     person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre")),
