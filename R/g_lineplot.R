@@ -105,7 +105,8 @@
 #'
 #' # Mean, +/- SD
 #' g_lineplot(adlb, adsl,
-#'   interval = "mean_sdi", whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
+#'   interval = "mean_sdi",
+#'   whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
 #'   title = "Plot of Median +/- SD by Visit"
 #' )
 #'
