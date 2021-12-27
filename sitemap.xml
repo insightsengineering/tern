@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://insightsengineering.github.io/tern/404.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/articles/introduction.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/authors.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/index.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/pull_request_template.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/abnormal.html</loc>
@@ -373,6 +394,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/incidence_rate.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/individual_patient_plot.html</loc>
   </url>
   <url>
@@ -524,8 +548,5 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/unlist_and_blank_na.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/articles/introduction.html</loc>
   </url>
 </urlset>

@@ -26,6 +26,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.5.9014</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -68,34 +64,10 @@
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="index.html">latest</a></li>
-   <li><a href="pre-release/index.html">pre-release</a></li>
-   <li><a href="v0.7.5/index.html">v0.7.5</a></li>
-   <li><a href="v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/insightsengineering/tern">
+  <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
      
   </a>
@@ -112,31 +84,31 @@ Other releases
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="tern" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#tern" class="anchor"></a>tern</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="tern">tern<a class="anchor" aria-label="anchor" href="#tern"></a>
+</h1></div>
 <p>The <code>tern</code> R package contains analysis functions to create tables, listings and graphs (TLGs) as used in clinical trials. We also provide the <code>teal</code> modules for outputs in <code>tern</code> in the <code>teal.modules.clinical</code> R package.</p>
 <ul>
 <li><p>Note that tern can be used to create output for regulatory submissions when used in the enableR system.</p></li>
 <li><p>Use of tern in other contexts/systems is for exploratory analysis, quality control, etc.</p></li>
 </ul>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div id="clone-and-install-manually" class="section level3">
-<h3 class="hasAnchor">
-<a href="#clone-and-install-manually" class="anchor"></a>Clone and install manually</h3>
-<ol>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="section level3">
+<h3 id="clone-and-install-manually">Clone and install manually<a class="anchor" aria-label="anchor" href="#clone-and-install-manually"></a>
+</h3>
+<ol style="list-style-type: decimal">
 <li>
 <p>Clone the repository</p>
-<p>The repository can be downloaded directly from the <code>github.com</code> site as an archive (see <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository">Github tutorial on cloning to learn more</a>). Alternatively, Git command line tools offer the same functionality, without the need for manual downloading and unpacking the archive, but require to authenticate to Github. You can authenticate using a key pair or a Personal Access Token (PAT). Please refer to excellent Github tutorials on <a href="https://docs.github.com/en/github/authenticating-to-github">connecting to Github using SSH</a> or <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token">creating and using PAT</a>.</p>
-<ol>
+<p>The repository can be downloaded directly from the <code>github.com</code> site as an archive (see <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" class="external-link">Github tutorial on cloning to learn more</a>). Alternatively, Git command line tools offer the same functionality, without the need for manual downloading and unpacking the archive, but require to authenticate to Github. You can authenticate using a key pair or a Personal Access Token (PAT). Please refer to excellent Github tutorials on <a href="https://docs.github.com/en/github/authenticating-to-github" class="external-link">connecting to Github using SSH</a> or <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external-link">creating and using PAT</a>.</p>
+<ol style="list-style-type: decimal">
 <li>Using PAT. Input in the Git Bash console, PowerShell or any Linux shell:</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git clone https://github.com/insightsengineering/tern.git</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Username:</span> your_username_goes_here</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Password:</span> your_token_goes_here</span></code></pre></div>
-<ol>
+<ol style="list-style-type: decimal">
 <li>
 <p>Using SSH. If set up properly, the repository is ready to be cloned executing:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/insightsengineering/tern.git</span></code></pre></div>
@@ -156,16 +128,16 @@ Other releases
 </ol>
 </div>
 </div>
-<div id="presentations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#presentations" class="anchor"></a>Presentations</h2>
+<div class="section level2">
+<h2 id="presentations">Presentations<a class="anchor" aria-label="anchor" href="#presentations"></a>
+</h2>
 <ul>
-<li><a href="https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing">Stats Software Initiative - R Series. June 18, 2018</a></li>
+<li><a href="https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing" class="external-link">Stats Software Initiative - R Series. June 18, 2018</a></li>
 </ul>
 </div>
-<div id="acknowledgments" class="section level2">
-<h2 class="hasAnchor">
-<a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
+<div class="section level2">
+<h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
+</h2>
 <p>There are a number of people who have previously been actively working on <code>tern</code> including: Maximilian Mordig, Jennifer Li, Chendi Liao, Yuyao Song, Edgar Manukyan, Carolyn Zhang, Mark Rothe, Xiao Yu Mo.</p>
 </div>
 </div>
@@ -173,23 +145,31 @@ Other releases
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/insightsengineering/tern/">https://​github.com/​insightsengineering/​tern/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github..com/insightsengineering/tern/issues">https://​github..com/​insightsengineering/​tern/​issues</a>
-</li>
+<li><a href="https://github..com/insightsengineering/tern/" class="external-link">Browse source code</a></li>
+<li><a href="https://github..com/insightsengineering/tern/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>Apache License 2.0 | file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing tern</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>NEST <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Roche <br><small class="roles"> Copyright holder, funder </small>  </li>
@@ -205,20 +185,24 @@ Other releases
 <li>Carreras Maximo <br><small class="roles"> Author </small>  </li>
 <li>Zhao Rui <br><small class="roles"> Author </small>  </li>
 <li>Wojciech Wojciak <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by NEST, Roche, Saibah Chohan, Francois Collin, Nick Paszty, Ting Qi, Daniel Sabanes Bove, Jana Stoilova, Adrian Waddell, Heng Wang, Godwin Yung, Carreras Maximo, Zhao Rui, Wojciech Wojciak.</p>
+  <p></p>
+<p>Developed by NEST, Roche, Saibah Chohan, Francois Collin, Nick Paszty, Ting Qi, Daniel Sabanes Bove, Jana Stoilova, Adrian Waddell, Heng Wang, Godwin Yung, Carreras Maximo, Zhao Rui, Wojciech Wojciak.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -226,6 +210,8 @@ Other releases
 
   
 
+
+  
 
   </body>
 </html>
