@@ -5,7 +5,8 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
 
   result <- prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
-  expected <- list(# according to SAS.
+  # according to SAS.
+  expected <- list(
     diff = 0.25,
     diff_ci = c(-0.9195, 1)
   )
@@ -16,13 +17,12 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
   result <- prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
-
-  expected <- list(# according to SAS.
+  # according to SAS.
+  expected <- list(
     diff = 0,
     diff_ci = c(-0.8451, 0.8451)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
-
 })
 
 
@@ -35,7 +35,8 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
   result <- suppressWarnings(
     prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
   )
-  expected <- list(# according to SAS.
+  # according to SAS.
+  expected <- list(
     diff = 0.25,
     diff_ci = c(-0.2967, 0.6750)
   )
@@ -47,17 +48,16 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
   result <- testthat::expect_warning(
     prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.6)
   )
-  expected <- list(# according to SAS.
+  # according to SAS.
+  expected <- list(
     diff = 0,
     diff_ci = c(-0.3616, 0.3616)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
-
 })
 
 
 testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
-
   set.seed(2, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
   grp <- sample(c("Placebo", "Treatment"), 100, TRUE)
@@ -65,7 +65,8 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
   strata_data <- data.frame(
     "f1" = sample(c("a", "b"), 100, TRUE),
     "f2" = sample(c("x", "y", "z"), 100, TRUE),
-    stringsAsFactors = TRUE)
+    stringsAsFactors = TRUE
+  )
 
   result <- prop_diff_cmh(
     rsp = rsp, grp = grp, strata = interaction(strata_data),
@@ -82,11 +83,9 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
     diff_ci = c(-0.285363076, 0.009989872)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
-
 })
 
 testthat::test_that("prop_diff_cmh works correctly when some strata don't have both groups", {
-
   set.seed(2, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
   grp <- sample(c("Placebo", "Treatment"), 100, TRUE)
@@ -94,7 +93,8 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
   strata_data <- data.frame(
     "f1" = sample(c("a", "b"), 100, TRUE),
     "f2" = sample(c("x", "y", "z"), 100, TRUE),
-    stringsAsFactors = TRUE)
+    stringsAsFactors = TRUE
+  )
 
   # Deliberately remove all `Treatment` patients from one stratum.
   grp[strata_data$f1 == "a" & strata_data$f2 == "x"] <- "Placebo"

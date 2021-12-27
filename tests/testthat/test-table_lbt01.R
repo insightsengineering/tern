@@ -10,10 +10,10 @@ adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 testthat::test_that("LBT01 default variant is produced correctly", {
   adlb_f <- adlb %>%
     dplyr::filter(
-    PARAM == "Alanine Aminotransferase Measurement" &
-      !(ARM == "B: Placebo" & AVISIT == "WEEK 1 DAY 8") &
-      AVISIT != "SCREENING"
-  )
+      PARAM == "Alanine Aminotransferase Measurement" &
+        !(ARM == "B: Placebo" & AVISIT == "WEEK 1 DAY 8") &
+        AVISIT != "SCREENING"
+    )
 
   l <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -27,7 +27,8 @@ testthat::test_that("LBT01 default variant is produced correctly", {
   result <- build_table(l, adlb_f)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "BASELINE", "n", "Mean (SD)", "Median", "Min - Max",
+    c(
+      "", "", "BASELINE", "n", "Mean (SD)", "Median", "Min - Max",
       "WEEK 1 DAY 8", "n", "Mean (SD)", "Median", "Min - Max", "WEEK 2 DAY 15",
       "n", "Mean (SD)", "Median", "Min - Max", "WEEK 3 DAY 22", "n",
       "Mean (SD)", "Median", "Min - Max", "WEEK 4 DAY 29", "n", "Mean (SD)",

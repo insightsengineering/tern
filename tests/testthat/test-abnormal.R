@@ -1,7 +1,6 @@
 library(dplyr)
 
 testthat::test_that("s_count_abnormal works with healthy input and default arguments", {
-
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
   df <- data.frame(
@@ -27,15 +26,15 @@ testthat::test_that("s_count_abnormal works with healthy input and default argum
   expected_result[["low"]] <- with_label(
     label = "low",
     c(
-      num = 1L,  # Patient 1 had LOW during treatment.
-      denom = 2L  # Both patients 1 and 2 have post-baseline assessments.
+      num = 1L, # Patient 1 had LOW during treatment.
+      denom = 2L # Both patients 1 and 2 have post-baseline assessments.
     )
   )
   expected_result[["high"]] <- with_label(
     label = "high",
     c(
-      num = 1L,  # Patient 2 had HIGH during treatment.
-      denom = 2L  # Both patients 1 and 2 have post-baseline assessments.
+      num = 1L, # Patient 2 had HIGH during treatment.
+      denom = 2L # Both patients 1 and 2 have post-baseline assessments.
     )
   )
 
@@ -69,15 +68,15 @@ testthat::test_that("s_count_abnormal works when excluding patients with abnorma
   expected_result[["low"]] <- with_label(
     label = "low",
     c(
-      num = 1L,  # Patient 1 had LOW during treatment.
-      denom = 2L  # Both patients 1 and 2 have post-baseline assessments.
+      num = 1L, # Patient 1 had LOW during treatment.
+      denom = 2L # Both patients 1 and 2 have post-baseline assessments.
     )
   )
   expected_result[["high"]] <- with_label(
     label = "high",
     c(
-      num = 1L,  # Patient 3 had HIGH during treatment.
-      denom = 2L  # Both patients 1 and 3 have post-baseline assessments.
+      num = 1L, # Patient 3 had HIGH during treatment.
+      denom = 2L # Both patients 1 and 3 have post-baseline assessments.
     )
   )
 
@@ -86,7 +85,6 @@ testthat::test_that("s_count_abnormal works when excluding patients with abnorma
 })
 
 testthat::test_that("s_count_abnormal also works with tibble and custom arguments", {
-
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
   df <- tibble::as_tibble(
@@ -115,15 +113,15 @@ testthat::test_that("s_count_abnormal also works with tibble and custom argument
   expected_result[["low"]] <- with_label(
     label = "low",
     c(
-      num = 0L,  # Patient 1 is removed due to baseline being abnormal.
-      denom = 1L  # Only patients 2 has post-baseline assessments.
+      num = 0L, # Patient 1 is removed due to baseline being abnormal.
+      denom = 1L # Only patients 2 has post-baseline assessments.
     )
   )
   expected_result[["high"]] <- with_label(
     label = "high",
     c(
-      num = 0L,  # Patient 2 is removed due to baseline being abnormal.
-      denom = 1L  # Only patients 1 has post-baseline assessments.
+      num = 0L, # Patient 2 is removed due to baseline being abnormal.
+      denom = 1L # Only patients 1 has post-baseline assessments.
     )
   )
 
@@ -132,7 +130,6 @@ testthat::test_that("s_count_abnormal also works with tibble and custom argument
 })
 
 testthat::test_that("count_abnormal works with default arguments", {
-
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
   df <- data.frame(
@@ -161,7 +158,6 @@ testthat::test_that("count_abnormal works with default arguments", {
 })
 
 testthat::test_that("count_abnormal works with custom arguments", {
-
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 
   df2 <- data.frame(
@@ -196,7 +192,6 @@ testthat::test_that("count_abnormal works with custom arguments", {
 })
 
 testthat::test_that("count_abnormal works with default arguments and visit", {
-
   abn_levels <- c("LOW", "NORMAL", "HIGH")
   visit_levels <- c("BASELINE", "WEEK 1", "WEEK 2")
 
@@ -222,14 +217,13 @@ testthat::test_that("count_abnormal works with default arguments and visit", {
     c(
       "", "WEEK 1", "low", "high", "WEEK 2", "low", "high",
       "all obs", "", "1/2 (50%)", "1/2 (50%)", "", "1/2 (50%)", "0/2"
-      ),
+    ),
     .Dim = c(7L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("s_count_abnormal works with healthy input and grouped abnormal arguments", {
-
   abn_levels <- c("LOW", "NORMAL", "HIGH", "LOW LOW", "HIGH HIGH")
 
   df <- data.frame(
@@ -255,15 +249,15 @@ testthat::test_that("s_count_abnormal works with healthy input and grouped abnor
   expected_result[["low"]] <- with_label(
     label = "low",
     c(
-      num = 2L,  # Patient 1 and 3 had LOW during treatment.
-      denom = 4L  # Both patients 1, 2, 3 and 4 have post-baseline assessments.
+      num = 2L, # Patient 1 and 3 had LOW during treatment.
+      denom = 4L # Both patients 1, 2, 3 and 4 have post-baseline assessments.
     )
   )
   expected_result[["high"]] <- with_label(
     label = "high",
     c(
-      num = 2L,  # Patient 2 and 4 had HIGH during treatment.
-      denom = 4L  # Both patients 1, 2, 3 and 4 have post-baseline assessments.
+      num = 2L, # Patient 2 and 4 had HIGH during treatment.
+      denom = 4L # Both patients 1, 2, 3 and 4 have post-baseline assessments.
     )
   )
 

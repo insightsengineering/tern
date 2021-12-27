@@ -144,7 +144,6 @@ set.seed(2)
 rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 grp <- c(rep("A", 10), rep("B", 10))
 prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
-
 # Anderson-Hauck confidence interval
 
 ## "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
@@ -157,18 +156,16 @@ rsp <- c(TRUE, FALSE, TRUE, FALSE)
 grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
 prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
 
-
 # Newcombe confidence interval
 
 set.seed(1)
 rsp <- c(
-  sample(c(TRUE, FALSE), size = 40, prob = c(3/4, 1/4), replace = TRUE),
-  sample(c(TRUE, FALSE), size = 40, prob = c(1/2, 1/2), replace = TRUE)
+  sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+  sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
 )
 grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A"))
 table(rsp, grp)
 prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
-
 
 # Cochran-Mantel-Haenszel confidence interval
 
@@ -179,13 +176,13 @@ grp <- factor(grp, levels = c("Placebo", "Treatment"))
 strata_data <- data.frame(
   "f1" = sample(c("a", "b"), 100, TRUE),
   "f2" = sample(c("x", "y", "z"), 100, TRUE),
-  stringsAsFactors = TRUE)
+  stringsAsFactors = TRUE
+)
 
 prop_diff_cmh(
   rsp = rsp, grp = grp, strata = interaction(strata_data),
   conf_level = 0.90
 )
-
 
 # Summary
 
@@ -203,7 +200,6 @@ s_proportion_diff(
   conf_level = 0.90,
   method = "ha"
 )
-
 a_proportion_diff(
   df = subset(dta, grp == "A"),
   .var = "rsp",
@@ -213,9 +209,8 @@ a_proportion_diff(
   method = "ha"
 )
 
-
 l <- basic_table() \%>\%
-split_cols_by(var = "grp", ref_group = "B") \%>\%
+  split_cols_by(var = "grp", ref_group = "B") \%>\%
   estimate_proportion_diff(
     vars = "rsp",
     conf_level = 0.90,
@@ -223,5 +218,4 @@ split_cols_by(var = "grp", ref_group = "B") \%>\%
   )
 
 build_table(l, df = dta)
-
 }

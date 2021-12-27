@@ -73,7 +73,7 @@ cfun_by_flag <- function(analysis_var,
 #'
 c_label_n <- function(df,
                       labelstr,
-                      .N_row  #nolint
+                      .N_row # nolint
 ) {
   label <- paste0(labelstr, " (N=", .N_row, ")")
   CellValue(
@@ -101,7 +101,6 @@ c_label_n <- function(df,
 #'   add_rowcounts() %>%
 #'   analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") %>%
 #'   build_table(DM)
-#'
 add_rowcounts <- function(lyt) {
   summarize_row_groups(
     lyt,
@@ -153,7 +152,7 @@ labels_or_names <- function(x) {
 #'   which is used.
 #' @export
 #'
-as.rtable <- function(x, ...) {  #nolint
+as.rtable <- function(x, ...) { # nolint
   UseMethod("as.rtable", x)
 }
 
@@ -167,7 +166,6 @@ as.rtable <- function(x, ...) {  #nolint
 #'   b = rnorm(10)
 #' )
 #' as.rtable(x)
-#'
 as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nousage # nolint
   assertthat::assert_that(all(sapply(x, is.numeric)), msg = "only works with numeric data frame columns")
   do.call(
@@ -179,9 +177,12 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nousage # nolint
       ),
       Map(
         function(row, row_name) {
-          do.call(rrow,
-                  c(as.list(unname(row)),
-                    row.name = row_name))
+          do.call(
+            rrow,
+            c(as.list(unname(row)),
+              row.name = row_name
+            )
+          )
         },
         row = as.data.frame(t(x)),
         row_name = rownames(x)
@@ -220,7 +221,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nousage # nolint
 #' # [1] "rate_diff"
 #'
 #' .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
-#' h_split_param(.formats, names(.formats), f =  f)
+#' h_split_param(.formats, names(.formats), f = f)
 #'
 #' # $surv
 #' # pt_at_risk event_free_rate
@@ -228,7 +229,6 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nousage # nolint
 #' #
 #' # $surv_diff
 #' # NULL
-#'
 h_split_param <- function(param,
                           value,
                           f) {
@@ -294,9 +294,7 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'   analyze("AGE", afun = mean) %>%
 #'   append_varlabels(DM, c("SEX", "AGE"))
 #' build_table(lyt, DM)
-#'
 append_varlabels <- function(lyt, df, vars, indent = 0L) {
-
   if (assertthat::is.flag(indent)) {
     warning("indent argument is now accepting integers. Boolean indent will be converted to integers.")
     indent <- as.integer(indent)

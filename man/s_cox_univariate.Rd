@@ -80,10 +80,10 @@ ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- within( # nolint
   data = subset(
     ADTTE_f,
-    PARAMCD == "OS"
-    & ARMCD \%in\% c("ARM A", "ARM B")
-    & SEX \%in\% c("F", "M")
-    & RACE \%in\% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
+    PARAMCD == "OS" &
+      ARMCD \%in\% c("ARM A", "ARM B") &
+      SEX \%in\% c("F", "M") &
+      RACE \%in\% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
   ),
   expr = { # nolint start
     set.seed(1)
@@ -94,7 +94,6 @@ ADTTE_f <- within( # nolint
     X <- rnorm(n = length(ARM))
   } # nolint end
 )
-
 \dontrun{
 s_cox_univariate(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),

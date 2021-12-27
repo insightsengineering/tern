@@ -108,7 +108,6 @@ basic_table() %>%
     .formats = c(mean_sd = "xx.xx (xx.xx)")
   ) %>%
   build_table(adsl)
-
 ```
 
 One feature of a `layout` is that it can be used with different datasets to create different summaries. For example, here we can easily create the same summary of demographics for the Brazil and China subgroups, respectively:
@@ -152,7 +151,7 @@ basic_table() %>%
   build_table(
     df = adae,
     alt_counts_df = adsl
-)
+  )
 ```
 
 Note that for this table, the denominator used for percentages and shown in the header of the table `(N = xx)` is defined based on the subject-level dataset `adsl`. This is done by using the `alt_df_counts` argument in `build_table()`, which provides an alternative data set for deriving the counts in the header. This is often required when we work with data sets that include multiple records per patient as `df`, such as `adae` here.
@@ -184,7 +183,7 @@ basic_table() %>%
   build_table(
     df = adae,
     alt_counts_df = adsl
-)
+  )
 ```
 
 Let's now continue building on the layout for the adverse event table. 
@@ -221,7 +220,7 @@ basic_table() %>%
   build_table(
     df = adae,
     alt_counts_df = adsl
-)
+  )
 ```
 
 The table looks almost ready. For the final step, we need a layout creating function that can produce a count table of event frequencies. The layout creating function for this is `count_occurrences()`. Let's first try using this function in a simpler layout without row splits:
@@ -272,7 +271,7 @@ basic_table() %>%
   build_table(
     df = adae,
     alt_counts_df = adsl
-)
+  )
 ```
 
 ## Response Table
@@ -338,7 +337,7 @@ basic_table() %>%
   split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
   add_colcounts() %>%
   estimate_proportion_diff(
-  vars = "is_rsp",
+    vars = "is_rsp",
     show_labels = "visible",
     var_labels = "Unstratified Analysis"
   ) %>%

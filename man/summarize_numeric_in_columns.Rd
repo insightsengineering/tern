@@ -65,7 +65,6 @@ library(dplyr)
 ADPC <- scda::synthetic_cdisc_data("latest")$adpc
 summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
 
-
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
   split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
@@ -78,19 +77,21 @@ lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
   split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
   summarize_vars_numeric_in_cols(
-  var = "AGE",
-  .stats = c("n", "cv", "geom_mean", "mean_ci"),
-  .labels = c(n = "myN", cv = "myCV", geom_mean = "myGeomMean", mean_ci = "Mean (95\%CI)"),
-  col_split = TRUE)
+    var = "AGE",
+    .stats = c("n", "cv", "geom_mean", "mean_ci"),
+    .labels = c(n = "myN", cv = "myCV", geom_mean = "myGeomMean", mean_ci = "Mean (95\%CI)"),
+    col_split = TRUE
+  )
 result <- build_table(lyt = lyt, df = ADPC)
 result
 
 lyt <- basic_table() \%>\%
   summarize_vars_numeric_in_cols(
-  var = "AGE",
-  col_split = TRUE,
-  custom_label = "some custom label")
-  result <- build_table(lyt, df = ADPC)
+    var = "AGE",
+    col_split = TRUE,
+    custom_label = "some custom label"
+  )
+result <- build_table(lyt, df = ADPC)
 result
 
 # PKPT03
@@ -98,7 +99,7 @@ ADPC <- mutate(ADPC, PARAMUNIT = paste0(.data$PARAM, "(", .data$AVALU, ")"))
 lyt <- basic_table() \%>\%
   split_rows_by(var = "PARAMUNIT", split_label = "PK Parameter", label_pos = "topleft") \%>\%
   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
-  result <- build_table(lyt, df = ADPC)
+result <- build_table(lyt, df = ADPC)
 result
 
 # PKCT01FDS
@@ -107,9 +108,8 @@ lyt <- basic_table() \%>\%
   split_rows_by(var = "VISIT", split_label = "Visit", label_pos = "topleft") \%>\%
   split_rows_by(var = "NRELTM1", split_label = "Norminal time from first dose", label_pos = "topleft") \%>\%
   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
-  result <- build_table(lyt, df = ADPC)
+result <- build_table(lyt, df = ADPC)
 result
-
 }
 \seealso{
 \link{summarize_vars}.

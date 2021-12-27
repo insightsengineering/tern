@@ -22,7 +22,7 @@ testthat::test_that("is_nonnegative_count is TRUE with healthy input", {
 
 testthat::test_that("is_nonnegative_count is FALSE with wrong input", {
   testthat::expect_false(is_nonnegative_count(c(5L, 3L)))
-  testthat::expect_false(is_nonnegative_count(- 5L))
+  testthat::expect_false(is_nonnegative_count(-5L))
   testthat::expect_false(is_nonnegative_count(NULL))
   testthat::expect_false(is_nonnegative_count(NA_integer_))
 })

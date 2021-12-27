@@ -43,8 +43,7 @@ NULL
 #'     fatal = c(AESDTH = "Y")
 #'   )
 #' )
-#'
-s_count_patients_and_multiple_events <- function(df, #nolint
+s_count_patients_and_multiple_events <- function(df, # nolint
                                                  id,
                                                  filters_list,
                                                  empty_stats = character(),
@@ -118,8 +117,7 @@ s_count_patients_and_multiple_events <- function(df, #nolint
 #'     custom_label = "%s Total number of patients and events"
 #'   ) %>%
 #'   build_table(df)
-#'
-summarize_patients_events_in_cols <- function(lyt,  #nolint
+summarize_patients_events_in_cols <- function(lyt, # nolint
                                               id = "USUBJID",
                                               filters_list = list(),
                                               ...,

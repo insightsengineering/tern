@@ -5,9 +5,7 @@ library(tern)
 library(scda)
 
 stack_adae_by_smq <- function(adae, smq) {
-
   l_df <- lapply(smq, function(ae_grp) {
-
     keep <- !(is.na(adae[[ae_grp]]))
     df <- adae[keep, ]
     df[["SMQ"]] <- ae_grp
@@ -21,18 +19,17 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correctly", {
-
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
 
   adae <- adae %>%
     dplyr::mutate(
-      SMQ1  = dplyr::case_when(
+      SMQ1 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
       ),
       SMQ2 = dplyr::case_when(
-        AEBODSYS %in% c("cl A.1",  "cl D.1") ~ "SMQ 1 (narrow)",
+        AEBODSYS %in% c("cl A.1", "cl D.1") ~ "SMQ 1 (narrow)",
         TRUE ~ NA_character_
       ),
       SMQ3 = dplyr::case_when(
@@ -47,13 +44,14 @@ testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produ
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
-    add_colcounts()  %>%
+    add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "SMQ",
       child_labels = "visible",
@@ -67,12 +65,13 @@ testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produ
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Total number of events related to study drug"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, adae_r, alt_counts_df = adsl) %>%
     sort_at_path(path = c("SMQ"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
 
@@ -95,18 +94,17 @@ testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produ
 
 testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
                     <with customized queries>) is produced correctly", {
-
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
 
   adae <- adae %>%
     dplyr::mutate(
-      SMQ1  = dplyr::case_when(
+      SMQ1 = dplyr::case_when(
         AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
         TRUE ~ NA_character_
       ),
       SMQ2 = dplyr::case_when(
-        AEBODSYS %in% c("cl A.1",  "cl D.1") ~ "SMQ 1 (narrow)",
+        AEBODSYS %in% c("cl A.1", "cl D.1") ~ "SMQ 1 (narrow)",
         TRUE ~ NA_character_
       ),
       SMQ3 = dplyr::case_when(
@@ -121,13 +119,14 @@ testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
-    add_colcounts()  %>%
+    add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "SMQ",
       child_labels = "visible",
@@ -141,12 +140,13 @@ testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Total number of events related to study drug"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, adae_r, alt_counts_df = adsl) %>%
     sort_at_path(path = c("SMQ"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
 

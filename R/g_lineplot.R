@@ -87,18 +87,26 @@
 #' g_lineplot(adlb, variables = control_lineplot_vars(strata = NA))
 #'
 #' # Mean, upper whisker of CI, no strata counts N
-#' g_lineplot(adlb, whiskers = "mean_ci_upr",
+#' g_lineplot(
+#'   adlb,
+#'   whiskers = "mean_ci_upr",
 #'   title = "Plot of Mean and Upper 95% Confidence Limit by Visit"
 #' )
 #'
 #' # Median with CI
-#' g_lineplot(adlb, adsl, mid = "median", interval = "median_ci",
+#' g_lineplot(
+#'   adlb,
+#'   adsl,
+#'   mid = "median",
+#'   interval = "median_ci",
 #'   whiskers = c("median_ci_lwr", "median_ci_upr"),
 #'   title = "Plot of Median and 95% Confidence Limits by Visit"
 #' )
 #'
 #' # Mean, +/- SD
-#' g_lineplot(adlb, adsl, interval = "mean_sdi", whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
+#' g_lineplot(adlb, adsl,
+#'   interval = "mean_sdi",
+#'   whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
 #'   title = "Plot of Median +/- SD by Visit"
 #' )
 #'
@@ -107,7 +115,9 @@
 #'
 #' # Mean with CI, table and customized confidence level
 #' g_lineplot(
-#'   adlb, adsl, table = c("n", "mean", "mean_ci"),
+#'   adlb,
+#'   adsl,
+#'   table = c("n", "mean", "mean_ci"),
 #'   control = control_summarize_vars(conf_level = 0.80),
 #'   title = "Plot of Mean and 80% Confidence Limits by Visit"
 #' )
@@ -115,8 +125,6 @@
 #' # Mean with CI, table, filtered data
 #' adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
 #' g_lineplot(adlb_f, table = c("n", "mean"))
-#'
-#'
 g_lineplot <- function(df, # nolint
                        alt_counts_df = NULL,
                        variables = control_lineplot_vars(),
@@ -144,7 +152,6 @@ g_lineplot <- function(df, # nolint
                        table_labels = tern::summary_labels(),
                        table_font_size = 3,
                        newpage = TRUE) {
-
   assertthat::assert_that(is.character(variables) || is.na(variables))
   assertthat::assert_that(is.character(mid) || is.null(mid))
   assertthat::assert_that(is.character(interval) || is.null(interval))
@@ -210,16 +217,14 @@ g_lineplot <- function(df, # nolint
 
   # add number of objects N in strata
   if (!is.null(strata) && !is.null(alt_counts_df)) {
-
     strata_N <- paste0(strata, "_N") # nolint
 
     df_N <- as.data.frame(table(alt_counts_df[[strata]], exclude = c(NA, NaN, Inf))) # nolint
-    colnames(df_N) <- c(strata, "N")
-    df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")")
+    colnames(df_N) <- c(strata, "N") # nolint
+    df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")") # nolint
 
     assertthat::assert_that(!(strata_N %in% colnames(df_stats)))
     df_stats <- merge(x = df_stats, y = df_N[, c(strata, strata_N)], by = strata)
-
   } else if (!is.null(strata)) {
     strata_N <- strata # nolint
   } else {
@@ -236,20 +241,19 @@ g_lineplot <- function(df, # nolint
 
   # y label
   if (!is.null(y_lab)) {
-
-    if (y_lab_add_paramcd)
+    if (y_lab_add_paramcd) {
       y_lab <- paste(y_lab, unique(df[[paramcd]]))
+    }
 
-    if (y_lab_add_unit)
+    if (y_lab_add_unit) {
       y_lab <- paste0(y_lab, " (", unique(df[[y_unit]]), ")")
+    }
 
     y_lab <- trimws(y_lab)
-
   }
 
   # subtitle
   if (!is.null(subtitle)) {
-
     if (subtitle_add_paramcd) {
       subtitle <- paste(subtitle, unique(df[[paramcd]]))
     }
@@ -259,7 +263,6 @@ g_lineplot <- function(df, # nolint
     }
 
     subtitle <- trimws(subtitle)
-
   }
 
   ##################################################
@@ -269,7 +272,8 @@ g_lineplot <- function(df, # nolint
     data = df_stats,
     mapping = ggplot2::aes_string(
       x = x, y = mid, color = strata_N, shape = strata_N, lty = strata_N, group = strata_N
-    ))
+    )
+  )
 
   if (!is.null(mid)) {
     # points
@@ -280,16 +284,14 @@ g_lineplot <- function(df, # nolint
     # lines
     # further conditions in if are to ensure that not all of the groups consist of only one observation
     if (grepl("l", mid_type, fixed = TRUE) &&
-        !is.null(strata) &&
-        !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) {
+      !is.null(strata) &&
+      !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) {
       p <- p + ggplot2::geom_line(position = position, na.rm = TRUE)
     }
-
   }
 
   # interval
   if (!is.null(interval)) {
-
     p <- p +
       ggplot2::geom_errorbar(
         ggplot2::aes_string(ymin = whiskers[1], ymax = whiskers[max(1, length(whiskers))]),
@@ -334,7 +336,8 @@ g_lineplot <- function(df, # nolint
         legend.direction = ifelse(
           legend_position %in% c("top", "bottom"),
           "horizontal",
-          "vertical")
+          "vertical"
+        )
       )
   }
 
@@ -342,7 +345,6 @@ g_lineplot <- function(df, # nolint
   ## Optionally, add table to the bottom of the plot.
   ##################################################
   if (!is.null(table)) {
-
     df_stats_table <- df_grp %>%
       dplyr::summarise(
         h_format_row(
@@ -396,13 +398,9 @@ g_lineplot <- function(df, # nolint
     }
 
     gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
-
-  }
-
-  else {
+  } else {
     p
   }
-
 }
 
 #' Helper function to get the right formatting in the optional table in g_lineplot.
@@ -439,21 +437,22 @@ g_lineplot <- function(df, # nolint
 #' attr(mean_ci, "label") <- "Mean 95% CI"
 #' x <- list(mean = 50, mean_ci = mean_ci)
 #' h_format_row(x, format, labels)
-#'
 h_format_row <- function(x, format, labels = NULL) {
 
   # cell: one row, one column data.frame
   format_cell <- function(x, format, label = NULL) {
     fc <- format_rcell(x = x, format = format)
-    if (is.na(fc))
+    if (is.na(fc)) {
       fc <- "NA"
+    }
     x_label <- attr(x, "label")
-    if (!is.null(label) && !is.na(label))
+    if (!is.null(label) && !is.na(label)) {
       names(fc) <- label
-    else if (!is.null(x_label) && !is.na(x_label))
+    } else if (!is.null(x_label) && !is.na(x_label)) {
       names(fc) <- x_label
-    else if (length(x) == length(fc))
+    } else if (length(x) == length(fc)) {
       names(fc) <- names(x)
+    }
     as.data.frame(t(fc))
   }
 
@@ -488,9 +487,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @examples
 #' control_lineplot_vars()
 #' control_lineplot_vars(strata = NA)
-#'
 control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU") {
-
   assertthat::assert_that(is.character(x))
   assertthat::assert_that(is.character(y))
   assertthat::assert_that(is.character(strata) || is.na(strata))
@@ -499,5 +496,4 @@ control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", para
 
   variables <- c(x = x, y = y, strata = strata, paramcd = paramcd, y_unit = y_unit)
   return(variables)
-
 }

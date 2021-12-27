@@ -119,7 +119,6 @@ testthat::test_that("Safety Summary Variant 1 works as expected", {
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
@@ -161,9 +160,9 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
       CQ01 = CQ01NAM != ""
     ) %>%
     var_relabel(
-      SMQ01 =  aesi_label(adae$SMQ01NAM, adae$SMQ01SC),
-      SMQ02 =  aesi_label(adae$SMQ02NAM, adae$SMQ02SC),
-      CQ01 =  aesi_label(adae$CQ01NAM)
+      SMQ01 = aesi_label(adae$SMQ01NAM, adae$SMQ01SC),
+      SMQ02 = aesi_label(adae$SMQ02NAM, adae$SMQ02SC),
+      CQ01 = aesi_label(adae$CQ01NAM)
     )
 
   aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
@@ -265,7 +264,6 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
@@ -374,11 +372,9 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
     .Dim = c(14L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
-
   adae <- adae %>%
     dplyr::mutate(
       USUBJID_AESEQ = paste(USUBJID, AESEQ, sep = "@@") # Create unique ID per AE in dataset.
@@ -514,5 +510,4 @@ testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Add
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })

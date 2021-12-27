@@ -32,7 +32,8 @@
 #'     armcd = as.factor(rx),
 #'     covar1 = as.factor(enum),
 #'     covar2 = factor(
-#'       sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")
+#'       sample(as.factor(enum)),
+#'       levels = 1:4, labels = c("F", "F", "M", "M")
 #'     )
 #'   )
 #' )
@@ -43,10 +44,10 @@
 #'
 #' plot(
 #'   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
-#'   lty= 2:4, xlab="Months",
+#'   lty = 2:4,
+#'   xlab = "Months",
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
-#'
 NULL
 
 #' @describeIn cox_regression Helper for Cox Regression Formula
@@ -97,7 +98,6 @@ NULL
 #'     time = "time", event = "status", covariates = c("X", "y")
 #'   )
 #' )
-#'
 h_coxreg_univar_formulas <- function(variables,
                                      interaction = FALSE) {
   assertthat::assert_that(utils.nest::is_fully_named_list(variables))
@@ -116,17 +116,17 @@ h_coxreg_univar_formulas <- function(variables,
   )
 
   if (!is.null(variables$covariates)) {
-  forms <- paste0(
-    "survival::Surv(", variables$time, ", ", variables$event, ") ~ ",
-    ifelse(has_arm, variables$arm, "1"),
-    ifelse(interaction, " * ", " + "),
-    variables$covariates,
-    ifelse(
-      !is.null(variables$strata),
-      paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
-      ""
+    forms <- paste0(
+      "survival::Surv(", variables$time, ", ", variables$event, ") ~ ",
+      ifelse(has_arm, variables$arm, "1"),
+      ifelse(interaction, " * ", " + "),
+      variables$covariates,
+      ifelse(
+        !is.null(variables$strata),
+        paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
+        ""
+      )
     )
-  )
   } else {
     forms <- NULL
   }
@@ -188,7 +188,6 @@ h_coxreg_univar_formulas <- function(variables,
 #'     strata = "SITE"
 #'   )
 #' )
-#'
 h_coxreg_multivar_formula <- function(variables) {
   assertthat::assert_that(utils.nest::is_fully_named_list(variables))
   has_arm <- "arm" %in% names(variables)
@@ -236,7 +235,6 @@ h_coxreg_multivar_formula <- function(variables) {
 #' @examples
 #'
 #' control_coxreg()
-#'
 control_coxreg <- function(pval_method = c("wald", "likelihood"),
                            ties = c("exact", "efron", "breslow"),
                            conf_level = 0.95,
@@ -320,7 +318,6 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'   ),
 #'   data = dta_bladder
 #' )
-#'
 fit_coxreg_univar <- function(variables,
                               data,
                               at = list(),
@@ -391,7 +388,8 @@ fit_coxreg_univar <- function(variables,
 #'     armcd = as.factor(rx),
 #'     covar1 = as.factor(enum),
 #'     covar2 = factor(
-#'       sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")
+#'       sample(as.factor(enum)),
+#'       levels = 1:4, labels = c("F", "F", "M", "M")
 #'     )
 #'   )
 #' )
@@ -403,7 +401,6 @@ fit_coxreg_univar <- function(variables,
 #' formula <- "survival::Surv(time, status) ~ armcd + covar1"
 #' msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 #' tidy(msum)
-#'
 tidy.summary.coxph <- function(x, # nousage # nolint
                                ...) {
   assertthat::assert_that(
@@ -435,10 +432,10 @@ tidy.summary.coxph <- function(x, # nousage # nolint
 #' @examples
 #' library(survival)
 #'
-#' dta_simple <-  data.frame(
+#' dta_simple <- data.frame(
 #'   time = c(5, 5, 10, 10, 5, 5, 10, 10),
 #'   status = c(0, 0, 1, 0, 0, 1, 1, 1),
-#'   armcd  = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
+#'   armcd = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
 #'   var1 = c(45, 55, 65, 75, 55, 65, 85, 75),
 #'   var2 = c("F", "M", "F", "M", "F", "M", "F", "U")
 #' )
@@ -447,7 +444,6 @@ tidy.summary.coxph <- function(x, # nousage # nolint
 #'   effect = "armcd", covar = "armcd", mod = mod, data = dta_simple
 #' )
 #' result
-#'
 h_coxreg_univar_extract <- function(effect,
                                     covar,
                                     data,
@@ -523,7 +519,9 @@ h_coxreg_univar_extract <- function(effect,
 #'     armcd = as.factor(rx),
 #'     covar1 = as.factor(enum),
 #'     covar2 = factor(
-#'       sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")
+#'       sample(as.factor(enum)),
+#'       levels = 1:4,
+#'       labels = c("F", "F", "M", "M")
 #'     )
 #'   )
 #' )
@@ -534,10 +532,10 @@ h_coxreg_univar_extract <- function(effect,
 #'
 #' plot(
 #'   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
-#'   lty= 2:4, xlab="Months",
+#'   lty = 2:4,
+#'   xlab = "Months",
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
-#'
 h_coxreg_inter_effect <- function(x,
                                   effect,
                                   covar,
@@ -581,10 +579,10 @@ h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
   coef_hat <- betas[effect_index] + xval * betas[!effect_index]
   coef_se <- sqrt(
     betas_var[effect_index] +
-      xval ^ 2 * betas_var[!effect_index] +
+      xval ^ 2 * betas_var[!effect_index] + # styler: off
       2 * xval * betas_cov
   )
-  q_norm  <- stats::qnorm((1 + control$conf_level) / 2)
+  q_norm <- stats::qnorm((1 + control$conf_level) / 2)
   data.frame(
     effect = "Covariate:",
     term = rep(covar, length(xval)),
@@ -605,7 +603,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
 #'
 #' @param data (`data frame`)\cr the data frame on which the model was fit.
 #' @export
-h_coxreg_inter_effect.factor <- function(x,  # nousage # nolint
+h_coxreg_inter_effect.factor <- function(x, # nousage # nolint
                                          effect,
                                          covar,
                                          mod,
@@ -613,7 +611,6 @@ h_coxreg_inter_effect.factor <- function(x,  # nousage # nolint
                                          control,
                                          data,
                                          ...) {
-
   y <- h_coxreg_inter_estimations(
     variable = effect, given = covar,
     lvl_var = levels(data[[effect]]),
@@ -649,7 +646,6 @@ h_coxreg_inter_effect.factor <- function(x,  # nousage # nolint
 #'   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
 #'   control = control_coxreg()
 #' )
-#'
 h_coxreg_extract_interaction <- function(effect,
                                          covar,
                                          mod,
@@ -683,9 +679,14 @@ h_coxreg_extract_interaction <- function(effect,
     )
     # Estimate the interaction.
     y <- h_coxreg_inter_effect(
-      data[[covar]], covar = covar, effect = effect, mod = mod,
+      data[[covar]],
+      covar = covar,
+      effect = effect,
+      mod = mod,
       label = unname(labels_or_names(data[covar])),
-      at = at, control = control, data = data
+      at = at,
+      control = control,
+      data = data
     )
     rbind(covar_test, y)
   }
@@ -737,7 +738,6 @@ h_coxreg_extract_interaction <- function(effect,
 #'   mod = mod, conf_level = .95
 #' )
 #' result
-#'
 h_coxreg_inter_estimations <- function(variable, given,
                                        lvl_var, lvl_given,
                                        mod,
@@ -763,7 +763,8 @@ h_coxreg_inter_estimations <- function(variable, given,
     X = design_mat, MARGIN = 1, FUN = function(x) {
       mmat[names(mmat) %in% x[-which(names(x) == "given")]] <- 1
       mmat
-    })
+    }
+  )
   colnames(design_mat) <- interaction_names
 
   coef <- stats::coef(mod)
@@ -779,7 +780,8 @@ h_coxreg_inter_estimations <- function(variable, given,
       y <- sum(y)
       y <- sqrt(y)
       return(y)
-    })
+    }
+  )
   q_norm <- stats::qnorm((1 + conf_level) / 2)
   y <- cbind(coef_hat, `se(coef)` = coef_se)
   y <- apply(y, 1, function(x) {
@@ -813,7 +815,6 @@ h_coxreg_inter_estimations <- function(variable, given,
 #' library(broom)
 #' tidy(mod1)
 #' tidy(mod2)
-#'
 tidy.coxreg.univar <- function(x, # nousage # nolint
                                ...) {
   assertthat::assert_that(
@@ -903,7 +904,6 @@ tidy.coxreg.univar <- function(x, # nousage # nolint
 #'   ),
 #'   data = dta_bladder
 #' )
-#'
 fit_coxreg_multivar <- function(variables,
                                 data,
                                 control = control_coxreg()) {
@@ -961,12 +961,10 @@ fit_coxreg_multivar <- function(variables,
 #'   var = "var1", mod = mod, data = dta_simple
 #' )
 #' result
-#'
 h_coxreg_multivar_extract <- function(var,
                                       data,
                                       mod,
                                       control = control_coxreg()) {
-
   test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
   mod_aov <- muffled_car_anova(mod, test_statistic)
 
@@ -978,7 +976,7 @@ h_coxreg_multivar_extract <- function(var,
   names(ret_anova)[2] <- "pval"
   if (is.factor(data[[var]])) {
     ret_cox <- sum_cox[startsWith(prefix = var, x = sum_cox$level), !(names(sum_cox) %in% "exp(-coef)")]
-    } else {
+  } else {
     ret_cox <- sum_cox[(var == sum_cox$level), !(names(sum_cox) %in% "exp(-coef)")]
   }
   names(ret_cox)[1:4] <- c("pval", "hr", "lcl", "ucl")
@@ -1017,7 +1015,6 @@ h_coxreg_multivar_extract <- function(var,
 #' @examples
 #' library(broom)
 #' broom::tidy(multivar_model)
-#'
 tidy.coxreg.multivar <- function(x, # nousage # nolint
                                  ...) {
   assertthat::assert_that(
@@ -1099,7 +1096,6 @@ tidy.coxreg.multivar <- function(x, # nousage # nolint
 #' )
 #' df2_covs <- broom::tidy(multivar_covs_model)
 #' s_coxreg(df = df2_covs, .var = "hr")
-#'
 s_coxreg <- function(df, .var) {
   assertthat::assert_that(
     is_df_with_variables(df, list(term = "term", var = .var)),
@@ -1168,7 +1164,6 @@ s_coxreg <- function(df, .var) {
 #'   summarize_coxreg(multivar = TRUE, conf_level = .95) %>%
 #'   build_table(df2_covs)
 #' result_multivar_covs
-#'
 summarize_coxreg <- function(lyt,
                              conf_level,
                              multivar = FALSE,
@@ -1234,11 +1229,13 @@ muffled_car_anova <- function(mod, test_statistic) {
         )
       },
       message = function(m) invokeRestart("muffleMessage"),
-      error = function(e) stop(paste(
-        "the model seems to have convergence problems, please try to change",
-        "the configuration of covariates or strata variables, e.g.",
-        "- original error:", e
-      ))
+      error = function(e) {
+        stop(paste(
+          "the model seems to have convergence problems, please try to change",
+          "the configuration of covariates or strata variables, e.g.",
+          "- original error:", e
+        ))
+      }
     )
   )
 }

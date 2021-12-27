@@ -20,7 +20,6 @@
 #'
 #' # Use a different response definition.
 #' control_logistic(response_definition = "I(response %in% c('CR', 'PR'))")
-#'
 control_logistic <- function(response_definition = "response",
                              conf_level = 0.95) {
   assertthat::assert_that(

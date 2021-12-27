@@ -95,10 +95,10 @@ univariate <- function(x) {
 #' ADTTE_f <- within( # nolint
 #'   data = subset(
 #'     ADTTE_f,
-#'     PARAMCD == "OS"
-#'     & ARMCD %in% c("ARM A", "ARM B")
-#'     & SEX %in% c("F", "M")
-#'     & RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
+#'     PARAMCD == "OS" &
+#'       ARMCD %in% c("ARM A", "ARM B") &
+#'       SEX %in% c("F", "M") &
+#'       RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
 #'   ),
 #'   expr = { # nolint start
 #'     set.seed(1)
@@ -109,7 +109,6 @@ univariate <- function(x) {
 #'     X <- rnorm(n = length(ARM))
 #'   } # nolint end
 #' )
-#'
 #' \dontrun{
 #' s_cox_univariate(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
@@ -209,7 +208,7 @@ s_cox_univariate <- function(formula,
     is_covar_num <- lapply(covariates, function(x) is.numeric(data[[rht(x)]]))
     coef_cov <- Map(
       # work on model fits with interaction
-      fit = fit[- (1:(length(covariates) + 1))], is_covar_num = is_covar_num, covariates = covariates,
+      fit = fit[-(1:(length(covariates) + 1))], is_covar_num = is_covar_num, covariates = covariates, # nolint
       f = function(fit, is_covar_num, covariates) {
         if (is_covar_num & rht(covariates) %in% names(increments)) {
           # [^1]: If covar is a numeric and increments are specified,
@@ -300,7 +299,10 @@ s_cox_univariate <- function(formula,
   pval <- c(
     ref_mod = with(
       fit$ref_mod,
-      unname(switch(pval_method, "wald" = msum$waldtest["pvalue"], "likelihood" = msum$logtest["pvalue"]))
+      unname(switch(pval_method,
+        "wald" = msum$waldtest["pvalue"],
+        "likelihood" = msum$logtest["pvalue"]
+      ))
     ),
     lapply(X = fit[-1], FUN = function(x) x$aov[tarm, "Pr(>Chisq)"])
   )
@@ -308,15 +310,14 @@ s_cox_univariate <- function(formula,
   # Likelihood ratio test for the interaction
   if (interactions) {
     lrt <- Map(
-      f = function(
-                   without_interaction,
+      f = function(without_interaction,
                    with_interaction) {
         stats::anova(without_interaction$mod, with_interaction$mod)[2, "P(>|Chi|)"]
       },
       without_interaction = fit[2:(length(covariates) + 1)],
-      with_interaction = fit[- (1:(length(covariates) + 1))]
+      with_interaction = fit[-(1:(length(covariates) + 1))] # nolint
     )
-    names(lrt) <- names(fit[- (1:(length(covariates) + 1))])
+    names(lrt) <- names(fit[-(1:(length(covariates) + 1))]) # nolint
   } else if (!interactions) {
     lrt <- NULL
   }
@@ -563,7 +564,10 @@ fit_n_aov <- function(formula,
 
   aov <- try_car_anova(
     mod,
-    test.statistic = switch(pval_method, "wald" = "Wald", "likelihood" = "LR")
+    test.statistic = switch(pval_method,
+      "wald" = "Wald",
+      "likelihood" = "LR"
+    )
   )
 
   warn_attr <- aov$warn_text
@@ -660,9 +664,9 @@ check_increments <- function(increments, covariates) {
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 #' ADTTE_f <- filter(
 #'   ADTTE_f,
-#'   PARAMCD == "OS"
-#'   & SEX %in% c("F", "M")
-#'   & RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
+#'   PARAMCD == "OS" &
+#'     SEX %in% c("F", "M") &
+#'     RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
 #' )
 #' ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
 #' ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)

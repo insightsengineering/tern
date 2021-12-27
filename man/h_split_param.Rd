@@ -36,7 +36,7 @@ h_split_param(.stats, .stats, f = f)
 # [1] "rate_diff"
 
 .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
-h_split_param(.formats, names(.formats), f =  f)
+h_split_param(.formats, names(.formats), f = f)
 
 # $surv
 # pt_at_risk event_free_rate
@@ -44,5 +44,4 @@ h_split_param(.formats, names(.formats), f =  f)
 #
 # $surv_diff
 # NULL
-
 }

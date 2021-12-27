@@ -9,7 +9,6 @@ adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 
 testthat::test_that("AET06 variant 1 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_cols_by("SEX") %>%
@@ -20,7 +19,8 @@ testthat::test_that("AET06 variant 1 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEBODSYS",
       child_labels = "visible",
@@ -33,7 +33,8 @@ testthat::test_that("AET06 variant 1 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD")
   result <- build_table(lyt, adae, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
@@ -90,11 +91,9 @@ testthat::test_that("AET06 variant 1 is produced correctly", {
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("AET06 variant 5 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_cols_by("SEX") %>%
@@ -105,15 +104,17 @@ testthat::test_that("AET06 variant 5 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
-      )) %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L)  %>%
+      )
+    ) %>%
+    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEHLT",
       child_labels = "visible",
@@ -126,7 +127,8 @@ testthat::test_that("AET06 variant 5 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
-      )) %>%
+      )
+    ) %>%
     count_occurrences("AEDECOD")
   result <- build_table(lyt, adae, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
@@ -212,5 +214,4 @@ testthat::test_that("AET06 variant 5 is produced correctly", {
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })

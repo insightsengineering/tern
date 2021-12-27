@@ -30,7 +30,8 @@ testthat::test_that("LBT03 default variant is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "BASELINE", "n", "Mean (SD)", "Median", "Min - Max",
+    c(
+      "", "", "BASELINE", "n", "Mean (SD)", "Median", "Min - Max",
       "WEEK 1 DAY 8", "n", "Mean (SD)", "Median", "Min - Max", "WEEK 2 DAY 15",
       "n", "Mean (SD)", "Median", "Min - Max", "WEEK 3 DAY 22", "n",
       "Mean (SD)", "Median", "Min - Max", "WEEK 4 DAY 29", "n", "Mean (SD)",

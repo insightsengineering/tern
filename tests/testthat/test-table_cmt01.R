@@ -67,7 +67,6 @@ testthat::test_that("CMT01 default variant (Concomitant medications) is produced
 
 
 testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly", {
-
   adcm_p <- adcm %>% dplyr::filter(ATIREL == "PRIOR")
 
   result <- basic_table() %>%

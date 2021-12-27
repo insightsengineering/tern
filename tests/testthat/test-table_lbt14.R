@@ -44,7 +44,7 @@ testthat::test_that("LBT14 variant 1: HIGH works as expected", {
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
     split_rows_by("PARAMCD", split_fun = drop_split_levels) %>%
-    split_rows_by("BTOXGR_GP",  split_fun = drop_split_levels) %>%
+    split_rows_by("BTOXGR_GP", split_fun = drop_split_levels) %>%
     summarize_num_patients(var = "USUBJID", .stats = c("unique_count")) %>%
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
@@ -117,7 +117,7 @@ testthat::test_that("LBT14 variant 2: LOW works as expected", {
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
     split_rows_by("PARAMCD", split_fun = drop_split_levels) %>%
-    split_rows_by("BTOXGR_GP",  split_fun = drop_split_levels) %>%
+    split_rows_by("BTOXGR_GP", split_fun = drop_split_levels) %>%
     summarize_num_patients(var = "USUBJID", .stats = c("unique_count")) %>%
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
@@ -190,7 +190,7 @@ testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expe
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
     split_rows_by("PARAMCD", split_fun = drop_split_levels) %>%
-    split_rows_by("BTOXGR_GP",  split_fun = drop_split_levels) %>%
+    split_rows_by("BTOXGR_GP", split_fun = drop_split_levels) %>%
     summarize_num_patients(var = "USUBJID", .stats = c("unique_count")) %>%
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
@@ -225,7 +225,7 @@ testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expe
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-baseline, then force the missing baseline as 0 as expected", { #nolint
+testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-baseline, then force the missing baseline as 0 as expected", { # nolint
   adlb_f <- adlb %>%
     dplyr::filter(PARAMCD %in% "ALT") %>%
     dplyr::filter(!USUBJID %in% c("AB12345-CHN-3-id-128")) %>%
@@ -265,7 +265,7 @@ testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and 
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
     split_rows_by("PARAMCD", split_fun = drop_split_levels) %>%
-    split_rows_by("BTOXGR_GP",  split_fun = drop_split_levels) %>%
+    split_rows_by("BTOXGR_GP", split_fun = drop_split_levels) %>%
     summarize_num_patients(var = "USUBJID", .stats = c("unique_count")) %>%
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
@@ -339,7 +339,7 @@ testthat::test_that("LBT14 variant 5: HIGH with fillings works as expected", {
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
     split_rows_by("PARAMCD", split_fun = drop_split_levels) %>%
-    split_rows_by("BTOXGR_GP",  split_fun = keep_split_levels(c("Not High", "1", "2", "3", "4", "Missing"))) %>%
+    split_rows_by("BTOXGR_GP", split_fun = keep_split_levels(c("Not High", "1", "2", "3", "4", "Missing"))) %>%
     summarize_num_patients(var = "USUBJID", .stats = c("unique_count")) %>%
     count_occurrences("ATOXGR_GP", denom = "n", drop = FALSE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)

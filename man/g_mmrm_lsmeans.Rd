@@ -55,7 +55,7 @@ library(rtables)
 adsl <- synthetic_cdisc_data("latest")$adsl
 adqs <- synthetic_cdisc_data("latest")$adqs
 adqs_f <- adqs \%>\%
-  filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
+  filter(PARAMCD == "FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
   droplevels() \%>\%
   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
   mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
@@ -84,7 +84,7 @@ g_mmrm_lsmeans(
 )
 
 adqs_f2 <- adqs_f \%>\%
- filter(ARMCD == "ARM A")
+  filter(ARMCD == "ARM A")
 
 mmrm_results_no_arm <- fit_mmrm(
   vars = list(
@@ -102,8 +102,10 @@ g_mmrm_lsmeans(mmrm_results_no_arm, select = "estimates")
 g_mmrm_lsmeans(
   mmrm_results_no_arm,
   select = c("estimates", "contrasts"),
-  titles = c(estimates = "Adjusted mean of FKSI-FWB",
-  contrasts = "it will not be created"),
+  titles = c(
+    estimates = "Adjusted mean of FKSI-FWB",
+    contrasts = "it will not be created"
+  ),
   show_pval = TRUE,
   width = 0.8
 )

@@ -6,13 +6,13 @@ library(dplyr)
 library(broom)
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
-adtte_f <- subset(adtte, PARAMCD == "OS")   # _f: filtered
+adtte_f <- subset(adtte, PARAMCD == "OS") # _f: filtered
 adtte_f <- within( # nolint
   data = subset(
     adtte_f,
-    PARAMCD == "OS"
-    & SEX %in% c("F", "M")
-    & RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
+    PARAMCD == "OS" &
+      SEX %in% c("F", "M") &
+      RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
   ),
   expr = { # nolint start
     set.seed(1)
@@ -20,7 +20,7 @@ adtte_f <- within( # nolint
     SEX <- droplevels(SEX)
     RACE <- droplevels(RACE)
     X <- stats::rnorm(n = length(ARM))
-  }  # nolint end
+  } # nolint end
 ) %>%
   dplyr::mutate(event = 1 - CNSR) %>%
   var_relabel(

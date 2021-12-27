@@ -23,7 +23,7 @@ testthat::test_that("CMT02_PT default variant is produced correctly", {
     ) %>%
     count_occurrences(vars = "CMDECOD") %>%
     build_table(adcm, alt_counts_df = adsl) %>%
-    sort_at_path(path =  c("CMDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("CMDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
 

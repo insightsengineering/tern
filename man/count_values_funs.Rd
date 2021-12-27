@@ -114,20 +114,14 @@ are hidden.
 # `s_count_values.character`
 s_count_values(x = c("a", "b", "a"), values = "a")
 s_count_values(x = c("a", "b", "a", NA, NA), values = "b", na.rm = FALSE)
-
 # `s_count_values.factor`
 s_count_values(x = factor(c("a", "b", "a")), values = "a")
-
- # `s_count_values.logical`
- s_count_values(x = c(TRUE, FALSE, TRUE))
-
-
+# `s_count_values.logical`
+s_count_values(x = c(TRUE, FALSE, TRUE))
 # `count_values`
 basic_table() \%>\%
   count_values("Species", values = "setosa") \%>\%
   build_table(iris)
-
 # `a_count_values`
 a_count_values(x = factor(c("a", "b", "a")), values = "a", .N_col = 10, .N_row = 10)
-
 }

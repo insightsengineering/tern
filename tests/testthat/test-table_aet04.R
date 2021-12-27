@@ -1,7 +1,6 @@
 library(scda)
 
 preproc_adae <- function(adae) {
-
   anl <- adae %>%
     dplyr::mutate(
       AEDECOD = as.character(AEDECOD),
@@ -12,8 +11,7 @@ preproc_adae <- function(adae) {
 }
 
 raw_table <- function(adae, adsl) {
-
-  gr_grp <-  list(
+  gr_grp <- list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-4" = c("3", "4"),
@@ -27,14 +25,18 @@ raw_table <- function(adae, adsl) {
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEBODSYS",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEDECOD",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -62,7 +64,6 @@ raw_table <- function(adae, adsl) {
 
 # Simple wrapper to return subset ADAE to a threshold of xx%.
 get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
-
   n_per_arm <- adsl %>%
     dplyr::count(ACTARM)
 
@@ -97,10 +98,9 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 testthat::test_that("AET04 variant 1 is produced correctly", {
-
   adae <- preproc_adae(adae)
 
-  gr_grp <-  list(
+  gr_grp <- list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-4" = c("3", "4"),
@@ -114,14 +114,18 @@ testthat::test_that("AET04 variant 1 is produced correctly", {
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEBODSYS",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEDECOD",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -213,12 +217,11 @@ testthat::test_that("AET04 variant 1 is produced correctly", {
 })
 
 testthat::test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)", {
-
   adae <- adae %>%
     preproc_adae() %>%
     dplyr::filter(ACTARM == "A: Drug X")
 
-  gr_grp <-  list(
+  gr_grp <- list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-4" = c("3", "4"),
@@ -232,14 +235,18 @@ testthat::test_that("AET04 variant 2 is produced correctly (Fill in of Treatment
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEBODSYS",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEDECOD",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -317,10 +324,9 @@ testthat::test_that("AET04 variant 2 is produced correctly (Fill in of Treatment
 })
 
 testthat::test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
-
   adae <- preproc_adae(adae)
 
-  gr_grp <-  list(
+  gr_grp <- list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-4" = c("3", "4"),
@@ -456,16 +462,15 @@ testthat::test_that("AET04 variant 3 is produced correctly (Fill in of Grades)",
       "0", "0", "43 (32.6%)", "0", "43 (32.6%)", "0", "", "43 (32.6%)",
       "0", "0", "0", "43 (32.6%)", "0", "43 (32.6%)", "0"
     ),
-  .Dim = c(163L, 4L)
+    .Dim = c(163L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1&2, grades 3&4&5)", {
-
   adae <- preproc_adae(adae)
 
-  gr_grp <-  list(
+  gr_grp <- list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-5" = c("3", "4", "5")
@@ -478,14 +483,18 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEBODSYS",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEDECOD",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -572,7 +581,7 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
       "43 (32.6%)", "43 (32.6%)", "43 (32.6%)", "", "43 (32.6%)", "43 (32.6%)",
       "43 (32.6%)"
     ),
-  .Dim = c(82L, 4L)
+    .Dim = c(82L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -583,12 +592,11 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
 
 testthat::test_that("AET04 variant 6 is produced correctly (with an
                     Incidence Rate of at Least 5%, totals restricted)", {
-
   adae <- preproc_adae(adae)
   adae <- get_adae_trimmed(adsl, adae, cutoff_rate = 0.4) %>%
     dplyr::mutate(AETOXGR = droplevels(AETOXGR))
 
-  gr_grp <-  list(
+  gr_grp <- list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-4" = c("3", "4"),
@@ -602,14 +610,18 @@ testthat::test_that("AET04 variant 6 is produced correctly (with an
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEBODSYS",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEDECOD",
+      split_fun = trim_levels_in_group("AETOXGR"),
+      child_labels = "visible", nested = TRUE, indent_mod = -1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -666,7 +678,7 @@ testthat::test_that("AET04 variant 6 is produced correctly (with an
       "51 (38.6%)", "", "55 (41.7%)", "55 (41.7%)", "55 (41.7%)", "",
       "55 (41.7%)", "55 (41.7%)", "55 (41.7%)"
     ),
-  .Dim = c(38L, 4L)
+    .Dim = c(38L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -677,7 +689,6 @@ testthat::test_that("AET04 variant 6 is produced correctly (with an
 
 # NOTE: STREAM logic will only trim at term level
 testthat::test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at Least X Patients)", {
-
   adae <- preproc_adae(adae)
 
   raw_result <- raw_table(adae, adsl)
@@ -690,34 +701,33 @@ testthat::test_that("AET04 variant 8 is produced correctly (with an Incidence Ra
 
   expected_matrix <- structure(
     c(
-    "", "", "- Any Grade -", "Grade 1-2", "1", "2", "Grade 3-4",
-    "3", "4", "Grade 5", "cl A.1", "- Any Grade -", "Grade 1-2",
-    "1", "2", "dcd A.1.1.1.1", "- Any Grade -", "Grade 1-2", "1",
-    "cl D.2", "- Any Grade -", "Grade 1-2", "1", "dcd D.2.1.5.3",
-    "- Any Grade -", "Grade 1-2", "1", "A: Drug X", "(N=134)", "122 (91%)",
-    "13 (9.7%)", "7 (5.2%)", "6 (4.5%)", "33 (24.6%)", "18 (13.4%)",
-    "15 (11.2%)", "76 (56.7%)", "", "78 (58.2%)", "78 (58.2%)", "30 (22.4%)",
-    "48 (35.8%)", "", "50 (37.3%)", "50 (37.3%)", "50 (37.3%)", "",
-    "47 (35.1%)", "47 (35.1%)", "47 (35.1%)", "", "47 (35.1%)", "47 (35.1%)",
-    "47 (35.1%)", "B: Placebo", "(N=134)", "123 (91.8%)", "19 (14.2%)",
-    "9 (6.7%)", "10 (7.5%)", "34 (25.4%)", "14 (10.4%)", "20 (14.9%)",
-    "70 (52.2%)", "", "75 (56%)", "75 (56%)", "27 (20.1%)", "48 (35.8%)",
-    "", "45 (33.6%)", "45 (33.6%)", "45 (33.6%)", "", "58 (43.3%)",
-    "58 (43.3%)", "58 (43.3%)", "", "58 (43.3%)", "58 (43.3%)", "58 (43.3%)",
-    "C: Combination", "(N=132)", "120 (90.9%)", "11 (8.3%)", "4 (3%)",
-    "7 (5.3%)", "34 (25.8%)", "16 (12.1%)", "18 (13.6%)", "75 (56.8%)",
-    "", "89 (67.4%)", "89 (67.4%)", "39 (29.5%)", "50 (37.9%)", "",
-    "63 (47.7%)", "63 (47.7%)", "63 (47.7%)", "", "57 (43.2%)", "57 (43.2%)",
-    "57 (43.2%)", "", "57 (43.2%)", "57 (43.2%)", "57 (43.2%)"
-  ),
-  .Dim = c(27L, 4L)
- )
- testthat::expect_identical(result_matrix, expected_matrix)
+      "", "", "- Any Grade -", "Grade 1-2", "1", "2", "Grade 3-4",
+      "3", "4", "Grade 5", "cl A.1", "- Any Grade -", "Grade 1-2",
+      "1", "2", "dcd A.1.1.1.1", "- Any Grade -", "Grade 1-2", "1",
+      "cl D.2", "- Any Grade -", "Grade 1-2", "1", "dcd D.2.1.5.3",
+      "- Any Grade -", "Grade 1-2", "1", "A: Drug X", "(N=134)", "122 (91%)",
+      "13 (9.7%)", "7 (5.2%)", "6 (4.5%)", "33 (24.6%)", "18 (13.4%)",
+      "15 (11.2%)", "76 (56.7%)", "", "78 (58.2%)", "78 (58.2%)", "30 (22.4%)",
+      "48 (35.8%)", "", "50 (37.3%)", "50 (37.3%)", "50 (37.3%)", "",
+      "47 (35.1%)", "47 (35.1%)", "47 (35.1%)", "", "47 (35.1%)", "47 (35.1%)",
+      "47 (35.1%)", "B: Placebo", "(N=134)", "123 (91.8%)", "19 (14.2%)",
+      "9 (6.7%)", "10 (7.5%)", "34 (25.4%)", "14 (10.4%)", "20 (14.9%)",
+      "70 (52.2%)", "", "75 (56%)", "75 (56%)", "27 (20.1%)", "48 (35.8%)",
+      "", "45 (33.6%)", "45 (33.6%)", "45 (33.6%)", "", "58 (43.3%)",
+      "58 (43.3%)", "58 (43.3%)", "", "58 (43.3%)", "58 (43.3%)", "58 (43.3%)",
+      "C: Combination", "(N=132)", "120 (90.9%)", "11 (8.3%)", "4 (3%)",
+      "7 (5.3%)", "34 (25.8%)", "16 (12.1%)", "18 (13.6%)", "75 (56.8%)",
+      "", "89 (67.4%)", "89 (67.4%)", "39 (29.5%)", "50 (37.9%)", "",
+      "63 (47.7%)", "63 (47.7%)", "63 (47.7%)", "", "57 (43.2%)", "57 (43.2%)",
+      "57 (43.2%)", "", "57 (43.2%)", "57 (43.2%)", "57 (43.2%)"
+    ),
+    .Dim = c(27L, 4L)
+  )
+  testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 # NOTE: STREAM logic will only tream at term level
 testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence Rate of at Least X%)", {
-
   adae <- preproc_adae(adae)
 
   raw_result <- raw_table(adae, adsl)
@@ -731,27 +741,27 @@ testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in
 
   expected_matrix <- structure(
     c(
-    "", "", "- Any Grade -", "Grade 1-2", "1", "2", "Grade 3-4",
-    "3", "4", "Grade 5", "cl A.1", "- Any Grade -", "Grade 1-2",
-    "1", "2", "dcd A.1.1.1.1", "- Any Grade -", "Grade 1-2", "1",
-    "cl C.2", "- Any Grade -", "Grade 1-2", "2", "dcd C.2.1.2.1",
-    "- Any Grade -", "Grade 1-2", "2", "A: Drug X", "(N=134)", "122 (91%)",
-    "13 (9.7%)", "7 (5.2%)", "6 (4.5%)", "33 (24.6%)", "18 (13.4%)",
-    "15 (11.2%)", "76 (56.7%)", "", "78 (58.2%)", "78 (58.2%)", "30 (22.4%)",
-    "48 (35.8%)", "", "50 (37.3%)", "50 (37.3%)", "50 (37.3%)", "",
-    "35 (26.1%)", "35 (26.1%)", "35 (26.1%)", "", "35 (26.1%)", "35 (26.1%)",
-    "35 (26.1%)", "B: Placebo", "(N=134)", "123 (91.8%)", "19 (14.2%)",
-    "9 (6.7%)", "10 (7.5%)", "34 (25.4%)", "14 (10.4%)", "20 (14.9%)",
-    "70 (52.2%)", "", "75 (56%)", "75 (56%)", "27 (20.1%)", "48 (35.8%)",
-    "", "45 (33.6%)", "45 (33.6%)", "45 (33.6%)", "", "48 (35.8%)",
-    "48 (35.8%)", "48 (35.8%)", "", "48 (35.8%)", "48 (35.8%)", "48 (35.8%)",
-    "C: Combination", "(N=132)", "120 (90.9%)", "11 (8.3%)", "4 (3%)",
-    "7 (5.3%)", "34 (25.8%)", "16 (12.1%)", "18 (13.6%)", "75 (56.8%)",
-    "", "89 (67.4%)", "89 (67.4%)", "39 (29.5%)", "50 (37.9%)", "",
-    "63 (47.7%)", "63 (47.7%)", "63 (47.7%)", "", "55 (41.7%)", "55 (41.7%)",
-    "55 (41.7%)", "", "55 (41.7%)", "55 (41.7%)", "55 (41.7%)"
+      "", "", "- Any Grade -", "Grade 1-2", "1", "2", "Grade 3-4",
+      "3", "4", "Grade 5", "cl A.1", "- Any Grade -", "Grade 1-2",
+      "1", "2", "dcd A.1.1.1.1", "- Any Grade -", "Grade 1-2", "1",
+      "cl C.2", "- Any Grade -", "Grade 1-2", "2", "dcd C.2.1.2.1",
+      "- Any Grade -", "Grade 1-2", "2", "A: Drug X", "(N=134)", "122 (91%)",
+      "13 (9.7%)", "7 (5.2%)", "6 (4.5%)", "33 (24.6%)", "18 (13.4%)",
+      "15 (11.2%)", "76 (56.7%)", "", "78 (58.2%)", "78 (58.2%)", "30 (22.4%)",
+      "48 (35.8%)", "", "50 (37.3%)", "50 (37.3%)", "50 (37.3%)", "",
+      "35 (26.1%)", "35 (26.1%)", "35 (26.1%)", "", "35 (26.1%)", "35 (26.1%)",
+      "35 (26.1%)", "B: Placebo", "(N=134)", "123 (91.8%)", "19 (14.2%)",
+      "9 (6.7%)", "10 (7.5%)", "34 (25.4%)", "14 (10.4%)", "20 (14.9%)",
+      "70 (52.2%)", "", "75 (56%)", "75 (56%)", "27 (20.1%)", "48 (35.8%)",
+      "", "45 (33.6%)", "45 (33.6%)", "45 (33.6%)", "", "48 (35.8%)",
+      "48 (35.8%)", "48 (35.8%)", "", "48 (35.8%)", "48 (35.8%)", "48 (35.8%)",
+      "C: Combination", "(N=132)", "120 (90.9%)", "11 (8.3%)", "4 (3%)",
+      "7 (5.3%)", "34 (25.8%)", "16 (12.1%)", "18 (13.6%)", "75 (56.8%)",
+      "", "89 (67.4%)", "89 (67.4%)", "39 (29.5%)", "50 (37.9%)", "",
+      "63 (47.7%)", "63 (47.7%)", "63 (47.7%)", "", "55 (41.7%)", "55 (41.7%)",
+      "55 (41.7%)", "", "55 (41.7%)", "55 (41.7%)", "55 (41.7%)"
     ),
-  .Dim = c(27L, 4L)
+    .Dim = c(27L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -764,54 +774,56 @@ testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in
 
 testthat::test_that(
   "AET04 variant 11 is produced correctly
-  (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)", {
+  (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)",
+  code = {
+    adae <- preproc_adae(adae)
 
-  adae <- preproc_adae(adae)
+    raw_result <- raw_table(adae, adsl)
 
-  raw_result <- raw_table(adae, adsl)
+    cutoff <- 0.4
+    row_condition <- has_fraction_in_any_col(atleast = cutoff, col_names = levels(adsl$ACTARM))
 
-  cutoff <- 0.4
-  row_condition <- has_fraction_in_any_col(atleast = cutoff, col_names = levels(adsl$ACTARM))
+    result <- prune_table(raw_result, keep_rows(row_condition))
 
-  result <- prune_table(raw_result, keep_rows(row_condition))
+    result_matrix <- to_string_matrix(result)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-    "", "", "- Any Grade -", "Grade 1-2", "1", "2", "Grade 3-4",
-    "3", "4", "Grade 5", "cl A.1", "- Any Grade -", "Grade 1-2",
-    "1", "2", "dcd A.1.1.1.1", "- Any Grade -", "Grade 1-2", "1",
-    "cl B.2", "- Any Grade -", "Grade 1-2", "1", "Grade 3-4", "3",
-    "dcd B.2.2.3.1", "- Any Grade -", "Grade 1-2", "1", "cl D.2",
-    "- Any Grade -", "Grade 1-2", "1", "dcd D.2.1.5.3", "- Any Grade -",
-    "Grade 1-2", "1", "cl C.2", "- Any Grade -", "Grade 1-2", "2",
-    "dcd C.2.1.2.1", "- Any Grade -", "Grade 1-2", "2", "A: Drug X",
-    "(N=134)", "122 (91%)", "13 (9.7%)", "7 (5.2%)", "6 (4.5%)",
-    "33 (24.6%)", "18 (13.4%)", "15 (11.2%)", "76 (56.7%)", "", "78 (58.2%)",
-    "78 (58.2%)", "30 (22.4%)", "48 (35.8%)", "", "50 (37.3%)", "50 (37.3%)",
-    "50 (37.3%)", "", "79 (59%)", "30 (22.4%)", "30 (22.4%)", "49 (36.6%)",
-    "49 (36.6%)", "", "48 (35.8%)", "48 (35.8%)", "48 (35.8%)", "",
-    "47 (35.1%)", "47 (35.1%)", "47 (35.1%)", "", "47 (35.1%)", "47 (35.1%)",
-    "47 (35.1%)", "", "35 (26.1%)", "35 (26.1%)", "35 (26.1%)", "",
-    "35 (26.1%)", "35 (26.1%)", "35 (26.1%)", "B: Placebo", "(N=134)",
-    "123 (91.8%)", "19 (14.2%)", "9 (6.7%)", "10 (7.5%)", "34 (25.4%)",
-    "14 (10.4%)", "20 (14.9%)", "70 (52.2%)", "", "75 (56%)", "75 (56%)",
-    "27 (20.1%)", "48 (35.8%)", "", "45 (33.6%)", "45 (33.6%)", "45 (33.6%)",
-    "", "74 (55.2%)", "30 (22.4%)", "30 (22.4%)", "44 (32.8%)", "44 (32.8%)",
-    "", "54 (40.3%)", "54 (40.3%)", "54 (40.3%)", "", "58 (43.3%)",
-    "58 (43.3%)", "58 (43.3%)", "", "58 (43.3%)", "58 (43.3%)", "58 (43.3%)",
-    "", "48 (35.8%)", "48 (35.8%)", "48 (35.8%)", "", "48 (35.8%)",
-    "48 (35.8%)", "48 (35.8%)", "C: Combination", "(N=132)", "120 (90.9%)",
-    "11 (8.3%)", "4 (3%)", "7 (5.3%)", "34 (25.8%)", "16 (12.1%)",
-    "18 (13.6%)", "75 (56.8%)", "", "89 (67.4%)", "89 (67.4%)", "39 (29.5%)",
-    "50 (37.9%)", "", "63 (47.7%)", "63 (47.7%)", "63 (47.7%)", "",
-    "85 (64.4%)", "33 (25%)", "33 (25%)", "52 (39.4%)", "52 (39.4%)",
-    "", "51 (38.6%)", "51 (38.6%)", "51 (38.6%)", "", "57 (43.2%)",
-    "57 (43.2%)", "57 (43.2%)", "", "57 (43.2%)", "57 (43.2%)", "57 (43.2%)",
-    "", "55 (41.7%)", "55 (41.7%)", "55 (41.7%)", "", "55 (41.7%)",
-    "55 (41.7%)", "55 (41.7%)"),
-  .Dim = c(45L, 4L)
- )
- testthat::expect_identical(result_matrix, expected_matrix)
-})
+    expected_matrix <- structure(
+      c(
+        "", "", "- Any Grade -", "Grade 1-2", "1", "2", "Grade 3-4",
+        "3", "4", "Grade 5", "cl A.1", "- Any Grade -", "Grade 1-2",
+        "1", "2", "dcd A.1.1.1.1", "- Any Grade -", "Grade 1-2", "1",
+        "cl B.2", "- Any Grade -", "Grade 1-2", "1", "Grade 3-4", "3",
+        "dcd B.2.2.3.1", "- Any Grade -", "Grade 1-2", "1", "cl D.2",
+        "- Any Grade -", "Grade 1-2", "1", "dcd D.2.1.5.3", "- Any Grade -",
+        "Grade 1-2", "1", "cl C.2", "- Any Grade -", "Grade 1-2", "2",
+        "dcd C.2.1.2.1", "- Any Grade -", "Grade 1-2", "2", "A: Drug X",
+        "(N=134)", "122 (91%)", "13 (9.7%)", "7 (5.2%)", "6 (4.5%)",
+        "33 (24.6%)", "18 (13.4%)", "15 (11.2%)", "76 (56.7%)", "", "78 (58.2%)",
+        "78 (58.2%)", "30 (22.4%)", "48 (35.8%)", "", "50 (37.3%)", "50 (37.3%)",
+        "50 (37.3%)", "", "79 (59%)", "30 (22.4%)", "30 (22.4%)", "49 (36.6%)",
+        "49 (36.6%)", "", "48 (35.8%)", "48 (35.8%)", "48 (35.8%)", "",
+        "47 (35.1%)", "47 (35.1%)", "47 (35.1%)", "", "47 (35.1%)", "47 (35.1%)",
+        "47 (35.1%)", "", "35 (26.1%)", "35 (26.1%)", "35 (26.1%)", "",
+        "35 (26.1%)", "35 (26.1%)", "35 (26.1%)", "B: Placebo", "(N=134)",
+        "123 (91.8%)", "19 (14.2%)", "9 (6.7%)", "10 (7.5%)", "34 (25.4%)",
+        "14 (10.4%)", "20 (14.9%)", "70 (52.2%)", "", "75 (56%)", "75 (56%)",
+        "27 (20.1%)", "48 (35.8%)", "", "45 (33.6%)", "45 (33.6%)", "45 (33.6%)",
+        "", "74 (55.2%)", "30 (22.4%)", "30 (22.4%)", "44 (32.8%)", "44 (32.8%)",
+        "", "54 (40.3%)", "54 (40.3%)", "54 (40.3%)", "", "58 (43.3%)",
+        "58 (43.3%)", "58 (43.3%)", "", "58 (43.3%)", "58 (43.3%)", "58 (43.3%)",
+        "", "48 (35.8%)", "48 (35.8%)", "48 (35.8%)", "", "48 (35.8%)",
+        "48 (35.8%)", "48 (35.8%)", "C: Combination", "(N=132)", "120 (90.9%)",
+        "11 (8.3%)", "4 (3%)", "7 (5.3%)", "34 (25.8%)", "16 (12.1%)",
+        "18 (13.6%)", "75 (56.8%)", "", "89 (67.4%)", "89 (67.4%)", "39 (29.5%)",
+        "50 (37.9%)", "", "63 (47.7%)", "63 (47.7%)", "63 (47.7%)", "",
+        "85 (64.4%)", "33 (25%)", "33 (25%)", "52 (39.4%)", "52 (39.4%)",
+        "", "51 (38.6%)", "51 (38.6%)", "51 (38.6%)", "", "57 (43.2%)",
+        "57 (43.2%)", "57 (43.2%)", "", "57 (43.2%)", "57 (43.2%)", "57 (43.2%)",
+        "", "55 (41.7%)", "55 (41.7%)", "55 (41.7%)", "", "55 (41.7%)",
+        "55 (41.7%)", "55 (41.7%)"
+      ),
+      .Dim = c(45L, 4L)
+    )
+    testthat::expect_identical(result_matrix, expected_matrix)
+  }
+)

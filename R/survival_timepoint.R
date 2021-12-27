@@ -40,7 +40,6 @@ NULL
 #'   filter(ARMCD == "ARM A")
 #'
 #' s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-#'
 s_surv_timepoint <- function(df,
                              .var,
                              time_point,
@@ -88,7 +87,6 @@ s_surv_timepoint <- function(df,
 #'
 #' @examples
 #' a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-#'
 a_surv_timepoint <- make_afun(
   s_surv_timepoint,
   .indent_mods = c(
@@ -117,10 +115,13 @@ a_surv_timepoint <- make_afun(
 #'
 #' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 #' s_surv_timepoint_diff(
-#'   df, df_ref_group, .in_ref_col = FALSE,
-#'   .var = "AVAL", time_point = 7, is_event = "is_event"
+#'   df,
+#'   df_ref_group,
+#'   .in_ref_col = FALSE,
+#'   .var = "AVAL",
+#'   time_point = 7,
+#'   is_event = "is_event"
 #' )
-#'
 s_surv_timepoint_diff <- function(df,
                                   .var,
                                   .ref_group,
@@ -128,7 +129,6 @@ s_surv_timepoint_diff <- function(df,
                                   time_point,
                                   control = control_surv_timepoint(),
                                   ...) {
-
   if (.in_ref_col) {
     return(
       list(
@@ -169,10 +169,13 @@ s_surv_timepoint_diff <- function(df,
 #'
 #' @examples
 #' a_surv_timepoint_diff(
-#'   df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", time_point = 7,
+#'   df,
+#'   df_ref_group,
+#'   .in_ref_col = FALSE,
+#'   .var = "AVAL",
+#'   time_point = 7,
 #'   is_event = "is_event"
 #' )
-#'
 a_surv_timepoint_diff <- make_afun(
   s_surv_timepoint_diff,
   .indent_mods = c(
@@ -235,7 +238,6 @@ a_surv_timepoint_diff <- make_afun(
 #'     method = "both"
 #'   ) %>%
 #'   build_table(df = ADTTE_f)
-#'
 surv_timepoint <- function(lyt,
                            vars,
                            ...,
@@ -250,7 +252,6 @@ surv_timepoint <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
-
   method <- match.arg(method)
   assertthat::assert_that(assertthat::is.string(table_names_suffix))
 
@@ -315,7 +316,6 @@ surv_timepoint <- function(lyt,
         )
       )
     }
-
   }
   lyt
 }

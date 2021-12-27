@@ -39,9 +39,10 @@ data <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 tbl_grob <- tern:::h_grob_coxph(
-   df = data,
-   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),
-   control_coxph_pw = control_coxph(conf_level = 0.9), x = 0.5, y = 0.5)
+  df = data,
+  variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),
+  control_coxph_pw = control_coxph(conf_level = 0.9), x = 0.5, y = 0.5
+)
 grid::grid.draw(tbl_grob)
 }
 

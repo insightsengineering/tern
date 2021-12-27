@@ -24,5 +24,4 @@ grade_groups <- list(
   "Grade 5 (\%)" = "5"
 )
 groups_list_to_df(grade_groups)
-
 }

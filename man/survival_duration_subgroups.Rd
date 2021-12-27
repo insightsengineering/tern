@@ -126,7 +126,6 @@ adtte_f <- adtte \%>\%
     is_event = "Event Flag"
   )
 
-
 df <- extract_survival_subgroups(
   variables = list(
     tte = "AVAL",
@@ -153,9 +152,7 @@ df_grouped <- extract_survival_subgroups(
   )
 )
 df_grouped
-
 a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
-
 
 ## Table with default columns.
 basic_table() \%>\%
@@ -168,5 +165,4 @@ basic_table() \%>\%
     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
     time_unit = adtte_f$AVALU[1]
   )
-
 }

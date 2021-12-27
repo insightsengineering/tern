@@ -91,13 +91,15 @@ testthat::test_that("compare_vars works with default settings in rtables layout 
   result <- build_table(lyt, ex_adsl)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "AGE", "n", "Mean (SD)", "p-value (t-test)",
+    c(
+      "", "AGE", "n", "Mean (SD)", "p-value (t-test)",
       "SEX", "n", "F", "M", "U", "UNDIFFERENTIATED", "p-value (chi-squared test)",
       "ARM B", "", "134", "35.4 (7.9)", "", "", "134", "77 (57.5%)",
       "55 (41%)", "2 (1.5%)", "0", "", "ARM A", "", "134", "33.8 (6.6)",
       "0.0616", "", "134", "79 (59%)", "51 (38.1%)", "3 (2.2%)", "1 (0.7%)",
       "0.7110", "ARM C", "", "132", "35.4 (7.7)", "0.9992", "", "132",
-      "66 (50%)", "60 (45.5%)", "4 (3%)", "2 (1.5%)", "0.2939"),
+      "66 (50%)", "60 (45.5%)", "4 (3%)", "2 (1.5%)", "0.2939"
+    ),
     .Dim = c(12L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -115,13 +117,15 @@ testthat::test_that("compare_vars works with custom settings", {
   result <- build_table(lyt, df = ex_adsl)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "AGE", "Mean, SD", "p-value (t-test)", "SEX",
+    c(
+      "", "AGE", "Mean, SD", "p-value (t-test)", "SEX",
       "F", "M", "U", "UNDIFFERENTIATED", "p-value (chi-squared test)",
       "ARM C", "", "35.4, 7.7", "", "", "66 (50%)", "60 (45.45%)",
       "4 (3.03%)", "2 (1.52%)", "", "ARM A", "", "33.8, 6.6", "0.0595",
       "", "79 (58.96%)", "51 (38.06%)", "3 (2.24%)", "1 (0.75%)", "0.5018",
       "ARM B", "", "35.4, 7.9", "0.9992", "", "77 (57.46%)", "55 (41.04%)",
-      "2 (1.49%)", "0 (0%)", "0.2939"),
+      "2 (1.49%)", "0 (0%)", "0.2939"
+    ),
     .Dim = c(10L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

@@ -15,7 +15,6 @@
 control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
                           ties = c("efron", "breslow", "exact"),
                           conf_level = 0.95) {
-
   pval_method <- match.arg(pval_method)
   ties <- match.arg(ties)
   assertthat::assert_that(is_proportion(conf_level))
@@ -60,8 +59,7 @@ control_surv_time <- function(conf_level = 0.95,
 #' @export
 #'
 control_surv_timepoint <- function(conf_level = 0.95,
-                                   conf_type = c("plain", "log", "log-log")
-) {
+                                   conf_type = c("plain", "log", "log-log")) {
   conf_type <- match.arg(conf_type)
   assertthat::assert_that(is_proportion(conf_level))
   list(

@@ -21,7 +21,6 @@
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   mutate(rsp = AVALC == "CR")
 #' var_labels(adrs_f) <- c(adrs_labels, "Response")
-#'
 NULL
 
 #' @describeIn h_response_biomarkers_subgroups helps with converting the "response" function variable list

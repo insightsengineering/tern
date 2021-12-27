@@ -41,11 +41,10 @@ grid.draw(stack_grobs(g1, g2, g3))
 showViewport()
 
 grid.newpage()
-pushViewport(viewport(layout = grid.layout(1,2)))
+pushViewport(viewport(layout = grid.layout(1, 2)))
 vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
 grid.draw(stack_grobs(g1, g2, g3, vp = vp1, name = "test"))
 
 showViewport()
 grid.ls(grobs = TRUE, viewports = TRUE)
-
 }

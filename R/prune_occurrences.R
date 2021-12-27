@@ -19,7 +19,7 @@
 #'   summarize_row_groups() %>%
 #'   summarize_vars("COUNTRY", .stats = "count_fraction") %>%
 #'   build_table(DM)
-#'}
+#' }
 #'
 NULL
 
@@ -37,7 +37,7 @@ NULL
 #' # `keep_rows`
 #' is_non_empty <- !CombinationFunction(all_zero_or_na)
 #' prune_table(tab, keep_rows(is_non_empty))
-#'}
+#' }
 keep_rows <- function(row_condition) {
   assertthat::assert_that(is.function(row_condition))
   function(table_tree) {
@@ -59,11 +59,11 @@ keep_rows <- function(row_condition) {
 #'   checks the condition on the first content row of leaf tables in the table.
 #' @export
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' # `keep_content_rows`
 #' more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
 #' prune_table(tab, keep_content_rows(more_than_twenty))
-#'}
+#' }
 keep_content_rows <- function(content_row_condition) {
   assertthat::assert_that(is.function(content_row_condition))
   function(table_tree) {
@@ -94,7 +94,7 @@ keep_content_rows <- function(content_row_condition) {
 #' # `has_count_in_cols`
 #' more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one))
-#'}
+#' }
 has_count_in_cols <- function(atleast, ...) {
   assertthat::assert_that(
     assertthat::is.count(atleast)
@@ -118,7 +118,7 @@ has_count_in_cols <- function(atleast, ...) {
 #' # `has_count_in_any_col`
 #' any_more_than_one <- has_count_in_any_col(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(any_more_than_one))
-#'}
+#' }
 has_count_in_any_col <- function(atleast, ...) {
   assertthat::assert_that(
     assertthat::is.count(atleast)
@@ -139,7 +139,7 @@ has_count_in_any_col <- function(atleast, ...) {
 #' # `has_fraction_in_cols`
 #' more_than_five_percent <- has_fraction_in_cols(atleast = 0.05, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_five_percent))
-#'}
+#' }
 has_fraction_in_cols <- function(atleast, ...) {
   assertthat::assert_that(
     is_proportion(atleast, include_boundaries = TRUE)
@@ -164,7 +164,7 @@ has_fraction_in_cols <- function(atleast, ...) {
 #' # `has_fraction_in_any_col`
 #' any_atleast_five_percent <- has_fraction_in_any_col(atleast = 0.05, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_five_percent))
-#'}
+#' }
 has_fraction_in_any_col <- function(atleast, ...) {
   assertthat::assert_that(
     is_proportion(atleast, include_boundaries = TRUE)
@@ -185,7 +185,7 @@ has_fraction_in_any_col <- function(atleast, ...) {
 #' # `has_fractions_difference`
 #' more_than_five_percent_diff <- has_fractions_difference(atleast = 0.05, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_five_percent_diff))
-#'}
+#' }
 has_fractions_difference <- function(atleast, ...) {
   assertthat::assert_that(
     is_proportion(atleast, include_boundaries = TRUE)
@@ -207,7 +207,7 @@ has_fractions_difference <- function(atleast, ...) {
 #' # `has_counts_difference`
 #' more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one_diff))
-#'}
+#' }
 has_counts_difference <- function(atleast, ...) {
   assertthat::assert_that(
     assertthat::is.count(atleast)

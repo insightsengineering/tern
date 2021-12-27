@@ -20,9 +20,7 @@ Assign value to attribute footnote of object \code{x}.
 x <- table(iris$Species)
 footnotes(x) <- "Species are equally distributed"
 attributes(x)
-
 x <- table(iris$Species)
 footnotes(x) <- "Species are equally distributed"
 attributes(x)
-
 }

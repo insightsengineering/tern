@@ -30,7 +30,6 @@ NULL
 #' h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 #' h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
 #' h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
-#'
 h_count_cumulative <- function(x,
                                threshold,
                                lower_tail = TRUE,
@@ -87,7 +86,6 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 #' @examples
 #' s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 #' s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
-#'
 s_count_cumulative <- function(x,
                                thresholds,
                                lower_tail = TRUE,
@@ -117,7 +115,6 @@ s_count_cumulative <- function(x,
 #' # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_cumulative, .ungroup_stats = "count_fraction")
 #' afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
-#'
 a_count_cumulative <- make_afun(
   s_count_cumulative,
   .formats = c(count_fraction = format_count_fraction)
@@ -133,14 +130,13 @@ a_count_cumulative <- make_afun(
 #' library(scda)
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' basic_table() %>%
-#' split_cols_by("ARM") %>%
+#'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
 #'   count_cumulative(
 #'     vars = "AGE",
 #'     thresholds = c(40, 60)
 #'   ) %>%
 #'   build_table(ADSL)
-#'
 count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,

@@ -137,18 +137,16 @@ data <- data.frame(
 # Odds ratio based on glm.
 or_glm(data, conf_level = 0.95)
 
-
 # Data with 3 groups.
 data <- data.frame(
   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-  grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
+  grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
   strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
   stringsAsFactors = TRUE
 )
 
 # Odds ratio based on stratified estimation by conditional logistic regression.
 or_clogit(data, conf_level = 0.95)
-
 
 set.seed(12)
 dta <- data.frame(
@@ -175,7 +173,6 @@ s_odds_ratio(
   .df_row = dta,
   variables = list(arm = "grp", strata = "strata")
 )
-
 a_odds_ratio(
   df = subset(dta, grp == "A"),
   .var = "rsp",
@@ -184,16 +181,14 @@ a_odds_ratio(
   .df_row = dta
 )
 
-
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
   grp = factor(rep(c("A", "B"), each = 50))
 )
 
 l <- basic_table() \%>\%
-split_cols_by(var = "grp", ref_group = "B") \%>\%
+  split_cols_by(var = "grp", ref_group = "B") \%>\%
   estimate_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)
-
 }

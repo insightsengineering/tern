@@ -24,7 +24,6 @@
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   mutate(rsp = AVALC == "CR")
 #' var_labels(adrs_f) <- c(adrs_labels, "Response")
-#'
 NULL
 
 #' @describeIn response_biomarkers_subgroups prepares estimates for number of responses, patients and

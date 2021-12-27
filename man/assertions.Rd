@@ -144,13 +144,11 @@ is_variables(list("bla"))
 is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
 is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 
-
 # Check whether `df` contains all factor analysis `variables`.
 is_df_with_factors(
   df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
   variables = list(val = "a")
 )
-
 
 # Check whether `df` contains a factor `variable` with `n_levels` levels.
 is_df_with_nlevels_factor(
@@ -159,7 +157,6 @@ is_df_with_nlevels_factor(
   n_levels = 2
 )
 
-
 #' # Check whether `x` is a valid list of variable names.
 a <- 1
 b <- NULL
@@ -167,18 +164,15 @@ c <- c(1, "car")
 d <- 5
 is_equal_length(a, b, c, d)
 
-
 # Check whether `x` is between 0 and 1.
 is_proportion(x = 0.3)
 is_proportion(x = 1.3)
 is_proportion(x = 0, include_boundaries = TRUE)
 
-
 # Check whether `x` is a vector of numbers between 0 and 1.
 is_proportion_vector(c(0.3, 0.1))
 is_proportion_vector(c(1.3, 0.1))
 is_proportion_vector(0, include_boundaries = TRUE)
-
 
 # Check whether `x` is a vector of sorted quantile proportions between 0 and 1.
 is_quantiles_vector(c(0.1, 0.3))
@@ -186,18 +180,15 @@ is_quantiles_vector(c(0.3, 0.1))
 is_quantiles_vector(c(0.3, 0.3))
 is_quantiles_vector(0, include_boundaries = TRUE)
 
-
 # Check whether `x` is a valid factor.
 is_valid_factor(-1)
 is_valid_factor(factor(c("a", "b")))
 is_valid_factor(factor(c("a", "")))
 is_valid_factor(factor())
 
-
 # Check whether `NA` has been handled when `x` is a factor.
 is_factor_no_na(factor(c("a", NA)))
 is_factor_no_na(factor(c("a", "<Missing>")))
-
 
 # Check whether `x` is a valid character vector
 is_valid_character(-1)
@@ -205,17 +196,14 @@ is_valid_character(c("a", "b"))
 is_valid_character(c("a", ""))
 is_valid_character("")
 
-
 # Check whether all elements of `x` are in a reference vector.
 all_elements_in_ref(c("a", "b"), c("a", "b", "c"))
 all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
 all_elements_in_ref(c(1:3), c(1:5))
-
 
 df <- data.frame(a = 1:3, b = 2:4)
 df$a <- ifelse(df$a == 1, "<Missing>", df$a)
 is_df_with_no_na_level(df, variables = list(a = "a"), na_level = "<Missing>")
 is_df_with_no_na_level(df, variables = list(b = "b"), na_level = "<Missing>")
 is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
-
 }

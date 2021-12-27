@@ -184,7 +184,6 @@ decorate_grob <- function(grob,
     outer_margins = outer_margins,
     gp_titles = gp_titles,
     gp_footnotes = gp_footnotes,
-
     children = grid::gList(
       grid::gTree(
         children = grid::gList(
@@ -240,7 +239,7 @@ decorate_grob <- function(grob,
 
 #' @importFrom grid validDetails
 #' @export
-validDetails.decoratedGrob <- function(x) { #nolint #nousage
+validDetails.decoratedGrob <- function(x) { # nolint #nousage
   stopifnot(
     grid::is.grob(x$grob) || is.null(x$grob),
     is.character(x$titles),
@@ -256,13 +255,13 @@ validDetails.decoratedGrob <- function(x) { #nolint #nousage
 
 #' @importFrom grid widthDetails
 #' @export
-widthDetails.decoratedGrob <- function(x) { #nolint #nousage
+widthDetails.decoratedGrob <- function(x) { # nolint #nousage
   grid::unit(1, "null")
 }
 
 #' @importFrom grid heightDetails
 #' @export
-heightDetails.decoratedGrob <- function(x) { #nolint #nousage
+heightDetails.decoratedGrob <- function(x) { # nolint #nousage
   grid::unit(1, "null")
 }
 
@@ -388,7 +387,7 @@ split_text_grob <- function(text,
 
 #' @importFrom grid validDetails
 #' @export
-validDetails.dynamicSplitText <- function(x) { #nolint #nousage
+validDetails.dynamicSplitText <- function(x) { # nolint #nousage
   stopifnot(
     is.character(x$text),
     grid::is.unit(x$width) && length(x$width) == 1
@@ -399,7 +398,7 @@ validDetails.dynamicSplitText <- function(x) { #nolint #nousage
 
 #' @importFrom grid heightDetails
 #' @export
-heightDetails.dynamicSplitText <- function(x) { #nolint #nousage
+heightDetails.dynamicSplitText <- function(x) { # nolint #nousage
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {
@@ -410,13 +409,13 @@ heightDetails.dynamicSplitText <- function(x) { #nolint #nousage
 
 #' @importFrom grid widthDetails
 #' @export
-widthDetails.dynamicSplitText <- function(x) { #nolint #nousage
+widthDetails.dynamicSplitText <- function(x) { # nolint #nousage
   x$width
 }
 
 #' @importFrom grid drawDetails
 #' @export
-drawDetails.dynamicSplitText <- function(x, recording) { #nolint #nousage
+drawDetails.dynamicSplitText <- function(x, recording) { # nolint #nousage
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {

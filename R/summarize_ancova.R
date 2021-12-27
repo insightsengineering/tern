@@ -27,11 +27,9 @@ NULL
 #'   .df_row = iris,
 #'   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 #' )
-#'
 h_ancova <- function(.var,
                      .df_row,
                      variables) {
-
   assertthat::assert_that(
     assertthat::is.string(.var),
     is.list(variables),
@@ -95,10 +93,10 @@ h_ancova <- function(.var,
 #'
 #' adqs_single <- adqs %>%
 #'   filter(
-#'     AVISIT == "WEEK 1 DAY 8",  # single time point
-#'     PARAMCD == "FKSI-FWB"  # single end point
+#'     AVISIT == "WEEK 1 DAY 8", # single time point
+#'     PARAMCD == "FKSI-FWB" # single end point
 #'   ) %>%
-#'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
+#'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
 #'
 #' df <- adqs_single %>%
 #'   filter(ARMCD == "ARM B")
@@ -110,7 +108,6 @@ h_ancova <- function(.var,
 #' conf_level <- 0.95
 #'
 #' s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
-#'
 s_ancova <- function(df,
                      .var,
                      .df_row,
@@ -118,7 +115,6 @@ s_ancova <- function(df,
                      .ref_group,
                      .in_ref_col,
                      conf_level) {
-
   emmeans_fit <- h_ancova(.var = .var, variables = variables, .df_row = .df_row)
 
   sum_fit <- summary(
@@ -182,7 +178,6 @@ s_ancova <- function(df,
 #'
 #' @examples
 #' a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
-#'
 a_ancova <- make_afun(
   s_ancova,
   .indent_mods = c("n" = 0L, "lsmean" = 0L, "lsmean_diff" = 0L, "lsmean_diff_ci" = 1L, "pval" = 1L),
@@ -204,10 +199,10 @@ a_ancova <- make_afun(
 #'
 #' adqs_single <- adqs %>%
 #'   filter(
-#'     AVISIT == "WEEK 1 DAY 8",  # single time point
-#'     PARAMCD == "FKSI-FWB"  # single end point
+#'     AVISIT == "WEEK 1 DAY 8", # single time point
+#'     PARAMCD == "FKSI-FWB" # single end point
 #'   ) %>%
-#'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
+#'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
 #' adqs_multi <- adqs %>%
 #'   filter(AVISIT == "WEEK 1 DAY 8")
 #'
@@ -228,7 +223,6 @@ a_ancova <- make_afun(
 #'     conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)"
 #'   ) %>%
 #'   build_table(adqs_single, alt_counts_df = adsl)
-#'
 #' \dontrun{
 #' basic_table() %>%
 #'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
@@ -239,7 +233,7 @@ a_ancova <- make_afun(
 #'     conf_level = 0.95, var_labels = "Adjusted mean"
 #'   ) %>%
 #'   build_table(adqs_multi, alt_counts_df = adsl)
-#'}
+#' }
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,

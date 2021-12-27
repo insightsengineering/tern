@@ -65,5 +65,4 @@ c1 <- higher(5)
 c2 <- lower(10)
 c3 <- higher(5) & lower(10)
 c3(7)
-
 }

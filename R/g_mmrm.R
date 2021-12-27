@@ -40,7 +40,7 @@ NULL
 #' adsl <- synthetic_cdisc_data("latest")$adsl
 #' adqs <- synthetic_cdisc_data("latest")$adqs
 #' adqs_f <- adqs %>%
-#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%
 #'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
@@ -59,12 +59,10 @@ NULL
 #' )
 #' g_mmrm_diagnostic(mmrm_results)
 #' g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
-#'}
-g_mmrm_diagnostic <- function(
-  object,
-  type = c("fit-residual", "q-q-residual"),
-  z_threshold = NULL
-) {
+#' }
+g_mmrm_diagnostic <- function(object,
+                              type = c("fit-residual", "q-q-residual"),
+                              z_threshold = NULL) {
   stopifnot(inherits(object, "mmrm"))
   type <- match.arg(type)
   stopifnot(is.null(z_threshold) || (is.numeric(z_threshold) && z_threshold > 0))
@@ -74,23 +72,24 @@ g_mmrm_diagnostic <- function(
   amended_data <- object$fit@frame
   amended_data$.fitted <- stats::predict(
     model,
-    re.form = NA  # Don't include random effects. We want marginal fitted values.
+    re.form = NA # Don't include random effects. We want marginal fitted values.
   )
   amended_data$.resid <- amended_data[[vars$response]] - amended_data$.fitted
 
   result <- if (type == "fit-residual") {
-    amended_data_smooth <- suppressWarnings(tryCatch({
-      get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
-    }, error = function(msg) {
-      message(
-        paste(
-          "Warning: Data not amenable to the Locally Weighted Scatterplot Smoothing.",
-          "\nSmooth line will not be displayed in the fit-residual plot."
+    amended_data_smooth <- suppressWarnings(tryCatch(
+      expr = { # nolint
+        get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
+      },
+      error = function(msg) {
+        message(
+          paste(
+            "Warning: Data not amenable to the Locally Weighted Scatterplot Smoothing.",
+            "\nSmooth line will not be displayed in the fit-residual plot."
+          )
         )
-      )
-    }
-    )
-  )
+      }
+    ))
     tmp <- ggplot2::ggplot(amended_data, ggplot2::aes_string(x = ".fitted", y = ".resid")) +
       ggplot2::geom_point(colour = "blue", alpha = 0.3) +
       ggplot2::facet_grid(stats::as.formula(paste(". ~", vars$visit)), scales = "free_x") +
@@ -103,22 +102,21 @@ g_mmrm_diagnostic <- function(
         size = 1.4
       ) +
         ggplot2::geom_ribbon(
-        data = amended_data_smooth,
-        ggplot2::aes_string(
-          x = "x",
-          y = NULL,
-          ymin = "ylow",
-          ymax = "yhigh",
-          group = vars$visit
-        ),
-        alpha = 0.4,
-        color = "light grey"
-      )
+          data = amended_data_smooth,
+          ggplot2::aes_string(
+            x = "x",
+            y = NULL,
+            ymin = "ylow",
+            ymax = "yhigh",
+            group = vars$visit
+          ),
+          alpha = 0.4,
+          color = "light grey"
+        )
     }
     tmp <- tmp +
       ggplot2::xlab("Fitted values") +
       ggplot2::ylab("Residuals")
-
   } else if (type == "q-q-residual") {
     # We use visit specific standard deviation of marginal residuals for scaling residuals.
     all_sigmas <- sqrt(diag(object$cov_estimate))
@@ -132,7 +130,7 @@ g_mmrm_diagnostic <- function(
           x = stats::qnorm(stats::ppoints(data$.scaled_resid)),
           y = sort(data$.scaled_resid)
         )
-        res[[vars$visit]] <- data[[vars$visit]]  # Note that these are all the same.
+        res[[vars$visit]] <- data[[vars$visit]] # Note that these are all the same.
         res
       }) %>%
       do.call(rbind, .)
@@ -197,7 +195,7 @@ g_mmrm_diagnostic <- function(
 #' adsl <- synthetic_cdisc_data("latest")$adsl
 #' adqs <- synthetic_cdisc_data("latest")$adqs
 #' adqs_f <- adqs %>%
-#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%
 #'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
@@ -225,10 +223,10 @@ g_mmrm_diagnostic <- function(
 #'   width = 0.8
 #' )
 #'
-#'adqs_f2 <- adqs_f %>%
-#'  filter(ARMCD == "ARM A")
+#' adqs_f2 <- adqs_f %>%
+#'   filter(ARMCD == "ARM A")
 #'
-#'mmrm_results_no_arm <- fit_mmrm(
+#' mmrm_results_no_arm <- fit_mmrm(
 #'   vars = list(
 #'     response = "AVAL",
 #'     covariates = c("STRATA1", "BMRKR2"),
@@ -244,8 +242,10 @@ g_mmrm_diagnostic <- function(
 #' g_mmrm_lsmeans(
 #'   mmrm_results_no_arm,
 #'   select = c("estimates", "contrasts"),
-#'   titles = c(estimates = "Adjusted mean of FKSI-FWB",
-#'   contrasts = "it will not be created"),
+#'   titles = c(
+#'     estimates = "Adjusted mean of FKSI-FWB",
+#'     contrasts = "it will not be created"
+#'   ),
 #'   show_pval = TRUE,
 #'   width = 0.8
 #' )
@@ -257,7 +257,7 @@ g_mmrm_diagnostic <- function(
 #'   show_pval = TRUE,
 #'   width = 0.8
 #' )
-#'}
+#' }
 g_mmrm_lsmeans <-
   function(object,
            select = c("estimates", "contrasts"),
@@ -270,14 +270,14 @@ g_mmrm_lsmeans <-
            ylab = paste0("Estimates with ", round(object$conf_level * 100), "% CIs"),
            width = 0.6,
            show_pval = TRUE) {
-
     stopifnot(inherits(object, "mmrm"))
     select <- match.arg(select, several.ok = TRUE)
     if (is.null(object$vars$arm)) {
       select <- "estimates"
       arms <- FALSE
-      if (identical(names(titles), "contrasts"))
-      names(titles) <- "estimates"
+      if (identical(names(titles), "contrasts")) {
+        names(titles) <- "estimates"
+      }
       titles <- titles
     } else {
       arms <- TRUE
@@ -330,14 +330,14 @@ g_mmrm_lsmeans <-
       ggplot2::expand_limits(x = 0) +
       ggplot2::scale_color_discrete(
         name = if (arms) object$labels$arm else NULL,
-        drop = FALSE  # To ensure same colors for only contrasts plot.
+        drop = FALSE # To ensure same colors for only contrasts plot.
       ) +
       ggplot2::ylab(ylab) +
       ggplot2::xlab(object$labels$visit) +
       ggplot2::facet_wrap(
-        ~ type,
+        ~type,
         nrow = length(select),
-        scales = "free_y",  # Since estimates and contrasts need to have different y scales.
+        scales = "free_y", # Since estimates and contrasts need to have different y scales.
         labeller = ggplot2::as_labeller(titles)
       )
     if ("contrasts" %in% select) {

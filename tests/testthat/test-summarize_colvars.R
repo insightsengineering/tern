@@ -28,12 +28,14 @@ testthat::test_that("summarize_colvars works as expected without column split an
   result <- build_table(l, dta)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "V1", "n", "Mean (SD)", "Median", "Min - Max",
+    c(
+      "", "V1", "n", "Mean (SD)", "Median", "Min - Max",
       "V2", "n", "Mean (SD)", "Median", "Min - Max", "V3", "n", "Mean (SD)",
       "Median", "Min - Max", "AVAL", "", "3", "6 (3)", "6", "3 - 9",
       "", "3", "5 (3)", "5", "2 - 8", "", "3", "4 (3)", "4", "1 - 7",
       "CHG", "", "3", "0 (0)", "0", "0 - 0", "", "3", "-1 (0)", "-1",
-      "-1 - -1", "", "3", "-2 (0)", "-2", "-2 - -2"),
+      "-1 - -1", "", "3", "-2 (0)", "-2", "-2 - -2"
+    ),
     .Dim = c(16L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -51,7 +53,8 @@ testthat::test_that("summarize_colvars works as expected with column split", {
   result <- build_table(l, dta)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "V1", "n", "Mean (SD)", "Median", "Min - Max",
+    c(
+      "", "", "V1", "n", "Mean (SD)", "Median", "Min - Max",
       "V2", "n", "Mean (SD)", "Median", "Min - Max", "V3", "n", "Mean (SD)",
       "Median", "Min - Max", "A", "AVAL", "", "2", "6 (4.2)", "6",
       "3 - 9", "", "1", "5 (NA)", "5", "5 - 5", "", "2", "4 (4.2)",
@@ -60,7 +63,8 @@ testthat::test_that("summarize_colvars works as expected with column split", {
       "B", "AVAL", "", "1", "6 (NA)", "6", "6 - 6", "", "2", "5 (4.2)",
       "5", "2 - 8", "", "1", "4 (NA)", "4", "4 - 4", "B", "CHG", "",
       "1", "0 (NA)", "0", "0 - 0", "", "2", "-1 (0)", "-1", "-1 - -1",
-      "", "1", "-2 (NA)", "-2", "-2 - -2"),
+      "", "1", "-2 (NA)", "-2", "-2 - -2"
+    ),
     .Dim = c(17L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -84,12 +88,14 @@ testthat::test_that("summarize_colvars works when selecting statistics and custo
   result <- build_table(l, dta)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "V1", "n", "Mean, SD", "V2", "n",
+    c(
+      "", "", "V1", "n", "Mean, SD", "V2", "n",
       "Mean, SD", "V3", "n", "Mean, SD", "A", "AVAL", "",
       "2", "6, 4.2", "", "1", "5, NA", "", "2", "4, 4.2", "A", "CHG",
       "", "2", "0, 0", "", "1", "-1, NA", "", "2", "-2, 0", "B", "AVAL",
       "", "1", "6, NA", "", "2", "5, 4.2", "", "1", "4, NA", "B", "CHG",
-      "", "1", "0, NA", "", "2", "-1, 0", "", "1", "-2, NA"),
+      "", "1", "0, NA", "", "2", "-1, 0", "", "1", "-2, NA"
+    ),
     .Dim = c(11L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

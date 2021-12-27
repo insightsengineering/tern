@@ -41,7 +41,6 @@
 #'     SEX = adtte_labels["SEX"],
 #'     is_event = "Event Flag"
 #'   )
-#'
 NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
@@ -55,9 +54,7 @@ NULL
 #'   is_event = adtte_f$is_event,
 #'   arm = adtte_f$ARM
 #' )
-#'
 h_survtime_df <- function(tte, is_event, arm) {
-
   assertthat::assert_that(
     is.numeric(tte),
     is.logical(is_event),
@@ -71,16 +68,14 @@ h_survtime_df <- function(tte, is_event, arm) {
     stringsAsFactors = FALSE
   )
 
-  #Delete NAs
+  # Delete NAs
   non_missing_rows <- stats::complete.cases(df_tte)
   df_tte <- df_tte[non_missing_rows, ]
   arm <- arm[non_missing_rows]
 
   lst_tte <- split(df_tte, arm)
   lst_results <- Map(function(x, arm) {
-
     if (nrow(x) > 0) {
-
       s_surv <- s_surv_time(x, .var = "tte", is_event = "is_event")
       median_est <- unname(as.numeric(s_surv$median))
       n_events <- sum(x$is_event)
@@ -96,7 +91,6 @@ h_survtime_df <- function(tte, is_event, arm) {
       median = median_est,
       stringsAsFactors = FALSE
     )
-
   }, lst_tte, names(lst_tte))
 
   df <- do.call(rbind, args = c(lst_results, make.row.names = FALSE))
@@ -139,12 +133,10 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'     )
 #'   )
 #' )
-#'
 h_survtime_subgroups_df <- function(variables,
                                     data,
                                     groups_lists = list(),
                                     label_all = "All Patients") {
-
   assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
@@ -192,9 +184,7 @@ h_survtime_subgroups_df <- function(variables,
 #'
 #' # Extract hazard ratio for one group with stratification factor.
 #' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
-#'
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
-
   assertthat::assert_that(
     is.numeric(tte),
     is.logical(is_event),
@@ -251,12 +241,10 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
       pval_label = obj_label(result$pvalue),
       stringsAsFactors = FALSE
     )
-
   } else if (
     (nrow(l_df[[1]]) == 0 && nrow(l_df[[2]]) > 0) ||
-    (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
+      (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
   ) {
-
     df_tte_complete <- df_tte[stats::complete.cases(df_tte), ]
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
@@ -272,7 +260,6 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
       stringsAsFactors = FALSE
     )
   } else {
-
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",
@@ -286,11 +273,9 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
       pval_label = NA,
       stringsAsFactors = FALSE
     )
-
   }
 
   df
-
 }
 
 #' @describeIn h_survival_duration_subgroups summarizes estimates of the treatment hazard ratio
@@ -338,16 +323,14 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'     arm = "ARM",
 #'     subgroups = c("SEX", "BMRKR2"),
 #'     strat = c("STRATA1", "STRATA2")
-#'    ),
+#'   ),
 #'   data = adtte_f
 #' )
-#'
 h_coxph_subgroups_df <- function(variables,
                                  data,
                                  groups_lists = list(),
                                  control = control_coxph(),
                                  label_all = "All Patients") {
-
   assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
@@ -379,7 +362,6 @@ h_coxph_subgroups_df <- function(variables,
     l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
-
       result <- h_coxph_df(
         tte = grp$df[[variables$tte]],
         is_event = grp$df[[variables$is_event]],
@@ -422,7 +404,7 @@ h_coxph_subgroups_df <- function(variables,
 #'
 #' df <- data.frame(
 #'   x = c(1:5),
-#'   y = factor(c("A","B", "A", "B", "A"), levels = c("A", "B", "C")),
+#'   y = factor(c("A", "B", "A", "B", "A"), levels = c("A", "B", "C")),
 #'   z = factor(c("C", "C", "D", "D", "D"), levels = c("D", "C"))
 #' )
 #' var_labels(df) <- paste("label for", names(df))
@@ -439,11 +421,9 @@ h_coxph_subgroups_df <- function(variables,
 #'     y = list("AB" = c("A", "B"), "C" = "C")
 #'   )
 #' )
-#'
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {
-
   assertthat::assert_that(
     utils.nest::is_character_vector(subgroups),
     is_df_with_factors(data, as.list(stats::setNames(subgroups, subgroups))),
@@ -479,7 +459,6 @@ h_split_by_subgroups <- function(data,
 
   # Create a list of data subsets.
   lapply(split(df_labels, row_split_var), function(row_i) {
-
     which_row <- if (row_i$var %in% names(groups_lists)) {
       data[[row_i$var]] %in% groups_lists[[row_i$var]][[row_i$subgroup]]
     } else {
@@ -494,5 +473,4 @@ h_split_by_subgroups <- function(data,
       df_labels = data.frame(row_i, row.names = NULL)
     )
   })
-
 }

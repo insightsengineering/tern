@@ -13,10 +13,10 @@ ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- within(
   data = subset(
     ADTTE_f,
-    PARAMCD == "OS"
-    & ARMCD %in% c("ARM A", "ARM B")
-    & SEX %in% c("F", "M")
-    & RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
+    PARAMCD == "OS" &
+      ARMCD %in% c("ARM A", "ARM B") &
+      SEX %in% c("F", "M") &
+      RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
   ),
   expr = {
     ARMCD <- droplevels(ARMCD)

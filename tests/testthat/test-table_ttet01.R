@@ -4,7 +4,6 @@ library(scda)
 library(dplyr)
 
 preproc_adtte <- function(adtte) {
-
   anl <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -180,7 +179,6 @@ testthat::test_that("TTET01 variant 2: selecting sections to display", {
 })
 
 testthat::test_that("TTET01 variant 3: modifying analysis details like conftype, ties, alpha level", {
-
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -360,7 +358,6 @@ testthat::test_that("TTET01 variant 4: with stratified analysis", {
 })
 
 testthat::test_that("TTET01 variant 5: modifying time point", {
-
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -441,7 +438,6 @@ testthat::test_that("TTET01 variant 5: modifying time point", {
 })
 
 testthat::test_that("TTET01 variant 6: requesting more than one p-value", {
-
   adtte <- adtte %>%
     preproc_adtte()
 

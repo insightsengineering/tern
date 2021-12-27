@@ -35,8 +35,8 @@
 #'   grid.newpage()
 #'   pushViewport(plotViewport(rep(1, 4)))
 #'   pushViewport(viewport(layout = grid.layout(1, ncol = length(x))))
-#'   for(i in seq_along(x)) {
-#'     grid.rect(gp = gpar(fill = x[i], col = NA), vp = viewport(layout.pos.col=i, layout.pos.row=1))
+#'   for (i in seq_along(x)) {
+#'     grid.rect(gp = gpar(fill = x[i], col = NA), vp = viewport(layout.pos.col = i, layout.pos.row = 1))
 #'   }
 #' }
 #'
@@ -45,7 +45,6 @@
 #' plot_pal(color_palette(n = 10, palette = "stream"))
 #'
 #' plot_pal(color_palette(n = 10, palette = "viridis"))
-#'
 color_palette <- function(n = 10, palette = "nest") {
   stopifnot(utils.nest::is_character_single(palette))
   match.arg(palette, c("nest", "stream", "viridis"))
@@ -58,16 +57,20 @@ color_palette <- function(n = 10, palette = "nest") {
       ceiling(n / 49)
     ))
   } else if (palette == "stream") {
-    rep(c(
-      "#343cff", "#ff484b", "#232323",  "#329032", "#ffa41c", "#750375", "#1d831c", "#767676",
-      "#9b2525",  "#008080", "#ff1f8e", "#bdb771",  "#ffd92d", "#000bff", "#ff0004", "#090909",
-      "#379336", "#ffa722", "#750375", "#2f9999", "#ff2c95",  "#bfb976", "#ffdd41",  "#3438ff",
-      "#ff0004", "#000000",  "#047503", "#ff9a05",  "#7a0d7a", "#a94343", "#008080",  "#ffa825",
-      "#ff1388",  "#bdb771", "#ffe258",  "#141dff", "#ff0004", "#000000"),
+    rep(
+      c(
+        "#343cff", "#ff484b", "#232323", "#329032", "#ffa41c", "#750375", "#1d831c", "#767676",
+        "#9b2525", "#008080", "#ff1f8e", "#bdb771", "#ffd92d", "#000bff", "#ff0004", "#090909",
+        "#379336", "#ffa722", "#750375", "#2f9999", "#ff2c95", "#bfb976", "#ffdd41", "#3438ff",
+        "#ff0004", "#000000", "#047503", "#ff9a05", "#7a0d7a", "#a94343", "#008080", "#ffa825",
+        "#ff1388", "#bdb771", "#ffe258", "#141dff", "#ff0004", "#000000"
+      ),
       ceiling(n / 38)
     )
   } else if (palette == "nest") {
-    rep(c("#ff2951ff", "#2995ffff", "#81832Bff", "#AC1CF8", "#1CF853", "#F8761C", "#F8341C",
+    rep(
+      c(
+        "#ff2951ff", "#2995ffff", "#81832Bff", "#AC1CF8", "#1CF853", "#F8761C", "#F8341C",
         "#F81CC5", "#2D1CF8", "#1CF8DC", "#6EF81C", "#F8B81C", "#F81C25", "#F81C85", "#EC1CF8",
         "#6D1CF8", "#1C4BF8", "#1CD0F8", "#1CF898", "#2AF81C", "#B3F81C", "#F8D91C", "#F8971C",
         "#F8551C", "#F8241C", "#F81C35", "#F81C65", "#F81CA5", "#F81CE5", "#CC1CF8", "#8D1CF8",
@@ -79,11 +82,11 @@ color_palette <- function(n = 10, palette = "nest") {
         "#1CF8CB", "#1CF8A9", "#1CF887", "#1CF865", "#1CF842", "#1CF820", "#3BF81C", "#5DF81C",
         "#80F81C", "#A2F81C", "#C4F81C", "#E6F81C", "#F8F11C", "#F8E11C", "#F8D11C", "#F8C11C",
         "#F8B01C", "#F8A01C", "#F88F1C", "#F87F1C", "#F86E1C", "#F85E1C", "#F84D1C", "#F83D1C",
-        "#F82C1C")[seq_len(96)],
+        "#F82C1C"
+      )[seq_len(96)],
       ceiling(n / 96)
     )
   }
 
   return(colors[seq_len(n)])
-
 }

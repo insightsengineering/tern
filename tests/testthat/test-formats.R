@@ -29,7 +29,7 @@ testthat::test_that("format_fraction fails with bad inputs", {
   )
   purrr::map(
     x,
-    ~testthat::expect_error(format_fraction(.))
+    ~ testthat::expect_error(format_fraction(.))
   )
 })
 
@@ -66,11 +66,9 @@ testthat::test_that("h_get_format_threshold works with easy inputs", {
     format_string = c(low = "<0.1", high = ">999.9")
   )
   testthat::expect_identical(result, expected)
-
 })
 
 testthat::test_that("h_format_threshold works with easy inputs", {
-
   test <- c(0.782, 0.127, Inf, 0, 0.009, NA)
   result <- sapply(test, h_format_threshold)
   expected <- c("0.78", "0.13", ">999.99", "0.00", "<0.01", NA)

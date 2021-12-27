@@ -31,7 +31,6 @@ and probability 1 so that downstream plot lines start at those coordinates,
 }
 }
 \examples{
-
 \dontrun{
 library(scda)
 library(dplyr)

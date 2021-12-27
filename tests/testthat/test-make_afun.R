@@ -58,7 +58,7 @@ testthat::test_that("make_afun works with healthy input statistics function taki
 })
 
 testthat::test_that("make_afun processes additional rtables arguments correctly", {
-  sfun <- function(df, .in_ref_col, .N_col) {  #nolint
+  sfun <- function(df, .in_ref_col, .N_col) { # nolint
     assertthat::assert_that(is.data.frame(df))
     list(
       nrows = nrow(df),
@@ -231,8 +231,10 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
     build_table(iris)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Number of patients", "setosa", "", "versicolor",
-      "50", "virginica", "50"),
+    c(
+      "", "Number of patients", "setosa", "", "versicolor",
+      "50", "virginica", "50"
+    ),
     .Dim = c(2L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -258,20 +260,24 @@ testthat::test_that("make_afun by default removes results from `.in_ref_col`", {
     build_table(iris)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Label for Range", "setosa", "", "versicolor",
-      "4.9, 7", "virginica", "4.9, 7.9"),
+    c(
+      "", "Label for Range", "setosa", "", "versicolor",
+      "4.9, 7", "virginica", "4.9, 7.9"
+    ),
     .Dim = c(2L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("make_afun works with nested lists", {
-  s_grp <- function(df, .N_col, a = 1, b = 2) {  #nolint
+  s_grp <- function(df, .N_col, a = 1, b = 2) { # nolint
     list(
       nrow_df = nrow(df),
       .N_col = .N_col,
-      letters = list(a = a,
-                     b = b)
+      letters = list(
+        a = a,
+        b = b
+      )
     )
   }
   a_grp <- make_afun(
@@ -295,12 +301,14 @@ testthat::test_that("make_afun works with nested lists", {
 })
 
 testthat::test_that("make_afun can subset on non-nested results when unnesting took place", {
-  sfun <- function(df, .N_col, a = 1, b = 2) {  #nolint
+  sfun <- function(df, .N_col, a = 1, b = 2) { # nolint
     list(
       nrow_df = nrow(df),
       .N_col = .N_col,
-      letters = list(a = a,
-                     b = b)
+      letters = list(
+        a = a,
+        b = b
+      )
     )
   }
   afun <- make_afun(

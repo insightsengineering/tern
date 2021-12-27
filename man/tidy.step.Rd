@@ -33,7 +33,6 @@ step_matrix <- fit_survival_step(
   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
 )
 broom::tidy(step_matrix)
-
 }
 \seealso{
 \code{\link[=g_step]{g_step()}} which consumes the result from this function.

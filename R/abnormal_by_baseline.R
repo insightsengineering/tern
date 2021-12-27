@@ -31,9 +31,7 @@ NULL
 #' @export
 #' @examples
 #' d_count_abnormal_by_baseline("LOW")
-#'
 d_count_abnormal_by_baseline <- function(abnormal) {
-
   null_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
   not_abn_name <- paste("Not", tolower(abnormal), "baseline status")
   abn_name <- paste(null_name, "baseline status")
@@ -59,15 +57,14 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #'
 #' @examples
 #' df <- data.frame(
-#'  USUBJID = as.character(c(1:6)),
-#'  ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
-#'  BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
-#'  )
+#'   USUBJID = as.character(c(1:6)),
+#'   ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
+#'   BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
+#' )
 #' df <- df_explicit_na(df)
 #'
 #' # Just for one abnormal level.
 #' s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
-#'
 s_count_abnormal_by_baseline <- function(df,
                                          .var,
                                          abnormal,
@@ -144,7 +141,6 @@ s_count_abnormal_by_baseline <- function(df,
 #' # so that the rtables formatting function `format_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 #' afun(df, .var = "ANRIND", abnormal = "LOW")
-#'
 a_count_abnormal_by_baseline <- make_afun(
   s_count_abnormal_by_baseline,
   .formats = c(fraction = format_fraction)
@@ -180,7 +176,6 @@ a_count_abnormal_by_baseline <- make_afun(
 #'     .indent_mods = c(fraction = 2L)
 #'   ) %>%
 #'   build_table(df2)
-#'
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,

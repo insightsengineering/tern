@@ -37,9 +37,7 @@ NULL
 #'
 #' # Odds ratio based on glm.
 #' or_glm(data, conf_level = 0.95)
-#'
 or_glm <- function(data, conf_level) {
-
   assertthat::assert_that(
     is_df_with_variables(data, list(rsp = "rsp", grp = "grp")),
     is.logical(data$rsp),
@@ -80,16 +78,14 @@ or_glm <- function(data, conf_level) {
 #' # Data with 3 groups.
 #' data <- data.frame(
 #'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-#'   grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
+#'   grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
 #'   strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
 #'   stringsAsFactors = TRUE
 #' )
 #'
 #' # Odds ratio based on stratified estimation by conditional logistic regression.
 #' or_clogit(data, conf_level = 0.95)
-#'
 or_clogit <- function(data, conf_level) {
-
   assertthat::assert_that(
     is_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata")),
     is.logical(data$rsp),
@@ -153,7 +149,6 @@ or_clogit <- function(data, conf_level) {
 #'   .df_row = dta,
 #'   variables = list(arm = "grp", strata = "strata")
 #' )
-#'
 s_odds_ratio <- function(df,
                          .var,
                          .ref_group,
@@ -165,7 +160,6 @@ s_odds_ratio <- function(df,
   y <- list(or_ci = "", n_tot = "")
 
   if (!.in_ref_col) {
-
     assertthat::assert_that(
       is_df_with_variables(df, list(rsp = .var)),
       is_df_with_variables(.ref_group, list(rsp = .var)),
@@ -182,7 +176,6 @@ s_odds_ratio <- function(df,
       )
       y <- or_glm(data, conf_level = conf_level)
     } else {
-
       assertthat::assert_that(
         is_df_with_variables(.df_row, c(list(rsp = .var), variables))
       )
@@ -256,7 +249,6 @@ s_odds_ratio <- function(df,
 #'   .in_ref_col = FALSE,
 #'   .df_row = dta
 #' )
-#'
 a_odds_ratio <- make_afun(
   s_odds_ratio,
   .formats = c(or_ci = "xx.xx (xx.xx - xx.xx)"),
@@ -278,11 +270,10 @@ a_odds_ratio <- make_afun(
 #' )
 #'
 #' l <- basic_table() %>%
-#' split_cols_by(var = "grp", ref_group = "B") %>%
+#'   split_cols_by(var = "grp", ref_group = "B") %>%
 #'   estimate_odds_ratio(vars = "rsp")
 #'
 #' build_table(l, df = dta)
-#'
 estimate_odds_ratio <- function(lyt,
                                 vars,
                                 ...,

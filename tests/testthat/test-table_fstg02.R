@@ -22,13 +22,11 @@ preprocess_adtte <- function(adtte) {
     )
 
   reapply_varlabels(adtte_mod, adtte_labels, AVAL = adtte_labels["AVAL"])
-
 }
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is produced correctly", {
-
   anl1 <- adtte %>%
     preprocess_adtte()
 
@@ -69,11 +67,9 @@ testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Durat
     tbl = result,
     draw = FALSE
   )
-
 })
 
 testthat::test_that("FSTG02 table variant 2 (specifying class variables and options for the treatment variable)", {
-
   anl2 <- adtte %>%
     preprocess_adtte() %>%
     dplyr::mutate(
@@ -118,7 +114,7 @@ testthat::test_that("FSTG02 table variant 2 (specifying class variables and opti
     .Dim = c(10L, 8L)
   )
 
-  #expected_matrix
+  # expected_matrix
   testthat::expect_equal(result_matrix, expected_matrix)
 
   # Add plot.
@@ -126,11 +122,9 @@ testthat::test_that("FSTG02 table variant 2 (specifying class variables and opti
     tbl = result,
     draw = FALSE
   )
-
 })
 
 testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the alpha level)", {
-
   anl3 <- adtte %>%
     preprocess_adtte()
 
@@ -169,7 +163,6 @@ testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the 
 })
 
 testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
-
   anl4 <- adtte %>%
     preprocess_adtte()
 
@@ -199,7 +192,8 @@ testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced corr
       "", "41.9", "27.9", "", "38.1", "41.7", "35.2", " ", "Hazard Ratio",
       "0.72", "", "0.70", "0.78", "", "0.71", "0.57", "0.98", " ",
       "95% Wald CI", "(0.53, 0.98)", "", "(0.46, 1.05)", "(0.49, 1.26)",
-      "", "(0.42, 1.17)", "(0.32, 1.01)", "(0.56, 1.72)"),
+      "", "(0.42, 1.17)", "(0.32, 1.01)", "(0.56, 1.72)"
+    ),
     .Dim = c(10L, 8L)
   )
   testthat::expect_equal(result_matrix, expected_matrix)
@@ -209,5 +203,4 @@ testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced corr
     tbl = result,
     draw = FALSE
   )
-
 })

@@ -9,7 +9,6 @@ adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 
 testthat::test_that("AET10 default variant is produced correctly", {
-
   result1 <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%

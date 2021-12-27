@@ -7,7 +7,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 testthat::test_that("AET02 variant 1 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -18,7 +17,8 @@ testthat::test_that("AET02 variant 1 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEBODSYS",
       child_labels = "visible",
@@ -32,19 +32,21 @@ testthat::test_that("AET02 variant 1 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_onecol(4)) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_onecol(4)) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",                                                        "",
+    c(
+      "", "",
       "Total number of patients with at least one adverse event",
       "Overall total number of events",
       "cl A.1",
@@ -77,86 +79,84 @@ testthat::test_that("AET02 variant 1 is produced correctly", {
       "cl C.1",
       "Total number of patients with at least one adverse event",
       "Total number of events",
-      "dcd C.1.1.1.3",                                           "A: Drug X",
-      "(N=134)",                                                 "122 (91%)",
-      "609",                                                     "",
-      "78 (58.2%)",                                              "132",
-      "50 (37.3%)",                                              "48 (35.8%)",
-      "",                                                        "79 (59%)",
-      "129",                                                     "48 (35.8%)",
-      "49 (36.6%)",                                              "",
-      "79 (59%)",                                                "127",
-      "50 (37.3%)",                                              "48 (35.8%)",
-      "",                                                        "47 (35.1%)",
-      "62",                                                      "47 (35.1%)",
-      "",                                                        "47 (35.1%)",
-      "56",                                                      "47 (35.1%)",
-      "",                                                        "35 (26.1%)",
-      "48",                                                      "35 (26.1%)",
-      "",                                                        "43 (32.1%)",
-      "55",                                                      "43 (32.1%)",
-      "B: Placebo",                                              "(N=134)",
-      "123 (91.8%)",                                             "622",
-      "",                                                        "75 (56%)",
-      "130",                                                     "45 (33.6%)",
-      "48 (35.8%)",                                              "",
-      "74 (55.2%)",                                              "138",
-      "54 (40.3%)",                                              "44 (32.8%)",
-      "",                                                        "67 (50%)",
-      "106",                                                     "42 (31.3%)",
-      "42 (31.3%)",                                              "",
-      "58 (43.3%)",                                              "72",
-      "58 (43.3%)",                                              "",
-      "49 (36.6%)",                                              "60",
-      "49 (36.6%)",                                              "",
-      "48 (35.8%)",                                              "53",
-      "48 (35.8%)",                                              "",
-      "46 (34.3%)",                                              "63",
-      "46 (34.3%)",                                              "C: Combination",
-      "(N=132)",                                                 "120 (90.9%)",
-      "703",                                                     "",
-      "89 (67.4%)",                                              "160",
-      "63 (47.7%)",                                              "50 (37.9%)",
-      "",                                                        "85 (64.4%)",
-      "143",                                                     "51 (38.6%)",
-      "52 (39.4%)",                                              "",
-      "80 (60.6%)",                                              "135",
-      "51 (38.6%)",                                              "50 (37.9%)",
-      "",                                                        "57 (43.2%)",
-      "74",                                                      "57 (43.2%)",
-      "",                                                        "43 (32.6%)",
-      "62",                                                      "43 (32.6%)",
-      "",                                                        "55 (41.7%)",
-      "65",                                                      "55 (41.7%)",
-      "",                                                        "43 (32.6%)",
-      "64",                                                      "43 (32.6%)",
-      "All Patients",                                            "(N=400)",
-      "365 (91.2%)",                                             "1934",
-      "",                                                        "242 (60.5%)",
-      "422",                                                     "158 (39.5%)",
-      "146 (36.5%)",                                             "",
-      "238 (59.5%)",                                             "410",
-      "153 (38.2%)",                                             "145 (36.2%)",
-      "",                                                        "226 (56.5%)",
-      "368",                                                     "143 (35.8%)",
-      "140 (35%)",                                               "",
-      "162 (40.5%)",                                             "208",
-      "162 (40.5%)",                                             "",
-      "139 (34.8%)",                                             "178",
-      "139 (34.8%)",                                             "",
-      "138 (34.5%)",                                             "166",
-      "138 (34.5%)",                                             "",
-      "132 (33%)",                                               "182",
+      "dcd C.1.1.1.3", "A: Drug X",
+      "(N=134)", "122 (91%)",
+      "609", "",
+      "78 (58.2%)", "132",
+      "50 (37.3%)", "48 (35.8%)",
+      "", "79 (59%)",
+      "129", "48 (35.8%)",
+      "49 (36.6%)", "",
+      "79 (59%)", "127",
+      "50 (37.3%)", "48 (35.8%)",
+      "", "47 (35.1%)",
+      "62", "47 (35.1%)",
+      "", "47 (35.1%)",
+      "56", "47 (35.1%)",
+      "", "35 (26.1%)",
+      "48", "35 (26.1%)",
+      "", "43 (32.1%)",
+      "55", "43 (32.1%)",
+      "B: Placebo", "(N=134)",
+      "123 (91.8%)", "622",
+      "", "75 (56%)",
+      "130", "45 (33.6%)",
+      "48 (35.8%)", "",
+      "74 (55.2%)", "138",
+      "54 (40.3%)", "44 (32.8%)",
+      "", "67 (50%)",
+      "106", "42 (31.3%)",
+      "42 (31.3%)", "",
+      "58 (43.3%)", "72",
+      "58 (43.3%)", "",
+      "49 (36.6%)", "60",
+      "49 (36.6%)", "",
+      "48 (35.8%)", "53",
+      "48 (35.8%)", "",
+      "46 (34.3%)", "63",
+      "46 (34.3%)", "C: Combination",
+      "(N=132)", "120 (90.9%)",
+      "703", "",
+      "89 (67.4%)", "160",
+      "63 (47.7%)", "50 (37.9%)",
+      "", "85 (64.4%)",
+      "143", "51 (38.6%)",
+      "52 (39.4%)", "",
+      "80 (60.6%)", "135",
+      "51 (38.6%)", "50 (37.9%)",
+      "", "57 (43.2%)",
+      "74", "57 (43.2%)",
+      "", "43 (32.6%)",
+      "62", "43 (32.6%)",
+      "", "55 (41.7%)",
+      "65", "55 (41.7%)",
+      "", "43 (32.6%)",
+      "64", "43 (32.6%)",
+      "All Patients", "(N=400)",
+      "365 (91.2%)", "1934",
+      "", "242 (60.5%)",
+      "422", "158 (39.5%)",
+      "146 (36.5%)", "",
+      "238 (59.5%)", "410",
+      "153 (38.2%)", "145 (36.2%)",
+      "", "226 (56.5%)",
+      "368", "143 (35.8%)",
+      "140 (35%)", "",
+      "162 (40.5%)", "208",
+      "162 (40.5%)", "",
+      "139 (34.8%)", "178",
+      "139 (34.8%)", "",
+      "138 (34.5%)", "166",
+      "138 (34.5%)", "",
+      "132 (33%)", "182",
       "132 (33%)"
     ),
     .Dim = c(35L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("AET02 variant 2 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -167,7 +167,8 @@ testthat::test_that("AET02 variant 2 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEBODSYS",
       child_labels = "visible",
@@ -180,7 +181,8 @@ testthat::test_that("AET02 variant 2 is produced correctly", {
       .stats = c("unique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L) %>%
     count_values(
       "STUDYID",
@@ -193,13 +195,14 @@ testthat::test_that("AET02 variant 2 is produced correctly", {
   result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences) %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_onecol(4))
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences) %>%
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_onecol(4))
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",
+    c(
+      "",
       "",
       "Total number of patients with at least one adverse event",
       "Overall total number of events",
@@ -378,11 +381,9 @@ testthat::test_that("AET02 variant 2 is produced correctly", {
     .Dim = c(35L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("AET02 variant 3 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -392,7 +393,8 @@ testthat::test_that("AET02 variant 3 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEBODSYS",
       child_labels = "visible",
@@ -405,7 +407,8 @@ testthat::test_that("AET02 variant 3 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEHLT",
       child_labels = "visible",
@@ -419,20 +422,22 @@ testthat::test_that("AET02 variant 3 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
   result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",
+    c(
+      "",
       "",
       "Total number of patients with at least one adverse event",
       "Overall total number of events",
@@ -684,11 +689,9 @@ testthat::test_that("AET02 variant 3 is produced correctly", {
     .Dim = c(62L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("AET02 variant 4 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -698,45 +701,47 @@ testthat::test_that("AET02 variant 4 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
   result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
-    sort_at_path(path =  c("AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",                                                        "",
+    c(
+      "", "",
       "Total number of patients with at least one adverse event", "Total number of events",
-      "dcd D.2.1.5.3",                                           "dcd A.1.1.1.1",
-      "dcd B.2.2.3.1",                                           "dcd A.1.1.1.2",
-      "dcd B.2.1.2.1",                                           "dcd D.1.1.1.1",
-      "dcd D.1.1.4.2",                                           "dcd B.1.1.1.1",
-      "dcd C.2.1.2.1",                                           "dcd C.1.1.1.3",
-      "A: Drug X",                                               "(N=134)",
-      "122 (91%)",                                            "609",
-      "47 (35.1%)",                                              "50 (37.3%)",
-      "48 (35.8%)",                                              "48 (35.8%)",
-      "49 (36.6%)",                                              "50 (37.3%)",
-      "48 (35.8%)",                                              "47 (35.1%)",
-      "35 (26.1%)",                                              "43 (32.1%)",
-      "B: Placebo",                                              "(N=134)",
-      "123 (91.8%)",                                            "622",
-      "58 (43.3%)",                                              "45 (33.6%)",
-      "54 (40.3%)",                                              "48 (35.8%)",
-      "44 (32.8%)",                                              "42 (31.3%)",
-      "42 (31.3%)",                                              "49 (36.6%)",
-      "48 (35.8%)",                                              "46 (34.3%)",
-      "C: Combination",                                          "(N=132)",
-      "120 (90.9%)",                                            "703",
-      "57 (43.2%)",                                              "63 (47.7%)",
-      "51 (38.6%)",                                              "50 (37.9%)",
-      "52 (39.4%)",                                              "51 (38.6%)",
-      "50 (37.9%)",                                              "43 (32.6%)",
-      "55 (41.7%)",                                              "43 (32.6%)"
+      "dcd D.2.1.5.3", "dcd A.1.1.1.1",
+      "dcd B.2.2.3.1", "dcd A.1.1.1.2",
+      "dcd B.2.1.2.1", "dcd D.1.1.1.1",
+      "dcd D.1.1.4.2", "dcd B.1.1.1.1",
+      "dcd C.2.1.2.1", "dcd C.1.1.1.3",
+      "A: Drug X", "(N=134)",
+      "122 (91%)", "609",
+      "47 (35.1%)", "50 (37.3%)",
+      "48 (35.8%)", "48 (35.8%)",
+      "49 (36.6%)", "50 (37.3%)",
+      "48 (35.8%)", "47 (35.1%)",
+      "35 (26.1%)", "43 (32.1%)",
+      "B: Placebo", "(N=134)",
+      "123 (91.8%)", "622",
+      "58 (43.3%)", "45 (33.6%)",
+      "54 (40.3%)", "48 (35.8%)",
+      "44 (32.8%)", "42 (31.3%)",
+      "42 (31.3%)", "49 (36.6%)",
+      "48 (35.8%)", "46 (34.3%)",
+      "C: Combination", "(N=132)",
+      "120 (90.9%)", "703",
+      "57 (43.2%)", "63 (47.7%)",
+      "51 (38.6%)", "50 (37.9%)",
+      "52 (39.4%)", "51 (38.6%)",
+      "50 (37.9%)", "43 (32.6%)",
+      "55 (41.7%)", "43 (32.6%)"
     ),
     .Dim = c(14L, 4L)
   )
@@ -755,7 +760,8 @@ testthat::test_that("AET02 variant 5 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEBODSYS",
       child_labels = "visible",
@@ -768,19 +774,21 @@ testthat::test_that("AET02 variant 5 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
   result <- build_table(lyt, adae_5, alt_counts_df = adsl)
 
   result <- result %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",
+    c(
+      "",
       "",
       "Total number of patients with at least one adverse event",
       "Overall total number of events",
@@ -927,7 +935,6 @@ testthat::test_that("AET02 variant 5 is produced correctly", {
 })
 
 testthat::test_that("AET02 variant 6 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -941,12 +948,12 @@ testthat::test_that("AET02 variant 6 is produced correctly", {
       var = "USUBJID",
       .stats = "unique",
       .labels = "Total number of patients with at least one adverse event"
-      ) %>%
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
     inherits(tr, "ContentRow")
@@ -959,16 +966,17 @@ testthat::test_that("AET02 variant 6 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",              "",              "cl A.1",        "dcd A.1.1.1.1",
-      "cl B.2",        "dcd B.2.2.3.1", "cl D.2",        "dcd D.2.1.5.3",
-      "cl C.2",        "dcd C.2.1.2.1", "A: Drug X",     "(N=134)",
-      "",              "50 (37.3%)",    "",              "48 (35.8%)",
-      "",              "47 (35.1%)",    "",              "35 (26.1%)",
-      "B: Placebo",    "(N=134)",       "",              "45 (33.6%)",
-      "",              "54 (40.3%)",    "",              "58 (43.3%)",
-      "",              "48 (35.8%)",    "C: Combination", "(N=132)",
-      "",              "63 (47.7%)",    "",              "51 (38.6%)",
-      "",              "57 (43.2%)",    "",              "55 (41.7%)"
+    c(
+      "", "", "cl A.1", "dcd A.1.1.1.1",
+      "cl B.2", "dcd B.2.2.3.1", "cl D.2", "dcd D.2.1.5.3",
+      "cl C.2", "dcd C.2.1.2.1", "A: Drug X", "(N=134)",
+      "", "50 (37.3%)", "", "48 (35.8%)",
+      "", "47 (35.1%)", "", "35 (26.1%)",
+      "B: Placebo", "(N=134)", "", "45 (33.6%)",
+      "", "54 (40.3%)", "", "58 (43.3%)",
+      "", "48 (35.8%)", "C: Combination", "(N=132)",
+      "", "63 (47.7%)", "", "51 (38.6%)",
+      "", "57 (43.2%)", "", "55 (41.7%)"
     ),
     .Dim = c(10L, 4L)
   )
@@ -976,7 +984,6 @@ testthat::test_that("AET02 variant 6 is produced correctly", {
 })
 
 testthat::test_that("AET02 variant 7 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -1022,20 +1029,21 @@ testthat::test_that("AET02 variant 7 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",              "",              "cl A.1",        "hlt A.1.1.1",
-      "dcd A.1.1.1.1", "cl B.2",        "hlt B.2.2.3",   "dcd B.2.2.3.1",
-      "cl D.2",        "hlt D.2.1.5",   "dcd D.2.1.5.3", "cl C.2",
-      "hlt C.2.1.2",   "dcd C.2.1.2.1", "A: Drug X",     "(N=134)",
-      "",              "",              "50 (37.3%)",    "",
-      "",              "48 (35.8%)",    "",              "",
-      "47 (35.1%)",    "",              "",              "35 (26.1%)",
-      "B: Placebo",    "(N=134)",       "",              "",
-      "45 (33.6%)",    "",              "",              "54 (40.3%)",
-      "",              "",              "58 (43.3%)",    "",
-      "",              "48 (35.8%)",    "C: Combination", "(N=132)",
-      "",              "",              "63 (47.7%)",    "",
-      "",              "51 (38.6%)",    "",              "",
-      "57 (43.2%)",    "",              "",              "55 (41.7%)"
+    c(
+      "", "", "cl A.1", "hlt A.1.1.1",
+      "dcd A.1.1.1.1", "cl B.2", "hlt B.2.2.3", "dcd B.2.2.3.1",
+      "cl D.2", "hlt D.2.1.5", "dcd D.2.1.5.3", "cl C.2",
+      "hlt C.2.1.2", "dcd C.2.1.2.1", "A: Drug X", "(N=134)",
+      "", "", "50 (37.3%)", "",
+      "", "48 (35.8%)", "", "",
+      "47 (35.1%)", "", "", "35 (26.1%)",
+      "B: Placebo", "(N=134)", "", "",
+      "45 (33.6%)", "", "", "54 (40.3%)",
+      "", "", "58 (43.3%)", "",
+      "", "48 (35.8%)", "C: Combination", "(N=132)",
+      "", "", "63 (47.7%)", "",
+      "", "51 (38.6%)", "", "",
+      "57 (43.2%)", "", "", "55 (41.7%)"
     ),
     .Dim = c(14L, 4L)
   )
@@ -1043,7 +1051,6 @@ testthat::test_that("AET02 variant 7 is produced correctly", {
 })
 
 testthat::test_that("AET02 variant 8 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -1061,8 +1068,8 @@ testthat::test_that("AET02 variant 8 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
     inherits(tr, "ContentRow")
@@ -1075,16 +1082,17 @@ testthat::test_that("AET02 variant 8 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",              "",              "cl A.1",        "dcd A.1.1.1.1",
-      "cl B.2",        "dcd B.2.2.3.1", "cl D.2",        "dcd D.2.1.5.3",
-      "cl C.2",        "dcd C.2.1.2.1", "A: Drug X",     "(N=134)",
-      "",              "50 (37.3%)",    "",              "48 (35.8%)",
-      "",              "47 (35.1%)",    "",              "35 (26.1%)",
-      "B: Placebo",    "(N=134)",       "",              "45 (33.6%)",
-      "",              "54 (40.3%)",    "",              "58 (43.3%)",
-      "",              "48 (35.8%)",    "C: Combination", "(N=132)",
-      "",              "63 (47.7%)",    "",              "51 (38.6%)",
-      "",              "57 (43.2%)",    "",              "55 (41.7%)"
+    c(
+      "", "", "cl A.1", "dcd A.1.1.1.1",
+      "cl B.2", "dcd B.2.2.3.1", "cl D.2", "dcd D.2.1.5.3",
+      "cl C.2", "dcd C.2.1.2.1", "A: Drug X", "(N=134)",
+      "", "50 (37.3%)", "", "48 (35.8%)",
+      "", "47 (35.1%)", "", "35 (26.1%)",
+      "B: Placebo", "(N=134)", "", "45 (33.6%)",
+      "", "54 (40.3%)", "", "58 (43.3%)",
+      "", "48 (35.8%)", "C: Combination", "(N=132)",
+      "", "63 (47.7%)", "", "51 (38.6%)",
+      "", "57 (43.2%)", "", "55 (41.7%)"
     ),
     .Dim = c(10L, 4L)
   )
@@ -1092,7 +1100,6 @@ testthat::test_that("AET02 variant 8 is produced correctly", {
 })
 
 testthat::test_that("AET02 variant 9 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -1110,8 +1117,8 @@ testthat::test_that("AET02 variant 9 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
     inherits(tr, "ContentRow")
@@ -1124,17 +1131,18 @@ testthat::test_that("AET02 variant 9 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",              "",              "cl A.1",
-      "dcd A.1.1.1.1", "cl B.2",        "dcd B.2.2.3.1", "dcd B.2.1.2.1", "cl D.2",
-      "dcd D.2.1.5.3", "cl C.2",        "dcd C.2.1.2.1",
-      "A: Drug X",     "(N=134)",       "",              "50 (37.3%)",    "",
-      "48 (35.8%)",    "49 (36.6%)",    "",
-      "47 (35.1%)",    "",              "35 (26.1%)",    "B: Placebo",    "(N=134)",
-      "",              "45 (33.6%)",    "",
-      "54 (40.3%)",    "44 (32.8%)",    "",              "58 (43.3%)",    "",
-      "48 (35.8%)",    "C: Combination", "(N=132)",
-      "",              "63 (47.7%)",    "",              "51 (38.6%)",    "52 (39.4%)",
-      "",              "57 (43.2%)",    "",
+    c(
+      "", "", "cl A.1",
+      "dcd A.1.1.1.1", "cl B.2", "dcd B.2.2.3.1", "dcd B.2.1.2.1", "cl D.2",
+      "dcd D.2.1.5.3", "cl C.2", "dcd C.2.1.2.1",
+      "A: Drug X", "(N=134)", "", "50 (37.3%)", "",
+      "48 (35.8%)", "49 (36.6%)", "",
+      "47 (35.1%)", "", "35 (26.1%)", "B: Placebo", "(N=134)",
+      "", "45 (33.6%)", "",
+      "54 (40.3%)", "44 (32.8%)", "", "58 (43.3%)", "",
+      "48 (35.8%)", "C: Combination", "(N=132)",
+      "", "63 (47.7%)", "", "51 (38.6%)", "52 (39.4%)",
+      "", "57 (43.2%)", "",
       "55 (41.7%)"
     ),
     .Dim = c(11, 4L)
@@ -1143,7 +1151,6 @@ testthat::test_that("AET02 variant 9 is produced correctly", {
 })
 
 testthat::test_that("AET02 variant 10 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -1161,8 +1168,8 @@ testthat::test_that("AET02 variant 10 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
     inherits(tr, "ContentRow")
@@ -1175,19 +1182,20 @@ testthat::test_that("AET02 variant 10 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",              "",              "cl A.1",
-      "dcd A.1.1.1.1", "cl B.2",        "dcd B.2.1.2.1", "cl D.1",        "dcd D.1.1.1.1",
-      "dcd D.1.1.4.2", "cl D.2",        "dcd D.2.1.5.3",
-      "cl C.2",        "dcd C.2.1.2.1", "A: Drug X",     "(N=134)",       "",
-      "50 (37.3%)",    "",              "49 (36.6%)",
-      "",              "50 (37.3%)",    "48 (35.8%)",    "",              "47 (35.1%)",
-      "",              "35 (26.1%)",    "B: Placebo",
-      "(N=134)",       "",              "45 (33.6%)",    "",              "44 (32.8%)",
-      "",              "42 (31.3%)",    "42 (31.3%)",
-      "",              "58 (43.3%)",    "",              "48 (35.8%)",    "C: Combination",
-      "(N=132)",       "",              "63 (47.7%)",
-      "",              "52 (39.4%)",    "",              "51 (38.6%)",    "50 (37.9%)",
-      "",              "57 (43.2%)",    "",
+    c(
+      "", "", "cl A.1",
+      "dcd A.1.1.1.1", "cl B.2", "dcd B.2.1.2.1", "cl D.1", "dcd D.1.1.1.1",
+      "dcd D.1.1.4.2", "cl D.2", "dcd D.2.1.5.3",
+      "cl C.2", "dcd C.2.1.2.1", "A: Drug X", "(N=134)", "",
+      "50 (37.3%)", "", "49 (36.6%)",
+      "", "50 (37.3%)", "48 (35.8%)", "", "47 (35.1%)",
+      "", "35 (26.1%)", "B: Placebo",
+      "(N=134)", "", "45 (33.6%)", "", "44 (32.8%)",
+      "", "42 (31.3%)", "42 (31.3%)",
+      "", "58 (43.3%)", "", "48 (35.8%)", "C: Combination",
+      "(N=132)", "", "63 (47.7%)",
+      "", "52 (39.4%)", "", "51 (38.6%)", "50 (37.9%)",
+      "", "57 (43.2%)", "",
       "55 (41.7%)"
     ),
     .Dim = c(13L, 4L)
@@ -1196,7 +1204,6 @@ testthat::test_that("AET02 variant 10 is produced correctly", {
 })
 
 testthat::test_that("AET02 variant 11 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -1214,8 +1221,8 @@ testthat::test_that("AET02 variant 11 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
     inherits(tr, "ContentRow")
@@ -1228,12 +1235,13 @@ testthat::test_that("AET02 variant 11 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",              "",              "cl B.2",        "dcd B.2.2.3.1",
-      "cl D.2",        "dcd D.2.1.5.3", "A: Drug X",     "(N=134)",
-      "",              "48 (35.8%)",    "",              "47 (35.1%)",
-      "B: Placebo",    "(N=134)",       "",              "54 (40.3%)",
-      "",              "58 (43.3%)",    "C: Combination", "(N=132)",
-      "",              "51 (38.6%)",    "",              "57 (43.2%)"
+    c(
+      "", "", "cl B.2", "dcd B.2.2.3.1",
+      "cl D.2", "dcd D.2.1.5.3", "A: Drug X", "(N=134)",
+      "", "48 (35.8%)", "", "47 (35.1%)",
+      "B: Placebo", "(N=134)", "", "54 (40.3%)",
+      "", "58 (43.3%)", "C: Combination", "(N=132)",
+      "", "51 (38.6%)", "", "57 (43.2%)"
     ),
     .Dim = c(6L, 4L)
   )
@@ -1241,7 +1249,6 @@ testthat::test_that("AET02 variant 11 is produced correctly", {
 })
 
 testthat::test_that("AET02 variant 12 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -1259,8 +1266,8 @@ testthat::test_that("AET02 variant 12 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
   criteria_fun <- function(tr) {
     inherits(tr, "ContentRow")
@@ -1276,14 +1283,15 @@ testthat::test_that("AET02 variant 12 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",              "",              "cl D.1",        "dcd D.1.1.1.1",
-      "cl D.2",        "dcd D.2.1.5.3", "cl C.2",        "dcd C.2.1.2.1",
-      "A: Drug X",     "(N=134)",       "",              "50 (37.3%)",
-      "",              "47 (35.1%)",    "",              "35 (26.1%)",
-      "B: Placebo",    "(N=134)",       "",              "42 (31.3%)",
-      "",              "58 (43.3%)",    "",              "48 (35.8%)",
-      "C: Combination", "(N=132)",       "",              "51 (38.6%)",
-      "",              "57 (43.2%)",    "",              "55 (41.7%)"
+    c(
+      "", "", "cl D.1", "dcd D.1.1.1.1",
+      "cl D.2", "dcd D.2.1.5.3", "cl C.2", "dcd C.2.1.2.1",
+      "A: Drug X", "(N=134)", "", "50 (37.3%)",
+      "", "47 (35.1%)", "", "35 (26.1%)",
+      "B: Placebo", "(N=134)", "", "42 (31.3%)",
+      "", "58 (43.3%)", "", "48 (35.8%)",
+      "C: Combination", "(N=132)", "", "51 (38.6%)",
+      "", "57 (43.2%)", "", "55 (41.7%)"
     ),
     .Dim = c(8L, 4L)
   )

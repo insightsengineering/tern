@@ -24,8 +24,7 @@
 #'   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
 #' )
 #' broom::tidy(step_matrix)
-#'
-tidy.step <- function(x, ...) {  #nolint #nousage
+tidy.step <- function(x, ...) { # nolint #nousage
   assertthat::assert_that(inherits(x, "step"))
   dat <- as.data.frame(x)
   nams <- names(dat)
@@ -133,7 +132,6 @@ tidy.step <- function(x, ...) {  #nolint #nousage
 #' )
 #' step_data <- broom::tidy(step_matrix)
 #' g_step(step_data)
-#'
 g_step <- function(df,
                    use_percentile = "Percentile Center" %in% names(df),
                    est = list(col = "black", lty = 1),

@@ -23,13 +23,12 @@
 #' showViewport()
 #'
 #' grid.newpage()
-#' pushViewport(viewport(layout = grid.layout(1,2)))
+#' pushViewport(viewport(layout = grid.layout(1, 2)))
 #' vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
 #' grid.draw(stack_grobs(g1, g2, g3, vp = vp1, name = "test"))
 #'
 #' showViewport()
 #' grid.ls(grobs = TRUE, viewports = TRUE)
-#'
 stack_grobs <- function(...,
                         grobs = list(...),
                         padding = grid::unit(2, "line"),
@@ -113,12 +112,11 @@ stack_grobs <- function(...,
 #' grid.draw(arrange_grobs(g1, g2, g3, ncol = 3))
 #'
 #' grid::grid.newpage()
-#' grid::pushViewport(grid::viewport(layout = grid::grid.layout(1,2)))
+#' grid::pushViewport(grid::viewport(layout = grid::grid.layout(1, 2)))
 #' vp1 <- grid::viewport(layout.pos.row = 1, layout.pos.col = 2)
 #' grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 #'
 #' showViewport()
-#'
 arrange_grobs <- function(..., # nolint
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
@@ -186,11 +184,13 @@ arrange_grobs <- function(..., # nolint
     for (j in seq(ncol) * 2 - 1) {
       k <- k + 1
       if (k <= length(grobs)) {
-        nested_grobs <- c(nested_grobs,
-                          list(grid::gTree(
-                            children = grid::gList(grobs[[k]]),
-                            vp = grid::viewport(layout.pos.row = i, layout.pos.col = j)
-                          )))
+        nested_grobs <- c(
+          nested_grobs,
+          list(grid::gTree(
+            children = grid::gList(grobs[[k]]),
+            vp = grid::viewport(layout.pos.row = i, layout.pos.col = j)
+          ))
+        )
       }
     }
   }
@@ -230,7 +230,6 @@ arrange_grobs <- function(..., # nolint
 #'   arrange_grobs(grobs = .) %>%
 #'   draw_grob()
 #' showViewport()
-#'
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {
     grid::grid.newpage()

@@ -2,7 +2,6 @@ library(scda)
 library(dplyr)
 
 preprocess_adrs <- function(adrs, n_records = 20) {
-
   adrs_labels <- var_labels(adrs)
   adrs <- adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
@@ -22,7 +21,6 @@ preprocess_adrs <- function(adrs, n_records = 20) {
 adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
 testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced correctly", {
-
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
@@ -47,15 +45,13 @@ testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is p
       "88.1%", "", "89.5%", "90.7%", " ", "Odds Ratio", "3.68", "",
       "5.83", "1.67", "", "3.50", "3.95", " ", "95% CI", "(1.68, 8.04)",
       "", "(2.03, 16.73)", "(0.48, 5.79)", "", "(1.22, 10.00)", "(1.20, 13.01)"
-      ),
+    ),
     .Dim = 9:8
   )
   testthat::expect_equal(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly", {
-
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
@@ -89,16 +85,14 @@ testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced c
       "Odds Ratio", "3.68", "", "1.67", "5.83", "", "6.54", "1.21",
       ">999.99", " ", "95% CI", "(1.68, 8.04)", "", "(0.48, 5.79)",
       "(2.03, 16.73)", "", "(1.32, 32.44)", "(0.41, 3.61)", "(0.00, >999.99)"
-      ),
+    ),
     .Dim = c(10L, 8L)
-    )
+  )
 
   testthat::expect_equal(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is produced correctly", {
-
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
@@ -121,11 +115,11 @@ testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha 
       "95", " ", "Odds Ratio", "3.68", "", "5.83", "1.67", "", "3.50",
       "3.95", " ", "90% CI", "(1.91, 7.09)", "", "(2.41, 14.12)", "(0.59, 4.74)",
       "", "(1.45, 8.45)", "(1.45, 10.74)", " ", "p-value (Chi-Squared Test)",
-      "0.0007", "", "0.0004", "0.4150", "", "0.0154", "0.0178"),
+      "0.0007", "", "0.0004", "0.4150", "", "0.0154", "0.0178"
+    ),
     .Dim = c(9L, 5L)
-    )
+  )
   testthat::expect_equal(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("ONCT05 variant 4 (setting values indicating response) is produced correctly", {
@@ -160,9 +154,8 @@ testthat::test_that("ONCT05 variant 4 (setting values indicating response) is pr
       ">999.99", "", ">999.99", "3.50", " ", "95% CI", "(0.60, 45.43)",
       "", "(0.17, 21.53)", "(0.00, >999.99)", "", "(0.00, >999.99)",
       "(0.38, 32.55)"
-      ),
+    ),
     .Dim = 9:8
   )
   testthat::expect_equal(result_matrix, expected_matrix)
-
 })

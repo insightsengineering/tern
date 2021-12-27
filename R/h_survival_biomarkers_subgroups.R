@@ -30,7 +30,6 @@
 #'     AVALU = adtte_labels["AVALU"],
 #'     is_event = "Event Flag"
 #'   )
-#'
 NULL
 
 #' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list

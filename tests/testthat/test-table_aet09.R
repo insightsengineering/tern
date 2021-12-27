@@ -5,7 +5,6 @@ adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 
 testthat::test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
-
   adae_r <- adae[adae$AEREL == "Y", ]
 
   lyt <- basic_table() %>%
@@ -18,7 +17,8 @@ testthat::test_that("AET09 variant 1 is produced correctly, AE related to study 
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Overall total number of events related to study drug"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEBODSYS",
       child_labels = "visible",
@@ -31,21 +31,23 @@ testthat::test_that("AET09 variant 1 is produced correctly, AE related to study 
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Total number of events related to study drug"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, adae_r, alt_counts_df = adsl)
 
   result <- result %>%
     prune_table() %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_onecol(4)) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_onecol(4)) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",
+    c(
+      "",
       "",
       "Total number of patients with at least one adverse event related to study drug",
       "Overall total number of events related to study drug",
@@ -169,11 +171,9 @@ testthat::test_that("AET09 variant 1 is produced correctly, AE related to study 
     .Dim = c(24L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
-
 })
 
 testthat::test_that("AET09 variant 2 is produced correctly, AE related to study drug (including high-level terms)", {
-
   adae_r <- adae[adae$AEREL == "Y", ]
 
   lyt <- basic_table() %>%
@@ -185,34 +185,37 @@ testthat::test_that("AET09 variant 2 is produced correctly, AE related to study 
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Overall total number of events related to study drug"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEBODSYS",
       child_labels = "visible",
       nested = FALSE,
       split_fun = drop_split_levels
-    )  %>%
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Total number of events related to study drug"
-      )) %>%
+      )
+    ) %>%
     split_rows_by(
       "AEHLT",
       child_labels = "visible",
       nested = TRUE,
       indent_mod = -1L,
       split_fun = drop_split_levels
-    )  %>%
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Total number of events related to study drug"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
 
@@ -220,16 +223,17 @@ testthat::test_that("AET09 variant 2 is produced correctly, AE related to study 
     prune_table()
 
   result <- result %>%
-    sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols) %>%
+    sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences)
 
 
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",
+    c(
+      "",
       "",
       "Total number of patients with at least one adverse event related to study drug",
       "Overall total number of events related to study drug",

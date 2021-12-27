@@ -31,7 +31,6 @@
 #'     rsp = AVALC == "CR"
 #'   )
 #' var_labels(adrs_f) <- c(adrs_labels, "Response")
-#'
 NULL
 
 #' @describeIn h_response_subgroups helper to prepare a data frame of binary responses by arm.
@@ -43,9 +42,7 @@ NULL
 #'   c(TRUE, FALSE, FALSE),
 #'   arm = factor(c("A", "A", "B"), levels = c("A", "B"))
 #' )
-#'
 h_proportion_df <- function(rsp, arm) {
-
   assertthat::assert_that(
     is.logical(rsp),
     is_valid_factor(arm),
@@ -75,7 +72,6 @@ h_proportion_df <- function(rsp, arm) {
         stringsAsFactors = FALSE
       )
     }
-
   }, lst_rsp, names(lst_rsp))
 
   df <- do.call(rbind, args = c(lst_results, make.row.names = FALSE))
@@ -111,7 +107,6 @@ h_proportion_subgroups_df <- function(variables,
                                       data,
                                       groups_lists = list(),
                                       label_all = "All Patients") {
-
   assertthat::assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
@@ -132,7 +127,6 @@ h_proportion_subgroups_df <- function(variables,
   if (is.null(variables$subgroups)) {
     result_all
   } else {
-
     l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
@@ -174,9 +168,7 @@ h_proportion_subgroups_df <- function(variables,
 #'   strata_data = adrs_f[, c("STRATA1", "STRATA2")],
 #'   method = "cmh"
 #' )
-#'
 h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
-
   assertthat::assert_that(
     is_valid_factor(arm),
     is_equal_length(rsp, arm),
@@ -189,7 +181,6 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
   )
 
   if (!is.null(strata_data)) {
-
     strata_var <- interaction(strata_data, drop = TRUE)
     strata_name <- "strata"
 
@@ -248,9 +239,8 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
     # In those cases cannot go through the model so will obtain n_tot from data.
   } else if (
     (nrow(l_df[[1]]) == 0 && nrow(l_df[[2]]) > 0) ||
-    (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
-    ) {
-
+      (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
+  ) {
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",
@@ -265,9 +255,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
       df$pval <- NA
       df$pval_label <- NA
     }
-
   } else {
-
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",
@@ -286,7 +274,6 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
   }
 
   df
-
 }
 
 #' @describeIn h_response_subgroups summarizes estimates of the odds ratio between a treatment and a control
@@ -309,7 +296,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #'     arm = "ARM",
 #'     subgroups = c("SEX", "BMRKR2"),
 #'     strat = c("STRATA1", "STRATA2")
-#'    ),
+#'   ),
 #'   data = adrs_f
 #' )
 #'
@@ -329,14 +316,12 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #'     )
 #'   )
 #' )
-#'
 h_odds_ratio_subgroups_df <- function(variables,
                                       data,
                                       groups_lists = list(),
                                       conf_level = 0.95,
                                       method = NULL,
                                       label_all = "All Patients") {
-
   assertthat::assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
@@ -369,11 +354,9 @@ h_odds_ratio_subgroups_df <- function(variables,
   if (is.null(variables$subgroups)) {
     result_all
   } else {
-
     l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
-
       grp_strata_data <- if (is.null(variables$strat)) {
         NULL
       } else {
@@ -399,5 +382,4 @@ h_odds_ratio_subgroups_df <- function(variables,
       result_subgroups
     )
   }
-
 }

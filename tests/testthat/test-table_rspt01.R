@@ -47,7 +47,8 @@ testthat::test_that("RSPT01: 1. Best Overall Response", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Responders", "95% CI (Wald, with correction)",
+    c(
+      "", "", "Responders", "95% CI (Wald, with correction)",
       "Unstratified Analysis", "Difference in Response rate (%)", "95% CI (Wald, with correction)",
       "p-value (Chi-Squared Test with Schouten Correction)", "Odds Ratio (95% CI)",
       "Complete Response (CR)", "95% CI (Wald, with correction)", "Partial Response (PR)",
@@ -65,7 +66,8 @@ testthat::test_that("RSPT01: 1. Best Overall Response", {
       "(52.7, 70)", "", "-13.3", "(-25.1, -1.4)", "0.0245", "0.54 (0.32 - 0.91)",
       "57 (43.2%)", "(34.35, 52.01)", "24 (18.2%)", "(11.22, 25.14)",
       "13 (9.8%)", "(4.39, 15.31)", "33 (25%)", "(17.23, 32.77)", "5 (3.8%)",
-      "(0.15, 7.42)"),
+      "(0.15, 7.42)"
+    ),
     .Dim = c(19L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -96,7 +98,8 @@ testthat::test_that("RSPT01: 2. Best Overall Response (selecting sections to dis
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Responders", "95% CI (Wald, with correction)",
+    c(
+      "", "", "Responders", "95% CI (Wald, with correction)",
       "Unstratified Analysis", "Difference in Response rate (%)", "95% CI (Wald, with correction)",
       "p-value (Chi-Squared Test with Schouten Correction)", "Complete Response (CR)",
       "95% CI (Wald, with correction)", "Partial Response (PR)", "95% CI (Wald, with correction)",
@@ -112,7 +115,8 @@ testthat::test_that("RSPT01: 2. Best Overall Response (selecting sections to dis
       "(N=132)", "81 (61.4%)", "(52.7, 70)", "", "-13.3", "(-25.1, -1.4)",
       "0.0245", "57 (43.2%)", "(34.35, 52.01)", "24 (18.2%)", "(11.22, 25.14)",
       "13 (9.8%)", "(4.39, 15.31)", "33 (25%)", "(17.23, 32.77)", "5 (3.8%)",
-      "(0.15, 7.42)"),
+      "(0.15, 7.42)"
+    ),
     .Dim = c(18L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -160,7 +164,8 @@ testthat::test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "", "Responders", "90% CI (Clopper-Pearson)",
+    c(
+      "", "", "Responders", "90% CI (Clopper-Pearson)",
       "Unstratified Analysis", "Difference in Response rate (%)", "90% CI (Anderson-Hauck)",
       "p-value (Fisher's Exact Test)", "Odds Ratio (90% CI)", "Complete Response (CR)",
       "90% CI (Clopper-Pearson)", "Partial Response (PR)", "90% CI (Clopper-Pearson)",
@@ -176,7 +181,8 @@ testthat::test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
       "(N=132)", "81 (61.4%)", "(53.9, 68.5)", "", "-13.3", "(-23, -3.5)",
       "0.0253", "0.54 (0.35 - 0.84)", "57 (43.2%)", "(35.88, 50.71)",
       "24 (18.2%)", "(12.87, 24.61)", "13 (9.8%)", "(5.92, 15.2)",
-      "33 (25%)", "(18.9, 31.97)", "5 (3.8%)"),
+      "33 (25%)", "(18.9, 31.97)", "5 (3.8%)"
+    ),
     .Dim = c(18L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -229,7 +235,8 @@ testthat::test_that("RSPT01: 4. Best Overall Response (with stratified analysis)
   result <- build_table(l, adrs)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Responders", "95% CI (Wald, with correction)",
+    c(
+      "", "", "Responders", "95% CI (Wald, with correction)",
       "Unstratified Analysis", "Difference in Response rate (%)", "95% CI (Wald, with correction)",
       "p-value (Chi-Squared Test with Schouten Correction)", "Odds Ratio (95% CI)",
       "Stratified Analysis", "Difference in Response rate (%)", "95% CI (CMH, without correction)",
@@ -251,7 +258,8 @@ testthat::test_that("RSPT01: 4. Best Overall Response (with stratified analysis)
       "", "-13.5", "(-24.5, -2.5)", "0.0180", "0.54 (0.32 - 0.9)",
       "57 (43.2%)", "(34.35, 52.01)", "24 (18.2%)", "(11.22, 25.14)",
       "13 (9.8%)", "(4.39, 15.31)", "33 (25%)", "(17.23, 32.77)", "5 (3.8%)",
-      "(0.15, 7.42)"),
+      "(0.15, 7.42)"
+    ),
     .Dim = c(24L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -286,7 +294,8 @@ testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition 
   result <- build_table(l, adrs)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Responders", "95% CI (Wald, with correction)",
+    c(
+      "", "", "Responders", "95% CI (Wald, with correction)",
       "Unstratified Analysis", "Difference in Response rate (%)", "95% CI (Wald, with correction)",
       "p-value (Chi-Squared Test with Schouten Correction)", "Odds Ratio (95% CI)",
       "Complete Response (CR)", "95% CI (Wald, with correction)", "Partial Response (PR)",
@@ -303,7 +312,8 @@ testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition 
       "ARM C", "(N=132)", "57 (43.2%)", "(34.4, 52)", "", "-1.6", "(-14.3, 11.1)",
       "0.8413", "0.94 (0.58 - 1.52)", "57 (43.2%)", "(34.35, 52.01)",
       "24 (18.2%)", "(11.22, 25.14)", "13 (9.8%)", "(4.39, 15.31)",
-      "33 (25%)", "(17.23, 32.77)", "5 (3.8%)", "(0.15, 7.42)"),
+      "33 (25%)", "(17.23, 32.77)", "5 (3.8%)", "(0.15, 7.42)"
+    ),
     .Dim = c(19L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -313,15 +323,16 @@ testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition 
 testthat::test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
 
   # Define study-specific response category "No Progression".
-  adrs <- adrs %>% dplyr::mutate(
-    AVALC_NEW = dplyr::case_when(
-      AVALC %in% c(
-        "Complete Response (CR)", "Partial Response (PR)",
-        "Stable Disease (SD)"
-      ) ~ "No Progression",
-      TRUE ~ as.character(AVALC)
-    )
-  ) %>%
+  adrs <- adrs %>%
+    dplyr::mutate(
+      AVALC_NEW = dplyr::case_when(
+        AVALC %in% c(
+          "Complete Response (CR)", "Partial Response (PR)",
+          "Stable Disease (SD)"
+        ) ~ "No Progression",
+        TRUE ~ as.character(AVALC)
+      )
+    ) %>%
     dplyr::mutate(
       AVALC_NEW = factor(
         AVALC_NEW,
@@ -356,7 +367,8 @@ testthat::test_that("RSPT01: 6. Best Overall Response (define new sections to di
   result <- build_table(l, adrs)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Responders", "95% CI (Wald, with correction)",
+    c(
+      "", "", "Responders", "95% CI (Wald, with correction)",
       "Unstratified Analysis", "Difference in Response rate (%)", "95% CI (Wald, with correction)",
       "p-value (Chi-Squared Test with Schouten Correction)", "Odds Ratio (95% CI)",
       "No Progression", "95% CI (Wald, with correction)", "Progressive Disease (PD)",
@@ -369,7 +381,8 @@ testthat::test_that("RSPT01: 6. Best Overall Response (define new sections to di
       "12 (9%)", "(3.75, 14.16)", "ARM C", "(N=132)", "81 (61.4%)",
       "(52.7, 70)", "", "-13.3", "(-25.1, -1.4)", "0.0245", "0.54 (0.32 - 0.91)",
       "94 (71.2%)", "(63.11, 79.31)", "33 (25%)", "(17.23, 32.77)",
-      "5 (3.8%)", "(0.15, 7.42)"),
+      "5 (3.8%)", "(0.15, 7.42)"
+    ),
     .Dim = c(15L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

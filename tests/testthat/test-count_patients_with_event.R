@@ -1,7 +1,6 @@
 library(dplyr)
 
 testthat::test_that("s_count_patients_with_event handles NA", {
-
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002"),
     TRTEMFL = c("Y", "", "", "NA", "", ""),
@@ -19,7 +18,6 @@ testthat::test_that("s_count_patients_with_event handles NA", {
 })
 
 testthat::test_that("s_count_patients_with_event handles multiple columns", {
-
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     TRTEMFL = c("Y", "", "", "NA", "", "", "Y", "", ""),
@@ -39,7 +37,6 @@ testthat::test_that("s_count_patients_with_event handles multiple columns", {
 })
 
 testthat::test_that("count_patients_with_event works as expected", {
-
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     ARM = c("A", "A", "A", "A", "A", "A", "B", "B", "B"),
@@ -71,7 +68,8 @@ testthat::test_that("count_patients_with_event works as expected", {
   result <- to_string_matrix(result)
 
   expected <- structure(
-    c("", "", "Total number of patients with at least one adverse event",
+    c(
+      "", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=2)",
       "1 (50%)", "0", "B", "(N=1)", "1 (100%)", "1 (100%)"
     ),
@@ -82,7 +80,6 @@ testthat::test_that("count_patients_with_event works as expected", {
 })
 
 testthat::test_that("count_patients_with_event works as expected for different column count", {
-
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     ARM = factor(c("A", "A", "A", "A", "A", "A", "B", "B", "B"), levels = c("A", "B")),
@@ -119,7 +116,8 @@ testthat::test_that("count_patients_with_event works as expected for different c
 
   result <- to_string_matrix(result)
   expected <- structure(
-    c("", "", "Total number of patients with at least one adverse event",
+    c(
+      "", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=6)",
       "1 (16.7%)", "0", "B", "(N=4)", "1 (25%)", "1 (25%)"
     ),
@@ -129,7 +127,6 @@ testthat::test_that("count_patients_with_event works as expected for different c
 })
 
 testthat::test_that("count_patients_with_flags works as expected", {
-
   test_data <- tibble::tibble(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     ARM = factor(c("A", "A", "A", "A", "A", "A", "B", "B", "B"), levels = c("A", "B")),
@@ -169,7 +166,8 @@ testthat::test_that("count_patients_with_flags works as expected", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Total number of patients with at least one adverse event",
+    c(
+      "", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=6)",
       "1 (16.7%)", "0", "B", "(N=4)", "1 (25%)", "1 (25%)"
     ),
@@ -179,7 +177,6 @@ testthat::test_that("count_patients_with_flags works as expected", {
 })
 
 testthat::test_that("count_patients_with_flags works as expected when specifying table_names", {
-
   test_data <- tibble::tibble(
     USUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
@@ -212,7 +209,7 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
       flag_variables = var_labels(test_data[, c("flag1", "flag2")]),
       table_names = "SUBJID",
       denom = "N_col"
-      ) %>%
+    ) %>%
     count_patients_with_flags(
       "USUBJID",
       flag_variables = var_labels(test_data[, c("flag1", "flag2")]),
@@ -229,7 +226,8 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
       "Total number of patients with fatal AEs", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=6)", "1 (16.7%)",
       "0", "1 (16.7%)", "0", "B", "(N=4)", "1 (25%)", "1 (25%)",
-      "1 (25%)", "1 (25%)"),
+      "1 (25%)", "1 (25%)"
+    ),
     .Dim = c(6L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -287,7 +285,7 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
       "Related AE", "105 (78.4%)", "108 (80.6%)", "109 (82.6%)",
       "Grade 3-5 AE", "109 (81.3%)", "104 (77.6%)", "109 (82.6%)",
       "Grade 4/5 AE", "91 (67.9%)", "90 (67.2%)", "93 (70.5%)"
-      ),
+    ),
     .Dim = c(4L, 8L)
   ))
   testthat::expect_identical(result_matrix, expected_matrix)

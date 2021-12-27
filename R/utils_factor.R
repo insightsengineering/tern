@@ -12,10 +12,9 @@
 #'
 #' @examples
 #' x <- factor(letters[1:5], levels = letters[5:1])
-#' tern:::combine_levels(x, levels = c('a', 'b') )
+#' tern:::combine_levels(x, levels = c("a", "b"))
 #'
-#' tern:::combine_levels(x, c('e', 'b'))
-#'
+#' tern:::combine_levels(x, c("e", "b"))
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
   stopifnot(
     is.factor(x),
@@ -51,7 +50,6 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' @examples
 #' as_factor_keep_attributes(with_label(c(1, 1, 2, 3), "id"))
 #' as_factor_keep_attributes(c("a", "b", ""), "id")
-#'
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),
                                       na_level = "<Missing>") {
@@ -113,7 +111,6 @@ as_factor_keep_attributes <- function(x,
 #'
 #' # Passing an empty vector just gives a single bin 0-100%.
 #' bins_percent_labels(c())
-#'
 bins_percent_labels <- function(probs,
                                 digits = 0) {
   assertthat::assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))
@@ -166,7 +163,6 @@ bins_percent_labels <- function(probs,
 #' which(is.na(ozone_binned))
 #' # So you might want to make these explicit.
 #' explicit_na(ozone_binned)
-#'
 cut_quantile_bins <- function(x,
                               probs = c(0.25, 0.5, 0.75),
                               labels = bins_percent_labels(probs),
@@ -216,7 +212,6 @@ cut_quantile_bins <- function(x,
 #'
 #' @examples
 #' fct_discard(factor(c("a", "b", "c")), "c")
-#'
 fct_discard <- function(x, discard) {
   assertthat::assert_that(
     is.factor(x),
@@ -244,7 +239,6 @@ fct_discard <- function(x, discard) {
 #'
 #' @examples
 #' fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
-#'
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   assertthat::assert_that(
     is.factor(x),
@@ -276,7 +270,6 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #'
 #' @examples
 #' fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
-#'
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   new_lvls <- names(list(...))
   assertthat::assert_that(

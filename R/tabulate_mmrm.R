@@ -32,9 +32,9 @@ NULL
 #'       include.lowest = TRUE
 #'     ),
 #'     Subject = case_when(
-#'        group == "A" ~ as.character(Subject),
-#'        TRUE ~ as.character(as.numeric(as.character(Subject)) + 50)
-#'      )
+#'       group == "A" ~ as.character(Subject),
+#'       TRUE ~ as.character(as.numeric(as.character(Subject)) + 50)
+#'     )
 #'   ) %>%
 #'   distinct_at(.vars = c("Subject", "days_grouped", "group"), .keep_all = TRUE)
 #'
@@ -64,13 +64,11 @@ NULL
 #'   parallel = TRUE
 #' )
 #' as.rtable(result_no_arm, type = "cov", format = "xx.x")
-#'
-as.rtable.mmrm <- function(x,  #nolint
+as.rtable.mmrm <- function(x, # nolint
                            type = c("fixed", "cov", "diagnostic"),
                            ...) {
   type <- match.arg(type)
-  switch(
-    type,
+  switch(type,
     fixed = h_mmrm_fixed(x, ...),
     cov = h_mmrm_cov(x, ...),
     diagnostic = h_mmrm_diagnostic(x, ...)
@@ -87,7 +85,7 @@ h_mmrm_fixed <- function(x, format = "xx.xxxx") {
   df_column <- match("df", names(fixed_table))
   pvalue_table <- as.rtable(fixed_table[, pvalue_column, drop = FALSE], format = "x.xxxx | (<0.0001)")
   df_table <- as.rtable(fixed_table[, df_column, drop = FALSE], format = "xx.")
-  remaining_table <- as.rtable(fixed_table[, - c(df_column, pvalue_column), drop = FALSE], format = format)
+  remaining_table <- as.rtable(fixed_table[, -c(df_column, pvalue_column), drop = FALSE], format = format)
   cbind_rtables(remaining_table, df_table, pvalue_table)
 }
 
@@ -126,8 +124,7 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
 #' library(broom)
 #' df <- tidy(result)
 #' df_no_arm <- tidy(result_no_arm)
-#'
-tidy.mmrm <- function(x) {  #nolint #nousage
+tidy.mmrm <- function(x) { # nolint #nousage
   vars <- x$vars
   estimates <- x$lsmeans$estimates
   df <- if (is.null(vars$arm)) {
@@ -158,7 +155,6 @@ tidy.mmrm <- function(x) {  #nolint #nousage
 #' @export
 #' @examples
 #' s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
-#'
 s_mmrm_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "increase")) {
   show_relative <- match.arg(show_relative)
   if_not_ref <- function(x) `if`(.in_ref_col, character(), x)
@@ -168,10 +164,9 @@ s_mmrm_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "incr
     adj_mean_ci = with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level)),
     diff_mean_se = if_not_ref(c(df$estimate_contr, df$se_contr)),
     diff_mean_ci = with_label(if_not_ref(c(df$lower_cl_contr, df$upper_cl_contr)), f_conf_level(df$conf_level)),
-    change = switch(
-      show_relative,
+    change = switch(show_relative,
       reduction = with_label(if_not_ref(df$relative_reduc), "Relative Reduction (%)"),
-      increase = with_label(if_not_ref(- df$relative_reduc), "Relative Increase (%)")
+      increase = with_label(if_not_ref(-df$relative_reduc), "Relative Increase (%)")
     ),
     p_value = if_not_ref(df$p_value)
   )
@@ -212,7 +207,6 @@ a_mmrm_lsmeans <- make_afun(
 #' @export
 #' @examples
 #' s_mmrm_lsmeans_single(df_no_arm[4, ])
-#'
 s_mmrm_lsmeans_single <- function(df) {
   list(
     n = df$n,
@@ -248,7 +242,7 @@ a_mmrm_lsmeans_single <- make_afun(
 #'
 #' dat_adsl <- dat %>%
 #'   select(Subject, group) %>%
-#'   unique
+#'   unique()
 #' basic_table() %>%
 #'   split_cols_by("group", ref_group = result$ref_level) %>%
 #'   add_colcounts() %>%
@@ -266,7 +260,6 @@ a_mmrm_lsmeans_single <- make_afun(
 #'     df = broom::tidy(result_no_arm),
 #'     alt_counts_df = dat_adsl
 #'   )
-#'
 summarize_lsmeans <- function(lyt,
                               arms = TRUE,
                               ...,

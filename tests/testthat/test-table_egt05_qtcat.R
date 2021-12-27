@@ -12,24 +12,27 @@ get_adeg <- function() {
 
   adeg_f <- adeg %>%
     dplyr::filter(PARAMCD == "QT" & ANL01FL == "Y") %>%
-    dplyr::mutate(# Categorize AVAL and CHG
+    # Categorize AVAL and CHG
+    dplyr::mutate(
       AVALCAT1 = dplyr::case_when(
         AVAL <= 450 ~ "<=450 msec",
         AVAL <= 480 ~ ">450 to <=480 msec",
         AVAL <= 500 ~ ">480 to <= 500 msec",
-        AVAL > 500 ~ ">500 msec"),
+        AVAL > 500 ~ ">500 msec"
+      ),
       CHGCAT1 = dplyr::case_when(
         CHG <= 30 ~ "<=30 msec",
         CHG <= 60 ~ ">30 to <=60 msec",
-        CHG > 60 ~ ">60 msec")
+        CHG > 60 ~ ">60 msec"
+      )
     )
 
-  adeg_f$AVALCAT1 <- factor(#nolint snake_case
+  adeg_f$AVALCAT1 <- factor( # nolint snake_case
     adeg_f$AVALCAT1,
     levels = c("<=450 msec", ">450 to <=480 msec", ">480 to <= 500 msec", ">500 msec")
   )
 
-  adeg_f$CHGCAT1 <- factor(#nolint snake_case
+  adeg_f$CHGCAT1 <- factor( # nolint snake_case
     adeg_f$CHGCAT1,
     levels = c("<=30 msec", ">30 to <=60 msec", ">60 msec")
   )
@@ -43,18 +46,20 @@ get_adeg <- function() {
 testthat::test_that("EGT05_QTCAT default variant is produced correctly", {
   adeg <- get_adeg()
 
-  result <-  basic_table() %>%
+  result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
     split_rows_by("AVISIT", split_label = "Visit", child_labels = "default", label_pos = "visible") %>%
     summarize_vars(
       vars = c("AVALCAT1", "CHGCAT1"),
-      var_labels = c("Value at Visit", "Change from Baseline")) %>%
+      var_labels = c("Value at Visit", "Change from Baseline")
+    ) %>%
     build_table(df = adeg, alt_counts_df = adsl) %>%
     prune_table()
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Visit", "BASELINE", "Value at Visit", "n",
+    c(
+      "", "", "Visit", "BASELINE", "Value at Visit", "n",
       "<=450 msec", ">450 to <=480 msec", ">480 to <= 500 msec", ">500 msec",
       "WEEK 1 DAY 8", "Value at Visit", "n", "<=450 msec", ">450 to <=480 msec",
       ">480 to <= 500 msec", ">500 msec", "Change from Baseline", "n",
@@ -99,7 +104,8 @@ testthat::test_that("EGT05_QTCAT default variant is produced correctly", {
       "40 (30.3%)", "", "", "132", "114 (86.4%)", "6 (4.5%)", "3 (2.3%)",
       "9 (6.8%)", "", "132", "79 (59.8%)", "10 (7.6%)", "43 (32.6%)",
       "", "", "132", "112 (84.8%)", "13 (9.8%)", "3 (2.3%)", "4 (3%)",
-      "", "132", "73 (55.3%)", "11 (8.3%)", "48 (36.4%)"),
+      "", "132", "73 (55.3%)", "11 (8.3%)", "48 (36.4%)"
+    ),
     .Dim = c(70L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

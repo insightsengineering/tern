@@ -85,13 +85,13 @@ testthat::test_that("count_abnormal_by_baseline throws warning with character va
 
   # Check with LOW abnormality.
   result <- testthat::expect_warning(
-      s_count_abnormal_by_baseline(
-        df = df,
-        .var = "myrange",
-        abnormal = "LOW",
-        variables = list(id = "myid", baseline = "mybase")
-      )
+    s_count_abnormal_by_baseline(
+      df = df,
+      .var = "myrange",
+      abnormal = "LOW",
+      variables = list(id = "myid", baseline = "mybase")
     )
+  )
   expected <- list(fraction = list(
     "not_abnormal" = with_label(c(num = 2L, denom = 4L), "Not low baseline status"),
     "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
@@ -138,10 +138,12 @@ testthat::test_that("count_abnormal_by_baseline works with custom arguments", {
     build_table(df2)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "Low", "Not low baseline status", "Low baseline status",
+    c(
+      "", "Low", "Not low baseline status", "Low baseline status",
       "Total", "High", "Not high baseline status", "High baseline status",
       "Total", "all obs", "", "1 / 3", "0 / 1", "1 / 4", "", "1 / 2",
-      "1 / 2", "2 / 4"),
+      "1 / 2", "2 / 4"
+    ),
     .Dim = c(9L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

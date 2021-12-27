@@ -16,7 +16,7 @@
 #'
 #' dta_test <- data.frame(
 #'   USUBJID = rep(1:6, each = 3),
-#'   PARAMCD = rep("lab", 6*3),
+#'   PARAMCD = rep("lab", 6 * 3),
 #'   AVISIT = rep(paste0("V", 1:3), 6),
 #'   ARM = rep(LETTERS[1:3], rep(6, 3)),
 #'   AVAL = c(9:1, rep(NA, 9)),
@@ -50,14 +50,12 @@
 #'   split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
 #'   summarize_colvars(na.rm = FALSE) %>%
 #'   build_table(dta_test)
-#'
 summarize_colvars <- function(lyt,
                               ...,
                               .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                               .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {
-
   afun <- create_afun_summary(.stats, .formats, .labels, .indent_mods)
 
   analyze_colvars(

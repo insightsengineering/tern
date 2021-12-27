@@ -6,7 +6,7 @@ get_adsl0 <- function() {
   # This specific ADSL is currently not part of RCD.
   set.seed(1, kind = "Mersenne-Twister")
 
-  #nolint start
+  # nolint start
   adsl0 <- ex_adsl %>%
     dplyr::mutate(
       COMPSTUD = sample(
@@ -20,9 +20,11 @@ get_adsl0 <- function() {
         replace = TRUE
       ) %>% as.factor(),
       STDDRS = sample(
-        c("Death", "Lost To Follow-Up",
+        c(
+          "Death", "Lost To Follow-Up",
           "Protocol Violation", "Withdrawal By Subject",
-          "Other"),
+          "Other"
+        ),
         size = nrow(ex_adsl),
         replace = TRUE
       ) %>% as.factor(),
@@ -34,9 +36,11 @@ get_adsl0 <- function() {
         replace = TRUE
       ) %>% as.factor(),
       TRTDRS = sample(
-        c("ADVERSE EVENT", "PROGRESSIVE DISEASE",
+        c(
+          "ADVERSE EVENT", "PROGRESSIVE DISEASE",
           "PHYSICIAN DECISION", "LACK OF EFFICACY",
-          "OTHER"),
+          "OTHER"
+        ),
         size = nrow(ex_adsl),
         replace = TRUE
       ) %>% as.factor(),
@@ -49,7 +53,8 @@ get_adsl0 <- function() {
         TRTDRS %in% c("ADVERSE EVENT", "PHYSICIAN DECISION") ~ "Safety",
         !is.na(TRTDRS) ~ "Other"
       )
-    ) %>% var_relabel(
+    ) %>%
+    var_relabel(
       COMPSTUD = "Complete Study",
       STUDONS = "On-study Status",
       DISSTDFL = "Discontinued Study",
@@ -59,7 +64,7 @@ get_adsl0 <- function() {
       TRTDRS = "Reason for Treatment \r\nDiscontinuation",
       DRSCAT = "Subcategory for Treatment Discontinuation"
     )
-  #nolint end
+  # nolint end
   adsl0
 }
 
@@ -77,7 +82,8 @@ testthat::test_that("DST01 default variant is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Completed Study", "Discontinued Study",
+    c(
+      "", "", "Completed Study", "Discontinued Study",
       "Death", "Lost To Follow-Up", "Other", "Protocol Violation",
       "Withdrawal By Subject", "A: Drug X", "(N=134)", "65 (48.51%)",
       "15 (11.2%)", "6 (40%)", "1 (6.7%)", "2 (13.3%)", "4 (26.7%)",
@@ -86,7 +92,8 @@ testthat::test_that("DST01 default variant is produced correctly", {
       "C: Combination", "(N=132)", "69 (52.27%)", "24 (18.2%)", "4 (16.7%)",
       "8 (33.3%)", "5 (20.8%)", "4 (16.7%)", "3 (12.5%)", "All Patients",
       "(N=400)", "201 (50.25%)", "67 (16.8%)", "15 (22.4%)", "12 (17.9%)",
-      "13 (19.4%)", "12 (17.9%)", "15 (22.4%)"),
+      "13 (19.4%)", "12 (17.9%)", "15 (22.4%)"
+    ),
     .Dim = c(9L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -109,7 +116,8 @@ testthat::test_that("DST01 variant with grouping of reasons is produced correctl
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Received treatment", "Discontinued treatment",
+    c(
+      "", "", "Received treatment", "Discontinued treatment",
       "Safety", "ADVERSE EVENT", "PHYSICIAN DECISION", "Other", "LACK OF EFFICACY",
       "OTHER", "PROGRESSIVE DISEASE", "A: Drug X", "(N=134)", "134 (100%)",
       "70 (52.2%)", "21 (15.7%)", "10 (47.6%)", "11 (52.4%)", "49 (36.6%)",
@@ -120,7 +128,8 @@ testthat::test_that("DST01 variant with grouping of reasons is produced correctl
       "15 (57.7%)", "42 (31.8%)", "10 (23.8%)", "15 (35.7%)", "17 (40.5%)",
       "All Patients", "(N=400)", "400 (100%)", "203 (50.7%)", "75 (18.8%)",
       "31 (41.3%)", "44 (58.7%)", "128 (32%)", "38 (29.7%)", "45 (35.2%)",
-      "45 (35.2%)"),
+      "45 (35.2%)"
+    ),
     .Dim = c(11L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -141,7 +150,8 @@ testthat::test_that("DST01 variant with adding other optional rows is produced c
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Completed Study", "Alive: In Follow-up",
+    c(
+      "", "", "Completed Study", "Alive: In Follow-up",
       "Discontinued Study", "Death", "Lost To Follow-Up", "Other",
       "Protocol Violation", "Withdrawal By Subject", "A: Drug X", "(N=134)",
       "65 (48.51%)", "25 (46.3%)", "15 (11.2%)", "6 (40%)", "1 (6.7%)",
@@ -151,7 +161,8 @@ testthat::test_that("DST01 variant with adding other optional rows is produced c
       "69 (52.27%)", "18 (46.15%)", "24 (18.2%)", "4 (16.7%)", "8 (33.3%)",
       "5 (20.8%)", "4 (16.7%)", "3 (12.5%)", "All Patients", "(N=400)",
       "201 (50.25%)", "63 (47.73%)", "67 (16.8%)", "15 (22.4%)", "12 (17.9%)",
-      "13 (19.4%)", "12 (17.9%)", "15 (22.4%)"),
+      "13 (19.4%)", "12 (17.9%)", "15 (22.4%)"
+    ),
     .Dim = c(10L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

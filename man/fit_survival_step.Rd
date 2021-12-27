@@ -87,7 +87,6 @@ step_matrix3 <- fit_survival_step(
   data = adtte_f,
   control = c(control_coxph(), control_step(bandwidth = NULL, degree = 3, num_points = 5L))
 )
-
 }
 \seealso{
 \code{\link[=control_step]{control_step()}} and \code{\link[=control_coxph]{control_coxph()}} for the available customization options.

@@ -59,5 +59,4 @@ adlb_out_by_visit <- h_adsl_adlb_merge_using_worst_flag(
   worst_flag = c("WGRLOVFL" = "Y"),
   by_visit = TRUE
 )
-
 }

@@ -11,9 +11,9 @@ testthat::test_that("EGT04 default variant is produced correctly", {
   adeg_f <- subset(
     adeg,
     PARAMCD == "ECGINTP" & # Analysis in terms of "NORMAL"/"ABNORMAL" (AVALC)
-      SAFFL == "Y"       & # "Safety Population Flag"
-      ONTRTFL == "Y"     & # "On Treatment Record Flag"
-      WORS02FL == "Y"      # "Worst Post-Baseline Observation"
+      SAFFL == "Y" & # "Safety Population Flag"
+      ONTRTFL == "Y" & # "On Treatment Record Flag"
+      WORS02FL == "Y" # "Worst Post-Baseline Observation"
   )
 
   # Preprocessing
@@ -25,12 +25,14 @@ testthat::test_that("EGT04 default variant is produced correctly", {
   adeg_f$AVALC[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
   adeg_f$BASEC[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
 
-  adeg_f$AVALC <- factor( #nolint
-    adeg_f$AVALC, levels = c("NORMAL", "ABNORMAL", "Missing"),
+  adeg_f$AVALC <- factor( # nolint
+    adeg_f$AVALC,
+    levels = c("NORMAL", "ABNORMAL", "Missing"),
     labels = c("Normal", "Abnormal", "Missing")
   )
-  adeg_f$BASEC <- factor( #nolint
-    adeg_f$BASEC, levels = c("NORMAL", "ABNORMAL", "Missing"),
+  adeg_f$BASEC <- factor( # nolint
+    adeg_f$BASEC,
+    levels = c("NORMAL", "ABNORMAL", "Missing"),
     labels = c("Normal", "Abnormal", "Missing")
   )
   var_labels(adeg_f) <- adeg_labels
@@ -49,7 +51,8 @@ testthat::test_that("EGT04 default variant is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "A: Drug X (N=133)", "Normal", "Abnormal", "Missing",
+    c(
+      "", "A: Drug X (N=133)", "Normal", "Abnormal", "Missing",
       "B: Placebo (N=134)", "Normal", "Abnormal", "Missing", "C: Combination (N=130)",
       "Normal", "Abnormal", "Missing", "Normal", "", "24 (18%)", "6 (4.5%)",
       "0", "", "14 (10.4%)", "4 (3%)", "1 (0.7%)", "", "23 (17.7%)",
@@ -57,7 +60,8 @@ testthat::test_that("EGT04 default variant is produced correctly", {
       "1 (0.8%)", "", "88 (65.7%)", "24 (17.9%)", "1 (0.7%)", "", "66 (50.8%)",
       "25 (19.2%)", "0", "Missing", "", "1 (0.8%)", "0",
       "1 (0.8%)", "", "2 (1.5%)", "0", "0", "", "1 (0.8%)",
-      "0", "0"),
+      "0", "0"
+    ),
     .Dim = c(13L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

@@ -8,7 +8,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
 testthat::test_that("EGT01 default variant is produced correctly", {
-
   adeg_f <- adeg %>%
     dplyr::filter(
       PARAM == "Heart Rate" &

@@ -42,39 +42,40 @@ belonging to any of the selected baskets.
 
 library(scda)
 
-adae <- synthetic_cdisc_data("latest")$adae[1:20 , ] \%>\% df_explicit_na()
+adae <- synthetic_cdisc_data("latest")$adae[1:20, ] \%>\% df_explicit_na()
 h_stack_by_baskets(df = adae)
 
 aag <- data.frame(
-NAMVAR = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),
-REFNAME = c("D.2.1.5.3/A.1.1.1.1 AESI", "X.9.9.9.9/Y.8.8.8.8 AESI",
- "C.1.1.1.3/B.2.2.3.1 AESI", "C.1.1.1.3/B.3.3.3.3 AESI"),
-SCOPE = c("", "", "BROAD", "BROAD"),
-stringsAsFactors = FALSE
- )
+  NAMVAR = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),
+  REFNAME = c(
+    "D.2.1.5.3/A.1.1.1.1 AESI", "X.9.9.9.9/Y.8.8.8.8 AESI",
+    "C.1.1.1.3/B.2.2.3.1 AESI", "C.1.1.1.3/B.3.3.3.3 AESI"
+  ),
+  SCOPE = c("", "", "BROAD", "BROAD"),
+  stringsAsFactors = FALSE
+)
 
 basket_name <- character(nrow(aag))
 cq_pos <- grep("^(CQ).+NAM$", aag$NAMVAR)
 smq_pos <- grep("^(SMQ).+NAM$", aag$NAMVAR)
 basket_name[cq_pos] <- aag$REFNAME[cq_pos]
 basket_name[smq_pos] <- paste0(
-aag$REFNAME[smq_pos], "(", aag$SCOPE[smq_pos], ")"
+  aag$REFNAME[smq_pos], "(", aag$SCOPE[smq_pos], ")"
 )
 
 aag_summary <- data.frame(
-basket = aag$NAMVAR,
-basket_name = basket_name,
-stringsAsFactors = TRUE
+  basket = aag$NAMVAR,
+  basket_name = basket_name,
+  stringsAsFactors = TRUE
 )
 
 result <- h_stack_by_baskets(df = adae, aag_summary = aag_summary)
 all(levels(aag_summary$basket_name) \%in\% levels(result$SMQ))
 
 h_stack_by_baskets(
-df = adae,
-aag_summary = NULL,
-keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM"),
-baskets = "SMQ01NAM"
+  df = adae,
+  aag_summary = NULL,
+  keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM"),
+  baskets = "SMQ01NAM"
 )
-
 }

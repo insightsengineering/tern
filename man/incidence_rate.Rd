@@ -138,13 +138,9 @@ function \code{s_incidence_rate} and desired format.
 
 \examples{
 h_incidence_rate_normal(200, 2)
-
 h_incidence_rate_normal_log(200, 2)
-
 h_incidence_rate_exact(200, 2)
-
 h_incidence_rate_byar(200, 2)
-
 h_incidence_rate(200, 2)
 
 h_incidence_rate(
@@ -153,9 +149,9 @@ h_incidence_rate(
   control_incidence_rate(
     conf_level = 0.9,
     conf_type = "normal_log",
-    time_unit_output = 100)
+    time_unit_output = 100
+  )
 )
-
 
 library(dplyr)
 
@@ -177,7 +173,6 @@ s_incidence_rate(
     time_unit_output = 100
   )
 )
-
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
@@ -190,12 +185,10 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df)
-
 a_incidence_rate(
   df,
   .var = "AVAL",
   n_events = "n_events",
   control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
 )
-
 }

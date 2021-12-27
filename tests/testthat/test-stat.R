@@ -18,7 +18,6 @@ testthat::test_that("stat_mean_ci works for series without NAs
   result <- stat_mean_ci(x = 1:2, n_min = 3, gg_helper = FALSE)
   expected <- c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_)
   testthat::expect_identical(result, expected)
-
 })
 
 testthat::test_that("stat_mean_ci works for series with NAs (including extreme case n = 1 and various n_min values)", {
@@ -76,7 +75,6 @@ testthat::test_that("stat_mean_ci works for series with NAs (including extreme c
   )
   expected <- c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_)
   testthat::expect_identical(result, expected)
-
 })
 
 testthat::test_that("stat_median_ci works for series without NAs (including extreme case n = 1)", {
@@ -97,7 +95,6 @@ testthat::test_that("stat_median_ci works for series without NAs (including extr
   expected <- c(median_ci_lwr = 2L, median_ci_upr = 9L)
   attr(expected, "conf_level") <- 0.98
   testthat::expect_identical(result, expected)
-
 })
 
 testthat::test_that("stat_median_ci works for series with NAs (including extreme case n = 1)", {
@@ -151,11 +148,9 @@ testthat::test_that("stat_median_ci works for series with NAs (including extreme
   expected <- c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_)
   attr(expected, "conf_level") <- NA_real_
   testthat::expect_identical(result, expected)
-
 })
 
 testthat::test_that("stat_median_ci works for named numeric values when name is missing)", {
-
   x <- integer(0)
   attr(x, "names") <- character(0)
 
@@ -163,5 +158,4 @@ testthat::test_that("stat_median_ci works for named numeric values when name is 
   expected <- c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_)
   attr(expected, "conf_level") <- NA_real_
   testthat::expect_identical(result, expected)
-
 })

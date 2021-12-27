@@ -42,13 +42,11 @@
 #' df_explicit_na(my_data, logical_as_factor = TRUE)
 #' # Encode missing values in a subset of columns.
 #' df_explicit_na(my_data, omit_columns = c("x", "y"))
-#'
 df_explicit_na <- function(data,
                            omit_columns = NULL,
                            char_as_factor = TRUE,
                            logical_as_factor = FALSE,
                            na_level = "<Missing>") {
-
   assertthat::assert_that(
     is.data.frame(data),
     is.null(omit_columns) || utils.nest::is_character_vector(omit_columns),
@@ -74,7 +72,6 @@ df_explicit_na <- function(data,
   )
 
   for (x in target_vars) {
-
     xi <- data[[x]]
     xi_label <- obj_label(xi)
 

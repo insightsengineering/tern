@@ -19,5 +19,4 @@ Combine Two Vectors Elementwise
 }
 \examples{
 combine_vectors(1:3, 4:6)
-
 }

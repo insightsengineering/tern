@@ -18,5 +18,4 @@ Conversion of Months to Days
 \examples{
 x <- c(13.25, 8.15, 1, 2.834)
 month2day(x)
-
 }

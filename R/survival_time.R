@@ -41,7 +41,6 @@ NULL
 #'   )
 #' df <- ADTTE_f %>% filter(ARMCD == "ARM A")
 #' s_surv_time(df, .var = "AVAL", is_event = "is_event")
-#'
 s_surv_time <- function(df,
                         .var,
                         is_event,
@@ -85,7 +84,6 @@ s_surv_time <- function(df,
 #'
 #' @examples
 #' a_surv_time(df, .var = "AVAL", is_event = "is_event")
-#'
 a_surv_time <- make_afun(
   s_surv_time,
   .indent_mods = c(
@@ -112,7 +110,7 @@ a_surv_time <- make_afun(
 #' @export
 #' @examples
 #' basic_table() %>%
-#' split_cols_by(var = "ARMCD") %>%
+#'   split_cols_by(var = "ARMCD") %>%
 #'   add_colcounts() %>%
 #'   surv_time(
 #'     vars = "AVAL",
@@ -121,7 +119,6 @@ a_surv_time <- make_afun(
 #'     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
 #'   ) %>%
 #'   build_table(df = ADTTE_f)
-#'
 surv_time <- function(lyt,
                       vars,
                       ...,

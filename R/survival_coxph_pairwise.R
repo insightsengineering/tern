@@ -43,7 +43,6 @@ NULL
 #'   filter(ARMCD == "ARM B")
 #'
 #' s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
-#'
 s_coxph_pairwise <- function(df,
                              .ref_group,
                              .in_ref_col,
@@ -68,7 +67,7 @@ s_coxph_pairwise <- function(df,
         hr = with_label("", "Hazard Ratio"),
         hr_ci = with_label("", f_conf_level(conf_level)),
         n_tot = with_label("", "Total n"),
-        n_tot_events =  with_label("", "Total events")
+        n_tot_events = with_label("", "Total events")
       )
     )
   }
@@ -98,8 +97,7 @@ s_coxph_pairwise <- function(df,
     ties = ties
   )
   sum_cox <- summary(cox_fit, conf.int = conf_level, extend = TRUE)
-  pval <- switch(
-    pval_method,
+  pval <- switch(pval_method,
     "wald" = sum_cox$waldtest["pvalue"],
     "log-rank" = sum_cox$sctest["pvalue"], # Score (logrank) test,
     "likelihood" = sum_cox$logtest["pvalue"]
@@ -119,7 +117,6 @@ s_coxph_pairwise <- function(df,
 #'
 #' @examples
 #' a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
-#'
 a_coxph_pairwise <- make_afun(
   s_coxph_pairwise,
   .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L, n_tot = 0L, n_tot_events = 0L),
@@ -139,7 +136,7 @@ a_coxph_pairwise <- make_afun(
 #' @examples
 #'
 #' basic_table() %>%
-#' split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
+#'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%
 #'   coxph_pairwise(
 #'     vars = "AVAL",
@@ -149,7 +146,7 @@ a_coxph_pairwise <- make_afun(
 #'   build_table(df = ADTTE_f)
 #'
 #' basic_table() %>%
-#' split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
+#'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%
 #'   coxph_pairwise(
 #'     vars = "AVAL",

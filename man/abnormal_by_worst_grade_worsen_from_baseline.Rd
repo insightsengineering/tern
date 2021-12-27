@@ -144,35 +144,34 @@ library(dplyr)
 adlb <- synthetic_cdisc_data("latest")$adlb
 adsl <- synthetic_cdisc_data("latest")$adsl
 
-#The direction variable, GRADDR, is based on metadata
+# The direction variable, GRADDR, is based on metadata
 adlb <- adlb \%>\%
   mutate(
     GRADDR = case_when(
-    PARAMCD == "ALT" ~ "B",
-    PARAMCD == "CRP" ~ "L",
-    PARAMCD == "IGA" ~ "H"
+      PARAMCD == "ALT" ~ "B",
+      PARAMCD == "CRP" ~ "L",
+      PARAMCD == "IGA" ~ "H"
     )
   ) \%>\%
-filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 df <- h_adlb_worsen(
   adlb,
   worst_flag_low = c("WGRLOFL" = "Y"),
   worst_flag_high = c("WGRHIFL" = "Y"),
   direction_var = "GRADDR"
-  )
-
+)
 # `h_worsen_counter`
-h_worsen_counter(df \%>\% filter(PARAMCD == "CRP" & GRADDR == "Low"),
-                 id = "USUBJID",
-                 .var = "ATOXGR",
-                 baseline_var = "BTOXGR",
-                 direction_var = "GRADDR"
-                 )
+h_worsen_counter(
+  df \%>\% filter(PARAMCD == "CRP" & GRADDR == "Low"),
+  id = "USUBJID",
+  .var = "ATOXGR",
+  baseline_var = "BTOXGR",
+  direction_var = "GRADDR"
+)
 
 
-
-#Patients with worsening lab grade for CRP in the direction of low
+# Patients with worsening lab grade for CRP in the direction of low
 s_count_abnormal_lab_worsen_by_baseline(
   df = df \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
@@ -180,30 +179,27 @@ s_count_abnormal_lab_worsen_by_baseline(
     id = "USUBJID",
     baseline_var = "BTOXGR",
     direction_var = "GRADDR"
- )
+  )
 )
-
 
 a_count_abnormal_lab_worsen_by_baseline(
   df = df \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR")
 )
-
 basic_table() \%>\%
-split_cols_by("ARMCD") \%>\%
-add_colcounts() \%>\%
-split_rows_by("PARAMCD") \%>\%
-split_rows_by("GRADDR") \%>\%
-count_abnormal_lab_worsen_by_baseline(
-  var = "ATOXGR",
-  variables = list(
-    id = "USUBJID",
-    baseline_var = "BTOXGR",
-    direction_var = "GRADDR"
+  split_cols_by("ARMCD") \%>\%
+  add_colcounts() \%>\%
+  split_rows_by("PARAMCD") \%>\%
+  split_rows_by("GRADDR") \%>\%
+  count_abnormal_lab_worsen_by_baseline(
+    var = "ATOXGR",
+    variables = list(
+      id = "USUBJID",
+      baseline_var = "BTOXGR",
+      direction_var = "GRADDR"
     )
- ) \%>\%
- append_topleft("Direction of Abnormality") \%>\%
- build_table(df = df, alt_counts_df = adsl)
-
+  ) \%>\%
+  append_topleft("Direction of Abnormality") \%>\%
+  build_table(df = df, alt_counts_df = adsl)
 }

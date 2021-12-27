@@ -23,7 +23,6 @@ testthat::test_that("s_count_occurrences functions as expected with valid input 
       MH2 = c("num" = 1L, "denom" = 4L),
       MH3 = c("num" = 1L, "denom" = 4L)
     )
-
   )
   testthat::expect_equal(result, expected)
 })
@@ -34,7 +33,7 @@ testthat::test_that("s_count_occurrences drops non appearing levels by default",
     MHDECOD = factor(
       c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3"),
       levels = c("MH1", "MH2", "MH3", "MHX")
-     )
+    )
   )
   result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df)
   testthat::expect_false("MHX" %in% c(names(result$count), names(result$count_fraction), names(result$fraction)))
@@ -124,10 +123,13 @@ testthat::test_that("count_occurrences functions as expected with valid input an
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "", "MH1", "MH2", "MH3", "MH4", "A", "(N=5)",
+    c(
+      "", "", "MH1", "MH2", "MH3", "MH4", "A", "(N=5)",
       "3 (60%)", "1 (20%)", "1 (20%)", "0", "B", "(N=4)", "1 (25%)",
-      "2 (50%)", "1 (25%)", "1 (25%)"),
-    .Dim = c(6L, 3L))
+      "2 (50%)", "1 (25%)", "1 (25%)"
+    ),
+    .Dim = c(6L, 3L)
+  )
 
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -157,9 +159,12 @@ testthat::test_that("count_occurrences functions as expected with label row spec
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "MH Term", "MH1", "MH2", "all obs",
-      "", "4 (44.4%)", "3 (33.3%)"),
-    .Dim = c(4L, 2L))
+    c(
+      "", "MH Term", "MH1", "MH2", "all obs",
+      "", "4 (44.4%)", "3 (33.3%)"
+    ),
+    .Dim = c(4L, 2L)
+  )
 
   testthat::expect_identical(result_matrix, expected_matrix)
 })

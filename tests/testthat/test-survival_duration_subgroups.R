@@ -26,7 +26,6 @@ preprocess_adtte <- function(adtte) {
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("extract_survival_subgroups functions as expected with valid input and default arguments", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -46,7 +45,7 @@ testthat::test_that("extract_survival_subgroups functions as expected with valid
         n = c(134L, 134L, 82L, 79L, 52L, 55L, 45L, 50L, 56L, 37L, 33L, 47L),
         n_events = c(
           87L, 79L, 50L, 45L, 37L, 34L, 30L, 31L, 36L, 19L, 21L, 29L
-          ),
+        ),
         median = c(
           837.42801327648,
           1260.49053370248,
@@ -186,13 +185,13 @@ testthat::test_that("extract_survival_subgroups functions as expected with valid
           "analysis"
         )
       ),
-      row.names = c(NA, -6L), class = "data.frame")
+      row.names = c(NA, -6L), class = "data.frame"
+    )
   )
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 testthat::test_that("extract_survival_subgroups works as expected with groups_lists", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -222,7 +221,6 @@ testthat::test_that("extract_survival_subgroups works as expected with groups_li
 })
 
 testthat::test_that("extract_survival_subgroups functions as expected with NULL subgroups", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -268,13 +266,13 @@ testthat::test_that("extract_survival_subgroups functions as expected with NULL 
           row_type = "content"
         ),
         row.names = c(NA, -1L),
-        class = "data.frame")
+        class = "data.frame"
+      )
     )
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
 testthat::test_that("a_survival_subgroups functions as expected with valid input", {
-
   df <- data.frame(
     hr = c(0.1234, 0.5678),
     pval = c(0.00001, 1.302309),
@@ -293,14 +291,14 @@ testthat::test_that("a_survival_subgroups functions as expected with valid input
 
   expected_matrix <- structure(
     c(
-      "", "M", "F", "hr", "0.12", "0.57", "pval", "<0.0001", "1.3023"),
+      "", "M", "F", "hr", "0.12", "0.57", "pval", "<0.0001", "1.3023"
+    ),
     .Dim = c(3L, 3L)
   )
   testthat::expect_equal(result_matrix, expected_matrix)
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected with valid input", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -315,7 +313,8 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with vali
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("Baseline Risk Factors", "", "All Patients", "Sex",
+    c(
+      "Baseline Risk Factors", "", "All Patients", "Sex",
       "F", "M", "Categorical Level Biomarker 2", "LOW", "MEDIUM", "HIGH",
       " ", "Total Events", "166", "", "95", "71", "", "61", "55", "50",
       "B: Placebo", "Events", "87", "", "50", "37", "", "30", "36",
@@ -333,7 +332,6 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with vali
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected with NULL subgroups", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -362,7 +360,6 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with NULL
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected with extreme values in subgroups", {
-
   adtte <- adtte %>%
     preprocess_adtte() %>%
     dplyr::slice(1:30) %>%
@@ -397,7 +394,6 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with extr
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected when one arm has 0 records", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -440,7 +436,6 @@ testthat::test_that("tabulate_survival_subgroups functions as expected when one 
 })
 
 testthat::test_that("tabulate_survival_subgroups works correctly with both `n_tot` and `n_tot_events` in `vars`", {
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -483,7 +478,6 @@ testthat::test_that("tabulate_survival_subgroups works correctly with both `n_to
 })
 
 testthat::test_that("d_survival_subgroups_colvars functions as expected with valid input", {
-
   vars <- c("n", "n_events", "median", "n_tot_events", "hr", "ci", "pval")
 
   result <- d_survival_subgroups_colvars(

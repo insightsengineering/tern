@@ -19,7 +19,6 @@
 #' range_noinf(Inf, na.rm = TRUE, finite = TRUE)
 #' range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
 #' range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
-#'
 range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
   assertthat::assert_that(is.numeric(x), msg = "Argument x in range_noinf function must be of class numeric.")
@@ -33,13 +32,11 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
   if (length(x) == 0) {
     rval <- c(NA, NA)
     mode(rval) <- typeof(x)
-  }
-  else {
+  } else {
     rval <- c(min(x, na.rm = FALSE), max(x, na.rm = FALSE))
   }
 
   return(rval)
-
 }
 
 #' Util function to create label for confidence interval
@@ -99,22 +96,24 @@ to_n <- function(x, n) {
 check_same_n <- function(..., omit_null = TRUE) {
   dots <- list(...)
 
-  n_list <- Map(function(x, name) {
-    if (is.null(x)) {
-      if (omit_null) {
-        NA_integer_
+  n_list <- Map(
+    function(x, name) {
+      if (is.null(x)) {
+        if (omit_null) {
+          NA_integer_
+        } else {
+          stop("arg", name, "is not supposed to be NULL")
+        }
+      } else if (is.data.frame(x)) {
+        nrow(x)
+      } else if (is.atomic(x)) {
+        length(x)
       } else {
-        stop("arg", name, "is not supposed to be NULL")
+        stop("data structure for ", name, "is currently not supported")
       }
-    } else if (is.data.frame(x)) {
-      nrow(x)
-    } else if (is.atomic(x)) {
-      length(x)
-    } else {
-      stop("data structure for ", name, "is currently not supported")
-    }
-  },
-  dots, names(dots))
+    },
+    dots, names(dots)
+  )
 
   n <- stats::na.omit(unlist(n_list))
 
@@ -136,7 +135,6 @@ check_same_n <- function(..., omit_null = TRUE) {
 #' @export
 #' @examples
 #' make_names(c("foo Bar", "1 2 3 bla"))
-#'
 make_names <- function(nams) {
   orig <- make.names(nams)
   gsub(".", "", x = orig, fixed = TRUE)
@@ -151,7 +149,6 @@ make_names <- function(nams) {
 #' @examples
 #' x <- c(13.25, 8.15, 1, 2.834)
 #' month2day(x)
-#'
 month2day <- function(x) {
   assertthat::assert_that(is.numeric(x))
   x * 30.4375
@@ -166,7 +163,6 @@ month2day <- function(x) {
 #' @examples
 #' x <- c(403, 248, 30, 86)
 #' day2month(x)
-#'
 day2month <- function(x) {
   assertthat::assert_that(is.numeric(x))
   x / 30.4375
@@ -181,7 +177,6 @@ day2month <- function(x) {
 #' @examples
 #' x <- c(NA, NA, NA)
 #' empty_vector_if_na(x)
-#'
 empty_vector_if_na <- function(x) {
   if (all(is.na(x))) {
     numeric()
@@ -199,9 +194,7 @@ empty_vector_if_na <- function(x) {
 #' @export
 #' @examples
 #' combine_vectors(1:3, 4:6)
-#'
 combine_vectors <- function(x, y) {
-
   assertthat::assert_that(
     is.vector(x),
     is.vector(y),
@@ -261,9 +254,7 @@ extract <- function(x, names) {
 #'
 #' # Customized query label.
 #' aesi_label(adae$CQ01NAM)
-#'
 aesi_label <- function(aesi, scope = NULL) {
-
   assertthat::assert_that(
     is.character(aesi),
     is.character(scope) || is.null(scope)
@@ -274,14 +265,12 @@ aesi_label <- function(aesi, scope = NULL) {
   aesi <- unique(aesi)[!is.na(unique(aesi))]
 
   lbl <- if (length(aesi) == 1 & !is.null(scope)) {
-
     scope <- sas_na(scope)
     scope <- unique(scope)[!is.na(unique(scope))]
     assertthat::assert_that(
       assertthat::is.string(scope)
     )
     paste0(aesi, " (", scope, ")")
-
   } else if (length(aesi) == 1 & is.null(scope)) {
     aesi
   } else {
@@ -374,7 +363,6 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 #'
 #' @examples
 #' n_available(c(1, NA, 2))
-#'
 n_available <- function(x) {
   sum(!is.na(x))
 }
@@ -385,7 +373,7 @@ reapply_varlabels <- function(x, varlables, ...) { # nolintr # nousage
 }
 
 # Wrapper function of survival::clogit so that when model fitting failed, a more useful message would show
-clogit_with_tryCatch <- function(formula, data, ...) { #nolint
+clogit_with_tryCatch <- function(formula, data, ...) { # nolint
   tryCatch(
     survival::clogit(formula = formula, data = data, ...),
     error = function(e) stop("model not built successfully with survival::clogit")

@@ -36,8 +36,7 @@
 #' c2 <- lower(10)
 #' c3 <- higher(5) & lower(10)
 #' c3(7)
-#'
-CombinationFunction <- methods::setClass("CombinationFunction", contains = "function")  #nolint
+CombinationFunction <- methods::setClass("CombinationFunction", contains = "function") # nolint
 
 #' @describeIn combination_function Logical "AND" combination of `CombinationFunction` functions.
 #'   The resulting object is of the same class, and evaluates the two argument functions. The result
@@ -51,7 +50,8 @@ methods::setMethod(
     CombinationFunction(function(...) {
       e1(...) && e2(...)
     })
-  })
+  }
+)
 
 #' @describeIn combination_function Logical "OR" combination of `CombinationFunction` functions.
 #'   The resulting object is of the same class, and evaluates the two argument functions. The result
@@ -65,7 +65,8 @@ methods::setMethod(
     CombinationFunction(function(...) {
       e1(...) || e2(...)
     })
-  })
+  }
+)
 
 #' @describeIn combination_function Logical negation of `CombinationFunction` functions.
 #'   The resulting object is of the same class, and evaluates the original function. The result
@@ -79,4 +80,5 @@ methods::setMethod(
     CombinationFunction(function(...) {
       !x(...)
     })
-  })
+  }
+)

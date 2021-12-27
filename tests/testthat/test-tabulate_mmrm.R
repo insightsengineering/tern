@@ -256,7 +256,6 @@ get_mmrm_no_arm <- function() {
 
 
 testthat::test_that("h_mmrm_fixed works as expected", {
-
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     testthat::skip("tests dont run with older version of lme4")
   }
@@ -267,7 +266,8 @@ testthat::test_that("h_mmrm_fixed works as expected", {
   testthat::expect_identical(result, result2)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "(Intercept)", "BMRKR2LOW", "BMRKR2MEDIUM", "ARMA: Drug X",
+    c(
+      "", "(Intercept)", "BMRKR2LOW", "BMRKR2MEDIUM", "ARMA: Drug X",
       "ARMC: Combination", "AVISITWEEK 2 DAY 15", "AVISITWEEK 3 DAY 22",
       "AVISITWEEK 4 DAY 29", "AVISITWEEK 5 DAY 36", "ARMA: Drug X:AVISITWEEK 2 DAY 15",
       "ARMC: Combination:AVISITWEEK 2 DAY 15", "ARMA: Drug X:AVISITWEEK 3 DAY 22",
@@ -286,7 +286,8 @@ testthat::test_that("h_mmrm_fixed works as expected", {
       "71", "65", "66", "150", "150", "71", "71", "65", "65", "66",
       "66", "Pr(>|t|)", "<0.0001", "0.2957", "0.0663", "0.9688", "0.3143",
       "0.1220", "0.6698", "0.6473", "0.7267", "0.3458", "0.2329", "0.8114",
-      "0.2437", "0.7187", "0.2322", "0.7260", "0.1406"),
+      "0.2437", "0.7187", "0.2322", "0.7260", "0.1406"
+    ),
     .Dim = c(18L, 6L)
   )
 
@@ -297,7 +298,6 @@ testthat::test_that("h_mmrm_fixed works as expected", {
 })
 
 testthat::test_that("h_mmrm_cov works as expected", {
-
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     testthat::skip("tests dont run with older version of lme4")
   }
@@ -357,7 +357,6 @@ testthat::test_that("h_mmrm_cov works as expected", {
 })
 
 testthat::test_that("h_mmrm_diagnostic works as expected", {
-
   utils.nest::skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
@@ -366,15 +365,16 @@ testthat::test_that("h_mmrm_diagnostic works as expected", {
   testthat::expect_identical(result, result2)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
-      "1351.4", "1365.4", "1366", "1377.4"),
+    c(
+      "", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
+      "1351.4", "1365.4", "1366", "1377.4"
+    ),
     .Dim = c(5L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("tidy.mmrm works as expected", {
-
   utils.nest::skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
@@ -404,7 +404,6 @@ testthat::test_that("tidy.mmrm works as expected", {
 })
 
 testthat::test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
-
   utils.nest::skip_if_too_deep(3)
 
   mmrm <- get_mmrm_no_arm()
@@ -441,7 +440,6 @@ testthat::test_that("s_mmrm_lsmeans works as expected when not in reference colu
 })
 
 testthat::test_that("s_mmrm_lsmeans works as expected when in reference column", {
-
   utils.nest::skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
@@ -460,7 +458,6 @@ testthat::test_that("s_mmrm_lsmeans works as expected when in reference column",
 })
 
 testthat::test_that("s_mmrm_lsmeans_single works as expected", {
-
   utils.nest::skip_if_too_deep(3)
 
   mmrm <- get_mmrm_no_arm()
@@ -475,7 +472,6 @@ testthat::test_that("s_mmrm_lsmeans_single works as expected", {
 })
 
 testthat::test_that("summarize_lsmeans works as expected", {
-
   utils.nest::skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
@@ -547,7 +543,6 @@ testthat::test_that("summarize_lsmeans works as expected", {
 })
 
 testthat::test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
-
   utils.nest::skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
@@ -562,14 +557,16 @@ testthat::test_that("summarize_lsmeans works as expected when treatment is not c
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "WEEK 1 DAY 8", "n", "Adjusted Mean (SE)", "95% CI",
+    c(
+      "", "WEEK 1 DAY 8", "n", "Adjusted Mean (SE)", "95% CI",
       "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)", "95% CI", "WEEK 3 DAY 22",
       "n", "Adjusted Mean (SE)", "95% CI", "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)",
       "95% CI", "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)", "95% CI",
       "all obs", "", "41", "50.486 (1.238)", "(48.03, 52.942)", "",
       "41", "48.703 (1.194)", "(46.346, 51.061)", "", "41", "51.187 (1.230)",
       "(48.752, 53.623)", "", "41", "50.029 (1.266)", "(47.527, 52.532)",
-      "", "41", "50.843 (1.263)", "(48.323, 53.363)"),
+      "", "41", "50.843 (1.263)", "(48.323, 53.363)"
+    ),
     .Dim = c(21L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)

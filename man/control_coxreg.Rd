@@ -36,5 +36,4 @@ see \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_c
 \examples{
 
 control_coxreg()
-
 }

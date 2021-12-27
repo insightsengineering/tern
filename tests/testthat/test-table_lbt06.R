@@ -7,7 +7,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
 testthat::test_that("LBT06 default variant is produced correctly", {
-
   adlb <- adlb %>%
     dplyr::filter(PARAMCD == "ALT") %>%
     dplyr::filter(!(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
@@ -26,7 +25,8 @@ testthat::test_that("LBT06 default variant is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Alanine Aminotransferase Measurement", "WEEK 1 DAY 8",
+    c(
+      "", "", "Alanine Aminotransferase Measurement", "WEEK 1 DAY 8",
       "Low", "Not low baseline status", "Low baseline status", "Total",
       "High", "Not high baseline status", "High baseline status", "Total",
       "WEEK 2 DAY 15", "Low", "Not low baseline status", "Low baseline status",

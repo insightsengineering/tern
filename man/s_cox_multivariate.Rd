@@ -51,9 +51,9 @@ ADTTE <- synthetic_cdisc_data("latest")$adtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- filter(
   ADTTE_f,
-  PARAMCD == "OS"
-  & SEX \%in\% c("F", "M")
-  & RACE \%in\% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
+  PARAMCD == "OS" &
+    SEX \%in\% c("F", "M") &
+    RACE \%in\% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
 )
 ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
 ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)

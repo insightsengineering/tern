@@ -44,7 +44,6 @@ NULL
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
 #' )
-#'
 s_count_occurrences <- function(df,
                                 denom = c("N_col", "n"),
                                 .N_col, # nolint
@@ -52,7 +51,6 @@ s_count_occurrences <- function(df,
                                 drop = TRUE,
                                 .var = "MHDECOD",
                                 id = "USUBJID") {
-
   assertthat::assert_that(
     is_df_with_variables(df, list(range = .var, id = id)),
     is_nonnegative_count(.N_col),
@@ -78,8 +76,7 @@ s_count_occurrences <- function(df,
     df[[.var]]
   }
   ids <- factor(df[[id]])
-  dn <- switch(
-    denom,
+  dn <- switch(denom,
     n = nlevels(ids),
     N_col = .N_col
   )
@@ -121,11 +118,10 @@ s_count_occurrences <- function(df,
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
 #' )
-#'
 a_count_occurrences <- make_afun(
   s_count_occurrences,
   .formats = c(count = "xx", count_fraction = format_count_fraction, fraction = format_fraction)
-  )
+)
 
 #' @describeIn count_occurrences Analyze Function that counts occurrences as part of rtables layouts.
 #'
@@ -135,15 +131,19 @@ a_count_occurrences <- make_afun(
 #'
 #' library(dplyr)
 #' df <- data.frame(
-#'   USUBJID = as.character(c(1, 1, 2, 4, 4, 4,
-#'                            6, 6, 6, 7, 7, 8)),
-#'   MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3",
-#'               "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"),
-#'   ARM = rep(c("A", "B"), each=6)
+#'   USUBJID = as.character(c(
+#'     1, 1, 2, 4, 4, 4,
+#'     6, 6, 6, 7, 7, 8
+#'   )),
+#'   MHDECOD = c(
+#'     "MH1", "MH2", "MH1", "MH1", "MH1", "MH3",
+#'     "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"
+#'   ),
+#'   ARM = rep(c("A", "B"), each = 6)
 #' )
 #' df_adsl <- df %>%
 #'   select(USUBJID, ARM) %>%
-#'   unique
+#'   unique()
 #'
 #' # Create table layout
 #' lyt <- basic_table() %>%
@@ -155,7 +155,6 @@ a_count_occurrences <- make_afun(
 #' lyt %>%
 #'   build_table(df, alt_counts_df = df_adsl) %>%
 #'   prune_table()
-#'
 count_occurrences <- function(lyt,
                               vars,
                               var_labels = vars,

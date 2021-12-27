@@ -8,7 +8,7 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
 adlb_raw <- local({
-  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb #nolintr
+  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolintr
 
   # Data set is modified in order to have some parameters with grades only in one direction
   # and simulate the real data.
@@ -72,7 +72,7 @@ testthat::test_that("LBT07 is produced correctly", {
     ) %>%
     count_abnormal_by_worst_grade(
       var = "GRADE_ANL",
-      variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR")
+      variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
     )
 
   result <- build_table(lyt, adlb_f, alt_counts_df = adsl)

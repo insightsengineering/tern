@@ -237,7 +237,6 @@ s_compare(rnorm(10, 5, 1), .ref_group = 1, .in_ref_col = FALSE)
 
 ## Empty numeric does not fail, it returns NA-filled items and no p-value.
 s_compare(numeric(), .ref_group = numeric(), .in_ref_col = FALSE)
-
 # `s_compare.factor`
 
 ## Basic usage:
@@ -250,7 +249,6 @@ x <- explicit_na(factor(c("a", "a", "b", "c", "a", NA, NA)))
 y <- explicit_na(factor(c("a", "b", "c", NA)))
 s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
-
 # `s_compare.character`
 
 ## Basic usage:
@@ -263,7 +261,6 @@ x <- c("a", "a", "b", "c", "a", NA)
 y <- c("a", "b", "c", rep(NA, 20))
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", na.rm = FALSE)
-
 # `s_compare.logical`
 
 ## Basic usage:
@@ -276,7 +273,6 @@ x <- c(NA, TRUE, FALSE)
 y <- c(NA, NA, NA, NA, FALSE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
-
 # `a_compare.numeric`
 a_compare(
   rnorm(10, 5, 1),
@@ -284,7 +280,6 @@ a_compare(
   .in_ref_col = FALSE,
   .var = "bla"
 )
-
 # `a_compare.factor`
 # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
 # functions can be applied correctly.
@@ -295,7 +290,6 @@ afun <- make_afun(
 x <- factor(c("a", "a", "b", "c", "a"))
 y <- factor(c("a", "a", "b", "c"))
 afun(x, .ref_group = y, .in_ref_col = FALSE)
-
 # `a_compare.character`
 afun <- make_afun(
   getS3method("a_compare", "character"),
@@ -304,7 +298,6 @@ afun <- make_afun(
 x <- c("A", "B", "A", "C")
 y <- c("B", "A", "C")
 afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
-
 # `a_compare.logical`
 afun <- make_afun(
   getS3method("a_compare", "logical")
@@ -312,7 +305,6 @@ afun <- make_afun(
 x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
 y <- c(TRUE, FALSE)
 afun(x, .ref_group = y, .in_ref_col = FALSE)
-
 # `create_afun_compare()` to create combined `afun`
 
 afun <- create_afun_compare(
@@ -338,7 +330,6 @@ lyt <- basic_table() \%>\%
   )
 build_table(lyt, df = ex_adsl)
 
-
 # `compare_vars()` in rtables pipelines
 
 ## Default output within a `rtables` pipeline.
@@ -357,7 +348,6 @@ lyt <- basic_table() \%>\%
     .labels = c(mean_sd = "Mean, SD")
   )
 build_table(lyt, df = ex_adsl)
-
 }
 \seealso{
 \code{\link[=s_summary]{s_summary()}} which is used internally for the summary part per column.

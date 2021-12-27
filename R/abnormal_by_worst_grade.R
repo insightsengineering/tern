@@ -54,20 +54,23 @@ NULL
 #'   filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
 #'   mutate(
 #'     GRADE_DIR = factor(case_when(
-#'      ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
-#'      ATOXGR == "0" ~ "ZERO",
-#'      ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"),
-#'      levels = c("LOW", "ZERO", "HIGH")),
+#'       ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
+#'       ATOXGR == "0" ~ "ZERO",
+#'       ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
+#'     ),
+#'     levels = c("LOW", "ZERO", "HIGH")
+#'     ),
 #'     GRADE_ANL = fct_relevel(
-#'      fct_recode(ATOXGR,
-#'       `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
-#'        c("0", "1", "2", "3", "4")
-#'      )
-#'    ) %>%
+#'       fct_recode(ATOXGR, `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
+#'       c("0", "1", "2", "3", "4")
+#'     )
+#'   ) %>%
 #'   filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
 #'   droplevels()
 #'
-#' adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT") %>% droplevels()
+#' adlb_f_alt <- adlb_f %>%
+#'   filter(PARAMCD == "ALT") %>%
+#'   droplevels()
 #' full_parent_df <- list(adlb_f_alt, "not_needed")
 #' cur_col_subset <- list(rep(TRUE, nrow(adlb_f_alt)), "not_needed")
 #'
@@ -83,16 +86,14 @@ NULL
 #'   .spl_context = spl_context,
 #'   .var = "GRADE_ANL"
 #' )
-#'
 s_count_abnormal_by_worst_grade <- function(df, # nolint
                                             .var = "GRADE_ANL",
                                             .spl_context,
                                             variables = list(
                                               id = "USUBJID",
-                                              param  = "PARAM",
+                                              param = "PARAM",
                                               grade_dir = "GRADE_DIR"
                                             )) {
-
   assertthat::assert_that(
     assertthat::is.string(.var),
     is_df_with_variables(df, c(a = .var, variables)),
@@ -104,13 +105,14 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
   # To verify that the `split_rows_by` are performed with correct variables.
   assertthat::assert_that(
     all(
-      c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split), #nolint
+      c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split
+    ),
     msg = paste(
       "variabes$param and variables$grade_dir must match",
       "the variables used for splitting rows in the layout."
     )
   )
-  first_row <- .spl_context[.spl_context$split == variables[["param"]], ] #nolint
+  first_row <- .spl_context[.spl_context$split == variables[["param"]], ] # nolint
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "Any")
   result <- split(numeric(0), factor(x_lvls))
 
@@ -122,15 +124,11 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 
   for (lvl in x_lvls) {
     if (lvl != "Any") {
-
       num <- sum(df[[.var]] == lvl)
       fraction <- ifelse(denom == 0, 0, num / denom)
-
     } else {
-
       num <- sum(df[[.var]] != 0)
       fraction <- ifelse(denom == 0, 0, num / denom)
-
     }
     result[[lvl]] <- with_label(c(count = num, fraction = fraction), lvl)
   }
@@ -148,8 +146,7 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 #' # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 #' afun(df = adlb_f_alt, .spl_context = spl_context)
-#'
-a_count_abnormal_by_worst_grade <- make_afun(  #nolint
+a_count_abnormal_by_worst_grade <- make_afun( # nolint
   s_count_abnormal_by_worst_grade,
   .formats = c(count_fraction = format_count_fraction)
 )
@@ -162,9 +159,9 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
 #' # Map excludes records without abnormal grade since they should not be displayed
 #' # in the table.
 #' map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
-#'  lapply(as.character) %>%
-#'  as.data.frame() %>%
-#'  arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
+#'   lapply(as.character) %>%
+#'   as.data.frame() %>%
+#'   arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
 #'
 #' basic_table() %>%
 #'   split_cols_by("ARMCD") %>%
@@ -172,11 +169,9 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
 #'   split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
 #'   count_abnormal_by_worst_grade(
 #'     var = "GRADE_ANL",
-#'     variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
+#'     variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
 #'   ) %>%
 #'   build_table(df = adlb_f)
-#'
-#'
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
                                           ...,
@@ -184,7 +179,6 @@ count_abnormal_by_worst_grade <- function(lyt,
                                           .formats = NULL,
                                           .labels = NULL,
                                           .indent_mods = NULL) {
-
   afun <- make_afun(
     a_count_abnormal_by_worst_grade,
     .stats = .stats,

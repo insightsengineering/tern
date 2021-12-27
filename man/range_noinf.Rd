@@ -32,5 +32,4 @@ range_noinf(Inf)
 range_noinf(Inf, na.rm = TRUE, finite = TRUE)
 range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
 range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
-
 }

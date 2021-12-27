@@ -102,25 +102,27 @@ adlb <- synthetic_cdisc_data("latest")$adlb \%>\%
   filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
   slice(1:36)
 
-p <- h_g_ipp(df = adlb,
-             xvar = "AVISIT",
-             yvar = "AVAL",
-             xlab = "Visit",
-             id_var = "USUBJID",
-             ylab = "SGOT/ALT (U/L)",
-             add_baseline_hline = TRUE)
+p <- h_g_ipp(
+  df = adlb,
+  xvar = "AVISIT",
+  yvar = "AVAL",
+  xlab = "Visit",
+  id_var = "USUBJID",
+  ylab = "SGOT/ALT (U/L)",
+  add_baseline_hline = TRUE
+)
 p
 
-
-plot_list <- g_ipp(df = adlb,
-           xvar = "AVISIT",
-           yvar = "AVAL",
-           xlab = "Visit" ,
-           ylab = "SGOT/ALT (U/L)",
-           title = "Individual Patient Plots",
-           add_baseline_hline = TRUE,
-           plotting_choices = "split_by_max_obs",
-           max_obs_per_plot = 5)
+plot_list <- g_ipp(
+  df = adlb,
+  xvar = "AVISIT",
+  yvar = "AVAL",
+  xlab = "Visit",
+  ylab = "SGOT/ALT (U/L)",
+  title = "Individual Patient Plots",
+  add_baseline_hline = TRUE,
+  plotting_choices = "split_by_max_obs",
+  max_obs_per_plot = 5
+)
 plot_list
-
 }

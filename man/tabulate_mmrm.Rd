@@ -125,9 +125,9 @@ dat <- sleepstudy \%>\%
       include.lowest = TRUE
     ),
     Subject = case_when(
-       group == "A" ~ as.character(Subject),
-       TRUE ~ as.character(as.numeric(as.character(Subject)) + 50)
-     )
+      group == "A" ~ as.character(Subject),
+      TRUE ~ as.character(as.numeric(as.character(Subject)) + 50)
+    )
   ) \%>\%
   distinct_at(.vars = c("Subject", "days_grouped", "group"), .keep_all = TRUE)
 
@@ -157,19 +157,15 @@ result_no_arm <- fit_mmrm(
   parallel = TRUE
 )
 as.rtable(result_no_arm, type = "cov", format = "xx.x")
-
 library(broom)
 df <- tidy(result)
 df_no_arm <- tidy(result_no_arm)
-
 s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
-
 s_mmrm_lsmeans_single(df_no_arm[4, ])
-
 
 dat_adsl <- dat \%>\%
   select(Subject, group) \%>\%
-  unique
+  unique()
 basic_table() \%>\%
   split_cols_by("group", ref_group = result$ref_level) \%>\%
   add_colcounts() \%>\%
@@ -187,5 +183,4 @@ basic_table() \%>\%
     df = broom::tidy(result_no_arm),
     alt_counts_df = dat_adsl
   )
-
 }

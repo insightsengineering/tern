@@ -100,12 +100,10 @@ adrs_f <- adrs \%>\%
   )
 var_labels(adrs_f) <- c(adrs_labels, "Response")
 
-
 h_proportion_df(
   c(TRUE, FALSE, FALSE),
   arm = factor(c("A", "A", "B"), levels = c("A", "B"))
 )
-
 
 h_proportion_subgroups_df(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -142,7 +140,6 @@ h_odds_ratio_df(
   method = "cmh"
 )
 
-
 # Unstratified analysis.
 h_odds_ratio_subgroups_df(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -156,7 +153,7 @@ h_odds_ratio_subgroups_df(
     arm = "ARM",
     subgroups = c("SEX", "BMRKR2"),
     strat = c("STRATA1", "STRATA2")
-   ),
+  ),
   data = adrs_f
 )
 
@@ -176,5 +173,4 @@ h_odds_ratio_subgroups_df(
     )
   )
 )
-
 }

@@ -30,5 +30,4 @@ factor levels).
 \examples{
 as_factor_keep_attributes(with_label(c(1, 1, 2, 3), "id"))
 as_factor_keep_attributes(c("a", "b", ""), "id")
-
 }

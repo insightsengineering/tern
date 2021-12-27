@@ -1,5 +1,4 @@
 testthat::test_that("h_format_row returns the correct dataframe", {
-
   format <- c(mean = "xx.x", mean_ci = "(xx.xx, xx.xx)")
   labels <- c(mean = "My Mean")
 

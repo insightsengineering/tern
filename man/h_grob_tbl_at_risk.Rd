@@ -21,7 +21,6 @@ Two Graphical Objects are obtained, one corresponding to row labeling and
 the second to the number of patient at risk.
 }
 \examples{
-
 \dontrun{
 library(scda)
 library(dplyr)
@@ -55,7 +54,7 @@ if (is.null(fit_km$strata)) {
     n.risk = annot_tbl$n.risk,
     time = annot_tbl$time,
     strata = annot_tbl$strata
-    )
+  )
 }
 
 # The annotation table is transformed into a grob.

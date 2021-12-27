@@ -52,17 +52,18 @@ d_proportion_diff <- function(conf_level,
                               method,
                               long = FALSE) {
   label <- paste0(conf_level * 100, "% CI")
-  if (long) label <- paste(
-    label,
-    ifelse(
-      method == "cmh",
-      "for adjusted difference",
-      "for difference"
+  if (long) {
+    label <- paste(
+      label,
+      ifelse(
+        method == "cmh",
+        "for adjusted difference",
+        "for difference"
+      )
     )
-  )
+  }
 
-  method_part <- switch(
-    method,
+  method_part <- switch(method,
     "cmh" = "CMH, without correction",
     "waldcc" = "Wald, with correction",
     "wald" = "Wald, without correction",
@@ -90,7 +91,6 @@ d_proportion_diff <- function(conf_level,
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 #' grp <- c(rep("A", 10), rep("B", 10))
 #' prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
-#'
 prop_diff_wald <- function(rsp,
                            grp,
                            conf_level,
@@ -132,7 +132,6 @@ prop_diff_wald <- function(rsp,
 #' rsp <- c(TRUE, FALSE, TRUE, FALSE)
 #' grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
 #' prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
-#'
 prop_diff_ha <- function(rsp,
                          grp,
                          conf_level) {
@@ -163,13 +162,12 @@ prop_diff_ha <- function(rsp,
 #'
 #' set.seed(1)
 #' rsp <- c(
-#'   sample(c(TRUE, FALSE), size = 40, prob = c(3/4, 1/4), replace = TRUE),
-#'   sample(c(TRUE, FALSE), size = 40, prob = c(1/2, 1/2), replace = TRUE)
+#'   sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+#'   sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
 #' )
 #' grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A"))
 #' table(rsp, grp)
 #' prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
-#'
 prop_diff_nc <- function(rsp,
                          grp,
                          conf_level) {
@@ -215,13 +213,13 @@ prop_diff_nc <- function(rsp,
 #' strata_data <- data.frame(
 #'   "f1" = sample(c("a", "b"), 100, TRUE),
 #'   "f2" = sample(c("x", "y", "z"), 100, TRUE),
-#'   stringsAsFactors = TRUE)
+#'   stringsAsFactors = TRUE
+#' )
 #'
 #' prop_diff_cmh(
 #'   rsp = rsp, grp = grp, strata = interaction(strata_data),
 #'   conf_level = 0.90
 #' )
-#'
 prop_diff_cmh <- function(rsp,
                           grp,
                           strata,
@@ -232,8 +230,9 @@ prop_diff_cmh <- function(rsp,
     rsp = rsp, grp = grp, conf_level = conf_level, strata = strata
   )
 
-  if (any(tapply(rsp, strata, length) < 5))
+  if (any(tapply(rsp, strata, length) < 5)) {
     warning("Less than 5 observations in some strata.")
+  }
 
   # first dimension: FALSE, TRUE
   # 2nd dimension: CONTROL, TX
@@ -305,7 +304,6 @@ prop_diff_cmh <- function(rsp,
 #'   conf_level = 0.90,
 #'   method = "ha"
 #' )
-#'
 s_proportion_diff <- function(df,
                               .var,
                               .ref_group,
@@ -315,13 +313,11 @@ s_proportion_diff <- function(df,
                               method = c(
                                 "waldcc", "wald", "cmh",
                                 "ha", "newcombe"
-                              )
-) {
+                              )) {
   method <- match.arg(method)
   y <- list(diff = "", diff_ci = "")
 
   if (!.in_ref_col) {
-
     rsp <- c(.ref_group[[.var]], df[[.var]])
     grp <- factor(
       rep(
@@ -342,8 +338,7 @@ s_proportion_diff <- function(df,
       strata <- factor(c(interaction(.ref_group[strata]), interaction(df[strata])))
     }
 
-    y <- switch(
-      method,
+    y <- switch(method,
       wald = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
       waldcc = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
       ha = prop_diff_ha(rsp, grp, conf_level),
@@ -353,12 +348,12 @@ s_proportion_diff <- function(df,
 
     y$diff <- y$diff * 100
     y$diff_ci <- y$diff_ci * 100
-
   }
 
   attr(y$diff, "label") <- "Difference in Response rate (%)"
   attr(y$diff_ci, "label") <- d_proportion_diff(
-    conf_level, method, long = FALSE
+    conf_level, method,
+    long = FALSE
   )
 
   y
@@ -376,7 +371,6 @@ s_proportion_diff <- function(df,
 #'   conf_level = 0.90,
 #'   method = "ha"
 #' )
-#'
 a_proportion_diff <- make_afun(
   s_proportion_diff,
   .formats =  c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
@@ -394,7 +388,7 @@ a_proportion_diff <- make_afun(
 #' @examples
 #'
 #' l <- basic_table() %>%
-#' split_cols_by(var = "grp", ref_group = "B") %>%
+#'   split_cols_by(var = "grp", ref_group = "B") %>%
 #'   estimate_proportion_diff(
 #'     vars = "rsp",
 #'     conf_level = 0.90,
@@ -402,7 +396,6 @@ a_proportion_diff <- make_afun(
 #'   )
 #'
 #' build_table(l, df = dta)
-#'
 estimate_proportion_diff <- function(lyt,
                                      vars,
                                      ...,

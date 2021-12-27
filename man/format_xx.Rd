@@ -27,5 +27,4 @@ sapply(test, z)
 
 z <- format_xx("xx.x, incl. xx.x\% NE")
 sapply(test, z)
-
 }

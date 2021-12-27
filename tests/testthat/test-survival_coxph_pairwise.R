@@ -4,7 +4,6 @@ library(dplyr)
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("s_coxph_pairwise works with default arguments and no stratification factors", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -31,7 +30,6 @@ testthat::test_that("s_coxph_pairwise works with default arguments and no strati
 })
 
 testthat::test_that("s_coxph_pairwise works with customized arguments and no stratification factors", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -59,7 +57,6 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and no str
 })
 
 testthat::test_that("s_coxph_pairwise works with default arguments and stratification factors", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -86,7 +83,6 @@ testthat::test_that("s_coxph_pairwise works with default arguments and stratific
 })
 
 testthat::test_that("s_coxph_pairwise works with customized arguments and stratification factors", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -115,7 +111,6 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and strati
 
 
 testthat::test_that("coxph_pairwise works with default arguments and no stratification factors", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -124,7 +119,7 @@ testthat::test_that("coxph_pairwise works with default arguments and no stratifi
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-  ) %>%
+    ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
@@ -147,7 +142,6 @@ testthat::test_that("coxph_pairwise works with default arguments and no stratifi
 })
 
 testthat::test_that("coxph_pairwise works with customized arguments and no stratification factors", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -156,7 +150,7 @@ testthat::test_that("coxph_pairwise works with customized arguments and no strat
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-  ) %>%
+    ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
@@ -181,7 +175,6 @@ testthat::test_that("coxph_pairwise works with customized arguments and no strat
 
 
 testthat::test_that("coxph_pairwise works with default arguments and stratification factors", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -190,7 +183,7 @@ testthat::test_that("coxph_pairwise works with default arguments and stratificat
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-  ) %>%
+    ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
@@ -214,7 +207,6 @@ testthat::test_that("coxph_pairwise works with default arguments and stratificat
 })
 
 testthat::test_that("coxph_pairwise works with customized arguments and stratification factors", {
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -223,7 +215,7 @@ testthat::test_that("coxph_pairwise works with customized arguments and stratifi
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-  ) %>%
+    ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",

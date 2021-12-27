@@ -148,6 +148,7 @@ Adds the count statistics to the input layout for multiple flag variables at onc
 
 \examples{
 
+
 library(dplyr)
 library(scda)
 adae <- synthetic_cdisc_data("latest")$adae
@@ -181,7 +182,6 @@ a_count_patients_with_event(
   .N_row = 100
 )
 
-
 # `count_patients_with_event()`
 
 lyt <- basic_table() \%>\%
@@ -214,7 +214,6 @@ lyt <- basic_table() \%>\%
   )
 build_table(lyt, adae, alt_counts_df = adsl)
 
-
 # `s_count_patients_with_flags()`
 
 # Add labelled flag variables to analysis dataset.
@@ -230,7 +229,7 @@ adae <- adae \%>\%
     fl2 = "Total number of patients with at least one adverse event",
     fl3 = "Total number of patients with fatal AEs",
     fl4 = "Total number of patients with related fatal AEs"
- )
+  )
 
 s_count_patients_with_flags(
   adae,
@@ -238,8 +237,7 @@ s_count_patients_with_flags(
   flag_variables = c("fl1", "fl2", "fl3", "fl4"),
   denom = "N_col",
   .N_col = 1000
- )
-
+)
 #  We need to ungroup `count_fraction` first so that the rtables formatting
 # function `format_count_fraction()` can be applied correctly.
 
@@ -257,7 +255,6 @@ afun(
   flag_variables = c("fl1", "fl2", "fl3", "fl4")
 )
 
-
 # `count_patients_with_flags()`
 
 lyt2 <- basic_table() \%>\%
@@ -268,6 +265,5 @@ lyt2 <- basic_table() \%>\%
     flag_variables = var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
     denom = "N_col"
   )
- build_table(lyt2, adae, alt_counts_df = adsl)
-
+build_table(lyt2, adae, alt_counts_df = adsl)
 }

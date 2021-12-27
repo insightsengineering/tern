@@ -10,10 +10,10 @@ gen_advs <- function() {
 
   advs <- advs %>%
     dplyr::filter(PARAMCD == "DIABP" & PARAM == "Diastolic Blood Pressure") %>%
-    dplyr::mutate(PARAMCD = droplevels(PARAMCD), PARAM = droplevels(PARAM)) #nolint
+    dplyr::mutate(PARAMCD = droplevels(PARAMCD), PARAM = droplevels(PARAM)) # nolint
 
   # post-baseline
-  advs_pb <- advs %>% dplyr::filter(ABLFL != "Y" & ABLFL2 != "Y") #nolint
+  advs_pb <- advs %>% dplyr::filter(ABLFL != "Y" & ABLFL2 != "Y") # nolint
 
   advs_pb_max <- advs_pb %>%
     dplyr::group_by(PARAM, USUBJID) %>%
@@ -44,7 +44,7 @@ gen_advs <- function() {
   )
 
   var_labels(advs_f) <- advs_label
-  advs_f <- advs_f %>% dplyr::mutate(AVISIT = droplevels(AVISIT))  #nolint
+  advs_f <- advs_f %>% dplyr::mutate(AVISIT = droplevels(AVISIT)) # nolint
   advs_f
 }
 
@@ -52,7 +52,7 @@ testthat::test_that("VST01 default variant is produced correctly", {
   utils.nest::skip_if_too_deep(3)
 
   advs <- gen_advs()
-  advs_baseline <- advs %>% dplyr::filter(ABLFL == "Y")   #nolint
+  advs_baseline <- advs %>% dplyr::filter(ABLFL == "Y") # nolint
   df_adsl <- unique(advs[c("USUBJID", "ARM")])
 
   result <- basic_table() %>%
@@ -61,13 +61,15 @@ testthat::test_that("VST01 default variant is produced correctly", {
     split_rows_by("AVISIT") %>%
     split_cols_by_multivar(
       vars = c("AVAL", "CHG"),
-      varlabels = c("Value at Visit", "Change from Baseline")) %>%
+      varlabels = c("Value at Visit", "Change from Baseline")
+    ) %>%
     summarize_colvars(.labels = c(range = "Min - Max")) %>%
     build_table(df = advs, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "", "SCREENING", "n", "Mean (SD)", "Median",
+    c(
+      "", "", "", "SCREENING", "n", "Mean (SD)", "Median",
       "Min - Max", "BASELINE", "n", "Mean (SD)", "Median", "Min - Max",
       "WEEK 1 DAY 8", "n", "Mean (SD)", "Median", "Min - Max", "WEEK 2 DAY 15",
       "n", "Mean (SD)", "Median", "Min - Max", "WEEK 3 DAY 22", "n",

@@ -100,7 +100,6 @@ step_matrix4 <- fit_rsp_step(
   data = adrs_f,
   control = c(control_logistic(), control_step(bandwidth = 0.6))
 )
-
 }
 \seealso{
 \code{\link[=control_step]{control_step()}} and \code{\link[=control_logistic]{control_logistic()}} for the available

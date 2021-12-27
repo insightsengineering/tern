@@ -27,7 +27,6 @@ not be replaced by the missing level. If needed \code{\link[=explicit_na]{explic
 }
 \examples{
 fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
-
 }
 \seealso{
 \code{\link[forcats:fct_collapse]{forcats::fct_collapse()}}, \code{\link[forcats:fct_relevel]{forcats::fct_relevel()}} which are used internally.

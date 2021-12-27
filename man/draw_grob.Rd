@@ -28,5 +28,4 @@ num \%>\%
   arrange_grobs(grobs = .) \%>\%
   draw_grob()
 showViewport()
-
 }

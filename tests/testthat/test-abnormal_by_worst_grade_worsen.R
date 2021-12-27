@@ -4,14 +4,15 @@ library(dplyr)
 
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adlb <- adlb %>% dplyr::mutate(
-  GRADDR = dplyr::case_when(
-    PARAMCD == "ALT" ~ "B",
-    PARAMCD == "CRP" ~ "L",
-    PARAMCD == "IGA" ~ "H"
-  )
-) %>%
-dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+adlb <- adlb %>%
+  dplyr::mutate(
+    GRADDR = dplyr::case_when(
+      PARAMCD == "ALT" ~ "B",
+      PARAMCD == "CRP" ~ "L",
+      PARAMCD == "IGA" ~ "H"
+    )
+  ) %>%
+  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   set.seed(42)
@@ -29,12 +30,12 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
       WGRLOFL = dplyr::case_when(
         VALUES == MIN ~ "Y",
         TRUE ~ ""
-        ),
+      ),
       WGRHIFL = dplyr::case_when(
         VALUES == MAX ~ "Y",
         TRUE ~ ""
-        )
       )
+    )
 
   input_data <- input_data %>%
     dplyr::mutate(
@@ -42,8 +43,8 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
         PARAMCD == "ABC" ~ "L",
         PARAMCD == "OPQ" ~ "B",
         PARAMCD == "XYZ" ~ "H"
-        )
       )
+    )
 
 
   result <- h_adlb_worsen(
@@ -51,7 +52,7 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
     worst_flag_low = c("WGRLOFL" = "Y"),
     worst_flag_high = c("WGRHIFL" = "Y"),
     direction_var = "GRADDR"
-    )
+  )
 
   result <- result[order(result$VALUES), ]
 
@@ -61,10 +62,10 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   p3 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "B")
   p4 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "B")
 
-  p1$GRADDR <- "Low"  #nolint
-  p2$GRADDR <- "High" #nolint
-  p3$GRADDR <- "Low" #nolint
-  p4$GRADDR <- "High" #nolint
+  p1$GRADDR <- "Low" # nolint
+  p2$GRADDR <- "High" # nolint
+  p3$GRADDR <- "Low" # nolint
+  p4$GRADDR <- "High" # nolint
 
   expected <- rbind(p1, p2, p3, p4)
 
@@ -81,16 +82,19 @@ testthat::test_that("h_adlb_worsen stacks data correctly", {
     worst_flag_low = c("WGRLOFL" = "Y"),
     worst_flag_high = c("WGRHIFL" = "Y"),
     direction_var = "GRADDR"
-    )
+  )
 
   result <- result %>% dplyr::select(USUBJID, ARMCD, AVISIT, PARAMCD, ATOXGR, BTOXGR, WGRLOFL, WGRHIFL, GRADDR)
   result_matrix <- matrix(c(as.matrix(result)), 8L, 9L)
 
   expected_matrix <- structure(
-    c(rep(c("AB12345-CHN-15-id-262", "AB12345-CHN-3-id-128"), 4L),
+    c(
+      rep(c("AB12345-CHN-15-id-262", "AB12345-CHN-3-id-128"), 4L),
       rep(c("ARM C", "ARM A"), 4L),
-      c("WEEK 4 DAY 29", "WEEK 3 DAY 22", "WEEK 5 DAY 36", "WEEK 3 DAY 22", "WEEK 3 DAY 22",
-        "WEEK 1 DAY 8", "WEEK 5 DAY 36", "WEEK 2 DAY 15"),
+      c(
+        "WEEK 4 DAY 29", "WEEK 3 DAY 22", "WEEK 5 DAY 36", "WEEK 3 DAY 22", "WEEK 3 DAY 22",
+        "WEEK 1 DAY 8", "WEEK 5 DAY 36", "WEEK 2 DAY 15"
+      ),
       c("IGA", "IGA", "ALT", "ALT", "CRP", "CRP", "ALT", "ALT"),
       c("0", "0", "0", "2", "-2", "-1", "0", "-3"),
       c("0", "3", "0", "0", "2", "0", "0", "0"),
@@ -107,11 +111,10 @@ testthat::test_that("h_adlb_worsen stacks data correctly", {
 })
 
 testthat::test_that("h_group_counter counts data (low) correctly", {
-
   df_test <- expand.grid(
     ATOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>"),
     BTOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>")
-    )
+  )
 
   df_test <- cbind(USUBJID = 1:100, df_test, GRADDR = "Low")
 
@@ -129,15 +132,13 @@ testthat::test_that("h_group_counter counts data (low) correctly", {
       "2" = c(num = 7, denom = 63),
       "3" = c(num = 8, denom = 72),
       "4" = c(num = 9, denom = 81),
-      "Any" = c(num = 30,  denom = 81)
+      "Any" = c(num = 30, denom = 81)
     )
   )
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("h_group_counter counts data (high) correctly", {
-
   df_test <- expand.grid(
     ATOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>"),
     BTOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>")
@@ -159,15 +160,13 @@ testthat::test_that("h_group_counter counts data (high) correctly", {
       "2" = c(num = 7, denom = 63),
       "3" = c(num = 8, denom = 72),
       "4" = c(num = 9, denom = 81),
-      "Any" = c(num = 30,  denom = 81)
+      "Any" = c(num = 30, denom = 81)
     )
   )
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("h_group_counter counts data (low), no high correctly", {
-
   df_test <- expand.grid(
     ATOXGR = c(-4, -3, -2, -1, 0, "<Missing>"),
     BTOXGR = c(-4, -3, -2, -1, 0, "<Missing>")
@@ -189,15 +188,13 @@ testthat::test_that("h_group_counter counts data (low), no high correctly", {
       "2" = c(num = 3, denom = 15),
       "3" = c(num = 4, denom = 20),
       "4" = c(num = 5, denom = 25),
-      "Any" = c(num = 14,  denom = 25)
+      "Any" = c(num = 14, denom = 25)
     )
   )
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("h_group_counter counts data (low), no low correctly", {
-
   df_test <- expand.grid(
     ATOXGR = c(0, 1, 2, 3, 4, "<Missing>"),
     BTOXGR = c(0, 1, 2, 3, 4, "<Missing>")
@@ -219,15 +216,13 @@ testthat::test_that("h_group_counter counts data (low), no low correctly", {
       "2" = c(num = 0, denom = 30),
       "3" = c(num = 0, denom = 30),
       "4" = c(num = 0, denom = 30),
-      "Any" = c(num = 0,  denom = 30)
+      "Any" = c(num = 0, denom = 30)
     )
   )
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("s_count_abnormal_lab_worsen_by_baseline", {
-
   df_test <- expand.grid(
     ATOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>"),
     BTOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>")
@@ -251,21 +246,19 @@ testthat::test_that("s_count_abnormal_lab_worsen_by_baseline", {
       "2" = c(num = 7, denom = 63),
       "3" = c(num = 8, denom = 72),
       "4" = c(num = 9, denom = 81),
-      "Any" = c(num = 30,  denom = 81)
+      "Any" = c(num = 30, denom = 81)
     )
   )
   testthat::expect_equal(result, expected)
-
 })
 
 testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
-
   df <- h_adlb_worsen(
     adlb,
     worst_flag_low = c("WGRLOFL" = "Y"),
     worst_flag_high = c("WGRHIFL" = "Y"),
     direction_var = "GRADDR"
-    )
+  )
 
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
@@ -305,7 +298,8 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
       "11/123 (8.9%)", "10/127 (7.9%)", "10/131 (7.6%)", "40/131 (30.5%)",
       "", "", "13/117 (11.1%)", "16/122 (13.1%)", "16/123 (13%)", "4/124 (3.2%)",
       "49/124 (39.5%)", "", "", "13/119 (10.9%)", "13/125 (10.4%)",
-      "17/128 (13.3%)", "4/130 (3.1%)", "47/130 (36.2%)"),
+      "17/128 (13.3%)", "4/130 (3.1%)", "47/130 (36.2%)"
+    ),
     .Dim = c(29L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -314,14 +308,15 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
 testthat::test_that("h_adlb_worsen all high", {
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-  adlb <- adlb %>% dplyr::mutate(
-    GRADDR = dplyr::case_when(
-      PARAMCD == "ALT" ~ "H",
-      PARAMCD == "CRP" ~ "H",
-      PARAMCD == "IGA" ~ "H"
-    )
-  ) %>%
-  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  adlb <- adlb %>%
+    dplyr::mutate(
+      GRADDR = dplyr::case_when(
+        PARAMCD == "ALT" ~ "H",
+        PARAMCD == "CRP" ~ "H",
+        PARAMCD == "IGA" ~ "H"
+      )
+    ) %>%
+    dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
     adlb,
@@ -332,7 +327,7 @@ testthat::test_that("h_adlb_worsen all high", {
 
 
   expected <- adlb[adlb$WGRHIFL == "Y", ]
-  expected$GRADDR <- "High" #nolint
+  expected$GRADDR <- "High" # nolint
   expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD, expected$PCHG), ]
 
   result_matrix <- matrix(c(as.matrix(result)), nrow(result), ncol(result))
@@ -344,14 +339,15 @@ testthat::test_that("h_adlb_worsen all high", {
 testthat::test_that("h_adlb_worsen all low", {
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-  adlb <- adlb %>% dplyr::mutate(
-    GRADDR = dplyr::case_when(
-      PARAMCD == "ALT" ~ "L",
-      PARAMCD == "CRP" ~ "L",
-      PARAMCD == "IGA" ~ "L"
-    )
-  ) %>%
-  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  adlb <- adlb %>%
+    dplyr::mutate(
+      GRADDR = dplyr::case_when(
+        PARAMCD == "ALT" ~ "L",
+        PARAMCD == "CRP" ~ "L",
+        PARAMCD == "IGA" ~ "L"
+      )
+    ) %>%
+    dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
     adlb,
@@ -362,7 +358,7 @@ testthat::test_that("h_adlb_worsen all low", {
 
 
   expected <- adlb[adlb$WGRLOFL == "Y", ]
-  expected$GRADDR <- "Low" #nolint
+  expected$GRADDR <- "Low" # nolint
   expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD, expected$PCHG), ]
 
   result_matrix <- matrix(c(as.matrix(result)), nrow(result), ncol(result))
