@@ -146,6 +146,7 @@ Collate:
     'survival_time.R'
     'survival_timepoint.R'
     'tabulate_mmrm.R'
+    'tabulate_rbmi.R'
     'test_proportion_diff.R'
     'utils.R'
     'utils_factor.R'
