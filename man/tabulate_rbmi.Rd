@@ -52,6 +52,15 @@ summarize_rbmi(
 
 \item{.null_ref_cells}{Reference cell}
 }
+\value{
+A data.frame
+
+A dataframe
+
+A data.frame
+
+An rtable
+}
 \description{
 These functions can be used to produce tables from a fitted RBMI produced with
 \code{\link[=fit_mmrm]{fit_mmrm()}}.

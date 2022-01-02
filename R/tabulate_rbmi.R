@@ -1,7 +1,6 @@
 #' Tabulation of RBMI Results
 #'
-#' These functions can be used to produce tables from a fitted RBMI produced with
-#' [fit_mmrm()].
+#' These functions can be used to produce tables from a fitted RBMI produced
 #'
 #' @name tabulate_rbmi
 #'
@@ -14,6 +13,8 @@ NULL
 #' @details Helper function to produce data frame with results of rbmi::pool
 #'   for a single visit
 #' @param x (`list`)
+#' @export
+#' @return A data.frame
 #'
 h_tidy_pool <- function(x) {
   contr <- x[[grep("trt_", names(x))]]
@@ -64,6 +65,8 @@ h_tidy_pool <- function(x) {
 #'   `pool` rbmi object containing the LS means and contrasts and multiple visits
 #' @method tidy pool
 #' @param x (`list`)
+#' @export
+#' @return A dataframe
 #'
 tidy.pool <- function(x) { # nolint #nousage
 
@@ -99,6 +102,7 @@ tidy.pool <- function(x) { # nolint #nousage
 #' @param show_relative Show relative
 #'
 #' @export
+#' @return A data.frame
 #'
 s_rbmi_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "increase")) {
   show_relative <- match.arg(show_relative)
@@ -129,6 +133,7 @@ s_rbmi_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "incr
 #' @param .null_ref_cells Reference cell
 #'
 #' @export
+#' @return NULL
 #'
 a_rbmi_lsmeans <- make_afun(
   s_rbmi_lsmeans,
@@ -167,6 +172,8 @@ a_rbmi_lsmeans <- make_afun(
 #' @param .labels Labels
 #'
 #' @export
+#'
+#' @return An rtable
 #'
 #' @examples
 #'
