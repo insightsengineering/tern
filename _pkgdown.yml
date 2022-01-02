@@ -62,6 +62,7 @@ reference:
       - s_length_proportion
       - s_mmrm_lsmeans
       - s_mmrm_lsmeans_single
+      - s_rbmi_lsmeans
       - s_num_patients
       - s_num_patients_content
       - s_odds_ratio
@@ -132,6 +133,7 @@ reference:
        - summarize_coxreg
        - summarize_logistic
        - summarize_lsmeans
+       - summarize_rbmi
        - summarize_num_patients
        - summarize_occurrences_by_grade
        - summarize_patients_events_in_cols
@@ -208,6 +210,7 @@ reference:
       - h_tab_one_biomarker
       - h_tab_surv_one_biomarker
       - h_worsen_counter
+      - h_tidy_pool
       - or_clogit
       - or_glm
       - prop_chisq
@@ -245,6 +248,7 @@ reference:
       - tidy.mmrm
       - tidy.step
       - tidy.summary.coxph
+      - tidy.pool
       - univariate
 
   - title: Graphs
