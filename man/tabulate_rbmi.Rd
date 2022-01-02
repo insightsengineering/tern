@@ -65,6 +65,7 @@ rbmi \code{pool} results.
 
 \examples{
 
+\dontrun{
 library(rtables)
 library(dplyr)
 library(broom)
@@ -87,5 +88,6 @@ basic_table() \%>\%
   split_rows_by("visit", split_label = "Visit", label_pos = "topleft") \%>\%
   summarize_rbmi() \%>\%
   build_table(df)
+}
 
 }
