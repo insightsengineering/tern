@@ -29,6 +29,28 @@ summarize_rbmi(
 }
 \arguments{
 \item{x}{(\code{list})}
+
+\item{df}{Output dataframe}
+
+\item{.in_ref_col}{Reference column}
+
+\item{show_relative}{Show relative}
+
+\item{lyt}{Layout}
+
+\item{table_names}{Table name}
+
+\item{.stats}{Statistics}
+
+\item{.formats}{Formatting}
+
+\item{.indent_mods}{Indentation mode}
+
+\item{.labels}{Labels}
+
+\item{s_rbmi_lsmeans}{summery function}
+
+\item{.null_ref_cells}{Reference cell}
 }
 \description{
 These functions can be used to produce tables from a fitted RBMI produced with

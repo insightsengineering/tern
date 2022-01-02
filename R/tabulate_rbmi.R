@@ -94,6 +94,10 @@ tidy.pool <- function(x) { # nolint #nousage
 #' @details Statistics function which is extracting estimates from a tidied rbmi::pool
 #'   data frame.
 #'
+#' @param df Output dataframe
+#' @param .in_ref_col Reference column
+#' @param show_relative Show relative
+#'
 #' @export
 #'
 s_rbmi_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "increase")) {
@@ -117,6 +121,12 @@ s_rbmi_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "incr
 #'
 #' @details Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
+#' @param s_rbmi_lsmeans summery function
+#' @param .labels labels
+#' @param .formats Formatting
+#' @param .indent_mods Indentation mode
+#' @param .null_ref_cells Reference cell
 #'
 #' @export
 #'
@@ -149,6 +159,12 @@ a_rbmi_lsmeans <- make_afun(
 #'
 #' @details Analyze function for tabulating LS means estimates from tidied
 #'   rbmi `pool` results.
+#' @param lyt Layout
+#' @param table_names Table name
+#' @param .stats Statistics
+#' @param .formats Formatting
+#' @param .indent_mods Indentation mode
+#' @param .labels Labels
 #'
 #' @export
 #'
