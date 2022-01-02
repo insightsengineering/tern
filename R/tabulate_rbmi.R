@@ -175,7 +175,6 @@ a_rbmi_lsmeans <- make_afun(
 #'   split_rows_by("visit", split_label = "Visit", label_pos = "topleft") %>%
 #'   summarize_rbmi() %>%
 #'   build_table(df)
-
 #'
 summarize_rbmi <- function(lyt,
                            ...,
@@ -199,4 +198,3 @@ summarize_rbmi <- function(lyt,
     extra_args = list(...)
   )
 }
-
