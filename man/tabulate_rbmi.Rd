@@ -30,71 +30,56 @@ summarize_rbmi(
 \arguments{
 \item{x}{(\code{list})}
 
-\item{df}{Output dataframe}
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.in_ref_col}{Reference column}
+\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
-\item{show_relative}{Show relative}
+\item{show_relative}{should the "reduction" (\code{control - treatment}, default) or the "increase"
+(\code{treatment - control}) be shown for the relative change from baseline?}
 
-\item{lyt}{Layout}
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{table_names}{Table name}
+\item{...}{additional arguments for the lower level functions.}
 
-\item{.stats}{Statistics}
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
-\item{.formats}{Formatting}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{.indent_mods}{Indentation mode}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
-\item{.labels}{Labels}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{s_rbmi_lsmeans}{summery function}
-
-\item{.null_ref_cells}{Reference cell}
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 }
 \value{
-A data.frame
-
 A dataframe
-
-A data.frame
-
-An rtable
 }
 \description{
-These functions can be used to produce tables from a fitted RBMI produced with
-\code{\link[=fit_mmrm]{fit_mmrm()}}.
-}
-\details{
-Helper function to produce data frame with results of rbmi::pool
-for a single visit
-
-Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a data frame from an
-\code{pool} rbmi object containing the LS means and contrasts and multiple visits
-
-Statistics function which is extracting estimates from a tidied rbmi::pool
-data frame.
-
-Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
-
-Analyze function for tabulating LS means estimates from tidied
-rbmi \code{pool} results.
+These functions can be used to produce tables from a fitted RBMI produced
 }
 \section{Functions}{
 \itemize{
-\item \code{h_tidy_pool}: Code is adapted from https://github.com/insightsengineering/tern/blob/main/R/tabulate_mmrm.R
+\item \code{h_tidy_pool}: Helper function to produce data frame with results of rbmi::pool
+for a single visit
 
-\item \code{tidy.pool}: 
+\item \code{tidy.pool}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a data frame from an
+\code{pool} rbmi object containing the LS means and contrasts and multiple visits
 
-\item \code{s_rbmi_lsmeans}: 
+\item \code{s_rbmi_lsmeans}: Statistics function which is extracting estimates from a tidied LS means
+data frame.
 
-\item \code{a_rbmi_lsmeans}: 
+\item \code{a_rbmi_lsmeans}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{summarize_rbmi}: 
+\item \code{summarize_rbmi}: Analyze function for tabulating LS means estimates from tidied
+rbmi \code{pool} results.
 }}
 
 \examples{
+\dontrun{
+s_rbmi_lsmeans(df[8, ], .in_ref_col = FALSE)
+}
 
 \dontrun{
 library(rtables)

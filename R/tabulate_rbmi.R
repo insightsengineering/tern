@@ -6,15 +6,10 @@
 #'
 NULL
 
-#' @describeIn tabulate_rbmi
-#'
-#' Code is adapted from https://github.com/insightsengineering/tern/blob/main/R/tabulate_mmrm.R
-#'
-#' @details Helper function to produce data frame with results of rbmi::pool
+#' @describeIn tabulate_rbmi Helper function to produce data frame with results of rbmi::pool
 #'   for a single visit
 #' @param x (`list`)
 #' @export
-#' @return A data.frame
 #'
 h_tidy_pool <- function(x) {
   contr <- x[[grep("trt_", names(x))]]
@@ -59,9 +54,7 @@ h_tidy_pool <- function(x) {
   result
 }
 
-#' @describeIn tabulate_rbmi
-#'
-#' @details Helper method (for [broom::tidy()]) to prepare a data frame from an
+#' @describeIn tabulate_rbmi Helper method (for [broom::tidy()]) to prepare a data frame from an
 #'   `pool` rbmi object containing the LS means and contrasts and multiple visits
 #' @method tidy pool
 #' @param x (`list`)
@@ -92,18 +85,16 @@ tidy.pool <- function(x) { # nolint #nousage
 
 }
 
-#' @describeIn tabulate_rbmi
-#'
-#' @details Statistics function which is extracting estimates from a tidied rbmi::pool
+#' @describeIn tabulate_rbmi Statistics function which is extracting estimates from a tidied LS means
 #'   data frame.
-#'
-#' @param df Output dataframe
-#' @param .in_ref_col Reference column
-#' @param show_relative Show relative
-#'
+#' @inheritParams argument_convention
+#' @param show_relative should the "reduction" (`control - treatment`, default) or the "increase"
+#'   (`treatment - control`) be shown for the relative change from baseline?
 #' @export
-#' @return A data.frame
-#'
+#' @examples
+#' \dontrun{
+#' s_rbmi_lsmeans(df[8, ], .in_ref_col = FALSE)
+#' }
 s_rbmi_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "increase")) {
   show_relative <- match.arg(show_relative)
   if_not_ref <- function(x) `if`(.in_ref_col, character(), x)
@@ -121,19 +112,9 @@ s_rbmi_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "incr
   )
 }
 
-#' @describeIn tabulate_rbmi
-#'
-#' @details Formatted Analysis function which can be further customized by calling
+#' @describeIn tabulate_rbmi Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#'
-#' @param s_rbmi_lsmeans summery function
-#' @param .labels labels
-#' @param .formats Formatting
-#' @param .indent_mods Indentation mode
-#' @param .null_ref_cells Reference cell
-#'
 #' @export
-#' @return NULL
 #'
 a_rbmi_lsmeans <- make_afun(
   s_rbmi_lsmeans,
@@ -160,21 +141,10 @@ a_rbmi_lsmeans <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' @describeIn tabulate_rbmi
-#'
-#' @details Analyze function for tabulating LS means estimates from tidied
+#' @describeIn tabulate_rbmi Analyze function for tabulating LS means estimates from tidied
 #'   rbmi `pool` results.
-#' @param lyt Layout
-#' @param table_names Table name
-#' @param .stats Statistics
-#' @param .formats Formatting
-#' @param .indent_mods Indentation mode
-#' @param .labels Labels
-#'
+#' @inheritParams argument_convention
 #' @export
-#'
-#' @return An rtable
-#'
 #' @examples
 #'
 #' \dontrun{
