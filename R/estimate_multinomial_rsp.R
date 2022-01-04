@@ -19,6 +19,12 @@ NULL
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "NE/Missing")
 #' )
+#'
+#' By adding some values not considered in `d_onco_rsp_label`
+#' d_onco_rsp_label(
+#'   c("CR", "PR", "hello", "hi")
+#' )
+#'
 d_onco_rsp_label <- function(x) { # nousage # nolint
 
   x <- as.character(x)
@@ -37,8 +43,12 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
     SD           = "Stable Disease (SD)"
   )
 
-  assertthat::assert_that(all(x %in% names(desc)))
-  factor(desc[x])
+  values_label <- ifelse(
+    x %in% names(desc),
+    desc[x],
+    x
+  )
+  return(factor(values_label))
 }
 
 #' @describeIn estimate_multinomial_rsp Statistics function which takes the length of the input `x` and takes that

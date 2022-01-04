@@ -17,4 +17,10 @@ Describe the oncology response in a standard way.
 d_onco_rsp_label(
   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "NE/Missing")
 )
+
+By adding some values not considered in `d_onco_rsp_label`
+d_onco_rsp_label(
+  c("CR", "PR", "hello", "hi")
+)
+
 }
