@@ -48,6 +48,15 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
     desc[x],
     x
   )
+
+  desc_in_values <- which(desc %in% values_label)
+
+  names(values_label) <- ifelse(
+    values_label %in% desc,
+    names(desc)[desc_in_values],
+    values_label
+    )
+
   return(factor(values_label))
 }
 
