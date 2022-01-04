@@ -43,22 +43,17 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
     SD           = "Stable Disease (SD)"
   )
 
-  values_label <- ifelse(
-    x %in% names(desc),
-    desc[x],
-    x
+  values_label <- vapply(
+    X = x,
+    FUN.VALUE = character(1),
+    function(val) {
+      if (val %in% names(desc)) desc[val] else val
+    }
   )
-
-  desc_in_values <- which(desc %in% values_label)
-
-  names(values_label) <- ifelse(
-    values_label %in% desc,
-    names(desc)[desc_in_values],
-    values_label
-    )
 
   return(factor(values_label))
 }
+
 
 #' @describeIn estimate_multinomial_rsp Statistics function which takes the length of the input `x` and takes that
 #'   as the number of successes, and the column number `.N_col` as the total number, and feeds that into
