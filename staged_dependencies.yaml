@@ -11,6 +11,9 @@ upstream_repos:
   insightsengineering/utils.nest:
     repo: insightsengineering/utils.nest
     host: https://github.com
+  insightsengineering/rbmi:
+    repo: insightsengineering/rbmi
+    host: https://github.com
   Roche/rtables:
     repo: Roche/rtables
     host: https://github.com
