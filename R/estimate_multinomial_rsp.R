@@ -12,21 +12,20 @@ NULL
 #' Describe the oncology response in a standard way.
 #'
 #' @param x (`character`)\cr the standard oncology code to be described.
-#' @param na_level (`string`)\cr the string used to replace `NA` or empty values during data proprocessing using
+#' @param na_level (`string`)\cr the string used to replace `NA` or empty values during data pre-processing using
 #' `df_explicit_na`.
 #' @export
 #'
 #' @examples
 #'
 #' d_onco_rsp_label(
-#'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "NE/Missing")
+#'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "<Missing>", "NE/Missing")
 #' )
 d_onco_rsp_label <- function(x, na_level = "<Missing>") { # nousage # nolint
 
   x <- as.character(x)
   desc <- c(
     CR           = "Complete Response (CR)",
-    Missing      = "Missing",
     na_level     = "Missing",
     MR           = "Minimal/Minor Response (MR)",
     MRD          = "Minimal Residual Disease (MRD)",

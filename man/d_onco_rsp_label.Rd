@@ -9,7 +9,7 @@ d_onco_rsp_label(x, na_level = "<Missing>")
 \arguments{
 \item{x}{(\code{character})\cr the standard oncology code to be described.}
 
-\item{na_level}{(\code{string})\cr the string used to replace \code{NA} or empty values during data proprocessing using
+\item{na_level}{(\code{string})\cr the string used to replace \code{NA} or empty values during data pre-processing using
 \code{df_explicit_na}.}
 }
 \description{
@@ -18,6 +18,6 @@ Describe the oncology response in a standard way.
 \examples{
 
 d_onco_rsp_label(
-  c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "NE/Missing")
+  c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "<Missing>", "NE/Missing")
 )
 }
