@@ -18,11 +18,11 @@ NULL
 #'   FALSE, FALSE, FALSE, FALSE, FALSE
 #' )
 #' prop_wilson(rsp, conf_level = 0.9)
-prop_wilson <- function(rsp, conf_level) {
+prop_wilson <- function(rsp, conf_level, correct = FALSE) {
   y <- stats::prop.test(
     sum(rsp),
     length(rsp),
-    correct = FALSE,
+    correct = correct,
     conf.level = conf_level
   )
 
@@ -155,7 +155,7 @@ s_proportion <- function(x,
                          conf_level = 0.95,
                          method = c(
                            "waldcc", "wald", "clopper-pearson",
-                           "wilson", "agresti-coull", "jeffreys"
+                           "wilson", "wilsonc", "agresti-coull", "jeffreys"
                          ),
                          long = FALSE) {
   x <- as.logical(x)
@@ -174,6 +174,7 @@ s_proportion <- function(x,
   prop_ci <- switch(method,
     "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
     wilson = prop_wilson(rsp, conf_level),
+    wilsoc = prop_wilson(rsp, conf_level, correct = TRUE),
     wald = prop_wald(rsp, conf_level),
     waldcc = prop_wald(rsp, conf_level, correct = TRUE),
     "agresti-coull" = prop_agresti_coull(rsp, conf_level),
@@ -264,7 +265,8 @@ d_proportion <- function(conf_level,
     "clopper-pearson" = "Clopper-Pearson",
     "waldcc" = "Wald, with correction",
     "wald" = "Wald, without correction",
-    "wilson" = "Wilson",
+    "wilson" = "Wilson, without correction",
+    "wilsonc" = "Wilson, with correction",
     "agresti-coull" = "Agresti-Coull",
     "jeffreys" = "Jeffreys",
     stop(paste(method, "does not have a description"))

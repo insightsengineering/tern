@@ -12,7 +12,7 @@
 \alias{a_proportion}
 \title{Estimation of Proportions}
 \usage{
-prop_wilson(rsp, conf_level)
+prop_wilson(rsp, conf_level, correct = FALSE)
 
 prop_clopper_pearson(rsp, conf_level)
 
@@ -25,7 +25,7 @@ prop_jeffreys(rsp, conf_level)
 s_proportion(
   x,
   conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "agresti-coull",
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
     "jeffreys"),
   long = FALSE
 )
@@ -45,7 +45,7 @@ estimate_proportion(
 a_proportion(
   x,
   conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "agresti-coull",
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
     "jeffreys"),
   long = FALSE
 )
