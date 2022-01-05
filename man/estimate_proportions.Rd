@@ -143,7 +143,7 @@ dta_test <- data.frame(
 
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
-  estimate_proportion(vars = "AVAL", method = "wald") \%>\%
+  estimate_proportion(vars = "AVAL") \%>\%
   build_table(df = dta_test)
 a_proportion(c(1, 0, 1, 0))
 }

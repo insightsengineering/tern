@@ -174,7 +174,7 @@ s_proportion <- function(x,
   prop_ci <- switch(method,
     "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
     wilson = prop_wilson(rsp, conf_level),
-    wilsoc = prop_wilson(rsp, conf_level, correct = TRUE),
+    wilsonc = prop_wilson(rsp, conf_level, correct = TRUE),
     wald = prop_wald(rsp, conf_level),
     waldcc = prop_wald(rsp, conf_level, correct = TRUE),
     "agresti-coull" = prop_agresti_coull(rsp, conf_level),
@@ -215,7 +215,7 @@ a_proportion <- make_afun(
 #'
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
-#'   estimate_proportion(vars = "AVAL", method = "wald") %>%
+#'   estimate_proportion(vars = "AVAL") %>%
 #'   build_table(df = dta_test)
 estimate_proportion <- function(lyt,
                                 vars,
