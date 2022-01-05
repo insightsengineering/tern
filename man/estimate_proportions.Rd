@@ -91,8 +91,8 @@ Estimate the proportion of responders within a studied population.
 }
 \section{Functions}{
 \itemize{
-\item \code{prop_wilson}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}
-with option \code{correct = FALSE}. Also referred to as Wilson score interval.
+\item \code{prop_wilson}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}.
+Also referred to as Wilson score interval.
 
 \item \code{prop_clopper_pearson}: the Clopper-Pearson interval calls
 \code{\link[stats:binom.test]{stats::binom.test()}}. Also referred to as the \code{exact} method.
@@ -143,7 +143,7 @@ dta_test <- data.frame(
 
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
-  estimate_proportion(vars = "AVAL") \%>\%
+  estimate_proportion(vars = "AVAL", method = "wald") \%>\%
   build_table(df = dta_test)
 a_proportion(c(1, 0, 1, 0))
 }

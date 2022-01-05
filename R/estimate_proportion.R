@@ -8,8 +8,8 @@
 NULL
 
 
-#' @describeIn estimate_proportions the Wilson interval calls [stats::prop.test()]
-#'   with option `correct = FALSE`. Also referred to as Wilson score interval.
+#' @describeIn estimate_proportions the Wilson interval calls [stats::prop.test()].
+#'  Also referred to as Wilson score interval.
 #' @export
 #' @order 2
 #' @examples
@@ -215,7 +215,7 @@ a_proportion <- make_afun(
 #'
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
-#'   estimate_proportion(vars = "AVAL") %>%
+#'   estimate_proportion(vars = "AVAL", method = "wald") %>%
 #'   build_table(df = dta_test)
 estimate_proportion <- function(lyt,
                                 vars,
