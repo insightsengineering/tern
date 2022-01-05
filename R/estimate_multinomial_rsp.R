@@ -29,6 +29,7 @@ NULL
 d_onco_rsp_label <- function(x) { # nousage # nolint
 
   x <- as.character(x)
+  checkmate::assert_character(x, unique = TRUE)
   desc <- c(
     CR           = "Complete Response (CR)",
     Missing      = "Missing",
