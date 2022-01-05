@@ -24,9 +24,10 @@ NULL
 d_onco_rsp_label <- function(x, na_level = "<Missing>") { # nousage # nolint
 
   x <- as.character(x)
+  missing_level <- c("Missing")
+  names(missing_level) <- eval(na_level)
   desc <- c(
     CR           = "Complete Response (CR)",
-    na_level     = "Missing",
     MR           = "Minimal/Minor Response (MR)",
     MRD          = "Minimal Residual Disease (MRD)",
     `NA`         = "Not Applicable (NA)",
@@ -38,6 +39,7 @@ d_onco_rsp_label <- function(x, na_level = "<Missing>") { # nousage # nolint
     PR           = "Partial Response (PR)",
     SD           = "Stable Disease (SD)"
   )
+  desc <- c(desc, missing_level)
 
   assertthat::assert_that(all(x %in% names(desc)))
   factor(desc[x])
