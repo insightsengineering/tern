@@ -32,6 +32,7 @@ Imports:
     assertthat,
     broom,
     car,
+    checkmate,
     dfoptim,
     dplyr,
     emmeans (>= 1.4.5),
