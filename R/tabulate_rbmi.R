@@ -57,7 +57,7 @@ h_tidy_pool <- function(x) {
 #' @describeIn tabulate_rbmi Helper method (for [broom::tidy()]) to prepare a data frame from an
 #'   `pool` rbmi object containing the LS means and contrasts and multiple visits
 #' @method tidy pool
-#' @param x (`list`)
+#' @param x (`pool`)
 #' @export
 #' @return A dataframe
 #'
