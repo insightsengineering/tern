@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.5.9014</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.5.9015</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -78,7 +69,7 @@ Other releases
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">prop_wilson</span><span class="op">(</span><span class="va">rsp</span>, <span class="va">conf_level</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">prop_wilson</span><span class="op">(</span><span class="va">rsp</span>, <span class="va">conf_level</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu">prop_clopper_pearson</span><span class="op">(</span><span class="va">rsp</span>, <span class="va">conf_level</span><span class="op">)</span>
 
@@ -91,7 +82,7 @@ Other releases
 <span class="fu">s_proportion</span><span class="op">(</span>
   <span class="va">x</span>,
   conf_level <span class="op">=</span> <span class="fl">0.95</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"clopper-pearson"</span>, <span class="st">"wilson"</span>, <span class="st">"agresti-coull"</span>,
+  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"clopper-pearson"</span>, <span class="st">"wilson"</span>, <span class="st">"wilsonc"</span>, <span class="st">"agresti-coull"</span>,
     <span class="st">"jeffreys"</span><span class="op">)</span>,
   long <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span>
@@ -111,7 +102,7 @@ Other releases
 <span class="fu">a_proportion</span><span class="op">(</span>
   <span class="va">x</span>,
   conf_level <span class="op">=</span> <span class="fl">0.95</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"clopper-pearson"</span>, <span class="st">"wilson"</span>, <span class="st">"agresti-coull"</span>,
+  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"clopper-pearson"</span>, <span class="st">"wilson"</span>, <span class="st">"wilsonc"</span>, <span class="st">"agresti-coull"</span>,
     <span class="st">"jeffreys"</span><span class="op">)</span>,
   long <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
@@ -158,8 +149,8 @@ to avoid warnings from <code>rtables</code>.</p></dd>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>prop_wilson</code>: the Wilson interval calls <code><a href="https://rdrr.io/r/stats/prop.test.html" class="external-link">stats::prop.test()</a></code>
-with option <code>correct = FALSE</code>. Also referred to as Wilson score interval.</p></li>
+<ul><li><p><code>prop_wilson</code>: the Wilson interval calls <code><a href="https://rdrr.io/r/stats/prop.test.html" class="external-link">stats::prop.test()</a></code>.
+Also referred to as Wilson score interval.</p></li>
 <li><p><code>prop_clopper_pearson</code>: the Clopper-Pearson interval calls
 <code><a href="https://rdrr.io/r/stats/binom.test.html" class="external-link">stats::binom.test()</a></code>. Also referred to as the <code>exact</code> method.</p></li>
 <li><p><code>prop_wald</code>: the Wald interval follows the usual

@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.5.9014</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.5.9015</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -73,7 +64,7 @@ Other releases
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.7.5.9014" id="tern-0759014">tern 0.7.5.9014<a class="anchor" aria-label="anchor" href="#tern-0759014"></a></h2>
+<h2 class="page-header" data-toc-text="0.7.5.9015" id="tern-0759015">tern 0.7.5.9015<a class="anchor" aria-label="anchor" href="#tern-0759015"></a></h2>
 <ul><li>Refactored <code>count_abnormal_by_marked</code> <code>tern</code> function and related statistics and formatting functions to use a more efficient layout with <code>.spl_context</code> argument used for determining denominators and with <code>trim_levels_to_map</code> split function under <code>split_rows_by</code> to show only the desired levels in the table. This is a breaking change.</li>
 <li>Refactored <code>count_abnormal_by_worst_grade</code> <code>tern</code> function and related statistics and formatting functions to use a more efficient layout with <code>.spl_context</code> argument used for determining denominators and with <code>trim_levels_to_map</code> split function under <code>split_rows_by</code> to show only the desired levels in the table. This is a breaking change.</li>
 <li>Enhanced <code>tern</code> functions <code>tabulate_survival_subgroups</code> and <code>tabulate_rsp_subgroups</code> (Survival Duration and Best Overall Response analyses) to calculate <code>N</code>-s based on the records considered to create the model.</li>
@@ -82,6 +73,7 @@ Other releases
 <li>Fixed bug in <code>assertthat</code> functions that output wrong data frame names and limited length of failure message outputs.</li>
 <li>Added <code>s_summary_numeric_in_cols</code> and <code>summarize_vars_numeric_in_cols</code> functions to generate summary statistics in columns, mainly used for PK datasets.</li>
 <li>Added five statistics to <code>s_summary.numeric</code> to use in <code>s_summary_numeric_in_cols</code>.</li>
+<li>Enhanced <code>estimate_proportion</code> <code>tern</code> function and related functions to be able to apply a continuity correction in the Wilson method.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.5" id="tern-075">tern 0.7.5<a class="anchor" aria-label="anchor" href="#tern-075"></a></h2>
