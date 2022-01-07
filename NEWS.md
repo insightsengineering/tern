@@ -1,4 +1,4 @@
-# tern 0.7.5.9015
+# tern 0.7.5.9016
 * Refactored `count_abnormal_by_marked` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change. 
 * Refactored `count_abnormal_by_worst_grade` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change. 
 * Enhanced `tern` functions `tabulate_survival_subgroups` and `tabulate_rsp_subgroups` (Survival Duration and Best Overall Response analyses) to calculate `N`-s based on the records considered to create the model. 
@@ -9,6 +9,7 @@ efficient layout with `trim_levels_to_map` split function under `split_rows_by` 
 * Fixed bug in `assertthat` functions that output wrong data frame names and limited length of failure message outputs.
 * Added `s_summary_numeric_in_cols` and `summarize_vars_numeric_in_cols` functions to generate summary statistics in columns, mainly used for PK datasets.
 * Added five statistics to `s_summary.numeric` to use in `s_summary_numeric_in_cols`.
+* Enhanced `estimate_proportion` `tern` function and related functions to be able to apply a continuity correction in the Wilson method. 
 
 
 # tern 0.7.5

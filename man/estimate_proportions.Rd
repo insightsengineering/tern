@@ -12,7 +12,7 @@
 \alias{a_proportion}
 \title{Estimation of Proportions}
 \usage{
-prop_wilson(rsp, conf_level)
+prop_wilson(rsp, conf_level, correct = FALSE)
 
 prop_clopper_pearson(rsp, conf_level)
 
@@ -25,7 +25,7 @@ prop_jeffreys(rsp, conf_level)
 s_proportion(
   x,
   conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "agresti-coull",
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
     "jeffreys"),
   long = FALSE
 )
@@ -45,7 +45,7 @@ estimate_proportion(
 a_proportion(
   x,
   conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "agresti-coull",
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
     "jeffreys"),
   long = FALSE
 )
@@ -91,8 +91,8 @@ Estimate the proportion of responders within a studied population.
 }
 \section{Functions}{
 \itemize{
-\item \code{prop_wilson}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}
-with option \code{correct = FALSE}. Also referred to as Wilson score interval.
+\item \code{prop_wilson}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}.
+Also referred to as Wilson score interval.
 
 \item \code{prop_clopper_pearson}: the Clopper-Pearson interval calls
 \code{\link[stats:binom.test]{stats::binom.test()}}. Also referred to as the \code{exact} method.
