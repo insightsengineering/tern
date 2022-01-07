@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.5.9015</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.5.9016</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -102,6 +93,18 @@ Other releases
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      Missing                   NE/Missing </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      Missing       Missing or unevaluable </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 Levels: Complete Response (CR) Missing ... Stable Disease (SD)</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Adding some values not considered in d_onco_rsp_label</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu">d_onco_rsp_label</span><span class="op">(</span></span>
+<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CR"</span>, <span class="st">"PR"</span>, <span class="st">"hello"</span>, <span class="st">"hi"</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     CR                     PR                  hello </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Complete Response (CR)  Partial Response (PR)                  hello </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     hi </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     hi </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Levels: Complete Response (CR) Partial Response (PR) hello hi</span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </div>
