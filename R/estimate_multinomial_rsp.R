@@ -19,9 +19,17 @@ NULL
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "NE/Missing")
 #' )
+#'
+#' # Adding some values not considered in d_onco_rsp_label
+#'
+#' d_onco_rsp_label(
+#'   c("CR", "PR", "hello", "hi")
+#' )
+#'
 d_onco_rsp_label <- function(x) { # nousage # nolint
 
   x <- as.character(x)
+  checkmate::assert_character(x, unique = TRUE)
   desc <- c(
     CR           = "Complete Response (CR)",
     Missing      = "Missing",
@@ -37,9 +45,17 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
     SD           = "Stable Disease (SD)"
   )
 
-  assertthat::assert_that(all(x %in% names(desc)))
-  factor(desc[x])
+  values_label <- vapply(
+    X = x,
+    FUN.VALUE = character(1),
+    function(val) {
+      if (val %in% names(desc)) desc[val] else val
+    }
+  )
+
+  return(factor(values_label))
 }
+
 
 #' @describeIn estimate_multinomial_rsp Statistics function which takes the length of the input `x` and takes that
 #'   as the number of successes, and the column number `.N_col` as the total number, and feeds that into
