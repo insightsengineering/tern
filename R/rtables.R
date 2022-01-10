@@ -166,7 +166,7 @@ as.rtable <- function(x, ...) { # nolint
 #'   b = rnorm(10)
 #' )
 #' as.rtable(x)
-as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nousage # nolint
+as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
   assertthat::assert_that(all(sapply(x, is.numeric)), msg = "only works with numeric data frame columns")
   do.call(
     rtable,

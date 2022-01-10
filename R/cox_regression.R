@@ -401,7 +401,7 @@ fit_coxreg_univar <- function(variables,
 #' formula <- "survival::Surv(time, status) ~ armcd + covar1"
 #' msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 #' tidy(msum)
-tidy.summary.coxph <- function(x, # nousage # nolint
+tidy.summary.coxph <- function(x, # nolint
                                ...) {
   assertthat::assert_that(
     class(x) == "summary.coxph"
@@ -552,7 +552,7 @@ h_coxreg_inter_effect <- function(x,
 #' @param at (`list`)\cr a list with items named after the covariate, every
 #'   item is a vector of levels at which the interaction should be estimated.
 #' @export
-h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
+h_coxreg_inter_effect.numeric <- function(x, # nolint
                                           effect,
                                           covar,
                                           mod,
@@ -603,7 +603,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
 #'
 #' @param data (`data frame`)\cr the data frame on which the model was fit.
 #' @export
-h_coxreg_inter_effect.factor <- function(x, # nousage # nolint
+h_coxreg_inter_effect.factor <- function(x, # nolint
                                          effect,
                                          covar,
                                          mod,
@@ -815,7 +815,7 @@ h_coxreg_inter_estimations <- function(variable, given,
 #' library(broom)
 #' tidy(mod1)
 #' tidy(mod2)
-tidy.coxreg.univar <- function(x, # nousage # nolint
+tidy.coxreg.univar <- function(x, # nolint
                                ...) {
   assertthat::assert_that(
     class(x) == "coxreg.univar"
@@ -1015,7 +1015,7 @@ h_coxreg_multivar_extract <- function(var,
 #' @examples
 #' library(broom)
 #' broom::tidy(multivar_model)
-tidy.coxreg.multivar <- function(x, # nousage # nolint
+tidy.coxreg.multivar <- function(x, # nolint
                                  ...) {
   assertthat::assert_that(
     class(x) == "coxreg.multivar"
