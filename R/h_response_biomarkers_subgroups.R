@@ -88,10 +88,12 @@ h_logistic_mult_cont_df <- function(variables,
                                     control = control_logistic()) {
   assertthat::assert_that(
     is.list(variables),
-    utils.nest::is_character_vector(variables$biomarkers),
-    is_df_with_variables(data, as.list(unlist(variables))),
-    utils.nest::is_fully_named_list(control)
+    is_df_with_variables(data, as.list(unlist(variables)))
   )
+
+  checkmate::assert_character(variables$biomarkers, min.len = 1)
+  checkmate::test_list(control, names = "named")
+
   conf_level <- control[["conf_level"]]
   pval_label <- "p-value (Wald)"
 

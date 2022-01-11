@@ -729,7 +729,7 @@ fit_mmrm <- function(vars = list(
     formula = formula,
     data = data,
     optimizer = optimizer,
-    n_cores = ifelse(parallel, utils.nest::get_free_cores(), 1L)
+    n_cores = ifelse(parallel, get_free_cores(), 1L)
   )
 
   lsmeans <- get_mmrm_lsmeans(

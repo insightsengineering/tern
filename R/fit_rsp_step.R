@@ -93,9 +93,9 @@ fit_rsp_step <- function(variables,
                          data,
                          control = c(control_step(), control_logistic())) {
   assertthat::assert_that(
-    is_df_with_variables(data, variables),
-    utils.nest::is_fully_named_list(control)
+    is_df_with_variables(data, variables)
   )
+  checkmate::test_list(control, names = "named")
   data <- data[!is.na(data[[variables$biomarker]]), ]
   window_sel <- h_step_window(x = data[[variables$biomarker]], control = control)
   interval_center <- window_sel$interval[, "Interval Center"]

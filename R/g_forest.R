@@ -507,13 +507,13 @@ cell_in_rows <- function(row_name,
                          row_index,
                          underline_colspan = FALSE) {
   stopifnot(
-    utils.nest::is_character_single(row_name),
-    utils.nest::is_character_vector(cells),
-    utils.nest::is_numeric_vector(cell_spans),
-    length(cells) == length(cell_spans),
-    utils.nest::is_numeric_single(row_index),
-    utils.nest::is_logical_single(underline_colspan)
+    length(cells) == length(cell_spans)
   )
+  checkmate::assert_string(row_name)
+  checkmate::assert_character(cells, min.len = 1)
+  checkmate::assert_numeric(cell_spans, min.len = 1)
+  checkmate::assert_numeric(row_index, len = 1)
+  checkmate::assert_flag(underline_colspan)
 
   vp_name_rn <- paste0("rowname-", row_index)
   g_rowname <- if (!is.null(row_name) && row_name != "") {

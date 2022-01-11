@@ -102,10 +102,10 @@ h_coxreg_mult_cont_df <- function(variables,
                                   control = control_coxreg()) {
   assertthat::assert_that(
     is.list(variables),
-    utils.nest::is_character_vector(variables$biomarkers),
-    is_df_with_variables(data, as.list(unlist(variables))),
-    utils.nest::is_fully_named_list(control)
+    is_df_with_variables(data, as.list(unlist(variables)))
   )
+  checkmate::test_list(control, names = "named")
+  checkmate::assert_character(variables$biomarkers, min.len = 1)
   conf_level <- control[["conf_level"]]
   pval_label <- paste0(
     "p-value (", stringr::str_to_sentence(control[["pval_method"]]), ")"
