@@ -10,7 +10,7 @@ efficient layout with `trim_levels_to_map` split function under `split_rows_by` 
 * Added `s_summary_numeric_in_cols` and `summarize_vars_numeric_in_cols` functions to generate summary statistics in columns, mainly used for PK datasets.
 * Added five statistics to `s_summary.numeric` to use in `s_summary_numeric_in_cols`.
 * Enhanced `estimate_proportion` `tern` function and related functions to be able to apply a continuity correction in the Wilson method. 
-* Removed dependency on `utils.nest` by using the `checkmate` and `purrr` packages for validation and moved `get_free_cores`  and `skip_if_too_deep` functions from `utils.nest` into `tern`.
+* Removed dependency on `utils.nest` by using the `checkmate` and `purrr` packages for validation and moved `get_free_cores` and `skip_if_too_deep` functions from `utils.nest` into `tern`.
 
 
 # tern 0.7.5

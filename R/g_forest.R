@@ -512,7 +512,7 @@ cell_in_rows <- function(row_name,
   checkmate::assert_string(row_name)
   checkmate::assert_character(cells, min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(cell_spans, min.len = 1, any.missing = FALSE)
-  checkmate::assert_numeric(row_index, len = 1, any.missing = FALSE)
+  checkmate::assert_number(row_index)
   checkmate::assert_flag(underline_colspan)
 
   vp_name_rn <- paste0("rowname-", row_index)

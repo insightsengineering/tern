@@ -50,7 +50,7 @@ s_surv_timepoint <- function(df,
     assertthat::is.string(.var)
   )
   checkmate::assert_numeric(df[[.var]], min.len = 1, any.missing = FALSE)
-  checkmate::assert_numeric(time_point, len = 1, any.missing = FALSE)
+  checkmate::assert_numerber(time_point)
   checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
 
   conf_type <- control$conf_type
