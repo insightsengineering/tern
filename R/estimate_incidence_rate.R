@@ -228,8 +228,8 @@ s_incidence_rate <- function(df,
         is_df_with_variables(df, list(tte = .var, is_event = is_event)),
         assertthat::is.string(.var)
       )
-      checkmate::assert_logical(df[[is_event]])
-      checkmate::assert_numeric(df[[.var]])
+      checkmate::assert_logical(df[[is_event]], any.missing = FALSE)
+      checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
       n_events <- is_event
     }
   } else {
@@ -237,8 +237,8 @@ s_incidence_rate <- function(df,
       is_df_with_variables(df, list(tte = .var, n_events = n_events)),
       assertthat::is.string(.var)
     )
-    checkmate::assert_numeric(df[[.var]])
-    checkmate::assert_integer(df[[n_events]])
+    checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
+    checkmate::assert_integer(df[[n_events]], any.missing = FALSE)
   }
 
   time_unit_input <- control$time_unit_input

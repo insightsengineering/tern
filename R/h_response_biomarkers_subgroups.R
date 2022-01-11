@@ -91,7 +91,7 @@ h_logistic_mult_cont_df <- function(variables,
     is_df_with_variables(data, as.list(unlist(variables)))
   )
 
-  checkmate::assert_character(variables$biomarkers, min.len = 1)
+  checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(control, names = "named")
 
   conf_level <- control[["conf_level"]]

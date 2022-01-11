@@ -426,7 +426,7 @@ h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {
 
-  checkmate::assert_character(subgroups, min.len = 1)
+  checkmate::assert_character(subgroups, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(groups_lists, names = "named")
   assertthat::assert_that(
     is_df_with_factors(data, as.list(stats::setNames(subgroups, subgroups))),

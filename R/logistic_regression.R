@@ -157,9 +157,9 @@ h_interaction_coef_name <- function(interaction_vars,
                                     first_var_with_level,
                                     second_var_with_level) {
 
-  checkmate::assert_character(interaction_vars, len = 2)
-  checkmate::assert_character(first_var_with_level, len = 2)
-  checkmate::assert_character(second_var_with_level, len = 2)
+  checkmate::assert_character(interaction_vars, len = 2, any.missing = FALSE)
+  checkmate::assert_character(first_var_with_level, len = 2, any.missing = FALSE)
+  checkmate::assert_character(second_var_with_level, len = 2, any.missing = FALSE)
 
   assertthat::assert_that(
     all(c(first_var_with_level[1], second_var_with_level[1]) %in% interaction_vars)
@@ -245,7 +245,7 @@ h_or_cont_interaction <- function(odds_ratio_var,
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
     identical(length(interaction_vars), 2L)
   )
-  checkmate::assert_numeric(at, min.len = 1, null.ok = TRUE)
+  checkmate::assert_numeric(at, min.len = 1, null.ok = TRUE, any.missing = FALSE)
   xs_level <- fit_glm$xlevels
   xs_coef <- stats::coef(fit_glm)
   xs_vcov <- stats::vcov(fit_glm)

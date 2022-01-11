@@ -48,7 +48,7 @@ df_explicit_na <- function(data,
                            logical_as_factor = FALSE,
                            na_level = "<Missing>") {
 
-  checkmate::assert_character(omit_columns, null.ok = TRUE, min.len = 1)
+  checkmate::assert_character(omit_columns, null.ok = TRUE, min.len = 1, any.missing = FALSE)
 
   assertthat::assert_that(
     is.data.frame(data),
