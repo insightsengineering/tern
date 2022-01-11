@@ -202,7 +202,7 @@ assertthat::on_failure(is_equal_length) <- function(call, env) {
 #' is_proportion(x = 1.3)
 #' is_proportion(x = 0, include_boundaries = TRUE)
 is_proportion <- function(x, include_boundaries = FALSE) {
-  checkmate::test_numeric(x, len = 1, any.missing = FALSE) &&
+  checkmate::test_number(x) &&
     is_proportion_vector(x, include_boundaries = include_boundaries)
 }
 assertthat::on_failure(is_proportion) <- function(call, env) {
