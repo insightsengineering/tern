@@ -86,7 +86,7 @@ h_map_for_count_abnormal <- function(df,
     !any(is.na(df[variables$split_rows])),
     is_factor_no_na(df[[variables$anl]])
   )
-  checkmate::assert_list(abnormal, type = "character", len = 2)
+  checkmate::assert_list(abnormal, types = "character", len = 2)
 
   # Drop usued levels from df as they are not supposed to be in the final map
   df <- droplevels(df)
