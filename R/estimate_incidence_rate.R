@@ -238,7 +238,7 @@ s_incidence_rate <- function(df,
       assertthat::is.string(.var)
     )
     checkmate::assert_numeric(df[[.var]])
-    checkmate::assert_numeric(df[[n_events]])
+    checkmate::assert_integer(df[[n_events]])
   }
 
   time_unit_input <- control$time_unit_input
