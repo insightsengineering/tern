@@ -12,7 +12,7 @@ skip_if_too_deep <- function(depth) { # nolintr
 
   if (length(testing_depth) != 1 || is.na(testing_depth)) testing_depth <- 3
 
-  if (test_to_depth < depth) {
-    testthat::skip(paste("testing depth", test_to_depth, "is below current testing specification", depth))
+  if (testing_depth < depth) {
+    testthat::skip(paste("testing depth", testing_depth, "is below current testing specification", depth))
   }
 }

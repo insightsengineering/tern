@@ -28,7 +28,6 @@ assertthat::on_failure(is_character_or_factor) <- function(call, env) {
   paste0(deparse(call$x), " is not a character or factor vector")
 }
 
-
 #' @describeIn assertions Check whether `x` is a nonnegative count.
 #' @export
 #' @examples
@@ -62,8 +61,8 @@ assertthat::on_failure(is_nonnegative_count) <- function(call, env) {
 #' is_variables(list(1, 2))
 #' is_variables(list("bla"))
 is_variables <- function(x) {
-  checkmate::check_list(x, names = "named") &&
-    all(vapply(x, checkmate::check_character, TRUE))
+  checkmate::test_list(x, names = "named") &&
+    all(vapply(x, checkmate::test_character, TRUE))
 }
 assertthat::on_failure(is_variables) <- function(call, env) {
   paste0(deparse(call$x), " is not a list of variable names")
@@ -203,7 +202,7 @@ assertthat::on_failure(is_equal_length) <- function(call, env) {
 #' is_proportion(x = 1.3)
 #' is_proportion(x = 0, include_boundaries = TRUE)
 is_proportion <- function(x, include_boundaries = FALSE) {
-  checkmate::check_numeric(x, len = 1) &&
+  checkmate::test_numeric(x, len = 1) &&
     is_proportion_vector(x, include_boundaries = include_boundaries)
 }
 assertthat::on_failure(is_proportion) <- function(call, env) {

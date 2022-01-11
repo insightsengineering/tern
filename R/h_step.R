@@ -18,7 +18,7 @@ NULL
 h_step_window <- function(x,
                           control = control_step()) {
   checkmate::assert_numeric(x, min.len = 1)
-  checkmate::test_list(control, names = "named")
+  checkmate::assert_list(control, names = "named")
 
   sel <- matrix(FALSE, length(x), control$num_points)
   out <- matrix(0, control$num_points, 3)
@@ -138,7 +138,7 @@ h_step_survival_est <- function(formula,
   )
   checkmate::assert_logical(subset, min.len = 1)
   checkmate::assert_numeric(x, min.len = 1)
-  checkmate::test_list(control, names = "named")
+  checkmate::assert_list(control, names = "named")
   # Note: `subset` in `coxph` needs to be an expression referring to `data` variables.
   data$.subset <- subset
   coxph_warnings <- NULL
@@ -238,7 +238,7 @@ h_step_rsp_est <- function(formula,
   )
   checkmate::assert_logical(subset, min.len = 1)
   checkmate::assert_numeric(x, min.len = 1)
-  checkmate::test_list(control, names = "named")
+  checkmate::assert_list(control, names = "named")
   # Note: `subset` in `glm` needs to be an expression referring to `data` variables.
   data$.subset <- subset
   fit_warnings <- NULL

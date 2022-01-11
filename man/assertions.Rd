@@ -3,6 +3,7 @@
 \name{assertions}
 \alias{assertions}
 \alias{is_character_or_factor}
+\alias{is_logical_or_zero_one}
 \alias{is_nonnegative_count}
 \alias{is_variables}
 \alias{is_df_with_variables}
@@ -21,6 +22,8 @@
 \title{Additional Assertions for \code{assert_that}}
 \usage{
 is_character_or_factor(x)
+
+is_logical_or_zero_one(x)
 
 is_nonnegative_count(x)
 
@@ -86,6 +89,8 @@ We provide additional assertion functions which can be used together with \code{
 \itemize{
 \item \code{is_character_or_factor}: Check whether \code{x} is a character or factor vector.
 
+\item \code{is_logical_or_zero_one}: Check whether \code{x} is logical or 0/1
+
 \item \code{is_nonnegative_count}: Check whether \code{x} is a nonnegative count.
 
 \item \code{is_variables}: Check whether \code{x} is a valid list of variable names.
@@ -126,6 +131,11 @@ is a factor with \code{n_levels} number of levels.
 is_character_or_factor(-1)
 is_character_or_factor(c("a", "b"))
 is_character_or_factor(factor(c("a", "b")))
+
+# Check whether `x` is logical or 0/1
+is_logical_or_zero_one(c(TRUE, FALSE))
+is_logical_or_zero_one(c(0, 1, 1))
+is_logical_or_zero_one(c(4, 1, 1))
 
 # Check whether `x` is a nonnegative count.
 is_nonnegative_count(-1)

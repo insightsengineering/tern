@@ -17,7 +17,7 @@
 #' )
 #' groups_list_to_df(grade_groups)
 groups_list_to_df <- function(groups_list) {
-  checkmate::test_list(groups_list, names = "named")
+  checkmate::assert_list(groups_list, names = "named")
   assertthat::assert_that(
     all(sapply(groups_list, is.character))
   )

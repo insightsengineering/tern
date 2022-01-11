@@ -100,7 +100,7 @@ NULL
 #' )
 h_coxreg_univar_formulas <- function(variables,
                                      interaction = FALSE) {
-  checkmate::test_list(variables, names = "named")
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -189,7 +189,7 @@ h_coxreg_univar_formulas <- function(variables,
 #'   )
 #' )
 h_coxreg_multivar_formula <- function(variables) {
-  checkmate::test_list(variables, names = "named")
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -322,7 +322,7 @@ fit_coxreg_univar <- function(variables,
                               data,
                               at = list(),
                               control = control_coxreg()) {
-  checkmate::test_list(variables, names = "named")
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -907,7 +907,7 @@ tidy.coxreg.univar <- function(x, # nousage # nolint
 fit_coxreg_multivar <- function(variables,
                                 data,
                                 control = control_coxreg()) {
-  checkmate::test_list(variables, names = "named")
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 

@@ -141,8 +141,8 @@ g_step <- function(df,
     assertthat::is.flag(use_percentile)
   )
 
-  checkmate::test_list(est, names = "named")
-  checkmate::test_list(ci_ribbon, names = "named", null.ok = TRUE)
+  checkmate::assert_list(est, names = "named")
+  checkmate::assert_list(ci_ribbon, names = "named", null.ok = TRUE)
 
   x_var <- ifelse(use_percentile, "Percentile Center", "Interval Center")
   df$x <- df[[x_var]]

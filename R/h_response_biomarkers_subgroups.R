@@ -92,7 +92,7 @@ h_logistic_mult_cont_df <- function(variables,
   )
 
   checkmate::assert_character(variables$biomarkers, min.len = 1)
-  checkmate::test_list(control, names = "named")
+  checkmate::assert_list(control, names = "named")
 
   conf_level <- control[["conf_level"]]
   pval_label <- "p-value (Wald)"
