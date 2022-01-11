@@ -124,7 +124,7 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
 #' library(broom)
 #' df <- tidy(result)
 #' df_no_arm <- tidy(result_no_arm)
-tidy.mmrm <- function(x) { # nolint #nousage
+tidy.mmrm <- function(x) { # nolint
   vars <- x$vars
   estimates <- x$lsmeans$estimates
   df <- if (is.null(vars$arm)) {

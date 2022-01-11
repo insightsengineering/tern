@@ -240,12 +240,12 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   grid::grid.draw(grob)
 }
 
-tern_grob <- function(x) { # nousage # nolint
+tern_grob <- function(x) { # nolint
   class(x) <- unique(c("ternGrob", class(x)))
   x
 }
 
-print.ternGrob <- function(x, ...) { # nousage # nolint
+print.ternGrob <- function(x, ...) { # nolint
   grid::grid.newpage()
   grid::grid.draw(x)
 }
