@@ -169,7 +169,7 @@ cut_quantile_bins <- function(x,
                               type = 7,
                               ordered = TRUE) {
 
-  checkmate::assert_character(labels, min.len = length(probs) + 1, max.len = length(probs) + 1)
+  checkmate::assert_character(labels, len = length(probs) + 1)
 
   assertthat::assert_that(
     is.numeric(x),
