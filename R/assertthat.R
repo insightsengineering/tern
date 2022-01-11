@@ -62,7 +62,7 @@ assertthat::on_failure(is_nonnegative_count) <- function(call, env) {
 #' is_variables(list("bla"))
 is_variables <- function(x) {
   checkmate::test_list(x, names = "named") &&
-    all(vapply(x, checkmate::test_character, TRUE))
+    all(vapply(x, checkmate::test_character, logical(1), min.len = 1))
 }
 assertthat::on_failure(is_variables) <- function(call, env) {
   paste0(deparse(call$x), " is not a list of variable names")
