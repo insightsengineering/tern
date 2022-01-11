@@ -823,7 +823,7 @@ vp_forest_table_part <- function(nrow,
 #'
 #' @noRd
 #'
-grid.forest <- function(...) { # nousage # nolint
+grid.forest <- function(...) { # nolint
   grid::grid.draw(forest_grob(...)) # nolint
 }
 

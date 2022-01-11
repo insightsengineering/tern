@@ -26,7 +26,7 @@ NULL
 #'   c("CR", "PR", "hello", "hi")
 #' )
 #'
-d_onco_rsp_label <- function(x) { # nousage # nolint
+d_onco_rsp_label <- function(x) { # nolint
 
   x <- as.character(x)
   desc <- c(

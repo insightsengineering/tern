@@ -823,7 +823,7 @@ h_logistic_inter_terms <- function(x,
 #' library(broom)
 #' df <- tidy(mod1, conf_level = 0.99)
 #' df2 <- tidy(mod2, conf_level = 0.99)
-tidy.glm <- function(fit_glm, # nolint #nousage
+tidy.glm <- function(fit_glm, # nolint
                      conf_level = 0.95,
                      at = NULL) {
   assertthat::assert_that(
