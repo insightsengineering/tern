@@ -89,7 +89,7 @@ as.rtable <- function(x, ...) {  #nolint
   UseMethod("as.rtable", x)
 }
 
-as.rtable.data.frame <- function(x, format = "xx.xx") { # nousage # nolint
+as.rtable.data.frame <- function(x, format = "xx.xx") { # nolint
   do.call(
     rtable,
     c(
@@ -121,7 +121,7 @@ class(test)
 That seems to work, nice. Let's try the `cbind` (at least for simple elementary tables):
 
 ```{r}
-cbind.rtables <- function(...) { # nousage # nolint
+cbind.rtables <- function(...) { # nolint
   all_args <- list(...)
   stopifnot(all(sapply(all_args, is, "ElementaryTable")))
   current <- all_args[[1]]

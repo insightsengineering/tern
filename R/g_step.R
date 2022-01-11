@@ -24,7 +24,7 @@
 #'   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
 #' )
 #' broom::tidy(step_matrix)
-tidy.step <- function(x, ...) { # nolint #nousage
+tidy.step <- function(x, ...) { # nolint
   assertthat::assert_that(inherits(x, "step"))
   dat <- as.data.frame(x)
   nams <- names(dat)
