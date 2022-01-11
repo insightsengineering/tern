@@ -81,7 +81,6 @@ Collate:
     'abnormal_by_worst_grade_worsen.R'
     'argument_convention.R'
     'assertthat.R'
-    'cached_object.R'
     'combination_function.R'
     'summarize_variables.R'
     'compare_variables.R'
