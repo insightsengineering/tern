@@ -1,4 +1,4 @@
-#' Catched `S3` `pool` object obtained by `rbmi` package
+#' Catched `pool` object obtained by `rbmi` package
 #' @docType data
 #'
 "pool_obj"

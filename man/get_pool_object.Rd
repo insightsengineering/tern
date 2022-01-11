@@ -2,12 +2,12 @@
 % Please edit documentation in R/get_pool_object.R
 \name{get_pool_object}
 \alias{get_pool_object}
-\title{Get cached \code{rbmi} S3 \code{pool} object}
+\title{Get cached \code{pool} class object from \code{rbmi} package}
 \usage{
 get_pool_object()
 }
 \description{
-Get cached \code{rbmi} S3 \code{pool} object
+Get cached \code{pool} class object from \code{rbmi} package
 }
 \examples{
 get_pool_object()

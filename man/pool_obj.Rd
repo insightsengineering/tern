@@ -3,7 +3,7 @@
 \docType{data}
 \name{pool_obj}
 \alias{pool_obj}
-\title{Catched \code{S3} \code{pool} object obtained by \code{rbmi} package}
+\title{Catched \code{pool} object obtained by \code{rbmi} package}
 \format{
 An object of class \code{pool} of length 5.
 }
@@ -11,6 +11,6 @@ An object of class \code{pool} of length 5.
 pool_obj
 }
 \description{
-Catched \code{S3} \code{pool} object obtained by \code{rbmi} package
+Catched \code{pool} object obtained by \code{rbmi} package
 }
 \keyword{datasets}
