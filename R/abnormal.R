@@ -62,7 +62,7 @@ s_count_abnormal <- function(df,
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE) {
 
-  checkmate::assert_list(abnormal, names = "named", len = 2)
+  checkmate::assert_list(abnormal, types = "character", names = "named", len = 2)
 
   assertthat::assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
