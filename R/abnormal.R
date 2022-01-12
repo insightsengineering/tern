@@ -61,10 +61,11 @@ s_count_abnormal <- function(df,
                              abnormal = list(Low = "LOW", High = "HIGH"),
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE) {
+
+  checkmate::assert_list(abnormal, types = "character", names = "named", len = 2, any.missing = FALSE)
+
   assertthat::assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
-    utils.nest::is_character_list(abnormal, min_length = 2, max_length = 2),
-    !is.null(names(abnormal)),
     any(unlist(abnormal) %in% levels(df[[.var]])),
     is_character_or_factor(df[[variables$baseline]]),
     is_character_or_factor(df[[variables$id]]),
@@ -95,7 +96,7 @@ s_count_abnormal <- function(df,
   # This will define the abnormal levels theoretically possible for a specific lab parameter
   # within a split level of a layout.
   abnormal_lev <- lapply(abnormal, intersect, levels(df[[.var]]))
-  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, utils.nest::is_empty)]
+  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, purrr::is_empty)]
 
   result <- sapply(names(abnormal_lev), function(i) count_abnormal_single(i, abnormal_lev[[i]]), simplify = FALSE)
   result <- list(fraction = result)

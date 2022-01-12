@@ -17,8 +17,8 @@
 #' )
 #' groups_list_to_df(grade_groups)
 groups_list_to_df <- function(groups_list) {
+  checkmate::assert_list(groups_list, names = "named")
   assertthat::assert_that(
-    utils.nest::is_fully_named_list(groups_list),
     all(sapply(groups_list, is.character))
   )
   tibble::tibble(

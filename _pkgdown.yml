@@ -388,6 +388,7 @@ reference:
       - fit_lme4
       - fit_lme4_single_optimizer
       - get_covariates
+      - get_free_cores
       - get_lme4_cov_estimate
       - get_lme4_diagnostics
       - get_mmrm_lsmeans

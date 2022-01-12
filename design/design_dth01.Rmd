@@ -36,7 +36,6 @@ library(assertthat)
 library(rtables)
 library(dplyr)
 library(utils)
-library(utils.nest)
 library(tern)
 
 packageVersion("rtables")

@@ -35,7 +35,6 @@ adlb <- adlb %>% mutate(
 
 ## Elementary function: `h_abnormal_by_worst_grade`
 ```{r h_data}
-library(utils.nest)
 library(rtables)
 library(assertthat)
 library(tern)

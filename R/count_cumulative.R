@@ -92,9 +92,8 @@ s_count_cumulative <- function(x,
                                include_eq = TRUE,
                                .N_col, # nolint
                                ...) {
-  assertthat::assert_that(
-    utils.nest::is_numeric_vector(thresholds)
-  )
+
+  checkmate::assert_numeric(thresholds, min.len = 1, any.missing = FALSE)
 
   count_fraction_list <- Map(function(thres) {
     result <- h_count_cumulative(x, thres, lower_tail, include_eq, .N_col = .N_col, ...)

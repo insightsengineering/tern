@@ -49,10 +49,12 @@ s_count_patients_and_multiple_events <- function(df, # nolint
                                                  empty_stats = character(),
                                                  labelstr = "",
                                                  custom_label = NULL) {
+
+  checkmate::assert_list(filters_list, names = "named")
+
   assertthat::assert_that(
     is.data.frame(df),
     assertthat::is.string(id),
-    utils.nest::is_fully_named_list(filters_list),
     !(any(c("unique", "all") %in% names(filters_list))),
     is.character(empty_stats),
     assertthat::is.string(labelstr),

@@ -168,10 +168,12 @@ cut_quantile_bins <- function(x,
                               labels = bins_percent_labels(probs),
                               type = 7,
                               ordered = TRUE) {
+
+  checkmate::assert_character(labels, len = length(probs) + 1, any.missing = FALSE)
+
   assertthat::assert_that(
     is.numeric(x),
     is_quantiles_vector(probs, include_boundaries = FALSE),
-    utils.nest::is_character_vector(labels, min_length = length(probs) + 1, max_length = length(probs) + 1),
     !any(duplicated(labels)),
     assertthat::is.flag(ordered)
   )

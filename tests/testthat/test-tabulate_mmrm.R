@@ -302,7 +302,7 @@ testthat::test_that("h_mmrm_cov works as expected", {
     testthat::skip("tests dont run with older version of lme4")
   }
 
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
   result <- h_mmrm_cov(mmrm, format = "xx.xxxx")
@@ -357,7 +357,7 @@ testthat::test_that("h_mmrm_cov works as expected", {
 })
 
 testthat::test_that("h_mmrm_diagnostic works as expected", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
   result <- h_mmrm_diagnostic(mmrm, format = "xx.x")
@@ -375,7 +375,7 @@ testthat::test_that("h_mmrm_diagnostic works as expected", {
 })
 
 testthat::test_that("tidy.mmrm works as expected", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
   result <- broom::tidy(mmrm)
@@ -404,7 +404,7 @@ testthat::test_that("tidy.mmrm works as expected", {
 })
 
 testthat::test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   mmrm <- get_mmrm_no_arm()
   result <- broom::tidy(mmrm)
@@ -440,7 +440,7 @@ testthat::test_that("s_mmrm_lsmeans works as expected when not in reference colu
 })
 
 testthat::test_that("s_mmrm_lsmeans works as expected when in reference column", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
@@ -458,7 +458,7 @@ testthat::test_that("s_mmrm_lsmeans works as expected when in reference column",
 })
 
 testthat::test_that("s_mmrm_lsmeans_single works as expected", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   mmrm <- get_mmrm_no_arm()
   df <- broom::tidy(mmrm)
@@ -472,7 +472,7 @@ testthat::test_that("s_mmrm_lsmeans_single works as expected", {
 })
 
 testthat::test_that("summarize_lsmeans works as expected", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     testthat::skip("tests dont run with older version of lme4")
@@ -543,7 +543,7 @@ testthat::test_that("summarize_lsmeans works as expected", {
 })
 
 testthat::test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     testthat::skip("tests dont run with older version of lme4")

@@ -143,7 +143,7 @@ function that does not work with log-rank test, we need to use
 
 ```{r}
 library(assertthat)
-library(utils.nest)
+library(checkmate)
 library(tern)
 extract_survival_biomarkers <- function(variables,
                                         data,
@@ -236,11 +236,12 @@ h_coxreg_mult_cont_df <- function(variables,
                                   control = control_coxreg()) {
   assertthat::assert_that(
     is.list(variables),
-    utils.nest::is_character_vector(variables$biomarkers),
-    is_df_with_variables(data, as.list(unlist(variables))),
-    utils.nest::is_fully_named_list(control)
+    is_df_with_variables(data, as.list(unlist(variables)))
   )
 
+  checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)
+  checkmate::assert_list(control, names = "named")
+  
   # If there is any data, run model, otherwise return empty results.
   result_df <- if (nrow(data) > 0) {
     bm_cols <- match(variables$biomarkers, names(data))

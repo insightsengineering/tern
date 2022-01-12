@@ -198,10 +198,11 @@ g_km <- function(df,
   arm <- variables$arm
   assertthat::assert_that(
     is_df_with_variables(df, list(tte = tte, is_event = is_event, arm = arm)),
-    utils.nest::is_numeric_vector(df[[tte]]),
-    is_valid_factor(df[[arm]]),
-    utils.nest::is_logical_vector(df[[is_event]])
+    is_valid_factor(df[[arm]])
   )
+  checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
+  checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
+
   armval <- as.character(unique(df[[arm]]))
   if (length(armval) > 1) {
     armval <- NULL
