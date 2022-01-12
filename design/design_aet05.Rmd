@@ -24,7 +24,8 @@ library(rtables)
 library(tern)
 library(assertthat)
 library(dplyr)
-library(utils.nest)
+library(checkmate)
+
 source("../R/utils.R")
 packageVersion("tern")
 packageVersion("rtables")
@@ -65,10 +66,11 @@ s_adjusted_rate <- function(
 
   assertthat::assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    assertthat::is.string(.var),
-    utils.nest::is_numeric_vector(df[[.var]]),
-    utils.nest::is_logical_vector(df[[is_event]])
+    assertthat::is.string(.var)
   )
+  
+  checkmate::assert_numeric(df[[.var]], min.len = 1, any.missing = FALSE)
+  checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
 
   time_unit <- control$time_unit
   conf_level <- control$conf_level
@@ -100,11 +102,9 @@ h_rate_ci <- function(
   control = control_adjusted_rate()
 ) {
 
-  assertthat::assert_that(
-    utils.nest::is_numeric_single(person_years),
-    utils.nest::is_numeric_single(num_events)
-  )
-
+  checkmate::is_number(person_years)
+  checkmate::is_number(num_events)
+  
   conf_level <- control$conf_level
   conf_type <- control$conf_type
   time_unit <- control$time_unit
@@ -143,8 +143,8 @@ control_adjusted_rate <- function(
   conf_type = c("normal", "normal for log transform", "exact", "byar")
 ) {
   conf_type <- match.arg(conf_type)
+  checkamte::assert_number(time_unit)
   assertthat::assert_that(
-    utils.nest::is_numeric_single(time_unit),
     is_proportion(conf_level)
   )
   list(conf_level = conf_level, conf_type = conf_type, time_unit = time_unit)
