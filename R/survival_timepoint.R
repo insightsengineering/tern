@@ -47,11 +47,12 @@ s_surv_timepoint <- function(df,
                              control = control_surv_timepoint()) {
   assertthat::assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    assertthat::is.string(.var),
-    utils.nest::is_numeric_vector(df[[.var]]),
-    utils.nest::is_numeric_single(time_point),
-    utils.nest::is_logical_vector(df[[is_event]])
+    assertthat::is.string(.var)
   )
+  checkmate::assert_numeric(df[[.var]], min.len = 1, any.missing = FALSE)
+  checkmate::assert_number(time_point)
+  checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
+
   conf_type <- control$conf_type
   conf_level <- control$conf_level
 

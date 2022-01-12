@@ -368,7 +368,7 @@ n_available <- function(x) {
 }
 
 # used for tests at the moments
-reapply_varlabels <- function(x, varlables, ...) { # nolintr # nousage
+reapply_varlabels <- function(x, varlables, ...) { # nolintr
   do.call(var_relabel, c(list(x = x), as.list(varlables), list(...)))
 }
 

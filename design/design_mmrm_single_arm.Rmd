@@ -422,7 +422,7 @@ The LS means table don't work out of the box.
 First we have to adapt the tidy method.
 
 ```{r}
-tidy.mmrm <- function(x) {  #nolint #nousage
+tidy.mmrm <- function(x) {  #nolint
   vars <- x$vars
   estimates <- x$lsmeans$estimates
   df <- if (is.null(vars$arm)) {

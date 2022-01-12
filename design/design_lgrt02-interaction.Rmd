@@ -25,7 +25,6 @@ library(random.cdisc.data)
 library(dplyr)
 library(rtables)
 library(assertthat)
-library(utils.nest)
 
 ADRS <- radrs(cached = TRUE) #nolint
 adrs_labels <- var_labels(ADRS) #nolint
@@ -189,9 +188,11 @@ h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_int
     assertthat::is.string(odds_ratio_var),
     assertthat::is.string(interaction_var),
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
-    identical(length(interaction_vars), 2L),
-    is.null(interaction_increments) || utils.nest::is_numeric_vector(interaction_increments)
+    identical(length(interaction_vars), 2L)
   )
+  
+  checkmate::assert_numeric(interaction_increments, min.len = 1, null.ok = TRUE, any.missing = FALSE)
+
   xs_level <- fit_glm$xlevels
   xs_coef <- coef(fit_glm)
   xs_vcov <- vcov(fit_glm)

@@ -27,7 +27,6 @@ library(scda)
 library(dplyr)
 library(tern)
 library(assertthat)
-library(utils.nest)
 library(forcats)
 adlb <- synthetic_cdisc_data("latest")$adlb
 adsl <- synthetic_cdisc_data("latest")$adsl

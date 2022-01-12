@@ -31,6 +31,8 @@ library(rtables)
 library(tern)
 library(dplyr)
 library(assertthat)
+library(purrr)
+library(checkmate)
 
 packageVersion("tern")
 packageVersion("rtables")
@@ -94,8 +96,8 @@ s_count_abnormal <- function(df,
 ) {
 
   # Assertions for abnormal
+  checkmate::assert_list(abnormal, types = "character", len = 2)
   assertthat::assert_that(
-    utils.nest::is_character_list(abnormal, min_length = 2, max_length = 2),
     !is.null(names(abnormal)),
     any(unlist(abnormal) %in% levels(df[[.var]]))
   )
@@ -124,7 +126,7 @@ s_count_abnormal <- function(df,
   # This will define the abnormal levels theoretically possible for a specific lab parameter
   # within a split level of a layout.
   abnormal_lev <- lapply(abnormal, intersect, levels(df[[.var]]))
-  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, utils.nest::is_empty)]
+  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, purrr::is_empty)]
 
   result <- sapply(names(abnormal_lev), function(i) count_abnormal_single(i, abnormal_lev[[i]]), simplify = FALSE)
   result <- list(fraction = result)

@@ -17,7 +17,7 @@
 #'
 #' explicit_na(sas_na(c("a", "")))
 explicit_na <- function(x, label = "<Missing>") {
-  stopifnot(utils.nest::is_character_single(label))
+  checkmate::assert_string(label)
 
   if (is.factor(x)) {
     forcats::fct_explicit_na(x, label)
@@ -48,7 +48,8 @@ explicit_na <- function(x, label = "<Missing>") {
 #'
 #' is.na(sas_na(c("1", "", " ", "   ", "b")))
 sas_na <- function(x, empty = TRUE, whitespaces = TRUE) {
-  stopifnot(utils.nest::is_logical_single(empty), utils.nest::is_logical_single(whitespaces))
+  checkmate::assert_flag(empty)
+  checkmate::assert_flag(whitespaces)
 
   if (is.factor(x)) {
     empty_levels <- levels(x) == ""

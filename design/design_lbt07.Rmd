@@ -27,7 +27,7 @@ library(scda)
 library(dplyr)
 library(tern)
 library(assertthat)
-library(utils.nest)
+library(checkmate)
 adlb <- synthetic_cdisc_data("latest")$adlb
 adsl <- synthetic_cdisc_data("latest")$adsl
 
@@ -67,10 +67,10 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
     is.list(variables),
     all(names(variables) %in% c("id", "worst_grade_flag")),
     is_df_with_variables(df, c(aval = .var, variables)),
-    utils.nest::is_numeric_vector(df[[.var]]),
-    utils.nest::is_logical_vector(df[[variables$worst_grade_flag]]),
     is_character_or_factor(df[[variables$id]])
   )
+  checkmate::assert_numeric(df[[.var]], min.len = 1, any.missing = FALSE)
+  checkmate::assert_logical(df[[variables$worst_grade_flag]], min.len = 1, any.missing = FALSE)
 
   df <- df[!is.na(df[[.var]]), ]
   anl <- data.frame(
@@ -162,10 +162,11 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
     !is.null(names(variables$worst_high_flag)),
     is_df_with_variables(df, c(aval = .var, variables)),
     is.factor(df[[.var]]),
-    utils.nest::is_logical_vector(df[[variables$worst_low_flag]]) || is_logical_empty(df[[variables$worst_low_flag]]),
-    utils.nest::is_logical_vector(df[[variables$worst_high_flag]]) || is_logical_empty(df[[variables$worst_high_flag]]),
     is_character_or_factor(df[[variables$id]])
   )
+  
+  checkmate::assert_logical(df[[variables$worst_low_flag]], any.missing = FALSE)
+  checkmate::assert_logical(df[[variables$worst_high_flag]], any.missing = FALSE)
 
   low_label <- names(variables$worst_low_flag)
   high_label <- names(variables$worst_high_flag)

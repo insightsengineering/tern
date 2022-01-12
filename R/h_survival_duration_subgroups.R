@@ -142,9 +142,10 @@ h_survtime_subgroups_df <- function(variables,
     is.character(variables$is_event),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables)))
   )
+
+  checkmate::assert_string(label_all)
 
   # Add All Patients.
   result_all <- h_survtime_df(data[[variables$tte]], data[[variables$is_event]], data[[variables$arm]])
@@ -337,10 +338,10 @@ h_coxph_subgroups_df <- function(variables,
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
     is.character(variables$strat) || is.null(variables$strat),
-    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
   )
+  checkmate::assert_string(label_all)
 
   # Add All Patients.
   result_all <- h_coxph_df(
@@ -424,10 +425,12 @@ h_coxph_subgroups_df <- function(variables,
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {
+
+  checkmate::assert_character(subgroups, min.len = 1, any.missing = FALSE)
+  checkmate::assert_list(groups_lists, names = "named")
   assertthat::assert_that(
-    utils.nest::is_character_vector(subgroups),
     is_df_with_factors(data, as.list(stats::setNames(subgroups, subgroups))),
-    utils.nest::is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups)
+    all(names(groups_lists) %in% subgroups)
   )
 
   data_labels <- unname(var_labels(data))

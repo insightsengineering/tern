@@ -43,7 +43,6 @@ var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
 ```{r}
 library(assertthat)
 library(tern)
-library(utils.nest)
 # variables: "interaction" is either NULL or a variable selected from "covariates".
 # Fit a logistic model with data and variables
 fit_logistic <- function(data,

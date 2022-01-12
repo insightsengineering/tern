@@ -50,7 +50,6 @@ library(rtables)
 library(dplyr)
 library(tern)
 library(assertthat)
-library(utils.nest)
 
 packageVersion("tern")
 packageVersion("rtables")

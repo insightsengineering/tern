@@ -24,7 +24,7 @@
 #'   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
 #' )
 #' broom::tidy(step_matrix)
-tidy.step <- function(x, ...) { # nolint #nousage
+tidy.step <- function(x, ...) { # nolint
   assertthat::assert_that(inherits(x, "step"))
   dat <- as.data.frame(x)
   nams <- names(dat)
@@ -138,10 +138,12 @@ g_step <- function(df,
                    ci_ribbon = list(fill = "lightblue", alpha = 0.5)) {
   assertthat::assert_that(
     tibble::is_tibble(df),
-    assertthat::is.flag(use_percentile),
-    utils.nest::is_fully_named_list(est),
-    is.null(ci_ribbon) || utils.nest::is_fully_named_list(ci_ribbon)
+    assertthat::is.flag(use_percentile)
   )
+
+  checkmate::assert_list(est, names = "named")
+  checkmate::assert_list(ci_ribbon, names = "named", null.ok = TRUE)
+
   x_var <- ifelse(use_percentile, "Percentile Center", "Interval Center")
   df$x <- df[[x_var]]
   attrs <- attributes(df)

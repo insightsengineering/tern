@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.5.9015
+Version: 0.7.5.9021
 Date: 2021-10-13
 Authors@R: c(
     person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre")),
@@ -32,6 +32,7 @@ Imports:
     assertthat,
     broom,
     car,
+    checkmate,
     dfoptim,
     dplyr,
     emmeans (>= 1.4.5),
@@ -46,6 +47,7 @@ Imports:
     lmerTest (>= 3.1-1),
     magrittr,
     methods,
+    parallel,
     purrr,
     rlang,
     scales,
@@ -55,7 +57,6 @@ Imports:
     tibble,
     tidyr,
     utils,
-    utils.nest (>= 0.2.11),
     viridisLite
 Suggests:
     knitr,
@@ -125,6 +126,7 @@ Collate:
     'nest_colors.R'
     'odds_ratio.R'
     'package.R'
+    'parallel.R'
     'prop_diff.R'
     'prune_occurrences.R'
     'response_biomarkers_subgroups.R'

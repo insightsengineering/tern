@@ -226,20 +226,19 @@ s_incidence_rate <- function(df,
     if (missing(n_events)) {
       assertthat::assert_that(
         is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-        assertthat::is.string(.var),
-        utils.nest::is_numeric_vector(df[[.var]], min_length = 0),
-        utils.nest::is_logical_vector(df[[is_event]], min_length = 0)
+        assertthat::is.string(.var)
       )
-
+      checkmate::assert_logical(df[[is_event]], any.missing = FALSE)
+      checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
       n_events <- is_event
     }
   } else {
     assertthat::assert_that(
       is_df_with_variables(df, list(tte = .var, n_events = n_events)),
-      assertthat::is.string(.var),
-      utils.nest::is_numeric_vector(df[[.var]], min_length = 0),
-      utils.nest::is_integer_vector(df[[n_events]], min_length = 0)
+      assertthat::is.string(.var)
     )
+    checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
+    checkmate::assert_integer(df[[n_events]], any.missing = FALSE)
   }
 
   time_unit_input <- control$time_unit_input

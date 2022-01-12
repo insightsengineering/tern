@@ -100,7 +100,7 @@ NULL
 #' )
 h_coxreg_univar_formulas <- function(variables,
                                      interaction = FALSE) {
-  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -189,7 +189,7 @@ h_coxreg_univar_formulas <- function(variables,
 #'   )
 #' )
 h_coxreg_multivar_formula <- function(variables) {
-  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -322,7 +322,7 @@ fit_coxreg_univar <- function(variables,
                               data,
                               at = list(),
                               control = control_coxreg()) {
-  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -401,7 +401,7 @@ fit_coxreg_univar <- function(variables,
 #' formula <- "survival::Surv(time, status) ~ armcd + covar1"
 #' msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 #' tidy(msum)
-tidy.summary.coxph <- function(x, # nousage # nolint
+tidy.summary.coxph <- function(x, # nolint
                                ...) {
   assertthat::assert_that(
     class(x) == "summary.coxph"
@@ -552,7 +552,7 @@ h_coxreg_inter_effect <- function(x,
 #' @param at (`list`)\cr a list with items named after the covariate, every
 #'   item is a vector of levels at which the interaction should be estimated.
 #' @export
-h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
+h_coxreg_inter_effect.numeric <- function(x, # nolint
                                           effect,
                                           covar,
                                           mod,
@@ -603,7 +603,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
 #'
 #' @param data (`data frame`)\cr the data frame on which the model was fit.
 #' @export
-h_coxreg_inter_effect.factor <- function(x, # nousage # nolint
+h_coxreg_inter_effect.factor <- function(x, # nolint
                                          effect,
                                          covar,
                                          mod,
@@ -815,7 +815,7 @@ h_coxreg_inter_estimations <- function(variable, given,
 #' library(broom)
 #' tidy(mod1)
 #' tidy(mod2)
-tidy.coxreg.univar <- function(x, # nousage # nolint
+tidy.coxreg.univar <- function(x, # nolint
                                ...) {
   assertthat::assert_that(
     class(x) == "coxreg.univar"
@@ -907,7 +907,7 @@ tidy.coxreg.univar <- function(x, # nousage # nolint
 fit_coxreg_multivar <- function(variables,
                                 data,
                                 control = control_coxreg()) {
-  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -1015,7 +1015,7 @@ h_coxreg_multivar_extract <- function(var,
 #' @examples
 #' library(broom)
 #' broom::tidy(multivar_model)
-tidy.coxreg.multivar <- function(x, # nousage # nolint
+tidy.coxreg.multivar <- function(x, # nolint
                                  ...) {
   assertthat::assert_that(
     class(x) == "coxreg.multivar"

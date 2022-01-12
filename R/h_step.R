@@ -17,10 +17,9 @@ NULL
 #'
 h_step_window <- function(x,
                           control = control_step()) {
-  assertthat::assert_that(
-    utils.nest::is_numeric_vector(x),
-    utils.nest::is_fully_named_list(control)
-  )
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
+  checkmate::assert_list(control, names = "named")
+
   sel <- matrix(FALSE, length(x), control$num_points)
   out <- matrix(0, control$num_points, 3)
   colnames(out) <- paste("Interval", c("Center", "Lower", "Upper"))
@@ -135,11 +134,11 @@ h_step_survival_est <- function(formula,
                                 control = control_coxph()) {
   assertthat::assert_that(
     inherits(formula, "formula"),
-    is_df_with_variables(data, variables),
-    utils.nest::is_numeric_vector(x),
-    utils.nest::is_logical_vector(subset),
-    utils.nest::is_fully_named_list(control)
+    is_df_with_variables(data, variables)
   )
+  checkmate::assert_logical(subset, min.len = 1, any.missing = FALSE)
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
+  checkmate::assert_list(control, names = "named")
   # Note: `subset` in `coxph` needs to be an expression referring to `data` variables.
   data$.subset <- subset
   coxph_warnings <- NULL
@@ -235,11 +234,11 @@ h_step_rsp_est <- function(formula,
                            control = control_logistic()) {
   assertthat::assert_that(
     inherits(formula, "formula"),
-    is_df_with_variables(data, variables),
-    utils.nest::is_numeric_vector(x),
-    utils.nest::is_logical_vector(subset),
-    utils.nest::is_fully_named_list(control)
+    is_df_with_variables(data, variables)
   )
+  checkmate::assert_logical(subset, min.len = 1, any.missing = FALSE)
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
+  checkmate::assert_list(control, names = "named")
   # Note: `subset` in `glm` needs to be an expression referring to `data` variables.
   data$.subset <- subset
   fit_warnings <- NULL

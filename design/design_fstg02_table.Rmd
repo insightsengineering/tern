@@ -33,7 +33,7 @@ library(tern)
 library(assertthat)
 library(dplyr)
 library(forcats)
-library(utils.nest)
+library(checkmate)
 
 packageVersion("tern")
 packageVersion("rtables")
@@ -130,9 +130,9 @@ is_df_with_factors <- function(df, variables) {
 h_split_by_subgroups <- function(data, subgroups) {
 
   assertthat::assert_that(
-    utils.nest::is_character_vector(subgroups),
     is_df_with_factors(data, as.list(setNames(subgroups, subgroups)))
   )
+  checkmate::assert_character(subgroups, min.len = 1, any.missing = FALSE)
 
   df_subgroups <- data[, subgroups, drop = FALSE]
   subgroup_labels <- var_labels(df_subgroups, fill = TRUE)
@@ -178,9 +178,9 @@ str(split_data)
 
 h_survtime_df <- function(tte, is_event, arm) {
 
+  checkmate::assert_numeric(tte, min.len = 1, any.missing = FALSE)
+  checkmate::assert_logical(is_event, min.len - 1, any.missing = FALSE)
   assertthat::assert_that(
-    utils.nest::is_numeric_vector(tte),
-    utils.nest::is_logical_vector(is_event),
     is_valid_factor(arm),
     is_equal_length(tte, is_event, arm)
   )
@@ -216,11 +216,11 @@ h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients")
     is.character(variables$is_event),
     is.character(variables$arm),
     is.character(variables$subgroups),
-    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
     assertthat::are_equal(nlevels(data[[variables$arm]]), 2)
   )
+  checkmate::assert_string(label_all)
 
   # Add All Patients.
   result_all <- h_survtime_df(data[[variables$tte]], data[[variables$is_event]], data[[variables$arm]])
@@ -261,9 +261,9 @@ h_survtime_subgroups_df(
 ```{r, helpers_hr}
 h_coxph_df <- function(tte, is_event, arm, control = control_coxph()) {
 
+  checkmate::assert_numeric(tte, min.len = 1, any.missing = FALSE)
+  checkmate::assert_logical(is_event, min.len - 1, any.missing = FALSE)
   assertthat::assert_that(
-    utils.nest::is_numeric_vector(tte),
-    utils.nest::is_logical_vector(is_event),
     is_valid_factor(arm),
     assertthat::are_equal(nlevels(arm), 2),
     is_equal_length(tte, is_event, arm)
@@ -312,12 +312,11 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
     is.character(variables$is_event),
     is.character(variables$arm),
     is.character(variables$subgroups),
-    utils.nest::is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
     assertthat::are_equal(nlevels(data[[variables$arm]]), 2)
   )
-
+  checkmate::assert_string(label_all)
   # Add All Patients.
   result_all <- h_coxph_df(
     tte = data[[variables$tte]],

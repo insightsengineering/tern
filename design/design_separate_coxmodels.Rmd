@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Data
 
 ```{r}
+library(checkmate)
 library(survival)
 set.seed(1, kind = "Mersenne-Twister")
 dta_bladder <- with(
@@ -208,7 +209,7 @@ h_coxreg_biomarker_formulas <- function(variables) {
 And then of course we also need the tidy method. We can reuse the `h_coxreg_multivar_extract()` helper function here. This makes sense because we want to tabulate results for covariates which are often factors, and thus need for consistency the same layout as the multivariate Cox model tabulation.
 
 ```{r, tidymethod}
-tidy.coxreg.biomarker <- function(x, # nousage # nolint
+tidy.coxreg.biomarker <- function(x, # nolint
                                   ...) {
   assertthat::assert_that(
     class(x) == "coxreg.biomarker"
@@ -271,7 +272,7 @@ fit_coxreg_univar <- function(variables,
                               data,
                               at = list(),
                               control = control_coxreg()) {
-  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -322,7 +323,7 @@ fit_coxreg_univar <- function(variables,
 
 h_coxreg_univar_formulas <- function(variables,
                                      interaction = FALSE) {
-  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -365,7 +366,7 @@ h_coxreg_univar_formulas <- function(variables,
   setNames(forms, nams)
 }
 
-tidy.coxreg.univar <- function(x, # nousage # nolint
+tidy.coxreg.univar <- function(x, # nolint
                                ...) {
   assertthat::assert_that(
     class(x) == "coxreg.univar"
@@ -452,7 +453,7 @@ We also need to be able to work without an arm variable in the multivariate case
 fit_coxreg_multivar <- function(variables,
                                 data,
                                 control = control_coxreg()) {
-  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
@@ -487,7 +488,7 @@ fit_coxreg_multivar <- function(variables,
 }
 
 h_coxreg_multivar_formula <- function(variables) {
-  assertthat::assert_that(utils.nest::is_fully_named_list(variables))
+  checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 

@@ -533,7 +533,7 @@ testthat::test_that("h_glm_interaction_extract works for continuous interaction"
 # h_logistic_simple_terms ----
 
 testthat::test_that("h_logistic_simple_terms works", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   adrs <- adrs_example
   mod1 <- fit_logistic(
@@ -596,7 +596,7 @@ testthat::test_that("h_logistic_simple_terms works", {
 })
 
 testthat::test_that("h_logistic_simple_terms can extract continuous variable results from clogit objects", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   data <- data.frame(
     Response = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
@@ -866,7 +866,7 @@ testthat::test_that("h_logistic_inter_terms works as expected", {
 # tidy.glm ----
 
 testthat::test_that("tidy.glm works as expected for simple case", {
-  utils.nest::skip_if_too_deep(3)
+  skip_if_too_deep(3)
 
   adrs <- adrs_example
   mod1 <- fit_logistic(
