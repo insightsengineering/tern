@@ -3,7 +3,7 @@ pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   introduction: introduction.html
-last_built: 2022-01-07T07:43Z
+last_built: 2022-01-12T15:35Z
 urls:
   reference: https://insightsengineering.github.io/tern/reference
   article: https://insightsengineering.github.io/tern/articles
