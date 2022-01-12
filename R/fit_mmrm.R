@@ -52,8 +52,8 @@ check_mmrm_vars <- function(vars,
 
   # Check there is no more than one record per patient and visit.
   grouped_visit_usubjid <- data_complete_regressors %>%
-    group_by(.data[[vars$visit]], .data[[vars$id]]) %>%
-    count()
+    dplyr::group_by(.data[[vars$visit]], .data[[vars$id]]) %>%
+    dplyr::count()
   if (any(grouped_visit_usubjid$n > 1)) {
     n_dupl_subjects <- length(grouped_visit_usubjid[[vars$id]][grouped_visit_usubjid$n > 1]) # nolint
   }
