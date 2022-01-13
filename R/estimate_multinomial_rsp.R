@@ -31,8 +31,12 @@ NULL
 d_onco_rsp_label <- function(x) { # nolint
 
   x <- as.character(x)
-  missing_level <- c("Missing")
-  names(missing_level) <- eval(na_level)
+
+  na_level <- "Missing"
+  if ("<Missing>" %in% x){
+    na_level <- "<Missing>"
+  }
+  missing_level <- setNames(na_level, na_level)
   desc <- c(
     CR           = "Complete Response (CR)",
     MR           = "Minimal/Minor Response (MR)",
