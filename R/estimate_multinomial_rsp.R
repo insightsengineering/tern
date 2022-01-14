@@ -31,14 +31,9 @@ NULL
 d_onco_rsp_label <- function(x) { # nolint
 
   x <- as.character(x)
-
-  na_level <- "Missing"
-  if ("<Missing>" %in% x){
-    na_level <- "<Missing>"
-  }
-  missing_level <- setNames(na_level, na_level)
   desc <- c(
     CR           = "Complete Response (CR)",
+    Missing      = "Missing",
     MR           = "Minimal/Minor Response (MR)",
     MRD          = "Minimal Residual Disease (MRD)",
     `NA`         = "Not Applicable (NA)",
@@ -50,7 +45,6 @@ d_onco_rsp_label <- function(x) { # nolint
     PR           = "Partial Response (PR)",
     SD           = "Stable Disease (SD)"
   )
-  desc <- c(desc, missing_level)
 
   values_label <- vapply(
     X = x,

@@ -4,7 +4,7 @@
 \alias{d_onco_rsp_label}
 \title{Standard Oncology Response}
 \usage{
-d_onco_rsp_label(x, na_level = "<Missing>")
+d_onco_rsp_label(x)
 }
 \arguments{
 \item{x}{(\code{character})\cr the standard oncology code to be described.}
