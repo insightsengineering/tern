@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -91,7 +82,7 @@ Other releases
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
 <span class="r-in"><span class="fu">d_onco_rsp_label</span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CR"</span>, <span class="st">"PR"</span>, <span class="st">"SD"</span>, <span class="st">"NON CR/PD"</span>, <span class="st">"PD"</span>, <span class="st">"NE"</span>, <span class="st">"Missing"</span>, <span class="st">"NE/Missing"</span><span class="op">)</span></span>
+<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CR"</span>, <span class="st">"PR"</span>, <span class="st">"SD"</span>, <span class="st">"NON CR/PD"</span>, <span class="st">"PD"</span>, <span class="st">"NE"</span>, <span class="st">"Missing"</span>, <span class="st">"&lt;Missing&gt;"</span>, <span class="st">"NE/Missing"</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                           CR                           PR </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Complete Response (CR)        Partial Response (PR) </span>
@@ -99,9 +90,11 @@ Other releases
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Stable Disease (SD) Non-CR or Non-PD (NON CR/PD) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                           PD                           NE </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Progressive Disease (PD)           Not Evaluable (NE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      Missing                   NE/Missing </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      Missing       Missing or unevaluable </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Levels: Complete Response (CR) Missing ... Stable Disease (SD)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      Missing                    &lt;Missing&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      Missing                    &lt;Missing&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   NE/Missing </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Missing or unevaluable </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 Levels: &lt;Missing&gt; Complete Response (CR) Missing ... Stable Disease (SD)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Adding some values not considered in d_onco_rsp_label</span></span>
 <span class="r-in"></span>
