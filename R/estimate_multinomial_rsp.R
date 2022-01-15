@@ -17,7 +17,7 @@ NULL
 #' @examples
 #'
 #' d_onco_rsp_label(
-#'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "NE/Missing")
+#'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "<Missing>", "NE/Missing")
 #' )
 #'
 #' # Adding some values not considered in d_onco_rsp_label
