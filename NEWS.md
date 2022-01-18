@@ -9,8 +9,7 @@
 * Enhanced functions `tabulate_survival_subgroups` and `tabulate_rsp_subgroups` (Survival Duration and Best Overall Response analyses) to calculate `N`-s based on the records considered to create the model.
 * Enhanced the function `estimate_proportion` and related functions to be able to apply a continuity correction in the Wilson method.
 * Refactored `count_abnormal_by_marked` and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change.
-* Refactored `count_abnormal_by_worst_grade` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function
-under `split_rows_by` to show only the desired levels in the table. This is a breaking change.
+* Refactored `count_abnormal_by_worst_grade` and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change.
 * Refactored `count_abnormal` function and related statistics and formatting functions to use a more efficient layout with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. Also updated `abnormal` argument to be able to consider more than one level for each direction. This is a breaking change.
 
 ### Bug fixes
