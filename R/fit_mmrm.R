@@ -298,6 +298,10 @@ fit_lme4_single_optimizer <- function(formula,
   if (optimizer == "automatic") {
     optimizer <- "nloptwrap_bobyqa"
   }
+
+  # below are dummy calls to funs in order to silent import warning - those funs are used below
+  optimx::optimx
+  dfoptim::nmk
   control <- lme4::lmerControl(
     # We need this to be able to fit unstructured covariance matrix models.
     check.nobs.vs.nRE = "ignore",
