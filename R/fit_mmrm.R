@@ -269,6 +269,14 @@ get_lme4_diagnostics <- function(fit,
   return(result)
 }
 
+
+dummy_calls <- function() {
+  # below are dummy calls to funs in order to silent import warning - those funs are used below
+  optimx::optimx
+  dfoptim::nmk
+}
+
+
 #' Fitting `lme4` Model
 #'
 #' Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.
@@ -299,9 +307,6 @@ fit_lme4_single_optimizer <- function(formula,
     optimizer <- "nloptwrap_bobyqa"
   }
 
-  # below are dummy calls to funs in order to silent import warning - those funs are used below
-  optimx::optimx
-  dfoptim::nmk
   control <- lme4::lmerControl(
     # We need this to be able to fit unstructured covariance matrix models.
     check.nobs.vs.nRE = "ignore",
