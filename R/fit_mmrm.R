@@ -270,13 +270,6 @@ get_lme4_diagnostics <- function(fit,
 }
 
 
-dummy_calls <- function() {
-  # below are dummy calls to funs in order to silent import warning - those funs are used below
-  optimx::optimx
-  dfoptim::nmk
-}
-
-
 #' Fitting `lme4` Model
 #'
 #' Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.
@@ -305,6 +298,12 @@ fit_lme4_single_optimizer <- function(formula,
 
   if (optimizer == "automatic") {
     optimizer <- "nloptwrap_bobyqa"
+  }
+
+  if (FALSE) {
+    # below are dummy calls to funs in order to silent import warning - those funs are used below
+    optimx::optimx
+    dfoptim::nmk
   }
 
   control <- lme4::lmerControl(
