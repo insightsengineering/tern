@@ -298,6 +298,7 @@ fit_lme4_single_optimizer <- function(formula,
   if (optimizer == "automatic") {
     optimizer <- "nloptwrap_bobyqa"
   }
+
   control <- lme4::lmerControl(
     # We need this to be able to fit unstructured covariance matrix models.
     check.nobs.vs.nRE = "ignore",

@@ -25,7 +25,6 @@ License: Apache License 2.0 | file LICENSE
 URL: https://github.com/insightsengineering/tern
 BugReports: https://github..com/insightsengineering/tern/issues
 Depends:
-    optimx,
     R (>= 3.6),
     rtables (>= 0.3.8)
 Imports:
@@ -47,6 +46,7 @@ Imports:
     lmerTest (>= 3.1-1),
     magrittr,
     methods,
+    optimx,
     parallel,
     purrr,
     rlang,

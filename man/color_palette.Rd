@@ -41,7 +41,10 @@ plot_pal <- function(x) {
   pushViewport(plotViewport(rep(1, 4)))
   pushViewport(viewport(layout = grid.layout(1, ncol = length(x))))
   for (i in seq_along(x)) {
-    grid.rect(gp = gpar(fill = x[i], col = NA), vp = viewport(layout.pos.col = i, layout.pos.row = 1))
+    grid.rect(
+      gp = gpar(fill = x[i], col = NA),
+      vp = viewport(layout.pos.col = i, layout.pos.row = 1)
+      )
   }
 }
 
