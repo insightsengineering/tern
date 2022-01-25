@@ -11,6 +11,7 @@
 * Refactored `count_abnormal_by_marked` and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change.
 * Refactored `count_abnormal_by_worst_grade` and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change.
 * Refactored `count_abnormal` function and related statistics and formatting functions to use a more efficient layout with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. Also updated `abnormal` argument to be able to consider more than one level for each direction. This is a breaking change.
+* Enhanced the function `estimate_incidence_rate` and related functions to consider the week as time unit for data input. 
 
 ### Bug fixes
 * Fixed bug in `assertthat` functions that output wrong data frame names and limited length of failure message outputs.
