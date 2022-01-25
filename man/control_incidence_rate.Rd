@@ -7,7 +7,7 @@
 control_incidence_rate(
   conf_level = 0.95,
   conf_type = c("normal", "normal_log", "exact", "byar"),
-  time_unit_input = c("year", "day", "month"),
+  time_unit_input = c("year", "day", "week", "month"),
   time_unit_output = 1
 )
 }
