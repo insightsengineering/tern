@@ -247,7 +247,7 @@ s_incidence_rate <- function(df,
   person_years <- sum(df[[.var]], na.rm = TRUE) * (
     1 * (time_unit_input == "year") +
       1 / 12 * (time_unit_input == "month") +
-      1 / 57.14 * (time_unit_input == "week") +
+      1 / 52.14 * (time_unit_input == "week") +
       1 / 365.24 * (time_unit_input == "day")
   )
   n_events <- sum(df[[n_events]], na.rm = TRUE)
