@@ -9,7 +9,7 @@
 #' * `conf_level`: (`proportion`) \cr confidence level for the estimated incidence rate.
 #' * `conf_type`: (`string`) \cr `normal` (default), `normal_log`, `exact`, or `byar`
 #'   for confidence interval type.
-#' * `time_unit_input`: (`string`) \cr `day`, `month`, or `year` (default)
+#' * `time_unit_input`: (`string`) \cr `day`, `week`, `month`, or `year` (default)
 #'   indicating time unit for data input.
 #' * `time_unit_output`: (`numeric`) \cr time unit for desired output (in person-years).
 #' @param person_years (`numeric`) \cr total person-years at risk.
@@ -38,7 +38,7 @@ NULL
 #' control_incidence_rate(0.9, "exact", "month", 100)
 control_incidence_rate <- function(conf_level = 0.95,
                                    conf_type = c("normal", "normal_log", "exact", "byar"),
-                                   time_unit_input = c("year", "day", "month"),
+                                   time_unit_input = c("year", "day", "week", "month"),
                                    time_unit_output = 1) {
   conf_type <- match.arg(conf_type)
   time_unit_input <- match.arg(time_unit_input)
@@ -247,6 +247,7 @@ s_incidence_rate <- function(df,
   person_years <- sum(df[[.var]], na.rm = TRUE) * (
     1 * (time_unit_input == "year") +
       1 / 12 * (time_unit_input == "month") +
+      1 / 52.14 * (time_unit_input == "week") +
       1 / 365.24 * (time_unit_input == "day")
   )
   n_events <- sum(df[[n_events]], na.rm = TRUE)
