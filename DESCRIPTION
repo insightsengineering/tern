@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.5.9022
-Date: 2021-10-13
+Version: 0.7.6
+Date: 2022-01-27
 Authors@R: c(
     person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre")),
     person("Roche", role = c("cph", "fnd")),
@@ -25,9 +25,8 @@ License: Apache License 2.0 | file LICENSE
 URL: https://github.com/insightsengineering/tern
 BugReports: https://github..com/insightsengineering/tern/issues
 Depends:
-    optimx,
     R (>= 3.6),
-    rtables (>= 0.3.8)
+    rtables (>= 0.4.1)
 Imports:
     assertthat,
     broom,
@@ -47,6 +46,7 @@ Imports:
     lmerTest (>= 3.1-1),
     magrittr,
     methods,
+    optimx,
     parallel,
     purrr,
     rlang,
@@ -63,8 +63,8 @@ Suggests:
     lattice,
     Matrix,
     rmarkdown,
-    scda (>= 0.1.1),
-    scda.2021 (>= 0.1.1),
+    scda (>= 0.1.2),
+    scda.2021 (>= 0.1.2),
     testthat (>= 2.0)
 VignetteBuilder:
     knitr

@@ -44,7 +44,7 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 #' @inheritParams argument_convention
 #' @return a `string`
 #' @examples
-#' tern:::f_conf_level(0.95)
+#' f_conf_level(0.95)
 #' @noRd
 #'
 f_conf_level <- function(conf_level) {

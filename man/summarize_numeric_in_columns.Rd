@@ -106,7 +106,11 @@ result
 ADPC <- mutate(ADPC, as.factor(.data$NRELTM1))
 lyt <- basic_table() \%>\%
   split_rows_by(var = "VISIT", split_label = "Visit", label_pos = "topleft") \%>\%
-  split_rows_by(var = "NRELTM1", split_label = "Norminal time from first dose", label_pos = "topleft") \%>\%
+  split_rows_by(
+    var = "NRELTM1",
+    split_label = "Norminal time from first dose",
+    label_pos = "topleft"
+   ) \%>\%
   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
 result <- build_table(lyt, df = ADPC)
 result

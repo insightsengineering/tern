@@ -10,6 +10,8 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data := !!
 #' @importFrom survival coxph strata Surv
+#' @importFrom optimx optimx
+#' @importFrom dfoptim nmk
 NULL
 
 # We need this to avoid R CMD check warning about missing global definitions.
