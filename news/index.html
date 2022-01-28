@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9000</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -73,15 +64,15 @@ Other releases
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.7.6" id="tern-076">tern 0.7.6<a class="anchor" aria-label="anchor" href="#tern-076"></a></h2>
+<h2 class="page-header" data-toc-text="0.7.6.9000" id="tern-0769000">tern 0.7.6.9000<a class="anchor" aria-label="anchor" href="#tern-0769000"></a></h2>
 <div class="section level4">
-<h4 id="new-features-0-7-6">New features<a class="anchor" aria-label="anchor" href="#new-features-0-7-6"></a></h4>
+<h4 id="new-features-0-7-6-9000">New features<a class="anchor" aria-label="anchor" href="#new-features-0-7-6-9000"></a></h4>
 <ul><li>Added <code>h_map_for_count_abnormal</code> so that the map used in <code>trim_levels_to_map</code> split function can be created by calling this helper function. Currently it supports two methods: one with all observed mapping, one with at least low limit above zero and at least one non missing high limit.</li>
 <li>Added <code>s_summary_numeric_in_cols</code> and <code>summarize_vars_numeric_in_cols</code> functions to generate summary statistics in columns, mainly used for PK datasets.</li>
 <li>Added five statistics to <code>s_summary.numeric</code> to use in <code>s_summary_numeric_in_cols</code>.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="enhancements-0-7-6">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-6"></a></h4>
+<h4 id="enhancements-0-7-6-9000">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-6-9000"></a></h4>
 <ul><li>Enhanced functions <code>tabulate_survival_subgroups</code> and <code>tabulate_rsp_subgroups</code> (Survival Duration and Best Overall Response analyses) to calculate <code>N</code>-s based on the records considered to create the model.</li>
 <li>Enhanced the function <code>estimate_proportion</code> and related functions to be able to apply a continuity correction in the Wilson method.</li>
 <li>Refactored <code>count_abnormal_by_marked</code> and related statistics and formatting functions to use a more efficient layout with <code>.spl_context</code> argument used for determining denominators and with <code>trim_levels_to_map</code> split function under <code>split_rows_by</code> to show only the desired levels in the table. This is a breaking change.</li>
@@ -90,11 +81,11 @@ Other releases
 <li>Enhanced the function <code>estimate_incidence_rate</code> and related functions to consider the week as time unit for data input.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-0-7-6">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-7-6"></a></h4>
+<h4 id="bug-fixes-0-7-6-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-7-6-9000"></a></h4>
 <ul><li>Fixed bug in <code>assertthat</code> functions that output wrong data frame names and limited length of failure message outputs.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-7-6">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-6"></a></h4>
+<h4 id="miscellaneous-0-7-6-9000">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-6-9000"></a></h4>
 <ul><li>Removed dependency on <code>utils.nest</code> by using the <code>checkmate</code> and <code>purrr</code> packages for validation and moved <code>get_free_cores</code> and <code>skip_if_too_deep</code> functions from <code>utils.nest</code> into <code>tern</code>.</li>
 </ul></div>
 </div>
