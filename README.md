@@ -1,4 +1,4 @@
-# tern
+# tern <a href='https://github.com/insightsengineering/tern'><img src="man/figures/tern.png" align="right" height="139" style="max-width: 100%;"/><\a>
 
 The `tern` R package contains analysis functions to create tables,
 listings and graphs (TLGs) as used in clinical trials. We also provide
