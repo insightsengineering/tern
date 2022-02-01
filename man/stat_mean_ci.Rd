@@ -4,7 +4,14 @@
 \alias{stat_mean_ci}
 \title{Confidence Interval for Mean}
 \usage{
-stat_mean_ci(x, conf_level = 0.95, na.rm = TRUE, n_min = 2, gg_helper = TRUE)
+stat_mean_ci(
+  x,
+  conf_level = 0.95,
+  na.rm = TRUE,
+  n_min = 2,
+  gg_helper = TRUE,
+  geom_mean = FALSE
+)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -21,6 +28,7 @@ for the use with ggplot.}
 }
 \description{
 Convenient function for calculating the mean confidence interval.
+It calculates the arithmetic as well as the geometric mean.
 It can be used as a ggplot helper function for plotting.
 }
 \examples{
@@ -40,4 +48,11 @@ p + ggplot2::stat_summary(
   fun.args = list(conf_level = 0.5),
   geom = "errorbar"
 )
+
+p + ggplot2::stat_summary(
+  fun.data = stat_mean_ci,
+  fun.args = list(conf_level = 0.5, geom_mean = TRUE),
+  geom = "errorbar"
+)
+
 }
