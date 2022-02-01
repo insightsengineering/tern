@@ -25,6 +25,9 @@ the confidence interval for mean.}
 
 \item{gg_helper}{(\code{logical})\cr \code{TRUE} when output should be aligned
 for the use with ggplot.}
+
+\item{geom_mean}{(\code{logical})\cr \code{TRUE} when the geometric mean should be
+calculated}
 }
 \description{
 Convenient function for calculating the mean confidence interval.

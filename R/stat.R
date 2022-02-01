@@ -9,6 +9,8 @@
 #'     the confidence interval for mean.
 #' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned
 #' for the use with ggplot.
+#' @param geom_mean (`logical`)\cr `TRUE` when the geometric mean should be
+#' calculated
 #'
 #' @export
 #'
@@ -44,14 +46,15 @@ stat_mean_ci <- function(x,
                          geom_mean = FALSE) {
 
   if (na.rm) {
-    x <- na.omit(x)
+    x <- stats::na.omit(x)
   }
   n <- length(x)
 
   if (!geom_mean) {
     m <- mean(x)
   } else {
-    negative_values_exist <- any(is.na(x) <- x <= 0)
+
+    negative_values_exist <- any(is.na(x[!is.na(x)]) <- x[!is.na(x)] <= 0)
     if(negative_values_exist) {
       m <- NA_real_
     } else {
@@ -71,6 +74,7 @@ stat_mean_ci <- function(x,
   }
 
   if (gg_helper) {
+    m <- ifelse(is.na(m), NA_real_, m)
     ci <- data.frame(y = ifelse(geom_mean, exp(m), m), ymin = ci[[1]], ymax = ci[[2]])
   }
 

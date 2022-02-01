@@ -125,6 +125,7 @@ testthat::test_that("s_summary returns right results for n = 2", {
     max = c(max = 2),
     cv = c(cv.sd = 47.14045),
     geom_mean = c(geom_mean = 1.414214),
+    geom_mean_ci = with_label(c(mean_ci_lwr = 0.01729978, mean_ci_upr = 115.60839614), "Geometric Mean 95% CI"),
     geom_cv = c(geom_cv = 52.10922)
   )
   testthat::expect_equivalent(result, expected, tolerance = .00001)
@@ -152,6 +153,7 @@ testthat::test_that("s_summary returns right results for n = 8", {
     max = c(max = 10),
     cv = c(cv.sd = 53.45225),
     geom_mean = c(geom_mean = 4.842534),
+    geom_mean_ci = with_label(c(mean_ci_lwr = 2.456211, mean_ci_upr = 9.547283), "Geometric Mean 95% CI"),
     geom_cv = c(geom_cv = 96.61307)
   )
   testthat::expect_equivalent(result, expected, tolerance = .00001)
