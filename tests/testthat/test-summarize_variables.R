@@ -41,6 +41,7 @@ testthat::test_that("s_summary return NA for x length 0L", {
     max = c(max = NA_real_),
     cv = c(cv.sd = NA_real_),
     geom_mean = c(geom_mean = NA_real_),
+    geom_mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
     geom_cv = c(geom_cv = NA_real_)
   )
   testthat::expect_equivalent(result, expected)
@@ -70,6 +71,7 @@ testthat::test_that("s_summary handles NA", {
     max = c(max = 1),
     cv = c(cv.sd = NA_real_),
     geom_mean = c(geom_mean = 1),
+    geom_mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
     geom_cv = c(geom_cv = NA_real_)
   )
   testthat::expect_equivalent(result, expected)
@@ -95,6 +97,7 @@ testthat::test_that("s_summary handles NA", {
     max = c(max = NA_real_),
     cv = c(cv.sd = NA_real_),
     geom_mean = c(geom_mean = NA_real_),
+    geom_mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
     geom_cv = c(geom_cv = NA_real_)
   )
   testthat::expect_equivalent(result, expected)
