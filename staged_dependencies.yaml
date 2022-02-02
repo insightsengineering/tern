@@ -8,8 +8,8 @@ upstream_repos:
   insightsengineering/scda.2021:
     repo: insightsengineering/scda.2021
     host: https://github.com
-  Roche/rtables:
-    repo: Roche/rtables
+  shajoezhu/rtables:
+    repo: shajoezhu/rtables
     host: https://github.com
 downstream_repos:
   insightsengineering/osprey:
