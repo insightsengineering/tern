@@ -55,7 +55,7 @@ stat_mean_ci <- function(x,
   } else {
 
     negative_values_exist <- any(is.na(x[!is.na(x)]) <- x[!is.na(x)] <= 0)
-    if(negative_values_exist) {
+    if (negative_values_exist) {
       m <- NA_real_
     } else {
       x <- log(x)
