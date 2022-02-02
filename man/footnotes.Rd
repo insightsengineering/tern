@@ -24,3 +24,4 @@ footnotes(x) <- "Species are equally distributed"
 footnotes(x)
 }
 }
+\keyword{internal}

@@ -17,3 +17,4 @@ A list with elements \code{messages} (list of all messages), \code{fixef} (list 
 Helper function to extract summaries from a list of lme4 fit objects.
 This is inspired by the internal unexported method \code{summary.allFit} from \code{lme4}.
 }
+\keyword{internal}

@@ -22,3 +22,4 @@ Content function which just gives \code{df$analysis_var} at the row identified b
 \description{
 This can be useful for tabulating model results.
 }
+\keyword{internal}

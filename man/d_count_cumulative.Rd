@@ -20,3 +20,4 @@ a \code{string}
 \description{
 This is a helper function that describes analysis in \code{s_count_cumulative}
 }
+\keyword{internal}

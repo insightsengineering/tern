@@ -16,6 +16,8 @@ NULL
 #'
 #' @inheritParams prop_difference
 #' @inheritParams prop_diff_wald
+#' @keywords internal
+#'
 check_diff_prop_ci <- function(rsp,
                                grp,
                                strata = NULL,
@@ -47,6 +49,7 @@ check_diff_prop_ci <- function(rsp,
 #' @param long (`logical`)\cr
 #'   Whether a long or a short (default) description is required.
 #' @return String describing the analysis.
+#' @keywords internal
 #'
 d_proportion_diff <- function(conf_level,
                               method,

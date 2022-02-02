@@ -14,7 +14,6 @@ reference:
   - title: Overview Pages
     contents:
       - tern-package
-      - argument_convention
       - formatting_functions
       - kaplan_meier
 
@@ -194,6 +193,7 @@ reference:
       - h_proportion_subgroups_df
       - h_response_biomarkers_subgroups
       - h_simple_term_labels
+      - h_split_param
       - h_split_by_subgroups
       - h_stack_by_baskets
       - h_step_rsp_est
@@ -367,50 +367,6 @@ reference:
       - is_valid_factor
       - is_variables
 
-  - title: Non-exported Functions
-    desc: the documentation for those unexported functions is useful for developers
-    contents:
-      - afun_selected_stats
-      - build_mmrm_formula
-      - check_diff_prop_ci
-      - check_mmrm_vars
-      - check_same_n
-      - c_label_n
-      - d_count_cumulative
-      - d_count_missed_doses
-      - d_onco_rsp_label
-      - d_proportion
-      - d_proportion_diff
-      - d_rsp_subgroups_colvars
-      - d_survival_subgroups_colvars
-      - d_test_proportion_diff
-      - extract
-      - fit_lme4
-      - fit_lme4_single_optimizer
-      - get_covariates
-      - get_free_cores
-      - get_lme4_cov_estimate
-      - get_lme4_diagnostics
-      - get_mmrm_lsmeans
-      - get_smooths
-      - h_col_indices
-      - h_data_plot
-      - h_decompose_gg
-      - h_ggkm
-      - h_grob_coxph
-      - h_grob_median_surv
-      - h_grob_tbl_at_risk
-      - h_grob_y_annot
-      - h_km_layout
-      - h_split_param
-      - h_tbl_coxph_pairwise
-      - h_tbl_median_surv
-      - h_xticks
-      - labels_or_names
-      - muffled_car_anova
-      - refit_lme4_all_optimizers
-      - summary_all_fits
-      - try_car_anova
   - title: Deprecated Functions
     desc: These functions will eventually be removed
     contents:

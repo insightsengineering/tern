@@ -32,3 +32,4 @@ the complete MMRM formula to use with \code{\link[lme4:lmer]{lme4::lmer()}}.
 \description{
 Helper function to build the MMRM formula.
 }
+\keyword{internal}
