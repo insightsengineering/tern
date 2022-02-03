@@ -33,7 +33,7 @@ mmrm_results <- if (too_old_lme4) {
     data = adqs_f,
     cor_struct = "unstructured",
     weights_emmeans = "proportional",
-    optimizer = "nloptwrap_neldermead"
+    optimizer = "automatic"
   )
 }
 
