@@ -43,8 +43,6 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 #'
 #' @inheritParams argument_convention
 #' @return a `string`
-#' @examples
-#' f_conf_level(0.95)
 #' @keywords internal
 #'
 f_conf_level <- function(conf_level) {

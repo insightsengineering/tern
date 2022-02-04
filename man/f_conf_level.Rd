@@ -15,7 +15,4 @@ a \code{string}
 \description{
 Utility function to create label for confidence interval
 }
-\examples{
-f_conf_level(0.95)
-}
 \keyword{internal}
