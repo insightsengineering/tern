@@ -265,7 +265,6 @@ reference:
       - append_varlabels
       - as.rtable
       - as.rtable.data.frame
-      - cfun_by_flag
       - combine_counts
       - combine_groups
       - groups_list_to_df
@@ -279,7 +278,6 @@ reference:
       - make_names
       - split_cols_by_groups
       - to_string_matrix
-      - unlist_and_blank_na
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package
@@ -348,7 +346,6 @@ reference:
       - n_available
       - range_noinf
       - sas_na
-      - to_n
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package
