@@ -60,7 +60,7 @@ summary_formats <- function(type = "numeric") {
       range = "xx.x - xx.x",
       cv = "xx.x",
       min = "xx.x",
-      max = "xx",
+      max = "xx.x",
       geom_mean = "xx.x",
       geom_cv = "xx.x"
     )
