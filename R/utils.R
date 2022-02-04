@@ -39,7 +39,7 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
   return(rval)
 }
 
-#' Util function to create label for confidence interval
+#' Utility function to create label for confidence interval
 #'
 #' @inheritParams argument_convention
 #' @return a `string`

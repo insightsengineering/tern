@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{f_conf_level}
 \alias{f_conf_level}
-\title{Util function to create label for confidence interval}
+\title{Utility function to create label for confidence interval}
 \usage{
 f_conf_level(conf_level)
 }
@@ -13,7 +13,7 @@ f_conf_level(conf_level)
 a \code{string}
 }
 \description{
-Util function to create label for confidence interval
+Utility function to create label for confidence interval
 }
 \examples{
 f_conf_level(0.95)
