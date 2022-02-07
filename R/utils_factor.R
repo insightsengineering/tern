@@ -168,7 +168,6 @@ cut_quantile_bins <- function(x,
                               labels = bins_percent_labels(probs),
                               type = 7,
                               ordered = TRUE) {
-
   checkmate::assert_character(labels, len = length(probs) + 1, any.missing = FALSE)
 
   assertthat::assert_that(

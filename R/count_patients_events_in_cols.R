@@ -49,7 +49,6 @@ s_count_patients_and_multiple_events <- function(df, # nolint
                                                  empty_stats = character(),
                                                  labelstr = "",
                                                  custom_label = NULL) {
-
   checkmate::assert_list(filters_list, names = "named")
 
   assertthat::assert_that(
