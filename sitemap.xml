@@ -175,9 +175,6 @@
     <loc>https://insightsengineering.github.io/tern/reference/d_count_cumulative.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/d_onco_rsp_label.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/reference/d_proportion.html</loc>
   </url>
   <url>
@@ -230,6 +227,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/extreme_format.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/f_conf_level.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/fct_collapse_only.html</loc>

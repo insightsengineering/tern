@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9002</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -79,10 +70,6 @@ Other releases
           <p><code><a href="tern-package.html">tern-package</a></code> </p>
         </td>
         <td><p>tern Package</p></td>
-      </tr><tr><td>
-          <p><code><a href="argument_convention.html">argument_convention</a></code> </p>
-        </td>
-        <td><p>Standard Arguments</p></td>
       </tr><tr><td>
           <p><code><a href="formatting_functions.html">formatting_functions</a></code> </p>
         </td>
@@ -216,7 +203,7 @@ Other releases
         </td>
         <td><p>Incidence rate</p></td>
       </tr><tr><td>
-          <p><code><a href="estimate_multinomial_rsp.html">s_length_proportion()</a></code> <code><a href="estimate_multinomial_rsp.html">a_length_proportion()</a></code> <code><a href="estimate_multinomial_rsp.html">estimate_multinomial_response()</a></code> </p>
+          <p><code><a href="estimate_multinomial_rsp.html">d_onco_rsp_label()</a></code> <code><a href="estimate_multinomial_rsp.html">s_length_proportion()</a></code> <code><a href="estimate_multinomial_rsp.html">a_length_proportion()</a></code> <code><a href="estimate_multinomial_rsp.html">estimate_multinomial_response()</a></code> </p>
         </td>
         <td><p>Estimation of Proportions per Level of Factor</p></td>
       </tr><tr><td>
@@ -400,7 +387,7 @@ Other releases
         </td>
         <td><p>Incidence rate</p></td>
       </tr><tr><td>
-          <p><code><a href="estimate_multinomial_rsp.html">s_length_proportion()</a></code> <code><a href="estimate_multinomial_rsp.html">a_length_proportion()</a></code> <code><a href="estimate_multinomial_rsp.html">estimate_multinomial_response()</a></code> </p>
+          <p><code><a href="estimate_multinomial_rsp.html">d_onco_rsp_label()</a></code> <code><a href="estimate_multinomial_rsp.html">s_length_proportion()</a></code> <code><a href="estimate_multinomial_rsp.html">a_length_proportion()</a></code> <code><a href="estimate_multinomial_rsp.html">estimate_multinomial_response()</a></code> </p>
         </td>
         <td><p>Estimation of Proportions per Level of Factor</p></td>
       </tr><tr><td>
@@ -564,6 +551,10 @@ Other releases
         </td>
         <td><p>Helper Functions for Tabulating Biomarker Effects on Binary Response by Subgroup</p></td>
       </tr><tr><td>
+          <p><code><a href="h_split_param.html">h_split_param()</a></code> </p>
+        </td>
+        <td><p>Split parameters</p></td>
+      </tr><tr><td>
           <p><code><a href="h_split_by_subgroups.html">h_split_by_subgroups()</a></code> </p>
         </td>
         <td><p>Split Dataframe by Subgroups</p></td>
@@ -721,10 +712,6 @@ Other releases
         </td>
         <td><p>Convert to <code>rtable</code></p></td>
       </tr><tr><td>
-          <p><code><a href="cfun_by_flag.html">cfun_by_flag()</a></code> </p>
-        </td>
-        <td><p>Constructor for Content Functions given Data Frame with Flag Input</p></td>
-      </tr><tr><td>
           <p><code><a href="combine_counts.html">combine_counts()</a></code> </p>
         </td>
         <td><p>Combine Counts</p></td>
@@ -760,10 +747,6 @@ Other releases
           <p><code><a href="to_string_matrix.html">to_string_matrix()</a></code> </p>
         </td>
         <td><p>Convert Table into Matrix of Strings</p></td>
-      </tr><tr><td>
-          <p><code><a href="unlist_and_blank_na.html">unlist_and_blank_na()</a></code> </p>
-        </td>
-        <td><p>Blank for Missing Input</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="rtables-formatting-functions">rtables Formatting Functions <a href="#rtables-formatting-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>these functions provide customized formatting rules to work with the rtables package</p>
@@ -930,10 +913,6 @@ without any warnings.</p></td>
           <p><code><a href="sas_na.html">sas_na()</a></code> </p>
         </td>
         <td><p>Convert Strings to <code>NA</code></p></td>
-      </tr><tr><td>
-          <p><code><a href="to_n.html">to_n()</a></code> </p>
-        </td>
-        <td><p>Replicate Entries of a Vector if Required</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="assertion-functions">Assertion Functions <a href="#assertion-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>these functions supplement those in the assertthat package</p>
@@ -942,171 +921,6 @@ without any warnings.</p></td>
           <p><code><a href="assertions.html">is_character_or_factor()</a></code> <code><a href="assertions.html">is_nonnegative_count()</a></code> <code><a href="assertions.html">is_variables()</a></code> <code><a href="assertions.html">is_df_with_variables()</a></code> <code><a href="assertions.html">is_df_with_factors()</a></code> <code><a href="assertions.html">is_df_with_nlevels_factor()</a></code> <code><a href="assertions.html">is_equal_length()</a></code> <code><a href="assertions.html">is_proportion()</a></code> <code><a href="assertions.html">is_proportion_vector()</a></code> <code><a href="assertions.html">is_quantiles_vector()</a></code> <code><a href="assertions.html">is_valid_factor()</a></code> <code><a href="assertions.html">is_factor_no_na()</a></code> <code><a href="assertions.html">is_valid_character()</a></code> <code><a href="assertions.html">all_elements_in_ref()</a></code> <code><a href="assertions.html">has_tabletree_colnames()</a></code> <code><a href="assertions.html">is_df_with_no_na_level()</a></code> </p>
         </td>
         <td><p>Additional Assertions for <code>assert_that</code></p></td>
-      </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="non-exported-functions">Non-exported Functions <a href="#non-exported-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>the documentation for those unexported functions is useful for developers</p>
-        </th>
-      </tr></tbody><tbody><tr><td>
-          <p><code><a href="afun_selected_stats.html">afun_selected_stats()</a></code> </p>
-        </td>
-        <td><p>Get Selected Statistics Names</p></td>
-      </tr><tr><td>
-          <p><code><a href="build_mmrm_formula.html">build_mmrm_formula()</a></code> </p>
-        </td>
-        <td><p>Build MMRM Formula</p></td>
-      </tr><tr><td>
-          <p><code><a href="check_diff_prop_ci.html">check_diff_prop_ci()</a></code> </p>
-        </td>
-        <td><p>Check: Proportion Difference Arguments</p></td>
-      </tr><tr><td>
-          <p><code><a href="check_mmrm_vars.html">check_mmrm_vars()</a></code> </p>
-        </td>
-        <td><p>MMRM Variables Helper</p></td>
-      </tr><tr><td>
-          <p><code><a href="check_same_n.html">check_same_n()</a></code> </p>
-        </td>
-        <td><p>Check Element Dimension</p></td>
-      </tr><tr><td>
-          <p><code><a href="c_label_n.html">c_label_n()</a></code> </p>
-        </td>
-        <td><p>Content Row Function to Add Row Total to Labels</p></td>
-      </tr><tr><td>
-          <p><code><a href="d_count_cumulative.html">d_count_cumulative()</a></code> </p>
-        </td>
-        <td><p>Description of Cumulative Count</p></td>
-      </tr><tr><td>
-          <p><code><a href="count_missed_doses.html">s_count_nonmissing()</a></code> <code><a href="count_missed_doses.html">d_count_missed_doses()</a></code> <code><a href="count_missed_doses.html">s_count_missed_doses()</a></code> <code><a href="count_missed_doses.html">a_count_missed_doses()</a></code> <code><a href="count_missed_doses.html">count_missed_doses()</a></code> </p>
-        </td>
-        <td><p>Counting Missed Doses</p></td>
-      </tr><tr><td>
-          <p><code><a href="d_onco_rsp_label.html">d_onco_rsp_label()</a></code> </p>
-        </td>
-        <td><p>Standard Oncology Response</p></td>
-      </tr><tr><td>
-          <p><code><a href="d_proportion.html">d_proportion()</a></code> </p>
-        </td>
-        <td><p>Description of the Proportion Summary</p></td>
-      </tr><tr><td>
-          <p><code><a href="d_proportion_diff.html">d_proportion_diff()</a></code> </p>
-        </td>
-        <td><p>Description of Method Used for Proportion Comparison</p></td>
-      </tr><tr><td>
-          <p><code><a href="d_rsp_subgroups_colvars.html">d_rsp_subgroups_colvars()</a></code> </p>
-        </td>
-        <td><p>Labels for Column Variables in Binary Response by Subgroup Table</p></td>
-      </tr><tr><td>
-          <p><code><a href="d_survival_subgroups_colvars.html">d_survival_subgroups_colvars()</a></code> </p>
-        </td>
-        <td><p>Labels for Column Variables in Survival Duration by Subgroup Table</p></td>
-      </tr><tr><td>
-          <p><code><a href="d_test_proportion_diff.html">d_test_proportion_diff()</a></code> </p>
-        </td>
-        <td><p>Description of the Difference Test Between Two Proportions</p></td>
-      </tr><tr><td>
-          <p><code><a href="extract.html">extract()</a></code> </p>
-        </td>
-        <td><p>Extract Elements by Name</p></td>
-      </tr><tr><td>
-          <p><code><a href="fit_lme4.html">fit_lme4()</a></code> </p>
-        </td>
-        <td><p>Fitting <code>lme4</code> Model</p></td>
-      </tr><tr><td>
-          <p><code><a href="fit_lme4_single_optimizer.html">fit_lme4_single_optimizer()</a></code> </p>
-        </td>
-        <td><p>Fitting <code>lme4</code> Model</p></td>
-      </tr><tr><td>
-          <p><code><a href="get_covariates.html">get_covariates()</a></code> </p>
-        </td>
-        <td><p>Utility function to return a named list of covariate names.</p></td>
-      </tr><tr><td>
-          <p><code><a href="get_lme4_cov_estimate.html">get_lme4_cov_estimate()</a></code> </p>
-        </td>
-        <td><p>Covariance Matrix for MMRM</p></td>
-      </tr><tr><td>
-          <p><code><a href="get_lme4_diagnostics.html">get_lme4_diagnostics()</a></code> </p>
-        </td>
-        <td><p>Linear Mixed Model Diagnostics</p></td>
-      </tr><tr><td>
-          <p><code><a href="get_mmrm_lsmeans.html">get_mmrm_lsmeans()</a></code> </p>
-        </td>
-        <td><p>Extract LS Means from MMRM</p></td>
-      </tr><tr><td>
-          <p><code><a href="get_smooths.html">get_smooths()</a></code> </p>
-        </td>
-        <td><p>Smooth Function with Optional Grouping</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_col_indices.html">h_col_indices()</a></code> </p>
-        </td>
-        <td><p>Obtain Column Indices</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_data_plot.html">h_data_plot()</a></code> </p>
-        </td>
-        <td><p>Helper function: tidy survival fit</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_decompose_gg.html">h_decompose_gg()</a></code> </p>
-        </td>
-        <td><p><code>ggplot</code> Decomposition</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_ggkm.html">h_ggkm()</a></code> </p>
-        </td>
-        <td><p>Helper function: KM plot</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_grob_coxph.html">h_grob_coxph()</a></code> </p>
-        </td>
-        <td><p>Helper Function: CoxPH Grob
-Grob of rtable output from h_tbl_coxph_pairwise</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_grob_median_surv.html">h_grob_median_surv()</a></code> </p>
-        </td>
-        <td><p>Helper Function: Survival Estimation Grob</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_grob_tbl_at_risk.html">h_grob_tbl_at_risk()</a></code> </p>
-        </td>
-        <td><p>Helper: Patient-at-Risk Grobs</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_grob_y_annot.html">h_grob_y_annot()</a></code> </p>
-        </td>
-        <td><p>Helper: Grid Object with y-axis Annotation</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_km_layout.html">h_km_layout()</a></code> </p>
-        </td>
-        <td><p>Helper: KM Layout</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_split_param.html">h_split_param()</a></code> </p>
-        </td>
-        <td><p>Split parameters</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_tbl_coxph_pairwise.html">h_tbl_coxph_pairwise()</a></code> </p>
-        </td>
-        <td><p>Helper Function: Pairwise CoxPH table</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_tbl_median_surv.html">h_tbl_median_surv()</a></code> </p>
-        </td>
-        <td><p>Helper Function: Survival Estimations</p></td>
-      </tr><tr><td>
-          <p><code><a href="h_xticks.html">h_xticks()</a></code> </p>
-        </td>
-        <td><p>Helper function: x tick positions</p></td>
-      </tr><tr><td>
-          <p><code><a href="labels_or_names.html">labels_or_names()</a></code> </p>
-        </td>
-        <td><p>Labels or Names of List Elements</p></td>
-      </tr><tr><td>
-          <p><code><a href="muffled_car_anova.html">muffled_car_anova()</a></code> </p>
-        </td>
-        <td><p>Muffled <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">car::Anova</a></code></p></td>
-      </tr><tr><td>
-          <p><code><a href="refit_lme4_all_optimizers.html">refit_lme4_all_optimizers()</a></code> </p>
-        </td>
-        <td><p>Re-Fitting <code>lme4</code> Model</p></td>
-      </tr><tr><td>
-          <p><code><a href="summary_all_fits.html">summary_all_fits()</a></code> </p>
-        </td>
-        <td><p>Summary of Multiple <code>lme4</code> Fits</p></td>
-      </tr><tr><td>
-          <p><code><a href="try_car_anova.html">try_car_anova()</a></code> </p>
-        </td>
-        <td><p><code>tryCatch</code> around <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">car::Anova</a></code></p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="deprecated-functions">Deprecated Functions <a href="#deprecated-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>These functions will eventually be removed</p>
