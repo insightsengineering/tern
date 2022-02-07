@@ -55,5 +55,6 @@
 #' @param x (`numeric`)\cr vector of numbers we want to analyze.
 #'
 #' @name argument_convention
+#' @keywords internal
 #'
 NULL

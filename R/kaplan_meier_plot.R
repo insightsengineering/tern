@@ -396,6 +396,7 @@ g_km <- function(df,
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`) \cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
+#' @keywords internal
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -466,6 +467,7 @@ h_data_plot <- function(fit_km,
 #' and is required in the graphic and the patient-at-risk annotation table.
 #'
 #' @inheritParams kaplan_meier
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -517,6 +519,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
 #' @inheritParams kaplan_meier
+#' @keywords internal
 #' @examples
 #' \dontrun{
 #'
@@ -666,6 +669,7 @@ h_ggkm <- function(data,
 #' the legend (`guide`).
 #'
 #' @param gg (`ggplot`)\cr a graphic to decompose.
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -720,6 +724,7 @@ h_decompose_gg <- function(gg) {
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table
 #'   reporting the number of patient at risk matching the main grid of the
 #'   Kaplan-Meier curve.
+#' @keywords internal
 #'
 #' @details
 #' The layout corresponds to a grid of two columns and five rows of unequal
@@ -838,6 +843,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'   patients at risk at given time points.
 #' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
 #'   ensure the at risk table aligns with the KM graph).
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -974,6 +980,8 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' by N, median and confidence interval.
 #'
 #' @inheritParams h_data_plot
+#' @keywords internal
+#'
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -1022,6 +1030,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.
 #' @inheritParams h_data_plot
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -1070,6 +1079,7 @@ h_grob_median_surv <- function(fit_km,
 #'   a `ggplot`.
 #' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from
 #'   a `ggplot`.
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -1117,6 +1127,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' Create an rtable of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
+#' @keywords internal
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -1173,6 +1184,7 @@ h_tbl_coxph_pairwise <- function(df,
 #' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{

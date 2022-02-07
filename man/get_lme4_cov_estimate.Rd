@@ -25,3 +25,4 @@ This is adapted from \url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008
 Note that the order of rows/columns in the returned matrix corresponds to the order of the
 \code{id}'s observations in the original data set.
 }
+\keyword{internal}

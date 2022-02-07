@@ -22,3 +22,4 @@ String describing the analysis.
 This is an auxiliary function that describes the analysis in
 \code{s_proportion_diff}.
 }
+\keyword{internal}

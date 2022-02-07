@@ -24,3 +24,4 @@ Currently there are 7 optimizers in total. Since 1 optimizer is already used in 
 only 6 additional optimizer runs need to be done. Thus the maximum number of parallel runs is 6.
 For Windows, no parallelization is currently implemented.
 }
+\keyword{internal}

@@ -16,3 +16,4 @@ a named \code{list} of character vector.
 \description{
 Utility function to return a named list of covariate names.
 }
+\keyword{internal}
