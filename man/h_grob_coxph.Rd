@@ -47,3 +47,4 @@ grid::grid.draw(tbl_grob)
 }
 
 }
+\keyword{internal}

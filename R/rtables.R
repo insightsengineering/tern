@@ -17,6 +17,7 @@ to_string_matrix <- function(x) {
 #' Helper function to use in tabulating model results.
 #'
 #' @param x (`vector`)\cr input for a cell.
+#' @keywords internal
 #'
 #' @return Either empty character vector if all entries in `x` are missing (`NA`), or otherwise
 #'   the unlisted version of `x`
@@ -42,6 +43,7 @@ unlist_and_blank_na <- function(x) {
 #'
 #' @return Content function which just gives `df$analysis_var` at the row identified by
 #'   `.df_row$flag` in the given format.
+#' @keywords internal
 #'
 cfun_by_flag <- function(analysis_var,
                          flag_var,
@@ -70,6 +72,7 @@ cfun_by_flag <- function(analysis_var,
 #'
 #' @note Important is here to not use `df` but `.N_row` in the implementation, because the former
 #'   is already split by columns and will refer to the first column of the data only.
+#' @keywords internal
 #'
 c_label_n <- function(df,
                       labelstr,
@@ -117,6 +120,7 @@ add_rowcounts <- function(lyt) {
 #' @param col_names (`character`)\cr vector of column names.
 #'
 #' @return the vector of column indices.
+#' @keywords internal
 #'
 h_col_indices <- function(table_tree, col_names) {
   assertthat::assert_that(has_tabletree_colnames(table_tree, col_names))
@@ -131,6 +135,7 @@ h_col_indices <- function(table_tree, col_names) {
 #' @param x a list
 #'
 #' @return a character vector with the labels or names for the list elements
+#' @keywords internal
 #'
 labels_or_names <- function(x) {
   assertthat::assert_that(is.list(x))
@@ -245,6 +250,7 @@ h_split_param <- function(param,
 #' @param all_stats (`character`)\cr all statistics which can be selected here potentially.
 #'
 #' @return Character vector with the selected statistics.
+#' @keywords internal
 #'
 afun_selected_stats <- function(.stats, all_stats) {
   assertthat::assert_that(

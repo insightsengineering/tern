@@ -292,6 +292,7 @@ tabulate_rsp_subgroups <- function(lyt,
 #'
 #' @inheritParams tabulate_rsp_subgroups
 #' @return `list` of variables to tabulate and their labels.
+#' @keywords internal
 #'
 d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,

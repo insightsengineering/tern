@@ -207,3 +207,4 @@ is_df_with_no_na_level(df, variables = list(a = "a"), na_level = "<Missing>")
 is_df_with_no_na_level(df, variables = list(b = "b"), na_level = "<Missing>")
 is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
 }
+\keyword{internal}

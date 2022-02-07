@@ -1217,6 +1217,7 @@ summarize_coxreg <- function(lyt,
 #' @param mod (`coxph`)\cr Cox regression model fitted by [survival::coxph()].
 #' @param test_statistic (`string`)\cr the method used for estimation of p.values;
 #'   `wald` (default) or `likelihood`.
+#' @keywords internal
 #'
 muffled_car_anova <- function(mod, test_statistic) {
   tryCatch(

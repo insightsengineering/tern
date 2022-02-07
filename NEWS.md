@@ -1,4 +1,8 @@
-# tern 0.7.6.9001
+# tern 0.7.6.9003
+
+* Some release note
+
+# tern 0.7.6
 
 ### New features
 * Added `h_map_for_count_abnormal` so that the map used in `trim_levels_to_map` split function can be created by calling this helper function. Currently it supports two methods: one with all observed mapping, one with at least low limit above zero and at least one non missing high limit.

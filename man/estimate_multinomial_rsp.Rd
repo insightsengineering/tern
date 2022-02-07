@@ -2,11 +2,14 @@
 % Please edit documentation in R/estimate_multinomial_rsp.R
 \name{estimate_multinomial_rsp}
 \alias{estimate_multinomial_rsp}
+\alias{d_onco_rsp_label}
 \alias{s_length_proportion}
 \alias{a_length_proportion}
 \alias{estimate_multinomial_response}
 \title{Estimation of Proportions per Level of Factor}
 \usage{
+d_onco_rsp_label(x)
+
 s_length_proportion(x, .N_col, ...)
 
 a_length_proportion(x, .N_col, ...)
@@ -24,7 +27,7 @@ estimate_multinomial_response(
 )
 }
 \arguments{
-\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
+\item{x}{(\code{character})\cr the standard oncology code to be described.}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
@@ -57,6 +60,10 @@ regarding the level of a factor.
 }
 \section{Functions}{
 \itemize{
+\item \code{d_onco_rsp_label}: Standard Oncology Response
+
+Describe the oncology response in a standard way.
+
 \item \code{s_length_proportion}: Statistics function which takes the length of the input \code{x} and takes that
 as the number of successes, and the column number \code{.N_col} as the total number, and feeds that into
 \code{\link[=s_proportion]{s_proportion()}}.
@@ -70,6 +77,16 @@ here.
 }}
 
 \examples{
+
+d_onco_rsp_label(
+  c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "<Missing>", "NE/Missing")
+)
+
+# Adding some values not considered in d_onco_rsp_label
+
+d_onco_rsp_label(
+  c("CR", "PR", "hello", "hi")
+)
 s_length_proportion(rep("CR", 10), .N_col = 100)
 s_length_proportion(factor(character(0)), .N_col = 100)
 a_length_proportion(rep("CR", 10), .N_col = 100)

@@ -18,3 +18,4 @@ Character vector with the selected statistics.
 \description{
 Helper function to be used for creating \code{afun}.
 }
+\keyword{internal}

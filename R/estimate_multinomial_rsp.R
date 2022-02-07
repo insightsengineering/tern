@@ -7,6 +7,7 @@
 #'
 NULL
 
+#' @describeIn estimate_multinomial_rsp
 #' Standard Oncology Response
 #'
 #' Describe the oncology response in a standard way.

@@ -25,3 +25,4 @@ the \code{\link[lmerTest:lmerModLmerTest-class]{lmerTest::lmerModLmerTest}} obje
 \description{
 Helper function to fit the MMRM with \code{lme4} and \code{lmerTest.}
 }
+\keyword{internal}
