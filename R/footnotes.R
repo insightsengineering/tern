@@ -25,7 +25,6 @@
 #' x <- table(iris$Species)
 #' footnotes(x) <- "Species are equally distributed"
 #' footnotes(x)
-#'
 footnotes <- function(x) {
   attr(x, "footnote")
 }
