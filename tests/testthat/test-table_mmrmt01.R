@@ -25,7 +25,8 @@ mmrm_results <- if (too_old_lme4) {
   fit_mmrm(
     vars = list(
       response = "AVAL",
-      covariates = c("STRATA1", "BMRKR2"),
+      # covariates = c("STRATA1", "BMRKR2"),
+      covariates = c("STRATA1", "BMRKR1"),
       # covariates = c("STRATA1"),
       id = "USUBJID",
       arm = "ARM",
