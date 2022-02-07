@@ -1,4 +1,8 @@
-# tern 0.7.6.9001
+# tern 0.7.6.9002
+
+* Some release note
+
+# tern 0.7.6
 
 * Enhanced `stat_mean_ci` and `s_summary.numeric` to calculate the geometric mean with its confidence intervals. 
 
