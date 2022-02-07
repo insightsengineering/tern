@@ -1,4 +1,4 @@
-# tern 0.7.6.9001
+# tern 0.7.6.9002
 
 * Some release note
 
