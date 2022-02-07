@@ -253,6 +253,7 @@ estimate_proportion <- function(lyt,
 #' @param long (`flag`)\cr Whether a long or a short (default) description is required.
 #'
 #' @return String describing the analysis.
+#' @keywords internal
 #'
 d_proportion <- function(conf_level,
                          method,

@@ -14,3 +14,4 @@ check_same_n(..., omit_null = TRUE)
 \description{
 Checks if the elements in \code{...} have the same dimension.
 }
+\keyword{internal}

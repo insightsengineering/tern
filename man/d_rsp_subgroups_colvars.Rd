@@ -31,3 +31,4 @@ so no test is performed.}
 Internal function to check variables included in
 \link{tabulate_rsp_subgroups} and create column labels.
 }
+\keyword{internal}

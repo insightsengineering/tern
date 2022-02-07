@@ -9,6 +9,7 @@
 #'   covariates part (i.e. occurring variable in the original covariates
 #'   specification) is included. If a label is not found, the variable name is
 #'   instead used.
+#' @keywords internal
 #'
 check_mmrm_vars <- function(vars,
                             data) {
@@ -118,6 +119,7 @@ check_mmrm_vars <- function(vars,
 #' @inheritParams fit_mmrm
 #'
 #' @return the complete MMRM formula to use with [lme4::lmer()].
+#' @keywords internal
 #'
 build_mmrm_formula <- function(vars,
                                cor_struct = c(
@@ -191,6 +193,7 @@ build_mmrm_formula <- function(vars,
 #' @details This is adapted from \url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q1/000558.html}.
 #'   Note that the order of rows/columns in the returned matrix corresponds to the order of the
 #'   `id`'s observations in the original data set.
+#' @keywords internal
 #'
 get_lme4_cov_estimate <- function(fit) {
   stopifnot(inherits(fit, "merMod"))
@@ -248,6 +251,7 @@ get_lme4_cov_estimate <- function(fit) {
 #' and \code{m} is the number of observations minus the number of fixed effects, or \code{df + 2} if it is smaller
 #' than that. The same \code{df} is used for AIC and BIC. Note that for BIC, the \code{n} used is the number of
 #' subjects (instead of the number of observations as in AIC and AICc). This matches the definitions in SAS.
+#' @keywords internal
 #'
 get_lme4_diagnostics <- function(fit,
                                  cov_est = get_lme4_cov_estimate(fit)) {
@@ -280,6 +284,7 @@ get_lme4_diagnostics <- function(fit,
 #'
 #' @note While we are not directly importing functions from `dfoptim` or `optimx` here, we rely on them
 #'   being available to `lme4` (which has these packages only in "Suggests"). Therefore we note the imports below.
+#' @keywords internal
 #'
 fit_lme4_single_optimizer <- function(formula,
                                       data,
@@ -343,6 +348,7 @@ fit_lme4_single_optimizer <- function(formula,
 #' @return A list with elements `messages` (list of all messages), `fixef` (list of all fixed effects),
 #'   `llik` (vector of all log-likelihood values), `feval` (vector of number of function evaluations).
 #'
+#' @keywords internal
 #'
 summary_all_fits <- function(all_fits) {
   messages <- lapply(all_fits, function(x) attr(x, "messages"))
@@ -372,6 +378,7 @@ summary_all_fits <- function(all_fits) {
 #' @note Currently there are 7 optimizers in total. Since 1 optimizer is already used in the original fit,
 #'   only 6 additional optimizer runs need to be done. Thus the maximum number of parallel runs is 6.
 #'   For Windows, no parallelization is currently implemented.
+#' @keywords internal
 #'
 refit_lme4_all_optimizers <- function(original_fit,
                                       n_cores = 1L) {
@@ -445,6 +452,7 @@ refit_lme4_all_optimizers <- function(original_fit,
 #' @param n_cores (`count`)\cr number of cores to parallelize over the "automatic" optimizer search.
 #'
 #' @return the [`lmerTest::lmerModLmerTest`] object.
+#' @keywords internal
 #'
 fit_lme4 <- function(formula,
                      data,
@@ -487,6 +495,7 @@ fit_lme4 <- function(formula,
 #' @return A list with the LS means `estimates` and `contrasts` results between the treatment
 #'   and control arm groups at the different visits.
 #'
+#' @keywords internal
 #'
 get_mmrm_lsmeans <- function(fit,
                              vars,

@@ -10,6 +10,7 @@
 #' @return `flag` whether the assertion holds (`TRUE` or `FALSE`). When used inside
 #'   [assertthat::assert_that()] produces a meaningful error message.
 #' @name assertions
+#' @keywords internal
 #'
 NULL
 

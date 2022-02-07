@@ -94,3 +94,4 @@ commonly and consistently used in the framework. For the developer it adds a
 single reference point to import the \code{roxygen} argument description with:
 \verb{@inheritParams argument_convention}
 }
+\keyword{internal}

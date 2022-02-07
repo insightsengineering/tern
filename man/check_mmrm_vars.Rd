@@ -33,3 +33,4 @@ instead used.
 \description{
 Helper function to check the MMRM variables.
 }
+\keyword{internal}
