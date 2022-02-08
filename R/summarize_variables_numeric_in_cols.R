@@ -72,7 +72,8 @@ summary_numeric_in_cols <- function(x,
 #'       mean_ci = "Mean (95%CI)",
 #'       median = "Median",
 #'       min = "Minimum",
-#'       max = "Maximum"),
+#'       max = "Maximum"
+#'     ),
 #'     col_split = TRUE
 #'   )
 #' result <- build_table(lyt = lyt, df = ADPC)
@@ -96,15 +97,16 @@ summary_numeric_in_cols <- function(x,
 #'     col_split = TRUE,
 #'     .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
 #'     .labels = c(
-#'     n = "n",
-#'     mean = "Mean",
-#'     sd = "SD",
-#'     cv = "CV (%)",
-#'     geom_cv = "CV % Geometric Mean",
-#'     median = "Median",
-#'     min = "Minimum",
-#'     max = "Maximum")
+#'       n = "n",
+#'       mean = "Mean",
+#'       sd = "SD",
+#'       cv = "CV (%)",
+#'       geom_cv = "CV % Geometric Mean",
+#'       median = "Median",
+#'       min = "Minimum",
+#'       max = "Maximum"
 #'     )
+#'   )
 #' result <- build_table(lyt, df = ADPC)
 #' result
 #'
@@ -116,21 +118,22 @@ summary_numeric_in_cols <- function(x,
 #'     var = "NRELTM1",
 #'     split_label = "Norminal time from first dose",
 #'     label_pos = "topleft"
-#'    ) %>%
+#'   ) %>%
 #'   summarize_vars_numeric_in_cols(
 #'     var = "AVAL",
 #'     col_split = TRUE,
 #'     .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
 #'     .labels = c(
-#'     n = "n",
-#'     mean = "Mean",
-#'     sd = "SD",
-#'     cv = "CV (%)",
-#'     geom_cv = "CV % Geometric Mean",
-#'     median = "Median",
-#'     min = "Minimum",
-#'     max = "Maximum")
+#'       n = "n",
+#'       mean = "Mean",
+#'       sd = "SD",
+#'       cv = "CV (%)",
+#'       geom_cv = "CV % Geometric Mean",
+#'       median = "Median",
+#'       min = "Minimum",
+#'       max = "Maximum"
 #'     )
+#'   )
 #' result <- build_table(lyt, df = ADPC)
 #' result
 summarize_vars_numeric_in_cols <- function(lyt,
