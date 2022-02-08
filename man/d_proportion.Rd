@@ -22,3 +22,4 @@ String describing the analysis.
 \description{
 This is a helper function that describes the analysis in \code{\link[=s_proportion]{s_proportion()}}.
 }
+\keyword{internal}

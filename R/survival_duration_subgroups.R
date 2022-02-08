@@ -321,6 +321,7 @@ tabulate_survival_subgroups <- function(lyt,
 #' @inheritParams argument_convention
 #' @param method p-value method for testing hazard ratio = 1.
 #' @return `list` of variables to tabulate and their labels.
+#' @keywords internal
 #'
 d_survival_subgroups_colvars <- function(vars,
                                          conf_level,

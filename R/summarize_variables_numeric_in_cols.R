@@ -96,7 +96,7 @@ summary_numeric_in_cols <- function(x,
 #'     var = "NRELTM1",
 #'     split_label = "Norminal time from first dose",
 #'     label_pos = "topleft"
-#'    ) %>%
+#'   ) %>%
 #'   summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
 #' result <- build_table(lyt, df = ADPC)
 #' result

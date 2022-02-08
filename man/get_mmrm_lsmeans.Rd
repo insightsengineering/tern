@@ -33,3 +33,4 @@ and control arm groups at the different visits.
 \description{
 Helper function to extract the LS means from an MMRM fit.
 }
+\keyword{internal}

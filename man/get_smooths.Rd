@@ -24,3 +24,4 @@ optional \code{groups} variables formatted to factor type.
 \description{
 This produces \code{loess} smoothed estimates of \code{y} with Student confidence intervals.
 }
+\keyword{internal}

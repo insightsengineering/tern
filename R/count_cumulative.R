@@ -65,6 +65,7 @@ h_count_cumulative <- function(x,
 #' This is a helper function that describes analysis in `s_count_cumulative`
 #' @inheritParams h_count_cumulative
 #' @return a `string`
+#' @keywords internal
 #'
 d_count_cumulative <- function(threshold, lower_tail, include_eq) {
   assertthat::assert_that(
@@ -92,7 +93,6 @@ s_count_cumulative <- function(x,
                                include_eq = TRUE,
                                .N_col, # nolint
                                ...) {
-
   checkmate::assert_numeric(thresholds, min.len = 1, any.missing = FALSE)
 
   count_fraction_list <- Map(function(thres) {

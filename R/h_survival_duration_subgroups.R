@@ -425,7 +425,6 @@ h_coxph_subgroups_df <- function(variables,
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {
-
   checkmate::assert_character(subgroups, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(groups_lists, names = "named")
   assertthat::assert_that(

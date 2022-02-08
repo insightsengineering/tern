@@ -25,3 +25,4 @@ and \code{m} is the number of observations minus the number of fixed effects, or
 than that. The same \code{df} is used for AIC and BIC. Note that for BIC, the \code{n} used is the number of
 subjects (instead of the number of observations as in AIC and AICc). This matches the definitions in SAS.
 }
+\keyword{internal}
