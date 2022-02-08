@@ -156,7 +156,6 @@ h_get_interaction_vars <- function(fit_glm) {
 h_interaction_coef_name <- function(interaction_vars,
                                     first_var_with_level,
                                     second_var_with_level) {
-
   checkmate::assert_character(interaction_vars, len = 2, any.missing = FALSE)
   checkmate::assert_character(first_var_with_level, len = 2, any.missing = FALSE)
   checkmate::assert_character(second_var_with_level, len = 2, any.missing = FALSE)

@@ -87,7 +87,6 @@ d_onco_rsp_label(
 d_onco_rsp_label(
   c("CR", "PR", "hello", "hi")
 )
-
 s_length_proportion(rep("CR", 10), .N_col = 100)
 s_length_proportion(factor(character(0)), .N_col = 100)
 a_length_proportion(rep("CR", 10), .N_col = 100)

@@ -18,7 +18,6 @@ Retrieve value from attribute \code{footnote} of object \code{x}.
 x <- table(iris$Species)
 footnotes(x) <- "Species are equally distributed"
 footnotes(x)
-
 \dontrun{
 x <- table(iris$Species)
 footnotes(x) <- "Species are equally distributed"

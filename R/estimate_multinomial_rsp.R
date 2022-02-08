@@ -26,7 +26,6 @@ NULL
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "hello", "hi")
 #' )
-#'
 d_onco_rsp_label <- function(x) { # nolint
 
   x <- as.character(x)
