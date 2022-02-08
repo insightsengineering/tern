@@ -25,3 +25,4 @@ include the continuity correction.}
 Verifies that and/or convert arguments into valid values to be used in the
 estimation of difference in responder proportions.
 }
+\keyword{internal}

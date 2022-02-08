@@ -218,6 +218,7 @@ s_test_proportion_diff <- function(df,
 #'
 #' @inheritParams s_test_proportion_diff
 #' @return `string` describing the test from which the p-value is derived.
+#' @keywords internal
 #'
 d_test_proportion_diff <- function(method) {
   assertthat::assert_that(assertthat::is.string(method))

@@ -18,3 +18,4 @@ to calculate the p-value.}
 This is an auxiliary function that describes the analysis in
 \code{s_test_proportion_diff}.
 }
+\keyword{internal}

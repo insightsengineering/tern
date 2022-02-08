@@ -34,3 +34,4 @@ Internal function to check variables included in
 \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}} and create column labels.
 Note that at least one of \code{n_tot} and \code{n_tot_events} needs to be provided in \code{vars}.
 }
+\keyword{internal}

@@ -16,3 +16,4 @@ muffled_car_anova(mod, test_statistic)
 Applied on survival models, \code{\link[car:Anova]{car::Anova()}} signal that the \code{strata} terms is dropped from the model formula when
 present, this function deliberately muffles this message.
 }
+\keyword{internal}

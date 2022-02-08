@@ -24,3 +24,4 @@ This takes the label of the latest row split level and adds the row total in par
 Important is here to not use \code{df} but \code{.N_row} in the implementation, because the former
 is already split by columns and will refer to the first column of the data only.
 }
+\keyword{internal}

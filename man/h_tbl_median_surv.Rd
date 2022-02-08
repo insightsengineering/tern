@@ -33,3 +33,4 @@ h_tbl_median_surv(fit_km = fit)
 }
 
 }
+\keyword{internal}

@@ -488,6 +488,7 @@ estimate_coef <- function(variable, given,
 #' @md
 #' @return A list with item `aov` for the result of the model and
 #'   `error_text` for the captured warnings.
+#' @keywords internal
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected

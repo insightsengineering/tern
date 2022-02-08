@@ -16,3 +16,4 @@ the unlisted version of \code{x}
 \description{
 Helper function to use in tabulating model results.
 }
+\keyword{internal}

@@ -61,7 +61,6 @@ s_count_abnormal <- function(df,
                              abnormal = list(Low = "LOW", High = "HIGH"),
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE) {
-
   checkmate::assert_list(abnormal, types = "character", names = "named", len = 2, any.missing = FALSE)
 
   assertthat::assert_that(

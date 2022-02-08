@@ -39,7 +39,7 @@
 #'     grid.rect(
 #'       gp = gpar(fill = x[i], col = NA),
 #'       vp = viewport(layout.pos.col = i, layout.pos.row = 1)
-#'       )
+#'     )
 #'   }
 #' }
 #'

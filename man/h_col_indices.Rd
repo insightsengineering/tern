@@ -18,3 +18,4 @@ the vector of column indices.
 Helper function to extract column indices from a \code{VTableTree} for a given
 vector of column names.
 }
+\keyword{internal}
