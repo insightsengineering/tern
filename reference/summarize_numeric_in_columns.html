@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9004</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -284,24 +275,32 @@ summary tables in columns, primarily used for PK data sets.</p></li>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"SEX"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">summarize_vars_numeric_in_cols</span><span class="op">(</span></span>
 <span class="r-in">    var <span class="op">=</span> <span class="st">"AGE"</span>,</span>
-<span class="r-in">    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"cv"</span>, <span class="st">"geom_mean"</span>, <span class="st">"mean_ci"</span><span class="op">)</span>,</span>
-<span class="r-in">    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"myN"</span>, cv <span class="op">=</span> <span class="st">"myCV"</span>, geom_mean <span class="op">=</span> <span class="st">"myGeomMean"</span>, mean_ci <span class="op">=</span> <span class="st">"Mean (95%CI)"</span><span class="op">)</span>,</span>
+<span class="r-in">    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"cv"</span>, <span class="st">"geom_mean"</span>, <span class="st">"mean_ci"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span><span class="op">)</span>,</span>
+<span class="r-in">    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span class="r-in">      n <span class="op">=</span> <span class="st">"myN"</span>,</span>
+<span class="r-in">      cv <span class="op">=</span> <span class="st">"myCV"</span>,</span>
+<span class="r-in">      geom_mean <span class="op">=</span> <span class="st">"myGeomMean"</span>,</span>
+<span class="r-in">      mean_ci <span class="op">=</span> <span class="st">"Mean (95%CI)"</span>,</span>
+<span class="r-in">      median <span class="op">=</span> <span class="st">"Median"</span>,</span>
+<span class="r-in">      min <span class="op">=</span> <span class="st">"Minimum"</span>,</span>
+<span class="r-in">      max <span class="op">=</span> <span class="st">"Maximum"</span></span>
+<span class="r-in">    <span class="op">)</span>,</span>
 <span class="r-in">    col_split <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPC</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">result</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SEX            myN    myCV   myGeomMean    Mean (95%CI) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A: Drug X                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F              711    18.5      32.2      (32.31, 33.21)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M              495    19.6      34.6      (34.61, 35.83)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> B: Placebo                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F               0      NA       NaN          (NA, NA)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M               0      NA       NaN          (NA, NA)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F              1260   20.8      34.5       (34.8, 35.6) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M              1116   22.7      34.8      (35.22, 36.17)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARM                                                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SEX            myN    myCV   myGeomMean    Mean (95%CI)    Median   Minimum   Maximum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A: Drug X                                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F              711    18.5      32.2      (32.31, 33.21)     32       21        47   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M              495    19.6      34.6      (34.61, 35.83)     34       23        50   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> B: Placebo                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F               0      NA       NaN          (NA, NA)        NA       NA        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M               0      NA       NaN          (NA, NA)        NA       NA        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F              1260   20.8      34.5       (34.8, 35.6)      35       21        64   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M              1116   22.7      34.8      (35.22, 36.17)     35       20        69   </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">summarize_vars_numeric_in_cols</span><span class="op">(</span></span>
@@ -319,13 +318,27 @@ summary tables in columns, primarily used for PK data sets.</p></li>
 <span class="r-in"><span class="va">ADPC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">ADPC</span>, PARAMUNIT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">PARAM</span>, <span class="st">"("</span>, <span class="va">.data</span><span class="op">$</span><span class="va">AVALU</span>, <span class="st">")"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"PARAMUNIT"</span>, split_label <span class="op">=</span> <span class="st">"PK Parameter"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars_numeric_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in">  <span class="fu">summarize_vars_numeric_in_cols</span><span class="op">(</span></span>
+<span class="r-in">    var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
+<span class="r-in">    col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span class="r-in">    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"cv"</span>, <span class="st">"geom_mean"</span>, <span class="st">"geom_cv"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span><span class="op">)</span>,</span>
+<span class="r-in">    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span class="r-in">      n <span class="op">=</span> <span class="st">"n"</span>,</span>
+<span class="r-in">      mean <span class="op">=</span> <span class="st">"Mean"</span>,</span>
+<span class="r-in">      sd <span class="op">=</span> <span class="st">"SD"</span>,</span>
+<span class="r-in">      cv <span class="op">=</span> <span class="st">"CV (%)"</span>,</span>
+<span class="r-in">      geom_cv <span class="op">=</span> <span class="st">"CV % Geometric Mean"</span>,</span>
+<span class="r-in">      median <span class="op">=</span> <span class="st">"Median"</span>,</span>
+<span class="r-in">      min <span class="op">=</span> <span class="st">"Minimum"</span>,</span>
+<span class="r-in">      max <span class="op">=</span> <span class="st">"Maximum"</span></span>
+<span class="r-in">    <span class="op">)</span></span>
+<span class="r-in">  <span class="op">)</span></span>
 <span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPC</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">result</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PK Parameter            n     Mean    SD    SE    CV (%)   CV % Geometric Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Plasma Drug X(ug/mL)   2394    8     6.6    0.1    82.7            NA         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Plasma Drug Y(ug/mL)   1188    16    13.3   0.4    83.1            NA         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PK Parameter            n     Mean    SD    CV (%)   NA   CV % Geometric Mean   Median   Minimum   Maximum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Plasma Drug X(ug/mL)   2394    8     6.6     82.7    NA           NA             8.3        0       19.9  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Plasma Drug Y(ug/mL)   1188    16    13.3    83.1    NA           NA             16.4       0       39.5  </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># PKCT01FDS</span></span>
 <span class="r-in"><span class="va">ADPC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">ADPC</span>, <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">NRELTM1</span><span class="op">)</span><span class="op">)</span></span>
@@ -336,23 +349,37 @@ summary tables in columns, primarily used for PK data sets.</p></li>
 <span class="r-in">    split_label <span class="op">=</span> <span class="st">"Norminal time from first dose"</span>,</span>
 <span class="r-in">    label_pos <span class="op">=</span> <span class="st">"topleft"</span></span>
 <span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars_numeric_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in">  <span class="fu">summarize_vars_numeric_in_cols</span><span class="op">(</span></span>
+<span class="r-in">    var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
+<span class="r-in">    col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span class="r-in">    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"cv"</span>, <span class="st">"geom_mean"</span>, <span class="st">"geom_cv"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span><span class="op">)</span>,</span>
+<span class="r-in">    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span class="r-in">      n <span class="op">=</span> <span class="st">"n"</span>,</span>
+<span class="r-in">      mean <span class="op">=</span> <span class="st">"Mean"</span>,</span>
+<span class="r-in">      sd <span class="op">=</span> <span class="st">"SD"</span>,</span>
+<span class="r-in">      cv <span class="op">=</span> <span class="st">"CV (%)"</span>,</span>
+<span class="r-in">      geom_cv <span class="op">=</span> <span class="st">"CV % Geometric Mean"</span>,</span>
+<span class="r-in">      median <span class="op">=</span> <span class="st">"Median"</span>,</span>
+<span class="r-in">      min <span class="op">=</span> <span class="st">"Minimum"</span>,</span>
+<span class="r-in">      max <span class="op">=</span> <span class="st">"Maximum"</span></span>
+<span class="r-in">    <span class="op">)</span></span>
+<span class="r-in">  <span class="op">)</span></span>
 <span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPC</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Split var [NRELTM1] was not character or factor. Converting to factor</span>
 <span class="r-in"><span class="va">result</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Visit                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Norminal time from first dose    n    Mean   SD    SE    CV (%)   CV % Geometric Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Day 1                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0                               398    0      0     0     NaN             NA         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5                             398   17.1   6.5   0.3     38            36.4        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1                               398   21.8   8.2   0.4    37.4           35.7        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.5                             398   20.9   7.8   0.4    37.1           35.3        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2                               398   17.9   6.7   0.3    37.2           35.4        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3                               398   11.1   4.3   0.2    38.6           36.9        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4                               398   6.2    2.6   0.1    41.3           40.2        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   8                               398   0.4    0.3    0     62.6           66.8        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   12                              398    0      0     0     94.1           114.2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Visit                                                                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Norminal time from first dose    n    Mean   SD    CV (%)    NA    CV % Geometric Mean   Median   Minimum   Maximum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Day 1                                                                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0                               398    0      0     NaN      NA            NA              0         0         0   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5                             398   17.1   6.5     38      16           36.4             14       9.7       31   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1                               398   21.8   8.2    37.4    20.5          35.7            17.5     12.6      39.5  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.5                             398   20.9   7.8    37.1    19.7          35.3            16.8     12.3      37.7  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2                               398   17.9   6.7    37.2    16.8          35.4            14.4     10.7      32.6  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3                               398   11.1   4.3    38.6    10.4          36.9            9.5       5.8      21.9  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4                               398   6.2    2.6    41.3    5.8           40.2            5.4       2.7      14.4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8                               398   0.4    0.3    62.6    0.4           66.8            0.4       0.1       1.7  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   12                              398    0      0     94.1     0            114.2            0         0        0.2  </span>
 </code></pre></div>
     </div>
   </div>
