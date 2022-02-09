@@ -137,7 +137,7 @@ h_g_ipp <- function(df,
           label = id_var,
           colour = id_var
         ),
-        nudge_y = 1,
+        nudge_y = 0.025 * (max(df[, yvar], na.rm = TRUE) - min(df[, yvar], na.rm = TRUE)),
         vjust = "right",
         size = 2
       )
