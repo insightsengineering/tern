@@ -1,0 +1,67 @@
+---
+title: 'Design: Mean (+/-SD) Plasma Concentration Time Prog  (PKCG03)'
+author: "Qi Liu"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of DORT01}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+library(dplyr)
+library(scda.2021)
+packageVersion("tern")
+packageVersion("rtables")
+
+
+```
+
+# Variant 1
+
+Individual plots of concentrations vs. time (one plot per patient/subject)
+
+```{r variant1, results = "asis", eval = TRUE}
+
+adpc <- synthetic_cdisc_data("latest")$adpc
+
+adpc_a <- adpc %>% 
+  filter(
+    PARAM =="Plasma Drug X",
+    ARMCD == "ARM A"
+    ) %>% 
+  mutate(Patient_ID = sub(".*id-", "", USUBJID)) %>% 
+  droplevels() %>%
+  df_explicit_na()
+
+result <- g_lineplot(
+  df = adpc_a,
+  variables = control_lineplot_vars(
+  x = "NRELTM1",
+  y = "AVAL",
+  strata = "ARMCD",
+  paramcd = "PARAMCD",
+  y_unit = "AVALU"),
+  interval = "mean_sdi",
+  whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
+  title = "Plot of Mean (+/-SD)",
+  subtitle = "Analyte:"
+)
+result
+
+
+```

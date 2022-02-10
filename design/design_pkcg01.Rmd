@@ -1,0 +1,67 @@
+---
+title: "Design: Individual plots of concentrations vs. time (PKCG01)"
+author: "Qi Liu"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of DORT01}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+library(dplyr)
+library(scda.2021)
+packageVersion("tern")
+packageVersion("rtables")
+
+
+```
+
+# Variant 1
+
+Individual plots of concentrations vs. time (one plot per patient/subject)
+
+```{r variant1, results = "asis", eval = TRUE}
+
+adpc <- synthetic_cdisc_data("latest")$adpc
+
+adpc_a <- adpc %>% 
+  filter(
+    PARAM =="Plasma Drug X",
+    ARMCD == "ARM A"
+    ) %>% 
+  mutate(Patient_ID = sub(".*id-", "", USUBJID))
+
+result <- g_ipp(
+  df = adpc_a,
+  xvar = "NRELTM1",
+  yvar = "AVAL",
+  xlab = "Norminal Time from First Dose (hr)",
+  ylab = "Concentration (ug/mL)",
+  id_var = "Patient_ID",
+  add_baseline_hline = F,
+  yvar_baseline = "AVAL",  #  yvar_baseline cannot be NA or ignore
+  title = "Individual Patient Plots",
+  subtitle = "Treatment Arm A",
+  plotting_choices = "separate_by_obs"
+)
+result
+
+
+```
+
+
