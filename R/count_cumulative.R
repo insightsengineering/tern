@@ -92,7 +92,6 @@ s_count_cumulative <- function(x,
                                include_eq = TRUE,
                                .N_col, # nolint
                                ...) {
-
   checkmate::assert_numeric(thresholds, min.len = 1, any.missing = FALSE)
 
   count_fraction_list <- Map(function(thres) {

@@ -44,7 +44,6 @@ stat_mean_ci <- function(x,
                          n_min = 2,
                          gg_helper = TRUE,
                          geom_mean = FALSE) {
-
   if (na.rm) {
     x <- stats::na.omit(x)
   }
@@ -53,7 +52,6 @@ stat_mean_ci <- function(x,
   if (!geom_mean) {
     m <- mean(x)
   } else {
-
     negative_values_exist <- any(is.na(x[!is.na(x)]) <- x[!is.na(x)] <= 0)
     if (negative_values_exist) {
       m <- NA_real_
