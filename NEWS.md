@@ -5,6 +5,12 @@
 
 # tern 0.7.6
 
+* Enhanced `stat_mean_ci` and `s_summary.numeric` to calculate the geometric mean with its confidence intervals. 
+
+
+# tern 0.7.6
+
+
 ### New features
 * Added `h_map_for_count_abnormal` so that the map used in `trim_levels_to_map` split function can be created by calling this helper function. Currently it supports two methods: one with all observed mapping, one with at least low limit above zero and at least one non missing high limit.
 * Added `s_summary_numeric_in_cols` and `summarize_vars_numeric_in_cols` functions to generate summary statistics in columns, mainly used for PK datasets.
