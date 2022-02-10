@@ -57,7 +57,7 @@ result <- g_ipp(
   add_baseline_hline = F,
   yvar_baseline = "AVAL",  #  yvar_baseline cannot be NA or ignore
   title = "Individual X Concentration (ug/mL) Over Time by Treatment",
-  subtitle = "Treatment Arm A", # how to add second line of subtitle
+  subtitle = paste("Treatment Arm A\nAnalyte: X"), # how to add second line of subtitle
   plotting_choices = "all_in_one" # line style
 )
 result
