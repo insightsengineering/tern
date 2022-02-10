@@ -47,3 +47,4 @@ with_wald <- tern:::try_car_anova(mod = mod, test.statistic = "Wald")
 with_lr <- tern:::try_car_anova(mod = mod, test.statistic = "LR")
 }
 }
+\keyword{internal}

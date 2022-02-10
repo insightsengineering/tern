@@ -47,3 +47,4 @@ tern:::h_tbl_coxph_pairwise(
 }
 
 }
+\keyword{internal}

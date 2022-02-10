@@ -25,3 +25,4 @@ Differences to the standard [base::\code{[}()] function are:
 elements are returned. That is, \code{names} which don't appear in \code{x} are not returned as \code{NA}s.
 }
 }
+\keyword{internal}

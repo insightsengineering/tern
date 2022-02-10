@@ -18,3 +18,4 @@ otherwise if it is scalar the replicated version of it with \code{n} entries.
 \description{
 Note that this will fail if \code{x} is not having length \code{n} or being a scalar.
 }
+\keyword{internal}
