@@ -25,7 +25,7 @@ with the new Analyze Function compare_vars()."><!-- mathjax --><script src="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9006</span>
       </span>
     </div>
 
@@ -46,15 +46,6 @@ with the new Analyze Function compare_vars()."><!-- mathjax --><script src="http
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -379,6 +370,12 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  5.072982 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.604033    5.589696 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean 95% CI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 13.62167 </span>
@@ -473,6 +470,12 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  4.810946 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.494113    5.150115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean 95% CI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9.544896 </span>
@@ -566,6 +569,12 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       NaN </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          NA          NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean 95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_cv </span>
@@ -841,27 +850,50 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     row_name formatted_cell indent_mod                 row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          n             10          0                         n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       mean            4.9          0                      Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         sd            1.1          0                        SD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         se            0.3          0                        SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    mean_sd      4.9 (1.1)          0                 Mean (SD)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    mean_ci   (4.12, 5.63)          0               Mean 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   mean_sei   (4.54, 5.21)          0             Mean -/+ 1xSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   mean_sdi   (3.82, 5.93)          0             Mean -/+ 1xSD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     median            4.7          0                    Median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10       mad              0          0 Median Absolute Deviation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 median_ci   (3.86, 6.23)          0             Median 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 quantiles      4.1 - 5.3          0           25% and 75%-ile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13       iqr            1.1          0                       IQR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14     range      3.7 - 6.9          0                 Min - Max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15       min            3.7          0                   Minimum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16       max            6.9          0                   Maximum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17        cv           21.6          0                    CV (%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 geom_mean            4.8          0            Geometric Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19   geom_cv           20.8          0       CV % Geometric Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20      pval        &lt;0.0001          0          p-value (t-test)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        row_name                     formatted_cell indent_mod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1             n                                 10          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          mean                                4.9          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            sd                                1.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4            se                                0.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       mean_sd                          4.9 (1.1)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       mean_ci                       (4.12, 5.63)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      mean_sei                       (4.54, 5.21)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      mean_sdi                       (3.82, 5.93)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        median                                4.7          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10          mad                                  0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    median_ci                       (3.86, 6.23)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    quantiles                          4.1 - 5.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13          iqr                                1.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14        range                          3.7 - 6.9          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15          min                                3.7          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16          max                                6.9          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17           cv                               21.6          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18    geom_mean                                4.8          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 geom_mean_ci 4.12522881158738, 5.53785511804167          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20      geom_cv                               20.8          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21         pval                            &lt;0.0001          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                          n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                       Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                         SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  Mean (SD)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                Mean 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7              Mean -/+ 1xSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8              Mean -/+ 1xSD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                     Median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Median Absolute Deviation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11             Median 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12           25% and 75%-ile</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                       IQR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                 Min - Max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                   Minimum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                   Maximum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                    CV (%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18            Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19     Geometric Mean 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20       CV % Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21          p-value (t-test)</span>
 <span class="r-in"><span class="co"># `a_compare.factor`</span></span>
 <span class="r-in"><span class="co"># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span>
 <span class="r-in"><span class="co"># functions can be applied correctly.</span></span>
