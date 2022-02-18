@@ -330,3 +330,58 @@ rbind_fix <- function(...) {
     rbind(...)
   }
 }
+
+#' Extracts dataset and variable labels from a dataset.
+#'
+#' @param data (`data.frame`) table to extract the labels from
+#' @param fill (`logical(1)`) if `TRUE`, the function will return variable names for columns with non-existent labels;
+#'   otherwise will return `NA` for them
+#' @export
+#' @return column labels
+#' @keywords internal
+#'
+var_labels <- function(data, fill = FALSE) {
+  stopifnot(is.data.frame(data))
+  checkmate::assert_flag(fill)
+
+  column_labels <- Map(function(col, colname) {
+    label <- attr(col, "label")
+    if (is.null(label)) {
+      if (fill) {
+        colname
+      } else {
+        NA_character_
+      }
+    } else {
+      if (!checkmate::test_string(label, na.ok = TRUE)) {
+        stop("label for variable ", colname, " is not a character string")
+      }
+      as.vector(label)
+    }
+  }, data, colnames(data))
+  column_labels <- unlist(column_labels, recursive = FALSE, use.names = TRUE)
+
+  column_labels
+}
+
+
+#' Sets column labels of a `data.frame`.
+#'
+#' @param x (`data.frame`) object with columns
+#' @param value (`character`) labels
+#' @return `x`
+#' @export
+#' @examples
+#' var_labels(iris) <- colnames(iris)
+#' @keywords internal
+#'
+`var_labels<-` <- function(x, value) { # nolint
+  checkmate::assert_data_frame(x)
+  checkmate::assert_character(value, len = ncol(x))
+
+  for (i in seq_along(x)) {
+    attr(x[[i]], "label") <- value[i]
+  }
+
+  x
+}
