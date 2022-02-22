@@ -380,7 +380,9 @@ var_labels <- function(data, fill = FALSE) {
   checkmate::assert_character(value, len = ncol(x))
 
   for (i in seq_along(x)) {
-    attr(x[[i]], "label") <- value[i]
+    if (!is.na(value[i])) {
+      attr(x[[i]], "label") <- value[i]
+    }
   }
 
   x

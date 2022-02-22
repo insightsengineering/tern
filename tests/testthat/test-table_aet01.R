@@ -166,7 +166,6 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
       SMQ02 = SMQ02NAM != "",
       CQ01 = CQ01NAM != ""
     )
-
   aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
   basket_vars <- c("SMQ01", "SMQ02", "CQ01")
   labels <- c(
@@ -290,7 +289,7 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
   labels <- c(
     "AE with fatal outcome",
     "Serious AE",
-    "Serious AE leading to withdrawal from treatment",
+    "AE leading to withdrawal from treatment",
     "Related AE",
     "Grade 3-5 AE",
     "Grade 4/5 AE"
