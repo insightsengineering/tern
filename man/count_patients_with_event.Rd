@@ -223,13 +223,15 @@ adae <- adae \%>\%
     fl2 = TRTEMFL == "Y",
     fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",
     fl4 = TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y"
-  ) \%>\%
-  var_relabel(
-    fl1 = "Total AEs",
-    fl2 = "Total number of patients with at least one adverse event",
-    fl3 = "Total number of patients with fatal AEs",
-    fl4 = "Total number of patients with related fatal AEs"
   )
+columns <- c("fl1", "fl2", "fl3", "fl4")
+labels <- c(
+  "Total AEs",
+  "Total number of patients with at least one adverse event",
+  "Total number of patients with fatal AEs",
+  "Total number of patients with related fatal AEs"
+)
+var_labels(adae)[columns] <- labels
 
 s_count_patients_with_flags(
   adae,

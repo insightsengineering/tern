@@ -107,12 +107,13 @@ adtte_f <- adtte \%>\%
     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
     SEX = droplevels(SEX),
     is_event = CNSR == 0
-  ) \%>\%
-  var_relabel(
-    ARM = adtte_labels["ARM"],
-    SEX = adtte_labels["SEX"],
-    is_event = "Event Flag"
   )
+columns <- c("ARM", "SEX", "is_event")
+labels <- c(adtte_labels["ARM"], adtte_labels["SEX"], "Event Flag")
+for (i in seq_along(columns)) {
+  attr(adtte_f[[columns[i]]], "label") <- labels[i]
+}
+
 
 # Extract median survival time for one group.
 h_survtime_df(

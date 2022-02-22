@@ -373,7 +373,9 @@ n_available <- function(x) {
 
 # used for tests at the moments
 reapply_varlabels <- function(x, varlables, ...) { # nolintr
-  do.call(var_relabel, c(list(x = x), as.list(varlables), list(...)))
+  named_labels <- c(as.list(varlables), list(...))
+  var_labels(x)[names(named_labels)] <- as.character(named_labels)
+  x
 }
 
 # Wrapper function of survival::clogit so that when model fitting failed, a more useful message would show

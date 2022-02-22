@@ -136,13 +136,13 @@ adtte_f <- adtte \%>\%
     SEX = droplevels(SEX),
     AVALU = as.character(AVALU),
     is_event = CNSR == 0
-  ) \%>\%
-  var_relabel(
-    ARM = adtte_labels["ARM"],
-    SEX = adtte_labels["SEX"],
-    AVALU = adtte_labels["AVALU"],
-    is_event = "Event Flag"
   )
+
+columns <- c("ARM", "SEX", "AVALU", "is_event")
+labels <- c(adtte_labels["ARM"], adtte_labels["SEX"], adtte_labels["AVALU"], "Event Flag")
+for (i in seq_along(columns)) {
+  attr(adtte_f[[columns[i]]], "label") <- labels[i]
+}
 
 df <- extract_survival_subgroups(
   variables = list(
