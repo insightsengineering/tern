@@ -3,7 +3,7 @@
 The `tern` R package contains analysis functions to create tables, listings and graphs (TLGs) as used in clinical trial reporting.
 
 The package provides a large range of functionality, for example:
-- data visualisations:
+- data visualizations:
   * forest plots
   * line plots
   * Kaplan-Meier plots
