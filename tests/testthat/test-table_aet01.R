@@ -172,7 +172,7 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
     aesi_label(adae$SMQ01NAM, adae$SMQ01SC), aesi_label(adae$SMQ02NAM, adae$SMQ02SC), aesi_label(adae$CQ01NAM)
   )
   for (i in seq_along(basket_vars)) {
-    attr(adae[[aesi_vars[i]]], "label") <- labels[i]
+    attr(adae[[basket_vars[i]]], "label") <- labels[i]
   }
 
   # Layout for variables from adsl dataset.
@@ -398,7 +398,7 @@ testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Add
       CTC35 = AETOXGR %in% c("3", "4", "5"),
       CTC45 = AETOXGR %in% c("4", "5")
     )
-  aesi_vars <- c("FATAL", "SER", "DSM", "REL", "CTC35", "CTC45")
+  aesi_vars <- c("FATAL", "SER", "WD", "DSM", "REL", "CTC35", "CTC45")
   labels <- c(
     "AE with fatal outcome",
     "Serious AE",
