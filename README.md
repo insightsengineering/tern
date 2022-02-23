@@ -6,20 +6,20 @@ The package provides a large range of functionality, for example:
 
 <!-- markdownlint-disable MD007 MD030 -->
 -   data visualizations:
-  -   forest plots
-  -   line plots
-  -   Kaplan-Meier plots
-  -   ...
+    -   forest plots
+    -   line plots
+    -   Kaplan-Meier plots
+    -   ...
 -   statistical model fits:
-  -   MMRM
-  -   logistic regression
-  -   Cox regression
-  -   ...
+    -   MMRM
+    -   logistic regression
+    -   Cox regression
+    -   ...
 -   summary tables:
-  -   unique patients
-  -   exposure across patients
-  -   change from baseline for parameters
-  -   ...
+    -   unique patients
+    -   exposure across patients
+    -   change from baseline for parameters
+    -   ...
 
 <!-- markdownlint-enable MD007 MD030 -->
 
