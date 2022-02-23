@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9007</span>
       </span>
     </div>
 
@@ -64,15 +64,6 @@
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="index.html">latest</a></li>
-   <li><a href="/index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -94,13 +85,19 @@ Other releases
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="tern-">tern <a href="https://github.com/insightsengineering/tern" class="external-link"><img src="reference/figures/tern.png" align="right" height="139" style="max-width: 100%;"></a>
+<div class="page-header"><h1 id="tern-">tern
+<a href="https://github.com/insightsengineering/tern" class="external-link"><img src="reference/figures/tern.png" align="right" height="139" style="max-width: 100%;"></a>
 <a class="anchor" aria-label="anchor" href="#tern-"></a>
 </h1></div>
-<p>The <code>tern</code> R package contains analysis functions to create tables, listings and graphs (TLGs) as used in clinical trials. We also provide the <code>teal</code> modules for outputs in <code>tern</code> in the <code>teal.modules.clinical</code> R package.</p>
+<p>The <code>tern</code> R package contains analysis functions to create
+tables, listings and graphs (TLGs) as used in clinical trials. We also
+provide the <code>teal</code> modules for outputs in <code>tern</code>
+in the <code>teal.modules.clinical</code> R package.</p>
 <ul>
-<li><p>Note that tern can be used to create output for regulatory submissions when used in the enableR system.</p></li>
-<li><p>Use of tern in other contexts/systems is for exploratory analysis, quality control, etc.</p></li>
+<li><p>Note that tern can be used to create output for regulatory
+submissions when used in the enableR system.</p></li>
+<li><p>Use of tern in other contexts/systems is for exploratory
+analysis, quality control, etc.</p></li>
 </ul>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -111,28 +108,43 @@ Other releases
 <ol style="list-style-type: decimal">
 <li>
 <p>Clone the repository</p>
-<p>The repository can be downloaded directly from the <code>github.com</code> site as an archive (see <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" class="external-link">Github tutorial on cloning to learn more</a>). Alternatively, Git command line tools offer the same functionality, without the need for manual downloading and unpacking the archive, but require to authenticate to Github. You can authenticate using a key pair or a Personal Access Token (PAT). Please refer to excellent Github tutorials on <a href="https://docs.github.com/en/github/authenticating-to-github" class="external-link">connecting to Github using SSH</a> or <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external-link">creating and using PAT</a>.</p>
+<p>The repository can be downloaded directly from the
+<code>github.com</code> site as an archive (see <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" class="external-link">Github
+tutorial on cloning to learn more</a>). Alternatively, Git command line
+tools offer the same functionality, without the need for manual
+downloading and unpacking the archive, but require to authenticate to
+Github. You can authenticate using a key pair or a Personal Access Token
+(PAT). Please refer to excellent Github tutorials on <a href="https://docs.github.com/en/github/authenticating-to-github" class="external-link">connecting
+to Github using SSH</a> or <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external-link">creating
+and using PAT</a>.</p>
 <ol style="list-style-type: decimal">
-<li>Using PAT. Input in the Git Bash console, PowerShell or any Linux shell:</li>
+<li>Using PAT. Input in the Git Bash console, PowerShell or any Linux
+shell:</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git clone https://github.com/insightsengineering/tern.git</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Username:</span> your_username_goes_here</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Password:</span> your_token_goes_here</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>
-<p>Using SSH. If set up properly, the repository is ready to be cloned executing:</p>
+<p>Using SSH. If set up properly, the repository is ready to be
+cloned executing:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/insightsengineering/tern.git</span></code></pre></div>
 </li>
 </ol>
-<p>This creates a subdirectory <code>tern</code> containing the cloned repository.</p>
+<p>This creates a subdirectory <code>tern</code> containing the cloned
+repository.</p>
 </li>
 <li>
 <p>Build and install</p>
-<p>The native R tools provide a quick way to install a package. Run in PowerShell or any Linux shell:</p>
+<p>The native R tools provide a quick way to install a package. Run in
+PowerShell or any Linux shell:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD build tern</span></code></pre></div>
-<p>This command builds the package and creates an archive. The name of the archive is output by the command at then of building. Then input in the shell:</p>
+<p>This command builds the package and creates an archive. The name of
+the archive is output by the command at then of building. Then input in
+the shell:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'install.packages("name_of_the_archive")'</span></span></code></pre></div>
-<p>Here is an example of a real command (with name_of_the_archive substituted by the output of the build command):</p>
+<p>Here is an example of a real command (with name_of_the_archive
+substituted by the output of the build command):</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'install.packages("tern_0.9.5.9000.tar.gz")'</span></span></code></pre></div>
 </li>
 </ol>
@@ -142,13 +154,17 @@ Other releases
 <h2 id="presentations">Presentations<a class="anchor" aria-label="anchor" href="#presentations"></a>
 </h2>
 <ul>
-<li><a href="https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing" class="external-link">Stats Software Initiative - R Series. June 18, 2018</a></li>
+<li><a href="https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing" class="external-link">Stats
+Software Initiative - R Series. June 18, 2018</a></li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>There are a number of people who have previously been actively working on <code>tern</code> including: Maximilian Mordig, Jennifer Li, Chendi Liao, Yuyao Song, Edgar Manukyan, Carolyn Zhang, Mark Rothe, Xiao Yu Mo.</p>
+<p>There are a number of people who have previously been actively
+working on <code>tern</code> including: Maximilian Mordig, Jennifer Li,
+Chendi Liao, Yuyao Song, Edgar Manukyan, Carolyn Zhang, Mark Rothe, Xiao
+Yu Mo.</p>
 </div>
 </div>
   </div>
@@ -157,8 +173,8 @@ Other releases
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github..com/insightsengineering/tern/" class="external-link">Browse source code</a></li>
-<li><a href="https://github..com/insightsengineering/tern/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/insightsengineering/tern/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/insightsengineering/tern/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -207,12 +223,15 @@ Other releases
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by NEST, Roche, Saibah Chohan, Francois Collin, Nick Paszty, Ting Qi, Daniel Sabanes Bove, Jana Stoilova, Adrian Waddell, Heng Wang, Godwin Yung, Carreras Maximo, Zhao Rui, Wojciech Wojciak.</p>
+<p>Developed by NEST, Roche, Saibah Chohan, Francois Collin, Nick
+Paszty, Ting Qi, Daniel Sabanes Bove, Jana Stoilova, Adrian Waddell,
+Heng Wang, Godwin Yung, Carreras Maximo, Zhao Rui, Wojciech Wojciak.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>

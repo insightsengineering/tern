@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9007</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -89,7 +80,9 @@ Other releases
         <td><p>Kaplan-Meier Plot</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="control-functions">Control Functions <a href="#control-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Control functions capture options in lists, and take care of defaults (and if it makes sense also checks). They avoid cluttering of function signatures with long lists of single arguments.</p>
+          <p class="section-desc"></p><p>Control functions capture options in lists, and take care of defaults
+(and if it makes sense also checks). They avoid cluttering of function
+signatures with long lists of single arguments.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="control_coxph.html">control_coxph()</a></code> </p>
@@ -129,7 +122,10 @@ Other releases
         <td><p>Control Function for <code>survfit</code> Model for Patient's Survival Rate at Timepoint</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="statistics-functions">Statistics Functions <a href="#statistics-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Statistics functions should do the computation of the numbers that are tabulated later. In order to separate computation from formatting, they should not take care of <code>rcell</code> type formatting themselves.</p>
+          <p class="section-desc"></p><p>Statistics functions should do the computation of the numbers that
+are tabulated later. In order to separate computation from formatting,
+they should not take care of <code>rcell</code> type formatting
+themselves.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="summarize_ancova.html">h_ancova()</a></code> <code><a href="summarize_ancova.html">s_ancova()</a></code> <code><a href="summarize_ancova.html">a_ancova()</a></code> <code><a href="summarize_ancova.html">summarize_ancova()</a></code> </p>
@@ -253,7 +249,10 @@ Other releases
         <td><p>Difference Test for Two Proportions</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="formatted-analysis-functions">Formatted Analysis functions <a href="#formatted-analysis-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>These have the same arguments as the corresponding statistics functions, and can be further customized by calling <code><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">rtables::make_afun()</a></code> on them. They are used as <code>afun</code> in <code><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p>
+          <p class="section-desc"></p><p>These have the same arguments as the corresponding statistics
+functions, and can be further customized by calling
+<code><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">rtables::make_afun()</a></code> on them. They are used as
+<code>afun</code> in <code><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="summarize_ancova.html">h_ancova()</a></code> <code><a href="summarize_ancova.html">s_ancova()</a></code> <code><a href="summarize_ancova.html">a_ancova()</a></code> <code><a href="summarize_ancova.html">summarize_ancova()</a></code> </p>
@@ -345,7 +344,8 @@ Other releases
         <td><p>Summarize Variables</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="analyze-functions">Analyze Functions <a href="#analyze-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates the table.</p>
+          <p class="section-desc"></p><p>Analyze Functions are used in combination with the rtables layout
+functions, in the pipeline which creates the table.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="compare_variables.html">s_compare()</a></code> <code><a href="compare_variables.html">a_compare()</a></code> <code><a href="compare_variables.html">create_afun_compare()</a></code> <code><a href="compare_variables.html">compare_vars()</a></code> </p>
@@ -606,7 +606,8 @@ Other releases
         <td><p>Summary numeric variables in columns</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="model-specific-functions">Model Specific Functions <a href="#model-specific-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>these functions help with fitting or extracting results from specific models</p>
+          <p class="section-desc"></p><p>these functions help with fitting or extracting results from specific
+models</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="tabulate_mmrm.html">as.rtable(<i>&lt;mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_fixed()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_cov()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_diagnostic()</a></code> <code><a href="tabulate_mmrm.html">tidy(<i>&lt;mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">summarize_lsmeans()</a></code> </p>
@@ -706,7 +707,8 @@ Other releases
         <td><p>Plot LS means for MMRM</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="rtables-helper-functions">rtables Helper Functions <a href="#rtables-helper-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>these functions help to work with the new rtables package and might be moved there later</p>
+          <p class="section-desc"></p><p>these functions help to work with the new rtables package and might
+be moved there later</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="add_rowcounts.html">add_rowcounts()</a></code> </p>
@@ -758,7 +760,8 @@ Other releases
         <td><p>Convert Table into Matrix of Strings</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="rtables-formatting-functions">rtables Formatting Functions <a href="#rtables-formatting-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>these functions provide customized formatting rules to work with the rtables package</p>
+          <p class="section-desc"></p><p>these functions provide customized formatting rules to work with the
+rtables package</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="format_count_fraction.html">format_count_fraction()</a></code> </p>
@@ -947,11 +950,14 @@ without any warnings.</p></td>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by NEST, Roche, Saibah Chohan, Francois Collin, Nick Paszty, Ting Qi, Daniel Sabanes Bove, Jana Stoilova, Adrian Waddell, Heng Wang, Godwin Yung, Carreras Maximo, Zhao Rui, Wojciech Wojciak.</p>
+  <p></p><p>Developed by NEST, Roche, Saibah Chohan, Francois Collin, Nick
+Paszty, Ting Qi, Daniel Sabanes Bove, Jana Stoilova, Adrian Waddell,
+Heng Wang, Godwin Yung, Carreras Maximo, Zhao Rui, Wojciech Wojciak.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>
