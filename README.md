@@ -3,22 +3,25 @@
 The `tern` R package contains analysis functions to create tables and graphs used for clinical trial reporting.
 
 The package provides a large range of functionality, for example:
-- data visualizations:
-  * forest plots
-  * line plots
-  * Kaplan-Meier plots
-  * ...
-- statistical model fits:
-  * MMRM
-  * logistic regression
-  * Cox regression
-  * ...
-- summary tables:
-  * unique patients
-  * exposure across patients
-  * change from baseline for parameters
-  * ...
 
+<!-- markdownlint-disable MD007 MD030 -->
+-   data visualizations:
+  -   forest plots
+  -   line plots
+  -   Kaplan-Meier plots
+  -   ...
+-   statistical model fits:
+  -   MMRM
+  -   logistic regression
+  -   Cox regression
+  -   ...
+-   summary tables:
+  -   unique patients
+  -   exposure across patients
+  -   change from baseline for parameters
+  -   ...
+
+<!-- markdownlint-enable MD007 MD030 -->
 
 Many of these outputs are available to be added into `teal` applications for interactive exploration of data. These `teal` modules are available in the [`teal.modules.clinical`](https://github.com/insightsengineering/teal.modules.clinical) package.
 
