@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9008</span>
       </span>
     </div>
 
@@ -64,15 +64,6 @@
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="index.html">latest</a></li>
-   <li><a href="/index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -99,73 +90,59 @@ Other releases
 <a class="anchor" aria-label="anchor" href="#tern-"></a>
 </h1></div>
 <p>The <code>tern</code> R package contains analysis functions to create
-tables, listings and graphs (TLGs) as used in clinical trials. We also
-provide the <code>teal</code> modules for outputs in <code>tern</code>
-in the <code>teal.modules.clinical</code> R package.</p>
+tables and graphs used for clinical trial reporting.</p>
+<p>The package provides a large range of functionality, for example:</p>
+<!-- markdownlint-disable MD007 MD030 -->
 <ul>
-<li><p>Note that tern can be used to create output for regulatory
-submissions when used in the enableR system.</p></li>
-<li><p>Use of tern in other contexts/systems is for exploratory
-analysis, quality control, etc.</p></li>
+<li>data visualizations:
+<ul>
+<li>forest plots</li>
+<li>line plots</li>
+<li>Kaplan-Meier plots</li>
+<li>…</li>
 </ul>
+</li>
+<li>statistical model fits:
+<ul>
+<li>MMRM</li>
+<li>logistic regression</li>
+<li>Cox regression</li>
+<li>…</li>
+</ul>
+</li>
+<li>summary tables:
+<ul>
+<li>unique patients</li>
+<li>exposure across patients</li>
+<li>change from baseline for parameters</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<!-- markdownlint-enable MD007 MD030 --><p>Many of these outputs are available to be added into
+<code>teal</code> applications for interactive exploration of data.
+These <code>teal</code> modules are available in the <a href="https://github.com/insightsengineering/teal.modules.clinical" class="external-link"><code>teal.modules.clinical</code></a>
+package.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="section level3">
-<h3 id="clone-and-install-manually">Clone and install manually<a class="anchor" aria-label="anchor" href="#clone-and-install-manually"></a>
-</h3>
-<ol style="list-style-type: decimal">
-<li>
-<p>Clone the repository</p>
-<p>The repository can be downloaded directly from the
-<code>github.com</code> site as an archive (see <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" class="external-link">Github
-tutorial on cloning to learn more</a>). Alternatively, Git command line
-tools offer the same functionality, without the need for manual
-downloading and unpacking the archive, but require to authenticate to
-Github. You can authenticate using a key pair or a Personal Access Token
-(PAT). Please refer to excellent Github tutorials on <a href="https://docs.github.com/en/github/authenticating-to-github" class="external-link">connecting
-to Github using SSH</a> or <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external-link">creating
-and using PAT</a>.</p>
-<ol style="list-style-type: decimal">
-<li>Using PAT. Input in the Git Bash console, PowerShell or any Linux
-shell:</li>
-</ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git clone https://github.com/insightsengineering/tern.git</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Username:</span> your_username_goes_here</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Password:</span> your_token_goes_here</span></code></pre></div>
-<ol style="list-style-type: decimal">
-<li>
-<p>Using SSH. If set up properly, the repository is ready to be
-cloned executing:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/insightsengineering/tern.git</span></code></pre></div>
-</li>
-</ol>
-<p>This creates a subdirectory <code>tern</code> containing the cloned
-repository.</p>
-</li>
-<li>
-<p>Build and install</p>
-<p>The native R tools provide a quick way to install a package. Run in
-PowerShell or any Linux shell:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD build tern</span></code></pre></div>
-<p>This command builds the package and creates an archive. The name of
-the archive is output by the command at then of building. Then input in
-the shell:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'install.packages("name_of_the_archive")'</span></span></code></pre></div>
-<p>Here is an example of a real command (with name_of_the_archive
-substituted by the output of the build command):</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'install.packages("tern_0.9.5.9000.tar.gz")'</span></span></code></pre></div>
-</li>
-</ol>
-</div>
-</div>
-<div class="section level2">
-<h2 id="presentations">Presentations<a class="anchor" aria-label="anchor" href="#presentations"></a>
-</h2>
-<ul>
-<li><a href="https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing" class="external-link">Stats
-Software Initiative - R Series. June 18, 2018</a></li>
-</ul>
+<p>This repository requires a personal access token to install see here
+<a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external-link">creating
+and using PAT</a>. Once this is set up, to install the latest released
+version of the package run:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>GITHUB_PAT <span class="op">=</span> <span class="st">"your_access_token_here"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"insightsengineering/tern@*release"</span>, dependencies <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<p>You might need to manually install all of the package dependencies
+before installing this package as without the
+<code>dependencies = FALSE</code> argument to
+<code>install_github</code> it may produce an error.</p>
+<p>In order to run many of the examples you will also need to install
+the <a href="https://github.com/insightsengineering/scda" class="external-link"><code>scda</code></a>
+package.</p>
+<p>See package vignettes <code>browseVignettes(package = "tern")</code>
+for usage of this package.</p>
 </div>
 <div class="section level2">
 <h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
