@@ -138,11 +138,13 @@ adtte_f <- adtte \%>\%
     is_event = CNSR == 0
   )
 
-columns <- c("ARM", "SEX", "AVALU", "is_event")
-labels <- c(adtte_labels["ARM"], adtte_labels["SEX"], adtte_labels["AVALU"], "Event Flag")
-for (i in seq_along(columns)) {
-  attr(adtte_f[[columns[i]]], "label") <- labels[i]
-}
+labels <- c(
+  "ARM" = adtte_labels["ARM"],
+  "SEX" = adtte_labels["SEX"],
+  "AVALU" = adtte_labels["AVALU"],
+  "is_event" = "Event Flag"
+)
+var_labels(adtte_f)[names(labels)] <- labels
 
 df <- extract_survival_subgroups(
   variables = list(

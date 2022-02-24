@@ -71,7 +71,7 @@ library(rtables)
 adtte <- synthetic_cdisc_data("latest")$adtte
 
 # Save variable labels before data processing steps.
-adtte_labels <- var_labels(adtte)
+adtte_labels <- var_labels(adtte, fill = FALSE)
 
 adtte_f <- adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
@@ -79,11 +79,8 @@ adtte_f <- adtte \%>\%
     AVALU = as.character(AVALU),
     is_event = CNSR == 0
   )
-columns <- c("AVALU", "is_event")
-labels <- c(adtte_labels["AVALU"], "Event Flag")
-for (i in seq_along(columns)) {
-  attr(adtte_f[[columns[i]]], "label") <- labels[i]
-}
+labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
+var_labels(adtte_f)[names(labels)] <- labels
 
 # This is how the variable list is converted internally.
 h_surv_to_coxreg_variables(

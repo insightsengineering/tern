@@ -36,11 +36,8 @@
 #'     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
 #'     is_event = CNSR == 0
 #'   )
-#' columns <- c("ARM", "is_event")
-#' labels <- c("Treatment Arm", "Event Flag")
-#' for (i in seq_along(columns)) {
-#'   attr(adtte_f[[columns[i]]], "label") <- labels[i]
-#' }
+#' labels <- c("ARM" = "Treatment Arm", "is_event" = "Event Flag")
+#' var_labels(adtte_f)[names(labels)] <- labels
 #'
 #' variables <- list(
 #'   arm = "ARM",
