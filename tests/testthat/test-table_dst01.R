@@ -53,17 +53,19 @@ get_adsl0 <- function() {
         TRTDRS %in% c("ADVERSE EVENT", "PHYSICIAN DECISION") ~ "Safety",
         !is.na(TRTDRS) ~ "Other"
       )
-    ) %>%
-    var_relabel(
-      COMPSTUD = "Complete Study",
-      STUDONS = "On-study Status",
-      DISSTDFL = "Discontinued Study",
-      STDDRS = "Reason for Study \r\nDiscontinuation",
-      GOTTRT = "Received Treatment",
-      DISTRTFL = "Discontinued Treatment",
-      TRTDRS = "Reason for Treatment \r\nDiscontinuation",
-      DRSCAT = "Subcategory for Treatment Discontinuation"
     )
+  columns <- c("COMPSTUD", "STUDONS", "DISSTDFL", "STDDRS", "GOTTRT", "DISTRTFL", "TRTDRS", "DRSCAT")
+  labels <- c(
+    "Complete Study",
+    "On-study Status",
+    "Discontinued Study",
+    "Reason for Study \r\nDiscontinuation",
+    "Received Treatment",
+    "Discontinued Treatment",
+    "Reason for Treatment \r\nDiscontinuation",
+    "Subcategory for Treatment Discontinuation"
+  )
+  var_labels(adsl0)[columns] <- labels
   # nolint end
   adsl0
 }

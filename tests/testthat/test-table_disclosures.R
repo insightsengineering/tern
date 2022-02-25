@@ -31,14 +31,10 @@ get_adsl <- function() {
         nrow(.),
         replace = TRUE
       )
-    ) %>%
-    var_relabel(
-      STSTFL = "Start Study",
-      COMPSTUD = "Study Completion Flag",
-      DISCSTUD = "Study Discontinuation Flag",
-      AGEGRP = "Age Group",
-      ETHNIC = "Ethnicity"
     )
+  columns <- c("STSTFL", "COMPSTUD", "DISCSTUD", "AGEGRP", "ETHNIC")
+  labels <- c("Start Study", "Study Completion Flag", "Study Discontinuation Flag", "Age Group", "Ethnicity")
+  var_labels(adsl_f)[columns] <- labels
 
   adsl_f$AGEGRP <- factor(adsl_f$AGEGRP, levels = c("< 65 yrs", ">= 65 yrs"))
   adsl_f$ETHNIC <- factor(adsl_f$ETHNIC, levels = c("Ethnicity 1", "Ethnicity 2", "Unknown"))

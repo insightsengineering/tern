@@ -202,9 +202,8 @@ dta_bladder <- with(
     )
   )
 )
-attr(dta_bladder$armcd, "label") <- "ARM"
-attr(dta_bladder$covar1, "label") <- "A Covariate Label"
-attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
+labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+var_labels(dta_bladder)[names(labels)] <- labels
 dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 plot(

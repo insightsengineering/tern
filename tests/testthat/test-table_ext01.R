@@ -144,14 +144,16 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
       names_from = PARAMCD,
       values_from = AVAL
     ) %>%
-    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
-    var_relabel(
-      TDOSE = "Total dose administered",
-      TNDOSE = "Total number of doses administered",
-      TDURD = "Treatment duration (days)",
-      TNDOSMIS = "Total number of missed doses during study",
-      TDURDC = "Treatment duration (days)"
-    )
+    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID"))
+  columns <- c("TDOSE", "TNDOSE", "TDURD", "TNDOSMIS", "TDURDC")
+  labels <- c(
+    "Total dose administered",
+    "Total number of doses administered",
+    "Treatment duration (days)",
+    "Total number of missed doses during study",
+    "Treatment duration (days)"
+  )
+  var_labels(anl)[columns] <- labels
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -252,14 +254,16 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
       names_from = PARAMCD,
       values_from = AVAL
     ) %>%
-    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
-    var_relabel(
-      TDOSE = "Total dose administered",
-      TNDOSE = "Total number of doses administered",
-      TDURD = "Treatment duration (days)",
-      TNDOSMIS = "Total number of missed doses during study",
-      TDURDC = "Treatment duration (days)"
-    )
+    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID"))
+  columns <- c("TDOSE", "TNDOSE", "TDURD", "TNDOSMIS", "TDURDC")
+  labels <- c(
+    "Total dose administered",
+    "Total number of doses administered",
+    "Treatment duration (days)",
+    "Total number of missed doses during study",
+    "Treatment duration (days)"
+  )
+  var_labels(anl)[columns] <- labels
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
