@@ -24,7 +24,7 @@ on a binary response endpoint across population subgroups."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9009</span>
       </span>
     </div>
 
@@ -45,15 +45,6 @@ on a binary response endpoint across population subgroups."><!-- mathjax --><scr
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -163,12 +154,12 @@ created by combining multiple subtables.</p>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span>
-<span class="r-in"><span class="va">adrs_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">adrs_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adrs</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">adrs_f</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="va">AVALC</span> <span class="op">==</span> <span class="st">"CR"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs_f</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">adrs_labels</span>, <span class="st">"Response"</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adrs_f</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">adrs_labels</span>, <span class="st">"Response"</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,</span></span>
 <span class="r-in"><span class="co"># in logistic regression models with one covariate `RACE`. The subgroups</span></span>
 <span class="r-in"><span class="co"># are defined by the levels of `BMRKR2`.</span></span>

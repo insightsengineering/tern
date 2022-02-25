@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9009</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -330,13 +321,14 @@ Adds the count statistics to the input layout for multiple flag variables at onc
 <span class="r-in">    fl2 <span class="op">=</span> <span class="va">TRTEMFL</span> <span class="op">==</span> <span class="st">"Y"</span>,</span>
 <span class="r-in">    fl3 <span class="op">=</span> <span class="va">TRTEMFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">&amp;</span> <span class="va">AEOUT</span> <span class="op">==</span> <span class="st">"FATAL"</span>,</span>
 <span class="r-in">    fl4 <span class="op">=</span> <span class="va">TRTEMFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">&amp;</span> <span class="va">AEOUT</span> <span class="op">==</span> <span class="st">"FATAL"</span> <span class="op">&amp;</span> <span class="va">AEREL</span> <span class="op">==</span> <span class="st">"Y"</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/var_relabel.html" class="external-link">var_relabel</a></span><span class="op">(</span></span>
-<span class="r-in">    fl1 <span class="op">=</span> <span class="st">"Total AEs"</span>,</span>
-<span class="r-in">    fl2 <span class="op">=</span> <span class="st">"Total number of patients with at least one adverse event"</span>,</span>
-<span class="r-in">    fl3 <span class="op">=</span> <span class="st">"Total number of patients with fatal AEs"</span>,</span>
-<span class="r-in">    fl4 <span class="op">=</span> <span class="st">"Total number of patients with related fatal AEs"</span></span>
 <span class="r-in">  <span class="op">)</span></span>
+<span class="r-in"><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span class="r-in">  <span class="st">"fl1"</span> <span class="op">=</span> <span class="st">"Total AEs"</span>,</span>
+<span class="r-in">  <span class="st">"fl2"</span> <span class="op">=</span> <span class="st">"Total number of patients with at least one adverse event"</span>,</span>
+<span class="r-in">  <span class="st">"fl3"</span> <span class="op">=</span> <span class="st">"Total number of patients with fatal AEs"</span>,</span>
+<span class="r-in">  <span class="st">"fl4"</span> <span class="op">=</span> <span class="st">"Total number of patients with related fatal AEs"</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adae</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">labels</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">s_count_patients_with_flags</span><span class="op">(</span></span>
 <span class="r-in">  <span class="va">adae</span>,</span>
@@ -418,7 +410,7 @@ Adds the count statistics to the input layout for multiple flag variables at onc
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">count_patients_with_flags</span><span class="op">(</span></span>
 <span class="r-in">    <span class="st">"SUBJID"</span>,</span>
-<span class="r-in">    flag_variables <span class="op">=</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adae</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fl1"</span>, <span class="st">"fl2"</span>, <span class="st">"fl3"</span>, <span class="st">"fl4"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,</span>
+<span class="r-in">    flag_variables <span class="op">=</span> <span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adae</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fl1"</span>, <span class="st">"fl2"</span>, <span class="st">"fl3"</span>, <span class="st">"fl4"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,</span>
 <span class="r-in">    denom <span class="op">=</span> <span class="st">"N_col"</span></span>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt2</span>, <span class="va">adae</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span>

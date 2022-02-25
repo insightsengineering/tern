@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9009</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -174,7 +165,7 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in"><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Save variable labels before data processing steps.</span></span>
-<span class="r-in"><span class="va">adtte_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">adtte_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adtte</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
@@ -188,13 +179,15 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in">    SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">SEX</span><span class="op">)</span>,</span>
 <span class="r-in">    AVALU <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">AVALU</span><span class="op">)</span>,</span>
 <span class="r-in">    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/var_relabel.html" class="external-link">var_relabel</a></span><span class="op">(</span></span>
-<span class="r-in">    ARM <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[</span><span class="st">"ARM"</span><span class="op">]</span>,</span>
-<span class="r-in">    SEX <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[</span><span class="st">"SEX"</span><span class="op">]</span>,</span>
-<span class="r-in">    AVALU <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[</span><span class="st">"AVALU"</span><span class="op">]</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"Event Flag"</span></span>
 <span class="r-in">  <span class="op">)</span></span>
+<span class="r-in"><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span class="r-in">  <span class="st">"ARM"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"ARM"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span class="r-in">  <span class="st">"SEX"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"SEX"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span class="r-in">  <span class="st">"AVALU"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"AVALU"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span class="r-in">  <span class="st">"is_event"</span> <span class="op">=</span> <span class="st">"Event Flag"</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adtte_f</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">labels</span></span>
+<span class="r-in"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">extract_survival_subgroups</span><span class="op">(</span></span>
 <span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -324,8 +317,8 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         .formats = fmt)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55d999d67998&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d99b60b1c0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560d23dd8c78&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560d1e69df70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (df, labelstr = "", ...) </span>
@@ -333,8 +326,8 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         .formats = fmt)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55d999d67998&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d99b60b578&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560d23dd8c78&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560d1e69dbb8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Table with default columns.</span></span>

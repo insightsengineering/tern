@@ -24,7 +24,7 @@ across population subgroups."><!-- mathjax --><script src="https://cdnjs.cloudfl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9009</span>
       </span>
     </div>
 
@@ -45,15 +45,6 @@ across population subgroups."><!-- mathjax --><script src="https://cdnjs.cloudfl
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -166,18 +157,17 @@ created by combining multiple subtables.</p>
 <span class="r-in"><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Save variable labels before data processing steps.</span></span>
-<span class="r-in"><span class="va">adtte_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">adtte_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adtte</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span class="r-in">    AVALU <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">AVALU</span><span class="op">)</span>,</span>
 <span class="r-in">    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/var_relabel.html" class="external-link">var_relabel</a></span><span class="op">(</span></span>
-<span class="r-in">    AVALU <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[</span><span class="st">"AVALU"</span><span class="op">]</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"Event Flag"</span></span>
 <span class="r-in">  <span class="op">)</span></span>
+<span class="r-in"><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVALU"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"AVALU"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"is_event"</span> <span class="op">=</span> <span class="st">"Event Flag"</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adtte_f</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">labels</span></span>
+<span class="r-in"></span>
 <span class="r-in"><span class="co"># Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,</span></span>
 <span class="r-in"><span class="co"># in multiple regression models containing one covariate `RACE`,</span></span>
 <span class="r-in"><span class="co"># as well as one stratification variable `STRATA1`. The subgroups</span></span>

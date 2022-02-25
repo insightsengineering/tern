@@ -24,7 +24,7 @@ time and hazard ratio for population subgroups."><!-- mathjax --><script src="ht
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9009</span>
       </span>
     </div>
 
@@ -45,15 +45,6 @@ time and hazard ratio for population subgroups."><!-- mathjax --><script src="ht
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -163,7 +154,7 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in"><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Save variable labels before data processing steps.</span></span>
-<span class="r-in"><span class="va">adtte_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">adtte_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adtte</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
@@ -176,12 +167,10 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in">    ARM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span><span class="va">ARM</span>, <span class="st">"B: Placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span class="r-in">    SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">SEX</span><span class="op">)</span>,</span>
 <span class="r-in">    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/var_relabel.html" class="external-link">var_relabel</a></span><span class="op">(</span></span>
-<span class="r-in">    ARM <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[</span><span class="st">"ARM"</span><span class="op">]</span>,</span>
-<span class="r-in">    SEX <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[</span><span class="st">"SEX"</span><span class="op">]</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"Event Flag"</span></span>
 <span class="r-in">  <span class="op">)</span></span>
+<span class="r-in"><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ARM"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"ARM"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"SEX"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"SEX"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"is_event"</span> <span class="op">=</span> <span class="st">"Event Flag"</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="var_labels.html">var_labels</a></span><span class="op">(</span><span class="va">adtte_f</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">labels</span></span>
+<span class="r-in"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Extract median survival time for one group.</span></span>
 <span class="r-in"><span class="fu">h_survtime_df</span><span class="op">(</span></span>
