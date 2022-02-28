@@ -51,6 +51,9 @@ testthat::test_that("AOVT01 variant with single endpoint is produced correctly",
 })
 
 testthat::test_that("AOVT01 variant with multiple endpoints is produced correctly", {
+
+  skip_if_fail_rtables_refactor()
+
   adqs_multi <- dplyr::filter(adqs, AVISIT == "WEEK 1 DAY 8")
   n_per_arm <- table(adsl$ARM)
 

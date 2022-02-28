@@ -111,6 +111,9 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and strati
 
 
 testthat::test_that("coxph_pairwise works with default arguments and no stratification factors", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -175,6 +178,9 @@ testthat::test_that("coxph_pairwise works with customized arguments and no strat
 
 
 testthat::test_that("coxph_pairwise works with default arguments and stratification factors", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)

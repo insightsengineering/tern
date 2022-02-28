@@ -79,6 +79,9 @@ testthat::test_that("s_surv_timepoint also works when there are 0 patients at ri
 })
 
 testthat::test_that("surv_timepoint works with default arguments", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -112,6 +115,9 @@ testthat::test_that("surv_timepoint works with default arguments", {
 })
 
 testthat::test_that("surv_timepoint works with customized arguments", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
