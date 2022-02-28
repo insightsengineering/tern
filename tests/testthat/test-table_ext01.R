@@ -7,6 +7,9 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adex <- synthetic_cdisc_data("rcd_2021_05_05")$adex
 
 testthat::test_that("EXT01 default variant with numeric parameters is produced correctly", {
+
+  skip_if_fail_rtables_refactor()
+
   adex <- adex %>%
     dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
@@ -80,6 +83,9 @@ testthat::test_that("EXT01 default variant with numeric parameters is produced c
 })
 
 testthat::test_that("EXT01 variant: with both numeric and categorical parameters", {
+
+  skip_if_fail_rtables_refactor()
+
   adex <- adex %>%
     dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
@@ -190,6 +196,9 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
 })
 
 testthat::test_that("EXT01 variant: with user specified categories for missed doses", {
+
+  skip_if_fail_rtables_refactor()
+
   adex <- adex %>%
     dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
