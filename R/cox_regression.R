@@ -37,9 +37,8 @@
 #'     )
 #'   )
 #' )
-#' attr(dta_bladder$armcd, "label") <- "ARM"
-#' attr(dta_bladder$covar1, "label") <- "A Covariate Label"
-#' attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
+#' labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+#' var_labels(dta_bladder)[names(labels)] <- labels
 #' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 #'
 #' plot(
@@ -393,9 +392,8 @@ fit_coxreg_univar <- function(variables,
 #'     )
 #'   )
 #' )
-#' attr(dta_bladder$armcd, "label") <- "ARM"
-#' attr(dta_bladder$covar1, "label") <- "A Covariate Label"
-#' attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
+#' labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+#' var_labels(dta_bladder)[names(labels)] <- labels
 #' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 #'
 #' formula <- "survival::Surv(time, status) ~ armcd + covar1"
@@ -525,9 +523,8 @@ h_coxreg_univar_extract <- function(effect,
 #'     )
 #'   )
 #' )
-#' attr(dta_bladder$armcd, "label") <- "ARM"
-#' attr(dta_bladder$covar1, "label") <- "A Covariate Label"
-#' attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
+#' labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+#' var_labels(dta_bladder)[names(labels)] <- labels
 #' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 #'
 #' plot(

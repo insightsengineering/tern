@@ -137,15 +137,16 @@ testthat::test_that("count_patients_with_flags works as expected", {
     dplyr::mutate(
       flag1 = TRTEMFL == "Y",
       flag2 = TRTEMFL == "Y" & AEOUT == "FATAL",
-    ) %>%
-    var_relabel(
-      SUBJID = "A",
-      ARM = "B",
-      TRTEMFL = "C",
-      AEOUT = "D",
-      flag1 = "Total number of patients with at least one adverse event",
-      flag2 = "Total number of patients with fatal AEs"
     )
+  labels <- c(
+    "A",
+    "B",
+    "C",
+    "D",
+    "Total number of patients with at least one adverse event",
+    "Total number of patients with fatal AEs"
+  )
+  var_labels(test_data) <- labels
 
   test_adsl_like <- tibble::tibble(
     SUBJID = as.character(1001:1010),
@@ -188,11 +189,13 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
     dplyr::mutate(
       flag1 = TRTEMFL == "Y",
       flag2 = TRTEMFL == "Y" & AEOUT == "FATAL",
-    ) %>%
-    var_relabel(
-      flag1 = "Total number of patients with at least one adverse event",
-      flag2 = "Total number of patients with fatal AEs"
     )
+  columns <- c("flag1", "flag2")
+  labels <- c(
+    "Total number of patients with at least one adverse event",
+    "Total number of patients with fatal AEs"
+  )
+  var_labels(test_data)[columns] <- labels
 
   test_adsl_like <- tibble::tibble(
     USUBJID = as.character(1001:1010),
@@ -244,14 +247,12 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
       REL = AEREL == "Y",
       CTC35 = AETOXGR %in% c("3", "4", "5"),
       CTC45 = AETOXGR %in% c("4", "5")
-    ) %>%
-    var_relabel(
-      SER = "Serious AE",
-      REL = "Related AE",
-      CTC35 = "Grade 3-5 AE",
-      CTC45 = "Grade 4/5 AE"
     )
-
+  columns <- c("SER", "REL", "CTC35", "CTC45")
+  labels <- c("Serious AE", "Related AE", "Grade 3-5 AE", "Grade 4/5 AE")
+  for (i in seq_along(columns)) {
+    attr(adae[[columns[i]]], "label") <- labels[i]
+  }
   aesi_vars <- c("SER", "REL", "CTC35", "CTC45")
 
   # Create layout

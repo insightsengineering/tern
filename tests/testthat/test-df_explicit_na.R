@@ -53,8 +53,10 @@ testthat::test_that("Default fill in of missing values and conversion to factor 
 })
 
 testthat::test_that("Default settings work when input data does not have labels", {
-  my_data <- example_data %>%
-    var_labels_remove()
+  my_data <- example_data
+  for (i in seq_along(my_data)) {
+    attr(my_data[[i]], "label") <- NULL
+  }
 
   result <- df_explicit_na(data = my_data, omit_columns = NULL, char_as_factor = TRUE)
 

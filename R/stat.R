@@ -1,6 +1,7 @@
 #' Confidence Interval for Mean
 #'
 #' Convenient function for calculating the mean confidence interval.
+#' It calculates the arithmetic as well as the geometric mean.
 #' It can be used as a ggplot helper function for plotting.
 #'
 #' @inheritParams argument_convention
@@ -8,6 +9,8 @@
 #'     the confidence interval for mean.
 #' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned
 #' for the use with ggplot.
+#' @param geom_mean (`logical`)\cr `TRUE` when the geometric mean should be
+#' calculated
 #'
 #' @export
 #'
@@ -28,26 +31,49 @@
 #'   fun.args = list(conf_level = 0.5),
 #'   geom = "errorbar"
 #' )
+#'
+#' p + ggplot2::stat_summary(
+#'   fun.data = stat_mean_ci,
+#'   fun.args = list(conf_level = 0.5, geom_mean = TRUE),
+#'   geom = "errorbar"
+#' )
+#'
 stat_mean_ci <- function(x,
                          conf_level = 0.95,
                          na.rm = TRUE, # nolint
                          n_min = 2,
-                         gg_helper = TRUE) {
+                         gg_helper = TRUE,
+                         geom_mean = FALSE) {
   if (na.rm) {
-    x <- x[!is.na(x)]
+    x <- stats::na.omit(x)
   }
   n <- length(x)
-  m <- mean(x)
+
+  if (!geom_mean) {
+    m <- mean(x)
+  } else {
+    negative_values_exist <- any(is.na(x[!is.na(x)]) <- x[!is.na(x)] <= 0)
+    if (negative_values_exist) {
+      m <- NA_real_
+    } else {
+      x <- log(x)
+      m <- mean(x)
+    }
+  }
 
   if (n < n_min || is.na(m)) {
     ci <- c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_)
   } else {
     hci <- stats::qt((1 + conf_level) / 2, df = n - 1) * stats::sd(x) / sqrt(n)
     ci <- c(mean_ci_lwr = m - hci, mean_ci_upr = m + hci)
+    if (geom_mean) {
+      ci <- exp(ci)
+    }
   }
 
   if (gg_helper) {
-    ci <- data.frame(y = ifelse(is.na(m), NA_real_, m), ymin = ci[[1]], ymax = ci[[2]])
+    m <- ifelse(is.na(m), NA_real_, m)
+    ci <- data.frame(y = ifelse(geom_mean, exp(m), m), ymin = ci[[1]], ymax = ci[[2]])
   }
 
   return(ci)

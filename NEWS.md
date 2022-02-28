@@ -1,12 +1,16 @@
-# tern 0.7.6.9004
+# tern 0.7.6.9010
 
+* Changed the `nudge_y` argument of `h_g_ipp` to be dependent on the data, fixing an issue whereby the baseline labels were offset incorrectly. 
 * Some release note
 
 # tern 0.7.6
 
-* Some release note
+
+* Enhanced `stat_mean_ci` and `s_summary.numeric` to calculate the geometric mean with its confidence intervals. 
+
 
 # tern 0.7.6
+
 
 ### New features
 * Added `h_map_for_count_abnormal` so that the map used in `trim_levels_to_map` split function can be created by calling this helper function. Currently it supports two methods: one with all observed mapping, one with at least low limit above zero and at least one non missing high limit.
