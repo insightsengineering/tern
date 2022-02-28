@@ -170,7 +170,6 @@ count_patients_with_event <- function(lyt,
 #' @param flag_variables (`character`)\cr a character vector specifying the names of `logical`
 #'   variables from analysis dataset used for counting the number of unique identifiers.
 #' @inheritParams summarize_variables
-
 #' @export
 #' @examples
 #'
@@ -183,13 +182,14 @@ count_patients_with_event <- function(lyt,
 #'     fl2 = TRTEMFL == "Y",
 #'     fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",
 #'     fl4 = TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y"
-#'   ) %>%
-#'   var_relabel(
-#'     fl1 = "Total AEs",
-#'     fl2 = "Total number of patients with at least one adverse event",
-#'     fl3 = "Total number of patients with fatal AEs",
-#'     fl4 = "Total number of patients with related fatal AEs"
 #'   )
+#' labels <- c(
+#'   "fl1" = "Total AEs",
+#'   "fl2" = "Total number of patients with at least one adverse event",
+#'   "fl3" = "Total number of patients with fatal AEs",
+#'   "fl4" = "Total number of patients with related fatal AEs"
+#' )
+#' var_labels(adae)[names(labels)] <- labels
 #'
 #' s_count_patients_with_flags(
 #'   adae,

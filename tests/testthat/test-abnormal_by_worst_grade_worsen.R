@@ -68,7 +68,6 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   p4$GRADDR <- "High" # nolint
 
   expected <- rbind(p1, p2, p3, p4)
-
   expected <- expected[order(expected$VALUES), ]
 
   testthat::expect_identical(result, expected)

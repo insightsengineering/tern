@@ -35,12 +35,10 @@
 #'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
 #'     SEX = droplevels(SEX),
 #'     is_event = CNSR == 0
-#'   ) %>%
-#'   var_relabel(
-#'     ARM = adtte_labels["ARM"],
-#'     SEX = adtte_labels["SEX"],
-#'     is_event = "Event Flag"
 #'   )
+#' labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
+#' var_labels(adtte_f)[names(labels)] <- labels
+#'
 NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.

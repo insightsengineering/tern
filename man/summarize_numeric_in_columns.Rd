@@ -78,8 +78,16 @@ lyt <- basic_table() \%>\%
   split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
   summarize_vars_numeric_in_cols(
     var = "AGE",
-    .stats = c("n", "cv", "geom_mean", "mean_ci"),
-    .labels = c(n = "myN", cv = "myCV", geom_mean = "myGeomMean", mean_ci = "Mean (95\%CI)"),
+    .stats = c("n", "cv", "geom_mean", "mean_ci", "median", "min", "max"),
+    .labels = c(
+      n = "myN",
+      cv = "myCV",
+      geom_mean = "myGeomMean",
+      mean_ci = "Mean (95\%CI)",
+      median = "Median",
+      min = "Minimum",
+      max = "Maximum"
+    ),
     col_split = TRUE
   )
 result <- build_table(lyt = lyt, df = ADPC)
@@ -98,7 +106,21 @@ result
 ADPC <- mutate(ADPC, PARAMUNIT = paste0(.data$PARAM, "(", .data$AVALU, ")"))
 lyt <- basic_table() \%>\%
   split_rows_by(var = "PARAMUNIT", split_label = "PK Parameter", label_pos = "topleft") \%>\%
-  summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
+  summarize_vars_numeric_in_cols(
+    var = "AVAL",
+    col_split = TRUE,
+    .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
+    .labels = c(
+      n = "n",
+      mean = "Mean",
+      sd = "SD",
+      cv = "CV (\%)",
+      geom_cv = "CV \% Geometric Mean",
+      median = "Median",
+      min = "Minimum",
+      max = "Maximum"
+    )
+  )
 result <- build_table(lyt, df = ADPC)
 result
 
@@ -111,7 +133,21 @@ lyt <- basic_table() \%>\%
     split_label = "Norminal time from first dose",
     label_pos = "topleft"
   ) \%>\%
-  summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
+  summarize_vars_numeric_in_cols(
+    var = "AVAL",
+    col_split = TRUE,
+    .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
+    .labels = c(
+      n = "n",
+      mean = "Mean",
+      sd = "SD",
+      cv = "CV (\%)",
+      geom_cv = "CV \% Geometric Mean",
+      median = "Median",
+      min = "Minimum",
+      max = "Maximum"
+    )
+  )
 result <- build_table(lyt, df = ADPC)
 result
 }

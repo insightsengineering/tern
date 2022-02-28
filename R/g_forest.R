@@ -100,13 +100,15 @@
 #'     SEX = droplevels(SEX),
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
-#'   ) %>%
-#'   var_relabel(
-#'     ARM = adtte_labels["ARM"],
-#'     SEX = adtte_labels["SEX"],
-#'     AVALU = adtte_labels["AVALU"],
-#'     is_event = "Event Flag"
 #'   )
+#'
+#' labels <- c(
+#'   "ARM" = adtte_labels["ARM"],
+#'   "SEX" = adtte_labels["SEX"],
+#'   "AVALU" = adtte_labels["AVALU"],
+#'   "is_event" = "Event Flag"
+#' )
+#' var_labels(adtte_f)[names(labels)] <- labels
 #'
 #' df <- extract_survival_subgroups(
 #'   variables = list(
