@@ -155,6 +155,9 @@ testthat::test_that("extract_survival_biomarkers works as expected with groups_l
 # tabulate_survival_biomarkers ----
 
 testthat::test_that("tabulate_survival_biomarkers works as expected with valid input", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte_f <- adtte %>%
     preprocess_adtte()
 
@@ -226,6 +229,9 @@ testthat::test_that("tabulate_survival_biomarkers functions as expected with NUL
 })
 
 testthat::test_that("tabulate_survival_biomarkers works with only a single biomarker in the data frame", {
+
+  skip_if_fail_rtables_refactor()
+
   df1 <- data.frame(
     biomarker = "BMRKR1",
     biomarker_label = "Continous Level Biomarker 1",
