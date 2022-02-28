@@ -356,6 +356,9 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
 })
 
 testthat::test_that("create_afun_summary creates an `afun` that works", {
+
+  skip_if_fail_rtables_refactor()
+
   afun <- create_afun_summary(
     .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
     .formats = c(median = "xx."),
@@ -402,6 +405,9 @@ testthat::test_that("create_afun_summary creates an `afun` that works", {
 })
 
 testthat::test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", {
+
+  skip_if_fail_rtables_refactor()
+
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
   l <- basic_table() %>%
@@ -420,6 +426,9 @@ testthat::test_that("`summarize_vars` works with healthy input, default `na.rm =
 })
 
 testthat::test_that("`summarize_vars` works with healthy input, and control function.", {
+
+  skip_if_fail_rtables_refactor()
+
   dta_test <- data.frame(AVAL = c(1:9))
 
   l <- basic_table() %>%
@@ -599,6 +608,9 @@ testthat::test_that("`summarize_vars` works with logical input", {
 })
 
 testthat::test_that("`summarize_vars` works with empty named numeric variables", {
+
+  skip_if_fail_rtables_refactor()
+
   dta <- tibble::tibble(
     foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
     boo = 1:6

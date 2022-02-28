@@ -151,6 +151,9 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
 })
 
 testthat::test_that("summarize_change works as expected", {
+
+  skip_if_fail_rtables_refactor()
+
   library(dplyr)
   dta_test <- data.frame(
     USUBJID = rep(1:6, each = 3),
