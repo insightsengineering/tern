@@ -848,6 +848,9 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
 })
 
 testthat::test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtables", {
+
+  skip_if_fail_rtables_refactor()
+
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- get_bladder()
@@ -881,6 +884,9 @@ testthat::test_that("summarize_coxreg adds the multi-variable Cox regression lay
 })
 
 testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {
+
+  skip_if_fail_rtables_refactor()
+
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- get_bladder()

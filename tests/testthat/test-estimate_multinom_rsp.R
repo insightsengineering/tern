@@ -37,6 +37,8 @@ testthat::test_that("s_length_proportion fails with bad input", {
 
 testthat::test_that("estimate_multinomial_response returns right result", {
 
+  skip_if_fail_rtables_refactor()
+
   # Preparation of a common test case for unit tests.
   dta_test <- data.frame(
     USUBJID = paste0("S", 1:12),
