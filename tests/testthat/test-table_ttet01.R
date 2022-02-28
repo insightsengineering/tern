@@ -27,6 +27,9 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("TTET01 default variant is produced correctly", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -114,6 +117,9 @@ testthat::test_that("TTET01 default variant is produced correctly", {
 })
 
 testthat::test_that("TTET01 variant 2: selecting sections to display", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -179,6 +185,9 @@ testthat::test_that("TTET01 variant 2: selecting sections to display", {
 })
 
 testthat::test_that("TTET01 variant 3: modifying analysis details like conftype, ties, alpha level", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -270,6 +279,9 @@ testthat::test_that("TTET01 variant 3: modifying analysis details like conftype,
 })
 
 testthat::test_that("TTET01 variant 4: with stratified analysis", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -358,6 +370,9 @@ testthat::test_that("TTET01 variant 4: with stratified analysis", {
 })
 
 testthat::test_that("TTET01 variant 5: modifying time point", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -438,6 +453,9 @@ testthat::test_that("TTET01 variant 5: modifying time point", {
 })
 
 testthat::test_that("TTET01 variant 6: requesting more than one p-value", {
+
+  skip_if_fail_rtables_refactor()
+
   adtte <- adtte %>%
     preproc_adtte()
 
