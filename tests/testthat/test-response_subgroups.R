@@ -200,6 +200,9 @@ testthat::test_that("a_response_subgroups functions as expected with valid input
 })
 
 testthat::test_that("tabulate_rsp_subgroups functions as expected with valid input", {
+
+  skip_if_fail_rtables_refactor()
+
   adrs <- adrs_200
 
   df <- extract_rsp_subgroups(
@@ -269,6 +272,9 @@ testthat::test_that("tabulate_rsp_subgroups correctly calculates column indices"
 })
 
 testthat::test_that("tabulate_rsp_subgroups functions as expected with valid input extreme values in OR table", {
+
+  skip_if_fail_rtables_refactor()
+
   var1 <- data.frame(
     rsp = c(rep(TRUE, 30), rep(FALSE, 20)),
     arm = factor(c(rep("REF", 30), rep("COMP", 20)), levels = c("REF", "COMP")),
@@ -310,6 +316,9 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
 })
 
 testthat::test_that("tabulate_rsp_subgroups functions as expected with NULL subgroups", {
+
+  skip_if_fail_rtables_refactor()
+
   adrs <- adrs_200
 
   df <- extract_rsp_subgroups(
@@ -341,6 +350,9 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with NULL subg
 })
 
 testthat::test_that("tabulate_rsp_subgroups functions as expected when 0 obs in one arm", {
+
+  skip_if_fail_rtables_refactor()
+
   adrs <- adrs_200
 
   df <- testthat::expect_warning(extract_rsp_subgroups(

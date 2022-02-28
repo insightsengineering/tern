@@ -1024,6 +1024,9 @@ testthat::test_that("logistic_summary_by_flag works", {
 # summarize_logistic ----
 
 testthat::test_that("summarize_logistic works as expected for interaction model with continuous variable", {
+
+  skip_if_fail_rtables_refactor()
+
   adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
@@ -1065,6 +1068,9 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
 })
 
 testthat::test_that("summarize_logistic works as expected for interaction model with categorical variable", {
+
+  skip_if_fail_rtables_refactor()
+
   adrs <- adrs_example
   model <- fit_logistic(
     adrs,
@@ -1107,6 +1113,9 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
 })
 
 testthat::test_that("summarize_logistic works as expected for simple model without interactions", {
+
+  skip_if_fail_rtables_refactor()
+
   adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
