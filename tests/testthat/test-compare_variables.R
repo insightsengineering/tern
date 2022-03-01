@@ -106,7 +106,6 @@ testthat::test_that("compare_vars works with default settings in rtables layout 
 })
 
 testthat::test_that("compare_vars works with custom settings", {
-
   lyt <- basic_table() %>%
     split_cols_by("ARMCD", ref_group = "ARM C") %>%
     compare_vars(
