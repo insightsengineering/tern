@@ -24,7 +24,7 @@ when a column table layout is required."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -45,15 +45,6 @@ when a column table layout is required."><!-- mathjax --><script src="https://cd
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -199,12 +190,12 @@ statistics of patients and the sum of analysis value in the column layout as con
 <span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">result</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                              ARM A                    ARM B                     Total         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                      Patients   Person time   Patients   Person time   Patients    Person time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Total patients numbers/person time   6 (100%)       46        6 (100%)       68        12 (100%)       114    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Female                             6 (100%)       46         0 (0%)         0         6 (50%)        46     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Male                                0 (0%)         0        6 (100%)       68         6 (50%)        68     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                               ARM A                      ARM B                       Total          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       Patients    Person time    Patients    Person time    Patients     Person time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total patients numbers/person time   6 (100.0%)       46        6 (100.0%)       68        12 (100.0%)       114    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Female                             6 (100.0%)       46         0 (0.0%)         0         6 (50.0%)        46     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Male                                0 (0.0%)         0        6 (100.0%)       68         6 (50.0%)        68     </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">lyt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, split_fun <span class="op">=</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_level.html" class="external-link">add_overall_level</a></span><span class="op">(</span><span class="st">"Total"</span>, first <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -216,20 +207,20 @@ statistics of patients and the sum of analysis value in the column layout as con
 <span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt2</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">result2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      ARM A      ARM B       Total  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     Patients   Patients   Patients </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> some custom label   6 (100%)   6 (100%)   12 (100%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Female            6 (100%)      0        6 (50%) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Male               0 (0%)       68       6 (50%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       ARM A        ARM B         Total   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      Patients     Patients     Patients  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> some custom label   6 (100.0%)   6 (100.0%)   12 (100.0%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Female            6 (100.0%)       0         6 (50.0%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Male               0 (0.0%)        68        6 (50.0%) </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">lyt3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">result3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt3</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">result3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                      Patients    Person time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Total patients numbers/person time   12 (100%)       114    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       Patients     Person time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total patients numbers/person time   12 (100.0%)       114    </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">lyt4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span>, .stats <span class="op">=</span> <span class="st">"sum_exposure"</span><span class="op">)</span></span>

@@ -25,7 +25,7 @@ with the new Analyze Function summarize_vars()."><!-- mathjax --><script src="ht
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -46,15 +46,6 @@ with the new Analyze Function summarize_vars()."><!-- mathjax --><script src="ht
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -240,7 +231,7 @@ See more about <code>type</code> in <code><a href="https://rdrr.io/r/stats/quant
 <dt>var_labels</dt>
 <dd><p>character for label.</p></dd>
 <dt>nested</dt>
-<dd><p>boolean, Add this as a new top-level split  (defining a new subtable directly under root). Defaults to <code>FALSE</code></p></dd>
+<dd><p>boolean. Should this layout instruction be applied within the existing layout structure <em>if possible</em> (<code>TRUE</code>, the default) or as a new top-level element (`FALSE). Ignored if it would nest a split underneath analyses, which is not allowed.</p></dd>
 <dt>show_labels</dt>
 <dd><p>label visibility: one of "default", "visible" and "hidden".</p></dd>
 <dt>table_names</dt>
@@ -1656,24 +1647,24 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span>        row_name formatted_cell indent_mod                 row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1             n             10          0                         n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2          mean            0.1          0                      Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            sd              1          0                        SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            sd            1.0          0                        SD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4            se            0.3          0                        SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       mean_sd        0.1 (1)          0                 Mean (SD)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       mean_sd      0.1 (1.0)          0                 Mean (SD)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6       mean_ci  (-0.63, 0.86)          0               Mean 95% CI</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7      mean_sei  (-0.22, 0.44)          0             Mean -/+ 1xSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8      mean_sdi  (-0.93, 1.16)          0             Mean -/+ 1xSD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9        median            0.2          0                    Median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10          mad              0          0 Median Absolute Deviation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10          mad            0.0          0 Median Absolute Deviation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11    median_ci  (-0.62, 1.12)          0             Median 95% CI</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12    quantiles     -0.3 - 0.7          0           25% and 75%-ile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13          iqr              1          0                       IQR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13          iqr            1.0          0                       IQR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 14        range     -2.2 - 1.5          0                 Min - Max</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15          min           -2.2          0                   Minimum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16          max            1.5          0                   Maximum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 17           cv          918.5          0                    CV (%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18    geom_mean           &lt;NA&gt;          0            Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18    geom_mean             NA          0            Geometric Mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19 geom_mean_ci         NA, NA          0     Geometric Mean 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20      geom_cv           &lt;NA&gt;          0       CV % Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20      geom_cv             NA          0       CV % Geometric Mean</span>
 <span class="r-in"><span class="co"># `a_summary.factor`</span></span>
 <span class="r-in"><span class="co"># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span>
 <span class="r-in"><span class="co"># functions can be applied correctly.</span></span>
@@ -1743,68 +1734,68 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, afun <span class="op">=</span> <span class="va">afun</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                      A             B          C    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V1                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                  2             1          0    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean                              7.5            3          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SD                                2.1            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SE                                1.5            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)                      7.5 (2.1)       3 (NA)    NA (NA) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean 95% CI                 (-11.56, 26.56)   (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSE                   (6, 9)        (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSD                (5.38, 9.62)     (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     My median                        8             3          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Median Absolute Deviation          0             0          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Median 95% CI                  (NA, NA)       (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   25% and 75%-ile                  6 - 9         3 - 3     NA - NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   IQR                                3             0          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max                        6 - 9         3 - 3     NA - NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   CV (%)                           28.3            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Minimum                            6             3          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Maximum                            9             3          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Geometric Mean                    7.3            3         NaN   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   CV % Geometric Mean              29.3            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V2                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                  2             1          0    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean                              6.5            2          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SD                                2.1            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SE                                1.5            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)                      6.5 (2.1)       2 (NA)    NA (NA) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean 95% CI                 (-12.56, 25.56)   (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSE                   (5, 8)        (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSD                (4.38, 8.62)     (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     My median                        6             2          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Median Absolute Deviation          0             0          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Median 95% CI                  (NA, NA)       (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   25% and 75%-ile                  5 - 8         2 - 2     NA - NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   IQR                                3             0          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max                        5 - 8         2 - 2     NA - NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   CV (%)                           32.6            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Minimum                            5             2          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Maximum                            8             2          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Geometric Mean                    6.3            2         NaN   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   CV % Geometric Mean              34.2            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V3                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                  2             1          0    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean                              5.5            1          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SD                                2.1            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SE                                1.5            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)                      5.5 (2.1)       1 (NA)    NA (NA) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean 95% CI                 (-13.56, 24.56)   (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSE                   (4, 7)        (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSD                (3.38, 7.62)     (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     My median                        6             1          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Median Absolute Deviation          0             0          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Median 95% CI                  (NA, NA)       (NA, NA)   (NA, NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   25% and 75%-ile                  4 - 7         1 - 1     NA - NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   IQR                                3             0          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max                        4 - 7         1 - 1     NA - NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   CV (%)                           38.6            NA         NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Minimum                            4             1          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Maximum                            7             1          NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Geometric Mean                    5.3            1         NaN   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   CV % Geometric Mean              41.2            NA         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                      A              B          C    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V1                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                  2              1          0    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean                              7.5            3.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SD                                2.1            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SE                                1.5            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)                      7.5 (2.1)      3.0 (NA)    NA (NA) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean 95% CI                 (-11.56, 26.56)   (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSE                (6.00, 9.00)     (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSD                (5.38, 9.62)     (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     My median                        8              3          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median Absolute Deviation         0.0            0.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median 95% CI                  (NA, NA)       (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   25% and 75%-ile                6.0 - 9.0      3.0 - 3.0   NA - NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   IQR                               3.0            0.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max                      6.0 - 9.0      3.0 - 3.0   NA - NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   CV (%)                           28.3            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Minimum                           6.0            3.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Maximum                           9.0            3.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Geometric Mean                    7.3            3.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   CV % Geometric Mean              29.3            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V2                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                  2              1          0    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean                              6.5            2.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SD                                2.1            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SE                                1.5            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)                      6.5 (2.1)      2.0 (NA)    NA (NA) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean 95% CI                 (-12.56, 25.56)   (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSE                (5.00, 8.00)     (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSD                (4.38, 8.62)     (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     My median                        6              2          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median Absolute Deviation         0.0            0.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median 95% CI                  (NA, NA)       (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   25% and 75%-ile                5.0 - 8.0      2.0 - 2.0   NA - NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   IQR                               3.0            0.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max                      5.0 - 8.0      2.0 - 2.0   NA - NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   CV (%)                           32.6            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Minimum                           5.0            2.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Maximum                           8.0            2.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Geometric Mean                    6.3            2.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   CV % Geometric Mean              34.2            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V3                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                  2              1          0    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean                              5.5            1.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SD                                2.1            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SE                                1.5            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)                      5.5 (2.1)      1.0 (NA)    NA (NA) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean 95% CI                 (-13.56, 24.56)   (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSE                (4.00, 7.00)     (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean -/+ 1xSD                (3.38, 7.62)     (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     My median                        6              1          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median Absolute Deviation         0.0            0.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median 95% CI                  (NA, NA)       (NA, NA)    (NA, NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   25% and 75%-ile                4.0 - 7.0      1.0 - 1.0   NA - NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   IQR                               3.0            0.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max                      4.0 - 7.0      1.0 - 1.0   NA - NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   CV (%)                           38.6            NA          NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Minimum                           4.0            1.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Maximum                           7.0            1.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Geometric Mean                    5.3            1.0         NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   CV % Geometric Mean              41.2            NA          NA   </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># `summarize_vars()` in rtables pipelines</span></span>
 <span class="r-in"></span>
@@ -1815,23 +1806,23 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-in">  <span class="fu">summarize_vars</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   A         B         C   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V1                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n               2         1         0   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   7.5 (2.1)   3 (NA)   NA (NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Median         7.5        3        NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max     6 - 9     3 - 3    NA - NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V2                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n               2         1         0   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   6.5 (2.1)   2 (NA)   NA (NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Median         6.5        2        NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max     5 - 8     2 - 2    NA - NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V3                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n               2         1         0   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   5.5 (2.1)   1 (NA)   NA (NA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Median         5.5        1        NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max     4 - 7     1 - 1    NA - NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   A           B          C   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V1                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n               2           1          0   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   7.5 (2.1)   3.0 (NA)    NA (NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median         7.5         3.0        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   6.0 - 9.0   3.0 - 3.0   NA - NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V2                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n               2           1          0   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   6.5 (2.1)   2.0 (NA)    NA (NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median         6.5         2.0        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   5.0 - 8.0   2.0 - 2.0   NA - NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V3                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n               2           1          0   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   5.5 (2.1)   1.0 (NA)    NA (NA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median         5.5         1.0        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   4.0 - 7.0   1.0 - 1.0   NA - NA</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Select and format statistics output.</span></span>
 <span class="r-in"><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -1869,13 +1860,13 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;7.5, 2.1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;3, NA&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;3.0, NA&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;6 - 9&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;3 - 3&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;6.0 - 9.0&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;3.0 - 3.0&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
@@ -1893,13 +1884,13 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;6.5, 2.1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;2, NA&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;2.0, NA&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;5 - 8&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;2 - 2&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;5.0 - 8.0&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;2.0 - 2.0&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
@@ -1917,13 +1908,13 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;5.5, 2.1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;1, NA&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;1.0, NA&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;4 - 7&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;1 - 1&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;4.0 - 7.0&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;1.0 - 1.0&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;caption style="caption-side:top;"&gt;&lt;div class="rtables-titles-block rtables-container"&gt;</span>

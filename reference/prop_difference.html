@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -331,8 +322,8 @@ should be accounted for.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod                       row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     diff             25          0 Difference in Response rate (%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  diff_ci     (-92, 100)          0         90% CI (Anderson-Hauck)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     diff           25.0          0 Difference in Response rate (%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  diff_ci (-92.0, 100.0)          1         90% CI (Anderson-Hauck)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"grp"</span>, ref_group <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -343,10 +334,10 @@ should be accounted for.</p></li>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   B       A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Difference in Response rate (%)           25    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   90% CI (Anderson-Hauck)             (-92, 100)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                   B         A       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Difference in Response rate (%)            25.0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   90% CI (Anderson-Hauck)             (-92.0, 100.0)</span>
 </code></pre></div>
     </div>
   </div>

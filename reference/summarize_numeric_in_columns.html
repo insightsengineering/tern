@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -282,7 +273,7 @@ summary tables in columns, primarily used for PK data sets.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   M               0      NA    NA    NA      NA             NA         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                                         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   F              1260   35.2   7.3   0.2    20.8           20.4        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M              1116   35.7   8.1   0.2    22.7            22         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M              1116   35.7   8.1   0.2    22.7           22.0        </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># By selecting just some statistics and ad-hoc labels</span></span>
 <span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -308,14 +299,14 @@ summary tables in columns, primarily used for PK data sets.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   SEX            myN    myCV   myGeomMean    Mean (95%CI)    Median   Minimum   Maximum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A: Drug X                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F              711    18.5      32.2      (32.31, 33.21)     32       21        47   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M              495    19.6      34.6      (34.61, 35.83)     34       23        50   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F              711    18.5      32.2      (32.31, 33.21)    32.0     21.0      47.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M              495    19.6      34.6      (34.61, 35.83)    34.0     23.0      50.0  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> B: Placebo                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F               0      NA       NaN          (NA, NA)        NA       NA        NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M               0      NA       NaN          (NA, NA)        NA       NA        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F               0      NA        NA          (NA, NA)        NA       NA        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M               0      NA        NA          (NA, NA)        NA       NA        NA   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F              1260   20.8      34.5       (34.8, 35.6)      35       21        64   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M              1116   22.7      34.8      (35.22, 36.17)     35       20        69   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F              1260   20.8      34.5      (34.80, 35.60)    35.0     21.0      64.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M              1116   22.7      34.8      (35.22, 36.17)    35.0     20.0      69.0  </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">summarize_vars_numeric_in_cols</span><span class="op">(</span></span>
@@ -352,8 +343,8 @@ summary tables in columns, primarily used for PK data sets.</p></li>
 <span class="r-in"><span class="va">result</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PK Parameter            n     Mean    SD    CV (%)   NA   CV % Geometric Mean   Median   Minimum   Maximum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Plasma Drug X(ug/mL)   2394    8     6.6     82.7    NA           NA             8.3        0       19.9  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Plasma Drug Y(ug/mL)   1188    16    13.3    83.1    NA           NA             16.4       0       39.5  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Plasma Drug X(ug/mL)   2394   8.0    6.6     82.7    NA           NA             8.3       0.0      19.9  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Plasma Drug Y(ug/mL)   1188   16.0   13.3    83.1    NA           NA             16.4      0.0      39.5  </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># PKCT01FDS</span></span>
 <span class="r-in"><span class="va">ADPC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">ADPC</span>, <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">NRELTM1</span><span class="op">)</span><span class="op">)</span></span>
@@ -386,15 +377,15 @@ summary tables in columns, primarily used for PK data sets.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Norminal time from first dose    n    Mean   SD    CV (%)    NA    CV % Geometric Mean   Median   Minimum   Maximum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Day 1                                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0                               398    0      0     NaN      NA            NA              0         0         0   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5                             398   17.1   6.5     38      16           36.4             14       9.7       31   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0                               398   0.0    0.0     NA      NA            NA             0.0       0.0       0.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5                             398   17.1   6.5    38.0    16.0          36.4            14.0      9.7      31.0  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1                               398   21.8   8.2    37.4    20.5          35.7            17.5     12.6      39.5  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1.5                             398   20.9   7.8    37.1    19.7          35.3            16.8     12.3      37.7  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2                               398   17.9   6.7    37.2    16.8          35.4            14.4     10.7      32.6  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   3                               398   11.1   4.3    38.6    10.4          36.9            9.5       5.8      21.9  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4                               398   6.2    2.6    41.3    5.8           40.2            5.4       2.7      14.4  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   8                               398   0.4    0.3    62.6    0.4           66.8            0.4       0.1       1.7  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   12                              398    0      0     94.1     0            114.2            0         0        0.2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   12                              398   0.0    0.0    94.1    0.0           114.2           0.0       0.0       0.2  </span>
 </code></pre></div>
     </div>
   </div>

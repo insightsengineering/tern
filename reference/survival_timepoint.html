@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -242,8 +233,8 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          row_name formatted_cell indent_mod                         row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      pt_at_risk            103          0        Patients remaining at risk</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 event_free_rate          83.83          0               Event Free Rate (%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         rate_se           3.23          0 Standard Error of Event Free Rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         rate_ci (77.49, 90.17)          0                            95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         rate_se           3.23          1 Standard Error of Event Free Rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         rate_ci (77.49, 90.17)          1                            95% CI</span>
 <span class="r-in"><span class="va">df_ref_group</span> <span class="op">&lt;-</span> <span class="va">ADTTE_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM B"</span><span class="op">)</span></span>
 <span class="r-in"></span>
@@ -297,9 +288,9 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       row_name formatted_cell indent_mod                     row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    rate_diff            1.1          0 Difference in Event Free Rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 rate_diff_ci (-8.03, 10.23)          0                        95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   ztest_pval         0.8133          0              p-value (Z-test)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    rate_diff           1.10          1 Difference in Event Free Rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 rate_diff_ci (-8.03, 10.23)          2                        95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   ztest_pval         0.8133          2              p-value (Z-test)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Survival at given time points.</span></span>
 <span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -312,13 +303,13 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-in">    time_point <span class="op">=</span> <span class="fl">7</span></span>
 <span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">ADTTE_f</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                    ARM A            ARM B           ARM C     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   (N=134)          (N=134)         (N=132)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 Months                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Patients remaining at risk        103              102              83      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Event Free Rate (%)              83.83            82.73           66.98     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                       (77.49, 90.17)   (76.15, 89.3)   (58.79, 75.17)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                    ARM A            ARM B            ARM C     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                   (N=134)          (N=134)          (N=132)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 Months                                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Patients remaining at risk        103              102               83      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Event Free Rate (%)              83.83            82.73            66.98     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                       (77.49, 90.17)   (76.15, 89.30)   (58.79, 75.17)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Difference in survival at given time points.</span></span>
 <span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>

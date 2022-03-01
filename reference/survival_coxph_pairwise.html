@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -221,9 +212,9 @@ to the input layout. Note that additional formatting arguments can be used here.
 <span class="r-out co"><span class="r-pr">#&gt;</span>       row_name formatted_cell indent_mod          row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       pvalue         0.0334          0 p-value (log-rank)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2           hr           0.72          0       Hazard Ratio</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        hr_ci   (0.53, 0.98)          0             95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        n_tot            268          0            Total n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 n_tot_events            166          0       Total events</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        hr_ci   (0.53, 0.98)          1             95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        n_tot         268.00          0            Total n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 n_tot_events         166.00          0       Total events</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -234,13 +225,13 @@ to the input layout. Note that additional formatting arguments can be used here.
 <span class="r-in">    var_labels <span class="op">=</span> <span class="st">"Unstratified Analysis"</span></span>
 <span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">ADTTE_f</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                          ARM A       ARM B         ARM C   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         (N=134)     (N=134)       (N=132)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Unstratified Analysis                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value (log-rank)                0.0334        &lt;0.0001  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Hazard Ratio                       1.39          2.75    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                          (1.03, 1.9)   (2.05, 3.7)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          ARM A       ARM B          ARM C    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         (N=134)     (N=134)        (N=132)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Unstratified Analysis                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value (log-rank)                 0.0334        &lt;0.0001   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Hazard Ratio                        1.39           2.75    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                          (1.03, 1.90)   (2.05, 3.70)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -253,13 +244,13 @@ to the input layout. Note that additional formatting arguments can be used here.
 <span class="r-in">    control <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span>pval_method <span class="op">=</span> <span class="st">"wald"</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">ADTTE_f</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        ARM A      ARM B        ARM C    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       (N=134)    (N=134)      (N=132)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Stratified Analysis                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value (wald)                 0.0487       &lt;0.0001   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Hazard Ratio                    1.36          2.73    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                        (1, 1.86)   (2.02, 3.69)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        ARM A       ARM B          ARM C    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       (N=134)     (N=134)        (N=132)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Stratified Analysis                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value (wald)                   0.0487        &lt;0.0001   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Hazard Ratio                      1.36           2.73    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                        (1.00, 1.86)   (2.02, 3.69)</span>
 </code></pre></div>
     </div>
   </div>

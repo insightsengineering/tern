@@ -25,7 +25,7 @@ greatest intensity/highest grade level."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -46,15 +46,6 @@ greatest intensity/highest grade level."><!-- mathjax --><script src="https://cd
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -355,12 +346,12 @@ statistics function and additional format arguments (see below).</p></li>
 <span class="r-in">    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count_fraction"</span> <span class="op">=</span> <span class="st">"xx.xx (xx.xx%)"</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">df_adsl</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                A            B     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              (N=3)        (N=3)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MILD         0 (0%)     2 (66.67%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MODERATE   1 (33.33%)   1 (33.33%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEVERE     2 (66.67%)     0 (0%)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  A               B      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                (N=3)           (N=3)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> MILD       0.00 (0.00%)    2.00 (66.67%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> MODERATE   1.00 (33.33%)   1.00 (33.33%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SEVERE     2.00 (66.67%)   0.00 (0.00%) </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Define additional grade groupings.</span></span>
 <span class="r-in"><span class="va">grade_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -398,17 +389,17 @@ statistics function and additional format arguments (see below).</p></li>
 <span class="r-in">    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count_fraction"</span> <span class="op">=</span> <span class="st">"xx.xx (xx.xx%)"</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">df_adsl</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               all obs  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                (N=6)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   MILD         0 (0%)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   MODERATE   1 (16.67%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SEVERE     2 (33.33%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> B                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   MILD       2 (33.33%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   MODERATE   1 (16.67%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SEVERE       0 (0%)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 all obs   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  (N=6)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MILD       0.00 (0.00%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MODERATE   1.00 (16.67%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SEVERE     2.00 (33.33%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> B                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MILD       2.00 (33.33%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MODERATE   1.00 (16.67%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SEVERE     0.00 (0.00%) </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>

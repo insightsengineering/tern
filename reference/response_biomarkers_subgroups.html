@@ -24,7 +24,7 @@ on a binary response endpoint across population subgroups."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -45,15 +45,6 @@ on a binary response endpoint across population subgroups."><!-- mathjax --><scr
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -268,13 +259,13 @@ created by combining multiple subtables.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   Total n   Responders   Response (%)   Odds Ratio      95% CI      p-value (Wald)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Age                                                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   All Patients                      400        336           84%           1.00      (0.96, 1.04)       0.9547    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   All Patients                      400        336          84.0%          1.00      (0.96, 1.04)       0.9547    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Categorical Level Biomarker 2                                                                                   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     LOW                             135        120          88.9%          1.04      (0.96, 1.13)       0.3243    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     MEDIUM                          135        110          81.5%          1.02      (0.96, 1.09)       0.5386    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     HIGH                            130        106          81.5%          0.97      (0.92, 1.02)       0.2345    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Continuous Level Biomarker 1                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   All Patients                      400        336           84%           1.06      (0.97, 1.15)       0.1968    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   All Patients                      400        336          84.0%          1.06      (0.97, 1.15)       0.1968    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Categorical Level Biomarker 2                                                                                   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     LOW                             135        120          88.9%          1.06      (0.89, 1.27)       0.5054    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     MEDIUM                          135        110          81.5%          1.02      (0.90, 1.16)       0.7294    </span>
@@ -287,8 +278,9 @@ created by combining multiple subtables.</p>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Finally produce the forest plot.</span></span>
+<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"><span class="fu"><a href="g_forest.html">g_forest</a></span><span class="op">(</span><span class="va">tab</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">1.4</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-plt img"><img src="response_biomarkers_subgroups-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>

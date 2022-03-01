@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -63,15 +63,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -157,20 +148,20 @@ from <code>rtables</code>.</p>
     var_labels <span class="op">=</span> <span class="va">var_labels</span>
   <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span>
-<span class="co">#&gt;                      A: Drug X    B: Placebo   C: Combination   All Patients</span>
-<span class="co">#&gt;                       (N=134)      (N=134)        (N=132)         (N=400)   </span>
-<span class="co">#&gt; ————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                    </span>
-<span class="co">#&gt;   n                     134          134            132             400     </span>
-<span class="co">#&gt;   Mean (SD)          33.8 (6.6)   35.4 (7.9)     35.4 (7.7)      34.9 (7.4) </span>
-<span class="co">#&gt;   Median                 33           35             35              34     </span>
-<span class="co">#&gt;   Min - Max           21 - 50      21 - 62        20 - 69         20 - 69   </span>
-<span class="co">#&gt; Sex                                                                         </span>
-<span class="co">#&gt;   n                     134          134            132             400     </span>
-<span class="co">#&gt;   F                   79 (59%)    77 (57.5%)      66 (50%)      222 (55.5%) </span>
-<span class="co">#&gt;   M                  51 (38.1%)    55 (41%)      60 (45.5%)     166 (41.5%) </span>
-<span class="co">#&gt;   U                   3 (2.2%)     2 (1.5%)        4 (3%)         9 (2.2%)  </span>
-<span class="co">#&gt;   UNDIFFERENTIATED    1 (0.7%)        0           2 (1.5%)        3 (0.8%)</span></code></pre></div>
+<span class="co">#&gt;                       A: Drug X    B: Placebo    C: Combination   All Patients</span>
+<span class="co">#&gt;                        (N=134)       (N=134)        (N=132)         (N=400)   </span>
+<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span>
+<span class="co">#&gt; Age (yr)                                                                      </span>
+<span class="co">#&gt;   n                      134           134            132             400     </span>
+<span class="co">#&gt;   Mean (SD)          33.8 (6.6)    35.4 (7.9)      35.4 (7.7)      34.9 (7.4) </span>
+<span class="co">#&gt;   Median                33.0          35.0            35.0            34.0    </span>
+<span class="co">#&gt;   Min - Max          21.0 - 50.0   21.0 - 62.0    20.0 - 69.0     20.0 - 69.0 </span>
+<span class="co">#&gt; Sex                                                                           </span>
+<span class="co">#&gt;   n                      134           134            132             400     </span>
+<span class="co">#&gt;   F                   79 (59%)     77 (57.5%)       66 (50%)      222 (55.5%) </span>
+<span class="co">#&gt;   M                  51 (38.1%)     55 (41%)       60 (45.5%)     166 (41.5%) </span>
+<span class="co">#&gt;   U                   3 (2.2%)      2 (1.5%)         4 (3%)         9 (2.2%)  </span>
+<span class="co">#&gt;   UNDIFFERENTIATED    1 (0.7%)          0           2 (1.5%)        3 (0.8%)</span></code></pre></div>
 <p>To change the display order of categorical variables in a table use
 factor variables and explicitly set the order of the levels. This is the
 case for the display order in columns and rows. Note that the
@@ -192,20 +183,20 @@ these types of data processing steps (not used below).</p>
     var_labels <span class="op">=</span> <span class="va">var_labels</span>
   <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span>
-<span class="co">#&gt;                      B: Placebo   A: Drug X    C: Combination   All Patients</span>
-<span class="co">#&gt;                       (N=134)      (N=134)        (N=132)         (N=400)   </span>
-<span class="co">#&gt; ————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                    </span>
-<span class="co">#&gt;   n                     134          134            132             400     </span>
-<span class="co">#&gt;   Mean (SD)          35.4 (7.9)   33.8 (6.6)     35.4 (7.7)      34.9 (7.4) </span>
-<span class="co">#&gt;   Median                 35           33             35              34     </span>
-<span class="co">#&gt;   Min - Max           21 - 62      21 - 50        20 - 69         20 - 69   </span>
-<span class="co">#&gt; Sex                                                                         </span>
-<span class="co">#&gt;   n                     134          134            132             400     </span>
-<span class="co">#&gt;   M                   55 (41%)    51 (38.1%)     60 (45.5%)     166 (41.5%) </span>
-<span class="co">#&gt;   F                  77 (57.5%)    79 (59%)       66 (50%)      222 (55.5%) </span>
-<span class="co">#&gt;   U                   2 (1.5%)     3 (2.2%)        4 (3%)         9 (2.2%)  </span>
-<span class="co">#&gt;   UNDIFFERENTIATED       0         1 (0.7%)       2 (1.5%)        3 (0.8%)</span></code></pre></div>
+<span class="co">#&gt;                      B: Placebo     A: Drug X    C: Combination   All Patients</span>
+<span class="co">#&gt;                        (N=134)       (N=134)        (N=132)         (N=400)   </span>
+<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span>
+<span class="co">#&gt; Age (yr)                                                                      </span>
+<span class="co">#&gt;   n                      134           134            132             400     </span>
+<span class="co">#&gt;   Mean (SD)          35.4 (7.9)    33.8 (6.6)      35.4 (7.7)      34.9 (7.4) </span>
+<span class="co">#&gt;   Median                35.0          33.0            35.0            34.0    </span>
+<span class="co">#&gt;   Min - Max          21.0 - 62.0   21.0 - 50.0    20.0 - 69.0     20.0 - 69.0 </span>
+<span class="co">#&gt; Sex                                                                           </span>
+<span class="co">#&gt;   n                      134           134            132             400     </span>
+<span class="co">#&gt;   M                   55 (41%)     51 (38.1%)      60 (45.5%)     166 (41.5%) </span>
+<span class="co">#&gt;   F                  77 (57.5%)     79 (59%)        66 (50%)      222 (55.5%) </span>
+<span class="co">#&gt;   U                   2 (1.5%)      3 (2.2%)         4 (3%)         9 (2.2%)  </span>
+<span class="co">#&gt;   UNDIFFERENTIATED        0         1 (0.7%)        2 (1.5%)        3 (0.8%)</span></code></pre></div>
 <p>The <code>tern</code> package includes many functions similar to
 <code><a href="../reference/summarize_variables.html">summarize_vars()</a></code>. These functions are called layout
 creating functions and are used in combination with other rtables layout
@@ -241,18 +232,18 @@ of just one.</p>
     .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean_sd <span class="op">=</span> <span class="st">"xx.xx (xx.xx)"</span><span class="op">)</span>
   <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span>
-<span class="co">#&gt;                      B: Placebo     A: Drug X     C: Combination   All Patients</span>
-<span class="co">#&gt;                        (N=134)       (N=134)         (N=132)         (N=400)   </span>
-<span class="co">#&gt; ———————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                       </span>
-<span class="co">#&gt;   n                      134           134             132             400     </span>
-<span class="co">#&gt;   Mean (SD)          35.43 (7.9)   33.77 (6.55)    35.43 (7.72)    34.88 (7.44)</span>
-<span class="co">#&gt; Sex                                                                            </span>
-<span class="co">#&gt;   n                      134           134             132             400     </span>
-<span class="co">#&gt;   M                      55             51              60             166     </span>
-<span class="co">#&gt;   F                      77             79              66             222     </span>
-<span class="co">#&gt;   U                       2             3               4               9      </span>
-<span class="co">#&gt;   UNDIFFERENTIATED        0             1               2               3</span></code></pre></div>
+<span class="co">#&gt;                       B: Placebo     A: Drug X     C: Combination   All Patients</span>
+<span class="co">#&gt;                        (N=134)        (N=134)         (N=132)         (N=400)   </span>
+<span class="co">#&gt; ————————————————————————————————————————————————————————————————————————————————</span>
+<span class="co">#&gt; Age (yr)                                                                        </span>
+<span class="co">#&gt;   n                      134            134             132             400     </span>
+<span class="co">#&gt;   Mean (SD)          35.43 (7.90)   33.77 (6.55)    35.43 (7.72)    34.88 (7.44)</span>
+<span class="co">#&gt; Sex                                                                             </span>
+<span class="co">#&gt;   n                      134            134             132             400     </span>
+<span class="co">#&gt;   M                       55             51              60             166     </span>
+<span class="co">#&gt;   F                       77             79              66             222     </span>
+<span class="co">#&gt;   U                       2              3               4               9      </span>
+<span class="co">#&gt;   UNDIFFERENTIATED        0              1               2               3</span></code></pre></div>
 <p>One feature of a <code>layout</code> is that it can be used with
 different datasets to create different summaries. For example, here we
 can easily create the same summary of demographics for the Brazil and
@@ -269,36 +260,36 @@ China subgroups, respectively:</p>
   <span class="op">)</span>
 
 <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adsl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">COUNTRY</span> <span class="op">==</span> <span class="st">"BRA"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;                      B: Placebo   A: Drug X    C: Combination   All Patients</span>
-<span class="co">#&gt;                        (N=7)        (N=13)         (N=10)          (N=30)   </span>
-<span class="co">#&gt; ————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                    </span>
-<span class="co">#&gt;   n                      7            13             10              30     </span>
-<span class="co">#&gt;   Mean (SD)           32 (6.1)    36.7 (6.4)    38.3 (10.6)      36.1 (8.1) </span>
-<span class="co">#&gt;   Median                 32           37             35             35.5    </span>
-<span class="co">#&gt;   Min - Max           25 - 42      24 - 47        25 - 64         24 - 64   </span>
-<span class="co">#&gt; Sex                                                                         </span>
-<span class="co">#&gt;   n                      7            13             10              30     </span>
-<span class="co">#&gt;   M                  4 (57.1%)    8 (61.5%)       5 (50%)        17 (56.7%) </span>
-<span class="co">#&gt;   F                  3 (42.9%)    5 (38.5%)       5 (50%)        13 (43.3%) </span>
-<span class="co">#&gt;   U                      0            0              0               0      </span>
-<span class="co">#&gt;   UNDIFFERENTIATED       0            0              0               0</span>
+<span class="co">#&gt;                      B: Placebo     A: Drug X    C: Combination   All Patients</span>
+<span class="co">#&gt;                         (N=7)        (N=13)          (N=10)          (N=30)   </span>
+<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span>
+<span class="co">#&gt; Age (yr)                                                                      </span>
+<span class="co">#&gt;   n                       7            13              10              30     </span>
+<span class="co">#&gt;   Mean (SD)          32.0 (6.1)    36.7 (6.4)     38.3 (10.6)      36.1 (8.1) </span>
+<span class="co">#&gt;   Median                32.0          37.0            35.0            35.5    </span>
+<span class="co">#&gt;   Min - Max          25.0 - 42.0   24.0 - 47.0    25.0 - 64.0     24.0 - 64.0 </span>
+<span class="co">#&gt; Sex                                                                           </span>
+<span class="co">#&gt;   n                       7            13              10              30     </span>
+<span class="co">#&gt;   M                   4 (57.1%)     8 (61.5%)       5 (50%)        17 (56.7%) </span>
+<span class="co">#&gt;   F                   3 (42.9%)     5 (38.5%)       5 (50%)        13 (43.3%) </span>
+<span class="co">#&gt;   U                       0             0              0               0      </span>
+<span class="co">#&gt;   UNDIFFERENTIATED        0             0              0               0</span>
 
 <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adsl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">COUNTRY</span> <span class="op">==</span> <span class="st">"CHN"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;                      B: Placebo   A: Drug X    C: Combination   All Patients</span>
-<span class="co">#&gt;                        (N=81)       (N=74)         (N=64)         (N=219)   </span>
-<span class="co">#&gt; ————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                    </span>
-<span class="co">#&gt;   n                      81           74             64             219     </span>
-<span class="co">#&gt;   Mean (SD)          35.7 (7.3)    33 (6.4)      35.2 (6.4)      34.6 (6.8) </span>
-<span class="co">#&gt;   Median                 36           32             35              34     </span>
-<span class="co">#&gt;   Min - Max           21 - 58      23 - 48        21 - 49         21 - 58   </span>
-<span class="co">#&gt; Sex                                                                         </span>
-<span class="co">#&gt;   n                      81           74             64             219     </span>
-<span class="co">#&gt;   M                  35 (43.2%)   27 (36.5%)     30 (46.9%)       92 (42%)  </span>
-<span class="co">#&gt;   F                  45 (55.6%)   44 (59.5%)     29 (45.3%)     118 (53.9%) </span>
-<span class="co">#&gt;   U                   1 (1.2%)     2 (2.7%)       3 (4.7%)        6 (2.7%)  </span>
-<span class="co">#&gt;   UNDIFFERENTIATED       0         1 (1.4%)       2 (3.1%)        3 (1.4%)</span></code></pre></div>
+<span class="co">#&gt;                      B: Placebo     A: Drug X    C: Combination   All Patients</span>
+<span class="co">#&gt;                        (N=81)        (N=74)          (N=64)         (N=219)   </span>
+<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span>
+<span class="co">#&gt; Age (yr)                                                                      </span>
+<span class="co">#&gt;   n                      81            74              64             219     </span>
+<span class="co">#&gt;   Mean (SD)          35.7 (7.3)    33.0 (6.4)      35.2 (6.4)      34.6 (6.8) </span>
+<span class="co">#&gt;   Median                36.0          32.0            35.0            34.0    </span>
+<span class="co">#&gt;   Min - Max          21.0 - 58.0   23.0 - 48.0    21.0 - 49.0     21.0 - 58.0 </span>
+<span class="co">#&gt; Sex                                                                           </span>
+<span class="co">#&gt;   n                      81            74              64             219     </span>
+<span class="co">#&gt;   M                  35 (43.2%)    27 (36.5%)      30 (46.9%)       92 (42%)  </span>
+<span class="co">#&gt;   F                  45 (55.6%)    44 (59.5%)      29 (45.3%)     118 (53.9%) </span>
+<span class="co">#&gt;   U                   1 (1.2%)      2 (2.7%)        3 (4.7%)        6 (2.7%)  </span>
+<span class="co">#&gt;   UNDIFFERENTIATED        0         1 (1.4%)        2 (3.1%)        3 (1.4%)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="adverse-event-table">Adverse Event Table<a class="anchor" aria-label="anchor" href="#adverse-event-table"></a>

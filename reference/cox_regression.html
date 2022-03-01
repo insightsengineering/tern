@@ -24,7 +24,7 @@ size in a survival analysis."><!-- mathjax --><script src="https://cdnjs.cloudfl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.6.9011</span>
       </span>
     </div>
 
@@ -45,15 +45,6 @@ size in a survival analysis."><!-- mathjax --><script src="https://cdnjs.cloudfl
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern" class="external-link">
     <span class="fa fa-github"></span>
@@ -649,7 +640,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Treatment:                                                       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2 vs control (1)    340       0.64       (0.43, 0.94)   0.0242 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Covariate:                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   A Covariate Label   340       0.61       (0.41, 0.9)    0.0126 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   A Covariate Label   340       0.61       (0.41, 0.90)   0.0126 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Sex (F/M)           340       0.62       (0.42, 0.92)   0.0182 </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">result_multivar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -660,11 +651,11 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                     Hazard Ratio      95% CI      p-value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ARM (reference = 1)                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                       0.61       (0.41, 0.9)    0.0123 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                       0.61       (0.41, 0.90)   0.0123 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A Covariate Label (reference = 1)                                 &lt;0.0001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                                       0.46       (0.28, 0.73)   0.0011 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                                       0.31       (0.18, 0.51)   &lt;0.0001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                       0.18       (0.1, 0.33)    &lt;0.0001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                       0.18       (0.10, 0.33)   &lt;0.0001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sex (F/M) (reference = F)                                                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M                                       1.29       (0.88, 1.89)   0.1911 </span>
 <span class="r-in"></span>
@@ -680,7 +671,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A Covariate Label (reference = 1)                                 &lt;0.0001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                                       0.45       (0.28, 0.71)   0.0007 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                                       0.31       (0.19, 0.52)   &lt;0.0001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                       0.18       (0.1, 0.33)    &lt;0.0001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                       0.18       (0.10, 0.33)   &lt;0.0001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sex (F/M) (reference = F)                                                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M                                       1.33       (0.91, 1.94)   0.1414 </span>
 <span class="r-in"></span>
@@ -695,7 +686,7 @@ it rather prepares the data to be used by the layout creating function.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A Covariate Label (reference = 1)                                 &lt;0.0001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                                       0.46       (0.29, 0.74)   0.0012 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                                       0.31       (0.19, 0.52)   &lt;0.0001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                       0.19       (0.1, 0.34)    &lt;0.0001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                       0.19       (0.10, 0.34)   &lt;0.0001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sex (F/M) (reference = F)                                                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M                                       1.29       (0.88, 1.88)   0.1958 </span>
 </code></pre></div>
