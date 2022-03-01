@@ -157,7 +157,9 @@ extract_rsp_biomarkers <- function(variables,
 #' )
 #'
 #' ## Finally produce the forest plot.
+#' \dontrun{
 #' g_forest(tab, xlim = c(0.7, 1.4))
+#' }
 tabulate_rsp_biomarkers <- function(df,
                                     vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")) {
   assertthat::assert_that(
