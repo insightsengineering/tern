@@ -1,4 +1,4 @@
-# tern 0.7.6.9010
+# tern 0.7.6.9011
 
 * Changed the `nudge_y` argument of `h_g_ipp` to be dependent on the data, fixing an issue whereby the baseline labels were offset incorrectly. 
 * Some release note
