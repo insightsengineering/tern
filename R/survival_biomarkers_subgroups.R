@@ -158,7 +158,9 @@ extract_survival_biomarkers <- function(variables,
 #' )
 #'
 #' ## Finally produce the forest plot.
+#' \dontrun{
 #' g_forest(tab, xlim = c(0.8, 1.2))
+#' }
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {
