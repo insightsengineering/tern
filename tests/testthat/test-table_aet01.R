@@ -20,22 +20,25 @@ testthat::test_that("Safety Summary Variant 1 works as expected", {
       RELWD = AEREL == "Y" & AEACN == "DRUG WITHDRAWN",
       RELDSM = AEREL == "Y" & AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
       CTC35 = AETOXGR %in% c("3", "4", "5")
-    ) %>%
-    var_relabel(
-      FATAL = "AE with fatal outcome",
-      SER = "Serious AE",
-      SERWD = "Serious AE leading to withdrawal from treatment",
-      SERDSM = "Serious AE leading to dose modification/interruption",
-      RELSER = "Related Serious AE",
-      WD = "AE leading to withdrawal from treatment",
-      DSM = "AE leading to dose modification/interruption",
-      REL = "Related AE",
-      RELWD = "Related AE leading to withdrawal from treatment",
-      RELDSM = "Related AE leading to dose modification/interruption",
-      CTC35 = "Grade 3-5 AE"
     )
 
   aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
+  labels <- c(
+    "AE with fatal outcome",
+    "Serious AE",
+    "Serious AE leading to withdrawal from treatment",
+    "Serious AE leading to dose modification/interruption",
+    "Related Serious AE",
+    "AE leading to withdrawal from treatment",
+    "AE leading to dose modification/interruption",
+    "Related AE",
+    "Related AE leading to withdrawal from treatment",
+    "Related AE leading to dose modification/interruption",
+    "Grade 3-5 AE"
+  )
+  for (i in seq_along(aesi_vars)) {
+    attr(adae[[aesi_vars[i]]], "label") <- labels[i]
+  }
 
   # Layout for variables from adsl dataset.
   lyt_adsl <- basic_table() %>%
@@ -137,20 +140,24 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
       RELWD = AEREL == "Y" & AEACN == "DRUG WITHDRAWN",
       RELDSM = AEREL == "Y" & AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
       CTC35 = AETOXGR %in% c("3", "4", "5")
-    ) %>%
-    var_relabel(
-      FATAL = "AE with fatal outcome",
-      SER = "Serious AE",
-      SERWD = "Serious AE leading to withdrawal from treatment",
-      SERDSM = "Serious AE leading to dose modification/interruption",
-      RELSER = "Related Serious AE",
-      WD = "AE leading to withdrawal from treatment",
-      DSM = "AE leading to dose modification/interruption",
-      REL = "Related AE",
-      RELWD = "Related AE leading to withdrawal from treatment",
-      RELDSM = "Related AE leading to dose modification/interruption",
-      CTC35 = "Grade 3-5 AE"
     )
+  aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
+  labels <- c(
+    "AE with fatal outcome",
+    "Serious AE",
+    "Serious AE leading to withdrawal from treatment",
+    "Serious AE leading to dose modification/interruption",
+    "Related Serious AE",
+    "AE leading to withdrawal from treatment",
+    "AE leading to dose modification/interruption",
+    "Related AE",
+    "Related AE leading to withdrawal from treatment",
+    "Related AE leading to dose modification/interruption",
+    "Grade 3-5 AE"
+  )
+  for (i in seq_along(aesi_vars)) {
+    attr(adae[[aesi_vars[i]]], "label") <- labels[i]
+  }
 
   # Add flags (TRUE/FALSE) for select AE basket variables.
   adae <- adae %>%
@@ -158,15 +165,15 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
       SMQ01 = SMQ01NAM != "",
       SMQ02 = SMQ02NAM != "",
       CQ01 = CQ01NAM != ""
-    ) %>%
-    var_relabel(
-      SMQ01 = aesi_label(adae$SMQ01NAM, adae$SMQ01SC),
-      SMQ02 = aesi_label(adae$SMQ02NAM, adae$SMQ02SC),
-      CQ01 = aesi_label(adae$CQ01NAM)
     )
-
   aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
   basket_vars <- c("SMQ01", "SMQ02", "CQ01")
+  labels <- c(
+    aesi_label(adae$SMQ01NAM, adae$SMQ01SC), aesi_label(adae$SMQ02NAM, adae$SMQ02SC), aesi_label(adae$CQ01NAM)
+  )
+  for (i in seq_along(basket_vars)) {
+    attr(adae[[basket_vars[i]]], "label") <- labels[i]
+  }
 
   # Layout for variables from adsl dataset.
   lyt_adsl <- basic_table() %>%
@@ -277,17 +284,19 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
       REL = AEREL == "Y",
       CTC35 = AETOXGR %in% c("3", "4", "5"),
       CTC45 = AETOXGR %in% c("4", "5")
-    ) %>%
-    var_relabel(
-      FATAL = "AE with fatal outcome",
-      SER = "Serious AE",
-      WD = "AE leading to withdrawal from treatment",
-      REL = "Related AE",
-      CTC35 = "Grade 3-5 AE",
-      CTC45 = "Grade 4/5 AE"
     )
-
   aesi_vars <- c("FATAL", "SER", "WD", "REL", "CTC35", "CTC45")
+  labels <- c(
+    "AE with fatal outcome",
+    "Serious AE",
+    "AE leading to withdrawal from treatment",
+    "Related AE",
+    "Grade 3-5 AE",
+    "Grade 4/5 AE"
+  )
+  for (i in seq_along(aesi_vars)) {
+    attr(adae[[aesi_vars[i]]], "label") <- labels[i]
+  }
 
   # Layout for variables from adsl dataset.
   lyt_adsl <- basic_table() %>%
@@ -376,9 +385,7 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
 
 testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
   adae <- adae %>%
-    dplyr::mutate(
-      USUBJID_AESEQ = paste(USUBJID, AESEQ, sep = "@@") # Create unique ID per AE in dataset.
-    )
+    dplyr::mutate(USUBJID_AESEQ = paste(USUBJID, AESEQ, sep = "@@")) # nolint # Create unique ID per AE in dataset.
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -390,16 +397,20 @@ testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Add
       REL = AEREL == "Y",
       CTC35 = AETOXGR %in% c("3", "4", "5"),
       CTC45 = AETOXGR %in% c("4", "5")
-    ) %>%
-    var_relabel(
-      FATAL = "AE with fatal outcome",
-      SER = "Serious AE",
-      WD = "AE leading to withdrawal from treatment",
-      DSM = "AE leading to dose modification/interruption",
-      REL = "Related AE",
-      CTC35 = "Grade 3-5 AE",
-      CTC45 = "Grade 4/5"
     )
+  aesi_vars <- c("FATAL", "SER", "WD", "DSM", "REL", "CTC35", "CTC45")
+  labels <- c(
+    "AE with fatal outcome",
+    "Serious AE",
+    "AE leading to withdrawal from treatment",
+    "AE leading to dose modification/interruption",
+    "Related AE",
+    "Grade 3-5 AE",
+    "Grade 4/5"
+  )
+  for (i in seq_along(aesi_vars)) {
+    attr(adae[[aesi_vars[i]]], "label") <- labels[i]
+  }
 
   count_subj_vars <- c("FATAL", "SER", "WD", "DSM", "REL", "CTC35")
   count_term_vars <- c("SER", "DSM", "REL", "CTC35", "CTC45")
