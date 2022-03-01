@@ -18,7 +18,6 @@ get_dta <- function() {
 }
 
 testthat::test_that("summarize_colvars works as expected without column split and default behavior", {
-
   skip_if_fail_rtables_refactor()
 
   dta <- get_dta()
@@ -45,7 +44,6 @@ testthat::test_that("summarize_colvars works as expected without column split an
 })
 
 testthat::test_that("summarize_colvars works as expected with column split", {
-
   skip_if_fail_rtables_refactor()
 
   dta <- get_dta()
@@ -78,7 +76,6 @@ testthat::test_that("summarize_colvars works as expected with column split", {
 
 
 testthat::test_that("summarize_colvars works when selecting statistics and custom formatting", {
-
   skip_if_fail_rtables_refactor()
 
   dta <- get_dta()

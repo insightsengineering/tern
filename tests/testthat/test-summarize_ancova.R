@@ -86,7 +86,6 @@ testthat::test_that("s_ancova fails wrong inputs", {
 })
 
 testthat::test_that("summarize_ancova works with healthy inputs", {
-
   skip_if_fail_rtables_refactor()
 
   result <- basic_table() %>%

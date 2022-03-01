@@ -102,7 +102,6 @@ testthat::test_that("s_incidence_rate works as expected with healthy input", {
 })
 
 testthat::test_that("estimate_incidence_rate works as expected with healthy input", {
-
   skip_if_fail_rtables_refactor()
 
   df <- data.frame(

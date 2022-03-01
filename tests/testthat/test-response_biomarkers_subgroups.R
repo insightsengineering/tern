@@ -165,7 +165,6 @@ testthat::test_that("extract_rsp_biomarkers works as expected with other custom 
 # tabulate_rsp_biomarkers ----
 
 testthat::test_that("tabulate_rsp_biomarkers works as expected with valid input", {
-
   skip_if_fail_rtables_refactor()
 
   adrs_f <- adrs %>%

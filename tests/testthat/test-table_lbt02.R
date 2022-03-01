@@ -7,7 +7,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
 testthat::test_that("LBT02 default variant is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adlb <- subset(adlb, AVISIT != "SCREENING" & PARAMCD == "ALT")

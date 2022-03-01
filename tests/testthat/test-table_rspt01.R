@@ -19,7 +19,6 @@ adrs <- adrs %>%
   )
 
 testthat::test_that("RSPT01: 1. Best Overall Response", {
-
   skip_if_fail_rtables_refactor()
 
   l <- basic_table() %>%
@@ -77,7 +76,6 @@ testthat::test_that("RSPT01: 1. Best Overall Response", {
 })
 
 testthat::test_that("RSPT01: 2. Best Overall Response (selecting sections to display)", {
-
   skip_if_fail_rtables_refactor()
 
   l <- basic_table() %>%
@@ -129,7 +127,6 @@ testthat::test_that("RSPT01: 2. Best Overall Response (selecting sections to dis
 })
 
 testthat::test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
-
   skip_if_fail_rtables_refactor()
 
   conf_level <- 0.90
@@ -198,7 +195,6 @@ testthat::test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
 })
 
 testthat::test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
-
   skip_if_fail_rtables_refactor()
 
   l <- basic_table() %>%
@@ -278,7 +274,6 @@ testthat::test_that("RSPT01: 4. Best Overall Response (with stratified analysis)
 })
 
 testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition of overall response)", {
-
   skip_if_fail_rtables_refactor()
 
   l <- basic_table() %>%
@@ -336,7 +331,6 @@ testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition 
 
 
 testthat::test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
-
   skip_if_fail_rtables_refactor()
 
   # Define study-specific response category "No Progression".

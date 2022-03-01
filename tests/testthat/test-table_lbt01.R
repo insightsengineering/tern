@@ -8,7 +8,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
 testthat::test_that("LBT01 default variant is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adlb_f <- adlb %>%

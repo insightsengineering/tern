@@ -31,7 +31,6 @@ testthat::test_that("s_count_patients_sum_exposure works as expected", {
 
 
 testthat::test_that("summarize_patients_exposure_in_cols works well with default arguments", {
-
   skip_if_fail_rtables_refactor()
 
   df <- get_anl()

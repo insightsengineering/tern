@@ -173,7 +173,6 @@ testthat::test_that("has_counts_difference result performs comparisons correctly
 })
 
 testthat::test_that("combination of pruning functions works", {
-
   skip_if_fail_rtables_refactor()
 
   result <- tab %>%

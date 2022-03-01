@@ -27,7 +27,6 @@ preprocess_adtte <- function(adtte) {
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   anl1 <- adtte %>%
@@ -73,7 +72,6 @@ testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Durat
 })
 
 testthat::test_that("FSTG02 table variant 2 (specifying class variables and options for the treatment variable)", {
-
   skip_if_fail_rtables_refactor()
 
   anl2 <- adtte %>%
@@ -131,7 +129,6 @@ testthat::test_that("FSTG02 table variant 2 (specifying class variables and opti
 })
 
 testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the alpha level)", {
-
   skip_if_fail_rtables_refactor()
 
   anl3 <- adtte %>%
@@ -172,7 +169,6 @@ testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the 
 })
 
 testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   anl4 <- adtte %>%

@@ -27,7 +27,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("DORT01 variant 1 is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adtte <- adtte %>%
@@ -108,7 +107,6 @@ testthat::test_that("DORT01 variant 1 is produced correctly", {
 })
 
 testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adtte <- adtte %>%
@@ -190,7 +188,6 @@ testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly"
 })
 
 testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adtte <- adtte %>%
@@ -272,7 +269,6 @@ testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is pr
 })
 
 testthat::test_that("DORT01 variant 4 (modifying time point for the “xx duration”) is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adtte <- adtte %>%

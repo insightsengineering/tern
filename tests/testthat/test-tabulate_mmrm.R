@@ -298,7 +298,6 @@ testthat::test_that("h_mmrm_fixed works as expected", {
 })
 
 testthat::test_that("h_mmrm_cov works as expected", {
-
   skip_if_fail_rtables_refactor()
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
@@ -360,7 +359,6 @@ testthat::test_that("h_mmrm_cov works as expected", {
 })
 
 testthat::test_that("h_mmrm_diagnostic works as expected", {
-
   skip_if_fail_rtables_refactor()
 
   skip_if_too_deep(3)
@@ -410,7 +408,6 @@ testthat::test_that("tidy.mmrm works as expected", {
 })
 
 testthat::test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
-
   skip_if_fail_rtables_refactor()
 
   skip_if_too_deep(3)
@@ -552,7 +549,6 @@ testthat::test_that("summarize_lsmeans works as expected", {
 })
 
 testthat::test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
-
   skip_if_fail_rtables_refactor()
 
   skip_if_too_deep(3)

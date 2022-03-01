@@ -9,7 +9,6 @@ advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs
 
 
 testthat::test_that("DMT01 default and alternative variants are produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   # Change description in variable SEX.

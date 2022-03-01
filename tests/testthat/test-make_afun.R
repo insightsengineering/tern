@@ -58,7 +58,6 @@ testthat::test_that("make_afun works with healthy input statistics function taki
 })
 
 testthat::test_that("make_afun processes additional rtables arguments correctly", {
-
   skip_if_fail_rtables_refactor()
 
   sfun <- function(df, .in_ref_col, .N_col) { # nolint

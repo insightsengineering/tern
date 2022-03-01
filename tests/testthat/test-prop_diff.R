@@ -121,7 +121,6 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
 
 
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
-
   skip_if_fail_rtables_refactor()
 
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.

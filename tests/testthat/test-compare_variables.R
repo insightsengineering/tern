@@ -106,7 +106,6 @@ testthat::test_that("compare_vars works with default settings in rtables layout 
 })
 
 testthat::test_that("compare_vars works with custom settings", {
-
   skip_if_fail_rtables_refactor()
 
   lyt <- basic_table() %>%

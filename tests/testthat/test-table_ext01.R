@@ -7,7 +7,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adex <- synthetic_cdisc_data("rcd_2021_05_05")$adex
 
 testthat::test_that("EXT01 default variant with numeric parameters is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adex <- adex %>%
@@ -83,7 +82,6 @@ testthat::test_that("EXT01 default variant with numeric parameters is produced c
 })
 
 testthat::test_that("EXT01 variant: with both numeric and categorical parameters", {
-
   skip_if_fail_rtables_refactor()
 
   adex <- adex %>%
@@ -196,7 +194,6 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
 })
 
 testthat::test_that("EXT01 variant: with user specified categories for missed doses", {
-
   skip_if_fail_rtables_refactor()
 
   adex <- adex %>%

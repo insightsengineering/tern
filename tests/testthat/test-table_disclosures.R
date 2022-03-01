@@ -76,7 +76,6 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
 
 
 testthat::test_that("Patient Disposition table is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adsl <- get_adsl()
@@ -134,7 +133,6 @@ testthat::test_that("Patient Disposition table is produced correctly", {
 })
 
 testthat::test_that("Demographic table is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adsl <- get_adsl()
@@ -185,7 +183,6 @@ testthat::test_that("Demographic table is produced correctly", {
 })
 
 testthat::test_that("Enrollment by Country Table is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adsl <- get_adsl()
@@ -217,7 +214,6 @@ testthat::test_that("Enrollment by Country Table is produced correctly", {
 })
 
 testthat::test_that("Death table is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adsl <- get_adsl()

@@ -39,7 +39,6 @@ mmrm_results <- if (too_old_lme4) {
 
 
 testthat::test_that("LS means table is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
@@ -94,7 +93,6 @@ testthat::test_that("LS means table is produced correctly", {
 })
 
 testthat::test_that("Fixed effects table is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
@@ -128,7 +126,6 @@ testthat::test_that("Fixed effects table is produced correctly", {
 })
 
 testthat::test_that("Covariance matrix table is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
@@ -150,7 +147,6 @@ testthat::test_that("Covariance matrix table is produced correctly", {
 })
 
 testthat::test_that("Model diagnostics table is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")

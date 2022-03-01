@@ -394,7 +394,6 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with extr
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected when one arm has 0 records", {
-
   skip_if_fail_rtables_refactor()
 
   adtte <- adtte %>%

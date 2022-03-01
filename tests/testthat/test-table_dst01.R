@@ -71,7 +71,6 @@ get_adsl0 <- function() {
 }
 
 testthat::test_that("DST01 default variant is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adsl0 <- get_adsl0()
@@ -105,7 +104,6 @@ testthat::test_that("DST01 default variant is produced correctly", {
 })
 
 testthat::test_that("DST01 variant with grouping of reasons is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adsl0 <- get_adsl0()
@@ -144,7 +142,6 @@ testthat::test_that("DST01 variant with grouping of reasons is produced correctl
 })
 
 testthat::test_that("DST01 variant with adding other optional rows is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   adsl0 <- get_adsl0()

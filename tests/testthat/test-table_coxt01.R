@@ -30,7 +30,6 @@ ADTTE_f$event <- 1 - ADTTE_f$CNSR
 # nolint end
 
 testthat::test_that("1. Cox Regression", {
-
   skip_if_fail_rtables_refactor()
 
   mod1 <- fit_coxreg_univar(
@@ -63,7 +62,6 @@ testthat::test_that("1. Cox Regression", {
 
 
 testthat::test_that("2. Cox Regression (with Interaction Term)", {
-
   skip_if_fail_rtables_refactor()
 
   mod2 <- fit_coxreg_univar(
@@ -102,7 +100,6 @@ testthat::test_that("2. Cox Regression (with Interaction Term)", {
 
 
 testthat::test_that("3. Cox Regression (specifying covariates)", {
-
   skip_if_fail_rtables_refactor()
 
   mod3 <- fit_coxreg_univar(
@@ -145,7 +142,6 @@ testthat::test_that("3. Cox Regression (specifying covariates)", {
 
 
 testthat::test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
-
   skip_if_fail_rtables_refactor()
 
   conf_level <- 0.90

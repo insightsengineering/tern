@@ -5,7 +5,6 @@ adpc <- synthetic_cdisc_data("rcd_2021_10_13")$adpc
 adpc <- adpc %>% dplyr::filter(AVAL != 0)
 
 testthat::test_that("PKPT03 is produced correctly", {
-
   skip_if_fail_rtables_refactor()
 
   l <- basic_table() %>%

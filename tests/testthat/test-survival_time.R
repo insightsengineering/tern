@@ -55,7 +55,6 @@ testthat::test_that("s_surv_time works with customized arguments", {
 })
 
 testthat::test_that("surv_time works with default arguments", {
-
   skip_if_fail_rtables_refactor()
 
   adtte_f <- adtte %>%
@@ -93,7 +92,6 @@ testthat::test_that("surv_time works with default arguments", {
 
 
 testthat::test_that("surv_time works with customized arguments", {
-
   skip_if_fail_rtables_refactor()
 
   adtte_f <- adtte %>%
