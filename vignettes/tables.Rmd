@@ -1,0 +1,410 @@
+---
+title: "Introduction to tern"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to tern}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+The `tern` R package provides functions to create common analyses from clinical trials in `R`. The core functionality for tabulation is built on the more general purpose `rtables` package. New users should first begin by reading the "Introduction to rtables" vignette to become familiar with the `rtables` layout tabulation concepts.
+
+```{r, eval=FALSE}
+vignette(topic = "introduction", package = "rtables")
+```
+
+In this vignette we are going to create:
+
+* demographic table
+* adverse event table
+* response table
+
+using layout creating functions from `tern`. 
+
+The packages used in this vignette are:
+```{r, message=FALSE}
+library(rtables)
+library(tern)
+library(dplyr)
+```
+
+The datasets used in this vignette are:
+```{r, message=FALSE}
+adsl <- ex_adsl
+adae <- ex_adae
+adrs <- ex_adrs
+```
+
+## Demographic Table
+
+Demographic tables provide a summary of the characteristics of patients enrolled in a clinical trial. Typically the table columns represent treatment arms and variables summarized in the table are demographic properties such as age, sex, race, etc. 
+
+In the example below the only function from `tern` is `summarize_vars()` and the remaining layout functions are from `rtables`. 
+
+```{r}
+# Select variables to include in table.
+vars <- c("AGE", "SEX")
+var_labels <- c("Age (yr)", "Sex")
+
+basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_overall_col("All Patients") %>%
+  add_colcounts() %>%
+  summarize_vars(
+    vars = vars,
+    var_labels = var_labels
+  ) %>%
+  build_table(adsl)
+```
+
+To change the display order of categorical variables in a table use factor variables and explicitly set the order of the levels. This is the case for the display order in columns and rows. Note that the `forcats` package has many useful functions to help with these types of data processing steps (not used below).
+
+```{r}
+# Reorder the levels in the ARM variable.
+adsl$ARM <- factor(adsl$ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")) # nolint
+
+# Reorder the levels in the SEX variable.
+adsl$SEX <- factor(adsl$SEX, levels = c("M", "F", "U", "UNDIFFERENTIATED")) # nolint
+
+basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_overall_col("All Patients") %>%
+  add_colcounts() %>%
+  summarize_vars(
+    vars = vars,
+    var_labels = var_labels
+  ) %>%
+  build_table(adsl)
+```
+
+The `tern` package includes many functions similar to `summarize_vars()`. These functions are called layout creating functions and are used in combination with other rtables layout functions just like in the examples above. Layout creating functions are wrapping calls to rtables `analyze()`, `analyze_colvars()` and `summarize_row_groups()` and provide options for easy formatting and analysis modifications. 
+
+To customize the display for the demographics table, we can do so via the arguments in `summarize_vars()`. Most layout creating functions in `tern` include the standard arguments `.stats`, `.formats`, `.labels` and `.indent_mods` which control which statistics are displayed and how the numbers are formatted. Refer to the package help with `help("summarize_vars")` or `?summarize_vars` to see the full set of options.
+
+For this example we will change the default summary for numeric variables to include the number of records, and the mean and standard deviation (in a single statistic, i.e. within a single cell). For categorical variables we modify the summary to include the number of records and the counts of categories. We also modify the display format for the mean and standard deviation to print two decimal places instead of just one.
+
+```{r}
+# Select statistics and modify default formats.
+basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_overall_col("All Patients") %>%
+  add_colcounts() %>%
+  summarize_vars(
+    vars = vars,
+    var_labels = var_labels,
+    .stats = c("n", "mean_sd", "count"),
+    .formats = c(mean_sd = "xx.xx (xx.xx)")
+  ) %>%
+  build_table(adsl)
+```
+
+One feature of a `layout` is that it can be used with different datasets to create different summaries. For example, here we can easily create the same summary of demographics for the Brazil and China subgroups, respectively:
+
+```{r}
+
+lyt <- basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_overall_col("All Patients") %>%
+  add_colcounts() %>%
+  summarize_vars(
+    vars = vars,
+    var_labels = var_labels
+  )
+
+build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "BRA"))
+
+build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "CHN"))
+```
+
+## Adverse Event Table 
+
+The standard table of adverse events (AEs) is a summary by system organ class and preferred term. For frequency counts by preferred term, if there are multiple occurrences of the same AE in an individual we count them only once. 
+
+To create this table we will need to use a combination of several layout creating functions in a tabulation pipeline. 
+
+We start by creating the high-level summary. The layout creating function in `tern` that can do this is `summarize_num_patients()`:
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ACTARM") %>%
+  add_colcounts() %>%
+  add_overall_col(label = "All Patients") %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = c("unique", "nonunique"),
+    .labels = c(
+      unique = "Total number of patients with at least one AE",
+      nonunique = "Overall total number of events"
+    )
+  ) %>%
+  build_table(
+    df = adae,
+    alt_counts_df = adsl
+  )
+```
+
+Note that for this table, the denominator used for percentages and shown in the header of the table `(N = xx)` is defined based on the subject-level dataset `adsl`. This is done by using the `alt_df_counts` argument in `build_table()`, which provides an alternative data set for deriving the counts in the header. This is often required when we work with data sets that include multiple records per patient as `df`, such as `adae` here.
+
+### Statistics Functions
+Before building out the rest of the AE table it is helpful to introduce some more `tern` package design conventions. Each layout creating function in `tern` is a wrapper for a Statistics function. Statistics functions are the ones that do the actual computation of numbers in a table. These functions always return named lists whose elements are the statistics available to include in a layout via the `.stats` argument at the layout creating function level.
+
+Statistics functions follow a naming convention to always begin with `s_*` and for ease of use are documented on the same page as their layout creating function counterpart. It is helpful to review a Statistic function to understand the logic used to calculate the numbers in a table and see what options may be available to modify the analysis.
+
+For example, the Statistics function calculating the numbers in `summarize_num_patients()` is `s_num_patients()`. The results of this Statistics function is a list with the elements `unique`, `nonunique` and `unique_count`:
+```{r}
+s_num_patients(x = adae$USUBJID, labelstr = "", .N_col = nrow(adae))
+```
+
+From these results you can see that the `unique` and `nonunique` statistics are those displayed in the "All Patients" column in the initial AE table output above. Also you can see that these are raw numbers and are not formatted in any way. All formatting functionality is handled at the layout creating function level with the `.formats` argument. 
+
+Now that we know what types of statistics can be derived by `s_num_patients()`, we can try modifying the default layout returned by `summarize_num_patients()`. Instead of reporting the `unique` and `nonqunie` statistics, we specify that the analysis should include only the `unique_count` statistic. The result will show only the counts of unique patients. Note we make this update in both the `.stats` and `.labels` argument of `summarize_num_patients()`.
+
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ACTARM") %>%
+  add_colcounts() %>%
+  add_overall_col(label = "All Patients") %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = "unique_count",
+    .labels = c(unique_count = "Total number of patients with at least one AE")
+  ) %>%
+  build_table(
+    df = adae,
+    alt_counts_df = adsl
+  )
+```
+
+Let's now continue building on the layout for the adverse event table. 
+
+After we have the top-level summary, we can repeat the same summary at each system organ class level. To do this we split the analysis data with `split_rows_by()` before calling again `summarize_num_patients()`.
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ACTARM") %>%
+  add_colcounts() %>%
+  add_overall_col(label = "All Patients") %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = c("unique", "nonunique"),
+    .labels = c(
+      unique = "Total number of patients with at least one AE",
+      nonunique = "Overall total number of events"
+    )
+  ) %>%
+  split_rows_by(
+    "AEBODSYS",
+    child_labels = "visible",
+    nested = FALSE,
+    indent_mod = -1L,
+    split_fun = drop_split_levels
+  ) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = c("unique", "nonunique"),
+    .labels = c(
+      unique = "Total number of patients with at least one AE",
+      nonunique = "Overall total number of events"
+    )
+  ) %>%
+  build_table(
+    df = adae,
+    alt_counts_df = adsl
+  )
+```
+
+The table looks almost ready. For the final step, we need a layout creating function that can produce a count table of event frequencies. The layout creating function for this is `count_occurrences()`. Let's first try using this function in a simpler layout without row splits:
+
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ACTARM") %>%
+  add_colcounts() %>%
+  add_overall_col(label = "All Patients") %>%
+  count_occurrences(vars = "AEDECOD") %>%
+  build_table(
+    df = adae,
+    alt_counts_df = adsl
+  )
+```
+
+Putting everything together, the final AE table looks like this:
+
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ACTARM") %>%
+  add_colcounts() %>%
+  add_overall_col(label = "All Patients") %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = c("unique", "nonunique"),
+    .labels = c(
+      unique = "Total number of patients with at least one AE",
+      nonunique = "Overall total number of events"
+    )
+  ) %>%
+  split_rows_by(
+    "AEBODSYS",
+    child_labels = "visible",
+    nested = FALSE,
+    indent_mod = -1L,
+    split_fun = drop_split_levels
+  ) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = c("unique", "nonunique"),
+    .labels = c(
+      unique = "Total number of patients with at least one AE",
+      nonunique = "Overall total number of events"
+    )
+  ) %>%
+  count_occurrences(vars = "AEDECOD") %>%
+  build_table(
+    df = adae,
+    alt_counts_df = adsl
+  )
+```
+
+## Response Table
+
+A typical response table for a binary clinical trial endpoint may be composed of several different analyses:
+
+* Proportion of responders in each treatment group
+* Difference between proportion of responders in comparison groups vs. control group
+* Chi-Square test for difference in response rates between comparison groups vs. control group
+
+We can build a table layout like this by following the same approach we used for the AE table: each table section will be produced using a different layout creating function from `tern`. 
+
+First we start with some data preparation steps to set up the analysis dataset. We select the endpoint to analyze from `PARAMCD` and define the logical variable `is_rsp` which indicates whether a patient is classified as a responder or not. 
+
+```{r}
+# Preprocessing to select an analysis endpoint.
+anl <- adrs %>%
+  dplyr::filter(PARAMCD == "BESRSPI") %>%
+  dplyr::mutate(is_rsp = AVALC %in% c("CR", "PR"))
+```
+
+To create a summary of the proportion of responders in each treatment group, use the `estimate_proportion()` layout creating function:
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_colcounts() %>%
+  estimate_proportion(
+    vars = "is_rsp",
+    table_names = "est_prop"
+  ) %>%
+  build_table(anl)
+```
+
+To specify which arm in the table should be used as the reference, use the argument `ref_group` from `split_cols_by()`. Below we change the reference arm to "B: Placebo" and so this arm is displayed as the first column:
+
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
+  add_colcounts() %>%
+  estimate_proportion(
+    vars = "is_rsp"
+  ) %>%
+  build_table(anl)
+```
+
+To further customize the analysis, we can use the `method` and `conf_level` arguments to modify the type of confidence interval that is calculated:
+
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
+  add_colcounts() %>%
+  estimate_proportion(
+    vars = "is_rsp",
+    method = "clopper-pearson",
+    conf_level = 0.9
+  ) %>%
+  build_table(anl)
+```
+
+The next table section needed should summarize the difference in response rates between the reference arm each comparison arm. Use `estimate_proportion_diff()` layout creating function for this:
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
+  add_colcounts() %>%
+  estimate_proportion_diff(
+    vars = "is_rsp",
+    show_labels = "visible",
+    var_labels = "Unstratified Analysis"
+  ) %>%
+  build_table(anl)
+```
+
+The final section needed to complete the table includes a statistical test for the difference in response rates. Use the `test_proportion_diff()` layout creating function for this:
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
+  add_colcounts() %>%
+  test_proportion_diff(vars = "is_rsp") %>%
+  build_table(anl)
+```
+
+To customize the output, we use the `method` argument to select a Chi-Squared test with Schouten correction.
+
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
+  add_colcounts() %>%
+  test_proportion_diff(
+    vars = "is_rsp",
+    method = "schouten"
+  ) %>%
+  build_table(anl)
+```
+
+Now we can put all the table sections together in one layout pipeline. Note there is one more small change needed. Since the primary analysis variable in all table sections is the same (`is_rsp`), we need to give each sub-table a unique name. This is done by adding the `table_names` argument and providing unique names through that:
+
+```{r}
+basic_table() %>%
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
+  add_colcounts() %>%
+  estimate_proportion(
+    vars = "is_rsp",
+    method = "clopper-pearson",
+    conf_level = 0.9,
+    table_names = "est_prop"
+  ) %>%
+  estimate_proportion_diff(
+    vars = "is_rsp",
+    show_labels = "visible",
+    var_labels = "Unstratified Analysis",
+    table_names = "est_prop_diff"
+  ) %>%
+  test_proportion_diff(
+    vars = "is_rsp",
+    method = "schouten",
+    table_names = "test_prop_diff"
+  ) %>%
+  build_table(anl)
+```
+
+## Summary
+
+Tabulation with `tern` builds on top of the the layout tabulation framework from `rtables`. Complex tables are built step by step in a pipeline by combining layout creating functions that perform a specific type of analysis.
+
+The `tern` layout functions introduced in this vignette are:
+
+* `summarize_vars()`
+* `summarize_num_patients()`
+* `count_occurrences()`
+* `estimate_proportion()`
+* `estimate_proportion_diff()`
+* `test_proportion_diff()`
+
+Layout creating functions build a formatted `layout` by controlling features such as labels, numerical display formats and indentation. These functions are wrappers for the Statistics functions which calculate the raw summaries of each analysis. You can easily spot Statistics functions in the documentation because they always begin with the prefix `s_`. It can be helpful to inspect and run Statistics functions to understand ways an analysis can be customized.
+
+In summary, `tern` contains many additional functions for creating tables, listing and graphs used in clinical trials. The design of the package gives users a lot of flexibility to meet the analysis needs in a regulatory or exploratory reporting context.
