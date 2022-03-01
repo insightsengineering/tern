@@ -237,6 +237,8 @@ testthat::test_that("count_occurrences_by_grade label works when more than one v
 
 
 testthat::test_that("count_occurrences_by_grade works with custom arguments for grade", {
+  skip_if_fail_rtables_refactor()
+
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
@@ -273,6 +275,8 @@ testthat::test_that("count_occurrences_by_grade works with custom arguments for 
 })
 
 testthat::test_that("summarize_occurrences_by_grade works with default arguments for intensity", {
+  skip_if_fail_rtables_refactor()
+
   df <- raw_data
   df_adsl <- data.frame(
     USUBJID = 1:9,

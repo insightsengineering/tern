@@ -1,4 +1,6 @@
 testthat::test_that("s_change_from_baseline handles empty data (complete missing for a visit)", {
+  skip_if_fail_rtables_refactor()
+
   test_data <- data.frame(
     chg = numeric(),
     aval = numeric(),
@@ -41,6 +43,8 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
 })
 
 testthat::test_that("s_change_from_baseline handles NA in baseline values", {
+  skip_if_fail_rtables_refactor()
+
   test_data <- data.frame(
     chg = c(0, 0, 0, NA),
     aval = c(0, 3, 6, NA),
@@ -83,6 +87,8 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
 })
 
 testthat::test_that("s_change_from_baseline handles baseline substitution", {
+  skip_if_fail_rtables_refactor()
+
   test_data <- data.frame(
     chg = c(3, 1, 2, 5),
     aval = c(1, 3, 6, 4),
@@ -155,6 +161,8 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
 })
 
 testthat::test_that("summarize_change works as expected", {
+  skip_if_fail_rtables_refactor()
+
   library(dplyr)
   dta_test <- data.frame(
     USUBJID = rep(1:6, each = 3),

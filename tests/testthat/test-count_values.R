@@ -83,6 +83,8 @@ testthat::test_that("count_values works as expected with a single value", {
 })
 
 testthat::test_that("count_values works as expected with multiple values and variables", {
+  skip_if_fail_rtables_refactor()
+
   df <- data.frame(
     x = c("a", "b", "a", "c"),
     y = c("b", "a", "a", "f"),
@@ -134,6 +136,8 @@ testthat::test_that("s_count_values for logical vector with NA", {
 
 
 testthat::test_that("count_values works as expected with multiple values and variables", {
+  skip_if_fail_rtables_refactor()
+
   df <- data.frame(
     x = c(TRUE, FALSE, TRUE, FALSE),
     y = c("b", "a", "a", "f"),

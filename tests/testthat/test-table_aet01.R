@@ -5,6 +5,8 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 testthat::test_that("Safety Summary Variant 1 works as expected", {
+  skip_if_fail_rtables_refactor()
+
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -125,6 +127,8 @@ testthat::test_that("Safety Summary Variant 1 works as expected", {
 })
 
 testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
+  skip_if_fail_rtables_refactor()
+
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -274,6 +278,8 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
 })
 
 testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
+  skip_if_fail_rtables_refactor()
+
 
   # Add flags (TRUE/FALSE) for select AEs of interest -- custom groups.
   adae <- adae %>%
@@ -384,6 +390,8 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
 })
 
 testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
+  skip_if_fail_rtables_refactor()
+
   adae <- adae %>%
     dplyr::mutate(USUBJID_AESEQ = paste(USUBJID, AESEQ, sep = "@@")) # nolint # Create unique ID per AE in dataset.
 
