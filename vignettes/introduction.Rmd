@@ -31,26 +31,63 @@ It is strongly recommended to begin by reading the "Introduction to rtables" vig
 
 ## Common clinical trials analyses in `R`
 
-The package provides a large range of functionality:
+The package provides a large range of functionality.
 
-summary tables:
-unique patients
-exposure across patients
-change from baseline for parameters
-…
-statistical model fits:
-MMRM
-logistic regression
-Cox regression
-…
-data visualizations:
-forest plots
-line plots
-Kaplan-Meier plots
-…
+`rtables` tabulation extended by clinical trials specific interfaces:
 
-Many of these outputs are available to be added into `teal` applications for interactive exploration of data. 
-These `teal` modules are available in the `teal.modules.clinical` package.
+ - unique patients
+ - exposure across patients
+ - change from baseline for parameters
+ - statistical model fits: MMRM, logistic regression, Cox regression
+ - ...
+
+`rtables` tabulation helper functions:
+
+- pre-processing
+- conversions and transformations
+- ...
+
+data visualizations connected with clinical trials:
+
+- Kaplan-Meier plots
+- forest plots
+- line plots
+- ...
+
+data visualizations helper functions:
+
+- arrange/stack multiple graphs
+- decorate graphs like add titles, footnotes, page number, ...
+- ...
 
 ---------
 
+## Summary functions for `rtables` tabulation 
+
+`tern` syntax for `rtables` tabulation has a clear distinction for helper and end product functions.  
+The end product in the most of the scenarios is a summary function for a `rtables` table, like e.g.  
+`tern::count_values` or `tern::summarize_ancova`.
+
+Internally the summary function like `tern::count_values` is built in 4 elements chain:
+
+```
+tern::h_count_values -> tern::s_count_values -> tern::a_count_values -> tern::count_values.
+```
+
+- analysis helper functions `tern::h_*`. these functions are useful to help defining the analysis.
+- statistics function `tern::s_*`. Statistics functions should do the computation of the numbers that are tabulated later. In order to separate computation from formatting, they should not take care of `rcell` type formatting themselves.
+- formatted analysis functions `tern::a_*`. These have the same arguments as the corresponding statistics functions, and can be further customized by calling `rtables::make_afun()` on them. They are used as `afun` in `rtables::analyze()`.
+- analyze functions  `rtables::analyze(..., afun = make_afun(tern::a_*))`. Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the table. They are the last element of the chain.
+
+## Usage
+
+### Direct Usage
+
+tern could be used directly for reporting or console analysis.
+
+
+
+### Indirect Usage
+
+Many of these outputs are available to be added into `teal` applications for interactive exploration of data. 
+These `teal` modules are available in the `teal.modules.clinical` package.
