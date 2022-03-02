@@ -84,6 +84,8 @@ testthat::test_that("add_rowcounts works with one row split", {
 })
 
 testthat::test_that("add_rowcounts works with multiple column and row splits", {
+  skip_if_fail_rtables_refactor()
+
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_cols_by("STRATA1") %>%
@@ -157,6 +159,8 @@ testthat::test_that("h_col_indices works as expected", {
 
 
 testthat::test_that("as.rtable.data.frame works correctly", {
+  skip_if_fail_rtables_refactor()
+
   x <- data.frame(
     a = 1:10,
     b = seq(from = 10000, to = 20000, length = 10) / 1000

@@ -139,7 +139,9 @@ tab <- tabulate_rsp_biomarkers(
 )
 
 ## Finally produce the forest plot.
+\dontrun{
 g_forest(tab, xlim = c(0.7, 1.4))
+}
 }
 \seealso{
 \code{\link[=h_logistic_mult_cont_df]{h_logistic_mult_cont_df()}} which is used internally.

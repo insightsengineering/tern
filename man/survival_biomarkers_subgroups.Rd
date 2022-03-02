@@ -145,7 +145,9 @@ tab <- tabulate_survival_biomarkers(
 )
 
 ## Finally produce the forest plot.
+\dontrun{
 g_forest(tab, xlim = c(0.8, 1.2))
+}
 }
 \seealso{
 \code{\link[=h_coxreg_mult_cont_df]{h_coxreg_mult_cont_df()}} which is used internally.
