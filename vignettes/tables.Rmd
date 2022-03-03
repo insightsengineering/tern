@@ -1,13 +1,18 @@
 ---
-title: "Introduction to tern"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+title: "tern tabulation"
+output:
+    rmarkdown::html_document:
+        theme: "spacelab"
+        highlight: "kate"
+        toc: true
+        toc_float: true
 vignette: >
-  %\VignetteIndexEntry{Introduction to tern}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
+    %\VignetteIndexEntry{tern tabulation}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+editor_options:
+    markdown: 
+        wrap: 72
 ---
 
 ```{r, include = FALSE}
