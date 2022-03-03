@@ -102,7 +102,6 @@ testthat::test_that("s_incidence_rate works as expected with healthy input", {
 })
 
 testthat::test_that("estimate_incidence_rate works as expected with healthy input", {
-
   df <- data.frame(
     USUBJID = as.character(seq(6)),
     CNSR = c(0, 1, 1, 0, 0, 0),
