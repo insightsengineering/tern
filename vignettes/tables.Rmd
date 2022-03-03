@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## `tern` tabulation
+## `tern` Tabulation
 
 The `tern` R package provides functions to create common analyses from clinical trials in `R`. 
 The core functionality for tabulation is built on the more general purpose `rtables` package. 
@@ -227,7 +227,8 @@ basic_table() %>%
 
 Note that for this table, the denominator used for percentages and shown in the header of the table `(N = xx)` is defined based on the subject-level dataset `adsl`. This is done by using the `alt_df_counts` argument in `build_table()`, which provides an alternative data set for deriving the counts in the header. This is often required when we work with data sets that include multiple records per patient as `df`, such as `adae` here.
 
-### Statistics Functions
+#### Statistics Functions
+
 Before building out the rest of the AE table it is helpful to introduce some more `tern` package design conventions. Each layout creating function in `tern` is a wrapper for a Statistics function. Statistics functions are the ones that do the actual computation of numbers in a table. These functions always return named lists whose elements are the statistics available to include in a layout via the `.stats` argument at the layout creating function level.
 
 Statistics functions follow a naming convention to always begin with `s_*` and for ease of use are documented on the same page as their layout creating function counterpart. It is helpful to review a Statistic function to understand the logic used to calculate the numbers in a table and see what options may be available to modify the analysis.
