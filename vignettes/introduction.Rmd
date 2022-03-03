@@ -1,19 +1,24 @@
 ---
 title: "Introduction to tern"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+    rmarkdown::html_document:
+        theme: "spacelab"
+        highlight: "kate"
+        toc: true
+        toc_float: true
 vignette: >
-  %\VignetteIndexEntry{Introduction to tern}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
+    %\VignetteIndexEntry{Introduction to tern}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+editor_options:
+    markdown: 
+        wrap: 72
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+collapse = TRUE,
+comment = "#>"
 )
 ```
 
@@ -21,25 +26,28 @@ knitr::opts_chunk$set(
 
 ---------
 
-This vignette introduces the `tern` package, its general purpose and syntax.
-The `tern` R package contains analysis functions to create tables and graphs used for clinical trial reporting.
-The main focus was put on the tabulation for clinical trial reporting.
-The core functionality for tabulation is built on the more general purpose `rtables` package.
-It is strongly recommended to begin by reading the "Introduction to rtables" vignette to become familiar with the `rtables` concepts.
+This vignette shows the `tern` package, its general purpose and syntax.  
+The `tern` R package contains analytical functions for creating tables and graphs used for clinical trials and other statistical analysis. 
+The main focus is on the clinical trial reporting tables. 
+Nevertheless, the graphs related to the clinical trials are a valuable supplement.
+The core functionality for tabulation is built on top of the more general purpose `rtables` package. 
+
+**It is strongly recommended that you start by reading the "Introduction to rtables" vignette to get familiar with the concept of `rtables`.**
 
 ---------
 
-## Common clinical trials analyses in `R`
+## Common Clinical Trials Analyses
 
-The package provides a large range of functionality.
+The package provides a large range of functionality to create tables and graphs used for clinical trial analysis.
 
-`rtables` tabulation extended by clinical trials specific interfaces:
+`rtables` tabulation extended by clinical trials specific functions:
 
- - unique patients
- - exposure across patients
- - change from baseline for parameters
- - statistical model fits: MMRM, logistic regression, Cox regression
- - ...
+- demographics
+- unique patients
+- exposure across patients
+- change from baseline for parameters
+- statistical model fits: MMRM, logistic regression, Cox regression, ...
+- ...
 
 `rtables` tabulation helper functions:
 
@@ -62,32 +70,149 @@ data visualizations helper functions:
 
 ---------
 
-## Summary functions for `rtables` tabulation 
+## Analyze Functions for `rtables`
 
-`tern` syntax for `rtables` tabulation has a clear distinction for helper and end product functions.  
-The end product in the most of the scenarios is a summary function for a `rtables` table, like e.g.  
-`tern::count_values` or `tern::summarize_ancova`.
+Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the `rtables` table.
+They apply some statistical logic to the layout of the `rtables` table.
+The table layout is materialized with the `rtables::build_table` function and the data.
 
-Internally the summary function like `tern::count_values` is built in 4 elements chain:
+The `tern` analyze functions are wrappers around `rtables::analyze` function, they offer various methods useful from the perspective of clinical trials and other statistical projects.
+
+Examples of the `tern` analyze functions are `tern::count_occurrences`, `tern::summarize_ancova` or  `tern::summarize_vars`. 
+As there is no one prefix to identify all `tern` analyze functions it is recommended to use the reference subsection on the `tern` pkgdown website.
+
+A fabricated dataset:
 
 ```
-tern::h_count_values -> tern::s_count_values -> tern::a_count_values -> tern::count_values.
+library(tern)
+
+dta_test <- data.frame(
+  USUBJID = rep(1:6, each = 3),
+  PARAMCD = rep("lab", 6 * 3),
+  AVISIT  = rep(paste0("V", 1:3), 6),
+  ARM  = rep(LETTERS[1:3], rep(6, 3)),
+  AVAL = c(9:1, rep(NA, 9))
+)
 ```
 
-- analysis helper functions `tern::h_*`. these functions are useful to help defining the analysis.
-- statistics function `tern::s_*`. Statistics functions should do the computation of the numbers that are tabulated later. In order to separate computation from formatting, they should not take care of `rcell` type formatting themselves.
-- formatted analysis functions `tern::a_*`. These have the same arguments as the corresponding statistics functions, and can be further customized by calling `rtables::make_afun()` on them. They are used as `afun` in `rtables::analyze()`.
-- analyze functions  `rtables::analyze(..., afun = make_afun(tern::a_*))`. Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the table. They are the last element of the chain.
+In the `rtables` code below we first described the table and assigned that description to a variable `l`. We then built the table using the actual data with `rtables::build_table`. The description of a table is called a table **layout**.  The **analyze instruction** adds to the layout that the `ARM` variable should be analyzed with the `mean` analysis function and the result should be rounded to 1 decimal place.
+Hence, a **layout** is “pre-data”, that is, it’s a description of **how to build a table once we get data**.
 
-## Usage
+Defining the table layout with a pure `rtables` code.
 
-### Direct Usage
+```
+# Create table layout pure rtables
+l <- basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  split_rows_by(var = "AVISIT") %>%
+  analyze(vars = "AVAL", mean, format = "xx.x")
+```
 
-tern could be used directly for reporting or console analysis.
+Below the only `tern` function is the `summarize_vars` which replace the `rtables::analyze` one.
 
+```
+# Create table layout with tern summarize_vars analyze function
+l2 <- basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  split_rows_by(var = "AVISIT") %>%
+  summarize_vars(vars = "AVAL", .formats = c("mean_sd" = "(xx.xx, xx.xx)"))
+```
 
+```
+# Apply table layout to data and produce rtable object
+build_table(l, df = dta_test)
+build_table(l2, df = dta_test)
+```
 
-### Indirect Usage
+We could find out that `tern` offers more advanced analitycs with only one line updated in contrast to the pure `rtables` code. 
 
-Many of these outputs are available to be added into `teal` applications for interactive exploration of data. 
-These `teal` modules are available in the `teal.modules.clinical` package.
+**More examples with analyze functions are presented in the `tables` vignette.**
+
+### Internals of `tern` Analyze Functions 
+
+**Please skip this subsection if you are not interested in the internals of the analysis function.**
+
+Internally the `tern` analyze functions like `tern::summarize_ancova` are mainly built in the 4 elements chain:
+
+```
+h_ancova() -> s_ancova() -> a_ancova() -> summarize_ancova()
+```
+
+- analysis helper functions `h_*`. These functions are useful to help defining the analysis.
+- statistics function `s_*`. Statistics functions should do the computation of the numbers that are tabulated later. 
+In order to separate computation from formatting, they should not take care of `rcell` type formatting themselves.
+- formatted analysis functions `a_*`. 
+These have the same arguments as the corresponding statistics functions, and can be further customized by calling `rtables::make_afun()` on them. 
+They are used as `afun` in `rtables::analyze()`.
+- **analyze functions `rtables::analyze(..., afun = make_afun(tern::a_*))`. 
+Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the table. 
+They are the last element of the chain.**
+
+We could update the previously presented example.
+We will use the native `rtables::analyze` function with the `tern` formatted analysis functions as a `afun` parameter.
+
+```
+l <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    split_rows_by(var = "AVISIT") %>%
+    analyze(vars = "AVAL", afun = a_summary)
+
+build_table(l, df = dta_test)
+```
+
+If somebody want to attach some format to the formatted analysis function then the `rtables::make_afun` function is helpful.
+
+```
+afun <- make_afun(
+    a_summary,
+    .stats = NULL,
+    .formats = c(median = "xx."),
+    .labels = c(median = "My median"),
+    .indent_mods = c(median = 1L)
+)
+
+l2 <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    split_rows_by(var = "AVISIT") %>%
+    analyze(vars = "AVAL", afun = afun)
+
+build_table(l2, df = dta_test)
+```
+
+## Clinical Trials Visualizations
+
+Clinical trails related plots complement the rich palette of `tern` tabulation analysis functions.
+Thus the `tern` package delivers a full-featured tool for clinical trial reporting.
+The `tern` functions used for plot generation are mostly `g_` prefixed.
+The `tern` plot functions return `ggplot2` or `gTree` objects, the later is returned when a table is attached to the plot.
+The `tern` visualizations are specified with regular function arguments and 
+
+Line plot without and with table applied by the `tern::g_lineplot` function.
+
+```
+adsl <- scda::synthetic_cdisc_data("latest")$adsl
+adlb <- scda::synthetic_cdisc_data("latest")$adlb
+adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
+
+# Mean with CI
+tern::g_lineplot(adlb, adsl, subtitle = "Laboratory Test:")
+
+# Mean with CI, table and customized confidence level
+tern::g_lineplot(
+  adlb,
+  adsl,
+  table = c("n", "mean", "mean_ci"),
+  control = tern::control_summarize_vars(conf_level = 0.80),
+  title = "Plot of Mean and 80% Confidence Limits by Visit"
+)
+```
+
+The first plot is of the `ggplot2` and the second `gTree` type, as the latter contains the table.
+The `tern::control_summarize_vars` is a helper function to control descriptive statistics on the plot.
+
+## Interactive apps
+
+Most of `tern` outputs could be easily accommodate into `shiny` apps. 
+We are recommending to apply `tern` outputs in the `teal` package for interactive exploration of data. 
+`teal` is a shiny-based interactive exploration framework for analyzing data.
+`teal` modules with tern outputs are available in the `teal.modules.clinical` package.

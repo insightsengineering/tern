@@ -34,6 +34,7 @@ In this vignette we are going to create:
 using layout creating functions from `tern`. 
 
 The packages used in this vignette are:
+
 ```{r, message=FALSE}
 library(rtables)
 library(tern)
