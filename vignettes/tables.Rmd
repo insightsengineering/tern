@@ -51,7 +51,7 @@ h_ancova() -> s_ancova() -> a_ancova() -> summarize_ancova()
 
 The descriptions for each function type:
 
-- analysis helper functions `h_*`. These functions are useful to help defining the analysis.
+- analysis helper functions `h_*`. These functions are useful to help define the analysis.
 - statistics function `s_*`. Statistics functions should do the computation of the numbers that are tabulated later. 
 In order to separate computation from formatting, they should not take care of `rcell` type formatting themselves.
 - formatted analysis functions `a_*`. 
@@ -73,7 +73,7 @@ l <- basic_table() %>%
 build_table(l, df = dta_test)
 ```
 
-If somebody want to attach some format to the formatted analysis function then the `rtables::make_afun` function is helpful.
+If somebody wants to attach some format to the formatted analysis function then the `rtables::make_afun` function is helpful.
 
 ```
 afun <- make_afun(
