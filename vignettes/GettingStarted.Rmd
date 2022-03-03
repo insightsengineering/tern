@@ -126,17 +126,19 @@ build_table(l2, df = dta_test)
 
 We could find out that `tern` offers more advanced analitycs with only a one code line updated in contrast to the pure `rtables` code. 
 
-**More examples with analyze functions are presented in the `tables` vignette.**
+**More examples with tabulation analyze functions are presented in the `tern tabulation` vignette.**
 
 ### Internals of `tern` Analyze Functions 
 
-**Please skip this subsection if you are not interested in the internals of the analysis function.**
+**Please skip this subsection if you are not interested in the internals of `tern` analysis functions.**
 
-Internally the `tern` analyze functions like `tern::summarize_ancova` are mainly built in the 4 elements chain:
+Internally `tern` analyze functions like `tern::summarize_ancova` are mainly built in the 4 elements chain:
 
 ```
 h_ancova() -> s_ancova() -> a_ancova() -> summarize_ancova()
 ```
+
+The descriptions for each function type:
 
 - analysis helper functions `h_*`. These functions are useful to help defining the analysis.
 - statistics function `s_*`. Statistics functions should do the computation of the numbers that are tabulated later. 
@@ -185,7 +187,6 @@ Clinical trails related plots complement the rich palette of `tern` tabulation a
 Thus the `tern` package delivers a full-featured tool for clinical trial reporting.
 The `tern` functions used for plot generation are mostly `g_` prefixed.
 The `tern` plot functions return `ggplot2` or `gTree` objects, the later is returned when a table is attached to the plot.
-The `tern` visualizations are specified with regular function arguments and 
 
 Line plot without and with table applied by the `tern::g_lineplot` function.
 
@@ -209,6 +210,7 @@ tern::g_lineplot(
 
 The first plot is of the `ggplot2` and the second `gTree` type, as the latter contains the table.
 The `tern::control_summarize_vars` is a helper function to control descriptive statistics on the plot.
+Only part of the functions using control objects
 
 ## Interactive Apps
 
