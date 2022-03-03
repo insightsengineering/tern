@@ -27,7 +27,7 @@ comment = "#>"
 ---------
 
 This vignette shows the `tern` package, its general purpose and syntax.  
-The `tern` R package contains analytical functions for creating tables and graphs used for clinical trials and other statistical analysis. 
+The `tern` R package contains analytical functions for creating tables and graphs useful for clinical trials and other statistical analysis. 
 The main focus is on the clinical trial reporting tables. 
 Nevertheless, the graphs related to the clinical trials are a valuable supplement.
 The core functionality for tabulation is built on top of the more general purpose `rtables` package. 
@@ -124,7 +124,7 @@ build_table(l, df = dta_test)
 build_table(l2, df = dta_test)
 ```
 
-We could find out that `tern` offers more advanced analitycs with only one line updated in contrast to the pure `rtables` code. 
+We could find out that `tern` offers more advanced analitycs with only a one code line updated in contrast to the pure `rtables` code. 
 
 **More examples with analyze functions are presented in the `tables` vignette.**
 
@@ -210,9 +210,9 @@ tern::g_lineplot(
 The first plot is of the `ggplot2` and the second `gTree` type, as the latter contains the table.
 The `tern::control_summarize_vars` is a helper function to control descriptive statistics on the plot.
 
-## Interactive apps
+## Interactive Apps
 
 Most of `tern` outputs could be easily accommodate into `shiny` apps. 
-We are recommending to apply `tern` outputs in the `teal` package for interactive exploration of data. 
-`teal` is a shiny-based interactive exploration framework for analyzing data.
-`teal` modules with tern outputs are available in the `teal.modules.clinical` package.
+We are recommending to apply `tern` outputs into the `teal` apps. 
+The `teal` package is a shiny-based interactive exploration framework for analyzing data.
+`teal` modules with `tern` outputs are available in the `teal.modules.clinical` package.
