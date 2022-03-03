@@ -22,13 +22,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introduction
+## `tern` tabulation
 
-The `tern` R package provides functions to create common analyses from clinical trials in `R`. The core functionality for tabulation is built on the more general purpose `rtables` package. New users should first begin by reading the "Introduction to rtables" vignette to become familiar with the `rtables` layout tabulation concepts.
-
-```{r, eval=FALSE}
-vignette(topic = "introduction", package = "rtables")
-```
+The `tern` R package provides functions to create common analyses from clinical trials in `R`. 
+The core functionality for tabulation is built on the more general purpose `rtables` package. 
+New users should first begin by reading the "Introduction to rtables" vignette to become familiar with the `rtables` layout tabulation concepts.
 
 In this vignette we are going to create:
 
@@ -36,7 +34,7 @@ In this vignette we are going to create:
 * adverse event table
 * response table
 
-using layout creating functions from `tern`. 
+using `tern` analyze functions. 
 
 The packages used in this vignette are:
 
@@ -47,10 +45,76 @@ library(dplyr)
 ```
 
 The datasets used in this vignette are:
+
 ```{r, message=FALSE}
 adsl <- ex_adsl
 adae <- ex_adae
 adrs <- ex_adrs
+```
+
+
+## `tern` Analyze Functions 
+
+Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the `rtables` table.
+They apply some statistical logic to the layout of the `rtables` table.
+The table layout is materialized with the `rtables::build_table` function and the data.
+
+The `tern` analyze functions are wrappers around `rtables::analyze` function, they offer various methods useful from the perspective of clinical trials and other statistical projects.
+
+Examples of the `tern` analyze functions are `tern::count_occurrences`, `tern::summarize_ancova` or  `tern::summarize_vars`. 
+As there is no one prefix to identify all `tern` analyze functions it is recommended to use the reference subsection on the `tern` pkgdown website.
+
+### Internals of `tern` Analyze Functions 
+
+**Please skip this subsection if you are not interested in the internals of `tern` analyze functions.**
+
+Internally `tern` analyze functions like `tern::summarize_ancova` are mainly built in the 4 elements chain:
+
+```
+h_ancova() -> s_ancova() -> a_ancova() -> summarize_ancova()
+```
+
+The descriptions for each function type:
+
+- analysis helper functions `h_*`. These functions are useful to help defining the analysis.
+- statistics function `s_*`. Statistics functions should do the computation of the numbers that are tabulated later. 
+In order to separate computation from formatting, they should not take care of `rcell` type formatting themselves.
+- formatted analysis functions `a_*`. 
+These have the same arguments as the corresponding statistics functions, and can be further customized by calling `rtables::make_afun()` on them. 
+They are used as `afun` in `rtables::analyze()`.
+- **analyze functions `rtables::analyze(..., afun = make_afun(tern::a_*))`. 
+Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the table. 
+They are the last element of the chain.**
+
+We could update the previously presented example.
+We will use the native `rtables::analyze` function with the `tern` formatted analysis functions as a `afun` parameter.
+
+```
+l <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    split_rows_by(var = "AVISIT") %>%
+    analyze(vars = "AVAL", afun = a_summary)
+
+build_table(l, df = dta_test)
+```
+
+If somebody want to attach some format to the formatted analysis function then the `rtables::make_afun` function is helpful.
+
+```
+afun <- make_afun(
+    a_summary,
+    .stats = NULL,
+    .formats = c(median = "xx."),
+    .labels = c(median = "My median"),
+    .indent_mods = c(median = 1L)
+)
+
+l2 <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    split_rows_by(var = "AVISIT") %>%
+    analyze(vars = "AVAL", afun = afun)
+
+build_table(l2, df = dta_test)
 ```
 
 ## Demographic Table
