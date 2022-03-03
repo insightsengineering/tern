@@ -28,31 +28,6 @@ The `tern` R package provides functions to create common analyses from clinical 
 The core functionality for tabulation is built on the more general purpose `rtables` package. 
 New users should first begin by reading the "Introduction to rtables" vignette to become familiar with the `rtables` layout tabulation concepts.
 
-In this vignette we are going to create:
-
-* demographic table
-* adverse event table
-* response table
-
-using `tern` analyze functions. 
-
-The packages used in this vignette are:
-
-```{r, message=FALSE}
-library(rtables)
-library(tern)
-library(dplyr)
-```
-
-The datasets used in this vignette are:
-
-```{r, message=FALSE}
-adsl <- ex_adsl
-adae <- ex_adae
-adrs <- ex_adrs
-```
-
-
 ## `tern` Analyze Functions 
 
 Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the `rtables` table.
@@ -117,7 +92,33 @@ l2 <- basic_table() %>%
 build_table(l2, df = dta_test)
 ```
 
-## Demographic Table
+## Tabulation Examples
+
+In this vignette we are going to create:
+
+* demographic table
+* adverse event table
+* response table
+
+using `tern` analyze functions. 
+
+The packages used in this vignette are:
+
+```{r, message=FALSE}
+library(rtables)
+library(tern)
+library(dplyr)
+```
+
+The datasets used in this vignette are:
+
+```{r, message=FALSE}
+adsl <- ex_adsl
+adae <- ex_adae
+adrs <- ex_adrs
+```
+
+### Demographic Table
 
 Demographic tables provide a summary of the characteristics of patients enrolled in a clinical trial. Typically the table columns represent treatment arms and variables summarized in the table are demographic properties such as age, sex, race, etc. 
 
@@ -198,7 +199,7 @@ build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "BRA"))
 build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "CHN"))
 ```
 
-## Adverse Event Table 
+### Adverse Event Table 
 
 The standard table of adverse events (AEs) is a summary by system organ class and preferred term. For frequency counts by preferred term, if there are multiple occurrences of the same AE in an individual we count them only once. 
 
@@ -344,7 +345,7 @@ basic_table() %>%
   )
 ```
 
-## Response Table
+### Response Table
 
 A typical response table for a binary clinical trial endpoint may be composed of several different analyses:
 
@@ -466,7 +467,7 @@ basic_table() %>%
 
 Tabulation with `tern` builds on top of the the layout tabulation framework from `rtables`. Complex tables are built step by step in a pipeline by combining layout creating functions that perform a specific type of analysis.
 
-The `tern` layout functions introduced in this vignette are:
+The `tern` analyze functions introduced in this vignette are:
 
 * `summarize_vars()`
 * `summarize_num_patients()`
