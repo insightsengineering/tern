@@ -136,8 +136,6 @@ testthat::test_that("s_count_values for logical vector with NA", {
 
 
 testthat::test_that("count_values works as expected with multiple values and variables", {
-  skip_if_fail_rtables_refactor()
-
   df <- data.frame(
     x = c(TRUE, FALSE, TRUE, FALSE),
     y = c("b", "a", "a", "f"),
@@ -151,8 +149,9 @@ testthat::test_that("count_values works as expected with multiple values and var
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "TRUE", "all obs", "2 (50%)"),
+    c("", "TRUE", "all obs", "2 (50.00%)"),
     .Dim = c(2L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
+
