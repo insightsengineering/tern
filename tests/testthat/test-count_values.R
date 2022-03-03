@@ -152,4 +152,3 @@ testthat::test_that("count_values works as expected with multiple values and var
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
-
