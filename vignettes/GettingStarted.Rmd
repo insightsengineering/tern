@@ -68,6 +68,9 @@ data visualizations helper functions:
 - decorate graphs like add titles, footnotes, page number, ...
 - ...
 
+
+The reference of `tern` functions is available on the [pkgdown tern website](https://insightsengineering.github.io/tern/reference/index.html).
+
 ---------
 
 ## Analyze Functions for `rtables`
@@ -82,11 +85,6 @@ Examples of the `tern` analyze functions are `tern::count_occurrences`, `tern::s
 As there is no one prefix to identify all `tern` analyze functions it is recommended to use the reference subsection on the `tern` pkgdown website.
 
 A fabricated dataset:
-
-```
-testtttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
-```
-
 
 ```
 library(tern)
@@ -168,5 +166,5 @@ Only part of the functions using control objects
 
 Most of `tern` outputs could be easily accommodate into `shiny` apps. 
 We are recommending to apply `tern` outputs into the `teal` apps. 
-The `teal` package is a shiny-based interactive exploration framework for analyzing data.
-`teal` modules with `tern` outputs are available in the `teal.modules.clinical` package.
+The [`teal` package](https://insightsengineering.github.io/teal/) is a shiny-based interactive exploration framework for analyzing data.
+`teal` modules with `tern` outputs are available in the [`teal.modules.clinical` package](https://insightsengineering.github.io/teal.modules.clinical/).
