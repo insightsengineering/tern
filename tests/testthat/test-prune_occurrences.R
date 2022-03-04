@@ -173,8 +173,6 @@ testthat::test_that("has_counts_difference result performs comparisons correctly
 })
 
 testthat::test_that("combination of pruning functions works", {
-  skip_if_fail_rtables_refactor()
-
   result <- tab %>%
     prune_table(
       keep_rows(
@@ -190,7 +188,7 @@ testthat::test_that("combination of pruning functions works", {
       "CHN", "A: Drug X", "", "27 (22.3%)", "14 (51.9%)", "28 (23.1%)",
       "4 (14.3%)", "", "7 (5.8%)", "4 (57.1%)", "B: Placebo", "", "20 (18.9%)",
       "9 (45%)", "19 (17.9%)", "2 (10.5%)", "", "5 (4.7%)", "1 (20%)",
-      "C: Combination", "", "31 (24%)", "12 (38.7%)", "31 (24%)", "1 (3.2%)",
+      "C: Combination", "", "31 (24.0%)", "12 (38.7%)", "31 (24.0%)", "1 (3.2%)",
       "", "4 (3.1%)", "3 (75%)"
     ),
     .Dim = c(9L, 4L)
