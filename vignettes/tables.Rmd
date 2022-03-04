@@ -39,9 +39,9 @@ library(dplyr)
 The datasets used in this vignette are:
 
 ```{r, message=FALSE}
-adsl <- rtables::ex_adsl
-adae <- rtables::ex_adae
-adrs <- rtables::ex_adrs
+adsl <- ex_adsl
+adae <- ex_adae
+adrs <- ex_adrs
 ```
 
 ## `tern` Analyze Functions 

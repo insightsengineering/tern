@@ -91,7 +91,7 @@ Hence, a **layout** is “pre-data”, that is, it’s a description of **how to
 library(tern)
 library(dplyr)
 
-adrs <- rtables::ex_adrs
+adrs <- ex_adrs
 ```
 
 Defining the table layout with a pure `rtables` code.
@@ -132,8 +132,8 @@ The `tern` functions used for plot generation are mostly `g_` prefixed.
 The `tern` plot functions return `ggplot2` or `gTree` objects, the latter is returned when a table is attached to the plot.
 
 ```{r}
-adsl <- rtables::ex_adsl
-adlb <- rtables::ex_adlb
+adsl <- ex_adsl
+adlb <- ex_adlb
 adlb <- dplyr::filter(adlb, PARAMCD == "ALT", AVISIT != "SCREENING")
 ```
 
