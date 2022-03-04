@@ -71,7 +71,7 @@ The descriptions for each function type:
 - statistics function `s_*`. Statistics functions should do the computation of the numbers that are tabulated later. 
 In order to separate computation from formatting, they should not take care of `rcell` type formatting themselves.
 - formatted analysis functions `a_*`. 
-These have the same arguments as the corresponding statistics functions, and can be further customized by calling `rtables::make_afun()` on them. 
+These have the same arguments as the corresponding statistics functions, and can be further customized by calling `rtables::make_afun()` on them.
 They are used as `afun` in `rtables::analyze()`.
 - **analyze functions `rtables::analyze(..., afun = make_afun(tern::a_*))`. 
 Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the table. 
