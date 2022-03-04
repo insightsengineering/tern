@@ -331,4 +331,3 @@ testthat::test_that("make_afun can subset on non-nested results when unnesting t
   )
   testthat::expect_identical(result, expected)
 })
-
