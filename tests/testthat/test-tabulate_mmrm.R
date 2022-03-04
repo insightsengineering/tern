@@ -357,8 +357,6 @@ testthat::test_that("h_mmrm_cov works as expected", {
 })
 
 testthat::test_that("h_mmrm_diagnostic works as expected", {
-  skip_if_fail_rtables_refactor()
-
   skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
@@ -369,7 +367,7 @@ testthat::test_that("h_mmrm_diagnostic works as expected", {
   expected_matrix <- structure(
     c(
       "", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
-      "1351.4", "1365.4", "1366", "1377.4"
+      "1351.4", "1365.4", "1366.0", "1377.4"
     ),
     .Dim = c(5L, 2L)
   )
