@@ -159,7 +159,7 @@ tern::g_lineplot(
 
 The first plot is of the `ggplot2` and the second `gTree` type, as the latter contains the table.
 The `tern::control_summarize_vars` is a helper function to control descriptive statistics on the plot.
-Only part of the functions using control objects
+The control slot is used only in the part of the high level functions.
 
 ## Interactive Apps
 
