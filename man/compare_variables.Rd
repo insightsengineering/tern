@@ -124,7 +124,7 @@ by a statistics function.}
 
 \item{var_labels}{character for label.}
 
-\item{nested}{boolean, Add this as a new top-level split  (defining a new subtable directly under root). Defaults to \code{FALSE}}
+\item{nested}{boolean. Should this layout instruction be applied within the existing layout structure \emph{if possible} (\code{TRUE}, the default) or as a new top-level element (`FALSE). Ignored if it would nest a split underneath analyses, which is not allowed.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
