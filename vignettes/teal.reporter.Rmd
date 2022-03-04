@@ -75,7 +75,7 @@ The reference of `tern` functions is available on [the tern website functions re
 
 ## Analyze Functions for `rtables`
 
-Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the `rtables` table.
+Analyze functions are used in combination with other `rtables` layout functions, in the pipeline which creates the `rtables` table.
 They apply some statistical logic to the layout of the `rtables` table.
 The table layout is materialized with the `rtables::build_table` function and the data.
 
@@ -120,7 +120,7 @@ build_table(l, df = adrs)
 build_table(l2, df = adrs)
 ```
 
-We could find out that `tern` offers more advanced analysis with only a one code line updated compared to the pure `rtables` code. 
+We could find out that `tern` offers advanced analysis with only a one code line updated compared to the pure `rtables` code. 
 
 **More examples with tabulation analyze functions are presented in the `tern tabulation` vignette.**
 
@@ -156,6 +156,7 @@ tern::g_lineplot(
 ```
 
 The first plot is of the `ggplot2` and the second `gTree` type, as the latter contains the table.
+The second plot has to be properly resized to get a clear and readable table content.
 
 The `tern` functions used for plot generation are mostly `g_` prefixed.
 All `tern` plot functions are listed on [the tern website functions reference](https://insightsengineering.github.io/tern/reference/index.html).
@@ -171,4 +172,4 @@ The [`teal` package](https://insightsengineering.github.io/teal/) is a shiny-bas
 
 In summary, `tern` contains many additional functions for creating tables, listing and graphs used in clinical trials and other statistical analysis. The design of the package gives users a lot of flexibility to meet the analysis needs in a regulatory or exploratory reporting context.
 
-**For more information please visit [the tern website](https://insightsengineering.github.io/tern).**
+**For more information please explore [the tern website](https://insightsengineering.github.io/tern).**
