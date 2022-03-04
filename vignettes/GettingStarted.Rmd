@@ -165,7 +165,7 @@ All `tern` plot functions are listed on [the tern website functions reference](h
 Most of `tern` outputs could be easily accommodated into `shiny` apps. 
 We are recommending to apply `tern` outputs into the `teal` apps. 
 The [`teal` package](https://insightsengineering.github.io/teal/) is a shiny-based interactive exploration framework for analyzing data.
-`teal` modules with `tern` outputs are available in the [`teal.modules.clinical` package](https://insightsengineering.github.io/teal.modules.clinical/).
+`teal` shiny apps with `tern` outputs are available in the [`teal.modules.clinical` package](https://insightsengineering.github.io/teal.modules.clinical/).
 
 ## Summary 
 
