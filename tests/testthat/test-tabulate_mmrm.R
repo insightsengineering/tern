@@ -298,8 +298,6 @@ testthat::test_that("h_mmrm_fixed works as expected", {
 })
 
 testthat::test_that("h_mmrm_cov works as expected", {
-  skip_if_fail_rtables_refactor()
-
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     testthat::skip("tests dont run with older version of lme4")
   }
@@ -359,8 +357,6 @@ testthat::test_that("h_mmrm_cov works as expected", {
 })
 
 testthat::test_that("h_mmrm_diagnostic works as expected", {
-  skip_if_fail_rtables_refactor()
-
   skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
@@ -371,7 +367,7 @@ testthat::test_that("h_mmrm_diagnostic works as expected", {
   expected_matrix <- structure(
     c(
       "", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
-      "1351.4", "1365.4", "1366", "1377.4"
+      "1351.4", "1365.4", "1366.0", "1377.4"
     ),
     .Dim = c(5L, 2L)
   )
@@ -408,8 +404,6 @@ testthat::test_that("tidy.mmrm works as expected", {
 })
 
 testthat::test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
-  skip_if_fail_rtables_refactor()
-
   skip_if_too_deep(3)
 
   mmrm <- get_mmrm_no_arm()
@@ -549,8 +543,6 @@ testthat::test_that("summarize_lsmeans works as expected", {
 })
 
 testthat::test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
-  skip_if_fail_rtables_refactor()
-
   skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
@@ -570,7 +562,7 @@ testthat::test_that("summarize_lsmeans works as expected when treatment is not c
       "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)", "95% CI", "WEEK 3 DAY 22",
       "n", "Adjusted Mean (SE)", "95% CI", "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)",
       "95% CI", "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)", "95% CI",
-      "all obs", "", "41", "50.486 (1.238)", "(48.03, 52.942)", "",
+      "all obs", "", "41", "50.486 (1.238)", "(48.030, 52.942)", "",
       "41", "48.703 (1.194)", "(46.346, 51.061)", "", "41", "51.187 (1.230)",
       "(48.752, 53.623)", "", "41", "50.029 (1.266)", "(47.527, 52.532)",
       "", "41", "50.843 (1.263)", "(48.323, 53.363)"
