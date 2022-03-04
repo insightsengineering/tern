@@ -53,7 +53,7 @@ The table layout is materialized with the `rtables::build_table` function and th
 The `tern` analyze functions are wrappers around `rtables::analyze` function, they offer various methods useful from the perspective of clinical trials and other statistical projects.
 
 Examples of the `tern` analyze functions are `tern::count_occurrences`, `tern::summarize_ancova` or  `tern::summarize_vars`. 
-As there is no one prefix to identify all `tern` analyze functions it is recommended to use the reference subsection on [the tern website](https://insightsengineering.github.io/tern/reference/index.html).
+As there is no one prefix to identify all `tern` analyze functions it is recommended to use the [the tern website functions reference](https://insightsengineering.github.io/tern/reference/index.html).
 
 ### Internals of `tern` Analyze Functions 
 
