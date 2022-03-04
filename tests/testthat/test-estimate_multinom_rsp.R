@@ -36,8 +36,6 @@ testthat::test_that("s_length_proportion fails with bad input", {
 })
 
 testthat::test_that("estimate_multinomial_response returns right result", {
-  skip_if_fail_rtables_refactor()
-
   # Preparation of a common test case for unit tests.
   dta_test <- data.frame(
     USUBJID = paste0("S", 1:12),
@@ -59,9 +57,9 @@ testthat::test_that("estimate_multinomial_response returns right result", {
     c(
       "", "Complete Response (CR)", "95% CI (Wald, with correction)",
       "Partial Response (PR)", "95% CI (Wald, with correction)", "A",
-      "0 (0%)", "(0, 12.5)", "4 (100%)", "(87.5, 100)", "B", "2 (50%)",
-      "(0, 100)", "2 (50%)", "(0, 100)", "C", "4 (100%)", "(87.5, 100)",
-      "0 (0%)", "(0, 12.5)"
+      "0 (0.0%)", "(0.00, 12.50)", "4 (100.0%)", "(87.50, 100.00)",
+      "B", "2 (50.0%)", "(0.00, 100.00)", "2 (50.0%)", "(0.00, 100.00)",
+      "C", "4 (100.0%)", "(87.50, 100.00)", "0 (0.0%)", "(0.00, 12.50)"
     ),
     .Dim = 5:4
   )
