@@ -69,7 +69,7 @@ data visualizations helper functions:
 - ...
 
 
-The reference of `tern` functions is available on the [pkgdown tern website](https://insightsengineering.github.io/tern/reference/index.html).
+The reference of `tern` functions is available on [the pkgdown tern website](https://insightsengineering.github.io/tern/reference/index.html).
 
 ---------
 
@@ -84,26 +84,19 @@ The `tern` analyze functions are wrappers around `rtables::analyze` function, th
 Examples of the `tern` analyze functions are `tern::count_occurrences`, `tern::summarize_ancova` or `tern::summarize_vars`. 
 As there is no one prefix to identify all `tern` analyze functions it is recommended to use the reference subsection on the `tern` pkgdown website.
 
-A fabricated dataset:
-
-```
-library(tern)
-
-dta_test <- data.frame(
-  USUBJID = rep(1:6, each = 3),
-  PARAMCD = rep("lab", 6 * 3),
-  AVISIT  = rep(paste0("V", 1:3), 6),
-  ARM  = rep(LETTERS[1:3], rep(6, 3)),
-  AVAL = c(9:1, rep(NA, 9))
-)
-```
-
 In the `rtables` code below we first described the table and assigned that description to a variable `l`. We then built the table using the actual data with `rtables::build_table`. The description of a table is called a table **layout**. The **analyze instruction** adds to the layout that the `ARM` variable should be analyzed with the `mean` analysis function and the result should be rounded to 1 decimal place.
 Hence, a **layout** is “pre-data”, that is, it’s a description of **how to build a table once we get data**.
 
+```{r}
+library(tern)
+library(dplyr)
+
+adrs <- rtables::ex_adrs
+```
+
 Defining the table layout with a pure `rtables` code.
 
-```
+```{r}
 # Create table layout pure rtables
 l <- basic_table() %>%
   split_cols_by(var = "ARM") %>%
@@ -113,7 +106,7 @@ l <- basic_table() %>%
 
 Below the only `tern` function is the `summarize_vars` which replace the `rtables::analyze` one.
 
-```
+```{r}
 # Create table layout with tern summarize_vars analyze function
 l2 <- basic_table() %>%
   split_cols_by(var = "ARM") %>%
@@ -121,13 +114,13 @@ l2 <- basic_table() %>%
   summarize_vars(vars = "AVAL", .formats = c("mean_sd" = "(xx.xx, xx.xx)"))
 ```
 
-```
+```{r}
 # Apply table layout to data and produce `rtables` object
-build_table(l, df = dta_test)
-build_table(l2, df = dta_test)
+build_table(l, df = adrs)
+build_table(l2, df = adrs)
 ```
 
-We could find out that `tern` offers more advanced analytics with only a one code line updated in contrast to the pure `rtables` code. 
+We could find out that `tern` offers more advanced analytics with only a one code line updated compared to the pure `rtables` code. 
 
 **More examples with tabulation analyze functions are presented in the `tern tabulation` vignette.**
 
@@ -138,16 +131,22 @@ Thus the `tern` package delivers a full-featured tool for clinical trial reporti
 The `tern` functions used for plot generation are mostly `g_` prefixed.
 The `tern` plot functions return `ggplot2` or `gTree` objects, the latter is returned when a table is attached to the plot.
 
-Line plot without and with table applied by the `tern::g_lineplot` function.
-
+```{r}
+adsl <- rtables::ex_adsl
+adlb <- rtables::ex_adlb
+adlb <- dplyr::filter(adlb, PARAMCD == "ALT", AVISIT != "SCREENING")
 ```
-adsl <- scda::synthetic_cdisc_data("latest")$adsl
-adlb <- scda::synthetic_cdisc_data("latest")$adlb
-adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 
+Line plot without a table applied by the `tern::g_lineplot` function.
+
+```{r}
 # Mean with CI
 tern::g_lineplot(adlb, adsl, subtitle = "Laboratory Test:")
+```
 
+Line plot with a table applied by the `tern::g_lineplot` function.
+
+```{r, fig.height = 10}
 # Mean with CI, table and customized confidence level
 tern::g_lineplot(
   adlb,
