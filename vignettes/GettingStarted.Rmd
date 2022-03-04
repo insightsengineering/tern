@@ -38,7 +38,7 @@ The core functionality for tabulation is built on top of the more general purpos
 
 ## Common Clinical Trials Analyses
 
-The package provides a large range of functionality to create tables and graphs used for clinical trial analysis.
+The package provides a large range of functionality to create tables and graphs used for clinical trial and other statistical analysis.
 
 `rtables` tabulation extended by clinical trials specific functions:
 
@@ -69,7 +69,7 @@ data visualizations helper functions:
 - ...
 
 
-The reference of `tern` functions is available on [the pkgdown tern website](https://insightsengineering.github.io/tern/reference/index.html).
+The reference of `tern` functions is available on [the tern website functions reference](https://insightsengineering.github.io/tern/reference/index.html).
 
 ---------
 
@@ -82,12 +82,12 @@ The table layout is materialized with the `rtables::build_table` function and th
 The `tern` analyze functions are wrappers around `rtables::analyze` function, they offer various methods useful from the perspective of clinical trials and other statistical projects.
 
 Examples of the `tern` analyze functions are `tern::count_occurrences`, `tern::summarize_ancova` or `tern::summarize_vars`. 
-As there is no one prefix to identify all `tern` analyze functions it is recommended to use the reference subsection on the `tern` pkgdown website.
+As there is no one prefix to identify all `tern` analyze functions it is recommended to use the reference subsection on [the tern website](https://insightsengineering.github.io/tern/reference/index.html).
 
 In the `rtables` code below we first described the table and assigned that description to a variable `l`. We then built the table using the actual data with `rtables::build_table`. The description of a table is called a table **layout**. The **analyze instruction** adds to the layout that the `ARM` variable should be analyzed with the `mean` analysis function and the result should be rounded to 1 decimal place.
 Hence, a **layout** is “pre-data”, that is, it’s a description of **how to build a table once we get data**.
 
-```{r}
+```{r, message=FALSE}
 library(tern)
 library(dplyr)
 
@@ -120,7 +120,7 @@ build_table(l, df = adrs)
 build_table(l2, df = adrs)
 ```
 
-We could find out that `tern` offers more advanced analytics with only a one code line updated compared to the pure `rtables` code. 
+We could find out that `tern` offers more advanced analysis with only a one code line updated compared to the pure `rtables` code. 
 
 **More examples with tabulation analyze functions are presented in the `tern tabulation` vignette.**
 
@@ -128,7 +128,6 @@ We could find out that `tern` offers more advanced analytics with only a one cod
 
 Clinical trails related plots complement the rich palette of `tern` tabulation analysis functions.
 Thus the `tern` package delivers a full-featured tool for clinical trial reporting.
-The `tern` functions used for plot generation are mostly `g_` prefixed.
 The `tern` plot functions return `ggplot2` or `gTree` objects, the latter is returned when a table is attached to the plot.
 
 ```{r}
@@ -152,14 +151,14 @@ tern::g_lineplot(
   adlb,
   adsl,
   table = c("n", "mean", "mean_ci"),
-  control = tern::control_summarize_vars(conf_level = 0.80),
   title = "Plot of Mean and 80% Confidence Limits by Visit"
 )
 ```
 
 The first plot is of the `ggplot2` and the second `gTree` type, as the latter contains the table.
-The `tern::control_summarize_vars` is a helper function to control descriptive statistics on the plot.
-The control slot is used only in the part of the high level functions.
+
+The `tern` functions used for plot generation are mostly `g_` prefixed.
+All `tern` plot functions are listed on [the tern website functions reference](https://insightsengineering.github.io/tern/reference/index.html).
 
 ## Interactive Apps
 
@@ -167,3 +166,9 @@ Most of `tern` outputs could be easily accommodated into `shiny` apps.
 We are recommending to apply `tern` outputs into the `teal` apps. 
 The [`teal` package](https://insightsengineering.github.io/teal/) is a shiny-based interactive exploration framework for analyzing data.
 `teal` modules with `tern` outputs are available in the [`teal.modules.clinical` package](https://insightsengineering.github.io/teal.modules.clinical/).
+
+## Summary 
+
+In summary, `tern` contains many additional functions for creating tables, listing and graphs used in clinical trials and other statistical analysis. The design of the package gives users a lot of flexibility to meet the analysis needs in a regulatory or exploratory reporting context.
+
+**For more information please visit [the tern website](https://insightsengineering.github.io/tern).**
