@@ -19,8 +19,6 @@ testthat::test_that("control_summarize_vars fails wrong inputs", {
 })
 
 testthat::test_that("s_summary return NA for x length 0L", {
-  skip_if_fail_rtables_refactor()
-
   x <- numeric()
 
   result <- s_summary(x)
@@ -50,8 +48,6 @@ testthat::test_that("s_summary return NA for x length 0L", {
 })
 
 testthat::test_that("s_summary handles NA", {
-  skip_if_fail_rtables_refactor()
-
   x <- c(NA_real_, 1)
 
   # With `na.rm = TRUE`.
@@ -108,8 +104,6 @@ testthat::test_that("s_summary handles NA", {
 })
 
 testthat::test_that("s_summary returns right results for n = 2", {
-  skip_if_fail_rtables_refactor()
-
   x <- c(NA_real_, 1, 2)
   result <- s_summary(x)
   expected <- list(
@@ -138,8 +132,6 @@ testthat::test_that("s_summary returns right results for n = 2", {
 })
 
 testthat::test_that("s_summary returns right results for n = 8", {
-  skip_if_fail_rtables_refactor()
-
   x <- c(NA_real_, 1, 2, 5, 6, 7, 8, 9, 10)
   result <- s_summary(x)
   expected <- list(
@@ -369,8 +361,6 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
 })
 
 testthat::test_that("create_afun_summary creates an `afun` that works", {
-  skip_if_fail_rtables_refactor()
-
   afun <- create_afun_summary(
     .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
     .formats = c(median = "xx."),
@@ -399,13 +389,13 @@ testthat::test_that("create_afun_summary creates an `afun` that works", {
       "Mean 95% CI", "ARM", "n", "A", "B", "C", "V2", "AVAL", "n",
       "My median", "Min - Max", "Mean 95% CI", "ARM", "n", "A", "B",
       "C", "V3", "AVAL", "n", "My median", "Min - Max", "Mean 95% CI",
-      "ARM", "n", "A", "B", "C", "A", "", "", "2", "8", "6 - 9", "(-11.56, 26.56)",
-      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "5 - 8", "(-12.56, 25.56)",
-      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "4 - 7", "(-13.56, 24.56)",
-      "", "2", "2 (100%)", "0", "0", "B", "", "", "1", "3", "3 - 3",
+      "ARM", "n", "A", "B", "C", "A", "", "", "2", "8", "6.0 - 9.0", "(-11.56, 26.56)",
+      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "5.0 - 8.0", "(-12.56, 25.56)",
+      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "4.0 - 7.0", "(-13.56, 24.56)",
+      "", "2", "2 (100%)", "0", "0", "B", "", "", "1", "3", "3.0 - 3.0",
       "(NA, NA)", "", "2", "0", "2 (100%)", "0", "", "", "1", "2",
-      "2 - 2", "(NA, NA)", "", "2", "0", "2 (100%)", "0", "", "", "1",
-      "1", "1 - 1", "(NA, NA)", "", "2", "0", "2 (100%)", "0", "C",
+      "2.0 - 2.0", "(NA, NA)", "", "2", "0", "2 (100%)", "0", "", "", "1",
+      "1", "1.0 - 1.0", "(NA, NA)", "", "2", "0", "2 (100%)", "0", "C",
       "", "", "0", "NA", "NA - NA", "(NA, NA)", "", "2", "0", "0",
       "2 (100%)", "", "", "0", "NA", "NA - NA", "(NA, NA)", "", "2",
       "0", "0", "2 (100%)", "", "", "0", "NA", "NA - NA", "(NA, NA)",
@@ -417,8 +407,6 @@ testthat::test_that("create_afun_summary creates an `afun` that works", {
 })
 
 testthat::test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", {
-  skip_if_fail_rtables_refactor()
-
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
   l <- basic_table() %>%
@@ -428,7 +416,7 @@ testthat::test_that("`summarize_vars` works with healthy input, default `na.rm =
   expected <- structure(
     c(
       "", "n", "Mean (SD)", "Median", "Min - Max", "all obs",
-      "4", "2.5 (1.3)", "2.5", "1 - 4"
+      "4", "2.5 (1.3)", "2.5", "1.0 - 4.0"
     ),
     .Dim = c(5L, 2L)
   )
@@ -437,8 +425,6 @@ testthat::test_that("`summarize_vars` works with healthy input, default `na.rm =
 })
 
 testthat::test_that("`summarize_vars` works with healthy input, and control function.", {
-  skip_if_fail_rtables_refactor()
-
   dta_test <- data.frame(AVAL = c(1:9))
 
   l <- basic_table() %>%
@@ -452,7 +438,7 @@ testthat::test_that("`summarize_vars` works with healthy input, and control func
   expected <- structure(
     c(
       "", "n", "Mean (SD)", "Mean 90% CI", "10% and 90%-ile", "all obs",
-      "9", "5 (2.7)", "(3.3, 6.7)", "1 - 9"
+      "9", "5.0 (2.7)", "(3.30, 6.70)", "1.0 - 9.0"
     ),
     .Dim = c(5L, 2L)
   )
@@ -618,8 +604,6 @@ testthat::test_that("`summarize_vars` works with logical input", {
 })
 
 testthat::test_that("`summarize_vars` works with empty named numeric variables", {
-  skip_if_fail_rtables_refactor()
-
   dta <- tibble::tibble(
     foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
     boo = 1:6
@@ -635,7 +619,7 @@ testthat::test_that("`summarize_vars` works with empty named numeric variables",
   expected_matrix <- structure(
     c(
       "", "n", "Mean (SD)", "Median", "Min - Max", "a", "0", "NA (NA)", "NA", "NA - NA",
-      "b", "2", "3.5 (0.7)", "3.5", "3 - 4", "c", "2", "5.5 (0.7)", "5.5", "5 - 6"
+      "b", "2", "3.5 (0.7)", "3.5", "3.0 - 4.0", "c", "2", "5.5 (0.7)", "5.5", "5.0 - 6.0"
     ),
     .Dim = c(5:4)
   )
