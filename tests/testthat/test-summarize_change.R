@@ -1,6 +1,4 @@
 testthat::test_that("s_change_from_baseline handles empty data (complete missing for a visit)", {
-  skip_if_fail_rtables_refactor()
-
   test_data <- data.frame(
     chg = numeric(),
     aval = numeric(),
@@ -43,8 +41,6 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
 })
 
 testthat::test_that("s_change_from_baseline handles NA in baseline values", {
-  skip_if_fail_rtables_refactor()
-
   test_data <- data.frame(
     chg = c(0, 0, 0, NA),
     aval = c(0, 3, 6, NA),
@@ -87,8 +83,6 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
 })
 
 testthat::test_that("s_change_from_baseline handles baseline substitution", {
-  skip_if_fail_rtables_refactor()
-
   test_data <- data.frame(
     chg = c(3, 1, 2, 5),
     aval = c(1, 3, 6, 4),
@@ -161,8 +155,6 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
 })
 
 testthat::test_that("summarize_change works as expected", {
-  skip_if_fail_rtables_refactor()
-
   library(dplyr)
   dta_test <- data.frame(
     USUBJID = rep(1:6, each = 3),
@@ -188,9 +180,9 @@ testthat::test_that("summarize_change works as expected", {
     c(
       "", "V1", "n", "Mean (SD)", "Median", "Min - Max",
       "V2", "n", "Mean (SD)", "Median", "Min - Max", "V3", "n", "Mean (SD)",
-      "Median", "Min - Max", "all obs", "", "3", "6 (3)", "6", "3 - 9",
-      "", "3", "-1 (0)", "-1", "-1 - -1", "", "3", "-2 (0)", "-2",
-      "-2 - -2"
+      "Median", "Min - Max", "all obs", "", "3", "6.00 (3.00)", "6.00", "3.00 - 9.00",
+      "", "3", "-1.00 (0.00)", "-1.00", "-1.00 - -1.00", "", "3", "-2.00 (0.00)", "-2.00",
+      "-2.00 - -2.00"
     ),
     .Dim = c(16L, 2L)
   )
