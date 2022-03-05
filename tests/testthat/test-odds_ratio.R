@@ -114,7 +114,7 @@ testthat::test_that("estimate_odds_ratio estimates right OR and CI (unstratified
       "b",
       "0.25 (0.01 - 7.45)",
       "c",
-      "0.5 (0.02 - 11.09)"
+      "0.50 (0.02 - 11.09)"
     ),
     .Dim = c(2L, 4L)
   )
@@ -144,7 +144,7 @@ testthat::test_that("estimate_odds_ratio estimates right OR and CI (stratified a
         "A",
         "",
         "B",
-        "1.3 (0.58 - 2.92)"
+        "1.30 (0.58 - 2.92)"
       ),
       .Dim = 2:3
     )

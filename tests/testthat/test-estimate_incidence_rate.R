@@ -131,7 +131,7 @@ testthat::test_that("estimate_incidence_rate works as expected with healthy inpu
     c(
       "", "", "Total patient-years at risk", "Number of adverse events observed",
       "AE rate per 100 patient-years", "90% CI", "A", "(N=3)", "3.8",
-      "1", "26.2", "(5.06, 135.73)", "B", "(N=3)", "5.2", "3", "57.23",
+      "1", "26.20", "(5.06, 135.73)", "B", "(N=3)", "5.2", "3", "57.23",
       "(22.14, 147.94)"
     ),
     .Dim = c(6L, 3L)

@@ -18,18 +18,17 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- var_labels(adtte)
+#' adtte_labels <- var_labels(adtte, fill = FALSE)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
-#'   ) %>%
-#'   var_relabel(
-#'     AVALU = adtte_labels["AVALU"],
-#'     is_event = "Event Flag"
 #'   )
+#' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
+#' var_labels(adtte_f)[names(labels)] <- labels
+#'
 NULL
 
 #' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list

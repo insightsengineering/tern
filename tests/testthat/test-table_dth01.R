@@ -39,6 +39,8 @@ testthat::test_that("DTH01 variant 1 is produced correctly", {
 })
 
 testthat::test_that("DTH01 variant 2 is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -126,6 +128,8 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
 })
 
 testthat::test_that("DTH01 variant 3 is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -200,6 +204,8 @@ testthat::test_that("DTH01 variant 3 is produced correctly", {
 })
 
 testthat::test_that("DTH01 variant 4 is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl <- adsl %>%
     df_explicit_na()
 

@@ -99,7 +99,8 @@ testthat::test_that("make_afun processes additional rtables arguments correctly"
       incol = rcell(FALSE, "xx", label = "incol"),
       nincol = rcell(3, "xx", label = "nincol")
     ),
-    .indent_mods = c(0, 2, 0, 0)
+    .indent_mods = c(0, 2, 0, 0),
+    .aligns = "center"
   )
   testthat::expect_identical(result, expected)
 })

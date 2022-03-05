@@ -51,11 +51,9 @@ adtte_f <- adtte \%>\%
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
     is_event = CNSR == 0
-  ) \%>\%
-  var_relabel(
-    ARM = "Treatment Arm",
-    is_event = "Event Flag"
   )
+labels <- c("ARM" = "Treatment Arm", "is_event" = "Event Flag")
+var_labels(adtte_f)[names(labels)] <- labels
 
 variables <- list(
   arm = "ARM",

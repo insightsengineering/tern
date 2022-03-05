@@ -41,13 +41,15 @@
 #'     SEX = droplevels(SEX),
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
-#'   ) %>%
-#'   var_relabel(
-#'     ARM = adtte_labels["ARM"],
-#'     SEX = adtte_labels["SEX"],
-#'     AVALU = adtte_labels["AVALU"],
-#'     is_event = "Event Flag"
 #'   )
+#' labels <- c(
+#'   "ARM" = adtte_labels[["ARM"]],
+#'   "SEX" = adtte_labels[["SEX"]],
+#'   "AVALU" = adtte_labels[["AVALU"]],
+#'   "is_event" = "Event Flag"
+#' )
+#' var_labels(adtte_f)[names(labels)] <- labels
+#'
 NULL
 
 #' @describeIn survival_duration_subgroups prepares estimates of median survival times and treatment hazard ratios for

@@ -31,14 +31,10 @@ get_adsl <- function() {
         nrow(.),
         replace = TRUE
       )
-    ) %>%
-    var_relabel(
-      STSTFL = "Start Study",
-      COMPSTUD = "Study Completion Flag",
-      DISCSTUD = "Study Discontinuation Flag",
-      AGEGRP = "Age Group",
-      ETHNIC = "Ethnicity"
     )
+  columns <- c("STSTFL", "COMPSTUD", "DISCSTUD", "AGEGRP", "ETHNIC")
+  labels <- c("Start Study", "Study Completion Flag", "Study Discontinuation Flag", "Age Group", "Ethnicity")
+  var_labels(adsl_f)[columns] <- labels
 
   adsl_f$AGEGRP <- factor(adsl_f$AGEGRP, levels = c("< 65 yrs", ">= 65 yrs"))
   adsl_f$ETHNIC <- factor(adsl_f$ETHNIC, levels = c("Ethnicity 1", "Ethnicity 2", "Unknown"))
@@ -80,6 +76,8 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
 
 
 testthat::test_that("Patient Disposition table is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl <- get_adsl()
 
   result <- basic_table() %>%
@@ -135,6 +133,8 @@ testthat::test_that("Patient Disposition table is produced correctly", {
 })
 
 testthat::test_that("Demographic table is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl <- get_adsl()
   vars <- c("AGE", "AGEGRP", "SEX", "RACE", "ETHNIC")
   var_labels <- c(
@@ -183,6 +183,8 @@ testthat::test_that("Demographic table is produced correctly", {
 })
 
 testthat::test_that("Enrollment by Country Table is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl <- get_adsl()
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -212,6 +214,8 @@ testthat::test_that("Enrollment by Country Table is produced correctly", {
 })
 
 testthat::test_that("Death table is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl <- get_adsl()
 
   result <- basic_table() %>%

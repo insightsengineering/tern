@@ -22,11 +22,13 @@ adtte_f <- within( # nolint
     X <- stats::rnorm(n = length(ARM))
   } # nolint end
 ) %>%
-  dplyr::mutate(event = 1 - CNSR) %>%
-  var_relabel(
-    SEX = "Sex",
-    AGE = "Age"
-  )
+  dplyr::mutate(event = 1 - CNSR)
+
+columns <- c("SEX", "AGE")
+labels <- c("Sex", "Age")
+for (i in seq_along(columns)) {
+  attr(adtte_f[[columns[i]]], "label") <- labels[i]
+}
 
 testthat::test_that("COXT02 default variant 1 is produced correctly", {
   multivar_model <- fit_coxreg_multivar(

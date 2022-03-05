@@ -53,22 +53,26 @@ get_adsl0 <- function() {
         TRTDRS %in% c("ADVERSE EVENT", "PHYSICIAN DECISION") ~ "Safety",
         !is.na(TRTDRS) ~ "Other"
       )
-    ) %>%
-    var_relabel(
-      COMPSTUD = "Complete Study",
-      STUDONS = "On-study Status",
-      DISSTDFL = "Discontinued Study",
-      STDDRS = "Reason for Study \r\nDiscontinuation",
-      GOTTRT = "Received Treatment",
-      DISTRTFL = "Discontinued Treatment",
-      TRTDRS = "Reason for Treatment \r\nDiscontinuation",
-      DRSCAT = "Subcategory for Treatment Discontinuation"
     )
+  columns <- c("COMPSTUD", "STUDONS", "DISSTDFL", "STDDRS", "GOTTRT", "DISTRTFL", "TRTDRS", "DRSCAT")
+  labels <- c(
+    "Complete Study",
+    "On-study Status",
+    "Discontinued Study",
+    "Reason for Study \r\nDiscontinuation",
+    "Received Treatment",
+    "Discontinued Treatment",
+    "Reason for Treatment \r\nDiscontinuation",
+    "Subcategory for Treatment Discontinuation"
+  )
+  var_labels(adsl0)[columns] <- labels
   # nolint end
   adsl0
 }
 
 testthat::test_that("DST01 default variant is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl0 <- get_adsl0()
 
   result <- basic_table() %>%
@@ -100,6 +104,8 @@ testthat::test_that("DST01 default variant is produced correctly", {
 })
 
 testthat::test_that("DST01 variant with grouping of reasons is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl0 <- get_adsl0()
 
   result <- basic_table() %>%
@@ -136,6 +142,8 @@ testthat::test_that("DST01 variant with grouping of reasons is produced correctl
 })
 
 testthat::test_that("DST01 variant with adding other optional rows is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adsl0 <- get_adsl0()
 
   result <- basic_table() %>%

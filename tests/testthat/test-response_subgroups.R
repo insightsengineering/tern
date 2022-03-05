@@ -222,9 +222,9 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
       "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
       "S1", "S2", " ", "Total n", "200", "", "120", "80", "", "105",
       "95", "B: Placebo", "n", "100", "", "62", "38", "", "48", "52",
-      "B: Placebo", "Response (%)", "71%", "", "64.5%", "81.6%", "",
+      "B: Placebo", "Response (%)", "71.0%", "", "64.5%", "81.6%", "",
       "70.8%", "71.2%", "A: Drug X", "n", "100", "", "58", "42", "",
-      "57", "43", "A: Drug X", "Response (%)", "90%", "", "91.4%",
+      "57", "43", "A: Drug X", "Response (%)", "90.0%", "", "91.4%",
       "88.1%", "", "89.5%", "90.7%", " ", "Odds Ratio", "3.68", "",
       "5.83", "1.67", "", "3.50", "3.95", " ", "95% CI", "(1.68, 8.04)",
       "", "(2.03, 16.73)", "(0.48, 5.79)", "", "(1.22, 10.00)", "(1.20, 13.01)",
@@ -299,9 +299,9 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
     c(
       "Baseline Risk Factors", "", "All Patients", "var1", "subgroup1", "subgroup2",
       " ", "Total n", "62", "", "50", "12", "REF", "n", "40", "", "30",
-      "10", "REF", "Response (%)", "82.5%", "", "100%", "30%", "COMP",
+      "10", "REF", "Response (%)", "82.5%", "", "100.0%", "30.0%", "COMP",
       "n", "22", "", "20", "2", "COMP", "Response (%)", "9.1%", "",
-      "0%", "100%", " ", "Odds Ratio", "0.02", "", "<0.01", ">999.99",
+      "0.0%", "100.0%", " ", "Odds Ratio", "0.02", "", "<0.01", ">999.99",
       " ", "95% CI", "(<0.01, 0.11)", "", "(0.00, >999.99)", "(0.00, >999.99)"
     ),
     .Dim = c(6L, 8L)
@@ -330,8 +330,8 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with NULL subg
   expected_matrix <- structure(
     c(
       "Baseline Risk Factors", "", "All Patients", " ", "Total n", "200", "B: Placebo",
-      "n", "100", "B: Placebo", "Response (%)", "71%", "A: Drug X",
-      "n", "100", "A: Drug X", "Response (%)", "90%", " ", "Odds Ratio",
+      "n", "100", "B: Placebo", "Response (%)", "71.0%", "A: Drug X",
+      "n", "100", "A: Drug X", "Response (%)", "90.0%", " ", "Odds Ratio",
       "3.68", " ", "95% CI", "(1.68, 8.04)", " ", "p-value (Chi-Squared Test)",
       "0.0007"
     ),
@@ -364,9 +364,9 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected when 0 obs in 
       "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
       " ", "Total n", "200", "", "106", "49", "34", "10", "1", "B: Placebo",
       "n", "100", "", "50", "23", "19", "7", "1", "B: Placebo", "Response (%)",
-      "71%", "", "66%", "65.2%", "78.9%", "100%", "100%", "A: Drug X",
+      "71.0%", "", "66.0%", "65.2%", "78.9%", "100.0%", "100.0%", "A: Drug X",
       "n", "100", "", "56", "26", "15", "3", "0", "A: Drug X", "Response (%)",
-      "90%", "", "87.5%", "92.3%", "100%", "66.7%", "NA%", " ", "Odds Ratio",
+      "90.0%", "", "87.5%", "92.3%", "100.0%", "66.7%", "NA%", " ", "Odds Ratio",
       "3.68", "", "3.61", "6.40", ">999.99", "<0.01", "NA", " ", "95% CI",
       "(1.68, 8.04)", "", "(1.35, 9.65)", "(1.19, 34.29)", "(0.00, >999.99)",
       "(0.00, >999.99)", "(NA, NA)", " ", "p-value (Chi-Squared Test)",

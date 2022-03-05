@@ -7,6 +7,8 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adaette <- synthetic_cdisc_data("rcd_2021_05_05")$adaette
 
 testthat::test_that("AET05 variant 1 is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   anl <- adaette %>%
     dplyr::filter(PARAM == "Time to first occurrence of any adverse event") %>%
     dplyr::mutate(is_event = CNSR == 0) %>%
@@ -37,6 +39,8 @@ testthat::test_that("AET05 variant 1 is produced correctly", {
 })
 
 testthat::test_that("AET05 variant 2 is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   anl <- adaette %>%
     dplyr::filter(PARAM == "Time to first occurrence of any adverse event") %>%
     dplyr::mutate(is_event = CNSR == 0) %>%

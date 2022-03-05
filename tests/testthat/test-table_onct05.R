@@ -21,6 +21,8 @@ preprocess_adrs <- function(adrs, n_records = 20) {
 adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
 testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
@@ -52,6 +54,8 @@ testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is p
 })
 
 testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
@@ -93,6 +97,8 @@ testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced c
 })
 
 testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
@@ -123,6 +129,8 @@ testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha 
 })
 
 testthat::test_that("ONCT05 variant 4 (setting values indicating response) is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
 
   # Define new criteria for responder.
   adrs <- adrs %>%
