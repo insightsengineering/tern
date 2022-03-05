@@ -58,8 +58,6 @@ testthat::test_that("make_afun works with healthy input statistics function taki
 })
 
 testthat::test_that("make_afun processes additional rtables arguments correctly", {
-  skip_if_fail_rtables_refactor()
-
   sfun <- function(df, .in_ref_col, .N_col) { # nolint
     assertthat::assert_that(is.data.frame(df))
     list(
@@ -101,7 +99,8 @@ testthat::test_that("make_afun processes additional rtables arguments correctly"
       incol = rcell(FALSE, "xx", label = "incol"),
       nincol = rcell(3, "xx", label = "nincol")
     ),
-    .indent_mods = c(0, 2, 0, 0)
+    .indent_mods = c(0, 2, 0, 0),
+    .aligns = "center"
   )
   testthat::expect_identical(result, expected)
 })
