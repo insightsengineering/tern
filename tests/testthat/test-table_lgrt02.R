@@ -36,6 +36,8 @@ get_adrs <- function() {
 }
 
 testthat::test_that("LGRT02 without interaction term is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -75,6 +77,8 @@ testthat::test_that("LGRT02 without interaction term is produced correctly", {
 })
 
 testthat::test_that("LGRT02 with categorical interaction is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -120,6 +124,8 @@ testthat::test_that("LGRT02 with categorical interaction is produced correctly",
 })
 
 testthat::test_that("LGRT02 with continuous interaction is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -166,6 +172,8 @@ testthat::test_that("LGRT02 with continuous interaction is produced correctly", 
 })
 
 testthat::test_that("LGRT02 with setting values indicating an event and custom alpha level is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,

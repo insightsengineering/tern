@@ -7,6 +7,8 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
 testthat::test_that("LBT03 default variant is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adlb_f <- adlb %>%
     dplyr::filter(AVISIT != "SCREENING", PARAMCD == "ALT") %>%
     dplyr::mutate(

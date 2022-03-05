@@ -7,11 +7,12 @@ raw_data <- scda::synthetic_cdisc_data("rcd_2021_05_05")$adtte %>%
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
     is_event = CNSR == 0
-  ) %>%
-  var_relabel(
-    ARM = "Treatment Arm",
-    is_event = "Event Flag"
   )
+columns <- c("ARM", "is_event")
+labels <- c("Treatment Arm", "Event Flag")
+for (i in seq_along(columns)) {
+  attr(raw_data[[columns[i]]], "label") <- labels[i]
+}
 
 testthat::test_that("fit_survival_step works as expected with default options", {
   data <- raw_data

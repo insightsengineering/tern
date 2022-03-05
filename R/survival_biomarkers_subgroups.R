@@ -28,11 +28,10 @@
 #'   mutate(
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
-#'   ) %>%
-#'   var_relabel(
-#'     AVALU = adtte_labels["AVALU"],
-#'     is_event = "Event Flag"
 #'   )
+#' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
+#' var_labels(adtte_f)[names(labels)] <- labels
+#'
 NULL
 
 #' @describeIn survival_biomarkers_subgroups prepares estimates for number of events, patients and median survival
@@ -159,7 +158,9 @@ extract_survival_biomarkers <- function(variables,
 #' )
 #'
 #' ## Finally produce the forest plot.
+#' \dontrun{
 #' g_forest(tab, xlim = c(0.8, 1.2))
+#' }
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {

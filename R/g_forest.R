@@ -100,13 +100,15 @@
 #'     SEX = droplevels(SEX),
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
-#'   ) %>%
-#'   var_relabel(
-#'     ARM = adtte_labels["ARM"],
-#'     SEX = adtte_labels["SEX"],
-#'     AVALU = adtte_labels["AVALU"],
-#'     is_event = "Event Flag"
 #'   )
+#'
+#' labels <- c(
+#'   "ARM" = adtte_labels["ARM"],
+#'   "SEX" = adtte_labels["SEX"],
+#'   "AVALU" = adtte_labels["AVALU"],
+#'   "is_event" = "Event Flag"
+#' )
+#' var_labels(adtte_f)[names(labels)] <- labels
 #'
 #' df <- extract_survival_subgroups(
 #'   variables = list(
@@ -710,7 +712,7 @@ forest_viewport <- function(tbl,
   nr_h <- attr(mat_form, "nrow_header")
 
   if (is.null(width_row_names) || is.null(width_columns)) {
-    tbl_widths <- propose_column_widths(tbl, mat_form)
+    tbl_widths <- propose_column_widths(tbl)
     strs_with_width <- strrep("x", tbl_widths) # that works for mono spaced fonts
     if (is.null(width_row_names)) width_row_names <- grid::stringWidth(strs_with_width[1])
     if (is.null(width_columns)) width_columns <- grid::stringWidth(strs_with_width[-1])

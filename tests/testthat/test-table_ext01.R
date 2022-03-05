@@ -7,6 +7,8 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adex <- synthetic_cdisc_data("rcd_2021_05_05")$adex
 
 testthat::test_that("EXT01 default variant with numeric parameters is produced correctly", {
+  skip_if_fail_rtables_refactor()
+
   adex <- adex %>%
     dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
@@ -80,6 +82,8 @@ testthat::test_that("EXT01 default variant with numeric parameters is produced c
 })
 
 testthat::test_that("EXT01 variant: with both numeric and categorical parameters", {
+  skip_if_fail_rtables_refactor()
+
   adex <- adex %>%
     dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
@@ -144,14 +148,16 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
       names_from = PARAMCD,
       values_from = AVAL
     ) %>%
-    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
-    var_relabel(
-      TDOSE = "Total dose administered",
-      TNDOSE = "Total number of doses administered",
-      TDURD = "Treatment duration (days)",
-      TNDOSMIS = "Total number of missed doses during study",
-      TDURDC = "Treatment duration (days)"
-    )
+    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID"))
+  columns <- c("TDOSE", "TNDOSE", "TDURD", "TNDOSMIS", "TDURDC")
+  labels <- c(
+    "Total dose administered",
+    "Total number of doses administered",
+    "Treatment duration (days)",
+    "Total number of missed doses during study",
+    "Treatment duration (days)"
+  )
+  var_labels(anl)[columns] <- labels
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -188,6 +194,8 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
 })
 
 testthat::test_that("EXT01 variant: with user specified categories for missed doses", {
+  skip_if_fail_rtables_refactor()
+
   adex <- adex %>%
     dplyr::filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     dplyr::select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
@@ -252,14 +260,16 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
       names_from = PARAMCD,
       values_from = AVAL
     ) %>%
-    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
-    var_relabel(
-      TDOSE = "Total dose administered",
-      TNDOSE = "Total number of doses administered",
-      TDURD = "Treatment duration (days)",
-      TNDOSMIS = "Total number of missed doses during study",
-      TDURDC = "Treatment duration (days)"
-    )
+    dplyr::left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID"))
+  columns <- c("TDOSE", "TNDOSE", "TDURD", "TNDOSMIS", "TDURDC")
+  labels <- c(
+    "Total dose administered",
+    "Total number of doses administered",
+    "Treatment duration (days)",
+    "Total number of missed doses during study",
+    "Treatment duration (days)"
+  )
+  var_labels(anl)[columns] <- labels
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%

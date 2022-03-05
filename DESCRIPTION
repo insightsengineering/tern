@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.6.9007
+Version: 0.7.6.9028
 Date: 2022-01-27
 Authors@R: c(
     person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre")),
@@ -23,7 +23,7 @@ Description: Table, Listings, and Graphs (TLG) library for common outputs
     used in clinical trials.
 License: Apache License 2.0 | file LICENSE
 URL: https://github.com/insightsengineering/tern
-BugReports: https://github..com/insightsengineering/tern/issues
+BugReports: https://github.com/insightsengineering/tern/issues
 Depends:
     R (>= 3.6),
     rtables (>= 0.4.1)
