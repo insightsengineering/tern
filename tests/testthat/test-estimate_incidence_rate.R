@@ -102,8 +102,6 @@ testthat::test_that("s_incidence_rate works as expected with healthy input", {
 })
 
 testthat::test_that("estimate_incidence_rate works as expected with healthy input", {
-  skip_if_fail_rtables_refactor()
-
   df <- data.frame(
     USUBJID = as.character(seq(6)),
     CNSR = c(0, 1, 1, 0, 0, 0),
@@ -133,7 +131,7 @@ testthat::test_that("estimate_incidence_rate works as expected with healthy inpu
     c(
       "", "", "Total patient-years at risk", "Number of adverse events observed",
       "AE rate per 100 patient-years", "90% CI", "A", "(N=3)", "3.8",
-      "1", "26.2", "(5.06, 135.73)", "B", "(N=3)", "5.2", "3", "57.23",
+      "1", "26.20", "(5.06, 135.73)", "B", "(N=3)", "5.2", "3", "57.23",
       "(22.14, 147.94)"
     ),
     .Dim = c(6L, 3L)

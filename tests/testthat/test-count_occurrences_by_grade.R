@@ -237,8 +237,6 @@ testthat::test_that("count_occurrences_by_grade label works when more than one v
 
 
 testthat::test_that("count_occurrences_by_grade works with custom arguments for grade", {
-  skip_if_fail_rtables_refactor()
-
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
@@ -263,10 +261,10 @@ testthat::test_that("count_occurrences_by_grade works with custom arguments for 
   expected_matrix <- structure(
     c(
       "", "", "-Any-", "Grade 1-2", "1", "2", "Grade 3-5",
-      "3", "4", "5", "A", "(N=3)", "3 (100%)", "1 (33.33%)", "0 (0%)",
-      "1 (33.33%)", "2 (66.67%)", "2 (66.67%)", "0 (0%)", "0 (0%)",
-      "B", "(N=3)", "3 (100%)", "3 (100%)", "2 (66.67%)", "1 (33.33%)",
-      "0 (0%)", "0 (0%)", "0 (0%)", "0 (0%)"
+      "3", "4", "5", "A", "(N=3)", "3.00 (100.00%)", "1.00 (33.33%)", "0.00 (0.00%)",
+      "1.00 (33.33%)", "2.00 (66.67%)", "2.00 (66.67%)", "0.00 (0.00%)", "0.00 (0.00%)",
+      "B", "(N=3)", "3.00 (100.00%)", "3.00 (100.00%)", "2.00 (66.67%)", "1.00 (33.33%)",
+      "0.00 (0.00%)", "0.00 (0.00%)", "0.00 (0.00%)", "0.00 (0.00%)"
     ),
     .Dim = c(10L, 3L)
   )
@@ -275,8 +273,6 @@ testthat::test_that("count_occurrences_by_grade works with custom arguments for 
 })
 
 testthat::test_that("summarize_occurrences_by_grade works with default arguments for intensity", {
-  skip_if_fail_rtables_refactor()
-
   df <- raw_data
   df_adsl <- data.frame(
     USUBJID = 1:9,
@@ -296,8 +292,8 @@ testthat::test_that("summarize_occurrences_by_grade works with default arguments
   expected_matrix <- structure(
     c(
       "", "", "A", "MILD", "MODERATE", "SEVERE", "B", "MILD",
-      "MODERATE", "SEVERE", "all obs", "(N=9)", "", "0 (0%)", "1 (11.11%)",
-      "2 (22.22%)", "", "2 (22.22%)", "1 (11.11%)", "0 (0%)"
+      "MODERATE", "SEVERE", "all obs", "(N=9)", "", "0.00 (0.00%)", "1.00 (11.11%)",
+      "2.00 (22.22%)", "", "2.00 (22.22%)", "1.00 (11.11%)", "0.00 (0.00%)"
     ),
     .Dim = c(10L, 2L)
   )
