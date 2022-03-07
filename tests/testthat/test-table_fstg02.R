@@ -1,4 +1,5 @@
 library(scda)
+library(dplyr)
 
 preprocess_adtte <- function(adtte) {
 
@@ -27,7 +28,6 @@ preprocess_adtte <- function(adtte) {
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is produced correctly", {
-  skip_if_fail_rtables_refactor()
 
   anl1 <- adtte %>%
     preprocess_adtte()
@@ -52,7 +52,7 @@ testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Durat
       "F", "M", "Categorical Level Biomarker 2", "LOW", "MEDIUM", "HIGH",
       " ", "Total n", "268", "", "161", "107", "", "95", "93", "80",
       "B: Placebo", "n", "134", "", "82", "52", "", "45", "56", "33",
-      "B: Placebo", "Median (Months)", "27.5", "", "28", "17.3", "",
+      "B: Placebo", "Median (Months)", "27.5", "", "28.0", "17.3", "",
       "24.7", "23.7", "27.9", "A: Drug X", "n", "134", "", "79", "55",
       "", "50", "37", "47", "A: Drug X", "Median (Months)", "41.4",
       "", "41.9", "27.9", "", "38.1", "41.7", "35.2", " ", "Hazard Ratio",
@@ -72,7 +72,6 @@ testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Durat
 })
 
 testthat::test_that("FSTG02 table variant 2 (specifying class variables and options for the treatment variable)", {
-  skip_if_fail_rtables_refactor()
 
   anl2 <- adtte %>%
     preprocess_adtte() %>%
@@ -108,7 +107,7 @@ testthat::test_that("FSTG02 table variant 2 (specifying class variables and opti
       "M", "F", "Stratification Factor 1", "C", "B", "A", " ", "Total n",
       "268", "", "107", "161", "", "94", "92", "82", "Placebo", "n",
       "134", "", "52", "82", "", "45", "45", "44", "Placebo", "Median (Months)",
-      "27.5", "", "17.3", "28", "", "16.3", "27.9", "35.7", "Drug X",
+      "27.5", "", "17.3", "28.0", "", "16.3", "27.9", "35.7", "Drug X",
       "n", "134", "", "55", "79", "", "49", "47", "38", "Drug X", "Median (Months)",
       "41.4", "", "27.9", "41.9", "", "54.7", "32.4", "35.2", " ",
       "Hazard Ratio", "0.72", "", "0.78", "0.70", "", "0.53", "0.87",
@@ -129,7 +128,6 @@ testthat::test_that("FSTG02 table variant 2 (specifying class variables and opti
 })
 
 testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the alpha level)", {
-  skip_if_fail_rtables_refactor()
 
   anl3 <- adtte %>%
     preprocess_adtte()
@@ -169,7 +167,6 @@ testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the 
 })
 
 testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
-  skip_if_fail_rtables_refactor()
 
   anl4 <- adtte %>%
     preprocess_adtte()
@@ -194,7 +191,7 @@ testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced corr
       "F", "M", "Categorical Level Biomarker 2", "LOW", "MEDIUM", "HIGH",
       " ", "Total n", "268", "", "161", "107", "", "95", "93", "80",
       "B: Placebo", "n", "134", "", "82", "52", "", "45", "56", "33",
-      "B: Placebo", "Median (Months)", "27.5", "", "28", "17.3", "",
+      "B: Placebo", "Median (Months)", "27.5", "", "28.0", "17.3", "",
       "24.7", "23.7", "27.9", "A: Drug X", "n", "134", "", "79", "55",
       "", "50", "37", "47", "A: Drug X", "Median (Months)", "41.4",
       "", "41.9", "27.9", "", "38.1", "41.7", "35.2", " ", "Hazard Ratio",
