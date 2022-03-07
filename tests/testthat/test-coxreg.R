@@ -848,8 +848,6 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
 })
 
 testthat::test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtables", {
-  skip_if_fail_rtables_refactor()
-
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- get_bladder()
@@ -873,7 +871,7 @@ testthat::test_that("summarize_coxreg adds the multi-variable Cox regression lay
       "", "ARM (reference = 1)", "2", "A Covariate Label (reference = 1)",
       "2", "3", "4", "Sex (F/M) (reference = F)", "M", "Hazard Ratio",
       "", "0.61", "", "0.46", "0.31", "0.18", "", "1.29", "90% CI",
-      "", "(0.41, 0.9)", "", "(0.28, 0.73)", "(0.18, 0.51)", "(0.1, 0.33)",
+      "", "(0.41, 0.90)", "", "(0.28, 0.73)", "(0.18, 0.51)", "(0.10, 0.33)",
       "", "(0.88, 1.89)", "p-value", "", "0.0123", "<0.0001", "0.0011",
       "<0.0001", "<0.0001", "", "0.1911"
     ),
@@ -883,8 +881,6 @@ testthat::test_that("summarize_coxreg adds the multi-variable Cox regression lay
 })
 
 testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {
-  skip_if_fail_rtables_refactor()
-
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- get_bladder()
@@ -908,10 +904,11 @@ testthat::test_that("summarize_coxreg works without treatment arm in univariate 
       "", "A Covariate Label (reference = 1)", "2", "3",
       "4", "Sex (F/M) (reference = F)", "M", "Hazard Ratio", "", "0.45",
       "0.31", "0.18", "", "1.33", "90% CI", "", "(0.28, 0.71)", "(0.19, 0.52)",
-      "(0.1, 0.33)", "", "(0.91, 1.94)", "p-value", "<0.0001", "0.0007",
+      "(0.10, 0.33)", "", "(0.91, 1.94)", "p-value", "<0.0001", "0.0007",
       "<0.0001", "<0.0001", "", "0.1414"
     ),
     .Dim = c(7L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
+
