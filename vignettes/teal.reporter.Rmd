@@ -31,7 +31,7 @@ The `tern` R package contains analytical functions for creating tables and graph
 The main focus is on the clinical trial reporting tables but the graphs related to the clinical trials are also valuable
 The core functionality for tabulation is built on top of the more general purpose `rtables` package. 
 
-**It is strongly recommended that you start by reading the "Introduction to rtables" vignette to get familiar with the concept of `rtables`.**
+[**It is strongly recommended that you start by reading the "Introduction to rtables" vignette to get familiar with the concept of `rtables`.**](https://roche.github.io/rtables/articles/introduction.html)
 
 ---------
 
@@ -97,26 +97,26 @@ Defining the table layout with a pure `rtables` code.
 
 ```{r}
 # Create table layout pure rtables
-l <- basic_table() %>%
-  split_cols_by(var = "ARM") %>%
-  split_rows_by(var = "AVISIT") %>%
-  analyze(vars = "AVAL", mean, format = "xx.x")
+l <- rtables::basic_table() %>%
+  rtables::split_cols_by(var = "ARM") %>%
+  rtables::split_rows_by(var = "AVISIT") %>%
+  rtables::analyze(vars = "AVAL", mean, format = "xx.x")
 ```
 
 Below the only `tern` function is the `summarize_vars` which replace the `rtables::analyze` one.
 
 ```{r}
 # Create table layout with tern summarize_vars analyze function
-l2 <- basic_table() %>%
-  split_cols_by(var = "ARM") %>%
-  split_rows_by(var = "AVISIT") %>%
-  summarize_vars(vars = "AVAL", .formats = c("mean_sd" = "(xx.xx, xx.xx)"))
+l2 <- rtables::basic_table() %>%
+  rtables::split_cols_by(var = "ARM") %>%
+  rtables::split_rows_by(var = "AVISIT") %>%
+  tern::summarize_vars(vars = "AVAL", .formats = c("mean_sd" = "(xx.xx, xx.xx)"))
 ```
 
 ```{r}
 # Apply table layout to data and produce `rtables` object
-build_table(l, df = adrs)
-build_table(l2, df = adrs)
+rtables::build_table(l, df = adrs)
+rtables::build_table(l2, df = adrs)
 ```
 
 We see that `tern` offers advanced analysis with only a one code line updated compared to the pure `rtables` code. 
