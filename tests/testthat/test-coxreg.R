@@ -911,4 +911,3 @@ testthat::test_that("summarize_coxreg works without treatment arm in univariate 
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
-
