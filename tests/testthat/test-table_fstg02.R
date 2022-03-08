@@ -172,7 +172,12 @@ testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced corr
     preprocess_adtte()
 
   df <- extract_survival_subgroups(
-    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+    variables = list(
+      tte = "AVAL",
+      is_event = "is_event",
+      arm = "ARM",
+      subgroups = c("SEX", "BMRKR2")
+    ),
     data = anl4
   )
 
