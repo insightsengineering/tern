@@ -121,8 +121,6 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
 
 
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
-  skip_if_fail_rtables_refactor()
-
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   dta <- data.frame(
     rsp = c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE),
@@ -141,7 +139,7 @@ testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
   expected <- structure(
     c(
       "", "Difference in Response rate (%)", "90% CI (Anderson-Hauck)",
-      "B", "", "", "A", "25", "(-92, 100)"
+      "B", "", "", "A", "25.0", "(-92.0, 100.0)"
     ),
     .Dim = c(3L, 3L)
   )
