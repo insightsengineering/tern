@@ -5,7 +5,6 @@ adpc <- synthetic_cdisc_data("rcd_2021_10_13")$adpc
 adpc <- adpc %>% dplyr::filter(AVAL != 0)
 
 testthat::test_that("PKPT03 is produced correctly", {
-
   l <- basic_table() %>%
     split_rows_by(
       var = "ARM",
