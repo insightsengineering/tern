@@ -1,5 +1,4 @@
 library(scda)
-library(dplyr)
 
 preprocess_adtte <- function(adtte) {
 
@@ -209,3 +208,4 @@ testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced corr
     draw = FALSE
   )
 })
+
