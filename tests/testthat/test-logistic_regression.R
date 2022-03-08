@@ -1024,8 +1024,6 @@ testthat::test_that("logistic_summary_by_flag works", {
 # summarize_logistic ----
 
 testthat::test_that("summarize_logistic works as expected for interaction model with continuous variable", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
@@ -1049,11 +1047,11 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       "Reference ARM A, n = 126", "ARM B, n = 121", "ARM C, n = 126",
       "Degrees of Freedom", "", "", "1", "2", "", "1", "", "", "1",
       "", "", "", "1", "", "", "", "", "2", "", "1", "1", "Parameter Estimate",
-      "", "", "-0.38", "", "", "19.64", "", "", "15.449", "", "", "",
+      "", "", "-0.380", "", "", "19.640", "", "", "15.449", "", "", "",
       "0.864", "", "", "", "", "", "", "-0.836", "-0.628", "Standard Error",
       "", "", "0.712", "", "", "13.665", "", "", "14.745", "", "",
       "", "0.579", "", "", "", "", "", "", "0.581", "0.616", "Odds Ratio",
-      "", "", "0.68", "", "", "", "", "0", "", "", "0", "", "", "",
+      "", "", "0.68", "", "", "", "", "0.00", "", "", "0.00", "", "", "",
       "2.37", "1.03", "1.27", "", "", "", "", "Wald 99% CI", "", "",
       "(0.11, 4.28)", "", "", "", "", "(<0.01, >999.99)", "", "", "(<0.01, >999.99)",
       "", "", "", "(0.53, 10.54)", "(0.90, 1.18)", "(0.74, 2.18)",
@@ -1067,8 +1065,6 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
 })
 
 testthat::test_that("summarize_logistic works as expected for interaction model with categorical variable", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- adrs_example
   model <- fit_logistic(
     adrs,
@@ -1093,12 +1089,12 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       "Degrees of Freedom", "", "1", "2", "", "1", "", "", "", "1",
       "", "", "", "", "", "1", "", "", "", "", "2", "", "1", "1", "Parameter Estimate",
       "", "0.067", "", "", "-1.549", "", "", "", "16.089", "", "",
-      "", "", "", "16.075", "", "", "", "", "", "", "-16.41", "-32.572",
+      "", "", "", "16.075", "", "", "", "", "", "", "-16.410", "-32.572",
       "Standard Error", "", "0.053", "", "", "1.134", "", "", "", "2155.353",
       "", "", "", "", "", "2477.888", "", "", "", "", "", "", "2477.888",
       "3284.125", "Odds Ratio", "", "1.07", "", "", "", "", "0.21",
-      "0", "", "", ">999.99", "0", "", "", "", "", ">999.99", "0.72",
-      "0", "", "", "", "", "Wald 99% CI", "", "(0.93, 1.23)", "", "",
+      "0.00", "", "", ">999.99", "0.00", "", "", "", "", ">999.99", "0.72",
+      "0.00", "", "", "", "", "Wald 99% CI", "", "(0.93, 1.23)", "", "",
       "", "", "(0.01, 3.94)", "(0.00, >999.99)", "", "", "(0.00, >999.99)",
       "(0.00, >999.99)", "", "", "", "", "(0.00, >999.99)", "(0.09, 5.59)",
       "(0.00, >999.99)", "", "", "", "", "p-value", "", "0.2109", "0.3932",
@@ -1111,8 +1107,6 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
 })
 
 testthat::test_that("summarize_logistic works as expected for simple model without interactions", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
@@ -1128,7 +1122,7 @@ testthat::test_that("summarize_logistic works as expected for simple model witho
       "", "Planned Arm Code", "Reference ARM A, n = 126",
       "ARM B, n = 121", "ARM C, n = 126", "Age", "Age", "Degrees of Freedom",
       "2", "", "1", "1", "", "1", "Parameter Estimate", "", "", "-2.133",
-      "-0.093", "", "0.066", "Standard Error", "", "", "1.08", "1.422",
+      "-0.093", "", "0.066", "Standard Error", "", "", "1.080", "1.422",
       "", "0.053", "Odds Ratio", "", "", "0.12", "0.91", "", "1.07",
       "Wald 99% CI", "", "", "(<0.01, 1.91)", "(0.02, 35.52)", "",
       "(0.93, 1.23)", "p-value", "0.0367", "", "0.0483", "0.9481",
