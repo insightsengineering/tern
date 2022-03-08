@@ -163,7 +163,6 @@ testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the 
 })
 
 testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
-
   anl4 <- adtte %>%
     preprocess_adtte()
 
