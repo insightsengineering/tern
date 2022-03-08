@@ -71,7 +71,6 @@ get_adsl0 <- function() {
 }
 
 testthat::test_that("DST01 default variant is produced correctly", {
-  skip_if_fail_rtables_refactor()
 
   adsl0 <- get_adsl0()
 
@@ -91,7 +90,7 @@ testthat::test_that("DST01 default variant is produced correctly", {
       "Death", "Lost To Follow-Up", "Other", "Protocol Violation",
       "Withdrawal By Subject", "A: Drug X", "(N=134)", "65 (48.51%)",
       "15 (11.2%)", "6 (40%)", "1 (6.7%)", "2 (13.3%)", "4 (26.7%)",
-      "2 (13.3%)", "B: Placebo", "(N=134)", "67 (50%)", "28 (20.9%)",
+      "2 (13.3%)", "B: Placebo", "(N=134)", "67 (50.00%)", "28 (20.9%)",
       "5 (17.9%)", "3 (10.7%)", "6 (21.4%)", "4 (14.3%)", "10 (35.7%)",
       "C: Combination", "(N=132)", "69 (52.27%)", "24 (18.2%)", "4 (16.7%)",
       "8 (33.3%)", "5 (20.8%)", "4 (16.7%)", "3 (12.5%)", "All Patients",
@@ -104,7 +103,6 @@ testthat::test_that("DST01 default variant is produced correctly", {
 })
 
 testthat::test_that("DST01 variant with grouping of reasons is produced correctly", {
-  skip_if_fail_rtables_refactor()
 
   adsl0 <- get_adsl0()
 
@@ -125,15 +123,15 @@ testthat::test_that("DST01 variant with grouping of reasons is produced correctl
     c(
       "", "", "Received treatment", "Discontinued treatment",
       "Safety", "ADVERSE EVENT", "PHYSICIAN DECISION", "Other", "LACK OF EFFICACY",
-      "OTHER", "PROGRESSIVE DISEASE", "A: Drug X", "(N=134)", "134 (100%)",
+      "OTHER", "PROGRESSIVE DISEASE", "A: Drug X", "(N=134)", "134 (100.00%)",
       "70 (52.2%)", "21 (15.7%)", "10 (47.6%)", "11 (52.4%)", "49 (36.6%)",
       "14 (28.6%)", "20 (40.8%)", "15 (30.6%)", "B: Placebo", "(N=134)",
-      "134 (100%)", "65 (48.5%)", "28 (20.9%)", "10 (35.7%)", "18 (64.3%)",
+      "134 (100.00%)", "65 (48.5%)", "28 (20.9%)", "10 (35.7%)", "18 (64.3%)",
       "37 (27.6%)", "14 (37.8%)", "10 (27%)", "13 (35.1%)", "C: Combination",
-      "(N=132)", "132 (100%)", "68 (51.5%)", "26 (19.7%)", "11 (42.3%)",
+      "(N=132)", "132 (100.00%)", "68 (51.5%)", "26 (19.7%)", "11 (42.3%)",
       "15 (57.7%)", "42 (31.8%)", "10 (23.8%)", "15 (35.7%)", "17 (40.5%)",
-      "All Patients", "(N=400)", "400 (100%)", "203 (50.7%)", "75 (18.8%)",
-      "31 (41.3%)", "44 (58.7%)", "128 (32%)", "38 (29.7%)", "45 (35.2%)",
+      "All Patients", "(N=400)", "400 (100.00%)", "203 (50.7%)", "75 (18.8%)",
+      "31 (41.3%)", "44 (58.7%)", "128 (32.0%)", "38 (29.7%)", "45 (35.2%)",
       "45 (35.2%)"
     ),
     .Dim = c(11L, 5L)
@@ -142,7 +140,6 @@ testthat::test_that("DST01 variant with grouping of reasons is produced correctl
 })
 
 testthat::test_that("DST01 variant with adding other optional rows is produced correctly", {
-  skip_if_fail_rtables_refactor()
 
   adsl0 <- get_adsl0()
 
@@ -162,9 +159,9 @@ testthat::test_that("DST01 variant with adding other optional rows is produced c
       "", "", "Completed Study", "Alive: In Follow-up",
       "Discontinued Study", "Death", "Lost To Follow-Up", "Other",
       "Protocol Violation", "Withdrawal By Subject", "A: Drug X", "(N=134)",
-      "65 (48.51%)", "25 (46.3%)", "15 (11.2%)", "6 (40%)", "1 (6.7%)",
+      "65 (48.51%)", "25 (46.30%)", "15 (11.2%)", "6 (40%)", "1 (6.7%)",
       "2 (13.3%)", "4 (26.7%)", "2 (13.3%)", "B: Placebo", "(N=134)",
-      "67 (50%)", "20 (51.28%)", "28 (20.9%)", "5 (17.9%)", "3 (10.7%)",
+      "67 (50.00%)", "20 (51.28%)", "28 (20.9%)", "5 (17.9%)", "3 (10.7%)",
       "6 (21.4%)", "4 (14.3%)", "10 (35.7%)", "C: Combination", "(N=132)",
       "69 (52.27%)", "18 (46.15%)", "24 (18.2%)", "4 (16.7%)", "8 (33.3%)",
       "5 (20.8%)", "4 (16.7%)", "3 (12.5%)", "All Patients", "(N=400)",
