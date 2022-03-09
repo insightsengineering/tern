@@ -1,4 +1,5 @@
 library(scda)
+library(dplyr)
 
 preprocess_adtte <- function(adtte) {
 
