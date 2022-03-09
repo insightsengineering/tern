@@ -21,8 +21,6 @@ preprocess_adrs <- function(adrs, n_records = 20) {
 adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
 testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
@@ -41,9 +39,9 @@ testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is p
       "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
       "S1", "S2", " ", "Total n", "200", "", "120", "80", "", "105",
       "95", "B: Placebo", "n", "100", "", "62", "38", "", "48", "52",
-      "B: Placebo", "Response (%)", "71%", "", "64.5%", "81.6%", "",
+      "B: Placebo", "Response (%)", "71.0%", "", "64.5%", "81.6%", "",
       "70.8%", "71.2%", "A: Drug X", "n", "100", "", "58", "42", "",
-      "57", "43", "A: Drug X", "Response (%)", "90%", "", "91.4%",
+      "57", "43", "A: Drug X", "Response (%)", "90.0%", "", "91.4%",
       "88.1%", "", "89.5%", "90.7%", " ", "Odds Ratio", "3.68", "",
       "5.83", "1.67", "", "3.50", "3.95", " ", "95% CI", "(1.68, 8.04)",
       "", "(2.03, 16.73)", "(0.48, 5.79)", "", "(1.22, 10.00)", "(1.20, 13.01)"
@@ -54,8 +52,6 @@ testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is p
 })
 
 testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
@@ -82,10 +78,10 @@ testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced c
       "Baseline Risk Factors", "", "All Patients", "Sex", "M", "F", "Stratification Factor 1",
       "C", "B", "A", " ", "Total n", "200", "", "80", "120", "", "72",
       "71", "57", "B: Placebo", "n", "100", "", "38", "62", "", "36",
-      "35", "29", "B: Placebo", "Response (%)", "71%", "", "81.6%",
+      "35", "29", "B: Placebo", "Response (%)", "71.0%", "", "81.6%",
       "64.5%", "", "72.2%", "74.3%", "65.5%", "A: Drug X", "n", "100",
       "", "42", "58", "", "36", "36", "28", "A: Drug X", "Response (%)",
-      "90%", "", "88.1%", "91.4%", "", "94.4%", "77.8%", "100%", " ",
+      "90.0%", "", "88.1%", "91.4%", "", "94.4%", "77.8%", "100.0%", " ",
       "Odds Ratio", "3.68", "", "1.67", "5.83", "", "6.54", "1.21",
       ">999.99", " ", "95% CI", "(1.68, 8.04)", "", "(0.48, 5.79)",
       "(2.03, 16.73)", "", "(1.32, 32.44)", "(0.41, 3.61)", "(0.00, >999.99)"
@@ -97,8 +93,6 @@ testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced c
 })
 
 testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
@@ -129,8 +123,6 @@ testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha 
 })
 
 testthat::test_that("ONCT05 variant 4 (setting values indicating response) is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
 
   # Define new criteria for responder.
   adrs <- adrs %>%
@@ -155,10 +147,10 @@ testthat::test_that("ONCT05 variant 4 (setting values indicating response) is pr
       "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
       "S1", "S2", " ", "Total n", "200", "", "120", "80", "", "105",
       "95", "B: Placebo", "n", "100", "", "62", "38", "", "48", "52",
-      "B: Placebo", "Response (%)", "95%", "", "96.8%", "92.1%", "",
+      "B: Placebo", "Response (%)", "95.0%", "", "96.8%", "92.1%", "",
       "97.9%", "92.3%", "A: Drug X", "n", "100", "", "58", "42", "",
-      "57", "43", "A: Drug X", "Response (%)", "99%", "", "98.3%",
-      "100%", "", "100%", "97.7%", " ", "Odds Ratio", "5.21", "", "1.90",
+      "57", "43", "A: Drug X", "Response (%)", "99.0%", "", "98.3%",
+      "100.0%", "", "100.0%", "97.7%", " ", "Odds Ratio", "5.21", "", "1.90",
       ">999.99", "", ">999.99", "3.50", " ", "95% CI", "(0.60, 45.43)",
       "", "(0.17, 21.53)", "(0.00, >999.99)", "", "(0.00, >999.99)",
       "(0.38, 32.55)"
