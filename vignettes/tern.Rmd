@@ -1,5 +1,6 @@
 ---
 title: "Introduction to tern"
+date: "2022-03-09"
 output:
     rmarkdown::html_document:
         theme: "spacelab"
