@@ -36,8 +36,6 @@ get_adrs <- function() {
 }
 
 testthat::test_that("LGRT02 without interaction term is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -59,12 +57,12 @@ testthat::test_that("LGRT02 without interaction term is produced correctly", {
       "MULTIPLE, n = 1", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER, n = 1",
       "Age", "Age", "Degrees of Freedom", "2", "", "1", "1", "", "",
       "1", "5", "", "1", "1", "1", "1", "1", "", "1", "Parameter Estimate",
-      "", "", "-2.162", "-0.09", "", "", "0.364", "", "", "-16.246",
+      "", "", "-2.162", "-0.090", "", "", "0.364", "", "", "-16.246",
       "-15.205", "-15.955", "-0.363", "1.036", "", "0.071", "Standard Error",
       "", "", "1.084", "1.426", "", "", "0.701", "", "", "2017.122",
       "2017.122", "2017.122", "10941.553", "10941.553", "", "0.053",
       "Odds Ratio", "", "", "0.12", "0.91", "", "", "1.44", "", "",
-      "0", "0", "0", "0.7", "2.82", "", "1.07", "Wald 95% CI", "",
+      "0.00", "0.00", "0.00", "0.70", "2.82", "", "1.07", "Wald 95% CI", "",
       "", "(0.01, 0.96)", "(0.06, 14.97)", "", "", "(0.36, 5.69)",
       "", "", "(0.00, >999.99)", "(0.00, >999.99)", "(0.00, >999.99)",
       "(0.00, >999.99)", "(0.00, >999.99)", "", "(0.97, 1.19)", "p-value",
@@ -77,8 +75,6 @@ testthat::test_that("LGRT02 without interaction term is produced correctly", {
 })
 
 testthat::test_that("LGRT02 with categorical interaction is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -105,13 +101,13 @@ testthat::test_that("LGRT02 with categorical interaction is produced correctly",
       "Reference ARM A or M, n = 248", "ARM B * F, n = 82", "ARM C * F, n = 70",
       "Degrees of Freedom", "", "1", "2", "", "1", "", "", "", "1",
       "", "", "", "", "", "1", "", "", "", "", "2", "", "1", "1", "Parameter Estimate",
-      "", "0.067", "", "", "-17.85", "", "", "", "-16.442", "", "",
+      "", "0.067", "", "", "-17.850", "", "", "", "-16.442", "", "",
       "", "", "", "-16.044", "", "", "", "", "", "", "16.373", "32.492",
       "Standard Error", "", "0.054", "", "", "2362.767", "", "", "",
       "2362.767", "", "", "", "", "", "2362.767", "", "", "", "", "",
       "", "2362.767", "3156.732", "Odds Ratio", "", "1.07", "", "",
-      "", "", "0.23", "0", "", "", ">999.99", "0", "", "", "", "",
-      "0", "1.39", ">999.99", "", "", "", "", "Wald 95% CI", "", "(0.96, 1.19)",
+      "", "", "0.23", "0.00", "", "", ">999.99", "0.00", "", "", "", "",
+      "0.00", "1.39", ">999.99", "", "", "", "", "Wald 95% CI", "", "(0.96, 1.19)",
       "", "", "", "", "(0.02, 2.11)", "(0.00, >999.99)", "", "", "(0.00, >999.99)",
       "(0.00, >999.99)", "", "", "", "", "(0.00, >999.99)", "(0.29, 6.59)",
       "(0.00, >999.99)", "", "", "", "", "p-value", "", "0.2084", "0.4882",
@@ -124,8 +120,6 @@ testthat::test_that("LGRT02 with categorical interaction is produced correctly",
 })
 
 testthat::test_that("LGRT02 with continuous interaction is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -152,13 +146,13 @@ testthat::test_that("LGRT02 with continuous interaction is produced correctly", 
       "Reference ARM A, n = 134", "ARM B, n = 134", "ARM C, n = 132",
       "Degrees of Freedom", "", "", "1", "2", "", "1", "", "", "",
       "1", "", "", "", "", "1", "", "", "", "", "2", "", "1", "1",
-      "Parameter Estimate", "", "", "0.381", "", "", "20.02", "", "",
+      "Parameter Estimate", "", "", "0.381", "", "", "20.020", "", "",
       "", "15.622", "", "", "", "", "0.877", "", "", "", "", "", "",
-      "-0.849", "-0.636", "Standard Error", "", "", "0.71", "", "",
-      "13.714", "", "", "", "14.81", "", "", "", "", "0.581", "", "",
+      "-0.849", "-0.636", "Standard Error", "", "", "0.710", "", "",
+      "13.714", "", "", "", "14.810", "", "", "", "", "0.581", "", "",
       "", "", "", "", "0.583", "0.618", "Odds Ratio", "", "", "1.46",
-      "", "", "", "", "113.59", "0", "", "", "64.74", "0", "", "",
-      "", "2.4", "1.03", "1.27", "", "", "", "", "Wald 95% CI", "",
+      "", "", "", "", "113.59", "0.00", "", "", "64.74", "0.00", "", "",
+      "", "2.40", "1.03", "1.27", "", "", "", "", "Wald 95% CI", "",
       "", "(0.36, 5.88)", "", "", "", "", "(0.14, >999.99)", "(<0.01, >999.99)",
       "", "", "(0.03, >999.99)", "(<0.01, >999.99)", "", "", "", "(0.77, 7.50)",
       "(0.93, 1.14)", "(0.84, 1.93)", "", "", "", "", "p-value", "",
@@ -172,8 +166,6 @@ testthat::test_that("LGRT02 with continuous interaction is produced correctly", 
 })
 
 testthat::test_that("LGRT02 with setting values indicating an event and custom alpha level is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -200,7 +192,7 @@ testthat::test_that("LGRT02 with setting values indicating an event and custom a
       "MULTIPLE, n = 1", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER, n = 1",
       "Degrees of Freedom", "2", "", "1", "1", "", "", "1", "", "1",
       "5", "", "1", "1", "1", "1", "1", "Parameter Estimate", "", "",
-      "2.162", "0.09", "", "", "-0.364", "", "-0.071", "", "", "16.246",
+      "2.162", "0.090", "", "", "-0.364", "", "-0.071", "", "", "16.246",
       "15.205", "15.955", "0.363", "-1.036", "Standard Error", "",
       "", "1.084", "1.426", "", "", "0.701", "", "0.053", "", "", "2017.122",
       "2017.122", "2017.122", "10941.553", "10941.553", "Odds Ratio",
