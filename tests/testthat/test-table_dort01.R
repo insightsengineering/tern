@@ -27,8 +27,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 testthat::test_that("DORT01 variant 1 is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -97,7 +95,7 @@ testthat::test_that("DORT01 variant 1 is produced correctly", {
       "", "11.1", "(8.3, 14.6)", "6.2, 20.5", "0.1 to 43.8", "0.6 to 61.9",
       "", "25", "43.82", "(31.28, 56.36)", "C: Combination", "(N=132)",
       "62", "53 (85.5%)", "", "11", "12", "11", "12", "7", "9 (14.5%)",
-      "", "6.6", "(4.4, 9.2)", "3, 15.7", "0.2 to 39.6", "0.2 to 53.8",
+      "", "6.6", "(4.4, 9.2)", "3.0, 15.7", "0.2 to 39.6", "0.2 to 53.8",
       "", "18", "33.72", "(21.28, 46.15)"
     ),
     .Dim = c(21L, 4L)
@@ -107,8 +105,6 @@ testthat::test_that("DORT01 variant 1 is produced correctly", {
 })
 
 testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -178,7 +174,7 @@ testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly"
       "6.2, 20.5", "0.1 to 43.8", "0.6 to 61.9", "", "0.0029", "1.94",
       "(1.24, 3.02)", "C: Combination", "(N=132)", "62", "53 (85.5%)",
       "", "11", "12", "11", "12", "7", "9 (14.5%)", "", "6.6", "(4.4, 9.2)",
-      "3, 15.7", "0.2 to 39.6", "0.2 to 53.8", "", "<0.0001", "2.99",
+      "3.0, 15.7", "0.2 to 39.6", "0.2 to 53.8", "", "<0.0001", "2.99",
       "(1.92, 4.67)"
     ),
     .Dim = c(21L, 4L)
@@ -188,8 +184,6 @@ testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly"
 })
 
 testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -256,10 +250,10 @@ testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is pr
       "23.8", "(17.9, 30.2)", "9.3, 44.3", "1.6 to 64.5", "0.3 to 44.3",
       "", "28", "63.41", "(48.63, 78.19)", "B: Placebo", "(N=134)",
       "73", "51 (69.9%)", "", "14", "13", "5", "12", "7", "22 (30.1%)",
-      "", "11.1", "(9.1, 14)", "6.2, 20.5", "0.1 to 43.8", "0.6 to 61.9",
+      "", "11.1", "(9.1, 14.0)", "6.2, 20.5", "0.1 to 43.8", "0.6 to 61.9",
       "", "25", "43.82", "(29.48, 58.16)", "C: Combination", "(N=132)",
       "62", "53 (85.5%)", "", "11", "12", "11", "12", "7", "9 (14.5%)",
-      "", "6.6", "(4.4, 8)", "3, 15.7", "0.2 to 39.6", "0.2 to 53.8",
+      "", "6.6", "(4.4, 8.0)", "3.0, 15.7", "0.2 to 39.6", "0.2 to 53.8",
       "", "18", "33.72", "(19.49, 47.94)"
     ),
     .Dim = c(21L, 4L)
@@ -269,8 +263,6 @@ testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is pr
 })
 
 testthat::test_that("DORT01 variant 4 (modifying time point for the “xx duration”) is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adtte <- adtte %>%
     preproc_adtte()
 
@@ -338,7 +330,7 @@ testthat::test_that("DORT01 variant 4 (modifying time point for the “xx durati
       "", "11.1", "(8.3, 14.6)", "6.2, 20.5", "0.1 to 43.8", "0.6 to 61.9",
       "", "48", "76.14", "(65.92, 86.35)", "C: Combination", "(N=132)",
       "62", "53 (85.5%)", "", "11", "12", "11", "12", "7", "9 (14.5%)",
-      "", "6.6", "(4.4, 9.2)", "3, 15.7", "0.2 to 39.6", "0.2 to 53.8",
+      "", "6.6", "(4.4, 9.2)", "3.0, 15.7", "0.2 to 39.6", "0.2 to 53.8",
       "", "28", "50.57", "(37.68, 63.46)"
     ),
     .Dim = c(21L, 4L)

@@ -155,8 +155,6 @@ testthat::test_that("extract_survival_biomarkers works as expected with groups_l
 # tabulate_survival_biomarkers ----
 
 testthat::test_that("tabulate_survival_biomarkers works as expected with valid input", {
-  skip_if_fail_rtables_refactor()
-
   adtte_f <- adtte %>%
     preprocess_adtte()
 
@@ -184,8 +182,8 @@ testthat::test_that("tabulate_survival_biomarkers works as expected with valid i
         "130", "", "400", "", "231", "169", "", "135", "135", "130",
         "Total Events", "", "282", "", "156", "126", "", "95", "93",
         "94", "", "282", "", "156", "126", "", "95", "93", "94", "Median (DAYS)",
-        "", "681", "", "788.2", "503.7", "", "647.7", "646.4", "761.2",
-        "", "681", "", "788.2", "503.7", "", "647.7", "646.4", "761.2",
+        "", "681.0", "", "788.2", "503.7", "", "647.7", "646.4", "761.2",
+        "", "681.0", "", "788.2", "503.7", "", "647.7", "646.4", "761.2",
         "Hazard Ratio", "", "1.01", "", "1.02", "0.99", "", "1.00", "1.02",
         "1.01", "", "0.99", "", "1.00", "0.97", "", "1.02", "0.98", "0.96",
         "95% Wald CI", "", "(1.00, 1.03)", "", "(1.00, 1.04)", "(0.97, 1.02)",
@@ -228,8 +226,6 @@ testthat::test_that("tabulate_survival_biomarkers functions as expected with NUL
 })
 
 testthat::test_that("tabulate_survival_biomarkers works with only a single biomarker in the data frame", {
-  skip_if_fail_rtables_refactor()
-
   df1 <- data.frame(
     biomarker = "BMRKR1",
     biomarker_label = "Continous Level Biomarker 1",
@@ -253,7 +249,7 @@ testthat::test_that("tabulate_survival_biomarkers works with only a single bioma
     data = c(
       "", "Continous Level Biomarker 1", "All Patients",
       "Total n", "", "400", "Total Events", "", "282", "Median", "",
-      "680", "Hazard Ratio", "", "0.98", "95% Wald CI", "", "(0.95, 1.01)",
+      "680.0", "Hazard Ratio", "", "0.98", "95% Wald CI", "", "(0.95, 1.01)",
       "p-value (Wald)", "", "0.3000"
     ),
     nrow = 3,
