@@ -39,8 +39,6 @@ testthat::test_that("DTH01 variant 1 is produced correctly", {
 })
 
 testthat::test_that("DTH01 variant 2 is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -128,8 +126,6 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
 })
 
 testthat::test_that("DTH01 variant 3 is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -192,9 +188,9 @@ testthat::test_that("DTH01 variant 3 is produced correctly", {
       "All other causes", "A: Drug X", "(N=134)", "22 (16.4%)", "",
       "22", "6 (27.3%)", "7 (31.8%)", "9 (40.9%)", "2 (22.2%)", "7 (77.8%)",
       "B: Placebo", "(N=134)", "26 (19.4%)", "", "26", "12 (46.2%)",
-      "9 (34.6%)", "5 (19.2%)", "1 (20%)", "4 (80%)", "C: Combination",
+      "9 (34.6%)", "5 (19.2%)", "1 (20.0%)", "4 (80.0%)", "C: Combination",
       "(N=132)", "19 (14.4%)", "", "19", "7 (36.8%)", "8 (42.1%)",
-      "4 (21.1%)", "1 (25%)", "3 (75%)", "All Patients", "(N=400)",
+      "4 (21.1%)", "1 (25.0%)", "3 (75.0%)", "All Patients", "(N=400)",
       "67 (16.8%)", "", "67", "25 (37.3%)", "24 (35.8%)", "18 (26.9%)",
       "4 (22.2%)", "14 (77.8%)"
     ),
@@ -204,8 +200,6 @@ testthat::test_that("DTH01 variant 3 is produced correctly", {
 })
 
 testthat::test_that("DTH01 variant 4 is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -290,9 +284,9 @@ testthat::test_that("DTH01 variant 4 is produced correctly", {
       "7 (31.8%)", "9 (40.9%)", "2 (22.2%)", "7 (77.8%)", "2 (22.2%)",
       "2 (22.2%)", "1 (11.1%)", "4 (44.4%)", "B: Placebo", "(N=134)",
       "26 (19.4%)", "", "26", "12 (46.2%)", "9 (34.6%)", "5 (19.2%)",
-      "1 (20%)", "4 (80%)", "2 (40%)", "1 (20%)", "1 (20%)", "1 (20%)",
+      "1 (20.0%)", "4 (80.0%)", "2 (40%)", "1 (20%)", "1 (20%)", "1 (20%)",
       "C: Combination", "(N=132)", "19 (14.4%)", "", "19", "7 (36.8%)",
-      "8 (42.1%)", "4 (21.1%)", "1 (25%)", "3 (75%)", "1 (25%)", "1 (25%)",
+      "8 (42.1%)", "4 (21.1%)", "1 (25.0%)", "3 (75.0%)", "1 (25%)", "1 (25%)",
       "0", "2 (50%)", "All Patients", "(N=400)", "67 (16.8%)", "",
       "67", "25 (37.3%)", "24 (35.8%)", "18 (26.9%)", "4 (22.2%)",
       "14 (77.8%)", "5 (27.8%)", "4 (22.2%)", "2 (11.1%)", "7 (38.9%)"
