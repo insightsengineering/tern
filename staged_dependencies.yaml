@@ -33,3 +33,6 @@ downstream_repos:
   insightsengineering/chevron:
     repo: insightsengineering/chevron
     host: https://github.com
+  insightsengineering/tern.mmrm:
+    repo: insightsengineering/tern.mmrm
+    host: https://github.com
