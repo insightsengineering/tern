@@ -165,8 +165,6 @@ testthat::test_that("extract_rsp_biomarkers works as expected with other custom 
 # tabulate_rsp_biomarkers ----
 
 testthat::test_that("tabulate_rsp_biomarkers works as expected with valid input", {
-  skip_if_fail_rtables_refactor()
-
   adrs_f <- adrs %>%
     preprocess_adrs()
 
@@ -193,8 +191,8 @@ testthat::test_that("tabulate_rsp_biomarkers works as expected with valid input"
         "130", "", "400", "", "231", "169", "", "135", "135", "130",
         "Responders", "", "336", "", "195", "141", "", "120", "110",
         "106", "", "336", "", "195", "141", "", "120", "110", "106",
-        "Response (%)", "", "84%", "", "84.4%", "83.4%", "", "88.9%",
-        "81.5%", "81.5%", "", "84%", "", "84.4%", "83.4%", "", "88.9%",
+        "Response (%)", "", "84.0%", "", "84.4%", "83.4%", "", "88.9%",
+        "81.5%", "81.5%", "", "84.0%", "", "84.4%", "83.4%", "", "88.9%",
         "81.5%", "81.5%", "Odds Ratio", "", "1.00", "", "1.00", "1.00",
         "", "1.04", "1.02", "0.97", "", "1.06", "", "1.04", "1.09", "",
         "1.06", "1.02", "1.11", "95% CI", "", "(0.96, 1.03)", "", "(0.95, 1.05)",
