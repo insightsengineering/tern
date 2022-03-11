@@ -236,6 +236,7 @@ reference:
       - fit_mmrm
       - fit_rsp_step
       - fit_survival_step
+      - get_smooths
       - logistic_regression_cols
       - logistic_summary_by_flag
       - pairwise

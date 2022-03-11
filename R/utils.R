@@ -306,7 +306,8 @@ arm <- function(x) {
 #' @param level (`numeric`) level of confidence interval to use (0.95 by default).
 #' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, `yhigh` and
 #' optional `groups` variables formatted to factor type.
-#' @keywords internal
+#'
+#' @export
 #'
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
   assertthat::assert_that(is.data.frame(df))
