@@ -15,4 +15,3 @@ a \code{string}
 \description{
 Utility function to create label for confidence interval
 }
-\keyword{internal}

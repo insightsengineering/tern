@@ -236,6 +236,7 @@ reference:
       - fit_mmrm
       - fit_rsp_step
       - fit_survival_step
+      - get_smooths
       - logistic_regression_cols
       - logistic_summary_by_flag
       - pairwise
@@ -349,6 +350,7 @@ reference:
       - n_available
       - range_noinf
       - sas_na
+      - f_conf_level
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package

@@ -1,13 +1,19 @@
 ---
-title: "Introduction to tern"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+title: "tern tabulation"
+date: "2022-03-09"
+output:
+    rmarkdown::html_document:
+        theme: "spacelab"
+        highlight: "kate"
+        toc: true
+        toc_float: true
 vignette: >
-  %\VignetteIndexEntry{Introduction to tern}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
+    %\VignetteIndexEntry{tern tabulation}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+editor_options:
+    markdown: 
+        wrap: 72
 ---
 
 ```{r, include = FALSE}
@@ -17,23 +23,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introduction
+## `tern` Tabulation
 
-The `tern` R package provides functions to create common analyses from clinical trials in `R`. The core functionality for tabulation is built on the more general purpose `rtables` package. New users should first begin by reading the "Introduction to rtables" vignette to become familiar with the `rtables` layout tabulation concepts.
-
-```{r, eval=FALSE}
-vignette(topic = "introduction", package = "rtables")
-```
-
-In this vignette we are going to create:
-
-* demographic table
-* adverse event table
-* response table
-
-using layout creating functions from `tern`. 
+The `tern` R package provides functions to create common analyses from clinical trials in `R`. 
+The core functionality for tabulation is built on the more general purpose `rtables` package. 
+New users should first begin by reading the ["Introduction to tern"](https://insightsengineering.github.io/tern/articles/tern.html) and ["Introduction to rtables"](https://roche.github.io/rtables/articles/introduction.html) vignettes.
 
 The packages used in this vignette are:
+
 ```{r, message=FALSE}
 library(rtables)
 library(tern)
@@ -41,13 +38,87 @@ library(dplyr)
 ```
 
 The datasets used in this vignette are:
+
 ```{r, message=FALSE}
 adsl <- ex_adsl
 adae <- ex_adae
 adrs <- ex_adrs
 ```
 
-## Demographic Table
+## `tern` Analyze Functions 
+
+Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the `rtables` table.
+They apply some statistical logic to the layout of the `rtables` table.
+The table layout is materialized with the `rtables::build_table` function and the data.
+
+The `tern` analyze functions are wrappers around `rtables::analyze` function, they offer various methods useful from the perspective of clinical trials and other statistical projects.
+
+Examples of the `tern` analyze functions are `tern::count_occurrences`, `tern::summarize_ancova` or  `tern::summarize_vars`. 
+As there is no one prefix to identify all `tern` analyze functions it is recommended to use the [the tern website functions reference](https://insightsengineering.github.io/tern/reference/index.html).
+
+### Internals of `tern` Analyze Functions 
+
+**Please skip this subsection if you are not interested in the internals of `tern` analyze functions.**
+
+Internally `tern` analyze functions like `tern::summarize_ancova` are mainly built in the 4 elements chain:
+
+```
+h_ancova() -> s_ancova() -> a_ancova() -> summarize_ancova()
+```
+
+The descriptions for each function type:
+
+- analysis helper functions `h_*`. These functions are useful to help define the analysis.
+- statistics function `s_*`. Statistics functions should do the computation of the numbers that are tabulated later. 
+In order to separate computation from formatting, they should not take care of `rcell` type formatting themselves.
+- formatted analysis functions `a_*`. 
+These have the same arguments as the corresponding statistics functions, and can be further customized by calling `rtables::make_afun()` on them.
+They are used as `afun` in `rtables::analyze()`.
+- **analyze functions `rtables::analyze(..., afun = make_afun(tern::a_*))`. 
+Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the table. 
+They are the last element of the chain.**
+
+We will use the native `rtables::analyze` function with the `tern` formatted analysis functions as a `afun` parameter.
+
+```
+l <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    split_rows_by(var = "AVISIT") %>%
+    analyze(vars = "AVAL", afun = a_summary)
+
+build_table(l, df = adrs)
+```
+
+The `rtables::make_afun` function is helpful when somebody wants to attach some format to the formatted analysis function.
+
+```
+afun <- make_afun(
+    a_summary,
+    .stats = NULL,
+    .formats = c(median = "xx."),
+    .labels = c(median = "My median"),
+    .indent_mods = c(median = 1L)
+)
+
+l2 <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    split_rows_by(var = "AVISIT") %>%
+    analyze(vars = "AVAL", afun = afun)
+
+build_table(l2, df = adrs)
+```
+
+## Tabulation Examples
+
+We are going to create 3 different tables using `tern` analyze functions and the `rtables` interface.
+
+|         Table       |   `tern` analyze functions      |
+|---------------------|:---------------------------------|
+| **Demographic Table** | `summarize_vars()` and `summarize_num_patients()` |
+| **Adverse event Table** | `count_occurrences()` |
+| **Response Table** | `estimate_proportion()`, `estimate_proportion_diff()` and `test_proportion_diff()` |
+
+### Demographic Table
 
 Demographic tables provide a summary of the characteristics of patients enrolled in a clinical trial. Typically the table columns represent treatment arms and variables summarized in the table are demographic properties such as age, sex, race, etc. 
 
@@ -128,7 +199,7 @@ build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "BRA"))
 build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "CHN"))
 ```
 
-## Adverse Event Table 
+### Adverse Event Table 
 
 The standard table of adverse events (AEs) is a summary by system organ class and preferred term. For frequency counts by preferred term, if there are multiple occurrences of the same AE in an individual we count them only once. 
 
@@ -156,7 +227,8 @@ basic_table() %>%
 
 Note that for this table, the denominator used for percentages and shown in the header of the table `(N = xx)` is defined based on the subject-level dataset `adsl`. This is done by using the `alt_df_counts` argument in `build_table()`, which provides an alternative data set for deriving the counts in the header. This is often required when we work with data sets that include multiple records per patient as `df`, such as `adae` here.
 
-### Statistics Functions
+#### Statistics Functions
+
 Before building out the rest of the AE table it is helpful to introduce some more `tern` package design conventions. Each layout creating function in `tern` is a wrapper for a Statistics function. Statistics functions are the ones that do the actual computation of numbers in a table. These functions always return named lists whose elements are the statistics available to include in a layout via the `.stats` argument at the layout creating function level.
 
 Statistics functions follow a naming convention to always begin with `s_*` and for ease of use are documented on the same page as their layout creating function counterpart. It is helpful to review a Statistic function to understand the logic used to calculate the numbers in a table and see what options may be available to modify the analysis.
@@ -274,7 +346,7 @@ basic_table() %>%
   )
 ```
 
-## Response Table
+### Response Table
 
 A typical response table for a binary clinical trial endpoint may be composed of several different analyses:
 
@@ -396,7 +468,7 @@ basic_table() %>%
 
 Tabulation with `tern` builds on top of the the layout tabulation framework from `rtables`. Complex tables are built step by step in a pipeline by combining layout creating functions that perform a specific type of analysis.
 
-The `tern` layout functions introduced in this vignette are:
+The `tern` analyze functions introduced in this vignette are:
 
 * `summarize_vars()`
 * `summarize_num_patients()`
@@ -406,5 +478,3 @@ The `tern` layout functions introduced in this vignette are:
 * `test_proportion_diff()`
 
 Layout creating functions build a formatted `layout` by controlling features such as labels, numerical display formats and indentation. These functions are wrappers for the Statistics functions which calculate the raw summaries of each analysis. You can easily spot Statistics functions in the documentation because they always begin with the prefix `s_`. It can be helpful to inspect and run Statistics functions to understand ways an analysis can be customized.
-
-In summary, `tern` contains many additional functions for creating tables, listing and graphs used in clinical trials. The design of the package gives users a lot of flexibility to meet the analysis needs in a regulatory or exploratory reporting context.
