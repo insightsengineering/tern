@@ -12,6 +12,9 @@ upstream_repos:
     repo: Roche/rtables
     host: https://github.com
 downstream_repos:
+  insightsengineering/tern.mmrm:
+    repo: insightsengineering/tern.mmrm
+    host: https://github.com
   insightsengineering/osprey:
     repo: insightsengineering/osprey
     host: https://github.com
