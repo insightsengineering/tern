@@ -349,6 +349,7 @@ reference:
       - n_available
       - range_noinf
       - sas_na
+      - f_conf_level
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package

@@ -43,7 +43,7 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 #'
 #' @inheritParams argument_convention
 #' @return a `string`
-#' @keywords internal
+#' @export
 #'
 f_conf_level <- function(conf_level) {
   assertthat::assert_that(is_proportion(conf_level))
