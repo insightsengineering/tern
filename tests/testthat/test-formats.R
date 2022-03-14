@@ -27,10 +27,9 @@ testthat::test_that("format_fraction fails with bad inputs", {
     c(num = c(1L, 2L, 3L), denom = 5L),
     c(num = NA_integer_, denom = 2L)
   )
-  purrr::map(
-    x,
-    ~ testthat::expect_error(format_fraction(.))
-  )
+  for (i in x) {
+    testthat::expect_error(format_fraction(i))
+  }
 })
 
 testthat::test_that("format_xx works with easy inputs", {

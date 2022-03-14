@@ -1,6 +1,7 @@
 # tern 0.7.6.9056
 
-* Changed the `nudge_y` argument of `h_g_ipp` to be dependent on the data, fixing an issue whereby the baseline labels were offset incorrectly. 
+* Changed the `nudge_y` argument of `h_g_ipp` to be dependent on the data, fixing an issue whereby the baseline labels were offset incorrectly.
+* Move MMRM into a separate package `tern.mmrm`.
 * Some release note
 
 # tern 0.7.6

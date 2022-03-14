@@ -95,7 +95,7 @@ s_count_abnormal <- function(df,
   # This will define the abnormal levels theoretically possible for a specific lab parameter
   # within a split level of a layout.
   abnormal_lev <- lapply(abnormal, intersect, levels(df[[.var]]))
-  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, purrr::is_empty)]
+  abnormal_lev <- abnormal_lev[vapply(abnormal_lev, function(x) length(x) > 0, integer(1))]
 
   result <- sapply(names(abnormal_lev), function(i) count_abnormal_single(i, abnormal_lev[[i]]), simplify = FALSE)
   result <- list(fraction = result)

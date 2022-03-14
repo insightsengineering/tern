@@ -34,15 +34,19 @@ BCE
 BESRSPI
 biomarker
 BOBYQA
+Boruvka
 boruvkaa
 Bove
 breslow
 Byar's
+Carreras
 cdisc
 CDISC
 Chendi
 chisq
+Chohan
 ci
+clogit
 Clopper
 CMD
 cmh
@@ -51,6 +55,7 @@ CMT
 coercible
 conf
 Coull
+cov
 covr
 coxph
 CoxPH
@@ -83,10 +88,12 @@ Genetech
 ggplot
 github
 glm
+Godwin
 gpar
 Haensel
 Haenszel
 Hauck
+Heng
 https
 inputId
 ITT
@@ -106,7 +113,9 @@ lintr
 lme
 lme4
 lmerTest
+lsmeans
 Manukyan
+Maximo
 MedDRA
 mmrm
 MMRM
@@ -133,6 +142,7 @@ parallelizing
 paramcd
 PARAMCD
 Parametrized
+Paszty
 pharmasug
 PharmaSUG
 postprocessing
@@ -141,6 +151,7 @@ PR
 pre
 preprocess
 PRs
+Qi
 qit
 QTCAT
 quartiles
@@ -157,7 +168,9 @@ Rothe
 rsp
 RSPT
 rtable
+Rui
 Sabanes
+Saibah
 Satterthwaite
 Schouten
 SDTM
@@ -169,6 +182,7 @@ SMQzzNAM
 SMQzzSC
 songy
 SREPs
+Stoilova
 stoilovs
 STUDYID
 subtable
@@ -193,6 +207,7 @@ unevaluable
 unstratified
 USUBJID
 VST
+Waddell
 waddella
 wald
 waldcc
@@ -203,7 +218,8 @@ www
 Xiao
 xticks
 Yu
+Yung
 Yuyao
 zhanc
 Zhang
-clogit
+Zhao
