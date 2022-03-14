@@ -104,7 +104,6 @@ We can calculate some things from the `TableTree` object:
 ```{r}
 keep_occurrences <- function(keep_row_conditions, all_name = "All Patients") {
   function(tt) {
-    browser()
     all_levels_index <- grep(all_name, names(tt))
     if (is(tt, "TableRow"))
       return(! keep_row_conditions(
@@ -541,9 +540,6 @@ result <- basic_table() %>%
 ```{r}
 debug_fun <- function(tt) {
     all_levels_index <- grep("AllLevelsSentinel", names(tt))
-    if (is(tt, "TableRow")) {
-      # browser()
-    }
     content <- rtables::content_table(tt)
     children <- tree_children(tt)
     child_classes <- unique(sapply(children, class))
