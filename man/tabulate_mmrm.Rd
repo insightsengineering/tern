@@ -81,24 +81,24 @@ These functions can be used to produce tables from a fitted MMRM produced with
 }
 \section{Functions}{
 \itemize{
-\item \code{as.rtable.mmrm}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::as.rtable.mmrm}: Produce simple MMRM tables via the generic \code{\link[=as.rtable]{as.rtable()}}.
+\item \code{as.rtable.mmrm}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::tabulate_mmrm}: Produce simple MMRM tables via the generic \code{\link[=as.rtable]{as.rtable()}}.
 
-\item \code{h_mmrm_fixed}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::h_mmrm_fixed}: Helper function to produce fixed effects table.
+\item \code{h_mmrm_fixed}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::tabulate_mmrm}: Helper function to produce fixed effects table.
 
-\item \code{h_mmrm_cov}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::h_mmrm_cov}: Helper function to produce covariance matrix table.
+\item \code{h_mmrm_cov}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::tabulate_mmrm}: Helper function to produce covariance matrix table.
 
-\item \code{h_mmrm_diagnostic}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::h_mmrm_diagnostic}: Helper function to produce diagnostic statistics table.
+\item \code{h_mmrm_diagnostic}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::tabulate_mmrm}: Helper function to produce diagnostic statistics table.
 
-\item \code{tidy.mmrm}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::tidy.mmrm}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a data frame from an
+\item \code{tidy.mmrm}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::tabulate_mmrm}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a data frame from an
 \code{mmrm} object containing the LS means and contrasts.
 
-\item \code{s_mmrm_lsmeans}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::s_mmrm_lsmeans}: Statistics function which is extracting estimates from a tidied LS means
+\item \code{s_mmrm_lsmeans}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::tabulate_mmrm}: Statistics function which is extracting estimates from a tidied LS means
 data frame.
 
-\item \code{s_mmrm_lsmeans_single}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::s_mmrm_lsmeans_single}: Statistics function which is extracting estimates from a tidied LS means
+\item \code{s_mmrm_lsmeans_single}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::tabulate_mmrm}: Statistics function which is extracting estimates from a tidied LS means
 data frame when \code{ARM} is not considered in the model.
 
-\item \code{summarize_lsmeans}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::summarize_lsmeans}: Analyze function for tabulating LS means estimates from tidied \code{mmrm} results.
+\item \code{summarize_lsmeans}: Deprecated by \link[tern.mmrm:tabulate_mmrm]{tern.mmrm::tabulate_mmrm}: Analyze function for tabulating LS means estimates from tidied \code{mmrm} results.
 }}
 
 \examples{

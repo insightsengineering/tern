@@ -9,7 +9,7 @@
 #'
 NULL
 
-#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::as.rtable.mmrm]: Produce simple MMRM tables via the generic [as.rtable()].
+#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::tabulate_mmrm]: Produce simple MMRM tables via the generic [as.rtable()].
 #'
 #' @param x (`mmrm`)\cr the original MMRM fit object.
 #' @param type (`string`)\cr type of table which should be returned.
@@ -78,7 +78,7 @@ as.rtable.mmrm <- function(x, # nolint
   )
 }
 
-#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::h_mmrm_fixed]: Helper function to produce fixed effects table.
+#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::tabulate_mmrm]: Helper function to produce fixed effects table.
 #' @param format (`string`)\cr format for the numbers in the table.
 #' @export
 #'
@@ -90,7 +90,7 @@ h_mmrm_fixed <- function(x, format = "xx.xxxx") {
   )
 }
 
-#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::h_mmrm_cov]: Helper function to produce covariance matrix table.
+#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::tabulate_mmrm]: Helper function to produce covariance matrix table.
 #' @export
 #'
 h_mmrm_cov <- function(x, format = "xx.xxxx") {
@@ -101,7 +101,7 @@ h_mmrm_cov <- function(x, format = "xx.xxxx") {
   )
 }
 
-#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::h_mmrm_diagnostic]: Helper function to produce diagnostic statistics table.
+#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::tabulate_mmrm]: Helper function to produce diagnostic statistics table.
 #' @export
 #'
 h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
@@ -112,7 +112,7 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
   )
 }
 
-#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::tidy.mmrm]: Helper method (for [broom::tidy()]) to prepare a data frame from an
+#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::tabulate_mmrm]: Helper method (for [broom::tidy()]) to prepare a data frame from an
 #'   `mmrm` object containing the LS means and contrasts.
 #' @method tidy mmrm
 #' @export
@@ -130,7 +130,7 @@ tidy.mmrm <- function(x) { # nolint
   )
 }
 
-#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::s_mmrm_lsmeans]: Statistics function which is extracting estimates from a tidied LS means
+#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::tabulate_mmrm]: Statistics function which is extracting estimates from a tidied LS means
 #'   data frame.
 #' @inheritParams argument_convention
 #' @param show_relative should the "reduction" (`control - treatment`, default) or the "increase"
@@ -148,7 +148,7 @@ s_mmrm_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "incr
   )
 }
 
-#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::s_mmrm_lsmeans_single]: Statistics function which is extracting estimates from a tidied LS means
+#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::tabulate_mmrm]: Statistics function which is extracting estimates from a tidied LS means
 #' data frame when `ARM` is not considered in the model.
 #' @inheritParams argument_convention
 #' @export
@@ -164,7 +164,7 @@ s_mmrm_lsmeans_single <- function(df) {
   )
 }
 
-#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::summarize_lsmeans]: Analyze function for tabulating LS means estimates from tidied `mmrm` results.
+#' @describeIn tabulate_mmrm Deprecated by [tern.mmrm::tabulate_mmrm]: Analyze function for tabulating LS means estimates from tidied `mmrm` results.
 #' @inheritParams argument_convention
 #' @export
 #' @examples
