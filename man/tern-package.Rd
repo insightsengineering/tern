@@ -6,7 +6,7 @@
 \alias{tern-package}
 \title{tern Package}
 \description{
-tern is an analysis package to create tables, listings and graphs to analyze clinical trials data.
+Package to create tables, listings and graphs to analyze clinical trials data.
 }
 \seealso{
 Useful links:
