@@ -59,8 +59,6 @@ reference:
       - s_cox_univariate
       - s_incidence_rate
       - s_length_proportion
-      - s_mmrm_lsmeans
-      - s_mmrm_lsmeans_single
       - s_num_patients
       - s_num_patients_content
       - s_odds_ratio
@@ -90,8 +88,6 @@ reference:
        - a_count_patients_with_event
        - a_count_patients_with_flags
        - a_coxph_pairwise
-       - a_mmrm_lsmeans
-       - a_mmrm_lsmeans_single
        - a_odds_ratio
        - a_proportion
        - a_response_subgroups
@@ -181,9 +177,6 @@ reference:
       - h_logistic_inter_terms
       - h_logistic_simple_terms
       - h_map_for_count_abnormal
-      - h_mmrm_cov
-      - h_mmrm_diagnostic
-      - h_mmrm_fixed
       - h_odds_ratio_df
       - h_odds_ratio_subgroups_df
       - h_or_cat_interaction
@@ -225,7 +218,6 @@ reference:
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
     contents:
-      - as.rtable.mmrm
       - estimate_coef
       - extract_rsp_subgroups
       - extract_survival_biomarkers
@@ -233,7 +225,6 @@ reference:
       - fit_coxreg_multivar
       - fit_coxreg_univar
       - fit_logistic
-      - fit_mmrm
       - fit_rsp_step
       - fit_survival_step
       - get_smooths
@@ -243,7 +234,6 @@ reference:
       - tidy.coxreg.multivar
       - tidy.coxreg.univar
       - tidy.glm
-      - tidy.mmrm
       - tidy.step
       - tidy.summary.coxph
       - univariate
@@ -257,7 +247,6 @@ reference:
       - g_lineplot
       - g_step
       - g_waterfall
-      - starts_with("g_mmrm")
 
   - title: rtables Helper Functions
     desc: these functions help to work with the new rtables package and might be moved there later
@@ -370,6 +359,13 @@ reference:
       - is_variables
 
   - title: Deprecated Functions
-    desc: These functions will eventually be removed
+    desc: These functions already are or will eventually be removed
     contents:
-    - s_cox_univariate
+      - as.rtable.mmrm
+      - starts_with("a_mmrm")
+      - fit_mmrm
+      - starts_with("g_mmrm")
+      - starts_with("h_mmrm")
+      - s_cox_univariate
+      - starts_with("s_mmrm")
+      - tidy.mmrm

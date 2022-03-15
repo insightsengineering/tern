@@ -11,6 +11,7 @@ TODO\.md
 ^\.drone\.yml$
 ^Jenkinsfile$
 ^\.lintr$
+^\.pre-commit-config\.yaml$
 ^staged_dependencies\.yaml$
 ^LICENSE\.md$
 ^\.gitlab-ci\.yml$

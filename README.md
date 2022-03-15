@@ -15,7 +15,6 @@ The package provides a large range of functionality, for example:
     -   Kaplan-Meier plots
     -   ...
 -   statistical model fits:
-    -   MMRM
     -   logistic regression
     -   Cox regression
     -   ...

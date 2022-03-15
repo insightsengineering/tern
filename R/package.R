@@ -1,17 +1,17 @@
 #' tern Package
 #'
-#' tern is an analysis package to create tables, listings and graphs to analyze clinical trials data.
+#' Package to create tables, listings and graphs to analyze clinical trials data.
 #'
 "_PACKAGE"
 
 #' @import rtables ggplot2
 #' @importFrom broom tidy
+#' @importFrom formatable propose_column_widths
+#' @importFrom lifecycle badge
 #' @importFrom methods new
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data := !!
 #' @importFrom survival coxph strata Surv
-#' @importFrom optimx optimx
-#' @importFrom dfoptim nmk
 NULL
 
 # We need this to avoid R CMD check warning about missing global definitions.
