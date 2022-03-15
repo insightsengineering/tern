@@ -79,9 +79,6 @@
     <loc>https://insightsengineering.github.io/tern/reference/bins_percent_labels.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/build_mmrm_formula.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/reference/c_label_n.html</loc>
   </url>
   <url>
@@ -89,9 +86,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/check_diff_prop_ci.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/check_mmrm_vars.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/check_same_n.html</loc>
@@ -244,12 +238,6 @@
     <loc>https://insightsengineering.github.io/tern/reference/fct_explicit_na_if.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/fit_lme4.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/fit_lme4_single_optimizer.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/reference/fit_mmrm.html</loc>
   </url>
   <url>
@@ -305,15 +293,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/get_covariates.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/get_lme4_cov_estimate.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/get_lme4_diagnostics.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/get_mmrm_lsmeans.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/get_smooths.html</loc>
@@ -442,9 +421,6 @@
     <loc>https://insightsengineering.github.io/tern/reference/range_noinf.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/refit_lme4_all_optimizers.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/reference/response_biomarkers_subgroups.html</loc>
   </url>
   <url>
@@ -500,9 +476,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/summarize_variables.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/summary_all_fits.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/summary_formats.html</loc>
