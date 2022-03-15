@@ -32,23 +32,19 @@ Imports:
     broom,
     car,
     checkmate,
-    dfoptim,
     dplyr,
     emmeans (>= 1.4.5),
     forcats,
+    formatable,
     ggplot2,
     grDevices,
     grid,
     gridExtra,
     gtable,
     labeling,
-    lme4 (>= 1.1-21),
-    lmerTest (>= 3.1-1),
+    lifecycle,
     magrittr,
     methods,
-    optimx,
-    parallel,
-    purrr,
     rlang,
     scales,
     stats,
@@ -61,13 +57,14 @@ Imports:
 Suggests:
     knitr,
     lattice,
-    Matrix,
     rmarkdown,
     scda (>= 0.1.2),
     scda.2021 (>= 0.1.2),
     testthat (>= 2.0)
 VignetteBuilder:
     knitr
+RdMacros:
+    lifecycle
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -97,17 +94,18 @@ Collate:
     'cox_regression.R'
     'coxph.R'
     'decorate_grob.R'
+    'deprec-fit_mmrm.R'
+    'deprec-g_mmrm.R'
+    'deprec-tabulate_mmrm.R'
     'df_explicit_na.R'
     'estimate_incidence_rate.R'
     'estimate_multinomial_rsp.R'
     'estimate_proportion.R'
-    'fit_mmrm.R'
     'fit_rsp_step.R'
     'fit_survival_step.R'
     'footnotes.R'
     'g_forest.R'
     'g_lineplot.R'
-    'g_mmrm.R'
     'g_step.R'
     'g_waterfall.R'
     'h_adsl_adlb_merge_using_worst_flag.R'
@@ -126,7 +124,6 @@ Collate:
     'nest_colors.R'
     'odds_ratio.R'
     'package.R'
-    'parallel.R'
     'prop_diff.R'
     'prune_occurrences.R'
     'response_biomarkers_subgroups.R'
@@ -147,7 +144,6 @@ Collate:
     'survival_duration_subgroups.R'
     'survival_time.R'
     'survival_timepoint.R'
-    'tabulate_mmrm.R'
     'test_proportion_diff.R'
     'utils.R'
     'utils_factor.R'
