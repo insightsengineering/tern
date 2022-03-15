@@ -55,8 +55,6 @@ testthat::test_that("s_surv_time works with customized arguments", {
 })
 
 testthat::test_that("surv_time works with default arguments", {
-  skip_if_fail_rtables_refactor()
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -80,8 +78,8 @@ testthat::test_that("surv_time works with default arguments", {
       "", "Survival Time (Months)", "Median", "95% CI",
       "25% and 75%-ile", "Range (censored)", "Range (event)", "ARM A",
       "", "41.4", "(27.7, 54.7)", "15.4, 75.2", "0.4 to 154.7", "0.3 to 116.4",
-      "ARM B", "", "27.5", "(17.3, 30.2)", "9.5, 54.9", "0.9 to 91",
-      "0 to 122.4", "ARM C", "", "11.1", "(9.6, 15.9)", "5.3, 25.2",
+      "ARM B", "", "27.5", "(17.3, 30.2)", "9.5, 54.9", "0.9 to 91.0",
+      "0.0 to 122.4", "ARM C", "", "11.1", "(9.6, 15.9)", "5.3, 25.2",
       "0.3 to 49.4", "0.1 to 101.6"
     ),
     .Dim = c(7L, 4L)
@@ -92,8 +90,6 @@ testthat::test_that("surv_time works with default arguments", {
 
 
 testthat::test_that("surv_time works with customized arguments", {
-  skip_if_fail_rtables_refactor()
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -116,8 +112,8 @@ testthat::test_that("surv_time works with customized arguments", {
       "", "Survival Time (Months)", "Median", "90% CI",
       "40% and 60%-ile", "Range (censored)", "Range (event)", "ARM A",
       "", "41.4", "(32.4, 54.1)", "27.7, 54.7", "0.4 to 154.7", "0.3 to 116.4",
-      "ARM B", "", "27.5", "(20, 30.2)", "16.3, 32.4", "0.9 to 91",
-      "0 to 122.4", "ARM C", "", "11.1", "(9.7, 15.6)", "9.2, 15.9",
+      "ARM B", "", "27.5", "(20.0, 30.2)", "16.3, 32.4", "0.9 to 91.0",
+      "0.0 to 122.4", "ARM C", "", "11.1", "(9.7, 15.6)", "9.2, 15.9",
       "0.3 to 49.4", "0.1 to 101.6"
     ),
     .Dim = c(7L, 4L)
