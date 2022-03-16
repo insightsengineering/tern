@@ -5,8 +5,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 testthat::test_that("Safety Summary Variant 1 works as expected", {
-  skip_if_fail_rtables_refactor()
-
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -112,7 +110,7 @@ testthat::test_that("Safety Summary Variant 1 works as expected", {
       "6 (4.48%)", "", "76 (56.7%)", "104 (77.6%)", "8 (6%)",
       "36 (26.9%)", "76 (56.7%)", "23 (17.2%)", "72 (53.7%)", "105 (78.4%)",
       "6 (4.5%)", "31 (23.1%)", "109 (81.3%)", "B: Placebo", "(N=134)",
-      "123 (91.8%)", "622", "26 (19.4%)", "1 (0.75%)", "", "70 (52.2%)",
+      "123 (91.8%)", "622", "26 (19.40%)", "1 (0.75%)", "", "70 (52.2%)",
       "101 (75.4%)", "8 (6%)", "31 (23.1%)", "70 (52.2%)", "24 (17.9%)",
       "65 (48.5%)", "108 (80.6%)", "9 (6.7%)", "31 (23.1%)", "104 (77.6%)",
       "C: Combination", "(N=132)", "120 (90.9%)", "703", "19 (14.39%)",
@@ -127,8 +125,6 @@ testthat::test_that("Safety Summary Variant 1 works as expected", {
 })
 
 testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
-  skip_if_fail_rtables_refactor()
-
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -262,7 +258,7 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
       "76 (56.7%)", "23 (17.2%)", "72 (53.7%)", "105 (78.4%)",
       "6 (4.5%)", "31 (23.1%)", "109 (81.3%)", "", "72 (53.7%)",
       "0", "74 (55.2%)", "B: Placebo", "(N=134)", "123 (91.8%)",
-      "622", "26 (19.4%)", "1 (0.75%)", "", "70 (52.2%)", "101 (75.4%)",
+      "622", "26 (19.40%)", "1 (0.75%)", "", "70 (52.2%)", "101 (75.4%)",
       "8 (6%)", "31 (23.1%)", "70 (52.2%)", "24 (17.9%)", "65 (48.5%)",
       "108 (80.6%)", "9 (6.7%)", "31 (23.1%)", "104 (77.6%)", "",
       "79 (59%)", "0", "80 (59.7%)", "C: Combination", "(N=132)",
@@ -278,8 +274,6 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
 })
 
 testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
-  skip_if_fail_rtables_refactor()
-
 
   # Add flags (TRUE/FALSE) for select AEs of interest -- custom groups.
   adae <- adae %>%
@@ -378,10 +372,10 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
       "122 (91%)", "609", "22 (16.42%)", "6 (4.48%)", "2 (1.49%)",
       "", "76 (56.7%)", "104 (77.6%)", "23 (17.2%)", "105 (78.4%)",
       "109 (81.3%)", "91 (67.9%)", "B: Placebo", "(N=134)", "123 (91.8%)",
-      "622", "26 (19.4%)", "1 (0.75%)", "2 (1.49%)", "", "70 (52.2%)",
+      "622", "26 (19.40%)", "1 (0.75%)", "2 (1.49%)", "", "70 (52.2%)",
       "101 (75.4%)", "24 (17.9%)", "108 (80.6%)", "104 (77.6%)",
       "90 (67.2%)", "C: Combination", "(N=132)", "120 (90.9%)", "703",
-      "19 (14.39%)", "2 (1.52%)", "0 (0%)", "", "75 (56.8%)", "99 (75%)",
+      "19 (14.39%)", "2 (1.52%)", "0 (0.00%)", "", "75 (56.8%)", "99 (75%)",
       "27 (20.5%)", "109 (82.6%)", "109 (82.6%)", "93 (70.5%)"
     ),
     .Dim = c(14L, 4L)
@@ -390,8 +384,6 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
 })
 
 testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
-  skip_if_fail_rtables_refactor()
-
   adae <- adae %>%
     dplyr::mutate(USUBJID_AESEQ = paste(USUBJID, AESEQ, sep = "@@")) # nolint # Create unique ID per AE in dataset.
 
@@ -517,7 +509,7 @@ testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Add
       "104 (77.6%)", "23 (17.2%)", "72 (53.7%)", "105 (78.4%)",
       "109 (81.3%)", "", "4", "8", "5", "5", "3", "", "249", "109",
       "282", "303", "172", "B: Placebo", "(N=134)", "123 (91.8%)",
-      "622", "26 (19.4%)", "1 (0.75%)", "", "70 (52.2%)", "101 (75.4%)",
+      "622", "26 (19.40%)", "1 (0.75%)", "", "70 (52.2%)", "101 (75.4%)",
       "24 (17.9%)", "65 (48.5%)", "108 (80.6%)", "104 (77.6%)",
       "", "4", "8", "5", "5", "3", "", "255", "100", "299", "291",
       "174", "C: Combination", "(N=132)", "120 (90.9%)", "703", "19 (14.39%)",
