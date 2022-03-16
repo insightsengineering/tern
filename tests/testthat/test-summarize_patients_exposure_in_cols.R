@@ -31,8 +31,6 @@ testthat::test_that("s_count_patients_sum_exposure works as expected", {
 
 
 testthat::test_that("summarize_patients_exposure_in_cols works well with default arguments", {
-  skip_if_fail_rtables_refactor()
-
   df <- get_anl()
   adsl <- get_adsl()
 
@@ -47,10 +45,10 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with default
   expected_matrix <- structure(
     c(
       "", "", "Total patients numbers/person time", "Female",
-      "Male", "ARM A", "Patients", "6 (100%)", "6 (100%)", "0 (0%)",
+      "Male", "ARM A", "Patients", "6 (100.0%)", "6 (100.0%)", "0 (0.0%)",
       "ARM A", "Person time", "16", "16", "0", "ARM B", "Patients",
-      "6 (100%)", "0 (0%)", "6 (100%)", "ARM B", "Person time", "19",
-      "0", "19", "Total", "Patients", "12 (100%)", "6 (50%)", "6 (50%)",
+      "6 (100.0%)", "0 (0.0%)", "6 (100.0%)", "ARM B", "Person time", "19",
+      "0", "19", "Total", "Patients", "12 (100.0%)", "6 (50.0%)", "6 (50.0%)",
       "Total", "Person time", "35", "16", "19"
     ),
     .Dim = c(5L, 7L)
