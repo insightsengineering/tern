@@ -111,8 +111,6 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and strati
 
 
 testthat::test_that("coxph_pairwise works with default arguments and no stratification factors", {
-  skip_if_fail_rtables_refactor()
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -135,8 +133,8 @@ testthat::test_that("coxph_pairwise works with default arguments and no stratifi
     c(
       "", "Unstratified Analysis", "p-value (log-rank)",
       "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B", "",
-      "0.0334", "1.39", "(1.03, 1.9)", "ARM C", "", "<0.0001",
-      "2.75", "(2.05, 3.7)"
+      "0.0334", "1.39", "(1.03, 1.90)", "ARM C", "", "<0.0001",
+      "2.75", "(2.05, 3.70)"
     ),
     .Dim = 5:4
   )
@@ -177,8 +175,6 @@ testthat::test_that("coxph_pairwise works with customized arguments and no strat
 
 
 testthat::test_that("coxph_pairwise works with default arguments and stratification factors", {
-  skip_if_fail_rtables_refactor()
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
@@ -201,7 +197,7 @@ testthat::test_that("coxph_pairwise works with default arguments and stratificat
     c(
       "", "Stratified Analysis", "p-value (log-rank)",
       "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B", "",
-      "0.0478", "1.36", "(1, 1.86)", "ARM C", "", "<0.0001",
+      "0.0478", "1.36", "(1.00, 1.86)", "ARM C", "", "<0.0001",
       "2.73", "(2.02, 3.69)"
     ),
     .Dim = 5:4
