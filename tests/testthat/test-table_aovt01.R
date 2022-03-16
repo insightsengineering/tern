@@ -51,8 +51,6 @@ testthat::test_that("AOVT01 variant with single endpoint is produced correctly",
 })
 
 testthat::test_that("AOVT01 variant with multiple endpoints is produced correctly", {
-  skip_if_fail_rtables_refactor()
-
   adqs_multi <- dplyr::filter(adqs, AVISIT == "WEEK 1 DAY 8")
   n_per_arm <- table(adsl$ARM)
 
@@ -77,16 +75,16 @@ testthat::test_that("AOVT01 variant with multiple endpoints is produced correctl
       "FKSI-TSE", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "95% CI", "p-value",
       "FKSIALL", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "95% CI", "p-value",
       "ARM A", "(N=134)", "", "", "134", "4.47", "", "", "", "", "", "134", "5.42", "", "", "", "", "", "134", "4.29",
-      "", "", "", "", "", "134", "4.7", "", "", "", "", "", "134", "5.03", "", "", "",
+      "", "", "", "", "", "134", "4.70", "", "", "", "", "", "134", "5.03", "", "", "",
       "ARM B", "(N=134)", "", "", "134", "6.33", "1.85", "(-0.14, 3.85)", "0.0679", "", "",
       "134", "4.83", "-0.59", "(-2.58, 1.41)", "0.5644", "", "",
       "134", "3.51", "-0.79", "(-2.71, 1.14)", "0.4221", "", "",
-      "134", "3.84", "-0.86", "(-2.8, 1.09)", "0.3858", "", "",
+      "134", "3.84", "-0.86", "(-2.80, 1.09)", "0.3858", "", "",
       "134", "5.82", "0.79", "(-1.17, 2.76)", "0.4288",
       "ARM C", "(N=132)", "", "", "132", "4.02", "-0.46", "(-2.45, 1.54)", "0.6539", "", "",
       "132", "4.56", "-0.86", "(-2.87, 1.15)", "0.4026", "", "",
       "132", "3.06", "-1.24", "(-3.17, 0.69)", "0.2088", "", "",
-      "132", "4.45", "-0.25", "(-2.2, 1.7)", "0.8007", "", "",
+      "132", "4.45", "-0.25", "(-2.20, 1.70)", "0.8007", "", "",
       "132", "6.44", "1.42", "(-0.56, 3.39)", "0.1591"
     ),
     .Dim = c(37L, 4L)
