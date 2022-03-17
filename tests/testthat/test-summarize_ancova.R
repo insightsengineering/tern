@@ -86,8 +86,6 @@ testthat::test_that("s_ancova fails wrong inputs", {
 })
 
 testthat::test_that("summarize_ancova works with healthy inputs", {
-  skip_if_fail_rtables_refactor()
-
   result <- basic_table() %>%
     split_cols_by("Species", ref_group = "setosa") %>%
     add_colcounts() %>%
@@ -114,7 +112,7 @@ testthat::test_that("summarize_ancova works with healthy inputs", {
       "95% CI", "p-value",
       "setosa", "(N=50)", "", "50", "5.01", "", "", "", "", "50", "7.08", "", "", "",
       "versicolor", "(N=50)", "", "50", "5.94", "0.93", "(0.73, 1.13)", "<0.0001",
-      "", "50", "5.48", "-1.6", "(-1.98, -1.22)", "<0.0001",
+      "", "50", "5.48", "-1.60", "(-1.98, -1.22)", "<0.0001",
       "virginica", "(N=50)", "", "50", "6.59", "1.58", "(1.38, 1.79)", "<0.0001",
       "", "50", "4.97", "-2.12", "(-2.66, -1.58)", "<0.0001"
     ),

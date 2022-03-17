@@ -40,7 +40,7 @@ build_table(df) %>%
   prune_table(
     prune_occurrences(
       has_percent_all(above = 0.05) &
-      has_difference_arms(above = 0.02, arms = c("Active", "Combination"))
+        has_difference_arms(above = 0.02, arms = c("Active", "Combination"))
     )
   )
 ```
@@ -79,7 +79,8 @@ setMethod(
     function(x) {
       e1(x) & e2(x)
     }
-  })
+  }
+)
 
 c1 <- higher(5)
 c2 <- lower(10)
@@ -104,13 +105,13 @@ We can calculate some things from the `TableTree` object:
 ```{r}
 keep_occurrences <- function(keep_row_conditions, all_name = "All Patients") {
   function(tt) {
-    browser()
     all_levels_index <- grep(all_name, names(tt))
-    if (is(tt, "TableRow"))
-      return(! keep_row_conditions(
+    if (is(tt, "TableRow")) {
+      return(!keep_row_conditions(
         table_row = tt,
         all_levels_index = all_levels_index
       ))
+    }
     children <- tree_children(tt)
     identical(length(children), 0L)
   }
@@ -133,7 +134,8 @@ setMethod(
     new_condition(function(...) {
       e1(...) && e2(...)
     })
-  })
+  }
+)
 
 setMethod(
   "|",
@@ -142,7 +144,8 @@ setMethod(
     new_condition(function(...) {
       e1(...) || e2(...)
     })
-  })
+  }
+)
 
 setMethod(
   "!",
@@ -151,7 +154,8 @@ setMethod(
     function(...) {
       !x(...)
     }
-  })
+  }
+)
 ```
 
 ### Conditions for "Occurrence in All Patients"
@@ -540,18 +544,15 @@ result <- basic_table() %>%
 
 ```{r}
 debug_fun <- function(tt) {
-    all_levels_index <- grep("AllLevelsSentinel", names(tt))
-    if (is(tt, "TableRow")) {
-      # browser()
-    }
-    content <- rtables::content_table(tt)
-    children <- tree_children(tt)
-    child_classes <- unique(sapply(children, class))
-    if (identical(child_classes, "ElementaryTable")) {
-      print("this is a leaf")
-    }
-    FALSE
+  all_levels_index <- grep("AllLevelsSentinel", names(tt))
+  content <- rtables::content_table(tt)
+  children <- tree_children(tt)
+  child_classes <- unique(sapply(children, class))
+  if (identical(child_classes, "ElementaryTable")) {
+    print("this is a leaf")
   }
+  FALSE
+}
 
 result %>% prune_table(debug_fun)
 ```
@@ -584,7 +585,7 @@ keep_graded_occurrences <- function(keep_row_conditions) {
     all_levels_index <- grep("AllLevelsSentinel", names(tt))
     if (is_leaf_table(tt)) {
       tr <- get_content_as_row(tt)
-      return(! keep_row_conditions(
+      return(!keep_row_conditions(
         table_row = tr,
         all_levels_index = all_levels_index
       ))
