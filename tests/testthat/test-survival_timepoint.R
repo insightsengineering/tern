@@ -79,8 +79,6 @@ testthat::test_that("s_surv_timepoint also works when there are 0 patients at ri
 })
 
 testthat::test_that("surv_timepoint works with default arguments", {
-  skip_if_fail_rtables_refactor()
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -105,7 +103,7 @@ testthat::test_that("surv_timepoint works with default arguments", {
     c(
       "", "6 Months", "Patients remaining at risk", "Event Free Rate (%)",
       "95% CI", "ARM A", "", "106", "83.83", "(77.49, 90.17)", "ARM B",
-      "", "112", "89.16", "(83.8, 94.53)", "ARM C", "", "92", "73.4",
+      "", "112", "89.16", "(83.80, 94.53)", "ARM C", "", "92", "73.40",
       "(65.72, 81.07)"
     ),
     .Dim = 5:4
@@ -114,8 +112,6 @@ testthat::test_that("surv_timepoint works with default arguments", {
 })
 
 testthat::test_that("surv_timepoint works with customized arguments", {
-  skip_if_fail_rtables_refactor()
-
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -140,9 +136,9 @@ testthat::test_that("surv_timepoint works with customized arguments", {
   expected_matrix <- structure(
     c(
       "", "8 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "90% CI", "ARM A", "", "98", "81.36", "(74.9, 86.3)", "ARM B",
+      "90% CI", "ARM A", "", "98", "81.36", "(74.90, 86.30)", "ARM B",
       "", "100", "81.92", "(75.47, 86.82)", "ARM C", "", "77", "62.92",
-      "(55.4, 69.53)"
+      "(55.40, 69.53)"
     ),
     .Dim = 5:4
   )

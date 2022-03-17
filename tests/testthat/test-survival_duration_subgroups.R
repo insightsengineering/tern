@@ -394,8 +394,6 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with extr
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected when one arm has 0 records", {
-  skip_if_fail_rtables_refactor()
-
   adtte <- adtte %>%
     preprocess_adtte()
 
@@ -421,7 +419,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected when one 
       "Total Events", "166", "", "82", "35", "35", "12", "1", "1",
       "B: Placebo", "n", "134", "", "67", "28", "26", "11", "1", "1",
       "B: Placebo", "Events", "87", "", "40", "20", "19", "6", "1",
-      "1", "B: Placebo", "Median (DAYS)", "837.4", "", "906", "751.4",
+      "1", "B: Placebo", "Median (DAYS)", "837.4", "", "906.0", "751.4",
       "841.2", "741.9", "33.6", "153.5", "A: Drug X", "n", "134", "",
       "68", "31", "27", "8", "0", "0", "A: Drug X", "Events", "79",
       "", "42", "15", "16", "6", "NA", "NA", "A: Drug X", "Median (DAYS)",
