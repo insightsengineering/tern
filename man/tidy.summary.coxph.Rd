@@ -18,6 +18,7 @@ Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{ti
 
 library(survival)
 library(broom)
+library(rtables)
 
 set.seed(1, kind = "Mersenne-Twister")
 

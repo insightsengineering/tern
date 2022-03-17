@@ -430,9 +430,9 @@ h_split_by_subgroups <- function(data,
     all(names(groups_lists) %in% subgroups)
   )
 
-  data_labels <- unname(var_labels(data))
+  data_labels <- unname(formatable::var_labels(data))
   df_subgroups <- data[, subgroups, drop = FALSE]
-  subgroup_labels <- var_labels(df_subgroups, fill = TRUE)
+  subgroup_labels <- formatable::var_labels(df_subgroups, fill = TRUE)
 
   l_labels <- Map(function(grp_i, name_i) {
     existing_levels <- levels(droplevels(grp_i))
@@ -466,7 +466,7 @@ h_split_by_subgroups <- function(data,
     }
     df <- data[which_row, ]
     rownames(df) <- NULL
-    var_labels(df) <- data_labels
+    formatable::var_labels(df) <- data_labels
 
     list(
       df = df,

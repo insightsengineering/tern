@@ -69,12 +69,16 @@ s_surv_time <- function(df,
   range_event <- range_noinf(df[[.var]][df[[is_event]]], na.rm = TRUE)
   range <- range_noinf(df[[.var]], na.rm = TRUE)
   list(
-    median = with_label(unname(srv_tab["median"]), "Median"),
-    median_ci = with_label(unname(srv_tab[paste0(srv_fit$conf.int, c("LCL", "UCL"))]), f_conf_level(conf_level)),
-    quantiles = with_label(unname(srv_qt_tab), paste0(quantiles[1] * 100, "% and ", quantiles[2] * 100, "%-ile")),
-    range_censor = with_label(range_censor, "Range (censored)"),
-    range_event = with_label(range_event, "Range (event)"),
-    range = with_label(range, "Range")
+    median = formatable::with_label(unname(srv_tab["median"]), "Median"),
+    median_ci = formatable::with_label(
+      unname(srv_tab[paste0(srv_fit$conf.int, c("LCL", "UCL"))]), f_conf_level(conf_level)
+    ),
+    quantiles = formatable::with_label(
+      unname(srv_qt_tab), paste0(quantiles[1] * 100, "% and ", quantiles[2] * 100, "%-ile")
+    ),
+    range_censor = formatable::with_label(range_censor, "Range (censored)"),
+    range_event = formatable::with_label(range_event, "Range (event)"),
+    range = formatable::with_label(range, "Range")
   )
 }
 

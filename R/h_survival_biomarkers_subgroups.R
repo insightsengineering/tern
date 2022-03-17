@@ -132,7 +132,7 @@ h_coxreg_mult_cont_df <- function(variables,
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
-        biomarker_label = var_labels(data[bm], fill = TRUE),
+        biomarker_label = formatable::var_labels(data[bm], fill = TRUE),
         n_tot = coxreg_list$mod$n,
         n_tot_events = coxreg_list$mod$nevent,
         median = as.numeric(median),
@@ -147,7 +147,7 @@ h_coxreg_mult_cont_df <- function(variables,
   } else {
     data.frame(
       biomarker = variables$biomarkers,
-      biomarker_label = var_labels(data[variables$biomarkers], fill = TRUE),
+      biomarker_label = formatable::var_labels(data[variables$biomarkers], fill = TRUE),
       n_tot = 0L,
       n_tot_events = 0L,
       median = NA,

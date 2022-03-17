@@ -226,22 +226,22 @@ s_summary.numeric <- function(x, # nolint
   y$mean_sd <- c(y$mean, "sd" = stats::sd(x, na.rm = FALSE))
 
   mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
-  y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
+  y$mean_ci <- formatable::with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
 
   mean_sei <- y$mean[[1]] + c(-1, 1) * stats::sd(x, na.rm = FALSE) / sqrt(y$n)
   names(mean_sei) <- c("mean_sei_lwr", "mean_sei_upr")
-  y$mean_sei <- with_label(mean_sei, "Mean -/+ 1xSE")
+  y$mean_sei <- formatable::with_label(mean_sei, "Mean -/+ 1xSE")
 
   mean_sdi <- y$mean[[1]] + c(-1, 1) * stats::sd(x, na.rm = FALSE)
   names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
-  y$mean_sdi <- with_label(mean_sdi, "Mean -/+ 1xSD")
+  y$mean_sdi <- formatable::with_label(mean_sdi, "Mean -/+ 1xSD")
 
   y$median <- c("median" = stats::median(x, na.rm = FALSE))
 
   y$mad <- c("mad" = stats::median(x - y$median, na.rm = FALSE))
 
   median_ci <- stat_median_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
-  y$median_ci <- with_label(median_ci, paste("Median", f_conf_level(control$conf_level)))
+  y$median_ci <- formatable::with_label(median_ci, paste("Median", f_conf_level(control$conf_level)))
 
   q <- control$quantiles
   if (any(is.na(x))) {
@@ -250,7 +250,7 @@ s_summary.numeric <- function(x, # nolint
     qnts <- stats::quantile(x, probs = q, type = control$quantile_type, na.rm = FALSE)
   }
   names(qnts) <- paste("quantile", q, sep = "_")
-  y$quantiles <- with_label(qnts, paste0(paste(paste0(q * 100, "%"), collapse = " and "), "-ile"))
+  y$quantiles <- formatable::with_label(qnts, paste0(paste(paste0(q * 100, "%"), collapse = " and "), "-ile"))
 
   y$iqr <- c("iqr" = ifelse(
     any(is.na(x)),
@@ -269,7 +269,7 @@ s_summary.numeric <- function(x, # nolint
   x_no_negative_vals[x_no_negative_vals <= 0] <- NA
   y$geom_mean <- c("geom_mean" = exp(mean(log(x_no_negative_vals), na.rm = FALSE)))
   geom_mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE, geom_mean = TRUE)
-  y$geom_mean_ci <- with_label(geom_mean_ci, paste("Geometric Mean", f_conf_level(control$conf_level)))
+  y$geom_mean_ci <- formatable::with_label(geom_mean_ci, paste("Geometric Mean", f_conf_level(control$conf_level)))
 
   y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals), na.rm = FALSE) ^ 2) - 1) * 100) # styler: off
 

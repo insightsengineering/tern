@@ -188,6 +188,7 @@ When using \code{fit_coxreg_univar} there should be two study arms.
 # Testing dataset [survival::bladder].
 
 library(survival)
+library(rtables)
 set.seed(1, kind = "Mersenne-Twister")
 dta_bladder <- with(
   data = bladder[bladder$enum < 5, ],

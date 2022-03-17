@@ -23,6 +23,7 @@
 #' # Testing dataset with just two treatment arms.
 #' library(scda)
 #' library(dplyr)
+#' library(rtables)
 #'
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'

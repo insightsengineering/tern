@@ -102,7 +102,7 @@ s_count_patients_and_multiple_events(
 basic_table() \%>\%
   summarize_patients_events_in_cols(
     filters_list = list(
-      related = with_label(c(AEREL = "Y"), "Events (Related)"),
+      related = formatable::with_label(c(AEREL = "Y"), "Events (Related)"),
       fatal = c(AESDTH = "Y"),
       fatal_related = c(AEREL = "Y", AESDTH = "Y")
     ),

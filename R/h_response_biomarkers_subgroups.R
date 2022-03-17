@@ -119,7 +119,7 @@ h_logistic_mult_cont_df <- function(variables,
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
-        biomarker_label = var_labels(data[bm], fill = TRUE),
+        biomarker_label = formatable::var_labels(data[bm], fill = TRUE),
         n_tot = length(resp_vector),
         n_rsp = sum(resp_vector),
         prop = mean(resp_vector),
@@ -136,7 +136,7 @@ h_logistic_mult_cont_df <- function(variables,
   } else {
     data.frame(
       biomarker = variables$biomarkers,
-      biomarker_label = var_labels(data[variables$biomarkers], fill = TRUE),
+      biomarker_label = formatable::var_labels(data[variables$biomarkers], fill = TRUE),
       n_tot = 0L,
       n_rsp = 0L,
       prop = NA,

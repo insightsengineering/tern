@@ -182,8 +182,8 @@ s_proportion <- function(x,
   )
 
   list(
-    "n_prop" = with_label(c(n, p_hat), "Responders"),
-    "prop_ci" = with_label(
+    "n_prop" = formatable::with_label(c(n, p_hat), "Responders"),
+    "prop_ci" = formatable::with_label(
       x = 100 * prop_ci, label = d_proportion(conf_level, method, long = long)
     )
   )
