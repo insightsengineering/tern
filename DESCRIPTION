@@ -93,6 +93,7 @@ Collate:
     'count_values.R'
     'cox_regression.R'
     'coxph.R'
+    'd_pkparam.R'
     'decorate_grob.R'
     'deprec-fit_mmrm.R'
     'deprec-g_mmrm.R'
