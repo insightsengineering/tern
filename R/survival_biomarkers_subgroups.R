@@ -21,7 +21,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' formatable::var_labels <- formatable::var_labels(adtte)
+#' adtte_labels <- formatable::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(PARAMCD == "OS") %>%
