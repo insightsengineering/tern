@@ -30,7 +30,7 @@ d_pkparam <- function() {
     "AURCIFP", "AURC Infinity Pred", "AURCinf pred", "Plasma/Blood/Serum", "21",
     "AURCPEO", "AURC % Extrapolation Obs", "AURC extrap obs", "Plasma/Blood/Serum", "22",
     "AURCPEP", "AURC % Extrapolation Pred", "AURC extrap pred", "Plasma/Blood/Serum", "23",
-    "AURCLST", "AURC Dosing to Last Conc", "AURCIast", "Plasma/Blood/Serum", "24",
+    "AURCLST", "AURC Dosing to Last Conc", "AURClast", "Plasma/Blood/Serum", "24",
     "AURCALL", "AURC All", "AURCall", "Plasma/Blood/Serum", "25",
     "TLST", "Time of Last Nonzero Conc", "Tlast", "Plasma/Blood/Serum", "26",
     "CO", "Initial Conc", "CO", "Plasma/Blood/Serum", "27",
