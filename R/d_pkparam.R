@@ -102,7 +102,7 @@ d_pkparam <- function() {
     "SLP2", "Slope, 2nd Segment", "Slope2", "Matrix of PD", "93",
     "SLP1PT", "Number of Points for Slope 1st Segment", "No points slope1", "Matrix of PD", "94",
     "SLP2PT", "Number of Points for Slope 2nd Segment", "No points slope2", "Matrix of PD", "95",
-    "R2ADJS1", "R-Squared Adjusted Slope, 1st Segment", "Rsg adjusted slope1", "Matrix of PD", "96",
+    "R2ADJS1", "R-Squared Adjusted Slope, 1st Segment", "Rsq adjusted slope1", "Matrix of PD", "96",
     "R2ADJS2", "R-Squared Adjusted Slope, 2nd Segment", "Rsq adjusted slope2", "Matrix of PD", "97",
     "R2SLP1", "R Squared, Slope, 1st Segment", "Rsq slope1", "Matrix of PD", "98",
     "R2SLP2", "R Squared, Slope, 2nd Segment", "Rsq slope2", "Matrix of PD", "99",
