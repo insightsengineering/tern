@@ -153,14 +153,14 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
     "Total number of missed doses during study",
     "Treatment duration (days)"
   )
-  var_labels(anl)[columns] <- labels
+  formatable::var_labels(anl)[columns] <- labels
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
     summarize_vars(
       vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
-      var_labels = var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
+      var_labels = formatable::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
     ) %>%
     build_table(anl, alt_counts_df = adsl)
 
@@ -263,14 +263,14 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
     "Total number of missed doses during study",
     "Treatment duration (days)"
   )
-  var_labels(anl)[columns] <- labels
+  formatable::var_labels(anl)[columns] <- labels
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
     summarize_vars(
       vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
-      var_labels = var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
+      var_labels = formatable::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
     ) %>%
     count_missed_doses(
       "TNDOSMIS",

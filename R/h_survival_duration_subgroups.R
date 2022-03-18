@@ -22,7 +22,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- var_labels(adtte)
+#' adtte_labels <- formatable::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(
@@ -37,7 +37,7 @@
 #'     is_event = CNSR == 0
 #'   )
 #' labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
-#' var_labels(adtte_f)[names(labels)] <- labels
+#' formatable::var_labels(adtte_f)[names(labels)] <- labels
 #'
 NULL
 
@@ -406,7 +406,7 @@ h_coxph_subgroups_df <- function(variables,
 #'   y = factor(c("A", "B", "A", "B", "A"), levels = c("A", "B", "C")),
 #'   z = factor(c("C", "C", "D", "D", "D"), levels = c("D", "C"))
 #' )
-#' var_labels(df) <- paste("label for", names(df))
+#' formatable::var_labels(df) <- paste("label for", names(df))
 #'
 #' h_split_by_subgroups(
 #'   data = df,

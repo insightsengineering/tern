@@ -43,7 +43,7 @@
 #' adrs <- synthetic_cdisc_data("latest")$adrs
 #'
 #' n_records <- 20
-#' adrs_labels <- var_labels(adrs)
+#' adrs_labels <- formatable::var_labels(adrs)
 #' adrs <- adrs %>%
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
@@ -54,7 +54,7 @@
 #'     ARM = fct_relevel(ARM, "B: Placebo"),
 #'     rsp = AVALC == "CR"
 #'   )
-#' var_labels(adrs) <- c(adrs_labels, "Response")
+#' formatable::var_labels(adrs) <- c(adrs_labels, "Response")
 #'
 #' df <- extract_rsp_subgroups(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
@@ -86,7 +86,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- var_labels(adtte)
+#' adtte_labels <- formatable::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(
@@ -108,7 +108,7 @@
 #'   "AVALU" = adtte_labels["AVALU"],
 #'   "is_event" = "Event Flag"
 #' )
-#' var_labels(adtte_f)[names(labels)] <- labels
+#' formatable::var_labels(adtte_f)[names(labels)] <- labels
 #'
 #' df <- extract_survival_subgroups(
 #'   variables = list(

@@ -312,7 +312,7 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
     is_nonnegative_count(indent)
   )
 
-  lab <- var_labels(df[vars], fill = TRUE)
+  lab <- formatable::var_labels(df[vars], fill = TRUE)
   lab <- paste(lab, collapse = " / ")
   space <- paste(rep(" ", indent * 2), collapse = "")
   lab <- paste0(space, lab)

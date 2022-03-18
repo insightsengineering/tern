@@ -111,7 +111,7 @@ g_mmrm_diagnostic <- function(object,
 #'   droplevels() %>%
 #'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
-#' var_labels(adqs_f) <- var_labels(adqs)
+#' formatable::var_labels(adqs_f) <- formatable::var_labels(adqs)
 #'
 #' \dontrun{
 #' mmrm_results <- fit_mmrm(

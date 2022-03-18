@@ -310,7 +310,7 @@ s_coxreg <- function(df, .var) {
 
   y[[.var]] <- lapply(
     X = y[[.var]],
-    FUN = function(x) with_label(unlist(x), rownames(x))
+    FUN = function(x) formatable::with_label(unlist(x), rownames(x))
   )
 
   y

@@ -81,7 +81,7 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
   # according to SAS.
   expected <- list(
     n_prop = c(4, 4 / 6),
-    prop_ci = with_label(
+    prop_ci = formatable::with_label(
       c(34.0802, 89.5730),
       label = "90% CI for Response Rates (Jeffreys)"
     )
@@ -98,7 +98,7 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
   # according to SAS.
   expected <- list(
     n_prop = c(4, 1),
-    prop_ci = with_label(
+    prop_ci = formatable::with_label(
       x = c(55.5237, 100),
       label = "95% CI for Response Rates (Jeffreys)"
     )
@@ -118,7 +118,7 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
   # according to SAS.
   expected <- list(
     n_prop = c(4, 4 / 6),
-    prop_ci = with_label(
+    prop_ci = formatable::with_label(
       c(34.3585, 88.6154),
       label = "90% CI for Response Rates (Agresti-Coull)"
     )
@@ -135,7 +135,7 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
   # according to SAS.
   expected <- list(
     n_prop = c(4, 1),
-    prop_ci = with_label(
+    prop_ci = formatable::with_label(
       x = c(45.4050, 100),
       label = "95% CI for Response Rates (Agresti-Coull)"
     )

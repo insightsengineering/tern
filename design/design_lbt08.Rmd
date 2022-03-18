@@ -103,7 +103,7 @@ h_adlb_worsen <- function(
 
   #stack data
   out <- rbind(adlb_out_l, adlb_out_h, adlb_out_b_l, adlb_out_b_h)
-  var_labels(out) <- var_labels(adlb_out_l)
+  formatable::var_labels(out) <- formatable::var_labels(adlb_out_l)
   out
 }
 

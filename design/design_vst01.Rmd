@@ -41,7 +41,7 @@ library(dplyr)
 ```{r data peprocessing}
 adsl <- radsl(cached = TRUE)
 advs <- radvs(cached = TRUE)
-advs_label <- var_labels(advs)
+advs_label <- formatable::var_labels(advs)
 
 advs <- advs %>%
   filter(PARAMCD == "DIABP" & PARAM == "Diastolic Blood Pressure") %>%
@@ -80,7 +80,7 @@ advs_f <- rbind(
   advs_pb_min,
   advs_pb_max)
 
-var_labels(advs_f) <- advs_label
+formatable::var_labels(advs_f) <- advs_label
 
 advs_f <- advs_f %>% mutate(AVISIT = droplevels(AVISIT))
 

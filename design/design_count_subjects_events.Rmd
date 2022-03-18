@@ -370,7 +370,7 @@ Cons:
 ```{r, smq_stack}
 stack_df_by_smq <- function(df, smq, flag_var = "SMQ") {
 
-  df_labels <- c(var_labels(df), "MedDRA Query")
+  df_labels <- c(formatable::var_labels(df), "MedDRA Query")
   l_df <- lapply(smq, function(ae_grp){
 
     keep <- df[[ae_grp]]!= "<Missing>"
@@ -382,7 +382,7 @@ stack_df_by_smq <- function(df, smq, flag_var = "SMQ") {
   result <- do.call(rbind, l_df)
   
   result[[flag_var]] <- factor(result[[flag_var]], levels = smq) # so missing levels are added
-  var_labels(result) <- df_labels
+  formatable::var_labels(result) <- df_labels
   result
 }
 
@@ -518,7 +518,7 @@ lyt_adae <- basic_table() %>%
   count_occurrences("WTOXGR", .indent_mods = 1L) %>%
   count_patients_with_flags(
     "USUBJID",
-    flag_variables = var_labels(adae[, "fl_ser"])
+    flag_variables = formatable::var_labels(adae[, "fl_ser"])
   ) %>%
   count_occurrences("AEOUT", denom = "n", .indent_mods = 1L)
 ```

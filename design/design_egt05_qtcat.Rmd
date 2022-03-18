@@ -41,7 +41,7 @@ library(dplyr)
 ```{r data peprocessing}
 adsl <- radsl(cached = TRUE)
 adeg <- radeg(cached = TRUE)
-adeg_labels <- var_labels(adeg)
+adeg_labels <- formatable::var_labels(adeg)
 
 adeg_f <- adeg %>%
   filter(PARAMCD == "QT" & # Filtering QT Duration
@@ -74,7 +74,7 @@ adeg_f$CHGCAT1 <- factor(adeg_f$CHGCAT1,
                             ">60 msec"
                             ))
 
-var_labels(adeg_f) <- c(adeg_labels, "AVALCAT1" = "Value at Visit", "CHGCAT1" = "Change from Baseline")
+formatable::var_labels(adeg_f) <- c(adeg_labels, "AVALCAT1" = "Value at Visit", "CHGCAT1" = "Change from Baseline")
 ```
 
 ### Functions 

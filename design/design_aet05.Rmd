@@ -84,10 +84,10 @@ s_adjusted_rate <- function(
   )
 
   list(
-    person_years = with_label(person_years, "Total patient-years at risk"),
-    num_events = with_label(num_events, "Number of adverse events observed"),
-    rate = with_label(rate, paste("AE rate per", time_unit, "patient-years")),
-    rate_ci = with_label(rate_ci, f_conf_level(conf_level))
+    person_years = formatable::with_label(person_years, "Total patient-years at risk"),
+    num_events = formatable::with_label(num_events, "Number of adverse events observed"),
+    rate = formatable::with_label(rate, paste("AE rate per", time_unit, "patient-years")),
+    rate_ci = formatable::with_label(rate_ci, f_conf_level(conf_level))
   )
 
 }

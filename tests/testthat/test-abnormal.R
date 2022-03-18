@@ -23,14 +23,14 @@ testthat::test_that("s_count_abnormal works with healthy input and default argum
   )
 
   expected_result <- split(numeric(0), as.factor(c("low", "high")))
-  expected_result[["low"]] <- with_label(
+  expected_result[["low"]] <- formatable::with_label(
     label = "low",
     c(
       num = 1L, # Patient 1 had LOW during treatment.
       denom = 2L # Both patients 1 and 2 have post-baseline assessments.
     )
   )
-  expected_result[["high"]] <- with_label(
+  expected_result[["high"]] <- formatable::with_label(
     label = "high",
     c(
       num = 1L, # Patient 2 had HIGH during treatment.
@@ -65,14 +65,14 @@ testthat::test_that("s_count_abnormal works when excluding patients with abnorma
     exclude_base_abn = TRUE
   )
   expected_result <- split(numeric(0), as.factor(c("low", "high")))
-  expected_result[["low"]] <- with_label(
+  expected_result[["low"]] <- formatable::with_label(
     label = "low",
     c(
       num = 1L, # Patient 1 had LOW during treatment.
       denom = 2L # Both patients 1 and 2 have post-baseline assessments.
     )
   )
-  expected_result[["high"]] <- with_label(
+  expected_result[["high"]] <- formatable::with_label(
     label = "high",
     c(
       num = 1L, # Patient 3 had HIGH during treatment.
@@ -110,14 +110,14 @@ testthat::test_that("s_count_abnormal also works with tibble and custom argument
   )
 
   expected_result <- split(numeric(0), as.factor(c("low", "high")))
-  expected_result[["low"]] <- with_label(
+  expected_result[["low"]] <- formatable::with_label(
     label = "low",
     c(
       num = 0L, # Patient 1 is removed due to baseline being abnormal.
       denom = 1L # Only patients 2 has post-baseline assessments.
     )
   )
-  expected_result[["high"]] <- with_label(
+  expected_result[["high"]] <- formatable::with_label(
     label = "high",
     c(
       num = 0L, # Patient 2 is removed due to baseline being abnormal.
@@ -246,14 +246,14 @@ testthat::test_that("s_count_abnormal works with healthy input and grouped abnor
   )
 
   expected_result <- split(numeric(0), as.factor(c("low", "high")))
-  expected_result[["low"]] <- with_label(
+  expected_result[["low"]] <- formatable::with_label(
     label = "low",
     c(
       num = 2L, # Patient 1 and 3 had LOW during treatment.
       denom = 4L # Both patients 1, 2, 3 and 4 have post-baseline assessments.
     )
   )
-  expected_result[["high"]] <- with_label(
+  expected_result[["high"]] <- formatable::with_label(
     label = "high",
     c(
       num = 2L, # Patient 2 and 4 had HIGH during treatment.

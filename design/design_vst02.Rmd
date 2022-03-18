@@ -67,7 +67,7 @@ This design does not imitate the above STREAM template exactly. We cannot have a
 ```{r data peprocessing}
 adsl <- radsl(cached = TRUE)
 advs <- radvs(cached = TRUE)
-advs_label <- var_labels(advs)
+advs_label <- formatable::var_labels(advs)
 
 # This table intends to only provide during treatment abnormalities.
 # Hence, we keep treatment abnormalities only and remove baseline/screening abnormalities.

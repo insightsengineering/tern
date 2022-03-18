@@ -57,7 +57,7 @@ NULL
 #'     RACE = factor(RACE),
 #'     SEX = factor(SEX)
 #'   )
-#' var_labels(adrs_f) <- c(var_labels(adrs), Response = "Response")
+#' formatable::var_labels(adrs_f) <- c(formatable::var_labels(adrs), Response = "Response")
 #' mod1 <- fit_logistic(
 #'   data = adrs_f,
 #'   variables = list(

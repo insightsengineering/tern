@@ -120,7 +120,7 @@ s_count_abnormal <- function(df,
     num_select <- (df[[.var]] %in% abn) & denom_select
     num <- length(unique(df[num_select, variables$id, drop = TRUE]))
 
-    with_label(c(num = num, denom = denom), abn_name)
+    formatable::with_label(c(num = num, denom = denom), abn_name)
   }
 
   # This will define the abnormal levels theoretically possible for a specific lab parameter

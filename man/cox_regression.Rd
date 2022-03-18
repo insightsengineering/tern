@@ -204,7 +204,7 @@ dta_bladder <- with(
   )
 )
 labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
-var_labels(dta_bladder)[names(labels)] <- labels
+formatable::var_labels(dta_bladder)[names(labels)] <- labels
 dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 plot(

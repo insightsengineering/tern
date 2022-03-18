@@ -70,11 +70,11 @@ testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
   )
 
   expected <- list(count_fraction = list(
-    `1` = with_label(c(count = 14, fraction = 0.1044776), "1"),
-    `2` = with_label(c(count = 13, fraction = 0.09701493), "2"),
-    `3` = with_label(c(count = 20, fraction = 0.1492537), "3"),
-    `4` = with_label(c(count = 7, fraction = 0.05223881), "4"),
-    Any = with_label(c(count = 54, fraction = 0.4029851), "Any")
+    `1` = formatable::with_label(c(count = 14, fraction = 0.1044776), "1"),
+    `2` = formatable::with_label(c(count = 13, fraction = 0.09701493), "2"),
+    `3` = formatable::with_label(c(count = 20, fraction = 0.1492537), "3"),
+    `4` = formatable::with_label(c(count = 7, fraction = 0.05223881), "4"),
+    Any = formatable::with_label(c(count = 54, fraction = 0.4029851), "Any")
   ))
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })

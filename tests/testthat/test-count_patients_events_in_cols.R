@@ -19,10 +19,10 @@ testthat::test_that("s_count_patients_and_multiple_events works as expected", {
     )
   )
   expected <- list(
-    unique = with_label(4, "counts"),
-    all = with_label(7, "counts"),
-    serious = with_label(7, "counts"),
-    fatal = with_label(4, "counts")
+    unique = formatable::with_label(4, "counts"),
+    all = formatable::with_label(7, "counts"),
+    serious = formatable::with_label(7, "counts"),
+    fatal = formatable::with_label(4, "counts")
   )
   testthat::expect_equal(result, expected)
 })
@@ -39,10 +39,10 @@ testthat::test_that("s_count_patients_and_multiple_events can have empty stats i
     empty_stats = c("all", "serious")
   )
   expected <- list(
-    unique = with_label(4, "counts"),
-    all = with_label(character(), "counts"),
-    serious = with_label(character(), "counts"),
-    fatal = with_label(4, "counts")
+    unique = formatable::with_label(4, "counts"),
+    all = formatable::with_label(character(), "counts"),
+    serious = formatable::with_label(character(), "counts"),
+    fatal = formatable::with_label(4, "counts")
   )
   testthat::expect_equal(result, expected)
 })
@@ -52,7 +52,7 @@ testthat::test_that("summarize_patients_events_in_cols works well with default a
   result <- basic_table() %>%
     summarize_patients_events_in_cols(
       filters_list = list(
-        related = with_label(c(AEREL = "Y"), "Events (Related)"),
+        related = formatable::with_label(c(AEREL = "Y"), "Events (Related)"),
         fatal = c(AESDTH = "Y"),
         fatal_related = c(AEREL = "Y", AESDTH = "Y")
       )
@@ -76,7 +76,7 @@ testthat::test_that("summarize_patients_events_in_cols works well with custom ar
   result <- basic_table() %>%
     summarize_patients_events_in_cols(
       filters_list = list(
-        related = with_label(c(AEREL = "Y"), "Events (Related)"),
+        related = formatable::with_label(c(AEREL = "Y"), "Events (Related)"),
         fatal = c(AESDTH = "Y"),
         fatal_related = c(AEREL = "Y", AESDTH = "Y")
       ),

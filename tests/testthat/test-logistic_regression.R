@@ -5,12 +5,12 @@ library(dplyr)
 adsl_cached <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adsl_cached <- adsl_cached %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(var_labels(adsl_cached))
+  reapply_varlabels(formatable::var_labels(adsl_cached))
 
 adrs_cached <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 adrs_cached <- adrs_cached %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(var_labels(adrs_cached))
+  reapply_varlabels(formatable::var_labels(adrs_cached))
 
 adrs_example <- local({
   adrs_cached %>%
@@ -19,7 +19,7 @@ adrs_example <- local({
       RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
     ) %>%
     dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
-    reapply_varlabels(var_labels(adrs_cached))
+    reapply_varlabels(formatable::var_labels(adrs_cached))
 })
 
 # fit_logistic ----

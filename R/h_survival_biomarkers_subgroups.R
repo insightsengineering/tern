@@ -18,7 +18,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- var_labels(adtte, fill = FALSE)
+#' adtte_labels <- formatable::var_labels(adtte, fill = FALSE)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(PARAMCD == "OS") %>%
@@ -27,7 +27,7 @@
 #'     is_event = CNSR == 0
 #'   )
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
-#' var_labels(adtte_f)[names(labels)] <- labels
+#' formatable::var_labels(adtte_f)[names(labels)] <- labels
 #'
 NULL
 

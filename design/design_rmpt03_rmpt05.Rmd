@@ -96,9 +96,12 @@ s_count_patients_exposure_in_cols <- function(df, #nolint
     "Total patients numbers/person time"
   }
 
-  n_patients <- with_label(s_num_patients_content(df = df, .N_col, .var = id, labelstr = "")$unique, row_label)
+  n_patients <- formatable::with_label(
+    s_num_patients_content(df = df, .N_col, .var = id, labelstr = "")$unique, 
+    row_label
+  )
 
-  sum_exposure <- with_label(sum(df[[.var]]), row_label)
+  sum_exposure <- formatable::with_label(sum(df[[.var]]), row_label)
 
   y <- list(n_patients, sum_exposure)
   names(y) <- c("n_patients", "sum_exposure")
