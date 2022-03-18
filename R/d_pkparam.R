@@ -88,7 +88,7 @@ d_pkparam <- function() {
     "AUCABL", "AUC Above Baseline", "AUC above baseline", "Matrix of PD", "79",
     "AUCAT", "AUC Above Threshold", "AUC above threshold", "Matrix of PD", "80",
     "AUCBBL", "AUC Below Baseline", "AUC below baseline", "Matrix of PD", "81",
-    "AUCBT", "AUC Below Threshold", "AUC be low threshold", "Matrix of PD", "82",
+    "AUCBT", "AUC Below Threshold", "AUC below threshold", "Matrix of PD", "82",
     "AUCBLDIF", "Diff AUC Above Base and AUC Below Base", "AUC diff baseline", "Matrix of PD", "83",
     "AUCTDIF", "Diff AUC Above Thr and AUC Below Thr", "AUCnet threshold", "Matrix of PD", "84",
     "TDIFF", "Diff Time to Offset and Time to Onset", "Diff toffset-tonset", "Matrix of PD", "85",
