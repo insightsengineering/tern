@@ -1,6 +1,6 @@
 #' Generate PK reference dataset
 #' @describeIn Generates a dataframe of the correct order of the PK parameters
-#' @return data.frame of pk parameter dataset
+#' @return dataframe of PK parameters
 #' @export
 #'
 #' @examples
