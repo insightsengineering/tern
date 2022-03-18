@@ -106,7 +106,7 @@ d_pkparam <- function() {
     "R2ADJS2", "R-Squared Adjusted Slope, 2nd Segment", "Rsq adjusted slope2", "Matrix of PD", "97",
     "R2SLP1", "R Squared, Slope, 1st Segment", "Rsq slope1", "Matrix of PD", "98",
     "R2SLP2", "R Squared, Slope, 2nd Segment", "Rsq slope2", "Matrix of PD", "99",
-    "CORRXYS1", "Corr Btw TimeX and Log ConcY, Slope 1st", "Corr xy slope 1", "Plasma/Blood/Serum", "100",
+    "CORRXYS1", "Corr Btw TimeX and Log ConcY, Slope 1st", "Corr xy slope1", "Plasma/Blood/Serum", "100",
     "CORRXYS2", "Corr Btw TimeX and Log ConcY, Slope 1st Slope 2nd", "Corr xy slope2", "Plasma/Blood/Serum", "101"
   ),
   ncol = 5,
