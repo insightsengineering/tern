@@ -1,6 +1,6 @@
 # tern 0.7.6.9069
 
-* Added `d_pkparam` to generate PK paramaeter map for sorting
+* Added `d_pkparam` to generate PK parameter map for sorting
 * Changed the `nudge_y` argument of `h_g_ipp` to be dependent on the data, fixing an issue whereby the baseline labels were offset incorrectly.
 * Move MMRM into a separate package `tern.mmrm`.
 * Some release note
