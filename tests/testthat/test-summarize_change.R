@@ -120,7 +120,10 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       max = c(max = 2),
       cv = c(cv = 47.14045),
       geom_mean = c(geom_mean = 1.414214),
-      geom_mean_ci = formatable::with_label(c(mean_ci_lwr = 0.01729978, mean_ci_upr = 115.60839614), "Geometric Mean 95% CI"),
+      geom_mean_ci = formatable::with_label(
+        c(mean_ci_lwr = 0.01729978, mean_ci_upr = 115.60839614),
+        "Geometric Mean 95% CI"
+      ),
       geom_cv = c(geom_cv = 52.10922)
     ),
     # Here we take the summary of the 2 baseline values.
@@ -146,7 +149,10 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       max = c(max = 4),
       cv = c(cv = 84.85281),
       geom_mean = c(geom_mean = 2),
-      geom_mean_ci = formatable::with_label(c(mean_ci_lwr = 2.992824e-04, mean_ci_upr = 1.336530e+04), "Geometric Mean 95% CI"),
+      geom_mean_ci = formatable::with_label(
+        c(mean_ci_lwr = 2.992824e-04, mean_ci_upr = 1.336530e+04),
+        "Geometric Mean 95% CI"
+      ),
       geom_cv = c(geom_cv = 127.0458)
     )
   )

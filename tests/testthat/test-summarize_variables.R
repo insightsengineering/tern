@@ -125,7 +125,10 @@ testthat::test_that("s_summary returns right results for n = 2", {
     max = c(max = 2),
     cv = c(cv.sd = 47.14045),
     geom_mean = c(geom_mean = 1.414214),
-    geom_mean_ci = formatable::with_label(c(mean_ci_lwr = 0.01729978, mean_ci_upr = 115.60839614), "Geometric Mean 95% CI"),
+    geom_mean_ci = formatable::with_label(
+      c(mean_ci_lwr = 0.01729978, mean_ci_upr = 115.60839614),
+      "Geometric Mean 95% CI"
+    ),
     geom_cv = c(geom_cv = 52.10922)
   )
   testthat::expect_equivalent(result, expected, tolerance = .00001)
