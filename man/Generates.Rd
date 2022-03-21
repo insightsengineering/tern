@@ -7,7 +7,7 @@
 d_pkparam()
 }
 \value{
-data.frame of pk parameter dataset
+dataframe of PK parameters
 }
 \description{
 Generate PK reference dataset
