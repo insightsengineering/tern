@@ -55,7 +55,6 @@ adrs <- adrs %>%
     ARM = forcats::fct_relevel(ARM, "B: Placebo")
   )
 formatable::var_labels(adrs) <- c(adrs_labels, "Response")
-
 ```
 
 ## Objective
@@ -102,7 +101,6 @@ Details: (see GDSR)
 ```{r, helpers}
 
 h_extract_subgroup_or <- function(variables, data) {
-
   assertthat::assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
@@ -116,11 +114,9 @@ h_extract_subgroup_or <- function(variables, data) {
   subset_labels <- formatable::var_labels(data[, variables$subsets], fill = TRUE)
 
   l_result <- lapply(variables$subsets, function(subset_i) {
-
     l_data <- split(data, data[[subset_i]])
 
     l_df <- lapply(l_data, function(df) {
-
       df_comp <- df[df[[arm]] == arm_ref, ]
       df_ref <- df[df[[arm]] != arm_ref, ]
 
@@ -141,29 +137,27 @@ h_extract_subgroup_or <- function(variables, data) {
         .var = rsp,
         .ref_group = df_ref,
         .in_ref_col = FALSE,
-        variables = list(strata = NULL),  # TODO: add strata.
+        variables = list(strata = NULL), # TODO: add strata.
         method = "chisq" # TODO: add flexibility.
       )
 
-    data.frame(
-      arm = " ", # dummy column needed for nested header.
-      n_tot = unname(result_all$n_prop[1]),
-      or = unname(result_odds_ratio$or_ci["est"]),
-      lcl = unname(result_odds_ratio$or_ci["lcl"]),
-      ucl = unname(result_odds_ratio$or_ci["ucl"]),
-      pval = unname(result_test$pval),
-      conf_int = 0.95,
-      stringsAsFactors = FALSE
-    )
-
-  })
+      data.frame(
+        arm = " ", # dummy column needed for nested header.
+        n_tot = unname(result_all$n_prop[1]),
+        or = unname(result_odds_ratio$or_ci["est"]),
+        lcl = unname(result_odds_ratio$or_ci["lcl"]),
+        ucl = unname(result_odds_ratio$or_ci["ucl"]),
+        pval = unname(result_test$pval),
+        conf_int = 0.95,
+        stringsAsFactors = FALSE
+      )
+    })
 
     df <- do.call(rbind, l_df)
     df$row_label <- names(l_df)
     df$var <- subset_i
     df$var_label <- subset_labels[subset_i]
     df
-
   })
   result <- do.call(rbind, l_result)
   row.names(result) <- NULL
@@ -174,7 +168,6 @@ h_extract_subgroup_or <- function(variables, data) {
 h_extract_subgroup_or(variables = list(rsp = "rsp", arm = "ARM", subsets = c("SEX", "BMRKR2")), data = adrs)
 
 h_extract_subgroup_prop <- function(variables, data) {
-
   assertthat::assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
@@ -187,12 +180,10 @@ h_extract_subgroup_prop <- function(variables, data) {
   arm_ref <- levels(data[[arm]])[1]
   subset_labels <- formatable::var_labels(data[, variables$subsets], fill = TRUE)
 
-  l_result <- lapply(variables$subsets, function(subset_i){
-
+  l_result <- lapply(variables$subsets, function(subset_i) {
     l_data <- split(data, data[[subset_i]])
 
     l_df <- lapply(l_data, function(df) {
-
       df_comp <- df[df[[arm]] == arm_ref, ]
       df_ref <- df[df[[arm]] != arm_ref, ]
 
@@ -213,7 +204,6 @@ h_extract_subgroup_prop <- function(variables, data) {
           stringsAsFactors = FALSE
         )
       )
-
     })
 
     df <- do.call(rbind, l_df)
@@ -233,7 +223,6 @@ h_extract_subgroup_prop(variables = list(rsp = "rsp", arm = "ARM", subsets = c("
 
 # Wrapper.
 h_extract_subgroup_rsp <- function(variables, data) {
-
   df_prop <- h_extract_subgroup_prop(variables, data)
   df_or <- h_extract_subgroup_or(variables, data)
 
@@ -254,7 +243,6 @@ l_df
 ```{r, utils}
 # Add custom format.
 format_pct <- function(x, ...) {
-
   attr(x, "label") <- NULL
 
   if (any(is.na(x))) {
@@ -280,7 +268,7 @@ a_subgroup_rsp_list_manual <- list(
     in_rows(.list = as.list(df$n), .labels = as.character(df$row_label), .formats = "xx.")
   },
   rsp = function(df, ...) {
-    #ERROR with .formats = format_pct.
+    # ERROR with .formats = format_pct.
     in_rows(.list = as.list(df$rsp), .labels = as.character(df$row_label), .formats = "xx.x%")
   },
   n_tot = function(df, ...) {
@@ -293,7 +281,6 @@ a_subgroup_rsp_list_manual <- list(
     in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$row_label), .formats = "(xx.xx, xx.xx)")
   }
 )
-
 ```
 
 
@@ -325,7 +312,6 @@ t2
 
 # Test cbind
 cbind_rtables(t1, t2)
-
 ```
 
 Some issues still with `cbind`, below statement gives error.

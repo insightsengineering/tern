@@ -39,9 +39,9 @@ adeg_labels <- formatable::var_labels(ADEG)
 ADEG_f <- subset(
   ADEG,
   PARAMCD == "ECGINTP" & # Analysis in terms of "NORMAL"/"ABNORMAL" (AVALC)
-    SAFFL == "Y"       & # "Safety Population Flag"
-    ONTRTFL == 'Y'     & # "On Treatment Record Flag"
-    WORS02FL == 'Y'      # "Worst Post-Baseline Observation"
+    SAFFL == "Y" & # "Safety Population Flag"
+    ONTRTFL == "Y" & # "On Treatment Record Flag"
+    WORS02FL == "Y" # "Worst Post-Baseline Observation"
 )
 
 
@@ -50,16 +50,18 @@ ADEG_f <- subset(
 # For the EGT04 template, data imputation shoud be avoided, and missing data
 # explicit and accounted for, so the contingency table sum adds up to the group N.
 # For illustration purpose, missing data are added to the example.
-ADEG_f$AVALC[sample(1:nrow(ADEG_f), size = 5)] <- "Missing" 
-ADEG_f$BASEC[sample(1:nrow(ADEG_f), size = 5)] <- "Missing" 
+ADEG_f$AVALC[sample(1:nrow(ADEG_f), size = 5)] <- "Missing"
+ADEG_f$BASEC[sample(1:nrow(ADEG_f), size = 5)] <- "Missing"
 ADEG_f$AVALC <- factor(
-  ADEG_f$AVALC, levels = c("NORMAL", "ABNORMAL", "Missing"),
+  ADEG_f$AVALC,
+  levels = c("NORMAL", "ABNORMAL", "Missing"),
   labels = c("Normal", "Abnormal", "Missing")
-  )
+)
 ADEG_f$BASEC <- factor(
-  ADEG_f$BASEC, levels = c("NORMAL", "ABNORMAL", "Missing"),
+  ADEG_f$BASEC,
+  levels = c("NORMAL", "ABNORMAL", "Missing"),
   labels = c("Normal", "Abnormal", "Missing")
-  )
+)
 
 formatable::var_labels(ADEG_f) <- adeg_labels
 ```
@@ -88,7 +90,7 @@ We can then add a speaking layout creating function, which is parallel to `add_c
 Let's try this out in a simple example.
 
 ``` {r label example}
-basic_table() %>% 
+basic_table() %>%
   split_cols_by("ARM") %>%
   add_colcounts() %>%
   split_rows_by("RACE", split_fun = drop_split_levels) %>%
@@ -126,7 +128,7 @@ Let's try this out in a simple example. We add the row and column counts so that
 the fractions are correct.
 
 ``` {r summary example}
-basic_table() %>% 
+basic_table() %>%
   split_cols_by("ARM") %>%
   add_colcounts() %>%
   split_rows_by("SEX", split_fun = drop_split_levels) %>%
@@ -134,7 +136,7 @@ basic_table() %>%
   summarize_vars("RACE") %>%
   build_table(DM)
 
-basic_table() %>% 
+basic_table() %>%
   split_cols_by("ARM") %>%
   add_colcounts() %>%
   split_rows_by("SEX", split_fun = drop_split_levels) %>%

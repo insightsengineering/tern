@@ -92,8 +92,7 @@ s_count_abnormal <- function(df,
                              .var,
                              abnormal = list(Low = "LOW", High = "HIGH"),
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
-                             exclude_base_abn = FALSE
-) {
+                             exclude_base_abn = FALSE) {
 
   # Assertions for abnormal
   checkmate::assert_list(abnormal, types = "character", len = 2)
@@ -131,7 +130,6 @@ s_count_abnormal <- function(df,
   result <- sapply(names(abnormal_lev), function(i) count_abnormal_single(i, abnormal_lev[[i]]), simplify = FALSE)
   result <- list(fraction = result)
   result
-
 }
 
 # Test it out.
@@ -171,7 +169,6 @@ count_abnormal <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
-
   afun <- make_afun(
     a_count_abnormal,
     .stats = .stats,
@@ -185,14 +182,13 @@ count_abnormal <- function(lyt,
   )
 
   analyze(
-      lyt = lyt,
-      vars = var,
-      afun = afun,
-      table_names = table_names,
-      extra_args = list(...),
-      show_labels = "hidden"
-    )
-
+    lyt = lyt,
+    vars = var,
+    afun = afun,
+    table_names = table_names,
+    extra_args = list(...),
+    show_labels = "hidden"
+  )
 }
 ```
 
@@ -227,7 +223,6 @@ basic_table() %>%
     exclude_base_abn = TRUE
   ) %>%
   build_table(df = adlb, alt_counts_df = adsl)
-
 ```
 
 Despite the fact that we drop split levels, there might be still some "0" records in the leafs of the tree as they come from count_abnormal.
@@ -256,7 +251,6 @@ build_table(lyt = lyt_no0, df = adlb_no_ALT_LN, alt_counts_df = adsl) # whole AL
 build_table(lyt = lyt_no0, df = adlb_no_IGA_NH, alt_counts_df = adsl) # whole IMMUNOLOGY dropped due to drop_split_levels LBCAT and CHEMISTRY/ALT/HIGH due to trim_levels_in_group # nolint
 build_table(lyt = lyt_no0, df = adlb_no_ALT_LH, alt_counts_df = adsl) # FAILS at count_abnormal as there are only normal levels (no abnormal) # nolint
 build_table(lyt = lyt_no0, df = adlb_no_ALT_NH, alt_counts_df = adsl) # no CHEMISTRY/ALT/HIGH, IMMUNOLOGY/IGA/LOW due to trim_levels_in_group # nolint
-
 ```
 
 # Metadata map layout
@@ -285,7 +279,7 @@ map
 lyt_map <- basic_table() %>%
   split_rows_by("LBCAT", split_fun = drop_split_levels) %>%
   split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map)) %>%
-  #analyze("ANRIND") %>%
+  # analyze("ANRIND") %>%
   count_abnormal(
     var = "ANRIND",
     abnormal = list(Low = "LOW", High = "HIGH"),
@@ -307,7 +301,7 @@ map_no_ALT
 lyt_map_no_ALT <- basic_table() %>% # nolint
   split_rows_by("LBCAT", split_fun = drop_split_levels) %>%
   split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map_no_ALT)) %>%
-  #analyze("ANRIND") %>%
+  # analyze("ANRIND") %>%
   count_abnormal(
     var = "ANRIND",
     abnormal = list(Low = "LOW", High = "HIGH"),
@@ -328,7 +322,7 @@ map_ALT_H$ANRIND[map$PARAMCD == "ALT" & map$ANRIND == "LOW"] <- "HIGH"
 lyt_map_ALT_H <- basic_table() %>% # nolint
   split_rows_by("LBCAT", split_fun = drop_split_levels) %>%
   split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map_ALT_H)) %>%
-  #analyze("ANRIND") %>%
+  # analyze("ANRIND") %>%
   count_abnormal(
     var = "ANRIND",
     abnormal = list(Low = "LOW", High = "HIGH"),

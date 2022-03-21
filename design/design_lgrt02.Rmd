@@ -52,7 +52,7 @@ fit_logistic <- function(data,
                            covariates = NULL,
                            interaction = NULL,
                            strata = NULL
-                         )){
+                         )) {
   response <- variables$response
   arm <- variables$arm
   covariates <- variables$covariates
@@ -83,10 +83,10 @@ fit_logistic <- function(data,
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "RACE"),
-   interaction = NULL
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = NULL
   )
 )
 model_glm
@@ -144,24 +144,23 @@ simple_term_extract <- function(x, glm_mod) {
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "RACE"),
-   interaction = NULL
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = NULL
   )
 )
 simple_term_extract("RACE", model_glm)
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "RACE"),
-   interaction = "RACE"
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = "RACE"
   )
 )
 simple_term_extract("AGE", model_glm)
-
 ```
 
 
@@ -176,7 +175,7 @@ interaction_extract <- function(x, glm_mod) {
     identical(x, terms_name[which(!terms_name %in% names(xs_class))])
   )
   vars <- unlist(strsplit(x, ":"))
-    # Only take two-way interaction
+  # Only take two-way interaction
   assertthat::assert_that(
     length(vars) == 2,
     # Only consider simple case: first variable in interaction is arm, a categorical variable
@@ -222,10 +221,10 @@ interaction_extract <- function(x, glm_mod) {
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "RACE"),
-   interaction = "RACE"
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = "RACE"
   )
 )
 interaction_extract("ARMCD:RACE", model_glm)
@@ -233,10 +232,10 @@ interaction_extract("ARMCD:RACE", model_glm)
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "RACE"),
-   interaction = "AGE"
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = "AGE"
   )
 )
 interaction_extract("ARMCD:AGE", model_glm)
@@ -273,10 +272,10 @@ h_logistic_simple_terms <- function(x, glm_mod, conf_level = 0.95) {
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "RACE"),
-   interaction = NULL
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = NULL
   )
 )
 
@@ -287,10 +286,10 @@ h_logistic_simple_terms(c("RACE", "AGE"), model_glm)
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "RACE"),
-   interaction = "AGE"
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = "AGE"
   )
 )
 
@@ -318,10 +317,10 @@ tidy.glm <- function(glm_mod, conf_level = 0.95) {
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "RACE"),
-   interaction = NULL
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = NULL
   )
 )
 tidy(model_glm)
@@ -337,7 +336,7 @@ s_logistic <- function(df, .var) {
   df$term <- as.character(df$term)
   y <- split(df, f = factor(df$term, df$term), drop = FALSE)
   y <- setNames(y, nm = rep(.var, length(y)))
-  if(nrow(df) == 0) {
+  if (nrow(df) == 0) {
     setNames(list(character()), "estimate")
   } else {
     lapply(y, function(x) {
@@ -354,14 +353,16 @@ s_logistic(tidy(model_glm)[0, ], .var = "ci")
 ```{r}
 summarize_logistic <- function(lyt,
                                conf_level,
-                               vars = c("df","estimate",
-                                        "std.error", "odds_ratio",
-                                        "ci", "pvalue")) {
+                               vars = c(
+                                 "df", "estimate",
+                                 "std.error", "odds_ratio",
+                                 "ci", "pvalue"
+                               )) {
   afun_list <- Map(
     function(stat, format) {
       make_afun(s_logistic, .stats = stat, .formats = format, .ungroup_stats = stat)
     },
-    stat = c("df","estimate", "std.error", "odds_ratio", "ci", "pvalue"),
+    stat = c("df", "estimate", "std.error", "odds_ratio", "ci", "pvalue"),
     format = c(
       df = "xx", estimate = "xx.xxx", std.error = "xx.xxx",
       odds_ratio = "xx.xx", ci = "(xx.xx, xx.xx)", pvalue = "x.xxxx | (<0.0001)"
@@ -383,10 +384,10 @@ summarize_logistic <- function(lyt,
 model_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "RACE"),
-   interaction = NULL
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = NULL
   )
 )
 df <- tidy(model_glm)
@@ -394,7 +395,7 @@ df$variable <- factor(df$variable)
 df$term <- factor(df$term, df$term)
 result <- basic_table() %>%
   split_rows_by("variable") %>%
-  split_rows_by("term", split_fun = drop_split_levels ) %>%
+  split_rows_by("term", split_fun = drop_split_levels) %>%
   summarize_logistic(conf_level = .95) %>%
   build_table(df = df)
 result

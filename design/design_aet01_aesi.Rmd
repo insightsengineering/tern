@@ -53,7 +53,7 @@ adae <- filter(adae, (!is.na(AEBODSYS) | !is.na(AEDECOD)) & ANL01FL == "Y" & SAF
 adae <- df_explicit_na(adae)
 adsl <- df_explicit_na(adsl)
 
-#variables not in rcd ADAE: AECONTRT
+# variables not in rcd ADAE: AECONTRT
 
 adae <- adae %>%
   mutate(
@@ -69,7 +69,6 @@ adae <- adae %>%
     NOT_RESOLVED_WD = WD == TRUE & AEOUT != "RECOVERED/RESOLVED",
     NOT_RESOLVED_DSM = DSM == TRUE & AEOUT != "RECOVERED/RESOLVED",
     NOT_RESOLVED_CONTRT = CONTRT == TRUE & AEOUT != "RECOVERED/RESOLVED",
-
     SERWD = AESER == "Y" & AEACN == "DRUG WITHDRAWN",
     SERCONTRT = AECONTRT == "Y" & AESER == "Y",
     SERDSM = AESER == "Y" & AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
@@ -91,7 +90,6 @@ adae <- adae %>%
     NOT_RESOLVED_WD = "No. of patients with study drug withdrawn due to unresolved or ongoing AE",
     NOT_RESOLVED_DSM = "No. of patients with dose modified/interrupted due to unresolved or ongoing AE",
     NOT_RESOLVED_CONTRT = "No. of patients with treatment received for unresolved or ongoing AE",
-
     SERWD = "No. of patients with study drug withdrawn due to serious AE",
     SERDSM = "No. of patients with dose modified/interrupted due to serious AE",
     SERCONTRT = "No. of patients with treatment received for serious AE",
@@ -129,11 +127,11 @@ adae <- adae %>%
   ) %>%
   mutate(
     WTOXGR = forcats::fct_recode(WTOXGR,
-                                 "Grade 1" = "1",
-                                 "Grade 2" = "2",
-                                 "Grade 3" = "3",
-                                 "Grade 4" = "4",
-                                 "Grade 5 (fatal outcome)" = "5"
+      "Grade 1" = "1",
+      "Grade 2" = "2",
+      "Grade 3" = "3",
+      "Grade 4" = "4",
+      "Grade 5 (fatal outcome)" = "5"
     )
   ) %>%
   var_relabel(
@@ -147,7 +145,7 @@ aesi_vars <- c("WD", "DSM", "CONTRT", "ALL_RESOLVED", "NOT_RESOLVED", "SER", "RE
 ##New function to summarize grades and display labels
 
 ```{r}
-count_occurrences_by_grade_label <- function(lyt, #nolint
+count_occurrences_by_grade_label <- function(lyt, # nolint
                                              var,
                                              var_labels = var,
                                              ...,
@@ -174,7 +172,6 @@ count_occurrences_by_grade_label <- function(lyt, #nolint
     extra_args = list(...)
   )
 }
-
 ```
 
 ## Layout for variables from adae dataset
@@ -208,7 +205,7 @@ result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
 result <- insert_rrow(result_adae, rrow("Total number of patients with at least one AE by worst grade ", ""), at = 3)
 result_adae
 
-#In case of multiple drugs use AEREL1-X, AEACN1-X
+# In case of multiple drugs use AEREL1-X, AEACN1-X
 ```
 
 ##AEs by SMQ

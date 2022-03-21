@@ -42,7 +42,6 @@ packageVersion("rtables")
 Here the main change is that we no longer "fill-in" all the `grade_groups`.
 ```{r, sfun}
 h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
-
   assertthat::assert_that(
     is.list(grade_groups),
     is.list(refs)
@@ -120,25 +119,21 @@ h_append_grade_groups(grade_groups, refs = list("1" = 10, "2" = 5, "3" = 0))
 ```{r}
 s_count_occurrences_by_grade <- function(df,
                                          .var,
-                                         .N_col, #nolint
+                                         .N_col, # nolint
                                          id = "USUBJID",
                                          grade_groups = list(),
                                          remove_single = TRUE,
                                          labelstr = "") {
-
   assertthat::assert_that(
     is_df_with_variables(df, list(grade = .var, id = id)),
     is_valid_factor(df[[.var]])
   )
 
   if (nrow(df) < 1) {
-
     grade_levels <- levels(df[[.var]])
     l_count <- as.list(rep(0, length(grade_levels)))
     names(l_count) <- grade_levels
-
   } else {
-
     assertthat::assert_that(
       is_nonnegative_count(.N_col),
       assertthat::noNA(df[[id]]),
@@ -149,10 +144,8 @@ s_count_occurrences_by_grade <- function(df,
     grade <- df[[.var]]
 
     if (!is.ordered(grade)) {
-
       grade_lbl <- obj_label(grade)
       grade <- formatable::with_label(factor(grade, levels = levels(grade), ordered = TRUE), grade_lbl)
-
     }
 
     df_max <- aggregate(grade ~ id, FUN = max, drop = FALSE)
@@ -168,7 +161,6 @@ s_count_occurrences_by_grade <- function(df,
   list(
     count_fraction = l_count_fraction
   )
-
 }
 
 a_count_occurrences_by_grade <- make_afun(
@@ -241,39 +233,39 @@ df <- data.frame(
 )
 
 df_adsl <- df %>%
- select(USUBJID, ARM) %>%
- unique()
+  select(USUBJID, ARM) %>%
+  unique()
 
 # Grades 3+ are not returned since not observed in the data
- s_count_occurrences_by_grade(
-   droplevels(df),
-   .N_col = 30L, # nolint
-   .var = "AETOXGR",
-   id = "USUBJID",
-   grade_groups = grade_groups
- )
+s_count_occurrences_by_grade(
+  droplevels(df),
+  .N_col = 30L, # nolint
+  .var = "AETOXGR",
+  id = "USUBJID",
+  grade_groups = grade_groups
+)
 
 # Grades 3+ are not returned since not observed in the data
 basic_table() %>%
-   split_cols_by("ARM") %>%
-   add_colcounts() %>%
-   split_rows_by("SOC", split_fun = trim_levels_in_group("AETOXGR")) %>%
-   count_occurrences_by_grade(
-     var = "AETOXGR",
-     grade_groups = grade_groups
-   ) %>%
-   build_table(df, alt_counts_df = df_adsl)
+  split_cols_by("ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("SOC", split_fun = trim_levels_in_group("AETOXGR")) %>%
+  count_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = grade_groups
+  ) %>%
+  build_table(df, alt_counts_df = df_adsl)
 
 # Grades 3+ can be "filled-in" by changing the split function
 basic_table() %>%
-   split_cols_by("ARM") %>%
-   add_colcounts() %>%
-   split_rows_by("SOC") %>%
-   count_occurrences_by_grade(
-     var = "AETOXGR",
-     grade_groups = grade_groups
-   ) %>%
-   build_table(df, alt_counts_df = df_adsl)
+  split_cols_by("ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("SOC") %>%
+  count_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = grade_groups
+  ) %>%
+  build_table(df, alt_counts_df = df_adsl)
 ```
 
 ### check full AET03 layout
@@ -306,7 +298,7 @@ lyt <- basic_table() %>%
     split_fun = split_fun,
     label_pos = "topleft",
     split_label = obj_label(adae$AEBODSYS)
-    ) %>%
+  ) %>%
   tern::summarize_occurrences_by_grade(
     var = "AESEV",
     grade_groups = grade_groups
@@ -319,7 +311,7 @@ lyt <- basic_table() %>%
     split_fun = split_fun,
     label_pos = "topleft",
     split_label = obj_label(adae$AEDECOD)
-    ) %>%
+  ) %>%
   tern::summarize_num_patients(
     var = "USUBJID",
     .stats = "unique",
@@ -328,7 +320,7 @@ lyt <- basic_table() %>%
   tern::count_occurrences_by_grade(
     var = "AESEV",
     .indent_mods = -1L
-    ) %>%
+  ) %>%
   append_varlabels(adae, "AESEV", indent = 2L)
 
 
@@ -336,7 +328,7 @@ result <- lyt %>%
   build_table(
     adae,
     alt_counts_df = adsl
-    ) %>%
+  ) %>%
   trim_rows() %>%
   sort_at_path(
     path = "AEBODSYS",
@@ -377,7 +369,7 @@ lyt <- basic_table() %>%
     split_fun = split_fun,
     label_pos = "topleft",
     split_label = obj_label(adae$AEBODSYS)
-    ) %>%
+  ) %>%
   summarize_occurrences_by_grade(
     var = "AESEV",
     grade_groups = grade_groups
@@ -390,7 +382,7 @@ lyt <- basic_table() %>%
     split_fun = split_fun,
     label_pos = "topleft",
     split_label = obj_label(adae$AEDECOD)
-    ) %>%
+  ) %>%
   summarize_num_patients(
     var = "USUBJID",
     .stats = "unique",
@@ -399,7 +391,7 @@ lyt <- basic_table() %>%
   count_occurrences_by_grade(
     var = "AESEV",
     .indent_mods = -1L
-    ) %>%
+  ) %>%
   append_varlabels(adae, "AESEV", indent = 2L)
 
 
@@ -408,7 +400,7 @@ result <- lyt %>%
   build_table(
     adae,
     alt_counts_df = adsl
-    ) %>%
+  ) %>%
   sort_at_path(
     path = "AEBODSYS",
     scorefun = cont_n_allcols,
@@ -430,7 +422,7 @@ print(end_time - start_time)
 old way
 ```{r}
 start_time <- Sys.time()
-gr_grp <-  list(
+gr_grp <- list(
   "- Any Grade -" = c("1", "2", "3", "4", "5"),
   "Grade 1-2" = c("1", "2"),
   "Grade 3-4" = c("3", "4"),
@@ -500,7 +492,7 @@ print(end_time - start_time)
 new way
 ```{r}
 start_time <- Sys.time()
-gr_grp <-  list(
+gr_grp <- list(
   "- Any Grade -" = c("1", "2", "3", "4", "5"),
   "Grade 1-2" = c("1", "2"),
   "Grade 3-4" = c("3", "4"),

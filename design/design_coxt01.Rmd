@@ -82,6 +82,7 @@ helper function `h_coxph_formulas()` to generate the list of models to fit and
 
 
 ```{r ref.label = c("control_coxuniv", "h_coxph_formulas", "h_coxuniv_extract"), results = "hide", echo = FALSE, eval = TRUE}
+
 ```
 
 * `pval_method`, `ties`, `conf_level` are passed via `control`.
@@ -128,7 +129,6 @@ h_coxuniv <- function(variables,
 }
 #'
 #' @examples
-#'
 dta_test <- data.frame(
   time = c(4, 3, 1, 1, 2, 2, 3), status = c(1, 1, 1, 0, 1, 1, 0),
   x = c(0, 2, 1, 1, 1, 0, 0), y = c(0, 2, 4, 4, 1, 0, 0),
@@ -183,20 +183,25 @@ h_coxuniv_formulas <- function(variables,
 ```{r h_coxph_formulas_example}
 #'
 #' @examples
-#'
 h_coxuniv_formulas(
-  variables = list(time = "time", event = "status", arm = "armcd",
-  covariates = c("X", "y"))
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = c("X", "y")
+  )
 )
 
 h_coxuniv_formulas(
-  variables = list(time = "time", event = "status", arm = "armcd",
-  covariates = c("X", "y"), strata = "SITE")
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = c("X", "y"), strata = "SITE"
+  )
 )
 
 h_coxuniv_formulas(
-  variables = list(time = "time", event = "status", arm = "armcd",
-  covariates = c("X", "y"), strata = "SITE"), interaction = TRUE
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = c("X", "y"), strata = "SITE"
+  ), interaction = TRUE
 )
 ```
 
@@ -215,7 +220,7 @@ control_coxuniv <- function(pval_method = c("wald", "likelihood"),
   assertthat::assert_that(
     is_proportion(conf_level),
     assertthat::is.flag(interaction)
-    )
+  )
 
   list(
     pval_method = pval_method,
@@ -297,7 +302,6 @@ Render the results
 #' @note Not much calculation is done here, it rather prepare the data to
 #'  be used by the layout creating function.
 s_coxreg <- function(df, .var) {
-
   assertthat::assert_that(
     is_df_with_variables(df, list(term = "term", var = .var)),
     is_character_or_factor(df$term)
@@ -318,7 +322,6 @@ s_coxreg <- function(df, .var) {
 
 #'
 #' @examples
-#'
 dta_test <- data.frame(
   time = c(4, 3, 1, 1, 2, 2, 3), status = c(1, 1, 1, 0, 1, 1, 0),
   x = c(0, 2, 1, 1, 1, 0, 0), y = c(0, 2, 4, 4, 1, 0, 0),
@@ -331,7 +334,6 @@ df <- h_coxuniv(
   ), data = dta_test
 )
 s_coxreg(df = subset(df, mod == "Covariate"), .var = "hr")
-
 ```
 
 ```{r fit_coxreg, results = "hide"}
@@ -354,7 +356,6 @@ fit_coxreg <- function(lyt, conf_level) {
 }
 #'
 #' @examples
-#'
 dta_test <- data.frame(
   time = c(4, 3, 1, 1, 2, 2, 3), status = c(1, 1, 1, 0, 1, 1, 0),
   x = c(0, 2, 1, 1, 1, 0, 0), y = c(0, 2, 4, 4, 1, 0, 0),
@@ -391,7 +392,8 @@ expected_matrix <- structure(
     "y", "n", "", "7", "", "7", "7", "HR", "", "0.87", "", "0.39",
     "0.04", "91% CI", "", "(0.2, 6.51)", "", "(0.23, 27.69)", "(0.43, 1517.85)",
     "p.value", "", "0.8878", "", "0.5072", "0.1785"
-  ), .Dim = 6:5
+  ),
+  .Dim = 6:5
 )
 
 expect_identical(result_matrix, expected_matrix)
