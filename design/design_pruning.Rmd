@@ -381,7 +381,7 @@ s_count_grade_per_id <- function(df,
                                  id = "USUBJID") {
 
   assertthat::assert_that(
-    assertthat::(df[, c(.var, id)]),
+    assertthat::noNA(df[, c(.var, id)]),
     is.factor(df[[.var]])
   )
 
