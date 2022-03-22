@@ -112,6 +112,6 @@ d_pkparam <- function() {
   ncol = 5,
   byrow = TRUE
   ))
-  colnames(pk_dataset) <- c("PARMCD", "PARAM", "TLG_display", "Matrix", "TLG_Order")
+  colnames(pk_dataset) <- c("PARAMCD", "PARAM", "TLG_display", "Matrix", "TLG_Order")
   pk_dataset
 }

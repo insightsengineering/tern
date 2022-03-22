@@ -13,19 +13,19 @@
 #' adpp <- adpp %>% mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
 #'
 #' pk_ordered_data <- h_pkparam_sort(adpp)
-
 h_pkparam_sort <- function(pk_data) {
   ordered_pk_data <- d_pkparam()
 
-  #Add the numeric values from ordered_pk_data to pk_data
-  joined_data <-  dplyr::left_join(pk_data, ordered_pk_data, by = "PARAMCD", suffix = c("", ".y")) %>%
+  # Add the numeric values from ordered_pk_data to pk_data
+  joined_data <- dplyr::left_join(pk_data, ordered_pk_data, by = "PARAMCD", suffix = c("", ".y")) %>%
     select(-ends_with(".y"))
 
-  joined_data$TLG_Order <- as.numeric(joined_data$TLG_Order)
+  joined_data$TLG_Order <- as.numeric(joined_data$TLG_Order) # nolint
 
-  #Then order PARAM based on this column
-  joined_data$PARAM <- factor(joined_data$PARAM,
-                              levels = unique(joined_data$PARAM[order(joined_data$TLG_Order)]),
-                              ordered = TRUE)
+  # Then order PARAM based on this column
+  joined_data$PARAM <- factor(joined_data$PARAM, # nolint
+    levels = unique(joined_data$PARAM[order(joined_data$TLG_Order)]),
+    ordered = TRUE
+  )
   joined_data
 }
