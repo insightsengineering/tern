@@ -6,6 +6,9 @@
 \usage{
 h_pkparam_sort(pk_data)
 }
+\arguments{
+\item{pk_data}{(\code{data.frame})\cr Pharmacokinetics dataframe}
+}
 \value{
 dataframe with PK PARAM variable ordered
 }
