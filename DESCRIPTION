@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.6.9069
+Version: 0.7.6.9070
 Date: 2022-01-27
 Authors@R: c(
     person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre")),
@@ -59,7 +59,7 @@ Suggests:
     lattice,
     rmarkdown,
     scda (>= 0.1.2),
-    scda.2021 (>= 0.1.2),
+    scda.2022,
     testthat (>= 2.0)
 VignetteBuilder:
     knitr
@@ -93,6 +93,7 @@ Collate:
     'count_values.R'
     'cox_regression.R'
     'coxph.R'
+    'd_pkparam.R'
     'decorate_grob.R'
     'deprec-fit_mmrm.R'
     'deprec-g_mmrm.R'

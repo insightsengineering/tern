@@ -15,20 +15,17 @@
 #' pk_ordered_data <- h_pkparam_sort(adpp)
 
 h_pkparam_sort <- function(pk_data) {
-  #ordered_pk_data <- d_pkparam()
-  ordered_pk_data <- pk_dataset
-
-  pk_data <- pk_data %>% mutate(PARAM = factor(PARAM, levels = ))
-
-  #Change the variable names of the ordered_pk_data to match pk_data
-  colnames(ordered_pk_data) <- c("PARAMCD", "PARAM", "TLG display", "Matrix", "TLG Order")
+  ordered_pk_data <- d_pkparam()
 
   #Add the numeric values from ordered_pk_data to pk_data
-  joined_data <-  dplyr::left_join(pk_data, ordered_pk_data, by = "PARAMCD", suffix = c("", ".y")) %>% select(-ends_with(".y"))
-  joined_data$`TLG Order` <- as.numeric(joined_data$`TLG Order`)
+  joined_data <-  dplyr::left_join(pk_data, ordered_pk_data, by = "PARAMCD", suffix = c("", ".y")) %>%
+    select(-ends_with(".y"))
+
+  joined_data$TLG_Order <- as.numeric(joined_data$TLG_Order)
 
   #Then order PARAM based on this column
-  joined_data$PARAM <- factor(joined_data$PARAM, levels = unique(joined_data$PARAM[order(joined_data$`TLG Order`)]), ordered = TRUE)
-
+  joined_data$PARAM <- factor(joined_data$PARAM,
+                              levels = unique(joined_data$PARAM[order(joined_data$TLG_Order)]),
+                              ordered = TRUE)
+  joined_data
 }
-# joined_data <- joined_data %>% select(PARAM, `TLG Order`) %>% head(10)
