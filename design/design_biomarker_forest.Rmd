@@ -109,7 +109,7 @@ library(rtables)
 adtte <- synthetic_cdisc_data("latest")$adtte
 
 # Save variable labels before data processing steps.
-adtte_labels <- var_labels(adtte)
+adtte_labels <- formatable::var_labels(adtte)
 
 adtte_f <- adtte %>%
   filter(
@@ -241,11 +241,11 @@ h_coxreg_mult_cont_df <- function(variables,
 
   checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(control, names = "named")
-  
+
   # If there is any data, run model, otherwise return empty results.
   result_df <- if (nrow(data) > 0) {
     bm_cols <- match(variables$biomarkers, names(data))
-    data_constant <- data[, - bm_cols]
+    data_constant <- data[, -bm_cols]
     l_result <- lapply(variables$biomarkers, function(bm) {
       data <- droplevels(na.omit(cbind(
         data_constant,
@@ -268,7 +268,7 @@ h_coxreg_mult_cont_df <- function(variables,
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
-        biomarker_label = var_labels(data[bm], fill = TRUE),
+        biomarker_label = formatable::var_labels(data[bm], fill = TRUE),
         n_tot = nrow(data),
         n_tot_events = sum(data$is_event),
         median = as.numeric(median),
@@ -285,7 +285,7 @@ h_coxreg_mult_cont_df <- function(variables,
   } else {
     data.frame(
       biomarker = variables$biomarkers,
-      biomarker_label = var_labels(data[variables$biomarkers], fill = TRUE),
+      biomarker_label = formatable::var_labels(data[variables$biomarkers], fill = TRUE),
       n_tot = 0L,
       n_tot_events = 0L,
       hr = NA,
@@ -425,9 +425,8 @@ tabulate_survival_biomarkers <- function(lyt,
                                          df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {
-
   conf_level <- df$conf_level[1]
-  method <-  df$pval_label[1]
+  method <- df$pval_label[1]
 
   afun_lst <- a_survival_subgroups()[vars]
   colvars <- tern:::d_survival_subgroups_colvars(

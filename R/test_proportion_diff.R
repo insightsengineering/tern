@@ -206,7 +206,7 @@ s_test_proportion_diff <- function(df,
     )
   }
 
-  y$pval <- with_label(y$pval, d_test_proportion_diff(method))
+  y$pval <- formatable::with_label(y$pval, d_test_proportion_diff(method))
   y
 }
 

@@ -19,7 +19,7 @@ library(checkmate)
 adtte <- ex_adtte %>%
   filter(
     PARAMCD == "OS"
-    ) %>%
+  ) %>%
   mutate(
     AVAL = day2month(AVAL),
     AVALU = "Months",
@@ -28,11 +28,13 @@ adtte <- ex_adtte %>%
       ARM,
       CTRL = c("B: Placebo"),
       TRT = c("A: Drug X", "C: Combination")
-      ),
+    ),
     ARM_BIN = droplevels(forcats::fct_relevel(ARM_BIN, "CTRL"))
   ) %>%
-  var_relabel(BEP01FL = "BEP",
-              BMRKR2 = "Biomarker (Categorical)")
+  var_relabel(
+    BEP01FL = "BEP",
+    BMRKR2 = "Biomarker (Categorical)"
+  )
 ```
 
 ## Idea
@@ -56,7 +58,7 @@ tbl <- extract_survival_subgroups(
   variables = list(
     ...,
     subgroups = c("BEP01FL", "BMRKR2")
-    ),
+  ),
   groups_lists = list(BMRKR2 = bmrkr2_groups),
   ...
 )
@@ -82,11 +84,10 @@ We can just pass `groups_lists` from top level to helper functions.
 
 ```{r, toplevel}
 extract_survival_subgroups <- function(variables,
-                                        data,
-                                        groups_lists = NULL,
-                                        control = control_coxph(),
-                                        label_all = "All Patients") {
-
+                                       data,
+                                       groups_lists = NULL,
+                                       control = control_coxph(),
+                                       label_all = "All Patients") {
   df_survtime <- h_survtime_subgroups_df(
     variables,
     data,
@@ -114,7 +115,6 @@ h_survtime_subgroups_df <- function(variables,
                                     data,
                                     groups_lists = NULL,
                                     label_all = "All Patients") {
-
   assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
@@ -134,7 +134,7 @@ h_survtime_subgroups_df <- function(variables,
   result_all$row_type <- "content"
 
   # Add Subgroups.
-if (is.null(variables$subgroups)) {
+  if (is.null(variables$subgroups)) {
     result_all
   } else {
     l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
@@ -167,7 +167,6 @@ h_coxph_subgroups_df <- function(variables,
                                  groups_lists = NULL,
                                  control = control_coxph(),
                                  label_all = "All Patients") {
-
   assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
@@ -200,7 +199,6 @@ h_coxph_subgroups_df <- function(variables,
     l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
-
       result <- h_coxph_df(
         tte = grp$df[[variables$tte]],
         is_event = grp$df[[variables$is_event]],
@@ -231,17 +229,16 @@ Here the actual work happens.
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists) {
-
   assertthat::assert_that(
     is_df_with_factors(data, as.list(setNames(subgroups, subgroups)))
   )
   checkmate::assert_character(subgroups, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(groups_lists, null.ok = TRUE, names = "named")
   checkmate::assert_subset(names(groups_lists), subgroups)
-  
-  data_labels <- unname(var_labels(data))
+
+  data_labels <- unname(formatable::var_labels(data))
   df_subgroups <- data[, subgroups, drop = FALSE]
-  subgroup_labels <- var_labels(df_subgroups, fill = TRUE)
+  subgroup_labels <- formatable::var_labels(df_subgroups, fill = TRUE)
 
   l_labels <- Map(function(grp_i, name_i) {
     grp_levels <- if (name_i %in% names(groups_lists)) {
@@ -255,7 +252,6 @@ h_split_by_subgroups <- function(data,
       var_label = unname(subgroup_labels[name_i]),
       stringsAsFactors = FALSE # Rationale is that subgroups may not be unique.
     )
-
   }, df_subgroups, names(df_subgroups))
 
   # Create a dataframe with one row per subgroup.
@@ -272,14 +268,13 @@ h_split_by_subgroups <- function(data,
     }
     df <- data[which_row, ]
     rownames(df) <- NULL
-    var_labels(df) <- data_labels
+    formatable::var_labels(df) <- data_labels
 
     list(
       df = df,
       df_labels = data.frame(row_i, row.names = NULL)
     )
   })
-
 }
 ```
 
@@ -288,12 +283,12 @@ h_split_by_subgroups <- function(data,
 
 ```{r, tryout}
 tbl <- extract_survival_subgroups(
-   variables = list(
+  variables = list(
     tte = "AVAL",
     is_event = "is_event",
     arm = "ARM_BIN",
     subgroups = c("BEP01FL", "BMRKR2")
-    ),
+  ),
   label_all = "ITT",
   data = adtte,
   groups_lists = list(BMRKR2 = bmrkr2_groups)

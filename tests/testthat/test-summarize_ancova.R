@@ -63,10 +63,10 @@ testthat::test_that("s_ancova works with healthy input", {
 
   expected <- list(
     n = 50L,
-    lsmean = with_label(5.717409, "Adjusted Mean"),
-    lsmean_diff = with_label(-0.4374138, "Difference in Adjusted Means"),
-    lsmean_diff_ci = with_label(c(-1.1865544, 0.3117267), "99% CI"),
-    pval = with_label(0.2503574, "p-value")
+    lsmean = formatable::with_label(5.717409, "Adjusted Mean"),
+    lsmean_diff = formatable::with_label(-0.4374138, "Difference in Adjusted Means"),
+    lsmean_diff_ci = formatable::with_label(c(-1.1865544, 0.3117267), "99% CI"),
+    pval = formatable::with_label(0.2503574, "p-value")
   )
 
   testthat::expect_equal(result, expected, tolerance = 0.0000001)

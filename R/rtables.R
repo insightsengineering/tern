@@ -55,7 +55,7 @@ cfun_by_flag <- function(analysis_var,
   function(df, labelstr) {
     row_index <- which(df[[flag_var]])
     x <- unlist_and_blank_na(df[[analysis_var]][row_index])
-    with_label(
+    formatable::with_label(
       rcell(x, format = format),
       labelstr
     )
@@ -312,7 +312,7 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
     is_nonnegative_count(indent)
   )
 
-  lab <- var_labels(df[vars], fill = TRUE)
+  lab <- formatable::var_labels(df[vars], fill = TRUE)
   lab <- paste(lab, collapse = " / ")
   space <- paste(rep(" ", indent * 2), collapse = "")
   lab <- paste0(space, lab)
@@ -329,78 +329,4 @@ rbind_fix <- function(...) {
   } else {
     rbind(...)
   }
-}
-
-#' Extracts dataset and variable labels from a dataset.
-#'
-#' @param data (`data.frame`) table to extract the labels from
-#' @param fill (`logical(1)`) if `TRUE`, the function will return variable names for columns with non-existent labels;
-#'   otherwise will return `NA` for them
-#' @export
-#' @return column labels
-#' @keywords internal
-#'
-var_labels <- function(data, fill = FALSE) {
-  stopifnot(is.data.frame(data))
-  checkmate::assert_flag(fill)
-
-  column_labels <- Map(function(col, colname) {
-    label <- attr(col, "label")
-    if (is.null(label)) {
-      if (fill) {
-        colname
-      } else {
-        NA_character_
-      }
-    } else {
-      if (!checkmate::test_string(label, na.ok = TRUE)) {
-        stop("label for variable ", colname, " is not a character string")
-      }
-      as.vector(label)
-    }
-  }, data, colnames(data))
-  column_labels <- unlist(column_labels, recursive = FALSE, use.names = TRUE)
-
-  column_labels
-}
-
-
-#' Sets column labels of a `data.frame`.
-#'
-#' @param x (`data.frame`) object with columns
-#' @param value (`character`) labels
-#' @return `x`
-#' @export
-#' @examples
-#' var_labels(iris) <- colnames(iris)
-#' @keywords internal
-#'
-`var_labels<-` <- function(x, value) { # nolint
-  checkmate::assert_data_frame(x)
-  checkmate::assert_character(value, len = ncol(x))
-
-  for (i in seq_along(x)) {
-    if (!is.na(value[i])) {
-      attr(x[[i]], "label") <- value[i]
-    }
-  }
-
-  x
-}
-
-
-#' Return an object with a label attribute
-#'
-#' @param x an object
-#' @param label label attribute to to attached to  \code{x}
-#'
-#' @export
-#' @return \code{x} labeled by \code{label}. Note: the exact mechanism of labeling should be
-#' considered an internal implementation detail, but the label will always be retrieved via \code{obj_label}.
-#' @examples
-#' x <- with_label(c(1, 2, 3), label = "Test")
-#' obj_label(x)
-with_label <- function(x, label) {
-  obj_label(x) <- label
-  x
 }

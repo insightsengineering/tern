@@ -47,7 +47,7 @@ library(random.cdisc.data)
 adtte <- radtte(cached = TRUE)
 
 # Save variable labels before data processing steps.
-adtte_labels <- var_labels(adtte)
+adtte_labels <- formatable::var_labels(adtte)
 
 adtte <- adtte %>%
   filter(
@@ -70,7 +70,6 @@ adtte <- adtte %>%
 adtte %>%
   select(USUBJID, ARMCD, AVAL, is_event, SEX, BMRKR2) %>%
   glimpse()
-
 ```
 
 ## Objective
@@ -128,24 +127,21 @@ is_df_with_factors <- function(df, variables) {
 
 # Creata data splits by subgroup.
 h_split_by_subgroups <- function(data, subgroups) {
-
   assertthat::assert_that(
     is_df_with_factors(data, as.list(setNames(subgroups, subgroups)))
   )
   checkmate::assert_character(subgroups, min.len = 1, any.missing = FALSE)
 
   df_subgroups <- data[, subgroups, drop = FALSE]
-  subgroup_labels <- var_labels(df_subgroups, fill = TRUE)
+  subgroup_labels <- formatable::var_labels(df_subgroups, fill = TRUE)
 
   l_labels <- Map(function(grp_i, name_i) {
-
     df_labels <- data.frame(
       subgroup = levels(droplevels(grp_i)),
       var = name_i,
       var_label = unname(subgroup_labels[name_i]),
-      stringsAsFactors = FALSE #rationale: subgroups may not be unique.
+      stringsAsFactors = FALSE # rationale: subgroups may not be unique.
     )
-
   }, df_subgroups, names(df_subgroups))
 
   # Create a data.frame with one row per subgroup.
@@ -154,7 +150,6 @@ h_split_by_subgroups <- function(data, subgroups) {
 
   # Create a list of data subsets.
   lapply(split(df_labels, rownames(df_labels)), function(row_i) {
-
     which_row <- data[[row_i$var]] == row_i$subgroup
     df <- data[which_row, ]
 
@@ -163,21 +158,18 @@ h_split_by_subgroups <- function(data, subgroups) {
       df_labels = data.frame(row_i, row.names = NULL)
     )
   })
-
 }
 
 split_data <- h_split_by_subgroups(
-  data  = adtte %>% select(AVAL, is_event, SEX, BMRKR2),
+  data = adtte %>% select(AVAL, is_event, SEX, BMRKR2),
   subgroups = c("SEX", "BMRKR2")
 )
 str(split_data)
-
 ```
 
 ```{r, helpers_median}
 
 h_survtime_df <- function(tte, is_event, arm) {
-
   checkmate::assert_numeric(tte, min.len = 1, any.missing = FALSE)
   checkmate::assert_logical(is_event, min.len - 1, any.missing = FALSE)
   assertthat::assert_that(
@@ -193,7 +185,6 @@ h_survtime_df <- function(tte, is_event, arm) {
 
   lst_tte <- split(df_tte, arm)
   lst_results <- Map(function(x, arm) {
-
     s_surv <- s_surv_time(x, .var = "tte", is_event = "is_event")
     data.frame(
       arm = arm,
@@ -201,7 +192,6 @@ h_survtime_df <- function(tte, is_event, arm) {
       median = unname(s_surv$median),
       stringsAsFactors = FALSE
     )
-
   }, lst_tte, names(lst_tte))
 
   df <- do.call(rbind, args = c(lst_results, make.row.names = FALSE))
@@ -210,7 +200,6 @@ h_survtime_df <- function(tte, is_event, arm) {
 }
 
 h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients") {
-
   assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
@@ -244,7 +233,6 @@ h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients")
     result_all,
     result_subgroups
   )
-
 }
 
 # Extract median for one group.
@@ -255,12 +243,10 @@ h_survtime_subgroups_df(
   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD", subgroups = c("SEX", "BMRKR2")),
   data = adtte
 )
-
 ```
 
 ```{r, helpers_hr}
 h_coxph_df <- function(tte, is_event, arm, control = control_coxph()) {
-
   checkmate::assert_numeric(tte, min.len = 1, any.missing = FALSE)
   checkmate::assert_logical(is_event, min.len - 1, any.missing = FALSE)
   assertthat::assert_that(
@@ -302,11 +288,9 @@ h_coxph_df <- function(tte, is_event, arm, control = control_coxph()) {
   )
 
   df
-
 }
 
 h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), label_all = "All Patients") {
-
   assertthat::assert_that(
     is.character(variables$tte),
     is.character(variables$is_event),
@@ -332,7 +316,6 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
   # Add Subgroups.
   l_data <- h_split_by_subgroups(data, variables$subgroups)
   l_result <- lapply(l_data, function(grp) {
-
     result <- h_coxph_df(
       tte = grp$df[[variables$tte]],
       is_event = grp$df[[variables$is_event]],
@@ -349,7 +332,6 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
     result_all,
     result_subgroups
   )
-
 }
 
 # Extract HR for one group.
@@ -366,7 +348,6 @@ h_coxph_subgroups_df(
 ```{r, helper_wrapper}
 
 extract_tte_subgroups <- function(variables, data, control = control_coxph(), label_all = "All Patients") {
-
   df_survtime <- h_survtime_subgroups_df(variables, data, label_all = label_all)
   df_hr <- h_coxph_subgroups_df(variables, data, control = control, label_all = label_all)
 
@@ -378,7 +359,6 @@ df <- extract_tte_subgroups(
   data = adtte
 )
 df
-
 ```
 
 
@@ -389,18 +369,17 @@ df
 ```{r, utils}
 
 a_tte_subgroups <- function(.formats = list(
-  n = "xx", median = "xx.x",
-  n_tot = "xx", hr = list(format_extreme_values(2L)),
-  ci = list(format_extreme_values_ci(2L)),
-  pval = "x.xxxx | (<0.0001)")
-) {
-
+                              n = "xx", median = "xx.x",
+                              n_tot = "xx", hr = list(format_extreme_values(2L)),
+                              ci = list(format_extreme_values_ci(2L)),
+                              pval = "x.xxxx | (<0.0001)"
+                            )) {
   assertthat::assert_that(
     is.list(.formats),
     all_elements_in_ref(names(.formats), ref = c("n", "median", "n_tot", "hr", "ci", "pval"))
   )
 
-  afun_lst <- Map(function(stat, fmt){
+  afun_lst <- Map(function(stat, fmt) {
     if (stat == "ci") {
       function(df, labelstr = "", ...) {
         in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)
@@ -419,7 +398,6 @@ a_tte_subgroups <- function(.formats = list(
 }
 
 a_tte_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
-
 ```
 
 ## Description function for layout
@@ -430,7 +408,6 @@ Used to create the table header.
 
 # Helper for table header.
 d_tte_subgroups_colvars <- function(vars, control = control_coxph()) {
-
   assertthat::assert_that(
     is.character(vars),
     all_elements_in_ref(vars, ref = c("n", "median", "n_tot", "hr", "ci", "pval"))
@@ -458,7 +435,6 @@ d_tte_subgroups_colvars <- function(vars, control = control_coxph()) {
   )
 }
 d_tte_subgroups_colvars(vars = c("n_tot", "hr", "ci"))
-
 ```
 
 ## Layout function
@@ -466,11 +442,9 @@ d_tte_subgroups_colvars(vars = c("n_tot", "hr", "ci"))
 Just a small wrapper so users don't need to split summary data.
 
 ```{r, lyt}
-tabulate_tte_subgroups <- function(
-  lyt,
-  vars,
-  control = control_coxph()) {
-
+tabulate_tte_subgroups <- function(lyt,
+                                   vars,
+                                   control = control_coxph()) {
   colvars <- d_tte_subgroups_colvars(vars, control = control)
 
   afun_lst <- a_tte_subgroups()
@@ -497,7 +471,6 @@ tabulate_tte_subgroups <- function(
     varlabels = colvars$labels
   )
   analyze_colvars(lyt = lyt, afun = afun_lst[vars])
-
 }
 ```
 
@@ -520,7 +493,6 @@ tbl_hr <- basic_table() %>%
 
 # Combine tables
 cbind_rtables(tbl_hr[, 1], tbl_survtime, tbl_hr[, 2:3])
-
 ```
 
 ## Work in progress
@@ -541,7 +513,6 @@ df_na <- extract_tte_subgroups(
 )
 
 df_na$survtime
-
 ```
 
 The following results in an error and I'm not sure why.
@@ -549,6 +520,6 @@ The following results in an error and I'm not sure why.
 ```{r, extreme-value2, eval = FALSE}
 
 basic_table() %>%
- tabulate_tte_subgroups(vars = c("n", "median")) %>%
- build_table(df_na$survtime)
+  tabulate_tte_subgroups(vars = c("n", "median")) %>%
+  build_table(df_na$survtime)
 ```

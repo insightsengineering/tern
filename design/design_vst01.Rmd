@@ -41,36 +41,36 @@ library(dplyr)
 ```{r data peprocessing}
 adsl <- radsl(cached = TRUE)
 advs <- radvs(cached = TRUE)
-advs_label <- var_labels(advs)
+advs_label <- formatable::var_labels(advs)
 
 advs <- advs %>%
   filter(PARAMCD == "DIABP" & PARAM == "Diastolic Blood Pressure") %>%
   mutate(PARAMCD = droplevels(PARAMCD), PARAM = droplevels(PARAM))
 
-advs_b <- advs %>% filter(ABLFL == "Y" | ABLFL2 == "Y") 
+advs_b <- advs %>% filter(ABLFL == "Y" | ABLFL2 == "Y")
 N <- table(interaction(advs_b$ABLFL, advs_b$ARM))
 
 # post-baseline
-advs_pb <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y") 
+advs_pb <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y")
 
 advs_pb_max <- advs_pb %>%
   group_by(PARAM, USUBJID) %>%
   arrange(desc(AVAL)) %>%
-  slice(1) %>% 
+  slice(1) %>%
   ungroup() %>%
   mutate(AVISIT = "Post-Baseline Maximum")
 
 advs_pb_min <- advs_pb %>%
   group_by(PARAM, USUBJID) %>%
   arrange(AVAL) %>%
-  slice(1) %>% 
+  slice(1) %>%
   ungroup() %>%
   mutate(AVISIT = "Post-Baseline Minimum")
 
 advs_pb_last <- advs_pb %>%
   group_by(PARAM, USUBJID) %>%
   arrange(desc(AVISITN)) %>%
-  slice(1) %>% 
+  slice(1) %>%
   ungroup() %>%
   mutate(AVISIT = "Post-Baseline Last")
 
@@ -78,12 +78,12 @@ advs_f <- rbind(
   advs,
   advs_pb_last,
   advs_pb_min,
-  advs_pb_max)
+  advs_pb_max
+)
 
-var_labels(advs_f) <- advs_label
+formatable::var_labels(advs_f) <- advs_label
 
 advs_f <- advs_f %>% mutate(AVISIT = droplevels(AVISIT))
-
 ```
 
 ### Functions 
@@ -93,24 +93,23 @@ advs_f <- advs_f %>% mutate(AVISIT = droplevels(AVISIT))
 ```{r}
 library(tern)
 summarize_colvars
-
 ```
 
 #### Default output
 
 ```{r application_02}
 
-result <- basic_table() %>% 
+result <- basic_table() %>%
   split_cols_by("ARM") %>%
   add_colcounts() %>%
-  split_rows_by("AVISIT") %>% 
+  split_rows_by("AVISIT") %>%
   split_cols_by_multivar(
     vars = c("AVAL", "CHG"),
     varlabels = c("Value at Visit", "Change from Baseline")
-  ) %>% 
+  ) %>%
   summarize_colvars(
     .labels = c(range = "Min - Max")
-  ) %>% 
+  ) %>%
   build_table(df = advs_f, col_counts = N)
 result
 ```

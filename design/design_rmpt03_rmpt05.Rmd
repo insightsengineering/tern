@@ -49,10 +49,11 @@ adsl <- haven::read_sas(paste0(pth, "adsl.sas7bdat"))
 adex <- df_explicit_na(adex)
 adsl <- df_explicit_na(adsl)
 
-adex_f <- adex %>% filter(PARAMCD == "TDURD" &
-                            PARCAT2 == "MPDL3280A/PLACEBO INFUSION" &
-                            SAFFL == "Y") %>%
-mutate(SEX = factor(case_when(
+adex_f <- adex %>%
+  filter(PARAMCD == "TDURD" &
+    PARCAT2 == "MPDL3280A/PLACEBO INFUSION" &
+    SAFFL == "Y") %>%
+  mutate(SEX = factor(case_when(
     SEX == "F" ~ "Female",
     SEX == "M" ~ "Male"
   )))
@@ -64,7 +65,6 @@ adsl_f <- adsl %>%
     SEX == "F" ~ "Female",
     SEX == "M" ~ "Male"
   )))
-
 ```
 
 
@@ -72,14 +72,12 @@ adsl_f <- adsl %>%
 
 ```{r}
 
-s_count_patients_exposure_in_cols <- function(df, #nolint
+s_count_patients_exposure_in_cols <- function(df, # nolint
                                               .var = "AVAL",
                                               id = "USUBJID",
                                               labelstr = "",
-                                              .N_col, #nolint
-                                              custom_label = NULL
-) {
-
+                                              .N_col, # nolint
+                                              custom_label = NULL) {
   assertthat::assert_that(
     is.data.frame(df),
     assertthat::is.string(id),
@@ -96,32 +94,34 @@ s_count_patients_exposure_in_cols <- function(df, #nolint
     "Total patients numbers/person time"
   }
 
-  n_patients <- with_label(s_num_patients_content(df = df, .N_col, .var = id, labelstr = "")$unique, row_label)
+  n_patients <- formatable::with_label(
+    s_num_patients_content(df = df, .N_col, .var = id, labelstr = "")$unique,
+    row_label
+  )
 
-  sum_exposure <- with_label(sum(df[[.var]]), row_label)
+  sum_exposure <- formatable::with_label(sum(df[[.var]]), row_label)
 
   y <- list(n_patients, sum_exposure)
   names(y) <- c("n_patients", "sum_exposure")
   y
-
 }
 
 
-summarize_patients_exposure_in_cols <- function(lyt, #nolint
+summarize_patients_exposure_in_cols <- function(lyt, # nolint
                                                 var,
                                                 id = "USUBJID",
                                                 ...,
                                                 .stats = c(
-                                                "n_patients",
-                                                "sum_exposure"
+                                                  "n_patients",
+                                                  "sum_exposure"
                                                 ),
                                                 .formats = NULL,
                                                 .labels = c(
-                                                n_patients = "Patients",
-                                                sum_exposure = "Person time"
-                                              ),
+                                                  n_patients = "Patients",
+                                                  sum_exposure = "Person time"
+                                                ),
                                                 .indent_mods = NULL,
-                                                 col_split = TRUE) {
+                                                col_split = TRUE) {
   afun_list <- Map(
     function(stat) {
       make_afun(
@@ -129,7 +129,6 @@ summarize_patients_exposure_in_cols <- function(lyt, #nolint
         .stats = stat,
         .formats = ifelse(stat == "n_patients", "xx (xx.x%)", "xx")
       )
-
     },
     stat = .stats
   )
@@ -139,7 +138,6 @@ summarize_patients_exposure_in_cols <- function(lyt, #nolint
       lyt = lyt,
       vars = c(var, var),
       varlabels = .labels[.stats]
-
     )
   }
   summarize_row_groups(
@@ -160,7 +158,7 @@ lyt <- basic_table() %>%
   split_cols_by("SEX", split_fun = add_overall_level("Total", first = FALSE)) %>%
   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
   split_rows_by("AGEGR1") %>%
-summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
 
 result <- build_table(lyt, df = adex_f, alt_counts_df = adsl_f)
 
@@ -173,23 +171,25 @@ result
 
 ``` {r}
 colfuns <- list(
-  function(x, .N_col, labelstr) in_rows(" " = rcell( #nolint
-    c(length(unique(x)), length(unique(x)) / .N_col), format = "xx (xx.x%)"
-  )),
+  function(x, .N_col, labelstr) {
+    in_rows(" " = rcell( # nolint
+      c(length(unique(x)), length(unique(x)) / .N_col),
+      format = "xx (xx.x%)"
+    ))
+  },
   function(x, labelstr) in_rows(" " = sum(x), .formats = "xx")
 )
 
 l <- basic_table() %>%
-    split_cols_by("SEX", split_fun = add_overall_level("Total", first = FALSE)) %>%
-    split_cols_by_multivar(c("USUBJID", "AVAL"), varlabels = c("Patients", "Person time")) %>%
-    analyze_colvars(afun = colfuns) %>%
-    split_rows_by("AGEGR1", split_fun = drop_split_levels) %>%
-    analyze_colvars(afun = colfuns)
+  split_cols_by("SEX", split_fun = add_overall_level("Total", first = FALSE)) %>%
+  split_cols_by_multivar(c("USUBJID", "AVAL"), varlabels = c("Patients", "Person time")) %>%
+  analyze_colvars(afun = colfuns) %>%
+  split_rows_by("AGEGR1", split_fun = drop_split_levels) %>%
+  analyze_colvars(afun = colfuns)
 
 result <- build_table(l, df = adex_f, alt_counts_df = adsl_f)
 
 result
-
 ```
 
 ## Full RMPT05 Example
@@ -200,7 +200,7 @@ result
 lyt <- basic_table() %>%
   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
   split_rows_by("RACE") %>%
-summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
 
 result <- build_table(lyt, df = adex_f, alt_counts_df = adsl_f)
 

@@ -102,7 +102,7 @@ df_explicit_na <- function(data,
         xi <- factor(xi, levels = levels_xi)
       }
 
-      data[, x] <- with_label(xi, label = xi_label)
+      data[, x] <- formatable::with_label(xi, label = xi_label)
     }
   }
   return(data)

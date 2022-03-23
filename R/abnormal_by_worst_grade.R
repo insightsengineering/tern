@@ -130,7 +130,7 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
       num <- sum(df[[.var]] != 0)
       fraction <- ifelse(denom == 0, 0, num / denom)
     }
-    result[[lvl]] <- with_label(c(count = num, fraction = fraction), lvl)
+    result[[lvl]] <- formatable::with_label(c(count = num, fraction = fraction), lvl)
   }
 
   result <- list(count_fraction = result)

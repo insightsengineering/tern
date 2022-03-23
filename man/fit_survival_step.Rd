@@ -39,6 +39,7 @@ Note that for the default degree 0 the \code{biomarker} variable is not included
 # Testing dataset with just two treatment arms.
 library(scda)
 library(dplyr)
+library(rtables)
 
 adtte <- synthetic_cdisc_data("latest")$adtte
 
@@ -53,7 +54,7 @@ adtte_f <- adtte \%>\%
     is_event = CNSR == 0
   )
 labels <- c("ARM" = "Treatment Arm", "is_event" = "Event Flag")
-var_labels(adtte_f)[names(labels)] <- labels
+formatable::var_labels(adtte_f)[names(labels)] <- labels
 
 variables <- list(
   arm = "ARM",

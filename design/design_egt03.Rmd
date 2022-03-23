@@ -28,7 +28,6 @@ packageVersion("tern")
 packageVersion("rtables")
 
 library(random.cdisc.data)
-
 ```
 
 ## Shift Table of ECG Interval Data - Baseline versus Minimum Post-Baseline
@@ -42,17 +41,17 @@ set.seed(123, kind = "Mersenne-Twister")
 
 adsl <- radsl(cached = TRUE)
 adeg <- radeg(cached = TRUE)
-adeg_labels <- var_labels(adeg)
+adeg_labels <- formatable::var_labels(adeg)
 
 # Filtering
 # ---------
 adeg_f <- subset(
   adeg,
-  PARAMCD == "HR"  & # Heart Rate
-    SAFFL == "Y"   & # "Safety Population Flag"
+  PARAMCD == "HR" & # Heart Rate
+    SAFFL == "Y" & # "Safety Population Flag"
     ONTRTFL == "Y" & # "On Treatment Record Flag"
-    AVISIT  == "POST-BASELINE MINIMUM" # "Analysis Visit"
-  )
+    AVISIT == "POST-BASELINE MINIMUM" # "Analysis Visit"
+)
 
 
 # Preprocessing
@@ -61,19 +60,21 @@ adeg_f <- subset(
 # explicit and accounted for, so the contingency table sum adds up to the group N.
 # For illustration purpose, missing data are added to the example.
 adeg_f$BNRIND <- factor(
-  adeg_f$BNRIND, levels = c("LOW", "NORMAL", "HIGH", "Missing"),
+  adeg_f$BNRIND,
+  levels = c("LOW", "NORMAL", "HIGH", "Missing"),
   labels = c("LOW", "NORMAL", "HIGH", "Missing")
-  )
+)
 adeg_f$ANRIND <- factor(
-  adeg_f$ANRIND, levels = c("LOW", "NORMAL", "HIGH", "Missing"),
+  adeg_f$ANRIND,
+  levels = c("LOW", "NORMAL", "HIGH", "Missing"),
   labels = c("LOW", "NORMAL", "HIGH", "Missing")
-  )
+)
 
-adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing" 
-adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing" 
+adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
+adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 
 
-var_labels(adeg_f) <- adeg_labels
+formatable::var_labels(adeg_f) <- adeg_labels
 
 lyt <- basic_table() %>%
   split_cols_by("ANRIND") %>%
@@ -94,17 +95,17 @@ set.seed(123, kind = "Mersenne-Twister")
 
 adsl <- radsl(cached = TRUE)
 adeg <- radeg(cached = TRUE)
-adeg_labels <- var_labels(adeg)
+adeg_labels <- formatable::var_labels(adeg)
 
 # Filtering
 # ---------
 adeg_f <- subset(
   adeg,
-  PARAMCD == "HR"  & # Heart Rate
-    SAFFL == "Y"   & # "Safety Population Flag"
+  PARAMCD == "HR" & # Heart Rate
+    SAFFL == "Y" & # "Safety Population Flag"
     ONTRTFL == "Y" & # "On Treatment Record Flag"
-    AVISIT  == "POST-BASELINE MINIMUM" # "Analysis Visit"
-  )
+    AVISIT == "POST-BASELINE MINIMUM" # "Analysis Visit"
+)
 
 
 # Preprocessing
@@ -113,13 +114,14 @@ adeg_f <- subset(
 # explicit and accounted for, so the contingency table sum adds up to the group N.
 # For illustration purpose, missing data are added to the example.
 adeg_f$BNRIND <- factor(
-  adeg_f$BNRIND, levels = c("LOW", "NORMAL", "HIGH", "Missing"),
+  adeg_f$BNRIND,
+  levels = c("LOW", "NORMAL", "HIGH", "Missing"),
   labels = c("LOW", "NORMAL", "HIGH", "Missing")
-  )
+)
 
-adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing" 
+adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 
-var_labels(adeg_f) <- adeg_labels
+formatable::var_labels(adeg_f) <- adeg_labels
 
 lyt <- basic_table() %>%
   split_cols_by("ANRIND") %>%
@@ -139,17 +141,17 @@ set.seed(123, kind = "Mersenne-Twister")
 
 adsl <- radsl(cached = TRUE)
 adeg <- radeg(cached = TRUE)
-adeg_labels <- var_labels(adeg)
+adeg_labels <- formatable::var_labels(adeg)
 
 # Filtering
 # ---------
 adeg_f <- subset(
   adeg,
-  PARAMCD == "HR"  & # Heart Rate
-    SAFFL == "Y"   & # "Safety Population Flag"
+  PARAMCD == "HR" & # Heart Rate
+    SAFFL == "Y" & # "Safety Population Flag"
     ONTRTFL == "Y" & # "On Treatment Record Flag"
-    AVISIT  == "POST-BASELINE MINIMUM" # "Analysis Visit"
-  )
+    AVISIT == "POST-BASELINE MINIMUM" # "Analysis Visit"
+)
 
 
 # Preprocessing
@@ -158,13 +160,14 @@ adeg_f <- subset(
 # explicit and accounted for, so the contingency table sum adds up to the group N.
 # For illustration purpose, missing data are added to the example.
 adeg_f$ANRIND <- factor(
-  adeg_f$ANRIND, levels = c("LOW", "NORMAL", "HIGH", "Missing"),
+  adeg_f$ANRIND,
+  levels = c("LOW", "NORMAL", "HIGH", "Missing"),
   labels = c("LOW", "NORMAL", "HIGH", "Missing")
-  )
+)
 
 adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 
-var_labels(adeg_f) <- adeg_labels
+formatable::var_labels(adeg_f) <- adeg_labels
 
 lyt <- basic_table() %>%
   split_cols_by("ANRIND") %>%
@@ -187,17 +190,17 @@ set.seed(123, kind = "Mersenne-Twister")
 
 adsl <- radsl(cached = TRUE)
 adeg <- radeg(cached = TRUE)
-adeg_labels <- var_labels(adeg)
+adeg_labels <- formatable::var_labels(adeg)
 
 # Filtering
 # ---------
 adeg_f <- subset(
   adeg,
-  PARAMCD == "HR"  & # Heart Rate
-    SAFFL == "Y"   & # "Safety Population Flag"
+  PARAMCD == "HR" & # Heart Rate
+    SAFFL == "Y" & # "Safety Population Flag"
     ONTRTFL == "Y" & # "On Treatment Record Flag"
-    AVISIT  == "POST-BASELINE MAXIMUM" # "Analysis Visit"
-  )
+    AVISIT == "POST-BASELINE MAXIMUM" # "Analysis Visit"
+)
 
 
 # Preprocessing
@@ -206,19 +209,21 @@ adeg_f <- subset(
 # explicit and accounted for, so the contingency table sum adds up to the group N.
 # For illustration purpose, missing data are added to the example.
 adeg_f$BNRIND <- factor(
-  adeg_f$BNRIND, levels = c("LOW", "NORMAL", "HIGH", "Missing"),
+  adeg_f$BNRIND,
+  levels = c("LOW", "NORMAL", "HIGH", "Missing"),
   labels = c("LOW", "NORMAL", "HIGH", "Missing")
-  )
+)
 adeg_f$ANRIND <- factor(
-  adeg_f$ANRIND, levels = c("LOW", "NORMAL", "HIGH", "Missing"),
+  adeg_f$ANRIND,
+  levels = c("LOW", "NORMAL", "HIGH", "Missing"),
   labels = c("LOW", "NORMAL", "HIGH", "Missing")
-  )
+)
 
-adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing" 
-adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing" 
+adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
+adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 
 
-var_labels(adeg_f) <- adeg_labels
+formatable::var_labels(adeg_f) <- adeg_labels
 
 lyt <- basic_table() %>%
   split_cols_by("ANRIND") %>%

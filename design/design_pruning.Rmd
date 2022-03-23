@@ -359,8 +359,8 @@ library(random.cdisc.data)
 adsl <- radsl(cached = TRUE)
 adae <- radae(cached = TRUE)
 
-adae$AEDECOD2 <- as.character(adae$AEDECOD) #nolint
-adae$AEBODSYS2 <- as.character(adae$AEBODSYS) #nolint
+adae$AEDECOD2 <- as.character(adae$AEDECOD) # nolint
+adae$AEBODSYS2 <- as.character(adae$AEBODSYS) # nolint
 
 anl <- adae %>%
   dplyr::filter(AEDECOD %in% c("dcd A.1.1.1.1", "dcd A.1.1.1.2") | AEBODSYS == "cl B.1")
@@ -377,15 +377,14 @@ big_n <- length(unique(anl$USUBJID))
 
 s_count_grade_per_id <- function(df,
                                  .var,
-                                 .N_col, #nolint
+                                 .N_col, # nolint
                                  id = "USUBJID") {
-
   assertthat::assert_that(
-    assertthat::(df[, c(.var, id)]),
+    assertthat::noNA(df[, c(.var, id)]),
     is.factor(df[[.var]])
   )
 
-  id <- df[[id]] #nolint
+  id <- df[[id]] # nolint
   grade <- df[[.var]]
 
   grade <- factor(grade, levels = levels(grade), ordered = TRUE) # needed to take maximum
@@ -398,18 +397,15 @@ s_count_grade_per_id <- function(df,
   list(
     count_percent = l_count_percent
   )
-
 }
 
 s_count_grade_per_id(df, .var = "ATOXGR", .N_col = 10)
 
-s_count_grade_per_id_content <- function(
-  df,
-  labelstr = "",
-  .N_col, # nolint
-  .var,
-  id = "USUBJID") {
-
+s_count_grade_per_id_content <- function(df,
+                                         labelstr = "",
+                                         .N_col, # nolint
+                                         .var,
+                                         id = "USUBJID") {
   assertthat::assert_that(
     is.data.frame(df),
     assertthat::is.string(.var)
@@ -422,7 +418,7 @@ s_count_grade_per_id_content <- function(
     id = id
   )
   any_grade <- sum(vapply(tern:::flatten_list(result), `[[`, i = 1, numeric(1)))
-  any <- list("any" = with_label(c(any_grade, any_grade / .N_col), "- Any Grade -"))
+  any <- list("any" = formatable::with_label(c(any_grade, any_grade / .N_col), "- Any Grade -"))
 
   c(any, grade = unname(result))
 }
@@ -431,7 +427,6 @@ s_count_grade_per_id_content(df, .var = "ATOXGR", .N_col = 10)
 
 
 count_grade_per_id <- function(lyt, vars, ...) {
-
   afun <- tern:::format_wrap_df(
     s_count_grade_per_id,
     indent_mods = c(count_percent = 0L),
@@ -444,7 +439,6 @@ count_grade_per_id <- function(lyt, vars, ...) {
     afun = afun,
     extra_args = list(...)
   )
-
 }
 
 basic_table() %>%
@@ -480,15 +474,12 @@ c_grade_per_id2(
   .var = "ATOXGR"
 )
 
-summarize_grade_per_id <- function(
-  lyt,
-  var,
-  .stats = NULL,
-  .formats = NULL,
-  .indent_mods = NULL,
-  ...
-  ) {
-
+summarize_grade_per_id <- function(lyt,
+                                   var,
+                                   .stats = NULL,
+                                   .formats = NULL,
+                                   .indent_mods = NULL,
+                                   ...) {
   c_grade_per_id_customized <- make_afun(
     c_grade_per_id,
     .stats = .stats,
@@ -499,7 +490,7 @@ summarize_grade_per_id <- function(
         is.null(.stats) || "grade" %in% .stats,
         "grade",
         NULL
-      )# Note that we need to ungroup only here.
+      ) # Note that we need to ungroup only here.
     # Otherwise for the user they could no longer refer to `grade` statistic.
   )
 
@@ -510,7 +501,6 @@ summarize_grade_per_id <- function(
     extra_args = list(...)
   )
 }
-
 ```
 
 

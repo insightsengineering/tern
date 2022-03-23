@@ -224,12 +224,12 @@ s_odds_ratio <- function(df,
     }
   }
 
-  y$or_ci <- with_label(
+  y$or_ci <- formatable::with_label(
     x = y$or_ci,
     label = paste0("Odds Ratio (", 100 * conf_level, "% CI)")
   )
 
-  y$n_tot <- with_label(
+  y$n_tot <- formatable::with_label(
     x = y$n_tot,
     label = "Total n"
   )

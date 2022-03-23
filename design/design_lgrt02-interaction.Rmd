@@ -26,10 +26,10 @@ library(dplyr)
 library(rtables)
 library(assertthat)
 
-ADRS <- radrs(cached = TRUE) #nolint
-adrs_labels <- var_labels(ADRS) #nolint
+ADRS <- radrs(cached = TRUE) # nolint
+adrs_labels <- formatable::var_labels(ADRS) # nolint
 
-ADRS_f <- ADRS %>% #nolint
+ADRS_f <- ADRS %>% # nolint
   dplyr::filter(PARAMCD == "BESRSPI") %>%
   dplyr::filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
   dplyr::mutate(
@@ -38,7 +38,7 @@ ADRS_f <- ADRS %>% #nolint
     SEX = factor(SEX)
   )
 
-var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
+formatable::var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
 ```
 
 Now let's have a look at the interaction table. Basically we need another hierarchy level here in the tidied dataset and the row splits, let's call it "reference" since we are referring to a level or value of the interaction term (either treatment arm or the covariate which is interacting with treatment arm). Then the content rows at the "term" level no longer display odds ratio and CI for that, since that is then shown at the "reference" level.
@@ -56,10 +56,10 @@ We can fit and extract the main and interaction term estimates:
 model_factor_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "SEX"),
-   interaction = "SEX"
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "SEX"),
+    interaction = "SEX"
   )
 )
 glm_simple_term_extract("ARMCD", model_factor_glm)
@@ -69,10 +69,10 @@ glm_interaction_extract("ARMCD:SEX", model_factor_glm)
 model_numeric_glm <- fit_logistic(
   data = ADRS_f,
   variables = list(
-   response = "Response",
-   arm = "ARMCD",
-   covariates = c("AGE", "SEX"),
-   interaction = "AGE"
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "SEX"),
+    interaction = "AGE"
   )
 )
 glm_simple_term_extract("ARMCD", model_numeric_glm)
@@ -93,7 +93,7 @@ The main challenge her is that we also need to account for the covariance betwee
 Let's start simple with a categorical covariate interacting with the treatment arm.
 
 ```{r}
-h_get_interaction_vars <- function(fit_glm) {  # done
+h_get_interaction_vars <- function(fit_glm) { # done
   assertthat::assert_that("glm" %in% class(fit_glm))
   terms_name <- attr(terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
@@ -102,10 +102,9 @@ h_get_interaction_vars <- function(fit_glm) {  # done
 }
 
 h_interaction_coef_name <- function( # done
-  interaction_vars,
-  first_var_with_level,
-  second_var_with_level
-) {
+                                    interaction_vars,
+                                    first_var_with_level,
+                                    second_var_with_level) {
   first_name <- paste(first_var_with_level, collapse = "")
   second_name <- paste(second_var_with_level, collapse = "")
   if (first_var_with_level[1] == interaction_vars[1]) {
@@ -117,11 +116,11 @@ h_interaction_coef_name <- function( # done
   }
 }
 
-h_odds_ratio_categorical_interaction <- function( #done, renamed to h_or_cat_interaction
-  odds_ratio_var,  # name of the variable for which to calculate odds ratios
-  interaction_var,   # name of the interaction variable
-  fit_glm,
-  conf_level = 0.95) {
+h_odds_ratio_categorical_interaction <- function( # done, renamed to h_or_cat_interaction
+                                                 odds_ratio_var, # name of the variable for which to calculate odds ratios
+                                                 interaction_var, # name of the interaction variable
+                                                 fit_glm,
+                                                 conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
   assertthat::assert_that(
     assertthat::is.string(odds_ratio_var),
@@ -177,12 +176,12 @@ h_odds_ratio_categorical_interaction(odds_ratio_var = "SEX", interaction_var = "
 Now we look at a continuous covariate. Here we need an additional argument to specify increments that is either `NULL` in which case we would just look at the median of the interaction variable.
 
 ```{r}
-h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_interaction
-  odds_ratio_var,  # name of the variable for which to calculate odds ratios
-  interaction_var,   # name of the interaction variable
-  fit_glm,
-  interaction_increments = NULL, # optional increments for interaction variable
-  conf_level = 0.95) {
+h_odds_ratio_continuous_interaction <- function( # done, renamed to h_or_cont_interaction
+                                                odds_ratio_var, # name of the variable for which to calculate odds ratios
+                                                interaction_var, # name of the interaction variable
+                                                fit_glm,
+                                                interaction_increments = NULL, # optional increments for interaction variable
+                                                conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
   assertthat::assert_that(
     assertthat::is.string(odds_ratio_var),
@@ -190,7 +189,7 @@ h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_int
     all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
     identical(length(interaction_vars), 2L)
   )
-  
+
   checkmate::assert_numeric(interaction_increments, min.len = 1, null.ok = TRUE, any.missing = FALSE)
 
   xs_level <- fit_glm$xlevels
@@ -198,7 +197,7 @@ h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_int
   xs_vcov <- vcov(fit_glm)
   xs_class <- attr(fit_glm$terms, "dataClasses")
   model_data <- fit_glm$model
-  if (!is.null(interaction_increments)){
+  if (!is.null(interaction_increments)) {
     assertthat::assert_that(
       xs_class[interaction_var] == "numeric"
     )
@@ -276,21 +275,23 @@ h_odds_ratio_continuous_interaction <- function( #done, renamed to h_or_cont_int
 Try it out:
 
 ```{r}
-h_odds_ratio_continuous_interaction(odds_ratio_var = "ARMCD", interaction_var = "AGE",
-                                    interaction_increments = c(20, 30, 40), conf_level = 0.95,
-                                    fit_glm = model_numeric_glm)
+h_odds_ratio_continuous_interaction(
+  odds_ratio_var = "ARMCD", interaction_var = "AGE",
+  interaction_increments = c(20, 30, 40), conf_level = 0.95,
+  fit_glm = model_numeric_glm
+)
 ```
 
 
 ### Wrapper that checks for class
 
 ```{r}
-h_odds_ratio_interaction <- function( #done, renamed to h_or_interaction
-  odds_ratio_var,  # name of the variable for which to calculate odds ratios
-  interaction_var,   # name of the interaction variable
-  fit_glm,
-  conf_level = 0.95,
-  interaction_increments = NULL) {
+h_odds_ratio_interaction <- function( # done, renamed to h_or_interaction
+                                     odds_ratio_var, # name of the variable for which to calculate odds ratios
+                                     interaction_var, # name of the interaction variable
+                                     fit_glm,
+                                     conf_level = 0.95,
+                                     interaction_increments = NULL) {
   xs_class <- attr(fit_glm$terms, "dataClasses")
   ret <- if (any(xs_class[c(odds_ratio_var, interaction_var)] == "numeric")) {
     h_odds_ratio_continuous_interaction(
@@ -308,8 +309,10 @@ h_odds_ratio_interaction <- function( #done, renamed to h_or_interaction
 
 So for example:
 ```{r}
-h_odds_ratio_interaction(odds_ratio_var = "ARMCD", interaction_var = "AGE", model_numeric_glm,
-                         interaction_increments = c(20, 30, 40))
+h_odds_ratio_interaction(
+  odds_ratio_var = "ARMCD", interaction_var = "AGE", model_numeric_glm,
+  interaction_increments = c(20, 30, 40)
+)
 
 h_odds_ratio_interaction(odds_ratio_var = "AGE", interaction_var = "ARMCD", model_numeric_glm)
 ```
@@ -338,7 +341,7 @@ As mentioned above, in our helper function here we will need to produce addition
 We also need to adapt `glm_simple_term_extract` to return the right columns `is_variable_summary` and `is_term_summary`.
 
 ```{r}
-glm_simple_term_extract <- function(x, fit_glm) { #done, renamed to h_glm_simple_term_extract
+glm_simple_term_extract <- function(x, fit_glm) { # done, renamed to h_glm_simple_term_extract
   assertthat::assert_that(
     "glm" %in% class(fit_glm),
     assertthat::is.string(x)
@@ -410,7 +413,7 @@ glm_simple_term_extract("AGE", model_factor_glm)
 Similarly we also need to adapt the interaction extraction function to get the right flag columns in.
 
 ```{r}
-glm_interaction_extract <- function(x, fit_glm) { #done, renamed to h_glm_interaction_extract
+glm_interaction_extract <- function(x, fit_glm) { # done, renamed to h_glm_interaction_extract
   assertthat::assert_that("glm" %in% class(fit_glm))
   terms_name <- attr(terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
@@ -481,7 +484,7 @@ glm_interaction_extract("ARMCD:AGE", model_numeric_glm)
 And finally we need something new as well.
 
 ```{r}
-glm_inter_term_extract <- function(odds_ratio_var, #done, renamed to h_glm_inter_term_extract
+glm_inter_term_extract <- function(odds_ratio_var, # done, renamed to h_glm_inter_term_extract
                                    interaction_var,
                                    fit_glm,
                                    ...) {
@@ -569,21 +572,27 @@ glm_inter_term_extract <- function(odds_ratio_var, #done, renamed to h_glm_inter
 Let's try it out:
 
 ```{r}
-glm_inter_term_extract(odds_ratio_var = "ARMCD",
-                       interaction_var = "SEX",
-                       model_factor_glm,
-                       conf_level = 0.95)
+glm_inter_term_extract(
+  odds_ratio_var = "ARMCD",
+  interaction_var = "SEX",
+  model_factor_glm,
+  conf_level = 0.95
+)
 
-glm_inter_term_extract(odds_ratio_var = "ARMCD",
-                       interaction_var = "AGE",
-                       model_numeric_glm,
-                       conf_level = 0.95,
-                       interaction_increments = c(20, 30, 40))
+glm_inter_term_extract(
+  odds_ratio_var = "ARMCD",
+  interaction_var = "AGE",
+  model_numeric_glm,
+  conf_level = 0.95,
+  interaction_increments = c(20, 30, 40)
+)
 
-glm_inter_term_extract(odds_ratio_var = "AGE",
-                       interaction_var = "ARMCD",
-                       model_numeric_glm,
-                       conf_level = 0.95)
+glm_inter_term_extract(
+  odds_ratio_var = "AGE",
+  interaction_var = "ARMCD",
+  model_numeric_glm,
+  conf_level = 0.95
+)
 # note: must not use interaction increments here, since that only works the other way around
 ```
 
@@ -593,7 +602,7 @@ glm_inter_term_extract(odds_ratio_var = "AGE",
 Since in our case we have the odds ratios already, we can directly write the analogue to `h_logistic_simple_terms`.
 
 ```{r}
-h_logistic_inter_terms <- function(x, fit_glm, conf_level,  #done
+h_logistic_inter_terms <- function(x, fit_glm, conf_level, # done
                                    interaction_increments = NULL) {
   # find out the interaction variables and interaction term.
   inter_vars <- h_get_interaction_vars(fit_glm)
@@ -697,7 +706,7 @@ h_logistic_inter_terms(
 We need to adapt `tidy.glm` to use the new helper function:
 
 ```{r, tidy_glm}
-tidy.glm <- function(fit_glm, conf_level = 0.95, ...) { #nolint #done
+tidy.glm <- function(fit_glm, conf_level = 0.95, ...) { # nolint #done
   assertthat::assert_that(
     "glm" %in% class(fit_glm),
     fit_glm$family$family == "binomial"
@@ -802,7 +811,7 @@ Now here we create 3 different layout functions which are only different in whic
 ```{r summarize_logistic_funs}
 # Helper function to give an empty cell in case only NA in this entry.
 # need the `unlist(x)` for the CI entries.
-zeroNA <- function(x) { #nolint # done, renamed to unlist_and_blank_na
+zeroNA <- function(x) { # nolint # done, renamed to unlist_and_blank_na
   `if`(all(is.na(unlist(x))), character(), unlist(x))
 }
 
@@ -813,7 +822,7 @@ ident_cfun <- function(var, flag, format = "xx") { # done, renamed to cfun_by_fl
   force(format)
   function(df, labelstr, .df_row) {
     row_index <- which(.df_row[[flag]])
-    with_label(
+    formatable::with_label(
       rcell(zeroNA(df[[var]][row_index]), format = format),
       labelstr
     )
@@ -840,9 +849,9 @@ create_summary_layout_fun <- function(flag) {
 }
 
 # since we have 3 hierarchy levels (variable, term, reference) we need 3 layout creating functions.
-summarize_logistic_variable_test <- create_summary_layout_fun("is_variable_summary") #nolint
-summarize_logistic_term_estimates <- create_summary_layout_fun("is_term_summary") #nolint
-summarize_logistic_odds_ratios <- create_summary_layout_fun("is_reference_summary") #nolint
+summarize_logistic_variable_test <- create_summary_layout_fun("is_variable_summary") # nolint
+summarize_logistic_term_estimates <- create_summary_layout_fun("is_term_summary") # nolint
+summarize_logistic_odds_ratios <- create_summary_layout_fun("is_reference_summary") # nolint
 ```
 
 This custom split function constructor combines `drop` and `remove` features. I will do a PR for rtables for this one since
@@ -855,8 +864,10 @@ drop_and_remove_split_levels <- function(excl) {
     var <- rtables:::spl_payload(spl)
     df2 <- df[!(df[[var]] %in% excl), ]
     df2[[var]] <- factor(df2[[var]])
-    rtables:::.apply_split_inner(spl, df2, vals = vals, labels = labels,
-                                 trim = trim)
+    rtables:::.apply_split_inner(spl, df2,
+      vals = vals, labels = labels,
+      trim = trim
+    )
   }
 }
 ```

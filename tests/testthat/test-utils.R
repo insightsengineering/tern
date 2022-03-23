@@ -92,7 +92,7 @@ testthat::test_that("aesi_label works as expected when input includes multiple v
   expected <- NULL
   testthat::expect_identical(result, expected)
 
-  aesi2 <- with_label(c("AESI CQ1", "AESI CQ2"), label = "CQ: ABC")
+  aesi2 <- formatable::with_label(c("AESI CQ1", "AESI CQ2"), label = "CQ: ABC")
   result <- aesi_label(aesi2, scope = NULL)
 
   expected <- "CQ: ABC"

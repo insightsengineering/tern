@@ -8,10 +8,10 @@ adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
 adsl_cached <- adsl %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(var_labels(adsl))
+  reapply_varlabels(formatable::var_labels(adsl))
 adrs_cached <- adrs %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(var_labels(adrs))
+  reapply_varlabels(formatable::var_labels(adrs))
 
 
 get_adrs <- function() {
@@ -31,7 +31,7 @@ get_adrs <- function() {
         )
       )
     )
-  var_labels(adrs_f) <- c(var_labels(adrs_cached), Response = "Response") # nolint
+  formatable::var_labels(adrs_f) <- c(formatable::var_labels(adrs_cached), Response = "Response") # nolint
   adrs_f
 }
 

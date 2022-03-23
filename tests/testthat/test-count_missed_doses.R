@@ -30,8 +30,8 @@ testthat::test_that("s_count_missed_doses works as expected", {
   expected <- list(
     n = 8L,
     count_fraction = list(
-      "2" = with_label(c(count = 4, fraction = 0.4), label = "At least 2 missed doses"),
-      "5" = with_label(c(count = 0, fraction = 0), label = "At least 5 missed doses")
+      "2" = formatable::with_label(c(count = 4, fraction = 0.4), label = "At least 2 missed doses"),
+      "5" = formatable::with_label(c(count = 0, fraction = 0), label = "At least 5 missed doses")
     )
   )
   testthat::expect_identical(result, expected)

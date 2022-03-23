@@ -67,7 +67,7 @@ This design does not imitate the above STREAM template exactly. We cannot have a
 ```{r data peprocessing}
 adsl <- radsl(cached = TRUE)
 advs <- radvs(cached = TRUE)
-advs_label <- var_labels(advs)
+advs_label <- formatable::var_labels(advs)
 
 # This table intends to only provide during treatment abnormalities.
 # Hence, we keep treatment abnormalities only and remove baseline/screening abnormalities.
@@ -75,7 +75,6 @@ advs_f <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y")
 
 n_col_counts <- table(adsl$ARM)
 n_col_counts <- c(n_col_counts, sum(n_col_counts))
-
 ```
 
 ### Functions 
@@ -85,7 +84,6 @@ n_col_counts <- c(n_col_counts, sum(n_col_counts))
 ```{r}
 library(tern)
 count_abnormal
-
 ```
 
 #### Default output
@@ -96,6 +94,7 @@ result <- basic_table() %>%
   add_colcounts() %>%
   split_rows_by("PARAM", split_label = c("Parameter / Abnormality Direction"), visible_label = TRUE) %>%
   count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) %>%
-  build_table(df = advs_f, col_counts = n_col_counts) %>% as_html()
+  build_table(df = advs_f, col_counts = n_col_counts) %>%
+  as_html()
 result
 ```

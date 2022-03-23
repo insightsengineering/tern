@@ -46,8 +46,8 @@ library(random.cdisc.data)
 adsl <- radsl(cached = TRUE)
 adae <- radae(cached = TRUE)
 
-adae$AEDECOD2 <- as.character(adae$AEDECOD) #nolint
-adae$AEBODSYS2 <- as.character(adae$AEBODSYS) #nolint
+adae$AEDECOD2 <- as.character(adae$AEDECOD) # nolint
+adae$AEBODSYS2 <- as.character(adae$AEBODSYS) # nolint
 
 anl <- adae %>%
   filter(AEDECOD %in% c("dcd A.1.1.1.1", "dcd A.1.1.1.2") | AEBODSYS == "cl B.1")
@@ -92,15 +92,14 @@ Basic table functions {.tabset}
 ```{r, sfun}
 s_count_grade_per_id <- function(df,
                                  .var,
-                                 .N_col, #nolint
+                                 .N_col, # nolint
                                  variables = list(id = "USUBJID")) {
-
   assertthat::assert_that(
     assertthat::noNA(df[, c(.var, variables$id)]),
     is.factor(df[[.var]])
   )
 
-  id <- df[[variables$id]] #nolint
+  id <- df[[variables$id]] # nolint
   grade <- df[[.var]]
 
   grade <- factor(grade, levels = levels(grade), ordered = TRUE) # needed to take maximum
@@ -113,19 +112,16 @@ s_count_grade_per_id <- function(df,
   list(
     count_percent = l_count_percent
   )
-
 }
 
 s_count_grade_per_id(df, .var = "ATOXGR", .N_col = 10)
 s_count_grade_per_id(df, .var = "AESEV", .N_col = 10)
 
-s_count_grade_per_id_content <- function(
-  df,
-  labelstr="",
-  .N_col, # nolint
-  .var,
-  variables = list(id = "USUBJID", top_label = "- Any adverse events -")) {
-
+s_count_grade_per_id_content <- function(df,
+                                         labelstr = "",
+                                         .N_col, # nolint
+                                         .var,
+                                         variables = list(id = "USUBJID", top_label = "- Any adverse events -")) {
   assertthat::assert_that(
     is.data.frame(df),
     assertthat::is.string(.var)
@@ -139,15 +135,13 @@ s_count_grade_per_id_content <- function(
     variables = variables
   )
   any_grade <- sum(vapply(tern:::flatten_list(result), `[[`, i = 1, numeric(1)))
-  any <- list("any" = with_label(c(any_grade, any_grade / .N_col), "- Any Grade -"))
+  any <- list("any" = formatable::with_label(c(any_grade, any_grade / .N_col), "- Any Grade -"))
 
-  c(top_label = list(with_label("", top_label)), any, result)
-
+  c(top_label = list(formatable::with_label("", top_label)), any, result)
 }
 
 s_count_grade_per_id_content(df, .var = "ATOXGR", .N_col = 10)
 s_count_grade_per_id_content(df, .var = "AESEV", .N_col = 10)
-
 ```
 
 ### Layout Functions
@@ -155,7 +149,6 @@ s_count_grade_per_id_content(df, .var = "AESEV", .N_col = 10)
 ```{r, layout_functions}
 
 count_grade_per_id <- function(lyt, vars, ...) {
-
   afun <- tern:::format_wrap_df(
     s_count_grade_per_id,
     indent_mods = c(count_percent = 0L),
@@ -168,7 +161,6 @@ count_grade_per_id <- function(lyt, vars, ...) {
     afun = afun,
     extra_args = list(...)
   )
-
 }
 
 basic_table() %>%
@@ -178,15 +170,12 @@ basic_table() %>%
   build_table(df, col_counts = table(df$ARM))
 
 # count_percent list includes flexible grade levels
-summarize_grade_per_id <- function(
-  lyt,
-  var,
-  .stats = c("top_label", "any", "count_percent"),
-  .formats = c(top_label = "xx", any = "xx (xx.x%)", "count_percent" = "xx (xx.x%)"),
-  .indent_mods = c("top_label" = 0L, "any" = 1L, "count_percent" = 1L),
-  ...
-  ) {
-
+summarize_grade_per_id <- function(lyt,
+                                   var,
+                                   .stats = c("top_label", "any", "count_percent"),
+                                   .formats = c(top_label = "xx", any = "xx (xx.x%)", "count_percent" = "xx (xx.x%)"),
+                                   .indent_mods = c("top_label" = 0L, "any" = 1L, "count_percent" = 1L),
+                                   ...) {
   c_grade_per_id <- make_afun(
     s_count_grade_per_id_content,
     .stats = .stats,
@@ -202,7 +191,6 @@ summarize_grade_per_id <- function(
     indent_mod = 1L,
     extra_args = list(...)
   )
-
 }
 
 
@@ -309,7 +297,6 @@ basic_table() %>%
   ) %>%
   count_grade_per_id(vars = "AETOXGR") %>%
   build_table(anl, col_counts = big_n)
-
 ```
 
 Sorting {.tabset}
@@ -345,7 +332,6 @@ tbl_to_trim
 # now trim rows
 tbl <- trim_rows(tbl_to_trim)
 tbl
-
 ```
 
 
@@ -372,7 +358,6 @@ tbl_final <- sort_at_path(
 )
 
 tbl_final
-
 ```
 
 AET04 table with more data
@@ -401,7 +386,7 @@ basic_table() %>%
   ) %>%
   count_grade_per_id(vars = "AETOXGR") %>%
   build_table(adae, col_counts = c(table(adsl$ARM), nrow(adsl))) %>%
-#  trim_rows() %>% #comment out so to keep top row "- Any adverse events -"
+  #  trim_rows() %>% #comment out so to keep top row "- Any adverse events -"
   sort_at_path(
     path = c("AEBODSYS2"),
     scorefun = cont_n_onecol(4),
@@ -412,5 +397,4 @@ basic_table() %>%
     scorefun = cont_n_onecol(4),
     decreasing = TRUE
   )
-
 ```

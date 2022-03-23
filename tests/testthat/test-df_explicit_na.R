@@ -10,7 +10,7 @@ example_data <- {
     v8 = c(TRUE, FALSE, NA, NA),
     stringsAsFactors = FALSE
   )
-  var_labels(my_data) <- paste0("Variable ", seq_len(ncol(my_data)))
+  formatable::var_labels(my_data) <- paste0("Variable ", seq_len(ncol(my_data)))
   my_data
 }
 
@@ -47,7 +47,7 @@ testthat::test_that("Default fill in of missing values and conversion to factor 
     v8 = c(TRUE, FALSE, NA, NA),
     stringsAsFactors = FALSE
   )
-  var_labels(expected) <- paste0("Variable ", 1:8)
+  formatable::var_labels(expected) <- paste0("Variable ", 1:8)
 
   testthat::expect_equal(result, expected)
 })
@@ -117,7 +117,7 @@ testthat::test_that("Only replace missing values without modifying character or 
     v8 = c(TRUE, FALSE, NA, NA),
     stringsAsFactors = FALSE
   )
-  var_labels(expected) <- paste0("Variable ", 1:8)
+  formatable::var_labels(expected) <- paste0("Variable ", 1:8)
 
   testthat::expect_equal(result, expected)
 })
@@ -160,7 +160,7 @@ testthat::test_that("Conversion to factor works with some variables omitted", {
     ),
     stringsAsFactors = FALSE
   )
-  var_labels(expected) <- paste0("Variable ", 1:8)
+  formatable::var_labels(expected) <- paste0("Variable ", 1:8)
 
   testthat::expect_equal(result, expected)
 })
@@ -197,7 +197,7 @@ testthat::test_that("Only convert logical variables but not character variables"
     ),
     stringsAsFactors = FALSE
   )
-  var_labels(expected) <- paste0("Variable ", 1:8)
+  formatable::var_labels(expected) <- paste0("Variable ", 1:8)
 
   testthat::expect_equal(result, expected)
 })

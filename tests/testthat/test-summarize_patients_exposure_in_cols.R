@@ -23,8 +23,8 @@ testthat::test_that("s_count_patients_sum_exposure works as expected", {
   adsl <- get_adsl()
   result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl)) # nolintr
   expected <- list(
-    n_patients = with_label(c(12, 1), "Total patients numbers/person time"),
-    sum_exposure = with_label(35, "Total patients numbers/person time")
+    n_patients = formatable::with_label(c(12, 1), "Total patients numbers/person time"),
+    sum_exposure = formatable::with_label(35, "Total patients numbers/person time")
   )
   testthat::expect_equal(result, expected)
 })

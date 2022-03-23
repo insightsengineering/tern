@@ -106,6 +106,8 @@ no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}
 
 # Testing dataset [survival::bladder].
 library(survival)
+library(rtables)
+
 set.seed(1, kind = "Mersenne-Twister")
 dta_bladder <- with(
   data = bladder[bladder$enum < 5, ],
@@ -122,7 +124,7 @@ dta_bladder <- with(
   )
 )
 labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
-var_labels(dta_bladder)[names(labels)] <- labels
+formatable::var_labels(dta_bladder)[names(labels)] <- labels
 dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 plot(

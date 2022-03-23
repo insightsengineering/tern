@@ -63,11 +63,11 @@ s_coxph_pairwise <- function(df,
   if (.in_ref_col) {
     return(
       list(
-        pvalue = with_label("", paste0("p-value (", pval_method, ")")),
-        hr = with_label("", "Hazard Ratio"),
-        hr_ci = with_label("", f_conf_level(conf_level)),
-        n_tot = with_label("", "Total n"),
-        n_tot_events = with_label("", "Total events")
+        pvalue = formatable::with_label("", paste0("p-value (", pval_method, ")")),
+        hr = formatable::with_label("", "Hazard Ratio"),
+        hr_ci = formatable::with_label("", f_conf_level(conf_level)),
+        n_tot = formatable::with_label("", "Total n"),
+        n_tot_events = formatable::with_label("", "Total events")
       )
     )
   }
@@ -103,11 +103,11 @@ s_coxph_pairwise <- function(df,
     "likelihood" = sum_cox$logtest["pvalue"]
   )
   list(
-    pvalue = with_label(unname(pval), paste0("p-value (", pval_method, ")")),
-    hr = with_label(sum_cox$conf.int[1, 1], "Hazard Ratio"),
-    hr_ci = with_label(unname(sum_cox$conf.int[1, 3:4]), f_conf_level(conf_level)),
-    n_tot = with_label(sum_cox$n, "Total n"),
-    n_tot_events = with_label(sum_cox$nevent, "Total events")
+    pvalue = formatable::with_label(unname(pval), paste0("p-value (", pval_method, ")")),
+    hr = formatable::with_label(sum_cox$conf.int[1, 1], "Hazard Ratio"),
+    hr_ci = formatable::with_label(unname(sum_cox$conf.int[1, 3:4]), f_conf_level(conf_level)),
+    n_tot = formatable::with_label(sum_cox$n, "Total n"),
+    n_tot_events = formatable::with_label(sum_cox$nevent, "Total events")
   )
 }
 
