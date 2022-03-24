@@ -21,7 +21,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- formatable::var_labels(adtte)
+#' adtte_labels <- formatters::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(PARAMCD == "OS") %>%
@@ -30,8 +30,7 @@
 #'     is_event = CNSR == 0
 #'   )
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
-#' formatable::var_labels(adtte_f)[names(labels)] <- labels
-#'
+#' formatters::var_labels(adtte_f)[names(labels)] <- labels
 NULL
 
 #' @describeIn survival_biomarkers_subgroups prepares estimates for number of events, patients and median survival

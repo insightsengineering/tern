@@ -7,8 +7,8 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
-  adsl_labels <- formatable::var_labels(adsl)
-  adae_labels <- formatable::var_labels(adae)
+  adsl_labels <- formatters::var_labels(adsl)
+  adae_labels <- formatters::var_labels(adae)
 
   adae <- adae %>%
     dplyr::mutate(
@@ -44,7 +44,7 @@ testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
 
   adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)
 
-  formatable::var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries")
+  formatters::var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries")
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -124,8 +124,8 @@ testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
 })
 
 testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
-  adsl_labels <- formatable::var_labels(adsl)
-  adae_labels <- formatable::var_labels(adae)
+  adsl_labels <- formatters::var_labels(adsl)
+  adae_labels <- formatters::var_labels(adae)
 
   adsl <- adsl %>%
     dplyr::mutate(
@@ -136,7 +136,7 @@ testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
       AGE65 = factor(AGE65, levels = c(">= 65", "< 65"))
     )
 
-  formatable::var_labels(adsl) <- c(adsl_labels, "AGE65" = "AGE65 GROUP")
+  formatters::var_labels(adsl) <- c(adsl_labels, "AGE65" = "AGE65 GROUP")
 
   adae <- adae %>%
     dplyr::mutate(
@@ -176,7 +176,7 @@ testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
 
   adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)
 
-  formatable::var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries", "AGE65" = "AGE65 GROUP")
+  formatters::var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries", "AGE65" = "AGE65 GROUP")
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%

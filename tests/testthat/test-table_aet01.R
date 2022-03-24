@@ -78,7 +78,7 @@ testthat::test_that("Safety Summary Variant 1 works as expected", {
     ) %>%
     count_patients_with_flags(
       "USUBJID",
-      flag_variables = formatable::var_labels(adae[, aesi_vars]),
+      flag_variables = formatters::var_labels(adae[, aesi_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
       show_labels = "visible"
@@ -214,7 +214,7 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
     ) %>%
     count_patients_with_flags(
       "USUBJID",
-      flag_variables = formatable::var_labels(adae[, aesi_vars]),
+      flag_variables = formatters::var_labels(adae[, aesi_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
       show_labels = "visible",
@@ -222,7 +222,7 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
     ) %>%
     count_patients_with_flags(
       "USUBJID",
-      flag_variables = formatable::var_labels(adae[, basket_vars]),
+      flag_variables = formatters::var_labels(adae[, basket_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
       show_labels = "visible",
@@ -344,7 +344,7 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
     ) %>%
     count_patients_with_flags(
       "USUBJID",
-      flag_variables = formatable::var_labels(adae[, aesi_vars]),
+      flag_variables = formatters::var_labels(adae[, aesi_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
       show_labels = "visible"
@@ -456,14 +456,14 @@ testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Add
     ) %>%
     count_patients_with_flags(
       "USUBJID",
-      flag_variables = formatable::var_labels(adae[, count_subj_vars]),
+      flag_variables = formatters::var_labels(adae[, count_subj_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
       show_labels = "visible"
     ) %>%
     count_patients_with_flags(
       "AEDECOD",
-      flag_variables = formatable::var_labels(adae[, count_term_vars]),
+      flag_variables = formatters::var_labels(adae[, count_term_vars]),
       denom = "N_col",
       var_labels = "Total number of unique preferred terms which are",
       show_labels = "visible",
@@ -473,7 +473,7 @@ testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Add
     ) %>%
     count_patients_with_flags(
       "USUBJID_AESEQ",
-      flag_variables = formatable::var_labels(adae[, count_ae_vars]),
+      flag_variables = formatters::var_labels(adae[, count_ae_vars]),
       denom = "N_col",
       var_labels = "Total number of adverse events which are",
       show_labels = "visible",

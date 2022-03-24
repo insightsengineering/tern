@@ -65,7 +65,7 @@ get_adsl0 <- function() {
     "Reason for Treatment \r\nDiscontinuation",
     "Subcategory for Treatment Discontinuation"
   )
-  formatable::var_labels(adsl0)[columns] <- labels
+  formatters::var_labels(adsl0)[columns] <- labels
   # nolint end
   adsl0
 }

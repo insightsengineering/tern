@@ -7,7 +7,7 @@ library(scda)
 library(broom)
 
 ADTTE <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
-saved_labels <- formatable::var_labels(ADTTE)
+saved_labels <- formatters::var_labels(ADTTE)
 
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- within(
@@ -25,7 +25,7 @@ ADTTE_f <- within(
     RACE <- droplevels(RACE)
   }
 )
-formatable::var_labels(ADTTE_f) <- saved_labels
+formatters::var_labels(ADTTE_f) <- saved_labels
 ADTTE_f$event <- 1 - ADTTE_f$CNSR
 # nolint end
 

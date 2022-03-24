@@ -418,7 +418,7 @@ s_count_grade_per_id_content <- function(df,
     id = id
   )
   any_grade <- sum(vapply(tern:::flatten_list(result), `[[`, i = 1, numeric(1)))
-  any <- list("any" = formatable::with_label(c(any_grade, any_grade / .N_col), "- Any Grade -"))
+  any <- list("any" = formatters::with_label(c(any_grade, any_grade / .N_col), "- Any Grade -"))
 
   c(any, grade = unname(result))
 }

@@ -4,7 +4,7 @@ library(dplyr)
 preprocess_adtte <- function(adtte) {
 
   # Save variable labels before data processing steps.
-  adtte_labels <- formatable::var_labels(adtte)
+  adtte_labels <- formatters::var_labels(adtte)
 
   adtte_mod <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%

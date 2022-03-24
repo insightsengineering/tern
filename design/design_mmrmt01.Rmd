@@ -55,7 +55,7 @@ adqs_f <- adqs %>%
       as.numeric() %>%
       as.factor()
   )
-formatable::var_labels(adqs_f) <- formatable::var_labels(adqs)
+formatters::var_labels(adqs_f) <- formatters::var_labels(adqs)
 ```
 
 ## Model fitting
@@ -253,15 +253,15 @@ s_mmrm_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "incr
   list(
     n = df$n,
     adj_mean_se = c(df$estimate_est, df$se_est),
-    adj_mean_ci = formatable::with_label(c(df$lower_cl_est, df$upper_cl_est), tern:::f_conf_level(df$conf_level)),
+    adj_mean_ci = formatters::with_label(c(df$lower_cl_est, df$upper_cl_est), tern:::f_conf_level(df$conf_level)),
     diff_mean_se = if_not_ref(c(df$estimate_contr, df$se_contr)),
-    diff_mean_ci = formatable::with_label(
+    diff_mean_ci = formatters::with_label(
       if_not_ref(c(df$lower_cl_contr, df$upper_cl_contr)),
       tern:::f_conf_level(df$conf_level)
     ),
     change = switch(show_relative,
-      reduction = formatable::with_label(if_not_ref(df$relative_reduc), "Relative Reduction (%)"),
-      increase = formatable::with_label(if_not_ref(-df$relative_reduc), "Relative Increase (%)")
+      reduction = formatters::with_label(if_not_ref(df$relative_reduc), "Relative Reduction (%)"),
+      increase = formatters::with_label(if_not_ref(-df$relative_reduc), "Relative Increase (%)")
     ),
     p_value = if_not_ref(df$p_value)
   )

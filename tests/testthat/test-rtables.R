@@ -47,7 +47,7 @@ testthat::test_that("cfun_by_flag works as expected", {
 
 testthat::test_that("labels_or_names works correctly", {
   testthat::expect_identical(
-    labels_or_names(list(a = 5, b = formatable::with_label(3, "bla"))),
+    labels_or_names(list(a = 5, b = formatters::with_label(3, "bla"))),
     c(a = "a", b = "bla")
   )
   testthat::expect_identical(
@@ -55,7 +55,7 @@ testthat::test_that("labels_or_names works correctly", {
     c("", b = "b")
   )
   testthat::expect_identical(
-    labels_or_names(list(formatable::with_label(1, "bli"), b = 3)),
+    labels_or_names(list(formatters::with_label(1, "bli"), b = 3)),
     c("bli", b = "b")
   )
   testthat::expect_identical(
@@ -189,7 +189,7 @@ testthat::test_that("as.rtable.data.frame uses variable labels for column header
     a = 1:10,
     b = seq(from = 10000, to = 20000, length = 10) / 1000
   )
-  formatable::var_labels(x) <- paste("label for", names(x))
+  formatters::var_labels(x) <- paste("label for", names(x))
   rownames(x) <- LETTERS[1:10]
   result <- as.rtable(x, format = "xx.x")
   testthat::expect_identical(names(result), c("label for a", "label for b"))

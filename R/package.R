@@ -6,7 +6,7 @@
 
 #' @import rtables ggplot2
 #' @importFrom broom tidy
-#' @importFrom formatable propose_column_widths
+#' @importFrom formatters propose_column_widths
 #' @importFrom lifecycle badge
 #' @importFrom methods new
 #' @importFrom magrittr %>%

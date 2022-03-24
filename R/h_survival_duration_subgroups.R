@@ -22,7 +22,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- formatable::var_labels(adtte)
+#' adtte_labels <- formatters::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(
@@ -37,8 +37,7 @@
 #'     is_event = CNSR == 0
 #'   )
 #' labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
-#' formatable::var_labels(adtte_f)[names(labels)] <- labels
-#'
+#' formatters::var_labels(adtte_f)[names(labels)] <- labels
 NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
@@ -406,7 +405,7 @@ h_coxph_subgroups_df <- function(variables,
 #'   y = factor(c("A", "B", "A", "B", "A"), levels = c("A", "B", "C")),
 #'   z = factor(c("C", "C", "D", "D", "D"), levels = c("D", "C"))
 #' )
-#' formatable::var_labels(df) <- paste("label for", names(df))
+#' formatters::var_labels(df) <- paste("label for", names(df))
 #'
 #' h_split_by_subgroups(
 #'   data = df,
@@ -430,9 +429,9 @@ h_split_by_subgroups <- function(data,
     all(names(groups_lists) %in% subgroups)
   )
 
-  data_labels <- unname(formatable::var_labels(data))
+  data_labels <- unname(formatters::var_labels(data))
   df_subgroups <- data[, subgroups, drop = FALSE]
-  subgroup_labels <- formatable::var_labels(df_subgroups, fill = TRUE)
+  subgroup_labels <- formatters::var_labels(df_subgroups, fill = TRUE)
 
   l_labels <- Map(function(grp_i, name_i) {
     existing_levels <- levels(droplevels(grp_i))
@@ -466,7 +465,7 @@ h_split_by_subgroups <- function(data,
     }
     df <- data[which_row, ]
     rownames(df) <- NULL
-    formatable::var_labels(df) <- data_labels
+    formatters::var_labels(df) <- data_labels
 
     list(
       df = df,

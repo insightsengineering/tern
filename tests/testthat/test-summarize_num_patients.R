@@ -4,7 +4,7 @@ testthat::test_that("s_num_patients works as expected with healthy input", {
   expected <- list(
     unique = c(3.0, 0.6),
     nonunique = 4,
-    unique_count = formatable::with_label(3, " (n)")
+    unique_count = formatters::with_label(3, " (n)")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -15,7 +15,7 @@ testthat::test_that("s_num_patients works as expected with empty input", {
   expected <- list(
     unique = c(0, 0),
     nonunique = 0,
-    unique_count = formatable::with_label(0, " (n)")
+    unique_count = formatters::with_label(0, " (n)")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -29,7 +29,7 @@ testthat::test_that("s_num_patients_content works as expected with healthy input
   expected <- list(
     unique = c(3.0, 0.6),
     nonunique = 4,
-    unique_count = formatable::with_label(3, " (n)")
+    unique_count = formatters::with_label(3, " (n)")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -117,7 +117,7 @@ testthat::test_that("s_num_patients count_by works as expected with healthy inpu
   expected <- list(
     unique = c(3.0, 0.6),
     nonunique = 4,
-    unique_count = formatable::with_label(3, " (n)")
+    unique_count = formatters::with_label(3, " (n)")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -129,7 +129,7 @@ testthat::test_that("s_num_patients count_by with missing works as expected with
   expected <- list(
     unique = c(3.0, 0.6),
     nonunique = 4,
-    unique_count = formatable::with_label(3, " (n)")
+    unique_count = formatters::with_label(3, " (n)")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -141,7 +141,7 @@ testthat::test_that("s_num_patients count_by with missing case 2 works as expect
   expected <- list(
     unique = c(3.0, 0.6),
     nonunique = 3,
-    unique_count = formatable::with_label(3, " (n)")
+    unique_count = formatters::with_label(3, " (n)")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -155,7 +155,7 @@ testthat::test_that("s_num_patients_content with count_by works as expected with
   expected <- list(
     unique = c(3.0, 0.6),
     nonunique = 3,
-    unique_count = formatable::with_label(3, " (n)")
+    unique_count = formatters::with_label(3, " (n)")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -169,7 +169,7 @@ testthat::test_that("s_num_patients_content with count_by case 2 works as expect
   expected <- list(
     unique = c(3.0, 0.6),
     nonunique = 4,
-    unique_count = formatable::with_label(3, " (n)")
+    unique_count = formatters::with_label(3, " (n)")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -183,7 +183,7 @@ testthat::test_that("s_num_patients_content with count_by trivial cases, identic
   expected <- list(
     unique = c(4.0, 0.8),
     nonunique = 4,
-    unique_count = formatable::with_label(4, " (n)")
+    unique_count = formatters::with_label(4, " (n)")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })

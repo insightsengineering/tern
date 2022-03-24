@@ -75,10 +75,10 @@ s_surv_timepoint <- function(df,
     rate_ci <- c(df_srv_fit$lower, df_srv_fit$upper)
   }
   list(
-    pt_at_risk = formatable::with_label(pt_at_risk, "Patients remaining at risk"),
-    event_free_rate = formatable::with_label(event_free_rate * 100, "Event Free Rate (%)"),
-    rate_se = formatable::with_label(rate_se * 100, "Standard Error of Event Free Rate"),
-    rate_ci = formatable::with_label(rate_ci * 100, f_conf_level(conf_level))
+    pt_at_risk = formatters::with_label(pt_at_risk, "Patients remaining at risk"),
+    event_free_rate = formatters::with_label(event_free_rate * 100, "Event Free Rate (%)"),
+    rate_se = formatters::with_label(rate_se * 100, "Standard Error of Event Free Rate"),
+    rate_ci = formatters::with_label(rate_ci * 100, f_conf_level(conf_level))
   )
 }
 
@@ -133,9 +133,9 @@ s_surv_timepoint_diff <- function(df,
   if (.in_ref_col) {
     return(
       list(
-        rate_diff = formatable::with_label("", "Difference in Event Free Rate"),
-        rate_diff_ci = formatable::with_label("", f_conf_level(control$conf_level)),
-        ztest_pval = formatable::with_label("", "p-value (Z-test)")
+        rate_diff = formatters::with_label("", "Difference in Event Free Rate"),
+        rate_diff_ci = formatters::with_label("", f_conf_level(control$conf_level)),
+        ztest_pval = formatters::with_label("", "p-value (Z-test)")
       )
     )
   }
@@ -158,9 +158,9 @@ s_surv_timepoint_diff <- function(df,
     2 * (1 - stats::pnorm(abs(rate_diff) / se_diff))
   }
   list(
-    rate_diff = formatable::with_label(rate_diff, "Difference in Event Free Rate"),
-    rate_diff_ci = formatable::with_label(rate_diff_ci, f_conf_level(control$conf_level)),
-    ztest_pval = formatable::with_label(ztest_pval, "p-value (Z-test)")
+    rate_diff = formatters::with_label(rate_diff, "Difference in Event Free Rate"),
+    rate_diff_ci = formatters::with_label(rate_diff_ci, f_conf_level(control$conf_level)),
+    ztest_pval = formatters::with_label(ztest_pval, "p-value (Z-test)")
   )
 }
 

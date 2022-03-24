@@ -39,7 +39,7 @@ adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
 adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
 adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 
-adlb_labels <- formatable::var_labels(adlb)
+adlb_labels <- formatters::var_labels(adlb)
 
 adlb_f <- adlb %>%
   dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
@@ -50,7 +50,7 @@ adlb_f <- adlb %>%
   ) %>%
   droplevels()
 
-formatable::var_labels(adlb_f) <- adlb_labels
+formatters::var_labels(adlb_f) <- adlb_labels
 ```
 
 ## Current `s_count_abnormal_by_worst_grade` function
@@ -212,11 +212,11 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
         num <- length(unique(anl_abn[anl_abn$grade == grade, "id", drop = TRUE]))
         abn_grade <- paste(abnormal, "-", abs(as.numeric(grade)))
         fraction <- if_else(n == 0, 0, num / n)
-        result[[abn_grade]] <- formatable::with_label(c(num, fraction), abn_grade)
+        result[[abn_grade]] <- formatters::with_label(c(num, fraction), abn_grade)
       }
       any_grade_num <- length(unique(anl_abn$id))
       fraction_any <- if_else(n == 0, 0, any_grade_num / n)
-      result[[name_any]] <- formatable::with_label(c(any_grade_num, fraction_any), name_any)
+      result[[name_any]] <- formatters::with_label(c(any_grade_num, fraction_any), name_any)
     }
     result <- list(count_fraction = result)
   }

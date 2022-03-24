@@ -146,7 +146,7 @@ testthat::test_that("count_patients_with_flags works as expected", {
     "Total number of patients with at least one adverse event",
     "Total number of patients with fatal AEs"
   )
-  formatable::var_labels(test_data) <- labels
+  formatters::var_labels(test_data) <- labels
 
   test_adsl_like <- tibble::tibble(
     SUBJID = as.character(1001:1010),
@@ -159,7 +159,7 @@ testthat::test_that("count_patients_with_flags works as expected", {
     add_colcounts() %>%
     count_patients_with_flags(
       "SUBJID",
-      flag_variables = formatable::var_labels(test_data[, c("flag1", "flag2")]),
+      flag_variables = formatters::var_labels(test_data[, c("flag1", "flag2")]),
       denom = "N_col"
     )
 
@@ -195,7 +195,7 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
     "Total number of patients with at least one adverse event",
     "Total number of patients with fatal AEs"
   )
-  formatable::var_labels(test_data)[columns] <- labels
+  formatters::var_labels(test_data)[columns] <- labels
 
   test_adsl_like <- tibble::tibble(
     USUBJID = as.character(1001:1010),
@@ -209,13 +209,13 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
     add_colcounts() %>%
     count_patients_with_flags(
       "SUBJID",
-      flag_variables = formatable::var_labels(test_data[, c("flag1", "flag2")]),
+      flag_variables = formatters::var_labels(test_data[, c("flag1", "flag2")]),
       table_names = "SUBJID",
       denom = "N_col"
     ) %>%
     count_patients_with_flags(
       "USUBJID",
-      flag_variables = formatable::var_labels(test_data[, c("flag1", "flag2")]),
+      flag_variables = formatters::var_labels(test_data[, c("flag1", "flag2")]),
       table_names = "USUBJID",
       denom = "N_col"
     )
@@ -267,7 +267,7 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
     ) %>%
     count_patients_with_flags(
       "USUBJID",
-      flag_variables = formatable::var_labels(adae[, aesi_vars]),
+      flag_variables = formatters::var_labels(adae[, aesi_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
       show_labels = "visible"

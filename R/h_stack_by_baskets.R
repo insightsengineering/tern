@@ -101,7 +101,7 @@ h_stack_by_baskets <- function(df,
     }
   }
 
-  var_labels <- c(formatable::var_labels(df[, keys]), smq_varlabel)
+  var_labels <- c(formatters::var_labels(df[, keys]), smq_varlabel)
 
   # convert `na_level` records from baskets to NA for the later loop and from wide to long steps
   df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_level] <- NA
@@ -166,6 +166,6 @@ h_stack_by_baskets <- function(df,
       levels = sort(c(smq_levels, all_na_basket))
     )
   }
-  formatable::var_labels(df_long) <- var_labels
+  formatters::var_labels(df_long) <- var_labels
   tibble::tibble(df_long)
 }

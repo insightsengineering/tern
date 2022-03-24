@@ -7,7 +7,7 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
 testthat::test_that("EGT04 default variant is produced correctly", {
-  adeg_labels <- formatable::var_labels(adeg)
+  adeg_labels <- formatters::var_labels(adeg)
   adeg_f <- subset(
     adeg,
     PARAMCD == "ECGINTP" & # Analysis in terms of "NORMAL"/"ABNORMAL" (AVALC)
@@ -35,7 +35,7 @@ testthat::test_that("EGT04 default variant is produced correctly", {
     levels = c("NORMAL", "ABNORMAL", "Missing"),
     labels = c("Normal", "Abnormal", "Missing")
   )
-  formatable::var_labels(adeg_f) <- adeg_labels
+  formatters::var_labels(adeg_f) <- adeg_labels
 
   l <- basic_table() %>%
     split_cols_by("AVALC") %>%

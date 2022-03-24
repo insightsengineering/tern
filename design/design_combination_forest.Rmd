@@ -236,9 +236,9 @@ h_split_by_subgroups <- function(data,
   checkmate::assert_list(groups_lists, null.ok = TRUE, names = "named")
   checkmate::assert_subset(names(groups_lists), subgroups)
 
-  data_labels <- unname(formatable::var_labels(data))
+  data_labels <- unname(formatters::var_labels(data))
   df_subgroups <- data[, subgroups, drop = FALSE]
-  subgroup_labels <- formatable::var_labels(df_subgroups, fill = TRUE)
+  subgroup_labels <- formatters::var_labels(df_subgroups, fill = TRUE)
 
   l_labels <- Map(function(grp_i, name_i) {
     grp_levels <- if (name_i %in% names(groups_lists)) {
@@ -268,7 +268,7 @@ h_split_by_subgroups <- function(data,
     }
     df <- data[which_row, ]
     rownames(df) <- NULL
-    formatable::var_labels(df) <- data_labels
+    formatters::var_labels(df) <- data_labels
 
     list(
       df = df,

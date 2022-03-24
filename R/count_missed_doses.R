@@ -47,7 +47,7 @@ s_count_missed_doses <- function(x,
   )
   labels <- d_count_missed_doses(thresholds)
   for (i in seq_along(stat$count_fraction)) {
-    stat$count_fraction[[i]] <- formatable::with_label(stat$count_fraction[[i]], label = labels[i])
+    stat$count_fraction[[i]] <- formatters::with_label(stat$count_fraction[[i]], label = labels[i])
   }
   n_stat <- s_count_nonmissing(x)
   c(n_stat, stat)

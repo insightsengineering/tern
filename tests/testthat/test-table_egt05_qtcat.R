@@ -8,7 +8,7 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
 get_adeg <- function() {
   adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg # nolintr
-  adeg_labels <- formatable::var_labels(adeg)
+  adeg_labels <- formatters::var_labels(adeg)
 
   adeg_f <- adeg %>%
     dplyr::filter(PARAMCD == "QT" & ANL01FL == "Y") %>%
@@ -37,7 +37,7 @@ get_adeg <- function() {
     levels = c("<=30 msec", ">30 to <=60 msec", ">60 msec")
   )
 
-  formatable::var_labels(adeg_f) <- c(adeg_labels, "AVALCAT1" = "Value at Visit", "CHGCAT1" = "Change from Baseline")
+  formatters::var_labels(adeg_f) <- c(adeg_labels, "AVALCAT1" = "Value at Visit", "CHGCAT1" = "Change from Baseline")
 
   adeg_f <- df_explicit_na(adeg_f)
   adeg_f

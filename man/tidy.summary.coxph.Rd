@@ -36,7 +36,7 @@ dta_bladder <- with(
   )
 )
 labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
-formatable::var_labels(dta_bladder)[names(labels)] <- labels
+formatters::var_labels(dta_bladder)[names(labels)] <- labels
 dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 formula <- "survival::Surv(time, status) ~ armcd + covar1"

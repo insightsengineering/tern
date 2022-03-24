@@ -43,7 +43,7 @@ packageVersion("rtables")
 
 library(random.cdisc.data)
 adrs <- radrs(cached = TRUE)
-adrs_labels <- formatable::var_labels(adrs)
+adrs_labels <- formatters::var_labels(adrs)
 
 adrs <- adrs %>%
   filter(PARAMCD == "BESRSPI") %>%
@@ -54,7 +54,7 @@ adrs <- adrs %>%
     # Reorder levels of factor to make the placebo group the reference arm.
     ARM = forcats::fct_relevel(ARM, "B: Placebo")
   )
-formatable::var_labels(adrs) <- c(adrs_labels, "Response")
+formatters::var_labels(adrs) <- c(adrs_labels, "Response")
 ```
 
 ## Objective
@@ -111,7 +111,7 @@ h_extract_subgroup_or <- function(variables, data) {
   rsp <- variables$rsp
   arm <- variables$arm
   arm_ref <- levels(data[[arm]])[1]
-  subset_labels <- formatable::var_labels(data[, variables$subsets], fill = TRUE)
+  subset_labels <- formatters::var_labels(data[, variables$subsets], fill = TRUE)
 
   l_result <- lapply(variables$subsets, function(subset_i) {
     l_data <- split(data, data[[subset_i]])
@@ -178,7 +178,7 @@ h_extract_subgroup_prop <- function(variables, data) {
   rsp <- variables$rsp
   arm <- variables$arm
   arm_ref <- levels(data[[arm]])[1]
-  subset_labels <- formatable::var_labels(data[, variables$subsets], fill = TRUE)
+  subset_labels <- formatters::var_labels(data[, variables$subsets], fill = TRUE)
 
   l_result <- lapply(variables$subsets, function(subset_i) {
     l_data <- split(data, data[[subset_i]])

@@ -41,7 +41,7 @@ set.seed(123, kind = "Mersenne-Twister")
 
 adsl <- radsl(cached = TRUE)
 adeg <- radeg(cached = TRUE)
-adeg_labels <- formatable::var_labels(adeg)
+adeg_labels <- formatters::var_labels(adeg)
 
 # Filtering
 # ---------
@@ -74,7 +74,7 @@ adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 
 
-formatable::var_labels(adeg_f) <- adeg_labels
+formatters::var_labels(adeg_f) <- adeg_labels
 
 lyt <- basic_table() %>%
   split_cols_by("ANRIND") %>%
@@ -95,7 +95,7 @@ set.seed(123, kind = "Mersenne-Twister")
 
 adsl <- radsl(cached = TRUE)
 adeg <- radeg(cached = TRUE)
-adeg_labels <- formatable::var_labels(adeg)
+adeg_labels <- formatters::var_labels(adeg)
 
 # Filtering
 # ---------
@@ -121,7 +121,7 @@ adeg_f$BNRIND <- factor(
 
 adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 
-formatable::var_labels(adeg_f) <- adeg_labels
+formatters::var_labels(adeg_f) <- adeg_labels
 
 lyt <- basic_table() %>%
   split_cols_by("ANRIND") %>%
@@ -141,7 +141,7 @@ set.seed(123, kind = "Mersenne-Twister")
 
 adsl <- radsl(cached = TRUE)
 adeg <- radeg(cached = TRUE)
-adeg_labels <- formatable::var_labels(adeg)
+adeg_labels <- formatters::var_labels(adeg)
 
 # Filtering
 # ---------
@@ -167,7 +167,7 @@ adeg_f$ANRIND <- factor(
 
 adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 
-formatable::var_labels(adeg_f) <- adeg_labels
+formatters::var_labels(adeg_f) <- adeg_labels
 
 lyt <- basic_table() %>%
   split_cols_by("ANRIND") %>%
@@ -190,7 +190,7 @@ set.seed(123, kind = "Mersenne-Twister")
 
 adsl <- radsl(cached = TRUE)
 adeg <- radeg(cached = TRUE)
-adeg_labels <- formatable::var_labels(adeg)
+adeg_labels <- formatters::var_labels(adeg)
 
 # Filtering
 # ---------
@@ -223,7 +223,7 @@ adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
 
 
-formatable::var_labels(adeg_f) <- adeg_labels
+formatters::var_labels(adeg_f) <- adeg_labels
 
 lyt <- basic_table() %>%
   split_cols_by("ANRIND") %>%
