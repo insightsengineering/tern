@@ -230,7 +230,7 @@ labels <- c(
   "fl3" = "Total number of patients with fatal AEs",
   "fl4" = "Total number of patients with related fatal AEs"
 )
-var_labels(adae)[names(labels)] <- labels
+formatable::var_labels(adae)[names(labels)] <- labels
 
 s_count_patients_with_flags(
   adae,
@@ -263,7 +263,7 @@ lyt2 <- basic_table() \%>\%
   add_colcounts() \%>\%
   count_patients_with_flags(
     "SUBJID",
-    flag_variables = var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
+    flag_variables = formatable::var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
     denom = "N_col"
   )
 build_table(lyt2, adae, alt_counts_df = adsl)

@@ -167,9 +167,9 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
   # sfun which returns empty string results when `in_ref` (toy example resembling comparison problems).
   sfun <- function(x, in_ref = FALSE) {
     list(
-      n = with_label(`if`(in_ref, character(), length(x)), "Number of patients"),
-      mean = with_label(`if`(in_ref, character(), mean(x)), "Mean"),
-      median = with_label(`if`(in_ref, character(), stats::median(x)), "Median")
+      n = formatable::with_label(`if`(in_ref, character(), length(x)), "Number of patients"),
+      mean = formatable::with_label(`if`(in_ref, character(), mean(x)), "Mean"),
+      median = formatable::with_label(`if`(in_ref, character(), stats::median(x)), "Median")
     )
   }
   indent_mods <- c(n = 0L, mean = 2L, median = 1L)
@@ -195,9 +195,9 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
   result <- afun(x)
   expected <- in_rows(
     .list = list(
-      n = rcell(with_label(8L, "Number of patients"), "xx.", label = "Number of patients"),
-      mean = rcell(with_label(2.45, "Mean"), "xx.xx", label = "Mean"),
-      median = rcell(with_label(2.25, "Median"), "xx", label = "Median")
+      n = rcell(formatable::with_label(8L, "Number of patients"), "xx.", label = "Number of patients"),
+      mean = rcell(formatable::with_label(2.45, "Mean"), "xx.xx", label = "Mean"),
+      median = rcell(formatable::with_label(2.25, "Median"), "xx", label = "Median")
     ),
     .indent_mods = c(0, 2, 1)
   )
@@ -208,12 +208,12 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
   expected <- in_rows(
     .list = list(
       n = rcell(
-        with_label(character(), "Number of patients"),
+        formatable::with_label(character(), "Number of patients"),
         "xx.",
         label = "Number of patients"
       ),
-      mean = rcell(with_label(character(), "Mean"), "xx.xx", label = "Mean"),
-      median = rcell(with_label(character(), "Median"), "xx", label = "Median")
+      mean = rcell(formatable::with_label(character(), "Mean"), "xx.xx", label = "Mean"),
+      median = rcell(formatable::with_label(character(), "Median"), "xx", label = "Median")
     ),
     .indent_mods = c(0, 2, 1)
   )
@@ -222,7 +222,7 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
   # Use now in table.
   sfun <- function(x, .in_ref_col) {
     list(
-      n = with_label(`if`(.in_ref_col, character(), length(x)), "Number of patients")
+      n = formatable::with_label(`if`(.in_ref_col, character(), length(x)), "Number of patients")
     )
   }
   afun <- make_afun(sfun, .null_ref_cells = FALSE)
@@ -244,7 +244,7 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
 testthat::test_that("make_afun by default removes results from `.in_ref_col`", {
   sfun <- function(df, .var, .ref_group, .in_ref_col) {
     list(
-      range = with_label(
+      range = formatable::with_label(
         `if`(.in_ref_col, "", range(df[[.var]])),
         "Label for Range"
       )

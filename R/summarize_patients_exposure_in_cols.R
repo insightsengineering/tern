@@ -64,7 +64,7 @@ s_count_patients_sum_exposure <- function(df, # nolintr
   y <- list()
 
   y$n_patients <-
-    with_label(
+    formatable::with_label(
       s_num_patients_content(
         df = df,
         .N_col = .N_col, # nolintr
@@ -74,7 +74,7 @@ s_count_patients_sum_exposure <- function(df, # nolintr
       row_label
     )
 
-  y$sum_exposure <- with_label(sum(df[[.var]]), row_label)
+  y$sum_exposure <- formatable::with_label(sum(df[[.var]]), row_label)
   y
 }
 

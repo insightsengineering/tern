@@ -135,10 +135,10 @@ s_ancova <- function(df,
   if (.in_ref_col) {
     list(
       n = length(y[!is.na(y)]),
-      lsmean = with_label(sum_fit_level$emmean, "Adjusted Mean"),
-      lsmean_diff = with_label(character(), "Difference in Adjusted Means"),
-      lsmean_diff_ci = with_label(character(), f_conf_level(conf_level)),
-      pval = with_label(character(), "p-value")
+      lsmean = formatable::with_label(sum_fit_level$emmean, "Adjusted Mean"),
+      lsmean_diff = formatable::with_label(character(), "Difference in Adjusted Means"),
+      lsmean_diff_ci = formatable::with_label(character(), f_conf_level(conf_level)),
+      pval = formatable::with_label(character(), "p-value")
     )
   } else {
     # Estimate the differences between the marginal means.
@@ -161,13 +161,13 @@ s_ancova <- function(df,
 
     list(
       n = length(y[!is.na(y)]),
-      lsmean = with_label(sum_fit_level$emmean, "Adjusted Mean"),
-      lsmean_diff = with_label(sum_contrasts_level$estimate, "Difference in Adjusted Means"),
-      lsmean_diff_ci = with_label(
+      lsmean = formatable::with_label(sum_fit_level$emmean, "Adjusted Mean"),
+      lsmean_diff = formatable::with_label(sum_contrasts_level$estimate, "Difference in Adjusted Means"),
+      lsmean_diff_ci = formatable::with_label(
         c(sum_contrasts_level$lower.CL, sum_contrasts_level$upper.CL),
         f_conf_level(conf_level)
       ),
-      pval = with_label(sum_contrasts_level$p.value, "p-value")
+      pval = formatable::with_label(sum_contrasts_level$p.value, "p-value")
     )
   }
 }

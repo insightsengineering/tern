@@ -18,6 +18,7 @@ Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{ti
 
 library(survival)
 library(broom)
+library(rtables)
 
 set.seed(1, kind = "Mersenne-Twister")
 
@@ -35,7 +36,7 @@ dta_bladder <- with(
   )
 )
 labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
-var_labels(dta_bladder)[names(labels)] <- labels
+formatable::var_labels(dta_bladder)[names(labels)] <- labels
 dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 formula <- "survival::Surv(time, status) ~ armcd + covar1"

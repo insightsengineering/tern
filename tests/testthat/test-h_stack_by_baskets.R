@@ -112,7 +112,7 @@ testthat::test_that(
 
     testthat::expect_identical(result_names, expected_names)
 
-    result_var_labels <- var_labels(result)
+    result_var_labels <- formatable::var_labels(result)
     expected_var_labels <- c(
       STUDYID = "Study Identifier", USUBJID = "Unique Subject Identifier", ASTDTM = "Analysis Start Datetime",
       AEDECOD = "Dictionary-Derived Term", AESEQ = "Sponsor-Defined Identifier",

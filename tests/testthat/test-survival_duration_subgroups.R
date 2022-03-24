@@ -4,7 +4,7 @@ library(dplyr)
 preprocess_adtte <- function(adtte) {
 
   # Save variable labels before data processing steps.
-  adtte_labels <- var_labels(adtte)
+  adtte_labels <- formatable::var_labels(adtte)
 
   adtte_mod <- adtte %>%
     dplyr::filter(
@@ -363,7 +363,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with extr
   adtte <- adtte %>%
     preprocess_adtte() %>%
     dplyr::slice(1:30) %>%
-    reapply_varlabels(var_labels(adtte))
+    reapply_varlabels(formatable::var_labels(adtte))
 
   df <- testthat::expect_warning(extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "REGION1"),

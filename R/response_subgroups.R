@@ -25,7 +25,7 @@
 #' library(rtables)
 #'
 #' adrs <- synthetic_cdisc_data("latest")$adrs
-#' adrs_labels <- var_labels(adrs)
+#' adrs_labels <- formatable::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%
 #'   filter(PARAMCD == "BESRSPI") %>%
@@ -36,7 +36,7 @@
 #'     ARM = fct_relevel(ARM, "B: Placebo"),
 #'     rsp = AVALC == "CR"
 #'   )
-#' var_labels(adrs_f) <- c(adrs_labels, "Response")
+#' formatable::var_labels(adrs_f) <- c(adrs_labels, "Response")
 NULL
 
 #' @describeIn response_subgroups prepares response rates and odds ratios for

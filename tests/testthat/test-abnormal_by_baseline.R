@@ -13,9 +13,9 @@ testthat::test_that("s_count_abnormal_by_baseline works with healthy input and d
     abnormal = "LOW"
   )
   expected <- list(fraction = list(
-    "not_abnormal" = with_label(c(num = 1L, denom = 3L), "Not low baseline status"),
-    "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
-    "total" = with_label(c(num = 1L, denom = 4L), "Total")
+    "not_abnormal" = formatable::with_label(c(num = 1L, denom = 3L), "Not low baseline status"),
+    "abnormal" = formatable::with_label(c(num = 0L, denom = 1L), "Low baseline status"),
+    "total" = formatable::with_label(c(num = 1L, denom = 4L), "Total")
   ))
 
   testthat::expect_identical(result, expected)
@@ -27,9 +27,9 @@ testthat::test_that("s_count_abnormal_by_baseline works with healthy input and d
     abnormal = "HIGH"
   )
   expected <- list(fraction = list(
-    "not_abnormal" = with_label(c(num = 1L, denom = 3L), "Not high baseline status"),
-    "abnormal" = with_label(c(num = 1L, denom = 1L), "High baseline status"),
-    "total" = with_label(c(num = 2L, denom = 4L), "Total")
+    "not_abnormal" = formatable::with_label(c(num = 1L, denom = 3L), "Not high baseline status"),
+    "abnormal" = formatable::with_label(c(num = 1L, denom = 1L), "High baseline status"),
+    "total" = formatable::with_label(c(num = 2L, denom = 4L), "Total")
   ))
   testthat::expect_identical(result, expected)
 })
@@ -52,9 +52,9 @@ testthat::test_that("s_count_abnormal_by_baseline also works with tibble and cus
     variables = list(id = "myid", baseline = "mybase")
   )
   expected <- list(fraction = list(
-    "not_abnormal" = with_label(c(num = 2L, denom = 5L), "Not low baseline status"),
-    "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
-    "total" = with_label(c(num = 2L, denom = 6L), "Total")
+    "not_abnormal" = formatable::with_label(c(num = 2L, denom = 5L), "Not low baseline status"),
+    "abnormal" = formatable::with_label(c(num = 0L, denom = 1L), "Low baseline status"),
+    "total" = formatable::with_label(c(num = 2L, denom = 6L), "Total")
   ))
   testthat::expect_identical(result, expected)
 
@@ -66,9 +66,9 @@ testthat::test_that("s_count_abnormal_by_baseline also works with tibble and cus
     variables = list(id = "myid", baseline = "mybase")
   )
   expected <- list(fraction = list(
-    "not_abnormal" = with_label(c(num = 1L, denom = 5L), "Not high baseline status"),
-    "abnormal" = with_label(c(num = 0L, denom = 1L), "High baseline status"),
-    "total" = with_label(c(num = 1L, denom = 6L), "Total")
+    "not_abnormal" = formatable::with_label(c(num = 1L, denom = 5L), "Not high baseline status"),
+    "abnormal" = formatable::with_label(c(num = 0L, denom = 1L), "High baseline status"),
+    "total" = formatable::with_label(c(num = 1L, denom = 6L), "Total")
   ))
   testthat::expect_identical(result, expected)
 })
@@ -93,9 +93,9 @@ testthat::test_that("count_abnormal_by_baseline throws warning with character va
     )
   )
   expected <- list(fraction = list(
-    "not_abnormal" = with_label(c(num = 2L, denom = 4L), "Not low baseline status"),
-    "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
-    "total" = with_label(c(num = 2L, denom = 5L), "Total")
+    "not_abnormal" = formatable::with_label(c(num = 2L, denom = 4L), "Not low baseline status"),
+    "abnormal" = formatable::with_label(c(num = 0L, denom = 1L), "Low baseline status"),
+    "total" = formatable::with_label(c(num = 2L, denom = 5L), "Total")
   ))
   testthat::expect_identical(result, expected)
 })

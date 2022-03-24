@@ -22,7 +22,6 @@ adcm$CMID <- paste0(adcm$USUBJID, "@", adcm$CMSEQ)
 
 adae <- radae(ADSL = adsl, seed = 1234, cached = FALSE)
 adae <- df_explicit_na(adae)
-
 ```
 
 ## Table
@@ -39,7 +38,8 @@ t1 <- basic_table() %>%
     .stats = "unique",
     .labels = c(
       unique = "Total number of patients with at least one treatment"
-    )) %>%
+    )
+  ) %>%
   build_table(adcm, alt_counts_df = adsl)
 
 t2 <- basic_table() %>%
@@ -50,7 +50,8 @@ t2 <- basic_table() %>%
     .stats = c("unique_count"),
     .labels = c(
       unique_count = "Total number of treatments"
-    )) %>%
+    )
+  ) %>%
   build_table(adcm, alt_counts_df = adsl)
 
 # Combine tables.
@@ -60,8 +61,6 @@ result <- rbind(
   t2
 )
 result
-
-
 ```
 
 The approach above works but it is not scalable. For example, it would be difficutl to insert this summary inside each level of a nested split like so:
@@ -71,12 +70,12 @@ basic_table() %>%
   split_cols_by("ARM") %>%
   add_colcounts() %>%
   split_rows_by(
-    "ATC2", 
-    child_labels = "visible", 
-    nested = FALSE, 
+    "ATC2",
+    child_labels = "visible",
+    nested = FALSE,
     indent_mod = -1L,
     split_fun = drop_split_levels
-    ) %>%
+  ) %>%
   summarize_num_patients(
     var = "USUBJID",
     .stats = c("unique", "nonunique"),
@@ -84,10 +83,11 @@ basic_table() %>%
       unique = "Total number of patients with at least one treatment",
       nonunique = "Total number of treatments"
     )
-  ) %>% build_table(
-  df = adcm, 
-  alt_counts_df = adsl) 
-
+  ) %>%
+  build_table(
+    df = adcm,
+    alt_counts_df = adsl
+  )
 ```
 
 ## Ideas
@@ -100,12 +100,11 @@ basic_table() %>%
 ```{r, idea_1}
 
 summarize_num_patients2 <- function(lyt,
-                                   vars,
-                                   .stats = NULL,
-                                   .formats = NULL,
-                                   .labels = NULL,
-                                   ...) {
-
+                                    vars,
+                                    .stats = NULL,
+                                    .formats = NULL,
+                                    .labels = NULL,
+                                    ...) {
   afun <- make_afun(
     tern:::c_num_patients,
     .stats = .stats,
@@ -118,11 +117,9 @@ summarize_num_patients2 <- function(lyt,
     vars = vars,
     afun = afun,
     extra_args = list(...),
-    show_labels = "hidden" #NOTE: this approach won't work without hiding the labels.
+    show_labels = "hidden" # NOTE: this approach won't work without hiding the labels.
   )
-
 }
-
 ```
 
 The benefits of this approach are minimal impact for users already used to working with this function. However, the big negative is that with the loss of content rows, sorting and trimming functionality is also lost.
@@ -138,13 +135,15 @@ result <- basic_table() %>%
     .stats = "unique",
     .labels = c(
       unique = "Total number of patients with at least one treatment"
-    )) %>%
+    )
+  ) %>%
   summarize_num_patients2(
     vars = "CMID",
     .stats = c("unique_count"),
     .labels = c(
       unique_count = "Total number of treatments"
-  )) %>%
+    )
+  ) %>%
   split_rows_by(
     "ATC2",
     child_labels = "visible",
@@ -157,13 +156,15 @@ result <- basic_table() %>%
     .stats = "unique",
     .labels = c(
       unique = "Total number of patients with at least one treatment"
-    )) %>%
+    )
+  ) %>%
   summarize_num_patients2(
     vars = "CMID",
     .stats = c("unique_count"),
     .labels = c(
       unique_count = "Total number of treatments"
-  )) %>%
+    )
+  ) %>%
   build_table(adcm, alt_counts_df = adsl)
 
 result
@@ -175,14 +176,13 @@ Adding this function is not too hard and we can reuse some existing Statistics f
 ```{r, idea_2}
 
 analyze_num_patients <- function(lyt,
-                         vars,
-                         .stats = NULL,
-                         .formats = NULL,
-                         .labels = NULL,
-                         .indent_mods = NULL,
-                         show_labels = "default",
-                         ...) {
-  
+                                 vars,
+                                 .stats = NULL,
+                                 .formats = NULL,
+                                 .labels = NULL,
+                                 .indent_mods = NULL,
+                                 show_labels = "default",
+                                 ...) {
   afun <- make_afun(
     tern:::c_num_patients,
     .stats = .stats,
@@ -190,7 +190,7 @@ analyze_num_patients <- function(lyt,
     .labels = .labels,
     .indent_mods = .indent_mods
   )
-  
+
   analyze(
     lyt = lyt,
     vars = vars,
@@ -198,7 +198,6 @@ analyze_num_patients <- function(lyt,
     extra_args = list(...),
     show_labels = show_labels
   )
-  
 }
 ```
 
@@ -212,16 +211,15 @@ basic_table() %>%
     .stats = "unique",
     .labels = c(
       unique = "Total number of patients with at least one treatment"
-    )) %>%
+    )
+  ) %>%
   analyze_num_patients(
-    vars = "CMID", 
+    vars = "CMID",
     .stats = "unique_count",
     .labels = c(unique_count = "Number of events"),
     .indent_mods = c(unique_count = -1L)
   ) %>%
   build_table(adcm, alt_counts_df = adsl)
-
-
 ```
 
 Another limitation of this approach is it results in a longer layout for standard templates. There is also a need to hide labels to make the "Number of events" row look like a content row.
@@ -234,7 +232,8 @@ result <- basic_table() %>%
     .stats = "unique",
     .labels = c(
       unique = "Total number of patients with at least one treatment"
-    )) %>%
+    )
+  ) %>%
   analyze_num_patients(
     vars = "CMID",
     .stats = "unique_count",
@@ -247,13 +246,14 @@ result <- basic_table() %>%
     nested = FALSE,
     indent_mod = -1L,
     split_fun = drop_split_levels
-) %>%
+  ) %>%
   summarize_num_patients(
     var = "USUBJID",
     .stats = "unique",
     .labels = c(
       unique = "Total number of patients with at least one treatment"
-    )) %>%
+    )
+  ) %>%
   analyze_num_patients(
     vars = "CMID",
     .stats = "unique_count",
@@ -271,8 +271,8 @@ result <- basic_table() %>%
 result
 
 result_sorted <- result %>%
-  sort_at_path(path =  c("ATC2"), scorefun = cont_n_onecol(1)) %>%
-  sort_at_path(path =  c("ATC2", "*", "CMDECOD"), scorefun = score_occurrences)
+  sort_at_path(path = c("ATC2"), scorefun = cont_n_onecol(1)) %>%
+  sort_at_path(path = c("ATC2", "*", "CMDECOD"), scorefun = score_occurrences)
 
 result_sorted
 ```
@@ -291,9 +291,10 @@ basic_table() %>%
     count_by = "CMID",
     .stats = c("unique", "nonunique"),
     .labels = c(
-        unique = "Total number of patients with at least one adverse event",
-        nonunique = "Total number of events"
-    )) %>%
+      unique = "Total number of patients with at least one adverse event",
+      nonunique = "Total number of events"
+    )
+  ) %>%
   build_table(adcm, alt_counts_df = adsl)
 ```
 
@@ -304,21 +305,20 @@ The ad-hoc function will return multi-line content rows with the 2 variables sum
 ```{r idea_4}
 
 # new ad-hoc analysis function
-foo <- function(df, labelstr="", .N_col, .var, .var2) {
-
-result1 <- s_num_patients(
+foo <- function(df, labelstr = "", .N_col, .var, .var2) {
+  result1 <- s_num_patients(
     x = df[[.var]],
     labelstr = labelstr,
     .N_col = .N_col
   )
 
-result2 <- s_num_patients(
+  result2 <- s_num_patients(
     x = df[[.var2]],
     labelstr = labelstr,
     .N_col = .N_col
   )
 
-list(unique_subj = result1$unique, unique_events = result2$unique_count)
+  list(unique_subj = result1$unique, unique_events = result2$unique_count)
 }
 
 # create formatting
@@ -326,13 +326,14 @@ c_foo <- make_afun(
   foo,
   .stats = c("unique_subj", "unique_events"),
   .formats = c(unique_subj = format_count_fraction, unique_events = "xx"),
-  .labels = c(unique_subj = "Number of patients with at least one event",
-              unique_events = "Number of events")
+  .labels = c(
+    unique_subj = "Number of patients with at least one event",
+    unique_events = "Number of events"
+  )
 )
 
 
-foo(adcm, .N_col = 10, .var = "USUBJID", .var2 = "CMID") 
-
+foo(adcm, .N_col = 10, .var = "USUBJID", .var2 = "CMID")
 ```
 
 While using `summarize_row_groups` directly is OK, it does not seem very efficient to set up the custom function for each analysis. Also, not great as we would need to add ad-hoc function `cfun` in modules too.
@@ -351,7 +352,6 @@ basic_table() %>%
   ) %>%
   summarize_row_groups(cfun = c_foo, extra_args = list(.var = "USUBJID", .var2 = "CMID")) %>%
   build_table(adcm, alt_counts_df = adsl)
-
 ```
 
 # Analyzing Events by SMQ
@@ -369,20 +369,18 @@ Cons:
 * Users need to handle labels.
 ```{r, smq_stack}
 stack_df_by_smq <- function(df, smq, flag_var = "SMQ") {
-
-  df_labels <- c(var_labels(df), "MedDRA Query")
-  l_df <- lapply(smq, function(ae_grp){
-
-    keep <- df[[ae_grp]]!= "<Missing>"
+  df_labels <- c(formatable::var_labels(df), "MedDRA Query")
+  l_df <- lapply(smq, function(ae_grp) {
+    keep <- df[[ae_grp]] != "<Missing>"
     df <- df[keep, ]
     df[[flag_var]] <- ae_grp
     df
   })
 
   result <- do.call(rbind, l_df)
-  
+
   result[[flag_var]] <- factor(result[[flag_var]], levels = smq) # so missing levels are added
-  var_labels(result) <- df_labels
+  formatable::var_labels(result) <- df_labels
   result
 }
 
@@ -411,13 +409,12 @@ tbl <- basic_table() %>%
 
 tbl <- tbl %>%
   sort_at_path(
-    path =  c("SMQ"),
+    path = c("SMQ"),
     scorefun = cont_n_onecol(1),
     decreasing = FALSE
   )
 
 tbl
-
 ```
 
 
@@ -430,8 +427,8 @@ basic_table() %>%
   analyze("event") %>%
   split_rows_by("SMQ2", split_fun = keep_split_levels(only = "Y")) %>%
   analyze("event") %>%
-  ...
-  split_rows_by("SMQn", split_fun = keep_split_levels(only = "Y")) %>%
+  ...()
+split_rows_by("SMQn", split_fun = keep_split_levels(only = "Y")) %>%
   analyze("event") %>%
   build_table(ANL)
 ```
@@ -442,7 +439,6 @@ basic_table() %>%
   split_rows_by_value(split_vars = c("SMQ1", "SMQ2", "SMQ3", ..., "SMQn"), keep = "Y") %>%
   analyze("event") %>%
   build_table(ANL)
-
 ```
 
 However a big negative is that users are not able to sort the table by SMQ with `sort_at_path` so this option is out.
@@ -468,7 +464,6 @@ basic_table() %>%
     )
   ) %>%
   build_table(adae)
-
 ```
 
 ### One more consideration for SMQ analyses
@@ -498,11 +493,13 @@ lyt_adsl <- basic_table() %>%
   add_colcounts() %>%
   estimate_proportion(
     vars = "AEFL",
-    method =  "clopper-pearson",
-   .labels = c(
-     n_prop = "Number of patients with at least one adverse event",
-     prop_ci = "95% CI for % of patients with at least one AE (Clopper-Pearson)"),
-    table_names = "est_prop") 
+    method = "clopper-pearson",
+    .labels = c(
+      n_prop = "Number of patients with at least one adverse event",
+      prop_ci = "95% CI for % of patients with at least one AE (Clopper-Pearson)"
+    ),
+    table_names = "est_prop"
+  )
 
 # Layout for variables from adae dataset.
 lyt_adae <- basic_table() %>%
@@ -514,11 +511,11 @@ lyt_adae <- basic_table() %>%
     .stats = "count",
     .labels = c(count = "Total number of AEs"),
     table_names = "total_aes"
-  ) %>% 
+  ) %>%
   count_occurrences("WTOXGR", .indent_mods = 1L) %>%
   count_patients_with_flags(
     "USUBJID",
-    flag_variables = var_labels(adae[, "fl_ser"])
+    flag_variables = formatable::var_labels(adae[, "fl_ser"])
   ) %>%
   count_occurrences("AEOUT", denom = "n", .indent_mods = 1L)
 ```

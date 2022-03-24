@@ -27,11 +27,11 @@ adqs_f <- adqs %>%
   dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
   dplyr::mutate(
     AVISITN = rank(AVISITN) %>%
-    as.factor() %>%
-    as.numeric() %>%
-    as.factor()
+      as.factor() %>%
+      as.numeric() %>%
+      as.factor()
   )
-var_labels(adqs_f) <- var_labels(adqs)
+formatable::var_labels(adqs_f) <- formatable::var_labels(adqs)
 
 adqs_single <- adqs_f %>%
   dplyr::filter(ARMCD == "ARM B") %>%
@@ -70,7 +70,7 @@ check_mmrm_vars <- function(vars,
       string <- ifelse(!is.null(label), label, v)
       res <- c(res, setNames(string, v))
     }
-    labels[[var]] <<- res  # Saves the result under the `var` element of `labels`.
+    labels[[var]] <<- res # Saves the result under the `var` element of `labels`.
   }
   check_and_get_label("response")
   check_and_get_label("id")
@@ -140,15 +140,13 @@ check_mmrm_vars <- function(vars,
 Here in case of missing arm variable we let the arm/visit part only contain the visit variable.
 
 ```{r}
-build_mmrm_formula <- function(
-  vars,
-  cor_struct = c(
-    "unstructured",
-    "random-quadratic",
-    "random-slope",
-    "compound-symmetry"
-  )
-) {
+build_mmrm_formula <- function(vars,
+                               cor_struct = c(
+                                 "unstructured",
+                                 "random-quadratic",
+                                 "random-slope",
+                                 "compound-symmetry"
+                               )) {
   cor_struct <- match.arg(cor_struct)
 
   covariates_part <- paste(
@@ -173,8 +171,8 @@ build_mmrm_formula <- function(
       "random-slope" = "(as.numeric(visit_var) | id_var)",
       "compound-symmetry" = "(1 | id_var)"
     ) %>%
-    gsub("visit_var", vars$visit, x = .) %>% #nolint
-    gsub("id_var", vars$id, x = .) #nolint
+    gsub("visit_var", vars$visit, x = .) %>% # nolint
+    gsub("id_var", vars$id, x = .) # nolint
 
   rhs_formula <- paste(
     arm_visit_part,
@@ -251,7 +249,7 @@ get_mmrm_lsmeans <- function(fit,
       left_join(data_n, by = c(vars$visit, vars$arm))
   )
 
-  results <-  if (is.null(vars$arm)) {
+  results <- if (is.null(vars$arm)) {
     list(
       estimates = estimates
     )
@@ -315,21 +313,19 @@ get_mmrm_lsmeans <- function(fit,
 Now for the fitting function we just have to be careful for the `ref_level` result list element.
 
 ```{r}
-fit_mmrm <- function(
-  vars = list(
-    response = "AVAL",
-    covariates = c(),
-    id = "USUBJID",
-    arm = "ARM",
-    visit = "AVISIT"
-  ),
-  data,
-  conf_level = 0.95,
-  cor_struct = "unstructured",
-  weights_emmeans = "proportional",
-  optimizer = "automatic",
-  parallel = FALSE
-) {
+fit_mmrm <- function(vars = list(
+                       response = "AVAL",
+                       covariates = c(),
+                       id = "USUBJID",
+                       arm = "ARM",
+                       visit = "AVISIT"
+                     ),
+                     data,
+                     conf_level = 0.95,
+                     cor_struct = "unstructured",
+                     weights_emmeans = "proportional",
+                     optimizer = "automatic",
+                     parallel = FALSE) {
   labels <- check_mmrm_vars(vars, data)
   assertthat::assert_that(
     is_proportion(conf_level),
@@ -422,7 +418,7 @@ The LS means table don't work out of the box.
 First we have to adapt the tidy method.
 
 ```{r}
-tidy.mmrm <- function(x) {  #nolint
+tidy.mmrm <- function(x) { # nolint
   vars <- x$vars
   estimates <- x$lsmeans$estimates
   df <- if (is.null(vars$arm)) {
@@ -455,7 +451,7 @@ s_mmrm_lsmeans_single <- function(df) {
   list(
     n = df$n,
     adj_mean_se = c(df$estimate_est, df$se_est),
-    adj_mean_ci = with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level))
+    adj_mean_ci = formatable::with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level))
   )
 }
 
