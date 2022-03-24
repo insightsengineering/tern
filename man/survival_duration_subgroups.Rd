@@ -127,7 +127,6 @@ labels <- c(
 )
 formatters::var_labels(adtte_f)[names(labels)] <- labels
 
-
 df <- extract_survival_subgroups(
   variables = list(
     tte = "AVAL",

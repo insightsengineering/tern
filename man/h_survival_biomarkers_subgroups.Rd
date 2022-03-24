@@ -81,7 +81,6 @@ adtte_f <- adtte \%>\%
   )
 labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 formatters::var_labels(adtte_f)[names(labels)] <- labels
-
 # This is how the variable list is converted internally.
 h_surv_to_coxreg_variables(
   variables = list(

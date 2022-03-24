@@ -111,7 +111,6 @@ adtte_f <- adtte \%>\%
 labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
 formatters::var_labels(adtte_f)[names(labels)] <- labels
 
-
 # Extract median survival time for one group.
 h_survtime_df(
   tte = adtte_f$AVAL,

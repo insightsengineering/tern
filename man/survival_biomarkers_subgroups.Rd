@@ -95,7 +95,6 @@ adtte_f <- adtte \%>\%
   )
 labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 formatters::var_labels(adtte_f)[names(labels)] <- labels
-
 # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 # in multiple regression models containing one covariate `RACE`,
 # as well as one stratification variable `STRATA1`. The subgroups

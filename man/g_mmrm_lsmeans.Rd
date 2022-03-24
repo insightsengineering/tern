@@ -61,7 +61,6 @@ adqs_f <- adqs \%>\%
   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
   mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 formatters::var_labels(adqs_f) <- formatters::var_labels(adqs)
-
 \dontrun{
 mmrm_results <- fit_mmrm(
   vars = list(
