@@ -21,8 +21,8 @@ NULL
 #'
 #' library(scda)
 #' library(dplyr)
-#' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
-#' summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
+#' ADPP <- scda::synthetic_cdisc_data("latest")$adpp %>% h_pkparam_sort()
+#' summary_numeric_in_cols(ADPP$AGE, custom_label = "stats")
 summary_numeric_in_cols <- function(x,
                                     labelstr = "",
                                     custom_label = NULL,
@@ -55,7 +55,7 @@ summary_numeric_in_cols <- function(x,
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
 #'   summarize_vars_numeric_in_cols(var = "AGE", col_split = TRUE)
-#' result <- build_table(lyt = lyt, df = ADPC)
+#' result <- build_table(lyt = lyt, df = ADPP)
 #' result
 #'
 #' # By selecting just some statistics and ad-hoc labels
@@ -76,7 +76,7 @@ summary_numeric_in_cols <- function(x,
 #'     ),
 #'     col_split = TRUE
 #'   )
-#' result <- build_table(lyt = lyt, df = ADPC)
+#' result <- build_table(lyt = lyt, df = ADPP)
 #' result
 #'
 #' lyt <- basic_table() %>%
@@ -85,11 +85,11 @@ summary_numeric_in_cols <- function(x,
 #'     col_split = TRUE,
 #'     custom_label = "some custom label"
 #'   )
-#' result <- build_table(lyt, df = ADPC)
+#' result <- build_table(lyt, df = ADPP)
 #' result
 #'
 #' # PKPT03
-#' ADPC <- mutate(ADPC, PARAMUNIT = paste0(.data$PARAM, "(", .data$AVALU, ")"))
+#' ADPP <- mutate(ADPP, PARAMUNIT = paste0(.data$PARAM, "(", .data$AVALU, ")"))
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "PARAMUNIT", split_label = "PK Parameter", label_pos = "topleft") %>%
 #'   summarize_vars_numeric_in_cols(
@@ -107,10 +107,11 @@ summary_numeric_in_cols <- function(x,
 #'       max = "Maximum"
 #'     )
 #'   )
-#' result <- build_table(lyt, df = ADPC)
+#' result <- build_table(lyt, df = ADPP)
 #' result
 #'
 #' # PKCT01FDS
+#' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
 #' ADPC <- mutate(ADPC, as.factor(.data$NRELTM1))
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "VISIT", split_label = "Visit", label_pos = "topleft") %>%
