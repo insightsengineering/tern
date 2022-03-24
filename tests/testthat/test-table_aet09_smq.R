@@ -19,8 +19,8 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correctly", {
-  adsl_labels <- formatable::var_labels(adsl)
-  adae_labels <- formatable::var_labels(adae)
+  adsl_labels <- formatters::var_labels(adsl)
+  adae_labels <- formatters::var_labels(adae)
 
   adae <- adae %>%
     dplyr::mutate(
@@ -94,8 +94,8 @@ testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produ
 
 testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
                     <with customized queries>) is produced correctly", {
-  adsl_labels <- formatable::var_labels(adsl)
-  adae_labels <- formatable::var_labels(adae)
+  adsl_labels <- formatters::var_labels(adsl)
+  adae_labels <- formatters::var_labels(adae)
 
   adae <- adae %>%
     dplyr::mutate(

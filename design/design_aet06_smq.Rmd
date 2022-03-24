@@ -34,8 +34,8 @@ packageVersion("rtables")
 
 adsl <- radsl(cached = TRUE)
 adae <- radae(cached = TRUE)
-adsl_labels <- formatable::var_labels(adsl)
-adae_labels <- formatable::var_labels(adae)
+adsl_labels <- formatters::var_labels(adsl)
+adae_labels <- formatters::var_labels(adae)
 
 adae <- adae %>%
   mutate(
@@ -71,7 +71,7 @@ adae_smq3 <- adae %>%
 
 adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)
 
-formatable::var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries")
+formatters::var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries")
 
 n_per_arm_sex <- table(interaction(adsl$SEX, adsl$ARM))
 
@@ -109,8 +109,8 @@ result
 adsl <- radsl(cached = TRUE)
 adae <- radae(cached = TRUE)
 
-adsl_labels <- formatable::var_labels(adsl)
-adae_labels <- formatable::var_labels(adae)
+adsl_labels <- formatters::var_labels(adsl)
+adae_labels <- formatters::var_labels(adae)
 
 adsl <- adsl %>%
   mutate(
@@ -121,7 +121,7 @@ adsl <- adsl %>%
     AGE65 = factor(AGE65, levels = c(">= 65", "< 65"))
   )
 
-formatable::var_labels(adsl) <- c(adsl_labels, "AGE65" = "AGE65 GROUP")
+formatters::var_labels(adsl) <- c(adsl_labels, "AGE65" = "AGE65 GROUP")
 
 adae <- adae %>%
   mutate(
@@ -161,7 +161,7 @@ adae_smq3 <- adae %>%
 
 adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)
 
-formatable::var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries", "AGE65" = "AGE65 GROUP")
+formatters::var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries", "AGE65" = "AGE65 GROUP")
 
 n_per_arm_age65 <- table(interaction(adsl$AGE65, adsl$ARM))
 

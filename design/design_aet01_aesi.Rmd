@@ -199,7 +199,7 @@ lyt_adae <- basic_table() %>%
   ) %>%
   count_patients_with_flags(
     "USUBJID",
-    flag_variables = formatable::var_labels(adae[, aesi_vars])
+    flag_variables = formatters::var_labels(adae[, aesi_vars])
   )
 result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
 result <- insert_rrow(result_adae, rrow("Total number of patients with at least one AE by worst grade ", ""), at = 3)
@@ -211,7 +211,7 @@ result_adae
 ##AEs by SMQ
 ```{r}
 stack_adae_by_smq <- function(adae, smq) {
-  adae_labels <- c(formatable::var_labels(adae), "Standardized MedDRA Query")
+  adae_labels <- c(formatters::var_labels(adae), "Standardized MedDRA Query")
   l_df <- lapply(smq, function(ae_grp) {
     ae_scope <- str_replace(ae_grp, "NAM", "SC")
     keep <- adae[[ae_grp]] != "<Missing>"
@@ -224,7 +224,7 @@ stack_adae_by_smq <- function(adae, smq) {
     df
   })
   result <- do.call(rbind, l_df)
-  formatable::var_labels(result) <- adae_labels
+  formatters::var_labels(result) <- adae_labels
   result
 }
 
@@ -264,7 +264,7 @@ lyt_adae <- basic_table() %>%
   ) %>%
   count_patients_with_flags(
     "USUBJID",
-    flag_variables = formatable::var_labels(adae[, aesi_vars])
+    flag_variables = formatters::var_labels(adae[, aesi_vars])
   )
 result_adae <- build_table(lyt_adae, df = adae_smq, alt_counts_df = adsl)
 result_adae

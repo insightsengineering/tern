@@ -20,11 +20,11 @@ testthat::test_that("s_coxph_pairwise works with default arguments and no strati
   )
 
   expected <- list(
-    pvalue = formatable::with_label(0.03340293, "p-value (log-rank)"),
-    hr = formatable::with_label(0.7173651, "Hazard Ratio"),
-    hr_ci = formatable::with_label(c(0.5275231, 0.9755262), "95% CI"),
-    n_tot = formatable::with_label(268L, "Total n"),
-    n_tot_events = formatable::with_label(166L, "Total events")
+    pvalue = formatters::with_label(0.03340293, "p-value (log-rank)"),
+    hr = formatters::with_label(0.7173651, "Hazard Ratio"),
+    hr_ci = formatters::with_label(c(0.5275231, 0.9755262), "95% CI"),
+    n_tot = formatters::with_label(268L, "Total n"),
+    n_tot_events = formatters::with_label(166L, "Total events")
   )
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -47,11 +47,11 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and no str
   )
 
   expected <- list(
-    pvalue = formatable::with_label(0.03417907, "p-value (wald)"),
-    hr = formatable::with_label(0.7173651, "Hazard Ratio"),
-    hr_ci = formatable::with_label(c(0.5542485, 0.9284871), "90% CI"),
-    n_tot = formatable::with_label(268L, "Total n"),
-    n_tot_events = formatable::with_label(166L, "Total events")
+    pvalue = formatters::with_label(0.03417907, "p-value (wald)"),
+    hr = formatters::with_label(0.7173651, "Hazard Ratio"),
+    hr_ci = formatters::with_label(c(0.5542485, 0.9284871), "90% CI"),
+    n_tot = formatters::with_label(268L, "Total n"),
+    n_tot_events = formatters::with_label(166L, "Total events")
   )
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -73,11 +73,11 @@ testthat::test_that("s_coxph_pairwise works with default arguments and stratific
   )
 
   expected <- list(
-    pvalue = formatable::with_label(0.03398278, "p-value (log-rank)"),
-    hr = formatable::with_label(0.7057806, "Hazard Ratio"),
-    hr_ci = formatable::with_label(c(0.5106793, 0.9754189), "95% CI"),
-    n_tot = formatable::with_label(268L, "Total n"),
-    n_tot_events = formatable::with_label(166L, "Total events")
+    pvalue = formatters::with_label(0.03398278, "p-value (log-rank)"),
+    hr = formatters::with_label(0.7057806, "Hazard Ratio"),
+    hr_ci = formatters::with_label(c(0.5106793, 0.9754189), "95% CI"),
+    n_tot = formatters::with_label(268L, "Total n"),
+    n_tot_events = formatters::with_label(166L, "Total events")
   )
   testthat::expect_equal(result, expected, tolerance = 0.00001)
 })
@@ -100,11 +100,11 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and strati
   )
 
   expected <- list(
-    pvalue = formatable::with_label(0.03479608, "p-value (wald)"),
-    hr = formatable::with_label(0.7057806, "Hazard Ratio"),
-    hr_ci = formatable::with_label(c(0.5379481, 0.9259745), "90% CI"),
-    n_tot = formatable::with_label(268L, "Total n"),
-    n_tot_events = formatable::with_label(166L, "Total events")
+    pvalue = formatters::with_label(0.03479608, "p-value (wald)"),
+    hr = formatters::with_label(0.7057806, "Hazard Ratio"),
+    hr_ci = formatters::with_label(c(0.5379481, 0.9259745), "90% CI"),
+    n_tot = formatters::with_label(268L, "Total n"),
+    n_tot_events = formatters::with_label(166L, "Total events")
   )
   testthat::expect_equal(result, expected, tolerance = 0.00001)
 })

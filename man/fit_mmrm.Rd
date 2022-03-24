@@ -117,7 +117,7 @@ adqs_f <- adqs \%>\%
       as.numeric() \%>\%
       as.factor()
   )
-formatable::var_labels(adqs_f) <- formatable::var_labels(adqs)
+formatters::var_labels(adqs_f) <- formatters::var_labels(adqs)
 \dontrun{
 # sometimes results in failure to converge with 1 negative eigenvalue
 mmrm_results <- fit_mmrm(

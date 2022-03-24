@@ -34,7 +34,7 @@ library(random.cdisc.data)
 
 ADSL <- radsl(cached = TRUE)
 ADEG <- radeg(cached = TRUE)
-adeg_labels <- formatable::var_labels(ADEG)
+adeg_labels <- formatters::var_labels(ADEG)
 
 ADEG_f <- subset(
   ADEG,
@@ -63,7 +63,7 @@ ADEG_f$BASEC <- factor(
   labels = c("Normal", "Abnormal", "Missing")
 )
 
-formatable::var_labels(ADEG_f) <- adeg_labels
+formatters::var_labels(ADEG_f) <- adeg_labels
 ```
 
 ## Design Proposition

@@ -85,7 +85,7 @@ library(rtables)
 adtte <- synthetic_cdisc_data("latest")$adtte
 
 # Save variable labels before data processing steps.
-adtte_labels <- formatable::var_labels(adtte)
+adtte_labels <- formatters::var_labels(adtte)
 
 adtte_f <- adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
@@ -94,7 +94,7 @@ adtte_f <- adtte \%>\%
     is_event = CNSR == 0
   )
 labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
-formatable::var_labels(adtte_f)[names(labels)] <- labels
+formatters::var_labels(adtte_f)[names(labels)] <- labels
 
 # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 # in multiple regression models containing one covariate `RACE`,

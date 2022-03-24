@@ -35,7 +35,7 @@ Imports:
     dplyr,
     emmeans (>= 1.4.5),
     forcats,
-    formatable,
+    formatters,
     ggplot2,
     grDevices,
     grid,

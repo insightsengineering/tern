@@ -237,7 +237,7 @@ adrs_f <- adrs \%>\%
     RACE = factor(RACE),
     SEX = factor(SEX)
   )
-formatable::var_labels(adrs_f) <- c(formatable::var_labels(adrs), Response = "Response")
+formatters::var_labels(adrs_f) <- c(formatters::var_labels(adrs), Response = "Response")
 mod1 <- fit_logistic(
   data = adrs_f,
   variables = list(

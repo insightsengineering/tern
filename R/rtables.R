@@ -55,7 +55,7 @@ cfun_by_flag <- function(analysis_var,
   function(df, labelstr) {
     row_index <- which(df[[flag_var]])
     x <- unlist_and_blank_na(df[[analysis_var]][row_index])
-    formatable::with_label(
+    formatters::with_label(
       rcell(x, format = format),
       labelstr
     )
@@ -312,7 +312,7 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
     is_nonnegative_count(indent)
   )
 
-  lab <- formatable::var_labels(df[vars], fill = TRUE)
+  lab <- formatters::var_labels(df[vars], fill = TRUE)
   lab <- paste(lab, collapse = " / ")
   space <- paste(rep(" ", indent * 2), collapse = "")
   lab <- paste0(space, lab)

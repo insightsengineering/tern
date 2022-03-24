@@ -4,7 +4,7 @@ library(dplyr)
 preprocess_adrs <- function(adrs) {
 
   # Save variable labels before data processing steps.
-  adrs_labels <- formatable::var_labels(adrs)
+  adrs_labels <- formatters::var_labels(adrs)
 
   adrs_mod <- adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%

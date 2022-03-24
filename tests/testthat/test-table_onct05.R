@@ -2,7 +2,7 @@ library(scda)
 library(dplyr)
 
 preprocess_adrs <- function(adrs, n_records = 20) {
-  adrs_labels <- formatable::var_labels(adrs)
+  adrs_labels <- formatters::var_labels(adrs)
   adrs <- adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
     dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
@@ -13,7 +13,7 @@ preprocess_adrs <- function(adrs, n_records = 20) {
       ARM = forcats::fct_relevel(ARM, "B: Placebo"),
       rsp = AVALC == "CR"
     )
-  formatable::var_labels(adrs) <- c(adrs_labels, "Response")
+  formatters::var_labels(adrs) <- c(adrs_labels, "Response")
 
   adrs
 }

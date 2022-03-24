@@ -6,7 +6,7 @@ library(dplyr)
 
 gen_advs <- function() {
   advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs # nolintr
-  advs_label <- formatable::var_labels(advs)
+  advs_label <- formatters::var_labels(advs)
 
   advs <- advs %>%
     dplyr::filter(PARAMCD == "DIABP" & PARAM == "Diastolic Blood Pressure") %>%
@@ -43,7 +43,7 @@ gen_advs <- function() {
     advs_pb_max
   )
 
-  formatable::var_labels(advs_f) <- advs_label
+  formatters::var_labels(advs_f) <- advs_label
   advs_f <- advs_f %>% dplyr::mutate(AVISIT = droplevels(AVISIT)) # nolint
   advs_f
 }

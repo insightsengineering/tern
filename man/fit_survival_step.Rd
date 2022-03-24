@@ -54,7 +54,7 @@ adtte_f <- adtte \%>\%
     is_event = CNSR == 0
   )
 labels <- c("ARM" = "Treatment Arm", "is_event" = "Event Flag")
-formatable::var_labels(adtte_f)[names(labels)] <- labels
+formatters::var_labels(adtte_f)[names(labels)] <- labels
 
 variables <- list(
   arm = "ARM",

@@ -27,7 +27,7 @@ library(rtables)
 library(assertthat)
 
 ADRS <- radrs(cached = TRUE) # nolint
-adrs_labels <- formatable::var_labels(ADRS) # nolint
+adrs_labels <- formatters::var_labels(ADRS) # nolint
 
 ADRS_f <- ADRS %>% # nolint
   dplyr::filter(PARAMCD == "BESRSPI") %>%
@@ -38,7 +38,7 @@ ADRS_f <- ADRS %>% # nolint
     SEX = factor(SEX)
   )
 
-formatable::var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
+formatters::var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
 ```
 
 Now let's have a look at the interaction table. Basically we need another hierarchy level here in the tidied dataset and the row splits, let's call it "reference" since we are referring to a level or value of the interaction term (either treatment arm or the covariate which is interacting with treatment arm). Then the content rows at the "term" level no longer display odds ratio and CI for that, since that is then shown at the "reference" level.
@@ -822,7 +822,7 @@ ident_cfun <- function(var, flag, format = "xx") { # done, renamed to cfun_by_fl
   force(format)
   function(df, labelstr, .df_row) {
     row_index <- which(.df_row[[flag]])
-    formatable::with_label(
+    formatters::with_label(
       rcell(zeroNA(df[[var]][row_index]), format = format),
       labelstr
     )

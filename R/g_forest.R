@@ -43,7 +43,7 @@
 #' adrs <- synthetic_cdisc_data("latest")$adrs
 #'
 #' n_records <- 20
-#' adrs_labels <- formatable::var_labels(adrs)
+#' adrs_labels <- formatters::var_labels(adrs)
 #' adrs <- adrs %>%
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
@@ -54,7 +54,7 @@
 #'     ARM = fct_relevel(ARM, "B: Placebo"),
 #'     rsp = AVALC == "CR"
 #'   )
-#' formatable::var_labels(adrs) <- c(adrs_labels, "Response")
+#' formatters::var_labels(adrs) <- c(adrs_labels, "Response")
 #'
 #' df <- extract_rsp_subgroups(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
@@ -86,7 +86,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- formatable::var_labels(adtte)
+#' adtte_labels <- formatters::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(
@@ -108,7 +108,7 @@
 #'   "AVALU" = adtte_labels["AVALU"],
 #'   "is_event" = "Event Flag"
 #' )
-#' formatable::var_labels(adtte_f)[names(labels)] <- labels
+#' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
 #' df <- extract_survival_subgroups(
 #'   variables = list(
@@ -712,7 +712,7 @@ forest_viewport <- function(tbl,
   nr_h <- attr(mat_form, "nrow_header")
 
   if (is.null(width_row_names) || is.null(width_columns)) {
-    tbl_widths <- formatable::propose_column_widths(mat_form)
+    tbl_widths <- formatters::propose_column_widths(mat_form)
     strs_with_width <- strrep("x", tbl_widths) # that works for mono spaced fonts
     if (is.null(width_row_names)) width_row_names <- grid::stringWidth(strs_with_width[1])
     if (is.null(width_columns)) width_columns <- grid::stringWidth(strs_with_width[-1])

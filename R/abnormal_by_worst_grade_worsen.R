@@ -149,7 +149,7 @@ h_adlb_worsen <- function(adlb,
   }
 
   # label
-  formatable::var_labels(out) <- formatable::var_labels(adlb_f, fill = FALSE)
+  formatters::var_labels(out) <- formatters::var_labels(adlb_f, fill = FALSE)
   # NA
   out
 }

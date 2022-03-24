@@ -26,7 +26,7 @@ adae <- df_explicit_na(adae)
 
 ## Table
 
-The goal is to come up with a way to produce a summary like the one below based on two input variables - one variable for the number of subjects and another variable for the number of unique events. The challenge is the need to split the layout because we cannot have repeated `summarize_num_patients` within the same level of a layout (because this functon creates content rows).
+The goal is to come up with a way to produce a summary like the one below based on two input variables - one variable for the number of subjects and another variable for the number of unique events. The challenge is the need to split the layout because we cannot have repeated `summarize_num_patients` within the same level of a layout (because this function creates content rows).
 
 ```{r table}
 
@@ -63,7 +63,7 @@ result <- rbind(
 result
 ```
 
-The approach above works but it is not scalable. For example, it would be difficutl to insert this summary inside each level of a nested split like so:
+The approach above works but it is not scalable. For example, it would be difficult to insert this summary inside each level of a nested split like so:
 
 ```{r nested_table}
 basic_table() %>%
@@ -369,7 +369,7 @@ Cons:
 * Users need to handle labels.
 ```{r, smq_stack}
 stack_df_by_smq <- function(df, smq, flag_var = "SMQ") {
-  df_labels <- c(formatable::var_labels(df), "MedDRA Query")
+  df_labels <- c(formatters::var_labels(df), "MedDRA Query")
   l_df <- lapply(smq, function(ae_grp) {
     keep <- df[[ae_grp]] != "<Missing>"
     df <- df[keep, ]
@@ -380,7 +380,7 @@ stack_df_by_smq <- function(df, smq, flag_var = "SMQ") {
   result <- do.call(rbind, l_df)
 
   result[[flag_var]] <- factor(result[[flag_var]], levels = smq) # so missing levels are added
-  formatable::var_labels(result) <- df_labels
+  formatters::var_labels(result) <- df_labels
   result
 }
 
@@ -515,7 +515,7 @@ lyt_adae <- basic_table() %>%
   count_occurrences("WTOXGR", .indent_mods = 1L) %>%
   count_patients_with_flags(
     "USUBJID",
-    flag_variables = formatable::var_labels(adae[, "fl_ser"])
+    flag_variables = formatters::var_labels(adae[, "fl_ser"])
   ) %>%
   count_occurrences("AEOUT", denom = "n", .indent_mods = 1L)
 ```

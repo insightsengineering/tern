@@ -3,7 +3,7 @@ library(scda)
 preprocess_adtte <- function(adtte) {
 
   # Save variable labels before data processing steps.
-  adtte_labels <- formatable::var_labels(adtte)
+  adtte_labels <- formatters::var_labels(adtte)
 
   adtte_mod <- adtte %>%
     dplyr::filter(
@@ -117,7 +117,7 @@ testthat::test_that("h_split_by_subgroups functions as expected with valid input
     y = factor(c("A", "B"), levels = lvls_y),
     z = factor(c("D", "D"), levels = "D")
   )
-  formatable::var_labels(df_test) <- paste("label for", names(df_test))
+  formatters::var_labels(df_test) <- paste("label for", names(df_test))
 
   result <- h_split_by_subgroups(
     data = df_test,
@@ -129,14 +129,14 @@ testthat::test_that("h_split_by_subgroups functions as expected with valid input
     y = factor("B", levels = lvls_y),
     z = factor("D", levels = "D")
   )
-  formatable::var_labels(df_yb) <- c("label for x", "label for y", "label for z")
+  formatters::var_labels(df_yb) <- c("label for x", "label for y", "label for z")
 
   df_ya <- data.frame(
     x = 1,
     y = factor("A", levels = lvls_y),
     z = factor("D", levels = "D")
   )
-  formatable::var_labels(df_ya) <- c("label for x", "label for y", "label for z")
+  formatters::var_labels(df_ya) <- c("label for x", "label for y", "label for z")
 
   expected <- list(
     `y.B` = list(
@@ -179,7 +179,7 @@ testthat::test_that("h_split_by_subgroups works as expected with groups_lists", 
     y = factor(c("A", "B"), levels = lvls_y),
     z = factor(c("D", "D"), levels = "D")
   )
-  formatable::var_labels(df_test) <- paste("label for", names(df_test))
+  formatters::var_labels(df_test) <- paste("label for", names(df_test))
 
   result <- h_split_by_subgroups(
     data = df_test,
@@ -195,7 +195,7 @@ testthat::test_that("h_split_by_subgroups works as expected with groups_lists", 
     y = factor(c("A", "B"), levels = lvls_y),
     z = factor("D", levels = "D")
   )
-  formatable::var_labels(df_yab) <- c("label for x", "label for y", "label for z")
+  formatters::var_labels(df_yab) <- c("label for x", "label for y", "label for z")
   testthat::expect_identical(
     result$y.AB$df,
     df_yab
@@ -468,7 +468,7 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with valid input
   # Test edge case where HR is (0, Inf)
   adtte <- adtte %>%
     dplyr::filter(COUNTRY %in% c("CAN", "GBR")) %>%
-    reapply_varlabels(formatable::var_labels(adtte))
+    reapply_varlabels(formatters::var_labels(adtte))
 
   result <- testthat::expect_warning(h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "COUNTRY"),

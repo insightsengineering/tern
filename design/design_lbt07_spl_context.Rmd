@@ -42,7 +42,7 @@ adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] 
 adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
 adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 
-adlb_labels <- formatable::var_labels(adlb)
+adlb_labels <- formatters::var_labels(adlb)
 
 adlb_f <- adlb %>%
   dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
@@ -52,7 +52,7 @@ adlb_f <- adlb %>%
   ) %>%
   droplevels()
 
-formatable::var_labels(adlb_f) <- adlb_labels
+formatters::var_labels(adlb_f) <- adlb_labels
 
 ## Introduce two analysis variables: GRADE_DIR variable to be used instead of ANRIND
 ## This is a necessary step since when checking vs STREAM I noticed that GRADE can be 0 while ANRIND is HIGH or LOW
@@ -125,7 +125,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, # nolint
       num <- sum(df[[.var]] != 0)
       fraction <- if_else(denom == 0, 0, num / denom)
     }
-    result[[lvl]] <- formatable::with_label(c(count = num, fraction = fraction), lvl)
+    result[[lvl]] <- formatters::with_label(c(count = num, fraction = fraction), lvl)
   }
 
   result <- list(count_fraction = result)
