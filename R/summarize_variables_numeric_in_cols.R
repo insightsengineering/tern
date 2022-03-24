@@ -21,7 +21,8 @@ NULL
 #'
 #' library(scda)
 #' library(dplyr)
-#' ADPC <- scda::synthetic_cdisc_data("latest")$adpc %>% h_pkparam_sort()
+#' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
+#' ADPP <- scda::synthetic_cdisc_data("latest")$adpp %>% h_pkparam_sort()
 #' summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
 summary_numeric_in_cols <- function(x,
                                     labelstr = "",
