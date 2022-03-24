@@ -62,7 +62,7 @@ summary tables in columns, primarily used for PK data sets.
 
 library(scda)
 library(dplyr)
-ADPC <- scda::synthetic_cdisc_data("latest")$adpc
+ADPC <- scda::synthetic_cdisc_data("latest")$adpc \%>\% h_pkparam_sort()
 summary_numeric_in_cols(ADPC$AGE, custom_label = "stats")
 
 lyt <- basic_table() \%>\%
