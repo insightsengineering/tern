@@ -66,12 +66,12 @@ library(forcats)
 library(rtables)
 
 adrs <- synthetic_cdisc_data("latest")$adrs
-adrs_labels <- formatable::var_labels(adrs)
+adrs_labels <- formatters::var_labels(adrs)
 
 adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   mutate(rsp = AVALC == "CR")
-formatable::var_labels(adrs_f) <- c(adrs_labels, "Response")
+formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 # This is how the variable list is converted internally.
 h_rsp_to_logistic_variables(
   variables = list(

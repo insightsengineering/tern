@@ -57,11 +57,11 @@ testthat::test_that("s_odds_ratio estimates right OR and CI (unstratified analys
   )
 
   expected <- list(
-    or_ci = formatable::with_label(
+    or_ci = formatters::with_label(
       c(est = 1 / 2 / 2 / 1, lcl = 0.0083, ucl = 7.4518),
       "Odds Ratio (95% CI)"
     ),
-    n_tot = formatable::with_label(c(n_tot = 6), "Total n")
+    n_tot = formatters::with_label(c(n_tot = 6), "Total n")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -84,11 +84,11 @@ testthat::test_that("s_odds_ratio estimates right OR and CI (stratified analysis
   )
 
   expected <- list(
-    or_ci = formatable::with_label(
+    or_ci = formatters::with_label(
       c(est = 0.76898, lcl = 0.34242, ucl = 1.72692),
       "Odds Ratio (95% CI)"
     ),
-    n_tot = formatable::with_label(c(n_tot = 100), "Total n")
+    n_tot = formatters::with_label(c(n_tot = 100), "Total n")
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })

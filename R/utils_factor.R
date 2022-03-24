@@ -48,7 +48,7 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' @export
 #'
 #' @examples
-#' as_factor_keep_attributes(formatable::with_label(c(1, 1, 2, 3), "id"))
+#' as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
 #' as_factor_keep_attributes(c("a", "b", ""), "id")
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),

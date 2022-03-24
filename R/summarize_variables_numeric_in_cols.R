@@ -38,7 +38,7 @@ summary_numeric_in_cols <- function(x,
   # Calling s_summary.numeric
   results <- s_summary.numeric(x)
 
-  lapply(results, formatable::with_label, row_label)
+  lapply(results, formatters::with_label, row_label)
 }
 
 #' @describeIn summarize_numeric_in_columns Layout creating function which can be used for creating

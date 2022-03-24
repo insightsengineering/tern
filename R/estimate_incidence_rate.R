@@ -258,10 +258,10 @@ s_incidence_rate <- function(df,
     control
   )
   list(
-    person_years = formatable::with_label(person_years, "Total patient-years at risk"),
-    n_events = formatable::with_label(n_events, "Number of adverse events observed"),
-    rate = formatable::with_label(result$rate, paste("AE rate per", time_unit_output, "patient-years")),
-    rate_ci = formatable::with_label(result$rate_ci, f_conf_level(conf_level))
+    person_years = formatters::with_label(person_years, "Total patient-years at risk"),
+    n_events = formatters::with_label(n_events, "Number of adverse events observed"),
+    rate = formatters::with_label(result$rate, paste("AE rate per", time_unit_output, "patient-years")),
+    rate_ci = formatters::with_label(result$rate_ci, f_conf_level(conf_level))
   )
 }
 

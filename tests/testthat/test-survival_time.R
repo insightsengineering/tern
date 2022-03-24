@@ -17,12 +17,12 @@ testthat::test_that("s_surv_time works with default arguments", {
     is_event = "is_event"
   )
   expected <- list(
-    median = formatable::with_label(27.5130353437858, label = "Median"),
-    median_ci = formatable::with_label(c(17.336045529175, 30.2169178803838), label = "95% CI"),
-    quantiles = formatable::with_label(c(9.49817068050519, 54.8903290286298), label = "25% and 75%-ile"),
-    range_censor = formatable::with_label(c(0.864396308007549, 91.0033832489784), label = "Range (censored)"),
-    range_event = formatable::with_label(c(0.0104370446088212, 122.357382022329), label = "Range (event)"),
-    range = formatable::with_label(c(0.0104370446088212, 122.357382022329), label = "Range")
+    median = formatters::with_label(27.5130353437858, label = "Median"),
+    median_ci = formatters::with_label(c(17.336045529175, 30.2169178803838), label = "95% CI"),
+    quantiles = formatters::with_label(c(9.49817068050519, 54.8903290286298), label = "25% and 75%-ile"),
+    range_censor = formatters::with_label(c(0.864396308007549, 91.0033832489784), label = "Range (censored)"),
+    range_event = formatters::with_label(c(0.0104370446088212, 122.357382022329), label = "Range (event)"),
+    range = formatters::with_label(c(0.0104370446088212, 122.357382022329), label = "Range")
   )
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -44,12 +44,12 @@ testthat::test_that("s_surv_time works with customized arguments", {
     )
   )
   expected <- list(
-    median = formatable::with_label(27.5130353437858, label = "Median"),
-    median_ci = formatable::with_label(c(15.7210381999671, 35.7398274871358), label = "99% CI"),
-    quantiles = formatable::with_label(c(8.49943279711687, 61.6015017964328), label = "20% and 80%-ile"),
-    range_censor = formatable::with_label(c(0.864396308007549, 91.0033832489784), label = "Range (censored)"),
-    range_event = formatable::with_label(c(0.0104370446088212, 122.357382022329), label = "Range (event)"),
-    range = formatable::with_label(c(0.0104370446088212, 122.357382022329), label = "Range")
+    median = formatters::with_label(27.5130353437858, label = "Median"),
+    median_ci = formatters::with_label(c(15.7210381999671, 35.7398274871358), label = "99% CI"),
+    quantiles = formatters::with_label(c(8.49943279711687, 61.6015017964328), label = "20% and 80%-ile"),
+    range_censor = formatters::with_label(c(0.864396308007549, 91.0033832489784), label = "Range (censored)"),
+    range_event = formatters::with_label(c(0.0104370446088212, 122.357382022329), label = "Range (event)"),
+    range = formatters::with_label(c(0.0104370446088212, 122.357382022329), label = "Range")
   )
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })

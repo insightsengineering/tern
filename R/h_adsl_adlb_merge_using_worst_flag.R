@@ -101,9 +101,9 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, # nolint
       dplyr::select(-.data$BTOXGR_MAP)
 
     adlb_var_labels <- c(
-      formatable::var_labels(adlb[by_variables_from_adlb]),
-      formatable::var_labels(adlb[columns_from_adlb[!columns_from_adlb %in% by_variables_from_adlb]]),
-      formatable::var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
+      formatters::var_labels(adlb[by_variables_from_adlb]),
+      formatters::var_labels(adlb[columns_from_adlb[!columns_from_adlb %in% by_variables_from_adlb]]),
+      formatters::var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
     )
   } else {
     adsl_lb <- expand.grid(
@@ -127,9 +127,9 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, # nolint
     )
 
     adlb_var_labels <- c(
-      formatable::var_labels(adlb[by_variables_from_adlb]),
-      formatable::var_labels(adlb[columns_from_adlb[!columns_from_adlb %in% by_variables_from_adlb]]),
-      formatable::var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
+      formatters::var_labels(adlb[by_variables_from_adlb]),
+      formatters::var_labels(adlb[columns_from_adlb[!columns_from_adlb %in% by_variables_from_adlb]]),
+      formatters::var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
     )
   }
 
@@ -137,7 +137,7 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, # nolint
   adlb_out$BTOXGR <- as.factor(adlb_out$BTOXGR) # nolint
 
   adlb_out <- df_explicit_na(adlb_out)
-  formatable::var_labels(adlb_out) <- adlb_var_labels
+  formatters::var_labels(adlb_out) <- adlb_var_labels
 
   adlb_out
 }

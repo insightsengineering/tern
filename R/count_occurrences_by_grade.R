@@ -156,7 +156,7 @@ s_count_occurrences_by_grade <- function(df,
 
     if (!is.ordered(grade)) {
       grade_lbl <- obj_label(grade)
-      grade <- formatable::with_label(factor(grade, levels = levels(grade), ordered = TRUE), grade_lbl)
+      grade <- formatters::with_label(factor(grade, levels = levels(grade), ordered = TRUE), grade_lbl)
     }
 
     df_max <- stats::aggregate(grade ~ id, FUN = max, drop = FALSE)

@@ -18,7 +18,7 @@
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- formatable::var_labels(adtte, fill = FALSE)
+#' adtte_labels <- formatters::var_labels(adtte, fill = FALSE)
 #'
 #' adtte_f <- adtte %>%
 #'   filter(PARAMCD == "OS") %>%
@@ -27,8 +27,7 @@
 #'     is_event = CNSR == 0
 #'   )
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
-#' formatable::var_labels(adtte_f)[names(labels)] <- labels
-#'
+#' formatters::var_labels(adtte_f)[names(labels)] <- labels
 NULL
 
 #' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list
@@ -132,7 +131,7 @@ h_coxreg_mult_cont_df <- function(variables,
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
-        biomarker_label = formatable::var_labels(data[bm], fill = TRUE),
+        biomarker_label = formatters::var_labels(data[bm], fill = TRUE),
         n_tot = coxreg_list$mod$n,
         n_tot_events = coxreg_list$mod$nevent,
         median = as.numeric(median),
@@ -147,7 +146,7 @@ h_coxreg_mult_cont_df <- function(variables,
   } else {
     data.frame(
       biomarker = variables$biomarkers,
-      biomarker_label = formatable::var_labels(data[variables$biomarkers], fill = TRUE),
+      biomarker_label = formatters::var_labels(data[variables$biomarkers], fill = TRUE),
       n_tot = 0L,
       n_tot_events = 0L,
       median = NA,

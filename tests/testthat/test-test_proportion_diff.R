@@ -124,7 +124,7 @@ testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return ri
 
   expected <- list(
     d = "p-value (Cochran-Mantel-Haenszel Test)",
-    s = list(pval = formatable::with_label(0.6477, result$d))
+    s = list(pval = formatters::with_label(0.6477, result$d))
   )
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })

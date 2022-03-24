@@ -102,7 +102,7 @@ h_adlb_worsen <- function(adlb,
 
   # stack data
   out <- rbind(adlb_out_l, adlb_out_h, adlb_out_b_l, adlb_out_b_h)
-  formatable::var_labels(out) <- formatable::var_labels(adlb_out_l)
+  formatters::var_labels(out) <- formatters::var_labels(adlb_out_l)
   out
 }
 
@@ -125,7 +125,7 @@ df <- h_adlb_worsen(
 ```
 
 ## Elementary function: `h_worsen_counter`
-# Logics
+# Logic
 * only keep patients with at least one non-missing post-baseline
 * for grade 1-4:
  + denom: the number of patients with missing or less than the grade of interest at baseline, also post-baseline values must be in the same direction of interest
@@ -133,7 +133,7 @@ df <- h_adlb_worsen(
 * for any:
  + denom: the number of patients with missing or less than the grade of interest at baseline, also post-baseline values must be in the same direction of interest
  + num: the number of patients satisfy either condition 1 or condition 2:
-   - condition 1 (misisng baseline): patients included in denom who has missing at baseline
+   - condition 1 (missing baseline): patients included in denom who has missing at baseline
    - condition 2 (valid baseline): patients included in denom whose post-baseline grade is worse than baseline grade
 ```{r h_count}
 h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {

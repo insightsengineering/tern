@@ -124,9 +124,9 @@ s_count_abnormal_by_baseline <- function(df,
 
   labels <- d_count_abnormal_by_baseline(abnormal)
   list(fraction = list(
-    not_abnormal = formatable::with_label(c(num = not_abn_num, denom = not_abn_denom), labels$not_abnormal),
-    abnormal = formatable::with_label(c(num = abn_num, denom = abn_denom), labels$abnormal),
-    total = formatable::with_label(c(num = total_num, denom = total_denom), labels$total)
+    not_abnormal = formatters::with_label(c(num = not_abn_num, denom = not_abn_denom), labels$not_abnormal),
+    abnormal = formatters::with_label(c(num = abn_num, denom = abn_denom), labels$abnormal),
+    total = formatters::with_label(c(num = total_num, denom = total_denom), labels$total)
   ))
 }
 

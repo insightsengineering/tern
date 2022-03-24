@@ -69,17 +69,17 @@ s_count_patients_and_multiple_events <- function(df, # nolint
   } else {
     "counts"
   }
-  y$unique <- formatable::with_label(
+  y$unique <- formatters::with_label(
     s_num_patients_content(df = df, .N_col = 1, .var = id, required = NULL)$unique[1L],
     row_label
   )
-  y$all <- formatable::with_label(
+  y$all <- formatters::with_label(
     nrow(df),
     row_label
   )
   events <- Map(
     function(filters) {
-      formatable::with_label(
+      formatters::with_label(
         s_count_patients_with_event(df = df, .var = ".row_index", filters = filters, .N_col = 1, .N_row = 1)$count,
         row_label
       )
@@ -90,7 +90,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
   y <- if (length(empty_stats) > 0) {
     y_reduced <- y_complete
     for (stat in intersect(names(y_complete), empty_stats)) {
-      y_reduced[[stat]] <- formatable::with_label(character(), obj_label(y_reduced[[stat]]))
+      y_reduced[[stat]] <- formatters::with_label(character(), obj_label(y_reduced[[stat]]))
     }
     y_reduced
   } else {
@@ -111,7 +111,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #' basic_table() %>%
 #'   summarize_patients_events_in_cols(
 #'     filters_list = list(
-#'       related = formatable::with_label(c(AEREL = "Y"), "Events (Related)"),
+#'       related = formatters::with_label(c(AEREL = "Y"), "Events (Related)"),
 #'       fatal = c(AESDTH = "Y"),
 #'       fatal_related = c(AEREL = "Y", AESDTH = "Y")
 #'     ),

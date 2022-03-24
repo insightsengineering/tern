@@ -83,12 +83,12 @@ library(forcats)
 library(rtables)
 
 adrs <- synthetic_cdisc_data("latest")$adrs
-adrs_labels <- formatable::var_labels(adrs)
+adrs_labels <- formatters::var_labels(adrs)
 
 adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   mutate(rsp = AVALC == "CR")
-formatable::var_labels(adrs_f) <- c(adrs_labels, "Response")
+formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 # in logistic regression models with one covariate `RACE`. The subgroups
 # are defined by the levels of `BMRKR2`.

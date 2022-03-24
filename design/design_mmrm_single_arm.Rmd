@@ -31,7 +31,7 @@ adqs_f <- adqs %>%
       as.numeric() %>%
       as.factor()
   )
-formatable::var_labels(adqs_f) <- formatable::var_labels(adqs)
+formatters::var_labels(adqs_f) <- formatters::var_labels(adqs)
 
 adqs_single <- adqs_f %>%
   dplyr::filter(ARMCD == "ARM B") %>%
@@ -451,7 +451,7 @@ s_mmrm_lsmeans_single <- function(df) {
   list(
     n = df$n,
     adj_mean_se = c(df$estimate_est, df$se_est),
-    adj_mean_ci = formatable::with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level))
+    adj_mean_ci = formatters::with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level))
   )
 }
 

@@ -1,4 +1,4 @@
-# tern 0.7.6.9071
+# tern 0.7.6.9072
 
 ### New features
 
@@ -13,7 +13,7 @@
 ### Miscellaneous
 
 * Move MMRM into a separate package `tern.mmrm`.
-* Removed `with_label`, `var_labels`, and `var_labels<-` to resolve conflict with `formatable`.
+* Removed `with_label`, `var_labels`, and `var_labels<-` to resolve conflict with `formatters`.
 
 
 # tern 0.7.6

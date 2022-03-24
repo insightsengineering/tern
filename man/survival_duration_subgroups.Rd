@@ -104,7 +104,7 @@ library(rtables)
 adtte <- synthetic_cdisc_data("latest")$adtte
 
 # Save variable labels before data processing steps.
-adtte_labels <- formatable::var_labels(adtte)
+adtte_labels <- formatters::var_labels(adtte)
 
 adtte_f <- adtte \%>\%
   filter(
@@ -125,8 +125,7 @@ labels <- c(
   "AVALU" = adtte_labels[["AVALU"]],
   "is_event" = "Event Flag"
 )
-formatable::var_labels(adtte_f)[names(labels)] <- labels
-
+formatters::var_labels(adtte_f)[names(labels)] <- labels
 
 df <- extract_survival_subgroups(
   variables = list(

@@ -94,7 +94,7 @@ library(rtables)
 adtte <- synthetic_cdisc_data("latest")$adtte
 
 # Save variable labels before data processing steps.
-adtte_labels <- formatable::var_labels(adtte)
+adtte_labels <- formatters::var_labels(adtte)
 
 adtte_f <- adtte \%>\%
   filter(
@@ -109,8 +109,7 @@ adtte_f <- adtte \%>\%
     is_event = CNSR == 0
   )
 labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
-formatable::var_labels(adtte_f)[names(labels)] <- labels
-
+formatters::var_labels(adtte_f)[names(labels)] <- labels
 
 # Extract median survival time for one group.
 h_survtime_df(

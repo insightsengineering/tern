@@ -37,7 +37,6 @@
 #'   fun.args = list(conf_level = 0.5, geom_mean = TRUE),
 #'   geom = "errorbar"
 #' )
-#'
 stat_mean_ci <- function(x,
                          conf_level = 0.95,
                          na.rm = TRUE, # nolint

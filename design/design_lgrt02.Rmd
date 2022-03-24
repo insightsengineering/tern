@@ -25,7 +25,7 @@ library(random.cdisc.data)
 library(dplyr)
 library(rtables)
 ADRS <- radrs(cached = TRUE)
-adrs_labels <- formatable::var_labels(ADRS)
+adrs_labels <- formatters::var_labels(ADRS)
 
 ADRS_f <- ADRS %>%
   dplyr::filter(PARAMCD == "BESRSPI") %>%
@@ -36,7 +36,7 @@ ADRS_f <- ADRS %>%
     SEX = factor(SEX)
   )
 
-formatable::var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
+formatters::var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
 ```
 
 ## Function to create a logistic model: `fit_logistic`

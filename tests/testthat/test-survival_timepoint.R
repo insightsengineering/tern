@@ -18,10 +18,10 @@ testthat::test_that("s_surv_timepoint works with default arguments", {
     is_event = "is_event"
   )
   expected <- list(
-    pt_at_risk = formatable::with_label(112, label = "Patients remaining at risk"),
-    event_free_rate = formatable::with_label(89.1626763122249, label = "Event Free Rate (%)"),
-    rate_se = formatable::with_label(2.73767719947927, label = "Standard Error of Event Free Rate"),
-    rate_ci = formatable::with_label(c(83.7969275999491, 94.5284250245007), label = "95% CI")
+    pt_at_risk = formatters::with_label(112, label = "Patients remaining at risk"),
+    event_free_rate = formatters::with_label(89.1626763122249, label = "Event Free Rate (%)"),
+    rate_se = formatters::with_label(2.73767719947927, label = "Standard Error of Event Free Rate"),
+    rate_ci = formatters::with_label(c(83.7969275999491, 94.5284250245007), label = "95% CI")
   )
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
@@ -44,10 +44,10 @@ testthat::test_that("s_surv_timepoint works with customized arguments", {
     )
   )
   expected <- list(
-    pt_at_risk = formatable::with_label(83, label = "Patients remaining at risk"),
-    event_free_rate = formatable::with_label(66.9772864371622, label = "Event Free Rate (%)"),
-    rate_se = formatable::with_label(4.17892667633869, label = "Standard Error of Event Free Rate"),
-    rate_ci = formatable::with_label(c(57.0335300760197, 78.6547298143104), label = "99% CI")
+    pt_at_risk = formatters::with_label(83, label = "Patients remaining at risk"),
+    event_free_rate = formatters::with_label(66.9772864371622, label = "Event Free Rate (%)"),
+    rate_se = formatters::with_label(4.17892667633869, label = "Standard Error of Event Free Rate"),
+    rate_ci = formatters::with_label(c(57.0335300760197, 78.6547298143104), label = "99% CI")
   )
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
@@ -70,10 +70,10 @@ testthat::test_that("s_surv_timepoint also works when there are 0 patients at ri
     is_event = "is_event"
   ))
   expected <- list(
-    pt_at_risk = formatable::with_label(NA_real_, "Patients remaining at risk"),
-    event_free_rate = formatable::with_label(NA_real_, "Event Free Rate (%)"),
-    rate_se = formatable::with_label(NA_real_, "Standard Error of Event Free Rate"),
-    rate_ci = formatable::with_label(c(NA_real_, NA_real_), "95% CI")
+    pt_at_risk = formatters::with_label(NA_real_, "Patients remaining at risk"),
+    event_free_rate = formatters::with_label(NA_real_, "Event Free Rate (%)"),
+    rate_se = formatters::with_label(NA_real_, "Standard Error of Event Free Rate"),
+    rate_ci = formatters::with_label(c(NA_real_, NA_real_), "95% CI")
   )
   testthat::expect_identical(result, expected)
 })
@@ -167,9 +167,9 @@ testthat::test_that("s_surv_timepoint_diff works with default arguments for comp
     control = control_surv_timepoint()
   )
   expected <- list(
-    rate_diff = formatable::with_label(-5.33344544636732, label = "Difference in Event Free Rate"),
-    rate_diff_ci = formatable::with_label(c(-13.6362446145953, 2.96935372186064), label = "95% CI"),
-    ztest_pval = formatable::with_label(0.208024379170235, label = "p-value (Z-test)")
+    rate_diff = formatters::with_label(-5.33344544636732, label = "Difference in Event Free Rate"),
+    rate_diff_ci = formatters::with_label(c(-13.6362446145953, 2.96935372186064), label = "95% CI"),
+    ztest_pval = formatters::with_label(0.208024379170235, label = "p-value (Z-test)")
   )
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -196,9 +196,9 @@ testthat::test_that("s_surv_timepoint_diff works with customized arguments for c
     control = control_surv_timepoint(conf_level = 0.9)
   )
   expected <- list(
-    rate_diff = formatable::with_label(-0.562624959121464, label = "Difference in Event Free Rate"),
-    rate_diff_ci = formatable::with_label(c(-8.53787765104722, 7.41262773280429), label = "90% CI"),
-    ztest_pval = formatable::with_label(0.907622094366106, label = "p-value (Z-test)")
+    rate_diff = formatters::with_label(-0.562624959121464, label = "Difference in Event Free Rate"),
+    rate_diff_ci = formatters::with_label(c(-8.53787765104722, 7.41262773280429), label = "90% CI"),
+    ztest_pval = formatters::with_label(0.907622094366106, label = "p-value (Z-test)")
   )
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })

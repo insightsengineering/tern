@@ -98,7 +98,7 @@ s_count_cumulative <- function(x,
   count_fraction_list <- Map(function(thres) {
     result <- h_count_cumulative(x, thres, lower_tail, include_eq, .N_col = .N_col, ...)
     label <- d_count_cumulative(thres, lower_tail, include_eq)
-    formatable::with_label(result, label)
+    formatters::with_label(result, label)
   }, thresholds)
 
   names(count_fraction_list) <- thresholds

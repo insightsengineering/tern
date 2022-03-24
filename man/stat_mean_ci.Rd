@@ -57,5 +57,4 @@ p + ggplot2::stat_summary(
   fun.args = list(conf_level = 0.5, geom_mean = TRUE),
   geom = "errorbar"
 )
-
 }
