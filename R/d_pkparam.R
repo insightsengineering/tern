@@ -1,5 +1,4 @@
 #' Generate PK reference dataset
-#' @describeIn Generates a dataframe of the correct order of the PK parameters
 #' @return dataframe of PK parameters
 #' @export
 #'
@@ -112,6 +111,6 @@ d_pkparam <- function() {
   ncol = 5,
   byrow = TRUE
   ))
-  colnames(pk_dataset) <- c("PARMCD", "PARAM", "TLG_display", "Matrix", "TLG_Order")
+  colnames(pk_dataset) <- c("PARAMCD", "PARAM", "TLG_DISPLAY", "MATRIX", "TLG_ORDER")
   pk_dataset
 }

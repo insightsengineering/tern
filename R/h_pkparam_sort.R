@@ -1,0 +1,30 @@
+#' Sort PK PARAM variable
+#' @param pk_data (`data.frame`)\cr Pharmacokinetics dataframe
+#' @return dataframe with PK PARAM variable ordered
+#' @export
+#'
+#' @examples
+#' library(scda)
+#' library(dplyr)
+#'
+#' adpp <- synthetic_cdisc_data("latest")$adpp
+#' adpp <- adpp %>% mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
+#'
+#' pk_ordered_data <- h_pkparam_sort(adpp)
+h_pkparam_sort <- function(pk_data) {
+  ordered_pk_data <- d_pkparam()
+
+  # Add the numeric values from ordered_pk_data to pk_data
+  joined_data <- merge(pk_data, ordered_pk_data, by = "PARAMCD", suffix = c("", ".y"))
+
+  joined_data <- joined_data[, -grep(".*.y$", colnames(joined_data))]
+
+  joined_data$TLG_ORDER <- as.numeric(joined_data$TLG_ORDER) # nolint
+
+  # Then order PARAM based on this column
+  joined_data$PARAM <- factor(joined_data$PARAM, # nolint
+    levels = unique(joined_data$PARAM[order(joined_data$TLG_ORDER)]),
+    ordered = TRUE
+  )
+  joined_data
+}

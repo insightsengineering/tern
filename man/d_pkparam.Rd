@@ -12,11 +12,6 @@ dataframe of PK parameters
 \description{
 Generate PK reference dataset
 }
-\section{Functions}{
-\itemize{
-\item \code{d_pkparam}: a dataframe of the correct order of the PK parameters
-}}
-
 \examples{
 pk_reference_dataset <- d_pkparam()
 }
