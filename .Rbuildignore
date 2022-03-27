@@ -5,6 +5,7 @@ design/*
 ^_pkgdown\.yml$
 ^docs$
 ^\.github$
+^\.git$
 README.*
 man-roxygen/*
 TODO\.md
