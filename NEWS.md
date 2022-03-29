@@ -16,7 +16,7 @@
 
 ### Miscellaneous
 
-* Updated dependencies and internal adjustments after the refactor of `rtables` package.
+* Updated dependencies and internal adjustments after the `rtables` package refactor.
 * Removed `with_label`, `var_labels`, and `var_labels<-` to resolve conflict with the `formatters` package, a new dependency.
 * Added new "Introduction to `tern`" and "`tern` tabulation" vignettes.
 
