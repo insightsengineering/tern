@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_survival.R
 \name{control_surv_timepoint}
 \alias{control_surv_timepoint}
-\title{Control Function for \code{survfit} Model for Patient's Survival Rate at timepoint}
+\title{Control Function for \code{survfit} Model for Patient's Survival Rate at time point}
 \usage{
 control_surv_timepoint(
   conf_level = 0.95,
@@ -20,5 +20,5 @@ A list of components with the same names as the arguments
 }
 \description{
 This is an auxiliary function for controlling arguments for \code{survfit} model, typically used internally to specify
-details of \code{survfit} model for \link{s_surv_timepoint}. \code{conf_level} refers to patient risk estimation at a time point.
+details of \code{survfit} model for \code{\link{s_surv_timepoint}}. \code{conf_level} refers to patient risk estimation at a time point.
 }

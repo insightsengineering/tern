@@ -6,7 +6,7 @@
 #' @inheritParams s_surv_time
 #' @param time_point (`number`) \cr survival time point of interest.
 #' @param control a (`list`) of parameters for comparison details, specified by using \cr
-#'    the helper function [control_surv_timepoint]. Some possible parameter options are: \cr
+#'    the helper function [`control_surv_timepoint`]. Some possible parameter options are: \cr
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival rate.
 #' * `conf_type`: (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
 #'    see more in [survival::survfit()]. Note that the option "none" is no longer supported.

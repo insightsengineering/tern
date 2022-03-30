@@ -44,7 +44,7 @@ g_ipp(
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{xvar}{(\code{string})\cr timepoint variable to be plotted on x-axis.}
+\item{xvar}{(\code{string})\cr time point variable to be plotted on x-axis.}
 
 \item{yvar}{(\code{string})\cr continuous analysis variable to be plotted on y-axis.}
 

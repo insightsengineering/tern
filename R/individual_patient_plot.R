@@ -4,7 +4,7 @@
 #' Patients' individual baseline values can be added to the plot(s) as reference.
 #'
 #' @inheritParams argument_convention
-#' @param xvar (`string`)\cr timepoint variable to be plotted on x-axis.
+#' @param xvar (`string`)\cr time point variable to be plotted on x-axis.
 #' @param yvar (`string`)\cr continuous analysis variable to be plotted on y-axis.
 #' @param xlab (`string`)\cr plot label for x-axis.
 #' @param ylab (`string`)\cr plot label for y-axis.
