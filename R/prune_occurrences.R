@@ -83,7 +83,7 @@ keep_content_rows <- function(content_row_condition) {
 #'  the specified columns.
 #' @param atleast (`count` or `proportion`)\cr threshold which should be met in order to
 #'   keep the row.
-#' @param ... arguments for row or column access, see [rtables_access]: either
+#' @param ... arguments for row or column access, see [`rtables_access`]: either
 #'   `col_names` (`character`) including the names of the columns which should be used,
 #'   or alternatively `col_indices` (`integer`) giving the indices directly instead.
 #' @return [has_count_in_cols()] returns a condition function that sums the counts in the specified

@@ -11,7 +11,7 @@ NULL
 
 #' @describeIn abnormal_by_worst_grade_worsen_from_baseline Helper function
 #' to prepare a `df` for generate the patient count shift table
-#' @param adlb (`data frame`) \cr ADLB dataframe
+#' @param adlb (`data frame`) \cr `ADLB` dataframe
 #' @param worst_flag_low (named `vector`) \cr
 #' Worst low post-baseline lab grade flag variable
 #' @param worst_flag_high (named `vector`) \cr

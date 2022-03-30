@@ -25,11 +25,11 @@ The layout corresponds to a grid of two columns and five rows of unequal
 dimensions. Most of the dimension are fixed, only the curve is flexible and
 will accommodate with the remaining free space.
 \itemize{
-\item The left column gets the annotation of the ggplot (y-axis) and the
+\item The left column gets the annotation of the \code{ggplot} (y-axis) and the
 names of the strata for the patient at risk tabulation.
 The main constraint is about the width of the columns which must allow the
 writing of the strata name.
-\item The right column receive the ggplot, the legend, the x-axis and the
+\item The right column receive the \code{ggplot}, the legend, the x-axis and the
 patient at risk table.
 }
 }

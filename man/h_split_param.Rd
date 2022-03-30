@@ -16,7 +16,7 @@ h_split_param(param, value, f)
 \description{
 It divides the data in the vector \code{param} into the groups defined by \code{f}
 based on specified \code{values}.
-It is relevant in rtables layers so as to distribute parameters
+It is relevant in \code{rtables} layers so as to distribute parameters
 \code{.stats} or' \code{.formats} into lists with items corresponding to
 specific analysis function.
 }

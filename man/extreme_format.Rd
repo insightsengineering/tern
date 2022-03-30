@@ -22,7 +22,7 @@ format_extreme_values_ci(digits = 2L)
 \item{x}{(\code{number})\cr value to format.}
 }
 \description{
-Rtables Formatting Functions that handle extreme values.
+\code{Rtables} Formatting Functions that handle extreme values.
 }
 \details{
 For each input, apply a format to the specified number of \code{digits}. If the value is

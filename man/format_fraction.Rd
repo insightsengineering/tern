@@ -9,7 +9,7 @@ format_fraction(x, ...)
 \arguments{
 \item{x}{(\code{integer})\cr with elements \code{num} and \code{denom}.}
 
-\item{...}{required for rtables interface.}
+\item{...}{required for \code{rtables} interface.}
 }
 \value{
 a string in the format \verb{num / denom (ratio \%)}. If \code{num} is 0 the format is \code{num / denom}.

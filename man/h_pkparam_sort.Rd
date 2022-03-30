@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_pkparam_sort.R
 \name{h_pkparam_sort}
 \alias{h_pkparam_sort}
-\title{Sort PK PARAM variable}
+\title{Sort \verb{PK PARAM} variable}
 \usage{
 h_pkparam_sort(pk_data)
 }
@@ -10,10 +10,10 @@ h_pkparam_sort(pk_data)
 \item{pk_data}{(\code{data.frame})\cr Pharmacokinetics dataframe}
 }
 \value{
-dataframe with PK PARAM variable ordered
+dataframe with \verb{PK PARAM} variable ordered
 }
 \description{
-Sort PK PARAM variable
+Sort \verb{PK PARAM} variable
 }
 \examples{
 library(scda)

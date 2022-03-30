@@ -13,7 +13,7 @@ returned by the content function.}
 \item{flag_var}{(\code{string})\cr variable name for the logical column identifying which
 row should be returned.}
 
-\item{format}{(\code{string})\cr rtables format to use.}
+\item{format}{(\code{string})\cr \code{rtables} format to use.}
 }
 \value{
 Content function which just gives \code{df$analysis_var} at the row identified by

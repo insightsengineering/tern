@@ -1,10 +1,10 @@
 #' Helper Function for Deriving Analysis Datasets for LBT13 and LBT14
 #'
-#' Helper function that merges ADSL and ADLB datasets so that missing lab test records are inserted in the
+#' Helper function that merges `ADSL` and `ADLB` datasets so that missing lab test records are inserted in the
 #' output dataset.
 #'
-#' @param adsl (`data frame`) ADSL dataframe
-#' @param adlb (`data frame`) ADLB dataframe
+#' @param adsl (`data frame`) `ADSL` dataframe
+#' @param adlb (`data frame`) `ADLB` dataframe
 #' @param worst_flag (named `vector`)
 #' Worst post-baseline lab flag variable
 #' @param by_visit (`logical`) defaults to `FALSE` to generate worst grade per patient.

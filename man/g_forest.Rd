@@ -161,7 +161,7 @@ table_hr <- basic_table() \%>\%
 g_forest(table_hr)
 
 
-# Works with any rtable.
+# Works with any `rtable`.
 
 tbl <- rtable(
   header = c("E", "CI", "N"),

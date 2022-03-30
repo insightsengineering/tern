@@ -143,7 +143,7 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 #' @export
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-#' # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
+#' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 #' afun(df = adlb_f_alt, .spl_context = spl_context)
 a_count_abnormal_by_worst_grade <- make_afun( # nolint

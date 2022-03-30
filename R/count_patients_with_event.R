@@ -235,7 +235,7 @@ s_count_patients_with_flags <- function(df,
 #' @export
 #'
 #' @examples
-#' #  We need to ungroup `count_fraction` first so that the rtables formatting
+#' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
 #'
 #' # `a_count_patients_with_flags()`

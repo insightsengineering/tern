@@ -1,6 +1,6 @@
-#' Sort PK PARAM variable
+#' Sort `PK PARAM` variable
 #' @param pk_data (`data.frame`)\cr Pharmacokinetics dataframe
-#' @return dataframe with PK PARAM variable ordered
+#' @return dataframe with `PK PARAM` variable ordered
 #' @export
 #'
 #' @examples

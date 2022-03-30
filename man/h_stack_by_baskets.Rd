@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_stack_by_baskets.R
 \name{h_stack_by_baskets}
 \alias{h_stack_by_baskets}
-\title{Helper Function to create a new \code{SMQ} variable in ADAE by stacking
+\title{Helper Function to create a new \code{SMQ} variable in \code{ADAE} by stacking
 \code{SMQ} and/or \code{CQ} records.}
 \usage{
 h_stack_by_baskets(
@@ -24,15 +24,15 @@ h_stack_by_baskets(
 \item{keys}{(\code{character})\cr names of the key variables to be returned
 along with the new variable created.}
 
-\item{aag_summary}{(\verb{data frame})\cr containing the SMQ baskets
-and the levels of interest for the final SMQ variable. This is useful when
+\item{aag_summary}{(\verb{data frame})\cr containing the \code{SMQ} baskets
+and the levels of interest for the final \code{SMQ} variable. This is useful when
 there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
 
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
 }
 \description{
-Helper Function to create a new \code{SMQ} variable in ADAE that
+Helper Function to create a new \code{SMQ} variable in \code{ADAE} that
 consists of all adverse events belonging to selected
 Standardized/Customized queries.
 The new dataset will only contain records of the adverse events

@@ -1,6 +1,6 @@
-#' rtables Access Helper Functions
+#' `rtables` Access Helper Functions
 #'
-#' These are a couple of functions that help with accessing the data in rtables objects.
+#' These are a couple of functions that help with accessing the data in `rtables` objects.
 #' Currently these work for occurrence tables, which are defined
 #' as having a count as the first element and a fraction as the second element in each cell.
 #'

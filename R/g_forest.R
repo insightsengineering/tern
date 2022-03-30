@@ -125,7 +125,7 @@
 #' g_forest(table_hr)
 #'
 #'
-#' # Works with any rtable.
+#' # Works with any `rtable`.
 #'
 #' tbl <- rtable(
 #'   header = c("E", "CI", "N"),
@@ -368,7 +368,7 @@ forest_grob <- function(tbl,
   # Get table content as matrix form.
   mf <- matrix_form(tbl)
 
-  # Use rtables indent_string eventually.
+  # Use `rtables` indent_string eventually.
   mf$strings[, 1] <- paste0(
     strrep("    ", c(rep(0, attr(mf, "nrow_header")), mf$row_info$indent)),
     mf$strings[, 1]
@@ -378,7 +378,7 @@ forest_grob <- function(tbl,
 
   if (any(mf$display[, 1] == FALSE)) stop("row names need to be always displayed")
 
-  # Preprocess the data to be used in lapply and cell_in_rows.
+  # Pre-process the data to be used in lapply and cell_in_rows.
   to_args_for_cell_in_rows_fun <- function(part = c("body", "header"),
                                            underline_colspan = FALSE) {
     part <- match.arg(part)

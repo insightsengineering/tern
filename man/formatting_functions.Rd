@@ -4,7 +4,7 @@
 \alias{formatting_functions}
 \title{Additional Formatting Functions}
 \description{
-This summarizes the additional Formatting Functions to work with rtables.
+This summarizes the additional Formatting Functions to work with \code{rtables}.
 }
 \seealso{
 Other formatting functions: 
