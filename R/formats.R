@@ -1,6 +1,6 @@
 #' Additional Formatting Functions
 #'
-#' This summarizes the additional Formatting Functions to work with rtables.
+#' This summarizes the additional Formatting Functions to work with `rtables`.
 #'
 #' @family formatting functions
 #' @name formatting_functions
@@ -11,7 +11,7 @@ NULL
 #' Formats a fraction together with ratio in percent.
 #'
 #' @param x (`integer`)\cr with elements `num` and `denom`.
-#' @param ... required for rtables interface.
+#' @param ... required for `rtables` interface.
 #' @return a string in the format `num / denom (ratio %)`. If `num` is 0 the format is `num / denom`.
 #'
 #' @family formatting functions
@@ -46,7 +46,7 @@ format_fraction <- function(x, ...) {
 #' Formats a count together with fraction with special consideration when count is `0`.
 #'
 #' @param x (`integer`)\cr vector of length 2, count and fraction.
-#' @param ... required for rtables interface.
+#' @param ... required for `rtables` interface.
 #' @return a string in the format `count (fraction %)`. If `count` is 0 the format is `0`.
 #'
 #' @family formatting functions
@@ -130,7 +130,7 @@ format_xx <- function(str) {
 #' a lower threshold, below which it is just stated that the fraction is smaller than that.
 #'
 #' @param threshold (`proportion`)\cr lower threshold.
-#' @return An rtables Formatting Function that takes numeric input `x` where the second
+#' @return An `rtables` Formatting Function that takes numeric input `x` where the second
 #'   element is the fraction that is formatted. If the fraction is above or equal to the threshold,
 #'   then it is displayed in percentage. If it is positive but below the threshold, it returns
 #'   "<1" e.g. if the threshold is `0.01`. If it is zero, then just "0" is returned.
@@ -165,7 +165,7 @@ format_fraction_threshold <- function(threshold) {
 
 #' Formatting Extreme Values
 #'
-#' Rtables Formatting Functions that handle extreme values.
+#' `Rtables` Formatting Functions that handle extreme values.
 #'
 #' @details For each input, apply a format to the specified number of `digits`. If the value is
 #'    below a threshold, it returns "<0.01" e.g. if the number of `digits` is 2. If the value is

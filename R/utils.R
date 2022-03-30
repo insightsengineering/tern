@@ -241,9 +241,9 @@ extract <- function(x, names) {
 
 #' Labels for Adverse Event Baskets
 #'
-#' @param aesi (`character`)\cr with standardized MedDRA query name (e.g. SMQzzNAM) or customized query
-#'   name (e.g. CQzzNAM).
-#' @param scope (`character`)\cr with scope of query (e.g. SMQzzSC).
+#' @param aesi (`character`)\cr with standardized MedDRA query name (e.g. `SMQzzNAM`) or customized query
+#'   name (e.g. `CQzzNAM`).
+#' @param scope (`character`)\cr with scope of query (e.g. `SMQzzSC`).
 #'
 #' @return A `string` with the standard label for the AE basket.
 #' @export

@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_survival.R
 \name{control_surv_timepoint}
 \alias{control_surv_timepoint}
-\title{Control Function for \code{survfit} Model for Patient's Survival Rate at Timepoint}
+\title{Control Function for \code{survfit} Model for Patient's Survival Rate at timepoint}
 \usage{
 control_surv_timepoint(
   conf_level = 0.95,

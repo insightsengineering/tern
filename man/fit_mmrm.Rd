@@ -67,7 +67,7 @@ Does the MMRM analysis. Multiple other functions can be called on the result to 
 tables and graphs.
 }
 \details{
-Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
+Only \code{Satterthwaite} adjusted degrees of freedom (d.f.) are supported, because they
 match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
 
 For the correlation structure (\code{cor_struct}), the user can choose among the following options, sorted
@@ -85,12 +85,12 @@ effect of the results. Therefore we report here the actually relevant number of 
 
 For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
 \describe{
-\item{nloptwrap_neldermead}{NLopt version of the Nelder-Mead algorithm (via package \code{nloptr})}
-\item{nloptwrap_bobyqa}{NLopt version of the BOBYQA algorithm (via package \code{nloptr})}
-\item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
-\item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
-\item{neldermead}{lme4 version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
-\item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
+\item{nloptwrap_neldermead}{\code{NLopt} version of the \code{Nelder-Mead} algorithm (via package \code{nloptr})}
+\item{nloptwrap_bobyqa}{\code{NLopt} version of the \code{BOBYQA} algorithm (via package \code{nloptr})}
+\item{bobyqa}{\code{BOBYQA} algorithm (via package \code{minqa})}
+\item{nlminbwrap}{\code{nlminb} algorithm (wrapper for \code{\link[stats]{nlminb})}}
+\item{neldermead}{\code{lme4} version of the \code{Nelder-Mead} algorithm with box constraints (via package \code{lme4})}
+\item{nmkbw}{\code{Nelder-Mead} algorithm (via package \code{dfoptim})}
 \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
 }
 }

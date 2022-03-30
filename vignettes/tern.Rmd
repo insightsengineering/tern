@@ -32,7 +32,7 @@ The `tern` R package contains analytical functions for creating tables and graph
 The main focus is on the clinical trial reporting tables but the graphs related to the clinical trials are also valuable
 The core functionality for tabulation is built on top of the more general purpose `rtables` package. 
 
-[**It is strongly recommended that you start by reading the "Introduction to rtables" vignette to get familiar with the concept of `rtables`.**](https://roche.github.io/rtables/articles/introduction.html)
+[**It is strongly recommended that you start by reading the "Introduction to `rtables`" vignette to get familiar with the concept of `rtables`.**](https://roche.github.io/rtables/articles/introduction.html)
 
 ---------
 

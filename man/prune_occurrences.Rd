@@ -38,7 +38,7 @@ first content rows of leaf tables and flags whether these leaf tables should be 
 \item{atleast}{(\code{count} or \code{proportion})\cr threshold which should be met in order to
 keep the row.}
 
-\item{...}{arguments for row or column access, see \link{rtables_access}: either
+\item{...}{arguments for row or column access, see \code{\link{rtables_access}}: either
 \code{col_names} (\code{character}) including the names of the columns which should be used,
 or alternatively \code{col_indices} (\code{integer}) giving the indices directly instead.}
 }

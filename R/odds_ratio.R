@@ -208,7 +208,7 @@ s_odds_ratio <- function(df,
         grp <- combine_levels(grp, levels = treatment, new_level = trt_grp)
       }
 
-      # The reference level in `grp` must be the same as in the rtables column split.
+      # The reference level in `grp` must be the same as in the `rtables` column split.
       data <- data.frame(
         rsp = .df_row[[.var]],
         grp = grp,

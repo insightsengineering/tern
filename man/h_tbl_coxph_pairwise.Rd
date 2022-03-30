@@ -28,7 +28,7 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 }}
 }
 \description{
-Create an rtable of pairwise stratified or unstratified CoxPH analysis results.
+Create an \code{rtable} of pairwise stratified or unstratified CoxPH analysis results.
 }
 \examples{
 \dontrun{

@@ -16,7 +16,7 @@
 #' @param yvar_baseline (`string`)\cr variable with baseline values only.
 #' Ignored when `add_baseline_hline` is FALSE.
 #' @param ggtheme (`theme`)\cr optional graphical theme function as provided
-#' by ggplot2 to control outlook of plot. Use `ggplot2::theme()` to tweak the display.
+#' by `ggplot2` to control outlook of plot. Use `ggplot2::theme()` to tweak the display.
 #' @param plotting_choices (`character`)\cr specifies options for displaying
 #' plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
 #' @param max_obs_per_plot (`count`)\cr Number of observations to be plotted on one
@@ -27,7 +27,7 @@
 NULL
 
 
-#' @describeIn individual_patient_plot sets a ggplot graphical theme to control outlook of plot.
+#' @describeIn individual_patient_plot sets a `ggplot` graphical theme to control outlook of plot.
 #' @export
 #'
 h_set_nest_theme <- function(font_size) {
@@ -151,7 +151,7 @@ h_g_ipp <- function(df,
 #' graphic or compiles a list of graphics that show trends in individual's parameter
 #' values over time.
 #'
-#' @return a ggplot object or a list of ggplots.
+#' @return a `ggplot` object or a list of `ggplot` objects.
 #'
 #' @export
 #' @examples

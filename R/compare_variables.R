@@ -147,7 +147,7 @@ s_compare.factor <- function(x,
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
-#'   It is therefore better to always preprocess the dataset such that factors are manually
+#'   It is therefore better to always pre-process the dataset such that factors are manually
 #'   created from character variables before passing the dataset to [rtables::build_table()].
 #' @method s_compare character
 #' @order 5
@@ -300,7 +300,7 @@ a_compare.numeric <- make_afun(
 #' @order 9
 #' @examples
 #' # `a_compare.factor`
-#' # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
+#' # We need to ungroup `count` and `count_fraction` first so that the `rtables` formatting
 #' # functions can be applied correctly.
 #' afun <- make_afun(
 #'   getS3method("a_compare", "factor"),
@@ -474,7 +474,7 @@ create_afun_compare <- function(.stats = NULL,
 #' @export
 #' @examples
 #'
-#' # `compare_vars()` in rtables pipelines
+#' # `compare_vars()` in `rtables` pipelines
 #'
 #' ## Default output within a `rtables` pipeline.
 #' lyt <- basic_table() %>%

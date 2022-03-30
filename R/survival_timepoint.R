@@ -196,7 +196,7 @@ a_surv_timepoint_diff <- make_afun(
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr either `surv` (survival estimations),
 #'   `surv_diff` (difference in survival with the control) or `both`.
-#' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the rtables to
+#' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
 #' @export
 #' @examples

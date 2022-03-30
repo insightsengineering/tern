@@ -730,11 +730,11 @@ h_decompose_gg <- function(gg) {
 #' The layout corresponds to a grid of two columns and five rows of unequal
 #' dimensions. Most of the dimension are fixed, only the curve is flexible and
 #' will accommodate with the remaining free space.
-#' - The left column gets the annotation of the ggplot (y-axis) and the
+#' - The left column gets the annotation of the `ggplot` (y-axis) and the
 #'   names of the strata for the patient at risk tabulation.
 #'   The main constraint is about the width of the columns which must allow the
 #'   writing of the strata name.
-#' - The right column receive the ggplot, the legend, the x-axis and the
+#' - The right column receive the `ggplot`, the legend, the x-axis and the
 #' patient at risk table.
 #'
 #' @examples
@@ -1124,7 +1124,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
 
 #' Helper Function: Pairwise CoxPH table
 #'
-#' Create an rtable of pairwise stratified or unstratified CoxPH analysis results.
+#' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
 #' @keywords internal
@@ -1178,7 +1178,7 @@ h_tbl_coxph_pairwise <- function(df,
   do.call(rbind, results)
 }
 #' Helper Function: CoxPH Grob
-#' Grob of rtable output from [h_tbl_coxph_pairwise]
+#' Grob of `rtable` output from [h_tbl_coxph_pairwise]
 #'
 #' @inheritParams h_grob_median_surv
 #' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].

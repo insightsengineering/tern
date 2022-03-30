@@ -328,7 +328,7 @@ assertthat::on_failure(all_elements_in_ref) <- function(call, env) {
   )
 }
 
-#' @describeIn assertions Check whether rtables object `x` has the specified column names.
+#' @describeIn assertions Check whether `rtables` object `x` has the specified column names.
 #' @param col_names (`character`)\cr column names which should be present in the table.
 #'
 has_tabletree_colnames <- function(x, col_names) {

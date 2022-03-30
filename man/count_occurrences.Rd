@@ -105,7 +105,7 @@ occurrence.
 \item \code{a_count_occurrences}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_occurrences}: Analyze Function that counts occurrences as part of rtables layouts.
+\item \code{count_occurrences}: Analyze Function that counts occurrences as part of \code{rtables} layouts.
 }}
 
 \examples{
@@ -124,7 +124,7 @@ s_count_occurrences(
   .var = "MHDECOD",
   id = "USUBJID"
 )
-#  We need to ungroup `count_fraction` first so that the rtables formatting
+#  We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction", "fraction"))
 afun(
@@ -157,7 +157,7 @@ lyt <- basic_table() \%>\%
   add_colcounts() \%>\%
   count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 
-# Apply table layout to data and produce rtable object
+# Apply table layout to data and produce `rtable` object
 lyt \%>\%
   build_table(df, alt_counts_df = df_adsl) \%>\%
   prune_table()

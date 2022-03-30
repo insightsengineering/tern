@@ -354,7 +354,7 @@ s_summary.factor <- function(x,
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
-#'   It is therefore better to always preprocess the dataset such that factors are manually
+#'   It is therefore better to always pre-process the dataset such that factors are manually
 #'   created from character variables before passing the dataset to [rtables::build_table()].
 #' @method s_summary character
 #' @order 5
@@ -627,7 +627,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' @export
 #' @examples
 #'
-#' # `summarize_vars()` in rtables pipelines
+#' # `summarize_vars()` in `rtables` pipelines
 #'
 #' ## Default output within a `rtables` pipeline.
 #' l <- basic_table() %>%

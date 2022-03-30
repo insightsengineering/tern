@@ -89,7 +89,7 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the o
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the rtables to
+\item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the \code{rtables} to
 avoid warnings from duplicate table names.}
 
 \item{var_labels}{character for label.}

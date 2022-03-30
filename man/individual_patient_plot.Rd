@@ -65,7 +65,7 @@ plot when TRUE.}
 Ignored when \code{add_baseline_hline} is FALSE.}
 
 \item{ggtheme}{(\code{theme})\cr optional graphical theme function as provided
-by ggplot2 to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
+by \code{ggplot2} to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
 
 \item{plotting_choices}{(\code{character})\cr specifies options for displaying
 plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}
@@ -74,7 +74,7 @@ plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}
 plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
 }
 \value{
-a ggplot object or a list of ggplots.
+a \code{ggplot} object or a list of \code{ggplot} objects.
 }
 \description{
 Line plot(s) displaying trend in patients' parameter values over time is rendered.
@@ -82,7 +82,7 @@ Patients' individual baseline values can be added to the plot(s) as reference.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_set_nest_theme}: sets a ggplot graphical theme to control outlook of plot.
+\item \code{h_set_nest_theme}: sets a \code{ggplot} graphical theme to control outlook of plot.
 
 \item \code{h_g_ipp}: helper function that generates a simple line
 plot displaying parameter trends over time.

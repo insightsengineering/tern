@@ -26,7 +26,7 @@ variable name itself is used instead. Multiple variable labels are concatenated 
 }
 \note{
 This is not an optimal implementation of course, since we are using here the data set
-itself during the layout creation. When we have a more mature rtables implementation then
+itself during the layout creation. When we have a more mature \code{rtables} implementation then
 this will also be improved or not necessary anymore.
 }
 \examples{
