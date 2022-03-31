@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprec-g_mmrm.R
 \name{g_mmrm_diagnostic}
 \alias{g_mmrm_diagnostic}
-\title{Deprecated by \link[tern.mmrm:g_mmrm_diagnostic]{tern.mmrm::g_mmrm_diagnostic}: Diagnostic Plots for MMRM}
+\title{Deprecated by \code{tern.mmrm::g_mmrm_diagnostic}: Diagnostic Plots for MMRM}
 \usage{
 g_mmrm_diagnostic(
   object,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprec-fit_mmrm.R
 \name{fit_mmrm}
 \alias{fit_mmrm}
-\title{Deprecated by \link[tern.mmrm:fit_mmrm]{tern.mmrm::fit_mmrm}: MMRM Analysis}
+\title{Deprecated by \code{tern.mmrm::fit_mmrm}: MMRM Analysis}
 \usage{
 fit_mmrm(
   vars = list(response = "AVAL", covariates = c(), id = "USUBJID", arm = "ARM", visit =
