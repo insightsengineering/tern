@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprec-g_mmrm.R
 \name{g_mmrm_lsmeans}
 \alias{g_mmrm_lsmeans}
-\title{Deprecated by \link[tern.mmrm:g_mmrm_diagnostic]{tern.mmrm::g_mmrm_diagnostic}: Plot LS means for MMRM}
+\title{Deprecated by \code{tern.mmrm::g_mmrm_diagnostic}: Plot LS means for MMRM}
 \usage{
 g_mmrm_lsmeans(
   object,

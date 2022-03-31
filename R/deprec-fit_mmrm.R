@@ -1,5 +1,5 @@
 
-#' Deprecated by [tern.mmrm::fit_mmrm]: MMRM Analysis
+#' Deprecated by `tern.mmrm::fit_mmrm`: MMRM Analysis
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'

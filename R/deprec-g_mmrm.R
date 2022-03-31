@@ -6,7 +6,7 @@
 #' @name g_mmrm
 NULL
 
-#' Deprecated by [tern.mmrm::g_mmrm_diagnostic]: Diagnostic Plots for MMRM
+#' Deprecated by `tern.mmrm::g_mmrm_diagnostic`: Diagnostic Plots for MMRM
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -71,7 +71,7 @@ g_mmrm_diagnostic <- function(object,
   )
 }
 
-#' Deprecated by [tern.mmrm::g_mmrm_diagnostic]: Plot LS means for MMRM
+#' Deprecated by `tern.mmrm::g_mmrm_diagnostic`: Plot LS means for MMRM
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
