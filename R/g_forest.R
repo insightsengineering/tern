@@ -30,7 +30,7 @@
 #'  sample size used to calculate the estimator. If `NULL`, the same symbol
 #'  size is used for all subgroups. By default tries to get this from
 #'  `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
-#'
+#' @return (`gtree`) object containing the forest plot and table
 #' @export
 #'
 #' @examples

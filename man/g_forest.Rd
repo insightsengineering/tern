@@ -65,6 +65,9 @@ size is used for all subgroups. By default tries to get this from
 \item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
 Only considered if \code{draw = TRUE} is used.}
 }
+\value{
+(\code{gtree}) object containing the forest plot and table
+}
 \description{
 Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} object that has a
 column with a single value and a column with 2 values.
