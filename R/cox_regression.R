@@ -351,7 +351,19 @@ fit_coxreg_univar <- function(variables,
   forms <- h_coxreg_univar_formulas(variables, interaction = control$interaction)
   mod <- lapply(
     forms, function(x) {
-      survival::coxph(formula = stats::as.formula(x), data = data, ties = control$ties)
+      converged <- TRUE
+      withCallingHandlers(
+        expr = structure(
+          survival::coxph(formula = stats::as.formula(x), data = data, ties = control$ties),
+          converged = converged
+        ),
+        warning = function(w) {
+          if (grepl("^Loglik converged before variable", w[["message"]])) {
+            converged <<- FALSE
+          }
+          invokeRestart("muffleWarning")
+        }
+      )
     }
   )
   structure(
