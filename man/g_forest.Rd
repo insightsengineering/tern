@@ -78,11 +78,9 @@ library(scda)
 library(dplyr)
 library(forcats)
 library(rtables)
-
 adrs <- synthetic_cdisc_data("latest")$adrs
-
 n_records <- 20
-adrs_labels <- formatters::var_labels(adrs)
+adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
 adrs <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   filter(ARM \%in\% c("A: Drug X", "B: Placebo")) \%>\%
@@ -94,39 +92,28 @@ adrs <- adrs \%>\%
     rsp = AVALC == "CR"
   )
 formatters::var_labels(adrs) <- c(adrs_labels, "Response")
-
 df <- extract_rsp_subgroups(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
   data = adrs
 )
-
 # Full commonly used response table.
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
-
 p <- g_forest(tbl)
-
 draw_grob(p)
-
 # Odds ratio only table.
 tbl_or <- basic_table() \%>\%
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 tbl_or
-
 p <- g_forest(
   tbl_or,
   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 )
-
 draw_grob(p)
-
 # Survival forest plot example.
-
 adtte <- synthetic_cdisc_data("latest")$adtte
-
 # Save variable labels before data processing steps.
-adtte_labels <- formatters::var_labels(adtte)
-
+adtte_labels <- formatters::var_labels(adtte, fill = TRUE)
 adtte_f <- adtte \%>\%
   filter(
     PARAMCD == "OS",
@@ -140,15 +127,13 @@ adtte_f <- adtte \%>\%
     AVALU = as.character(AVALU),
     is_event = CNSR == 0
   )
-
-labels <- c(
+labels <- list(
   "ARM" = adtte_labels["ARM"],
   "SEX" = adtte_labels["SEX"],
   "AVALU" = adtte_labels["AVALU"],
   "is_event" = "Event Flag"
 )
-formatters::var_labels(adtte_f)[names(labels)] <- labels
-
+formatters::var_labels(adtte_f)[names(labels)] <- as.character(labels)
 df <- extract_survival_subgroups(
   variables = list(
     tte = "AVAL",
@@ -157,21 +142,15 @@ df <- extract_survival_subgroups(
   ),
   data = adtte_f
 )
-
 table_hr <- basic_table() \%>\%
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
-
 g_forest(table_hr)
-
-
 # Works with any `rtable`.
-
 tbl <- rtable(
   header = c("E", "CI", "N"),
   rrow("", 1, c(.8, 1.2), 200),
   rrow("", 1.2, c(1.1, 1.4), 50)
 )
-
 g_forest(
   tbl = tbl,
   col_x = 1,
@@ -180,7 +159,6 @@ g_forest(
   x_at = c(0.5, 1, 2),
   col_symbol_size = 3
 )
-
 tbl <- rtable(
   header = rheader(
     rrow("", rcell("A", colspan = 2)),
@@ -189,7 +167,6 @@ tbl <- rtable(
   rrow("row 1", 1, c(.8, 1.2)),
   rrow("row 2", 1.2, c(1.1, 1.4))
 )
-
 g_forest(
   tbl = tbl,
   col_x = 1,
