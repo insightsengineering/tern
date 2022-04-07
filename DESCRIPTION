@@ -58,8 +58,8 @@ Suggests:
     knitr,
     lattice,
     rmarkdown,
-    scda (>= 0.1.2),
-    scda.2022,
+    scda (>= 0.1.3),
+    scda.2022 (>= 0.1.3),
     testthat (>= 2.0)
 VignetteBuilder:
     knitr
