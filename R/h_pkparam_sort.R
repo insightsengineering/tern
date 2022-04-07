@@ -22,8 +22,8 @@ h_pkparam_sort <- function(pk_data) {
   joined_data$TLG_ORDER <- as.numeric(joined_data$TLG_ORDER) # nolint
 
   # Then order PARAM based on this column
-  joined_data$PARAM <- factor(joined_data$PARAM, # nolint
-    levels = unique(joined_data$PARAM[order(joined_data$TLG_ORDER)]),
+  joined_data$TLG_DISPLAY <- factor(joined_data$TLG_DISPLAY, # nolint
+    levels = unique(joined_data$TLG_DISPLAY[order(joined_data$TLG_ORDER)]),
     ordered = TRUE
   )
   joined_data
