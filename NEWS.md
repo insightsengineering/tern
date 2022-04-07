@@ -1,4 +1,4 @@
-# tern 0.7.6.9073.7
+# tern 0.7.6.9073.8
 
 ### Breaking changes
 
