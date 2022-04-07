@@ -141,6 +141,8 @@ Line plot with the optional table
 adsl <- scda::synthetic_cdisc_data("latest")$adsl
 adlb <- scda::synthetic_cdisc_data("latest")$adlb
 adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
+adlb$AVISIT <- droplevels(adlb$AVISIT)
+adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 
 # Mean with CI
 g_lineplot(adlb, adsl, subtitle = "Laboratory Test:")
