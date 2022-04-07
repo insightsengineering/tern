@@ -89,9 +89,8 @@ summary_numeric_in_cols <- function(x,
 #' result
 #'
 #' # PKPT03
-#' ADPP <- mutate(ADPP, PARAMUNIT = paste0(.data$PARAM, "(", .data$AVALU, ")"))
 #' lyt <- basic_table() %>%
-#'   split_rows_by(var = "PARAMUNIT", split_label = "PK Parameter", label_pos = "topleft") %>%
+#'   split_rows_by(var = "TLG_DISPLAY", split_label = "PK Parameter", label_pos = "topleft") %>%
 #'   summarize_vars_numeric_in_cols(
 #'     var = "AVAL",
 #'     col_split = TRUE,
@@ -101,6 +100,7 @@ summary_numeric_in_cols <- function(x,
 #'       mean = "Mean",
 #'       sd = "SD",
 #'       cv = "CV (%)",
+#'       geom_mean = "Geometric Mean",
 #'       geom_cv = "CV % Geometric Mean",
 #'       median = "Median",
 #'       min = "Minimum",
@@ -112,7 +112,7 @@ summary_numeric_in_cols <- function(x,
 #'
 #' # PKCT01FDS
 #' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
-#' ADPC <- mutate(ADPC, as.factor(.data$NRELTM1))
+#' ADPC <- mutate(ADPC, NRELTM1 = as.factor(NRELTM1))
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "VISIT", split_label = "Visit", label_pos = "topleft") %>%
 #'   split_rows_by(
@@ -129,6 +129,7 @@ summary_numeric_in_cols <- function(x,
 #'       mean = "Mean",
 #'       sd = "SD",
 #'       cv = "CV (%)",
+#'       geom_mean = "Geometric Mean",
 #'       geom_cv = "CV % Geometric Mean",
 #'       median = "Median",
 #'       min = "Minimum",
