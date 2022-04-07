@@ -42,7 +42,7 @@ count_abnormal_lab_worsen_by_baseline(
 )
 }
 \arguments{
-\item{adlb}{(\verb{data frame}) \cr ADLB dataframe}
+\item{adlb}{(\verb{data frame}) \cr \code{ADLB} dataframe}
 
 \item{worst_flag_low}{(named \code{vector}) \cr
 Worst low post-baseline lab grade flag variable}

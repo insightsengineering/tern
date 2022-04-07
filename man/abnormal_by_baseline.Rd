@@ -128,7 +128,7 @@ df <- df_explicit_na(df)
 # Just for one abnormal level.
 s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
-# so that the rtables formatting function `format_fraction()` can be applied correctly.
+# so that the `rtables` formatting function `format_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 afun(df, .var = "ANRIND", abnormal = "LOW")
 

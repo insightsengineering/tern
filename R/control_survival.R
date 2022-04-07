@@ -5,9 +5,9 @@
 #'
 #' @md
 #' @param pval_method (`string`) \cr p-value method for testing hazard ratio = 1.
-#'   Default method is "log-rank", can also be set to "wald" or "likelihood".
-#' @param ties 	(`string`) \cr specifying the method for tie handling. Default is "efron",
-#'   can also be set to "breslow" or "exact". see more in [survival::coxph()]
+#'   Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"likelihood"}.
+#' @param ties 	(`string`) \cr specifying the method for tie handling. Default is \code{"efron"},
+#'   can also be set to \code{"breslow"} or \code{"exact"}. see more in [survival::coxph()]
 #' @inheritParams argument_convention
 #' @return A list of components with the same names as the arguments
 #' @export
@@ -47,10 +47,10 @@ control_surv_time <- function(conf_level = 0.95,
   list(conf_level = conf_level, conf_type = conf_type, quantiles = quantiles)
 }
 
-#' Control Function for `survfit` Model for Patient's Survival Rate at Timepoint
+#' Control Function for `survfit` Model for Patient's Survival Rate at time point
 #'
 #' This is an auxiliary function for controlling arguments for `survfit` model, typically used internally to specify
-#' details of `survfit` model for [s_surv_timepoint]. `conf_level` refers to patient risk estimation at a time point.
+#' details of `survfit` model for [`s_surv_timepoint`]. `conf_level` refers to patient risk estimation at a time point.
 #'
 #' @md
 #' @inheritParams argument_convention

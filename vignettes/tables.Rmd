@@ -1,5 +1,5 @@
 ---
-title: "tern tabulation"
+title: "Tabulation"
 date: "2022-03-09"
 output:
     rmarkdown::html_document:
@@ -8,7 +8,7 @@ output:
         toc: true
         toc_float: true
 vignette: >
-    %\VignetteIndexEntry{tern tabulation}
+    %\VignetteIndexEntry{Tabulation}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 editor_options:
@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 The `tern` R package provides functions to create common analyses from clinical trials in `R`. 
 The core functionality for tabulation is built on the more general purpose `rtables` package. 
-New users should first begin by reading the ["Introduction to tern"](https://insightsengineering.github.io/tern/articles/tern.html) and ["Introduction to rtables"](https://roche.github.io/rtables/articles/introduction.html) vignettes.
+New users should first begin by reading the ["Introduction to tern"](https://insightsengineering.github.io/tern/articles/tern.html) and ["Introduction to `rtables`"](https://roche.github.io/rtables/articles/introduction.html) vignettes.
 
 The packages used in this vignette are:
 
@@ -160,7 +160,7 @@ basic_table() %>%
   build_table(adsl)
 ```
 
-The `tern` package includes many functions similar to `summarize_vars()`. These functions are called layout creating functions and are used in combination with other rtables layout functions just like in the examples above. Layout creating functions are wrapping calls to rtables `analyze()`, `analyze_colvars()` and `summarize_row_groups()` and provide options for easy formatting and analysis modifications. 
+The `tern` package includes many functions similar to `summarize_vars()`. These functions are called layout creating functions and are used in combination with other `rtables` layout functions just like in the examples above. Layout creating functions are wrapping calls to `rtables` `analyze()`, `analyze_colvars()` and `summarize_row_groups()` and provide options for easy formatting and analysis modifications. 
 
 To customize the display for the demographics table, we can do so via the arguments in `summarize_vars()`. Most layout creating functions in `tern` include the standard arguments `.stats`, `.formats`, `.labels` and `.indent_mods` which control which statistics are displayed and how the numbers are formatted. Refer to the package help with `help("summarize_vars")` or `?summarize_vars` to see the full set of options.
 
@@ -201,7 +201,7 @@ build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "CHN"))
 
 ### Adverse Event Table 
 
-The standard table of adverse events (AEs) is a summary by system organ class and preferred term. For frequency counts by preferred term, if there are multiple occurrences of the same AE in an individual we count them only once. 
+The standard table of adverse events is a summary by system organ class and preferred term. For frequency counts by preferred term, if there are multiple occurrences of the same AE in an individual we count them only once. 
 
 To create this table we will need to use a combination of several layout creating functions in a tabulation pipeline. 
 

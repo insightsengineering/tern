@@ -56,7 +56,7 @@ s_count_missed_doses <- function(x,
 #' @describeIn count_missed_doses Formatted Analysis function to count non-missing values.
 #' @export
 #' @examples
-#' #  We need to ungroup `count_fraction` first so that the rtables formatting
+#' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
 #' afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)

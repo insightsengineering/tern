@@ -271,7 +271,7 @@ have been conveyed to \code{na_level} appropriately beforehand with
 \note{
 Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.
-It is therefore better to always preprocess the dataset such that factors are manually
+It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
 
 Since \code{\link[=a_summary]{a_summary()}} is generic and we want customization of the formatting arguments
@@ -405,7 +405,7 @@ l <- basic_table() \%>\%
 
 build_table(l, df = dta_test)
 
-# `summarize_vars()` in rtables pipelines
+# `summarize_vars()` in `rtables` pipelines
 
 ## Default output within a `rtables` pipeline.
 l <- basic_table() \%>\%

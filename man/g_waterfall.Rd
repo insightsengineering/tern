@@ -36,6 +36,10 @@ Text to be displayed as legend title.}
 \item{title}{(\code{character} value)\cr
 Text to be displayed as plot title.}
 }
+\value{
+(\code{ggplot} object)\cr
+Waterfall plot
+}
 \description{
 This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
 markup.
@@ -92,5 +96,5 @@ g_waterfall(
 )
 }
 \author{
-Yuyao Song (songy24) \email{yuyao.song@roche.com}
+Yuyao Song (songy) \email{yuyao.song@roche.com}
 }

@@ -3,7 +3,7 @@
 \name{h_grob_coxph}
 \alias{h_grob_coxph}
 \title{Helper Function: CoxPH Grob
-Grob of rtable output from \link{h_tbl_coxph_pairwise}}
+Grob of \code{rtable} output from \link{h_tbl_coxph_pairwise}}
 \usage{
 h_grob_coxph(
   ...,
@@ -24,7 +24,7 @@ h_grob_coxph(
 }
 \description{
 Helper Function: CoxPH Grob
-Grob of rtable output from \link{h_tbl_coxph_pairwise}
+Grob of \code{rtable} output from \link{h_tbl_coxph_pairwise}
 }
 \examples{
 \dontrun{

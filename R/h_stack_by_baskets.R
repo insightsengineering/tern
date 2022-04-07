@@ -1,7 +1,7 @@
-#' Helper Function to create a new `SMQ` variable in ADAE by stacking
+#' Helper Function to create a new `SMQ` variable in `ADAE` by stacking
 #' `SMQ` and/or `CQ` records.
 #'
-#' Helper Function to create a new `SMQ` variable in ADAE that
+#' Helper Function to create a new `SMQ` variable in `ADAE` that
 #' consists of all adverse events belonging to selected
 #' Standardized/Customized queries.
 #' The new dataset will only contain records of the adverse events
@@ -12,8 +12,8 @@
 #' @param smq_varlabel (`string`)\cr a label for the new variable created.
 #' @param keys (`character`)\cr names of the key variables to be returned
 #' along with the new variable created.
-#' @param aag_summary (`data frame`)\cr containing the SMQ baskets
-#' and the levels of interest for the final SMQ variable. This is useful when
+#' @param aag_summary (`data frame`)\cr containing the `SMQ` baskets
+#' and the levels of interest for the final `SMQ` variable. This is useful when
 #' there are some levels of interest that are not observed in the `df` dataset.
 #' The two columns of this dataset should be named `basket` and `basket_name`.
 #'

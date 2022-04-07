@@ -7,7 +7,7 @@
 \alias{h_col_counts}
 \alias{is_leaf_table}
 \alias{h_content_first_row}
-\title{rtables Access Helper Functions}
+\title{\code{rtables} Access Helper Functions}
 \usage{
 h_row_counts(
   table_row,
@@ -43,7 +43,7 @@ column split.)}
 \item{table}{(\code{VTableNodeInfo})\cr an occurrence table or row.}
 }
 \description{
-These are a couple of functions that help with accessing the data in rtables objects.
+These are a couple of functions that help with accessing the data in \code{rtables} objects.
 Currently these work for occurrence tables, which are defined
 as having a count as the first element and a fraction as the second element in each cell.
 }

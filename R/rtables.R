@@ -39,7 +39,7 @@ unlist_and_blank_na <- function(x) {
 #'   returned by the content function.
 #' @param flag_var (`string`)\cr variable name for the logical column identifying which
 #'   row should be returned.
-#' @param format (`string`)\cr rtables format to use.
+#' @param format (`string`)\cr `rtables` format to use.
 #'
 #' @return Content function which just gives `df$analysis_var` at the row identified by
 #'   `.df_row$flag` in the given format.
@@ -200,7 +200,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #'
 #' It divides the data in the vector `param` into the groups defined by `f`
 #' based on specified `values`.
-#' It is relevant in rtables layers so as to distribute parameters
+#' It is relevant in `rtables` layers so as to distribute parameters
 #' `.stats` or' `.formats` into lists with items corresponding to
 #' specific analysis function.
 #'
@@ -272,7 +272,7 @@ afun_selected_stats <- function(.stats, all_stats) {
 #' variable name itself is used instead. Multiple variable labels are concatenated with slashes.
 #'
 #' @note This is not an optimal implementation of course, since we are using here the data set
-#'   itself during the layout creation. When we have a more mature rtables implementation then
+#'   itself during the layout creation. When we have a more mature `rtables` implementation then
 #'   this will also be improved or not necessary anymore.
 #'
 #' @inheritParams argument_convention
@@ -320,7 +320,7 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
   append_topleft(lyt, lab)
 }
 
-# Temporary fix of rtables::rbind to be removed once rtables has been fixed,
+# Temporary fix of rtables::rbind to be removed once `rtables` has been fixed,
 # see https://github.com/insightsengineering/tern/issues/217
 rbind_fix <- function(...) {
   tabs <- list(...)

@@ -17,7 +17,8 @@
 #'   Text to be displayed as plot title.
 #' @param col_legend_title (\code{character} value)\cr
 #'   Text to be displayed as legend title.
-#'
+#' @return (\code{ggplot} object)\cr
+#'   Waterfall plot
 #' @template author_song24
 #'
 #' @export

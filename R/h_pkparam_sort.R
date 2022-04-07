@@ -1,6 +1,6 @@
-#' Sort PK PARAM variable
+#' Sort `PK PARAM` variable
 #' @param pk_data (`data.frame`)\cr Pharmacokinetics dataframe
-#' @return dataframe with PK PARAM variable ordered
+#' @return dataframe with `PK PARAM` variable ordered
 #' @export
 #'
 #' @examples
@@ -26,5 +26,11 @@ h_pkparam_sort <- function(pk_data) {
     levels = unique(joined_data$PARAM[order(joined_data$TLG_ORDER)]),
     ordered = TRUE
   )
+
+  joined_data$TLG_DISPLAY <- factor(joined_data$TLG_DISPLAY, # nolint
+    levels = unique(joined_data$TLG_DISPLAY[order(joined_data$TLG_ORDER)]),
+    ordered = TRUE
+  )
+
   joined_data
 }

@@ -6,7 +6,7 @@
 #' @inheritParams s_surv_time
 #' @param time_point (`number`) \cr survival time point of interest.
 #' @param control a (`list`) of parameters for comparison details, specified by using \cr
-#'    the helper function [control_surv_timepoint]. Some possible parameter options are: \cr
+#'    the helper function [`control_surv_timepoint`]. Some possible parameter options are: \cr
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival rate.
 #' * `conf_type`: (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
 #'    see more in [survival::survfit()]. Note that the option "none" is no longer supported.
@@ -196,7 +196,7 @@ a_surv_timepoint_diff <- make_afun(
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr either `surv` (survival estimations),
 #'   `surv_diff` (difference in survival with the control) or `both`.
-#' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the rtables to
+#' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
 #' @export
 #' @examples

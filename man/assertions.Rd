@@ -115,7 +115,7 @@ is a factor with \code{n_levels} number of levels.
 
 \item \code{all_elements_in_ref}: Check whether all elements of \code{x} are in a reference vector.
 
-\item \code{has_tabletree_colnames}: Check whether rtables object \code{x} has the specified column names.
+\item \code{has_tabletree_colnames}: Check whether \code{rtables} object \code{x} has the specified column names.
 
 \item \code{is_df_with_no_na_level}: check if the input \code{df} has \code{na_level} in its \code{variables}.
 }}

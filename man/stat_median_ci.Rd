@@ -14,11 +14,11 @@ stat_median_ci(x, conf_level = 0.95, na.rm = TRUE, gg_helper = TRUE)
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{gg_helper}{(\code{logical})\cr \code{TRUE} when output should be aligned
-for the use with ggplot.}
+for the use with \code{ggplot}.}
 }
 \description{
 Convenient function for calculating the median confidence interval.
-It can be used as a ggplot helper function for plotting.
+It can be used as a \code{ggplot} helper function for plotting.
 }
 \details{
 The function was adapted from \verb{DescTools/versions/0.99.35/source}

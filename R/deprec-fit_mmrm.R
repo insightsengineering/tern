@@ -1,5 +1,5 @@
 
-#' Deprecated by [tern.mmrm::fit_mmrm]: MMRM Analysis
+#' Deprecated by `tern.mmrm::fit_mmrm`: MMRM Analysis
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -30,7 +30,7 @@
 #' @param parallel flag that controls whether "automatic" optimizer search can use available free cores on the
 #'   machine (not default).
 #'
-#' @details Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
+#' @details Only `Satterthwaite` adjusted degrees of freedom (d.f.) are supported, because they
 #'   match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
 #'
 #'   For the correlation structure (\code{cor_struct}), the user can choose among the following options, sorted
@@ -48,12 +48,12 @@
 #'
 #'   For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
 #'   \describe{
-#'   \item{nloptwrap_neldermead}{NLopt version of the Nelder-Mead algorithm (via package \code{nloptr})}
-#'   \item{nloptwrap_bobyqa}{NLopt version of the BOBYQA algorithm (via package \code{nloptr})}
-#'   \item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
-#'   \item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
-#'   \item{neldermead}{lme4 version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
-#'   \item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
+#'   \item{nloptwrap_neldermead}{\code{NLopt} version of the `Nelder-Mead` algorithm (via package \code{nloptr})}
+#'   \item{nloptwrap_bobyqa}{\code{NLopt} version of the `BOBYQA` algorithm (via package \code{nloptr})}
+#'   \item{bobyqa}{`BOBYQA` algorithm (via package \code{minqa})}
+#'   \item{nlminbwrap}{`nlminb` algorithm (wrapper for \code{\link[stats]{nlminb})}}
+#'   \item{neldermead}{`lme4` version of the `Nelder-Mead` algorithm with box constraints (via package \code{lme4})}
+#'   \item{nmkbw}{`Nelder-Mead` algorithm (via package \code{dfoptim})}
 #'   \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
 #'   }
 #'

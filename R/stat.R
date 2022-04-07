@@ -2,13 +2,13 @@
 #'
 #' Convenient function for calculating the mean confidence interval.
 #' It calculates the arithmetic as well as the geometric mean.
-#' It can be used as a ggplot helper function for plotting.
+#' It can be used as a `ggplot` helper function for plotting.
 #'
 #' @inheritParams argument_convention
 #' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
 #'     the confidence interval for mean.
 #' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned
-#' for the use with ggplot.
+#' for the use with `ggplot`.
 #' @param geom_mean (`logical`)\cr `TRUE` when the geometric mean should be
 #' calculated
 #'
@@ -81,11 +81,11 @@ stat_mean_ci <- function(x,
 #' Confidence Interval for Median
 #'
 #' Convenient function for calculating the median confidence interval.
-#' It can be used as a ggplot helper function for plotting.
+#' It can be used as a `ggplot` helper function for plotting.
 #'
 #' @inheritParams argument_convention
 #' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned
-#' for the use with ggplot.
+#' for the use with `ggplot`.
 #'
 #' @details The function was adapted from `DescTools/versions/0.99.35/source`
 #'

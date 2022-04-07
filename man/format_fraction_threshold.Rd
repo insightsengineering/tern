@@ -10,7 +10,7 @@ format_fraction_threshold(threshold)
 \item{threshold}{(\code{proportion})\cr lower threshold.}
 }
 \value{
-An rtables Formatting Function that takes numeric input \code{x} where the second
+An \code{rtables} Formatting Function that takes numeric input \code{x} where the second
 element is the fraction that is formatted. If the fraction is above or equal to the threshold,
 then it is displayed in percentage. If it is positive but below the threshold, it returns
 "<1" e.g. if the threshold is \code{0.01}. If it is zero, then just "0" is returned.
