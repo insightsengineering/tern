@@ -3,6 +3,8 @@
 * Added a template to the `pkgdown` site.
 # tern 0.7.7
 
+# tern 0.7.7
+
 ### Breaking changes
 
 * Move `MMRM` into a separate package `tern.mmrm`.
