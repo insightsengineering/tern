@@ -1,5 +1,7 @@
 # tern 0.7.7.9000
 
+# tern 0.7.7
+
 ### Breaking changes
 
 * Move `MMRM` into a separate package `tern.mmrm`.
