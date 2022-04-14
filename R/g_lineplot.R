@@ -389,17 +389,7 @@ g_lineplot <- function(df, # nolint
     }
 
     # align plot and table
-    p_grob <- ggplot2::ggplotGrob(p)
-    tbl_grob <- ggplot2::ggplotGrob(tbl)
-    maxWidth <- grid::unit.pmax(p_grob$widths, tbl_grob$widths) # nolint
-    p_grob$widths <- maxWidth
-    tbl_grob$widths <- maxWidth
-
-    if (newpage) {
-      grid::grid.newpage()
-    }
-
-    gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
+    cowplot::plot_grid(p, tbl, labels = "AUTO", ncol = 1)
   } else {
     p
   }
