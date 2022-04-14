@@ -1,4 +1,9 @@
 # tern 0.7.7.9001
+
+### Enhancements
+
+* Enhanced `g_lineplot` with additional table to automatically scale the table height and return a `ggplot` object.
+
 ### Miscellaneous
 * Added a template to the `pkgdown` site.
 
