@@ -31,7 +31,6 @@ knitr::opts_chunk$set(
 library(dplyr)
 library(ggplot2)
 library(tern)
-
 ```
 
 ## Data for examples
@@ -40,11 +39,12 @@ library(tern)
 adlb <- scda::synthetic_cdisc_data("latest")$adlb
 
 adlb <- adlb %>%
-  filter(ANL01FL == "Y",
-         PARAMCD == "ALT",
-         AVISIT != "SCREENING") %>%
+  filter(
+    ANL01FL == "Y",
+    PARAMCD == "ALT",
+    AVISIT != "SCREENING"
+  ) %>%
   df_explicit_na()
-
 ```
 
 ## New function to display graphs
@@ -52,16 +52,16 @@ adlb <- adlb %>%
 
 # Helper function to get the right formatting in the table.
 h_format_row <- function(x, format, labels = NULL) {
-
   format_cell <- function(x, format, label = NULL) {
     fc <- rtables::format_rcell(x = x, format = format)
     x_label <- attr(x, "label")
-    if (!is.null(label) && !is.na(label))
+    if (!is.null(label) && !is.na(label)) {
       names(fc) <- label
-    else if (!is.null(x_label) && !is.na(x_label))
+    } else if (!is.null(x_label) && !is.na(x_label)) {
       names(fc) <- x_label
-    else if (length(x) == length(fc))
+    } else if (length(x) == length(fc)) {
       names(fc) <- names(x)
+    }
     as.data.frame(t(fc)) # cell: one row, one column data.frame
   }
 
@@ -103,7 +103,6 @@ g_lineplot <- function(df, # nolint
                        title = "Plot of Mean and 95% Confidence Limits by Visit",
                        caption = NULL,
                        newpage = TRUE) {
-
   assertthat::assert_that(is.character(mid) || is.null(mid))
   assertthat::assert_that(is.character(interval) || is.null(interval))
   assertthat::assert_that(ifelse(is.character(interval), all(whiskers %in% c("lwr", "upr")), TRUE))
@@ -130,13 +129,13 @@ g_lineplot <- function(df, # nolint
   ##################################################
   ## Compute required statistics.
   ##################################################
-  #df_stats <- aggregate( # nolint
+  # df_stats <- aggregate( # nolint
   #  x = df[[y]], # nolint
   #  by = df[, c(strata, x)], # nolint
   #  FUN = function(val) do.call(c, unname(sfun(val)[c(mid, interval)])) # nolint
-  #) # nolint
-  #assertthat::assert_that(!(any(c(strata, x) %in% colnames(df_stats$x)))) # nolint
-  #df_stats <- cbind(df_stats[, c(strata, x)], df_stats$x) # nolint
+  # ) # nolint
+  # assertthat::assert_that(!(any(c(strata, x) %in% colnames(df_stats$x)))) # nolint
+  # df_stats <- cbind(df_stats[, c(strata, x)], df_stats$x) # nolint
 
   df_grp <- dplyr::group_by_at(df, c(strata, x))
   df_stats <- dplyr::summarise(
@@ -147,7 +146,6 @@ g_lineplot <- function(df, # nolint
 
   # add number of objects N in strata
   if (!is.null(strata) && !is.null(alt_counts_df)) {
-
     strata_N <- paste0(strata, "_N") # nolint
 
     df_N <- as.data.frame(table(alt_counts_df[[strata]], exclude = c(NA, NaN, Inf))) # nolint
@@ -156,7 +154,6 @@ g_lineplot <- function(df, # nolint
 
     assertthat::assert_that(!(strata_N %in% colnames(df_stats))) # as we join with df_N (which has column N)
     df_stats <- dplyr::full_join(x = df_stats, y = df_N[, c(strata, strata_N)], by = strata)
-
   } else if (!is.null(strata)) {
     strata_N <- strata # nolint
   } else {
@@ -190,7 +187,8 @@ g_lineplot <- function(df, # nolint
     data = df_stats,
     mapping = aes_string(
       x = x, y = mid, color = strata_N, shape = strata_N, lty = strata_N, group = strata_N
-    ))
+    )
+  )
 
   if (!is.null(mid)) {
     # points
@@ -208,7 +206,6 @@ g_lineplot <- function(df, # nolint
 
   # interval
   if (!is.null(interval)) {
-
     yminmax <- paste(interval, whiskers, sep = "_")
 
     p <- p +
@@ -219,7 +216,7 @@ g_lineplot <- function(df, # nolint
       )
 
     if (length(whiskers) == 1) { # lwr or upr only; mid is then required
-      #workaround as geom_errorbar does not provide single-direction whiskers
+      # workaround as geom_errorbar does not provide single-direction whiskers
       p <- p +
         geom_linerange(
           aes_string(ymin = mid, ymax = yminmax),
@@ -252,7 +249,8 @@ g_lineplot <- function(df, # nolint
         legend.direction = ifelse(
           legend_position %in% c("top", "bottom"),
           "horizontal",
-          "vertical")
+          "vertical"
+        )
       )
   }
 
@@ -260,7 +258,6 @@ g_lineplot <- function(df, # nolint
   ## Optionally, add table to the bottom of the plot.
   ##################################################
   if (!is.null(table)) {
-
     df_stats_table <- df_grp %>%
       dplyr::summarise(
         h_format_row(
@@ -279,7 +276,7 @@ g_lineplot <- function(df, # nolint
         names_to = "stat",
         values_to = "value",
         names_ptypes = list(stat = factor(levels = stats_lev))
-    )
+      )
 
     tbl <- ggplot2::ggplot(df_stats_table, aes_string(x = x, y = "stat", label = "value")) +
       geom_text(size = table_font_size) +
@@ -308,7 +305,7 @@ g_lineplot <- function(df, # nolint
     # maxWidth <- grid::unit.pmax(p_grob$widths, tbl_grob$widths) # nolint
     # p_grob$widths <- maxWidth
     # tbl_grob$widths <- maxWidth
-    # 
+    #
     # if (newpage) {
     #   grid::grid.newpage()
     # }
@@ -316,13 +313,10 @@ g_lineplot <- function(df, # nolint
     #p <- gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
     #p <- gridExtra::marrangeGrob(list(p_grob, tbl_grob), nrow = 2, ncol = 1, heights = c(3, 1), top = NULL) # nolint
     p <- cowplot::plot_grid(p, tbl, ncol = 1)
-
   }
 
   return(p)
-
 }
-
 ```
 
 
@@ -349,7 +343,8 @@ g_lineplot(adlb, table = c("n", "mean", "mean_ci"))
 
 # Mean with CI - continuous time variable, customized confidence level
 g_lineplot(
-  adlb, variables = c(x = "AVISITN", y = "AVAL", strata = "ARM", y_lab = "PARAMCD", y_unit = "AVALU"),
+  adlb,
+  variables = c(x = "AVISITN", y = "AVAL", strata = "ARM", y_lab = "PARAMCD", y_unit = "AVALU"),
   table = c("n", "mean", "mean_ci"),
   control = control_summarize_vars(conf_level = 0.80),
   title = "Plot of Mean and 80% Confidence Limits by Visit"
