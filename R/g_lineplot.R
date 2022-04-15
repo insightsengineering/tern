@@ -389,7 +389,7 @@ g_lineplot <- function(df, # nolint
     }
 
     # align plot and table
-    cowplot::plot_grid(p, tbl, labels = "AUTO", ncol = 1)
+    cowplot::plot_grid(p, tbl, ncol = 1)
   } else {
     p
   }
