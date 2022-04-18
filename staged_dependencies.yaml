@@ -18,6 +18,9 @@ downstream_repos:
   insightsengineering/tern.mmrm:
     repo: insightsengineering/tern.mmrm
     host: https://github.com
+  insightsengineering/tern.rbmi:
+    repo: insightsengineering/tern.rbmi
+    host: https://github.com
   insightsengineering/osprey:
     repo: insightsengineering/osprey
     host: https://github.com
