@@ -71,7 +71,8 @@ d_proportion_diff <- function(conf_level,
     "waldcc" = "Wald, with correction",
     "wald" = "Wald, without correction",
     "ha" = "Anderson-Hauck",
-    "newcombe" = "Newcombe",
+    "newcombe" = "Newcombe, without correction",
+    "newcombecc" = "Newcombe, with correction",
     stop(paste(method, "does not have a description"))
   )
   paste0(label, " (", method_part, ")")
@@ -173,7 +174,8 @@ prop_diff_ha <- function(rsp,
 #' prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
 prop_diff_nc <- function(rsp,
                          grp,
-                         conf_level) {
+                         conf_level,
+                         correct = FALSE) {
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
 
@@ -182,7 +184,7 @@ prop_diff_nc <- function(rsp,
   p_grp <- tapply(rsp, grp, mean)
   diff_p <- unname(diff(p_grp))
   x_grp <- split(rsp, f = grp)
-  ci_grp <- lapply(x_grp, FUN = prop_wilson, conf_level = conf_level)
+  ci_grp <- lapply(x_grp, FUN = prop_wilson(correct = correct), conf_level = conf_level)
   l1 <- ci_grp[[1]][1]
   u1 <- ci_grp[[1]][2]
   l2 <- ci_grp[[2]][1]
@@ -315,7 +317,7 @@ s_proportion_diff <- function(df,
                               conf_level = 0.95,
                               method = c(
                                 "waldcc", "wald", "cmh",
-                                "ha", "newcombe"
+                                "ha", "newcombe", "newcombecc"
                               )) {
   method <- match.arg(method)
   y <- list(diff = "", diff_ci = "")
@@ -345,7 +347,8 @@ s_proportion_diff <- function(df,
       wald = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
       waldcc = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
       ha = prop_diff_ha(rsp, grp, conf_level),
-      newcombe = prop_diff_nc(rsp, grp, conf_level),
+      newcombe = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
+      newcombecc = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
       cmh = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
     )
 
