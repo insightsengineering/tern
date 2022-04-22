@@ -184,7 +184,7 @@ prop_diff_nc <- function(rsp,
   p_grp <- tapply(rsp, grp, mean)
   diff_p <- unname(diff(p_grp))
   x_grp <- split(rsp, f = grp)
-  ci_grp <- lapply(x_grp, FUN = prop_wilson(correct = correct), conf_level = conf_level)
+  ci_grp <- lapply(x_grp, FUN = prop_wilson, correct = correct, conf_level = conf_level)
   l1 <- ci_grp[[1]][1]
   u1 <- ci_grp[[1]][2]
   l2 <- ci_grp[[2]][1]
