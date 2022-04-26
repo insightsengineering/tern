@@ -131,8 +131,7 @@ controls the font size of values in the table.}
 \item{newpage}{(\code{logical} scalar) \cr should plot be drawn on new page?}
 }
 \value{
-\code{ggplot} or \code{gtable} object,
-depending on whether or not a table is appended to the plot.
+\code{ggplot}
 }
 \description{
 Line plot with the optional table

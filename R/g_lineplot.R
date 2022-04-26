@@ -70,8 +70,7 @@
 #'
 #' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 #'
-#' @return \code{ggplot} or \code{gtable} object,
-#' depending on whether or not a table is appended to the plot.
+#' @return \code{ggplot}
 #'
 #' @export
 #'
