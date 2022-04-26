@@ -411,7 +411,10 @@ tidy.summary.coxph <- function(x, # nolint
   confint <- x$conf.int
   levels <- rownames(pval)
 
-  ret <- as.data.frame(cbind(pval[, grepl("Pr", names(pval))], confint))
+  pval <- tibble::as_tibble(pval)
+  confint <- tibble::as_tibble(confint)
+
+  ret <- cbind(pval[, grepl("Pr", names(pval))], confint)
   ret$level <- levels
   ret$n <- x[["n"]]
   ret
