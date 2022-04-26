@@ -106,7 +106,7 @@ h_coxreg_mult_cont_df <- function(variables,
   checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)
   conf_level <- control[["conf_level"]]
   pval_label <- paste0(
-    "p-value (", stringr::str_to_sentence(control[["pval_method"]]), ")"
+    "p-value (", gsub("(^[a-z])", "\\U\\1", trimws(control[["pval_method"]]), perl = TRUE), ")"
   )
   # If there is any data, run model, otherwise return empty results.
   if (nrow(data) > 0) {
