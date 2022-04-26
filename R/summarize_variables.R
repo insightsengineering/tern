@@ -39,12 +39,14 @@ summary_formats <- function(type = "numeric") {
   if (type == "counts") {
     c(
       n = "xx.",
+      nBLQs = "xx.",
       count = "xx.",
       count_fraction = format_count_fraction
     )
   } else {
     c(
       n = "xx.",
+      nBLQs = "xx.",
       mean = "xx.x",
       sd = "xx.x",
       se = "xx.x",
@@ -88,7 +90,8 @@ summary_labels <- function() {
     max = "Maximum",
     geom_mean = "Geometric Mean",
     geom_cv = "CV % Geometric Mean",
-    n = "n"
+    n = "n",
+    nBLQs = "nBLQs"
   )
 }
 
@@ -216,6 +219,9 @@ s_summary.numeric <- function(x, # nolint
   y <- list()
 
   y$n <- c("n" = length(x))
+
+  y$nBLQs <- c("nBLQs" = sum(x==0))
+  # y$nBLQs <- c("nBLQs" = 123456)
 
   y$mean <- c("mean" = ifelse(length(x) == 0, NA_real_, mean(x, na.rm = FALSE)))
 

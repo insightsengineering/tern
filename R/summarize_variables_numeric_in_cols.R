@@ -140,6 +140,7 @@ summary_numeric_in_cols <- function(x,
 #' result
 summarize_vars_numeric_in_cols <- function(lyt,
                                            var,
+                                           varBLQ,
                                            ...,
                                            .stats = c(
                                              "n",
@@ -147,7 +148,8 @@ summarize_vars_numeric_in_cols <- function(lyt,
                                              "sd",
                                              "se",
                                              "cv",
-                                             "geom_cv"
+                                             "geom_cv",
+                                             "nBLQs"
                                            ),
                                            .labels = c(
                                              n = "n",
@@ -155,7 +157,8 @@ summarize_vars_numeric_in_cols <- function(lyt,
                                              sd = "SD",
                                              se = "SE",
                                              cv = "CV (%)",
-                                             geom_cv = "CV % Geometric Mean"
+                                             geom_cv = "CV % Geometric Mean",
+                                             nBLQs = "nBLQs"
                                            ),
                                            .indent_mods = NULL,
                                            col_split = TRUE) {
@@ -184,4 +187,38 @@ summarize_vars_numeric_in_cols <- function(lyt,
     cfun = afun_list,
     extra_args = list(...)
   )
+
+  # if (col_split) {
+  #   lyt <- split_cols_by_multivar(
+  #     lyt = lyt,
+  #     vars = varBLQ,
+  #     varlabels = "nBLQs"
+  #   )
+  # }
+  #
+  # summarize_row_groups(
+  #   lyt = lyt,
+  #   var = varBLQ,
+  #   cfun = afun_list,
+  #   extra_args = list(...)
+  # )
+
+  # if (col_split) {
+  #   lyt <- split_cols_by_multivar(
+  #     lyt = lyt,
+  #     vars = rep(var, length(.stats)),
+  #     varlabels = .labels[.stats],
+  #     varsBLQ = varBLQ,
+  #     varlabelsBLQ = "nBLQs"
+  #
+  #   )
+  # }
+  #
+  # summarize_row_groups(
+  #   lyt = lyt,
+  #   var = var,
+  #   var = varBLQ,
+  #   cfun = afun_list,
+  #   extra_args = list(...)
+  # )
 }
