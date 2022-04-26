@@ -38,7 +38,6 @@ Imports:
     forcats,
     formatters,
     ggplot2,
-    grDevices,
     grid,
     gridExtra,
     gtable,

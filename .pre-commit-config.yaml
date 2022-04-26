@@ -20,7 +20,6 @@ repos:
           - dplyr
           - ggplot2
           - glue
-          - grDevices
           - lifecycle
           - logger
           - magrittr
