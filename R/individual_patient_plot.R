@@ -22,6 +22,7 @@
 #' @param max_obs_per_plot (`count`)\cr Number of observations to be plotted on one
 #' plot. Ignored when `plotting_choices` is not "separate_by_obs".
 #' @param font_size (`number`)\cr text font size.
+#' @param caption (`character` scalar) \cr optional caption below the plot.
 #'
 #' @name individual_patient_plot
 NULL
@@ -79,6 +80,7 @@ h_g_ipp <- function(df,
                     id_var,
                     title = "Individual Patient Plots",
                     subtitle = "",
+                    caption = NULL,
                     add_baseline_hline = FALSE,
                     yvar_baseline = "BASE",
                     ggtheme = h_set_nest_theme(10)) {
@@ -111,7 +113,8 @@ h_g_ipp <- function(df,
       x = xlab,
       y = ylab,
       title = title,
-      subtitle = subtitle
+      subtitle = subtitle,
+      caption = caption
     ) +
     ggtheme
 
@@ -176,6 +179,7 @@ g_ipp <- function(df,
                   id_var = "USUBJID",
                   title = "Individual Patient Plots",
                   subtitle = "",
+                  caption = NULL,
                   add_baseline_hline = FALSE,
                   yvar_baseline = "BASE",
                   ggtheme = h_set_nest_theme(10),
@@ -198,6 +202,7 @@ g_ipp <- function(df,
       id_var = id_var,
       title = title,
       subtitle = subtitle,
+      caption = caption,
       add_baseline_hline = add_baseline_hline,
       yvar_baseline = yvar_baseline,
       ggtheme = ggtheme
@@ -229,6 +234,7 @@ g_ipp <- function(df,
         id_var = id_var,
         title = title,
         subtitle = subtitle,
+        caption = caption,
         add_baseline_hline = add_baseline_hline,
         yvar_baseline = yvar_baseline,
         ggtheme = ggtheme
@@ -251,6 +257,7 @@ g_ipp <- function(df,
           id_var = id_var,
           title = title,
           subtitle = subtitle,
+          caption = caption,
           add_baseline_hline = add_baseline_hline,
           yvar_baseline = yvar_baseline,
           ggtheme = ggtheme
