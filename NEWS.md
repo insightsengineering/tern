@@ -6,6 +6,7 @@
 
 ### Miscellaneous
 * Added a template to the `pkgdown` site.
+* Removed package dependencies of `grDevices`, `stringr`, and `viridisLite`.
 
 # tern 0.7.7
 
