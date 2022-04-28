@@ -35,9 +35,9 @@ g_lineplot(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame} or \code{tibble}) \cr data set containing all analysis variables.}
+\item{df}{(\verb{data frame}) \cr data set containing all analysis variables.}
 
-\item{alt_counts_df}{(\verb{data frame} or \code{tibble} or \code{NULL}) \cr
+\item{alt_counts_df}{(\verb{data frame} or \code{NULL}) \cr
 data set that will be used (only) to counts objects in strata.}
 
 \item{variables}{(named \code{character} vector) of variable names in \code{df} data set. Details are: \cr
@@ -131,8 +131,7 @@ controls the font size of values in the table.}
 \item{newpage}{(\code{logical} scalar) \cr should plot be drawn on new page?}
 }
 \value{
-\code{ggplot} or \code{gtable} object,
-depending on whether or not a table is appended to the plot.
+\code{ggplot}
 }
 \description{
 Line plot with the optional table

@@ -12,7 +12,7 @@
 \item{...}{additional arguments for the lower level functions.}
 }
 \description{
-Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{tibble} to extract model results.
+Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{data.frame} to extract model results.
 }
 \examples{
 
