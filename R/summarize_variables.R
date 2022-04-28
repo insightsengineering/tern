@@ -220,9 +220,6 @@ s_summary.numeric <- function(x, # nolint
 
   y$n <- c("n" = length(x))
 
-  y$nBLQs <- c("nBLQs" = sum(x==0))
-  # y$nBLQs <- c("nBLQs" = 123456)
-
   y$mean <- c("mean" = ifelse(length(x) == 0, NA_real_, mean(x, na.rm = FALSE)))
 
   y$sd <- c("sd" = stats::sd(x, na.rm = FALSE))
@@ -339,6 +336,8 @@ s_summary.factor <- function(x,
   y <- list()
 
   y$n <- length(x)
+
+  y$nBLQs <- sum(grepl("BLQ|LTR|<..", x))
 
   y$count <- as.list(table(x, useNA = "ifany"))
   dn <- switch(denom,

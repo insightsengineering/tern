@@ -2,11 +2,17 @@
 % Please edit documentation in R/summarize_variables_numeric_in_cols.R
 \name{summarize_numeric_in_columns}
 \alias{summarize_numeric_in_columns}
-\alias{summary_numeric_in_cols}
+\alias{summary_in_cols.numeric}
+\alias{summary_in_cols.factor}
+\alias{summary_in_cols.character}
 \alias{summarize_vars_numeric_in_cols}
 \title{Summary numeric variables in columns}
 \usage{
-summary_numeric_in_cols(x, labelstr = "", custom_label = NULL, ...)
+\method{summary_in_cols}{numeric}(x, labelstr = "", custom_label = NULL, ...)
+
+\method{summary_in_cols}{factor}(x, labelstr = "", custom_label = NULL, ...)
+
+\method{summary_in_cols}{character}(x, labelstr = "", custom_label = NULL, ...)
 
 summarize_vars_numeric_in_cols(
   lyt,
@@ -45,13 +51,25 @@ empty then this will be used as the row label.}
 \value{
 A named list of all statistics returned by \code{\link[=s_summary.numeric]{s_summary.numeric()}}.
 See \code{\link[=s_summary.numeric]{s_summary.numeric()}} to be aware of all available statistics.
+
+A named list of all statistics returned by \code{\link[=s_summary.factor]{s_summary.factor()}}.
+See \code{\link[=s_summary.factor]{s_summary.factor()}} to be aware of all available statistics.
+
+A named list of all statistics returned by \code{\link[=s_summary.character]{s_summary.character()}}.
+See \code{\link[=s_summary.character]{s_summary.character()}} to be aware of all available statistics.
 }
 \description{
 These functions can be used to produce summary tables for PK datasets.
 }
 \section{Functions}{
 \itemize{
-\item \code{summary_numeric_in_cols}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}}
+\item \code{summary_in_cols.numeric}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}}
+function that produces a named list of statistics to include as columns.
+
+\item \code{summary_in_cols.factor}: a wrapper of \code{\link[=s_summary.factor]{s_summary.factor()}}
+function that produces a named list of statistics to include as columns.
+
+\item \code{summary_in_cols.character}: a wrapper of \code{\link[=s_summary.character]{s_summary.character()}}
 function that produces a named list of statistics to include as columns.
 
 \item \code{summarize_vars_numeric_in_cols}: Layout creating function which can be used for creating
@@ -63,7 +81,17 @@ summary tables in columns, primarily used for PK data sets.
 library(scda)
 library(dplyr)
 ADPP <- scda::synthetic_cdisc_data("latest")$adpp \%>\% h_pkparam_sort()
-summary_numeric_in_cols(ADPP$AGE, custom_label = "stats")
+summary_in_cols(ADPP$AGE, custom_label = "stats")
+
+library(scda)
+library(dplyr)
+ADPC <- scda::synthetic_cdisc_data("latest")$adpc
+summary_in_cols(as.factor(ADPC$AVALC), custom_label = "stats")
+
+library(scda)
+library(dplyr)
+ADPC <- scda::synthetic_cdisc_data("latest")$adpc
+summary_in_cols.character(ADPC$AVALC, custom_label = "stats")
 
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
@@ -136,8 +164,9 @@ lyt <- basic_table() \%>\%
   ) \%>\%
   summarize_vars_numeric_in_cols(
     var = "AVAL",
+    varBLQ = "AVALC",
     col_split = TRUE,
-    .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
+    .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max", "nBLQs"),
     .labels = c(
       n = "n",
       mean = "Mean",
@@ -147,7 +176,8 @@ lyt <- basic_table() \%>\%
       geom_cv = "CV \% Geometric Mean",
       median = "Median",
       min = "Minimum",
-      max = "Maximum"
+      max = "Maximum",
+      nBLQs = "nBLQs"
     )
   )
 result <- build_table(lyt, df = ADPC)

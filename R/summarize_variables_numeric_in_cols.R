@@ -6,7 +6,7 @@
 #'
 NULL
 
-#' @describeIn summarize_numeric_in_columns a wrapper of [s_summary.numeric()]
+#' @describeIn `r lifecycle::badge("experimental")` summarize_numeric_in_columns a wrapper of [s_summary.numeric()]
 #'  function that produces a named list of statistics to include as columns.
 #'
 #' @inheritParams argument_convention
@@ -22,8 +22,8 @@ NULL
 #' library(scda)
 #' library(dplyr)
 #' ADPP <- scda::synthetic_cdisc_data("latest")$adpp %>% h_pkparam_sort()
-#' summary_numeric_in_cols(ADPP$AGE, custom_label = "stats")
-summary_numeric_in_cols <- function(x,
+#' summary_in_cols(ADPP$AGE, custom_label = "stats")
+summary_in_cols.numeric <- function(x,
                                     labelstr = "",
                                     custom_label = NULL,
                                     ...) {
@@ -41,8 +41,104 @@ summary_numeric_in_cols <- function(x,
   lapply(results, formatters::with_label, row_label)
 }
 
-#' @describeIn summarize_numeric_in_columns Layout creating function which can be used for creating
-#'   summary tables in columns, primarily used for PK data sets.
+
+#' @describeIn `r lifecycle::badge("experimental")` summarize_numeric_in_columns a wrapper of
+#' [s_summary.factor()] function that produces a named list of statistics to include as columns.
+#'
+#' @inheritParams argument_convention
+#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
+#'  empty then this will be used as the row label.
+#'
+#' @return A named list of all statistics returned by [s_summary.factor()].
+#' See [s_summary.factor()] to be aware of all available statistics.
+#'
+#' @export
+#' @examples
+#'
+#' library(scda)
+#' library(dplyr)
+#' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
+#' summary_in_cols(as.factor(ADPC$AVALC), custom_label = "stats")
+summary_in_cols.factor <- function(x,
+                                   labelstr = "",
+                                   custom_label = NULL,
+                                   ...) {
+  row_label <- if (labelstr != "") {
+    labelstr
+  } else if (!is.null(custom_label)) {
+    custom_label
+  } else {
+    "Statistics"
+  }
+
+  # Calling s_summary.factor
+  results <- s_summary.factor(x)
+
+  lapply(results, formatters::with_label, row_label)
+}
+
+
+#' @describeIn summarize_numeric_in_columns a wrapper of [s_summary.character()]
+#'  function that produces a named list of statistics to include as columns.
+#'
+#' @inheritParams argument_convention
+#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
+#'  empty then this will be used as the row label.
+#'
+#' @return A named list of all statistics returned by [s_summary.character()].
+#' See [s_summary.character()] to be aware of all available statistics.
+#'
+#' @export
+#' @examples
+#'
+#' library(scda)
+#' library(dplyr)
+#' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
+#' summary_in_cols.character(ADPC$AVALC, custom_label = "stats")
+summary_in_cols.character <- function(x,
+                                      labelstr = "",
+                                      custom_label = NULL,
+                                      ...) {
+  row_label <- if (labelstr != "") {
+    labelstr
+  } else if (!is.null(custom_label)) {
+    custom_label
+  } else {
+    "Statistics"
+  }
+
+  # Calling s_summary.character
+  results <- s_summary.factor(as.factor(x))
+
+  lapply(results, formatters::with_label, row_label)
+}
+
+
+
+#' @inheritParams argument_convention
+#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
+#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
+#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
+#' * `quantiles`: numeric vector of length two to specify the quantiles.
+#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
+#'   See more about `type` in [stats::quantile()].
+#'
+#' @describeIn `r lifecycle::badge("experimental")` summarize_variables `summary_in_cols` is a S3 generic
+#' function to produce
+#'   an object description.
+#'
+#' @export
+#' @order 2
+#'
+summary_in_cols <- function(x,
+                            labelstr = "",
+                            custom_label = NULL) {
+  UseMethod("summary_in_cols", x)
+}
+
+
+#' @describeIn `r lifecycle::badge("experimental")` summarize_numeric_in_columns Layout creating
+#' function which can be used for creating summary tables in columns, primarily used for PK data sets.
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'
@@ -109,38 +205,8 @@ summary_numeric_in_cols <- function(x,
 #'   )
 #' result <- build_table(lyt, df = ADPP)
 #' result
-#'
-#' # PKCT01FDS
-#' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
-#' ADPC <- mutate(ADPC, NRELTM1 = as.factor(NRELTM1))
-#' lyt <- basic_table() %>%
-#'   split_rows_by(var = "VISIT", split_label = "Visit", label_pos = "topleft") %>%
-#'   split_rows_by(
-#'     var = "NRELTM1",
-#'     split_label = "Norminal time from first dose",
-#'     label_pos = "topleft"
-#'   ) %>%
-#'   summarize_vars_numeric_in_cols(
-#'     var = "AVAL",
-#'     col_split = TRUE,
-#'     .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
-#'     .labels = c(
-#'       n = "n",
-#'       mean = "Mean",
-#'       sd = "SD",
-#'       cv = "CV (%)",
-#'       geom_mean = "Geometric Mean",
-#'       geom_cv = "CV % Geometric Mean",
-#'       median = "Median",
-#'       min = "Minimum",
-#'       max = "Maximum"
-#'     )
-#'   )
-#' result <- build_table(lyt, df = ADPC)
-#' result
 summarize_vars_numeric_in_cols <- function(lyt,
                                            var,
-                                           varBLQ,
                                            ...,
                                            .stats = c(
                                              "n",
@@ -148,8 +214,7 @@ summarize_vars_numeric_in_cols <- function(lyt,
                                              "sd",
                                              "se",
                                              "cv",
-                                             "geom_cv",
-                                             "nBLQs"
+                                             "geom_cv"
                                            ),
                                            .labels = c(
                                              n = "n",
@@ -157,15 +222,14 @@ summarize_vars_numeric_in_cols <- function(lyt,
                                              sd = "SD",
                                              se = "SE",
                                              cv = "CV (%)",
-                                             geom_cv = "CV % Geometric Mean",
-                                             nBLQs = "nBLQs"
+                                             geom_cv = "CV % Geometric Mean"
                                            ),
                                            .indent_mods = NULL,
                                            col_split = TRUE) {
   afun_list <- Map(
     function(stat) {
       make_afun(
-        summary_numeric_in_cols,
+        summary_in_cols,
         .stats = stat,
         .formats = summary_formats()[names(summary_formats()) == stat]
       )
@@ -174,9 +238,11 @@ summarize_vars_numeric_in_cols <- function(lyt,
   )
 
   if (col_split) {
+    vars <- rep(var, length(.stats))
+
     lyt <- split_cols_by_multivar(
       lyt = lyt,
-      vars = rep(var, length(.stats)),
+      vars = vars,
       varlabels = .labels[.stats]
     )
   }
@@ -187,38 +253,4 @@ summarize_vars_numeric_in_cols <- function(lyt,
     cfun = afun_list,
     extra_args = list(...)
   )
-
-  # if (col_split) {
-  #   lyt <- split_cols_by_multivar(
-  #     lyt = lyt,
-  #     vars = varBLQ,
-  #     varlabels = "nBLQs"
-  #   )
-  # }
-  #
-  # summarize_row_groups(
-  #   lyt = lyt,
-  #   var = varBLQ,
-  #   cfun = afun_list,
-  #   extra_args = list(...)
-  # )
-
-  # if (col_split) {
-  #   lyt <- split_cols_by_multivar(
-  #     lyt = lyt,
-  #     vars = rep(var, length(.stats)),
-  #     varlabels = .labels[.stats],
-  #     varsBLQ = varBLQ,
-  #     varlabelsBLQ = "nBLQs"
-  #
-  #   )
-  # }
-  #
-  # summarize_row_groups(
-  #   lyt = lyt,
-  #   var = var,
-  #   var = varBLQ,
-  #   cfun = afun_list,
-  #   extra_args = list(...)
-  # )
 }
