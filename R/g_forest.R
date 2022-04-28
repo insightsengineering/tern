@@ -319,8 +319,7 @@ forest_grob <- function(tbl,
 
   if (is.null(xlim)) {
     r <- range(c(x, lower, upper), na.rm = TRUE)
-    f <- 0.05
-    xlim <- r + c(-f, f) * diff(r)
+    xlim <- r + c(-0.05, 0.05) * diff(r)
   }
 
   if (logx) {
