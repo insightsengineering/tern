@@ -39,14 +39,13 @@ summary_formats <- function(type = "numeric") {
   if (type == "counts") {
     c(
       n = "xx.",
-      nBLQs = "xx.",
       count = "xx.",
-      count_fraction = format_count_fraction
+      count_fraction = format_count_fraction,
+      nBLQs = "xx."
     )
   } else {
     c(
       n = "xx.",
-      nBLQs = "xx.",
       mean = "xx.x",
       sd = "xx.x",
       se = "xx.x",
@@ -90,8 +89,7 @@ summary_labels <- function() {
     max = "Maximum",
     geom_mean = "Geometric Mean",
     geom_cv = "CV % Geometric Mean",
-    n = "n",
-    nBLQs = "nBLQs"
+    n = "n"
   )
 }
 

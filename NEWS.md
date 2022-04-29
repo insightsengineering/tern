@@ -9,6 +9,8 @@
 ### Miscellaneous
 * Added a template to the `pkgdown` site.
 * Removed package dependencies of `grDevices`, `stringr`, and `viridisLite`.
+* Renaming `summarize_numeric_in_columns` to `summarize_variables_in_columns`.
+* Renaming `summarize_vars_numeric_in_cols` to `summarize_vars_in_cols`.
 
 # tern 0.7.7
 

@@ -2,12 +2,14 @@
 #'
 #' These functions can be used to produce summary tables for PK datasets.
 #'
-#' @name summarize_numeric_in_columns
+#' @name summarize_variables_in_columns
 #'
 NULL
 
-#' @describeIn `r lifecycle::badge("experimental")` summarize_numeric_in_columns a wrapper of [s_summary.numeric()]
+#' @describeIn summarize_variables_in_columns a wrapper of [s_summary.numeric()]
 #'  function that produces a named list of statistics to include as columns.
+#'
+#' `r lifecycle::badge("experimental")`
 #'
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
@@ -42,8 +44,10 @@ summary_in_cols.numeric <- function(x,
 }
 
 
-#' @describeIn `r lifecycle::badge("experimental")` summarize_numeric_in_columns a wrapper of
+#' @describeIn summarize_variables_in_columns a wrapper of
 #' [s_summary.factor()] function that produces a named list of statistics to include as columns.
+#'
+#' `r lifecycle::badge("experimental")`
 #'
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
@@ -78,7 +82,7 @@ summary_in_cols.factor <- function(x,
 }
 
 
-#' @describeIn summarize_numeric_in_columns a wrapper of [s_summary.character()]
+#' @describeIn summarize_variables_in_columns a wrapper of [s_summary.character()]
 #'  function that produces a named list of statistics to include as columns.
 #'
 #' @inheritParams argument_convention
@@ -123,9 +127,10 @@ summary_in_cols.character <- function(x,
 #' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 #'   See more about `type` in [stats::quantile()].
 #'
-#' @describeIn `r lifecycle::badge("experimental")` summarize_variables `summary_in_cols` is a S3 generic
-#' function to produce
-#'   an object description.
+#' @describeIn summarize_variables_in_columns `summary_in_cols` is a S3 generic
+#' function to produce an object description.
+#'
+#' `r lifecycle::badge("experimental")`
 #'
 #' @export
 #' @order 2
@@ -137,8 +142,11 @@ summary_in_cols <- function(x,
 }
 
 
-#' @describeIn `r lifecycle::badge("experimental")` summarize_numeric_in_columns Layout creating
+#' @describeIn summarize_variables_in_columns Layout creating
 #' function which can be used for creating summary tables in columns, primarily used for PK data sets.
+#'
+#'  `r lifecycle::badge("experimental")`
+#'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'
@@ -150,7 +158,7 @@ summary_in_cols <- function(x,
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
-#'   summarize_vars_numeric_in_cols(var = "AGE", col_split = TRUE)
+#'   summarize_vars_in_cols(var = "AGE", col_split = TRUE)
 #' result <- build_table(lyt = lyt, df = ADPP)
 #' result
 #'
@@ -158,7 +166,7 @@ summary_in_cols <- function(x,
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
-#'   summarize_vars_numeric_in_cols(
+#'   summarize_vars_in_cols(
 #'     var = "AGE",
 #'     .stats = c("n", "cv", "geom_mean", "mean_ci", "median", "min", "max"),
 #'     .labels = c(
@@ -176,7 +184,7 @@ summary_in_cols <- function(x,
 #' result
 #'
 #' lyt <- basic_table() %>%
-#'   summarize_vars_numeric_in_cols(
+#'   summarize_vars_in_cols(
 #'     var = "AGE",
 #'     col_split = TRUE,
 #'     custom_label = "some custom label"
@@ -187,7 +195,7 @@ summary_in_cols <- function(x,
 #' # PKPT03
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "TLG_DISPLAY", split_label = "PK Parameter", label_pos = "topleft") %>%
-#'   summarize_vars_numeric_in_cols(
+#'   summarize_vars_in_cols(
 #'     var = "AVAL",
 #'     col_split = TRUE,
 #'     .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
@@ -205,7 +213,7 @@ summary_in_cols <- function(x,
 #'   )
 #' result <- build_table(lyt, df = ADPP)
 #' result
-summarize_vars_numeric_in_cols <- function(lyt,
+summarize_vars_in_cols <- function(lyt,
                                            var,
                                            ...,
                                            .stats = c(
