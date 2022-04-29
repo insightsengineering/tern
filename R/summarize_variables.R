@@ -337,7 +337,7 @@ s_summary.factor <- function(x,
 
   y$n <- length(x)
 
-  y$nBLQs <- sum(grepl("BLQ|LTR|<..", x)) # nolint
+  y$nBLQs <- sum(grepl("BLQ|LTR|<", x)) # nolint
 
   y$count <- as.list(table(x, useNA = "ifany"))
   dn <- switch(denom,

@@ -4,6 +4,7 @@
 
 * Enhanced `g_lineplot` with additional table to automatically scale the table height and return a `ggplot` object.
 * Enhanced `prop_diff` `tern` function and related functions to be able to apply a continuity correction in the Newcombe method.
+* Enhanced `summarize_numeric_in_columns` and `summarize_variables` to allow factor/character summary and to be able to summarize the number of BLQs in AVALC from `ADPP` dataset.
 
 ### Miscellaneous
 * Added a template to the `pkgdown` site.
