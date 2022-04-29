@@ -368,7 +368,7 @@ fit_coxreg_univar <- function(variables,
 
 #' Custom tidy method for [survival::coxph()] summary results.
 #'
-#' Tidy the [survival::coxph()] results into a `tibble` to extract model results.
+#' Tidy the [survival::coxph()] results into a `data.frame` to extract model results.
 #'
 #' @inheritParams argument_convention
 #' @method tidy summary.coxph

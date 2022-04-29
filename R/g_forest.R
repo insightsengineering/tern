@@ -307,9 +307,9 @@ forest_grob <- function(tbl,
 
   nr <- nrow(tbl)
   stopifnot(
-    length(x) == nr,
-    length(lower) == nr,
-    length(upper) == nr,
+    is.numeric(x) && length(x) == nr,
+    is.numeric(lower) && length(lower) == nr,
+    is.numeric(upper) && length(upper) == nr,
     is.null(symbol_size) || length(symbol_size) == nr
   )
 
@@ -318,7 +318,8 @@ forest_grob <- function(tbl,
   }
 
   if (is.null(xlim)) {
-    xlim <- grDevices::extendrange(c(x, lower, upper))
+    r <- range(c(x, lower, upper), na.rm = TRUE)
+    xlim <- r + c(-0.05, 0.05) * diff(r)
   }
 
   if (logx) {
