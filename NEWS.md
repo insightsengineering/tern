@@ -3,6 +3,7 @@
 ### Enhancements
 
 * Enhanced `g_lineplot` with additional table to automatically scale the table height and return a `ggplot` object.
+* Enhanced `g_ipp` with additional caption argument.
 * Enhanced `prop_diff` `tern` function and related functions to be able to apply a continuity correction in the Newcombe method.
 
 ### Miscellaneous
