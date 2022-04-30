@@ -15,7 +15,7 @@ prop_diff_wald(rsp, grp, conf_level, correct)
 
 prop_diff_ha(rsp, grp, conf_level)
 
-prop_diff_nc(rsp, grp, conf_level)
+prop_diff_nc(rsp, grp, conf_level, correct = FALSE)
 
 prop_diff_cmh(rsp, grp, strata, conf_level = 0.95)
 
@@ -26,7 +26,7 @@ s_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe")
+  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc")
 )
 
 a_proportion_diff(
@@ -36,7 +36,7 @@ a_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe")
+  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc")
 )
 
 estimate_proportion_diff(

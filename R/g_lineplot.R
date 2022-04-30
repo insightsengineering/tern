@@ -1,8 +1,8 @@
 #' Line plot with the optional table
 #'
 #'
-#' @param df (`data frame` or `tibble`) \cr data set containing all analysis variables.
-#' @param alt_counts_df (`data frame` or `tibble` or `NULL`) \cr
+#' @param df (`data frame`) \cr data set containing all analysis variables.
+#' @param alt_counts_df (`data frame` or `NULL`) \cr
 #'  data set that will be used (only) to counts objects in strata.
 #' @param variables (named `character` vector) of variable names in `df` data set. Details are: \cr
 #' * `x`: x-axis variable.
@@ -70,8 +70,7 @@
 #'
 #' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 #'
-#' @return \code{ggplot} or \code{gtable} object,
-#' depending on whether or not a table is appended to the plot.
+#' @return \code{ggplot}
 #'
 #' @export
 #'

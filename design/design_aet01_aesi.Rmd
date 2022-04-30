@@ -30,7 +30,6 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(dplyr)
 library(tern)
-library(stringr)
 packageVersion("tern")
 packageVersion("rtables")
 ```
@@ -42,7 +41,6 @@ packageVersion("rtables")
 
 library(tern)
 library(dplyr)
-library(stringr)
 
 adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
 adae <- haven::read_sas(data_file = "adae.sas7bdat")
