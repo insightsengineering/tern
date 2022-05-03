@@ -24,6 +24,7 @@ summarize_vars_in_cols(
   .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
   .labels = c(n = "n", mean = "Mean", sd = "SD", se = "SE", cv = "CV (\%)", geom_cv =
     "CV \% Geometric Mean"),
+  .formats = NULL,
   .indent_mods = NULL,
   col_split = TRUE
 )
@@ -46,6 +47,8 @@ empty then this will be used as the row label.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 

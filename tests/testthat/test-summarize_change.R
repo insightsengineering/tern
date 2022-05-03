@@ -34,7 +34,8 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
     cv = c(cv = NA_real_),
     geom_mean = c(geom_mean = NaN),
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
-    geom_cv = c(geom_cv = NA_real_)
+    geom_cv = c(geom_cv = NA_real_),
+    nBLQs = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -76,7 +77,8 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
     cv = c(cv = 100),
     geom_mean = c(geom_mean = NA_real_),
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
-    geom_cv = c(geom_cv = NA_real_)
+    geom_cv = c(geom_cv = NA_real_),
+    nBLQs = 0L
   )
 
   testthat::expect_equal(result, expected, tol = 1e-6)
@@ -124,7 +126,8 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
         c(mean_ci_lwr = 0.01729978, mean_ci_upr = 115.60839614),
         "Geometric Mean 95% CI"
       ),
-      geom_cv = c(geom_cv = 52.10922)
+      geom_cv = c(geom_cv = 52.10922),
+      nBLQs = 0L
     ),
     # Here we take the summary of the 2 baseline values.
     `TRUE` = list(
@@ -153,7 +156,8 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
         c(mean_ci_lwr = 2.992824e-04, mean_ci_upr = 1.336530e+04),
         "Geometric Mean 95% CI"
       ),
-      geom_cv = c(geom_cv = 127.0458)
+      geom_cv = c(geom_cv = 127.0458),
+      nBLQs = 0L
     )
   )
 

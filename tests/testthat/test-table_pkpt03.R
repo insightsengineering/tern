@@ -1,8 +1,8 @@
 # Preparation of the test case.
 library(scda)
 library(dplyr)
-adpc <- synthetic_cdisc_data("rcd_2021_10_13")$adpc
-adpc <- adpc %>% dplyr::filter(AVAL != 0)
+adpp <- synthetic_cdisc_data("rcd_2022_02_28")$adpp
+adpp <- adpp %>% dplyr::filter(AVAL != 0)
 
 testthat::test_that("PKPT03 is produced correctly", {
   l <- basic_table() %>%
@@ -11,22 +11,22 @@ testthat::test_that("PKPT03 is produced correctly", {
       split_fun = keep_split_levels(c("A: Drug X", "C: Combination"))
     ) %>%
     split_rows_by(var = "PARAM") %>%
-    summarize_vars_numeric_in_cols(var = "AVAL", col_split = TRUE)
+    summarize_vars_in_cols(var = "AVAL", col_split = TRUE)
 
-  result <- build_table(l, df = adpc)
+  result <- build_table(l, df = adpp)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "A: Drug X", "Plasma Drug X", "Plasma Drug Y",
-      "C: Combination", "Plasma Drug X", "Plasma Drug Y", "n", "",
-      "1072", "0", "", "1056", "1056", "Mean", "", "8.9", "NA", "",
-      "9.0", "18.0", "SD", "", "6.3", "NA", "", "6.4", "12.7", "SE", "",
-      "0.2", "NA", "", "0.2", "0.4", "CV (%)", "", "70.0", "NA", "",
-      "70.9", "70.9", "CV % Geometric Mean", "", "1687.8", "NA", "",
-      "1971.1", "1972.3"
+      "", "A: Drug X", "AUC Infinity Obs", "Max Conc", "Total CL Obs", "C: Combination",
+      "AUC Infinity Obs", "Max Conc", "Total CL Obs", "n", "", "402", "402", "402",
+      "", "792", "792", "792", "Mean", "", "198.0", "29.5", "5.0", "", "199.6",
+      "30.0", "5.0", "SD", "", "37.9", "6.1", "1.1", "", "40.9", "6.0", "1.0",
+      "SE", "", "1.9", "0.3", "0.1", "", "1.5", "0.2", "0.0", "CV (%)", "",
+      "19.1", "20.5", "21.6", "", "20.5", "19.9", "20.6", "CV % Geometric Mean",
+      "", "20.4", "22.6", "23.4", "", "21.9", "21.8", "22.3"
     ),
-    .Dim = c(7L, 7L)
+    .Dim = c(9L, 7L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })

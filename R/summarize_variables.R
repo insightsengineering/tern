@@ -275,6 +275,7 @@ s_summary.numeric <- function(x, # nolint
   y$geom_mean_ci <- formatters::with_label(geom_mean_ci, paste("Geometric Mean", f_conf_level(control$conf_level)))
 
   y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals), na.rm = FALSE) ^ 2) - 1) * 100) # styler: off
+  y$nBLQs <- 0L
 
   y
 }
@@ -350,7 +351,7 @@ s_summary.factor <- function(x,
     }
   )
 
-  y$nBLQs <- sum(grepl("BLQ|LTR|<", x)) # nolint
+  y$nBLQs <- sum(grepl("BLQ|LTR|<[1-9]", x)) # nolint
 
   y
 }
@@ -441,6 +442,7 @@ s_summary.logical <- function(x,
   )
   y$count <- count
   y$count_fraction <- c(count, ifelse(dn > 0, count / dn, NA))
+  y$nBLQs <- 0L
   y
 }
 

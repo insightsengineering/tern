@@ -7,7 +7,7 @@ testthat::test_that("s_compare works for numeric", {
   testthat::expect_named(result, c(
     "n", "mean", "sd", "se", "mean_sd", "mean_ci", "mean_sei", "mean_sdi",
     "median", "mad", "median_ci", "quantiles", "iqr", "range",
-    "min", "max", "cv", "geom_mean", "geom_mean_ci", "geom_cv", "pval"
+    "min", "max", "cv", "geom_mean", "geom_mean_ci", "geom_cv", "nBLQs", "pval"
   ))
 })
 
@@ -24,7 +24,7 @@ testthat::test_that("s_compare for factor works in usual case", {
   x <- factor(c("a", "a", "b", "c", "a"))
   y <- factor(c("a", "b", "c"))
   result <- testthat::expect_silent(s_compare(x = x, .ref_group = y, .in_ref_col = FALSE))
-  testthat::expect_named(result, c("n", "count", "count_fraction", "pval"))
+  testthat::expect_named(result, c("n", "count", "count_fraction", "nBLQs", "pval"))
   testthat::expect_equal(result$pval, 0.7659, tol = 1e-4)
 })
 
@@ -60,8 +60,8 @@ testthat::test_that("s_compare for character works as expected", {
     n = 5L,
     count = list(a = 3L, b = 1L, c = 1L),
     count_fraction = list(a = c(3, 0.6), b = c(1, 0.2), c = c(1, 0.2)),
-    pval = 0.7659,
-    nBLQs = 0,
+    nBLQs = 0L,
+    pval = 0.7659
   )
   testthat::expect_equal(result, expected, tol = 1e-4)
 })
