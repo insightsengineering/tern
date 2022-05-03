@@ -63,7 +63,8 @@ summary_formats <- function(type = "numeric") {
       min = "xx.x",
       max = "xx.x",
       geom_mean = "xx.x",
-      geom_cv = "xx.x"
+      geom_cv = "xx.x",
+      nBLQs = "xx."
     )
   }
 }
@@ -89,7 +90,8 @@ summary_labels <- function() {
     max = "Maximum",
     geom_mean = "Geometric Mean",
     geom_cv = "CV % Geometric Mean",
-    n = "n"
+    n = "n",
+    nBLQs = "nBLQs"
   )
 }
 
@@ -335,8 +337,6 @@ s_summary.factor <- function(x,
 
   y$n <- length(x)
 
-  y$nBLQs <- sum(grepl("BLQ|LTR|<", x)) # nolint
-
   y$count <- as.list(table(x, useNA = "ifany"))
   dn <- switch(denom,
     n = length(x),
@@ -349,6 +349,8 @@ s_summary.factor <- function(x,
       c(x, ifelse(dn > 0, x / dn, 0))
     }
   )
+
+  y$nBLQs <- sum(grepl("BLQ|LTR|<", x)) # nolint
 
   y
 }

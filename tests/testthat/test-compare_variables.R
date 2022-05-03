@@ -60,7 +60,8 @@ testthat::test_that("s_compare for character works as expected", {
     n = 5L,
     count = list(a = 3L, b = 1L, c = 1L),
     count_fraction = list(a = c(3, 0.6), b = c(1, 0.2), c = c(1, 0.2)),
-    pval = 0.7659
+    pval = 0.7659,
+    nBLQs = 0,
   )
   testthat::expect_equal(result, expected, tol = 1e-4)
 })

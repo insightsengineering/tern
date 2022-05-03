@@ -214,32 +214,33 @@ summary_in_cols <- function(x,
 #' result <- build_table(lyt, df = ADPP)
 #' result
 summarize_vars_in_cols <- function(lyt,
-                                           var,
-                                           ...,
-                                           .stats = c(
-                                             "n",
-                                             "mean",
-                                             "sd",
-                                             "se",
-                                             "cv",
-                                             "geom_cv"
-                                           ),
-                                           .labels = c(
-                                             n = "n",
-                                             mean = "Mean",
-                                             sd = "SD",
-                                             se = "SE",
-                                             cv = "CV (%)",
-                                             geom_cv = "CV % Geometric Mean"
-                                           ),
-                                           .indent_mods = NULL,
-                                           col_split = TRUE) {
+                                   var,
+                                   ...,
+                                   .stats = c(
+                                     "n",
+                                     "mean",
+                                     "sd",
+                                     "se",
+                                     "cv",
+                                     "geom_cv"
+                                   ),
+                                   .labels = c(
+                                     n = "n",
+                                     mean = "Mean",
+                                     sd = "SD",
+                                     se = "SE",
+                                     cv = "CV (%)",
+                                     geom_cv = "CV % Geometric Mean"
+                                   ),
+                                   .formats = NULL,
+                                   .indent_mods = NULL,
+                                   col_split = TRUE) {
   afun_list <- Map(
     function(stat) {
       make_afun(
         summary_in_cols,
         .stats = stat,
-        .formats = summary_formats()[names(summary_formats()) == stat]
+        .formats = ifelse(is.null(.formats), summary_formats()[names(summary_formats()) == stat], .formats)
       )
     },
     stat = .stats
