@@ -18,6 +18,7 @@ h_g_ipp(
   id_var,
   title = "Individual Patient Plots",
   subtitle = "",
+  caption = NULL,
   add_baseline_hline = FALSE,
   yvar_baseline = "BASE",
   ggtheme = h_set_nest_theme(10)
@@ -32,6 +33,7 @@ g_ipp(
   id_var = "USUBJID",
   title = "Individual Patient Plots",
   subtitle = "",
+  caption = NULL,
   add_baseline_hline = FALSE,
   yvar_baseline = "BASE",
   ggtheme = h_set_nest_theme(10),
@@ -57,6 +59,8 @@ g_ipp(
 \item{title}{(\code{string})\cr title for plot.}
 
 \item{subtitle}{(\code{string})\cr subtitle for plot.}
+
+\item{caption}{(\code{character} scalar) \cr optional caption below the plot.}
 
 \item{add_baseline_hline}{(\code{flag})\cr adds horizontal line at baseline y-value on
 plot when TRUE.}
