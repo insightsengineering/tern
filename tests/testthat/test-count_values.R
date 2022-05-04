@@ -7,7 +7,7 @@ testthat::test_that("s_count_values works for character input without NAs", {
     n = 3L,
     count = 2L,
     count_fraction = c(2, 2 / 3),
-    nBLQs = 0L
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 
@@ -17,7 +17,7 @@ testthat::test_that("s_count_values works for character input without NAs", {
     n = 3L,
     count = 0L,
     count_fraction = c(0, 0),
-    nBLQs = 0L
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 })
@@ -31,7 +31,7 @@ testthat::test_that("s_count_values works for character input with NAs", {
     n = 5L,
     count = 2L,
     count_fraction = c(2, 2 / 5),
-    nBLQs = 0L
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 
@@ -41,7 +41,7 @@ testthat::test_that("s_count_values works for character input with NAs", {
     n = 6L,
     count = 1L,
     count_fraction = c(1, 1 / 6),
-    nBLQs = 0L
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 })
@@ -54,7 +54,7 @@ testthat::test_that("s_count_values can pass options to s_summary's logical meth
     n = 3L,
     count = 2L,
     count_fraction = c(2, 2 / 10),
-    nBLQs = 0L
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 })
@@ -119,7 +119,7 @@ testthat::test_that("s_count_values for logical vector", {
     n = 3L,
     count = 2L,
     count_fraction = c(2, 2 / 3),
-    nBLQs = 0L
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 })
@@ -133,7 +133,7 @@ testthat::test_that("s_count_values for logical vector with NA", {
     n = 3L,
     count = 2L,
     count_fraction = c(2, 2 / 3),
-    nBLQs = 0L
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 })

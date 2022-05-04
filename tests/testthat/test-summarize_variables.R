@@ -42,8 +42,7 @@ testthat::test_that("s_summary return NA for x length 0L", {
     cv = c(cv.sd = NA_real_),
     geom_mean = c(geom_mean = NA_real_),
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
-    geom_cv = c(geom_cv = NA_real_),
-    nBLQs = c(nBLQs = 0L)
+    geom_cv = c(geom_cv = NA_real_)
   )
   testthat::expect_equivalent(result, expected)
 })
@@ -73,8 +72,7 @@ testthat::test_that("s_summary handles NA", {
     cv = c(cv.sd = NA_real_),
     geom_mean = c(geom_mean = 1),
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
-    geom_cv = c(geom_cv = NA_real_),
-    nBLQs = c(nBLQs = 0L)
+    geom_cv = c(geom_cv = NA_real_)
   )
   testthat::expect_equivalent(result, expected)
 
@@ -100,8 +98,7 @@ testthat::test_that("s_summary handles NA", {
     cv = c(cv.sd = NA_real_),
     geom_mean = c(geom_mean = NA_real_),
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
-    geom_cv = c(geom_cv = NA_real_),
-    nBLQs = c(nBLQs = 0L)
+    geom_cv = c(geom_cv = NA_real_)
   )
   testthat::expect_equivalent(result, expected)
 })
@@ -132,8 +129,7 @@ testthat::test_that("s_summary returns right results for n = 2", {
       c(mean_ci_lwr = 0.01729978, mean_ci_upr = 115.60839614),
       "Geometric Mean 95% CI"
     ),
-    geom_cv = c(geom_cv = 52.10922),
-    nBLQs = c(nBLQs = 0L)
+    geom_cv = c(geom_cv = 52.10922)
   )
   testthat::expect_equivalent(result, expected, tolerance = .00001)
 })
@@ -161,8 +157,7 @@ testthat::test_that("s_summary returns right results for n = 8", {
     cv = c(cv.sd = 53.45225),
     geom_mean = c(geom_mean = 4.842534),
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = 2.456211, mean_ci_upr = 9.547283), "Geometric Mean 95% CI"),
-    geom_cv = c(geom_cv = 96.61307),
-    nBLQs = c(nBLQs = 0L)
+    geom_cv = c(geom_cv = 96.61307)
   )
   testthat::expect_equivalent(result, expected, tolerance = .00001)
 })
@@ -183,7 +178,7 @@ testthat::test_that("s_summary works with factors", {
       Male = c(3, 3 / 9),
       Unknown = c(4, 4 / 9)
     ),
-    nBLQs = 0L
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -231,7 +226,7 @@ testthat::test_that("s_summary works with factors with NA values handled and cor
       Male = c(3, 3 / 9),
       Unknown = c(4, 4 / 9)
     ),
-    nBLQs = 0L
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -253,7 +248,7 @@ testthat::test_that("s_summary works with length 0 factors that have levels", {
       b = c(0L, 0),
       c = c(0L, 0)
     ),
-    nBLQs = 0L
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -275,7 +270,7 @@ testthat::test_that("s_summary works with factors and different denominator choi
       Male = c(3, 3 / 20),
       Unknown = c(4, 4 / 20)
     ),
-    nBLQs = 0L
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 
@@ -292,7 +287,7 @@ testthat::test_that("s_summary works with factors and different denominator choi
       Male = c(3, 3 / 30),
       Unknown = c(4, 4 / 30)
     ),
-    nBLQs = 0L
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 })
@@ -324,7 +319,7 @@ testthat::test_that("s_summary works with characters by converting to character 
       Unknown = c(4, 4 / 10),
       "<Missing>" = c(1, 1 / 10)
     ),
-    nBLQs = 0L
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -343,7 +338,7 @@ testthat::test_that("s_summary works with logical vectors", {
     n = 6L,
     count = 4L,
     count_fraction = c(4, 4 / 6),
-    nBLQs = 0L
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -357,7 +352,7 @@ testthat::test_that("s_summary works with logical vectors and by default removes
     n = 6L,
     count = 4L,
     count_fraction = c(4, 4 / 6),
-    nBLQs = 0L
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -371,7 +366,7 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
     n = 8L,
     count = 4L,
     count_fraction = c(4, 4 / 8),
-    nBLQs = 0L
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)

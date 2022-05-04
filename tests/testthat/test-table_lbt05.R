@@ -44,12 +44,12 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
       AVALCAT1 = factor(
         dplyr::case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
-            sample(
-              x = avalcat1,
-              size = dplyr::n(),
-              replace = TRUE,
-              prob = c(0.3, 0.6, 0.1)
-            ),
+          sample(
+            x = avalcat1,
+            size = dplyr::n(),
+            replace = TRUE,
+            prob = c(0.3, 0.6, 0.1)
+          ),
           TRUE ~ ""
         ),
         levels = c("", avalcat1)
@@ -142,12 +142,12 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
       AVALCAT1 = factor(
         dplyr::case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
-            sample(
-              x = avalcat1,
-              size = dplyr::n(),
-              replace = TRUE,
-              prob = c(0.3, 0.6, 0.1)
-            ),
+          sample(
+            x = avalcat1,
+            size = dplyr::n(),
+            replace = TRUE,
+            prob = c(0.3, 0.6, 0.1)
+          ),
           TRUE ~ ""
         ),
         levels = c("", avalcat1)
@@ -231,12 +231,12 @@ testthat::test_that("LBT05 variant 4 is produced correctly", {
       AVALCAT1 = factor(
         dplyr::case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
-            sample(
-              x = avalcat1,
-              size = dplyr::n(),
-              replace = TRUE,
-              prob = c(0.3, 0.6, 0.1)
-            ),
+          sample(
+            x = avalcat1,
+            size = dplyr::n(),
+            replace = TRUE,
+            prob = c(0.3, 0.6, 0.1)
+          ),
           TRUE ~ ""
         ),
         levels = c("", avalcat1)

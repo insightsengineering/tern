@@ -20,6 +20,7 @@ summary_in_cols(x, labelstr = "", custom_label = NULL)
 summarize_vars_in_cols(
   lyt,
   var,
+  var_type = "numeric",
   ...,
   .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
   .labels = c(n = "n", mean = "Mean", sd = "SD", se = "SE", cv = "CV (\%)", geom_cv =

@@ -44,12 +44,12 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
       AVALCAT1 = factor(
         dplyr::case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
-            sample(
-              x = avalcat1,
-              size = dplyr::n(),
-              replace = TRUE,
-              prob = c(0.3, 0.6, 0.1)
-            ),
+          sample(
+            x = avalcat1,
+            size = dplyr::n(),
+            replace = TRUE,
+            prob = c(0.3, 0.6, 0.1)
+          ),
           TRUE ~ ""
         ),
         levels = c("", avalcat1)
@@ -105,12 +105,12 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
       AVALCAT1 = factor(
         dplyr::case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
-            sample(
-              x = avalcat1,
-              size = dplyr::n(),
-              replace = TRUE,
-              prob = c(0.3, 0.6, 0.1)
-            ),
+          sample(
+            x = avalcat1,
+            size = dplyr::n(),
+            replace = TRUE,
+            prob = c(0.3, 0.6, 0.1)
+          ),
           TRUE ~ ""
         ),
         levels = c("", avalcat1)
@@ -167,12 +167,12 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
       AVALCAT1 = factor(
         dplyr::case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
-            sample(
-              x = avalcat1,
-              size = dplyr::n(),
-              replace = TRUE,
-              prob = c(0.3, 0.6, 0.1)
-            ),
+          sample(
+            x = avalcat1,
+            size = dplyr::n(),
+            replace = TRUE,
+            prob = c(0.3, 0.6, 0.1)
+          ),
           TRUE ~ ""
         ),
         levels = c("", avalcat1)
@@ -222,12 +222,12 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
       AVALCAT1 = factor(
         dplyr::case_when(
           .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
-            sample(
-              x = avalcat1,
-              size = dplyr::n(),
-              replace = TRUE,
-              prob = c(0.3, 0.6, 0.1)
-            ),
+          sample(
+            x = avalcat1,
+            size = dplyr::n(),
+            replace = TRUE,
+            prob = c(0.3, 0.6, 0.1)
+          ),
           TRUE ~ ""
         ),
         levels = c("", avalcat1)

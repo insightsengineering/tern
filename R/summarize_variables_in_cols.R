@@ -215,6 +215,7 @@ summary_in_cols <- function(x,
 #' result
 summarize_vars_in_cols <- function(lyt,
                                    var,
+                                   var_type = "numeric",
                                    ...,
                                    .stats = c(
                                      "n",
@@ -235,12 +236,18 @@ summarize_vars_in_cols <- function(lyt,
                                    .formats = NULL,
                                    .indent_mods = NULL,
                                    col_split = TRUE) {
+  format_candidates <- .formats
+  if (is.null(.formats)) {
+    var_type <- ifelse(var_type == "numeric", var_type, "counts")
+    format_candidates <- summary_formats(var_type)
+  }
+
   afun_list <- Map(
     function(stat) {
       make_afun(
         summary_in_cols,
         .stats = stat,
-        .formats = ifelse(is.null(.formats), summary_formats()[names(summary_formats()) == stat], .formats)
+        .formats = format_candidates[names(format_candidates) == stat]
       )
     },
     stat = .stats
