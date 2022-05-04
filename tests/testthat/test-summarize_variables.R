@@ -177,7 +177,8 @@ testthat::test_that("s_summary works with factors", {
       Female = c(2, 2 / 9),
       Male = c(3, 3 / 9),
       Unknown = c(4, 4 / 9)
-    )
+    ),
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -224,7 +225,8 @@ testthat::test_that("s_summary works with factors with NA values handled and cor
       Female = c(2, 2 / 9),
       Male = c(3, 3 / 9),
       Unknown = c(4, 4 / 9)
-    )
+    ),
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -245,7 +247,8 @@ testthat::test_that("s_summary works with length 0 factors that have levels", {
       a = c(0L, 0),
       b = c(0L, 0),
       c = c(0L, 0)
-    )
+    ),
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -266,7 +269,8 @@ testthat::test_that("s_summary works with factors and different denominator choi
       Female = c(2, 2 / 20),
       Male = c(3, 3 / 20),
       Unknown = c(4, 4 / 20)
-    )
+    ),
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 
@@ -282,7 +286,8 @@ testthat::test_that("s_summary works with factors and different denominator choi
       Female = c(2, 2 / 30),
       Male = c(3, 3 / 30),
       Unknown = c(4, 4 / 30)
-    )
+    ),
+    n_blq = 0L
   )
   testthat::expect_identical(result, expected)
 })
@@ -313,7 +318,8 @@ testthat::test_that("s_summary works with characters by converting to character 
       Male = c(3, 3 / 10),
       Unknown = c(4, 4 / 10),
       "<Missing>" = c(1, 1 / 10)
-    )
+    ),
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -331,7 +337,8 @@ testthat::test_that("s_summary works with logical vectors", {
   expected <- list(
     n = 6L,
     count = 4L,
-    count_fraction = c(4, 4 / 6)
+    count_fraction = c(4, 4 / 6),
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -344,7 +351,8 @@ testthat::test_that("s_summary works with logical vectors and by default removes
   expected <- list(
     n = 6L,
     count = 4L,
-    count_fraction = c(4, 4 / 6)
+    count_fraction = c(4, 4 / 6),
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
@@ -357,7 +365,8 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
   expected <- list(
     n = 8L,
     count = 4L,
-    count_fraction = c(4, 4 / 8)
+    count_fraction = c(4, 4 / 8),
+    n_blq = 0L
   )
 
   testthat::expect_identical(result, expected)
