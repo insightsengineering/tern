@@ -57,12 +57,6 @@ summary_in_cols.numeric <- function(x,
 #' See [s_summary.factor()] to be aware of all available statistics.
 #'
 #' @export
-#' @examples
-#'
-#' library(scda)
-#' library(dplyr)
-#' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
-#' summary_in_cols(as.factor(ADPC$AVALC), custom_label = "stats")
 summary_in_cols.factor <- function(x,
                                    labelstr = "",
                                    custom_label = NULL,
@@ -93,12 +87,6 @@ summary_in_cols.factor <- function(x,
 #' See [s_summary.character()] to be aware of all available statistics.
 #'
 #' @export
-#' @examples
-#'
-#' library(scda)
-#' library(dplyr)
-#' ADPC <- scda::synthetic_cdisc_data("latest")$adpc
-#' summary_in_cols.character(ADPC$AVALC, custom_label = "stats")
 summary_in_cols.character <- function(x,
                                       labelstr = "",
                                       custom_label = NULL,

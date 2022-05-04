@@ -110,16 +110,6 @@ library(dplyr)
 ADPP <- scda::synthetic_cdisc_data("latest")$adpp \%>\% h_pkparam_sort()
 summary_in_cols(ADPP$AGE, custom_label = "stats")
 
-library(scda)
-library(dplyr)
-ADPC <- scda::synthetic_cdisc_data("latest")$adpc
-summary_in_cols(as.factor(ADPC$AVALC), custom_label = "stats")
-
-library(scda)
-library(dplyr)
-ADPC <- scda::synthetic_cdisc_data("latest")$adpc
-summary_in_cols.character(ADPC$AVALC, custom_label = "stats")
-
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
   split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
