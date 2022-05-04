@@ -108,12 +108,6 @@ summary_in_cols.character <- function(x,
 
 
 #' @inheritParams argument_convention
-#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
-#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
-#' * `quantiles`: numeric vector of length two to specify the quantiles.
-#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   See more about `type` in [stats::quantile()].
 #'
 #' @describeIn summarize_variables_in_columns `summary_in_cols` is a S3 generic
 #' function to produce an object description.
@@ -137,6 +131,7 @@ summary_in_cols <- function(x,
 #'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
+#' @param var_type Variable type, "numeric" by default.
 #'
 #' @seealso [summarize_vars].
 #'

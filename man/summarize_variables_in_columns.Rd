@@ -45,6 +45,8 @@ empty then this will be used as the row label.}
 
 \item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
+\item{var_type}{Variable type, "numeric" by default.}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
@@ -54,15 +56,6 @@ empty then this will be used as the row label.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
 \item{col_split}{(\code{flag})\cr whether the columns should be split.}
-
-\item{control}{a (\code{list}) of parameters for descriptive statistics details, specified by using \cr
-the helper function \code{\link[=control_summarize_vars]{control_summarize_vars()}}. Some possible parameter options are: \cr
-\itemize{
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for mean and median.
-\item \code{quantiles}: numeric vector of length two to specify the quantiles.
-\item \code{quantile_type} (\code{numeric}) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
-}}
 }
 \value{
 A named list of all statistics returned by \code{\link[=s_summary.numeric]{s_summary.numeric()}}.
