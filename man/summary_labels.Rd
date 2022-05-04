@@ -7,5 +7,5 @@
 summary_labels()
 }
 \description{
-Returns labels of descriptive statistics.
+Returns labels of descriptive statistics for numeric variables.
 }
