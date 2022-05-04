@@ -34,7 +34,8 @@ testthat::test_that("PKCT01 is produced correctly", {
       split_fun = keep_split_levels(c("A: Drug X", "C: Combination"))
     ) %>%
     split_rows_by(var = "PARAM") %>%
-    summarize_vars_in_cols(var = "AVALC", var_type = "character", .stats = c("n_blq"), .labels = c(n_blq = "n_blq"), col_split = TRUE)
+    summarize_vars_in_cols(var = "AVALC", var_type = "character", .stats = c("n_blq"),
+                           .labels = c(n_blq = "n_blq"), col_split = TRUE)
 
   adpc <- adpc %>% mutate(AVALC = as.factor(AVALC))
   result <- build_table(l2, df = adpc)
