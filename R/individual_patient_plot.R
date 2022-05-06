@@ -42,7 +42,8 @@ h_set_nest_theme <- function(font_size) {
     legend.box.background = ggplot2::element_rect(colour = "grey", fill = NA, size = 1),
     legend.direction = "horizontal",
     legend.title = ggplot2::element_text(face = "bold"),
-    text = ggplot2::element_text(size = font_size)
+    text = ggplot2::element_text(size = font_size),
+    plot.caption = ggplot2::element_text(hjust = 0)
   )
 }
 
