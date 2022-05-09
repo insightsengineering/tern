@@ -32,7 +32,6 @@ knitr::opts_chunk$set(
 ## Configuration
 
 ```{r setup}
-library(rice)
 library(rtables)
 library(tern)
 library(dplyr)
@@ -58,20 +57,25 @@ h_glm_poisson <- function(.var,
                           variables,
                           weights) {
   arm <- variables$arm
-  covariates <- variables$covariates
-  offset <- .df_row[[variables$offset]]
-
+  
   formula <- as.formula(paste0(
-    .var, " ~ ",
-    " + ",
-    paste(covariates, collapse = " + "),
-    " + ",
-    arm
+    .var, " ~ ", " + ", arm
   ))
+  
+  if (!is.null(variables$covariates)) {
+    covariates <- variables$covariates
+    forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
+    formula <- update(formula, forumla_new)
+  }
+  
+  if(!is.null(variables$offset)) {
+    offset <- variables$offset
+    forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
+    formula <- update(formula, forumla_new)
+  }
 
   glm_fit <- glm(
     formula = formula,
-    offset = offset,
     data = .df_row,
     family = poisson(link = "log")
   )
@@ -98,20 +102,25 @@ h_glm_quasipoisson <- function(.var,
                                variables,
                                weights) {
   arm <- variables$arm
-  covariates <- variables$covariates
-  offset <- .df_row[[variables$offset]]
-
+  
   formula <- as.formula(paste0(
-    .var, " ~ ",
-    " + ",
-    paste(covariates, collapse = " + "),
-    " + ",
-    arm
+    .var, " ~ ", " + ", arm
   ))
+  
+  if (!is.null(variables$covariates)) {
+    covariates <- variables$covariates
+    forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
+    formula <- update(formula, forumla_new)
+  }
+  
+  if(!is.null(variables$offset)) {
+    covariates <- variables$covariates
+    forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
+    formula <- update(formula, forumla_new)
+  }
 
   glm_fit <- glm(
     formula = formula,
-    offset = offset,
     data = .df_row,
     family = quasipoisson(link = "log")
   )
@@ -138,17 +147,22 @@ h_glm_negbin <- function(.var,
                          variables,
                          weights) {
   arm <- variables$arm
-  covariates <- variables$covariates
-  offset <- variables$offset
-
+  
   formula <- as.formula(paste0(
-    .var, " ~ ",
-    "offset(", offset, ")",
-    " + ",
-    paste(covariates, collapse = " + "),
-    " + ",
-    arm
+    .var, " ~ ", " + ", arm
   ))
+  
+  if (!is.null(variables$covariates)) {
+    covariates <- variables$covariates
+    forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
+    formula <- update(formula, forumla_new)
+  }
+  
+  if(!is.null(variables$offset)) {
+    covariates <- variables$covariates
+    forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
+    formula <- update(formula, forumla_new)
+  }
 
   glm_fit <- MASS::glm.nb(
     formula = formula,
@@ -375,47 +389,52 @@ summarize_glm_count <- function(lyt,
 ### Example
 
 ```{r}
-#| include: false
-rice_session_open(username = "butcherb", password = Sys.getenv("ENTIMICE_PASSWORD"))
-
-path_st2 <- "root/clinical_studies/RO7187807/CDT70155/GB39242/data_analysis/CSR/prod/outdata_vad/"
-
-asl_st2 <- rice_read(paste0(path_st2, "asl.sas7bdat"), prolong = TRUE)
-aef_st2 <- rice_read(paste0(path_st2, "aef.sas7bdat"), prolong = TRUE)
-
-rice_session_close()
-
-anl_st2 <- aef_st2 %>%
-  filter(MITTFL == "Y") %>%
-  filter(PARAMCD == "TNPMEXAB") %>%
-  left_join(
-    asl_st2 %>%
-      select(USUBJID, TRT02P, TMATRSK, BEOSST, REGIONST, ICSDOSST, ASMEXGST),
-    by = "USUBJID"
-  ) %>%
-  select(USUBJID, TRT02P, AVAL, TMATRSK, BEOSST, REGIONST, ICSDOSST, ASMEXGST) %>%
-  mutate(
-    TRT02P = str_remove(TRT02P, " MSTT1041A"),
-    TRT02P = factor(TRT02P, levels = c("PLACEBO", "70 mg", "210 mg", "490 mg")),
-    lnTMATRSK = log(TMATRSK),
-    AVALF = factor(AVAL)
-  )
+# rice_session_open(username = "butcherb", password = Sys.getenv("ENTIMICE_PASSWORD"))
+# 
+# path_st2 <- "root/clinical_studies/RO7187807/CDT70155/GB39242/data_analysis/CSR/prod/outdata_vad/"
+# 
+# asl_st2 <- rice_read(paste0(path_st2, "asl.sas7bdat"), prolong = TRUE)
+# aef_st2 <- rice_read(paste0(path_st2, "aef.sas7bdat"), prolong = TRUE)
+# 
+# rice_session_close()
+# 
+# anl_st2 <- aef_st2 %>%
+#   filter(MITTFL == "Y") %>%
+#   filter(PARAMCD == "TNPMEXAB") %>%
+#   left_join(
+#     asl_st2 %>%
+#       select(USUBJID, TRT02P, TMATRSK, BEOSST, REGIONST, ICSDOSST, ASMEXGST),
+#     by = "USUBJID"
+#   ) %>%
+#   select(USUBJID, TRT02P, AVAL, TMATRSK, BEOSST, REGIONST, ICSDOSST, ASMEXGST) %>%
+#   mutate(
+#     TRT02P = str_remove(TRT02P, " MSTT1041A"),
+#     TRT02P = factor(TRT02P, levels = c("PLACEBO", "70 mg", "210 mg", "490 mg")),
+#     lnTMATRSK = log(TMATRSK),
+#     AVALF = factor(AVAL)
+#   )
 ```
 
 ```{r}
-covars_st2 <- c("BEOSST", "REGIONST", "ICSDOSST", "ASMEXGST")
+load("~/NEST/tern/design/design_ratet01_azpro.RData")
+covars <- c("sex", "age75", "admit", "hospital")
+anl <- azpro %>% 
+  mutate(
+    los_f = factor(los),
+    procedure = factor(procedure, levels = c(0, 1), labels = c("PTCA", "CAGB"))
+  )
 
-lyt_st2 <- basic_table() %>%
-  split_cols_by("TRT02P", ref_group = "PLACEBO") %>%
+lyt <- basic_table() %>%
+  split_cols_by("procedure", ref_group = "PTCA") %>%
   add_colcounts() %>% 
   summarize_vars(
-    "AVALF", 
-    var_labels = "Number of exacerbations per patient",
+    "los_f",
+    var_labels = "Number of days in hospital",
     .stats = c("count_fraction")
-  ) %>% 
+  ) %>%
   summarize_glm_count(
-    vars = "AVAL",
-    variables = list(arm = "TRT02P", offset = "lnTMATRSK", covariates = NULL),
+    vars = "los",
+    variables = list(arm = "procedure", offset = NULL, covariates = NULL),
     conf_level = 0.95,
     distribution = "poisson",
     rate_mean_method = "emmeans",
@@ -423,21 +442,22 @@ lyt_st2 <- basic_table() %>%
     table_names = "unadj",
     .stats = "rate",
     .labels = c(rate = "Rate")
-  ) %>% 
-  summarize_glm_count(
-    vars = "AVAL",
-    variables = list(arm = "TRT02P", offset = "lnTMATRSK", covariates = covars_st2),
-    conf_level = 0.95,
-    distribution = "quasipoisson",
-    rate_mean_method = "ppmeans",
-    var_labels = "Adjusted (QP) exacerbation rate (per year)",
-    table_names = "adj",
-    .stats = c("rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"),
-    .labels = c(rate = "Rate", rate_ratio = "Rate Ratio"),
-    .indent_mods = c(0L, 1L, 0L, 1L, 1L)
-  )
+  ) 
+  # %>% 
+  # summarize_glm_count(
+  #   vars = "AVAL",
+  #   variables = list(arm = "TRT02P", offset = "lnTMATRSK", covariates = covars_st2),
+  #   conf_level = 0.95,
+  #   distribution = "quasipoisson",
+  #   rate_mean_method = "ppmeans",
+  #   var_labels = "Adjusted (QP) exacerbation rate (per year)",
+  #   table_names = "adj",
+  #   .stats = c("rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"),
+  #   .labels = c(rate = "Rate", rate_ratio = "Rate Ratio"),
+  #   .indent_mods = c(0L, 1L, 0L, 1L, 1L)
+  # )
 
-build_table(lyt = lyt_st2, df = anl_st2)
+build_table(lyt = lyt, df = anl)
 ```
 
 -   Matches SAS out to 4 decimals
