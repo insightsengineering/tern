@@ -177,6 +177,7 @@ If \code{x} is of class \code{numeric}, returns a list with named items: \cr
 \itemize{
 \item \code{n}: the \code{\link[=length]{length()}} of \code{x}.
 \item \code{mean}: the \code{\link[=mean]{mean()}} of \code{x}.
+\item \code{sum}: the \code{\link[=sum]{sum()}} of \code{x}.
 \item \code{sd}: the \code{\link[stats:sd]{stats::sd()}} of \code{x}.
 \item \code{se}: the standard error of \code{x} mean, i.e.: (\verb{sd()/sqrt(length())]}).
 \item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[stats:sd]{stats::sd()}} of \code{x}.

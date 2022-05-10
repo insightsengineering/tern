@@ -46,6 +46,7 @@ summary_formats <- function(type = "numeric") {
   } else {
     c(
       n = "xx.",
+      sum = "xx.x",
       mean = "xx.x",
       sd = "xx.x",
       se = "xx.x",
@@ -77,6 +78,7 @@ summary_formats <- function(type = "numeric") {
 summary_labels <- function() {
   c(
     mean = "Mean",
+    sum = "Sum",
     sd = "SD",
     se = "SE",
     mean_sd = "Mean (SD)",
@@ -143,6 +145,7 @@ s_summary <- function(x,
 #' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.
 #' - `mean`: the [mean()] of `x`.
+#' - `sum`: the [sum()] of `x`.
 #' - `sd`: the [stats::sd()] of `x`.
 #' - `se`: the standard error of `x` mean, i.e.: (`sd()/sqrt(length())]`).
 #' - `mean_sd`: the [mean()] and [stats::sd()] of `x`.
@@ -217,6 +220,8 @@ s_summary.numeric <- function(x, # nolint
   y <- list()
 
   y$n <- c("n" = length(x))
+
+  y$sum <- c("sum" = ifelse(length(x) == 0, NA_real_, sum(x, na.rm = FALSE)))
 
   y$mean <- c("mean" = ifelse(length(x) == 0, NA_real_, mean(x, na.rm = FALSE)))
 
