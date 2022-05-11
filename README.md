@@ -48,3 +48,7 @@ See package vignettes `browseVignettes(package = "tern")` for usage of this pack
 ## Acknowledgments
 
 There are a number of people who have previously been actively working on `tern` including: Maximilian Mordig, Jennifer Li, Chendi Liao, Yuyao Song, Edgar Manukyan, Carolyn Zhang, Mark Rothe, Xiao Yu Mo.
+
+## Acknowledgment
+
+This package is a result of a joint efforts by many developers and stakeholders. We would like to thank everyone who contributed so far!
