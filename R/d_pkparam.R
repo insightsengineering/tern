@@ -107,7 +107,6 @@ d_pkparam <- function() {
     "R2SLP2", "R Squared, Slope, 2nd Segment", "Rsq slope2", "Matrix of PD", "99",
     "CORRXYS1", "Corr Btw TimeX and Log ConcY, Slope 1st", "Corr xy slope1", "Plasma/Blood/Serum", "100",
     "CORRXYS2", "Corr Btw TimeX and Log ConcY, Slope 1st Slope 2nd", "Corr xy slope2", "Plasma/Blood/Serum", "101",
-
     "AILAMZ", "Accumulation Index using Lambda z", "AILAMZ", "Plasma/Blood/Serum", "102",
     "ARAUC", "Accumulation Ratio AUCTAU", "ARAUC", "Plasma/Blood/Serum", "103",
     "ARAUCD", "Accum Ratio AUCTAU norm by dose", "ARAUCD", "Plasma/Blood/Serum", "104",
