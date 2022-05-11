@@ -133,6 +133,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
     `TRUE` = list(
       n = c(n = 2L),
       mean = c(mean = 2.5),
+      sum = c(sum = 5),
       sd = c(sd = 2.12132),
       se = c(se = 1.5),
       mean_sd = c(mean = 2.5, sd = 2.12132),

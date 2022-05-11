@@ -24,7 +24,7 @@ testthat::test_that("s_summary return NA for x length 0L", {
   result <- s_summary(x)
   expected <- list(
     n = c(n = 0),
-    sum = c(sum=NA_real_),
+    sum = c(sum = NA_real_),
     mean = c(mean = NA_real_),
     sd = c(sd = NA_real_),
     se = c(se = NA_real_),
@@ -55,7 +55,7 @@ testthat::test_that("s_summary handles NA", {
   result <- s_summary(x)
   expected <- list(
     n = 1,
-    sum  = c(sum=NA_real_),
+    sum = c(sum = 1),
     mean = c(mean = 1),
     sd = c(sd = NA_real_),
     se = c(se = NA_real_),
