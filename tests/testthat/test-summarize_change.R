@@ -13,6 +13,7 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
   )
   expected <- list(
     n = c(n = 0L),
+    sum = c(sum = NA_real_),
     mean = c(mean = NA_real_),
     sd = c(sd = NA_real_),
     se = c(se = NA_real_),
@@ -55,6 +56,7 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
   )
   expected <- list(
     n = c(n = 3L),
+    sum = c(sum = 9),
     mean = c(mean = 3),
     sd = c(sd = 3),
     se = c(se = 1.732051),
@@ -100,6 +102,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
     # Here we take the summary of the 2 change values.
     `FALSE` = list(
       n = c(n = 2L),
+      sum = c(sum = 3),
       mean = c(mean = 1.5),
       sd = c(sd = 0.7071068),
       se = c(se = 0.5),

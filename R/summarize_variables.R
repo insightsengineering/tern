@@ -144,8 +144,8 @@ s_summary <- function(x,
 #'
 #' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.
-#' - `mean`: the [mean()] of `x`.
 #' - `sum`: the [sum()] of `x`.
+#' - `mean`: the [mean()] of `x`.
 #' - `sd`: the [stats::sd()] of `x`.
 #' - `se`: the standard error of `x` mean, i.e.: (`sd()/sqrt(length())]`).
 #' - `mean_sd`: the [mean()] and [stats::sd()] of `x`.
