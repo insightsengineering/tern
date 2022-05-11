@@ -203,21 +203,25 @@ h_glm_count <- function(.var,
 
 ```{r}
 h_ppmeans <- function(obj, .df_row, arm, conf_level) {
+  
   alpha <- 1 - conf_level
   p <- 1 - alpha / 2
 
   arm_levels <- levels(.df_row[[arm]])
 
   out <- lapply(arm_levels, function(lev) {
+    lev <- arm_levels[[1]]
+    
     temp <- .df_row
     temp[[arm]] <- factor(lev, levels = arm_levels)
 
     mf <- model.frame(obj$formula, data = temp)
     X <- model.matrix(obj$formula, data = mf)
 
-    rate <- predict(obj, newdata = mf, type = "response")
+    rate <- predict(obj, newdata = temp, type = "response")
     rate_hat <- mean(rate)
 
+    ## Delta Method for log link function
     zz <- colMeans(rate * X)
     se <- sqrt(as.numeric(t(zz) %*% vcov(obj) %*% zz))
     rate_lwr <- rate_hat * exp(-qnorm(p) * se / rate_hat)
@@ -385,65 +389,35 @@ summarize_glm_count <- function(lyt,
 
 ### Example
 
+Get example cancer dataset from Alan Agresti's website: https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat
+
 ```{r}
-rice_session_open(username = "butcherb", password = Sys.getenv("ENTIMICE_PASSWORD"))
+cancer <- read.table("https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat", header = TRUE)
 
-path_st2 <- "root/clinical_studies/RO7187807/CDT70155/GB39242/data_analysis/CSR/prod/outdata_vad/"
-
-asl_st2 <- rice_read(paste0(path_st2, "asl.sas7bdat"), prolong = TRUE)
-aef_st2 <- rice_read(paste0(path_st2, "aef.sas7bdat"), prolong = TRUE)
-
-rice_session_close()
-
-anl_st2 <- aef_st2 %>%
-  filter(MITTFL == "Y") %>%
-  filter(PARAMCD == "TNPMEXAB") %>%
-  left_join(
-    asl_st2 %>%
-      select(USUBJID, TRT02P, TMATRSK, BEOSST, REGIONST, ICSDOSST, ASMEXGST),
-    by = "USUBJID"
-  ) %>%
-  select(USUBJID, TRT02P, AVAL, TMATRSK, BEOSST, REGIONST, ICSDOSST, ASMEXGST) %>%
+set.seed(12345)
+anl <- cancer %>% 
   mutate(
-    TRT02P = str_remove(TRT02P, " MSTT1041A"),
-    TRT02P = factor(TRT02P, levels = c("PLACEBO", "70 mg", "210 mg", "490 mg")),
-    lnTMATRSK = log(TMATRSK),
-    AVALF = factor(AVAL)
+    arm = sample(c("A", "B"), size = nrow(.), replace = TRUE),
+    arm = factor(arm),
+    ln_time_at_risk = log(risktime),
+    count_f = factor(count, levels = sort(unique(count)))
   )
-```
 
-```{r}
-anl_st2 <- aef_st2 %>%
-  filter(MITTFL == "Y") %>%
-  filter(PARAMCD == "TNPMEXAB") %>%
-  left_join(
-    asl_st2 %>%
-      select(USUBJID, TRT02P, TMATRSK, BEOSST, REGIONST, ICSDOSST, ASMEXGST),
-    by = "USUBJID"
-  ) %>%
-  select(USUBJID, TRT02P, AVAL, TMATRSK, BEOSST, REGIONST, ICSDOSST, ASMEXGST) %>%
-  mutate(
-    TRT02P = str_remove(TRT02P, " MSTT1041A"),
-    TRT02P = factor(TRT02P, levels = c("PLACEBO", "70 mg", "210 mg", "490 mg")),
-    lnTMATRSK = log(TMATRSK),
-    AVALF = factor(AVAL)
-  )
-```
+covars <- c("histology", "stage", "time")
+offset <- "ln_time_at_risk"
+arm <- "arm"
 
-```{r}
-covars_st2 <- c("BEOSST", "REGIONST", "ICSDOSST", "ASMEXGST")
-
-lyt_st2 <- basic_table() %>%
-  split_cols_by("TRT02P", ref_group = "PLACEBO") %>%
+lyt <- basic_table() %>%
+  split_cols_by(arm, ref_group = "B") %>%
   add_colcounts() %>%
   summarize_vars(
-    "AVALF",
+    "count_f",
     var_labels = "Number of exacerbations per patient",
     .stats = c("count_fraction")
   ) %>%
   summarize_glm_count(
-    vars = "AVAL",
-    variables = list(arm = "TRT02P", offset = "lnTMATRSK", covariates = NULL),
+    vars = "count",
+    variables = list(arm = arm, offset = offset, covariates = NULL),
     conf_level = 0.95,
     distribution = "poisson",
     rate_mean_method = "emmeans",
@@ -453,8 +427,8 @@ lyt_st2 <- basic_table() %>%
     .labels = c(rate = "Rate")
   ) %>%
   summarize_glm_count(
-    vars = "AVAL",
-    variables = list(arm = "TRT02P", offset = "lnTMATRSK", covariates = covars_st2),
+    vars = "count",
+    variables = list(arm = arm, offset = "ln_time_at_risk", covariates = covars),
     conf_level = 0.95,
     distribution = "quasipoisson",
     rate_mean_method = "ppmeans",
@@ -467,8 +441,6 @@ lyt_st2 <- basic_table() %>%
 
 build_table(lyt = lyt, df = anl)
 ```
-
--   Matches SAS out to 4 decimals
 
 ### To-Do
 
