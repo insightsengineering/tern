@@ -40,7 +40,8 @@ summary_formats <- function(type = "numeric") {
     c(
       n = "xx.",
       count = "xx.",
-      count_fraction = format_count_fraction
+      count_fraction = format_count_fraction,
+      n_blq = "xx."
     )
   } else {
     c(
@@ -69,7 +70,7 @@ summary_formats <- function(type = "numeric") {
 
 #' Label Function for Descriptive Statistics
 #'
-#' Returns labels of descriptive statistics.
+#' Returns labels of descriptive statistics for numeric variables.
 #'
 #' @export
 #'
@@ -347,6 +348,8 @@ s_summary.factor <- function(x,
     }
   )
 
+  y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]", x)) # nolint
+
   y
 }
 
@@ -436,6 +439,7 @@ s_summary.logical <- function(x,
   )
   y$count <- count
   y$count_fraction <- c(count, ifelse(dn > 0, count / dn, NA))
+  y$n_blq <- 0L
   y
 }
 

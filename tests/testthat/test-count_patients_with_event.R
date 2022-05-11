@@ -13,7 +13,7 @@ testthat::test_that("s_count_patients_with_event handles NA", {
     filters = c("TRTEMFL" = "Y")
   )
 
-  expected <- list(n = 2L, count = 1L, count_fraction = c(1.0, 0.5))
+  expected <- list(n = 2L, count = 1L, count_fraction = c(1.0, 0.5), n_blq = 0L)
   testthat::expect_identical(result, expected)
 })
 
@@ -31,7 +31,7 @@ testthat::test_that("s_count_patients_with_event handles multiple columns", {
     filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
   )
 
-  expected <- list(n = 3L, count = 1L, count_fraction = c(1.0, 0.3333333))
+  expected <- list(n = 3L, count = 1L, count_fraction = c(1.0, 0.3333333), n_blq = 0L)
 
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -307,6 +307,6 @@ testthat::test_that("s_count_patients_with_event works with factor filters", {
     .var = "SUBJID",
     filters = c("AEOUT" = "FATAL")
   )
-  expected <- list(n = 3, count = 1, count_fraction = c(1.0000000, 0.3333333))
+  expected <- list(n = 3, count = 1, count_fraction = c(1.0000000, 0.3333333), n_blq = 0L)
   testthat::expect_equal(result, expected, tolerance = 1e-7)
 })

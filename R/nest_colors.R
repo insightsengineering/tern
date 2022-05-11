@@ -56,7 +56,18 @@ color_palette <- function(n = 10, palette = "nest") {
   set.seed(124)
   colors <- if (palette == "viridis") {
     rep(c(
-      scales::col_bin(viridisLite::plasma(49), 1:49)(sample(1:49, 49)),
+      scales::col_bin(
+        c(
+          "#0D0887FF", "#1C068DFF", "#270592FF", "#310597FF", "#3B049AFF", "#44039EFF", "#4C02A1FF",
+          "#5502A4FF", "#5D01A6FF", "#6600A7FF", "#6E00A8FF", "#7601A8FF", "#7E03A8FF", "#8606A6FF",
+          "#8E0BA5FF", "#9511A1FF", "#9C179EFF", "#A21D9AFF", "#A92395FF", "#B02991FF", "#B52F8CFF",
+          "#BC3488FF", "#C13B82FF", "#C6417DFF", "#CC4678FF", "#D04D73FF", "#D5536FFF", "#DA596AFF",
+          "#DE5F65FF", "#E26561FF", "#E56B5DFF", "#E97257FF", "#ED7953FF", "#F07F4FFF", "#F3864AFF",
+          "#F68D45FF", "#F89441FF", "#FA9B3CFF", "#FCA338FF", "#FDAB33FF", "#FDB32FFF", "#FEBB2BFF",
+          "#FDC328FF", "#FDCC26FF", "#FBD424FF", "#F9DD25FF", "#F6E726FF", "#F3EF27FF", "#F0F921FF"
+        ),
+        1:49
+      )(sample(1:49, 49)),
       ceiling(n / 49)
     ))
   } else if (palette == "stream") {

@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.7.9003
+Version: 0.7.7.9005
 Date: 2022-04-07
 Authors@R: c(
     person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre")),
@@ -38,7 +38,6 @@ Imports:
     forcats,
     formatters,
     ggplot2,
-    grDevices,
     grid,
     gridExtra,
     gtable,
@@ -49,12 +48,10 @@ Imports:
     rlang,
     scales,
     stats,
-    stringr,
     survival (>= 3.1-11),
     tibble,
     tidyr,
-    utils,
-    viridisLite
+    utils
 Suggests:
     knitr,
     lattice,
@@ -142,7 +139,7 @@ Collate:
     'summarize_colvars.R'
     'summarize_num_patients.R'
     'summarize_patients_exposure_in_cols.R'
-    'summarize_variables_numeric_in_cols.R'
+    'summarize_variables_in_cols.R'
     'survival_biomarkers_subgroups.R'
     'survival_coxph_pairwise.R'
     'survival_duration_subgroups.R'
