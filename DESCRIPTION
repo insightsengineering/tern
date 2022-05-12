@@ -7,7 +7,7 @@ Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
     person("Jana", "Stoilova", , "jana.stoilova@roche.com", role = "aut"),
     person("Heng", "Wang", , "wang.heng@gene.com", role = "aut"),
-    person("Francois", "Collin", , "francois.collin@contractors.roche.com", role = "aut"),
+    person("Francois", "Collin", role = "aut"),
     person("Adrian", "Waddell", , "adrian.waddell@roche.com", role = "aut"),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
     person("Chendi", "Liao", , "chendi.liao@roche.com", role = "aut"),

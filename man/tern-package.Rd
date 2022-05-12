@@ -24,7 +24,7 @@ Authors:
   \item Daniel Sabanés Bové \email{daniel.sabanes_bove@roche.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
   \item Heng Wang \email{wang.heng@gene.com}
-  \item Francois Collin \email{francois.collin@contractors.roche.com}
+  \item Francois Collin
   \item Adrian Waddell \email{adrian.waddell@roche.com}
   \item Pawel Rucki \email{pawel.rucki@roche.com}
   \item Chendi Liao \email{chendi.liao@roche.com}
