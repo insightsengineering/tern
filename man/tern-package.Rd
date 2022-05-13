@@ -25,7 +25,7 @@ Authors:
   \item Jana Stoilova \email{jana.stoilova@roche.com}
   \item Heng Wang \email{wang.heng@gene.com}
   \item Francois Collin
-  \item Adrian Waddell \email{adrian.waddell@roche.com}
+  \item Adrian Waddell \email{adrian.waddell@gene.com}
   \item Pawel Rucki \email{pawel.rucki@roche.com}
   \item Chendi Liao \email{chendi.liao@roche.com}
   \item Jennifer Li \email{li.jing@gene.com}
