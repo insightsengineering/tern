@@ -57,18 +57,18 @@ h_glm_poisson <- function(.var,
                           variables,
                           weights) {
   arm <- variables$arm
-  
+
   formula <- as.formula(paste0(
     .var, " ~ ", " + ", arm
   ))
-  
+
   if (!is.null(variables$covariates)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
     formula <- update(formula, forumla_new)
   }
-  
-  if(!is.null(variables$offset)) {
+
+  if (!is.null(variables$offset)) {
     offset <- variables$offset
     forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
     formula <- update(formula, forumla_new)
@@ -102,18 +102,18 @@ h_glm_quasipoisson <- function(.var,
                                variables,
                                weights) {
   arm <- variables$arm
-  
+
   formula <- as.formula(paste0(
     .var, " ~ ", " + ", arm
   ))
-  
+
   if (!is.null(variables$covariates)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
     formula <- update(formula, forumla_new)
   }
-  
-  if(!is.null(variables$offset)) {
+
+  if (!is.null(variables$offset)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
     formula <- update(formula, forumla_new)
@@ -147,24 +147,24 @@ h_glm_negbin <- function(.var,
                          variables,
                          weights) {
   arm <- variables$arm
-  
+
   formula <- as.formula(paste0(
     .var, " ~ ", " + ", arm
   ))
-  
+
   if (!is.null(variables$covariates)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
     formula <- update(formula, forumla_new)
   }
-  
-  if(!is.null(variables$offset)) {
+
+  if (!is.null(variables$offset)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
     formula <- update(formula, forumla_new)
   }
 
-    glm_fit <- MASS::glm.nb(
+  glm_fit <- MASS::glm.nb(
     formula = formula,
     data = .df_row,
     link = "log"
@@ -192,8 +192,7 @@ h_glm_count <- function(.var,
                         variables,
                         distribution,
                         weights) {
-  switch(
-    distribution,
+  switch(distribution,
     poisson = h_glm_poisson(.var, .df_row, variables, weights),
     quasipoisson = h_glm_quasipoisson(.var, .df_row, variables, weights),
     negbin = h_glm_negbin(.var, .df_row, variables, weights)
@@ -203,7 +202,6 @@ h_glm_count <- function(.var,
 
 ```{r}
 h_ppmeans <- function(obj, .df_row, arm, conf_level) {
-  
   alpha <- 1 - conf_level
   p <- 1 - alpha / 2
 
@@ -211,7 +209,7 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 
   out <- lapply(arm_levels, function(lev) {
     lev <- arm_levels[[1]]
-    
+
     temp <- .df_row
     temp[[arm]] <- factor(lev, levels = arm_levels)
 
@@ -389,13 +387,13 @@ summarize_glm_count <- function(lyt,
 
 ### Example
 
-Get example cancer dataset from Alan Agresti's website: https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat
+Get example cancer dataset from Alan Agresti's website: <https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat>
 
 ```{r}
 cancer <- read.table("https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat", header = TRUE)
 
 set.seed(12345)
-anl <- cancer %>% 
+anl <- cancer %>%
   mutate(
     arm = sample(c("A", "B"), size = nrow(.), replace = TRUE),
     arm = factor(arm),
@@ -462,9 +460,7 @@ build_table(lyt = lyt, df = anl)
 
 ### Re-factor?
 
--   Perhaps it would be better to re-factor the code so that model fitting
-is done separately from the table generation, similar to how Cox regression,
-logistic regression, and MMRM currently work.
+-   Perhaps it would be better to re-factor the code so that model fitting is done separately from the table generation, similar to how Cox regression, logistic regression, and MMRM currently work.
 
 ```{r, eval = FALSE}
 fit_glm_count <- function(data,
