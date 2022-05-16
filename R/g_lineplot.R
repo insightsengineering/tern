@@ -216,6 +216,8 @@ g_lineplot <- function(df, # nolint
       .groups = "drop"
     )
 
+  df_stats <- df_stats %>% dplyr::filter(!is.na(mean))
+
   # add number of objects N in strata
   if (!is.null(strata) && !is.null(alt_counts_df)) {
     strata_N <- paste0(strata, "_N") # nolint
