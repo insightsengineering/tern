@@ -18,9 +18,9 @@ testthat::test_that("PKPT03 is produced correctly", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "A: Drug X", "AUC Infinity Obs", "Max Conc", "Renal CL", "Renal CL Norm by Dose",
+      "", "A: Drug X", "AUC Infinity Obs", "Max Conc", "Renal CL", "Renal CL Dose Norm",
       "Time of Maximum Response", "Time to Onset", "Total CL Obs", "C: Combination",
-      "AUC Infinity Obs", "Max Conc", "Renal CL", "Renal CL Norm by Dose",
+      "AUC Infinity Obs", "Max Conc", "Renal CL", "Renal CL Dose Norm",
       "Time of Maximum Response", "Time to Onset", "Total CL Obs", "n", "", "402",
       "402", "402", "402", "402", "402", "402", "", "792", "792", "792", "792",
       "792", "792", "792", "Mean", "", "199.2", "30.2", "0.1", "0.0", "9.9", "3.0",
