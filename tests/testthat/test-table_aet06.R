@@ -4,8 +4,8 @@
 
 library(scda)
 library(magrittr)
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+adsl <- synthetic_cdisc_data("latest")$adsl
+adae <- synthetic_cdisc_data("latest")$adae
 
 
 testthat::test_that("AET06 variant 1 is produced correctly", {
@@ -89,6 +89,147 @@ testthat::test_that("AET06 variant 1 is produced correctly", {
     ),
     .Dim = c(36L, 7L)
   )
+
+  testthat::expect_identical(result_matrix, expected_matrix)
+})
+
+testthat::test_that("AET06 variant 3 is produced correctly", {
+  lyt <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_cols_by("SEX") %>%
+    add_colcounts() %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .stats = c("unique", "nonunique"),
+      .labels = c(
+        unique = "Total number of patients with at least one adverse event",
+        nonunique = "Overall total number of events"
+      )
+    ) %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels,
+      label_pos = "topleft",
+      split_label = obj_label(adae$AEBODSYS)
+    ) %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .stats = c("unique", "nonunique"),
+      .labels = c(
+        unique = "Total number of patients with at least one adverse event",
+        nonunique = "Total number of events"
+      )
+    ) %>%
+    split_rows_by(
+      "AEHLT",
+      child_labels = "visible",
+      indent_mod = -1L,
+      split_fun = drop_split_levels,
+      label_pos = "topleft",
+      split_label = obj_label(adae$AEHLT)
+    ) %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .stats = c("unique", "nonunique"),
+      .labels = c(
+        unique = "Total number of patients with at least one adverse event",
+        nonunique = "Total number of events"
+      )
+    ) %>%
+    count_occurrences("AEDECOD", .indent_mods = -1L) %>%
+    append_varlabels(adae, "AEDECOD", indent = 2L)
+
+  result <- build_table(
+    lyt = lyt,
+    df = adae,
+    alt_counts_df = adsl
+  ) %>%
+    prune_table() %>%
+    # Sorted by decreasing frequency across all groups by System Organ Class, High-Level Term and Preferred Term.
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = cont_n_allcols
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEHLT"),
+      scorefun = cont_n_allcols
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"),
+      scorefun = score_occurrences
+    )
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- c(
+    "Body System or Organ Class", "A: Drug X", "A: Drug X", "B: Placebo", "B: Placebo", "C: Combination", "C: Combination", # nolint
+    "  High Level Term", "F", "M", "F", "M", "F", "M",
+    "    Dictionary-Derived Term", "(N=79)", "(N=55)", "(N=82)", "(N=52)", "(N=70)", "(N=62)",
+    "Total number of patients with at least one adverse event", "72 (91.1%)", "50 (90.9%)", "77 (93.9%)", "46 (88.5%)", "65 (92.9%)", "55 (88.7%)", # nolint
+    "Overall total number of events", "377", "232", "419", "203", "378", "325",
+    "cl A.1", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "53 (67.1%)", "25 (45.5%)", "51 (62.2%)", "24 (46.2%)", "43 (61.4%)", "46 (74.2%)", # nolint
+    "Total number of events", "85", "47", "93", "37", "86", "74",
+    "hlt A.1.1.1", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "53 (67.1%)", "25 (45.5%)", "51 (62.2%)", "24 (46.2%)", "43 (61.4%)", "46 (74.2%)", # nolint
+    "Total number of events", "85", "47", "93", "37", "86", "74",
+    "dcd A.1.1.1.1", "34 (43%)", "16 (29.1%)", "31 (37.8%)", "14 (26.9%)", "33 (47.1%)", "30 (48.4%)",
+    "dcd A.1.1.1.2", "32 (40.5%)", "16 (29.1%)", "33 (40.2%)", "15 (28.8%)", "24 (34.3%)", "26 (41.9%)",
+    "cl B.2", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "46 (58.2%)", "33 (60%)", "45 (54.9%)", "29 (55.8%)", "44 (62.9%)", "41 (66.1%)", # nolint
+    "Total number of events", "81", "48", "86", "52", "64", "79",
+    "hlt B.2.2.3", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "30 (38%)", "18 (32.7%)", "32 (39%)", "22 (42.3%)", "26 (37.1%)", "25 (40.3%)", # nolint
+    "Total number of events", "40", "24", "43", "33", "37", "40",
+    "dcd B.2.2.3.1", "30 (38%)", "18 (32.7%)", "32 (39%)", "22 (42.3%)", "26 (37.1%)", "25 (40.3%)",
+    "hlt B.2.1.2", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "29 (36.7%)", "20 (36.4%)", "30 (36.6%)", "14 (26.9%)", "22 (31.4%)", "30 (48.4%)", # nolint
+    "Total number of events", "41", "24", "43", "19", "27", "39",
+    "dcd B.2.1.2.1", "29 (36.7%)", "20 (36.4%)", "30 (36.6%)", "14 (26.9%)", "22 (31.4%)", "30 (48.4%)",
+    "cl D.1", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "45 (57%)", "34 (61.8%)", "40 (48.8%)", "27 (51.9%)", "41 (58.6%)", "39 (62.9%)", # nolint
+    "Total number of events", "72", "55", "64", "42", "73", "62",
+    "hlt D.1.1.1", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "25 (31.6%)", "25 (45.5%)", "29 (35.4%)", "13 (25%)", "27 (38.6%)", "24 (38.7%)", # nolint
+    "Total number of events", "32", "29", "36", "15", "39", "32",
+    "dcd D.1.1.1.1", "25 (31.6%)", "25 (45.5%)", "29 (35.4%)", "13 (25%)", "27 (38.6%)", "24 (38.7%)",
+    "hlt D.1.1.4", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "30 (38%)", "18 (32.7%)", "22 (26.8%)", "20 (38.5%)", "27 (38.6%)", "23 (37.1%)", # nolint
+    "Total number of events", "40", "26", "28", "27", "34", "30",
+    "dcd D.1.1.4.2", "30 (38%)", "18 (32.7%)", "22 (26.8%)", "20 (38.5%)", "27 (38.6%)", "23 (37.1%)",
+    "cl D.2", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "26 (32.9%)", "21 (38.2%)", "40 (48.8%)", "18 (34.6%)", "34 (48.6%)", "23 (37.1%)", # nolint
+    "Total number of events", "35", "27", "49", "23", "43", "31",
+    "hlt D.2.1.5", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "26 (32.9%)", "21 (38.2%)", "40 (48.8%)", "18 (34.6%)", "34 (48.6%)", "23 (37.1%)", # nolint
+    "Total number of events", "35", "27", "49", "23", "43", "31",
+    "dcd D.2.1.5.3", "26 (32.9%)", "21 (38.2%)", "40 (48.8%)", "18 (34.6%)", "34 (48.6%)", "23 (37.1%)",
+    "cl B.1", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "28 (35.4%)", "19 (34.5%)", "33 (40.2%)", "16 (30.8%)", "24 (34.3%)", "19 (30.6%)", # nolint
+    "Total number of events", "33", "23", "36", "24", "35", "27",
+    "hlt B.1.1.1", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "28 (35.4%)", "19 (34.5%)", "33 (40.2%)", "16 (30.8%)", "24 (34.3%)", "19 (30.6%)", # nolint
+    "Total number of events", "33", "23", "36", "24", "35", "27",
+    "dcd B.1.1.1.1", "28 (35.4%)", "19 (34.5%)", "33 (40.2%)", "16 (30.8%)", "24 (34.3%)", "19 (30.6%)",
+    "cl C.2", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "23 (29.1%)", "12 (21.8%)", "36 (43.9%)", "12 (23.1%)", "30 (42.9%)", "25 (40.3%)", # nolint
+    "Total number of events", "32", "16", "39", "14", "33", "32",
+    "hlt C.2.1.2", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "23 (29.1%)", "12 (21.8%)", "36 (43.9%)", "12 (23.1%)", "30 (42.9%)", "25 (40.3%)", # nolint
+    "Total number of events", "32", "16", "39", "14", "33", "32",
+    "dcd C.2.1.2.1", "23 (29.1%)", "12 (21.8%)", "36 (43.9%)", "12 (23.1%)", "30 (42.9%)", "25 (40.3%)",
+    "cl C.1", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "30 (38%)", "13 (23.6%)", "36 (43.9%)", "10 (19.2%)", "27 (38.6%)", "16 (25.8%)", # nolint
+    "Total number of events", "39", "16", "52", "11", "44", "20",
+    "hlt C.1.1.1", "", "", "", "", "", "",
+    "Total number of patients with at least one adverse event", "30 (38%)", "13 (23.6%)", "36 (43.9%)", "10 (19.2%)", "27 (38.6%)", "16 (25.8%)", # nolint
+    "Total number of events", "39", "16", "52", "11", "44", "20",
+    "dcd C.1.1.1.3", "30 (38%)", "13 (23.6%)", "36 (43.9%)", "10 (19.2%)", "27 (38.6%)", "16 (25.8%)"
+  )
+
+  expected_matrix <- matrix(expected_matrix, nrow = 63, ncol = 7, byrow = TRUE)
 
   testthat::expect_identical(result_matrix, expected_matrix)
 })
