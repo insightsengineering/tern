@@ -6,7 +6,7 @@ library(tern)
 
 # Data generation
 adpp <- synthetic_cdisc_data("latest")$adpp
-adpp_03 <- adpp %>% dplyr::filter(AVAL != 0)
+adpp_03 <- adpp %>% filter(PPSPEC == "Plasma", AVISIT == "CYCLE 1 DAY 1")
 adpp_urine <- adpp %>% filter(PPSPEC == "Urine", AVISIT == "CYCLE 1 DAY 1")
 adpp_norm_dose <- adpp %>% filter(
   AVISIT == "CYCLE 1 DAY 1",
