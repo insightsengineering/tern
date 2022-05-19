@@ -1,12 +1,11 @@
 # Preparation of the test case.
 library(scda)
-library(dplyr)
+library(rtables)
 adpp <- synthetic_cdisc_data("latest")$adpp
-adpp <- adpp %>% filter(PPSPEC == "Plasma", AVISIT == "CYCLE 1 DAY 1")
+adpp <- adpp %>%
+  filter(PPSPEC == "Urine", AVISIT == "CYCLE 1 DAY 1")
 
-testthat::test_that("PKPT02 is produced correctly for Drug X", {
-
-  # Plasma Drug X__
+testthat::test_that("PKPT04 is produced correctly for Drug X", {
   adpp0 <- adpp %>%
     filter(PPCAT == "Plasma Drug X") %>%
     h_pkparam_sort() %>%
@@ -43,34 +42,23 @@ testthat::test_that("PKPT02 is produced correctly for Drug X", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "PK Parameter", "AUCinf obs (day*ug/mL)", "n", "Mean (SD)", "CV (%)",
+      "PK Parameter", "CLR (L/hr)", "n", "Mean (SD)", "CV (%)",
       "Geometric Mean", "CV % Geometric Mean", "Median", "Min - Max",
-      "AUCINF_obs (day*ug/mL)", "n", "Mean (SD)", "CV (%)", "Geometric Mean",
-      "CV % Geometric Mean", "Median", "Min - Max", "CL obs (ml/day/kg)", "n",
-      "Mean (SD)", "CV (%)", "Geometric Mean", "CV % Geometric Mean", "Median",
-      "Min - Max", "Cmax (ug/mL)", "n", "Mean (SD)", "CV (%)", "Geometric Mean",
+      "RENALCLD (L/hr/mg)", "n", "Mean (SD)", "CV (%)", "Geometric Mean",
       "CV % Geometric Mean", "Median", "Min - Max", "ARM A", "", "134",
-      "1.974e+02 (4.021e+01)", "20.4", "1.929e+02", "23.1", "1.964e+02",
-      "7.070e+01 - 2.807e+02", "", "134", "1.974e+02 (4.021e+01)", "20.4",
-      "1.929e+02", "23.1", "1.964e+02", "7.070e+01 - 2.807e+02", "", "134",
-      "5.104e+00 (9.812e-01)", "19.2", "5.005e+00", "20.6", "5.180e+00",
-      "2.737e+00 - 7.542e+00", "", "134", "3.121e+01 (6.094e+00)", "19.5",
-      "3.057e+01", "21.1", "3.169e+01", "1.609e+01 - 4.591e+01", "ARM C", "",
-      "132", "2.048e+02 (3.910e+01)", "19.1", "2.009e+02", "20.4", "2.056e+02",
-      "9.943e+01 - 2.988e+02", "", "132", "2.048e+02 (3.910e+01)", "19.1",
-      "2.009e+02", "20.4", "2.056e+02", "9.943e+01 - 2.988e+02", "", "132",
-      "4.998e+00 (1.042e+00)", "20.9", "4.875e+00", "23.6", "5.126e+00",
-      "1.853e+00 - 6.946e+00", "", "132", "2.982e+01 (5.698e+00)", "19.1",
-      "2.926e+01", "19.9", "3.013e+01", "1.657e+01 - 4.385e+01"
+      "5.089e-02 (9.769e-03)", "19.2", "4.992e-02", "20.3", "5.020e-02",
+      "2.384e-02 - 8.111e-02", "", "134", "5.076e-03 (1.027e-03)", "20.2",
+      "4.971e-03", "21.0", "5.065e-03", "2.896e-03 - 7.598e-03", "ARM C", "",
+      "132", "4.993e-02 (9.577e-03)", "19.2", "4.895e-02", "20.6", "5.003e-02",
+      "2.690e-02 - 7.318e-02", "", "132", "4.893e-03 (9.184e-04)", "18.8",
+      "4.800e-03", "20.6", "4.945e-03", "2.177e-03 - 6.667e-03"
     ),
-    .Dim = c(33L, 3L)
+    .Dim = c(17L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-testthat::test_that("PKPT02 is produced correctly for Drug Y", {
-
-  # Plasma Drug Y
+testthat::test_that("PKPT04 is produced correctly for Drug Y", {
   adpp1 <- adpp %>%
     filter(PPCAT == "Plasma Drug Y") %>%
     h_pkparam_sort() %>%
@@ -107,21 +95,15 @@ testthat::test_that("PKPT02 is produced correctly for Drug Y", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "PK Parameter", "AUCinf obs (day*ug/mL)", "n", "Mean (SD)", "CV (%)",
+      "PK Parameter", "CLR (L/hr)", "n", "Mean (SD)", "CV (%)",
       "Geometric Mean", "CV % Geometric Mean", "Median", "Min - Max",
-      "AUCINF_obs (day*ug/mL)", "n", "Mean (SD)", "CV (%)", "Geometric Mean",
-      "CV % Geometric Mean", "Median", "Min - Max", "CL obs (ml/day/kg)", "n",
-      "Mean (SD)", "CV (%)", "Geometric Mean", "CV % Geometric Mean", "Median",
-      "Min - Max", "Cmax (ug/mL)", "n", "Mean (SD)", "CV (%)", "Geometric Mean",
+      "RENALCLD (L/hr/mg)", "n", "Mean (SD)", "CV (%)", "Geometric Mean",
       "CV % Geometric Mean", "Median", "Min - Max", "ARM C", "", "132",
-      "1.982e+02 (3.995e+01)", "20.2", "1.939e+02", "22.1", "1.988e+02",
-      "7.760e+01 - 2.931e+02", "", "132", "1.982e+02 (3.995e+01)", "20.2",
-      "1.939e+02", "22.1", "1.988e+02", "7.760e+01 - 2.931e+02", "", "132",
-      "4.882e+00 (9.571e-01)", "19.6", "4.790e+00", "20.0", "4.900e+00",
-      "2.775e+00 - 7.955e+00", "", "132", "2.968e+01 (6.297e+00)", "21.2",
-      "2.896e+01", "23.2", "2.990e+01", "1.480e+01 - 4.430e+01"
+      "4.975e-02 (8.945e-03)", "18.0", "4.891e-02", "19.2", "4.956e-02",
+      "2.242e-02 - 7.184e-02", "", "132", "5.068e-03 (1.038e-03)", "20.5",
+      "4.951e-03", "22.7", "5.209e-03", "2.453e-03 - 7.425e-03"
     ),
-    .Dim = c(33L, 2L)
+    .Dim = c(17L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
