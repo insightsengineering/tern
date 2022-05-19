@@ -1,25 +1,24 @@
 # Preparation of the test case.
-library(scda)
 library(rtables)
 library(dplyr)
-library(tern)
+
 adpc <- scda::synthetic_cdisc_data("latest")$adpc
 
 adpc <- adpc %>%
-  mutate(
+  dplyr::mutate(
     NRELTM1 = as.factor(NRELTM1),
     AVALC = as.factor(AVALC)
   ) %>%
-  filter(ACTARM %in% c("A: Drug X")) %>%
-  mutate(ACTARM = factor(ACTARM, levels = c("A: Drug X")))
+  dplyr::filter(ACTARM %in% c("A: Drug X")) %>%
+  dplyr::mutate(ACTARM = factor(ACTARM, levels = c("A: Drug X")))
 
 adpc_1 <- adpc %>%
-  mutate(
+  dplyr::mutate(
     NRELTM1 = as.factor(NRELTM1),
     AVAL = AVALC
   ) %>%
-  filter(ACTARM %in% c("A: Drug X")) %>%
-  mutate(ACTARM = factor(ACTARM, levels = c("A: Drug X")))
+  dplyr::filter(ACTARM %in% c("A: Drug X")) %>%
+  dplyr::mutate(ACTARM = factor(ACTARM, levels = c("A: Drug X")))
 
 testthat::test_that("PKCT01 is produced correctly", {
   l_rows <- basic_table() %>%
