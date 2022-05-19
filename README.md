@@ -45,6 +45,6 @@ In order to run many of the examples you will also need to install the [`scda`](
 
 See package vignettes `browseVignettes(package = "tern")` for usage of this package.
 
-## Acknowledgments
+## Acknowledgment
 
-There are a number of people who have previously been actively working on `tern` including: Maximilian Mordig, Jennifer Li, Chendi Liao, Yuyao Song, Edgar Manukyan, Carolyn Zhang, Mark Rothe, Xiao Yu Mo.
+This package is a result of a joint efforts by many developers and stakeholders. We would like to thank everyone who contributed so far!
