@@ -17,35 +17,147 @@ adpp_norm_dose <- adpp %>% filter(
 )
 
 # PKPT03
-testthat::test_that("PKPT03 is produced correctly", {
+testthat::test_that("PKPT03 Drug X is produced correctly", {
   l <- basic_table() %>%
     split_rows_by(
-      var = "ARM",
-      split_fun = keep_split_levels(c("A: Drug X", "C: Combination"))
+      var = "ARMCD",
+      split_fun = trim_levels_in_group("ARMCD"),
+      label_pos = "topleft",
+      split_label = "Treatment Arm"
     ) %>%
-    split_rows_by(var = "PARAM") %>%
-    summarize_vars_in_cols(var = "AVAL", col_split = TRUE)
+    split_rows_by(
+      var = "PKPARAM",
+      label_pos = "topleft",
+      split_label = "PK Parameter"
+    ) %>%
+    summarize_vars_in_cols(
+      var = "AVAL",
+      col_split = TRUE,
+      .stats = c(
+        "n", "mean", "sd", "cv",
+        "geom_mean", "geom_cv", "median",
+        "min", "max"
+      ),
+      .labels = c(
+        n = "n",
+        mean = "Mean",
+        sd = "SD",
+        cv = "CV (%)",
+        geom_mean = "Geometric Mean",
+        geom_cv = "CV % Geometric Mean",
+        median = "Median",
+        min = "Minimum",
+        max = "Maximum"
+      ),
+      .formats = c(
+        n = "xx.",
+        mean = sprintf_format("%.3e"),
+        sd = sprintf_format("%.3e"),
+        cv = "xx.x",
+        median = sprintf_format("%.3e"),
+        geom_mean = sprintf_format("%.3e"),
+        geom_cv = "xx.x",
+        min = sprintf_format("%.3e"),
+        max = sprintf_format("%.3e")
+      )
+    )
+  # Plasma Drug x
+  adpp0 <- adpp_03 %>%
+    filter(PPCAT == "Plasma Drug X") %>%
+    h_pkparam_sort() %>%
+    mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+  main_title(result) <- paste("Summary of", unique(adpp0$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
+  subtitles(result) <- paste("Analyte:", unique(adpp0$PPCAT), "\nVisit:", unique(adpp0$AVISIT))
+  result <- build_table(l, df = adpp0)
 
-  result <- build_table(l, df = adpp_03)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- c(
+    "Treatment Arm", "", "", "", "", "", "", "", "", "",
+    "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean", "Median", "Minimum", "Maximum", # nolint
+    "ARM A", "", "", "", "", "", "", "", "", "",
+    "AUCinf obs (day*ug/mL)", "134", "1.974e+02", "4.021e+01", "20.4", "1.929e+02", "23.1", "1.964e+02", "7.070e+01", "2.807e+02", # nolint
+    "AUCINF_obs (day*ug/mL)", "134", "1.974e+02", "4.021e+01", "20.4", "1.929e+02", "23.1", "1.964e+02", "7.070e+01", "2.807e+02", # nolint
+    "CL obs (ml/day/kg)", "134", "5.104e+00", "9.812e-01", "19.2", "5.005e+00", "20.6", "5.180e+00", "2.737e+00", "7.542e+00", # nolint
+    "Cmax (ug/mL)", "134", "3.121e+01", "6.094e+00", "19.5", "3.057e+01", "21.1", "3.169e+01", "1.609e+01", "4.591e+01",
+    "ARM C", "", "", "", "", "", "", "", "", "",
+    "AUCinf obs (day*ug/mL)", "132", "2.048e+02", "3.910e+01", "19.1", "2.009e+02", "20.4", "2.056e+02", "9.943e+01", "2.988e+02", # nolint
+    "AUCINF_obs (day*ug/mL)", "132", "2.048e+02", "3.910e+01", "19.1", "2.009e+02", "20.4", "2.056e+02", "9.943e+01", "2.988e+02", # nolint
+    "CL obs (ml/day/kg)", "132", "4.998e+00", "1.042e+00", "20.9", "4.875e+00", "23.6", "5.126e+00", "1.853e+00", "6.946e+00", # nolint
+    "Cmax (ug/mL)", "132", "2.982e+01", "5.698e+00", "19.1", "2.926e+01", "19.9", "3.013e+01", "1.657e+01", "4.385e+01"
+  )
+  expected_matrix <- matrix(expected_matrix, nrow = 12, ncol = 10, byrow = TRUE)
+
+  testthat::expect_identical(result_matrix, expected_matrix)
+})
+
+testthat::test_that("PKPT03 Drug Y is produced correctly", {
+  l <- basic_table() %>%
+    split_rows_by(
+      var = "ARMCD",
+      split_fun = trim_levels_in_group("ARMCD"),
+      label_pos = "topleft",
+      split_label = "Treatment Arm"
+    ) %>%
+    split_rows_by(
+      var = "PKPARAM",
+      label_pos = "topleft",
+      split_label = "PK Parameter"
+    ) %>%
+    summarize_vars_in_cols(
+      var = "AVAL",
+      col_split = TRUE,
+      .stats = c(
+        "n", "mean", "sd", "cv",
+        "geom_mean", "geom_cv", "median",
+        "min", "max"
+      ),
+      .labels = c(
+        n = "n",
+        mean = "Mean",
+        sd = "SD",
+        cv = "CV (%)",
+        geom_mean = "Geometric Mean",
+        geom_cv = "CV % Geometric Mean",
+        median = "Median",
+        min = "Minimum",
+        max = "Maximum"
+      ),
+      .formats = c(
+        n = "xx.",
+        mean = sprintf_format("%.3e"),
+        sd = sprintf_format("%.3e"),
+        cv = "xx.x",
+        median = sprintf_format("%.3e"),
+        geom_mean = sprintf_format("%.3e"),
+        geom_cv = "xx.x",
+        min = sprintf_format("%.3e"),
+        max = sprintf_format("%.3e")
+      )
+    )
+
+  # Plasma Drug Y__
+  adpp1 <- adpp_03 %>%
+    filter(PPCAT == "Plasma Drug Y") %>%
+    h_pkparam_sort() %>%
+    mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+  main_title(result) <- paste("Summary of", unique(adpp1$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
+  subtitles(result) <- paste("Analyte:", unique(adpp1$PPCAT), "\nVisit:", unique(adpp1$AVISIT))
+  result <- build_table(l, df = adpp1)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "A: Drug X", "AUC Infinity Obs", "Max Conc", "Renal CL", "Renal CL Norm by Dose",
-      "Time of Maximum Response", "Time to Onset", "Total CL Obs", "C: Combination",
-      "AUC Infinity Obs", "Max Conc", "Renal CL", "Renal CL Norm by Dose",
-      "Time of Maximum Response", "Time to Onset", "Total CL Obs", "n", "", "402",
-      "402", "402", "402", "402", "402", "402", "", "792", "792", "792", "792",
-      "792", "792", "792", "Mean", "", "199.2", "30.2", "0.1", "0.0", "9.9", "3.0",
-      "5.0", "", "200.2", "30.1", "0.0", "0.0", "10.0", "3.0", "5.0", "SD", "", "39.1",
-      "6.1", "0.0", "0.0", "1.9", "0.6", "1.0", "", "40.3", "6.0", "0.0", "0.0", "2.0",
-      "0.6", "1.0", "SE", "", "1.9", "0.3", "0.0", "0.0", "0.1", "0.0", "0.1", "",
-      "1.4", "0.2", "0.0", "0.0", "0.1", "0.0", "0.0", "CV (%)", "", "19.6", "20.3",
-      "19.8", "19.8", "19.7", "19.3", "21.1", "", "20.1", "20.0", "19.5", "19.3",
-      "20.3", "19.7", "20.2", "CV % Geometric Mean", "", "21.5", "21.7", "20.7",
-      "20.4", "20.9", "20.3", "22.8", "", "21.6", "21.6", "21.0", "20.5", "21.9", "20.8", "21.6"
+      "Treatment Arm", "  PK Parameter", "ARM C", "AUCinf obs (day*ug/mL)", "AUCINF_obs (day*ug/mL)", "CL obs (ml/day/kg)", "Cmax (ug/mL)", # nolint
+      "", "n", "", "132", "132", "132", "132", "", "Mean", "", "1.982e+02", "1.982e+02",
+      "4.882e+00", "2.968e+01", "", "SD", "", "3.995e+01",
+      "3.995e+01", "9.571e-01", "6.297e+00", "", "CV (%)", "", "20.2",
+      "20.2", "19.6", "21.2", "", "Geometric Mean", "", "1.939e+02",
+      "1.939e+02", "4.790e+00", "2.896e+01", "", "CV % Geometric Mean", "", "22.1",
+      "22.1", "20.0", "23.2", "", "Median", "",
+      "1.988e+02", "1.988e+02", "4.900e+00", "2.990e+01", "",
+      "Minimum", "", "7.760e+01", "7.760e+01", "2.775e+00", "1.480e+01", "", "Maximum", "", "2.931e+02", "2.931e+02", "7.955e+00", "4.430e+01" # nolint
     ),
-    .Dim = c(17L, 7L)
+    .Dim = c(7L, 10L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -103,7 +215,7 @@ testthat::test_that("PKPT05 Drug X is produced correctly", {
   result <- build_table(lyt, df = adpp0)
   main_title(result) <- paste("Summary of", unique(adpp0$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp0$PPCAT), "\nVisit:", unique(adpp0$AVISIT))
-  result <- build_table(lyt, df = adpp0)
+
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- c(
