@@ -3,7 +3,8 @@ library(scda)
 library(dplyr)
 library(stringr)
 adpp <- synthetic_cdisc_data("latest")$adpp
-adpp <- adpp %>% filter(AVISIT == "CYCLE 1 DAY 1", str_detect(tolower(PARAM), regex("norm by dose", ignore_case = TRUE)))
+adpp <- adpp %>% filter(AVISIT == "CYCLE 1 DAY 1", str_detect(tolower(PARAM),
+                                                              regex("norm by dose", ignore_case = TRUE)))
 
 testthat::test_that("PKPT06 is produced correctly for Drug X", {
 
