@@ -2,19 +2,19 @@
 # to variant 1, needing only the data frame to be pre-processed
 # and the baseline variable to be changed from SEX.
 
-library(scda)
 library(magrittr)
-adsl <- synthetic_cdisc_data("latest")$adsl
-adae <- synthetic_cdisc_data("latest")$adae
-adsub <- synthetic_cdisc_data("latest")$adsub
+
+adsl <- scda::synthetic_cdisc_data('2022_02_28')$adsl
+adae <- scda::synthetic_cdisc_data('2022_02_28')$adae
+adsub <- scda::synthetic_cdisc_data('2022_02_28')$adsub
 adsub_bmi <- adsub %>%
-  filter(PARAMCD == "BBMISI") %>%
-  select(STUDYID, USUBJID, AVALCAT1) %>%
-  mutate(
+  dplyr::filter(PARAMCD == "BBMISI") %>%
+  dplyr::select(STUDYID, USUBJID, AVALCAT1) %>%
+  dplyr::mutate(
     AVALCAT1 = factor(AVALCAT1, levels = c("<18.5", "18.5 - 24.9", "25 - 29.9", ">30"))
   )
 adsl <- adsl %>%
-  mutate(
+  dplyr::mutate(
     RACE1 = case_when(
       RACE == "WHITE" ~ "WHITE",
       TRUE ~ "NON-WHITE"
@@ -24,7 +24,7 @@ adsl <- adsl %>%
       levels = c("WHITE", "NON-WHITE")
     )
   ) %>%
-  left_join(
+  dplyr::left_join(
     y = adsub_bmi,
     by = c("STUDYID", "USUBJID")
   )
@@ -32,7 +32,7 @@ adsl <- adsl %>%
 adae_labels <- var_labels(adae)
 
 adae <- adae %>%
-  mutate(
+  dplyr::mutate(
     RACE1 = case_when(
       RACE == "WHITE" ~ "WHITE",
       TRUE ~ "NON-WHITE"
@@ -42,7 +42,7 @@ adae <- adae %>%
       levels = c("WHITE", "NON-WHITE")
     )
   ) %>%
-  left_join(
+  dplyr::left_join(
     y = adsub_bmi,
     by = c("STUDYID", "USUBJID")
   )
