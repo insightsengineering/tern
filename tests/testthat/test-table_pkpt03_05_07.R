@@ -1,14 +1,11 @@
 # Preparation of the test case.
-library(scda)
 library(rtables)
-library(dplyr)
-library(tern)
 
 # Data generation
-adpp <- synthetic_cdisc_data("rcd_2022_02_28")$adpp
-adpp_03 <- adpp %>% filter(PPSPEC == "Plasma", AVISIT == "CYCLE 1 DAY 1")
-adpp_urine <- adpp %>% filter(PPSPEC == "Urine", AVISIT == "CYCLE 1 DAY 1")
-adpp_norm_dose <- adpp %>% filter(
+adpp <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adpp
+adpp_03 <- adpp %>% dplyr::filter(PPSPEC == "Plasma", AVISIT == "CYCLE 1 DAY 1")
+adpp_urine <- adpp %>% dplyr::filter(PPSPEC == "Urine", AVISIT == "CYCLE 1 DAY 1")
+adpp_norm_dose <- adpp %>% dplyr::filter(
   AVISIT == "CYCLE 1 DAY 1",
   stringr::str_detect(
     tolower(PARAM),
@@ -63,9 +60,9 @@ testthat::test_that("PKPT03 Drug X is produced correctly", {
     )
   # Plasma Drug x
   adpp0 <- adpp_03 %>%
-    filter(PPCAT == "Plasma Drug X") %>%
+    dplyr::filter(PPCAT == "Plasma Drug X") %>%
     h_pkparam_sort() %>%
-    mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+    dplyr::mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
   result <- build_table(l, df = adpp0)
   main_title(result) <- paste("Summary of", unique(adpp0$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp0$PPCAT), "\nVisit:", unique(adpp0$AVISIT))
@@ -136,9 +133,9 @@ testthat::test_that("PKPT03 Drug Y is produced correctly", {
 
   # Plasma Drug Y__
   adpp1 <- adpp_03 %>%
-    filter(PPCAT == "Plasma Drug Y") %>%
+    dplyr::filter(PPCAT == "Plasma Drug Y") %>%
     h_pkparam_sort() %>%
-    mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+    dplyr::mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
   result <- build_table(l, df = adpp1)
   main_title(result) <- paste("Summary of", unique(adpp1$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp1$PPCAT), "\nVisit:", unique(adpp1$AVISIT))
@@ -204,9 +201,9 @@ testthat::test_that("PKPT05 Drug X is produced correctly", {
       )
     )
   adpp0 <- adpp_urine %>%
-    filter(PPCAT == "Plasma Drug X") %>%
+    dplyr::filter(PPCAT == "Plasma Drug X") %>%
     h_pkparam_sort() %>%
-    mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+    dplyr::mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
   result <- build_table(lyt, df = adpp0)
   main_title(result) <- paste("Summary of", unique(adpp0$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp0$PPCAT), "\nVisit:", unique(adpp0$AVISIT))
@@ -276,9 +273,9 @@ testthat::test_that("PKPT05 Drug Y is produced correctly", {
 
   # Plasma Drug Y
   adpp1 <- adpp_urine %>%
-    filter(PPCAT == "Plasma Drug Y") %>%
+    dplyr::filter(PPCAT == "Plasma Drug Y") %>%
     h_pkparam_sort() %>%
-    mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+    dplyr::mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
   result <- build_table(lyt, df = adpp1)
   main_title(result) <- paste("Summary of", unique(adpp1$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp1$PPCAT), "\nVisit:", unique(adpp1$AVISIT))
@@ -346,9 +343,9 @@ testthat::test_that("PKPT07 Drug X is produced correctly", {
 
   # Plasma Drug X__
   adpp0 <- adpp_norm_dose %>%
-    filter(PPCAT == "Plasma Drug X") %>%
+    dplyr::filter(PPCAT == "Plasma Drug X") %>%
     h_pkparam_sort() %>%
-    mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+    dplyr::mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
   result <- build_table(lyt, df = adpp0)
   main_title(result) <- paste("Summary of", unique(adpp0$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp0$PPCAT), "\nVisit:", unique(adpp0$AVISIT))
@@ -417,9 +414,9 @@ testthat::test_that("PKPT07 Drug Y is produced correctly", {
 
   # Plasma Drug Y
   adpp1 <- adpp_norm_dose %>%
-    filter(PPCAT == "Plasma Drug Y") %>%
+    dplyr::filter(PPCAT == "Plasma Drug Y") %>%
     h_pkparam_sort() %>%
-    mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+    dplyr::mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
   result <- build_table(lyt, df = adpp1)
   main_title(result) <- paste("Summary of", unique(adpp1$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp1$PPCAT), "\nVisit:", unique(adpp1$AVISIT))
