@@ -2,7 +2,7 @@
 library(rtables)
 library(dplyr)
 
-adpc <- scda::synthetic_cdisc_data("latest")$adpc
+adpc <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adpc
 
 adpc <- adpc %>%
   dplyr::mutate(
