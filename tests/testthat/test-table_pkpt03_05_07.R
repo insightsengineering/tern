@@ -5,7 +5,7 @@ library(dplyr)
 library(tern)
 
 # Data generation
-adpp <- synthetic_cdisc_data("latest")$adpp
+adpp <- synthetic_cdisc_data("rcd_2022_02_28")$adpp
 adpp_03 <- adpp %>% filter(PPSPEC == "Plasma", AVISIT == "CYCLE 1 DAY 1")
 adpp_urine <- adpp %>% filter(PPSPEC == "Urine", AVISIT == "CYCLE 1 DAY 1")
 adpp_norm_dose <- adpp %>% filter(
@@ -66,9 +66,10 @@ testthat::test_that("PKPT03 Drug X is produced correctly", {
     filter(PPCAT == "Plasma Drug X") %>%
     h_pkparam_sort() %>%
     mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+  result <- build_table(l, df = adpp0)
   main_title(result) <- paste("Summary of", unique(adpp0$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp0$PPCAT), "\nVisit:", unique(adpp0$AVISIT))
-  result <- build_table(l, df = adpp0)
+
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- c(
@@ -76,16 +77,14 @@ testthat::test_that("PKPT03 Drug X is produced correctly", {
     "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean", "Median", "Minimum", "Maximum", # nolint
     "ARM A", "", "", "", "", "", "", "", "", "",
     "AUCinf obs (day*ug/mL)", "134", "1.974e+02", "4.021e+01", "20.4", "1.929e+02", "23.1", "1.964e+02", "7.070e+01", "2.807e+02", # nolint
-    "AUCINF_obs (day*ug/mL)", "134", "1.974e+02", "4.021e+01", "20.4", "1.929e+02", "23.1", "1.964e+02", "7.070e+01", "2.807e+02", # nolint
     "CL obs (ml/day/kg)", "134", "5.104e+00", "9.812e-01", "19.2", "5.005e+00", "20.6", "5.180e+00", "2.737e+00", "7.542e+00", # nolint
     "Cmax (ug/mL)", "134", "3.121e+01", "6.094e+00", "19.5", "3.057e+01", "21.1", "3.169e+01", "1.609e+01", "4.591e+01",
     "ARM C", "", "", "", "", "", "", "", "", "",
     "AUCinf obs (day*ug/mL)", "132", "2.048e+02", "3.910e+01", "19.1", "2.009e+02", "20.4", "2.056e+02", "9.943e+01", "2.988e+02", # nolint
-    "AUCINF_obs (day*ug/mL)", "132", "2.048e+02", "3.910e+01", "19.1", "2.009e+02", "20.4", "2.056e+02", "9.943e+01", "2.988e+02", # nolint
     "CL obs (ml/day/kg)", "132", "4.998e+00", "1.042e+00", "20.9", "4.875e+00", "23.6", "5.126e+00", "1.853e+00", "6.946e+00", # nolint
     "Cmax (ug/mL)", "132", "2.982e+01", "5.698e+00", "19.1", "2.926e+01", "19.9", "3.013e+01", "1.657e+01", "4.385e+01"
   )
-  expected_matrix <- matrix(expected_matrix, nrow = 12, ncol = 10, byrow = TRUE)
+  expected_matrix <- matrix(expected_matrix, nrow = 10, ncol = 10, byrow = TRUE)
 
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -140,25 +139,21 @@ testthat::test_that("PKPT03 Drug Y is produced correctly", {
     filter(PPCAT == "Plasma Drug Y") %>%
     h_pkparam_sort() %>%
     mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
+  result <- build_table(l, df = adpp1)
   main_title(result) <- paste("Summary of", unique(adpp1$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp1$PPCAT), "\nVisit:", unique(adpp1$AVISIT))
-  result <- build_table(l, df = adpp1)
+
 
   result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "Treatment Arm", "  PK Parameter", "ARM C", "AUCinf obs (day*ug/mL)", "AUCINF_obs (day*ug/mL)", "CL obs (ml/day/kg)", "Cmax (ug/mL)", # nolint
-      "", "n", "", "132", "132", "132", "132", "", "Mean", "", "1.982e+02", "1.982e+02",
-      "4.882e+00", "2.968e+01", "", "SD", "", "3.995e+01",
-      "3.995e+01", "9.571e-01", "6.297e+00", "", "CV (%)", "", "20.2",
-      "20.2", "19.6", "21.2", "", "Geometric Mean", "", "1.939e+02",
-      "1.939e+02", "4.790e+00", "2.896e+01", "", "CV % Geometric Mean", "", "22.1",
-      "22.1", "20.0", "23.2", "", "Median", "",
-      "1.988e+02", "1.988e+02", "4.900e+00", "2.990e+01", "",
-      "Minimum", "", "7.760e+01", "7.760e+01", "2.775e+00", "1.480e+01", "", "Maximum", "", "2.931e+02", "2.931e+02", "7.955e+00", "4.430e+01" # nolint
-    ),
-    .Dim = c(7L, 10L)
+  expected_matrix <- c(
+    "Treatment Arm", "", "", "", "", "", "", "", "", "",
+    "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean", "Median", "Minimum", "Maximum", # nolint
+    "ARM C", "", "", "", "", "", "", "", "", "",
+    "AUCinf obs (day*ug/mL)", "132", "1.982e+02", "3.995e+01", "20.2", "1.939e+02", "22.1", "1.988e+02", "7.760e+01", "2.931e+02", # nolint
+    "CL obs (ml/day/kg)", "132", "4.882e+00", "9.571e-01", "19.6", "4.790e+00", "20.0", "4.900e+00", "2.775e+00", "7.955e+00", # nolint
+    "Cmax (ug/mL)", "132", "2.968e+01", "6.297e+00", "21.2", "2.896e+01", "23.2", "2.990e+01", "1.480e+01", "4.430e+01" # nolint
   )
+  expected_matrix <- matrix(expected_matrix, nrow = 6, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
