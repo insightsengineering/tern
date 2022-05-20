@@ -55,6 +55,7 @@
 #' @param position_coxph `numeric` \cr x and y positions for plotting [survival::coxph()] model.
 #' @param position_surv_med `numeric` \cr x and y positions for plotting annotation table
 #'    estimating median survival time per group
+#' @param use_palette (`character`) \cr color palette theme, "stream" (default), "nest", or "viridis"
 #'
 #' @name kaplan_meier
 #'
@@ -187,7 +188,8 @@ g_km <- function(df,
                  annot_coxph = FALSE,
                  control_coxph_pw = control_coxph(),
                  position_coxph = c(0, 0.05),
-                 position_surv_med = c(0.9, 0.9)) {
+                 position_surv_med = c(0.9, 0.9),
+                 use_palette = "stream") {
   assertthat::assert_that(
     is.list(variables),
     all(c("tte", "arm", "is_event") %in% names(variables)),
@@ -237,7 +239,8 @@ g_km <- function(df,
     lty = lty,
     col = col,
     ggtheme = ggtheme,
-    ci_ribbon = ci_ribbon
+    ci_ribbon = ci_ribbon,
+    use_palette = use_palette
   )
 
   g_el <- h_decompose_gg(gg) # nolint
@@ -559,7 +562,8 @@ h_ggkm <- function(data,
                    size = 2,
                    col = NULL,
                    ci_ribbon = FALSE,
-                   ggtheme = NULL) {
+                   ggtheme = NULL,
+                   use_palette = "stream") {
   assertthat::assert_that(
     (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty))
   )
@@ -583,7 +587,8 @@ h_ggkm <- function(data,
         fill = "strata"
       )
     ) +
-      ggplot2::geom_hline(yintercept = 0)
+      ggplot2::geom_hline(yintercept = 0) +
+      ggplot2::scale_color_manual(values = color_palette(palette = use_palette))
   }
 
   if (ci_ribbon) {

@@ -88,6 +88,8 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 
 \item{position_surv_med}{\code{numeric} \cr x and y positions for plotting annotation table
 estimating median survival time per group}
+
+\item{use_palette}{(\code{character}) \cr color palette theme, "stream" (default), "nest", or "viridis"}
 }
 \description{
 Kaplan-Meier Plot
