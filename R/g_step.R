@@ -163,7 +163,7 @@ g_step <- function(df,
     color = est$col,
     linetype = est$lty
   ) +
-  ggplot2::scale_color_manual(values = color_palette(palette = use_palette))
+    ggplot2::scale_color_manual(values = color_palette(palette = use_palette))
   p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate)
   if (use_percentile) {
     p <- p + ggplot2::scale_x_continuous(labels = scales::percent)
