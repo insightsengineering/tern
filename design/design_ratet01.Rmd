@@ -60,14 +60,14 @@ h_glm_poisson <- function(.var,
   formula <- as.formula(paste0(
     .var, " ~ ", " + ", arm
   ))
-  
+
   if (!is.null(variables$covariates)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
     formula <- update(formula, forumla_new)
   }
-  
-  if(!is.null(variables$offset)) {
+
+  if (!is.null(variables$offset)) {
     offset <- variables$offset
     forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
     formula <- update(formula, forumla_new)
@@ -116,14 +116,14 @@ h_glm_quasipoisson <- function(.var,
   formula <- as.formula(paste0(
     .var, " ~ ", " + ", arm
   ))
-  
+
   if (!is.null(variables$covariates)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
     formula <- update(formula, forumla_new)
   }
-  
-  if(!is.null(variables$offset)) {
+
+  if (!is.null(variables$offset)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
     formula <- update(formula, forumla_new)
@@ -172,14 +172,14 @@ h_glm_negbin <- function(.var,
   formula <- as.formula(paste0(
     .var, " ~ ", " + ", arm
   ))
-  
+
   if (!is.null(variables$covariates)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
     formula <- update(formula, forumla_new)
   }
-  
-  if(!is.null(variables$offset)) {
+
+  if (!is.null(variables$offset)) {
     covariates <- variables$covariates
     forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
     formula <- update(formula, forumla_new)
@@ -213,8 +213,7 @@ h_glm_count <- function(.var,
                         variables,
                         distribution,
                         weights) {
-  switch(
-    distribution,
+  switch(distribution,
     poisson = h_glm_poisson(.var, .df_row, variables, weights),
     quasipoisson = h_glm_quasipoisson(.var, .df_row, variables, weights),
     negbin = h_glm_negbin(.var, .df_row, variables, weights)
@@ -224,7 +223,6 @@ h_glm_count <- function(.var,
 
 ```{r}
 h_ppmeans <- function(obj, .df_row, arm, conf_level) {
-  
   alpha <- 1 - conf_level
   p <- 1 - alpha / 2
 
@@ -411,7 +409,8 @@ summarize_glm_count <- function(lyt,
 Get example cancer dataset from Alan Agresti's website: <https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat>
 
 ```{r}
-cancer <- read.table("https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat", header = TRUE)
+system("wget --no-check-certificate https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat")
+cancer <- read.table("Cancer.dat", header = TRUE)
 
 set.seed(12345)
 anl <- cancer %>%
@@ -422,6 +421,11 @@ anl <- cancer %>%
     count_f = factor(count, levels = sort(unique(count)))
   )
 
+```
+
+Creating table
+
+```{r}
 covars <- c("histology", "stage", "time")
 offset <- "ln_time_at_risk"
 arm <- "arm"
