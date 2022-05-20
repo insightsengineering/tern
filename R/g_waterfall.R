@@ -17,6 +17,7 @@
 #'   Text to be displayed as plot title.
 #' @param col_legend_title (\code{character} value)\cr
 #'   Text to be displayed as legend title.
+#' @param use_palette (`character`) \cr color palette theme, "stream" (default), "nest", or "viridis"
 #' @return (\code{ggplot} object)\cr
 #'   Waterfall plot
 #' @template author_song24
@@ -79,7 +80,8 @@ g_waterfall <- function(height,
                         xlab = NULL,
                         ylab = NULL,
                         col_legend_title = NULL,
-                        title = NULL) {
+                        title = NULL,
+                        use_palette = "stream") {
   if (!is.null(col)) {
     check_same_n(height = height, id = id, col = col)
   } else {
@@ -126,7 +128,7 @@ g_waterfall <- function(height,
         legend.title = ggplot2::element_text(face = "bold"),
         legend.box.background = ggplot2::element_rect(colour = "black")
       ) +
-      ggplot2::scale_fill_manual(values = color_palette())
+      ggplot2::scale_fill_manual(values = color_palette(palette = use_palette))
   }
 
   if (!is.null(title)) {

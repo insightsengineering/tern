@@ -70,6 +70,7 @@ tidy.step <- function(x, ...) { # nolint
 #' @param est (named `list`)\cr `col` and `lty` settings for estimate line.
 #' @param ci_ribbon (named `list` or `NULL`)\cr `fill` and `alpha` settings for the confidence interval
 #'   ribbon area, or `NULL` to not plot a CI ribbon.
+#' @param use_palette (`character`) \cr color palette theme, "stream" (default), "nest", or "viridis"
 #'
 #' @return The `ggplot2` object.
 #' @export
@@ -135,7 +136,8 @@ tidy.step <- function(x, ...) { # nolint
 g_step <- function(df,
                    use_percentile = "Percentile Center" %in% names(df),
                    est = list(col = "black", lty = 1),
-                   ci_ribbon = list(fill = "lightblue", alpha = 0.5)) {
+                   ci_ribbon = list(fill = "lightblue", alpha = 0.5),
+                   use_palette = "stream") {
   assertthat::assert_that(
     tibble::is_tibble(df),
     assertthat::is.flag(use_percentile)
@@ -160,7 +162,8 @@ g_step <- function(df,
     ggplot2::aes_string(y = "y"),
     color = est$col,
     linetype = est$lty
-  )
+  ) +
+  ggplot2::scale_color_manual(values = color_palette(palette = use_palette))
   p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate)
   if (use_percentile) {
     p <- p + ggplot2::scale_x_continuous(labels = scales::percent)

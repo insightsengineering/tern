@@ -23,6 +23,7 @@
 #' plot. Ignored when `plotting_choices` is not "separate_by_obs".
 #' @param font_size (`number`)\cr text font size.
 #' @param caption (`character` scalar) \cr optional caption below the plot.
+#' @param use_palette (`character`) \cr color palette theme, "stream" (default), "nest", or "viridis"
 #'
 #' @name individual_patient_plot
 NULL
@@ -84,7 +85,8 @@ h_g_ipp <- function(df,
                     caption = NULL,
                     add_baseline_hline = FALSE,
                     yvar_baseline = "BASE",
-                    ggtheme = h_set_nest_theme(10)) {
+                    ggtheme = h_set_nest_theme(10),
+                    use_palette = "stream") {
   assertthat::assert_that(
     is.data.frame(df),
     assertthat::is.string(xvar),
@@ -144,7 +146,8 @@ h_g_ipp <- function(df,
         nudge_y = 0.025 * (max(df[, yvar], na.rm = TRUE) - min(df[, yvar], na.rm = TRUE)),
         vjust = "right",
         size = 2
-      )
+      ) +
+      ggplot2::scale_color_manual(values = color_palette(palette = use_palette))
   }
   p
 }
@@ -184,6 +187,7 @@ g_ipp <- function(df,
                   add_baseline_hline = FALSE,
                   yvar_baseline = "BASE",
                   ggtheme = h_set_nest_theme(10),
+                  use_palette = "stream",
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
                   max_obs_per_plot = 4) {
   assertthat::assert_that(
@@ -206,7 +210,8 @@ g_ipp <- function(df,
       caption = caption,
       add_baseline_hline = add_baseline_hline,
       yvar_baseline = yvar_baseline,
-      ggtheme = ggtheme
+      ggtheme = ggtheme,
+      use_palette = use_palette
     )
 
     return(p)
@@ -238,7 +243,8 @@ g_ipp <- function(df,
         caption = caption,
         add_baseline_hline = add_baseline_hline,
         yvar_baseline = yvar_baseline,
-        ggtheme = ggtheme
+        ggtheme = ggtheme,
+        use_palette = use_palette
       )
 
       plot_list[[i]] <- plots
@@ -261,7 +267,8 @@ g_ipp <- function(df,
           caption = caption,
           add_baseline_hline = add_baseline_hline,
           yvar_baseline = yvar_baseline,
-          ggtheme = ggtheme
+          ggtheme = ggtheme,
+          use_palette = use_palette
         )
       }
     )

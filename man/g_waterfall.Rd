@@ -11,7 +11,8 @@ g_waterfall(
   xlab = NULL,
   ylab = NULL,
   col_legend_title = NULL,
-  title = NULL
+  title = NULL,
+  use_palette = "stream"
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ Text to be displayed as legend title.}
 
 \item{title}{(\code{character} value)\cr
 Text to be displayed as plot title.}
+
+\item{use_palette}{(\code{character}) \cr color palette theme, "stream" (default), "nest", or "viridis"}
 }
 \value{
 (\code{ggplot} object)\cr
