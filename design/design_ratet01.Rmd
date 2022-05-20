@@ -420,7 +420,6 @@ anl <- cancer %>%
     ln_time_at_risk = log(risktime),
     count_f = factor(count, levels = sort(unique(count)))
   )
-
 ```
 
 Creating table
