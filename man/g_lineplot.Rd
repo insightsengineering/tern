@@ -32,7 +32,7 @@ g_lineplot(
   table_labels = tern::summary_labels(),
   table_font_size = 3,
   newpage = TRUE,
-  use_palette = "stream"
+  col = color_palette(palette = "stream")
 )
 }
 \arguments{
@@ -131,7 +131,7 @@ controls the font size of values in the table.}
 
 \item{newpage}{(\code{logical} scalar) \cr should plot be drawn on new page?}
 
-\item{use_palette}{(\code{character}) \cr color palette theme, "stream" (default), "nest", or "viridis"}
+\item{col}{(\code{character})\cr colors.}
 }
 \value{
 \code{ggplot}

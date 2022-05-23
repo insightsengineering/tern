@@ -8,7 +8,7 @@ g_km(
   df,
   variables,
   control_surv = control_surv_timepoint(),
-  col = NULL,
+  col = color_palette(palette = "stream"),
   lty = NULL,
   lwd = 0.5,
   censor_show = TRUE,
@@ -33,8 +33,7 @@ g_km(
   annot_coxph = FALSE,
   control_coxph_pw = control_coxph(),
   position_coxph = c(0, 0.05),
-  position_surv_med = c(0.9, 0.9),
-  use_palette = "stream"
+  position_surv_med = c(0.9, 0.9)
 )
 }
 \arguments{
@@ -134,8 +133,6 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 
 \item{position_surv_med}{\code{numeric} \cr x and y positions for plotting annotation table
 estimating median survival time per group}
-
-\item{use_palette}{(\code{character}) \cr color palette theme, "stream" (default), "nest", or "viridis"}
 }
 \value{
 a \code{grob} of class \code{gTree}.

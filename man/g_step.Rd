@@ -9,7 +9,7 @@ g_step(
   use_percentile = "Percentile Center" \%in\% names(df),
   est = list(col = "black", lty = 1),
   ci_ribbon = list(fill = "lightblue", alpha = 0.5),
-  use_palette = "stream"
+  col = color_palette(palette = "stream")
 )
 }
 \arguments{

@@ -17,10 +17,9 @@ h_ggkm(
   lty = NULL,
   pch = 3,
   size = 2,
-  col = NULL,
+  col = color_palette(palette = "stream"),
   ci_ribbon = FALSE,
-  ggtheme = NULL,
-  use_palette = "stream"
+  ggtheme = NULL
 )
 }
 \arguments{
@@ -64,8 +63,6 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to
 control outlook of the Kaplan-Meier curve.}
-
-\item{use_palette}{(\code{character}) \cr color palette theme, "stream" (default), "nest", or "viridis"}
 }
 \description{
 Draw the Kaplan-Meier plot using \code{ggplot2}.

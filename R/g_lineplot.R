@@ -67,7 +67,7 @@
 #' @param table_font_size (`integer` or `double`) \cr
 #' controls the font size of values in the table.
 #' @param newpage (`logical` scalar) \cr should plot be drawn on new page?
-#' @param use_palette (`character`) \cr color palette theme, "stream" (default), "nest", or "viridis"
+#' @param col (`character`)\cr colors.
 #'
 #' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 #'
@@ -154,7 +154,7 @@ g_lineplot <- function(df, # nolint
                        table_labels = tern::summary_labels(),
                        table_font_size = 3,
                        newpage = TRUE,
-                       use_palette = "stream") {
+                       col = color_palette(palette = "stream")) {
   assertthat::assert_that(is.character(variables) || is.na(variables))
   assertthat::assert_that(is.character(mid) || is.null(mid))
   assertthat::assert_that(is.character(interval) || is.null(interval))
@@ -329,7 +329,7 @@ g_lineplot <- function(df, # nolint
       x = attr(df[[x]], "label"),
       y = y_lab
     ) +
-    ggplot2::scale_color_manual(values = color_palette(palette = use_palette))
+    ggplot2::scale_color_manual(values = col)
 
   if (!is.null(ggtheme)) {
     p <- p + ggtheme

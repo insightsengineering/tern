@@ -7,12 +7,11 @@
 g_waterfall(
   height,
   id,
-  col = NULL,
+  col = color_palette(palette = "stream"),
   xlab = NULL,
   ylab = NULL,
   col_legend_title = NULL,
-  title = NULL,
-  use_palette = "stream"
+  title = NULL
 )
 }
 \arguments{
@@ -22,8 +21,7 @@ Contains values to be plotted as the waterfall bars}
 \item{id}{(vector)\cr
 Contains of IDs used as the x-axis label for the waterfall bars}
 
-\item{col}{(vector)\cr
-Categorical variable for bar coloring}
+\item{col}{(\code{character})\cr colors.}
 
 \item{xlab}{(\code{character} value)\cr
 x label. Default is \code{ID}.}
@@ -36,8 +34,6 @@ Text to be displayed as legend title.}
 
 \item{title}{(\code{character} value)\cr
 Text to be displayed as plot title.}
-
-\item{use_palette}{(\code{character}) \cr color palette theme, "stream" (default), "nest", or "viridis"}
 }
 \value{
 (\code{ggplot} object)\cr

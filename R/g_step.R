@@ -137,7 +137,7 @@ g_step <- function(df,
                    use_percentile = "Percentile Center" %in% names(df),
                    est = list(col = "black", lty = 1),
                    ci_ribbon = list(fill = "lightblue", alpha = 0.5),
-                   use_palette = "stream") {
+                   col = color_palette(palette = "stream")) {
   assertthat::assert_that(
     tibble::is_tibble(df),
     assertthat::is.flag(use_percentile)
@@ -163,7 +163,7 @@ g_step <- function(df,
     color = est$col,
     linetype = est$lty
   ) +
-    ggplot2::scale_color_manual(values = color_palette(palette = use_palette))
+    ggplot2::scale_color_manual(values = col)
   p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate)
   if (use_percentile) {
     p <- p + ggplot2::scale_x_continuous(labels = scales::percent)
