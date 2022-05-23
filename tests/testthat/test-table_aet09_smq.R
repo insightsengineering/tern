@@ -15,8 +15,8 @@ stack_adae_by_smq <- function(adae, smq) {
   do.call(rbind, l_df)
 }
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
 
 testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correctly", {
   adsl_labels <- formatters::var_labels(adsl)

@@ -2,12 +2,12 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-adsl_cached <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adsl_cached <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
 adsl_cached <- adsl_cached %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
   reapply_varlabels(formatters::var_labels(adsl_cached))
 
-adrs_cached <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+adrs_cached <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 adrs_cached <- adrs_cached %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
   reapply_varlabels(formatters::var_labels(adrs_cached))

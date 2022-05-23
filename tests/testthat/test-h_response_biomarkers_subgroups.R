@@ -17,7 +17,7 @@ preprocess_adrs <- function(adrs) {
   )
 }
 
-adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 
 # h_rsp_to_logistic_variables ----
 

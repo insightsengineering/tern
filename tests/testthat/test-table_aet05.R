@@ -3,8 +3,8 @@
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adaette <- synthetic_cdisc_data("rcd_2021_05_05")$adaette
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adaette <- synthetic_cdisc_data("rcd_2022_02_28")$adaette
 
 testthat::test_that("AET05 variant 1 is produced correctly", {
   anl <- adaette %>%

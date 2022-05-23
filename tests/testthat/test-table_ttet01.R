@@ -23,8 +23,8 @@ preproc_adtte <- function(adtte) {
   anl
 }
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
 testthat::test_that("TTET01 default variant is produced correctly", {
   adtte <- adtte %>%

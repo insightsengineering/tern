@@ -2,8 +2,8 @@ library(scda)
 library(dplyr)
 library(rtables)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adcm <- synthetic_cdisc_data("rcd_2021_05_05")$adcm
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adcm <- synthetic_cdisc_data("rcd_2022_02_28")$adcm
 
 testthat::test_that("CMT01 default variant (Concomitant medications) is produced correctly", {
   adcm_c <- adcm %>% dplyr::filter(ATIREL == "CONCOMITANT")

@@ -1,7 +1,7 @@
 library(scda)
 library(dplyr)
 
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
 testthat::test_that("s_coxph_pairwise works with default arguments and no stratification factors", {
   adtte_f <- adtte %>%

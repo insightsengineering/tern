@@ -3,8 +3,8 @@
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adex <- synthetic_cdisc_data("rcd_2021_05_05")$adex
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adex <- synthetic_cdisc_data("rcd_2022_02_28")$adex
 
 testthat::test_that("EXT01 default variant with numeric parameters is produced correctly", {
   adex <- adex %>%

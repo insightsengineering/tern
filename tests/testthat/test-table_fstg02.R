@@ -25,7 +25,7 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, AVAL = adtte_labels["AVAL"])
 }
 
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
 testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is produced correctly", {
   anl1 <- adtte %>%

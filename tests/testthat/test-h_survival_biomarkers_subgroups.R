@@ -20,7 +20,7 @@ preprocess_adtte <- function(adtte) {
   )
 }
 
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
 # h_surv_to_coxreg_variables ----
 
