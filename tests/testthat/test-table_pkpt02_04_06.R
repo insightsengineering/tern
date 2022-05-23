@@ -132,7 +132,7 @@ testthat::test_that("PKPT04 is produced correctly for Drug X", {
       "1.534e+01", "19.6", "1.557e+01", "7.197e+00 - 2.294e+01", "", "132",
       "4.963e-03 (1.006e-03)", "20.3", "4.859e-03", "21.2", "4.980e-03",
       "2.344e-03 - 7.306e-03"
-      ),
+    ),
     .Dim = c(33L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -162,7 +162,8 @@ testthat::test_that("PKPT04 is produced correctly for Drug Y", {
       "4.950e-02", "21.4", "5.101e-02", "2.226e-02 - 7.606e-02", "", "264",
       "1.552e+01 (2.932e+00)", "18.9", "1.524e+01", "19.7", "1.550e+01",
       "8.133e+00 - 2.639e+01", "", "132", "5.124e-03 (9.578e-04)", "18.7",
-      "5.029e-03", "20.0", "5.175e-03", "2.676e-03 - 7.541e-03"    ),
+      "5.029e-03", "20.0", "5.175e-03", "2.676e-03 - 7.541e-03"
+    ),
     .Dim = c(33L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -185,7 +186,8 @@ testthat::test_that("PKPT06 is produced correctly for Drug X", {
       "", "134", "5.009e-03 (1.009e-03)", "20.1", "4.905e-03", "21.1",
       "4.909e-03", "2.426e-03 - 7.670e-03", "ARM C", "", "132",
       "4.963e-03 (1.006e-03)", "20.3", "4.859e-03", "21.2", "4.980e-03",
-      "2.344e-03 - 7.306e-03"    ),
+      "2.344e-03 - 7.306e-03"
+    ),
     .Dim = c(9L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -206,9 +208,9 @@ testthat::test_that("PKPT06 is produced correctly for Drug Y", {
       "PK Parameter", "RENALCLD (L/hr/mg)", "n", "Mean (SD)", "CV (%)",
       "Geometric Mean", "CV % Geometric Mean", "Median", "Min - Max", "ARM C",
       "", "132", "5.124e-03 (9.578e-04)", "18.7", "5.029e-03", "20.0",
-      "5.175e-03", "2.676e-03 - 7.541e-03"    ),
+      "5.175e-03", "2.676e-03 - 7.541e-03"
+    ),
     .Dim = c(9L, 2L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
-
