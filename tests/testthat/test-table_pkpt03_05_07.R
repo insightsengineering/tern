@@ -132,7 +132,7 @@ testthat::test_that("PKPT03 Drug Y is produced correctly", {
     )
 
   # Plasma Drug Y__
-  adpp1 <- adpp_03 %>%
+  adpp1 <- adpp_plasma %>%
     dplyr::filter(PPCAT == "Plasma Drug Y") %>%
     h_pkparam_sort() %>%
     dplyr::mutate(PKPARAM = factor(paste0(TLG_DISPLAY, " (", AVALU, ")")))
