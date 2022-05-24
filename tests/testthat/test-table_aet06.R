@@ -4,9 +4,9 @@
 
 library(magrittr)
 
-adsl <- scda::synthetic_cdisc_data('2022_02_28')$adsl
-adae <- scda::synthetic_cdisc_data('2022_02_28')$adae
-adsub <- scda::synthetic_cdisc_data('2022_02_28')$adsub
+adsl <- scda::synthetic_cdisc_data("2022_02_28")$adsl
+adae <- scda::synthetic_cdisc_data("2022_02_28")$adae
+adsub <- scda::synthetic_cdisc_data("2022_02_28")$adsub
 adsub_bmi <- adsub %>%
   dplyr::filter(PARAMCD == "BBMISI") %>%
   dplyr::select(STUDYID, USUBJID, AVALCAT1) %>%
