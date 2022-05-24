@@ -189,7 +189,7 @@ g_ipp <- function(df,
                   ggtheme = h_set_nest_theme(10),
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
                   max_obs_per_plot = 4,
-                  col = color_palette(palette = "stream") ) {
+                  col = color_palette(palette = "stream")) {
   assertthat::assert_that(
     assertthat::is.count(max_obs_per_plot),
     plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
