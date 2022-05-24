@@ -57,10 +57,21 @@ h_glm_poisson <- function(.var,
                           variables,
                           weights) {
   arm <- variables$arm
-
   formula <- as.formula(paste0(
     .var, " ~ ", " + ", arm
   ))
+
+  if (!is.null(variables$covariates)) {
+    covariates <- variables$covariates
+    forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
+    formula <- update(formula, forumla_new)
+  }
+
+  if (!is.null(variables$offset)) {
+    offset <- variables$offset
+    forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
+    formula <- update(formula, forumla_new)
+  }
 
   if (!is.null(variables$covariates)) {
     covariates <- variables$covariates
@@ -102,10 +113,21 @@ h_glm_quasipoisson <- function(.var,
                                variables,
                                weights) {
   arm <- variables$arm
-
   formula <- as.formula(paste0(
     .var, " ~ ", " + ", arm
   ))
+
+  if (!is.null(variables$covariates)) {
+    covariates <- variables$covariates
+    forumla_new <- as.formula(paste("~ . +", paste(covariates, collapse = " + ")))
+    formula <- update(formula, forumla_new)
+  }
+
+  if (!is.null(variables$offset)) {
+    covariates <- variables$covariates
+    forumla_new <- as.formula(paste("~ . +", paste("offset(", offset, ")")))
+    formula <- update(formula, forumla_new)
+  }
 
   if (!is.null(variables$covariates)) {
     covariates <- variables$covariates
@@ -147,7 +169,6 @@ h_glm_negbin <- function(.var,
                          variables,
                          weights) {
   arm <- variables$arm
-
   formula <- as.formula(paste0(
     .var, " ~ ", " + ", arm
   ))
@@ -208,8 +229,6 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
   arm_levels <- levels(.df_row[[arm]])
 
   out <- lapply(arm_levels, function(lev) {
-    lev <- arm_levels[[1]]
-
     temp <- .df_row
     temp[[arm]] <- factor(lev, levels = arm_levels)
 
@@ -390,7 +409,8 @@ summarize_glm_count <- function(lyt,
 Get example cancer dataset from Alan Agresti's website: <https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat>
 
 ```{r}
-cancer <- read.table("https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat", header = TRUE)
+system("wget --no-check-certificate https://users.stat.ufl.edu/~aa/glm/data/Cancer.dat")
+cancer <- read.table("Cancer.dat", header = TRUE)
 
 set.seed(12345)
 anl <- cancer %>%
@@ -400,7 +420,11 @@ anl <- cancer %>%
     ln_time_at_risk = log(risktime),
     count_f = factor(count, levels = sort(unique(count)))
   )
+```
 
+Creating table
+
+```{r}
 covars <- c("histology", "stage", "time")
 offset <- "ln_time_at_risk"
 arm <- "arm"
