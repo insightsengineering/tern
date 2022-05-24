@@ -319,14 +319,3 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
 
   append_topleft(lyt, lab)
 }
-
-# Temporary fix of rtables::rbind to be removed once `rtables` has been fixed,
-# see https://github.com/insightsengineering/tern/issues/217
-rbind_fix <- function(...) {
-  tabs <- list(...)
-  if (length(tabs) == 1L) {
-    tabs[[1L]]
-  } else {
-    rbind(...)
-  }
-}
