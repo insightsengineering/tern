@@ -94,8 +94,8 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   anl
 }
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
 
 testthat::test_that("AET04 variant 1 is produced correctly", {
   adae <- preproc_adae(adae)

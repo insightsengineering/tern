@@ -3,8 +3,8 @@
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
 
 testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
   adsl_labels <- formatters::var_labels(adsl)

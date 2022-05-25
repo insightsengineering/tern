@@ -1,6 +1,6 @@
 library(scda)
 testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
-  adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
+  adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
   result <- h_stack_by_baskets(df = adae)
 
   expected <-
@@ -65,7 +65,7 @@ testthat::test_that(
   "h_stack_by_baskets fails when selecting Standardized/Customized query names
   that do not start with 'SMQ' or 'CQ' ",
   code = {
-    adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
+    adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
 
     testthat::expect_error(
       h_stack_by_baskets(
@@ -80,7 +80,7 @@ testthat::test_that(
   "h_stack_by_baskets fails when selecting Standardized/Customized
   query names that do not end with 'NAM' ",
   code = {
-    adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
+    adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
 
     testthat::expect_error(
       h_stack_by_baskets(
@@ -95,7 +95,7 @@ testthat::test_that(
   "h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no
   adverse events falling within any of the baskets selected",
   code = {
-    adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
+    adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
 
     adae[, baskets] <- "<Missing>"
@@ -130,7 +130,7 @@ testthat::test_that(
   "The levels of the SMQ column does also
   include the options from aag_summary not observed in ADAE",
   code = {
-    adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ] %>% df_explicit_na()
+    adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
 
     aag_summary <- data.frame(

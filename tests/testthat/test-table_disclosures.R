@@ -1,10 +1,10 @@
 library(scda)
 library(dplyr)
 
-adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
 
 get_adsl <- function() {
-  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl # nolintr
+  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl # nolintr
   set.seed(1)
   # nolint start
   adsl_f <- adsl %>%

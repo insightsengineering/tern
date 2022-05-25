@@ -5,8 +5,8 @@ library(scda)
 library(rtables)
 library(tern)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-admh <- synthetic_cdisc_data("rcd_2021_05_05")$admh
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+admh <- synthetic_cdisc_data("rcd_2022_02_28")$admh
 
 testthat::test_that("MHT01 variant 1 is produced accurately", {
   adsl_f <- adsl %>%

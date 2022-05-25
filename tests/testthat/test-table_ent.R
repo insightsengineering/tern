@@ -2,7 +2,7 @@
 
 library(scda)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
 
 testthat::test_that("ENT01_IT is produced correctly", {
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint

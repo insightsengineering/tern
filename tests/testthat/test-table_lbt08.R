@@ -2,8 +2,8 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
 adlb <- adlb %>%
   dplyr::mutate(
     GRADDR = dplyr::case_when(

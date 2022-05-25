@@ -3,8 +3,8 @@
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adcm <- synthetic_cdisc_data("rcd_2021_05_05")$adcm
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adcm <- synthetic_cdisc_data("rcd_2022_02_28")$adcm
 
 testthat::test_that("CMT02_PT default variant is produced correctly", {
   adcm <- adcm %>%

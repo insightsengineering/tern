@@ -4,9 +4,9 @@
 
 library(magrittr)
 
-adsl <- scda::synthetic_cdisc_data("2022_02_28")$adsl
-adae <- scda::synthetic_cdisc_data("2022_02_28")$adae
-adsub <- scda::synthetic_cdisc_data("2022_02_28")$adsub
+adsl <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adae <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adae
+adsub <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adsub
 adsub_bmi <- adsub %>%
   dplyr::filter(PARAMCD == "BBMISI") %>%
   dplyr::select(STUDYID, USUBJID, AVALCAT1) %>%
@@ -15,7 +15,7 @@ adsub_bmi <- adsub %>%
   )
 adsl <- adsl %>%
   dplyr::mutate(
-    RACE1 = case_when(
+    RACE1 = dplyr::case_when(
       RACE == "WHITE" ~ "WHITE",
       TRUE ~ "NON-WHITE"
     ),
@@ -33,7 +33,7 @@ adae_labels <- var_labels(adae)
 
 adae <- adae %>%
   dplyr::mutate(
-    RACE1 = case_when(
+    RACE1 = dplyr::case_when(
       RACE == "WHITE" ~ "WHITE",
       TRUE ~ "NON-WHITE"
     ),
@@ -46,7 +46,6 @@ adae <- adae %>%
     y = adsub_bmi,
     by = c("STUDYID", "USUBJID")
   )
-
 
 testthat::test_that("AET06 variant 1 is produced correctly", {
   lyt <- basic_table() %>%

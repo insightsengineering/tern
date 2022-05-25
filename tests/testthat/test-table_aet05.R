@@ -2,9 +2,10 @@
 
 library(scda)
 library(dplyr)
+library(rtables)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adaette <- synthetic_cdisc_data("rcd_2021_05_05")$adaette
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adaette <- synthetic_cdisc_data("rcd_2022_02_28")$adaette
 
 testthat::test_that("AET05 variant 1 is produced correctly", {
   anl <- adaette %>%
@@ -24,11 +25,12 @@ testthat::test_that("AET05 variant 1 is produced correctly", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Total patient-years at risk", "Number of adverse events observed",
-      "AE rate per 100 patient-years", "95% CI", "A: Drug X", "(N=134)",
-      "93.1", "88", "94.57", "(74.81, 114.32)", "B: Placebo", "(N=134)",
-      "65.8", "109", "165.72", "(134.61, 196.83)", "C: Combination",
-      "(N=132)", "105.6", "76", "72.00", "(55.81, 88.18)"
+      "", "", "Total patient-years at risk",
+      "Number of adverse events observed", "AE rate per 100 patient-years",
+      "95% CI", "A: Drug X", "(N=134)", "112.3", "78", "69.49",
+      "(54.07, 84.91)", "B: Placebo", "(N=134)", "77.4", "104", "134.37",
+      "(108.54, 160.19)", "C: Combination", "(N=132)", "119.4", "67", "56.10",
+      "(42.67, 69.53)"
     ),
     .Dim = c(6L, 4L)
   )
@@ -54,11 +56,12 @@ testthat::test_that("AET05 variant 2 is produced correctly", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Total patient-years at risk", "Number of adverse events observed",
-      "AE rate per 100 patient-years", "95% CI", "A: Drug X", "(N=134)",
-      "93.1", "88", "94.57", "(75.84, 116.51)", "B: Placebo", "(N=134)",
-      "65.8", "109", "165.72", "(136.07, 199.90)", "C: Combination",
-      "(N=132)", "105.6", "76", "72.00", "(56.72, 90.11)"
+      "", "", "Total patient-years at risk",
+      "Number of adverse events observed", "AE rate per 100 patient-years",
+      "95% CI", "A: Drug X", "(N=134)", "112.3", "78", "69.49",
+      "(54.93, 86.72)", "B: Placebo", "(N=134)", "77.4", "104", "134.37",
+      "(109.79, 162.81)", "C: Combination", "(N=132)", "119.4", "67", "56.10",
+      "(43.48, 71.25)"
     ),
     .Dim = c(6L, 4L)
   )

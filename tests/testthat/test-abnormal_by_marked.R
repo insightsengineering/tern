@@ -3,7 +3,7 @@ library(rtables)
 library(dplyr)
 
 adlb_raw <- local({
-  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolintr
+  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb # nolintr
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
