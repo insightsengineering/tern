@@ -4,11 +4,11 @@ library(scda)
 library(dplyr)
 library(forcats)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
 
 adlb_raw <- local({
-  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolintr
+  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb # nolintr
 
   # Data set is modified in order to have some parameters with grades only in one direction
   # and simulate the real data.

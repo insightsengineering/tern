@@ -49,8 +49,8 @@ criteria_fun <- function(tr) {
   inherits(tr, "ContentRow")
 }
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
 
 testthat::test_that("AET04_PI full table is produced correctly", {
   adae_max <- adae %>%

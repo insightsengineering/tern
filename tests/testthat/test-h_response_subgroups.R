@@ -17,7 +17,7 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
-adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 
 adrs_20 <- preprocess_adrs(adrs, 20)
 adrs_100 <- preprocess_adrs(adrs, 100)

@@ -2,8 +2,8 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
 adlb <- adlb %>%
   dplyr::mutate(
     GRADDR = dplyr::case_when(
@@ -305,8 +305,8 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
 })
 
 testthat::test_that("h_adlb_worsen all high", {
-  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
-  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
+  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
   adlb <- adlb %>%
     dplyr::mutate(
       GRADDR = dplyr::case_when(
@@ -336,8 +336,8 @@ testthat::test_that("h_adlb_worsen all high", {
 })
 
 testthat::test_that("h_adlb_worsen all low", {
-  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
-  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
+  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
   adlb <- adlb %>%
     dplyr::mutate(
       GRADDR = dplyr::case_when(

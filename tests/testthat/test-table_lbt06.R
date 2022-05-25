@@ -3,8 +3,8 @@
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
 
 testthat::test_that("LBT06 default variant is produced correctly", {
   adlb <- adlb %>%

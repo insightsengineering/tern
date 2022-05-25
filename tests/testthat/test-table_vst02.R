@@ -3,8 +3,8 @@
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+advs <- synthetic_cdisc_data("rcd_2022_02_28")$advs
 
 testthat::test_that("1. Vital Sign Abnormalities (Regardless of Abnormality at Baseline, VST02_1)", {
 

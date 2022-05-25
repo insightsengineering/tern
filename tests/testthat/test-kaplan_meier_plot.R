@@ -2,7 +2,7 @@ library(scda)
 library(dplyr)
 library(survival)
 
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte # nolintr
+adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte # nolintr
 
 test_fit <- local({
   dta <- adtte[adtte$PARAMCD == "OS", ]

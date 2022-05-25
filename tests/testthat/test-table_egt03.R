@@ -4,8 +4,8 @@ library(rtables)
 library(tern)
 library(scda)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adeg <- synthetic_cdisc_data("rcd_2022_02_28")$adeg
 
 testthat::test_that("EGT03 variant 1 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")

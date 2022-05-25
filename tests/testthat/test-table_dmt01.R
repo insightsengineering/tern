@@ -4,8 +4,8 @@ library(scda)
 library(dplyr)
 library(rtables)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+advs <- synthetic_cdisc_data("rcd_2022_02_28")$advs
 
 
 testthat::test_that("DMT01 default and alternative variants are produced correctly", {

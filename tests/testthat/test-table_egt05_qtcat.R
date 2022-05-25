@@ -4,10 +4,10 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
 
 get_adeg <- function() {
-  adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg # nolintr
+  adeg <- synthetic_cdisc_data("rcd_2022_02_28")$adeg # nolintr
   adeg_labels <- formatters::var_labels(adeg)
 
   adeg_f <- adeg %>%

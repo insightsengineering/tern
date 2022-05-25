@@ -2,7 +2,7 @@
 library(dplyr)
 library(scda)
 
-adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 
 # Select a response parameter endpoint.
 adrs <- adrs %>% dplyr::filter(PARAMCD == "INVET")

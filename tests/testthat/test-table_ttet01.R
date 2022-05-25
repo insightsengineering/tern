@@ -23,8 +23,8 @@ preproc_adtte <- function(adtte) {
   anl
 }
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
 testthat::test_that("TTET01 default variant is produced correctly", {
   adtte <- adtte %>%
@@ -82,32 +82,29 @@ testthat::test_that("TTET01 default variant is produced correctly", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Patients with event (%)", "Earliest contributing event",
-      "Adverse Event", "Death", "Disease Progression", "Last Date Known To Be Alive",
-      "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "95% CI", "25% and 75%-ile", "Range (censored)", "Range (event)",
-      "Unstratified Analysis", "p-value (log-rank)", "Hazard Ratio",
-      "95% CI", "6 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "95% CI", "Difference in Event Free Rate", "95% CI", "p-value (Z-test)",
-      "12 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "95% CI", "Difference in Event Free Rate", "95% CI", "p-value (Z-test)",
-      "A: Drug X", "(N=134)", "79 (59%)", "", "15", "14", "18", "17",
-      "15", "55 (41%)", "", "41.4", "(27.7, 54.7)", "15.4, 75.2", "0.4 to 154.7",
-      "0.3 to 116.4", "", "", "", "", "", "106", "83.83", "(77.49, 90.17)",
-      "", "", "", "", "92", "78.03", "(70.82, 85.24)", "", "", "",
-      "B: Placebo", "(N=134)", "87 (64.9%)", "", "14", "20", "16",
-      "15", "22", "47 (35.1%)", "", "27.5", "(17.3, 30.2)", "9.5, 54.9",
-      "0.9 to 91.0", "0.0 to 122.4", "", "0.0334", "1.39", "(1.03, 1.90)",
-      "", "112", "89.16", "(83.80, 94.53)", "5.33", "(-2.97, 13.64)",
-      "0.2080", "", "83", "70.32", "(62.27, 78.37)", "-7.71", "(-18.51, 3.10)",
-      "0.1622", "C: Combination", "(N=132)", "116 (87.9%)", "", "21",
-      "23", "24", "27", "21", "16 (12.1%)", "", "11.1", "(9.6, 15.9)",
+      "", "", "Patients with event (%)", "Earliest contributing event", "Death",
+      "Patients without event (%)", "Time to Event (Months)", "Median", "95% CI",
+      "25% and 75%-ile", "Range (censored)", "Range (event)",
+      "Unstratified Analysis", "p-value (log-rank)", "Hazard Ratio", "95% CI",
+      "6 Months", "Patients remaining at risk", "Event Free Rate (%)", "95% CI",
+      "Difference in Event Free Rate", "95% CI", "p-value (Z-test)", "12 Months",
+      "Patients remaining at risk", "Event Free Rate (%)", "95% CI",
+      "Difference in Event Free Rate", "95% CI", "p-value (Z-test)", "A: Drug X",
+      "(N=134)", "79 (59%)", "", "79", "55 (41%)", "", "41.4", "(27.7, 54.7)",
+      "15.4, 75.2", "0.4 to 154.7", "0.3 to 116.4", "", "", "", "", "", "106",
+      "83.83", "(77.49, 90.17)", "", "", "", "", "92", "78.03", "(70.82, 85.24)",
+      "", "", "", "B: Placebo", "(N=134)", "87 (64.9%)", "", "87", "47 (35.1%)",
+      "", "27.5", "(17.3, 30.2)", "9.5, 54.9", "0.9 to 91.0", "0.0 to 122.4", "",
+      "0.0334", "1.39", "(1.03, 1.90)", "", "112", "89.16", "(83.80, 94.53)",
+      "5.33", "(-2.97, 13.64)", "0.2080", "", "83", "70.32", "(62.27, 78.37)",
+      "-7.71", "(-18.51, 3.10)", "0.1622", "C: Combination", "(N=132)",
+      "116 (87.9%)", "", "116", "16 (12.1%)", "", "11.1", "(9.6, 15.9)",
       "5.3, 25.2", "0.3 to 49.4", "0.1 to 101.6", "", "<0.0001", "2.75",
       "(2.05, 3.70)", "", "92", "73.40", "(65.72, 81.07)", "-10.43",
-      "(-20.38, -0.48)", "0.0399", "", "56", "46.39", "(37.59, 55.18)",
-      "-31.64", "(-43.01, -20.26)", "<0.0001"
+      "(-20.38, -0.48)", "0.0399", "", "56", "46.39", "(37.59, 55.18)", "-31.64",
+      "(-43.01, -20.26)", "<0.0001"
     ),
-    .Dim = c(34L, 4L)
+    .Dim = c(30L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -163,14 +160,13 @@ testthat::test_that("TTET01 variant 2: selecting sections to display", {
       "p-value (log-rank)", "Hazard Ratio", "95% CI", "12 Months",
       "Patients remaining at risk", "Event Free Rate (%)", "95% CI",
       "A: Drug X", "(N=134)", "79 (59%)", "55 (41%)", "", "41.4", "(27.7, 54.7)",
-      "15.4, 75.2", "0.4 to 154.7", "0.3 to 116.4", "", "", "", "",
-      "", "92", "78.03", "(70.82, 85.24)", "B: Placebo", "(N=134)",
-      "87 (64.9%)", "47 (35.1%)", "", "27.5", "(17.3, 30.2)", "9.5, 54.9",
-      "0.9 to 91.0", "0.0 to 122.4", "", "0.0334", "1.39", "(1.03, 1.90)",
-      "", "83", "70.32", "(62.27, 78.37)", "C: Combination", "(N=132)",
-      "116 (87.9%)", "16 (12.1%)", "", "11.1", "(9.6, 15.9)", "5.3, 25.2",
-      "0.3 to 49.4", "0.1 to 101.6", "", "<0.0001", "2.75", "(2.05, 3.70)",
-      "", "56", "46.39", "(37.59, 55.18)"
+      "15.4, 75.2", "0.4 to 154.7", "0.3 to 116.4", "", "", "", "", "", "92",
+      "78.03", "(70.82, 85.24)", "B: Placebo", "(N=134)", "87 (64.9%)",
+      "47 (35.1%)", "", "27.5", "(17.3, 30.2)", "9.5, 54.9", "0.9 to 91.0",
+      "0.0 to 122.4", "", "0.0334", "1.39", "(1.03, 1.90)", "", "83", "70.32",
+      "(62.27, 78.37)", "C: Combination", "(N=132)", "116 (87.9%)", "16 (12.1%)",
+      "", "11.1", "(9.6, 15.9)", "5.3, 25.2", "0.3 to 49.4", "0.1 to 101.6", "",
+      "<0.0001", "2.75", "(2.05, 3.70)", "", "56", "46.39", "(37.59, 55.18)"
     ),
     .Dim = c(18L, 4L)
   )
@@ -243,27 +239,24 @@ testthat::test_that("TTET01 variant 3: modifying analysis details like conftype,
 
   expected_matrix <- structure(
     c(
-      "", "", "Patients with event (%)", "Earliest contributing event",
-      "Adverse Event", "Death", "Disease Progression", "Last Date Known To Be Alive",
-      "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "90% CI", "25% and 75%-ile", "Range (censored)", "Range (event)",
-      "Unstratified Analysis", "p-value (log-rank)", "Hazard Ratio",
-      "95% CI", "12 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "90% CI", "Difference in Event Free Rate", "97.5% CI", "p-value (Z-test)",
-      "A: Drug X", "(N=134)", "79 (59%)", "", "15", "14", "18", "17",
-      "15", "55 (41%)", "", "41.4", "(27.9, 54.1)", "15.4, 75.2", "0.4 to 154.7",
-      "0.3 to 116.4", "", "", "", "", "", "92", "78.03", "(71.24, 83.40)",
-      "", "", "", "B: Placebo", "(N=134)", "87 (64.9%)", "", "14",
-      "20", "16", "15", "22", "47 (35.1%)", "", "27.5", "(18.8, 29.9)",
-      "9.5, 54.9", "0.9 to 91.0", "0.0 to 122.4", "", "0.0334", "1.39",
-      "(1.03, 1.90)", "", "83", "70.32", "(62.97, 76.49)", "-7.71",
-      "(-20.07, 4.65)", "0.1622", "C: Combination", "(N=132)", "116 (87.9%)",
-      "", "21", "23", "24", "27", "21", "16 (12.1%)", "", "11.1", "(9.7, 15.1)",
+      "", "", "Patients with event (%)", "Earliest contributing event", "Death",
+      "Patients without event (%)", "Time to Event (Months)", "Median", "90% CI",
+      "25% and 75%-ile", "Range (censored)", "Range (event)",
+      "Unstratified Analysis", "p-value (log-rank)", "Hazard Ratio", "95% CI",
+      "12 Months", "Patients remaining at risk", "Event Free Rate (%)", "90% CI",
+      "Difference in Event Free Rate", "97.5% CI", "p-value (Z-test)", "A: Drug X",
+      "(N=134)", "79 (59%)", "", "79", "55 (41%)", "", "41.4", "(27.9, 54.1)",
+      "15.4, 75.2", "0.4 to 154.7", "0.3 to 116.4", "", "", "", "", "", "92",
+      "78.03", "(71.24, 83.40)", "", "", "", "B: Placebo", "(N=134)", "87 (64.9%)",
+      "", "87", "47 (35.1%)", "", "27.5", "(18.8, 29.9)", "9.5, 54.9", "0.9 to 91.0",
+      "0.0 to 122.4", "", "0.0334", "1.39", "(1.03, 1.90)", "", "83", "70.32",
+      "(62.97, 76.49)", "-7.71", "(-20.07, 4.65)", "0.1622", "C: Combination",
+      "(N=132)", "116 (87.9%)", "", "116", "16 (12.1%)", "", "11.1", "(9.7, 15.1)",
       "5.3, 25.2", "0.3 to 49.4", "0.1 to 101.6", "", "<0.0001", "2.75",
       "(2.05, 3.70)", "", "56", "46.39", "(38.87, 53.56)", "-31.64",
       "(-44.64, -18.63)", "<0.0001"
     ),
-    .Dim = c(27L, 4L)
+    .Dim = c(23L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -329,29 +322,26 @@ testthat::test_that("TTET01 variant 4: with stratified analysis", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Patients with event (%)", "Earliest contributing event",
-      "Adverse Event", "Death", "Disease Progression", "Last Date Known To Be Alive",
-      "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "95% CI", "25% and 75%-ile", "Range (censored)", "Range (event)",
-      "Unstratified Analysis", "p-value (log-rank)", "Hazard Ratio",
-      "95% CI", "Stratified Analysis", "p-value (log-rank)", "Hazard Ratio",
-      "95% CI", "12 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "95% CI", "Difference in Event Free Rate", "95% CI", "p-value (Z-test)",
-      "A: Drug X", "(N=134)", "79 (59%)", "", "15", "14", "18", "17",
-      "15", "55 (41%)", "", "41.4", "(27.7, 54.7)", "15.4, 75.2", "0.4 to 154.7",
-      "0.3 to 116.4", "", "", "", "", "", "", "", "", "", "92", "78.03",
-      "(70.82, 85.24)", "", "", "", "B: Placebo", "(N=134)", "87 (64.9%)",
-      "", "14", "20", "16", "15", "22", "47 (35.1%)", "", "27.5", "(17.3, 30.2)",
-      "9.5, 54.9", "0.9 to 91.0", "0.0 to 122.4", "", "0.0334", "1.39",
-      "(1.03, 1.90)", "", "0.0478", "1.36", "(1.00, 1.86)", "", "83", "70.32",
-      "(62.27, 78.37)", "-7.71", "(-18.51, 3.10)", "0.1622", "C: Combination",
-      "(N=132)", "116 (87.9%)", "", "21", "23", "24", "27", "21", "16 (12.1%)",
-      "", "11.1", "(9.6, 15.9)", "5.3, 25.2", "0.3 to 49.4", "0.1 to 101.6",
-      "", "<0.0001", "2.75", "(2.05, 3.70)", "", "<0.0001", "2.73",
-      "(2.02, 3.69)", "", "56", "46.39", "(37.59, 55.18)", "-31.64",
-      "(-43.01, -20.26)", "<0.0001"
+      "", "", "Patients with event (%)", "Earliest contributing event", "Death",
+      "Patients without event (%)", "Time to Event (Months)", "Median", "95% CI",
+      "25% and 75%-ile", "Range (censored)", "Range (event)",
+      "Unstratified Analysis", "p-value (log-rank)", "Hazard Ratio", "95% CI",
+      "Stratified Analysis", "p-value (log-rank)", "Hazard Ratio", "95% CI",
+      "12 Months", "Patients remaining at risk", "Event Free Rate (%)", "95% CI",
+      "Difference in Event Free Rate", "95% CI", "p-value (Z-test)", "A: Drug X",
+      "(N=134)", "79 (59%)", "", "79", "55 (41%)", "", "41.4", "(27.7, 54.7)",
+      "15.4, 75.2", "0.4 to 154.7", "0.3 to 116.4", "", "", "", "", "", "", "",
+      "", "", "92", "78.03", "(70.82, 85.24)", "", "", "", "B: Placebo", "(N=134)",
+      "87 (64.9%)", "", "87", "47 (35.1%)", "", "27.5", "(17.3, 30.2)", "9.5, 54.9",
+      "0.9 to 91.0", "0.0 to 122.4", "", "0.0334", "1.39", "(1.03, 1.90)", "",
+      "0.0478", "1.36", "(1.00, 1.86)", "", "83", "70.32", "(62.27, 78.37)",
+      "-7.71", "(-18.51, 3.10)", "0.1622", "C: Combination", "(N=132)",
+      "116 (87.9%)", "", "116", "16 (12.1%)", "", "11.1", "(9.6, 15.9)",
+      "5.3, 25.2", "0.3 to 49.4", "0.1 to 101.6", "", "<0.0001", "2.75",
+      "(2.05, 3.70)", "", "<0.0001", "2.73", "(2.02, 3.69)", "", "56", "46.39",
+      "(37.59, 55.18)", "-31.64", "(-43.01, -20.26)", "<0.0001"
     ),
-    .Dim = c(31L, 4L)
+    .Dim = c(27L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -411,27 +401,24 @@ testthat::test_that("TTET01 variant 5: modifying time point", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Patients with event (%)", "Earliest contributing event",
-      "Adverse Event", "Death", "Disease Progression", "Last Date Known To Be Alive",
-      "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "95% CI", "25% and 75%-ile", "Range (censored)", "Range (event)",
-      "Unstratified Analysis", "p-value (log-rank)", "Hazard Ratio",
-      "95% CI", "6 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "95% CI", "Difference in Event Free Rate", "95% CI", "p-value (Z-test)",
-      "A: Drug X", "(N=134)", "79 (59%)", "", "15", "14", "18", "17",
-      "15", "55 (41%)", "", "41.4", "(27.7, 54.7)", "15.4, 75.2", "0.4 to 154.7",
-      "0.3 to 116.4", "", "", "", "", "", "106", "83.83", "(77.49, 90.17)",
-      "", "", "", "B: Placebo", "(N=134)", "87 (64.9%)", "", "14",
-      "20", "16", "15", "22", "47 (35.1%)", "", "27.5", "(17.3, 30.2)",
-      "9.5, 54.9", "0.9 to 91.0", "0.0 to 122.4", "", "0.0334", "1.39",
-      "(1.03, 1.90)", "", "112", "89.16", "(83.80, 94.53)", "5.33", "(-2.97, 13.64)",
-      "0.2080", "C: Combination", "(N=132)", "116 (87.9%)", "", "21",
-      "23", "24", "27", "21", "16 (12.1%)", "", "11.1", "(9.6, 15.9)",
-      "5.3, 25.2", "0.3 to 49.4", "0.1 to 101.6", "", "<0.0001", "2.75",
-      "(2.05, 3.70)", "", "92", "73.40", "(65.72, 81.07)", "-10.43",
-      "(-20.38, -0.48)", "0.0399"
+      "", "", "Patients with event (%)", "Earliest contributing event", "Death",
+      "Patients without event (%)", "Time to Event (Months)", "Median", "95% CI",
+      "25% and 75%-ile", "Range (censored)", "Range (event)",
+      "Unstratified Analysis", "p-value (log-rank)", "Hazard Ratio", "95% CI",
+      "6 Months", "Patients remaining at risk", "Event Free Rate (%)", "95% CI",
+      "Difference in Event Free Rate", "95% CI", "p-value (Z-test)", "A: Drug X",
+      "(N=134)", "79 (59%)", "", "79", "55 (41%)", "", "41.4", "(27.7, 54.7)",
+      "15.4, 75.2", "0.4 to 154.7", "0.3 to 116.4", "", "", "", "", "", "106",
+      "83.83", "(77.49, 90.17)", "", "", "", "B: Placebo", "(N=134)", "87 (64.9%)",
+      "", "87", "47 (35.1%)", "", "27.5", "(17.3, 30.2)", "9.5, 54.9",
+      "0.9 to 91.0", "0.0 to 122.4", "", "0.0334", "1.39", "(1.03, 1.90)", "",
+      "112", "89.16", "(83.80, 94.53)", "5.33", "(-2.97, 13.64)", "0.2080",
+      "C: Combination", "(N=132)", "116 (87.9%)", "", "116", "16 (12.1%)", "",
+      "11.1", "(9.6, 15.9)", "5.3, 25.2", "0.3 to 49.4", "0.1 to 101.6", "",
+      "<0.0001", "2.75", "(2.05, 3.70)", "", "92", "73.40", "(65.72, 81.07)",
+      "-10.43", "(-20.38, -0.48)", "0.0399"
     ),
-    .Dim = c(27L, 4L)
+    .Dim = c(23L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -509,29 +496,26 @@ testthat::test_that("TTET01 variant 6: requesting more than one p-value", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Patients with event (%)", "Earliest contributing event",
-      "Adverse Event", "Death", "Disease Progression", "Last Date Known To Be Alive",
-      "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "95% CI", "25% and 75%-ile", "Range (censored)", "Range (event)",
+      "", "", "Patients with event (%)", "Earliest contributing event", "Death",
+      "Patients without event (%)", "Time to Event (Months)", "Median", "95% CI",
+      "25% and 75%-ile", "Range (censored)", "Range (event)",
       "Unstratified Analysis", "p-value (log-rank)", "p-value (wald)",
       "p-value (likelihood)", "Hazard Ratio", "95% CI", "12 Months",
       "Patients remaining at risk", "Event Free Rate (%)", "95% CI",
-      "Difference in Event Free Rate", "95% CI", "p-value (Z-test)",
-      "A: Drug X", "(N=134)", "79 (59%)", "", "15", "14", "18", "17",
-      "15", "55 (41%)", "", "41.4", "(27.7, 54.7)", "15.4, 75.2", "0.4 to 154.7",
-      "0.3 to 116.4", "", "", "", "", "", "", "", "92", "78.03", "(70.82, 85.24)",
-      "", "", "", "B: Placebo", "(N=134)", "87 (64.9%)", "", "14",
-      "20", "16", "15", "22", "47 (35.1%)", "", "27.5", "(17.3, 30.2)",
+      "Difference in Event Free Rate", "95% CI", "p-value (Z-test)", "A: Drug X",
+      "(N=134)", "79 (59%)", "", "79", "55 (41%)", "", "41.4", "(27.7, 54.7)",
+      "15.4, 75.2", "0.4 to 154.7", "0.3 to 116.4", "", "", "", "", "", "", "",
+      "92", "78.03", "(70.82, 85.24)", "", "", "", "B: Placebo", "(N=134)",
+      "87 (64.9%)", "", "87", "47 (35.1%)", "", "27.5", "(17.3, 30.2)",
       "9.5, 54.9", "0.9 to 91.0", "0.0 to 122.4", "", "0.0334", "0.0342",
       "0.0341", "1.39", "(1.03, 1.90)", "", "83", "70.32", "(62.27, 78.37)",
       "-7.71", "(-18.51, 3.10)", "0.1622", "C: Combination", "(N=132)",
-      "116 (87.9%)", "", "21", "23", "24", "27", "21", "16 (12.1%)",
-      "", "11.1", "(9.6, 15.9)", "5.3, 25.2", "0.3 to 49.4", "0.1 to 101.6",
-      "", "<0.0001", "<0.0001", "<0.0001", "2.75", "(2.05, 3.70)", "",
-      "56", "46.39", "(37.59, 55.18)", "-31.64", "(-43.01, -20.26)",
-      "<0.0001"
+      "116 (87.9%)", "", "116", "16 (12.1%)", "", "11.1", "(9.6, 15.9)",
+      "5.3, 25.2", "0.3 to 49.4", "0.1 to 101.6", "", "<0.0001", "<0.0001",
+      "<0.0001", "2.75", "(2.05, 3.70)", "", "56", "46.39", "(37.59, 55.18)",
+      "-31.64", "(-43.01, -20.26)", "<0.0001"
     ),
-    .Dim = c(29L, 4L)
+    .Dim = c(25L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)

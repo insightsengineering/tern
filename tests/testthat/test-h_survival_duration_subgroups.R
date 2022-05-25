@@ -21,7 +21,7 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
 adtte_preprop <- adtte %>%
   preprocess_adtte()
