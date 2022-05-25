@@ -1,0 +1,309 @@
+---
+title: "Design for helper function to create layout map in LBT13/14"
+author: "Rosemary Li"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design of LBT04/VST02/EGT02/LBT15}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+Configuration
+=============
+
+```{r setup}
+library(rtables)
+library(tern)
+library(dplyr)
+library(assertthat)
+library(checkmate)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+Introduction
+=============
+
+When templates like LBT13 and 14 were refactored using `trim_levels_to_map`, we would like to have some helper function
+for users to easily create the correct map. The metadata used to create the map can be found at
+metadata/__atoxgr_allhigh_ref.sas7bdat
+
+Design
+=============
+
+New function to store meta data.
+```{r eval=FALSE}
+d_atoxgr_allhigh_ref <- function() {
+  atoxgr_allhigh_ref <- as.data.frame(
+    matrix(c(
+      "ALKPHSI",  "1", "ALKPHSI",  "2", "ALKPHSI",  "3", "ALKPHSI",  "4", "ALKPHSI",  "Not High",
+      "ALTSI",    "1", "ALTSI",    "2", "ALTSI",    "3", "ALTSI",    "4", "ALTSI",    "Not High",
+      "AMYLASSI",    "1", "AMYLASSI",    "2", "AMYLASSI",    "3", "AMYLASSI",    "4", "AMYLASSI",    "Not High",
+      "ASTSI",    "1",  "ASTSI",    "2", "ASTSI",    "3", "ASTSI",    "4", "ASTSI",    "Not High",
+      "CALCUMSI",    "1", "CALCUMSI",    "2", "CALCUMSI",    "3", "CALCUMSI",    "4", "CALCUMSI",    "Not High",
+      "CH0022SI",    "1", "CH0022SI",    "2", "CH0022SI",    "3", "CH0022SI",    "4", "CH0022SI",    "Not High",
+      "CH0350SI",    "1", "CH0350SI",    "2", "CH0350SI",    "3", "CH0350SI",    "4", "CH0350SI",    "Not High",
+      "CH0365SI",    "1", "CH0365SI",    "2", "CH0365SI",    "3", "CH0365SI",    "4", "CH0365SI",    "Not High",
+      "CH0467SI",    "1", "CH0467SI",    "2", "CH0467SI",    "3", "CH0467SI",    "4", "CH0467SI",    "Not High",
+      "CHOLESSI",    "1", "CHOLESSI",    "2", "CHOLESSI",    "3", "CHOLESSI",    "4", "CHOLESSI",    "Not High",
+      "CPKSI",    "1", "CPKSI",    "2", "CPKSI",    "3",  "CPKSI",    "4",  "CPKSI",    "Not High",
+      "CREATNSI",    "1", "CREATNSI",    "2", "CREATNSI",    "3", "CREATNSI",    "4", "CREATNSI",    "Not High",
+      "FASTGLSI",    "1", "FASTGLSI",    "2", "FASTGLSI",    "3", "FASTGLSI",    "4", "FASTGLSI",    "Not High",
+      "GGTSI",    "1",
+      "GGTSI",    "2",
+      "GGTSI",    "3",
+      "GGTSI",    "4",
+      "GGTSI",    "Not High",
+      "GLUCSI",    "3",
+      "GLUCSI",    "4",
+      "GLUCSI",    "Not High",
+      "HGBSI",    "1",
+      "HGBSI",    "2",
+      "HGBSI",    "3",
+      "HGBSI",    "Not High",
+      "LIPASESI",    "1",
+      "LIPASESI",    "2",
+      "LIPASESI",    "3",
+      "LIPASESI",    "4",
+      "LIPASESI",    "Not High",
+      "LYMPHSI",    "2",
+      "LYMPHSI",    "3",
+      "LYMPHSI",    "Not High",
+      "MAGNESSI",    "1",
+      "MAGNESSI",    "3",
+      "MAGNESSI",    "4",
+      "MAGNESSI",    "Not High",
+      "POTASSI" ,    "1",
+      "POTASSI" ,    "2",
+      "POTASSI" ,    "3",
+      "POTASSI" ,    "4",
+      "POTASSI" ,    "Not High",
+      "PTINRSI",    "1",
+      "PTINRSI",    "2",
+      "PTINRSI",    "3",
+      "PTINRSI",    "Not High",
+      "PTTSI",    "1",
+      "PTTSI",    "2",
+      "PTTSI",    "3",
+      "PTTSI",    "Not High",
+      "SODIUMSI",    "1",
+      "SODIUMSI",    "2",
+      "SODIUMSI",    "3",
+      "SODIUMSI",    "4",
+      "SODIUMSI",    "Not High",
+      "TBILISI",    "1",
+      "TBILISI",    "2",
+      "TBILISI",    "3",
+      "TBILISI",    "4",
+      "TBILISI",    "Not High",
+      "TRIGSI",    "1",
+      "TRIGSI",    "2",
+      "TRIGSI",    "3",
+      "TRIGSI",    "4",
+      "TRIGSI",    "Not High",
+      "URACIDSI",    "3",
+      "URACIDSI",    "4",
+      "URACIDSI",    "Not High",
+      "WBCSI",    "3",
+      "WBCSI",    "Not High"
+    ),
+    ncol = 2,
+    byrow = TRUE)
+  )
+  colnames(atoxgr_allhigh_ref) <- c("PARAMCD", "ATOXGR")
+  atoxgr_allhigh_ref
+}
+```
+
+New helper function to create grouping and map? Or it's easier to separate grouping and map?
+```{r}
+
+```
+
+
+
+Unit tests
+=============
+```{r eval=FALSE}
+df <- data.frame(
+  USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
+  AVISIT = c(
+    rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2)
+  ),
+  PARAM = rep(c("ALT", "CPR"), 6),
+  ANRIND = c("NORMAL", "NORMAL", "LOW", "HIGH", "LOW", "LOW", "HIGH", "HIGH", rep("NORMAL", 4))
+)
+df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
+```
+
+```{r}
+h_map_with_count_abnormal(
+  df = df,
+  split_rows_varibles = "PARAM",
+  anl_variable = "ANRIND",
+  abnormal = list(low = "LOW", high = "HIGH"),
+  method = "both"
+)
+```
+see difference between default and both
+```{r}
+df <- df %>% mutate(ANRIND = ifelse(PARAM == "ALT", "NORMAL", as.character(ANRIND)))
+df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
+h_map_for_count_abnormal(
+  df = df,
+  variables = list(anl = "ANRIND", split_rows = c("PARAM")),
+  abnormal = list(low = "LOW", high = "HIGH"),
+  method = "default"
+)
+h_map_with_count_abnormal(
+  df = df,
+  split_rows_varibles = "PARAM",
+  anl_variable = "ANRIND",
+  abnormal = list(low = "LOW", high = "HIGH"),
+  method = "both"
+)
+```
+
+STREAM tests with LBT15
+=============
+
+test with new method and stream data for lbt15.
+```{r eval=FALSE}
+# ADSL and ADLB are stream source data read in with haven::read_sas()
+
+adsl <- ADSL %>% df_explicit_na() %>% filter(SAFFL == "Y")
+adlb_f <- ADLB %>% df_explicit_na() %>% filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI") %>%
+  mutate(ATOXGR = factor(ATOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")),
+         BTOXGR = factor(BTOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")))
+adlb_f <- adlb_f %>%
+  mutate(
+    ATOXGR_CAT = fct_collapse(ATOXGR,
+                              "LOW" = c("-3", "-4"),
+                              "NORMAL" = c("-2", "-1", "0", "1", "2"),
+                              "HIGH" = c("3", "4")
+    ),
+    BTOXGR_CAT = fct_collapse(BTOXGR,
+                              "LOW" = c("-3", "-4"),
+                              "NORMAL" = c("-2", "-1", "0", "1", "2", "<Missing>"),
+                              "HIGH" = c("3", "4")
+    )
+  )
+
+
+map <- h_map_for_count_abnormal(
+  df = adlb_f,
+  variables = list(anl = "ATOXGR_CAT", split_rows = c("PARCAT1", "PARAM")),
+  abnormal = list(low = c("LOW"), high = c("HIGH")),
+  method = "meta_ext_ncictc4",
+  na_level = "<Missing>"
+)
+
+lyt <- basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("PARCAT1", split_fun = trim_levels_to_map(map = map)) %>%
+  split_rows_by("PARAM", split_fun = trim_levels_to_map(map = map)) %>%
+  count_abnormal(
+    var = "ATOXGR_CAT",
+    abnormal = list(low = "LOW", high = "HIGH"),
+    variables = list(id = "USUBJID", baseline = "BTOXGR_CAT"),
+    exclude_base_abn = TRUE
+  ) %>%
+  append_topleft("    Direction of Abnormality")
+
+build_table(lyt, adlb_f %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+
+# variant 2
+adlb_f_2 <- adlb_f %>%
+  mutate(
+    ATOXGR_CAT = fct_collapse(ATOXGR,
+                              "LOW" = c("-2", "-3", "-4"),
+                              "NORMAL" = c("-1", "0", "1"),
+                              "HIGH" = c("2", "3", "4")
+    ),
+    BTOXGR_CAT = fct_collapse(BTOXGR,
+                              "LOW" = c("-2", "-3", "-4"),
+                              "NORMAL" = c("-1", "0", "1"),
+                              "HIGH" = c("2", "3", "4")
+    )
+  )
+
+build_table(lyt, adlb_f_2 %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+```
+
+replace stream data with scda so that knit will work
+```{r}
+ADLB <- haven::read_sas("../adlb.sas7bdat") %>% df_explicit_na() #nolint
+adlb_f <- ADLB %>% filter(ONTRTFL == "Y" & ANRIND != "<Missing>" & PARCAT2 == "SI")
+
+h_map_with_count_abnormal(
+  df = adlb_f %>% filter(LBCAT != "<Missing>"),
+  split_rows_varibles = c("LBCAT", "PARAM"),
+  anl_variable = "ANRIND",
+  abnormal = list(low = "LOW", high = "HIGH"),
+  method = "lbt04"
+)
+
+lyt <- basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("PARCAT1", split_fun = trim_levels_to_map(map = map)) %>%
+  split_rows_by("PARAM", split_fun = trim_levels_to_map(map = map)) %>%
+  count_abnormal(
+    var = "ATOXGR_CAT",
+    abnormal = list(low = "LOW", high = "HIGH"),
+    variables = list(id = "USUBJID", baseline = "BTOXGR_CAT"),
+    exclude_base_abn = TRUE
+  ) %>%
+  append_topleft("    Direction of Abnormality")
+
+build_table(lyt, adlb_f, alt_counts_df = adsl)
+
+```
+
+As discussed in the design PR #255, how should we deal with some PARAMCDs that are not in the input dataset.
+```{r}
+adlb_f_noALTSI <- adlb_f %>% filter(PARAMCD != "ALTSI")
+build_table(lyt, adlb_f_noALTSI %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+```
+
+```{r}
+map_test <- h_map_for_count_abnormal(
+  df = adlb_f_noALTSI,
+  variables = list(anl = "ATOXGR_CAT", split_rows = c("PARCAT1", "PARAM")),
+  abnormal = list(low = c("LOW"), high = c("HIGH")),
+  method = "meta_ext_ncictc4",
+  na_level = "<Missing>"
+)
+
+lyt_test <- basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("PARCAT1", split_fun = trim_levels_to_map(map = map_test)) %>%
+  split_rows_by("PARAM", split_fun = trim_levels_to_map(map = map_test)) %>%
+  count_abnormal(
+    var = "ATOXGR_CAT",
+    abnormal = list(low = "LOW", high = "HIGH"),
+    variables = list(id = "USUBJID", baseline = "BTOXGR_CAT"),
+    exclude_base_abn = TRUE
+  ) %>%
+  append_topleft("    Direction of Abnormality")
+
+build_table(lyt_test, adlb_f_noALTSI %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+```
