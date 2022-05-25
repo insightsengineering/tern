@@ -56,7 +56,12 @@ testthat::test_that("AET05 variant 2 is produced correctly", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Total patient-years at risk", "Number of adverse events observed", "AE rate per 100 patient-years", "95% CI", "A: Drug X", "(N=134)", "112.3", "78", "69.49", "(54.93, 86.72)", "B: Placebo", "(N=134)", "77.4", "104", "134.37", "(109.79, 162.81)", "C: Combination", "(N=132)", "119.4", "67", "56.10", "(43.48, 71.25)"
+      "", "", "Total patient-years at risk",
+      "Number of adverse events observed", "AE rate per 100 patient-years",
+      "95% CI", "A: Drug X", "(N=134)", "112.3", "78", "69.49",
+      "(54.93, 86.72)", "B: Placebo", "(N=134)", "77.4", "104", "134.37",
+      "(109.79, 162.81)", "C: Combination", "(N=132)", "119.4", "67", "56.10",
+      "(43.48, 71.25)"
     ),
     .Dim = c(6L, 4L)
   )
