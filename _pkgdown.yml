@@ -131,7 +131,7 @@ reference:
        - summarize_occurrences_by_grade
        - summarize_patients_events_in_cols
        - summarize_patients_exposure_in_cols
-       - summarize_vars_numeric_in_cols
+       - summarize_vars_in_cols
        - summarize_vars
        - tabulate_rsp_subgroups
        - tabulate_survival_biomarkers
