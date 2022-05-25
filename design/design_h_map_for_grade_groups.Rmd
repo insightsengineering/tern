@@ -138,7 +138,7 @@ h_toxicity_grade_group <- function(
     variables = c("ATOXGR", "BTOXGR"), 
     grouping = list("Not High" = c(0, -1, -2, -3, -4), "1" = 1, "2" = 2, "3" = 3, "4" = 4, "Missing" = "<Missing>")) {
   for (variable in variables) {
-    new_var <- paste0(variable, "_GR")
+    new_var <- paste0(variable, "_GP")
     df[[new_var]] <- NA
     for (i in names(grouping)) {
       df[[new_var]] <- ifelse(df[[variable]] %in% unname(grouping[i])[[1]], i, df[[new_var]])
@@ -147,8 +147,24 @@ h_toxicity_grade_group <- function(
   df
 }
 
-h_toxicity_grade_map <- function() {
+h_toxicity_grade_map <- function(
+    paramcds = c("ALKPHSI", "GLUCSI"), 
+    ref = d_atoxgr_allhigh_ref(), 
+    missing_level = "Missing",
+    var_group = c("BTOXGR_GP", "ATOXGR_GP")) {
+  ref_sub <- ref %>% filter(PARAMCD %in% paramcds)
+  result_df <- data.frame()
+  for (paramcd in paramcds) {
+    a <- paramcd
+    b <- ref_sub %>% filter(PARAMCD == paramcd) %>% pull("ATOXGR")
+    b <- c(b, missing_level)
+    c <- b
+    paramcd_df <- expand.grid(a,b,c)
+    colnames(paramcd_df) <- c("PARAMCD", var_group)
+    result_df <- rbind(result_df, paramcd_df)
+  }
   
+  result_df
 }
 ```
 
