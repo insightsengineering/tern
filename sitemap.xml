@@ -4,7 +4,16 @@
     <loc>https://insightsengineering.github.io/tern/404.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/CONTRIBUTING.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/SECURITY.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/articles/index.html</loc>
@@ -172,6 +181,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/d_count_cumulative.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/d_pkparam.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/d_proportion.html</loc>
   </url>
   <url>
@@ -337,6 +349,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/h_map_for_count_abnormal.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/h_pkparam_sort.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/h_response_biomarkers_subgroups.html</loc>
   </url>
   <url>
@@ -469,13 +484,13 @@
     <loc>https://insightsengineering.github.io/tern/reference/summarize_num_patients.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/summarize_numeric_in_columns.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/reference/summarize_patients_exposure_in_cols.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/summarize_variables.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/summarize_variables_in_columns.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/summary_formats.html</loc>
@@ -524,14 +539,5 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/unlist_and_blank_na.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/var_labels-set.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/var_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/with_label.html</loc>
   </url>
 </urlset>
