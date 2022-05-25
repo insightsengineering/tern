@@ -133,7 +133,23 @@ d_atoxgr_allhigh_ref <- function() {
 
 New helper function to create grouping and map? Or it's easier to separate grouping and map?
 ```{r}
+h_toxicity_grade_group <- function(
+    df, 
+    variables = c("ATOXGR", "BTOXGR"), 
+    grouping = list("Not High" = c(0, -1, -2, -3, -4), "1" = 1, "2" = 2, "3" = 3, "4" = 4, "Missing" = "<Missing>")) {
+  for (variable in variables) {
+    new_var <- paste0(variable, "_GR")
+    df[[new_var]] <- NA
+    for (i in names(grouping)) {
+      df[[new_var]] <- ifelse(df[[variable]] %in% unname(grouping[i])[[1]], i, df[[new_var]])
+    }
+  }
+  df
+}
 
+h_toxicity_grade_map <- function() {
+  
+}
 ```
 
 
@@ -141,15 +157,10 @@ New helper function to create grouping and map? Or it's easier to separate group
 Unit tests
 =============
 ```{r eval=FALSE}
-df <- data.frame(
-  USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
-  AVISIT = c(
-    rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2)
-  ),
-  PARAM = rep(c("ALT", "CPR"), 6),
-  ANRIND = c("NORMAL", "NORMAL", "LOW", "HIGH", "LOW", "LOW", "HIGH", "HIGH", rep("NORMAL", 4))
-)
-df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
+ATOXGR <- c(0, 2, 3, 4, -3)
+BTOXGR <- c(-1, -3, 0, 3 ,2)
+df <- data.frame(ATOXGR, BTOXGR)
+h_toxicity_grade_group(df)
 ```
 
 ```{r}
