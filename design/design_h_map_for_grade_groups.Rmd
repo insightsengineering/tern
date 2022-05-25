@@ -158,8 +158,7 @@ h_toxicity_grade_map <- function(
     a <- paramcd
     b <- ref_sub %>% filter(PARAMCD == paramcd) %>% pull("ATOXGR")
     b <- c(b, missing_level)
-    c <- b
-    paramcd_df <- expand.grid(a,b,c)
+    paramcd_df <- expand.grid(a,b,b)
     colnames(paramcd_df) <- c("PARAMCD", var_group)
     result_df <- rbind(result_df, paramcd_df)
   }
