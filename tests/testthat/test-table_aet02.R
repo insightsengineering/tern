@@ -1256,6 +1256,7 @@ testthat::test_that("AET02 variant 12 is produced correctly", {
       "AEBODSYS",
       child_labels = "visible",
       nested = FALSE,
+      indent_mod = -1L,
       split_fun = drop_split_levels
     ) %>%
     summarize_num_patients(
@@ -1263,20 +1264,32 @@ testthat::test_that("AET02 variant 12 is produced correctly", {
       .stats = "unique",
       .labels = "Total number of patients with at least one adverse event"
     ) %>%
-    count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
+    count_occurrences(
+      vars = "AEDECOD",
+      .indent_mods = c(count_fraction = 1L)
+    )
 
-  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
-    sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+  result <- build_table(
+    lyt,
+    df = adae,
+    alt_counts_df = adsl
+  ) %>%
+    prune_table() %>%
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = cont_n_allcols
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences
+    )
 
-  criteria_fun <- function(tr) {
-    inherits(tr, "ContentRow")
-  }
+  criteria_fun <- function(tr) is(tr, "ContentRow")
   result <- trim_rows(result, criteria = criteria_fun)
 
   row_condition1 <- has_fractions_difference(atleast = 0.05, col_names = c("A: Drug X", "B: Placebo"))
   row_condition2 <- has_fractions_difference(atleast = 0.05, col_names = c("A: Drug X", "C: Combination"))
-  row_condition <- row_condition1 | row_condition1
+  row_condition <- row_condition1 | row_condition2
 
   result <- prune_table(result, keep_rows(row_condition))
 
@@ -1284,16 +1297,16 @@ testthat::test_that("AET02 variant 12 is produced correctly", {
 
   expected_matrix <- structure(
     c(
-      "", "", "cl D.1", "dcd D.1.1.1.1",
+      "", "", "cl A.1", "dcd A.1.1.1.1", "cl D.1", "dcd D.1.1.1.1",
       "cl D.2", "dcd D.2.1.5.3", "cl C.2", "dcd C.2.1.2.1",
-      "A: Drug X", "(N=134)", "", "50 (37.3%)",
+      "A: Drug X", "(N=134)", "", "50 (37.3%)", "", "50 (37.3%)",
       "", "47 (35.1%)", "", "35 (26.1%)",
-      "B: Placebo", "(N=134)", "", "42 (31.3%)",
+      "B: Placebo", "(N=134)", "", "45 (33.6%)", "", "42 (31.3%)",
       "", "58 (43.3%)", "", "48 (35.8%)",
-      "C: Combination", "(N=132)", "", "51 (38.6%)",
+      "C: Combination", "(N=132)", "", "63 (47.7%)", "", "51 (38.6%)",
       "", "57 (43.2%)", "", "55 (41.7%)"
     ),
-    .Dim = c(8L, 4L)
+    .Dim = c(10L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })

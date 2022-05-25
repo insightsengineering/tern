@@ -30,7 +30,7 @@ Many of these outputs are available to be added into `teal` applications for int
 
 ## Installation
 
-This repository requires a personal access token to install see here [creating and using PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). Once this is set up, to install the latest released version of the package run:
+It is recommended that you [create and use a Github PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) to install the latest version of this package. Once you have the PAT, run the following:
 
 ```r
 Sys.setenv(GITHUB_PAT = "your_access_token_here")
