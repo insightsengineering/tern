@@ -6,6 +6,8 @@
 * Enhanced `g_ipp` with additional caption argument and adjust the position.
 * Enhanced `prop_diff` `tern` function and related functions to be able to apply a continuity correction in the Newcombe method.
 * Enhanced `summarize_numeric_in_columns` and `summarize_variables` to allow factor/character summary and to be able to summarize the number of `BLQs` in `AVALC` from `ADPC` dataset.
+* Updated order of summarize variables stats in manual for order consistency.
+* Added a `sum` option to `summarize_variables`.
 
 ### Miscellaneous
 * Updated `test-table_aet02.R` variant 12 and changed the `scda` data version to '2022-02-28'.
@@ -13,6 +15,8 @@
 * Removed package dependencies of `grDevices`, `stringr`, and `viridisLite`.
 * Renaming `summarize_numeric_in_columns` to `summarize_variables_in_columns`.
 * Renaming `summarize_vars_numeric_in_cols` to `summarize_vars_in_cols`.
+* Fixed a bug where points on the `g_lineplot` plot were not connected in the case of missing values.
+* Updated the package authors.
 
 # tern 0.7.7
 
