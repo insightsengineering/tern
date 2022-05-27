@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 design/*
 ^\.CI-FORCE-RELEASE-VERSION$
 ^.*\.Rproj$
