@@ -1,5 +1,7 @@
 ^renv$
 ^renv\.lock$
+CODE_OF_CONDUCT.md
+SECURITY.md
 design/*
 ^\.CI-FORCE-RELEASE-VERSION$
 ^.*\.Rproj$
