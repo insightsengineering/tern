@@ -1,4 +1,4 @@
-raw_data <- scda::synthetic_cdisc_data("rcd_2021_05_05")$adtte %>%
+raw_data <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adtte %>%
   dplyr::filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X")

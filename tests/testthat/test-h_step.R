@@ -14,7 +14,7 @@ raw_data <- data.frame(
 
 
 get_adrs <- function() {
-  synthetic_cdisc_data("rcd_2021_05_05")$adrs %>%
+  synthetic_cdisc_data("rcd_2022_02_28")$adrs %>%
     dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
     dplyr::mutate(
       RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),

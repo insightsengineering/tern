@@ -3,8 +3,8 @@
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adqs <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
 
 testthat::test_that("AOVT01 variant with single endpoint is produced correctly", {
   adqs_single <- adqs %>%

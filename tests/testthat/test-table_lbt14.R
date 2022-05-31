@@ -2,8 +2,8 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
 
 testthat::test_that("LBT14 variant 1: HIGH works as expected", {
   adlb_f <- adlb %>%

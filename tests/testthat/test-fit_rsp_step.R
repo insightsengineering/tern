@@ -1,7 +1,7 @@
 library(scda)
 
 raw_data <- local({
-  adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs # nolint
+  adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs # nolint
   adrs %>%
     dplyr::filter(
       PARAMCD == "BESRSPI",

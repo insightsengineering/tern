@@ -2,8 +2,8 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
 
 testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients without any lab", {
   adsl_f <- adsl %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))

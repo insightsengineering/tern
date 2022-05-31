@@ -2,7 +2,7 @@ library(scda)
 library(dplyr)
 
 get_adlb <- function() {
-  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolintr
+  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb # nolintr
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
@@ -33,7 +33,7 @@ get_adlb <- function() {
 
 testthat::test_that("LBT05 variant 1 is produced correctly", {
   adlb <- get_adlb()
-  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -131,7 +131,7 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
 
 testthat::test_that("LBT05 variant 2 is produced correctly", {
   adlb <- get_adlb()
-  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -220,7 +220,7 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
 
 testthat::test_that("LBT05 variant 4 is produced correctly", {
   adlb <- get_adlb()
-  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 

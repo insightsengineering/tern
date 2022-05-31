@@ -6,7 +6,7 @@ library(tern)
 library(scda)
 library(broom)
 
-ADTTE <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+ADTTE <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 saved_labels <- formatters::var_labels(ADTTE)
 
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered

@@ -5,7 +5,7 @@ library(rtables)
 library(dplyr)
 
 gen_advs <- function() {
-  advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs # nolintr
+  advs <- synthetic_cdisc_data("rcd_2022_02_28")$advs # nolintr
   advs_label <- formatters::var_labels(advs)
 
   advs <- advs %>%

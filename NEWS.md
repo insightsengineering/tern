@@ -1,4 +1,4 @@
-# tern 0.7.7.9017
+# tern 0.7.7.9020
 
 ### Enhancements
 
@@ -8,6 +8,7 @@
 * Enhanced `summarize_numeric_in_columns` and `summarize_variables` to allow factor/character summary and to be able to summarize the number of `BLQs` in `AVALC` from `ADPC` dataset.
 
 ### Miscellaneous
+* Updated `test-table_aet02.R` variant 12 and changed the `scda` data version to '2022-02-28'.
 * Added a template to the `pkgdown` site.
 * Removed package dependencies of `grDevices`, `stringr`, and `viridisLite`.
 * Renaming `summarize_numeric_in_columns` to `summarize_variables_in_columns`.
