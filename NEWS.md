@@ -10,7 +10,8 @@
 * Added a `sum` option to `summarize_variables`.
 
 ### Miscellaneous
-* Updated `test-table_aet02.R` variant 12 and changed the `scda` data version to '2022-02-28'.
+* Updated `test-table_aet02.R` variant 12.
+* Changed the `scda` data version to '2022-02-28'.
 * Added a template to the `pkgdown` site.
 * Removed package dependencies of `grDevices`, `stringr`, and `viridisLite`.
 * Renaming `summarize_numeric_in_columns` to `summarize_variables_in_columns`.
