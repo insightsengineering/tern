@@ -20,3 +20,4 @@ The \code{rtables} table object.
 This is used by \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} and \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}},
 please see there for examples.
 }
+\keyword{internal}

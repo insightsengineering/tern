@@ -155,7 +155,7 @@ h_survtime_subgroups_df <- function(variables,
   if (is.null(variables$subgroups)) {
     result_all
   } else {
-    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
+    l_data <- tern::h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
     l_result <- lapply(l_data, function(grp) {
       result <- h_survtime_df(grp$df[[variables$tte]], grp$df[[variables$is_event]], grp$df[[variables$arm]])
       result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
@@ -357,7 +357,7 @@ h_coxph_subgroups_df <- function(variables,
   if (is.null(variables$subgroups)) {
     result_all
   } else {
-    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
+    l_data <- tern::h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
       result <- h_coxph_df(
@@ -395,9 +395,11 @@ h_coxph_subgroups_df <- function(variables,
 #'
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
 #'
-#' @export
 #'
 #' @examples
+#'
+#' @keywords internal
+#'
 #' library(rtables)
 #'
 #' df <- data.frame(
@@ -407,12 +409,12 @@ h_coxph_subgroups_df <- function(variables,
 #' )
 #' formatters::var_labels(df) <- paste("label for", names(df))
 #'
-#' h_split_by_subgroups(
+#' tern::h_split_by_subgroups(
 #'   data = df,
 #'   subgroups = c("y", "z")
 #' )
 #'
-#' h_split_by_subgroups(
+#' tern::h_split_by_subgroups(
 #'   data = df,
 #'   subgroups = c("y", "z"),
 #'   groups_lists = list(

@@ -8,7 +8,8 @@
 #' @param colvars (`list` with `vars` and `labels`)\cr variables to tabulate and their labels.
 #'
 #' @return The `rtables` table object.
-#' @export
+#'
+#' @keywords internal
 h_tab_one_biomarker <- function(df,
                                 afuns,
                                 colvars) {

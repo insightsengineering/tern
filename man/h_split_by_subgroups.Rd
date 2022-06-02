@@ -27,25 +27,46 @@ Split a dataframe into a non-nested list of subsets.
 Main functionality is to prepare data for use in forest plot layouts.
 }
 \examples{
-library(rtables)
 
-df <- data.frame(
-  x = c(1:5),
-  y = factor(c("A", "B", "A", "B", "A"), levels = c("A", "B", "C")),
-  z = factor(c("C", "C", "D", "D", "D"), levels = c("D", "C"))
-)
-formatters::var_labels(df) <- paste("label for", names(df))
-
-h_split_by_subgroups(
-  data = df,
-  subgroups = c("y", "z")
-)
-
-h_split_by_subgroups(
-  data = df,
-  subgroups = c("y", "z"),
-  groups_lists = list(
-    y = list("AB" = c("A", "B"), "C" = "C")
-  )
-)
 }
+\keyword{"A"),}
+\keyword{"A",}
+\keyword{"B"),}
+\keyword{"B",}
+\keyword{"C"}
+\keyword{"C")}
+\keyword{"C"))}
+\keyword{"C")),}
+\keyword{"C",}
+\keyword{"D"),}
+\keyword{"D",}
+\keyword{"z")}
+\keyword{"z"),}
+\keyword{)}
+\keyword{<-}
+\keyword{=}
+\keyword{c("A",}
+\keyword{c("D",}
+\keyword{c("y",}
+\keyword{c(1:5),}
+\keyword{data}
+\keyword{data.frame(}
+\keyword{df}
+\keyword{df,}
+\keyword{factor(c("A",}
+\keyword{factor(c("C",}
+\keyword{for",}
+\keyword{formatters::var_labels(df)}
+\keyword{groups_lists}
+\keyword{internal}
+\keyword{levels}
+\keyword{library(rtables)}
+\keyword{list(}
+\keyword{list("AB"}
+\keyword{names(df))}
+\keyword{paste("label}
+\keyword{subgroups}
+\keyword{tern::h_split_by_subgroups(}
+\keyword{x}
+\keyword{y}
+\keyword{z}

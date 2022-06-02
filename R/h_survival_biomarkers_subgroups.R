@@ -193,7 +193,7 @@ h_tab_surv_one_biomarker <- function(df,
     method = df$pval_label[1],
     time_unit = time_unit
   )
-  h_tab_one_biomarker(
+  tern::h_tab_one_biomarker(
     df = df,
     afuns = afuns,
     colvars = colvars

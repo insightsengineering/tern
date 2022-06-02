@@ -119,7 +119,7 @@ testthat::test_that("h_split_by_subgroups functions as expected with valid input
   )
   formatters::var_labels(df_test) <- paste("label for", names(df_test))
 
-  result <- h_split_by_subgroups(
+  result <- tern::h_split_by_subgroups(
     data = df_test,
     subgroups = c("y", "z")
   )
@@ -181,7 +181,7 @@ testthat::test_that("h_split_by_subgroups works as expected with groups_lists", 
   )
   formatters::var_labels(df_test) <- paste("label for", names(df_test))
 
-  result <- h_split_by_subgroups(
+  result <- tern::h_split_by_subgroups(
     data = df_test,
     subgroups = c("y", "z"),
     groups_lists = list(

@@ -71,9 +71,11 @@ helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{...}{additional arguments for the lower level functions.}
 
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
+
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
