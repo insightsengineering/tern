@@ -14,7 +14,6 @@
 #' If method is `"range"`, the returned map will be based on the rule that at least one observation with low range > 0
 #' for low direction and at least one observation with high range is not missing for high direction.
 #'
-#' @export
 #'
 #'
 #' @examples
@@ -23,7 +22,7 @@
 #' adlb <- synthetic_cdisc_data("latest")$adlb
 #' adlb <- df_explicit_na(adlb)
 #'
-#' h_map_for_count_abnormal(
+#' tern::h_map_for_count_abnormal(
 #'   df = adlb,
 #'   variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM")),
 #'   abnormal = list(low = c("LOW"), high = c("HIGH")),
@@ -51,7 +50,7 @@
 #'   ANRHI = rep(20, 12)
 #' )
 #' df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL"))
-#' h_map_for_count_abnormal(
+#' tern::h_map_for_count_abnormal(
 #'   df = df,
 #'   variables = list(
 #'     anl = "ANRIND",
@@ -63,6 +62,7 @@
 #'   method = "range",
 #'   na_level = "<Missing>"
 #' )
+#' @keywords internal
 h_map_for_count_abnormal <- function(df,
                                      variables = list(
                                        anl = "ANRIND",

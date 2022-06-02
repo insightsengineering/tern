@@ -43,7 +43,7 @@ count_abnormal_by_baseline(
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{na_level}{(\code{string}) \cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
@@ -52,6 +52,8 @@ by a statistics function.}
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
 

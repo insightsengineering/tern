@@ -37,7 +37,7 @@ count_abnormal(
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{abnormal}{(\verb{named list})\cr identifying the abnormal range level(s) in \code{var}. Default to
@@ -50,6 +50,8 @@ for example, \code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "
 from numerator and denominator.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
 
