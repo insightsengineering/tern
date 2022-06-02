@@ -1,10 +1,15 @@
 # tern 0.7.7.9020
 
+### Documentation
+
+* `g_lineplot` added stable badge
+* `h_format_row` internal key added and tern:: for test
+
 ### Enhancements
 
 * Enhanced `g_lineplot` with additional table to automatically scale the table height and return a `ggplot` object.
 * Enhanced `g_ipp` with additional caption argument and adjust the position.
-* Enhanced `prop_diff` `tern` function and related functions to be able to apply a continuity correction in the Newcombe method.
+* Enhanced `prop_diff`, `tern` function and related functions to be able to apply a continuity correction in the Newcombe method.
 * Enhanced `summarize_numeric_in_columns` and `summarize_variables` to allow factor/character summary and to be able to summarize the number of `BLQs` in `AVALC` from `ADPC` dataset.
 
 ### Miscellaneous

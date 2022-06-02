@@ -1,5 +1,8 @@
 #' Line plot with the optional table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Line plot with the optional table
 #'
 #' @param df (`data frame`) \cr data set containing all analysis variables.
 #' @param alt_counts_df (`data frame` or `NULL`) \cr
@@ -417,19 +420,19 @@ g_lineplot <- function(df, # nolint
 #'
 #' @return 1-row \code{data.frame} object
 #'
-#' @export
-#'
 #' @examples
 #'
 #' mean_ci <- c(48, 51)
 #' x <- list(mean = 50, mean_ci = mean_ci)
 #' format <- c(mean = "xx.x", mean_ci = "(xx.xx, xx.xx)")
 #' labels <- c(mean = "My Mean")
-#' h_format_row(x, format, labels)
+#' tern::h_format_row(x, format, labels)
 #'
 #' attr(mean_ci, "label") <- "Mean 95% CI"
 #' x <- list(mean = 50, mean_ci = mean_ci)
-#' h_format_row(x, format, labels)
+#' tern::h_format_row(x, format, labels)
+#'
+#' @keywords internal
 h_format_row <- function(x, format, labels = NULL) {
 
   # cell: one row, one column data.frame
