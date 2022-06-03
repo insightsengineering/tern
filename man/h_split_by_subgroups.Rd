@@ -26,9 +26,6 @@ Split a dataframe into a non-nested list of subsets.
 \details{
 Main functionality is to prepare data for use in forest plot layouts.
 }
-\examples{
-
-}
 \keyword{"A"),}
 \keyword{"A",}
 \keyword{"B"),}
