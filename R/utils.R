@@ -319,6 +319,8 @@ arm <- function(x) {
 
 #' Smooth Function with Optional Grouping
 #'
+#' @description
+#'
 #' This produces \code{loess} smoothed estimates of `y` with Student confidence intervals.
 #'
 #' @param df (`data.frame`)\cr.
@@ -329,8 +331,7 @@ arm <- function(x) {
 #' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, `yhigh` and
 #' optional `groups` variables formatted to factor type.
 #'
-#' @export
-#'
+#' @keywords internal
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
   assertthat::assert_that(is.data.frame(df))
   df_cols <- colnames(df)
