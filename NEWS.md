@@ -11,7 +11,7 @@
    tests and vignettes when present for the following functions:
    - `h_format_row`, `h_map_for_count_abnormal` (helper functions)
    - (utils functions) `f_conf_level`, `make_names`, `month2day`, `day2month` 
-     `empty_vector_if_na`, `combine_vectors`
+     `empty_vector_if_na`, `combine_vectors`, `aesi_label`
 
 ### Enhancements
 

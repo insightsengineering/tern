@@ -317,7 +317,6 @@ reference:
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
-      - aesi_label
       - as_factor_keep_attributes
       - bins_percent_labels
       - combine_levels

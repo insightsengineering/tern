@@ -266,17 +266,18 @@ extract <- function(x, names) {
 #' @param scope (`character`)\cr with scope of query (e.g. `SMQzzSC`).
 #'
 #' @return A `string` with the standard label for the AE basket.
-#' @export
 #'
 #' @examples
 #' library(scda)
 #' adae <- synthetic_cdisc_data("latest")$adae
 #'
 #' # Standardized query label includes scope.
-#' aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
+#' tern:::aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
 #'
 #' # Customized query label.
-#' aesi_label(adae$CQ01NAM)
+#' tern:::aesi_label(adae$CQ01NAM)
+#'
+#' @keywords internal
 aesi_label <- function(aesi, scope = NULL) {
   assertthat::assert_that(
     is.character(aesi),

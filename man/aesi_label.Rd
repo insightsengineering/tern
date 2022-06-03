@@ -23,8 +23,10 @@ library(scda)
 adae <- synthetic_cdisc_data("latest")$adae
 
 # Standardized query label includes scope.
-aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
+tern:::aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
 
 # Customized query label.
-aesi_label(adae$CQ01NAM)
+tern:::aesi_label(adae$CQ01NAM)
+
 }
+\keyword{internal}
