@@ -382,15 +382,18 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 
 #' Number of Available (Non-Missing Entries) in a Vector
 #'
+#' @description
+#'
 #' Small utility function for better readability.
 #'
 #' @param x (`vector`)\cr where to count the non-missing values.
 #'
 #' @return Number of non-missing values.
-#' @export
 #'
 #' @examples
-#' n_available(c(1, NA, 2))
+#' tern:::n_available(c(1, NA, 2))
+#'
+#' @keywords internal
 n_available <- function(x) {
   sum(!is.na(x))
 }

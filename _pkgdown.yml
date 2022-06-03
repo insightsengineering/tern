@@ -325,8 +325,6 @@ reference:
       - fct_collapse_only
       - fct_discard
       - fct_explicit_na_if
-      - month2day
-      - n_available
       - range_noinf
       - sas_na
 

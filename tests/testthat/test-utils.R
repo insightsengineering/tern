@@ -131,9 +131,9 @@ testthat::test_that("tern:::get_smooths relative intervals level", {
   testthat::expect_true(all(air_smooths3b$yhigh <= air_smooths3a$yhigh))
 })
 
-testthat::test_that("n_available works as expected", {
+testthat::test_that("tern:::n_available works as expected", {
   x <- c(1, 2, 3, NA)
-  result <- n_available(x)
+  result <- tern:::n_available(x)
   expected <- 3L
   testthat::expect_identical(result, expected)
 })
