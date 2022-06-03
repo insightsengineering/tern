@@ -9,7 +9,9 @@
 #'
 NULL
 
-#' @describeIn tabulate_mmrm Deprecated by `tern.mmrm::tabulate_mmrm`: Produce simple MMRM tables via the generic [as.rtable()].
+#' @describeIn tabulate_mmrm
+#'
+#' Deprecated by `tern.mmrm::tabulate_mmrm`: Produce simple MMRM tables via the generic [as.rtable()].
 #'
 #' @param x (`mmrm`)\cr the original MMRM fit object.
 #' @param type (`string`)\cr type of table which should be returned.

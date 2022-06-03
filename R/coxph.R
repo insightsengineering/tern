@@ -41,6 +41,10 @@ univariate <- function(x) {
 
 #' Cox regression including a single covariate - summarized results
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' This is a deprecated function. Use `fit_coxreg_univar` function instead.
+#'
 #' Fit cox (proportional hazard) regression models including the treatment and a single covariate.
 #' Starting from a univariate model (e.g. survival model including an two-level arm predictor), a list of candidate
 #' alternative models including an additional covariate (optionally including the interaction terms) is tested.
