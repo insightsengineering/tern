@@ -7,7 +7,7 @@ testthat::test_that("s_surv_time works with default arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -31,7 +31,7 @@ testthat::test_that("s_surv_time works with customized arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -58,7 +58,7 @@ testthat::test_that("surv_time works with default arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -93,7 +93,7 @@ testthat::test_that("surv_time works with customized arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 

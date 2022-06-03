@@ -6,7 +6,7 @@
 *  Internal keywords added, export removed, pkg_down.yml polished and tern:: for
    tests and vignettes when present for the following functions:
    - `h_format_row`, `h_map_for_count_abnormal` (helper functions)
-   - `f_conf_level`, `make_names`, `month2day`(utils functions)
+   - `f_conf_level`, `make_names`, `month2day`, `day2month`(utils functions)
 
 ### Enhancements
 

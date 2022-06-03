@@ -323,7 +323,6 @@ reference:
       - combine_levels
       - combine_vectors
       - cut_quantile_bins
-      - day2month
       - df_explicit_na
       - d_pkparam
       - empty_vector_if_na

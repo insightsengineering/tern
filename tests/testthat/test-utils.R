@@ -35,7 +35,7 @@ testthat::test_that("month2day works correctly", {
 
 testthat::test_that("day2month works correctly", {
   x <- c(403, 248, 30, 86, NA)
-  result <- day2month(x)
+  result <- tern:::day2month(x)
   expected <- c(13.2402464065708, 8.14784394250513, 0.985626283367556, 2.82546201232033, NA)
   testthat::expect_equal(result, expected)
 })

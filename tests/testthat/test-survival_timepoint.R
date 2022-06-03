@@ -7,7 +7,7 @@ testthat::test_that("s_surv_timepoint works with default arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -30,7 +30,7 @@ testthat::test_that("s_surv_timepoint works with customized arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -56,7 +56,7 @@ testthat::test_that("s_surv_timepoint also works when there are 0 patients at ri
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     ) %>%
     # Only take patients from Arm A who have less than 6 months time point,
@@ -82,7 +82,7 @@ testthat::test_that("surv_timepoint works with default arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -115,7 +115,7 @@ testthat::test_that("surv_timepoint works with customized arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -150,7 +150,7 @@ testthat::test_that("s_surv_timepoint_diff works with default arguments for comp
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -179,7 +179,7 @@ testthat::test_that("s_surv_timepoint_diff works with customized arguments for c
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -207,7 +207,7 @@ testthat::test_that("surv_timepoint for survival diff works with default argumen
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -242,7 +242,7 @@ testthat::test_that("surv_timepoint for survival diff works with customized argu
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
 
@@ -279,7 +279,7 @@ testthat::test_that("surv_timepoint no warning when multipled layers generated",
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0
     )
   testthat::expect_silent(

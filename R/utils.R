@@ -160,7 +160,7 @@ make_names <- function(nams) {
 #'
 #' @examples
 #' x <- c(13.25, 8.15, 1, 2.834)
-#' month2day(x)
+#' tern:::month2day(x)
 #'
 #' @keywords internal
 month2day <- function(x) {
@@ -173,10 +173,12 @@ month2day <- function(x) {
 #' @param x (`numeric`)\cr time in days.
 #'
 #' @return A `numeric` vector with the time in months.
-#' @export
+#'
 #' @examples
 #' x <- c(403, 248, 30, 86)
-#' day2month(x)
+#' tern:::day2month(x)
+#'
+#' @keywords internal
 day2month <- function(x) {
   assertthat::assert_that(is.numeric(x))
   x / 30.4375

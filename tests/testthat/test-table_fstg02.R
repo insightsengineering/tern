@@ -18,7 +18,7 @@ preprocess_adtte <- function(adtte) {
       SEX = droplevels(SEX),
       is_event = CNSR == 0,
       # Convert time to MONTH
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       AVALU = "Months"
     )
 

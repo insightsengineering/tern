@@ -18,7 +18,7 @@ considers each month as having an average of 30.4375 days.
 }
 \examples{
 x <- c(13.25, 8.15, 1, 2.834)
-month2day(x)
+tern:::month2day(x)
 
 }
 \keyword{internal}
