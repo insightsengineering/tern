@@ -127,7 +127,7 @@ h_proportion_subgroups_df <- function(variables,
   if (is.null(variables$subgroups)) {
     result_all
   } else {
-    l_data <- tern::h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
+    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
       result <- h_proportion_df(grp$df[[variables$rsp]], grp$df[[variables$arm]])
@@ -354,7 +354,7 @@ h_odds_ratio_subgroups_df <- function(variables,
   if (is.null(variables$subgroups)) {
     result_all
   } else {
-    l_data <- tern::h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
+    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
       grp_strata_data <- if (is.null(variables$strat)) {

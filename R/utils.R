@@ -203,7 +203,7 @@ empty_vector_if_na <- function(x) {
   }
 }
 
-#' Combine Two Vectors element-wise
+#' Combine Two Vectors Element Wise
 #'
 #' @param x (`vector`)\cr first vector to combine.
 #' @param y (`vector`)\cr second vector to combine.
