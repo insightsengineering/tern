@@ -306,12 +306,13 @@ aesi_label <- function(aesi, scope = NULL) {
 
 #' Indicate Arm Variable in Formula
 #'
+#' @description
+#'
 #' We use `arm` to indicate the study arm variable in `tern` formulas.
 #'
 #' @param x arm information
 #'
-#' @export
-#'
+#' @keywords internal
 arm <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }

@@ -142,7 +142,6 @@ reference:
     desc: these functions are useful to help definining the analysis
     contents:
       - add_footnotes<-
-      - arm
       - footnotes
       - footnotes<-
       - h_adlb_worsen
