@@ -423,7 +423,7 @@ h_coxph_subgroups_df <- function(variables,
 #'   )
 #' )
 #'
-#' #' @keywords internal
+#' @keywords internal
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {

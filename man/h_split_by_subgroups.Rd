@@ -51,5 +51,5 @@ tern:::h_split_by_subgroups(
   )
 )
 
-#' @keywords internal
 }
+\keyword{internal}

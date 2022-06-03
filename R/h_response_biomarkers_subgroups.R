@@ -179,7 +179,7 @@ h_tab_rsp_one_biomarker <- function(df,
     conf_level = df$conf_level[1],
     method = df$pval_label[1]
   )
-  tern::h_tab_one_biomarker(
+  h_tab_one_biomarker(
     df = df,
     afuns = afuns,
     colvars = colvars
