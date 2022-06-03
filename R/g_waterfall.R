@@ -19,7 +19,6 @@
 #'   Text to be displayed as legend title.
 #' @return (\code{ggplot} object)\cr
 #'   Waterfall plot
-#' @param col (`character`)\cr colors.
 #' @template author_song24
 #'
 #' @export
@@ -76,7 +75,7 @@
 #' )
 g_waterfall <- function(height,
                         id,
-                        col = color_palette(palette = "stream"),
+                        col = NULL,
                         xlab = NULL,
                         ylab = NULL,
                         col_legend_title = NULL,
@@ -127,7 +126,7 @@ g_waterfall <- function(height,
         legend.title = ggplot2::element_text(face = "bold"),
         legend.box.background = ggplot2::element_rect(colour = "black")
       ) +
-      ggplot2::scale_fill_manual(values = col)
+      ggplot2::scale_fill_manual(values = tern.color)
   }
 
   if (!is.null(title)) {

@@ -7,7 +7,7 @@
 g_waterfall(
   height,
   id,
-  col = color_palette(palette = "stream"),
+  col = NULL,
   xlab = NULL,
   ylab = NULL,
   col_legend_title = NULL,
@@ -21,7 +21,8 @@ Contains values to be plotted as the waterfall bars}
 \item{id}{(vector)\cr
 Contains of IDs used as the x-axis label for the waterfall bars}
 
-\item{col}{(\code{character})\cr colors.}
+\item{col}{(vector)\cr
+Categorical variable for bar coloring}
 
 \item{xlab}{(\code{character} value)\cr
 x label. Default is \code{ID}.}

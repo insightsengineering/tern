@@ -22,7 +22,7 @@ h_g_ipp(
   add_baseline_hline = FALSE,
   yvar_baseline = "BASE",
   ggtheme = h_set_nest_theme(10),
-  col = color_palette(palette = "stream")
+  col = tern.color
 )
 
 g_ipp(

@@ -32,7 +32,7 @@ g_lineplot(
   table_labels = tern::summary_labels(),
   table_font_size = 3,
   newpage = TRUE,
-  col = color_palette(palette = "stream")
+  col = tern.color
 )
 }
 \arguments{
