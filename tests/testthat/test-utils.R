@@ -42,7 +42,7 @@ testthat::test_that("day2month works correctly", {
 
 testthat::test_that("empty_vector_if_na works correctly", {
   x <- c(NA, NA, NA)
-  result <- empty_vector_if_na(x)
+  result <- tern:::empty_vector_if_na(x)
   expected <- numeric()
   testthat::expect_equal(result, expected)
 })

@@ -325,7 +325,6 @@ reference:
       - cut_quantile_bins
       - df_explicit_na
       - d_pkparam
-      - empty_vector_if_na
       - explicit_na
       - fct_collapse_only
       - fct_discard

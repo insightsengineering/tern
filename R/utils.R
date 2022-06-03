@@ -189,10 +189,12 @@ day2month <- function(x) {
 #' @param x (`numeric`)\cr vector.
 #'
 #' @return An empty `numeric`.
-#' @export
+#'
 #' @examples
 #' x <- c(NA, NA, NA)
-#' empty_vector_if_na(x)
+#' tern:::empty_vector_if_na(x)
+#'
+#' @keywords internal
 empty_vector_if_na <- function(x) {
   if (all(is.na(x))) {
     numeric()
