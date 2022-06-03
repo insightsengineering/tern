@@ -264,7 +264,6 @@ reference:
       - h_row_counts
       - h_row_fractions
       - is_leaf_table
-      - make_names
       - split_cols_by_groups
       - to_string_matrix
 

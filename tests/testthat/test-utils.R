@@ -1,11 +1,11 @@
 testthat::test_that("f_conf_level works for proportion", {
-  result <- f_conf_level(0.95)
+  result <- tern:::f_conf_level(0.95)
   expected <- "95% CI"
   testthat::expect_identical(result, expected)
 })
 testthat::test_that("f_conf_level fails for non-proportion input", {
-  testthat::expect_error(f_conf_level(1.1))
-  testthat::expect_error(f_conf_level(-1))
+  testthat::expect_error(tern:::f_conf_level(1.1))
+  testthat::expect_error(tern:::f_conf_level(-1))
 })
 
 testthat::test_that("make_names works as expected", {
@@ -28,7 +28,7 @@ testthat::test_that("get_covariates fails for non-character input", {
 
 testthat::test_that("month2day works correctly", {
   x <- c(13.25, 8.15, 1, 2.834, NA)
-  result <- month2day(x)
+  result <- tern:::month2day(x)
   expected <- c(403.296875, 248.065625, 30.4375, 86.259875, NA)
   testthat::expect_equal(result, expected)
 })

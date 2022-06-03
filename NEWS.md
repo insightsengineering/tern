@@ -3,7 +3,10 @@
 ### Documentation
 
 * `g_lineplot` added stable badge
-* `h_format_row` internal key added and tern:: for test
+*  Internal keywords added, export removed, pkg_down.yml polished and tern:: for
+   tests and vignettes when present for the following functions:
+   - `h_format_row`, `h_map_for_count_abnormal` (helper functions)
+   - `f_conf_level`, `make_names`, `month2day`(utils functions)
 
 ### Enhancements
 

@@ -55,8 +55,8 @@ f_conf_level <- function(conf_level) {
 #' @param covariates (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #' @return a named `list` of character vector.
-#' @keywords internal
 #'
+#' @keywords internal
 get_covariates <- function(covariates) {
   assertthat::assert_that(is.character(covariates))
   cov_vars <- unique(trimws(unlist(strsplit(covariates, "\\*"))))
@@ -65,15 +65,18 @@ get_covariates <- function(covariates) {
 
 #' Replicate Entries of a Vector if Required
 #'
-#' Note that this will fail if `x` is not having length `n` or being a scalar.
+#' @description
+#'
+#' Replicate Entries of a Vector if Required.Note that this will fail if `x`
+#' is not having length `n` or being a scalar.
 #'
 #' @inheritParams argument_convention
 #' @param n (`count`)\cr how many entries we need.
 #'
 #' @return Just input `x` if it has the required length already or is `NULL`,
 #'   otherwise if it is scalar the replicated version of it with `n` entries.
-#' @keywords internal
 #'
+#' @keywords internal
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -88,13 +91,14 @@ to_n <- function(x, n) {
 
 #' Check Element Dimension
 #'
+#' @description
+#'
 #' Checks if the elements in `...` have the same dimension.
 #'
 #' @param ... data.frames or vectors
 #' @param omit_null are \code{NULL} elements in \code{...} to be omitted from the check?
 #'
 #' @keywords internal
-#'
 check_same_n <- function(..., omit_null = TRUE) {
   dots <- list(...)
 
@@ -134,9 +138,10 @@ check_same_n <- function(..., omit_null = TRUE) {
 #' @return Character vector of proper names, which does not use dots in contrast to
 #'   [base::make.names()].
 #'
-#' @export
 #' @examples
 #' make_names(c("foo Bar", "1 2 3 bla"))
+#'
+#' @keywords internal
 make_names <- function(nams) {
   orig <- make.names(nams)
   gsub(".", "", x = orig, fixed = TRUE)
@@ -144,13 +149,20 @@ make_names <- function(nams) {
 
 #' Conversion of Months to Days
 #'
+#' @description
+#'
+#' Conversion of Months to Days. This is an approximative calculation because it
+#' considers each month as having an average of 30.4375 days.
+#'
 #' @param x (`numeric`)\cr time in months.
 #'
 #' @return A `numeric` vector with the time in days.
-#' @export
+#'
 #' @examples
 #' x <- c(13.25, 8.15, 1, 2.834)
 #' month2day(x)
+#'
+#' @keywords internal
 month2day <- function(x) {
   assertthat::assert_that(is.numeric(x))
   x * 30.4375

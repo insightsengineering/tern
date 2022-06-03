@@ -426,11 +426,11 @@ g_lineplot <- function(df, # nolint
 #' x <- list(mean = 50, mean_ci = mean_ci)
 #' format <- c(mean = "xx.x", mean_ci = "(xx.xx, xx.xx)")
 #' labels <- c(mean = "My Mean")
-#' tern::h_format_row(x, format, labels)
+#' tern:::h_format_row(x, format, labels)
 #'
 #' attr(mean_ci, "label") <- "Mean 95% CI"
 #' x <- list(mean = 50, mean_ci = mean_ci)
-#' tern::h_format_row(x, format, labels)
+#' tern:::h_format_row(x, format, labels)
 #'
 #' @keywords internal
 h_format_row <- function(x, format, labels = NULL) {

@@ -10,7 +10,7 @@ df <- data.frame(
 df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) # nolint
 
 testthat::test_that("h_map_for_count_abnormal returns the correct map for default method with healthy single input", {
-  result <- tern::h_map_for_count_abnormal(
+  result <- tern:::h_map_for_count_abnormal(
     df = df,
     variables = list(anl = "ANRIND", split_rows = "PARAM"),
     abnormal = list(low = "LOW", high = "HIGH"),
@@ -34,7 +34,7 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for range 
   df$ANRLO <- 5 # nolint
   df$ANRHI <- 20 # nolint
 
-  result <- tern::h_map_for_count_abnormal(
+  result <- tern:::h_map_for_count_abnormal(
     df = df,
     variables = list(anl = "ANRIND", split_rows = "PARAM", range_low = "ANRLO", range_high = "ANRHI"),
     abnormal = list(low = "LOW", high = "HIGH"),
@@ -58,7 +58,7 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for range 
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input",
   code = {
-    result <- tern::h_map_for_count_abnormal(
+    result <- tern:::h_map_for_count_abnormal(
       df = df,
       variables = list(anl = "ANRIND", split_rows = "PARAM"),
       abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH")),
@@ -87,7 +87,7 @@ testthat::test_that(
     df$ANRLO <- 5 # nolint
     df$ANRHI <- 20 # nolint
 
-    result <- tern::h_map_for_count_abnormal(
+    result <- tern:::h_map_for_count_abnormal(
       df = df,
       variables = list(anl = "ANRIND", split_rows = "PARAM", range_low = "ANRLO", range_high = "ANRHI"),
       abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
@@ -116,7 +116,7 @@ testthat::test_that(
       ANRIND = ifelse(PARAM == "ALT" & ANRIND == "LOW" & USUBJID == "1", "LOW LOW", as.character(ANRIND))
     )
     df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL", "LOW LOW", "HIGH HIGH")) # nolint
-    result <- tern::h_map_for_count_abnormal(
+    result <- tern:::h_map_for_count_abnormal(
       df = df,
       variables = list(anl = "ANRIND", split_rows = "PARAM"),
       abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH")),
@@ -147,7 +147,7 @@ testthat::test_that(
     df$ANRIND <- "NORMAL" # nolint
     df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) # nolint
 
-    result <- tern::h_map_for_count_abnormal(
+    result <- tern:::h_map_for_count_abnormal(
       df = df,
       variables = list(anl = "ANRIND", split_rows = "PARAM", range_low = "ANRLO", range_high = "ANRHI"),
       abnormal = list(low = c("LOW"), high = c("HIGH")),
@@ -177,7 +177,7 @@ testthat::test_that(
     df$ANRLO <- ifelse(df$PARAM == "ALT", 0, df$ANRLO) # nolint
     df$ANRHI <- ifelse(df$PARAM == "CPR", NA, df$ANRHI) # nolint
 
-    result <- tern::h_map_for_count_abnormal(
+    result <- tern:::h_map_for_count_abnormal(
       df = df,
       variables = list(anl = "ANRIND", split_rows = "PARAM", range_low = "ANRLO", range_high = "ANRHI"),
       abnormal = list(low = c("LOW"), high = c("HIGH")),
