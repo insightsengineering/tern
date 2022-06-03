@@ -64,6 +64,8 @@
 #'   na_level = "<Missing>"
 #' )
 #' @keywords internal
+
+
 h_map_for_count_abnormal <- function(df,
                                      variables = list(
                                        anl = "ANRIND",
