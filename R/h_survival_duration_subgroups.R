@@ -11,6 +11,7 @@
 #' @param arm (`factor`)\cr the treatment group variable.
 #' @name h_survival_duration_subgroups
 #' @order 1
+#'
 #' @examples
 #'
 #' # Testing dataset.
@@ -100,6 +101,7 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'    requires elements `tte`, `is_event`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
 #' @export
+#'
 #' @examples
 #'
 #' # Extract median survival time for multiple groups.
@@ -398,7 +400,6 @@ h_coxph_subgroups_df <- function(variables,
 #'
 #' @examples
 #'
-#' @keywords internal
 #'
 #' library(rtables)
 #'
@@ -421,6 +422,8 @@ h_coxph_subgroups_df <- function(variables,
 #'     y = list("AB" = c("A", "B"), "C" = "C")
 #'   )
 #' )
+#'
+#' #' @keywords internal
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {
