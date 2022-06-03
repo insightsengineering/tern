@@ -203,15 +203,17 @@ empty_vector_if_na <- function(x) {
   }
 }
 
-#' Combine Two Vectors Elementwise
+#' Combine Two Vectors element-wise
 #'
 #' @param x (`vector`)\cr first vector to combine.
 #' @param y (`vector`)\cr second vector to combine.
 #'
 #' @return A `list` where each element combines corresponding elements of `x` and `y`.
-#' @export
+#'
 #' @examples
-#' combine_vectors(1:3, 4:6)
+#' tern:::combine_vectors(1:3, 4:6)
+#'
+#' @keywords internal
 combine_vectors <- function(x, y) {
   assertthat::assert_that(
     is.vector(x),
@@ -226,6 +228,8 @@ combine_vectors <- function(x, y) {
 
 #' Extract Elements by Name
 #'
+#' @description
+#'
 #' This utility function extracts elements from a vector `x` by `names`.
 #' Differences to the standard [base::`[`()] function are:
 #'
@@ -237,8 +241,8 @@ combine_vectors <- function(x, y) {
 #' @param names (`character`)\cr vector of names to extract.
 #'
 #' @return Either `NULL` or the extracted elements from `x`.
-#' @keywords internal
 #'
+#' @keywords internal
 extract <- function(x, names) {
   if (is.null(x)) {
     return(NULL)

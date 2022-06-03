@@ -52,7 +52,7 @@ testthat::test_that("extract works for NULL input", {
 })
 
 testthat::test_that("extract works for non-NULL input", {
-  result <- extract(
+  result <- tern:::extract(
     x = c(a = "xx", b = function(x) paste(x, "bla")),
     c("b", "c")
   )
@@ -61,7 +61,7 @@ testthat::test_that("extract works for non-NULL input", {
 })
 
 testthat::test_that("extract returns NULL when there is no overlap", {
-  result <- extract(
+  result <- tern:::extract(
     x = c(a = "xx", b = "xx.xx"),
     c("d", "c")
   )

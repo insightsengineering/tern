@@ -321,7 +321,6 @@ reference:
       - as_factor_keep_attributes
       - bins_percent_labels
       - combine_levels
-      - combine_vectors
       - cut_quantile_bins
       - df_explicit_na
       - d_pkparam
