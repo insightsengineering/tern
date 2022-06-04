@@ -4,20 +4,9 @@
 \alias{color_palette}
 \title{Color Palettes Used in NEST}
 \usage{
-color_palette(n = 10, palette = "nest")
+color_palette(palette = "nest", n = 10)
 }
 \arguments{
-\item{n}{(\code{numeric} value) \cr
-The number of colors to be returned from
-the color palettes. Please note the colors will be repeated after
-a certain numerical limit per palette:
-
-\itemize{
-\item{\code{nest} }{96 colors}
-\item{\code{stream} }{38 colors}
-\item{\code{viridis} }{49 colors}
-}}
-
 \item{palette}{(\code{character} value)\cr
 The name of a palette supported by this function
 
@@ -27,6 +16,17 @@ colors in the NEST logo.
 }
 \item{\code{stream} }{A color palette proposed by the stream documentation of stream version \code{2_05}}
 \item{\code{viridis} }{A color palette provided by the \code{viridis::plasma} function.}
+}}
+
+\item{n}{(\code{numeric} value) \cr
+The number of colors to be returned from
+the color palettes. Please note the colors will be repeated after
+a certain numerical limit per palette:
+
+\itemize{
+\item{\code{nest} }{96 colors}
+\item{\code{stream} }{38 colors}
+\item{\code{viridis} }{49 colors}
 }}
 }
 \description{
@@ -48,9 +48,9 @@ plot_pal <- function(x) {
   }
 }
 
-plot_pal(color_palette(n = 10, palette = "nest"))
+plot_pal(color_palette(palette = "nest", n = 10))
 
-plot_pal(color_palette(n = 10, palette = "stream"))
+plot_pal(color_palette(palette = "stream", n = 10))
 
-plot_pal(color_palette(n = 10, palette = "viridis"))
+plot_pal(color_palette(palette = "viridis", n = 10))
 }
