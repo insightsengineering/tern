@@ -59,7 +59,7 @@ color_palette_core <- function(palette = "nest", n = 10) {
 .onLoad <- function(libname, pkgname) { # nolint
   # adapted from https://github.com/r-lib/devtools/blob/master/R/zzz.R
   tern_default_options <- list(
-    "tern.color" <- color_palette_core("stream")
+    "tern.color" <- color_palette_core("stream") # nolint
   )
   op <- options()
   toset <- !(names(tern_default_options) %in% names(op))

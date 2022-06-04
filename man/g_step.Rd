@@ -23,7 +23,7 @@ biomarker values.}
 \item{ci_ribbon}{(named \code{list} or \code{NULL})\cr \code{fill} and \code{alpha} settings for the confidence interval
 ribbon area, or \code{NULL} to not plot a CI ribbon.}
 
-\item{use_palette}{(\code{character}) \cr color palette theme, "stream" (default), "nest", or "viridis"}
+\item{use_palette}{(\code{character}) \cr color palette theme, \code{stream} (default), \code{nest}, or \code{viridis}}
 }
 \value{
 The \code{ggplot2} object.

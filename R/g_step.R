@@ -70,7 +70,7 @@ tidy.step <- function(x, ...) { # nolint
 #' @param est (named `list`)\cr `col` and `lty` settings for estimate line.
 #' @param ci_ribbon (named `list` or `NULL`)\cr `fill` and `alpha` settings for the confidence interval
 #'   ribbon area, or `NULL` to not plot a CI ribbon.
-#' @param use_palette (`character`) \cr color palette theme, "stream" (default), "nest", or "viridis"
+#' @param use_palette (`character`) \cr color palette theme, `stream` (default), `nest`, or `viridis`
 #'
 #' @return The `ggplot2` object.
 #' @export
