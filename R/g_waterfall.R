@@ -126,7 +126,7 @@ g_waterfall <- function(height,
         legend.title = ggplot2::element_text(face = "bold"),
         legend.box.background = ggplot2::element_rect(colour = "black")
       ) +
-      ggplot2::scale_fill_manual(values = tern.color)
+      ggplot2::scale_fill_manual(values = getOption("tern.color"))
   }
 
   if (!is.null(title)) {

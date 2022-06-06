@@ -86,7 +86,7 @@ h_g_ipp <- function(df,
                     add_baseline_hline = FALSE,
                     yvar_baseline = "BASE",
                     ggtheme = h_set_nest_theme(10),
-                    col = tern.color) {
+                    col = getOption("tern.color")) {
   assertthat::assert_that(
     is.data.frame(df),
     assertthat::is.string(xvar),

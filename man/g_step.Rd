@@ -9,7 +9,7 @@ g_step(
   use_percentile = "Percentile Center" \%in\% names(df),
   est = list(col = "black", lty = 1),
   ci_ribbon = list(fill = "lightblue", alpha = 0.5),
-  col = tern.color
+  col = getOption("tern.color")
 )
 }
 \arguments{

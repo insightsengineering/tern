@@ -154,7 +154,7 @@ g_lineplot <- function(df, # nolint
                        table_labels = tern::summary_labels(),
                        table_font_size = 3,
                        newpage = TRUE,
-                       col = tern.color) {
+                       col = getOption("tern.color")) {
   assertthat::assert_that(is.character(variables) || is.na(variables))
   assertthat::assert_that(is.character(mid) || is.null(mid))
   assertthat::assert_that(is.character(interval) || is.null(interval))

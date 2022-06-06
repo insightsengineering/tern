@@ -8,7 +8,7 @@ g_km(
   df,
   variables,
   control_surv = control_surv_timepoint(),
-  col = tern.color,
+  col = getOption("tern.color"),
   lty = NULL,
   lwd = 0.5,
   censor_show = TRUE,
