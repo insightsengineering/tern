@@ -17,6 +17,7 @@
 #' @inheritParams argument_convention
 #'
 #' @name cox_regression
+#' @description `r lifecycle::badge("stable")`
 #' @order 1
 #' @examples
 #'

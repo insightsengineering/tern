@@ -2,6 +2,7 @@
 #'
 #' Tidy the STEP results into a `tibble` to format them ready for plotting.
 #'
+#'
 #' @param x (`step` matrix)\cr results from [fit_survival_step()].
 #' @param ... not used here.
 #' @return A `tibble` with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,
@@ -63,6 +64,8 @@ tidy.step <- function(x, ...) { # nolint
 #'
 #' Based on the STEP results, creates a `ggplot` graph showing the estimated HR or OR
 #' along the continuous biomarker value subgroups.
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @param df (`tibble`)\cr result of [tidy.step()].
 #' @param use_percentile (`flag`)\cr whether to use percentiles for the x axis or actual

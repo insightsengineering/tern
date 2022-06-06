@@ -71,9 +71,11 @@ helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{...}{additional arguments for the lower level functions.}
 
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
+
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -122,10 +124,12 @@ with 4 elements:
 }
 }
 \description{
-Fits a Cox regression model and estimate hazard ratio to describe the effect
-size in a survival analysis.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
+Fits a Cox regression model and estimate hazard ratio to describe the effect
+size in a survival analysis.
+
 Cox models are the most commonly used methods to estimate the magnitude of
 the effect in survival analysis. It assumes proportional hazards: the ratio
 of the hazards between groups (e.g., two arms) is constant over time.

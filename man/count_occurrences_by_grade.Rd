@@ -64,7 +64,7 @@ in the the output list; in this case only the grade groups names will be include
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
@@ -76,6 +76,8 @@ by a statistics function.}
 (must be present as second argument in Content Row Functions).}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{var_labels}{(\code{character})\cr labels to show in the result table.}
 
@@ -95,6 +97,9 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Functions for analyzing frequencies and fractions of occurrences by grade for patients
 with occurrence data. Multiple occurrences within one individual are counted once at the
 greatest intensity/highest grade level.

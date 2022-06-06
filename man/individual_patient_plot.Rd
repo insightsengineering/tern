@@ -81,6 +81,9 @@ plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
 a \code{ggplot} object or a list of \code{ggplot} objects.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Line plot(s) displaying trend in patients' parameter values over time is rendered.
 Patients' individual baseline values can be added to the plot(s) as reference.
 }

@@ -4,8 +4,8 @@ testthat::test_that("f_conf_level works for proportion", {
   testthat::expect_identical(result, expected)
 })
 testthat::test_that("f_conf_level fails for non-proportion input", {
-  testthat::expect_error(tern:::f_conf_level(1.1))
-  testthat::expect_error(tern:::f_conf_level(-1))
+  testthat::expect_error(f_conf_level(1.1))
+  testthat::expect_error(f_conf_level(-1))
 })
 
 testthat::test_that("make_names works as expected", {
@@ -69,31 +69,31 @@ testthat::test_that("extract returns NULL when there is no overlap", {
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("tern:::aesi_label works as expected for SMQ", {
+testthat::test_that("aesi_label works as expected for SMQ", {
   smq01nam <- c("AESI 1", "", NA)
   smq01sc <- c("NARROW", "", NA)
 
-  result <- tern:::aesi_label(smq01nam, smq01sc)
+  result <- aesi_label(smq01nam, smq01sc)
   expected <- "AESI 1 (NARROW)"
   testthat::expect_identical(result, expected)
 }) # test with NA
 
-testthat::test_that("tern:::aesi_label works as expected for CQ", {
+testthat::test_that("aesi_label works as expected for CQ", {
   aesi1 <- c("AESI CQ1", "", NA)
-  result <- tern:::aesi_label(aesi1, scope = NULL)
+  result <- aesi_label(aesi1, scope = NULL)
   expected <- "AESI CQ1"
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("tern:::aesi_label works as expected when input includes multiple values", {
+testthat::test_that("aesi_label works as expected when input includes multiple values", {
   aesi1 <- c("AESI CQ1", "AESI CQ2")
-  result <- tern:::aesi_label(aesi1, scope = NULL)
+  result <- aesi_label(aesi1, scope = NULL)
 
   expected <- NULL
   testthat::expect_identical(result, expected)
 
   aesi2 <- formatters::with_label(c("AESI CQ1", "AESI CQ2"), label = "CQ: ABC")
-  result <- tern:::aesi_label(aesi2, scope = NULL)
+  result <- aesi_label(aesi2, scope = NULL)
 
   expected <- "CQ: ABC"
   testthat::expect_identical(result, expected)

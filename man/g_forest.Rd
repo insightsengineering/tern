@@ -69,6 +69,9 @@ Only considered if \code{draw = TRUE} is used.}
 (\code{gtree}) object containing the forest plot and table
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} object that has a
 column with a single value and a column with 2 values.
 }

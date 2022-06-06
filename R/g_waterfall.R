@@ -3,6 +3,8 @@
 #' This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
 #' markup.
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @param height (\code{numeric} vector)\cr
 #'   Contains values to be plotted as the waterfall bars
 #' @param id (vector)\cr

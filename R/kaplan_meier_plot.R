@@ -58,6 +58,8 @@
 #'
 #' @name kaplan_meier
 #'
+#' @description `r lifecycle::badge("stable")`
+
 NULL
 
 #' Kaplan-Meier Plot

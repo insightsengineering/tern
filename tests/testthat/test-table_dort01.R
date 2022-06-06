@@ -7,7 +7,7 @@ preproc_adtte <- function(adtte) {
   anl <- adtte %>%
     dplyr::filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
     dplyr::mutate(
-      AVAL = day2month(AVAL),
+      AVAL = tern:::day2month(AVAL),
       is_event = CNSR == 0,
       is_not_event = CNSR == 1,
       EVNT1 = factor(

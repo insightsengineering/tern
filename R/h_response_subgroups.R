@@ -5,6 +5,7 @@
 #'
 #' @details Main functionality is to prepare data for use in a layout creating function.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @inheritParams response_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.

@@ -22,11 +22,12 @@ intervals as produced by \code{\link[=cut_quantile_bins]{cut_quantile_bins()}}.
 }
 \examples{
 # Just pass the internal probability bounds, then 0 and 100\% will be added automatically.
-bins_percent_labels(c(0.2, 0.5))
+tern:::bins_percent_labels(c(0.2, 0.5))
 
 # Determine how to round.
-bins_percent_labels(0.35224, digits = 1)
+tern:::bins_percent_labels(0.35224, digits = 1)
 
 # Passing an empty vector just gives a single bin 0-100\%.
-bins_percent_labels(c())
+tern:::bins_percent_labels(c())
 }
+\keyword{internal}

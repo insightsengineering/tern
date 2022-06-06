@@ -4,6 +4,7 @@
 #' with occurrence data. Multiple occurrences within one individual are counted once at the
 #' greatest intensity/highest grade level.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
 #' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level

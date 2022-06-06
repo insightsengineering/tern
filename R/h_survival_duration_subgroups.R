@@ -43,7 +43,9 @@ NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
 #' @inheritParams h_survival_duration_subgroups
+#'
 #' @export
+#'
 #' @examples
 #'
 #' # Extract median survival time for one group.

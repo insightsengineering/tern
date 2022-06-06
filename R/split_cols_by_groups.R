@@ -224,7 +224,7 @@ split_cols_by_groups <- function(lyt,
 #' @inheritParams combine_groups
 #' @inheritParams groups_list_to_df
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #'
@@ -232,7 +232,7 @@ split_cols_by_groups <- function(lyt,
 #'
 #' ref <- c("A: Drug X", "B: Placebo")
 #' groups <- combine_groups(fct = DM$ARM, ref = ref)
-#' col_counts <- combine_counts(
+#' col_counts <- tern:::combine_counts(
 #'   fct = DM$ARM,
 #'   groups_list = groups
 #' )
@@ -245,7 +245,7 @@ split_cols_by_groups <- function(lyt,
 #'
 #' ref <- "A: Drug X"
 #' groups <- combine_groups(fct = DM$ARM, ref = ref)
-#' col_counts <- combine_counts(
+#' col_counts <- tern:::combine_counts(
 #'   fct = DM$ARM,
 #'   groups_list = groups
 #' )

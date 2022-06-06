@@ -14,6 +14,9 @@ The modified layout where the latest row split labels now have the row-wise
 total counts (i.e. without column based subsetting) attached in parentheses.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 This works analogously to \code{\link[rtables:add_colcounts]{rtables::add_colcounts()}} but on the rows.
 }
 \examples{

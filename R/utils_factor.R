@@ -100,17 +100,16 @@ as_factor_keep_attributes <- function(x,
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
 #'
 #' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
-#' @export
-#'
+#' @keywords internal
 #' @examples
 #' # Just pass the internal probability bounds, then 0 and 100% will be added automatically.
-#' bins_percent_labels(c(0.2, 0.5))
+#' tern:::bins_percent_labels(c(0.2, 0.5))
 #'
 #' # Determine how to round.
-#' bins_percent_labels(0.35224, digits = 1)
+#' tern:::bins_percent_labels(0.35224, digits = 1)
 #'
 #' # Passing an empty vector just gives a single bin 0-100%.
-#' bins_percent_labels(c())
+#' tern:::bins_percent_labels(c())
 bins_percent_labels <- function(probs,
                                 digits = 0) {
   assertthat::assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))

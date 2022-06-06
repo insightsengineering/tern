@@ -6,6 +6,7 @@
 #'   (e.g. reference and treatment group).
 #'
 #' @name prop_difference
+#' @keywords internal
 #'
 NULL
 

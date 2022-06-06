@@ -22,7 +22,7 @@ library(rtables)
 
 ref <- c("A: Drug X", "B: Placebo")
 groups <- combine_groups(fct = DM$ARM, ref = ref)
-col_counts <- combine_counts(
+col_counts <- tern:::combine_counts(
   fct = DM$ARM,
   groups_list = groups
 )
@@ -35,7 +35,7 @@ basic_table() \%>\%
 
 ref <- "A: Drug X"
 groups <- combine_groups(fct = DM$ARM, ref = ref)
-col_counts <- combine_counts(
+col_counts <- tern:::combine_counts(
   fct = DM$ARM,
   groups_list = groups
 )
@@ -49,3 +49,4 @@ basic_table() \%>\%
 \seealso{
 combine_groups
 }
+\keyword{internal}

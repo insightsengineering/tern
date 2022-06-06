@@ -2,6 +2,7 @@
 #'
 #' Substitute missing data with a string or factor level.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @param x factor or character vector
 #' @param label character string that missing data should be replaced with
 #'

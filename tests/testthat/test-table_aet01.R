@@ -169,9 +169,9 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
   aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
   basket_vars <- c("SMQ01", "SMQ02", "CQ01")
   labels <- c(
-    tern:::aesi_label(adae$SMQ01NAM, adae$SMQ01SC),
-    tern:::aesi_label(adae$SMQ02NAM, adae$SMQ02SC),
-    tern:::aesi_label(adae$CQ01NAM)
+    aesi_label(adae$SMQ01NAM, adae$SMQ01SC),
+    aesi_label(adae$SMQ02NAM, adae$SMQ02SC),
+    aesi_label(adae$CQ01NAM)
   )
   for (i in seq_along(basket_vars)) {
     attr(adae[[basket_vars[i]]], "label") <- labels[i]

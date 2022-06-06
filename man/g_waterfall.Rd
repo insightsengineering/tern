@@ -41,6 +41,9 @@ Text to be displayed as plot title.}
 Waterfall plot
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
 markup.
 }

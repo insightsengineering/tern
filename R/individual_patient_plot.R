@@ -25,6 +25,9 @@
 #' @param caption (`character` scalar) \cr optional caption below the plot.
 #'
 #' @name individual_patient_plot
+#'
+#' @description `r lifecycle::badge("stable")`
+
 NULL
 
 

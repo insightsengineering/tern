@@ -63,7 +63,7 @@ Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the s
 
 \item{id}{(\code{string}) \cr subject variable name.}
 
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{baseline_var}{(\code{string}) \cr baseline lab grade variable}
@@ -76,6 +76,8 @@ by a statistics function.}
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
 

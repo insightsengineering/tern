@@ -8,6 +8,7 @@
 #' Therefore the corresponding layout needs to use `split_fun = drop_split_levels` in the `split_rows_by`
 #' calls. Use `drop = FALSE` if you would like to show all occurrences.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #'
 #' @name count_occurrences

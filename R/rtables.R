@@ -89,6 +89,7 @@ c_label_n <- function(df,
 #'
 #' This works analogously to [rtables::add_colcounts()] but on the rows.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #'
 #' @return The modified layout where the latest row split labels now have the row-wise

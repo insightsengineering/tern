@@ -41,10 +41,12 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
 #' Utility function to create label for confidence interval
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams argument_convention
 #' @return a `string`
 #'
-#' @keywords internal
+#' @export
 f_conf_level <- function(conf_level) {
   assertthat::assert_that(is_proportion(conf_level))
   paste0(conf_level * 100, "% CI")
@@ -139,7 +141,7 @@ check_same_n <- function(..., omit_null = TRUE) {
 #'   [base::make.names()].
 #'
 #' @examples
-#' make_names(c("foo Bar", "1 2 3 bla"))
+#' tern:::make_names(c("foo Bar", "1 2 3 bla"))
 #'
 #' @keywords internal
 make_names <- function(nams) {
@@ -261,23 +263,26 @@ extract <- function(x, names) {
 
 #' Labels for Adverse Event Baskets
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @param aesi (`character`)\cr with standardized MedDRA query name (e.g. `SMQzzNAM`) or customized query
 #'   name (e.g. `CQzzNAM`).
 #' @param scope (`character`)\cr with scope of query (e.g. `SMQzzSC`).
 #'
 #' @return A `string` with the standard label for the AE basket.
 #'
+#' @export
+#'
 #' @examples
 #' library(scda)
 #' adae <- synthetic_cdisc_data("latest")$adae
 #'
 #' # Standardized query label includes scope.
-#' tern:::aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
+#' aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
 #'
 #' # Customized query label.
-#' tern:::aesi_label(adae$CQ01NAM)
+#' aesi_label(adae$CQ01NAM)
 #'
-#' @keywords internal
+
 aesi_label <- function(aesi, scope = NULL) {
   assertthat::assert_that(
     is.character(aesi),
@@ -306,13 +311,13 @@ aesi_label <- function(aesi, scope = NULL) {
 
 #' Indicate Arm Variable in Formula
 #'
-#' @description
+#' @description `r lifecycle::badge("stable")`
 #'
 #' We use `arm` to indicate the study arm variable in `tern` formulas.
 #'
 #' @param x arm information
+#' @export
 #'
-#' @keywords internal
 arm <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }

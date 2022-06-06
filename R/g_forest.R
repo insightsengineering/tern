@@ -3,6 +3,8 @@
 #' Create a forest plot from any [rtables::rtable()] object that has a
 #' column with a single value and a column with 2 values.
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams argument_convention
 #' @param tbl (`rtable`)
 #' @param col_x (`integer`)\cr column index with estimator. By default tries to get this from

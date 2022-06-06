@@ -115,6 +115,7 @@ reference:
        - count_occurrences_by_grade
        - count_patients_with_event
        - count_patients_with_flags
+       - count_values_funs
        - estimate_incidence_rate
        - estimate_multinomial_response
        - estimate_odds_ratio

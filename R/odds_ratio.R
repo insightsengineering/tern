@@ -1,5 +1,6 @@
 #' Odds Ratio Estimation
 #'
+#' @description `r lifecycle::badge("stable")`
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'

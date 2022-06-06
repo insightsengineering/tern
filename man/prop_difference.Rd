@@ -219,3 +219,4 @@ l <- basic_table() \%>\%
 
 build_table(l, df = dta)
 }
+\keyword{internal}
