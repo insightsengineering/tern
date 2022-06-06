@@ -1,4 +1,4 @@
-color_palette_core <- function(palette = "nest", n = 10) {
+color_palette_core <- function(n = 10, palette = "nest") {
   checkmate::assert_string(palette)
   match.arg(palette, c("nest", "stream", "viridis"))
   checkmate::assert_number(n)
@@ -58,6 +58,6 @@ color_palette_core <- function(palette = "nest", n = 10) {
 
 
 .onLoad <- function(libname, pkgname) { # nolint
-  options("tern.color" = color_palette_core("stream")) # nolint
+  options("tern.color" = color_palette_core(n = 10, palette = "stream")) # nolint
   invisible()
 }

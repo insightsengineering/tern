@@ -42,11 +42,11 @@
 #'   }
 #' }
 #'
-#' plot_pal(color_palette(palette = "nest", n = 10))
+#' plot_pal(color_palette(n = 10, palette = "nest"))
 #'
-#' plot_pal(color_palette(palette = "stream", n = 10))
+#' plot_pal(color_palette(n = 10, palette = "stream"))
 #'
-#' plot_pal(color_palette(palette = "viridis", n = 10))
-color_palette <- function(palette = "nest", n = 10) {
+#' plot_pal(color_palette(n = 10, palette = "viridis"))
+color_palette <- function(n = 10, palette = "nest") {
   color_palette_core(palette, n)
 }
