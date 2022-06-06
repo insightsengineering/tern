@@ -48,5 +48,5 @@
 #'
 #' plot_pal(color_palette(n = 10, palette = "viridis"))
 color_palette <- function(n = 10, palette = "nest") {
-  color_palette_core(palette, n)
+  color_palette_core(n, palette)
 }
