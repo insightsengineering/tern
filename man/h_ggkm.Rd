@@ -17,7 +17,7 @@ h_ggkm(
   lty = NULL,
   pch = 3,
   size = 2,
-  col = color_palette(palette = "stream"),
+  col = getOption("tern.color"),
   ci_ribbon = FALSE,
   ggtheme = NULL
 )
