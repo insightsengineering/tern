@@ -84,9 +84,6 @@ to avoid warnings from \code{rtables}.}
 See \code{\link[=s_summary.logical]{s_summary.logical()}} for the returned statistics, as this is used inside.
 }
 \description{
-internal
-}
-\details{
 We can count the occurrence of specific values in a variable of interest.
 }
 \section{Functions}{

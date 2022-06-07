@@ -2,9 +2,9 @@
 
 ### NAMESPACE polishing updates
 * list of functions that have downstream dependencies and should not be internal:
-   `f_conf_level` (tern.rbmi and tern.mmrm), `aesi_label`, `arm`and `get_smooths` (tern_mmrm) 
-* functions reverted to "export", with "stable" badge
-
+  `f_conf_level` (tern.rbmi and tern.mmrm), `aesi_label`, `arm`and `get_smooths` (tern_mmrm) 
+* functions reverted to "export" if downstream dependencies were present. Added 
+  "stable" badge for those.
 
 ### Fix
 
@@ -12,15 +12,17 @@
 
 ### Documentation and NAMESPACE polishing
 
-*  Added stable badge for `g_lineplot`, `g_step`, `g_waterfall`, `cox_regression`, `score_occurrences`, `add_rowcounts`, `odds_ratio`, `count_occurrences`, `count_occurrences_by_grade`, `explicit_na`.
+*  Added stable badge for `g_lineplot`, `g_step`, `g_waterfall`, `cox_regression`, 
+   `score_occurrences`, `add_rowcounts`, `odds_ratio`, `count_occurrences`, 
+   `count_occurrences_by_grade`, `explicit_na`.
 *  Internal keywords added, export removed, pkg_down.yml polished and tern:: for
    tests and vignettes when present for the following functions:
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 
-   - (utils functions) `f_conf_level`, `make_names`, `month2day`, `day2month` 
-     `empty_vector_if_na`, `combine_vectors`, `aesi_label`, `arm`, `get_smooths`,
+   - (utils functions) `make_names`, `month2day`, `day2month` 
+     `empty_vector_if_na`, `combine_vectors`, `aesi_label`,
      `n_available`, `format_xx`
    - `count_values_funs`, `prop_difference`, `combine_counts`.
-* Deprecated `s_cox_univariate` function has now deprecated badge.
+*  Deprecated `s_cox_univariate` function has now deprecated badge.
 
 ### Enhancements
 

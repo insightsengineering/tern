@@ -1,9 +1,10 @@
 #' Counting Specific Values
 #'
+#' @description
+#'
 #' We can count the occurrence of specific values in a variable of interest.
 #'
 #' @name count_values_funs
-#' @description internal
 #' @order 1
 #'
 NULL

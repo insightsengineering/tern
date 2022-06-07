@@ -1,5 +1,5 @@
 testthat::test_that("f_conf_level works for proportion", {
-  result <- tern:::f_conf_level(0.95)
+  result <- f_conf_level(0.95)
   expected <- "95% CI"
   testthat::expect_identical(result, expected)
 })
