@@ -30,7 +30,7 @@
 #' g_waterfall(
 #'   height = c(3, 5, -1),
 #'   id = letters[1:3],
-#'   col = letters[1:3]
+#'   col_var = letters[1:3]
 #' )
 #'
 #' library(scda)
@@ -120,7 +120,7 @@ g_waterfall <- function(height,
 
   if (!is.null(col)) {
     p <- p +
-      ggplot2::aes(fill = plot_data_ord$col) +
+      ggplot2::aes(fill = col) +
       ggplot2::labs(fill = col_legend_title) +
       ggplot2::theme(
         legend.position = "bottom",

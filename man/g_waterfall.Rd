@@ -53,7 +53,7 @@ g_waterfall(height = c(3, 5, -1), id = letters[1:3])
 g_waterfall(
   height = c(3, 5, -1),
   id = letters[1:3],
-  col = letters[1:3]
+  col_var = letters[1:3]
 )
 
 library(scda)
