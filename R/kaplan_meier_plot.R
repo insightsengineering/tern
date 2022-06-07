@@ -1097,7 +1097,7 @@ h_grob_median_surv <- function(fit_km,
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-#'   title = "title"
+#'   title = "title", yval = "Survival"
 #' )
 #'
 #' g_el <- h_decompose_gg(gg)

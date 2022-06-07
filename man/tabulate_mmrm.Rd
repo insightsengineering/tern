@@ -121,7 +121,7 @@ dat <- sleepstudy \%>\%
   ) \%>\%
   distinct_at(.vars = c("Subject", "days_grouped", "group"), .keep_all = TRUE)
 
-result <- fit_mmrm(
+result <- tern.mmrm::fit_mmrm(
   vars = list(
     response = "Reaction",
     covariates = c(),
@@ -135,7 +135,7 @@ result <- fit_mmrm(
 )
 as.rtable(result, type = "cov", format = "xx.x")
 
-result_no_arm <- fit_mmrm(
+result_no_arm <- tern.mmrm::fit_mmrm(
   vars = list(
     response = "Reaction",
     covariates = c(),

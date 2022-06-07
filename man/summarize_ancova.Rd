@@ -133,6 +133,8 @@ conf_level <- 0.95
 s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 
+adsl <- scda::synthetic_cdisc_data("latest")$adsl
+adqs <- scda::synthetic_cdisc_data("latest")$adqs
 adqs_single <- adqs \%>\%
   filter(
     AVISIT == "WEEK 1 DAY 8", # single time point

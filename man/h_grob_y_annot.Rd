@@ -32,7 +32,7 @@ gg <- h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-  title = "title"
+  title = "title", yval = "Survival"
 )
 
 g_el <- h_decompose_gg(gg)

@@ -130,6 +130,7 @@ df_grouped <- extract_rsp_biomarkers(
 df_grouped
 
 ## Table with default columns.
+df <- # <need_data_input_to_work>
 tabulate_rsp_biomarkers(df)
 
 ## Table with a manually chosen set of columns: leave out "pval", reorder.

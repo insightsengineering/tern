@@ -197,6 +197,8 @@ a_ancova <- make_afun(
 #' @export
 #' @examples
 #'
+#' adsl <- scda::synthetic_cdisc_data("latest")$adsl
+#' adqs <- scda::synthetic_cdisc_data("latest")$adqs
 #' adqs_single <- adqs %>%
 #'   filter(
 #'     AVISIT == "WEEK 1 DAY 8", # single time point
