@@ -639,7 +639,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' # `summarize_vars()` in `rtables` pipelines
 #'
 #' ## Default output within a `rtables` pipeline.
-#' dta_test <- # <needs_to_be_inputted_to_work>
+#' # dta_test <- <needs_to_be_inputted_to_work>
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%

@@ -147,7 +147,7 @@ extract_survival_biomarkers <- function(variables,
 #' @examples
 #'
 #' ## Table with default columns.
-#' df <- # <needs_to_be_inputted>
+#' # df <- <needs_to_be_inputted>
 #' tabulate_survival_biomarkers(df)
 #'
 #' ## Table with a manually chosen set of columns: leave out "pval", reorder.
