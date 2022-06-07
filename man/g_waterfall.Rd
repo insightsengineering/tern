@@ -7,7 +7,8 @@
 g_waterfall(
   height,
   id,
-  col = NULL,
+  col_var = NULL,
+  col = getOption("tern.color"),
   xlab = NULL,
   ylab = NULL,
   col_legend_title = NULL,
@@ -21,8 +22,10 @@ Contains values to be plotted as the waterfall bars}
 \item{id}{(vector)\cr
 Contains of IDs used as the x-axis label for the waterfall bars}
 
-\item{col}{(vector)\cr
+\item{col_var}{(vector)\cr
 Categorical variable for bar coloring}
+
+\item{col}{(\code{character})\cr colors.}
 
 \item{xlab}{(\code{character} value)\cr
 x label. Default is \code{ID}.}
@@ -72,19 +75,19 @@ head(ADRS_f)
 g_waterfall(
   height = ADRS_f$pchg,
   id = ADRS_f$USUBJID,
-  col = ADRS_f$AVALC
+  col_var = ADRS_f$AVALC
 )
 
 g_waterfall(
   height = ADRS_f$pchg,
   id = ADRS_f$USUBJID,
-  col = ADRS_f$AVALC
+  col_var = ADRS_f$AVALC
 )
 
 g_waterfall(
   height = ADRS_f$pchg,
   id = paste("asdfdsfdsfsd", ADRS_f$USUBJID),
-  col = ADRS_f$SEX
+  col_var = ADRS_f$SEX
 )
 
 g_waterfall(

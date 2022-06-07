@@ -7,7 +7,8 @@
 #'   Contains values to be plotted as the waterfall bars
 #' @param id (vector)\cr
 #'   Contains of IDs used as the x-axis label for the waterfall bars
-#' @param col (vector)\cr
+#' @param col (`character`)\cr colors.
+#' @param col_var (vector)\cr
 #'   Categorical variable for bar coloring
 #' @param xlab (\code{character} value)\cr
 #'   x label. Default is \code{ID}.
@@ -51,19 +52,19 @@
 #' g_waterfall(
 #'   height = ADRS_f$pchg,
 #'   id = ADRS_f$USUBJID,
-#'   col = ADRS_f$AVALC
+#'   col_var = ADRS_f$AVALC
 #' )
 #'
 #' g_waterfall(
 #'   height = ADRS_f$pchg,
 #'   id = ADRS_f$USUBJID,
-#'   col = ADRS_f$AVALC
+#'   col_var = ADRS_f$AVALC
 #' )
 #'
 #' g_waterfall(
 #'   height = ADRS_f$pchg,
 #'   id = paste("asdfdsfdsfsd", ADRS_f$USUBJID),
-#'   col = ADRS_f$SEX
+#'   col_var = ADRS_f$SEX
 #' )
 #'
 #' g_waterfall(
@@ -75,13 +76,14 @@
 #' )
 g_waterfall <- function(height,
                         id,
-                        col = NULL,
+                        col_var = NULL,
+                        col = getOption("tern.color"),
                         xlab = NULL,
                         ylab = NULL,
                         col_legend_title = NULL,
                         title = NULL) {
-  if (!is.null(col)) {
-    check_same_n(height = height, id = id, col = col)
+  if (!is.null(col_var)) {
+    check_same_n(height = height, id = id, col_var = col_var)
   } else {
     check_same_n(height = height, id = id)
   }
@@ -89,8 +91,8 @@ g_waterfall <- function(height,
   xlabel <- deparse(substitute(id))
   ylabel <- deparse(substitute(height))
 
-  col_label <- if (!missing(col)) {
-    deparse(substitute(col))
+  col_label <- if (!missing(col_var)) {
+    deparse(substitute(col_var))
   }
 
   xlab <- if (is.null(xlab)) xlabel else xlab
@@ -100,7 +102,7 @@ g_waterfall <- function(height,
   plot_data <- data.frame(
     height = height,
     id = as.character(id),
-    col = if (is.null(col)) "x" else to_n(col, length(height)),
+    col_var = if (is.null(col_var)) "x" else to_n(col_var, length(height)),
     stringsAsFactors = FALSE
   )
 
@@ -126,7 +128,7 @@ g_waterfall <- function(height,
         legend.title = ggplot2::element_text(face = "bold"),
         legend.box.background = ggplot2::element_rect(colour = "black")
       ) +
-      ggplot2::scale_fill_manual(values = getOption("tern.color"))
+      ggplot2::scale_fill_manual(values = col)
   }
 
   if (!is.null(title)) {
