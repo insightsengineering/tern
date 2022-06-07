@@ -118,9 +118,9 @@ g_waterfall <- function(height,
     ggplot2::ylab(ylab) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0, vjust = .5))
 
-  if (!is.null(col)) {
+  if (!is.null(col_var)) {
     p <- p +
-      ggplot2::aes(fill = col) +
+      ggplot2::aes(fill = col_var) +
       ggplot2::labs(fill = col_legend_title) +
       ggplot2::theme(
         legend.position = "bottom",
