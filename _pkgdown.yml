@@ -2,8 +2,6 @@ url: https://insightsengineering.github.io/tern
 
 template:
   package: nesttemplate
-  params:
-    ganalytics: "UA-125641273-1"
 
 navbar:
   right:
