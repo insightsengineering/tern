@@ -547,7 +547,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'
 h_ggkm <- function(data,
                    xticks = NULL,
-                   yval,
+                   yval = "Survival",
                    censor_show,
                    xlab,
                    ylab,
