@@ -9,7 +9,7 @@ h_pkparam_sort(pk_data, key_var = "PARAMCD")
 \arguments{
 \item{pk_data}{(\code{data.frame})\cr Pharmacokinetics dataframe}
 
-\item{key_var}{(\code{character})\cr key varialbe used to merge pk_data and metadata created by \code{d_pkparam()}}
+\item{key_var}{(\code{character})\cr key variable used to merge pk_data and metadata created by \code{d_pkparam()}}
 }
 \value{
 dataframe with \verb{PK PARAM} variable ordered

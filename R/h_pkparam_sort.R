@@ -1,6 +1,6 @@
 #' Sort `PK PARAM` variable
 #' @param pk_data (`data.frame`)\cr Pharmacokinetics dataframe
-#' @param key_var (`character`)\cr key varialbe used to merge pk_data and metadata created by `d_pkparam()`
+#' @param key_var (`character`)\cr key variable used to merge pk_data and metadata created by `d_pkparam()`
 #' @return dataframe with `PK PARAM` variable ordered
 #' @export
 #'
