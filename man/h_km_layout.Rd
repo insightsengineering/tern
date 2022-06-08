@@ -42,16 +42,16 @@ library(survival)
 fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-data_plot <- h_data_plot(fit_km = fit_km)
-xticks <- h_xticks(data = data_plot)
-gg <- h_ggkm(
+data_plot <- tern:::h_data_plot(fit_km = fit_km)
+xticks <- tern:::h_xticks(data = data_plot)
+gg <- tern:::h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
   title = "tt", yval = "Survival"
 )
-g_el <- h_decompose_gg(gg)
-lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
+g_el <- tern:::h_decompose_gg(gg)
+lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
 grid.show.layout(lyt)
 }
 
