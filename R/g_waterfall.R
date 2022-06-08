@@ -8,8 +8,8 @@
 #' @param id (vector)\cr
 #'   Contains of IDs used as the x-axis label for the waterfall bars
 #' @param col (`character`)\cr colors.
-#' @param col_var (vector)\cr
-#'   Categorical variable for bar coloring
+#' @param col_var (`factor`, `character` or `NULL`)\cr
+#'   Categorical variable for bar coloring. `NULL` by default.
 #' @param xlab (\code{character} value)\cr
 #'   x label. Default is \code{ID}.
 #' @param ylab (\code{character} value)\cr

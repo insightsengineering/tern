@@ -22,8 +22,8 @@ Contains values to be plotted as the waterfall bars}
 \item{id}{(vector)\cr
 Contains of IDs used as the x-axis label for the waterfall bars}
 
-\item{col_var}{(vector)\cr
-Categorical variable for bar coloring}
+\item{col_var}{(\code{factor}, \code{character} or \code{NULL})\cr
+Categorical variable for bar coloring. \code{NULL} by default.}
 
 \item{col}{(\code{character})\cr colors.}
 
