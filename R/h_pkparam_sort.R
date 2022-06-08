@@ -13,6 +13,11 @@
 #'
 #' pk_ordered_data <- h_pkparam_sort(adpp)
 h_pkparam_sort <- function(pk_data, key_var="PARAMCD") {
+
+  assertthat::assert_that(
+    is_df_with_variables(pk_data, list(key_var = key_var))
+  )
+
   ordered_pk_data <- d_pkparam()
 
   # Add the numeric values from ordered_pk_data to pk_data
