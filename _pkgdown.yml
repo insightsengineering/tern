@@ -143,6 +143,7 @@ reference:
     desc: these functions are useful to help definining the analysis
     contents:
       - add_footnotes<-
+      - arm
       - footnotes
       - footnotes<-
       - h_adlb_worsen
@@ -315,6 +316,7 @@ reference:
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
+      - aesi_label
       - as_factor_keep_attributes
       - bins_percent_labels
       - combine_levels
@@ -327,6 +329,8 @@ reference:
       - fct_explicit_na_if
       - range_noinf
       - sas_na
+      - f_conf_level
+
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package
