@@ -53,6 +53,7 @@ Suggests:
     rmarkdown,
     scda (>= 0.1.3),
     scda.2022 (>= 0.1.0),
+    stringr,
     testthat (>= 2.0)
 VignetteBuilder:
     knitr
@@ -145,3 +146,4 @@ Collate:
     'utils_factor.R'
     'utils_grid.R'
     'wrap_text.R'
+    'zzz.R'

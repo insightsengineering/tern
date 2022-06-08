@@ -23,6 +23,7 @@
 #' plot. Ignored when `plotting_choices` is not "separate_by_obs".
 #' @param font_size (`number`)\cr text font size.
 #' @param caption (`character` scalar) \cr optional caption below the plot.
+#' @param col (`character`)\cr lines colors.
 #'
 #' @name individual_patient_plot
 NULL
@@ -84,7 +85,8 @@ h_g_ipp <- function(df,
                     caption = NULL,
                     add_baseline_hline = FALSE,
                     yvar_baseline = "BASE",
-                    ggtheme = h_set_nest_theme(10)) {
+                    ggtheme = h_set_nest_theme(10),
+                    col = getOption("tern.color")) {
   assertthat::assert_that(
     is.data.frame(df),
     assertthat::is.string(xvar),
@@ -96,7 +98,8 @@ h_g_ipp <- function(df,
     assertthat::is.string(ylab),
     assertthat::is.string(title),
     assertthat::is.string(subtitle),
-    is.logical(add_baseline_hline)
+    is.logical(add_baseline_hline),
+    is.character(col)
   )
 
   p <- ggplot2::ggplot(
@@ -144,7 +147,8 @@ h_g_ipp <- function(df,
         nudge_y = 0.025 * (max(df[, yvar], na.rm = TRUE) - min(df[, yvar], na.rm = TRUE)),
         vjust = "right",
         size = 2
-      )
+      ) +
+      ggplot2::scale_color_manual(values = col)
   }
   p
 }
@@ -185,11 +189,13 @@ g_ipp <- function(df,
                   yvar_baseline = "BASE",
                   ggtheme = h_set_nest_theme(10),
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
-                  max_obs_per_plot = 4) {
+                  max_obs_per_plot = 4,
+                  col = getOption("tern.color")) {
   assertthat::assert_that(
     assertthat::is.count(max_obs_per_plot),
     plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
   )
+  assertthat::assert_that(is.character(col))
 
   plotting_choices <- match.arg(plotting_choices)
 
@@ -206,7 +212,8 @@ g_ipp <- function(df,
       caption = caption,
       add_baseline_hline = add_baseline_hline,
       yvar_baseline = yvar_baseline,
-      ggtheme = ggtheme
+      ggtheme = ggtheme,
+      col = col
     )
 
     return(p)
@@ -238,7 +245,8 @@ g_ipp <- function(df,
         caption = caption,
         add_baseline_hline = add_baseline_hline,
         yvar_baseline = yvar_baseline,
-        ggtheme = ggtheme
+        ggtheme = ggtheme,
+        col = col
       )
 
       plot_list[[i]] <- plots
@@ -261,7 +269,8 @@ g_ipp <- function(df,
           caption = caption,
           add_baseline_hline = add_baseline_hline,
           yvar_baseline = yvar_baseline,
-          ggtheme = ggtheme
+          ggtheme = ggtheme,
+          col = col
         )
       }
     )
