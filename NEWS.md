@@ -15,7 +15,7 @@
 
 *  Added stable badge for `g_lineplot`, `g_step`, `g_waterfall`, `cox_regression`, 
    `score_occurrences`, `add_rowcounts`, `odds_ratio`, `count_occurrences`, 
-   `count_occurrences_by_grade`, `explicit_na`.
+   `count_occurrences_by_grade`, `explicit_na`, `df_explicit_na`.
 *  Internal keywords added, export removed, `pkg_down.yml` polished and `tern::` for
    tests and vignettes when present for the following functions:
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 

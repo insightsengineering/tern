@@ -1,5 +1,7 @@
 #' Encode Categorical Missing Values in a Data Frame
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is a helper function to encode missing entries across groups of categorical
 #'   variables in a data frame.
 #'
