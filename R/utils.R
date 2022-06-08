@@ -282,7 +282,6 @@ extract <- function(x, names) {
 #' # Customized query label.
 #' aesi_label(adae$CQ01NAM)
 #'
-
 aesi_label <- function(aesi, scope = NULL) {
   assertthat::assert_that(
     is.character(aesi),
