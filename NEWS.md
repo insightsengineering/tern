@@ -9,7 +9,7 @@
 
 ### Fix
 
-* `h_split_by_subgroups` roxygen2 warning fix for wrong placing of example block
+* `h_split_by_subgroups` roxygen warning fix for wrong placing of example block
 
 ### Documentation and NAMESPACE polishing
 
