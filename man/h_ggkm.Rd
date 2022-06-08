@@ -7,7 +7,7 @@
 h_ggkm(
   data,
   xticks = NULL,
-  yval,
+  yval = "Survival",
   censor_show,
   xlab,
   ylab,
