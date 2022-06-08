@@ -140,7 +140,8 @@ g_step <- function(df,
                    col = getOption("tern.color")) {
   assertthat::assert_that(
     tibble::is_tibble(df),
-    assertthat::is.flag(use_percentile)
+    assertthat::is.flag(use_percentile),
+    is.character(col)
   )
 
   checkmate::assert_list(est, names = "named")

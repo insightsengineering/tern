@@ -98,7 +98,8 @@ h_g_ipp <- function(df,
     assertthat::is.string(ylab),
     assertthat::is.string(title),
     assertthat::is.string(subtitle),
-    is.logical(add_baseline_hline)
+    is.logical(add_baseline_hline),
+    is.character(col)
   )
 
   p <- ggplot2::ggplot(
@@ -194,6 +195,7 @@ g_ipp <- function(df,
     assertthat::is.count(max_obs_per_plot),
     plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
   )
+  assertthat::assert_that(is.character(col))
 
   plotting_choices <- match.arg(plotting_choices)
 

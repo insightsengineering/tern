@@ -169,6 +169,8 @@ g_lineplot <- function(df, # nolint
       TRUE
     )
   )
+  assertthat::assert_that(is.character(col))
+
 
   x <- variables[["x"]]
   y <- variables[["y"]]
