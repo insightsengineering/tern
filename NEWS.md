@@ -8,6 +8,7 @@
 * Enhanced `summarize_numeric_in_columns` and `summarize_variables` to allow factor/character summary and to be able to summarize the number of `BLQs` in `AVALC` from `ADPC` dataset.
 * Updated order of summarize variables stats in manual for order consistency.
 * Added a `sum` option to `summarize_variables`.
+* Use consistent color palette for plotting (`stream` by default).
 
 ### Miscellaneous
 * Updated `test-table_aet02.R` variant 12.

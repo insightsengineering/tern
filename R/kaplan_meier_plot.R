@@ -162,7 +162,7 @@ NULL
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
-                 col = NULL,
+                 col = getOption("tern.color"),
                  lty = NULL,
                  lwd = .5,
                  censor_show = TRUE,
@@ -191,7 +191,8 @@ g_km <- function(df,
   assertthat::assert_that(
     is.list(variables),
     all(c("tte", "arm", "is_event") %in% names(variables)),
-    assertthat::is.string(title) || is.null(title)
+    assertthat::is.string(title) || is.null(title),
+    is.character(col)
   )
   tte <- variables$tte
   is_event <- variables$is_event
@@ -557,11 +558,12 @@ h_ggkm <- function(data,
                    lty = NULL,
                    pch = 3,
                    size = 2,
-                   col = NULL,
+                   col = getOption("tern.color"),
                    ci_ribbon = FALSE,
                    ggtheme = NULL) {
   assertthat::assert_that(
-    (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty))
+    (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty)),
+    is.character(col)
   )
 
   # change estimates of survival to estimates of failure (1 - survival)
