@@ -41,7 +41,7 @@ NULL
 #'   ) %>%
 #'   distinct_at(.vars = c("Subject", "days_grouped", "group"), .keep_all = TRUE)
 #'
-#' result <- tern.mmrm::fit_mmrm(
+#' result <- fit_mmrm(
 #'   vars = list(
 #'     response = "Reaction",
 #'     covariates = c(),
@@ -55,7 +55,7 @@ NULL
 #' )
 #' as.rtable(result, type = "cov", format = "xx.x")
 #'
-#' result_no_arm <- tern.mmrm::fit_mmrm(
+#' result_no_arm <- fit_mmrm(
 #'   vars = list(
 #'     response = "Reaction",
 #'     covariates = c(),
