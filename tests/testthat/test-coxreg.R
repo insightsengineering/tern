@@ -373,7 +373,7 @@ testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated
 
   expected <- with(
     data = testthat::expect_warning(s_cox_univariate(
-      formula = survival::Surv(time, status) ~ tern:::arm(armcd),
+      formula = survival::Surv(time, status) ~ arm(armcd),
       data = dta_bladder,
       covariates = list(~covar1)
     )),
@@ -395,7 +395,7 @@ testthat::test_that("fit_coxreg_univar's result are identical to soon deprecated
   dta_bladder <- get_bladder()
   expected <- with(
     data = testthat::expect_warning(s_cox_univariate(
-      formula = survival::Surv(time, status) ~ tern:::arm(armcd),
+      formula = survival::Surv(time, status) ~ arm(armcd),
       data = dta_bladder,
       covariates = list(~covar1),
       interactions = TRUE,
