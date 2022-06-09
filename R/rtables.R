@@ -276,6 +276,7 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'   itself during the layout creation. When we have a more mature `rtables` implementation then
 #'   this will also be improved or not necessary anymore.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @param vars (`character`)\cr variable names of which the labels are to be looked up in `df`.
 #' @param indent (`integer`)\cr non-negative number of nested indent space, default to 0L which means no indent.

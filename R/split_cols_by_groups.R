@@ -36,6 +36,7 @@ groups_list_to_df <- function(groups_list) {
 #' treatment groups; it helps in arranging groups of
 #' columns in the `rtables` framework and teal modules.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @param fct (`factor`)\cr the variable with levels which needs to be grouped.
 #' @param ref (`string`)\cr the reference level(s).
 #' @param collapse (`string`)\cr a character string to separate `fct` and `ref`.

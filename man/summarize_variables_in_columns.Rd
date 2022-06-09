@@ -43,8 +43,7 @@ empty then this will be used as the row label.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{var_type}{Variable type, "numeric" by default.}
 

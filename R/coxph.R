@@ -22,6 +22,7 @@ pairwise <- function(x) {
 #' The special term `univariate` indicate that the model should be fitted individually for
 #' every variable included in univariate.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @param x A vector of variable name separated by comas.
 #'
 #' @details

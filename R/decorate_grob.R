@@ -3,6 +3,7 @@
 #' This function is useful to label grid grobs (also \code{ggplot2}, and \code{lattice} plots)
 #' with title, footnote, and page numbers.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @inheritParams grid::grob
 #' @param grob a grid grob object, optionally \code{NULL} if only a \code{grob} with
 #'   the decoration should be shown.

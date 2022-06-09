@@ -4,6 +4,7 @@
 #'
 #' @name count_patients_with_event
 #'
+#' @description `r lifecycle::badge("stable")`
 NULL
 
 #' @describeIn count_patients_with_event Statistics Function that returns the number and the fraction

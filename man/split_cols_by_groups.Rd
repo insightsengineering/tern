@@ -9,8 +9,7 @@ split_cols_by_groups(lyt, var, groups_list = NULL, ref_group = NULL, ...)
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{groups_list}{(named \code{list} of \code{character})\cr specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
