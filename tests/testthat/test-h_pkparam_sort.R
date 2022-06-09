@@ -1,6 +1,8 @@
 adpp <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adpp
-expected_tlg_display <- c("Cmax", "AUCinf obs", "CL obs", "Ae", "Fe", "CLR",
-                          "Rmax", "Tonset", "RENALCLD")
+expected_tlg_display <- c(
+  "Cmax", "AUCinf obs", "CL obs", "Ae", "Fe", "CLR",
+  "Rmax", "Tonset", "RENALCLD"
+)
 
 testthat::test_that("h_pkparam_sort with PARAMCD", {
   sorted_adpp <- adpp %>% h_pkparam_sort()
