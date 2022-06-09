@@ -10,8 +10,6 @@ univariate(x)
 \item{x}{A vector of variable name separated by comas.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 The special term \code{univariate} indicate that the model should be fitted individually for
 every variable included in univariate.
 }

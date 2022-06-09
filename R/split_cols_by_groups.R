@@ -32,7 +32,6 @@ groups_list_to_df <- function(groups_list) {
 
 #' Reference and Treatment Group Combination
 #'
-#' @description `r lifecycle::badge("stable")`
 #' Facilitate the re-combination of groups divided as reference and
 #' treatment groups; it helps in arranging groups of
 #' columns in the `rtables` framework and teal modules.

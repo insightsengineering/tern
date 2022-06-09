@@ -19,8 +19,6 @@ pairwise <- function(x) {
 
 #' Univariate formula special term
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' The special term `univariate` indicate that the model should be fitted individually for
 #' every variable included in univariate.
 #'

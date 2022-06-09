@@ -109,7 +109,8 @@ to avoid warnings from \code{rtables}.}
 \item{flag_variables}{(\code{character})\cr a character vector specifying the names of \code{logical}
 variables from analysis dataset used for counting the number of unique identifiers.}
 
-\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
+\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{var_labels}{character for label.}
 
@@ -120,9 +121,6 @@ variables from analysis dataset used for counting the number of unique identifie
 defined event.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
 The primary analysis variable \code{.var} denotes the unique patient identifier.
 }
 \section{Functions}{
