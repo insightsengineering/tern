@@ -8,7 +8,7 @@ testthat::test_that("h_pkparam_sort with PARAMCD", {
 })
 
 testthat::test_that("h_pkparam_sort with out PARAMCD", {
-  adpp_1[["pktest"]] = adpp$PARAMCD
+  adpp_1[["pktest"]] <- adpp$PARAMCD
   adpp_1$PARAMCD <- NULL
   sorted_adpp <- adpp_1 %>% h_pkparam_sort("pktest")
   result_tlg_display <- levels(sorted_adpp$TLG_DISPLAY)
