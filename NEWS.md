@@ -1,4 +1,4 @@
-# tern 0.7.7.9020.7
+# tern 0.7.8
 
 ### Enhancements
 
