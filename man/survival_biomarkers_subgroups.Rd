@@ -134,6 +134,7 @@ df_grouped <- extract_survival_biomarkers(
 df_grouped
 
 ## Table with default columns.
+# df <- <needs_to_be_inputted>
 tabulate_survival_biomarkers(df)
 
 ## Table with a manually chosen set of columns: leave out "pval", reorder.

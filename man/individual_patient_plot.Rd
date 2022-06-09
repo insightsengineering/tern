@@ -21,7 +21,8 @@ h_g_ipp(
   caption = NULL,
   add_baseline_hline = FALSE,
   yvar_baseline = "BASE",
-  ggtheme = h_set_nest_theme(10)
+  ggtheme = h_set_nest_theme(10),
+  col = getOption("tern.color")
 )
 
 g_ipp(
@@ -38,7 +39,8 @@ g_ipp(
   yvar_baseline = "BASE",
   ggtheme = h_set_nest_theme(10),
   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
-  max_obs_per_plot = 4
+  max_obs_per_plot = 4,
+  col = getOption("tern.color")
 )
 }
 \arguments{
@@ -70,6 +72,8 @@ Ignored when \code{add_baseline_hline} is FALSE.}
 
 \item{ggtheme}{(\code{theme})\cr optional graphical theme function as provided
 by \code{ggplot2} to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
+
+\item{col}{(\code{character})\cr lines colors.}
 
 \item{plotting_choices}{(\code{character})\cr specifies options for displaying
 plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}

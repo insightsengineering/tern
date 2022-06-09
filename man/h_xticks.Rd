@@ -33,14 +33,14 @@ library(survival)
 data <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
-  h_data_plot()
+  tern:::h_data_plot()
 
-h_xticks(data)
-h_xticks(data, xticks = seq(0, 3000, 500))
-h_xticks(data, xticks = 500)
-h_xticks(data, xticks = 500, max_time = 6000)
-h_xticks(data, xticks = c(0, 500), max_time = 300)
-h_xticks(data, xticks = 500, max_time = 300)
+tern:::h_xticks(data)
+tern:::h_xticks(data, xticks = seq(0, 3000, 500))
+tern:::h_xticks(data, xticks = 500)
+tern:::h_xticks(data, xticks = 500, max_time = 6000)
+tern:::h_xticks(data, xticks = c(0, 500), max_time = 300)
+tern:::h_xticks(data, xticks = 500, max_time = 300)
 }
 
 }

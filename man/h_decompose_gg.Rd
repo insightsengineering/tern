@@ -27,9 +27,9 @@ library(grid)
 fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-data_plot <- h_data_plot(fit_km = fit_km)
-xticks <- h_xticks(data = data_plot)
-gg <- h_ggkm(
+data_plot <- tern:::h_data_plot(fit_km = fit_km)
+xticks <- tern:::h_xticks(data = data_plot)
+gg <- tern:::h_ggkm(
   data = data_plot,
   yval = "Survival",
   censor_show = TRUE,
@@ -37,7 +37,7 @@ gg <- h_ggkm(
   title = "tt"
 )
 
-g_el <- h_decompose_gg(gg)
+g_el <- tern:::h_decompose_gg(gg)
 grid::grid.newpage()
 grid.rect(gp = grid::gpar(lty = 1, col = "red", fill = "gray85", lwd = 5))
 grid::grid.draw(g_el$panel)
