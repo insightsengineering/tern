@@ -16,11 +16,12 @@ h_pkparam_sort <- function(pk_data, key_var = "PARAMCD") {
   assertthat::assert_that(
     is_df_with_variables(pk_data, list(key_var = key_var))
   )
+  pk_data$PARAMCD = pk_data[[key_var]]
 
   ordered_pk_data <- d_pkparam()
 
   # Add the numeric values from ordered_pk_data to pk_data
-  joined_data <- merge(pk_data, ordered_pk_data, by = key_var, suffix = c("", ".y"))
+  joined_data <- merge(pk_data, ordered_pk_data, by = "PARAMCD", suffix = c("", ".y"))
 
   joined_data <- joined_data[, -grep(".*.y$", colnames(joined_data))]
 
