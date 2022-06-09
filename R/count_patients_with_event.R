@@ -3,6 +3,7 @@
 #' The primary analysis variable `.var` denotes the unique patient identifier.
 #'
 #' @name count_patients_with_event
+#' @description `r lifecycle::badge("stable")`
 #'
 NULL
 

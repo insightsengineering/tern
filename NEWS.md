@@ -1,12 +1,5 @@
 # tern 0.7.7.9020
 
-### NAMESPACE polishing updates
-* list of functions that have downstream dependencies and should not be internal:
-  `f_conf_level` (`tern.rbmi` and `tern.mmrm`), `aesi_label`, and 
-  `get_smooths` (`tern_mmrm`) 
-* functions reverted to "export" if downstream dependencies were present. Added 
-  "stable" badge for those.
-
 ### Fix
 
 * `h_split_by_subgroups` documentation warning fix for wrong placing of example block
@@ -15,7 +8,7 @@
 
 *  Added stable badge for `g_lineplot`, `g_step`, `g_waterfall`, `cox_regression`, 
    `score_occurrences`, `add_rowcounts`, `odds_ratio`, `count_occurrences`, 
-   `count_occurrences_by_grade`, `explicit_na`, `df_explicit_na`.
+   `count_occurrences_by_grade`, `explicit_na`, `df_explicit_na` `count_patients_with_event`, `decorate_grob`, `combine_groups`,          `append_varlabels`, `univariate`,  `stack_grobs`.
 *  Internal keywords added, export removed, `pkg_down.yml` polished and `tern::` for
    tests and vignettes when present for the following functions:
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 

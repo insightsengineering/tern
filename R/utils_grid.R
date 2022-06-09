@@ -2,6 +2,7 @@
 #'
 #' Stack grobs as a new grob with 1 column and multiple rows layout.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @param ... grobs.
 #' @param grobs list of grobs.
 #' @param padding unit of length 1, space between each grob.

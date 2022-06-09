@@ -272,6 +272,7 @@ afun_selected_stats <- function(.stats, all_stats) {
 #' from a given dataset in the top left corner. If a variable label is not found then the
 #' variable name itself is used instead. Multiple variable labels are concatenated with slashes.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @note This is not an optimal implementation of course, since we are using here the data set
 #'   itself during the layout creation. When we have a more mature `rtables` implementation then
 #'   this will also be improved or not necessary anymore.
