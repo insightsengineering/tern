@@ -9,6 +9,7 @@
 * Updated order of summarize variables stats in manual for order consistency.
 * Added a `sum` option to `summarize_variables`.
 * Use consistent color palette for plotting (`stream` by default).
+* Enhanced `h_pkparam_sort` function with additional argument `key_var` to allow data with different column names.
 
 ### Miscellaneous
 * Updated `test-table_aet02.R` variant 12.
