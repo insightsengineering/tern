@@ -115,13 +115,13 @@ univariate <- function(x) {
 #' )
 #' \dontrun{
 #' s_cox_univariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
 #'   data = ADTTE_f,
 #'   covariates = list(~SEX)
 #' )
 #'
 #' s_cox_univariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
 #'   data = ADTTE_f,
 #'   covariates = list("Race" = ~RACE, ~AGE, "a rand. quant var with increments" = ~X),
 #'   interactions = TRUE,
@@ -171,7 +171,7 @@ s_cox_univariate <- function(formula,
   istr <- attr(tf, "specials")$strata
   tstr <- rownames(attr(tf, "factors"))[istr]
 
-  if (is.null(iarm)) stop("Check `formula`, the arm variable needs to be wrapped in arm()")
+  if (is.null(iarm)) stop("Check `formula`, the arm variable needs to be wrapped in tern:::arm()")
 
   arms <- levels(with(data, eval(parse(text = tarm, keep.source = FALSE))))
   if (length(arms) != 2) stop("Check `formula`, the arm variable needs 2 levels.")
@@ -589,7 +589,7 @@ fit_n_aov <- function(formula,
 # argument_checks
 check_formula <- function(formula) {
   if (!(inherits(formula, "formula"))) {
-    stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD)`.")
+    stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD)`.")
   }
 
   invisible()

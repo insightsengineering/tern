@@ -10,7 +10,6 @@ arm(x)
 \item{x}{arm information}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 We use \code{arm} to indicate the study arm variable in \code{tern} formulas.
 }
+\keyword{internal}

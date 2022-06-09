@@ -2,7 +2,7 @@
 
 ### NAMESPACE polishing updates
 * list of functions that have downstream dependencies and should not be internal:
-  `f_conf_level` (`tern.rbmi` and `tern.mmrm`), `aesi_label`, `arm`and 
+  `f_conf_level` (`tern.rbmi` and `tern.mmrm`), `aesi_label`, and 
   `get_smooths` (`tern_mmrm`) 
 * functions reverted to "export" if downstream dependencies were present. Added 
   "stable" badge for those.
@@ -21,7 +21,7 @@
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 
    - (utils functions) `make_names`, `month2day`, `day2month` 
      `empty_vector_if_na`, `combine_vectors`, `aesi_label`,
-     `n_available`, `format_xx`
+     `n_available`, `format_xx`, `arm`
    - `count_values_funs`, `prop_difference`, `combine_counts`.
 *  Deprecated `s_cox_univariate` function has now deprecated badge.
 
