@@ -164,7 +164,7 @@ NULL
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
-                 col = NULL,
+                 col = getOption("tern.color"),
                  lty = NULL,
                  lwd = .5,
                  censor_show = TRUE,
@@ -193,7 +193,8 @@ g_km <- function(df,
   assertthat::assert_that(
     is.list(variables),
     all(c("tte", "arm", "is_event") %in% names(variables)),
-    assertthat::is.string(title) || is.null(title)
+    assertthat::is.string(title) || is.null(title),
+    is.character(col)
   )
   tte <- variables$tte
   is_event <- variables$is_event
@@ -480,14 +481,14 @@ h_data_plot <- function(fit_km,
 #' data <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   h_data_plot()
+#'   tern:::h_data_plot()
 #'
-#' h_xticks(data)
-#' h_xticks(data, xticks = seq(0, 3000, 500))
-#' h_xticks(data, xticks = 500)
-#' h_xticks(data, xticks = 500, max_time = 6000)
-#' h_xticks(data, xticks = c(0, 500), max_time = 300)
-#' h_xticks(data, xticks = 500, max_time = 300)
+#' tern:::h_xticks(data)
+#' tern:::h_xticks(data, xticks = seq(0, 3000, 500))
+#' tern:::h_xticks(data, xticks = 500)
+#' tern:::h_xticks(data, xticks = 500, max_time = 6000)
+#' tern:::h_xticks(data, xticks = c(0, 500), max_time = 300)
+#' tern:::h_xticks(data, xticks = 500, max_time = 300)
 #' }
 #'
 h_xticks <- function(data, xticks = NULL, max_time = NULL) {
@@ -549,7 +550,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'
 h_ggkm <- function(data,
                    xticks = NULL,
-                   yval,
+                   yval = "Survival",
                    censor_show,
                    xlab,
                    ylab,
@@ -559,11 +560,12 @@ h_ggkm <- function(data,
                    lty = NULL,
                    pch = 3,
                    size = 2,
-                   col = NULL,
+                   col = getOption("tern.color"),
                    ci_ribbon = FALSE,
                    ggtheme = NULL) {
   assertthat::assert_that(
-    (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty))
+    (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty)),
+    is.character(col)
   )
 
   # change estimates of survival to estimates of failure (1 - survival)
@@ -683,9 +685,9 @@ h_ggkm <- function(data,
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- h_data_plot(fit_km = fit_km)
-#' xticks <- h_xticks(data = data_plot)
-#' gg <- h_ggkm(
+#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' xticks <- tern:::h_xticks(data = data_plot)
+#' gg <- tern:::h_ggkm(
 #'   data = data_plot,
 #'   yval = "Survival",
 #'   censor_show = TRUE,
@@ -693,7 +695,7 @@ h_ggkm <- function(data,
 #'   title = "tt"
 #' )
 #'
-#' g_el <- h_decompose_gg(gg)
+#' g_el <- tern:::h_decompose_gg(gg)
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "red", fill = "gray85", lwd = 5))
 #' grid::grid.draw(g_el$panel)
@@ -748,16 +750,16 @@ h_decompose_gg <- function(gg) {
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- h_data_plot(fit_km = fit_km)
-#' xticks <- h_xticks(data = data_plot)
-#' gg <- h_ggkm(
+#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' xticks <- tern:::h_xticks(data = data_plot)
+#' gg <- tern:::h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
 #'   title = "tt", yval = "Survival"
 #' )
-#' g_el <- h_decompose_gg(gg)
-#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
+#' g_el <- tern:::h_decompose_gg(gg)
+#' lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
 #' grid.show.layout(lyt)
 #' }
 #'
@@ -858,11 +860,11 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #'
-#' data_plot <- h_data_plot(fit_km = fit_km)
+#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
 #'
-#' xticks <- h_xticks(data = data_plot)
+#' xticks <- tern:::h_xticks(data = data_plot)
 #'
-#' gg <- h_ggkm(
+#' gg <- tern:::h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
@@ -885,12 +887,12 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #' }
 #'
 #' # The annotation table is transformed into a grob.
-#' tbl <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xticks))
+#' tbl <- tern:::h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xticks))
 #'
 #' # For the representation, the layout is estimated for which the decomposition
 #' # of the graphic element is necessary.
-#' g_el <- h_decompose_gg(gg)
-#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
+#' g_el <- tern:::h_decompose_gg(gg)
+#' lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
 #'
 #' grid::grid.newpage()
 #' pushViewport(viewport(layout = lyt, height = .95, width = .95))
@@ -997,7 +999,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #'   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
 #'   data = adtte
 #' )
-#' h_tbl_median_surv(fit_km = fit)
+#' tern:::h_tbl_median_surv(fit_km = fit)
 #' }
 #'
 h_tbl_median_surv <- function(fit_km, armval = "All") {
@@ -1046,7 +1048,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   h_grob_median_surv() %>%
+#'   tern:::h_grob_median_surv() %>%
 #'   grid::grid.draw()
 #' }
 #'
@@ -1093,21 +1095,21 @@ h_grob_median_surv <- function(fit_km,
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- h_data_plot(fit_km = fit_km)
-#' xticks <- h_xticks(data = data_plot)
-#' gg <- h_ggkm(
+#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' xticks <- tern:::h_xticks(data = data_plot)
+#' gg <- tern:::h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-#'   title = "title"
+#'   title = "title", yval = "Survival"
 #' )
 #'
-#' g_el <- h_decompose_gg(gg)
+#' g_el <- tern:::h_decompose_gg(gg)
 #'
 #' grid::grid.newpage()
 #' pvp <- grid::plotViewport(margins = c(5, 4, 2, 20))
 #' pushViewport(pvp)
-#' grid::grid.draw(h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
+#' grid::grid.draw(tern:::h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "gray35", fill = NA))
 #' }
 #'

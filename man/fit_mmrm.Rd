@@ -120,6 +120,7 @@ adqs_f <- adqs \%>\%
 formatters::var_labels(adqs_f) <- formatters::var_labels(adqs)
 \dontrun{
 # sometimes results in failure to converge with 1 negative eigenvalue
+# in the event that it fails to converge, change the optimizer to "automatic"
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "AVAL",

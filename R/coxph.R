@@ -412,8 +412,8 @@ rht <- function(x) {
 #' mmat[!mmat == 0] <- 0
 #'
 #' estimate_coef(
-#'   variable = "ARMCD", given = "SEX",
-#'   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), data = ADTTE, conf_level = .95
+#'   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
+#'   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
 #' )
 #' }
 #'

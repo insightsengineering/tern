@@ -8,7 +8,8 @@ g_step(
   df,
   use_percentile = "Percentile Center" \%in\% names(df),
   est = list(col = "black", lty = 1),
-  ci_ribbon = list(fill = "lightblue", alpha = 0.5)
+  ci_ribbon = list(fill = "lightblue", alpha = 0.5),
+  col = getOption("tern.color")
 )
 }
 \arguments{
@@ -21,6 +22,8 @@ biomarker values.}
 
 \item{ci_ribbon}{(named \code{list} or \code{NULL})\cr \code{fill} and \code{alpha} settings for the confidence interval
 ribbon area, or \code{NULL} to not plot a CI ribbon.}
+
+\item{col}{(\code{character})\cr colors.}
 }
 \value{
 The \code{ggplot2} object.

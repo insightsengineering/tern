@@ -29,7 +29,7 @@ fit <- survfit(
   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
   data = adtte
 )
-h_tbl_median_surv(fit_km = fit)
+tern:::h_tbl_median_surv(fit_km = fit)
 }
 
 }
