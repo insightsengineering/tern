@@ -37,7 +37,6 @@ reference:
       - s_ancova
       - s_change_from_baseline
       - s_compare
-      - s_count_abnormal_by_worst_grade
       - s_count_cumulative
       - s_count_missed_doses
       - s_count_nonmissing
@@ -71,7 +70,6 @@ reference:
           `rtables::analyze()`.
     contents:
        - a_ancova
-       - a_count_abnormal_by_worst_grade
        - a_count_cumulative
        - a_count_missed_doses
        - a_count_occurrences

@@ -1,5 +1,7 @@
 #' Patient Counts with the Most Extreme Post-baseline Toxicity Grade per Direction of Abnormality
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Primary analysis variable `.var` indicates the toxicity grade (factor), and additional
 #' analysis variables are `id` (character or factor), `param` (`factor`) and `grade_dir` (`factor`).
 #' The pre-processing steps are crucial when using this function.
@@ -29,8 +31,6 @@ NULL
 #'   `1` to `4`, and `Any` non-zero grade.
 #' @return [s_count_abnormal_by_worst_grade()] the single statistic `count_fraction` with grade 1 to 4
 #'   and "Any" results.
-#'
-#' @export
 #'
 #' @examples
 #' library(scda)
@@ -81,11 +81,12 @@ NULL
 #'   cur_col_subset = I(cur_col_subset)
 #' )
 #'
-#' s_count_abnormal_by_worst_grade(
+#' tern:::s_count_abnormal_by_worst_grade(
 #'   df = adlb_f_alt,
 #'   .spl_context = spl_context,
 #'   .var = "GRADE_ANL"
 #' )
+#' @keywords internal
 s_count_abnormal_by_worst_grade <- function(df, # nolint
                                             .var = "GRADE_ANL",
                                             .spl_context,
@@ -140,12 +141,12 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 #' @describeIn abnormal_by_worst_grade Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #' @return [a_count_abnormal_by_worst_grade()] returns the corresponding list with formatted [rtables::CellValue()].
-#' @export
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 #' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
+#' afun <- make_afun(tern:::a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 #' afun(df = adlb_f_alt, .spl_context = spl_context)
+#' @keywords internal
 a_count_abnormal_by_worst_grade <- make_afun( # nolint
   s_count_abnormal_by_worst_grade,
   .formats = c(count_fraction = format_count_fraction)

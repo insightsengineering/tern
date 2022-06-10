@@ -44,7 +44,7 @@ adlb_raw <- local({
   adlb_f
 })
 
-testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
+testthat::test_that("tern:::s_count_abnormal_by_worst_grade works as expected", {
   adlb <- adlb_raw
 
   adlb_alt <- adlb %>%
@@ -59,7 +59,7 @@ testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
     cur_col_subset = I(cur_col_subset)
   )
 
-  result <- s_count_abnormal_by_worst_grade(
+  result <- tern:::s_count_abnormal_by_worst_grade(
     df = adlb %>% dplyr::filter(
       ARMCD == "ARM A" & PARAMCD == "ALT" & GRADE_DIR == "LOW"
     ) %>%
