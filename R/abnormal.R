@@ -112,7 +112,7 @@ s_count_abnormal <- function(df,
 #'
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`.
-#' a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
+#' a_fun <- make_afun(tern:::a_count_abnormal, .ungroup_stats = "fraction")
 #' a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
 #'
 #' @keywords internal

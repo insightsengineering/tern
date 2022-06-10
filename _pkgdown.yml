@@ -75,7 +75,6 @@ reference:
           `rtables::analyze()`.
     contents:
        - a_ancova
-       - a_count_abnormal
        - a_count_abnormal_by_baseline
        - a_count_abnormal_by_marked
        - a_count_abnormal_by_worst_grade
