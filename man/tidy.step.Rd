@@ -37,3 +37,4 @@ broom::tidy(step_matrix)
 \seealso{
 \code{\link[=g_step]{g_step()}} which consumes the result from this function.
 }
+\keyword{internal}

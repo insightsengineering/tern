@@ -2,14 +2,14 @@
 #'
 #' Tidy the STEP results into a `tibble` to format them ready for plotting.
 #'
-#'
 #' @param x (`step` matrix)\cr results from [fit_survival_step()].
 #' @param ... not used here.
 #' @return A `tibble` with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,
 #'   respectively. Additional attributes carry meta data also used for plotting.
 #' @seealso [g_step()] which consumes the result from this function.
 #' @method tidy step
-#' @export
+#' @keywords internal
+#'
 #' @examples
 #' library(survival)
 #' lung$sex <- factor(lung$sex)

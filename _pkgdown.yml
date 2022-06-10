@@ -220,7 +220,6 @@ reference:
       - tidy.coxreg.multivar
       - tidy.coxreg.univar
       - tidy.glm
-      - tidy.step
       - univariate
 
   - title: Graphs
