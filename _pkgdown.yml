@@ -72,7 +72,6 @@ reference:
     contents:
        - a_ancova
        - a_count_abnormal_by_worst_grade
-       - a_count_abnormal_lab_worsen_by_baseline
        - a_count_cumulative
        - a_count_missed_doses
        - a_count_occurrences
@@ -191,7 +190,6 @@ reference:
       - h_survtime_subgroups_df
       - h_tab_one_biomarker
       - h_tab_surv_one_biomarker
-      - h_worsen_counter
       - or_clogit
       - or_glm
       - prop_chisq

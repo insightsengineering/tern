@@ -111,6 +111,8 @@ their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "An
 the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Patient count and fraction for laboratory events (worsen from baseline) shift table.
 }
 \section{Functions}{
@@ -159,8 +161,9 @@ df <- h_adlb_worsen(
   worst_flag_high = c("WGRHIFL" = "Y"),
   direction_var = "GRADDR"
 )
+
 # `h_worsen_counter`
-h_worsen_counter(
+tern:::h_worsen_counter(
   df \%>\% filter(PARAMCD == "CRP" & GRADDR == "Low"),
   id = "USUBJID",
   .var = "ATOXGR",
@@ -168,9 +171,8 @@ h_worsen_counter(
   direction_var = "GRADDR"
 )
 
-
 # Patients with worsening lab grade for CRP in the direction of low
-s_count_abnormal_lab_worsen_by_baseline(
+tern:::s_count_abnormal_lab_worsen_by_baseline(
   df = df \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   variables = list(
@@ -180,7 +182,7 @@ s_count_abnormal_lab_worsen_by_baseline(
   )
 )
 
-a_count_abnormal_lab_worsen_by_baseline(
+tern:::a_count_abnormal_lab_worsen_by_baseline(
   df = df \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR")
@@ -201,3 +203,4 @@ basic_table() \%>\%
   append_topleft("Direction of Abnormality") \%>\%
   build_table(df = df, alt_counts_df = adsl)
 }
+\keyword{internal}
