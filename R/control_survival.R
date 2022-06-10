@@ -50,7 +50,7 @@ control_surv_time <- function(conf_level = 0.95,
 #' Control Function for `survfit` Model for Patient's Survival Rate at time point
 #'
 #' This is an auxiliary function for controlling arguments for `survfit` model, typically used internally to specify
-#' details of `survfit` model for [`s_surv_timepoint`]. `conf_level` refers to patient risk estimation at a time point.
+#' details of `survfit` model for [`tern:::s_surv_timepoint`]. `conf_level` refers to patient risk estimation at a time point.
 #'
 #' @md
 #' @inheritParams argument_convention

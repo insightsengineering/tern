@@ -20,5 +20,5 @@ A list of components with the same names as the arguments
 }
 \description{
 This is an auxiliary function for controlling arguments for \code{survfit} model, typically used internally to specify
-details of \code{survfit} model for \code{\link{s_surv_timepoint}}. \code{conf_level} refers to patient risk estimation at a time point.
+details of \code{survfit} model for \code{\link[tern:::s_surv_timepoint]{tern::::s_surv_timepoint}}. \code{conf_level} refers to patient risk estimation at a time point.
 }

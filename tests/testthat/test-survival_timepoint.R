@@ -11,7 +11,7 @@ testthat::test_that("s_surv_timepoint works with default arguments", {
       is_event = CNSR == 0
     )
 
-  result <- s_surv_timepoint(
+  result <- tern:::s_surv_timepoint(
     adtte_f %>% dplyr::filter(ARMCD == "ARM B"),
     .var = "AVAL",
     time_point = 6,
@@ -34,7 +34,7 @@ testthat::test_that("s_surv_timepoint works with customized arguments", {
       is_event = CNSR == 0
     )
 
-  result <- s_surv_timepoint(
+  result <- tern:::s_surv_timepoint(
     adtte_f %>% dplyr::filter(ARMCD == "ARM C"),
     .var = "AVAL",
     is_event = "is_event",
@@ -63,7 +63,7 @@ testthat::test_that("s_surv_timepoint also works when there are 0 patients at ri
     # such that no patients are at risk anymore beyond 6 months.
     dplyr::filter(ARMCD == "ARM A", AVAL <= 6)
 
-  result <- testthat::expect_silent(s_surv_timepoint(
+  result <- testthat::expect_silent(tern:::s_surv_timepoint(
     adtte_f,
     .var = "AVAL",
     time_point = 6,
@@ -157,7 +157,7 @@ testthat::test_that("s_surv_timepoint_diff works with default arguments for comp
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
-  result <- s_surv_timepoint_diff(
+  result <- tern:::s_surv_timepoint_diff(
     df = df,
     .var = "AVAL",
     .ref_group = df_ref,
@@ -186,7 +186,7 @@ testthat::test_that("s_surv_timepoint_diff works with customized arguments for c
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
-  result <- s_surv_timepoint_diff(
+  result <- tern:::s_surv_timepoint_diff(
     df = df,
     .var = "AVAL",
     .ref_group = df_ref,

@@ -14,7 +14,8 @@
    `s_count_abnormal_lab_worsen_by_baseline`.
    - (chain functions, reference to `abnormal_by_worst_grade`) `s_count_abnormal_by_worst_grade`, 
    `a_count_abnormal_by_worst_grade`. 
-
+   - (chain functions, reference to `survival_timepoint`) `s_surv_timepoint`, `s_surv_timepoint_diff`,
+   `a_surv_timepoint`, `a_surv_timepoint_diff`. 
 
 # tern 0.7.8
 

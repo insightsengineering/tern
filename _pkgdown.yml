@@ -60,8 +60,6 @@ reference:
       - s_proportion_diff
       - s_summary
       - s_surv_time
-      - s_surv_timepoint
-      - s_surv_timepoint_diff
       - s_test_proportion_diff
 
   - title: Formatted Analysis functions
@@ -82,8 +80,6 @@ reference:
        - a_response_subgroups
        - a_survival_subgroups
        - a_surv_time
-       - a_surv_timepoint
-       - a_surv_timepoint_diff
        - a_test_proportion_diff
        - create_afun_compare
        - create_afun_summary
