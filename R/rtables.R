@@ -2,9 +2,10 @@
 #'
 #' Helper function to use mostly within tests.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @param x the table
 #'
-#' @return matrix of strings
+#' @return A matrix of strings
 #'
 #' @export
 #'

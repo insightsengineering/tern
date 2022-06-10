@@ -10,8 +10,11 @@ to_string_matrix(x)
 \item{x}{the table}
 }
 \value{
-matrix of strings
+A matrix of strings
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Helper function to use mostly within tests.
 }
