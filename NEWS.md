@@ -11,7 +11,9 @@
    `score_occurrences`, `add_rowcounts`, `odds_ratio`, `count_occurrences`, 
    `count_occurrences_by_grade`, `explicit_na`, `df_explicit_na`, 
    `count_patients_with_event`, `decorate_grob`, `combine_groups`, 
-   `append_varlabels`, `univariate`, `stack_grobs`, `count_abnormal`.
+   `append_varlabels`, `univariate`, `stack_grobs`, `count_abnormal` (reference 
+   to `abnormal`), `count_abnormal_by_baseline` (reference to 
+   `abnormal_by_baseline`).
 *  Internal keywords added, export removed, `pkg_down.yml` polished and `tern::` for
    tests and vignettes when present for the following functions:
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 
@@ -20,6 +22,8 @@
      `n_available`, `format_xx`, `arm`. 
    - `count_values_funs`, `prop_difference`, `combine_counts`.
    - (chain functions) `s_count_abnormal`, `a_count_abnormal`.
+   - (chain functions) `s_count_abnormal_by_baseline`, `a_count_abnormal_by_baseline`,
+     `d_count_abnormal_by_baseline`.
 *  Deprecated `s_cox_univariate` function has now deprecated badge.
 
 ### Enhancements
