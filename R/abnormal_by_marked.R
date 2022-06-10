@@ -1,5 +1,7 @@
 #' Count patients with marked laboratory abnormalities
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Primary analysis variable `.var` indicates whether single, replicated
 #' or last marked laboratory abnormality was observed (factor).
 #' Additional analysis variables are `id` (character or factor) and `direction` indicating
@@ -26,8 +28,6 @@ NULL
 #' marked laboratory abnormalities for a single `abnormal` level.
 #' @return [s_count_abnormal_by_marked()] the single statistic `count_fraction`
 #' with `Single, not last`, `Last or replicated` and `Any` results.
-#'
-#' @export
 #'
 #' @examples
 #'
@@ -69,12 +69,13 @@ NULL
 #'   cur_col_subset = I(cur_col_subset)
 #' )
 #'
-#' s_count_abnormal_by_marked(
+#' tern:::s_count_abnormal_by_marked(
 #'   df = df_crp %>% filter(abn_dir == "High"),
 #'   .spl_context = spl_context,
 #'   .var = "AVALCAT1",
 #'   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 #' )
+#' @keywords internal
 s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1",
                                        .spl_context,
@@ -132,16 +133,16 @@ s_count_abnormal_by_marked <- function(df,
 #' @describeIn abnormal_by_marked Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #' @return [a_count_abnormal_by_marked()] returns the corresponding list with formatted [rtables::CellValue()].
-#' @export
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 #' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
+#' afun <- make_afun(tern:::a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
 #' afun(
 #'   df = df_crp %>% filter(abn_dir == "High"),
 #'   .spl_context = spl_context,
 #'   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 #' )
+#' @keywords internal
 a_count_abnormal_by_marked <- make_afun(
   s_count_abnormal_by_marked,
   .formats = c(count_fraction = format_count_fraction)
@@ -149,9 +150,10 @@ a_count_abnormal_by_marked <- make_afun(
 
 #' @describeIn abnormal_by_marked Layout creating function which can be used for creating tables,
 #' which can take statistics function arguments and additional format arguments (see below).
-#' @export
-#' @examples
 #'
+#' @export
+#'
+#' @examples
 #' map <- unique(
 #'   df[df$abn_dir %in% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
 #' ) %>%

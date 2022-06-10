@@ -33,7 +33,7 @@ adlb_raw <- local({
 })
 
 
-testthat::test_that("s_count_abnormal_by_marked works as expected", {
+testthat::test_that("tern:::s_count_abnormal_by_marked works as expected", {
   adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -78,7 +78,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     cur_col_subset = I(cur_col_subset)
   )
 
-  result <- s_count_abnormal_by_marked(
+  result <- tern:::s_count_abnormal_by_marked(
     df = adlb_crp %>% dplyr::filter(ARMCD == "ARM A" & abn_dir == "Low") %>% droplevels(),
     .spl_context = spl_context,
     .var = "AVALCAT1",
@@ -94,7 +94,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
 })
 
 
-testthat::test_that("s_count_abnormal_by_marked works as expected", {
+testthat::test_that("tern:::s_count_abnormal_by_marked works as expected", {
   adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -139,7 +139,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     cur_col_subset = I(cur_col_subset)
   )
 
-  result <- s_count_abnormal_by_marked(
+  result <- tern:::s_count_abnormal_by_marked(
     df = adlb_crp %>% dplyr::filter(ARMCD == "ARM A" & abn_dir == "High") %>% droplevels(),
     .spl_context = spl_context,
     .var = "AVALCAT1",
@@ -155,7 +155,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
 })
 
 
-testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
+testthat::test_that("tern:::s_count_abnormal_by_marked returns an error when `abn_dir` contains
           two direction values", {
   adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
@@ -201,7 +201,7 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
     cur_col_subset = I(cur_col_subset)
   )
 
-  testthat::expect_error(s_count_abnormal_by_marked(
+  testthat::expect_error(tern:::s_count_abnormal_by_marked(
     df = adlb_crp,
     .spl_context = spl_context,
     .var = "AVALCAT1",

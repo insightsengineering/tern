@@ -1,5 +1,12 @@
 # tern 0.7.8.9000
 
+### Documentation and NAMESPACE polishing
+*  Added stable badge for `count_abnormal_by_marked` (reference to `abnormal_by_marked`)
+*  Internal keywords added, export removed, `pkg_down.yml` polished and `tern:::` for
+   tests, examples, and vignettes when present for the following functions:
+   - (chain functions) `s_count_abnormal_by_marked`, `a_count_abnormal_by_marked`.
+
+
 # tern 0.7.8
 
 ### Fix
@@ -7,6 +14,7 @@
 * `h_split_by_subgroups` documentation warning fix for wrong placing of example block
 
 ### Documentation and NAMESPACE polishing
+
 *  Adopting the standard of badges only for `@description` instead of every 
    `@descriptionIn` function. Corrected accordingly `summarize_variables_in_cols`
 *  Added stable badge for `g_lineplot`, `g_step`, `g_waterfall`, `cox_regression`, 
@@ -16,8 +24,8 @@
    `append_varlabels`, `univariate`, `stack_grobs`, `count_abnormal` (reference 
    to `abnormal`), `count_abnormal_by_baseline` (reference to 
    `abnormal_by_baseline`).
-*  Internal keywords added, export removed, `pkg_down.yml` polished and `tern::` for
-   tests and vignettes when present for the following functions:
+*  Internal keywords added, export removed, `pkg_down.yml` polished and `tern:::` for
+   tests, examples, and vignettes when present for the following functions:
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 
    - (utils functions) `make_names`, `month2day`, `day2month` 
      `empty_vector_if_na`, `combine_vectors`, `aesi_label`,
