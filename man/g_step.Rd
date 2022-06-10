@@ -2,6 +2,7 @@
 % Please edit documentation in R/g_step.R
 \name{g_step}
 \alias{g_step}
+\alias{tidy.step}
 \title{Create a STEP Graph}
 \usage{
 g_step(
@@ -11,6 +12,8 @@ g_step(
   ci_ribbon = list(fill = "lightblue", alpha = 0.5),
   col = getOption("tern.color")
 )
+
+\method{tidy}{step}(x, ...)
 }
 \arguments{
 \item{df}{(\code{tibble})\cr result of \code{\link[=tidy.step]{tidy.step()}}.}
@@ -24,9 +27,16 @@ biomarker values.}
 ribbon area, or \code{NULL} to not plot a CI ribbon.}
 
 \item{col}{(\code{character})\cr colors.}
+
+\item{x}{(\code{step} matrix)\cr results from \code{\link[=fit_survival_step]{fit_survival_step()}}.}
+
+\item{...}{not used here.}
 }
 \value{
 The \code{ggplot2} object.
+
+A \code{tibble} with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,
+respectively. Additional attributes carry meta data also used for plotting.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -34,6 +44,13 @@ The \code{ggplot2} object.
 Based on the STEP results, creates a \code{ggplot} graph showing the estimated HR or OR
 along the continuous biomarker value subgroups.
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{tidy}: Custom Tidy Method for STEP Results
+
+Tidy the STEP results into a \code{tibble} to format them ready for plotting.
+}}
+
 \examples{
 library(survival)
 lung$sex <- factor(lung$sex)
@@ -92,4 +109,21 @@ step_matrix <- fit_rsp_step(
 )
 step_data <- broom::tidy(step_matrix)
 g_step(step_data)
+library(survival)
+lung$sex <- factor(lung$sex)
+vars <- list(
+  time = "time",
+  event = "status",
+  arm = "sex",
+  biomarker = "age"
+)
+step_matrix <- fit_survival_step(
+  variables = vars,
+  data = lung,
+  control = c(control_coxph(), control_step(num_points = 10, degree = 2))
+)
+broom::tidy(step_matrix)
+}
+\seealso{
+\code{\link[=g_step]{g_step()}} which consumes the result from this function.
 }

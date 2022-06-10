@@ -5,6 +5,7 @@
 \alias{h_coxreg_univar_formulas}
 \alias{h_coxreg_multivar_formula}
 \alias{fit_coxreg_univar}
+\alias{tidy.summary.coxph}
 \alias{h_coxreg_univar_extract}
 \alias{tidy.coxreg.univar}
 \alias{fit_coxreg_multivar}
@@ -19,6 +20,8 @@ h_coxreg_univar_formulas(variables, interaction = FALSE)
 h_coxreg_multivar_formula(variables)
 
 fit_coxreg_univar(variables, data, at = list(), control = control_coxreg())
+
+\method{tidy}{summary.coxph}(x, ...)
 
 h_coxreg_univar_extract(effect, covar, data, mod, control = control_coxreg())
 
@@ -61,15 +64,15 @@ effect should be estimated.}
 \item{control}{(\code{list})\cr a list of parameters as returned by the
 helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
+\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.}
+
+\item{...}{additional arguments for the lower level functions.}
+
 \item{effect}{(\code{string})\cr the treatment variable.}
 
 \item{covar}{(\code{string})\cr the name of the covariate in the model.}
 
 \item{mod}{(\code{coxph})\cr Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
-
-\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.}
-
-\item{...}{additional arguments for the lower level functions.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
@@ -150,6 +153,10 @@ be included in multi-variable Cox regression model.
 
 \item \code{fit_coxreg_univar}: Fit a series of univariate Cox regression models
 given the inputs.
+
+\item \code{tidy.summary.coxph}: Custom tidy method for \code{\link[survival:coxph]{survival::coxph()}} summary results.
+
+Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{data.frame} to extract model results.
 
 \item \code{h_coxreg_univar_extract}: Utility function to help tabulate the result of
 a univariate Cox regression model.
@@ -311,6 +318,33 @@ mod4 <- fit_coxreg_univar(
   ),
   data = dta_bladder
 )
+
+library(survival)
+library(broom)
+library(rtables)
+
+set.seed(1, kind = "Mersenne-Twister")
+
+dta_bladder <- with(
+  data = bladder[bladder$enum < 5, ],
+  data.frame(
+    time = stop,
+    status = event,
+    armcd = as.factor(rx),
+    covar1 = as.factor(enum),
+    covar2 = factor(
+      sample(as.factor(enum)),
+      levels = 1:4, labels = c("F", "F", "M", "M")
+    )
+  )
+)
+labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+formatters::var_labels(dta_bladder)[names(labels)] <- labels
+dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
+
+formula <- "survival::Surv(time, status) ~ armcd + covar1"
+msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
+tidy(msum)
 library(survival)
 
 dta_simple <- data.frame(
