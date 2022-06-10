@@ -39,7 +39,6 @@ reference:
       - s_ancova
       - s_change_from_baseline
       - s_compare
-      - s_count_abnormal
       - s_count_abnormal_by_baseline
       - s_count_abnormal_by_marked
       - s_count_abnormal_by_worst_grade

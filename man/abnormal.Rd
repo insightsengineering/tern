@@ -73,6 +73,8 @@ vector with \code{num} and \code{denom} counts of patients.
 \code{\link[=count_abnormal]{count_abnormal()}} can be used with multiple abnormal levels and modifies the layout.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Primary analysis variable \code{.var} indicates the abnormal range result (character or factor)
 and additional analysis variables are \code{id} (character or factor) and \code{baseline} (character or
 factor). For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
@@ -117,10 +119,10 @@ df <- df \%>\%
   filter(ONTRTFL == "Y")
 
 # For abnormal level "HIGH" we get the following counts.
-s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
+tern:::s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
 # Optionally exclude patients with abnormality at baseline.
-s_count_abnormal(
+tern:::s_count_abnormal(
   df,
   .var = "ANRIND",
   abnormal = list(high = "HIGH", low = "LOW"),
@@ -129,6 +131,7 @@ s_count_abnormal(
 # Use the Formatted Analysis function for `analyze()`.
 a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
 a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
+
 # Layout creating function.
 basic_table() \%>\%
   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) \%>\%
@@ -155,3 +158,4 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df2)
 }
+\keyword{internal}
