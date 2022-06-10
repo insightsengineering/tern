@@ -69,6 +69,8 @@ A named list of all statistics returned by \code{\link[=s_summary.character]{s_s
 See \code{\link[=s_summary.character]{s_summary.character()}} to be aware of all available statistics.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 These functions can be used to produce summary tables for PK datasets.
 }
 \section{Functions}{
@@ -76,25 +78,17 @@ These functions can be used to produce summary tables for PK datasets.
 \item \code{summary_in_cols}: \code{summary_in_cols} is a S3 generic
 function to produce an object description.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \item \code{summary_in_cols.numeric}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}}
 function that produces a named list of statistics to include as columns.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \item \code{summary_in_cols.factor}: a wrapper of
 \code{\link[=s_summary.factor]{s_summary.factor()}} function that produces a named list of statistics to include as columns.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \item \code{summary_in_cols.character}: a wrapper of \code{\link[=s_summary.character]{s_summary.character()}}
 function that produces a named list of statistics to include as columns.
 
 \item \code{summarize_vars_in_cols}: Layout creating
 function which can be used for creating summary tables in columns, primarily used for PK data sets.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }}
 
 \examples{

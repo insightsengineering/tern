@@ -5,10 +5,13 @@
 * `h_split_by_subgroups` documentation warning fix for wrong placing of example block
 
 ### Documentation and NAMESPACE polishing
-
+*  Adopting the standard of badges only for `@description` instead of every 
+   `@descriptionIn` function. Corrected accordingly `summarize_variables_in_cols`
 *  Added stable badge for `g_lineplot`, `g_step`, `g_waterfall`, `cox_regression`, 
    `score_occurrences`, `add_rowcounts`, `odds_ratio`, `count_occurrences`, 
-   `count_occurrences_by_grade`, `explicit_na`, `df_explicit_na`, `count_patients_with_event`, `decorate_grob`, `combine_groups`, `append_varlabels`, `univariate`, `stack_grobs`.
+   `count_occurrences_by_grade`, `explicit_na`, `df_explicit_na`, 
+   `count_patients_with_event`, `decorate_grob`, `combine_groups`, 
+   `append_varlabels`, `univariate`, `stack_grobs`.
 *  Internal keywords added, export removed, `pkg_down.yml` polished and `tern::` for
    tests and vignettes when present for the following functions:
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 
