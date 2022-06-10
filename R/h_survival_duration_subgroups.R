@@ -220,7 +220,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   if (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) > 0) {
 
     # Hazard ratio and CI.
-    result <- s_coxph_pairwise(
+    result <- tern:::s_coxph_pairwise(
       df = l_df[[2]],
       .ref_group = l_df[[1]],
       .in_ref_col = FALSE,

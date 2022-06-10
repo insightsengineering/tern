@@ -47,7 +47,6 @@ reference:
       - s_count_patients_with_event
       - s_count_patients_with_flags
       - s_count_values
-      - s_coxph_pairwise
       - s_coxreg
       - s_cox_multivariate
       - s_cox_univariate
@@ -73,11 +72,9 @@ reference:
        - a_count_occurrences_by_grade
        - a_count_patients_with_event
        - a_count_patients_with_flags
-       - a_coxph_pairwise
        - a_odds_ratio
        - a_proportion
        - a_response_subgroups
-       - a_survival_subgroups
        - a_test_proportion_diff
        - create_afun_compare
        - create_afun_summary

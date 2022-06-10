@@ -186,7 +186,7 @@ h_coxreg_mult_cont_df <- function(variables,
 h_tab_surv_one_biomarker <- function(df,
                                      vars,
                                      time_unit) {
-  afuns <- a_survival_subgroups()[vars]
+  afuns <- tern:::a_survival_subgroups()[vars]
   colvars <- d_survival_subgroups_colvars(
     vars,
     conf_level = df$conf_level[1],

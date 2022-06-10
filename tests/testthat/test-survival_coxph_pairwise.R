@@ -3,14 +3,14 @@ library(dplyr)
 
 adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
-testthat::test_that("s_coxph_pairwise works with default arguments and no stratification factors", {
+testthat::test_that("tern:::s_coxph_pairwise works with default arguments and no stratification factors", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
-  result <- s_coxph_pairwise(
+  result <- tern:::s_coxph_pairwise(
     df = df,
     .ref_group = df_ref,
     .in_ref_col = FALSE,
@@ -29,14 +29,14 @@ testthat::test_that("s_coxph_pairwise works with default arguments and no strati
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-testthat::test_that("s_coxph_pairwise works with customized arguments and no stratification factors", {
+testthat::test_that("tern:::s_coxph_pairwise works with customized arguments and no stratification factors", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
-  result <- s_coxph_pairwise(
+  result <- tern:::s_coxph_pairwise(
     df = df,
     .ref_group = df_ref,
     .in_ref_col = FALSE,
@@ -56,14 +56,14 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and no str
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-testthat::test_that("s_coxph_pairwise works with default arguments and stratification factors", {
+testthat::test_that("tern:::s_coxph_pairwise works with default arguments and stratification factors", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
-  result <- s_coxph_pairwise(
+  result <- tern:::s_coxph_pairwise(
     df = df,
     .ref_group = df_ref,
     .in_ref_col = FALSE,
@@ -82,14 +82,14 @@ testthat::test_that("s_coxph_pairwise works with default arguments and stratific
   testthat::expect_equal(result, expected, tolerance = 0.00001)
 })
 
-testthat::test_that("s_coxph_pairwise works with customized arguments and stratification factors", {
+testthat::test_that("tern:::s_coxph_pairwise works with customized arguments and stratification factors", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
-  result <- s_coxph_pairwise(
+  result <- tern:::s_coxph_pairwise(
     df = df,
     .ref_group = df_ref,
     .in_ref_col = FALSE,
