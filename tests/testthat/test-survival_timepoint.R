@@ -3,7 +3,7 @@ library(dplyr)
 
 adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
-testthat::test_that("s_surv_timepoint works with default arguments", {
+testthat::test_that("tern:::s_surv_timepoint works with default arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -26,7 +26,7 @@ testthat::test_that("s_surv_timepoint works with default arguments", {
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-testthat::test_that("s_surv_timepoint works with customized arguments", {
+testthat::test_that("tern:::s_surv_timepoint works with customized arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -52,7 +52,7 @@ testthat::test_that("s_surv_timepoint works with customized arguments", {
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-testthat::test_that("s_surv_timepoint also works when there are 0 patients at risk", {
+testthat::test_that("tern:::s_surv_timepoint also works when there are 0 patients at risk", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -146,7 +146,7 @@ testthat::test_that("surv_timepoint works with customized arguments", {
 })
 
 
-testthat::test_that("s_surv_timepoint_diff works with default arguments for comparison group", {
+testthat::test_that("tern:::s_surv_timepoint_diff works with default arguments for comparison group", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -175,7 +175,7 @@ testthat::test_that("s_surv_timepoint_diff works with default arguments for comp
 })
 
 
-testthat::test_that("s_surv_timepoint_diff works with customized arguments for comparison arm", {
+testthat::test_that("tern:::s_surv_timepoint_diff works with customized arguments for comparison arm", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(

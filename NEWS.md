@@ -4,7 +4,8 @@
 *  Added stable badge for `count_abnormal_by_marked` (reference to `abnormal_by_marked`),
    `count_abnormal_lab_worsen_by_baseline` and `h_adlb_worsen` (reference to 
    `abnormal_by_worst_grade_worsen_from_baseline`), `count_abnormal_by_worst_grade` 
-   (reference to `abnormal_by_worst_grade`), `to_string_matrix`.
+   (reference to `abnormal_by_worst_grade`), `to_string_matrix`, `surv_timepoint` 
+   (reference to `survival_timepoint`), `surv_time` (reference to `survival_time`).
 *  Internal keywords added, export removed, `pkg_down.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
    - (chain functions, reference to `abnormal_by_marked`) `s_count_abnormal_by_marked`, 
@@ -16,6 +17,7 @@
    `a_count_abnormal_by_worst_grade`. 
    - (chain functions, reference to `survival_timepoint`) `s_surv_timepoint`, `s_surv_timepoint_diff`,
    `a_surv_timepoint`, `a_surv_timepoint_diff`. 
+   - (chain functions, reference to `survival_time`) `s_surv_time`, `a_surv_time`. 
 
 # tern 0.7.8
 

@@ -124,7 +124,7 @@ h_coxreg_mult_cont_df <- function(variables,
       )
       data_fit <- as.data.frame(as.matrix(coxreg_list$mod$y))
       data_fit$status <- as.logical(data_fit$status)
-      median <- s_surv_time(
+      median <- tern:::s_surv_time(
         df = data_fit,
         .var = "time",
         is_event = "status"

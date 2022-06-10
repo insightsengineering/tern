@@ -59,7 +59,6 @@ reference:
       - s_proportion
       - s_proportion_diff
       - s_summary
-      - s_surv_time
       - s_test_proportion_diff
 
   - title: Formatted Analysis functions
@@ -79,7 +78,6 @@ reference:
        - a_proportion
        - a_response_subgroups
        - a_survival_subgroups
-       - a_surv_time
        - a_test_proportion_diff
        - create_afun_compare
        - create_afun_summary
