@@ -10,10 +10,12 @@ univariate(x)
 \item{x}{A vector of variable name separated by comas.}
 }
 \description{
-The special term \code{univariate} indicate that the model should be fitted individually for
-every variable included in univariate.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
+The special term \code{univariate} indicate that the model should be fitted individually for
+every variable included in univariate.
+
 If provided alongside with pairwise specification, the model
 \code{y ~ ARM + univariate(SEX, AGE, RACE)} lead to the study and comparison of the models
 \itemize{
