@@ -5,7 +5,7 @@
 #' Summarize patient's survival rate and difference of survival rates between groups at a time point.
 #'
 #' @inheritParams argument_convention
-#' @inheritParams tern:::s_surv_time
+#' @inheritParams s_surv_time
 #' @param time_point (`number`) \cr survival time point of interest.
 #' @param control a (`list`) of parameters for comparison details, specified by using \cr
 #'    the helper function [`control_surv_timepoint`]. Some possible parameter options are: \cr

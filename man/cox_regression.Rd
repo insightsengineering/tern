@@ -123,11 +123,11 @@ with 4 elements:
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Fits a Cox regression model and estimate hazard ratio to describe the effect
 size in a survival analysis.
-
+}
+\details{
 Cox models are the most commonly used methods to estimate the magnitude of
 the effect in survival analysis. It assumes proportional hazards: the ratio
 of the hazards between groups (e.g., two arms) is constant over time.

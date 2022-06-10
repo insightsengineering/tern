@@ -6,7 +6,7 @@
 #'
 #' @md
 #' @inheritParams argument_convention
-#' @inheritParams tern:::s_surv_time
+#' @inheritParams s_surv_time
 #' @param strat (`character` or `NULL`) variable names indicating stratification factors.
 #' @param control (`list`) \cr parameters for comparison details, specified by using \cr
 #'    the helper function [control_coxph()]. Some possible parameter options are: \cr

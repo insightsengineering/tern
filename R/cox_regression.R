@@ -1,5 +1,7 @@
 #' Cox Proportional Hazards Regression
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Fits a Cox regression model and estimate hazard ratio to describe the effect
 #' size in a survival analysis.
 #'
@@ -17,7 +19,6 @@
 #' @inheritParams argument_convention
 #'
 #' @name cox_regression
-#' @description `r lifecycle::badge("stable")`
 #' @order 1
 #' @examples
 #'
@@ -373,7 +374,7 @@ fit_coxreg_univar <- function(variables,
 #'
 #' @inheritParams argument_convention
 #' @method tidy summary.coxph
-#' @keywords internal
+#' @export
 #' @examples
 #'
 #' library(survival)

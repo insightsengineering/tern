@@ -8,7 +8,7 @@
 #'   respectively. Additional attributes carry meta data also used for plotting.
 #' @seealso [g_step()] which consumes the result from this function.
 #' @method tidy step
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' library(survival)
@@ -62,10 +62,10 @@ tidy.step <- function(x, ...) { # nolint
 
 #' Create a STEP Graph
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Based on the STEP results, creates a `ggplot` graph showing the estimated HR or OR
 #' along the continuous biomarker value subgroups.
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' @param df (`tibble`)\cr result of [tidy.step()].
 #' @param use_percentile (`flag`)\cr whether to use percentiles for the x axis or actual

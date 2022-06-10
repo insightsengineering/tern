@@ -4,8 +4,8 @@
 *  Added stable badge for `count_abnormal_by_marked` (reference to `abnormal_by_marked`),
    `count_abnormal_lab_worsen_by_baseline` and `h_adlb_worsen` (reference to 
    `abnormal_by_worst_grade_worsen_from_baseline`), `count_abnormal_by_worst_grade` 
-   (reference to `abnormal_by_worst_grade`), `to_string_matrix`, `surv_timepoint` 
-   (reference to `survival_timepoint`), `surv_time` (reference to `survival_time`),
+   (reference to `abnormal_by_worst_grade`), `to_string_matrix`, `tidy.summary.coxph`, `tidy.step`,
+   `surv_timepoint`, (reference to `survival_timepoint`), `surv_time` (reference to `survival_time`),
    `coxph_pairwise` (reference to `survival_coxph_pairwise`),
    `extract_survival_subgroups` and `tabulate_survival_subgroups` (reference to `survival_duration_subgroups`),
    `extract_survival_biomarkers` and `tabulate_survival_biomarkers` (reference to `survival_biomarkers_subgroups`).
@@ -46,7 +46,7 @@
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 
    - (utils functions) `make_names`, `month2day`, `day2month` 
      `empty_vector_if_na`, `combine_vectors`, `aesi_label`,
-     `n_available`, `format_xx`, `arm`, `tidy.summary.coxph`, `tidy.step`. 
+     `n_available`, `format_xx`, `arm`. 
    - `count_values_funs`, `prop_difference`, `combine_counts`.
    - (chain functions) `s_count_abnormal`, `a_count_abnormal`.
    - (chain functions) `s_count_abnormal_by_baseline`, `a_count_abnormal_by_baseline`,

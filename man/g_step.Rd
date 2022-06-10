@@ -30,8 +30,7 @@ The \code{ggplot2} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Based on the STEP results, creates a \code{ggplot} graph showing the estimated HR or OR
 along the continuous biomarker value subgroups.
 }
