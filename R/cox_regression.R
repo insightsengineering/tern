@@ -373,7 +373,7 @@ fit_coxreg_univar <- function(variables,
 #'
 #' @inheritParams argument_convention
 #' @method tidy summary.coxph
-#' @export
+#' @keywords internal
 #' @examples
 #'
 #' library(survival)

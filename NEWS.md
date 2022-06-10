@@ -38,7 +38,7 @@
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 
    - (utils functions) `make_names`, `month2day`, `day2month` 
      `empty_vector_if_na`, `combine_vectors`, `aesi_label`,
-     `n_available`, `format_xx`, `arm`. 
+     `n_available`, `format_xx`, `arm`, `tidy.summary.coxph`. 
    - `count_values_funs`, `prop_difference`, `combine_counts`.
    - (chain functions) `s_count_abnormal`, `a_count_abnormal`.
    - (chain functions) `s_count_abnormal_by_baseline`, `a_count_abnormal_by_baseline`,

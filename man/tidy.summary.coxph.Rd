@@ -43,3 +43,4 @@ formula <- "survival::Surv(time, status) ~ armcd + covar1"
 msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 tidy(msum)
 }
+\keyword{internal}

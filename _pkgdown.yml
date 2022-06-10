@@ -221,7 +221,6 @@ reference:
       - tidy.coxreg.univar
       - tidy.glm
       - tidy.step
-      - tidy.summary.coxph
       - univariate
 
   - title: Graphs
