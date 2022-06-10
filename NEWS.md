@@ -1,5 +1,7 @@
 # tern 0.7.8.9000
 
+# tern 0.7.8
+
 ### Enhancements
 
 * Enhanced `g_lineplot` with additional table to automatically scale the table height and return a `ggplot` object.
