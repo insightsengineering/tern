@@ -1,5 +1,7 @@
 #' Multi-variable logistic regression table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Logistic regression for binary outcome with categorical/continuous covariates in model statement.
 #' For each covariate category (if categorical) or specified values (if continuous), present degrees of freedom,
 #' regression parameter estimate and standard error (SE) relative to reference group or category.
@@ -507,6 +509,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
 #' @describeIn logistic_regression Helper function to tabulate the interaction term
 #'   results of a logistic regression model.
 #' @export
+#'
 #' @examples
 #' h_glm_interaction_extract("ARMCD:AGE", mod2)
 h_glm_interaction_extract <- function(x, fit_glm) {
@@ -610,6 +613,7 @@ h_glm_interaction_extract <- function(x, fit_glm) {
 #'   [h_or_interaction()] and [h_glm_simple_term_extract()] which puts the results
 #'   in the right data frame format.
 #' @export
+#'
 #' @examples
 #' h_glm_inter_term_extract("AGE", "ARMCD", mod2)
 h_glm_inter_term_extract <- function(odds_ratio_var,
@@ -703,6 +707,7 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 #' @describeIn logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of simple terms.
 #' @export
+#'
 #' @examples
 #' h_logistic_simple_terms("AGE", mod1)
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
@@ -731,6 +736,7 @@ h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
 #' @describeIn logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of interaction terms.
 #' @export
+#'
 #' @examples
 #' h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
 h_logistic_inter_terms <- function(x,
@@ -821,6 +827,7 @@ h_logistic_inter_terms <- function(x,
 #' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
 #' @method tidy glm
 #' @export
+#'
 #' @examples
 #' library(broom)
 #' df <- tidy(mod1, conf_level = 0.99)
@@ -903,6 +910,7 @@ logistic_summary_by_flag <- function(flag_var) {
 
 #' @describeIn logistic_regression Layout creating function which summarizes a logistic variable regression.
 #' @export
+#'
 #' @examples
 #' result1 <- basic_table() %>%
 #'   summarize_logistic(conf_level = 0.95) %>%

@@ -191,7 +191,6 @@ The usual formatting arguments for the \emph{layout creating} function
 When using \code{fit_coxreg_univar} there should be two study arms.
 }
 \examples{
-
 # Testing dataset [survival::bladder].
 
 library(survival)
@@ -220,7 +219,6 @@ plot(
   xlab = "Months",
   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 )
-
 # `h_coxreg_univar_formulas`
 
 ## Simple formulas.
@@ -253,7 +251,6 @@ h_coxreg_univar_formulas(
     time = "time", event = "status", covariates = c("X", "y")
   )
 )
-
 # `h_coxreg_multivar_formula`
 
 h_coxreg_multivar_formula(
@@ -277,7 +274,6 @@ h_coxreg_multivar_formula(
     strata = "SITE"
   )
 )
-
 # fit_coxreg_univar
 
 ## Cox regression: arm + 1 covariate.
@@ -318,7 +314,6 @@ mod4 <- fit_coxreg_univar(
   ),
   data = dta_bladder
 )
-
 library(survival)
 library(broom)
 library(rtables)
@@ -362,7 +357,6 @@ result
 library(broom)
 tidy(mod1)
 tidy(mod2)
-
 # fit_coxreg_multivar
 
 ## Cox regression: multivariate Cox regression.
@@ -391,7 +385,6 @@ result <- h_coxreg_multivar_extract(
 result
 library(broom)
 broom::tidy(multivar_model)
-
 # s_coxreg
 
 univar_model <- fit_coxreg_univar(
@@ -436,7 +429,6 @@ multivar_covs_model <- fit_coxreg_multivar(
 )
 df2_covs <- broom::tidy(multivar_covs_model)
 s_coxreg(df = df2_covs, .var = "hr")
-
 # summarize_coxreg
 result_univar <- basic_table() \%>\%
   split_rows_by("effect") \%>\%

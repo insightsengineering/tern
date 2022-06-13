@@ -131,6 +131,8 @@ helper function).}
 content function.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Logistic regression for binary outcome with categorical/continuous covariates in model statement.
 For each covariate category (if categorical) or specified values (if continuous), present degrees of freedom,
 regression parameter estimate and standard error (SE) relative to reference group or category.

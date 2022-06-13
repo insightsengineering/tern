@@ -103,7 +103,6 @@ no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}
 }}
 
 \examples{
-
 # Testing dataset [survival::bladder].
 library(survival)
 library(rtables)
@@ -140,7 +139,6 @@ h_coxreg_extract_interaction(
   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
   control = control_coxreg()
 )
-
 # Testing dataset [survival::bladder].
 library(survival)
 
