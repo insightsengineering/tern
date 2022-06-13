@@ -45,7 +45,6 @@ reference:
       - s_count_patients_with_flags
       - s_count_values
       - s_coxreg
-      - s_cox_multivariate
       - s_cox_univariate
       - s_incidence_rate
       - s_length_proportion
@@ -70,7 +69,6 @@ reference:
        - a_count_patients_with_flags
        - a_odds_ratio
        - a_proportion
-       - a_response_subgroups
        - a_test_proportion_diff
        - create_afun_compare
        - create_afun_summary
@@ -225,15 +223,8 @@ reference:
       - append_varlabels
       - as.rtable
       - as.rtable.data.frame
-      - combine_counts
       - combine_groups
-      - groups_list_to_df
       - has_tabletree_colnames
-      - h_col_counts
-      - h_content_first_row
-      - h_row_counts
-      - h_row_fractions
-      - is_leaf_table
       - split_cols_by_groups
       - to_string_matrix
 

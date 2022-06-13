@@ -173,7 +173,7 @@ h_logistic_mult_cont_df <- function(variables,
 #' )
 h_tab_rsp_one_biomarker <- function(df,
                                     vars) {
-  afuns <- a_response_subgroups()[vars]
+  afuns <- tern:::a_response_subgroups()[vars]
   colvars <- d_rsp_subgroups_colvars(
     vars,
     conf_level = df$conf_level[1],

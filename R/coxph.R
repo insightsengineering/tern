@@ -660,8 +660,6 @@ check_increments <- function(increments, covariates) {
 #'
 #' @md
 #'
-#' @export
-#'
 #' @examples
 #' library(scda)
 #' library(dplyr)
@@ -677,10 +675,12 @@ check_increments <- function(increments, covariates) {
 #' ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
 #' ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)
 #' \dontrun{
-#' s_cox_multivariate(
+#' tern:::s_cox_multivariate(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f
 #' )
 #' }
+#'
+#' @keywords internal
 s_cox_multivariate <- function(formula, data,
                                conf_level = 0.95,
                                pval_method = c("wald", "likelihood"),

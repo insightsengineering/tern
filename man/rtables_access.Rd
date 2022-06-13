@@ -66,3 +66,4 @@ in a table.
 \seealso{
 \verb{[prune_occurrences]} for usage of these functions.
 }
+\keyword{internal}

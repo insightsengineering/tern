@@ -49,7 +49,7 @@ NULL
 #'
 #' rtable_object_sorted
 score_occurrences <- function(table_row) {
-  row_counts <- h_row_counts(table_row, col_indices = seq_len(ncol(table_row)))
+  row_counts <- tern:::h_row_counts(table_row, col_indices = seq_len(ncol(table_row)))
   sum(row_counts)
 }
 
@@ -72,7 +72,7 @@ score_occurrences <- function(table_row) {
 #' rtable_object_sorted
 score_occurrences_cols <- function(...) {
   function(table_row) {
-    row_counts <- h_row_counts(table_row, ...)
+    row_counts <- tern:::h_row_counts(table_row, ...)
     sum(row_counts)
   }
 }
@@ -113,7 +113,7 @@ score_occurrences_cont_cols <- function(...) {
     if (inherits(table_tree, "ContentRow")) {
       return(NA)
     }
-    content_row <- h_content_first_row(table_tree)
+    content_row <- tern:::h_content_first_row(table_tree)
     score_table_row(content_row)
   }
 }
