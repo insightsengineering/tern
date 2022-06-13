@@ -23,5 +23,7 @@ grade_groups <- list(
   "Grade 3-4 (\%)" = c("3", "4"),
   "Grade 5 (\%)" = "5"
 )
-groups_list_to_df(grade_groups)
+tern:::groups_list_to_df(grade_groups)
+
 }
+\keyword{internal}

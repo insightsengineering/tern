@@ -225,9 +225,7 @@ reference:
       - append_varlabels
       - as.rtable
       - as.rtable.data.frame
-      - combine_counts
       - combine_groups
-      - groups_list_to_df
       - has_tabletree_colnames
       - h_col_counts
       - h_content_first_row

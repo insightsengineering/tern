@@ -7,7 +7,6 @@
 #'   levels that belong to it in the character vectors that are elements of the list.
 #'
 #' @return [tibble::tibble()] in the required format.
-#' @export
 #'
 #' @examples
 #' grade_groups <- list(
@@ -15,7 +14,9 @@
 #'   "Grade 3-4 (%)" = c("3", "4"),
 #'   "Grade 5 (%)" = "5"
 #' )
-#' groups_list_to_df(grade_groups)
+#' tern:::groups_list_to_df(grade_groups)
+#'
+#' @keywords internal
 groups_list_to_df <- function(groups_list) {
   checkmate::assert_list(groups_list, names = "named")
   assertthat::assert_that(
@@ -32,21 +33,21 @@ groups_list_to_df <- function(groups_list) {
 
 #' Reference and Treatment Group Combination
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Facilitate the re-combination of groups divided as reference and
 #' treatment groups; it helps in arranging groups of
 #' columns in the `rtables` framework and teal modules.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @param fct (`factor`)\cr the variable with levels which needs to be grouped.
 #' @param ref (`string`)\cr the reference level(s).
 #' @param collapse (`string`)\cr a character string to separate `fct` and `ref`.
 #'
 #' @return a `list` with first item `ref` (reference) and second item `trt`
 #'   (treatment).
-#'
 #' @export
-#' @examples
 #'
+#' @examples
 #' library(rtables)
 #'
 #' groups <- combine_groups(
@@ -85,6 +86,8 @@ combine_groups <- function(fct,
 }
 
 #' Split Columns by Groups of Levels
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
 #' @inheritParams groups_list_to_df
@@ -225,8 +228,6 @@ split_cols_by_groups <- function(lyt,
 #' @inheritParams combine_groups
 #' @inheritParams groups_list_to_df
 #'
-#' @keywords internal
-#'
 #' @examples
 #'
 #' library(rtables)
@@ -256,6 +257,8 @@ split_cols_by_groups <- function(lyt,
 #'   add_colcounts() %>%
 #'   summarize_vars("AGE") %>%
 #'   build_table(DM, col_counts = col_counts)
+#'
+#' @keywords internal
 combine_counts <- function(fct, groups_list = NULL) {
   assertthat::assert_that(is_character_or_factor(fct))
 

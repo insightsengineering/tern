@@ -17,6 +17,8 @@
    - `as.rtable`, `color_palette`, `add_footnotes` (note, this function is defined in two different files: footnotes and g_forest).
    - (statistical function controls)  `control_coxreg`, `control_coxph`, `control_incidence_rate`, `control_lineplot_vars`, `control_surv_time`, `control_surv_timepoint`.
    - `stat_mean_ci`, `stat_median_ci`
+   - `split_cols_by_groups`
+   
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
    - (chain functions, reference to `abnormal_by_marked`) `s_count_abnormal_by_marked`, 
@@ -37,6 +39,7 @@
    - `a_ancova`, `s_ancova`, `h_ancova`.
    - `arrange_grobs`, `as_factor_keep_attributes`, `combine_levels`.
    - `split_text_grob`
+   - `groups_list_to_df`
 # tern 0.7.8
 
 ### Fix
@@ -54,7 +57,7 @@
    `append_varlabels`, `univariate`, `stack_grobs`, `count_abnormal` (reference 
    to `abnormal`), `count_abnormal_by_baseline` (reference to 
    `abnormal_by_baseline`).
-*  Internal keywords added, export removed, `pkg_down.yml` polished and `tern:::` for
+*  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal` 
    - (utils functions) `make_names`, `month2day`, `day2month` 

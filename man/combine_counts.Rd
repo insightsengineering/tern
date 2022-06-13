@@ -45,6 +45,7 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   summarize_vars("AGE") \%>\%
   build_table(DM, col_counts = col_counts)
+
 }
 \seealso{
 combine_groups
