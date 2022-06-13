@@ -172,7 +172,7 @@ testthat::test_that("extract_rsp_subgroups functions as expected with strata", {
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("a_response_subgroups functions as expected with valid input", {
+testthat::test_that("tern:::a_response_subgroups functions as expected with valid input", {
   df <- data.frame(
     prop = c(0.1234, 0.5678),
     pval = c(0.00001, 0.983758),
@@ -180,7 +180,7 @@ testthat::test_that("a_response_subgroups functions as expected with valid input
     stringsAsFactors = FALSE
   )
 
-  afun <- a_response_subgroups(.formats = list(prop = "xx.xx", pval = "x.xxxx | (<0.0001)"))
+  afun <- tern:::a_response_subgroups(.formats = list(prop = "xx.xx", pval = "x.xxxx | (<0.0001)"))
 
   result <- basic_table() %>%
     split_cols_by_multivar(c("prop", "pval")) %>%

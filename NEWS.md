@@ -1,7 +1,8 @@
 # tern 0.7.8.9000
 
 ### Documentation and NAMESPACE polishing
-*  Added stable badge for `count_abnormal_by_marked` (reference to `abnormal_by_marked`),
+*  Added stable badge for:
+   - `count_abnormal_by_marked` (reference to `abnormal_by_marked`),
    `count_abnormal_lab_worsen_by_baseline` and `h_adlb_worsen` (reference to 
    `abnormal_by_worst_grade_worsen_from_baseline`), `count_abnormal_by_worst_grade` 
    (reference to `abnormal_by_worst_grade`), `to_string_matrix`, `tidy.summary.coxph`, `tidy.step`,
@@ -19,6 +20,7 @@
    - `stat_mean_ci`, `stat_median_ci`
    - `split_cols_by_groups`
    - `explicit_na`, `sas_na`
+   - `extract_rsp_subgroups`, `tabulate_rsp_subgroups`
    
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
@@ -43,6 +45,7 @@
    - `groups_list_to_df`
    - `s_cox_multivariate`
    - `h_row_counts`, `h_row_fractions`, `h_col_counts`, `is_leaf_table`, `h_content_first_row`
+   - `a_response_subgroups`
    
 # tern 0.7.8
 

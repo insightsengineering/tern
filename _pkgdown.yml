@@ -69,7 +69,6 @@ reference:
        - a_count_patients_with_flags
        - a_odds_ratio
        - a_proportion
-       - a_response_subgroups
        - a_test_proportion_diff
        - create_afun_compare
        - create_afun_summary

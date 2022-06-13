@@ -1,5 +1,7 @@
 #' Tabulate Binary Response by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Tabulate statistics such as response rate and odds ratio for population subgroups.
 #'
 #' @details These functions create a layout starting from a data frame which contains
@@ -47,8 +49,8 @@ NULL
 #'   optionally specifies groupings for `subgroups` variables.
 #' @param label_all (`string`)\cr label for the total population analysis.
 #' @export
-#' @examples
 #'
+#' @examples
 #' # Unstratified analysis.
 #' df <- extract_rsp_subgroups(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -102,9 +104,10 @@ extract_rsp_subgroups <- function(variables,
 
 #' @describeIn response_subgroups Formatted Analysis function used to format the results of [extract_rsp_subgroups()].
 #'   Returns is a list of Formatted Analysis functions with one element per statistic.
-#' @export
 #' @examples
-#' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
+#' tern:::a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
+#'
+#' @keywords internal
 a_response_subgroups <- function(.formats = list(
                                    n = "xx",
                                    n_rsp = "xx",
@@ -292,8 +295,8 @@ tabulate_rsp_subgroups <- function(lyt,
 #'
 #' @inheritParams tabulate_rsp_subgroups
 #' @return `list` of variables to tabulate and their labels.
-#' @keywords internal
 #'
+#' @keywords internal
 d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,
                                     method = NULL) {
