@@ -1,5 +1,7 @@
 #' Combine Factor Levels
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Combine specified old factor Levels in a single new level.
 #'
 #' @param x factor
@@ -12,9 +14,9 @@
 #'
 #' @examples
 #' x <- factor(letters[1:5], levels = letters[5:1])
-#' tern:::combine_levels(x, levels = c("a", "b"))
+#' combine_levels(x, levels = c("a", "b"))
 #'
-#' tern:::combine_levels(x, c("e", "b"))
+#' combine_levels(x, c("e", "b"))
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
   stopifnot(
     is.factor(x),
