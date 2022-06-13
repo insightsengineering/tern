@@ -15,6 +15,7 @@
    `s_num_patients`, `s_num_patients_content`, `summarize_num_patients`.
    - `summarize_colvars`, `summarize_change`, `summarize_ancova`
    - `as.rtable`, `color_palette`, `add_footnotes` (note, this function is defined in two different files: footnotes and g_forest).
+   - (statistical function controls)  `control_coxreg`, `control_coxph`
 *  Internal keywords added, export removed, `pkg_down.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
    - (chain functions, reference to `abnormal_by_marked`) `s_count_abnormal_by_marked`, 
@@ -33,7 +34,7 @@
    - `s_count_patients_sum_exposure`.
    - `a_change_from_baseline` `s_change_from_baseline`.
    - `a_ancova`, `s_ancova`, `h_ancova`.
-   - `arrange_grobs`, `as_factor_keep_attributes`, `combine_levels`, `control_coxph`.
+   - `arrange_grobs`, `as_factor_keep_attributes`, `combine_levels`.
 # tern 0.7.8
 
 ### Fix

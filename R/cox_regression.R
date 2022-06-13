@@ -52,6 +52,7 @@
 #' )
 NULL
 
+#' @description `r lifecycle::badge("stable")`
 #' @describeIn cox_regression Helper for Cox Regression Formula
 #'
 #' Creates a list of formulas. It is used internally by [fit_coxreg_univar()]
