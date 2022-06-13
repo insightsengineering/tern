@@ -23,6 +23,8 @@ NULL
 
 #' Control function for incidence rate
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is an auxiliary function for controlling arguments for the incidence rate, used
 #' internally to specify details in [s_incidence_rate()].
 #'

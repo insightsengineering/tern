@@ -26,6 +26,8 @@ indicating time unit for data input.}
 A list of components with the same name as the arguments.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is an auxiliary function for controlling arguments for the incidence rate, used
 internally to specify details in \code{\link[=s_incidence_rate]{s_incidence_rate()}}.
 }
