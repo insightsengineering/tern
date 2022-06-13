@@ -1,5 +1,7 @@
 #' Summarize Variables in Columns
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This Analyze Function uses the new S3 generic function [s_summary()] to summarize
 #' different variables that are arranged in columns.
 #' Additional standard formatting arguments are available.

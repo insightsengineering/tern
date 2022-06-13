@@ -63,7 +63,7 @@ As there is no one prefix to identify all `tern` analyze functions it is recomme
 Internally `tern` analyze functions like `tern::summarize_ancova` are mainly built in the 4 elements chain:
 
 ```
-h_ancova() -> s_ancova() -> a_ancova() -> summarize_ancova()
+tern:::h_ancova() -> tern:::s_ancova() -> tern:::a_ancova() -> summarize_ancova()
 ```
 
 The descriptions for each function type:

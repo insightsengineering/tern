@@ -1,7 +1,7 @@
 library(dplyr)
 
-testthat::test_that("h_ancova works with healthy input", {
-  result <- h_ancova(
+testthat::test_that("tern:::h_ancova works with healthy input", {
+  result <- tern:::h_ancova(
     .var = "Sepal.Length",
     .df_row = iris,
     variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
@@ -30,9 +30,9 @@ testthat::test_that("h_ancova works with healthy input", {
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-testthat::test_that("h_ancova fails wrong inputs", {
+testthat::test_that("tern:::h_ancova fails wrong inputs", {
   testthat::expect_error(
-    h_ancova(
+    tern:::h_ancova(
       .var = "Wrong.Var",
       .df_row = iris,
       variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
@@ -40,7 +40,7 @@ testthat::test_that("h_ancova fails wrong inputs", {
   )
 
   testthat::expect_error(
-    h_ancova(
+    tern:::h_ancova(
       .var = "Sepal.Length",
       .df_row = iris,
       variables = list(arm = "Species", covariates = c("Wrong.Var", "Sepal.Width"))
@@ -48,10 +48,10 @@ testthat::test_that("h_ancova fails wrong inputs", {
   )
 })
 
-testthat::test_that("s_ancova works with healthy input", {
+testthat::test_that("tern:::s_ancova works with healthy input", {
   df_col <- iris %>% dplyr::filter(Species == "versicolor")
   df_ref <- iris %>% dplyr::filter(Species == "setosa")
-  result <- s_ancova(
+  result <- tern:::s_ancova(
     df = df_col,
     .var = "Sepal.Length",
     .df_row = iris,
@@ -72,9 +72,9 @@ testthat::test_that("s_ancova works with healthy input", {
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-testthat::test_that("s_ancova fails wrong inputs", {
+testthat::test_that("tern:::s_ancova fails wrong inputs", {
   testthat::expect_error(
-    s_ancova(
+    tern:::s_ancova(
       df = iris,
       .var = "Sepal.Length",
       variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width")),

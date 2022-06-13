@@ -1,5 +1,7 @@
 #' Summary for analysis of covariance (ANCOVA).
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
@@ -19,14 +21,14 @@ NULL
 #'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'
-#' @export
 #'
 #' @examples
-#' h_ancova(
+#' tern:::h_ancova(
 #'   .var = "Sepal.Length",
 #'   .df_row = iris,
 #'   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 #' )
+#' @keywords internal
 h_ancova <- function(.var,
                      .df_row,
                      variables) {
@@ -82,7 +84,6 @@ h_ancova <- function(.var,
 #'   comparison to the reference group.
 #'   - `pval`: p-value (not adjusted for multiple comparisons).
 #'
-#' @export
 #'
 #' @examples
 #' library(scda)
@@ -107,7 +108,9 @@ h_ancova <- function(.var,
 #'   filter(ARMCD == "ARM A")
 #' conf_level <- 0.95
 #'
-#' s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#' tern:::s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#'
+#' @keywords internal
 s_ancova <- function(df,
                      .var,
                      .df_row,
@@ -174,10 +177,11 @@ s_ancova <- function(df,
 
 #' @describeIn summarize_ancova Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
-#' a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#' tern:::a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#'
+#' @keywords internal
 a_ancova <- make_afun(
   s_ancova,
   .indent_mods = c("n" = 0L, "lsmean" = 0L, "lsmean_diff" = 0L, "lsmean_diff_ci" = 1L, "pval" = 1L),

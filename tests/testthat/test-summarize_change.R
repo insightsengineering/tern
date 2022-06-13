@@ -1,11 +1,11 @@
-testthat::test_that("s_change_from_baseline handles empty data (complete missing for a visit)", {
+testthat::test_that("tern:::s_change_from_baseline handles empty data (complete missing for a visit)", {
   test_data <- data.frame(
     chg = numeric(),
     aval = numeric(),
     ablfl = logical()
   )
 
-  result <- s_change_from_baseline(
+  result <- tern:::s_change_from_baseline(
     test_data,
     .var = "chg",
     variables = list(value = "aval", baseline_flag = "ablfl"),
@@ -41,14 +41,14 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("s_change_from_baseline handles NA in baseline values", {
+testthat::test_that("tern:::s_change_from_baseline handles NA in baseline values", {
   test_data <- data.frame(
     chg = c(0, 0, 0, NA),
     aval = c(0, 3, 6, NA),
     ablfl = c(TRUE, TRUE, TRUE, TRUE)
   )
 
-  result <- s_change_from_baseline(
+  result <- tern:::s_change_from_baseline(
     test_data,
     .var = "chg",
     variables = list(value = "aval", baseline_flag = "ablfl"),
@@ -84,7 +84,7 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
   testthat::expect_equal(result, expected, tol = 1e-6)
 })
 
-testthat::test_that("s_change_from_baseline handles baseline substitution", {
+testthat::test_that("tern:::s_change_from_baseline handles baseline substitution", {
   test_data <- data.frame(
     chg = c(3, 1, 2, 5),
     aval = c(1, 3, 6, 4),
@@ -94,7 +94,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
   result <- test_data %>%
     split(test_data$ablfl) %>%
     lapply(
-      s_change_from_baseline,
+      tern:::s_change_from_baseline,
       .var = "chg",
       variables = list(value = "aval", baseline_flag = "ablfl")
     )

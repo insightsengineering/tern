@@ -34,8 +34,6 @@ reference:
           In order to separate computation from formatting, they should not take care of `rcell` type
           formatting themselves.
     contents:
-      - s_ancova
-      - s_change_from_baseline
       - s_compare
       - s_count_cumulative
       - s_count_missed_doses
@@ -64,7 +62,6 @@ reference:
           customized by calling `rtables::make_afun()` on them. They are used as `afun` in
           `rtables::analyze()`.
     contents:
-       - a_ancova
        - a_count_cumulative
        - a_count_missed_doses
        - a_count_occurrences
@@ -126,7 +123,6 @@ reference:
       - footnotes<-
       - h_adlb_worsen
       - h_adsl_adlb_merge_using_worst_flag
-      - h_ancova
       - h_append_grade_groups
       - h_count_cumulative
       - h_coxph_df
