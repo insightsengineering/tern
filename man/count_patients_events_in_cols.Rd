@@ -65,6 +65,8 @@ i.e. events, fulfilling the filter condition.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Counting the number of unique patients and the total number of all and specific events
 when a column table layout is required.
 }
@@ -89,7 +91,7 @@ df <- data.frame(
   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 )
-s_count_patients_and_multiple_events(
+tern:::s_count_patients_and_multiple_events(
   df = df,
   id = "USUBJID",
   filters_list = list(
@@ -100,7 +102,7 @@ s_count_patients_and_multiple_events(
 
 # `summarize_patients_events_in_cols()`
 basic_table() \%>\%
-  summarize_patients_events_in_cols(
+  tern:::summarize_patients_events_in_cols(
     filters_list = list(
       related = formatters::with_label(c(AEREL = "Y"), "Events (Related)"),
       fatal = c(AESDTH = "Y"),
@@ -110,3 +112,4 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df)
 }
+\keyword{internal}
