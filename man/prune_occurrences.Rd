@@ -68,6 +68,8 @@ specified column, and computes the difference of the minimum and maximum.
 specified column, and computes the difference of the minimum and maximum.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Family of constructor and condition functions to flexibly prune occurrence tables.
 The condition functions always return whether the row result is higher than the threshold.
 Since they are of class \code{\link[=CombinationFunction]{CombinationFunction()}} they can be logically combined with other condition
@@ -127,14 +129,15 @@ prune_table(tab, keep_rows(is_non_empty))
 }
 \dontrun{
 # `keep_content_rows`
-more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
+more_than_twenty <- tern:::has_count_in_cols(atleast = 20L, col_names = names(tab))
 prune_table(tab, keep_content_rows(more_than_twenty))
 }
 \dontrun{
 # `has_count_in_cols`
-more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
+more_than_one <- tern:::has_count_in_cols(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one))
 }
+
 \dontrun{
 # `has_count_in_any_col`
 any_more_than_one <- has_count_in_any_col(atleast = 1L, col_names = names(tab))
@@ -157,7 +160,9 @@ prune_table(tab, keep_rows(more_than_five_percent_diff))
 }
 \dontrun{
 # `has_counts_difference`
-more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
+more_than_one_diff <- tern:::has_counts_difference(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one_diff))
 }
+
 }
+\keyword{internal}
