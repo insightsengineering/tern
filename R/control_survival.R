@@ -1,5 +1,7 @@
 #' Control Function for `CoxPH` Model
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is an auxiliary function for controlling arguments for `CoxPH` model, typically used internally to specify
 #' details of `CoxPH` model for [s_coxph_pairwise]. `conf_level` refers to Hazard Ratio estimation.
 #'
