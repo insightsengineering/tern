@@ -8,7 +8,10 @@
    `surv_timepoint`, (reference to `survival_timepoint`), `surv_time` (reference to `survival_time`),
    `coxph_pairwise` (reference to `survival_coxph_pairwise`),
    `extract_survival_subgroups` and `tabulate_survival_subgroups` (reference to `survival_duration_subgroups`),
-   `extract_survival_biomarkers` and `tabulate_survival_biomarkers` (reference to `survival_biomarkers_subgroups`).
+   `extract_survival_biomarkers` and `tabulate_survival_biomarkers` (reference to 
+   `survival_biomarkers_subgroups`), `control_summarize_vars`, `s_summary` and 
+   `a_summary` (reference to `summarize_variables`) and kept the S3 method tree.
+   - `summarize_patients_exposure_in_cols`
 *  Internal keywords added, export removed, `pkg_down.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
    - (chain functions, reference to `abnormal_by_marked`) `s_count_abnormal_by_marked`, 
@@ -23,6 +26,8 @@
    - (chain functions, reference to `survival_time`) `s_surv_time`, `a_surv_time`. 
    - (chain functions, reference to `survival_coxph_pairwise`) `s_coxph_pairwise`, `a_coxph_pairwise`. 
    - (chain functions, reference to `survival_duration_subgroups`) `a_survival_subgroups`. 
+   - `summary_labels`, `summary_formats`
+   - `s_count_patients_sum_exposure`
 
 # tern 0.7.8
 

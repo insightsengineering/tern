@@ -218,6 +218,8 @@ to \code{NA} here.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 We use the new S3 generic function \code{\link[=s_summary]{s_summary()}} to implement summaries for
 different \code{x} objects. This is used as Statistics Function in combination
 with the new Analyze Function \code{\link[=summarize_vars]{summarize_vars()}}.
