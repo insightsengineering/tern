@@ -1,5 +1,7 @@
 #' Counting Missed Doses
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' These are specific functions to count patients with missed doses. The difference to [count_cumulative()] is
 #' mainly the special labels.
 #'
@@ -9,16 +11,17 @@ NULL
 
 #' @describeIn count_missed_doses Statistics function to count non-missing values.
 #' @return [s_count_nonmissing()] returns the statistic `n` which is the count of non-missing values in `x`.
-#' @export
+#' @keywords internal
 #' @examples
 #' set.seed(1)
 #' x <- c(sample(1:10, 10), NA)
-#' s_count_nonmissing(x)
+#' tern:::s_count_nonmissing(x)
 s_count_nonmissing <- function(x) {
   list(n = n_available(x))
 }
 
 #' @describeIn count_missed_doses Description function that calculates labels for  [s_count_missed_doses()].
+#' @keywords internal
 #' @inheritParams s_count_missed_doses
 #' @return [d_count_missed_doses()] returns a named `character` vector with the labels.
 #'
@@ -32,9 +35,9 @@ d_count_missed_doses <- function(thresholds) {
 #' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
 #' @return [s_count_missed_doses()] returns the statistics `n` and
 #'  `count_fraction` with one element for each threshold.
-#' @export
+#' @keywords internal
 #' @examples
-#' s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+#' tern:::s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
 s_count_missed_doses <- function(x,
                                  thresholds,
                                  .N_col) { # nolint
@@ -54,11 +57,11 @@ s_count_missed_doses <- function(x,
 }
 
 #' @describeIn count_missed_doses Formatted Analysis function to count non-missing values.
-#' @export
+#' @keywords internal
 #' @examples
 #' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
+#' afun <- make_afun(tern:::a_count_missed_doses, .ungroup_stats = "count_fraction")
 #' afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
 a_count_missed_doses <- make_afun(
   s_count_missed_doses,

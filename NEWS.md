@@ -13,7 +13,7 @@
    `a_summary` (reference to `summarize_variables`) and kept the S3 method tree.
    - `summarize_patients_exposure_in_cols`, `summarize_num_patients` with 
    `s_num_patients`, `s_num_patients_content`, `summarize_num_patients`.
-   - `count_cumulative`
+   - `count_cumulative`, `count_missed_doses`.
    - `summarize_colvars`, `summarize_change`, `summarize_ancova`
    - `as.rtable`, `color_palette`, `add_footnotes` (note, this function is defined in two different files: footnotes and g_forest).
    - (statistical function controls)  `control_coxreg`, `control_coxph`, `control_incidence_rate`, `control_lineplot_vars`, `control_surv_time`, `control_surv_timepoint`.
@@ -33,6 +33,7 @@
    - (chain functions, reference to `survival_duration_subgroups`) `a_survival_subgroups`. 
    - (chain functions, reference to `count_cumulative`) `h_count_cumulative`, 
    `d_count_cumulative`, `s_count_cumulative`, `a_count_cumulative`.
+   - (chain functions, reference to `count_missed_doses`) `s_count_nonmissing`, `d_count_missed_doses`, `s_count_missed_doses`, `a_count_missed_doses`.
    - `summary_labels`, `summary_formats`.
    - `s_count_patients_sum_exposure`.
    - `a_change_from_baseline` `s_change_from_baseline`.
