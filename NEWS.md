@@ -13,7 +13,8 @@
    `a_summary` (reference to `summarize_variables`) and kept the S3 method tree.
    - `summarize_patients_exposure_in_cols`, `summarize_num_patients` with 
    `s_num_patients`, `s_num_patients_content`, `summarize_num_patients`.
-   - `summarize_colvars`, `summarize_change`, `summarize_ancova`.
+   - `summarize_colvars`, `summarize_change`, `summarize_ancova`
+   - `as.rtable`, `color_palette`.
 *  Internal keywords added, export removed, `pkg_down.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
    - (chain functions, reference to `abnormal_by_marked`) `s_count_abnormal_by_marked`, 
@@ -32,6 +33,7 @@
    - `s_count_patients_sum_exposure`.
    - `a_change_from_baseline` `s_change_from_baseline`.
    - `a_ancova`, `s_ancova`, `h_ancova`.
+   - `arrange_grobs`.
 
 # tern 0.7.8
 
