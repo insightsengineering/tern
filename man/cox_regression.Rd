@@ -129,8 +129,6 @@ with 4 elements:
 
 Fits a Cox regression model and estimate hazard ratio to describe the effect
 size in a survival analysis.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
 Cox models are the most commonly used methods to estimate the magnitude of

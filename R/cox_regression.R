@@ -52,7 +52,6 @@
 #' )
 NULL
 
-#' @description `r lifecycle::badge("stable")`
 #' @describeIn cox_regression Helper for Cox Regression Formula
 #'
 #' Creates a list of formulas. It is used internally by [fit_coxreg_univar()]
@@ -219,6 +218,8 @@ h_coxreg_multivar_formula <- function(variables) {
 
 #' Controls for Cox regression
 #'
+#' @description `r lifecycle::badge("stable")`
+
 #' Sets a list of parameters for Cox regression fit. Used internally,
 #' see [fit_coxreg_univar()] and [fit_coxreg_multivar()].
 #'
