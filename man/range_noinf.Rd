@@ -32,4 +32,6 @@ tern:::range_noinf(Inf)
 tern:::range_noinf(Inf, na.rm = TRUE, finite = TRUE)
 tern:::range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
 tern:::range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
+
 }
+\keyword{internal}
