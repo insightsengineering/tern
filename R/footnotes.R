@@ -31,6 +31,8 @@ footnotes <- function(x) {
 
 #' Add Footnotes
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This adds more footnotes.
 #'
 #' @param x an object

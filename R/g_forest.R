@@ -846,6 +846,7 @@ footnotes <- function(x) {
 
 #' Add more footnotes
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @param x an object
 #' @param value character vector
 #'
