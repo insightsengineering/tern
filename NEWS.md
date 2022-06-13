@@ -18,6 +18,7 @@
    - (statistical function controls)  `control_coxreg`, `control_coxph`, `control_incidence_rate`, `control_lineplot_vars`, `control_surv_time`, `control_surv_timepoint`.
    - `stat_mean_ci`, `stat_median_ci`
    - `split_cols_by_groups`
+   - `explicit_na`, `sas_na`
    
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:

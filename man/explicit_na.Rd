@@ -13,12 +13,10 @@ explicit_na(x, label = "<Missing>")
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Substitute missing data with a string or factor level.
 }
 \examples{
-
 explicit_na(c(NA, "a", "b"))
 is.na(explicit_na(c(NA, "a", "b")))
 

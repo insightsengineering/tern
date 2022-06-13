@@ -1,15 +1,15 @@
 #' Missing Data
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Substitute missing data with a string or factor level.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @param x factor or character vector
 #' @param label character string that missing data should be replaced with
 #'
 #' @export
 #'
 #' @examples
-#'
 #' explicit_na(c(NA, "a", "b"))
 #' is.na(explicit_na(c(NA, "a", "b")))
 #'
@@ -33,6 +33,8 @@ explicit_na <- function(x, label = "<Missing>") {
 
 #' Convert Strings to `NA`
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' SAS imports missing data as empty strings or strings with whitespaces only. This helper function can be used to
 #' convert these values to \code{NA}s.
 #'
@@ -43,7 +45,6 @@ explicit_na <- function(x, label = "<Missing>") {
 #' @export
 #'
 #' @examples
-#'
 #' sas_na(c("1", "", " ", "   ", "b"))
 #' sas_na(factor(c("", " ", "b")))
 #'
