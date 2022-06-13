@@ -21,6 +21,8 @@ The \code{rtable} object. Note that the concrete class will depend on the method
 which is used.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is a new generic function to convert objects to \code{rtable} tables.
 }
 \section{Methods (by class)}{
