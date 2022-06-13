@@ -98,6 +98,8 @@ describing the method used. The p-value tests the null hypothesis that
 proportions in two groups are the same.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Various tests were implemented to test the difference between two
 proportions.
 }
@@ -128,7 +130,6 @@ additional format arguments.
 }}
 
 \examples{
-
 # Non-stratified proportion difference test
 
 ## Data
@@ -143,13 +144,13 @@ grp <- c(rep("A", A), rep("B", B))
 tbl <- table(grp, rsp)
 
 ## Chi-Squared test
-prop_chisq(tbl)
+tern:::prop_chisq(tbl)
 
 ## Chi-Squared test + Schouten correction.
-prop_schouten(tbl)
+tern:::prop_schouten(tbl)
 
 ## Fisher's exact test
-prop_fisher(tbl)
+tern:::prop_fisher(tbl)
 
 # Stratified proportion difference test
 
@@ -160,7 +161,8 @@ strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 tbl <- table(grp, rsp, strata)
 
 ## Cochran-Mantel-Haenszel test
-prop_cmh(tbl)
+tern:::prop_cmh(tbl)
+
 
 # Statistics function
 dta <- data.frame(
@@ -169,7 +171,7 @@ dta <- data.frame(
   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 )
 
-s_test_proportion_diff(
+tern:::s_test_proportion_diff(
   df = subset(dta, grp == "A"),
   .var = "rsp",
   .ref_group = subset(dta, grp == "B"),
@@ -177,7 +179,8 @@ s_test_proportion_diff(
   variables = list(strata = "strat"),
   method = "cmh"
 )
-a_test_proportion_diff(
+
+tern:::a_test_proportion_diff(
   df = subset(dta, grp == "A"),
   .var = "rsp",
   .ref_group = subset(dta, grp == "B"),
@@ -196,3 +199,4 @@ l <- basic_table() \%>\%
 
 build_table(l, df = dta)
 }
+\keyword{internal}

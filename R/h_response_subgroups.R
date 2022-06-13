@@ -224,7 +224,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
     if (!is.null(method)) {
 
       # Test for difference.
-      result_test <- s_test_proportion_diff(
+      result_test <- tern:::s_test_proportion_diff(
         df = l_df[[2]],
         .var = "rsp",
         .ref_group = l_df[[1]],

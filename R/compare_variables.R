@@ -238,7 +238,7 @@ s_compare.logical <- function(x,
     x <- factor(x, levels = c(TRUE, FALSE))
     .ref_group <- factor(.ref_group, levels = c(TRUE, FALSE))
     tbl <- rbind(table(x), table(.ref_group))
-    suppressWarnings(prop_chisq(tbl))
+    suppressWarnings(tern:::prop_chisq(tbl))
   } else {
     character()
   }

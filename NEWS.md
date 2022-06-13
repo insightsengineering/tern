@@ -22,6 +22,7 @@
    - `explicit_na`, `sas_na`
    - `extract_rsp_subgroups`, `tabulate_rsp_subgroups`, `extract_rsp_biomarkers`, `tabulate_rsp_biomarkers`
    - `keep_rows`, `keep_content_rows`, `has_count_in_any_col`, `has_fraction_in_cols`, `has_fraction_in_any_col`, `has_fractions_difference`
+   - `test_proportion_diff`
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
@@ -49,6 +50,7 @@
    - `a_response_subgroups`
    - `range_noinf`
    - `has_count_in_cols`, `has_counts_difference`
+   - `prop_chisq`, `prop_cmh`, `prop_schouten`, `prop_fisher`, `s_test_proportion_diff`, `a_test_proportion_diff`
    
 # tern 0.7.8
 

@@ -1,4 +1,4 @@
-testthat::test_that("prop_chisq returns right result", {
+testthat::test_that("tern:::prop_chisq returns right result", {
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- c(
     sample(c(TRUE, FALSE), size = 20, prob = c(3 / 4, 1 / 4), replace = TRUE),
@@ -7,24 +7,24 @@ testthat::test_that("prop_chisq returns right result", {
   grp <- c(rep("A", 20), rep("B", 20))
   tbl <- table(grp, rsp)
 
-  result <- prop_chisq(tbl)
+  result <- tern:::prop_chisq(tbl)
   expected <- 0.0565
   testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 })
 
-testthat::test_that("prop_cmh returns right result", {
+testthat::test_that("tern:::prop_cmh returns right result", {
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
   grp <- factor(rep(c("A", "B"), each = 50))
   strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   tbl <- table(grp, rsp, strata)
 
-  result <- prop_cmh(tbl)
+  result <- tern:::prop_cmh(tbl)
   expected <- 0.6477
   testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 })
 
-testthat::test_that("prop_cmh also works when there are strata with just one observation", {
+testthat::test_that("tern:::prop_cmh also works when there are strata with just one observation", {
   tbl <- structure(
     c(
       20L, 17L, 7L, 10L, 0L, 0L, 2L, 3L, 21L, 14L, 3L,
@@ -41,14 +41,14 @@ testthat::test_that("prop_cmh also works when there are strata with just one obs
   )
 
   result <- testthat::expect_warning(
-    prop_cmh(tbl),
+    tern:::prop_cmh(tbl),
     "<5 data points in some strata. CMH test may be incorrect."
   )
   expected <- 0.3326
   testthat::expect_equal(result, expected, tol = 1e-4)
 })
 
-testthat::test_that("prop_fisher returns right result", {
+testthat::test_that("tern:::prop_fisher returns right result", {
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- c(
     sample(c(TRUE, FALSE), size = 20, prob = c(3 / 4, 1 / 4), replace = TRUE),
@@ -57,12 +57,12 @@ testthat::test_that("prop_fisher returns right result", {
   grp <- c(rep("A", 20), rep("B", 20))
   tbl <- table(grp, rsp)
 
-  result <- prop_fisher(tbl)
+  result <- tern:::prop_fisher(tbl)
   expected <- 0.1110
   testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 })
 
-testthat::test_that("prop_schouten returns right result", {
+testthat::test_that("tern:::prop_schouten returns right result", {
   result <- sapply(
     1:100,
     function(x) {
@@ -80,7 +80,7 @@ testthat::test_that("prop_schouten returns right result", {
       if (ncol(tbl) < 2 | nrow(tbl) < 2) {
         return(NA_real_)
       }
-      prop_schouten(tbl)
+      tern:::prop_schouten(tbl)
     }
   )
 
@@ -101,7 +101,7 @@ testthat::test_that("prop_schouten returns right result", {
   testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
-testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {
+testthat::test_that("tern:::s_test_proportion_diff and d_test_proportion_diff return right result", {
   set.seed(1984, kind = "Mersenne-Twister")
   dta <- data.frame(
     rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -111,8 +111,8 @@ testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return ri
 
   method <- "cmh"
   result <- list(
-    d = d_test_proportion_diff(method),
-    s = s_test_proportion_diff(
+    d = tern:::d_test_proportion_diff(method),
+    s = tern:::s_test_proportion_diff(
       df = subset(dta, grp == "A"),
       .var = "rsp",
       .ref_group = subset(dta, grp == "B"),

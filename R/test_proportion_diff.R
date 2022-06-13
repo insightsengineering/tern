@@ -1,5 +1,7 @@
 #' Difference Test for Two Proportions
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Various tests were implemented to test the difference between two
 #' proportions.
 #'
@@ -14,10 +16,9 @@ NULL
 
 #' @describeIn prop_diff_test performs Chi-Squared test.
 #'   Internally calls [stats::prop.test()].
-#' @export
 #' @order 2
-#' @examples
 #'
+#' @examples
 #' # Non-stratified proportion difference test
 #'
 #' ## Data
@@ -32,7 +33,9 @@ NULL
 #' tbl <- table(grp, rsp)
 #'
 #' ## Chi-Squared test
-#' prop_chisq(tbl)
+#' tern:::prop_chisq(tbl)
+#'
+#' @keywords internal
 prop_chisq <- function(tbl) {
   assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
@@ -48,10 +51,9 @@ prop_chisq <- function(tbl) {
 #' @param ary (`array`, 3 dimensions)\cr
 #'   with two groups in rows, the binary response (`TRUE`/`FALSE`) in
 #'   columns, the strata in the third dimension.
-#' @export
 #' @order 3
-#' @examples
 #'
+#' @examples
 #' # Stratified proportion difference test
 #'
 #' ## Data
@@ -61,7 +63,9 @@ prop_chisq <- function(tbl) {
 #' tbl <- table(grp, rsp, strata)
 #'
 #' ## Cochran-Mantel-Haenszel test
-#' prop_cmh(tbl)
+#' tern:::prop_cmh(tbl)
+#'
+#' @keywords internal
 prop_cmh <- function(ary) {
   assertthat::assert_that(
     is.array(ary),
@@ -82,12 +86,13 @@ prop_cmh <- function(ary) {
 #' @describeIn prop_diff_test performs the Chi-Squared test with Schouten
 #'   correction ([Schouten 1980](
 #'   https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305)).
-#' @export
 #' @order 2
-#' @examples
 #'
+#' @examples
 #' ## Chi-Squared test + Schouten correction.
-#' prop_schouten(tbl)
+#' tern:::prop_schouten(tbl)
+#'
+#' @keywords internal
 prop_schouten <- function(tbl) {
   assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
 
@@ -115,12 +120,13 @@ prop_schouten <- function(tbl) {
 
 #' @describeIn prop_diff_test performs the Fisher's exact test.
 #'   Internally calls [stats::fisher.test()].
-#' @export
 #' @order 2
-#' @examples
 #'
+#' @examples
 #' ## Fisher's exact test
-#' prop_fisher(tbl)
+#' tern:::prop_fisher(tbl)
+#'
+#' @keywords internal
 prop_fisher <- function(tbl) {
   assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
@@ -140,7 +146,6 @@ prop_fisher <- function(tbl) {
 #'   describing the method used. The p-value tests the null hypothesis that
 #'   proportions in two groups are the same.
 #'
-#' @export
 #' @order 4
 #' @examples
 #'
@@ -151,7 +156,7 @@ prop_fisher <- function(tbl) {
 #'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 #' )
 #'
-#' s_test_proportion_diff(
+#' tern:::s_test_proportion_diff(
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
 #'   .ref_group = subset(dta, grp == "B"),
@@ -159,6 +164,8 @@ prop_fisher <- function(tbl) {
 #'   variables = list(strata = "strat"),
 #'   method = "cmh"
 #' )
+#'
+#' @keywords internal
 s_test_proportion_diff <- function(df,
                                    .var,
                                    .ref_group,
@@ -199,10 +206,10 @@ s_test_proportion_diff <- function(df,
     )
 
     y$pval <- switch(method,
-      chisq = prop_chisq(tbl),
-      cmh = prop_cmh(tbl),
-      fisher = prop_fisher(tbl),
-      schouten = prop_schouten(tbl)
+      chisq = tern:::prop_chisq(tbl),
+      cmh = tern:::prop_cmh(tbl),
+      fisher = tern:::prop_fisher(tbl),
+      schouten = tern:::prop_schouten(tbl)
     )
   }
 
@@ -218,8 +225,8 @@ s_test_proportion_diff <- function(df,
 #'
 #' @inheritParams s_test_proportion_diff
 #' @return `string` describing the test from which the p-value is derived.
-#' @keywords internal
 #'
+#' @keywords internal
 d_test_proportion_diff <- function(method) {
   assertthat::assert_that(assertthat::is.string(method))
   meth_part <- switch(method,
@@ -234,10 +241,9 @@ d_test_proportion_diff <- function(method) {
 
 #' @describeIn prop_diff_test Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
-#' a_test_proportion_diff(
+#' tern:::a_test_proportion_diff(
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
 #'   .ref_group = subset(dta, grp == "B"),
@@ -245,6 +251,8 @@ d_test_proportion_diff <- function(method) {
 #'   variables = list(strata = "strat"),
 #'   method = "cmh"
 #' )
+#'
+#' @keywords internal
 a_test_proportion_diff <- make_afun(
   s_test_proportion_diff,
   .formats = c(pval = "x.xxxx | (<0.0001)"),
@@ -257,8 +265,8 @@ a_test_proportion_diff <- make_afun(
 #' @param ... other arguments are passed to [s_test_proportion_diff()].
 #' @inheritParams argument_convention
 #' @export
-#' @examples
 #'
+#' @examples
 #' # With `rtables` pipelines.
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "grp", ref_group = "B") %>%
