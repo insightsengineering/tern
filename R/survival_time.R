@@ -67,9 +67,9 @@ s_surv_time <- function(df,
   )
   srv_tab <- summary(srv_fit, extend = TRUE)$table
   srv_qt_tab <- stats::quantile(srv_fit, probs = quantiles)$quantile
-  range_censor <- range_noinf(df[[.var]][!df[[is_event]]], na.rm = TRUE)
-  range_event <- range_noinf(df[[.var]][df[[is_event]]], na.rm = TRUE)
-  range <- range_noinf(df[[.var]], na.rm = TRUE)
+  range_censor <- tern:::range_noinf(df[[.var]][!df[[is_event]]], na.rm = TRUE)
+  range_event <- tern:::range_noinf(df[[.var]][df[[is_event]]], na.rm = TRUE)
+  range <- tern:::range_noinf(df[[.var]], na.rm = TRUE)
   list(
     median = formatters::with_label(unname(srv_tab["median"]), "Median"),
     median_ci = formatters::with_label(
