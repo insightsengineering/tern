@@ -176,14 +176,16 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "tern:::range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
-  x <- 5:1
+  "tern:::range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]",
+  {
+    x <- 5:1
 
-  result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(1L, 5L)
+    result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
+    expected <- c(1L, 5L)
 
-  testthat::expect_identical(result, expected)
-})
+    testthat::expect_identical(result, expected)
+  }
+)
 
 # INTEGER no zero-len data, with NAs, no Inf
 
@@ -221,14 +223,16 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "tern:::range_noinf for INT [no zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
-  x <- c(NA, 5:1, NA)
+  "tern:::range_noinf for INT [no zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]",
+  {
+    x <- c(NA, 5:1, NA)
 
-  result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(1L, 5L)
+    result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
+    expected <- c(1L, 5L)
 
-  testthat::expect_identical(result, expected)
-})
+    testthat::expect_identical(result, expected)
+  }
+)
 
 # INTEGER  with zero-len data, no NAs, no Inf
 
@@ -266,14 +270,16 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "tern:::range_noinf for INT [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
-  x <- vector(mode = "integer", length = 0)
+  "tern:::range_noinf for INT [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]",
+  {
+    x <- vector(mode = "integer", length = 0)
 
-  result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(NA_integer_, NA_integer_)
+    result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
+    expected <- c(NA_integer_, NA_integer_)
 
-  testthat::expect_identical(result, expected)
-})
+    testthat::expect_identical(result, expected)
+  }
+)
 
 # INTEGER with zero-len data, with NAs, no Inf
 
@@ -311,14 +317,16 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "tern:::range_noinf for INT [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
-  x <- rep(NA_integer_, 4)
+  "tern:::range_noinf for INT [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]",
+  {
+    x <- rep(NA_integer_, 4)
 
-  result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(NA_integer_, NA_integer_)
+    result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
+    expected <- c(NA_integer_, NA_integer_)
 
-  testthat::expect_identical(result, expected)
-})
+    testthat::expect_identical(result, expected)
+  }
+)
 
 # DOUBLE no zero-len data, no NAs, no Inf
 
@@ -356,14 +364,16 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "tern:::range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
-  x <- c(3.5, 1.5, 2.5)
+  "tern:::range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]",
+  {
+    x <- c(3.5, 1.5, 2.5)
 
-  result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(1.5, 3.5)
+    result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
+    expected <- c(1.5, 3.5)
 
-  testthat::expect_identical(result, expected)
-})
+    testthat::expect_identical(result, expected)
+  }
+)
 
 # DOUBLE no zero-len data, no NAs, with Inf
 
@@ -542,26 +552,30 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "tern:::range_noinf for DOUBLE [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
-  x <- vector(mode = "double", length = 0)
+  "tern:::range_noinf for DOUBLE [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]",
+  {
+    x <- vector(mode = "double", length = 0)
 
-  result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(NA_real_, NA_real_)
+    result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
+    expected <- c(NA_real_, NA_real_)
 
-  testthat::expect_identical(result, expected)
-})
+    testthat::expect_identical(result, expected)
+  }
+)
 
 # DOUBLE with zero-len data, no NAs, with Inf
 
 testthat::test_that(
-  "tern:::range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] and with all default options", {
-  x <- c(Inf, -Inf, Inf, -Inf)
+  "tern:::range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] and with all default options",
+  {
+    x <- c(Inf, -Inf, Inf, -Inf)
 
-  result <- tern:::range_noinf(x)
-  expected <- c(-Inf, Inf)
+    result <- tern:::range_noinf(x)
+    expected <- c(-Inf, Inf)
 
-  testthat::expect_identical(result, expected)
-})
+    testthat::expect_identical(result, expected)
+  }
+)
 
 testthat::test_that("tern:::range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
                     with [na.rm = TRUE, finite = FALSE (def)]", {
@@ -596,14 +610,16 @@ testthat::test_that("tern:::range_noinf for DOUBLE [with zero-len data, no NAs, 
 # DOUBLE with zero-len data, with NAs, no Inf
 
 testthat::test_that(
-  "tern:::range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] and with default options", {
-  x <- rep(NA_real_, 4)
+  "tern:::range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] and with default options",
+  {
+    x <- rep(NA_real_, 4)
 
-  result <- tern:::range_noinf(x)
-  expected <- c(NA_real_, NA_real_)
+    result <- tern:::range_noinf(x)
+    expected <- c(NA_real_, NA_real_)
 
-  testthat::expect_identical(result, expected)
-})
+    testthat::expect_identical(result, expected)
+  }
+)
 
 testthat::test_that(
   "tern:::range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = FALSE (def)]",
