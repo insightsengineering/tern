@@ -61,7 +61,7 @@ Dynamically wrap text.
 This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 }
 \examples{
-sg <- split_text_grob(text = paste(
+sg <- tern:::split_text_grob(text = paste(
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
   "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
@@ -86,12 +86,14 @@ grid.rect(
   height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
 )
 
-# stack split_text_grob
+# stack tern:::split_text_grob
 grid.newpage()
 pushViewport(plotViewport())
 grid.rect()
-grid.draw(split_text_grob(
+grid.draw(tern:::split_text_grob(
   c("Hello, this is a test", "and yet another test"),
   just = c("left", "top"), x = 0, y = 1
 ))
+
 }
+\keyword{internal}
