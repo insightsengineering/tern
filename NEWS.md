@@ -24,6 +24,7 @@
    - `keep_rows`, `keep_content_rows`, `has_count_in_any_col`, `has_fraction_in_cols`, `has_fraction_in_any_col`, `has_fractions_difference`
    - `test_proportion_diff`
    - `pairwise`
+   - `logistic_regression`
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
