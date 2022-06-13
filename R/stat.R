@@ -1,5 +1,7 @@
 #' Confidence Interval for Mean
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Convenient function for calculating the mean confidence interval.
 #' It calculates the arithmetic as well as the geometric mean.
 #' It can be used as a `ggplot` helper function for plotting.
@@ -79,6 +81,8 @@ stat_mean_ci <- function(x,
 }
 
 #' Confidence Interval for Median
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Convenient function for calculating the median confidence interval.
 #' It can be used as a `ggplot` helper function for plotting.

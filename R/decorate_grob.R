@@ -1,9 +1,10 @@
 #' Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This function is useful to label grid grobs (also \code{ggplot2}, and \code{lattice} plots)
 #' with title, footnote, and page numbers.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @inheritParams grid::grob
 #' @param grob a grid grob object, optionally \code{NULL} if only a \code{grob} with
 #'   the decoration should be shown.
@@ -237,7 +238,6 @@ decorate_grob <- function(grob,
   )
 }
 
-
 #' @importFrom grid validDetails
 #' @export
 validDetails.decoratedGrob <- function(x) { # nolint
@@ -265,7 +265,6 @@ widthDetails.decoratedGrob <- function(x) { # nolint
 heightDetails.decoratedGrob <- function(x) { # nolint
   grid::unit(1, "null")
 }
-
 
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
@@ -307,10 +306,8 @@ split_string <- function(text, width) {
 #' @details
 #' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 #'
-#' @export
-#'
 #' @examples
-#' sg <- split_text_grob(text = paste(
+#' sg <- tern:::split_text_grob(text = paste(
 #'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
 #'   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
 #'   "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
@@ -335,14 +332,16 @@ split_string <- function(text, width) {
 #'   height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
 #' )
 #'
-#' # stack split_text_grob
+#' # stack tern:::split_text_grob
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.rect()
-#' grid.draw(split_text_grob(
+#' grid.draw(tern:::split_text_grob(
 #'   c("Hello, this is a test", "and yet another test"),
 #'   just = c("left", "top"), x = 0, y = 1
 #' ))
+#'
+#' @keywords internal
 split_text_grob <- function(text,
                             x = grid::unit(0.5, "npc"),
                             y = grid::unit(0.5, "npc"),
