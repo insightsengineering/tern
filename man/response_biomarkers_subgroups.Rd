@@ -46,6 +46,8 @@ confidence level produced by \code{\link[=control_logistic]{control_logistic()}}
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Tabulate the estimated effects of multiple continuous biomarker variables
 on a binary response endpoint across population subgroups.
 }
@@ -128,7 +130,6 @@ df_grouped <- extract_rsp_biomarkers(
   )
 )
 df_grouped
-
 ## Table with default columns.
 # df <- <need_data_input_to_work>
 tabulate_rsp_biomarkers(df)

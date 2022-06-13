@@ -1,5 +1,7 @@
 #' Tabulate Biomarker Effects on Binary Response by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Tabulate the estimated effects of multiple continuous biomarker variables
 #' on a binary response endpoint across population subgroups.
 #'
@@ -40,6 +42,7 @@ NULL
 #'   `response_definition` control to convert that internally to a logical
 #'   variable reflecting binary response.
 #' @export
+#'
 #' @examples
 #' # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 #' # in logistic regression models with one covariate `RACE`. The subgroups
@@ -145,8 +148,8 @@ extract_rsp_biomarkers <- function(variables,
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
 #' @export
-#' @examples
 #'
+#' @examples
 #' ## Table with default columns.
 #' # df <- <need_data_input_to_work>
 #' tabulate_rsp_biomarkers(df)

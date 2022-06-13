@@ -288,7 +288,6 @@ reference:
       - fct_collapse_only
       - fct_discard
       - fct_explicit_na_if
-      - range_noinf
       - sas_na
       - f_conf_level
 

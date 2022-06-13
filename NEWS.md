@@ -21,8 +21,8 @@
    - `stat_mean_ci`, `stat_median_ci`
    - `split_cols_by_groups`
    - `explicit_na`, `sas_na`
-   - `extract_rsp_subgroups`, `tabulate_rsp_subgroups`
-   
+   - `extract_rsp_subgroups`, `tabulate_rsp_subgroups`, `extract_rsp_biomarkers`, `tabulate_rsp_biomarkers`
+
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
    - (chain functions, reference to `abnormal_by_marked`) `s_count_abnormal_by_marked`, 
@@ -51,6 +51,7 @@
    - `s_cox_multivariate`
    - `h_row_counts`, `h_row_fractions`, `h_col_counts`, `is_leaf_table`, `h_content_first_row`
    - `a_response_subgroups`
+   - `range_noinf`
    
 # tern 0.7.8
 

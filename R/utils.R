@@ -8,17 +8,17 @@
 #'
 #' @return 2-elements vector of class numeric.
 #'
-#' @export
-#'
 #' @examples
-#' range_noinf(1:5)
-#' range_noinf(c(1:5, NA, NA), na.rm = TRUE)
-#' range_noinf(numeric(), na.rm = TRUE)
-#' range_noinf(c(1:5, NA, NA, Inf), na.rm = TRUE, finite = TRUE)
-#' range_noinf(Inf)
-#' range_noinf(Inf, na.rm = TRUE, finite = TRUE)
-#' range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
-#' range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
+#' tern:::range_noinf(1:5)
+#' tern:::range_noinf(c(1:5, NA, NA), na.rm = TRUE)
+#' tern:::range_noinf(numeric(), na.rm = TRUE)
+#' tern:::range_noinf(c(1:5, NA, NA, Inf), na.rm = TRUE, finite = TRUE)
+#' tern:::range_noinf(Inf)
+#' tern:::range_noinf(Inf, na.rm = TRUE, finite = TRUE)
+#' tern:::range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
+#' tern:::range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
+#'
+#' @keywords internal
 range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
   assertthat::assert_that(is.numeric(x), msg = "Argument x in range_noinf function must be of class numeric.")
