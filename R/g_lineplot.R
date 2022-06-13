@@ -469,6 +469,7 @@ h_format_row <- function(x, format, labels = NULL) {
 
 #' Control Function for g_lineplot Function
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Default values for `variables` parameter in `g_lineplot` function.
 #' A variable's default value can be overwritten for any variable.
