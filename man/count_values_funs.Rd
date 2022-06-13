@@ -84,6 +84,8 @@ to avoid warnings from \code{rtables}.}
 See \code{\link[=s_summary.logical]{s_summary.logical()}} for the returned statistics, as this is used inside.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 We can count the occurrence of specific values in a variable of interest.
 }
 \section{Functions}{
