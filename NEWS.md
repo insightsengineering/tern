@@ -41,6 +41,9 @@
    - `arrange_grobs`, `as_factor_keep_attributes`, `combine_levels`.
    - `split_text_grob`
    - `groups_list_to_df`
+   - `s_cox_multivariate`
+   - `h_row_counts`, `h_row_fractions`, `h_col_counts`, `is_leaf_table`, `h_content_first_row`
+   
 # tern 0.7.8
 
 ### Fix

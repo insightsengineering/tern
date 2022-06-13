@@ -7,6 +7,7 @@
 #' @seealso `[prune_occurrences]` for usage of these functions.
 #' @name rtables_access
 #'
+#' @keywords internal
 NULL
 
 #' @describeIn rtables_access helper function to extract counts from specified columns
@@ -16,8 +17,8 @@ NULL
 #' @param col_indices (`integer`)\cr the indices of the columns to extract from. If `col_names` are provided,
 #'   then these are inferred from the names of `table_row`. (Note that this currently only works well with a single
 #'   column split.)
-#' @export
 #'
+#' @keywords internal
 h_row_counts <- function(table_row,
                          col_names = NULL,
                          col_indices = h_col_indices(table_row, col_names)) {
@@ -35,8 +36,8 @@ h_row_counts <- function(table_row,
 
 #' @describeIn rtables_access helper function to extract fractions from specified columns
 #'   in a `TableRow`.
-#' @export
 #'
+#' @keywords internal
 h_row_fractions <- function(table_row,
                             col_names = NULL,
                             col_indices = h_col_indices(table_row, col_names)) {
@@ -49,8 +50,8 @@ h_row_fractions <- function(table_row,
 #' @describeIn rtables_access Helper function to extract column counts from specified columns
 #'   in a table.
 #' @param table (`VTableNodeInfo`)\cr an occurrence table or row.
-#' @export
 #'
+#' @keywords internal
 h_col_counts <- function(table,
                          col_names = NULL,
                          col_indices = h_col_indices(table, col_names)) {
@@ -59,8 +60,8 @@ h_col_counts <- function(table,
 }
 
 #' @describeIn rtables_access Helper function which says whether current table is a leaf in the tree.
-#' @export
 #'
+#' @keywords internal
 is_leaf_table <- function(table) {
   children <- tree_children(table)
   child_classes <- unique(sapply(children, class))
@@ -68,8 +69,8 @@ is_leaf_table <- function(table) {
 }
 
 #' @describeIn rtables_access Helper function to get first row of content table of current table.
-#' @export
 #'
+#' @keywords internal
 h_content_first_row <- function(table) {
   ct <- content_table(table)
   tree_children(ct)[[1]]
