@@ -1,5 +1,7 @@
 #' Number of patients
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Count the number of unique and non-unique patients in a column (variable).
 #'
 #' @inheritParams argument_convention
