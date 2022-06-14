@@ -1,5 +1,7 @@
 #' Subgroup Treatment Effect Pattern (STEP) Fit for Binary (Response) Outcome
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This fits the Subgroup Treatment Effect Pattern logistic regression models for a binary
 #' (response) outcome. The treatment arm variable must have exactly 2 levels,
 #' where the first one is taken as reference and the estimated odds ratios are

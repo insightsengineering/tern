@@ -43,7 +43,7 @@
    - `estimate_incidence_rate`, `control_incidence_rate` (another file), reference to
    `incidence_rate`
    - `cut_quantile_bins`, `d_pkparam` (note: d function but required by tern_ex file), `estimate_multinomial_rsp`,
-   `decorate_grob_set`, `extreme_format`.
+   `decorate_grob_set`, `extreme_format`, `fit_rsp_step`, `fit_survival_step`.
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
