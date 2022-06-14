@@ -468,6 +468,8 @@ decorate_grob_factory <- function(npages, ...) {
 
 #' Decorate Set of `grobs` and Add Page Numbering
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Note that this uses the `decorate_grob_factory` function.
 #'
 #' @param grobs a list of grid grobs
