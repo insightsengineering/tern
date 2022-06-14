@@ -72,6 +72,7 @@ adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   mutate(rsp = AVALC == "CR")
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+
 # This is how the variable list is converted internally.
 h_rsp_to_logistic_variables(
   variables = list(
@@ -111,8 +112,10 @@ df1$subgroup <- "All patients"
 df1$row_type <- "content"
 df1$var <- "ALL"
 df1$var_label <- "All patients"
-h_tab_rsp_one_biomarker(
+tern:::h_tab_rsp_one_biomarker(
   df1,
   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
 )
+
 }
+\keyword{internal}

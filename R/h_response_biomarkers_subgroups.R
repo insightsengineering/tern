@@ -21,13 +21,15 @@
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   mutate(rsp = AVALC == "CR")
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+#'
+#' @keywords internal
 NULL
 
 #' @describeIn h_response_biomarkers_subgroups helps with converting the "response" function variable list
 #'   to the "logistic regression" variable list. The reason is that currently there is an
 #'   inconsistency between the variable names accepted by `extract_rsp_subgroups()` and `fit_logistic()`.
 #' @param biomarker (`string`)\cr the name of the biomarker variable.
-#' @export
+#'
 #' @examples
 #' # This is how the variable list is converted internally.
 #' h_rsp_to_logistic_variables(
@@ -38,6 +40,8 @@ NULL
 #'   ),
 #'   biomarker = "AGE"
 #' )
+#'
+#' @keywords internal
 h_rsp_to_logistic_variables <- function(variables, biomarker) {
   assertthat::assert_that(
     is.list(variables),
@@ -58,9 +62,8 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 #'   `variables` corresponds to names of variables found in `data`, passed as a named list and requires elements
 #'   `rsp` and `biomarkers` (vector of continuous biomarker variables) and optionally `covariates`
 #'   and `strat`.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # For a single population, estimate separately the effects
 #' # of two biomarkers.
 #' df <- h_logistic_mult_cont_df(
@@ -83,6 +86,8 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 #'   ),
 #'   data = adrs_f[NULL, ]
 #' )
+#'
+#' @keywords internal
 h_logistic_mult_cont_df <- function(variables,
                                     data,
                                     control = control_logistic()) {
@@ -158,19 +163,20 @@ h_logistic_mult_cont_df <- function(variables,
 #'   returned by [extract_rsp_biomarkers()] (it needs a couple of columns which are
 #'   added by that high-level function relative to what is returned by [h_logistic_mult_cont_df()],
 #'   see the example).
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Starting from above `df`, zoom in on one biomarker and add required columns.
 #' df1 <- df[1, ]
 #' df1$subgroup <- "All patients"
 #' df1$row_type <- "content"
 #' df1$var <- "ALL"
 #' df1$var_label <- "All patients"
-#' h_tab_rsp_one_biomarker(
+#' tern:::h_tab_rsp_one_biomarker(
 #'   df1,
 #'   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
 #' )
+#'
+#' @keywords internal
 h_tab_rsp_one_biomarker <- function(df,
                                     vars) {
   afuns <- a_response_subgroups()[vars]

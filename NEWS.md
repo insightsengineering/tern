@@ -89,6 +89,7 @@
    - (reference to `h_step`) `h_step_window`, `h_step_trt_effect`, `h_step_survival_formula`, 
    `h_step_survival_est`, `h_step_rsp_formula`, `h_step_rsp_est`
    - `h_split_param`
+   - (reference to `h_response_biomarkers_subgroups`) `h_rsp_to_logistic_variables`, `h_logistic_mult_cont_df`, `h_tab_rsp_one_biomarker`
 
 # tern 0.7.8
 
