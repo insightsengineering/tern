@@ -23,6 +23,101 @@
 #' @name incidence_rate
 NULL
 
+
+#' @describeIn incidence_rate statistics function which estimates the incidence rate and the
+#'   associated confidence interval.
+#'
+#' @return The statistics are:
+#'   * `person_years`: total person-years at risk
+#'   * `n_events`: total number of events observed
+#'   * `rate`: estimated incidence rate
+#'   * `rate_ci`: confidence interval for the incidence rate
+#'
+#' @examples
+#' tern:::s_incidence_rate(
+#'   df,
+#'   .var = "AVAL",
+#'   n_events = "n_events",
+#'   control = control_incidence_rate(
+#'     time_unit_input = "month",
+#'     time_unit_output = 100
+#'   )
+#' )
+#'
+#' @keywords internal
+s_incidence_rate <- function(df,
+                             .var,
+                             n_events,
+                             is_event,
+                             control = control_incidence_rate()) {
+  if (!missing(is_event)) {
+    warning("argument is_event will be deprecated. Please use n_events.")
+
+    if (missing(n_events)) {
+      assertthat::assert_that(
+        is_df_with_variables(df, list(tte = .var, is_event = is_event)),
+        assertthat::is.string(.var)
+      )
+      checkmate::assert_logical(df[[is_event]], any.missing = FALSE)
+      checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
+      n_events <- is_event
+    }
+  } else {
+    assertthat::assert_that(
+      is_df_with_variables(df, list(tte = .var, n_events = n_events)),
+      assertthat::is.string(.var)
+    )
+    checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
+    checkmate::assert_integer(df[[n_events]], any.missing = FALSE)
+  }
+
+  time_unit_input <- control$time_unit_input
+  time_unit_output <- control$time_unit_output
+  conf_level <- control$conf_level
+  person_years <- sum(df[[.var]], na.rm = TRUE) * (
+    1 * (time_unit_input == "year") +
+      1 / 12 * (time_unit_input == "month") +
+      1 / 52.14 * (time_unit_input == "week") +
+      1 / 365.24 * (time_unit_input == "day")
+  )
+  n_events <- sum(df[[n_events]], na.rm = TRUE)
+
+  result <- h_incidence_rate(
+    person_years,
+    n_events,
+    control
+  )
+  list(
+    person_years = formatters::with_label(person_years, "Total patient-years at risk"),
+    n_events = formatters::with_label(n_events, "Number of adverse events observed"),
+    rate = formatters::with_label(result$rate, paste("AE rate per", time_unit_output, "patient-years")),
+    rate_ci = formatters::with_label(result$rate_ci, f_conf_level(conf_level))
+  )
+}
+
+
+#' @describeIn incidence_rate Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
+#' @examples
+#' tern:::a_incidence_rate(
+#'   df,
+#'   .var = "AVAL",
+#'   n_events = "n_events",
+#'   control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
+#' )
+#'
+#' @keywords internal
+a_incidence_rate <- make_afun(
+  s_incidence_rate,
+  .formats = c(
+    "person_years" = "xx.x",
+    "n_events" = "xx",
+    "rate" = "xx.xx",
+    "rate_ci" = "(xx.xx, xx.xx)"
+  )
+)
+
 #' @describeIn incidence_rate layout creating function which adds analyze rows using the statistics
 #' function `s_incidence_rate` and desired format.
 #'
@@ -81,104 +176,6 @@ estimate_incidence_rate <- function(lyt,
     extra_args = list(...)
   )
 }
-
-#' @describeIn incidence_rate Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#'
-#' @examples
-#' tern:::a_incidence_rate(
-#'   df,
-#'   .var = "AVAL",
-#'   n_events = "n_events",
-#'   control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
-#' )
-#'
-#' @keywords internal
-#'
-#' @md
-a_incidence_rate <- make_afun(
-  s_incidence_rate,
-  .formats = c(
-    "person_years" = "xx.x",
-    "n_events" = "xx",
-    "rate" = "xx.xx",
-    "rate_ci" = "(xx.xx, xx.xx)"
-  )
-)
-
-#' @describeIn incidence_rate statistics function which estimates the incidence rate and the
-#'   associated confidence interval.
-#'
-#' @return The statistics are:
-#'   * `person_years`: total person-years at risk
-#'   * `n_events`: total number of events observed
-#'   * `rate`: estimated incidence rate
-#'   * `rate_ci`: confidence interval for the incidence rate
-#'
-#' @examples
-#' tern:::s_incidence_rate(
-#'   df,
-#'   .var = "AVAL",
-#'   n_events = "n_events",
-#'   control = control_incidence_rate(
-#'     time_unit_input = "month",
-#'     time_unit_output = 100
-#'   )
-#' )
-#'
-#' @keywords internal
-#'
-#' @md
-s_incidence_rate <- function(df,
-                             .var,
-                             n_events,
-                             is_event,
-                             control = control_incidence_rate()) {
-  if (!missing(is_event)) {
-    warning("argument is_event will be deprecated. Please use n_events.")
-
-    if (missing(n_events)) {
-      assertthat::assert_that(
-        is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-        assertthat::is.string(.var)
-      )
-      checkmate::assert_logical(df[[is_event]], any.missing = FALSE)
-      checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
-      n_events <- is_event
-    }
-  } else {
-    assertthat::assert_that(
-      is_df_with_variables(df, list(tte = .var, n_events = n_events)),
-      assertthat::is.string(.var)
-    )
-    checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
-    checkmate::assert_integer(df[[n_events]], any.missing = FALSE)
-  }
-
-  time_unit_input <- control$time_unit_input
-  time_unit_output <- control$time_unit_output
-  conf_level <- control$conf_level
-  person_years <- sum(df[[.var]], na.rm = TRUE) * (
-    1 * (time_unit_input == "year") +
-      1 / 12 * (time_unit_input == "month") +
-      1 / 52.14 * (time_unit_input == "week") +
-      1 / 365.24 * (time_unit_input == "day")
-  )
-  n_events <- sum(df[[n_events]], na.rm = TRUE)
-
-  result <- h_incidence_rate(
-    person_years,
-    n_events,
-    control
-  )
-  list(
-    person_years = formatters::with_label(person_years, "Total patient-years at risk"),
-    n_events = formatters::with_label(n_events, "Number of adverse events observed"),
-    rate = formatters::with_label(result$rate, paste("AE rate per", time_unit_output, "patient-years")),
-    rate_ci = formatters::with_label(result$rate_ci, f_conf_level(conf_level))
-  )
-}
-
 
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated confidence interval based on the normal approximation for the

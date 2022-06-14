@@ -29,7 +29,7 @@ A list of components with the same name as the arguments.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This is an auxiliary function for controlling arguments for the incidence rate, used
-internally to specify details in \code{\link[=s_incidence_rate]{s_incidence_rate()}}.
+internally to specify details in \code{s_incidence_rate()}.
 }
 \examples{
 control_incidence_rate(0.9, "exact", "month", 100)

@@ -2,16 +2,32 @@
 % Please edit documentation in R/incidence_rate.R
 \name{incidence_rate}
 \alias{incidence_rate}
+\alias{s_incidence_rate}
+\alias{a_incidence_rate}
 \alias{estimate_incidence_rate}
 \alias{h_incidence_rate_normal}
 \alias{h_incidence_rate_normal_log}
 \alias{h_incidence_rate_exact}
 \alias{h_incidence_rate_byar}
 \alias{h_incidence_rate}
-\alias{s_incidence_rate}
-\alias{a_incidence_rate}
 \title{Incidence rate}
 \usage{
+s_incidence_rate(
+  df,
+  .var,
+  n_events,
+  is_event,
+  control = control_incidence_rate()
+)
+
+a_incidence_rate(
+  df,
+  .var,
+  n_events,
+  is_event,
+  control = control_incidence_rate()
+)
+
 estimate_incidence_rate(
   lyt,
   vars,
@@ -33,24 +49,28 @@ h_incidence_rate_exact(person_years, n_events, alpha = 0.05)
 h_incidence_rate_byar(person_years, n_events, alpha = 0.05)
 
 h_incidence_rate(person_years, n_events, control = control_incidence_rate())
-
-s_incidence_rate(
-  df,
-  .var,
-  n_events,
-  is_event,
-  control = control_incidence_rate()
-)
-
-a_incidence_rate(
-  df,
-  .var,
-  n_events,
-  is_event,
-  control = control_incidence_rate()
-)
 }
 \arguments{
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{n_events}{(\code{integer}) \cr number of events observed.}
+
+\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+
+\item{control}{(\code{list}) \cr parameters for estimation details, specified by using
+the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are: \cr
+\itemize{
+\item \code{conf_level}: (\code{proportion}) \cr confidence level for the estimated incidence rate.
+\item \code{conf_type}: (\code{string}) \cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
+for confidence interval type.
+\item \code{time_unit_input}: (\code{string}) \cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
+indicating time unit for data input.
+\item \code{time_unit_output}: (\code{numeric}) \cr time unit for desired output (in person-years).
+}}
+
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -72,27 +92,7 @@ to avoid warnings from \code{rtables}.}
 
 \item{person_years}{(\code{numeric}) \cr total person-years at risk.}
 
-\item{n_events}{(\code{integer}) \cr number of events observed.}
-
 \item{alpha}{(\code{numeric}) \cr two-sided alpha-level for confidence interval.}
-
-\item{control}{(\code{list}) \cr parameters for estimation details, specified by using
-the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are: \cr
-\itemize{
-\item \code{conf_level}: (\code{proportion}) \cr confidence level for the estimated incidence rate.
-\item \code{conf_type}: (\code{string}) \cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
-for confidence interval type.
-\item \code{time_unit_input}: (\code{string}) \cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
-indicating time unit for data input.
-\item \code{time_unit_output}: (\code{numeric}) \cr time unit for desired output (in person-years).
-}}
-
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 }
 \value{
 The statistics are:
@@ -111,6 +111,12 @@ as incidence rate. Primary analysis variable is the person-years at risk.
 }
 \section{Functions}{
 \itemize{
+\item \code{s_incidence_rate}: statistics function which estimates the incidence rate and the
+associated confidence interval.
+
+\item \code{a_incidence_rate}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{estimate_incidence_rate}: layout creating function which adds analyze rows using the statistics
 function \code{s_incidence_rate} and desired format.
 
@@ -130,17 +136,27 @@ associated Byar's confidence interval. Unit is one person-year.
 
 \item \code{h_incidence_rate}: incidence_rate helper function to estimate the incidence rate and
 associated confidence interval.
-
-\item \code{s_incidence_rate}: statistics function which estimates the incidence rate and the
-associated confidence interval.
-
-\item \code{a_incidence_rate}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 }}
 
 \examples{
+tern:::s_incidence_rate(
+  df,
+  .var = "AVAL",
+  n_events = "n_events",
+  control = control_incidence_rate(
+    time_unit_input = "month",
+    time_unit_output = 100
+  )
+)
 
-```
+tern:::a_incidence_rate(
+  df,
+  .var = "AVAL",
+  n_events = "n_events",
+  control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
+)
+
+
 library(dplyr)
 
 df <- data.frame(
@@ -164,14 +180,18 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df)
-```
-h_incidence_rate_normal(200, 2)
-h_incidence_rate_normal_log(200, 2)
-h_incidence_rate_exact(200, 2)
-h_incidence_rate_byar(200, 2)
-h_incidence_rate(200, 2)
 
-h_incidence_rate(
+tern:::h_incidence_rate_normal(200, 2)
+
+tern:::h_incidence_rate_normal_log(200, 2)
+
+tern:::h_incidence_rate_exact(200, 2)
+
+tern:::h_incidence_rate_byar(200, 2)
+
+tern:::h_incidence_rate(200, 2)
+
+tern:::h_incidence_rate(
   200,
   2,
   control_incidence_rate(
@@ -181,23 +201,8 @@ h_incidence_rate(
   )
 )
 
-s_incidence_rate(
-  df,
-  .var = "AVAL",
-  n_events = "n_events",
-  control = control_incidence_rate(
-    time_unit_input = "month",
-    time_unit_output = 100
-  )
-)
-tern:::a_incidence_rate(
-  df,
-  .var = "AVAL",
-  n_events = "n_events",
-  control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
-)
-
 }
 \seealso{
 \code{\link[=control_incidence_rate]{control_incidence_rate()}}
 }
+\keyword{internal}
