@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.8.9000
+Version: 0.7.8.9001
 Date: 2022-06-09
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
@@ -61,6 +61,7 @@ RdMacros:
     lifecycle
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
+Language: en-US
 LazyData: true
 Language: en-US
 Roxygen: list(markdown = TRUE)

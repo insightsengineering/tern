@@ -1,4 +1,4 @@
-# tern 0.7.8.9000
+# tern 0.7.8.9001
 
 ### Fix
 *  Renamed `estimate_incidence_rate.R` into `incidence_rate.R` to match the 
