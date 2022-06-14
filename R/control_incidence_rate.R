@@ -3,7 +3,7 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is an auxiliary function for controlling arguments for the incidence rate, used
-#' internally to specify details in [s_incidence_rate()].
+#' internally to specify details in `s_incidence_rate()`.
 #'
 #' @inheritParams argument_convention
 #' @param time_unit_input (`string`) \cr `day`, `month`, or `year` (default)
@@ -15,6 +15,7 @@
 #' @export
 #' @examples
 #' control_incidence_rate(0.9, "exact", "month", 100)
+#' @seealso [incidence_rate], [estimate_incidence_rate()]
 control_incidence_rate <- function(conf_level = 0.95,
                                    conf_type = c("normal", "normal_log", "exact", "byar"),
                                    time_unit_input = c("year", "day", "week", "month"),

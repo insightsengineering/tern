@@ -46,7 +46,6 @@ reference:
       - s_count_values
       - s_coxreg
       - s_cox_univariate
-      - s_incidence_rate
       - s_length_proportion
       - s_num_patients
       - s_num_patients_content
@@ -137,11 +136,6 @@ reference:
       - h_glm_inter_term_extract
       - h_glm_interaction_extract
       - h_glm_simple_term_extract
-      - h_incidence_rate
-      - h_incidence_rate_byar
-      - h_incidence_rate_exact
-      - h_incidence_rate_normal
-      - h_incidence_rate_normal_log
       - h_interaction_coef_name
       - h_interaction_term_labels
       - h_logistic_inter_terms

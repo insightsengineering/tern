@@ -1,5 +1,14 @@
 # tern 0.7.8.9000
 
+### Fix
+*  Renamed `estimate_incidence_rate.R` into `incidence_rate.R` to match the 
+   documentation grouping.
+*  Extracted `control_incidence_rate` into a separated file as it was exported and
+   documented separately.
+*  Added `@md` and removed `@order` from `incidence_rate.R`. The presented order
+   is automatically the final order in the documentation. There is no specific 
+   need to add this tag. Modified examples accordingly.
+
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:
    - `count_abnormal_by_marked` (reference to `abnormal_by_marked`),
@@ -15,16 +24,23 @@
    - `summarize_patients_exposure_in_cols`, `summarize_num_patients` with 
    `s_num_patients`, `s_num_patients_content`, `summarize_num_patients`.
    - `summarize_colvars`, `summarize_change`, `summarize_ancova`
-   - `as.rtable`, `color_palette`, `add_footnotes` (note, this function is defined in two different files: footnotes and g_forest).
-   - (statistical function controls)  `control_coxreg`, `control_coxph`, `control_incidence_rate`, `control_lineplot_vars`, `control_surv_time`, `control_surv_timepoint`.
+   - `as.rtable`, `color_palette`, `add_footnotes` (note, this function is defined 
+   in two different files: footnotes and g_forest).
+   - (statistical function controls)  `control_coxreg`, `control_coxph`, 
+   `control_incidence_rate`, `control_lineplot_vars`, `control_surv_time`, 
+   `control_surv_timepoint`.
    - `stat_mean_ci`, `stat_median_ci`
    - `split_cols_by_groups`
    - `explicit_na`, `sas_na`
-   - `extract_rsp_subgroups`, `tabulate_rsp_subgroups`, `extract_rsp_biomarkers`, `tabulate_rsp_biomarkers`
-   - `keep_rows`, `keep_content_rows`, `has_count_in_any_col`, `has_fraction_in_cols`, `has_fraction_in_any_col`, `has_fractions_difference`
+   - `extract_rsp_subgroups`, `tabulate_rsp_subgroups`, `extract_rsp_biomarkers`, 
+   `tabulate_rsp_biomarkers`
+   - `keep_rows`, `keep_content_rows`, `has_count_in_any_col`, 
+   `has_fraction_in_cols`, `has_fraction_in_any_col`, `has_fractions_difference`
    - `test_proportion_diff`
    - `pairwise`
    - `logistic_regression`
+   - `estimate_incidence_rate`, `control_incidence_rate` (another file), reference to
+   `incidence_rate`
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
@@ -48,11 +64,16 @@
    - `split_text_grob`
    - `groups_list_to_df`
    - `s_cox_multivariate`
-   - `h_row_counts`, `h_row_fractions`, `h_col_counts`, `is_leaf_table`, `h_content_first_row`
+   - `h_row_counts`, `h_row_fractions`, `h_col_counts`, `is_leaf_table`, 
+   `h_content_first_row`
    - `a_response_subgroups`
    - `range_noinf`
    - `has_count_in_cols`, `has_counts_difference`
-   - `prop_chisq`, `prop_cmh`, `prop_schouten`, `prop_fisher`, `s_test_proportion_diff`, `a_test_proportion_diff`
+   - `prop_chisq`, `prop_cmh`, `prop_schouten`, `prop_fisher`, `s_test_proportion_diff`, 
+   `a_test_proportion_diff`
+   - (chain functions, reference to `incidence_rate`) `h_incidence_rate_normal`, 
+   `h_incidence_rate_normal_log`, `h_incidence_rate_exact`, `h_incidence_rate_byar`,
+   `h_incidence_rate`, `s_incidence_rate`, `a_incidence_rate`
    
 # tern 0.7.8
 
