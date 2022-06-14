@@ -1,5 +1,7 @@
 #' Additional Formatting Functions
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This summarizes the additional Formatting Functions to work with `rtables`.
 #'
 #' @family formatting functions
@@ -7,6 +9,8 @@
 NULL
 
 #' Formatting Fraction and Percentage
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a fraction together with ratio in percent.
 #'
@@ -42,6 +46,8 @@ format_fraction <- function(x, ...) {
 }
 
 #' Formatting Count and Fraction
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a count together with fraction with special consideration when count is `0`.
 #'
@@ -125,6 +131,8 @@ format_xx <- function(str) {
 }
 
 #' Formatting Fraction with Lower Threshold
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a fraction when the second element of the input `x` is the fraction. It applies
 #' a lower threshold, below which it is just stated that the fraction is smaller than that.
