@@ -84,6 +84,7 @@
    - (cox regression helper) `cox_regression_inter`, `decorate_grob_factory`, `draw_grob`, `estimate_coef`.
    - (reference to `h_survival_duration_subgroups`) `h_survtime_df`, `h_survtime_subgroups_df`, `h_coxph_df`, `h_coxph_subgroups_df`
    - (reference to `h_survival_biomarkers_subgroups`) `h_surv_to_coxreg_variables`, `h_coxreg_mult_cont_df`, `h_tab_surv_one_biomarker`
+   - `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`
    
 # tern 0.7.8
 

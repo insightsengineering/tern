@@ -212,10 +212,10 @@ cut_quantile_bins <- function(x,
 #' @param discard (`character`)\cr which levels to discard.
 #'
 #' @return The modified factor with observations as well as levels from `discard` dropped.
-#' @export
+#' @keywords internal
 #'
 #' @examples
-#' fct_discard(factor(c("a", "b", "c")), "c")
+#' tern:::fct_discard(factor(c("a", "b", "c")), "c")
 fct_discard <- function(x, discard) {
   assertthat::assert_that(
     is.factor(x),
@@ -239,10 +239,10 @@ fct_discard <- function(x, discard) {
 #' @return The modified factor with inserted and existing `NA` converted to `na_level`.
 #' @seealso [forcats::fct_explicit_na()] which is used internally.
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
-#' fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
+#' tern:::fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   assertthat::assert_that(
     is.factor(x),
@@ -270,10 +270,10 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #'   in the given character vectors input will be set to the missing level.
 #' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
-#' fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
+#' tern:::fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   new_lvls <- names(list(...))
   assertthat::assert_that(
