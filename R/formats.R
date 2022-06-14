@@ -165,6 +165,8 @@ format_fraction_threshold <- function(threshold) {
 
 #' Formatting Extreme Values
 #'
+#'  @description `r lifecycle::badge("stable")`
+#'
 #' `Rtables` Formatting Functions that handle extreme values.
 #'
 #' @details For each input, apply a format to the specified number of `digits`. If the value is
