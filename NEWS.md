@@ -81,6 +81,7 @@
    `h_incidence_rate_normal_log`, `h_incidence_rate_exact`, `h_incidence_rate_byar`,
    `h_incidence_rate`, `s_incidence_rate`, `a_incidence_rate`
    - (cox regression helper) `cox_regression_inter`, `decorate_grob_factory`, `draw_grob`
+   - (reference to `h_survival_duration_subgroups`) `h_survtime_df`, `h_survtime_subgroups_df`, `h_coxph_df`, `h_coxph_subgroups_df`
 
    
 # tern 0.7.8

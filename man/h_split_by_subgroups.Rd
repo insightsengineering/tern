@@ -27,8 +27,6 @@ Split a dataframe into a non-nested list of subsets.
 Main functionality is to prepare data for use in forest plot layouts.
 }
 \examples{
-
-
 library(rtables)
 
 df <- data.frame(

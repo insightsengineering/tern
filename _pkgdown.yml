@@ -120,8 +120,6 @@ reference:
       - h_adsl_adlb_merge_using_worst_flag
       - h_append_grade_groups
       - h_count_cumulative
-      - h_coxph_df
-      - h_coxph_subgroups_df
       - h_coxreg_extract_interaction
       - h_coxreg_inter_effect
       - h_coxreg_inter_effect.factor
@@ -160,8 +158,6 @@ reference:
       - h_step_trt_effect
       - h_step_window
       - h_surv_to_coxreg_variables
-      - h_survtime_df
-      - h_survtime_subgroups_df
       - h_tab_one_biomarker
       - h_tab_surv_one_biomarker
       - or_clogit
