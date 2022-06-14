@@ -1,5 +1,7 @@
 #' Estimation of Proportions per Level of Factor
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Estimate the proportion along with confidence interval of a proportion
 #' regarding the level of a factor.
 #'

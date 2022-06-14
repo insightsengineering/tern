@@ -80,10 +80,11 @@ mod <- coxph(
 mmat <- stats::model.matrix(mod)[1, ]
 mmat[!mmat == 0] <- 0
 
-estimate_coef(
+tern:::estimate_coef(
   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
 )
 }
 
 }
+\keyword{internal}

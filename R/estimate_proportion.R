@@ -1,5 +1,7 @@
 #' Estimation of Proportions
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Estimate the proportion of responders within a studied population.
 #'
 #' @name estimate_proportions
