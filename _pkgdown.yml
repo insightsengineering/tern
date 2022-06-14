@@ -148,7 +148,6 @@ reference:
       - h_proportion_subgroups_df
       - h_response_biomarkers_subgroups
       - h_simple_term_labels
-      - h_split_param
       - h_stack_by_baskets
       - h_tab_one_biomarker
       - or_clogit

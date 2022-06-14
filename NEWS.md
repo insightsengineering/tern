@@ -44,6 +44,7 @@
    `incidence_rate`
    - `cut_quantile_bins`, `d_pkparam` (note: d function but required by tern_ex file), `estimate_multinomial_rsp`,
    `decorate_grob_set`, `extreme_format`, `fit_rsp_step`, `fit_survival_step`, `footnotes`, `footnotes-set` (note: this function is defined twice in the footnotes file), `format_count_fraction`, `format_fraction_threshold`, `formatting_functions`, `format_fraction`, `combination_function` (S4 method), `compare_variables` (S3 method).
+   - `h_stack_by_baskets`
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
@@ -87,7 +88,8 @@
    - `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`
    - (reference to `h_step`) `h_step_window`, `h_step_trt_effect`, `h_step_survival_formula`, 
    `h_step_survival_est`, `h_step_rsp_formula`, `h_step_rsp_est`
-   
+   - `h_split_param`
+
 # tern 0.7.8
 
 ### Fix

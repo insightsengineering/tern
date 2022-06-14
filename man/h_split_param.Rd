@@ -27,7 +27,7 @@ f <- list(
 )
 
 .stats <- c("pt_at_risk", "rate_diff")
-h_split_param(.stats, .stats, f = f)
+tern:::h_split_param(.stats, .stats, f = f)
 
 # $surv
 # [1] "pt_at_risk"
@@ -36,7 +36,7 @@ h_split_param(.stats, .stats, f = f)
 # [1] "rate_diff"
 
 .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
-h_split_param(.formats, names(.formats), f = f)
+tern:::h_split_param(.formats, names(.formats), f = f)
 
 # $surv
 # pt_at_risk event_free_rate
@@ -44,4 +44,6 @@ h_split_param(.formats, names(.formats), f = f)
 #
 # $surv_diff
 # NULL
+
 }
+\keyword{internal}

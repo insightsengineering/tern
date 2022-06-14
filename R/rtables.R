@@ -212,8 +212,6 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' @param value (`vector`)\cr the value used to split.
 #' @param f (`list` of `vectors`)\cr the reference to make the split
 #'
-#'
-#' @export
 #' @examples
 #' f <- list(
 #'   surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),
@@ -221,7 +219,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' )
 #'
 #' .stats <- c("pt_at_risk", "rate_diff")
-#' h_split_param(.stats, .stats, f = f)
+#' tern:::h_split_param(.stats, .stats, f = f)
 #'
 #' # $surv
 #' # [1] "pt_at_risk"
@@ -230,7 +228,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' # [1] "rate_diff"
 #'
 #' .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
-#' h_split_param(.formats, names(.formats), f = f)
+#' tern:::h_split_param(.formats, names(.formats), f = f)
 #'
 #' # $surv
 #' # pt_at_risk event_free_rate
@@ -238,6 +236,8 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' #
 #' # $surv_diff
 #' # NULL
+#'
+#' @keywords internal
 h_split_param <- function(param,
                           value,
                           f) {
