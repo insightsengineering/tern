@@ -77,6 +77,7 @@ Collate:
     'combination_function.R'
     'summarize_variables.R'
     'compare_variables.R'
+    'control_incident_rate.R'
     'control_logistic.R'
     'control_step.R'
     'control_survival.R'
