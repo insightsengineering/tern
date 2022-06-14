@@ -45,6 +45,8 @@
    - `cut_quantile_bins`, `d_pkparam` (note: d function but required by tern_ex file), `estimate_multinomial_rsp`,
    `decorate_grob_set`, `extreme_format`, `fit_rsp_step`, `fit_survival_step`, `footnotes`, `footnotes-set` (note: this function is defined twice in the footnotes file), `format_count_fraction`, `format_fraction_threshold`, `formatting_functions`, `format_fraction`, `combination_function` (S4 method), `compare_variables` (S3 method).
    - `h_stack_by_baskets`
+   - `h_pkparam_sort`
+   - `h_adsl_adlb_merge_using_worst_flag`
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
@@ -90,6 +92,8 @@
    `h_step_survival_est`, `h_step_rsp_formula`, `h_step_rsp_est`
    - `h_split_param`
    - (reference to `h_response_biomarkers_subgroups`) `h_rsp_to_logistic_variables`, `h_logistic_mult_cont_df`, `h_tab_rsp_one_biomarker`
+   
+* Deprecated badge added to `g_mmrm`
 
 # tern 0.7.8
 

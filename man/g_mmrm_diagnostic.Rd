@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprec-g_mmrm.R
 \name{g_mmrm_diagnostic}
 \alias{g_mmrm_diagnostic}
-\title{Deprecated by \code{tern.mmrm::g_mmrm_diagnostic}: Diagnostic Plots for MMRM}
+\title{Diagnostic Plots for MMRM}
 \usage{
 g_mmrm_diagnostic(
   object,
@@ -30,6 +30,8 @@ a \code{ggplot2} plot
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
+Deprecated by \code{tern.mmrm::g_mmrm_diagnostic}.
+
 This function produces diagnostic plots.
 }
 \details{
@@ -38,6 +40,12 @@ to estimate fitted values, and the difference of those fitted values vs. the obs
 the residuals. This is in line with the MMRM philosophy where random effects are only used to
 model the marginal residual distribution.
 }
+\section{Warning}{
+
+Note that \code{tern::g_mmrm_diagnostic()} function is deprecated and will be removed in the coming releases.
+Please use the function \code{tern.mmrm::g_mmrm_diagnostic()} instead.
+}
+
 \examples{
 library(dplyr)
 library(scda)

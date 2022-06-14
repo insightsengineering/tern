@@ -1,5 +1,7 @@
 #' Helper Function for Deriving Analysis Datasets for LBT13 and LBT14
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper function that merges `ADSL` and `ADLB` datasets so that missing lab test records are inserted in the
 #' output dataset.
 #'

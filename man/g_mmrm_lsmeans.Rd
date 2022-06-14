@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprec-g_mmrm.R
 \name{g_mmrm_lsmeans}
 \alias{g_mmrm_lsmeans}
-\title{Deprecated by \code{tern.mmrm::g_mmrm_diagnostic}: Plot LS means for MMRM}
+\title{Plot LS means for MMRM}
 \usage{
 g_mmrm_lsmeans(
   object,
@@ -36,6 +36,8 @@ a \code{ggplot2} plot
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
+Deprecated by \code{tern.mmrm::g_mmrm_diagnostic}.
+
 This function summarizes adjusted \code{lsmeans} and standard error, as well as conducts
 comparisons between groups' adjusted \code{lsmeans}, where the first level of the group
 is the reference level.
@@ -48,6 +50,12 @@ Contrast plot is not going to be returned if treatment is not
 considered in the \code{mmrm} object considered in \code{object} argument,
 no matter if \code{select} argument contains \code{contrasts} value.
 }
+\section{Warning}{
+
+Note that \code{tern::g_mmrm_lsmeans()} function is deprecated and will be removed in the coming releases.
+Please use the function \code{tern.mmrm::g_mmrm_lsmeans()} instead.
+}
+
 \examples{
 library(dplyr)
 library(scda)

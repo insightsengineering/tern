@@ -33,6 +33,8 @@ Visits that are not considered for post-baseline worst toxicity grade. Defaults 
 \code{no_fillin_visits = c("SCREENING", "BASELINE")}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Helper function that merges \code{ADSL} and \code{ADLB} datasets so that missing lab test records are inserted in the
 output dataset.
 }
