@@ -3,6 +3,8 @@ NULL
 
 #' Compare Variables Between Groups
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' We use the new S3 generic function [s_compare()] to implement comparisons for
 #' different `x` objects. This is used as Statistics Function in combination
 #' with the new Analyze Function [compare_vars()].

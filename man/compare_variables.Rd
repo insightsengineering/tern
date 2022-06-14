@@ -152,6 +152,8 @@ If \code{x} is of class \code{logical}, returns a list with named items:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 We use the new S3 generic function \code{\link[=s_compare]{s_compare()}} to implement comparisons for
 different \code{x} objects. This is used as Statistics Function in combination
 with the new Analyze Function \code{\link[=compare_vars]{compare_vars()}}.
