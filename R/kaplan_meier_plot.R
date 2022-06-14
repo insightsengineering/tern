@@ -1,5 +1,6 @@
 #' Kaplan-Meier Plot
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @param df (`data frame`)\cr data set containing all analysis variables.
 #' @param variables (named `list`) of variable names. Details are: \cr
@@ -58,11 +59,11 @@
 #'
 #' @name kaplan_meier
 #'
-#' @description `r lifecycle::badge("stable")`
-
 NULL
 
 #' Kaplan-Meier Plot
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' From a survival model, a graphic is rendered along with tabulated annotation
 #' including the number of patient at risk at given time and the median survival

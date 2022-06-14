@@ -47,6 +47,7 @@
    - `h_stack_by_baskets`
    - `h_pkparam_sort`
    - `h_adsl_adlb_merge_using_worst_flag`
+   - `kaplan_meier`
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:

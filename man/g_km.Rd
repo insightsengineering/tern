@@ -138,6 +138,8 @@ estimating median survival time per group}
 a \code{grob} of class \code{gTree}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 From a survival model, a graphic is rendered along with tabulated annotation
 including the number of patient at risk at given time and the median survival
 per group.
