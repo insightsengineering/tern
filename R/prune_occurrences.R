@@ -71,8 +71,8 @@ keep_rows <- function(row_condition) {
 keep_content_rows <- function(content_row_condition) {
   assertthat::assert_that(is.function(content_row_condition))
   function(table_tree) {
-    if (tern:::is_leaf_table(table_tree)) {
-      content_row <- tern:::h_content_first_row(table_tree)
+    if (is_leaf_table(table_tree)) {
+      content_row <- h_content_first_row(table_tree)
       return(!content_row_condition(content_row))
     }
     if (inherits(table_tree, "DataRow")) {
@@ -106,7 +106,7 @@ has_count_in_cols <- function(atleast, ...) {
     assertthat::is.count(atleast)
   )
   CombinationFunction(function(table_row) {
-    row_counts <- tern:::h_row_counts(table_row, ...)
+    row_counts <- h_row_counts(table_row, ...)
     total_count <- sum(row_counts)
     total_count >= atleast
   })
@@ -131,7 +131,7 @@ has_count_in_any_col <- function(atleast, ...) {
     assertthat::is.count(atleast)
   )
   CombinationFunction(function(table_row) {
-    row_counts <- tern:::h_row_counts(table_row, ...)
+    row_counts <- h_row_counts(table_row, ...)
     any(row_counts >= atleast)
   })
 }
@@ -153,9 +153,9 @@ has_fraction_in_cols <- function(atleast, ...) {
     is_proportion(atleast, include_boundaries = TRUE)
   )
   CombinationFunction(function(table_row) {
-    row_counts <- tern:::h_row_counts(table_row, ...)
+    row_counts <- h_row_counts(table_row, ...)
     total_count <- sum(row_counts)
-    col_counts <- tern:::h_col_counts(table_row, ...)
+    col_counts <- h_col_counts(table_row, ...)
     total_n <- sum(col_counts)
     total_percent <- total_count / total_n
     total_percent >= atleast
@@ -179,7 +179,7 @@ has_fraction_in_any_col <- function(atleast, ...) {
     is_proportion(atleast, include_boundaries = TRUE)
   )
   CombinationFunction(function(table_row) {
-    row_fractions <- tern:::h_row_fractions(table_row, ...)
+    row_fractions <- h_row_fractions(table_row, ...)
     any(row_fractions >= atleast)
   })
 }
@@ -201,7 +201,7 @@ has_fractions_difference <- function(atleast, ...) {
     is_proportion(atleast, include_boundaries = TRUE)
   )
   CombinationFunction(function(table_row) {
-    fractions <- tern:::h_row_fractions(table_row, ...)
+    fractions <- h_row_fractions(table_row, ...)
     difference <- diff(range(fractions))
     difference >= atleast
   })
@@ -225,7 +225,7 @@ has_counts_difference <- function(atleast, ...) {
     assertthat::is.count(atleast)
   )
   CombinationFunction(function(table_row) {
-    counts <- tern:::h_row_counts(table_row, ...)
+    counts <- h_row_counts(table_row, ...)
     difference <- diff(range(counts))
     difference >= atleast
   })

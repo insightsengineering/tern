@@ -34,6 +34,18 @@ NULL
 #'   * `rate_ci`: confidence interval for the incidence rate
 #'
 #' @examples
+#'
+#' library(dplyr)
+#'
+#' df <- data.frame(
+#'   USUBJID = as.character(seq(6)),
+#'   CNSR = c(0, 1, 1, 0, 0, 0),
+#'   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
+#'   ARM = factor(c("A", "A", "A", "B", "B", "B"))
+#' ) %>%
+#'   mutate(is_event = CNSR == 0) %>%
+#'   mutate(n_events = as.integer(is_event))
+#'
 #' tern:::s_incidence_rate(
 #'   df,
 #'   .var = "AVAL",
@@ -124,18 +136,6 @@ a_incidence_rate <- make_afun(
 #' @export
 #'
 #' @examples
-#'
-#' library(dplyr)
-#'
-#' df <- data.frame(
-#'   USUBJID = as.character(seq(6)),
-#'   CNSR = c(0, 1, 1, 0, 0, 0),
-#'   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
-#'   ARM = factor(c("A", "A", "A", "B", "B", "B"))
-#' ) %>%
-#'   mutate(is_event = CNSR == 0) %>%
-#'   mutate(n_events = as.integer(is_event))
-#'
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%

@@ -270,7 +270,7 @@ s_summary.numeric <- function(x, # nolint
     stats::IQR(x, na.rm = FALSE, type = control$quantile_type)
   ))
 
-  y$range <- stats::setNames(tern:::range_noinf(x, na.rm = FALSE), c("min", "max"))
+  y$range <- stats::setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
   y$min <- y$range[1]
   y$max <- y$range[2]
 

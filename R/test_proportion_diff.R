@@ -206,10 +206,10 @@ s_test_proportion_diff <- function(df,
     )
 
     y$pval <- switch(method,
-      chisq = tern:::prop_chisq(tbl),
-      cmh = tern:::prop_cmh(tbl),
-      fisher = tern:::prop_fisher(tbl),
-      schouten = tern:::prop_schouten(tbl)
+      chisq = prop_chisq(tbl),
+      cmh = prop_cmh(tbl),
+      fisher = prop_fisher(tbl),
+      schouten = prop_schouten(tbl)
     )
   }
 
