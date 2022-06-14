@@ -217,19 +217,19 @@ arrange_grobs <- function(..., # nolint
 #' @param newpage draw on a new page
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' library(dplyr)
 #' library(grid)
 #'
 #' rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
-#' rect %>% draw_grob(vp = grid::viewport(angle = 45))
+#' rect %>% tern:::draw_grob(vp = grid::viewport(angle = 45))
 #'
 #' num <- lapply(1:10, textGrob)
 #' num %>%
 #'   tern:::arrange_grobs(grobs = .) %>%
-#'   draw_grob()
+#'   tern:::draw_grob()
 #' showViewport()
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {

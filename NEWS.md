@@ -80,7 +80,7 @@
    - (chain functions, reference to `incidence_rate`) `h_incidence_rate_normal`, 
    `h_incidence_rate_normal_log`, `h_incidence_rate_exact`, `h_incidence_rate_byar`,
    `h_incidence_rate`, `s_incidence_rate`, `a_incidence_rate`
-   - (cox regression helper), `cox_regression_inter`
+   - (cox regression helper) `cox_regression_inter`, `decorate_grob_factory`, `draw_grob`
 
    
 # tern 0.7.8

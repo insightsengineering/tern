@@ -439,21 +439,21 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #'
 #' @return closure that increments the page number
 #'
-#' @export
+#' @keywords internal
 #'
 #' @template author_waddella
 #'
 #' @examples
-#' pf <- decorate_grob_factory(
+#' pf <- tern:::decorate_grob_factory(
 #'   titles = "This is a test\nHello World",
 #'   footnotes = "Here belong the footnotess",
 #'   npages = 3
 #' )
 #'
 #' library(grid)
-#' draw_grob(pf(NULL))
-#' draw_grob(pf(NULL))
-#' draw_grob(pf(NULL))
+#' tern:::draw_grob(pf(NULL))
+#' tern:::draw_grob(pf(NULL))
+#' tern:::draw_grob(pf(NULL))
 decorate_grob_factory <- function(npages, ...) {
   current_page <- 0
   function(grob) {
@@ -491,9 +491,9 @@ decorate_grob_factory <- function(npages, ...) {
 #' })
 #' lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
 #' library(grid)
-#' draw_grob(lg[[1]])
-#' draw_grob(lg[[2]])
-#' draw_grob(lg[[6]])
+#' tern:::draw_grob(lg[[1]])
+#' tern:::draw_grob(lg[[2]])
+#' tern:::draw_grob(lg[[6]])
 decorate_grob_set <- function(grobs, ...) {
   n <- length(grobs)
   lgf <- decorate_grob_factory(npages = n, ...)

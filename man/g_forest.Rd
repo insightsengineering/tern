@@ -103,7 +103,7 @@ df <- extract_rsp_subgroups(
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
 p <- g_forest(tbl)
-draw_grob(p)
+tern:::draw_grob(p)
 # Odds ratio only table.
 tbl_or <- basic_table() \%>\%
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
@@ -112,7 +112,7 @@ p <- g_forest(
   tbl_or,
   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 )
-draw_grob(p)
+tern:::draw_grob(p)
 # Survival forest plot example.
 adtte <- synthetic_cdisc_data("latest")$adtte
 # Save variable labels before data processing steps.
