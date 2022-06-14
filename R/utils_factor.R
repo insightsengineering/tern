@@ -132,6 +132,8 @@ bins_percent_labels <- function(probs,
 
 #' Cutting Numeric Vector into Empirical Quantile Bins
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This cuts a numeric vector into sample quantile bins. Note that the intervals are closed on
 #' the right side. That is, the first bin is the interval `[-Inf, q1]` where `q1` is
 #' the first quantile, the second bin is then `(q1, q2]`, etc., and the last bin

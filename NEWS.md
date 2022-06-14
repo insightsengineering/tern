@@ -42,6 +42,7 @@
    - `logistic_regression`
    - `estimate_incidence_rate`, `control_incidence_rate` (another file), reference to
    `incidence_rate`
+   - `cut_quantile_bins`, `d_pkparam` (note: d function but required by tern_ex file)
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
@@ -79,7 +80,7 @@
    - (chain functions, reference to `incidence_rate`) `h_incidence_rate_normal`, 
    `h_incidence_rate_normal_log`, `h_incidence_rate_exact`, `h_incidence_rate_byar`,
    `h_incidence_rate`, `s_incidence_rate`, `a_incidence_rate`
-   - (cox regression helper)
+   - (cox regression helper), `cox_regression_inter`
 
    
 # tern 0.7.8
