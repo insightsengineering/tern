@@ -29,7 +29,7 @@
    in two different files: footnotes and g_forest).
    - (statistical function controls)  `control_coxreg`, `control_coxph`, 
    `control_incidence_rate`, `control_lineplot_vars`, `control_surv_time`, 
-   `control_surv_timepoint`.
+   `control_surv_timepoint`, `control_logisitic`, `control_step`.
    - `stat_mean_ci`, `stat_median_ci`
    - `split_cols_by_groups`
    - `explicit_na`, `sas_na`
@@ -79,6 +79,7 @@
    - (chain functions, reference to `incidence_rate`) `h_incidence_rate_normal`, 
    `h_incidence_rate_normal_log`, `h_incidence_rate_exact`, `h_incidence_rate_byar`,
    `h_incidence_rate`, `s_incidence_rate`, `a_incidence_rate`
+
    
 # tern 0.7.8
 

@@ -41,6 +41,8 @@ A list of components with the same names as the arguments, except \code{biomarke
 just used to calculate the \code{bandwidth} in case that actual biomarker windows are requested.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is an auxiliary function for controlling arguments for STEP calculations.
 }
 \examples{

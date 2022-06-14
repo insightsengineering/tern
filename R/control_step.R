@@ -1,5 +1,7 @@
 #' Control Function for Subgroup Treatment Effect Pattern (STEP) Calculations
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is an auxiliary function for controlling arguments for STEP calculations.
 #'
 #' @param biomarker (`numeric` or `NULL`)\cr optional provision of the numeric biomarker variable, which
