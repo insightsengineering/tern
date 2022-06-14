@@ -7,6 +7,8 @@ NULL
 #'
 #' @inheritParams argument_convention
 #' @name h_step
+#'
+#' @keywords internal
 NULL
 
 #' @describeIn h_step creates the windows for STEP, based on the control settings
@@ -15,6 +17,7 @@ NULL
 #' @param x (`numeric`) biomarker value(s) to use (without `NA`).
 #' @param control (named `list`) from `control_step()`.
 #'
+#' @keywords internal
 h_step_window <- function(x,
                           control = control_step()) {
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
@@ -63,6 +66,7 @@ h_step_window <- function(x,
 #'   ratio estimates. It returns a vector with elements `est` and `se`.
 #' @param model the regression model object.
 #'
+#' @keywords internal
 h_step_trt_effect <- function(data,
                               model,
                               variables,
@@ -98,6 +102,7 @@ h_step_trt_effect <- function(data,
 
 #' @describeIn h_step builds the model formula used in survival STEP calculations.
 #'
+#' @keywords internal
 h_step_survival_formula <- function(variables,
                                     control = control_step()) {
   assertthat::assert_that(
@@ -126,6 +131,7 @@ h_step_survival_formula <- function(variables,
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
 #'
+#' @keywords internal
 h_step_survival_est <- function(formula,
                                 data,
                                 variables,
@@ -188,6 +194,7 @@ h_step_survival_est <- function(formula,
 
 #' @describeIn h_step builds the model formula used in response STEP calculations.
 #'
+#' @keywords internal
 h_step_rsp_formula <- function(variables,
                                control = c(control_step(), control_logistic())) {
   assertthat::assert_that(
@@ -226,6 +233,8 @@ h_step_rsp_formula <- function(variables,
 #'   included here for each biomarker value in `x`.
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
+#'
+#' @keywords internal
 h_step_rsp_est <- function(formula,
                            data,
                            variables,

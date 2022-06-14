@@ -85,3 +85,4 @@ and Wald confidence interval bounds \code{ci_lower} and \code{ci_upper}. One row
 included here for each biomarker value in \code{x}.
 }}
 
+\keyword{internal}

@@ -85,6 +85,8 @@
    - (reference to `h_survival_duration_subgroups`) `h_survtime_df`, `h_survtime_subgroups_df`, `h_coxph_df`, `h_coxph_subgroups_df`
    - (reference to `h_survival_biomarkers_subgroups`) `h_surv_to_coxreg_variables`, `h_coxreg_mult_cont_df`, `h_tab_surv_one_biomarker`
    - `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`
+   - (reference to `h_step`) `h_step_window`, `h_step_trt_effect`, `h_step_survival_formula`, 
+   `h_step_survival_est`, `h_step_rsp_formula`, `h_step_rsp_est`
    
 # tern 0.7.8
 
