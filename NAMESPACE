@@ -132,12 +132,6 @@ export(g_waterfall)
 export(h_adlb_worsen)
 export(h_adsl_adlb_merge_using_worst_flag)
 export(h_append_grade_groups)
-<<<<<<< HEAD
-export(h_col_counts)
-export(h_content_first_row)
-=======
-export(h_count_cumulative)
->>>>>>> 3c4f02adfec3f3c7e34be05eef887544ac97a4ce
 export(h_coxph_df)
 export(h_coxph_subgroups_df)
 export(h_coxreg_extract_interaction)
