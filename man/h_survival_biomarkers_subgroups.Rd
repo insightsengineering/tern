@@ -81,8 +81,9 @@ adtte_f <- adtte \%>\%
   )
 labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 formatters::var_labels(adtte_f)[names(labels)] <- labels
+
 # This is how the variable list is converted internally.
-h_surv_to_coxreg_variables(
+tern:::h_surv_to_coxreg_variables(
   variables = list(
     tte = "AVAL",
     is_event = "EVNT",
@@ -94,7 +95,7 @@ h_surv_to_coxreg_variables(
 
 # For a single population, estimate separately the effects
 # of two biomarkers.
-df <- h_coxreg_mult_cont_df(
+df <- tern:::h_coxreg_mult_cont_df(
   variables = list(
     tte = "AVAL",
     is_event = "is_event",
@@ -107,7 +108,7 @@ df <- h_coxreg_mult_cont_df(
 df
 
 # If the data set is empty, still the corresponding rows with missings are returned.
-h_coxreg_mult_cont_df(
+tern:::h_coxreg_mult_cont_df(
   variables = list(
     tte = "AVAL",
     is_event = "is_event",
@@ -124,9 +125,11 @@ df1$subgroup <- "All patients"
 df1$row_type <- "content"
 df1$var <- "ALL"
 df1$var_label <- "All patients"
-h_tab_surv_one_biomarker(
+tern:::h_tab_surv_one_biomarker(
   df1,
   vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
   time_unit = "days"
 )
+
 }
+\keyword{internal}

@@ -24,8 +24,8 @@ adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 # h_surv_to_coxreg_variables ----
 
-testthat::test_that("h_surv_to_coxreg_variables works as expected", {
-  result <- testthat::expect_silent(h_surv_to_coxreg_variables(
+testthat::test_that("tern:::h_surv_to_coxreg_variables works as expected", {
+  result <- testthat::expect_silent(tern:::h_surv_to_coxreg_variables(
     variables = list(
       tte = "AVAL",
       is_event = "EVNT",
@@ -46,11 +46,11 @@ testthat::test_that("h_surv_to_coxreg_variables works as expected", {
 
 # h_coxreg_mult_cont_df ----
 
-testthat::test_that("h_coxreg_mult_cont_df works as expected", {
+testthat::test_that("tern:::h_coxreg_mult_cont_df works as expected", {
   adtte_f <- adtte %>%
     preprocess_adtte()
 
-  result <- testthat::expect_silent(h_coxreg_mult_cont_df(
+  result <- testthat::expect_silent(tern:::h_coxreg_mult_cont_df(
     variables = list(
       tte = "AVAL",
       is_event = "is_event",
@@ -76,11 +76,11 @@ testthat::test_that("h_coxreg_mult_cont_df works as expected", {
   testthat::expect_equal(result, expected, tol = 1e-5)
 })
 
-testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {
+testthat::test_that("tern:::h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {
   adtte_f <- adtte %>%
     preprocess_adtte()
 
-  result <- testthat::expect_silent(h_coxreg_mult_cont_df(
+  result <- testthat::expect_silent(tern:::h_coxreg_mult_cont_df(
     variables = list(
       tte = "AVAL",
       is_event = "is_event",
@@ -108,7 +108,7 @@ testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is emp
 
 # h_tab_surv_one_biomarker ----
 
-testthat::test_that("h_tab_surv_one_biomarker works as expected", {
+testthat::test_that("tern:::h_tab_surv_one_biomarker works as expected", {
   df <- data.frame(
     n_tot = c(48L, 48L),
     n_tot_events = c(25L, 25L),
@@ -124,7 +124,7 @@ testthat::test_that("h_tab_surv_one_biomarker works as expected", {
     var = c("ALL", "ALL"),
     var_label = c("All patients", "All patients")
   )
-  result <- testthat::expect_silent(h_tab_surv_one_biomarker(
+  result <- testthat::expect_silent(tern:::h_tab_surv_one_biomarker(
     df = df,
     vars = c("n_tot", "hr", "ci"),
     time_unit = "months"

@@ -1,4 +1,4 @@
-# tern 0.7.8.9000
+# tern 0.7.8.9001
 
 ### Fix
 *  Renamed `estimate_incidence_rate.R` into `incidence_rate.R` to match the 
@@ -82,7 +82,8 @@
    `h_incidence_rate_normal_log`, `h_incidence_rate_exact`, `h_incidence_rate_byar`,
    `h_incidence_rate`, `s_incidence_rate`, `a_incidence_rate`
    - (cox regression helper) `cox_regression_inter`, `decorate_grob_factory`, `draw_grob`, `estimate_coef`.
-
+   - (reference to `h_survival_duration_subgroups`) `h_survtime_df`, `h_survtime_subgroups_df`, `h_coxph_df`, `h_coxph_subgroups_df`
+   - (reference to `h_survival_biomarkers_subgroups`) `h_surv_to_coxreg_variables`, `h_coxreg_mult_cont_df`, `h_tab_surv_one_biomarker`
    
 # tern 0.7.8
 
