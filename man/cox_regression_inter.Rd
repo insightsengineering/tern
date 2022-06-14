@@ -151,3 +151,4 @@ result <- h_coxreg_inter_estimations(
 )
 result
 }
+\keyword{internal}

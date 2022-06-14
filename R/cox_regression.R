@@ -506,7 +506,7 @@ h_coxreg_univar_extract <- function(effect,
 #' @param control (`list`)\cr a list of controls as returned by
 #'   [control_coxreg()].
 #' @param ... see methods.
-#' @export
+#' @keywords internal
 #' @name cox_regression_inter
 #'
 #' @examples
