@@ -46,7 +46,6 @@ reference:
       - s_count_values
       - s_coxreg
       - s_cox_univariate
-      - s_incidence_rate
       - s_length_proportion
       - s_num_patients
       - s_num_patients_content
@@ -54,7 +53,6 @@ reference:
       - s_proportion
       - s_proportion_diff
       - s_summary
-      - s_test_proportion_diff
 
   - title: Formatted Analysis functions
     desc: These have the same arguments as the corresponding statistics functions, and can be further
@@ -69,7 +67,6 @@ reference:
        - a_count_patients_with_flags
        - a_odds_ratio
        - a_proportion
-       - a_test_proportion_diff
        - create_afun_compare
        - create_afun_summary
 
@@ -139,11 +136,6 @@ reference:
       - h_glm_inter_term_extract
       - h_glm_interaction_extract
       - h_glm_simple_term_extract
-      - h_incidence_rate
-      - h_incidence_rate_byar
-      - h_incidence_rate_exact
-      - h_incidence_rate_normal
-      - h_incidence_rate_normal_log
       - h_interaction_coef_name
       - h_interaction_term_labels
       - h_logistic_inter_terms
@@ -174,14 +166,10 @@ reference:
       - h_tab_surv_one_biomarker
       - or_clogit
       - or_glm
-      - prop_chisq
-      - prop_cmh
       - prop_diff_cmh
       - prop_diff_ha
       - prop_diff_nc
       - prop_diff_wald
-      - prop_fisher
-      - prop_schouten
       - summary_numeric_in_cols
 
   - title: Model Specific Functions
@@ -250,9 +238,7 @@ reference:
     desc: these functions and classes help with flexible pruning of tables
     contents:
       - CombinationFunction
-      - has_counts_difference
       - has_count_in_any_col
-      - has_count_in_cols
       - has_fractions_difference
       - has_fraction_in_any_col
       - has_fraction_in_cols

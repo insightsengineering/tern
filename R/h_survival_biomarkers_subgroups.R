@@ -124,7 +124,7 @@ h_coxreg_mult_cont_df <- function(variables,
       )
       data_fit <- as.data.frame(as.matrix(coxreg_list$mod$y))
       data_fit$status <- as.logical(data_fit$status)
-      median <- tern:::s_surv_time(
+      median <- s_surv_time(
         df = data_fit,
         .var = "time",
         is_event = "status"
@@ -186,7 +186,7 @@ h_coxreg_mult_cont_df <- function(variables,
 h_tab_surv_one_biomarker <- function(df,
                                      vars,
                                      time_unit) {
-  afuns <- tern:::a_survival_subgroups()[vars]
+  afuns <- a_survival_subgroups()[vars]
   colvars <- d_survival_subgroups_colvars(
     vars,
     conf_level = df$conf_level[1],

@@ -20,8 +20,8 @@
 #'
 #' @name cox_regression
 #' @order 1
-#' @examples
 #'
+#' @examples
 #' # Testing dataset [survival::bladder].
 #'
 #' library(survival)
@@ -67,7 +67,6 @@ NULL
 #' @export
 #'
 #' @examples
-#'
 #' # `h_coxreg_univar_formulas`
 #'
 #' ## Simple formulas.
@@ -166,7 +165,6 @@ h_coxreg_univar_formulas <- function(variables,
 #' @export
 #'
 #' @examples
-#'
 #' # `h_coxreg_multivar_formula`
 #'
 #' h_coxreg_multivar_formula(
@@ -219,7 +217,7 @@ h_coxreg_multivar_formula <- function(variables) {
 #' Controls for Cox regression
 #'
 #' @description `r lifecycle::badge("stable")`
-
+#'
 #' Sets a list of parameters for Cox regression fit. Used internally,
 #' see [fit_coxreg_univar()] and [fit_coxreg_multivar()].
 #'
@@ -236,8 +234,8 @@ h_coxreg_multivar_formula <- function(variables) {
 #'
 #' @return A `list` of item corresponding to the arguments.
 #' @export
-#' @examples
 #'
+#' @examples
 #' control_coxreg()
 control_coxreg <- function(pval_method = c("wald", "likelihood"),
                            ties = c("exact", "efron", "breslow"),
@@ -280,8 +278,8 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'   - `at`: Value of the covariate at which the effect should be estimated.
 #' @note When using `fit_coxreg_univar` there should be two study arms.
 #' @export
-#' @examples
 #'
+#' @examples
 #' # fit_coxreg_univar
 #'
 #' ## Cox regression: arm + 1 covariate.
@@ -377,8 +375,8 @@ fit_coxreg_univar <- function(variables,
 #' @inheritParams argument_convention
 #' @method tidy summary.coxph
 #' @export
-#' @examples
 #'
+#' @examples
 #' library(survival)
 #' library(broom)
 #' library(rtables)
@@ -510,8 +508,8 @@ h_coxreg_univar_extract <- function(effect,
 #' @param ... see methods.
 #' @export
 #' @name cox_regression_inter
-#' @examples
 #'
+#' @examples
 #' # Testing dataset [survival::bladder].
 #' library(survival)
 #' library(rtables)
@@ -643,6 +641,7 @@ h_coxreg_inter_effect.factor <- function(x, # nolint
 #'   the test of the interaction test and the estimated values. If
 #'   no interaction, [h_coxreg_univar_extract()] is applied.
 #' @export
+#'
 #' @examples
 #' library(survival)
 #'
@@ -731,7 +730,6 @@ h_coxreg_extract_interaction <- function(effect,
 #' @export
 #'
 #' @examples
-#'
 #' # Testing dataset [survival::bladder].
 #' library(survival)
 #'
@@ -888,8 +886,8 @@ tidy.coxreg.univar <- function(x, # nolint
 #'   - `control`: The original control input.
 #'   - `vars`: The variables used in the model.
 #' @export
-#' @examples
 #'
+#' @examples
 #' # fit_coxreg_multivar
 #'
 #' ## Cox regression: multivariate Cox regression.
@@ -1056,7 +1054,6 @@ tidy.coxreg.multivar <- function(x, # nolint
 #' @export
 #'
 #' @examples
-#'
 #' # s_coxreg
 #'
 #' univar_model <- fit_coxreg_univar(
@@ -1140,7 +1137,6 @@ s_coxreg <- function(df, .var) {
 #' @export
 #'
 #' @examples
-#'
 #' # summarize_coxreg
 #' result_univar <- basic_table() %>%
 #'   split_rows_by("effect") %>%
@@ -1222,8 +1218,8 @@ summarize_coxreg <- function(lyt,
 #' @param mod (`coxph`)\cr Cox regression model fitted by [survival::coxph()].
 #' @param test_statistic (`string`)\cr the method used for estimation of p.values;
 #'   `wald` (default) or `likelihood`.
-#' @keywords internal
 #'
+#' @keywords internal
 muffled_car_anova <- function(mod, test_statistic) {
   tryCatch(
     withCallingHandlers(

@@ -175,8 +175,8 @@ testthat::test_that(
   }
 )
 
-testthat::test_that(
-  "tern:::range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("tern:::range_noinf for INT [no zero-len data, no NAs, no Inf]
+                    with [na.rm = TRUE, finite = TRUE]", {
   x <- 5:1
 
   result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -220,8 +220,8 @@ testthat::test_that(
   }
 )
 
-testthat::test_that(
-  "tern:::range_noinf for INT [no zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("tern:::range_noinf for INT [no zero-len data, with NAs, no Inf]
+                    with [na.rm = TRUE, finite = TRUE]", {
   x <- c(NA, 5:1, NA)
 
   result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -265,8 +265,8 @@ testthat::test_that(
   }
 )
 
-testthat::test_that(
-  "tern:::range_noinf for INT [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("tern:::range_noinf for INT [with zero-len data, no NAs, no Inf]
+                    with [na.rm = TRUE, finite = TRUE]", {
   x <- vector(mode = "integer", length = 0)
 
   result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -310,8 +310,8 @@ testthat::test_that(
   }
 )
 
-testthat::test_that(
-  "tern:::range_noinf for INT [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("tern:::range_noinf for INT [with zero-len data, with NAs, no Inf]
+                    with [na.rm = TRUE, finite = TRUE]", {
   x <- rep(NA_integer_, 4)
 
   result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -355,8 +355,8 @@ testthat::test_that(
   }
 )
 
-testthat::test_that(
-  "tern:::range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("tern:::range_noinf for DOUBLE [no zero-len data, no NAs, no Inf]
+                    with [na.rm = TRUE, finite = TRUE]", {
   x <- c(3.5, 1.5, 2.5)
 
   result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -541,8 +541,8 @@ testthat::test_that(
   }
 )
 
-testthat::test_that(
-  "tern:::range_noinf for DOUBLE [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("tern:::range_noinf for DOUBLE [with zero-len data, no NAs, no Inf]
+                    with [na.rm = TRUE, finite = TRUE]", {
   x <- vector(mode = "double", length = 0)
 
   result <- tern:::range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -553,8 +553,8 @@ testthat::test_that(
 
 # DOUBLE with zero-len data, no NAs, with Inf
 
-testthat::test_that(
-  "tern:::range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] and with all default options", {
+testthat::test_that("tern:::range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
+                    and with all default options", {
   x <- c(Inf, -Inf, Inf, -Inf)
 
   result <- tern:::range_noinf(x)
@@ -595,8 +595,8 @@ testthat::test_that("tern:::range_noinf for DOUBLE [with zero-len data, no NAs, 
 
 # DOUBLE with zero-len data, with NAs, no Inf
 
-testthat::test_that(
-  "tern:::range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] and with default options", {
+testthat::test_that("tern:::range_noinf for DOUBLE [with zero-len data, with NAs, no Inf]
+                    and with default options", {
   x <- rep(NA_real_, 4)
 
   result <- tern:::range_noinf(x)

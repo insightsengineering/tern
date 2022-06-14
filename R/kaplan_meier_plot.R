@@ -1157,7 +1157,7 @@ h_tbl_coxph_pairwise <- function(df,
   ref_group <- levels(df[[arm]])[1]
   comp_group <- levels(df[[arm]])[-1]
   results <- Map(function(comp) {
-    res <- tern:::s_coxph_pairwise(
+    res <- s_coxph_pairwise(
       df = df[df[[arm]] == comp, , drop = FALSE],
       .ref_group = df[df[[arm]] == ref_group, , drop = FALSE],
       .in_ref_col = FALSE,

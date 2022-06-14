@@ -1,5 +1,7 @@
 #' Pairwise formula special term
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' The special term `pairwise` indicate that the model should be fitted individually for
 #' every tested level in comparison to the reference level.
 #'

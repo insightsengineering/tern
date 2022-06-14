@@ -76,7 +76,7 @@ h_survtime_df <- function(tte, is_event, arm) {
   lst_tte <- split(df_tte, arm)
   lst_results <- Map(function(x, arm) {
     if (nrow(x) > 0) {
-      s_surv <- tern:::s_surv_time(x, .var = "tte", is_event = "is_event")
+      s_surv <- s_surv_time(x, .var = "tte", is_event = "is_event")
       median_est <- unname(as.numeric(s_surv$median))
       n_events <- sum(x$is_event)
     } else {
@@ -220,7 +220,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   if (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) > 0) {
 
     # Hazard ratio and CI.
-    result <- tern:::s_coxph_pairwise(
+    result <- s_coxph_pairwise(
       df = l_df[[2]],
       .ref_group = l_df[[1]],
       .in_ref_col = FALSE,
