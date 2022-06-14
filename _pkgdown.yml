@@ -125,7 +125,6 @@ reference:
       - h_coxreg_inter_effect.factor
       - h_coxreg_inter_effect.numeric
       - h_coxreg_inter_estimations
-      - h_coxreg_mult_cont_df
       - h_coxreg_multivar_extract
       - h_coxreg_multivar_formula
       - h_coxreg_univar_extract
@@ -157,9 +156,7 @@ reference:
       - h_step_survival_formula
       - h_step_trt_effect
       - h_step_window
-      - h_surv_to_coxreg_variables
       - h_tab_one_biomarker
-      - h_tab_surv_one_biomarker
       - or_clogit
       - or_glm
       - prop_diff_cmh
