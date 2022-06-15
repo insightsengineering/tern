@@ -48,8 +48,10 @@ testthat::test_that("LGRT02 without interaction term is produced correctly", {
   df <- replace_emptys_with_na(df, rep_str = "_")
 
   result <- basic_table() %>%
-    summarize_logistic(conf_level = conf_level,
-                       drop_and_remove_str = "_") %>%
+    summarize_logistic(
+      conf_level = conf_level,
+      drop_and_remove_str = "_"
+    ) %>%
     build_table(df = df)
 
   result_matrix <- to_string_matrix(result)
@@ -97,8 +99,10 @@ testthat::test_that("LGRT02 with categorical interaction is produced correctly",
   df <- replace_emptys_with_na(df, rep_str = "_")
 
   result <- basic_table() %>%
-    summarize_logistic(conf_level = conf_level,
-                       drop_and_remove_str = "_") %>%
+    summarize_logistic(
+      conf_level = conf_level,
+      drop_and_remove_str = "_"
+    ) %>%
     build_table(df = df)
 
 
@@ -148,8 +152,10 @@ testthat::test_that("LGRT02 with continuous interaction is produced correctly", 
   df <- replace_emptys_with_na(df, rep_str = "_")
 
   result <- basic_table() %>%
-    summarize_logistic(conf_level = conf_level,
-                       drop_and_remove_str = "_") %>%
+    summarize_logistic(
+      conf_level = conf_level,
+      drop_and_remove_str = "_"
+    ) %>%
     build_table(df = df)
 
   result_matrix <- to_string_matrix(result)
@@ -199,8 +205,10 @@ testthat::test_that("LGRT02 with setting values indicating an event and custom a
   df <- replace_emptys_with_na(df, rep_str = "_")
 
   result <- basic_table() %>%
-    summarize_logistic(conf_level = conf_level,
-                       drop_and_remove_str = "_") %>%
+    summarize_logistic(
+      conf_level = conf_level,
+      drop_and_remove_str = "_"
+    ) %>%
     build_table(df = df)
 
   result_matrix <- to_string_matrix(result)

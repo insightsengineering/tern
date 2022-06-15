@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_factor.R
 \name{replace_emptys_with_na}
 \alias{replace_emptys_with_na}
-\title{Replace all occurences of empty string in data frame}
+\title{Replace all empty string values in data frame}
 \usage{
 replace_emptys_with_na(df, rep_str = "NA")
 }
@@ -12,7 +12,7 @@ replace_emptys_with_na(df, rep_str = "NA")
 \item{rep_str}{replacement string for empty strings}
 }
 \description{
-fnc to fix for update in Rtables issue \code{tern#593} (\code{NA} alternative -> \code{" "})
+Function used to fix for update in \verb{Rtables issue} \code{tern#593} (\code{NA} alternative -> \code{" "})
 This function is similar in scope as \code{df_explicit_na()}. In the future a merge
 is to be expected.
 }

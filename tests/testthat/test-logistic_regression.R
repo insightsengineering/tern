@@ -1039,8 +1039,10 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
   df2 <- replace_emptys_with_na(df, rep_str = "_") # _ is the flag value
 
   result <- basic_table() %>%
-    summarize_logistic(conf_level = 0.99,
-                       drop_and_remove_str = "_") %>%
+    summarize_logistic(
+      conf_level = 0.99,
+      drop_and_remove_str = "_"
+    ) %>%
     build_table(df2)
 
   result_matrix <- to_string_matrix(result)
@@ -1088,8 +1090,10 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
   df <- replace_emptys_with_na(df, rep_str = "_")
 
   result <- basic_table() %>%
-    summarize_logistic(conf_level = 0.99,
-                       drop_and_remove_str = "_") %>%
+    summarize_logistic(
+      conf_level = 0.99,
+      drop_and_remove_str = "_"
+    ) %>%
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -1132,8 +1136,10 @@ testthat::test_that("summarize_logistic works as expected for simple model witho
   df <- replace_emptys_with_na(df, rep_str = "_")
 
   result <- basic_table() %>%
-    summarize_logistic(conf_level = 0.99,
-                       drop_and_remove_str = "_") %>%
+    summarize_logistic(
+      conf_level = 0.99,
+      drop_and_remove_str = "_"
+    ) %>%
     build_table(df)
 
   result_matrix <- to_string_matrix(result)
