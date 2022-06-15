@@ -1,4 +1,10 @@
-# tern 0.7.8.9001
+# tern 0.7.8.9002
+
+* Fixing bug related to error flag for empty strings coming from `rtables` split 
+  functions. Creation of `replace_emptys_with_na` to replace empty strings with
+  custom strings across data.frame (this can be merged with `df_explicit_na`).
+* Add of new parameter for `summarize_logistic` that specify which pivoted value
+  is meant to be removed during the analysis.
 
 ### Fix
 *  Renamed `estimate_incidence_rate.R` into `incidence_rate.R` to match the 

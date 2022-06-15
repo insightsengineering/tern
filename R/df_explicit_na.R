@@ -44,6 +44,8 @@
 #' df_explicit_na(my_data, logical_as_factor = TRUE)
 #' # Encode missing values in a subset of columns.
 #' df_explicit_na(my_data, omit_columns = c("x", "y"))
+#'
+#' @seealso [replace_emptys_with_na()]
 df_explicit_na <- function(data,
                            omit_columns = NULL,
                            char_as_factor = TRUE,
