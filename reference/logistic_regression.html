@@ -30,7 +30,7 @@ special characters."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -149,7 +149,7 @@ special characters.</p>
 
 <span class="fu">logistic_summary_by_flag</span><span class="op">(</span><span class="va">flag_var</span><span class="op">)</span>
 
-<span class="fu">summarize_logistic</span><span class="op">(</span><span class="va">lyt</span>, <span class="va">conf_level</span><span class="op">)</span></code></pre></div>
+<span class="fu">summarize_logistic</span><span class="op">(</span><span class="va">lyt</span>, <span class="va">conf_level</span>, drop_and_remove_str <span class="op">=</span> <span class="st">""</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -202,6 +202,8 @@ helper function).</p></dd>
 <dt>flag_var</dt>
 <dd><p>(<code>string</code>)<br> variable name identifying which row should be used in this
 content function.</p></dd>
+<dt>drop_and_remove_str</dt>
+<dd><p>string to be dropped and removed</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -447,21 +449,61 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/" class="external-link">broom</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod1</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod2</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># flagging empty strings with "_"</span></span>
+<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df2</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
+<span class="r-in"></span>
 <span class="r-in"><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_logistic</span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">summarize_logistic</span><span class="op">(</span></span>
+<span class="r-in">    conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span class="r-in">    drop_and_remove_str <span class="op">=</span> <span class="st">"_"</span></span>
+<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fix_one_split_var(spl, df, char_ok = char_ok):</span> Got empty string level in splitting variable interactionThis is not supported.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   If display as an empty level is desired use a value-labeling variable.</span>
 <span class="r-in"><span class="va">result1</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'result1' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio    Wald 95% CI    p-value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Planned Arm Code                              2                                                                               0.0368 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ARM A, n = 126                                                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM B, n = 121                              1                  -2.155             1.084           0.12      (&lt;0.01, 1.89)   0.0468 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM C, n = 126                              1                  -0.127             1.425           0.88      (0.02, 34.55)   0.9287 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Age                                                                                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Age                                         1                  0.067              0.053           1.07      (0.93, 1.23)    0.2068 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Race                                          2                                                                               0.6369 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ASIAN, n = 208                                                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   BLACK OR AFRICAN AMERICAN, n = 91           1                  1.027              1.098           2.79      (0.17, 47.24)   0.3498 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   WHITE, n = 74                               1                  0.294              0.850           1.34      (0.15, 11.99)   0.7294 </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_logistic</span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">summarize_logistic</span><span class="op">(</span></span>
+<span class="r-in">    conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span class="r-in">    drop_and_remove_str <span class="op">=</span> <span class="st">"_"</span></span>
+<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df2</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fix_one_split_var(spl, df, char_ok = char_ok):</span> Got empty string level in splitting variable interactionThis is not supported.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   If display as an empty level is desired use a value-labeling variable.</span>
 <span class="r-in"><span class="va">result2</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'result2' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                         Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 95% CI      p-value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Race                                            2                                                                                  0.6027 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ASIAN, n = 208                                                                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   BLACK OR AFRICAN AMERICAN, n = 91             1                  1.079              1.136           2.94       (0.16, 54.88)     0.3423 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   WHITE, n = 74                                 1                  0.455              0.900           1.58       (0.16, 16.01)     0.6127 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Planned Arm Code                                2                                                                                  0.2890 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ARM A, n = 126                                                                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM B, n = 121                                1                  20.235             14.787                                       0.1712 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Age                                                                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       34                                                                                              0.00      (&lt;0.01, &gt;999.99)          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM C, n = 126                                1                  14.713             16.087                                       0.3604 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Age                                                                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       34                                                                                              0.00      (&lt;0.01, &gt;999.99)          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Age                                                                                                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Age                                           1                  0.896              0.629                                        0.1546 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Planned Arm Code                                                                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       ARM A                                                                                           2.45       (0.48, 12.39)            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       ARM B                                                                                           1.03        (0.90, 1.18)            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       ARM C                                                                                           1.32        (0.72, 2.43)            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Interaction of Planned Arm Code * Age           2                                                                                  0.2306 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ARM A, n = 126                                                                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM B, n = 121                                1                  -0.868             0.630                                        0.1680 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM C, n = 126                                1                  -0.618             0.671                                        0.3577 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
