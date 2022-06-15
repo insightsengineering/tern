@@ -41,8 +41,7 @@ Introduction
 
 LBT07 used the function `count_abnormal_by_worst_grade` which will need a map for layout.
 
-For STREAM, there's a meta data called ext_ncitct4 which is the grading criteria for lab abnormality, see reference here
-https://pages.github.roche.com/MDIS/stream_doc/um/vad_concept_grading.html
+For STREAM, there's metadata called `ext_ncitct4` which is the grading criteria for lab abnormality.
 
 Based on the above grading criteria, two reference datasets were created called `__atoxgr_low_ref.sas7bdat` and
 `__atoxgr_high_ref.sas7bdat` which were used as the lab abnormal direction reference for both LBT07 and LBT15. All the
@@ -53,7 +52,7 @@ The idea here is to derive the map used in `trim_levels_to_map` directly from `e
 Design
 =============
 
-The below steps are just to store the ext_ncitct4 data as rda file. After this, use `data("ext_ncitct4")` to load data.
+The below steps are just to store the `ext_ncitct4` data as rda file. After this, use `data("ext_ncitct4")` to load data.
 ```{r eval=FALSE}
 ext_ncictc4 <- haven::read_sas("metadata/ext_ncictc4.sas7bdat")
 ext_ncictc4 <- usethis::use_data(ext_ncictc4)
@@ -62,12 +61,10 @@ ext_ncictc4 <- usethis::use_data(ext_ncictc4)
 This helper function replies on user to put the correct `variables$split_rows` in the same order as their layout.
 Also the `abnormal` is the value that they used in pre-processing.
 ```{r}
-h_map_for_count_abnormal_by_worst_grade <- function(
-  df,
-  variables = list(anl = "GRADE_ANL", split_rows = c("PARAM", "GRADE_DIR")),
-  abnormal = list(low = "LOW", high = "HIGH"),
-  na_level = "<Missing>"
-) {
+h_map_for_count_abnormal_by_worst_grade <- function(df,
+                                                    variables = list(anl = "GRADE_ANL", split_rows = c("PARAM", "GRADE_DIR")),
+                                                    abnormal = list(low = "LOW", high = "HIGH"),
+                                                    na_level = "<Missing>") {
   last_split_var <- variables$split_rows[-1]
   assertthat::assert_that(
     is_df_with_variables(df, variables),
@@ -83,7 +80,7 @@ h_map_for_count_abnormal_by_worst_grade <- function(
   ext_ncictc4[[last_split_var]] <- na_level
   ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1", "2", "3", "4"), ][[last_split_var]] <- abnormal$high
   ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1", "-2", "-3", "-4"), ][[last_split_var]] <- abnormal$low
-  ext_ncictc4 <- unique(ext_ncictc4[ext_ncictc4[[last_split_var]] != na_level, ][c("PARAMCD", last_split_var)]) #nolint
+  ext_ncictc4 <- unique(ext_ncictc4[ext_ncictc4[[last_split_var]] != na_level, ][c("PARAMCD", last_split_var)]) # nolint
 
   if ("PARAMCD" %in% variables$split_rows) {
     map <- unique(df[c(variables$split_rows, variables$anl)])
@@ -116,27 +113,33 @@ library(forcats)
 ADSL <- haven::read_sas("data/adsl.sas7bdat")
 ADLB <- haven::read_sas("data/adlb.sas7bdat")
 
-adsl <- ADSL %>% filter(SAFFL == "Y") %>% df_explicit_na()
-adlb <- ADLB %>% df_explicit_na() %>%
+adsl <- ADSL %>%
+  filter(SAFFL == "Y") %>%
+  df_explicit_na()
+adlb <- ADLB %>%
+  df_explicit_na() %>%
   filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
 adlb_f <- adlb %>%
   mutate(
     GRADE_DIR = factor(case_when(
       ATOXGR %in% c("-1", "-2", "-3") ~ "LOW",
       ATOXGR == "0" ~ "ZERO",
-      ATOXGR %in% c("1", "2", "3") ~ "HIGH"),
-      levels = c("LOW", "ZERO", "HIGH")),
+      ATOXGR %in% c("1", "2", "3") ~ "HIGH"
+    ),
+    levels = c("LOW", "ZERO", "HIGH")
+    ),
     GRADE_ANL = fct_relevel(
       fct_recode(ATOXGR,
-                 `1` = "-1", `2` = "-2", `3` = "-3"),
+        `1` = "-1", `2` = "-2", `3` = "-3"
+      ),
       c("0", "1", "2", "3")
     )
   ) %>%
   filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
   droplevels()
 levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "Any")
-#I had to add "any" into the levels of analysis variable `GRADE_ANL` for the functions to work. Not sure if there's
-#better way to handle this.
+# I had to add "any" into the levels of analysis variable `GRADE_ANL` for the functions to work. Not sure if there's
+# better way to handle this.
 ```
 
 Pre-processing
@@ -148,19 +151,25 @@ adsl <- synthetic_cdisc_data("latest")$adsl
 adlb <- synthetic_cdisc_data("latest")$adlb
 adlb[["PARCAT2"]] <- "SI" # only for knit to work
 
-adsl <- adsl %>% filter(SAFFL == "Y") %>% df_explicit_na()
-adlb <- adlb %>% df_explicit_na() %>%
+adsl <- adsl %>%
+  filter(SAFFL == "Y") %>%
+  df_explicit_na()
+adlb <- adlb %>%
+  df_explicit_na() %>%
   filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
 adlb_f <- adlb %>%
   mutate(
     GRADE_DIR = factor(case_when(
       ATOXGR %in% c("-1", "-2", "-3") ~ "LOW",
       ATOXGR == "0" ~ "ZERO",
-      ATOXGR %in% c("1", "2", "3") ~ "HIGH"),
-      levels = c("LOW", "ZERO", "HIGH")),
+      ATOXGR %in% c("1", "2", "3") ~ "HIGH"
+    ),
+    levels = c("LOW", "ZERO", "HIGH")
+    ),
     GRADE_ANL = fct_relevel(
       fct_recode(ATOXGR,
-                 `1` = "-1", `2` = "-2", `3` = "-3"),
+        `1` = "-1", `2` = "-2", `3` = "-3"
+      ),
       c("0", "1", "2", "3")
     )
   ) %>%
@@ -192,8 +201,7 @@ basic_table() %>%
   split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
+    variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   build_table(df = adlb_f, alt_counts_df = adsl)
-
 ```
