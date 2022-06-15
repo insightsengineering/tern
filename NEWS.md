@@ -1,4 +1,4 @@
-# tern 0.7.8.9002
+# tern 0.7.8.9003
 
 * Fixing bug related to error flag for empty strings coming from `rtables` split 
   functions. Creation of `replace_emptys_with_na` to replace empty strings with
