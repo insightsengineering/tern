@@ -258,6 +258,9 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
     as.data.frame() %>%
     dplyr::arrange(PARAMCD, !dplyr::desc(abn_dir))
 
+  # fix for update in Rtables #593 (alternative -> " ")
+  # levels(adlb_f$abn_dir)[1] <- " "
+  levels(adlb_f$abn_dir)[1] <- NA
 
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
