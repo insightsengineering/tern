@@ -79,7 +79,7 @@ logistic_regression_cols(lyt, conf_level = 0.95)
 
 logistic_summary_by_flag(flag_var)
 
-summarize_logistic(lyt, conf_level)
+summarize_logistic(lyt, conf_level, drop_and_remove_str = "")
 }
 \arguments{
 \item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
@@ -129,6 +129,8 @@ helper function).}
 
 \item{flag_var}{(\code{string})\cr variable name identifying which row should be used in this
 content function.}
+
+\item{drop_and_remove_str}{string to be dropped and removed}
 }
 \description{
 Logistic regression for binary outcome with categorical/continuous covariates in model statement.

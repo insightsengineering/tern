@@ -5,12 +5,12 @@ library(dplyr)
 adsl_cached <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
 adsl_cached <- adsl_cached %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(formatters::var_labels(adsl_cached))
+  tern:::reapply_varlabels(formatters::var_labels(adsl_cached))
 
 adrs_cached <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 adrs_cached <- adrs_cached %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(formatters::var_labels(adrs_cached))
+  tern:::reapply_varlabels(formatters::var_labels(adrs_cached))
 
 adrs_example <- local({
   adrs_cached %>%
@@ -1035,12 +1035,34 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
   )
   df <- broom::tidy(mod1, conf_level = 0.99)
 
-  # fix for update in Rtables #593 (NA alternative -> " ")
-  df <- replace_emptys_na(df, rep_str = "NA")
+  # fix for update in Rtables tern#593
+  df2 <- replace_emptys_with_na(df, rep_str = "_") # _ is the flag value
+  # df2 <- df_explicit_na(df, na_level = "_") # alternative
+  # ?tern::df_explicit_na()
+
+  # insight of changes
+  # testthat::expect_identical(df, df2)
+
+  # df$interaction
+  # df2$interaction
+  #
+  # df$interaction_label
+  # df2$interaction_label
+  #
+  # df$reference
+  # df2$reference
+  #
+  # df$reference_label
+  # df2$reference_label
+
 
   result <- basic_table() %>%
-    summarize_logistic(conf_level = 0.99) %>%
-    build_table(df)
+    summarize_logistic(conf_level = 0.99,
+                       drop_and_remove_str = "_") %>%
+    build_table(df2)
+    # trim_rows()
+    # prune_table()
+    # trim_rows(criteria = all_zero_or_na())
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -1066,6 +1088,7 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
     ),
     .Dim = c(22L, 7L)
   )
+
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
@@ -1079,9 +1102,15 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       interaction = "SEX"
     )
   )
+
   df <- broom::tidy(model, conf_level = 0.99)
+
+  # fix for update in Rtables tern#593
+  df <- replace_emptys_with_na(df, rep_str = "_")
+
   result <- basic_table() %>%
-    summarize_logistic(conf_level = 0.99) %>%
+    summarize_logistic(conf_level = 0.99,
+                       drop_and_remove_str = "_") %>%
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -1108,6 +1137,7 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
     ),
     .Dim = c(24L, 7L)
   )
+
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
@@ -1118,9 +1148,15 @@ testthat::test_that("summarize_logistic works as expected for simple model witho
     variables = list(response = "Response", arm = "ARMCD", covariates = "AGE")
   )
   df <- broom::tidy(mod1, conf_level = 0.99)
+
+  # fix for update in Rtables tern#593
+  df <- replace_emptys_with_na(df, rep_str = "_")
+
   result <- basic_table() %>%
-    summarize_logistic(conf_level = 0.99) %>%
+    summarize_logistic(conf_level = 0.99,
+                       drop_and_remove_str = "_") %>%
     build_table(df)
+
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
