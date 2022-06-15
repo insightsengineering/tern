@@ -85,7 +85,7 @@ tern:::h_rsp_to_logistic_variables(
 
 # For a single population, estimate separately the effects
 # of two biomarkers.
-df <- h_logistic_mult_cont_df(
+df <- tern:::h_logistic_mult_cont_df(
   variables = list(
     rsp = "rsp",
     biomarkers = c("BMRKR1", "AGE"),
