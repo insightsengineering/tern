@@ -281,10 +281,10 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
 
-#' Replace all occurences of empty string in data frame
+#' Replace all empty string values in data frame
 #'
 #' @description
-#' fnc to fix for update in Rtables issue `tern#593` (`NA` alternative -> `" "`)
+#' Function used to fix for update in `Rtables issue` `tern#593` (`NA` alternative -> `" "`)
 #' This function is similar in scope as `df_explicit_na()`. In the future a merge
 #' is to be expected.
 #'
@@ -300,7 +300,7 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 #' @keywords internal
 #'
 #' @md
-replace_emptys_with_na <- function(df, rep_str = "NA"){
+replace_emptys_with_na <- function(df, rep_str = "NA") {
 
   # checks
   stopifnot(assertthat::is.string(rep_str))
@@ -309,11 +309,11 @@ replace_emptys_with_na <- function(df, rep_str = "NA"){
   where_to_mod <- apply(df, 2, function(x) any(nchar(x) == 0))
 
   # main loop on cols
-  for(cl_nm in which(where_to_mod)){
+  for (cl_nm in which(where_to_mod)) {
     tmp_cl <- df[, cl_nm]
-    if(is.null(levels(tmp_cl))){
+    if (is.null(levels(tmp_cl))) {
       tmp_cl[sapply(tmp_cl, nchar) == 0] <- rep_str
-    }else{
+    } else {
       levels(tmp_cl)[sapply(levels(tmp_cl), nchar) == 0] <- rep_str
     }
     df[, cl_nm] <- tmp_cl

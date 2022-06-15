@@ -1037,32 +1037,11 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
 
   # fix for update in Rtables tern#593
   df2 <- replace_emptys_with_na(df, rep_str = "_") # _ is the flag value
-  # df2 <- df_explicit_na(df, na_level = "_") # alternative
-  # ?tern::df_explicit_na()
-
-  # insight of changes
-  # testthat::expect_identical(df, df2)
-
-  # df$interaction
-  # df2$interaction
-  #
-  # df$interaction_label
-  # df2$interaction_label
-  #
-  # df$reference
-  # df2$reference
-  #
-  # df$reference_label
-  # df2$reference_label
-
 
   result <- basic_table() %>%
     summarize_logistic(conf_level = 0.99,
                        drop_and_remove_str = "_") %>%
     build_table(df2)
-    # trim_rows()
-    # prune_table()
-    # trim_rows(criteria = all_zero_or_na())
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

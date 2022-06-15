@@ -266,13 +266,23 @@ h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
 library(broom)
 df <- tidy(mod1, conf_level = 0.99)
 df2 <- tidy(mod2, conf_level = 0.99)
+# flagging empty strings with "_"
+df <- replace_emptys_with_na(df, rep_str = "_")
+df2 <- replace_emptys_with_na(df2, rep_str = "_")
+
 result1 <- basic_table() \%>\%
-  summarize_logistic(conf_level = 0.95) \%>\%
+  summarize_logistic(
+    conf_level = 0.95,
+    drop_and_remove_str = "_"
+  ) \%>\%
   build_table(df = df)
 result1
 
 result2 <- basic_table() \%>\%
-  summarize_logistic(conf_level = 0.95) \%>\%
+  summarize_logistic(
+    conf_level = 0.95,
+    drop_and_remove_str = "_"
+  ) \%>\%
   build_table(df = df2)
 result2
 }
