@@ -907,8 +907,8 @@ logistic_summary_by_flag <- function(flag_var) {
 #'
 #' @examples
 #' # flagging empty strings with "_"
-#' df <- replace_emptys_with_na(df, rep_str = "_")
-#' df2 <- replace_emptys_with_na(df2, rep_str = "_")
+#' df <- tern:::replace_emptys_with_na(df, rep_str = "_")
+#' df2 <- tern:::replace_emptys_with_na(df2, rep_str = "_")
 #'
 #' result1 <- basic_table() %>%
 #'   summarize_logistic(
