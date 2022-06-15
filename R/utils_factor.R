@@ -280,3 +280,21 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
+
+#' Replace all occurences of empty string in data frame
+#'
+#' @description
+#' fnc to fix for update in Rtables #593 (NA alternative -> " ")
+#'
+#' @keywords internal
+#'
+#' @md
+replace_emptys_na <- function(df, rep_str = "NA"){
+  where_to_mod <- apply(df, 2, function(x) any(nchar(x) == 0))
+  for(cl_nm in names(where_to_mod)[where_to_mod]){
+    tmp_cl <- df[, cl_nm]
+    levels(tmp_cl)[sapply(levels(tmp_cl), nchar) == 0] <- rep_str
+    df[, cl_nm] <- tmp_cl
+  }
+  df
+}

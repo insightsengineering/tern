@@ -19,7 +19,7 @@ adrs_example <- local({
       RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
     ) %>%
     dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
-    reapply_varlabels(formatters::var_labels(adrs_cached))
+    tern:::reapply_varlabels(formatters::var_labels(adrs_cached))
 })
 
 # fit_logistic ----
@@ -1034,9 +1034,14 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
     )
   )
   df <- broom::tidy(mod1, conf_level = 0.99)
+
+  # fix for update in Rtables #593 (NA alternative -> " ")
+  df <- replace_emptys_na(df, rep_str = "NA")
+
   result <- basic_table() %>%
     summarize_logistic(conf_level = 0.99) %>%
     build_table(df)
+
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
