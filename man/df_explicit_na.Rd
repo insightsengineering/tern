@@ -60,7 +60,10 @@ df_explicit_na(my_data)
 df_explicit_na(my_data, logical_as_factor = TRUE)
 # Encode missing values in a subset of columns.
 df_explicit_na(my_data, omit_columns = c("x", "y"))
+
 }
 \seealso{
 \code{\link[=sas_na]{sas_na()}} and \code{\link[=explicit_na]{explicit_na()}} for other missing data helper functions.
+
+\code{\link[=replace_emptys_with_na]{replace_emptys_with_na()}}
 }

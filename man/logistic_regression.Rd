@@ -79,7 +79,7 @@ logistic_regression_cols(lyt, conf_level = 0.95)
 
 logistic_summary_by_flag(flag_var)
 
-summarize_logistic(lyt, conf_level)
+summarize_logistic(lyt, conf_level, drop_and_remove_str = "")
 }
 \arguments{
 \item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
@@ -129,6 +129,8 @@ helper function).}
 
 \item{flag_var}{(\code{string})\cr variable name identifying which row should be used in this
 content function.}
+
+\item{drop_and_remove_str}{string to be dropped and removed}
 }
 \description{
 Logistic regression for binary outcome with categorical/continuous covariates in model statement.
@@ -264,13 +266,23 @@ h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
 library(broom)
 df <- tidy(mod1, conf_level = 0.99)
 df2 <- tidy(mod2, conf_level = 0.99)
+# flagging empty strings with "_"
+df <- tern:::replace_emptys_with_na(df, rep_str = "_")
+df2 <- tern:::replace_emptys_with_na(df2, rep_str = "_")
+
 result1 <- basic_table() \%>\%
-  summarize_logistic(conf_level = 0.95) \%>\%
+  summarize_logistic(
+    conf_level = 0.95,
+    drop_and_remove_str = "_"
+  ) \%>\%
   build_table(df = df)
 result1
 
 result2 <- basic_table() \%>\%
-  summarize_logistic(conf_level = 0.95) \%>\%
+  summarize_logistic(
+    conf_level = 0.95,
+    drop_and_remove_str = "_"
+  ) \%>\%
   build_table(df = df2)
 result2
 }
