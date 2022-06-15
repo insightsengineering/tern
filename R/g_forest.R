@@ -813,6 +813,10 @@ grid.forest <- function(...) { # nolint
 
 #' Assign value to attribute footnote of object x
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' This function is deprecated here. Please look at R/footnotes for the correct function.
+#'
 #' @param x an object
 #' @param value character vector
 #'
@@ -830,6 +834,10 @@ grid.forest <- function(...) { # nolint
 
 #' Retrieve value from attribute footnote of object x
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' This function is deprecated here. Please look at R/footnotes for the correct function.
+#'
 #' @param x an object
 #'
 #' @export
@@ -846,7 +854,10 @@ footnotes <- function(x) {
 
 #' Add more footnotes
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' This function is deprecated here. Please look at R/footnotes for the correct function.
+#'
 #' @param x an object
 #' @param value character vector
 #'
@@ -858,6 +869,10 @@ footnotes <- function(x) {
 #' footnotes(x)
 #' add_footnotes(x) <- "Add more footnotes"
 #' footnotes(x)
+`add_footnotes<-` <- function(x, value) { # nolint
+  footnotes(x) <- c(footnotes(x), value)
+  x
+}
 `add_footnotes<-` <- function(x, value) { # nolint
   footnotes(x) <- c(footnotes(x), value)
   x

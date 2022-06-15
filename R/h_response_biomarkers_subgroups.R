@@ -32,7 +32,7 @@ NULL
 #'
 #' @examples
 #' # This is how the variable list is converted internally.
-#' h_rsp_to_logistic_variables(
+#' tern:::h_rsp_to_logistic_variables(
 #'   variables = list(
 #'     rsp = "RSP",
 #'     covariates = c("A", "B"),
