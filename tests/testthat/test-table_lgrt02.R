@@ -8,10 +8,10 @@ adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 
 adsl_cached <- adsl %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(formatters::var_labels(adsl))
+  tern:::reapply_varlabels(formatters::var_labels(adsl))
 adrs_cached <- adrs %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(formatters::var_labels(adrs))
+  tern:::reapply_varlabels(formatters::var_labels(adrs))
 
 
 get_adrs <- function() {
@@ -43,8 +43,13 @@ testthat::test_that("LGRT02 without interaction term is produced correctly", {
   )
   conf_level <- 0.95
   df <- broom::tidy(model, conf_level = conf_level)
+
+  # fix for update in Rtables tern#593
+  df <- replace_emptys_with_na(df, rep_str = "_")
+
   result <- basic_table() %>%
-    summarize_logistic(conf_level = conf_level) %>%
+    summarize_logistic(conf_level = conf_level,
+                       drop_and_remove_str = "_") %>%
     build_table(df = df)
 
   result_matrix <- to_string_matrix(result)
@@ -87,9 +92,15 @@ testthat::test_that("LGRT02 with categorical interaction is produced correctly",
   )
   conf_level <- 0.95
   df <- broom::tidy(model, conf_level = conf_level)
+
+  # fix for update in Rtables tern#593
+  df <- replace_emptys_with_na(df, rep_str = "_")
+
   result <- basic_table() %>%
-    summarize_logistic(conf_level = conf_level) %>%
+    summarize_logistic(conf_level = conf_level,
+                       drop_and_remove_str = "_") %>%
     build_table(df = df)
+
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -132,8 +143,13 @@ testthat::test_that("LGRT02 with continuous interaction is produced correctly", 
   )
   conf_level <- 0.95
   df <- broom::tidy(model, conf_level = conf_level, at = c(18, 65))
+
+  # fix for update in Rtables tern#593
+  df <- replace_emptys_with_na(df, rep_str = "_")
+
   result <- basic_table() %>%
-    summarize_logistic(conf_level = conf_level) %>%
+    summarize_logistic(conf_level = conf_level,
+                       drop_and_remove_str = "_") %>%
     build_table(df = df)
 
   result_matrix <- to_string_matrix(result)
@@ -178,8 +194,13 @@ testthat::test_that("LGRT02 with setting values indicating an event and custom a
   )
   conf_level <- 0.9
   df <- broom::tidy(model, conf_level = conf_level)
+
+  # fix for update in Rtables tern#593
+  df <- replace_emptys_with_na(df, rep_str = "_")
+
   result <- basic_table() %>%
-    summarize_logistic(conf_level = conf_level) %>%
+    summarize_logistic(conf_level = conf_level,
+                       drop_and_remove_str = "_") %>%
     build_table(df = df)
 
   result_matrix <- to_string_matrix(result)
