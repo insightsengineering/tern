@@ -170,6 +170,7 @@ reference:
       - fit_logistic
       - fit_rsp_step
       - fit_survival_step
+      - get_smooths
       - logistic_regression_cols
       - logistic_summary_by_flag
       - pairwise
@@ -260,9 +261,9 @@ reference:
       - fct_collapse_only
       - fct_discard
       - fct_explicit_na_if
-      - sas_na
       - f_conf_level
-
+      - sas_na
+      - to_n
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package

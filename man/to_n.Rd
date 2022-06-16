@@ -16,7 +16,8 @@ Just input \code{x} if it has the required length already or is \code{NULL},
 otherwise if it is scalar the replicated version of it with \code{n} entries.
 }
 \description{
-Replicate Entries of a Vector if Required.Note that this will fail if \code{x}
-is not having length \code{n} or being a scalar.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Replicate entries of a vector if required. Note that this will fail if \code{x}
+is not of length \code{n} or is not a scalar.
 }
-\keyword{internal}

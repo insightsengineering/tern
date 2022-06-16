@@ -67,18 +67,18 @@ get_covariates <- function(covariates) {
 
 #' Replicate Entries of a Vector if Required
 #'
-#' @description
+#' @description `r lifecycle::badge("stable")`
 #'
-#' Replicate Entries of a Vector if Required.Note that this will fail if `x`
-#' is not having length `n` or being a scalar.
+#' Replicate entries of a vector if required. Note that this will fail if `x`
+#' is not of length `n` or is not a scalar.
 #'
 #' @inheritParams argument_convention
 #' @param n (`count`)\cr how many entries we need.
+#' @export
 #'
 #' @return Just input `x` if it has the required length already or is `NULL`,
 #'   otherwise if it is scalar the replicated version of it with `n` entries.
 #'
-#' @keywords internal
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -324,7 +324,7 @@ arm <- function(x) {
 
 #' Smooth Function with Optional Grouping
 #'
-#' @description
+#' @description `r lifecycle::badge("stable")`
 #'
 #' This produces \code{loess} smoothed estimates of `y` with Student confidence intervals.
 #'
@@ -335,8 +335,8 @@ arm <- function(x) {
 #' @param level (`numeric`) level of confidence interval to use (0.95 by default).
 #' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, `yhigh` and
 #' optional `groups` variables formatted to factor type.
+#' @export
 #'
-#' @keywords internal
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
   assertthat::assert_that(is.data.frame(df))
   df_cols <- colnames(df)
