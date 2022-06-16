@@ -902,23 +902,40 @@ logistic_summary_by_flag <- function(flag_var) {
 }
 
 #' @describeIn logistic_regression Layout creating function which summarizes a logistic variable regression.
+#' @param drop_and_remove_str string to be dropped and removed
 #' @export
+#'
 #' @examples
+#' # flagging empty strings with "_"
+#' df <- tern:::replace_emptys_with_na(df, rep_str = "_")
+#' df2 <- tern:::replace_emptys_with_na(df2, rep_str = "_")
+#'
 #' result1 <- basic_table() %>%
-#'   summarize_logistic(conf_level = 0.95) %>%
+#'   summarize_logistic(
+#'     conf_level = 0.95,
+#'     drop_and_remove_str = "_"
+#'   ) %>%
 #'   build_table(df = df)
 #' result1
 #'
 #' result2 <- basic_table() %>%
-#'   summarize_logistic(conf_level = 0.95) %>%
+#'   summarize_logistic(
+#'     conf_level = 0.95,
+#'     drop_and_remove_str = "_"
+#'   ) %>%
 #'   build_table(df = df2)
 #' result2
 summarize_logistic <- function(lyt,
-                               conf_level) {
+                               conf_level,
+                               drop_and_remove_str = "") {
+
+  # checks
+  stopifnot(assertthat::is.string(drop_and_remove_str))
+
   sum_logistic_variable_test <- logistic_summary_by_flag("is_variable_summary")
   sum_logistic_term_estimates <- logistic_summary_by_flag("is_term_summary")
   sum_logistic_odds_ratios <- logistic_summary_by_flag("is_reference_summary")
-  split_fun <- drop_and_remove_levels("")
+  split_fun <- drop_and_remove_levels(drop_and_remove_str)
 
   lyt <- logistic_regression_cols(lyt, conf_level = conf_level)
   lyt <- split_rows_by(lyt, var = "variable", labels_var = "variable_label", split_fun = split_fun)

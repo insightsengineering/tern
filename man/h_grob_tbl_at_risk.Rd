@@ -31,11 +31,11 @@ fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 
-data_plot <- h_data_plot(fit_km = fit_km)
+data_plot <- tern:::h_data_plot(fit_km = fit_km)
 
-xticks <- h_xticks(data = data_plot)
+xticks <- tern:::h_xticks(data = data_plot)
 
-gg <- h_ggkm(
+gg <- tern:::h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
@@ -58,12 +58,12 @@ if (is.null(fit_km$strata)) {
 }
 
 # The annotation table is transformed into a grob.
-tbl <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xticks))
+tbl <- tern:::h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xticks))
 
 # For the representation, the layout is estimated for which the decomposition
 # of the graphic element is necessary.
-g_el <- h_decompose_gg(gg)
-lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
+g_el <- tern:::h_decompose_gg(gg)
+lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
 
 grid::grid.newpage()
 pushViewport(viewport(layout = lyt, height = .95, width = .95))
