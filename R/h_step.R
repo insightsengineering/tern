@@ -9,7 +9,6 @@ NULL
 #'
 #' @inheritParams argument_convention
 #' @name h_step
-#' @export
 #'
 NULL
 

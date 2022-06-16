@@ -13,7 +13,6 @@
 #' @param arm (`factor`)\cr the treatment group variable.
 #' @name h_survival_duration_subgroups
 #' @order 1
-#' @export
 #'
 #' @examples
 #' # Testing dataset.
