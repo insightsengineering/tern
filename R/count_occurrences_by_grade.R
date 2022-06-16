@@ -20,6 +20,9 @@ NULL
 #'   insert grade groupings into list with individual grade frequencies. The order of the final result
 #'   follows the order of `grade_groups`. The elements under any-grade group (if any), i.e.
 #'   the grade group equal to `refs` will be moved to the end. Grade groups names must be unique.
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @export
 #' @examples
 #'

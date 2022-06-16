@@ -114,6 +114,10 @@ the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::Ce
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Patient count and fraction for laboratory events (worsen from baseline) shift table.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \section{Functions}{
 \itemize{
@@ -163,7 +167,7 @@ df <- h_adlb_worsen(
 )
 
 # `h_worsen_counter`
-tern:::h_worsen_counter(
+h_worsen_counter(
   df \%>\% filter(PARAMCD == "CRP" & GRADDR == "Low"),
   id = "USUBJID",
   .var = "ATOXGR",

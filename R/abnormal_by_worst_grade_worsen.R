@@ -12,6 +12,9 @@ NULL
 
 #' @describeIn abnormal_by_worst_grade_worsen_from_baseline Helper function
 #' to prepare a `df` for generate the patient count shift table
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @param adlb (`data frame`) \cr `ADLB` dataframe
 #' @param worst_flag_low (named `vector`) \cr
 #' Worst low post-baseline lab grade flag variable
@@ -160,6 +163,9 @@ h_adlb_worsen <- function(adlb,
 #' count the number of patients and the fraction of patients according to
 #' highest post-baseline lab grade variable `.var`, baseline lab grade variable `baseline_var`,
 #' and the direction of interest specified in `direction_var`.
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @param baseline_var (`string`) \cr baseline lab grade variable
 #' @return [h_worsen_counter()] returns the counts and fraction of patients
 #' whose worst post-baseline lab grades are worse than their baseline grades, for
@@ -169,14 +175,14 @@ h_adlb_worsen <- function(adlb,
 #' @examples
 #'
 #' # `h_worsen_counter`
-#' tern:::h_worsen_counter(
+#' h_worsen_counter(
 #'   df %>% filter(PARAMCD == "CRP" & GRADDR == "Low"),
 #'   id = "USUBJID",
 #'   .var = "ATOXGR",
 #'   baseline_var = "BTOXGR",
 #'   direction_var = "GRADDR"
 #' )
-#' @keywords internal
+#' @export
 h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
   assertthat::assert_that(
     assertthat::is.string(id),

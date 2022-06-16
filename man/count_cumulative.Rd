@@ -104,6 +104,8 @@ contains a vector for the count and fraction.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 Summarize cumulative counts of a (\code{numeric}) vector that is less than, less or equal to,
 greater than, or greater or equal to user-specific thresholds.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \section{Functions}{
 \itemize{
@@ -126,10 +128,10 @@ should be accounted for.
 set.seed(1, kind = "Mersenne-Twister")
 x <- c(sample(1:10, 10), NA)
 .N_col <- length(x)
-tern:::h_count_cumulative(x, 5, .N_col = .N_col)
-tern:::h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
-tern:::h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
-tern:::h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+h_count_cumulative(x, 5, .N_col = .N_col)
+h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
+h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
+h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
 tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first

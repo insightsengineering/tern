@@ -10,6 +10,9 @@ NULL
 
 #' @describeIn count_cumulative Helper function to calculate count and fraction of
 #'   `x` values in the lower or upper tail given a threshold.
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams argument_convention
 #' @param threshold (`number`)\cr a cutoff value as threshold to count values of `x`.
 #' @param lower_tail (`logical`)\cr whether to count lower tail, default is `TRUE`.
@@ -21,16 +24,16 @@ NULL
 #'   greater or equal to a threshold of user specification.
 #'   - `fraction`: the fraction of the count.
 #'
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' set.seed(1, kind = "Mersenne-Twister")
 #' x <- c(sample(1:10, 10), NA)
 #' .N_col <- length(x)
-#' tern:::h_count_cumulative(x, 5, .N_col = .N_col)
-#' tern:::h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
-#' tern:::h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
-#' tern:::h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+#' h_count_cumulative(x, 5, .N_col = .N_col)
+#' h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
+#' h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
+#' h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
 h_count_cumulative <- function(x,
                                threshold,
                                lower_tail = TRUE,
