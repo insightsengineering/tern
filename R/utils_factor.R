@@ -212,10 +212,10 @@ cut_quantile_bins <- function(x,
 #' @param discard (`character`)\cr which levels to discard.
 #'
 #' @return The modified factor with observations as well as levels from `discard` dropped.
-#' @keywords internal
+#' @export
 #'
 #' @examples
-#' tern:::fct_discard(factor(c("a", "b", "c")), "c")
+#' fct_discard(factor(c("a", "b", "c")), "c")
 fct_discard <- function(x, discard) {
   assertthat::assert_that(
     is.factor(x),
