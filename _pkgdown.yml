@@ -156,7 +156,6 @@ reference:
       - prop_diff_ha
       - prop_diff_nc
       - prop_diff_wald
-      - summary_numeric_in_cols
 
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
