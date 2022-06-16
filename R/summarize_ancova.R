@@ -20,15 +20,14 @@ NULL
 #'   reference group.
 #'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
-#'
+#' @export
 #'
 #' @examples
-#' tern:::h_ancova(
+#' h_ancova(
 #'   .var = "Sepal.Length",
 #'   .df_row = iris,
 #'   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 #' )
-#' @keywords internal
 h_ancova <- function(.var,
                      .df_row,
                      variables) {

@@ -149,7 +149,6 @@ a_incidence_rate <- make_afun(
 #'   ) %>%
 #'   build_table(df)
 #'
-#' @md
 estimate_incidence_rate <- function(lyt,
                                     vars,
                                     ...,
@@ -181,12 +180,11 @@ estimate_incidence_rate <- function(lyt,
 #'   associated confidence interval based on the normal approximation for the
 #'   incidence rate. Unit is one person-year.
 #'
+#' @export
+#'
 #' @examples
-#' tern:::h_incidence_rate_normal(200, 2)
+#' h_incidence_rate_normal(200, 2)
 #'
-#' @keywords internal
-#'
-#' @md
 h_incidence_rate_normal <- function(person_years,
                                     n_events,
                                     alpha = 0.05) {
@@ -207,12 +205,11 @@ h_incidence_rate_normal <- function(person_years,
 #'   associated confidence interval based on the normal approximation for the
 #'   logarithm of the incidence rate. Unit is one person-year.
 #'
+#' @export
+#'
 #' @examples
-#' tern:::h_incidence_rate_normal_log(200, 2)
+#' h_incidence_rate_normal_log(200, 2)
 #'
-#' @keywords internal
-#'
-#' @md
 h_incidence_rate_normal_log <- function(person_years,
                                         n_events,
                                         alpha = 0.05) {
@@ -234,12 +231,11 @@ h_incidence_rate_normal_log <- function(person_years,
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated exact confidence interval. Unit is one person-year.
 #'
+#' @export
+#'
 #' @examples
-#' tern:::h_incidence_rate_exact(200, 2)
+#' h_incidence_rate_exact(200, 2)
 #'
-#' @keywords internal
-#'
-#' @md
 h_incidence_rate_exact <- function(person_years,
                                    n_events,
                                    alpha = 0.05) {
@@ -259,12 +255,11 @@ h_incidence_rate_exact <- function(person_years,
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated Byar's confidence interval. Unit is one person-year.
 #'
+#' @export
+#'
 #' @examples
-#' tern:::h_incidence_rate_byar(200, 2)
+#' h_incidence_rate_byar(200, 2)
 #'
-#' @keywords internal
-#'
-#' @md
 h_incidence_rate_byar <- function(person_years,
                                   n_events,
                                   alpha = 0.05) {
@@ -287,10 +282,12 @@ h_incidence_rate_byar <- function(person_years,
 #' @describeIn incidence_rate incidence_rate helper function to estimate the incidence rate and
 #'   associated confidence interval.
 #'
-#' @examples
-#' tern:::h_incidence_rate(200, 2)
+#' @export
 #'
-#' tern:::h_incidence_rate(
+#' @examples
+#' h_incidence_rate(200, 2)
+#'
+#' h_incidence_rate(
 #'   200,
 #'   2,
 #'   control_incidence_rate(
@@ -300,9 +297,6 @@ h_incidence_rate_byar <- function(person_years,
 #'   )
 #' )
 #'
-#' @keywords internal
-#'
-#' @md
 h_incidence_rate <- function(person_years,
                              n_events,
                              control = control_incidence_rate()) {

@@ -1,7 +1,7 @@
 library(dplyr)
 
-testthat::test_that("tern:::h_ancova works with healthy input", {
-  result <- tern:::h_ancova(
+testthat::test_that("h_ancova works with healthy input", {
+  result <- h_ancova(
     .var = "Sepal.Length",
     .df_row = iris,
     variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
@@ -30,9 +30,9 @@ testthat::test_that("tern:::h_ancova works with healthy input", {
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-testthat::test_that("tern:::h_ancova fails wrong inputs", {
+testthat::test_that("h_ancova fails wrong inputs", {
   testthat::expect_error(
-    tern:::h_ancova(
+    h_ancova(
       .var = "Wrong.Var",
       .df_row = iris,
       variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
@@ -40,7 +40,7 @@ testthat::test_that("tern:::h_ancova fails wrong inputs", {
   )
 
   testthat::expect_error(
-    tern:::h_ancova(
+    h_ancova(
       .var = "Sepal.Length",
       .df_row = iris,
       variables = list(arm = "Species", covariates = c("Wrong.Var", "Sepal.Width"))
