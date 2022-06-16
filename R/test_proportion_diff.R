@@ -220,13 +220,15 @@ s_test_proportion_diff <- function(df,
 
 #' Description of the Difference Test Between Two Proportions
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is an auxiliary function that describes the analysis in
 #' `s_test_proportion_diff`.
 #'
 #' @inheritParams s_test_proportion_diff
 #' @return `string` describing the test from which the p-value is derived.
+#' @export
 #'
-#' @keywords internal
 d_test_proportion_diff <- function(method) {
   assertthat::assert_that(assertthat::is.string(method))
   meth_part <- switch(method,

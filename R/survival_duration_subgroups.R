@@ -318,6 +318,8 @@ tabulate_survival_subgroups <- function(lyt,
 
 #' Labels for Column Variables in Survival Duration by Subgroup Table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Internal function to check variables included in
 #' [tabulate_survival_subgroups()] and create column labels.
 #' Note that at least one of `n_tot` and `n_tot_events` needs to be provided in `vars`.
@@ -326,8 +328,8 @@ tabulate_survival_subgroups <- function(lyt,
 #' @inheritParams argument_convention
 #' @param method p-value method for testing hazard ratio = 1.
 #' @return `list` of variables to tabulate and their labels.
+#' @export
 #'
-#' @keywords internal
 d_survival_subgroups_colvars <- function(vars,
                                          conf_level,
                                          method,

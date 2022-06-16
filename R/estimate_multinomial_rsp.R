@@ -9,8 +9,7 @@
 #'
 NULL
 
-#' @describeIn estimate_multinomial_rsp
-#' Standard Oncology Response
+#' @describeIn estimate_multinomial_rsp Standard Oncology Response
 #'
 #' Describe the oncology response in a standard way.
 #'
@@ -18,7 +17,6 @@ NULL
 #' @export
 #'
 #' @examples
-#'
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "<Missing>", "NE/Missing")
 #' )

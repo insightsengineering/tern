@@ -43,6 +43,8 @@ check_diff_prop_ci <- function(rsp,
 
 #' Description of Method Used for Proportion Comparison
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is an auxiliary function that describes the analysis in
 #' `s_proportion_diff`.
 #'
@@ -50,7 +52,7 @@ check_diff_prop_ci <- function(rsp,
 #' @param long (`logical`)\cr
 #'   Whether a long or a short (default) description is required.
 #' @return String describing the analysis.
-#' @keywords internal
+#' @export
 #'
 d_proportion_diff <- function(conf_level,
                               method,

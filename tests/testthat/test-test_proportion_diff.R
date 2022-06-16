@@ -111,7 +111,7 @@ testthat::test_that("tern:::s_test_proportion_diff and d_test_proportion_diff re
 
   method <- "cmh"
   result <- list(
-    d = tern:::d_test_proportion_diff(method),
+    d = d_test_proportion_diff(method),
     s = tern:::s_test_proportion_diff(
       df = subset(dta, grp == "A"),
       .var = "rsp",
