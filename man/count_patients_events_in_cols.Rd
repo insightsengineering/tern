@@ -102,7 +102,7 @@ tern:::s_count_patients_and_multiple_events(
 
 # `summarize_patients_events_in_cols()`
 basic_table() \%>\%
-  tern:::summarize_patients_events_in_cols(
+  summarize_patients_events_in_cols(
     filters_list = list(
       related = formatters::with_label(c(AEREL = "Y"), "Events (Related)"),
       fatal = c(AESDTH = "Y"),

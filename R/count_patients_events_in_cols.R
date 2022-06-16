@@ -103,15 +103,16 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 
 #' @describeIn count_patients_events_in_cols Layout creating function which adds the count
 #'   statistics of patients and events in the column layout as content rows.
+#'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'  Set to `FALSE` when the required column split has been done already earlier in the layout pipe.
-#' @keywords internal
+#' @export
 #' @examples
 #'
 #' # `summarize_patients_events_in_cols()`
 #' basic_table() %>%
-#'   tern:::summarize_patients_events_in_cols(
+#'   summarize_patients_events_in_cols(
 #'     filters_list = list(
 #'       related = formatters::with_label(c(AEREL = "Y"), "Events (Related)"),
 #'       fatal = c(AESDTH = "Y"),
