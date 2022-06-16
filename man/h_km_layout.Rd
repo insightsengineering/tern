@@ -43,7 +43,7 @@ fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- tern:::h_data_plot(fit_km = fit_km)
-xticks <- tern:::h_xticks(data = data_plot)
+xticks <- h_xticks(data = data_plot)
 gg <- tern:::h_ggkm(
   data = data_plot,
   censor_show = TRUE,

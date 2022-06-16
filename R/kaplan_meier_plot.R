@@ -466,12 +466,14 @@ h_data_plot <- function(fit_km,
 
 #' Helper function: x tick positions
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Calculate the positions of ticks on the x-axis. However, if `xticks` already
 #' exists it is kept as is. It is based on the same function `ggplot2` relies on,
 #' and is required in the graphic and the patient-at-risk annotation table.
 #'
 #' @inheritParams kaplan_meier
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -484,12 +486,12 @@ h_data_plot <- function(fit_km,
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   tern:::h_data_plot()
 #'
-#' tern:::h_xticks(data)
-#' tern:::h_xticks(data, xticks = seq(0, 3000, 500))
-#' tern:::h_xticks(data, xticks = 500)
-#' tern:::h_xticks(data, xticks = 500, max_time = 6000)
-#' tern:::h_xticks(data, xticks = c(0, 500), max_time = 300)
-#' tern:::h_xticks(data, xticks = 500, max_time = 300)
+#' h_xticks(data)
+#' h_xticks(data, xticks = seq(0, 3000, 500))
+#' h_xticks(data, xticks = 500)
+#' h_xticks(data, xticks = 500, max_time = 6000)
+#' h_xticks(data, xticks = c(0, 500), max_time = 300)
+#' h_xticks(data, xticks = 500, max_time = 300)
 #' }
 #'
 h_xticks <- function(data, xticks = NULL, max_time = NULL) {
@@ -535,7 +537,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- tern:::h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #' gg <- tern:::h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
@@ -687,7 +689,7 @@ h_ggkm <- function(data,
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- tern:::h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #' gg <- tern:::h_ggkm(
 #'   data = data_plot,
 #'   yval = "Survival",
@@ -752,7 +754,7 @@ h_decompose_gg <- function(gg) {
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- tern:::h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #' gg <- tern:::h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
@@ -863,7 +865,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'
 #' data_plot <- tern:::h_data_plot(fit_km = fit_km)
 #'
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #'
 #' gg <- tern:::h_ggkm(
 #'   data = data_plot,
@@ -981,11 +983,13 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 
 #' Helper Function: Survival Estimations
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Transform a survival fit to a table with groups in rows characterized
 #' by N, median and confidence interval.
 #'
 #' @inheritParams h_data_plot
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -1000,7 +1004,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #'   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
 #'   data = adtte
 #' )
-#' tern:::h_tbl_median_surv(fit_km = fit)
+#' h_tbl_median_surv(fit_km = fit)
 #' }
 #'
 h_tbl_median_surv <- function(fit_km, armval = "All") {
@@ -1097,7 +1101,7 @@ h_grob_median_surv <- function(fit_km,
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- tern:::h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #' gg <- tern:::h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
@@ -1129,10 +1133,13 @@ h_grob_y_annot <- function(ylab, yaxis) {
 
 #' Helper Function: Pairwise CoxPH table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
-#' @keywords internal
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -1142,7 +1149,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #'
-#' tern:::h_tbl_coxph_pairwise(
+#' h_tbl_coxph_pairwise(
 #'   df = adtte,
 #'   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
 #'   control_coxph_pw = control_coxph(conf_level = 0.9)

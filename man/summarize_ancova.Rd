@@ -105,7 +105,7 @@ summary tables for analysis of covariance (ANCOVA).
 }}
 
 \examples{
-tern:::h_ancova(
+h_ancova(
   .var = "Sepal.Length",
   .df_row = iris,
   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))

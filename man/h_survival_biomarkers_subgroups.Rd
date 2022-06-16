@@ -42,6 +42,8 @@ are required.}
 displaying unit.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Helper functions which are documented here separately to not confuse the user
 when reading about the user-facing functions.
 }
@@ -83,7 +85,7 @@ labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 formatters::var_labels(adtte_f)[names(labels)] <- labels
 
 # This is how the variable list is converted internally.
-tern:::h_surv_to_coxreg_variables(
+h_surv_to_coxreg_variables(
   variables = list(
     tte = "AVAL",
     is_event = "EVNT",
@@ -95,7 +97,7 @@ tern:::h_surv_to_coxreg_variables(
 
 # For a single population, estimate separately the effects
 # of two biomarkers.
-df <- tern:::h_coxreg_mult_cont_df(
+df <- h_coxreg_mult_cont_df(
   variables = list(
     tte = "AVAL",
     is_event = "is_event",
@@ -108,7 +110,7 @@ df <- tern:::h_coxreg_mult_cont_df(
 df
 
 # If the data set is empty, still the corresponding rows with missings are returned.
-tern:::h_coxreg_mult_cont_df(
+h_coxreg_mult_cont_df(
   variables = list(
     tte = "AVAL",
     is_event = "is_event",
@@ -125,11 +127,10 @@ df1$subgroup <- "All patients"
 df1$row_type <- "content"
 df1$var <- "ALL"
 df1$var_label <- "All patients"
-tern:::h_tab_surv_one_biomarker(
+h_tab_surv_one_biomarker(
   df1,
   vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
   time_unit = "days"
 )
 
 }
-\keyword{internal}

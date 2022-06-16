@@ -1,5 +1,7 @@
 #' Helper Functions for Tabulating Survival Duration by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper functions that tabulate in a data frame statistics such as median survival
 #' time and hazard ratio for population subgroups.
 #'
@@ -11,6 +13,7 @@
 #' @param arm (`factor`)\cr the treatment group variable.
 #' @name h_survival_duration_subgroups
 #' @order 1
+#' @export
 #'
 #' @examples
 #' # Testing dataset.
@@ -39,21 +42,21 @@
 #' labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
-#' @keywords internal
 NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
+#'
 #' @inheritParams h_survival_duration_subgroups
+#' @export
 #'
 #' @examples
 #' # Extract median survival time for one group.
-#' tern:::h_survtime_df(
+#' h_survtime_df(
 #'   tte = adtte_f$AVAL,
 #'   is_event = adtte_f$is_event,
 #'   arm = adtte_f$ARM
 #' )
 #'
-#' @keywords internal
 h_survtime_df <- function(tte, is_event, arm) {
   assertthat::assert_that(
     is.numeric(tte),
@@ -103,9 +106,11 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'    requires elements `tte`, `is_event`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
 #'
+#' @export
+#'
 #' @examples
 #' # Extract median survival time for multiple groups.
-#' tern:::h_survtime_subgroups_df(
+#' h_survtime_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -116,7 +121,7 @@ h_survtime_df <- function(tte, is_event, arm) {
 #' )
 #'
 #' # Define groupings for BMRKR2 levels.
-#' tern:::h_survtime_subgroups_df(
+#' h_survtime_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -133,7 +138,6 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'   )
 #' )
 #'
-#' @keywords internal
 h_survtime_subgroups_df <- function(variables,
                                     data,
                                     groups_lists = list(),
@@ -176,17 +180,18 @@ h_survtime_subgroups_df <- function(variables,
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame with estimates of
 #'   treatment hazard ratio.
+#'
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
 #'   required if stratified analysis is performed.
+#' @export
 #'
 #' @examples
 #' # Extract hazard ratio for one group.
-#' tern:::h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
+#' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
 #'
 #' # Extract hazard ratio for one group with stratification factor.
-#' tern:::h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
+#' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
 #'
-#' @keywords internal
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
   assertthat::assert_that(
     is.numeric(tte),
@@ -287,9 +292,11 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   optionally `subgroups` and `strat`. `groups_lists` optionally specifies
 #'   groupings for `subgroups` variables.
 #'
+#' @export
+#'
 #' @examples
 #' # Extract hazard ratio for multiple groups.
-#' tern:::h_coxph_subgroups_df(
+#' h_coxph_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -300,7 +307,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #' )
 #'
 #' # Define groupings of BMRKR2 levels.
-#' tern:::h_coxph_subgroups_df(
+#' h_coxph_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -318,7 +325,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #' )
 #'
 #' # Extract hazard ratio for multiple groups with stratification factors.
-#' tern:::h_coxph_subgroups_df(
+#' h_coxph_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -329,7 +336,6 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   data = adtte_f
 #' )
 #'
-#' @keywords internal
 h_coxph_subgroups_df <- function(variables,
                                  data,
                                  groups_lists = list(),
@@ -389,6 +395,8 @@ h_coxph_subgroups_df <- function(variables,
 
 #' Split Dataframe by Subgroups
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Split a dataframe into a non-nested list of subsets.
 #'
 #' @details Main functionality is to prepare data for use in forest plot layouts.
@@ -400,6 +408,7 @@ h_coxph_subgroups_df <- function(variables,
 #'   determines the order in the downstream table.
 #'
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
+#' @export
 #'
 #' @examples
 #' library(rtables)
@@ -411,12 +420,12 @@ h_coxph_subgroups_df <- function(variables,
 #' )
 #' formatters::var_labels(df) <- paste("label for", names(df))
 #'
-#' tern:::h_split_by_subgroups(
+#' h_split_by_subgroups(
 #'   data = df,
 #'   subgroups = c("y", "z")
 #' )
 #'
-#' tern:::h_split_by_subgroups(
+#' h_split_by_subgroups(
 #'   data = df,
 #'   subgroups = c("y", "z"),
 #'   groups_lists = list(
@@ -424,7 +433,6 @@ h_coxph_subgroups_df <- function(variables,
 #'   )
 #' )
 #'
-#' @keywords internal
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {

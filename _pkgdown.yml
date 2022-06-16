@@ -121,11 +121,14 @@ reference:
       - h_ancova
       - h_append_grade_groups
       - h_count_cumulative
+      - h_coxph_df
+      - h_coxph_subgroups_df
       - h_coxreg_extract_interaction
       - h_coxreg_inter_effect
       - h_coxreg_inter_effect.factor
       - h_coxreg_inter_effect.numeric
       - h_coxreg_inter_estimations
+      - h_coxreg_mult_cont_df
       - h_coxreg_multivar_extract
       - h_coxreg_multivar_formula
       - h_coxreg_univar_extract
@@ -154,8 +157,21 @@ reference:
       - h_proportion_subgroups_df
       - h_response_biomarkers_subgroups
       - h_simple_term_labels
+      - h_split_by_subgroups
       - h_stack_by_baskets
+      - h_step_rsp_est
+      - h_step_rsp_formula
+      - h_step_survival_est
+      - h_step_survival_formula
+      - h_step_trt_effect
+      - h_step_window
+      - h_surv_to_coxreg_variables
+      - h_survtime_df
+      - h_survtime_subgroups_df
       - h_tab_one_biomarker
+      - h_tab_surv_one_biomarker
+      - h_tbl_coxph_pairwise
+      - h_tbl_median_surv
       - or_clogit
       - or_glm
       - prop_diff_cmh
@@ -253,6 +269,7 @@ reference:
       - draw_grob
       - h_g_ipp
       - h_set_nest_theme
+      - h_xticks
       - stack_grobs
       - stat_mean_ci
       - stat_median_ci

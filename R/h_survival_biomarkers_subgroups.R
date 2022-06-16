@@ -1,5 +1,7 @@
 #' Helper Functions for Tabulating Biomarker Effects on Survival by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper functions which are documented here separately to not confuse the user
 #' when reading about the user-facing functions.
 #'
@@ -8,6 +10,7 @@
 #' @inheritParams fit_coxreg_multivar
 #' @name h_survival_biomarkers_subgroups
 #' @order 1
+#' @export
 #'
 #' @examples
 #' # Testing dataset.
@@ -30,17 +33,18 @@
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
-#' @keywords internal
 NULL
 
 #' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list
 #'   to the "Cox regression" variable list. The reason is that currently there is an inconsistency between the variable
 #'   names accepted by `extract_survival_subgroups()` and `fit_coxreg_multivar()`.
+#'
 #' @param biomarker (`string`)\cr the name of the biomarker variable.
+#' @export
 #'
 #' @examples
 #' # This is how the variable list is converted internally.
-#' tern:::h_surv_to_coxreg_variables(
+#' h_surv_to_coxreg_variables(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "EVNT",
@@ -50,7 +54,6 @@ NULL
 #'   biomarker = "AGE"
 #' )
 #'
-#' @keywords internal
 h_surv_to_coxreg_variables <- function(variables, biomarker) {
   assertthat::assert_that(
     is.list(variables),
@@ -73,10 +76,12 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #'   `variables` corresponds to names of variables found in `data`, passed as a named list and requires elements
 #'   `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
 #'
+#' @export
+#'
 #' @examples
 #' # For a single population, estimate separately the effects
 #' # of two biomarkers.
-#' df <- tern:::h_coxreg_mult_cont_df(
+#' df <- h_coxreg_mult_cont_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -89,7 +94,7 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #' df
 #'
 #' # If the data set is empty, still the corresponding rows with missings are returned.
-#' tern:::h_coxreg_mult_cont_df(
+#' h_coxreg_mult_cont_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -100,7 +105,6 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #'   data = adtte_f[NULL, ]
 #' )
 #'
-#' @keywords internal
 h_coxreg_mult_cont_df <- function(variables,
                                   data,
                                   control = control_coxreg()) {
@@ -171,10 +175,12 @@ h_coxreg_mult_cont_df <- function(variables,
 
 #' @describeIn h_survival_biomarkers_subgroups prepares a single sub-table given a `df_sub` containing
 #'   the results for a single biomarker.
+#'
 #' @param df (`data.frame`)\cr results for a single biomarker, as part of what is
 #'   returned by [extract_survival_biomarkers()] (it needs a couple of columns which are
 #'   added by that high-level function relative to what is returned by [h_coxreg_mult_cont_df()],
 #'   see the example).
+#' @export
 #'
 #' @examples
 #' # Starting from above `df`, zoom in on one biomarker and add required columns.
@@ -183,13 +189,12 @@ h_coxreg_mult_cont_df <- function(variables,
 #' df1$row_type <- "content"
 #' df1$var <- "ALL"
 #' df1$var_label <- "All patients"
-#' tern:::h_tab_surv_one_biomarker(
+#' h_tab_surv_one_biomarker(
 #'   df1,
 #'   vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
 #'   time_unit = "days"
 #' )
 #'
-#' @keywords internal
 h_tab_surv_one_biomarker <- function(df,
                                      vars,
                                      time_unit) {

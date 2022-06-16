@@ -96,7 +96,7 @@ df <- tern:::h_logistic_mult_cont_df(
 df
 
 # If the data set is empty, still the corresponding rows with missings are returned.
-tern:::h_coxreg_mult_cont_df(
+h_coxreg_mult_cont_df(
   variables = list(
     rsp = "rsp",
     biomarkers = c("BMRKR1", "AGE"),

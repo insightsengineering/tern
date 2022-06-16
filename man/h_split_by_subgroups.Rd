@@ -21,6 +21,8 @@ levels that belong to it in the character vectors that are elements of the list.
 A list with subset data (\code{df}) and metadata about the subset (\code{df_labels}).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Split a dataframe into a non-nested list of subsets.
 }
 \details{
@@ -36,12 +38,12 @@ df <- data.frame(
 )
 formatters::var_labels(df) <- paste("label for", names(df))
 
-tern:::h_split_by_subgroups(
+h_split_by_subgroups(
   data = df,
   subgroups = c("y", "z")
 )
 
-tern:::h_split_by_subgroups(
+h_split_by_subgroups(
   data = df,
   subgroups = c("y", "z"),
   groups_lists = list(
@@ -50,4 +52,3 @@ tern:::h_split_by_subgroups(
 )
 
 }
-\keyword{internal}

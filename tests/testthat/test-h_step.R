@@ -24,10 +24,10 @@ get_adrs <- function() {
 
 # h_step_window ----
 
-testthat::test_that("tern:::h_step_window works as expected for percentiles", {
+testthat::test_that("h_step_window works as expected for percentiles", {
   x <- -5:10
   control <- control_step(use_percentile = TRUE, num_points = 5L, bandwidth = 0.2)
-  result <- testthat::expect_silent(tern:::h_step_window(x = x, control = control))
+  result <- testthat::expect_silent(h_step_window(x = x, control = control))
   testthat::expect_is(result, "list")
   testthat::expect_named(result, c("sel", "interval"))
   sel <- result$sel
@@ -46,10 +46,10 @@ testthat::test_that("tern:::h_step_window works as expected for percentiles", {
   testthat::expect_identical(nrow(interval), control$num_points)
 })
 
-testthat::test_that("tern:::h_step_window works as expected for actual biomarker values", {
+testthat::test_that("h_step_window works as expected for actual biomarker values", {
   x <- -5:10
   control <- control_step(use_percentile = FALSE, num_points = 5L, bandwidth = 3)
-  result <- testthat::expect_silent(tern:::h_step_window(x = x, control = control))
+  result <- testthat::expect_silent(h_step_window(x = x, control = control))
   testthat::expect_is(result, "list")
   testthat::expect_named(result, c("sel", "interval"))
   sel <- result$sel
@@ -62,10 +62,10 @@ testthat::test_that("tern:::h_step_window works as expected for actual biomarker
   )
 })
 
-testthat::test_that("tern:::h_step_window also works for bandwidth `NULL`", {
+testthat::test_that("h_step_window also works for bandwidth `NULL`", {
   x <- -5:10
   control <- control_step(bandwidth = NULL, num_points = 2L)
-  result <- testthat::expect_silent(tern:::h_step_window(x = x, control = control))
+  result <- testthat::expect_silent(h_step_window(x = x, control = control))
   testthat::expect_true(all(result$sel))
   testthat::expect_true(all(result$interval[, "Percentile Lower"] == 0))
   testthat::expect_true(all(result$interval[, "Percentile Upper"] == 1))
@@ -73,7 +73,7 @@ testthat::test_that("tern:::h_step_window also works for bandwidth `NULL`", {
 
 # h_step_trt_effect ----
 
-testthat::test_that("tern:::h_step_trt_effect works for Cox models without interaction", {
+testthat::test_that("h_step_trt_effect works for Cox models without interaction", {
   dta_simple <- raw_data
   # Use a model without biomarker interaction, then we can compare with summary results.
   mod <- survival::coxph(survival::Surv(time, status) ~ armcd + age, data = dta_simple)
@@ -81,7 +81,7 @@ testthat::test_that("tern:::h_step_trt_effect works for Cox models without inter
     arm = "armcd",
     biomarker = "age"
   )
-  result <- tern:::h_step_trt_effect(
+  result <- h_step_trt_effect(
     data = dta_simple,
     model = mod,
     variables = vars,
@@ -91,7 +91,7 @@ testthat::test_that("tern:::h_step_trt_effect works for Cox models without inter
   testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
 })
 
-testthat::test_that("tern:::h_step_trt_effect works for Cox models with interaction", {
+testthat::test_that("h_step_trt_effect works for Cox models with interaction", {
   dta_simple <- raw_data
   mod <- survival::coxph(survival::Surv(time, status) ~ armcd * age + stage, data = dta_simple)
   vars <- list(
@@ -99,7 +99,7 @@ testthat::test_that("tern:::h_step_trt_effect works for Cox models with interact
     biomarker = "age"
   )
   # Try first at age = 0, which reduces to no interaction case.
-  result <- tern:::h_step_trt_effect(
+  result <- h_step_trt_effect(
     data = dta_simple,
     model = mod,
     variables = vars,
@@ -108,7 +108,7 @@ testthat::test_that("tern:::h_step_trt_effect works for Cox models with interact
   coef_sum <- summary(mod)$coefficients
   testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
   # Then at age = 50. Compare point estimate with manual calculation.
-  result <- tern:::h_step_trt_effect(
+  result <- h_step_trt_effect(
     data = dta_simple,
     model = mod,
     variables = vars,
@@ -120,7 +120,7 @@ testthat::test_that("tern:::h_step_trt_effect works for Cox models with interact
   testthat::expect_equivalent(result["se"], 1.322242, tol = 1e-5)
 })
 
-testthat::test_that("tern:::h_step_trt_effect works for Cox models with strata", {
+testthat::test_that("h_step_trt_effect works for Cox models with strata", {
   dta_simple <- raw_data
   mod <- survival::coxph(
     survival::Surv(time, status) ~ armcd * age + strata(stage),
@@ -131,7 +131,7 @@ testthat::test_that("tern:::h_step_trt_effect works for Cox models with strata",
     biomarker = "age"
   )
   # Try first at age = 0, which reduces to no interaction case.
-  result <- testthat::expect_silent(tern:::h_step_trt_effect(
+  result <- testthat::expect_silent(h_step_trt_effect(
     data = dta_simple,
     model = mod,
     variables = vars,
@@ -141,7 +141,7 @@ testthat::test_that("tern:::h_step_trt_effect works for Cox models with strata",
   testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
 })
 
-testthat::test_that("tern:::h_step_trt_effect works for logistic regression models without interaction", {
+testthat::test_that("h_step_trt_effect works for logistic regression models without interaction", {
   dta_simple <- raw_data
   # Use a model without biomarker interaction, then we can compare with summary results.
   mod <- stats::glm(status ~ armcd + age, data = dta_simple, family = stats::binomial())
@@ -149,7 +149,7 @@ testthat::test_that("tern:::h_step_trt_effect works for logistic regression mode
     arm = "armcd",
     biomarker = "age"
   )
-  result <- tern:::h_step_trt_effect(
+  result <- h_step_trt_effect(
     data = dta_simple,
     model = mod,
     variables = vars,
@@ -159,7 +159,7 @@ testthat::test_that("tern:::h_step_trt_effect works for logistic regression mode
   testthat::expect_equivalent(result, coef_sum["armcdB", c("Estimate", "Std. Error")])
 })
 
-testthat::test_that("tern:::h_step_trt_effect works for logistic regression models with interaction", {
+testthat::test_that("h_step_trt_effect works for logistic regression models with interaction", {
   dta <- get_adrs()
   mod <- stats::glm(formula = RSP ~ ARMBIN * AGE + RACE, data = dta, family = stats::binomial())
   vars <- list(
@@ -167,7 +167,7 @@ testthat::test_that("tern:::h_step_trt_effect works for logistic regression mode
     biomarker = "AGE"
   )
   # Try first at age = 0, which reduces to no interaction case.
-  result <- tern:::h_step_trt_effect(
+  result <- h_step_trt_effect(
     data = dta,
     model = mod,
     variables = vars,
@@ -176,7 +176,7 @@ testthat::test_that("tern:::h_step_trt_effect works for logistic regression mode
   coef_sum <- summary(mod)$coefficients
   testthat::expect_equivalent(result, coef_sum["ARMBINARM B", c("Estimate", "Std. Error")])
   # Then at age = 50. Compare point estimate with manual calculation.
-  result <- tern:::h_step_trt_effect(
+  result <- h_step_trt_effect(
     data = dta,
     model = mod,
     variables = vars,
@@ -188,7 +188,7 @@ testthat::test_that("tern:::h_step_trt_effect works for logistic regression mode
   testthat::expect_equivalent(result["se"], 0.2153840, tol = 1e-5)
 })
 
-testthat::test_that("tern:::h_step_trt_effect works for conditional logistic regression without interaction", {
+testthat::test_that("h_step_trt_effect works for conditional logistic regression without interaction", {
   dta <- get_adrs()
   dta <- dta[sample(nrow(dta)), ]
   mod <- survival::clogit(formula = RSP ~ ARMBIN + strata(STRATA1), data = dta)
@@ -196,7 +196,7 @@ testthat::test_that("tern:::h_step_trt_effect works for conditional logistic reg
     arm = "ARMBIN",
     biomarker = "AGE"
   )
-  result <- tern:::h_step_trt_effect(
+  result <- h_step_trt_effect(
     data = dta,
     model = mod,
     variables = vars,
@@ -206,7 +206,7 @@ testthat::test_that("tern:::h_step_trt_effect works for conditional logistic reg
   testthat::expect_equivalent(result, coef_sum["ARMBINARM B", c("coef", "se(coef)")])
 })
 
-testthat::test_that("tern:::h_step_trt_effect works for conditional logistic regression with interaction", {
+testthat::test_that("h_step_trt_effect works for conditional logistic regression with interaction", {
   dta <- get_adrs()
   dta <- dta[sample(nrow(dta)), ]
   mod <- survival::clogit(formula = RSP ~ ARMBIN * AGE + strata(STRATA1), data = dta)
@@ -214,7 +214,7 @@ testthat::test_that("tern:::h_step_trt_effect works for conditional logistic reg
     arm = "ARMBIN",
     biomarker = "AGE"
   )
-  result <- tern:::h_step_trt_effect(
+  result <- h_step_trt_effect(
     data = dta,
     model = mod,
     variables = vars,
@@ -228,16 +228,16 @@ testthat::test_that("tern:::h_step_trt_effect works for conditional logistic reg
 
 # h_step_survival_formula ----
 
-testthat::test_that("tern:::h_step_survival_formula works correctly without covariates or strata", {
+testthat::test_that("h_step_survival_formula works correctly without covariates or strata", {
   testthat::expect_equal(
-    tern:::h_step_survival_formula(
+    h_step_survival_formula(
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME"),
       control = control_step(degree = 3)
     ),
     Surv(TIME, EV) ~ TRT * stats::poly(BM, degree = 3, raw = TRUE)
   )
   testthat::expect_equal(
-    tern:::h_step_survival_formula(
+    h_step_survival_formula(
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME"),
       control = control_step(degree = 0)
     ),
@@ -245,9 +245,9 @@ testthat::test_that("tern:::h_step_survival_formula works correctly without cova
   )
 })
 
-testthat::test_that("tern:::h_step_survival_formula works correctly with covariates", {
+testthat::test_that("h_step_survival_formula works correctly with covariates", {
   testthat::expect_equal(
-    tern:::h_step_survival_formula(
+    h_step_survival_formula(
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME", covariates = c("A", "B")),
       control = control_step(degree = 2)
     ),
@@ -255,9 +255,9 @@ testthat::test_that("tern:::h_step_survival_formula works correctly with covaria
   )
 })
 
-testthat::test_that("tern:::h_step_survival_formula works correctly with strata", {
+testthat::test_that("h_step_survival_formula works correctly with strata", {
   testthat::expect_equal(
-    tern:::h_step_survival_formula(
+    h_step_survival_formula(
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME", strata = c("A", "B")),
     ),
     Surv(TIME, EV) ~ TRT + strata(A, B)
@@ -266,7 +266,7 @@ testthat::test_that("tern:::h_step_survival_formula works correctly with strata"
 
 # h_step_survival_est ----
 
-testthat::test_that("tern:::h_step_survival_est works as expected", {
+testthat::test_that("h_step_survival_est works as expected", {
   dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
@@ -276,11 +276,11 @@ testthat::test_that("tern:::h_step_survival_est works as expected", {
     covariates = "stage"
   )
   age_vals <- c(20, 30, 40)
-  form <- tern:::h_step_survival_formula(
+  form <- h_step_survival_formula(
     variables = vars,
     control = control_step(degree = 1)
   )
-  result <- testthat::expect_silent(tern:::h_step_survival_est(
+  result <- testthat::expect_silent(h_step_survival_est(
     formula = form,
     data = dta_simple,
     variables = vars,
@@ -292,7 +292,7 @@ testthat::test_that("tern:::h_step_survival_est works as expected", {
   testthat::expect_equal(result[, "loghr"], c(1.075486, 1.082507, 1.089528), tol = 1e-6)
 })
 
-testthat::test_that("tern:::h_step_survival_est gives a readable warning when fitting warnings occur", {
+testthat::test_that("h_step_survival_est gives a readable warning when fitting warnings occur", {
   dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
@@ -303,12 +303,12 @@ testthat::test_that("tern:::h_step_survival_est gives a readable warning when fi
   )
   age_vals <- c(20, 30, 40)
   # We increase `degree` such that model becomes very complex and hence fitting warnings occur.
-  form <- tern:::h_step_survival_formula(
+  form <- h_step_survival_formula(
     variables = vars,
     control = control_step(degree = 4)
   )
   testthat::expect_warning(
-    tern:::h_step_survival_est(
+    h_step_survival_est(
       formula = form,
       data = dta_simple,
       variables = vars,
@@ -320,25 +320,25 @@ testthat::test_that("tern:::h_step_survival_est gives a readable warning when fi
 
 # h_step_rsp_formula ----
 
-testthat::test_that("tern:::h_step_rsp_formula works correctly without covariates", {
+testthat::test_that("h_step_rsp_formula works correctly without covariates", {
   testthat::expect_equal(
-    tern:::h_step_rsp_formula(
+    h_step_rsp_formula(
       list(arm = "TRT", biomarker = "BM", response = "RSP"),
       control = c(control_step(degree = 3), control_logistic())
     ),
     RSP ~ TRT * stats::poly(BM, degree = 3, raw = TRUE)
   )
   testthat::expect_equal(
-    tern:::h_step_rsp_formula(
+    h_step_rsp_formula(
       list(arm = "TRT", biomarker = "BM", response = "RSP")
     ),
     RSP ~ TRT
   )
 })
 
-testthat::test_that("tern:::h_step_rsp_formula works correctly with covariates", {
+testthat::test_that("h_step_rsp_formula works correctly with covariates", {
   testthat::expect_equal(
-    tern:::h_step_rsp_formula(
+    h_step_rsp_formula(
       list(arm = "TRT", biomarker = "BM", response = "RSP", covariates = c("A", "B")),
       control = c(control_logistic(), control_step(degree = 2))
     ),
@@ -346,9 +346,9 @@ testthat::test_that("tern:::h_step_rsp_formula works correctly with covariates",
   )
 })
 
-testthat::test_that("tern:::h_step_rsp_formula works correctly with different response definition", {
+testthat::test_that("h_step_rsp_formula works correctly with different response definition", {
   testthat::expect_equal(
-    tern:::h_step_rsp_formula(
+    h_step_rsp_formula(
       list(arm = "TRT", biomarker = "BM", response = "AVAL"),
       control = c(
         control_logistic(response_definition = "I(response == 'CR')"),
@@ -359,16 +359,16 @@ testthat::test_that("tern:::h_step_rsp_formula works correctly with different re
   )
 })
 
-testthat::test_that("tern:::h_step_rsp_formula works correctly with strata", {
+testthat::test_that("h_step_rsp_formula works correctly with strata", {
   testthat::expect_equal(
-    tern:::h_step_rsp_formula(
+    h_step_rsp_formula(
       list(arm = "TRT", biomarker = "BM", response = "RSP", strata = c("A", "B")),
       control = c(control_logistic(), control_step(degree = 2))
     ),
     RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + strata(I(interaction(A, B)))
   )
   testthat::expect_equal(
-    tern:::h_step_rsp_formula(
+    h_step_rsp_formula(
       list(arm = "TRT", biomarker = "BM", response = "RSP", strata = "A"),
       control = c(control_logistic(), control_step(degree = 2))
     ),
@@ -378,7 +378,7 @@ testthat::test_that("tern:::h_step_rsp_formula works correctly with strata", {
 
 # h_step_rsp_est ----
 
-testthat::test_that("tern:::h_step_rsp_est works as expected without strata", {
+testthat::test_that("h_step_rsp_est works as expected without strata", {
   dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
@@ -387,12 +387,12 @@ testthat::test_that("tern:::h_step_rsp_est works as expected without strata", {
     covariates = "time"
   )
   age_vals <- c(20, 30, 40)
-  form <- tern:::h_step_rsp_formula(
+  form <- h_step_rsp_formula(
     variables = vars,
     control = c(control_logistic(), control_step(degree = 1))
   )
   subset <- dta_simple$age > 15
-  result <- testthat::expect_silent(tern:::h_step_rsp_est(
+  result <- testthat::expect_silent(h_step_rsp_est(
     formula = form,
     data = dta_simple,
     variables = vars,
@@ -406,7 +406,7 @@ testthat::test_that("tern:::h_step_rsp_est works as expected without strata", {
   testthat::expect_equal(result[, "n"], rep(sum(subset), 3L))
 })
 
-testthat::test_that("tern:::h_step_rsp_est works as expected with strata", {
+testthat::test_that("h_step_rsp_est works as expected with strata", {
   dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
@@ -416,12 +416,12 @@ testthat::test_that("tern:::h_step_rsp_est works as expected with strata", {
     strata = "stage"
   )
   age_vals <- c(20, 30, 40)
-  form <- tern:::h_step_rsp_formula(
+  form <- h_step_rsp_formula(
     variables = vars,
     control = c(control_logistic(), control_step(degree = 1))
   )
   subset <- dta_simple$age > 15
-  result <- testthat::expect_silent(tern:::h_step_rsp_est(
+  result <- testthat::expect_silent(h_step_rsp_est(
     formula = form,
     data = dta_simple,
     variables = vars,
@@ -435,7 +435,7 @@ testthat::test_that("tern:::h_step_rsp_est works as expected with strata", {
   testthat::expect_equal(result[, "n"], rep(sum(subset), 3L))
 })
 
-testthat::test_that("tern:::h_step_rsp_est gives a readable warning when fitting warnings occur", {
+testthat::test_that("h_step_rsp_est gives a readable warning when fitting warnings occur", {
   dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
@@ -446,12 +446,12 @@ testthat::test_that("tern:::h_step_rsp_est gives a readable warning when fitting
   )
   age_vals <- c(20, 30, 40)
   # We increase `degree` such that model becomes very complex and hence fitting warnings occur.
-  form <- tern:::h_step_rsp_formula(
+  form <- h_step_rsp_formula(
     variables = vars,
     control = c(control_logistic(), control_step(degree = 4))
   )
   testthat::expect_warning(
-    tern:::h_step_rsp_est(
+    h_step_rsp_est(
       formula = form,
       data = dta_simple,
       variables = vars,
