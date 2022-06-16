@@ -152,7 +152,7 @@ ADTTE <- synthetic_cdisc_data("latest")$adtte
 ADTTE_f <- ADTTE \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(
-    AVAL = tern:::day2month(AVAL),
+    AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
 df <- ADTTE_f \%>\%

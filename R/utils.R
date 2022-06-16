@@ -178,9 +178,9 @@ month2day <- function(x) {
 #'
 #' @examples
 #' x <- c(403, 248, 30, 86)
-#' tern:::day2month(x)
+#' day2month(x)
 #'
-#' @keywords internal
+#' @export
 day2month <- function(x) {
   assertthat::assert_that(is.numeric(x))
   x / 30.4375
