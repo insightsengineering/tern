@@ -63,10 +63,12 @@ h_count_cumulative <- function(x,
 
 #' Description of Cumulative Count
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is a helper function that describes analysis in `s_count_cumulative`
 #' @inheritParams h_count_cumulative
 #' @return a `string`
-#' @keywords internal
+#' @export
 #'
 d_count_cumulative <- function(threshold, lower_tail, include_eq) {
   assertthat::assert_that(

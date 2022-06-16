@@ -255,7 +255,12 @@ reference:
       - combine_levels
       - cut_quantile_bins
       - df_explicit_na
+      - d_onco_rsp_label
       - d_pkparam
+      - d_proportion_diff
+      - d_rsp_subgroups_colvars
+      - d_survival_subgroups_colvars
+      - d_test_proportion_diff
       - explicit_na
       - fct_collapse_only
       - fct_discard

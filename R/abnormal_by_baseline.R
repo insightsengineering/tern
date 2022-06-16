@@ -29,10 +29,12 @@ NULL
 
 #' @describeIn abnormal_by_baseline Description Function that produces the labels for [s_count_abnormal_by_baseline()].
 #'
-#' @examples
-#' tern:::d_count_abnormal_by_baseline("LOW")
+#' @description `r lifecycle::badge("stable")`
 #'
-#' @keywords internal
+#' @examples
+#' d_count_abnormal_by_baseline("LOW")
+#'
+#' @export
 d_count_abnormal_by_baseline <- function(abnormal) {
   null_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
   not_abn_name <- paste("Not", tolower(abnormal), "baseline status")
