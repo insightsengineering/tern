@@ -25,7 +25,7 @@ Depends:
 Imports:
     assertthat,
     broom,
-    car,
+    car (>= 3.1-0),
     checkmate,
     cowplot,
     dplyr,
