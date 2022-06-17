@@ -493,10 +493,8 @@ estimate_coef <- function(variable, given,
 #'
 #' @inheritParams car::Anova
 #'
-#' @md
 #' @return A list with item `aov` for the result of the model and
 #'   `error_text` for the captured warnings.
-#' @keywords internal
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected
@@ -513,9 +511,10 @@ estimate_coef <- function(variable, given,
 #' with_wald <- tern:::try_car_anova(mod = mod, test.statistic = "Wald")
 #' with_lr <- tern:::try_car_anova(mod = mod, test.statistic = "LR")
 #' }
+#'
+#' @keywords internal
 try_car_anova <- function(mod,
                           test.statistic) { # nolint
-
   y <- tryCatch(
     withCallingHandlers(
       expr = {
