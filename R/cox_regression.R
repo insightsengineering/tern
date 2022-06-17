@@ -54,8 +54,6 @@ NULL
 
 #' @describeIn cox_regression Helper for Cox Regression Formula
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' Creates a list of formulas. It is used internally by [fit_coxreg_univar()]
 #' for the comparison of univariate Cox regression models.
 #'
@@ -153,8 +151,6 @@ h_coxreg_univar_formulas <- function(variables,
 }
 
 #' @describeIn cox_regression Helper for Multi-variable Cox Regression Formula
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' Creates a formulas string. It is used internally by [fit_coxreg_multivar()]
 #' for the comparison of multi-variable Cox regression models. Interactions will not
@@ -429,8 +425,6 @@ tidy.summary.coxph <- function(x, # nolint
 #' @describeIn cox_regression Utility function to help tabulate the result of
 #' a univariate Cox regression model.
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' @inheritParams argument_convention
 #' @inheritParams cox_regression_inter
 #' @param effect (`string`)\cr the treatment variable.
@@ -561,8 +555,6 @@ h_coxreg_inter_effect <- function(x,
 #' @describeIn cox_regression_inter Estimate the interaction with a numerical
 #'   covariate
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' @param at (`list`)\cr a list with items named after the covariate, every
 #'   item is a vector of levels at which the interaction should be estimated.
 #' @export
@@ -615,8 +607,6 @@ h_coxreg_inter_effect.numeric <- function(x, # nolint
 #' @describeIn cox_regression_inter Estimate the interaction with a factor
 #'   covariate.
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' @param data (`data frame`)\cr the data frame on which the model was fit.
 #' @export
 h_coxreg_inter_effect.factor <- function(x, # nolint
@@ -653,8 +643,6 @@ h_coxreg_inter_effect.factor <- function(x, # nolint
 #' @describeIn cox_regression_inter a higher level function that returns
 #'   the test of the interaction test and the estimated values. If
 #'   no interaction, [h_coxreg_univar_extract()] is applied.
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' @export
 #'
@@ -713,8 +701,6 @@ h_coxreg_extract_interaction <- function(effect,
 }
 
 #' @describeIn cox_regression_inter hazard ratio estimation in interactions.
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' @param variable,given (`string`)\cr
 #'   the name of variables in interaction. We seek the estimation of the levels
@@ -966,8 +952,6 @@ fit_coxreg_multivar <- function(variables,
 }
 
 #' @describeIn cox_regression Tabulation of Multi-variable Cox Regressions
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' Utility function to help tabulate the result of a multi-variable Cox regression model
 #' for a treatment/covariate variable.

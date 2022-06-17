@@ -21,10 +21,10 @@ s_count_nonmissing <- function(x) {
 }
 
 #' @describeIn count_missed_doses Description function that calculates labels for  [s_count_missed_doses()].
-#' @export
 #' @inheritParams s_count_missed_doses
 #' @return [d_count_missed_doses()] returns a named `character` vector with the labels.
 #'
+#' @export
 d_count_missed_doses <- function(thresholds) {
   paste0("At least ", thresholds, " missed dose", ifelse(thresholds > 1, "s", ""))
 }

@@ -21,8 +21,7 @@ The modified layout.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Helper layout creating function to just append the variable labels of a given variables vector
 from a given dataset in the top left corner. If a variable label is not found then the
 variable name itself is used instead. Multiple variable labels are concatenated with slashes.
