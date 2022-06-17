@@ -116,6 +116,8 @@ add_rowcounts <- function(lyt) {
 
 #' Obtain Column Indices
 #'
+#' @description`r lifecycle::badge("stable")`
+#'
 #' Helper function to extract column indices from a `VTableTree` for a given
 #' vector of column names.
 #'
@@ -123,8 +125,8 @@ add_rowcounts <- function(lyt) {
 #' @param col_names (`character`)\cr vector of column names.
 #'
 #' @return the vector of column indices.
-#' @keywords internal
 #'
+#' @export
 h_col_indices <- function(table_tree, col_names) {
   assertthat::assert_that(has_tabletree_colnames(table_tree, col_names))
   match(col_names, names(table_tree))
