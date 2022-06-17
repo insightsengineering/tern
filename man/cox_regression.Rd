@@ -129,6 +129,24 @@ with 4 elements:
 
 Fits a Cox regression model and estimate hazard ratio to describe the effect
 size in a survival analysis.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Creates a list of formulas. It is used internally by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
+for the comparison of univariate Cox regression models.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Creates a formulas string. It is used internally by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}
+for the comparison of multi-variable Cox regression models. Interactions will not
+be included in multi-variable Cox regression model.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Utility function to help tabulate the result of a multi-variable Cox regression model
+for a treatment/covariate variable.
 }
 \details{
 Cox models are the most commonly used methods to estimate the magnitude of
@@ -142,14 +160,7 @@ analysis (NEST Team, 2020).
 \itemize{
 \item \code{h_coxreg_univar_formulas}: Helper for Cox Regression Formula
 
-Creates a list of formulas. It is used internally by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
-for the comparison of univariate Cox regression models.
-
 \item \code{h_coxreg_multivar_formula}: Helper for Multi-variable Cox Regression Formula
-
-Creates a formulas string. It is used internally by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}
-for the comparison of multi-variable Cox regression models. Interactions will not
-be included in multi-variable Cox regression model.
 
 \item \code{fit_coxreg_univar}: Fit a series of univariate Cox regression models
 given the inputs.
@@ -168,9 +179,6 @@ Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_u
 \item \code{fit_coxreg_multivar}: Fit a multi-variable Cox regression model.
 
 \item \code{h_coxreg_multivar_extract}: Tabulation of Multi-variable Cox Regressions
-
-Utility function to help tabulate the result of a multi-variable Cox regression model
-for a treatment/covariate variable.
 
 \item \code{tidy.coxreg.multivar}: Custom tidy method for a Multi-variable Cox Regression
 
