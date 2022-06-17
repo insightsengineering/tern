@@ -22,13 +22,11 @@ format_extreme_values_ci(digits = 2L)
 \item{x}{(\code{number})\cr value to format.}
 }
 \description{
-@description \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+\code{Rtables} Formatting Functions that handle extreme values.
 }
 \details{
-\code{Rtables} Formatting Functions that handle extreme values.
-
 For each input, apply a format to the specified number of \code{digits}. If the value is
 below a threshold, it returns "<0.01" e.g. if the number of \code{digits} is 2. If the value is
 above a threshold, it returns ">999.99" e.g. if the number of \code{digits} is 2.

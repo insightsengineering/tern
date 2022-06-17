@@ -173,7 +173,7 @@ format_fraction_threshold <- function(threshold) {
 
 #' Formatting Extreme Values
 #'
-#'  @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' `Rtables` Formatting Functions that handle extreme values.
 #'
@@ -213,8 +213,6 @@ h_get_format_threshold <- function(digits = 2L) {
 
 #' @describeIn extreme_format Internal helper function to apply a threshold format to a value.
 #'   Creates a formatted string to be used in Formatting Functions.
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' @param x (`number`)\cr value to format.
 #' @export
