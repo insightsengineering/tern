@@ -19,12 +19,11 @@ default)}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-<<<<<<< HEAD
-=======
 Convert the survival fit data into a data frame designed for plotting
 within \code{g_km}.
 
->>>>>>> 348bd714249c04d13c78f41c02a046e27c8e01c5
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This starts from the \code{\link[broom:reexports]{broom::tidy()}} result, and then:
 \itemize{
 \item post-processes the \code{strata} column into a factor,
@@ -33,10 +32,6 @@ and probability 1 so that downstream plot lines start at those coordinates,
 \item adds a \code{censor} column,
 \item filters the rows before \code{max_time}.
 }
-}
-\details{
-Convert the survival fit data into a data frame designed for plotting
-within \code{g_km}.
 }
 \examples{
 \dontrun{

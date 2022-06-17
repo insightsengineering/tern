@@ -14,6 +14,8 @@ h_split_param(param, value, f)
 \item{f}{(\code{list} of \code{vectors})\cr the reference to make the split}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 It divides the data in the vector \code{param} into the groups defined by \code{f}
 based on specified \code{values}.
 It is relevant in \code{rtables} layers so as to distribute parameters
@@ -27,7 +29,7 @@ f <- list(
 )
 
 .stats <- c("pt_at_risk", "rate_diff")
-tern:::h_split_param(.stats, .stats, f = f)
+h_split_param(.stats, .stats, f = f)
 
 # $surv
 # [1] "pt_at_risk"
@@ -36,7 +38,7 @@ tern:::h_split_param(.stats, .stats, f = f)
 # [1] "rate_diff"
 
 .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
-tern:::h_split_param(.formats, names(.formats), f = f)
+h_split_param(.formats, names(.formats), f = f)
 
 # $surv
 # pt_at_risk event_free_rate
@@ -46,4 +48,3 @@ tern:::h_split_param(.formats, names(.formats), f = f)
 # NULL
 
 }
-\keyword{internal}

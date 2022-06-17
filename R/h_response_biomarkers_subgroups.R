@@ -1,5 +1,7 @@
 #' Helper Functions for Tabulating Biomarker Effects on Binary Response by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper functions which are documented here separately to not confuse the user
 #' when reading about the user-facing functions.
 #'
@@ -22,7 +24,6 @@
 #'   mutate(rsp = AVALC == "CR")
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 #'
-#' @keywords internal
 NULL
 
 #' @describeIn h_response_biomarkers_subgroups helps with converting the "response" function variable list
@@ -32,7 +33,7 @@ NULL
 #'
 #' @examples
 #' # This is how the variable list is converted internally.
-#' tern:::h_rsp_to_logistic_variables(
+#' h_rsp_to_logistic_variables(
 #'   variables = list(
 #'     rsp = "RSP",
 #'     covariates = c("A", "B"),
@@ -41,7 +42,7 @@ NULL
 #'   biomarker = "AGE"
 #' )
 #'
-#' @keywords internal
+#' @export
 h_rsp_to_logistic_variables <- function(variables, biomarker) {
   assertthat::assert_that(
     is.list(variables),
@@ -66,7 +67,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 #' @examples
 #' # For a single population, estimate separately the effects
 #' # of two biomarkers.
-#' df <- tern:::h_logistic_mult_cont_df(
+#' df <- h_logistic_mult_cont_df(
 #'   variables = list(
 #'     rsp = "rsp",
 #'     biomarkers = c("BMRKR1", "AGE"),
@@ -87,7 +88,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 #'   data = adrs_f[NULL, ]
 #' )
 #'
-#' @keywords internal
+#' @export
 h_logistic_mult_cont_df <- function(variables,
                                     data,
                                     control = control_logistic()) {
@@ -176,7 +177,7 @@ h_logistic_mult_cont_df <- function(variables,
 #'   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
 #' )
 #'
-#' @keywords internal
+#' @export
 h_tab_rsp_one_biomarker <- function(df,
                                     vars) {
   afuns <- a_response_subgroups()[vars]

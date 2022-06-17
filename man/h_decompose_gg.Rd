@@ -11,7 +11,6 @@ h_decompose_gg(gg)
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 The elements composing the \code{ggplot} are extracted and organized in a
 list containing:
 the panel (\code{panel}),
@@ -31,7 +30,7 @@ fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- tern:::h_xticks(data = data_plot)
-gg <- tern:::h_ggkm(
+gg <- h_ggkm(
   data = data_plot,
   yval = "Survival",
   censor_show = TRUE,

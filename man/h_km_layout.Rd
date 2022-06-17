@@ -18,6 +18,8 @@ reporting the number of patient at risk matching the main grid of the
 Kaplan-Meier curve.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
 }
 \details{
@@ -44,16 +46,15 @@ fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- tern:::h_xticks(data = data_plot)
-gg <- tern:::h_ggkm(
+gg <- h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
   title = "tt", yval = "Survival"
 )
 g_el <- h_decompose_gg(gg)
-lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
+lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
 grid.show.layout(lyt)
 }
 
 }
-\keyword{internal}

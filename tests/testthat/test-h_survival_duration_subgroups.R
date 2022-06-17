@@ -109,7 +109,7 @@ testthat::test_that("tern:::h_survtime_df fails with wrong input", {
   ))
 })
 
-testthat::test_that("tern:::h_split_by_subgroups functions as expected with valid input and default arguments", {
+testthat::test_that("h_split_by_subgroups functions as expected with valid input and default arguments", {
   lvls_y <- c("B", "A", "C")
 
   df_test <- data.frame(
@@ -171,7 +171,7 @@ testthat::test_that("tern:::h_split_by_subgroups functions as expected with vali
   testthat::expect_equal(result, expected)
 })
 
-testthat::test_that("tern:::h_split_by_subgroups works as expected with groups_lists", {
+testthat::test_that("h_split_by_subgroups works as expected with groups_lists", {
   lvls_y <- c("B", "A", "C")
 
   df_test <- data.frame(

@@ -195,14 +195,14 @@ testthat::test_that("as.rtable.data.frame uses variable labels for column header
   testthat::expect_identical(names(result), c("label for a", "label for b"))
 })
 
-testthat::test_that("tern:::h_split_param divides param values", {
+testthat::test_that("h_split_param divides param values", {
   f <- list(
     surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),
     surv_diff = c("rate_diff", "rate_diff_ci", "ztest_pval")
   )
 
   .stats <- c("pt_at_risk", "rate_diff")
-  result <- tern:::h_split_param(.stats, .stats, f = f)
+  result <- h_split_param(.stats, .stats, f = f)
   expected <- list(
     surv = "pt_at_risk",
     surv_diff = "rate_diff"
@@ -210,7 +210,7 @@ testthat::test_that("tern:::h_split_param divides param values", {
   testthat::expect_identical(result, expected)
 
   .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
-  result <- tern:::h_split_param(.formats, names(.formats), f = f)
+  result <- h_split_param(.formats, names(.formats), f = f)
   expected <- list(
     surv = c("pt_at_risk" = "xx", "event_free_rate" = "xxx"),
     surv_diff = NULL

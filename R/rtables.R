@@ -115,12 +115,7 @@ add_rowcounts <- function(lyt) {
 }
 
 #' Obtain Column Indices
-#'
-<<<<<<< HEAD
 #' @description `r lifecycle::badge("stable")`
-=======
-#' @description`r lifecycle::badge("stable")`
->>>>>>> 348bd714249c04d13c78f41c02a046e27c8e01c5
 #'
 #' Helper function to extract column indices from a `VTableTree` for a given
 #' vector of column names.
@@ -129,11 +124,6 @@ add_rowcounts <- function(lyt) {
 #' @param col_names (`character`)\cr vector of column names.
 #'
 #' @return the vector of column indices.
-<<<<<<< HEAD
-#' @export
-=======
->>>>>>> 348bd714249c04d13c78f41c02a046e27c8e01c5
-#'
 #' @export
 h_col_indices <- function(table_tree, col_names) {
   assertthat::assert_that(has_tabletree_colnames(table_tree, col_names))
@@ -213,6 +203,8 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 
 #' Split parameters
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' It divides the data in the vector `param` into the groups defined by `f`
 #' based on specified `values`.
 #' It is relevant in `rtables` layers so as to distribute parameters
@@ -230,7 +222,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' )
 #'
 #' .stats <- c("pt_at_risk", "rate_diff")
-#' tern:::h_split_param(.stats, .stats, f = f)
+#' h_split_param(.stats, .stats, f = f)
 #'
 #' # $surv
 #' # [1] "pt_at_risk"
@@ -239,7 +231,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' # [1] "rate_diff"
 #'
 #' .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
-#' tern:::h_split_param(.formats, names(.formats), f = f)
+#' h_split_param(.formats, names(.formats), f = f)
 #'
 #' # $surv
 #' # pt_at_risk event_free_rate
@@ -248,7 +240,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' # $surv_diff
 #' # NULL
 #'
-#' @keywords internal
+#' @export
 h_split_param <- function(param,
                           value,
                           f) {

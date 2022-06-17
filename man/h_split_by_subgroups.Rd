@@ -36,12 +36,12 @@ df <- data.frame(
 )
 formatters::var_labels(df) <- paste("label for", names(df))
 
-tern:::h_split_by_subgroups(
+h_split_by_subgroups(
   data = df,
   subgroups = c("y", "z")
 )
 
-tern:::h_split_by_subgroups(
+h_split_by_subgroups(
   data = df,
   subgroups = c("y", "z"),
   groups_lists = list(
@@ -50,4 +50,3 @@ tern:::h_split_by_subgroups(
 )
 
 }
-\keyword{internal}

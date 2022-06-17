@@ -25,6 +25,8 @@ variable only has one level. Default is "All".}
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 The survival fit is transformed in a grob containing a table with groups in
 rows characterized by N, median and 95\% confidence interval.
 }
@@ -40,9 +42,8 @@ grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
-  tern:::h_grob_median_surv() \%>\%
+  h_grob_median_surv() \%>\%
   grid::grid.draw()
 }
 
 }
-\keyword{internal}

@@ -120,6 +120,7 @@ reference:
       - h_adsl_adlb_merge_using_worst_flag
       - h_ancova
       - h_append_grade_groups
+      - h_col_indicies
       - h_count_cumulative
       - h_coxph_df
       - h_coxph_subgroups_df
@@ -134,7 +135,11 @@ reference:
       - h_coxreg_univar_extract
       - h_coxreg_univar_formulas
       - h_decompose_gg
+      - h_format_threshold
+      - h_format_row
+      - h_get_format_threshold
       - h_get_interaction_vars
+      - h_ggkm
       - h_glm_inter_term_extract
       - h_glm_interaction_extract
       - h_glm_simple_term_extract
@@ -145,7 +150,9 @@ reference:
       - h_incidence_rate_normal_log
       - h_interaction_coef_name
       - h_interaction_term_labels
+      - h_km_layout
       - h_logistic_inter_terms
+      - h_logistic_mult_cont_df
       - h_logistic_simple_terms
       - h_map_for_count_abnormal
       - h_odds_ratio_df
@@ -157,8 +164,10 @@ reference:
       - h_proportion_df
       - h_proportion_subgroups_df
       - h_response_biomarkers_subgroups
+      - h_rsp_to_logistic_variables
       - h_simple_term_labels
       - h_split_by_subgroups
+      - h_split_param
       - h_stack_by_baskets
       - h_step_rsp_est
       - h_step_rsp_formula
@@ -170,9 +179,11 @@ reference:
       - h_survtime_df
       - h_survtime_subgroups_df
       - h_tab_one_biomarker
+      - h_tab_rsp_one_biomarker
       - h_tab_surv_one_biomarker
       - h_tbl_coxph_pairwise
       - h_tbl_median_surv
+      - h_worsen_counter
       - or_clogit
       - or_glm
       - prop_diff_cmh
@@ -270,6 +281,10 @@ reference:
       - decorate_grob_set
       - draw_grob
       - h_g_ipp
+      - h_grob_coxph
+      - h_grob_median_surv
+      - h_grob_tbl_at_risk
+      - h_grob_y_annot
       - h_set_nest_theme
       - h_xticks
       - stack_grobs

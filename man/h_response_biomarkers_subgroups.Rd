@@ -38,6 +38,8 @@ see the example).}
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Helper functions which are documented here separately to not confuse the user
 when reading about the user-facing functions.
 }
@@ -74,7 +76,7 @@ adrs_f <- adrs \%>\%
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 
 # This is how the variable list is converted internally.
-tern:::h_rsp_to_logistic_variables(
+h_rsp_to_logistic_variables(
   variables = list(
     rsp = "RSP",
     covariates = c("A", "B"),
@@ -85,7 +87,7 @@ tern:::h_rsp_to_logistic_variables(
 
 # For a single population, estimate separately the effects
 # of two biomarkers.
-df <- tern:::h_logistic_mult_cont_df(
+df <- h_logistic_mult_cont_df(
   variables = list(
     rsp = "rsp",
     biomarkers = c("BMRKR1", "AGE"),
@@ -118,4 +120,3 @@ tern:::h_tab_rsp_one_biomarker(
 )
 
 }
-\keyword{internal}

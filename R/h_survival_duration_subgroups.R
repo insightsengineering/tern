@@ -1,5 +1,7 @@
 #' Helper Functions for Tabulating Survival Duration by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper functions that tabulate in a data frame statistics such as median survival
 #' time and hazard ratio for population subgroups.
 #'
@@ -411,12 +413,12 @@ h_coxph_subgroups_df <- function(variables,
 #' )
 #' formatters::var_labels(df) <- paste("label for", names(df))
 #'
-#' tern:::h_split_by_subgroups(
+#' h_split_by_subgroups(
 #'   data = df,
 #'   subgroups = c("y", "z")
 #' )
 #'
-#' tern:::h_split_by_subgroups(
+#' h_split_by_subgroups(
 #'   data = df,
 #'   subgroups = c("y", "z"),
 #'   groups_lists = list(
@@ -424,7 +426,7 @@ h_coxph_subgroups_df <- function(variables,
 #'   )
 #' )
 #'
-#' @keywords internal
+#' @export
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {
