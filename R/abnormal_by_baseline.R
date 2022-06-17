@@ -29,8 +29,6 @@ NULL
 
 #' @describeIn abnormal_by_baseline Description Function that produces the labels for [s_count_abnormal_by_baseline()].
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' @examples
 #' d_count_abnormal_by_baseline("LOW")
 #'

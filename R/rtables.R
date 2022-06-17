@@ -88,9 +88,10 @@ c_label_n <- function(df,
 
 #' Layout Creating Function to Add Row Total Counts
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This works analogously to [rtables::add_colcounts()] but on the rows.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #'
 #' @return The modified layout where the latest row split labels now have the row-wise
@@ -271,6 +272,8 @@ afun_selected_stats <- function(.stats, all_stats) {
 
 #' Add Variable Labels to Top Left Corner in Table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper layout creating function to just append the variable labels of a given variables vector
 #' from a given dataset in the top left corner. If a variable label is not found then the
 #' variable name itself is used instead. Multiple variable labels are concatenated with slashes.
@@ -279,7 +282,6 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'   itself during the layout creation. When we have a more mature `rtables` implementation then
 #'   this will also be improved or not necessary anymore.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @param vars (`character`)\cr variable names of which the labels are to be looked up in `df`.
 #' @param indent (`integer`)\cr non-negative number of nested indent space, default to 0L which means no indent.

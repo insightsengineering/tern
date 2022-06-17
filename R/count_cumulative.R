@@ -11,8 +11,6 @@ NULL
 #' @describeIn count_cumulative Helper function to calculate count and fraction of
 #'   `x` values in the lower or upper tail given a threshold.
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' @inheritParams argument_convention
 #' @param threshold (`number`)\cr a cutoff value as threshold to count values of `x`.
 #' @param lower_tail (`logical`)\cr whether to count lower tail, default is `TRUE`.
