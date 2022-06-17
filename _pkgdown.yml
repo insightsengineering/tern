@@ -133,6 +133,7 @@ reference:
       - h_coxreg_multivar_formula
       - h_coxreg_univar_extract
       - h_coxreg_univar_formulas
+      - h_decompose_gg
       - h_get_interaction_vars
       - h_glm_inter_term_extract
       - h_glm_interaction_extract
