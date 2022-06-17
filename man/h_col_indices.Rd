@@ -15,7 +15,8 @@ h_col_indices(table_tree, col_names)
 the vector of column indices.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Helper function to extract column indices from a \code{VTableTree} for a given
 vector of column names.
 }
-\keyword{internal}

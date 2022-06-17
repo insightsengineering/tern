@@ -213,6 +213,9 @@ h_get_format_threshold <- function(digits = 2L) {
 
 #' @describeIn extreme_format Internal helper function to apply a threshold format to a value.
 #'   Creates a formatted string to be used in Formatting Functions.
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @param x (`number`)\cr value to format.
 #' @export
 #' @examples

@@ -10,6 +10,8 @@ h_decompose_gg(gg)
 \item{gg}{(\code{ggplot})\cr a graphic to decompose.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 The elements composing the \code{ggplot} are extracted and organized in a
 list containing:
 the panel (\code{panel}),
@@ -37,7 +39,7 @@ gg <- tern:::h_ggkm(
   title = "tt"
 )
 
-g_el <- tern:::h_decompose_gg(gg)
+g_el <- h_decompose_gg(gg)
 grid::grid.newpage()
 grid.rect(gp = grid::gpar(lty = 1, col = "red", fill = "gray85", lwd = 5))
 grid::grid.draw(g_el$panel)
@@ -48,4 +50,3 @@ grid::grid.draw(with(g_el, cbind(ylab, yaxis)))
 }
 
 }
-\keyword{internal}

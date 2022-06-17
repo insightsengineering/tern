@@ -389,6 +389,8 @@ g_km <- function(df,
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This starts from the [broom::tidy()] result, and then:
 #' - post-processes the `strata` column into a factor,
 #' - extends each stratum by an additional first row with time 0
@@ -400,7 +402,7 @@ g_km <- function(df,
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`) \cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
-#' @keywords internal
+#' @export
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -411,13 +413,13 @@ g_km <- function(df,
 #' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   tern:::h_data_plot()
+#'   h_data_plot()
 #'
 #' # Test with single arm
 #' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   tern:::h_data_plot(armval = "ARM B")
+#'   h_data_plot(armval = "ARM B")
 #' }
 #'
 h_data_plot <- function(fit_km,
@@ -666,6 +668,8 @@ h_ggkm <- function(data,
 
 #' `ggplot` Decomposition
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' The elements composing the `ggplot` are extracted and organized in a
 #' list containing:
 #' the panel (`panel`),
@@ -674,7 +678,7 @@ h_ggkm <- function(data,
 #' the legend (`guide`).
 #'
 #' @param gg (`ggplot`)\cr a graphic to decompose.
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -696,7 +700,7 @@ h_ggkm <- function(data,
 #'   title = "tt"
 #' )
 #'
-#' g_el <- tern:::h_decompose_gg(gg)
+#' g_el <- h_decompose_gg(gg)
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "red", fill = "gray85", lwd = 5))
 #' grid::grid.draw(g_el$panel)

@@ -406,6 +406,7 @@ g_lineplot <- function(df, # nolint
 
 #' Helper function to get the right formatting in the optional table in g_lineplot.
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @param x (named `list`) \cr list of numerical values to be formatted and optionally labeled.
 #' Elements of `x` must be `numeric` vectors.
@@ -431,13 +432,13 @@ g_lineplot <- function(df, # nolint
 #' x <- list(mean = 50, mean_ci = mean_ci)
 #' format <- c(mean = "xx.x", mean_ci = "(xx.xx, xx.xx)")
 #' labels <- c(mean = "My Mean")
-#' tern:::h_format_row(x, format, labels)
+#' h_format_row(x, format, labels)
 #'
 #' attr(mean_ci, "label") <- "Mean 95% CI"
 #' x <- list(mean = 50, mean_ci = mean_ci)
-#' tern:::h_format_row(x, format, labels)
+#' h_format_row(x, format, labels)
 #'
-#' @keywords internal
+#' @export
 h_format_row <- function(x, format, labels = NULL) {
 
   # cell: one row, one column data.frame

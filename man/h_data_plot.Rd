@@ -17,10 +17,8 @@ Only data values less than or up to to this threshold value will be plotted.(\co
 default)}
 }
 \description{
-Convert the survival fit data into a data frame designed for plotting
-within \code{g_km}.
-}
-\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This starts from the \code{\link[broom:reexports]{broom::tidy()}} result, and then:
 \itemize{
 \item post-processes the \code{strata} column into a factor,
@@ -29,6 +27,10 @@ and probability 1 so that downstream plot lines start at those coordinates,
 \item adds a \code{censor} column,
 \item filters the rows before \code{max_time}.
 }
+}
+\details{
+Convert the survival fit data into a data frame designed for plotting
+within \code{g_km}.
 }
 \examples{
 \dontrun{
@@ -40,14 +42,13 @@ library(survival)
 synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
-  tern:::h_data_plot()
+  h_data_plot()
 
 # Test with single arm
 synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS", ARMCD == "ARM B") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
-  tern:::h_data_plot(armval = "ARM B")
+  h_data_plot(armval = "ARM B")
 }
 
 }
-\keyword{internal}
