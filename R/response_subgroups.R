@@ -290,13 +290,16 @@ tabulate_rsp_subgroups <- function(lyt,
 
 #' Labels for Column Variables in Binary Response by Subgroup Table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Internal function to check variables included in
 #' [tabulate_rsp_subgroups] and create column labels.
 #'
 #' @inheritParams tabulate_rsp_subgroups
+#'
 #' @return `list` of variables to tabulate and their labels.
 #'
-#' @keywords internal
+#' @export
 d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,
                                     method = NULL) {

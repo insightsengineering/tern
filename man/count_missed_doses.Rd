@@ -71,8 +71,6 @@ to avoid warnings from \code{rtables}.}
 
 These are specific functions to count patients with missed doses. The difference to \code{\link[=count_cumulative]{count_cumulative()}} is
 mainly the special labels.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \section{Functions}{
 \itemize{

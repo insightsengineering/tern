@@ -28,7 +28,8 @@ so no test is performed.}
 \code{list} of variables to tabulate and their labels.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Internal function to check variables included in
 \link{tabulate_rsp_subgroups} and create column labels.
 }
-\keyword{internal}
