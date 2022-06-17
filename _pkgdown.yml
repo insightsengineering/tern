@@ -285,6 +285,7 @@ reference:
       - df_explicit_na
       - d_onco_rsp_label
       - d_count_abnormal_by_baseline
+      - d_count_missed_doses
       - d_pkparam
       - d_proportion_diff
       - d_rsp_subgroups_colvars
