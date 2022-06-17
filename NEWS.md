@@ -1,13 +1,20 @@
-# tern 0.7.8.9001
+# tern 0.7.8.9003
 
 ### Fix
-*  Renamed `estimate_incidence_rate.R` into `incidence_rate.R` to match the 
-   documentation grouping.
-*  Extracted `control_incidence_rate` into a separated file as it was exported and
-   documented separately.
-*  Added `@md` and removed `@order` from `incidence_rate.R`. The presented order
-   is automatically the final order in the documentation. There is no specific 
-   need to add this tag. Modified examples accordingly.
+* `d_` and `h_` functions are all reverted or confirmed as export functions to 
+  allow future users to utilize their added flexibility.
+* Fixing bug related to error flag for empty strings coming from `rtables` split 
+  functions. Creation of `replace_emptys_with_na` to replace empty strings with
+  custom strings across data.frame (this can be merged with `df_explicit_na`).
+* Add of new parameter for `summarize_logistic` that specify which pivoted value
+  is meant to be removed during the analysis.
+* Renamed `estimate_incidence_rate.R` into `incidence_rate.R` to match the 
+  documentation grouping name.
+* Extracted `control_incidence_rate` into a separated file as it was exported and
+  documented separately.
+* Added `@md` and removed `@order` from `incidence_rate.R`. The presented order
+  is automatically the final order in the documentation. There is no specific 
+  need to add this tag. Modified examples accordingly.
 
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:
@@ -23,31 +30,21 @@
    `a_summary` (reference to `summarize_variables`) and kept the S3 method tree.
    - `summarize_patients_exposure_in_cols`, `summarize_num_patients` with 
    `s_num_patients`, `s_num_patients_content`, `summarize_num_patients`.
-   - `count_cumulative`, `count_missed_doses`, `count_patients_events_in_cols`.
-   - `summarize_colvars`, `summarize_change`, `summarize_ancova`
-   - `as.rtable`, `color_palette`, `add_footnotes` (note, this function is defined 
-   in two different files: footnotes and g_forest).
+   - `count_cumulative`, `count_missed_doses`, `count_patients_events_in_cols`, `summarize_colvars`, `summarize_change`, `summarize_ancova`,`as.rtable`, `color_palette`, `add_footnotes` (note, this function is defined in two different files: footnotes and g_forest).
    - (statistical function controls)  `control_coxreg`, `control_coxph`, 
    `control_incidence_rate`, `control_lineplot_vars`, `control_surv_time`, 
    `control_surv_timepoint`, `control_logisitic`, `control_step`.
-   - `stat_mean_ci`, `stat_median_ci`
-   - `split_cols_by_groups`
-   - `explicit_na`, `sas_na`
-   - `extract_rsp_subgroups`, `tabulate_rsp_subgroups`, `extract_rsp_biomarkers`, 
-   `tabulate_rsp_biomarkers`
-   - `keep_rows`, `keep_content_rows`, `has_count_in_any_col`, 
-   `has_fraction_in_cols`, `has_fraction_in_any_col`, `has_fractions_difference`
-   - `test_proportion_diff`
-   - `pairwise`
-   - `logistic_regression`
-   - `estimate_incidence_rate`, `control_incidence_rate` (another file), reference to
-   `incidence_rate`
-   - `cut_quantile_bins`, `d_pkparam` (note: d function but required by tern_ex file), `estimate_multinomial_rsp`,
-   `decorate_grob_set`, `extreme_format`, `fit_rsp_step`, `fit_survival_step`, `footnotes`, `footnotes-set` (note: this function is defined twice in the footnotes file), `format_count_fraction`, `format_fraction_threshold`, `formatting_functions`, `format_fraction`, `combination_function` (S4 method), `compare_variables` (S3 method).
-   - `h_stack_by_baskets`
-   - `h_pkparam_sort`
-   - `h_adsl_adlb_merge_using_worst_flag`
-   - `kaplan_meier`
+   - `stat_mean_ci`, `stat_median_ci`, `split_cols_by_groups`, `explicit_na`, `sas_na`, `extract_rsp_subgroups`, `tabulate_rsp_subgroups`, `extract_rsp_biomarkers`, 
+   `tabulate_rsp_biomarkers`, `keep_rows`, `keep_content_rows`, `has_count_in_any_col`, 
+   `has_fraction_in_cols`, `has_fraction_in_any_col`, `has_fractions_difference`,
+   `test_proportion_diff`, `pairwise`, `logistic_regression`,
+   `estimate_incidence_rate`, `control_incidence_rate` (another file), reference to
+   `incidence_rate`, `cut_quantile_bins`, `d_pkparam` (note: d function but required by tern_ex file), 
+   `estimate_multinomial_rsp`, `decorate_grob_set`, `extreme_format`, `fit_rsp_step`, 
+   `fit_survival_step`, `footnotes`, `footnotes-set` (note: this function is defined twice in the footnotes file), 
+   `format_count_fraction`, `format_fraction_threshold`, `formatting_functions`, 
+   `format_fraction`, `combination_function` (S4 method), `compare_variables` (S3 method),
+   `h_stack_by_baskets`, `h_pkparam_sort`, `h_adsl_adlb_merge_using_worst_flag`, `kaplan_meier`.
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
@@ -67,32 +64,25 @@
    `d_count_cumulative`, `s_count_cumulative`, `a_count_cumulative`.
    - (chain functions, reference to `count_missed_doses`) `s_count_nonmissing`, `d_count_missed_doses`, `s_count_missed_doses`, `a_count_missed_doses`.
    - (chain functions, reference to `count_patients_events_in_cols`) `s_count_patients_and_multiple_events`, `summarize_patients_events_in_cols`.
-   - `summary_labels`, `summary_formats`.
-   - `s_count_patients_sum_exposure`.
-   - `a_change_from_baseline` `s_change_from_baseline`.
-   - `a_ancova`, `s_ancova`, `h_ancova`.
-   - `arrange_grobs`, `as_factor_keep_attributes`, `combine_levels`.
-   - `split_text_grob`
-   - `groups_list_to_df`
-   - `s_cox_multivariate`
-   - `h_row_counts`, `h_row_fractions`, `h_col_counts`, `is_leaf_table`, 
-   `h_content_first_row`
-   - `a_response_subgroups`
-   - `range_noinf`
-   - `has_count_in_cols`, `has_counts_difference`
-   - `prop_chisq`, `prop_cmh`, `prop_schouten`, `prop_fisher`, `s_test_proportion_diff`, 
-   `a_test_proportion_diff`
    - (chain functions, reference to `incidence_rate`) `h_incidence_rate_normal`, 
    `h_incidence_rate_normal_log`, `h_incidence_rate_exact`, `h_incidence_rate_byar`,
-   `h_incidence_rate`, `s_incidence_rate`, `a_incidence_rate`
+   `h_incidence_rate`, `s_incidence_rate`, `a_incidence_rate`.
    - (cox regression helper) `cox_regression_inter`, `decorate_grob_factory`, `draw_grob`, `estimate_coef`.
    - (reference to `h_survival_duration_subgroups`) `h_survtime_df`, `h_survtime_subgroups_df`, `h_coxph_df`, `h_coxph_subgroups_df`
-   - (reference to `h_survival_biomarkers_subgroups`) `h_surv_to_coxreg_variables`, `h_coxreg_mult_cont_df`, `h_tab_surv_one_biomarker`
-   - `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`
+   - (reference to `h_survival_biomarkers_subgroups`) `h_surv_to_coxreg_variables`, 
+   `h_coxreg_mult_cont_df`, `h_tab_surv_one_biomarker`.
    - (reference to `h_step`) `h_step_window`, `h_step_trt_effect`, `h_step_survival_formula`, 
-   `h_step_survival_est`, `h_step_rsp_formula`, `h_step_rsp_est`
-   - `h_split_param`
-   - (reference to `h_response_biomarkers_subgroups`) `h_rsp_to_logistic_variables`, `h_logistic_mult_cont_df`, `h_tab_rsp_one_biomarker`
+   `h_step_survival_est`, `h_step_rsp_formula`, `h_step_rsp_est`.
+   - (reference to `h_response_biomarkers_subgroups`) `h_rsp_to_logistic_variables`, 
+   `h_logistic_mult_cont_df`, `h_tab_rsp_one_biomarker`.
+   - `summary_labels`, `summary_formats`, `s_count_patients_sum_exposure`,
+   `a_change_from_baseline` `s_change_from_baseline`, `a_ancova`, `s_ancova`, `h_ancova`,
+   `arrange_grobs`, `as_factor_keep_attributes`, `combine_levels`, `split_text_grob`, 
+   `groups_list_to_df`, `s_cox_multivariate`, `h_row_counts`, `h_row_fractions`, `h_col_counts`, `is_leaf_table`, 
+   `h_content_first_row`, `a_response_subgroups`, `range_noinf`, `has_count_in_cols`, 
+   `has_counts_difference`, `prop_chisq`, `prop_cmh`, `prop_schouten`, `prop_fisher`, 
+   `s_test_proportion_diff`, `a_test_proportion_diff`,`h_split_param`,
+   `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`.
    
 * Deprecated badge added to `g_mmrm`
 
