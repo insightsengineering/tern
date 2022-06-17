@@ -283,6 +283,7 @@ reference:
       - bins_percent_labels
       - combine_levels
       - cut_quantile_bins
+      - day2month
       - df_explicit_na
       - d_onco_rsp_label
       - d_count_abnormal_by_baseline
