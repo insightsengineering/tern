@@ -89,6 +89,7 @@ Collate:
     'count_patients_with_event.R'
     'count_values.R'
     'cox_regression.R'
+    'cox_regression_inter.R'
     'coxph.R'
     'd_pkparam.R'
     'decorate_grob.R'

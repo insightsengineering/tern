@@ -33,7 +33,7 @@ library(survival)
 data <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
-  tern:::h_data_plot()
+  h_data_plot()
 
 tern:::h_xticks(data)
 tern:::h_xticks(data, xticks = seq(0, 3000, 500))

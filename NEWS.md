@@ -1,6 +1,7 @@
 # tern 0.7.8.9003
 
 ### Fix
+* Extracted `cox_regression_inter` from `cox_regression`. 
 * `d_` and `h_` functions are all reverted or confirmed as export functions to 
   allow future users to utilize their added flexibility.
 * Fixing bug related to error flag for empty strings coming from `rtables` split 

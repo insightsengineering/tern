@@ -251,6 +251,7 @@ h_coxreg_univar_formulas(
     time = "time", event = "status", covariates = c("X", "y")
   )
 )
+
 # `h_coxreg_multivar_formula`
 
 h_coxreg_multivar_formula(
@@ -354,6 +355,7 @@ result <- h_coxreg_univar_extract(
   effect = "armcd", covar = "armcd", mod = mod, data = dta_simple
 )
 result
+
 library(broom)
 tidy(mod1)
 tidy(mod2)

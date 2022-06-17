@@ -31,7 +31,7 @@ fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 
-data_plot <- tern:::h_data_plot(fit_km = fit_km)
+data_plot <- h_data_plot(fit_km = fit_km)
 
 xticks <- tern:::h_xticks(data = data_plot)
 
@@ -62,7 +62,7 @@ tbl <- tern:::h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim =
 
 # For the representation, the layout is estimated for which the decomposition
 # of the graphic element is necessary.
-g_el <- tern:::h_decompose_gg(gg)
+g_el <- h_decompose_gg(gg)
 lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
 
 grid::grid.newpage()

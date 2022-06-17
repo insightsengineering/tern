@@ -222,6 +222,7 @@ reference:
       - combine_groups
       - has_tabletree_colnames
       - h_col_counts
+      - h_col_indices
       - h_content_first_row
       - h_row_counts
       - h_row_fractions
@@ -299,6 +300,7 @@ reference:
       - fct_discard
       - fct_explicit_na_if
       - f_conf_level
+      - h_data_plot
       - sas_na
       - to_n
 

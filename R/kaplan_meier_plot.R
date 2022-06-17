@@ -386,6 +386,8 @@ g_km <- function(df,
 
 #' Helper function: tidy survival fit
 #'
+#' @description`r lifecycle::badge("stable")`
+#'
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
 #'
@@ -402,7 +404,11 @@ g_km <- function(df,
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`) \cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
+<<<<<<< HEAD
 #' @export
+=======
+#'
+>>>>>>> 348bd714249c04d13c78f41c02a046e27c8e01c5
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -422,6 +428,7 @@ g_km <- function(df,
 #'   h_data_plot(armval = "ARM B")
 #' }
 #'
+#' @export
 h_data_plot <- function(fit_km,
                         armval = "All",
                         max_time = NULL) {
@@ -484,7 +491,7 @@ h_data_plot <- function(fit_km,
 #' data <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   tern:::h_data_plot()
+#'   h_data_plot()
 #'
 #' tern:::h_xticks(data)
 #' tern:::h_xticks(data, xticks = seq(0, 3000, 500))
@@ -536,7 +543,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- tern:::h_xticks(data = data_plot)
 #' gg <- tern:::h_ggkm(
 #'   data = data_plot,
@@ -668,7 +675,11 @@ h_ggkm <- function(data,
 
 #' `ggplot` Decomposition
 #'
+<<<<<<< HEAD
 #' @description `r lifecycle::badge("stable")`
+=======
+#' @description`r lifecycle::badge("stable")`
+>>>>>>> 348bd714249c04d13c78f41c02a046e27c8e01c5
 #'
 #' The elements composing the `ggplot` are extracted and organized in a
 #' list containing:
@@ -678,7 +689,10 @@ h_ggkm <- function(data,
 #' the legend (`guide`).
 #'
 #' @param gg (`ggplot`)\cr a graphic to decompose.
+<<<<<<< HEAD
 #' @export
+=======
+>>>>>>> 348bd714249c04d13c78f41c02a046e27c8e01c5
 #'
 #' @examples
 #' \dontrun{
@@ -690,7 +704,7 @@ h_ggkm <- function(data,
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- tern:::h_xticks(data = data_plot)
 #' gg <- tern:::h_ggkm(
 #'   data = data_plot,
@@ -710,6 +724,7 @@ h_ggkm <- function(data,
 #' grid::grid.draw(with(g_el, cbind(ylab, yaxis)))
 #' }
 #'
+#' @export
 h_decompose_gg <- function(gg) {
   g_el <- ggplot2::ggplotGrob(gg)
   y <- c(
@@ -755,7 +770,7 @@ h_decompose_gg <- function(gg) {
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- tern:::h_xticks(data = data_plot)
 #' gg <- tern:::h_ggkm(
 #'   data = data_plot,
@@ -763,7 +778,7 @@ h_decompose_gg <- function(gg) {
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
 #'   title = "tt", yval = "Survival"
 #' )
-#' g_el <- tern:::h_decompose_gg(gg)
+#' g_el <- h_decompose_gg(gg)
 #' lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
 #' grid.show.layout(lyt)
 #' }
@@ -865,7 +880,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #'
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' data_plot <- h_data_plot(fit_km = fit_km)
 #'
 #' xticks <- tern:::h_xticks(data = data_plot)
 #'
@@ -896,7 +911,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'
 #' # For the representation, the layout is estimated for which the decomposition
 #' # of the graphic element is necessary.
-#' g_el <- tern:::h_decompose_gg(gg)
+#' g_el <- h_decompose_gg(gg)
 #' lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
 #'
 #' grid::grid.newpage()
@@ -1100,7 +1115,7 @@ h_grob_median_surv <- function(fit_km,
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- tern:::h_xticks(data = data_plot)
 #' gg <- tern:::h_ggkm(
 #'   data = data_plot,
@@ -1109,7 +1124,7 @@ h_grob_median_surv <- function(fit_km,
 #'   title = "title", yval = "Survival"
 #' )
 #'
-#' g_el <- tern:::h_decompose_gg(gg)
+#' g_el <- h_decompose_gg(gg)
 #'
 #' grid::grid.newpage()
 #' pvp <- grid::plotViewport(margins = c(5, 4, 2, 20))

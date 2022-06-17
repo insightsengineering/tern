@@ -148,7 +148,10 @@ export(h_coxreg_univar_extract)
 export(h_coxreg_univar_formulas)
 export(h_data_plot)
 export(h_decompose_gg)
+<<<<<<< HEAD
 export(h_format_row)
+=======
+>>>>>>> 348bd714249c04d13c78f41c02a046e27c8e01c5
 export(h_format_threshold)
 export(h_g_ipp)
 export(h_get_format_threshold)
