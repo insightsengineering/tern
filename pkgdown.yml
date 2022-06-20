@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   tables: tables.html
   tern: tern.html
-last_built: 2022-06-20T12:12Z
+last_built: 2022-06-20T12:49Z
 urls:
   reference: https://insightsengineering.github.io/tern/reference
   article: https://insightsengineering.github.io/tern/articles
