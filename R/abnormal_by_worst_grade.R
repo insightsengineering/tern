@@ -86,6 +86,7 @@ NULL
 #'   .spl_context = spl_context,
 #'   .var = "GRADE_ANL"
 #' )
+#'
 #' @keywords internal
 s_count_abnormal_by_worst_grade <- function(df, # nolint
                                             .var = "GRADE_ANL",
@@ -154,9 +155,8 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 
 #' @describeIn abnormal_by_worst_grade Layout creating function which can be used for creating tables,
 #'    which can take statistics function arguments and additional format arguments (see below).
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Map excludes records without abnormal grade since they should not be displayed
 #' # in the table.
 #' map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
@@ -173,6 +173,8 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 #'     variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
 #'   ) %>%
 #'   build_table(df = adlb_f)
+#'
+#' @export
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
                                           ...,

@@ -151,8 +151,6 @@ a_count_abnormal_by_marked <- make_afun(
 #' @describeIn abnormal_by_marked Layout creating function which can be used for creating tables,
 #' which can take statistics function arguments and additional format arguments (see below).
 #'
-#' @export
-#'
 #' @examples
 #' map <- unique(
 #'   df[df$abn_dir %in% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
@@ -203,6 +201,8 @@ a_count_abnormal_by_marked <- make_afun(
 #'     )
 #'   ) %>%
 #'   build_table(df = df)
+#'
+#' @export
 count_abnormal_by_marked <- function(lyt,
                                      var,
                                      ...,

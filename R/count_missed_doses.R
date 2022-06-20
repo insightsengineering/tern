@@ -11,11 +11,11 @@ NULL
 
 #' @describeIn count_missed_doses Statistics function to count non-missing values.
 #' @return [s_count_nonmissing()] returns the statistic `n` which is the count of non-missing values in `x`.
-#' @keywords internal
 #' @examples
 #' set.seed(1)
 #' x <- c(sample(1:10, 10), NA)
 #' tern:::s_count_nonmissing(x)
+#' @keywords internal
 s_count_nonmissing <- function(x) {
   list(n = n_available(x))
 }

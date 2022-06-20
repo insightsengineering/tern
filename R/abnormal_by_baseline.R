@@ -153,8 +153,6 @@ a_count_abnormal_by_baseline <- make_afun(
 #'
 #' @inheritParams argument_convention
 #'
-#' @export
-#'
 #' @examples
 #'
 #' # Layout creating function.
@@ -178,6 +176,8 @@ a_count_abnormal_by_baseline <- make_afun(
 #'     .indent_mods = c(fraction = 2L)
 #'   ) %>%
 #'   build_table(df2)
+#'
+#' @export
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,
