@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,8 +67,10 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>mod</dt>
 <dd><p><code>lm</code>, <code>aov</code>, <code>glm</code>, <code>multinom</code>, <code>polr</code>
-    <code>mlm</code>, <code>coxph</code>, <code>coxme</code>, <code>lme</code>, <code>mer</code>, <code>merMod</code>, <code>svyglm</code>,
+    <code>mlm</code>, <code>coxph</code>, <code>coxme</code>, <code>lme</code>, <code>mer</code>, <code>merMod</code>, <code>svyglm</code>, <code>svycoxph</code>,
     <code>rlm</code>, or other suitable model object.</p></dd>
+
+
 <dt>test.statistic</dt>
 <dd><p>for a generalized linear model, whether to calculate
     <code>"LR"</code> (likelihood-ratio), <code>"Wald"</code>, or <code>"F"</code> tests; for a Cox
@@ -82,10 +84,13 @@
     with <code>"Pillai"</code> as the default. The <code>summary</code> method for <code>Anova.mlm</code>
     objects permits the specification of more than one multivariate
     test statistic, and the default is to report all four.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list with item <code>aov</code> for the result of the model and
+    
+
+<p>A list with item <code>aov</code> for the result of the model and
 <code>error_text</code> for the captured warnings.</p>
     </div>
 
@@ -105,6 +110,7 @@
 <span class="r-in"><span class="va">with_wald</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu">try_car_anova</span><span class="op">(</span>mod <span class="op">=</span> <span class="va">mod</span>, test.statistic <span class="op">=</span> <span class="st">"Wald"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">with_lr</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu">try_car_anova</span><span class="op">(</span>mod <span class="op">=</span> <span class="va">mod</span>, test.statistic <span class="op">=</span> <span class="st">"LR"</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

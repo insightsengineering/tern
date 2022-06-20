@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,12 +79,20 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>text</dt>
 <dd><p>character string</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A numeric vector or unit object specifying x-values.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>A numeric vector or unit object specifying y-values.</p></dd>
+
+
 <dt>width</dt>
 <dd><p>a unit object specifying max width of text</p></dd>
+
+
 <dt>just</dt>
 <dd><p>The justification of the text
     relative to its (x, y) location.  If there are two values, the first
@@ -93,24 +101,37 @@
     <code>"right"</code>, <code>"centre"</code>, <code>"center"</code>, <code>"bottom"</code>,
     and <code>"top"</code>.  For numeric values, 0 means left (bottom) alignment
     and 1 means right (top) alignment.</p></dd>
+
+
 <dt>hjust</dt>
 <dd><p>A numeric vector specifying horizontal justification.
     If specified, overrides the <code>just</code> setting.</p></dd>
+
+
 <dt>vjust</dt>
 <dd><p>A numeric vector specifying vertical justification.
     If specified, overrides the <code>just</code> setting.</p></dd>
+
+
 <dt>default.units</dt>
 <dd><p>A string indicating the default units to use
     if <code>x</code> or <code>y</code>
     are only given as numeric vectors.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>A character identifier.</p></dd>
+
+
 <dt>gp</dt>
 <dd><p>An object of class <code>"gpar"</code>, typically the output
     from a call to the function <code><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></code>.  This is basically
     a list of graphical parameter settings.</p></dd>
+
+
 <dt>vp</dt>
 <dd><p>A Grid viewport object (or NULL).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -119,7 +140,7 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">sg</span> <span class="op">&lt;-</span> <span class="fu">split_text_grob</span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">sg</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu">split_text_grob</span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
 <span class="r-in">  <span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae"</span>,</span>
 <span class="r-in">  <span class="st">"dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,"</span>,</span>
 <span class="r-in">  <span class="st">"commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed"</span>,</span>
@@ -146,15 +167,16 @@
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-plt img"><img src="split_text_grob-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># stack split_text_grob</span></span>
+<span class="r-in"><span class="co"># stack tern:::split_text_grob</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/plotViewport.html" class="external-link">plotViewport</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/grid.draw.html" class="external-link">grid.draw</a></span><span class="op">(</span><span class="fu">split_text_grob</span><span class="op">(</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/grid.draw.html" class="external-link">grid.draw</a></span><span class="op">(</span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">split_text_grob</span><span class="op">(</span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Hello, this is a test"</span>, <span class="st">"and yet another test"</span><span class="op">)</span>,</span>
 <span class="r-in">  just <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"top"</span><span class="op">)</span>, x <span class="op">=</span> <span class="fl">0</span>, y <span class="op">=</span> <span class="fl">1</span></span>
 <span class="r-in"><span class="op">)</span><span class="op">)</span></span>
 <span class="r-plt img"><img src="split_text_grob-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

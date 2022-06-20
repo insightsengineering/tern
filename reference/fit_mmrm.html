@@ -14,7 +14,7 @@ tables and graphs."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,28 +100,43 @@ in <code>data</code>:</p><dl><dt>response</dt>
 
 
 </dl><p>Note that the main effects and interaction of <code>arm</code> and <code>visit</code> are by default included in the model.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>a <code>data.frame</code> with all the variables specified in
 <code>vars</code>. Records with missing values in any independent variables
 will be excluded.</p></dd>
+
+
 <dt>conf_level</dt>
 <dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
+
+
 <dt>cor_struct</dt>
 <dd><p>a string specifying the correlation structure, defaults to
 <code>"unstructured"</code>. See the details.</p></dd>
+
+
 <dt>weights_emmeans</dt>
 <dd><p>argument from <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans::emmeans()</a></code>, "proportional" by default.</p></dd>
+
+
 <dt>optimizer</dt>
 <dd><p>a string specifying the optimization algorithm which should be used. By default, "automatic"
 will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
 is chosen and does not give a valid result, an error will occur.</p></dd>
+
+
 <dt>parallel</dt>
 <dd><p>flag that controls whether "automatic" optimizer search can use available free cores on the
 machine (not default).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>mmrm</code> object which is a list with MMRM results:</p><dl><dt>fit</dt>
+    
+
+<p>An <code>mmrm</code> object which is a list with MMRM results:</p><dl><dt>fit</dt>
 <dd><p>The <code>lmerModLmerTest</code> object which was fitted to the data. Note that the attribute <code>optimizer</code>
 contains the finally used optimization algorithm, which can be useful for refitting the model later on.</p></dd>
 

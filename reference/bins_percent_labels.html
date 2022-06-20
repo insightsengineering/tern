@@ -12,7 +12,7 @@ intervals as produced by cut_quantile_bins()."><!-- mathjax --><script src="http
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,26 +72,31 @@ intervals as produced by <code><a href="cut_quantile_bins.html">cut_quantile_bin
 <dd><p>(<code>proportion</code> vector)<br> the probabilities identifying the quantiles.
 This is a sorted vector of unique <code>proportion</code> values, i.e. between 0 and 1, where
 the boundaries 0 and 1 must not be included.</p></dd>
+
+
 <dt>digits</dt>
 <dd><p>(<code>integer</code>)<br> number of decimal places to round the percent numbers.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Character vector with labels in the format <code>[0%,20%]</code>, <code>(20%,50%]</code>, etc.</p>
+    
+
+<p>Character vector with labels in the format <code>[0%,20%]</code>, <code>(20%,50%]</code>, etc.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Just pass the internal probability bounds, then 0 and 100% will be added automatically.</span></span>
-<span class="r-in"><span class="fu">bins_percent_labels</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">bins_percent_labels</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "[0%,20%]"   "(20%,50%]"  "(50%,100%]"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Determine how to round.</span></span>
-<span class="r-in"><span class="fu">bins_percent_labels</span><span class="op">(</span><span class="fl">0.35224</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">bins_percent_labels</span><span class="op">(</span><span class="fl">0.35224</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "[0%,35.2%]"   "(35.2%,100%]"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Passing an empty vector just gives a single bin 0-100%.</span></span>
-<span class="r-in"><span class="fu">bins_percent_labels</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">bins_percent_labels</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "[0%,100%]"</span>
 </code></pre></div>
     </div>

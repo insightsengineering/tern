@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Content Row Function to Add Row Total to Labels</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/R/rtables.R" class="external-link"><code>R/rtables.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/R/utils_rtables.R" class="external-link"><code>R/utils_rtables.R</code></a></small>
       <div class="d-none name"><code>c_label_n.Rd</code></div>
     </div>
 
@@ -67,15 +67,22 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>df</dt>
 <dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+
+
 <dt>labelstr</dt>
 <dd><p>(<code>character</code>)<br> label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).</p></dd>
+
+
 <dt>.N_row</dt>
 <dd><p>(<code>count</code>)<br> column-wise N (column count) for the full column that is passed by <code>rtables</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>CellValue</code> that just has the right label.</p>
+    
+
+<p><code>CellValue</code> that just has the right label.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>

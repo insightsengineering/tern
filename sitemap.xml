@@ -49,7 +49,7 @@
     <loc>https://insightsengineering.github.io/tern/reference/abnormal_by_worst_grade.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/abnormal_by_worst_grade_worsen_from_baseline.html</loc>
+    <loc>https://insightsengineering.github.io/tern/reference/abnormal_by_worst_grade_worsen.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/add_footnotes-set.html</loc>
@@ -185,9 +185,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/d_proportion.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/d_proportion_diff.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/d_rsp_subgroups_colvars.html</loc>
@@ -424,10 +421,10 @@
     <loc>https://insightsengineering.github.io/tern/reference/pairwise.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/prop_diff_test.html</loc>
+    <loc>https://insightsengineering.github.io/tern/reference/prop_diff.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/prop_difference.html</loc>
+    <loc>https://insightsengineering.github.io/tern/reference/prop_diff_test.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/prune_occurrences.html</loc>
@@ -521,12 +518,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/tern-package.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/tidy.step.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/tidy.summary.coxph.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/to_n.html</loc>

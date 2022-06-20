@@ -14,7 +14,7 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,39 +98,68 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>(<code>mmrm</code>)<br> the original MMRM fit object.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>(<code>string</code>)<br> type of table which should be returned.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional argument <code>format</code> for controlling the numeric format.</p></dd>
+
+
 <dt>format</dt>
 <dd><p>(<code>string</code>)<br> format for the numbers in the table.</p></dd>
+
+
 <dt>df</dt>
 <dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+
+
 <dt>.in_ref_col</dt>
 <dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
+
+
 <dt>show_relative</dt>
 <dd><p>should the "reduction" (<code>control - treatment</code>, default) or the "increase"
 (<code>treatment - control</code>) be shown for the relative change from baseline?</p></dd>
+
+
 <dt>lyt</dt>
 <dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
+
+
 <dt>arms</dt>
 <dd><p>(<code>flag</code>)<br>  should treatment variable be considered when using
 <code>summarize_lsmeans</code> layout generating function.</p></dd>
+
+
 <dt>table_names</dt>
 <dd><p>(<code>character</code>)<br> this can be customized in case that the same <code>vars</code> are analyzed multiple times,
 to avoid warnings from <code>rtables</code>.</p></dd>
+
+
 <dt>.stats</dt>
 <dd><p>(<code>character</code>)<br> statistics to select for the table.</p></dd>
+
+
 <dt>.formats</dt>
 <dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
+
+
 <dt>.indent_mods</dt>
 <dd><p>(named <code>integer</code>)<br> indent modifiers for the labels.</p></dd>
+
+
 <dt>.labels</dt>
 <dd><p>(named <code>character</code>)<br> labels for the statistics (without indent).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>as.rtable.mmrm()</code> returns the fixed effects, covariance estimate or
+    
+
+<p><code>as.rtable.mmrm()</code> returns the fixed effects, covariance estimate or
 diagnostic statistics tables.</p>
     </div>
     <div class="section level2">

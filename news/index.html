@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,17 +54,86 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.7.8.9001" id="tern-0789001">tern 0.7.8.9001<a class="anchor" aria-label="anchor" href="#tern-0789001"></a></h2>
-<ul><li>Fixing bug related to error flag for empty strings coming from <code>rtables</code> split functions. Creation of <code>replace_emptys_with_na</code> to replace empty strings with custom strings across data.frame (this can be merged with <code>df_explicit_na</code>).</li>
+<h2 class="pkg-version" data-toc-text="0.7.8.9003" id="tern-0789003">tern 0.7.8.9003<a class="anchor" aria-label="anchor" href="#tern-0789003"></a></h2>
+<div class="section level4">
+<h4 id="fix-0-7-8-9003">Fix<a class="anchor" aria-label="anchor" href="#fix-0-7-8-9003"></a></h4>
+<ul><li>Renaming <code>rtables.R</code> as confusing file name due to the package dependence.</li>
+<li>Renamed files to respect the main documented function and fixed file in <code>R/</code> folder that does not comply with the standard (starting with the word test).</li>
+<li>Extracted <code>cox_regression_inter</code> from <code>cox_regression</code>.</li>
+<li>
+<code>d_</code> and <code>h_</code> functions are all reverted or confirmed as export functions to allow future users to utilize their added flexibility.</li>
+<li>Fixing bug related to error flag for empty strings coming from <code>rtables</code> split functions. Creation of <code>replace_emptys_with_na</code> to replace empty strings with custom strings across data.frame (this can be merged with <code>df_explicit_na</code>).</li>
 <li>Add of new parameter for <code>summarize_logistic</code> that specify which pivoted value is meant to be removed during the analysis.</li>
+<li>Renamed <code>estimate_incidence_rate.R</code> into <code>incidence_rate.R</code> to match the documentation grouping name.</li>
+<li>Extracted <code>control_incidence_rate</code> into a separated file as it was exported and documented separately.</li>
+<li>Added <code><a href="https://github.com/md" class="external-link">@md</a></code> and removed <code><a href="https://github.com/order" class="external-link">@order</a></code> from <code>incidence_rate.R</code>. The presented order is automatically the final order in the documentation. There is no specific need to add this tag. Modified examples accordingly.</li>
 </ul></div>
+<div class="section level4">
+<h4 id="documentation-and-namespace-polishing-0-7-8-9003">Documentation and NAMESPACE polishing<a class="anchor" aria-label="anchor" href="#documentation-and-namespace-polishing-0-7-8-9003"></a></h4>
+<ul><li>Added stable badge for:
+<ul><li>
+<code>count_abnormal_by_marked</code> (reference to <code>abnormal_by_marked</code>), <code>count_abnormal_lab_worsen_by_baseline</code> and <code>h_adlb_worsen</code> (reference to <code>abnormal_by_worst_grade_worsen_from_baseline</code>), <code>count_abnormal_by_worst_grade</code> (reference to <code>abnormal_by_worst_grade</code>), <code>to_string_matrix</code>, <code>tidy.summary.coxph</code>, <code>tidy.step</code>, <code>surv_timepoint</code>, (reference to <code>survival_timepoint</code>), <code>surv_time</code> (reference to <code>survival_time</code>), <code>coxph_pairwise</code> (reference to <code>survival_coxph_pairwise</code>), <code>extract_survival_subgroups</code> and <code>tabulate_survival_subgroups</code> (reference to <code>survival_duration_subgroups</code>), <code>extract_survival_biomarkers</code> and <code>tabulate_survival_biomarkers</code> (reference to <code>survival_biomarkers_subgroups</code>), <code>control_summarize_vars</code>, <code>s_summary</code> and <code>a_summary</code> (reference to <code>summarize_variables</code>) and kept the S3 method tree.</li>
+<li>
+<code>summarize_patients_exposure_in_cols</code>, <code>summarize_num_patients</code> with <code>s_num_patients</code>, <code>s_num_patients_content</code>, <code>summarize_num_patients</code>.</li>
+<li>
+<code>count_cumulative</code>, <code>count_missed_doses</code>, <code>count_patients_events_in_cols</code>, <code>summarize_colvars</code>, <code>summarize_change</code>, <code>summarize_ancova</code>,<code>as.rtable</code>, <code>color_palette</code>, <code>add_footnotes</code> (note, this function is defined in two different files: footnotes and g_forest).</li>
+<li>(statistical function controls) <code>control_coxreg</code>, <code>control_coxph</code>, <code>control_incidence_rate</code>, <code>control_lineplot_vars</code>, <code>control_surv_time</code>, <code>control_surv_timepoint</code>, <code>control_logisitic</code>, <code>control_step</code>.</li>
+<li>
+<code>stat_mean_ci</code>, <code>stat_median_ci</code>, <code>split_cols_by_groups</code>, <code>explicit_na</code>, <code>sas_na</code>, <code>extract_rsp_subgroups</code>, <code>tabulate_rsp_subgroups</code>, <code>extract_rsp_biomarkers</code>, <code>tabulate_rsp_biomarkers</code>, <code>keep_rows</code>, <code>keep_content_rows</code>, <code>has_count_in_any_col</code>, <code>has_fraction_in_cols</code>, <code>has_fraction_in_any_col</code>, <code>has_fractions_difference</code>, <code>test_proportion_diff</code>, <code>pairwise</code>, <code>logistic_regression</code>, <code>estimate_incidence_rate</code>, <code>control_incidence_rate</code> (another file), reference to <code>incidence_rate</code>, <code>cut_quantile_bins</code>, <code>d_pkparam</code> (note: d function but required by tern_ex file), <code>estimate_multinomial_rsp</code>, <code>decorate_grob_set</code>, <code>extreme_format</code>, <code>fit_rsp_step</code>, <code>fit_survival_step</code>, <code>footnotes</code>, <code>footnotes-set</code> (note: this function is defined twice in the footnotes file), <code>format_count_fraction</code>, <code>format_fraction_threshold</code>, <code>formatting_functions</code>, <code>format_fraction</code>, <code>combination_function</code> (S4 method), <code>compare_variables</code> (S3 method), <code>h_stack_by_baskets</code>, <code>h_pkparam_sort</code>, <code>h_adsl_adlb_merge_using_worst_flag</code>, <code>kaplan_meier</code>.</li>
+</ul></li>
+<li>Internal keywords added, export removed, <code>_pkgdown.yml</code> polished and <code>tern:::</code> for tests, examples, and vignettes when present for the following functions:
+<ul><li>(chain functions, reference to <code>abnormal_by_marked</code>) <code>s_count_abnormal_by_marked</code>, <code>a_count_abnormal_by_marked</code>.</li>
+<li>(chain functions, reference to <code>abnormal_by_worst_grade_worsen_from_baseline</code>) <code>a_count_abnormal_lab_worsen_by_baseline</code>, <code>h_worsen_counter</code> (same file), <code>s_count_abnormal_lab_worsen_by_baseline</code>.</li>
+<li>(chain functions, reference to <code>abnormal_by_worst_grade</code>) <code>s_count_abnormal_by_worst_grade</code>, <code>a_count_abnormal_by_worst_grade</code>.</li>
+<li>(chain functions, reference to <code>survival_timepoint</code>) <code>s_surv_timepoint</code>, <code>s_surv_timepoint_diff</code>, <code>a_surv_timepoint</code>, <code>a_surv_timepoint_diff</code>.</li>
+<li>(chain functions, reference to <code>survival_time</code>) <code>s_surv_time</code>, <code>a_surv_time</code>.</li>
+<li>(chain functions, reference to <code>survival_coxph_pairwise</code>) <code>s_coxph_pairwise</code>, <code>a_coxph_pairwise</code>.</li>
+<li>(chain functions, reference to <code>survival_duration_subgroups</code>) <code>a_survival_subgroups</code>.</li>
+<li>(chain functions, reference to <code>count_cumulative</code>) <code>h_count_cumulative</code>, <code>d_count_cumulative</code>, <code>s_count_cumulative</code>, <code>a_count_cumulative</code>.</li>
+<li>(chain functions, reference to <code>count_missed_doses</code>) <code>s_count_nonmissing</code>, <code>d_count_missed_doses</code>, <code>s_count_missed_doses</code>, <code>a_count_missed_doses</code>.</li>
+<li>(chain functions, reference to <code>count_patients_events_in_cols</code>) <code>s_count_patients_and_multiple_events</code>, <code>summarize_patients_events_in_cols</code>.</li>
+<li>(chain functions, reference to <code>incidence_rate</code>) <code>h_incidence_rate_normal</code>, <code>h_incidence_rate_normal_log</code>, <code>h_incidence_rate_exact</code>, <code>h_incidence_rate_byar</code>, <code>h_incidence_rate</code>, <code>s_incidence_rate</code>, <code>a_incidence_rate</code>.</li>
+<li>(cox regression helper) <code>cox_regression_inter</code>, <code>decorate_grob_factory</code>, <code>draw_grob</code>, <code>estimate_coef</code>.</li>
+<li>(reference to <code>h_survival_duration_subgroups</code>) <code>h_survtime_df</code>, <code>h_survtime_subgroups_df</code>, <code>h_coxph_df</code>, <code>h_coxph_subgroups_df</code>
+</li>
+<li>(reference to <code>h_survival_biomarkers_subgroups</code>) <code>h_surv_to_coxreg_variables</code>, <code>h_coxreg_mult_cont_df</code>, <code>h_tab_surv_one_biomarker</code>.</li>
+<li>(reference to <code>h_step</code>) <code>h_step_window</code>, <code>h_step_trt_effect</code>, <code>h_step_survival_formula</code>, <code>h_step_survival_est</code>, <code>h_step_rsp_formula</code>, <code>h_step_rsp_est</code>.</li>
+<li>(reference to <code>h_response_biomarkers_subgroups</code>) <code>h_rsp_to_logistic_variables</code>, <code>h_logistic_mult_cont_df</code>, <code>h_tab_rsp_one_biomarker</code>.</li>
+<li>
+<code>summary_labels</code>, <code>summary_formats</code>, <code>s_count_patients_sum_exposure</code>, <code>a_change_from_baseline</code> <code>s_change_from_baseline</code>, <code>a_ancova</code>, <code>s_ancova</code>, <code>h_ancova</code>, <code>arrange_grobs</code>, <code>as_factor_keep_attributes</code>, <code>combine_levels</code>, <code>split_text_grob</code>, <code>groups_list_to_df</code>, <code>s_cox_multivariate</code>, <code>h_row_counts</code>, <code>h_row_fractions</code>, <code>h_col_counts</code>, <code>is_leaf_table</code>, <code>h_content_first_row</code>, <code>a_response_subgroups</code>, <code>range_noinf</code>, <code>has_count_in_cols</code>, <code>has_counts_difference</code>, <code>prop_chisq</code>, <code>prop_cmh</code>, <code>prop_schouten</code>, <code>prop_fisher</code>, <code>s_test_proportion_diff</code>, <code>a_test_proportion_diff</code>,<code>h_split_param</code>, <code>fct_collapse_only</code>, <code>fct_discard</code>, <code>fct_explicit_na_if</code>.</li>
+</ul></li>
+<li>Deprecated badge added to <code>g_mmrm</code>
+</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.8" id="tern-078">tern 0.7.8<a class="anchor" aria-label="anchor" href="#tern-078"></a></h2>
+<div class="section level4">
+<h4 id="fix-0-7-8">Fix<a class="anchor" aria-label="anchor" href="#fix-0-7-8"></a></h4>
+<ul><li>
+<code>h_split_by_subgroups</code> documentation warning fix for wrong placing of example block</li>
+</ul></div>
+<div class="section level4">
+<h4 id="documentation-and-namespace-polishing-0-7-8">Documentation and NAMESPACE polishing<a class="anchor" aria-label="anchor" href="#documentation-and-namespace-polishing-0-7-8"></a></h4>
+<ul><li>Adopting the standard of badges only for <code><a href="https://github.com/description" class="external-link">@description</a></code> instead of every <code><a href="https://github.com/descriptionIn" class="external-link">@descriptionIn</a></code> function. Corrected accordingly <code>summarize_variables_in_cols</code>
+</li>
+<li>Added stable badge for <code>g_lineplot</code>, <code>g_step</code>, <code>g_waterfall</code>, <code>cox_regression</code>, <code>score_occurrences</code>, <code>add_rowcounts</code>, <code>odds_ratio</code>, <code>count_occurrences</code>, <code>count_occurrences_by_grade</code>, <code>explicit_na</code>, <code>df_explicit_na</code>, <code>count_patients_with_event</code>, <code>decorate_grob</code>, <code>combine_groups</code>, <code>append_varlabels</code>, <code>univariate</code>, <code>stack_grobs</code>, <code>count_abnormal</code> (reference to <code>abnormal</code>), <code>count_abnormal_by_baseline</code> (reference to <code>abnormal_by_baseline</code>).</li>
+<li>Internal keywords added, export removed, <code>_pkgdown.yml</code> polished and <code>tern:::</code> for tests, examples, and vignettes when present for the following functions:
+<ul><li>(helper functions) <code>h_format_row</code>, <code>h_map_for_count_abnormal</code>
+</li>
+<li>(utils functions) <code>make_names</code>, <code>month2day</code>, <code>day2month</code> <code>empty_vector_if_na</code>, <code>combine_vectors</code>, <code>aesi_label</code>, <code>n_available</code>, <code>format_xx</code>, <code>arm</code>.</li>
+<li>
+<code>count_values_funs</code>, <code>prop_difference</code>, <code>combine_counts</code>.</li>
+<li>(chain functions) <code>s_count_abnormal</code>, <code>a_count_abnormal</code>.</li>
+<li>(chain functions) <code>s_count_abnormal_by_baseline</code>, <code>a_count_abnormal_by_baseline</code>, <code>d_count_abnormal_by_baseline</code>.</li>
+</ul></li>
+<li>Deprecated <code>s_cox_univariate</code> function has now deprecated badge.</li>
+</ul></div>
 <div class="section level4">
 <h4 id="enhancements-0-7-8">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-8"></a></h4>
 <ul><li>Enhanced <code>g_lineplot</code> with additional table to automatically scale the table height and return a <code>ggplot</code> object.</li>
 <li>Enhanced <code>g_ipp</code> with additional caption argument and adjust the position.</li>
-<li>Enhanced <code>prop_diff</code> <code>tern</code> function and related functions to be able to apply a continuity correction in the Newcombe method.</li>
+<li>Enhanced <code>prop_diff</code>, <code>tern</code> function and related functions to be able to apply a continuity correction in the Newcombe method.</li>
 <li>Enhanced <code>summarize_numeric_in_columns</code> and <code>summarize_variables</code> to allow factor/character summary and to be able to summarize the number of <code>BLQs</code> in <code>AVALC</code> from <code>ADPC</code> dataset.</li>
 <li>Updated order of summarize variables stats in manual for order consistency.</li>
 <li>Added a <code>sum</code> option to <code>summarize_variables</code>.</li>

@@ -24,7 +24,7 @@ NEST's bookdown)"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,16 +95,25 @@ the p.values need to be interpreted with caution. (<strong>Statistical Analysis 
     <dl><dt>formula</dt>
 <dd><p>A <code>formula</code> corresponding to the investigated <code><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">survival model</a></code>
 including covariates.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>A <code>data.frame</code> which includes the variable in formula and covariates.</p></dd>
+
+
 <dt>conf_level</dt>
 <dd><p>The level of confidence for the hazard ration interval estimations. Default is 0.95.</p></dd>
+
+
 <dt>pval_method</dt>
 <dd><p>The method used for the estimation of p.values, should be one of <code>"wald"</code> (default) or
 <code>"likelihood"</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Optional parameters passed to <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph()</a></code></p><ul><li><p><code>ties</code> a character string specifying the method for tie handling, one of <code>exact</code> (default), <code>efron</code>, <code>breslow</code>.</p></li>
 </ul></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -129,10 +138,11 @@ but is out of scope as defined by the  Global Data Standards Repository
 <span class="r-in"><span class="va">ADTTE_f</span><span class="op">$</span><span class="va">SEX</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">ADTTE_f</span><span class="op">$</span><span class="va">SEX</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ADTTE_f</span><span class="op">$</span><span class="va">RACE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">ADTTE_f</span><span class="op">$</span><span class="va">RACE</span><span class="op">)</span></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu">s_cox_multivariate</span><span class="op">(</span></span>
+<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_cox_multivariate</span><span class="op">(</span></span>
 <span class="r-in">  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">AVAL</span>, event <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">CNSR</span><span class="op">)</span> <span class="op">~</span> <span class="op">(</span><span class="va">ARMCD</span> <span class="op">+</span> <span class="va">RACE</span> <span class="op">+</span> <span class="va">AGE</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>, data <span class="op">=</span> <span class="va">ADTTE_f</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

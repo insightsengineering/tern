@@ -12,7 +12,7 @@ that are used repeatedly to express an analysis."><!-- mathjax --><script src="h
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,83 +66,154 @@ that are used repeatedly to express an analysis.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>...</dt>
 <dd><p>additional arguments for the lower level functions.</p></dd>
+
+
 <dt>.df_row</dt>
 <dd><p>(<code>data frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
+
+
 <dt>.in_ref_col</dt>
 <dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
+
+
 <dt>.N_col</dt>
 <dd><p>(<code>count</code>)<br> row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by <code>rtables</code>.</p></dd>
+
+
 <dt>.N_row</dt>
 <dd><p>(<code>count</code>)<br> column-wise N (column count) for the full column that is passed by <code>rtables</code>.</p></dd>
+
+
 <dt>.ref_group</dt>
 <dd><p>(<code>data frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
+
+
 <dt>.stats</dt>
 <dd><p>(<code>character</code>)<br> statistics to select for the table.</p></dd>
+
+
 <dt>.indent_mods</dt>
 <dd><p>(named <code>integer</code>)<br> indent modifiers for the labels.</p></dd>
+
+
 <dt>.formats</dt>
 <dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
+
+
 <dt>.labels</dt>
 <dd><p>(named <code>character</code>)<br> labels for the statistics (without indent).</p></dd>
+
+
 <dt>.var</dt>
 <dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
 by a statistics function.</p></dd>
+
+
 <dt>.spl_context</dt>
 <dd><p>(<code>data frame</code>)<br> gives information about ancestor split states
 that is passed by <code>rtables</code>.</p></dd>
+
+
 <dt>col_by</dt>
 <dd><p>(<code>factor</code>)<br> defining column groups.</p></dd>
+
+
 <dt>conf_level</dt>
 <dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>(<code>data.frame</code>)<br> the dataset containing the variables to summarize.</p></dd>
+
+
 <dt>df</dt>
 <dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+
+
 <dt>draw</dt>
 <dd><p>(<code>flag</code>)<br> whether the plot should be drawn.</p></dd>
+
+
 <dt>drop</dt>
 <dd><p>(<code>flag</code>)<br> should non appearing occurrence levels be dropped from the resulting table.
 Note that in that case the remaining occurrence levels in the table are sorted alphabetically.</p></dd>
+
+
 <dt>id</dt>
 <dd><p>(<code>string</code>) <br> subject variable name.</p></dd>
+
+
 <dt>is_event</dt>
 <dd><p>(<code>logical</code>)<br><code>TRUE</code> if event, <code>FALSE</code> if time to event is censored.</p></dd>
+
+
 <dt>labelstr</dt>
 <dd><p>(<code>character</code>)<br> label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).</p></dd>
+
+
 <dt>lyt</dt>
 <dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p>(<code>flag</code>)<br> whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
+
+
 <dt>na_rm</dt>
 <dd><p>(<code>flag</code>)<br> (deprecated) whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
+
+
 <dt>na_level</dt>
 <dd><p>(<code>string</code>)<br> used to replace all <code>NA</code> or empty values in factors.</p></dd>
+
+
 <dt>newpage</dt>
 <dd><p>(<code>flag</code>)<br> whether the plot should be drawn on a new page.
 Only considered if <code>draw = TRUE</code> is used.</p></dd>
+
+
 <dt>prune_zero_rows</dt>
 <dd><p>(<code>flag</code>)<br> whether to prune all zero rows.</p></dd>
+
+
 <dt>rsp</dt>
 <dd><p>(<code>logical</code>)<br> whether each subject is a responder or not.</p></dd>
+
+
 <dt>show_labels</dt>
 <dd><p>label visibility: one of "default", "visible" and "hidden".</p></dd>
+
+
 <dt>table_names</dt>
 <dd><p>(<code>character</code>)<br> this can be customized in case that the same <code>vars</code> are analyzed multiple times,
 to avoid warnings from <code>rtables</code>.</p></dd>
+
+
 <dt>tte</dt>
 <dd><p>(<code>numeric</code>)<br> contains time-to-event duration values.</p></dd>
+
+
 <dt>var_labels</dt>
 <dd><p>character for label.</p></dd>
+
+
 <dt>variables</dt>
 <dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
+
+
 <dt>vars</dt>
 <dd><p>(<code>character</code>)<br> variable names for the primary analysis variable to be iterated over.</p></dd>
+
+
 <dt>var</dt>
 <dd><p>(<code>string</code>)<br> single variable name for the primary analysis variable.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>(<code>numeric</code>)<br> vector of numbers we want to analyze.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

@@ -12,7 +12,7 @@ see fit_coxreg_univar() and fit_coxreg_multivar()."><!-- mathjax --><script src=
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,27 +76,35 @@ see <code><a href="cox_regression.html">fit_coxreg_univar()</a></code> and <code
     <dl><dt>pval_method</dt>
 <dd><p>(<code>string</code>)<br> the method used for estimation of p.values;
 <code>wald</code> (default) or <code>likelihood</code>.</p></dd>
+
+
 <dt>ties</dt>
 <dd><p>(<code>string</code>)<br> among <code>exact</code> (equivalent to <code>DISCRETE</code> in SAS),
 <code>efron</code> and <code>breslow</code>, see <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code>.
 Note: there is no equivalent of SAS <code>EXACT</code> method in R.</p></dd>
+
+
 <dt>conf_level</dt>
 <dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
+
+
 <dt>interaction</dt>
 <dd><p>(<code>flag</code>)<br> if <code>TRUE</code>, the model includes the
 interaction between the studied treatment and candidate covariate. Note that
 for univariate models without treatment arm, and multivariate models, no
 interaction can be used so that this needs to be <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>list</code> of item corresponding to the arguments.</p>
+    
+
+<p>A <code>list</code> of item corresponding to the arguments.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu">control_coxreg</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">control_coxreg</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "wald"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -109,6 +117,7 @@ interaction can be used so that this needs to be <code>FALSE</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $interaction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

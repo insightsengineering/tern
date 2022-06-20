@@ -12,7 +12,7 @@ holders, and others as formatting elements."><!-- mathjax --><script src="https:
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,25 +70,28 @@ holders, and others as formatting elements.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>str</dt>
 <dd><p>(<code>string</code>)<br> template.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>rtables</code> formatting function.</p>
+    
+
+<p>A <code>rtables</code> formatting function.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.658</span>, <span class="fl">0.5761</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e1</span>, <span class="fl">785.6</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">format_xx</span><span class="op">(</span><span class="st">"xx (xx.x)"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu">format_xx</span><span class="op">(</span><span class="st">"xx (xx.x)"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">z</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2 (0.6)"    "10 (785.6)"</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">format_xx</span><span class="op">(</span><span class="st">"xx.x - xx.x"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu">format_xx</span><span class="op">(</span><span class="st">"xx.x - xx.x"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">z</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1.7 - 0.6"  "10 - 785.6"</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">format_xx</span><span class="op">(</span><span class="st">"xx.x, incl. xx.x% NE"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu">format_xx</span><span class="op">(</span><span class="st">"xx.x, incl. xx.x% NE"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">z</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1.7, incl. 0.6% NE"  "10, incl. 785.6% NE"</span>
 </code></pre></div>
