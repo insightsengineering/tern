@@ -202,5 +202,6 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df = df)
+
 }
 \keyword{internal}

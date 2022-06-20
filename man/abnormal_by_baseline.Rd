@@ -154,5 +154,6 @@ basic_table() \%>\%
     .indent_mods = c(fraction = 2L)
   ) \%>\%
   build_table(df2)
+
 }
 \keyword{internal}

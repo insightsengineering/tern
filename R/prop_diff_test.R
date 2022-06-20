@@ -156,7 +156,7 @@ prop_fisher <- function(tbl) {
 #'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 #' )
 #'
-#' tern:::s_prop_diff_test(
+#' tern:::s_test_proportion_diff(
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
 #'   .ref_group = subset(dta, grp == "B"),
@@ -241,7 +241,7 @@ d_test_proportion_diff <- function(method) {
   paste0("p-value (", meth_part, ")")
 }
 
-#' @describeIn test_proportion_diff Formatted Analysis function which can be further customized by calling
+#' @describeIn prop_diff_test Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
 #' @examples
@@ -261,7 +261,7 @@ a_test_proportion_diff <- make_afun(
   .indent_mods = c(pval = 1L)
 )
 
-#' @describeIn test_proportion_diff Layout creating function which can be used for
+#' @describeIn prop_diff_test Layout creating function which can be used for
 #'   creating tables, which can take statistics function arguments and
 #'   additional format arguments.
 #' @param ... other arguments are passed to [s_test_proportion_diff()].

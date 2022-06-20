@@ -152,11 +152,11 @@ tern:::s_count_abnormal_by_worst_grade(
   .spl_context = spl_context,
   .var = "GRADE_ANL"
 )
+
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(tern:::a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 afun(df = adlb_f_alt, .spl_context = spl_context)
-
 # Map excludes records without abnormal grade since they should not be displayed
 # in the table.
 map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) \%>\%
@@ -173,5 +173,6 @@ basic_table() \%>\%
     variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
   ) \%>\%
   build_table(df = adlb_f)
+
 }
 \keyword{internal}
