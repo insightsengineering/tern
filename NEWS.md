@@ -1,7 +1,7 @@
 # tern 0.7.8.9003
 
 ### Fix
-* Renaming rtables as confusing file name due to the package dependence.
+* Renaming `rtables.R` as confusing file name due to the package dependence.
 * Renamed files to respect the main documented function and fixed file in `R/` 
   folder that does not comply with the standard (starting with the word test).
 * Extracted `cox_regression_inter` from `cox_regression`. 
