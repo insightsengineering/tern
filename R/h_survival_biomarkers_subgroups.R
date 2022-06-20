@@ -1,5 +1,7 @@
 #' Helper Functions for Tabulating Biomarker Effects on Survival by Subgroup
 #'
+#' @description`r lifecycle::badge("stable")`
+#'
 #' Helper functions which are documented here separately to not confuse the user
 #' when reading about the user-facing functions.
 #'
@@ -30,7 +32,6 @@
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
-#' @keywords internal
 NULL
 
 #' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list
@@ -40,7 +41,7 @@ NULL
 #'
 #' @examples
 #' # This is how the variable list is converted internally.
-#' tern:::h_surv_to_coxreg_variables(
+#' h_surv_to_coxreg_variables(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "EVNT",
@@ -50,7 +51,7 @@ NULL
 #'   biomarker = "AGE"
 #' )
 #'
-#' @keywords internal
+#' @export
 h_surv_to_coxreg_variables <- function(variables, biomarker) {
   assertthat::assert_that(
     is.list(variables),
@@ -76,7 +77,7 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #' @examples
 #' # For a single population, estimate separately the effects
 #' # of two biomarkers.
-#' df <- tern:::h_coxreg_mult_cont_df(
+#' df <- h_coxreg_mult_cont_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -89,7 +90,7 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #' df
 #'
 #' # If the data set is empty, still the corresponding rows with missings are returned.
-#' tern:::h_coxreg_mult_cont_df(
+#' h_coxreg_mult_cont_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -100,7 +101,7 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #'   data = adtte_f[NULL, ]
 #' )
 #'
-#' @keywords internal
+#' @export
 h_coxreg_mult_cont_df <- function(variables,
                                   data,
                                   control = control_coxreg()) {

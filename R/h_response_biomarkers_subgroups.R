@@ -78,7 +78,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 #' df
 #'
 #' # If the data set is empty, still the corresponding rows with missings are returned.
-#' tern:::h_coxreg_mult_cont_df(
+#' h_coxreg_mult_cont_df(
 #'   variables = list(
 #'     rsp = "rsp",
 #'     biomarkers = c("BMRKR1", "AGE"),

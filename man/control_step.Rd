@@ -55,4 +55,5 @@ control_step(bandwidth = NULL, degree = 2)
 
 # Reduce number of points to be used.
 control_step(num_points = 10)
+
 }

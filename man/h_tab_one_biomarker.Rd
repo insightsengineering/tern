@@ -17,7 +17,8 @@ h_tab_one_biomarker(df, afuns, colvars)
 The \code{rtables} table object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is used by \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} and \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}},
 please see there for examples.
 }
-\keyword{internal}

@@ -991,11 +991,12 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 
 #' Helper Function: Survival Estimations
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Transform a survival fit to a table with groups in rows characterized
 #' by N, median and confidence interval.
 #'
 #' @inheritParams h_data_plot
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -1009,10 +1010,10 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' fit <- survfit(
 #'   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
 #'   data = adtte
-#' )
-#' tern:::h_tbl_median_surv(fit_km = fit)
+#' h_tbl_median_surv(fit_km = fit)
 #' }
 #'
+#' @export
 h_tbl_median_surv <- function(fit_km, armval = "All") {
   y <- if (is.null(fit_km$strata)) {
     as.data.frame(t(summary(fit_km)$table), row.names = armval)
@@ -1047,7 +1048,6 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.
 #' @inheritParams h_data_plot
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -1065,6 +1065,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #'   grid::grid.draw()
 #' }
 #'
+#' @export
 h_grob_median_surv <- function(fit_km,
                                armval = "All",
                                x = 0.9,
@@ -1098,7 +1099,6 @@ h_grob_median_surv <- function(fit_km,
 #'   a `ggplot`.
 #' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from
 #'   a `ggplot`.
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -1128,6 +1128,7 @@ h_grob_median_surv <- function(fit_km,
 #' grid.rect(gp = grid::gpar(lty = 1, col = "gray35", fill = NA))
 #' }
 #'
+#' @export
 h_grob_y_annot <- function(ylab, yaxis) {
   grid::gList(
     grid::gTree(
@@ -1143,10 +1144,11 @@ h_grob_y_annot <- function(ylab, yaxis) {
 
 #' Helper Function: Pairwise CoxPH table
 #'
+#' #' @description `r lifecycle::badge("stable")`
+#'
 #' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
-#' @keywords internal
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -1156,13 +1158,14 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #'
-#' tern:::h_tbl_coxph_pairwise(
+#' h_tbl_coxph_pairwise(
 #'   df = adtte,
 #'   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
 #'   control_coxph_pw = control_coxph(conf_level = 0.9)
 #' )
 #' }
 #'
+#' @export
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
                                  control_coxph_pw = control_coxph()) {

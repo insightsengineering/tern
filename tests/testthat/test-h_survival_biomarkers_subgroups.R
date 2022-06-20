@@ -46,11 +46,11 @@ testthat::test_that("tern:::h_surv_to_coxreg_variables works as expected", {
 
 # h_coxreg_mult_cont_df ----
 
-testthat::test_that("tern:::h_coxreg_mult_cont_df works as expected", {
+testthat::test_that("h_coxreg_mult_cont_df works as expected", {
   adtte_f <- adtte %>%
     preprocess_adtte()
 
-  result <- testthat::expect_silent(tern:::h_coxreg_mult_cont_df(
+  result <- testthat::expect_silent(h_coxreg_mult_cont_df(
     variables = list(
       tte = "AVAL",
       is_event = "is_event",
@@ -76,11 +76,11 @@ testthat::test_that("tern:::h_coxreg_mult_cont_df works as expected", {
   testthat::expect_equal(result, expected, tol = 1e-5)
 })
 
-testthat::test_that("tern:::h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {
+testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {
   adtte_f <- adtte %>%
     preprocess_adtte()
 
-  result <- testthat::expect_silent(tern:::h_coxreg_mult_cont_df(
+  result <- testthat::expect_silent(h_coxreg_mult_cont_df(
     variables = list(
       tte = "AVAL",
       is_event = "is_event",
