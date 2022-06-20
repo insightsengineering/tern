@@ -6,7 +6,6 @@
 #' multiple timepoints within the same response variable `.var`.
 #'
 #' @name summarize_ancova
-#'
 NULL
 
 #' @describeIn summarize_ancova Helper function to return results of a linear model.

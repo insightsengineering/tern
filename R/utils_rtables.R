@@ -1,14 +1,14 @@
 #' Convert Table into Matrix of Strings
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper function to use mostly within tests.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @param x the table
 #'
 #' @return A matrix of strings
 #'
 #' @export
-#'
 to_string_matrix <- function(x) {
   matrix_form(x)$string
 }
@@ -18,11 +18,11 @@ to_string_matrix <- function(x) {
 #' Helper function to use in tabulating model results.
 #'
 #' @param x (`vector`)\cr input for a cell.
-#' @keywords internal
 #'
 #' @return Either empty character vector if all entries in `x` are missing (`NA`), or otherwise
 #'   the unlisted version of `x`
 #'
+#' @keywords internal
 unlist_and_blank_na <- function(x) {
   unl <- unlist(x)
   if (all(is.na(unl))) {
@@ -44,8 +44,8 @@ unlist_and_blank_na <- function(x) {
 #'
 #' @return Content function which just gives `df$analysis_var` at the row identified by
 #'   `.df_row$flag` in the given format.
-#' @keywords internal
 #'
+#' @keywords internal
 cfun_by_flag <- function(analysis_var,
                          flag_var,
                          format = "xx") {
@@ -73,8 +73,8 @@ cfun_by_flag <- function(analysis_var,
 #'
 #' @note Important is here to not use `df` but `.N_row` in the implementation, because the former
 #'   is already split by columns and will refer to the first column of the data only.
-#' @keywords internal
 #'
+#' @keywords internal
 c_label_n <- function(df,
                       labelstr,
                       .N_row # nolint
@@ -97,7 +97,6 @@ c_label_n <- function(df,
 #' @return The modified layout where the latest row split labels now have the row-wise
 #'   total counts (i.e. without column based subsetting) attached in parentheses.
 #'
-#' @export
 #'
 #' @examples
 #' basic_table() %>%
@@ -107,6 +106,8 @@ c_label_n <- function(df,
 #'   add_rowcounts() %>%
 #'   analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") %>%
 #'   build_table(DM)
+#'
+#' @export
 add_rowcounts <- function(lyt) {
   summarize_row_groups(
     lyt,
@@ -115,6 +116,7 @@ add_rowcounts <- function(lyt) {
 }
 
 #' Obtain Column Indices
+#'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Helper function to extract column indices from a `VTableTree` for a given
@@ -124,6 +126,7 @@ add_rowcounts <- function(lyt) {
 #' @param col_names (`character`)\cr vector of column names.
 #'
 #' @return the vector of column indices.
+#'
 #' @export
 h_col_indices <- function(table_tree, col_names) {
   assertthat::assert_that(has_tabletree_colnames(table_tree, col_names))
@@ -138,8 +141,8 @@ h_col_indices <- function(table_tree, col_names) {
 #' @param x a list
 #'
 #' @return a character vector with the labels or names for the list elements
-#' @keywords internal
 #'
+#' @keywords internal
 labels_or_names <- function(x) {
   assertthat::assert_that(is.list(x))
   labs <- sapply(x, obj_label)
@@ -160,22 +163,25 @@ labels_or_names <- function(x) {
 #'
 #' @return The `rtable` object. Note that the concrete class will depend on the method
 #'   which is used.
-#' @export
 #'
+#' @export
 as.rtable <- function(x, ...) { # nolint
   UseMethod("as.rtable", x)
 }
 
 #' @describeIn as.rtable method for converting `data.frame` that contain numeric columns to `rtable`.
+#'
 #' @param format the format which should be used for the columns.
 #' @method as.rtable data.frame
-#' @export
+#'
 #' @examples
 #' x <- data.frame(
 #'   a = 1:10,
 #'   b = rnorm(10)
 #' )
 #' as.rtable(x)
+#'
+#' @export
 as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
   assertthat::assert_that(all(sapply(x, is.numeric)), msg = "only works with numeric data frame columns")
   do.call(
@@ -257,8 +263,8 @@ h_split_param <- function(param,
 #' @param all_stats (`character`)\cr all statistics which can be selected here potentially.
 #'
 #' @return Character vector with the selected statistics.
-#' @keywords internal
 #'
+#' @keywords internal
 afun_selected_stats <- function(.stats, all_stats) {
   assertthat::assert_that(
     is.null(.stats) || is.character(.stats),
@@ -291,8 +297,6 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'
 #' @return The modified layout.
 #'
-#' @export
-#'
 #' @examples
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
@@ -309,6 +313,8 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'   analyze("AGE", afun = mean) %>%
 #'   append_varlabels(DM, c("SEX", "AGE"))
 #' build_table(lyt, DM)
+#'
+#' @export
 append_varlabels <- function(lyt, df, vars, indent = 0L) {
   if (assertthat::is.flag(indent)) {
     warning("indent argument is now accepting integers. Boolean indent will be converted to integers.")
