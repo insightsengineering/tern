@@ -10,6 +10,7 @@
 NULL
 
 #' @describeIn summarize_ancova Helper function to return results of a linear model.
+#'
 #' @inheritParams argument_convention
 #' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
@@ -21,14 +22,14 @@ NULL
 #'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'
-#'
 #' @examples
-#' tern:::h_ancova(
+#' h_ancova(
 #'   .var = "Sepal.Length",
 #'   .df_row = iris,
 #'   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 #' )
-#' @keywords internal
+#'
+#' @export
 h_ancova <- function(.var,
                      .df_row,
                      variables) {

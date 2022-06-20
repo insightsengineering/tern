@@ -41,7 +41,7 @@ testthat::test_that("keep_content_rows works as expected", {
   result_leaves <- collect_leaves(result)
   result_content_rows <- result_leaves[sapply(result_leaves, class) == "ContentRow"]
   result_counts <- result_content_rows %>%
-    lapply(tern:::h_row_counts, col_names = names(tab)) %>%
+    lapply(h_row_counts, col_names = names(tab)) %>%
     sapply(sum)
   testthat::expect_true(all(result_counts > 20))
 })
