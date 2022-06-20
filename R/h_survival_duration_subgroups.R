@@ -41,7 +41,6 @@
 #' labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
-#' @keywords internal
 NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
@@ -49,13 +48,13 @@ NULL
 #'
 #' @examples
 #' # Extract median survival time for one group.
-#' tern:::h_survtime_df(
+#' h_survtime_df(
 #'   tte = adtte_f$AVAL,
 #'   is_event = adtte_f$is_event,
 #'   arm = adtte_f$ARM
 #' )
 #'
-#' @keywords internal
+#' @export
 h_survtime_df <- function(tte, is_event, arm) {
   assertthat::assert_that(
     is.numeric(tte),
@@ -107,7 +106,7 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'
 #' @examples
 #' # Extract median survival time for multiple groups.
-#' tern:::h_survtime_subgroups_df(
+#' h_survtime_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -118,7 +117,7 @@ h_survtime_df <- function(tte, is_event, arm) {
 #' )
 #'
 #' # Define groupings for BMRKR2 levels.
-#' tern:::h_survtime_subgroups_df(
+#' h_survtime_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -135,7 +134,7 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'   )
 #' )
 #'
-#' @keywords internal
+#' @export
 h_survtime_subgroups_df <- function(variables,
                                     data,
                                     groups_lists = list(),
@@ -183,12 +182,12 @@ h_survtime_subgroups_df <- function(variables,
 #'
 #' @examples
 #' # Extract hazard ratio for one group.
-#' tern:::h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
+#' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
 #'
 #' # Extract hazard ratio for one group with stratification factor.
-#' tern:::h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
+#' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
 #'
-#' @keywords internal
+#' @export
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
   assertthat::assert_that(
     is.numeric(tte),
@@ -291,7 +290,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'
 #' @examples
 #' # Extract hazard ratio for multiple groups.
-#' tern:::h_coxph_subgroups_df(
+#' h_coxph_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -302,7 +301,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #' )
 #'
 #' # Define groupings of BMRKR2 levels.
-#' tern:::h_coxph_subgroups_df(
+#' h_coxph_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -320,7 +319,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #' )
 #'
 #' # Extract hazard ratio for multiple groups with stratification factors.
-#' tern:::h_coxph_subgroups_df(
+#' h_coxph_subgroups_df(
 #'   variables = list(
 #'     tte = "AVAL",
 #'     is_event = "is_event",
@@ -331,7 +330,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   data = adtte_f
 #' )
 #'
-#' @keywords internal
+#' @export
 h_coxph_subgroups_df <- function(variables,
                                  data,
                                  groups_lists = list(),

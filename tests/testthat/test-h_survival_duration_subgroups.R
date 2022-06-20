@@ -27,10 +27,10 @@ adtte_preprop <- adtte %>%
   preprocess_adtte()
 
 
-testthat::test_that("tern:::h_survtime_df functions as expected with valid input and default arguments", {
+testthat::test_that("h_survtime_df functions as expected with valid input and default arguments", {
   adtte <- adtte_preprop
 
-  result <- tern:::h_survtime_df(
+  result <- h_survtime_df(
     tte = adtte$AVAL,
     is_event = adtte$is_event,
     arm = adtte$ARM
@@ -47,7 +47,7 @@ testthat::test_that("tern:::h_survtime_df functions as expected with valid input
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-testthat::test_that("tern:::h_survtime_df functions as expected when median is NA", {
+testthat::test_that("h_survtime_df functions as expected when median is NA", {
   adtte <- adtte_preprop
 
   # Edge case: median cannot be estimated.
@@ -57,7 +57,7 @@ testthat::test_that("tern:::h_survtime_df functions as expected when median is N
     arm = factor(c("A", "A", "A", "B", "B", "B"), levels = c("A", "B"))
   )
 
-  result <- tern:::h_survtime_df(
+  result <- h_survtime_df(
     tte = df_na$tte,
     is_event = df_na$is_event,
     arm = df_na$arm
@@ -74,7 +74,7 @@ testthat::test_that("tern:::h_survtime_df functions as expected when median is N
   testthat::expect_equal(result, expected)
 })
 
-testthat::test_that("tern:::h_survtime_df functions as expected when 0 records in one group", {
+testthat::test_that("h_survtime_df functions as expected when 0 records in one group", {
   adtte <- adtte_preprop
 
   # Edge case: 0 records in one group.
@@ -84,7 +84,7 @@ testthat::test_that("tern:::h_survtime_df functions as expected when 0 records i
     arm = factor(rep("B", 6), levels = c("A", "B"))
   )
 
-  result <- tern:::h_survtime_df(
+  result <- h_survtime_df(
     tte = df_na$tte,
     is_event = df_na$is_event,
     arm = df_na$arm
@@ -101,8 +101,8 @@ testthat::test_that("tern:::h_survtime_df functions as expected when 0 records i
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-testthat::test_that("tern:::h_survtime_df fails with wrong input", {
-  testthat::expect_error(tern:::h_survtime_df(
+testthat::test_that("h_survtime_df fails with wrong input", {
+  testthat::expect_error(h_survtime_df(
     tte = c(1, 2, "hello"),
     is_event = c(TRUE, FALSE, TRUE),
     arm = factor(c("A", "B", "A"), levels = c("B", "A"))
@@ -202,11 +202,11 @@ testthat::test_that("h_split_by_subgroups works as expected with groups_lists", 
   )
 })
 
-testthat::test_that("tern:::h_survtime_subgroups_df functions as expected with valid input and default arguments", {
+testthat::test_that("h_survtime_subgroups_df functions as expected with valid input and default arguments", {
   adtte <- adtte_preprop
 
 
-  result <- tern:::h_survtime_subgroups_df(
+  result <- h_survtime_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
     data = adtte
   )
@@ -230,11 +230,11 @@ testthat::test_that("tern:::h_survtime_subgroups_df functions as expected with v
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::h_survtime_subgroups_df functions as expected when subgroups is NULL.", {
+testthat::test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.", {
   adtte <- adtte %>%
     preprocess_adtte()
 
-  result <- tern:::h_survtime_subgroups_df(
+  result <- h_survtime_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
     data = adtte
   )
@@ -254,11 +254,11 @@ testthat::test_that("tern:::h_survtime_subgroups_df functions as expected when s
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::h_survtime_subgroups_df works as expected with groups_lists", {
+testthat::test_that("h_survtime_subgroups_df works as expected with groups_lists", {
   adtte <- adtte %>%
     preprocess_adtte()
 
-  result <- tern:::h_survtime_subgroups_df(
+  result <- h_survtime_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
     data = adtte,
     groups_lists = list(
@@ -276,11 +276,11 @@ testthat::test_that("tern:::h_survtime_subgroups_df works as expected with group
   )
 })
 
-testthat::test_that("tern:::h_coxph_df functions as expected with valid input and default arguments", {
+testthat::test_that("h_coxph_df functions as expected with valid input and default arguments", {
   adtte <- adtte %>%
     preprocess_adtte()
 
-  result <- tern:::h_coxph_df(
+  result <- h_coxph_df(
     tte = adtte$AVAL,
     is_event = adtte$is_event,
     arm = adtte$ARM
@@ -302,12 +302,12 @@ testthat::test_that("tern:::h_coxph_df functions as expected with valid input an
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::h_coxph_df functions as expected with one stratification factor", {
+testthat::test_that("h_coxph_df functions as expected with one stratification factor", {
   adtte <- adtte %>%
     preprocess_adtte()
 
   # Test with one stratification factor.
-  result <- tern:::h_coxph_df(
+  result <- h_coxph_df(
     tte = adtte$AVAL,
     is_event = adtte$is_event,
     arm = adtte$ARM,
@@ -330,11 +330,11 @@ testthat::test_that("tern:::h_coxph_df functions as expected with one stratifica
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::h_coxph_df functions as expected with multiple stratification factors", {
+testthat::test_that("h_coxph_df functions as expected with multiple stratification factors", {
   adtte <- adtte %>%
     preprocess_adtte()
 
-  result <- tern:::h_coxph_df(
+  result <- h_coxph_df(
     tte = adtte$AVAL,
     is_event = adtte$is_event,
     arm = adtte$ARM,
@@ -357,12 +357,12 @@ testthat::test_that("tern:::h_coxph_df functions as expected with multiple strat
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::h_coxph_df functions as expected when 0 records in one group", {
+testthat::test_that("h_coxph_df functions as expected when 0 records in one group", {
   adtte <- adtte %>%
     preprocess_adtte() %>%
     dplyr::filter(ARM == "A: Drug X")
 
-  result <- tern:::h_coxph_df(
+  result <- h_coxph_df(
     tte = adtte$AVAL,
     is_event = adtte$is_event,
     arm = adtte$ARM
@@ -384,11 +384,11 @@ testthat::test_that("tern:::h_coxph_df functions as expected when 0 records in o
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::h_coxph_subgroups_df functions as expected with valid input and default arguments", {
+testthat::test_that("h_coxph_subgroups_df functions as expected with valid input and default arguments", {
   adtte <- adtte %>%
     preprocess_adtte()
 
-  result <- tern:::h_coxph_subgroups_df(
+  result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
     data = adtte
   )
@@ -470,7 +470,7 @@ testthat::test_that("tern:::h_coxph_subgroups_df functions as expected with vali
     dplyr::filter(COUNTRY %in% c("CAN", "GBR")) %>%
     reapply_varlabels(formatters::var_labels(adtte))
 
-  result <- testthat::expect_warning(tern:::h_coxph_subgroups_df(
+  result <- testthat::expect_warning(h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "COUNTRY"),
     data = adtte
   ))
@@ -502,11 +502,11 @@ testthat::test_that("tern:::h_coxph_subgroups_df functions as expected with vali
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::h_coxph_subgroups_df functions as expected with stratification factors", {
+testthat::test_that("h_coxph_subgroups_df functions as expected with stratification factors", {
   adtte <- adtte %>%
     preprocess_adtte()
 
-  result <- tern:::h_coxph_subgroups_df(
+  result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "SEX", strat = "STRATA1"),
     data = adtte
   )
@@ -539,11 +539,11 @@ testthat::test_that("tern:::h_coxph_subgroups_df functions as expected with stra
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
+testthat::test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
   adtte <- adtte %>%
     preprocess_adtte()
 
-  result <- tern:::h_coxph_subgroups_df(
+  result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
     data = adtte
   )
@@ -571,10 +571,10 @@ testthat::test_that("tern:::h_coxph_subgroups_df functions as expected when subg
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::h_coxph_subgroups_df works as expected with groups_lists", {
+testthat::test_that("h_coxph_subgroups_df works as expected with groups_lists", {
   adtte <- adtte_preprop
 
-  result <- tern:::h_coxph_subgroups_df(
+  result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
     data = adtte,
     groups_lists = list(

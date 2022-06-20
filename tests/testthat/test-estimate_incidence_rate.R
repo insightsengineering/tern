@@ -21,8 +21,8 @@ testthat::test_that("control_incidence_rate fails with wrong input", {
   testthat::expect_error(control_incidence_rate(time_unit_output = "one"))
 })
 
-testthat::test_that("tern:::h_incidence_rate_normal works as expected with healthy input", {
-  result <- tern:::h_incidence_rate_normal(200, 2, 0.1)
+testthat::test_that("h_incidence_rate_normal works as expected with healthy input", {
+  result <- h_incidence_rate_normal(200, 2, 0.1)
   expected <- list(
     rate = 0.01,
     rate_ci = c(-0.001630872, 0.021630872)
@@ -30,8 +30,8 @@ testthat::test_that("tern:::h_incidence_rate_normal works as expected with healt
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-testthat::test_that("tern:::h_incidence_rate_normal_log works as expected with healthy input", {
-  result <- tern:::h_incidence_rate_normal_log(200, 2, 0.1)
+testthat::test_that("h_incidence_rate_normal_log works as expected with healthy input", {
+  result <- h_incidence_rate_normal_log(200, 2, 0.1)
   expected <- list(
     rate = 0.01,
     rate_ci = c(0.003125199, 0.031997963)
@@ -39,8 +39,8 @@ testthat::test_that("tern:::h_incidence_rate_normal_log works as expected with h
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-testthat::test_that("tern:::h_incidence_rate_exact works as expected with healthy input", {
-  result <- tern:::h_incidence_rate_exact(200, 2, 0.1)
+testthat::test_that("h_incidence_rate_exact works as expected with healthy input", {
+  result <- h_incidence_rate_exact(200, 2, 0.1)
   expected <- list(
     rate = 0.01,
     rate_ci = c(0.001776808, 0.031478968)
@@ -48,8 +48,8 @@ testthat::test_that("tern:::h_incidence_rate_exact works as expected with health
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-testthat::test_that("tern:::h_incidence_rate_byar works as expected with healthy input", {
-  result <- tern:::h_incidence_rate_byar(200, 2, 0.1)
+testthat::test_that("h_incidence_rate_byar works as expected with healthy input", {
+  result <- h_incidence_rate_byar(200, 2, 0.1)
   expected <- list(
     rate = 0.01,
     rate_ci = c(0.002820411, 0.027609866)

@@ -181,13 +181,13 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df)
 
-tern:::h_incidence_rate_normal(200, 2)
+h_incidence_rate_normal(200, 2)
 
 tern:::h_incidence_rate_normal_log(200, 2)
 
-tern:::h_incidence_rate_exact(200, 2)
+h_incidence_rate_exact(200, 2)
 
-tern:::h_incidence_rate_byar(200, 2)
+h_incidence_rate_byar(200, 2)
 
 tern:::h_incidence_rate(200, 2)
 

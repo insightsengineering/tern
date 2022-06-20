@@ -470,12 +470,13 @@ h_data_plot <- function(fit_km,
 
 #' Helper function: x tick positions
 #'
+#' @description`r lifecycle::badge("stable")`
+#'
 #' Calculate the positions of ticks on the x-axis. However, if `xticks` already
 #' exists it is kept as is. It is based on the same function `ggplot2` relies on,
 #' and is required in the graphic and the patient-at-risk annotation table.
 #'
 #' @inheritParams kaplan_meier
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -488,14 +489,15 @@ h_data_plot <- function(fit_km,
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
 #'
-#' tern:::h_xticks(data)
-#' tern:::h_xticks(data, xticks = seq(0, 3000, 500))
-#' tern:::h_xticks(data, xticks = 500)
-#' tern:::h_xticks(data, xticks = 500, max_time = 6000)
-#' tern:::h_xticks(data, xticks = c(0, 500), max_time = 300)
-#' tern:::h_xticks(data, xticks = 500, max_time = 300)
+#' h_xticks(data)
+#' h_xticks(data, xticks = seq(0, 3000, 500))
+#' h_xticks(data, xticks = 500)
+#' h_xticks(data, xticks = 500, max_time = 6000)
+#' h_xticks(data, xticks = c(0, 500), max_time = 300)
+#' h_xticks(data, xticks = 500, max_time = 300)
 #' }
 #'
+#' @export
 h_xticks <- function(data, xticks = NULL, max_time = NULL) {
   if (is.null(xticks)) {
     if (is.null(max_time)) {
@@ -541,7 +543,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
@@ -692,7 +694,7 @@ h_ggkm <- function(data,
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
 #'   data = data_plot,
 #'   yval = "Survival",
@@ -760,7 +762,7 @@ h_decompose_gg <- function(gg) {
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
@@ -847,10 +849,10 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 
 #' Helper: Patient-at-Risk Grobs
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Two Graphical Objects are obtained, one corresponding to row labeling and
 #' the second to the number of patient at risk.
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams kaplan_meier
 #' @param annot_tbl (`data.frame`)\cr annotation as prepared
@@ -858,7 +860,6 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'   patients at risk at given time points.
 #' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
 #'   ensure the at risk table aligns with the KM graph).
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -873,7 +874,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #'
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #'
 #' gg <- h_ggkm(
 #'   data = data_plot,
@@ -917,6 +918,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #' grid::grid.draw(tbl$label)
 #' }
 #'
+#' @export
 h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
@@ -1111,7 +1113,7 @@ h_grob_median_surv <- function(fit_km,
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,

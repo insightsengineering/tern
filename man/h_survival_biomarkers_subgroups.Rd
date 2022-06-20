@@ -127,11 +127,10 @@ df1$subgroup <- "All patients"
 df1$row_type <- "content"
 df1$var <- "ALL"
 df1$var_label <- "All patients"
-tern:::h_tab_surv_one_biomarker(
+h_tab_surv_one_biomarker(
   df1,
   vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
   time_unit = "days"
 )
 
 }
-\keyword{internal}

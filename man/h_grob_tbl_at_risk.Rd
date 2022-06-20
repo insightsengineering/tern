@@ -18,8 +18,7 @@ ensure the at risk table aligns with the KM graph).}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Two Graphical Objects are obtained, one corresponding to row labeling and
 the second to the number of patient at risk.
 }
@@ -36,7 +35,7 @@ fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
 
 data_plot <- h_data_plot(fit_km = fit_km)
 
-xticks <- tern:::h_xticks(data = data_plot)
+xticks <- h_xticks(data = data_plot)
 
 gg <- h_ggkm(
   data = data_plot,

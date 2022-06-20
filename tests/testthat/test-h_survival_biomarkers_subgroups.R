@@ -108,7 +108,7 @@ testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is emp
 
 # h_tab_surv_one_biomarker ----
 
-testthat::test_that("tern:::h_tab_surv_one_biomarker works as expected", {
+testthat::test_that("h_tab_surv_one_biomarker works as expected", {
   df <- data.frame(
     n_tot = c(48L, 48L),
     n_tot_events = c(25L, 25L),
@@ -124,7 +124,7 @@ testthat::test_that("tern:::h_tab_surv_one_biomarker works as expected", {
     var = c("ALL", "ALL"),
     var_label = c("All patients", "All patients")
   )
-  result <- testthat::expect_silent(tern:::h_tab_surv_one_biomarker(
+  result <- testthat::expect_silent(h_tab_surv_one_biomarker(
     df = df,
     vars = c("n_tot", "hr", "ci"),
     time_unit = "months"

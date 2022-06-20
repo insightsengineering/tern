@@ -182,11 +182,9 @@ estimate_incidence_rate <- function(lyt,
 #'   incidence rate. Unit is one person-year.
 #'
 #' @examples
-#' tern:::h_incidence_rate_normal(200, 2)
+#' h_incidence_rate_normal(200, 2)
 #'
-#' @keywords internal
-#'
-#' @md
+#' @export
 h_incidence_rate_normal <- function(person_years,
                                     n_events,
                                     alpha = 0.05) {
@@ -235,11 +233,9 @@ h_incidence_rate_normal_log <- function(person_years,
 #'   associated exact confidence interval. Unit is one person-year.
 #'
 #' @examples
-#' tern:::h_incidence_rate_exact(200, 2)
+#' h_incidence_rate_exact(200, 2)
 #'
-#' @keywords internal
-#'
-#' @md
+#' @export
 h_incidence_rate_exact <- function(person_years,
                                    n_events,
                                    alpha = 0.05) {
@@ -260,11 +256,9 @@ h_incidence_rate_exact <- function(person_years,
 #'   associated Byar's confidence interval. Unit is one person-year.
 #'
 #' @examples
-#' tern:::h_incidence_rate_byar(200, 2)
+#' h_incidence_rate_byar(200, 2)
 #'
 #' @keywords internal
-#'
-#' @md
 h_incidence_rate_byar <- function(person_years,
                                   n_events,
                                   alpha = 0.05) {

@@ -113,14 +113,14 @@ labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_ev
 formatters::var_labels(adtte_f)[names(labels)] <- labels
 
 # Extract median survival time for one group.
-tern:::h_survtime_df(
+h_survtime_df(
   tte = adtte_f$AVAL,
   is_event = adtte_f$is_event,
   arm = adtte_f$ARM
 )
 
 # Extract median survival time for multiple groups.
-tern:::h_survtime_subgroups_df(
+h_survtime_subgroups_df(
   variables = list(
     tte = "AVAL",
     is_event = "is_event",
@@ -131,7 +131,7 @@ tern:::h_survtime_subgroups_df(
 )
 
 # Define groupings for BMRKR2 levels.
-tern:::h_survtime_subgroups_df(
+h_survtime_subgroups_df(
   variables = list(
     tte = "AVAL",
     is_event = "is_event",
@@ -149,13 +149,13 @@ tern:::h_survtime_subgroups_df(
 )
 
 # Extract hazard ratio for one group.
-tern:::h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
+h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
 
 # Extract hazard ratio for one group with stratification factor.
-tern:::h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
+h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
 
 # Extract hazard ratio for multiple groups.
-tern:::h_coxph_subgroups_df(
+h_coxph_subgroups_df(
   variables = list(
     tte = "AVAL",
     is_event = "is_event",
@@ -166,7 +166,7 @@ tern:::h_coxph_subgroups_df(
 )
 
 # Define groupings of BMRKR2 levels.
-tern:::h_coxph_subgroups_df(
+h_coxph_subgroups_df(
   variables = list(
     tte = "AVAL",
     is_event = "is_event",
@@ -184,7 +184,7 @@ tern:::h_coxph_subgroups_df(
 )
 
 # Extract hazard ratio for multiple groups with stratification factors.
-tern:::h_coxph_subgroups_df(
+h_coxph_subgroups_df(
   variables = list(
     tte = "AVAL",
     is_event = "is_event",
@@ -196,4 +196,3 @@ tern:::h_coxph_subgroups_df(
 )
 
 }
-\keyword{internal}
