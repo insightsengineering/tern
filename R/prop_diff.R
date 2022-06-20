@@ -7,7 +7,7 @@
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
 #'
-#' @name prop_difference
+#' @name prop_diff
 NULL
 
 #' Check: Proportion Difference Arguments
@@ -15,7 +15,7 @@ NULL
 #' Verifies that and/or convert arguments into valid values to be used in the
 #' estimation of difference in responder proportions.
 #'
-#' @inheritParams prop_difference
+#' @inheritParams prop_diff
 #' @inheritParams prop_diff_wald
 #'
 #' @keywords internal
@@ -43,8 +43,7 @@ check_diff_prop_ci <- function(rsp,
 
 #' Description of Method Used for Proportion Comparison
 #'
-#'
-#' @describeIn prop_difference This is an auxiliary function that describes the analysis in
+#' @describeIn prop_diff This is an auxiliary function that describes the analysis in
 #' `s_proportion_diff`.
 #'
 #' @inheritParams s_proportion_diff
@@ -81,7 +80,7 @@ d_proportion_diff <- function(conf_level,
 }
 
 
-#' @describeIn prop_difference The Wald interval follows the usual textbook
+#' @describeIn prop_diff The Wald interval follows the usual textbook
 #'   definition for a single proportion confidence interval using the normal
 #'   approximation. It is possible to include a continuity correction for Wald's
 #'   interval.
@@ -124,7 +123,7 @@ prop_diff_wald <- function(rsp,
 }
 
 
-#' @describeIn prop_difference Anderson-Hauck confidence interval.
+#' @describeIn prop_diff Anderson-Hauck confidence interval.
 #'
 #' @examples
 #' # Anderson-Hauck confidence interval
@@ -160,7 +159,7 @@ prop_diff_ha <- function(rsp,
 }
 
 
-#' @describeIn prop_difference Newcombe confidence interval. It is based on
+#' @describeIn prop_diff Newcombe confidence interval. It is based on
 #'   the Wilson score confidence interval for a single binomial proportion.
 #'
 #' @examples
@@ -202,7 +201,7 @@ prop_diff_nc <- function(rsp,
 }
 
 
-#' @describeIn prop_difference Calculates the weighted difference.
+#' @describeIn prop_diff Calculates the weighted difference.
 #'     This is defined as the difference in response rates between the
 #'     experimental treatment group and the control treatment group, adjusted
 #'     for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
@@ -291,7 +290,7 @@ prop_diff_cmh <- function(rsp,
 }
 
 
-#' @describeIn prop_difference Statistics function estimating the difference
+#' @describeIn prop_diff Statistics function estimating the difference
 #'   in terms of responder proportion.
 #' @param method (`string`)\cr
 #'   the method used for the confidence interval estimation.
@@ -371,7 +370,7 @@ s_proportion_diff <- function(df,
   y
 }
 
-#' @describeIn prop_difference Formatted Analysis function which can be further customized by calling
+#' @describeIn prop_diff Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
 #' @examples
@@ -391,7 +390,7 @@ a_proportion_diff <- make_afun(
   .indent_mods = c(diff = 0L, diff_ci = 1L)
 )
 
-#' @describeIn prop_difference Adds a descriptive analyze layer to `rtables`
+#' @describeIn prop_diff Adds a descriptive analyze layer to `rtables`
 #'   pipelines. The analysis is applied to a `dataframe` and return the
 #'   estimations, in `rcells`. The ellipsis (`...`) conveys arguments to
 #'   `s_proportion_diff()`, for instance `na.rm = FALSE` if missing data
