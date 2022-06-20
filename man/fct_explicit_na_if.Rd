@@ -21,8 +21,9 @@ This inserts explicit missings in a factor based on a condition. Note that also 
 existing \code{NA} values will be explicitly converted to given \code{na_level}.
 }
 \examples{
-fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
+tern:::fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
 }
 \seealso{
 \code{\link[forcats:fct_explicit_na]{forcats::fct_explicit_na()}} which is used internally.
 }
+\keyword{internal}

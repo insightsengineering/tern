@@ -1,5 +1,7 @@
 #' Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This function is useful to label grid grobs (also \code{ggplot2}, and \code{lattice} plots)
 #' with title, footnote, and page numbers.
 #'
@@ -236,7 +238,6 @@ decorate_grob <- function(grob,
   )
 }
 
-
 #' @importFrom grid validDetails
 #' @export
 validDetails.decoratedGrob <- function(x) { # nolint
@@ -264,7 +265,6 @@ widthDetails.decoratedGrob <- function(x) { # nolint
 heightDetails.decoratedGrob <- function(x) { # nolint
   grid::unit(1, "null")
 }
-
 
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
@@ -306,10 +306,8 @@ split_string <- function(text, width) {
 #' @details
 #' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 #'
-#' @export
-#'
 #' @examples
-#' sg <- split_text_grob(text = paste(
+#' sg <- tern:::split_text_grob(text = paste(
 #'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
 #'   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
 #'   "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
@@ -334,14 +332,16 @@ split_string <- function(text, width) {
 #'   height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
 #' )
 #'
-#' # stack split_text_grob
+#' # stack tern:::split_text_grob
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.rect()
-#' grid.draw(split_text_grob(
+#' grid.draw(tern:::split_text_grob(
 #'   c("Hello, this is a test", "and yet another test"),
 #'   just = c("left", "top"), x = 0, y = 1
 #' ))
+#'
+#' @keywords internal
 split_text_grob <- function(text,
                             x = grid::unit(0.5, "npc"),
                             y = grid::unit(0.5, "npc"),
@@ -439,21 +439,21 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #'
 #' @return closure that increments the page number
 #'
-#' @export
+#' @keywords internal
 #'
 #' @template author_waddella
 #'
 #' @examples
-#' pf <- decorate_grob_factory(
+#' pf <- tern:::decorate_grob_factory(
 #'   titles = "This is a test\nHello World",
 #'   footnotes = "Here belong the footnotess",
 #'   npages = 3
 #' )
 #'
 #' library(grid)
-#' draw_grob(pf(NULL))
-#' draw_grob(pf(NULL))
-#' draw_grob(pf(NULL))
+#' tern:::draw_grob(pf(NULL))
+#' tern:::draw_grob(pf(NULL))
+#' tern:::draw_grob(pf(NULL))
 decorate_grob_factory <- function(npages, ...) {
   current_page <- 0
   function(grob) {
@@ -467,6 +467,8 @@ decorate_grob_factory <- function(npages, ...) {
 
 
 #' Decorate Set of `grobs` and Add Page Numbering
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Note that this uses the `decorate_grob_factory` function.
 #'
@@ -491,9 +493,9 @@ decorate_grob_factory <- function(npages, ...) {
 #' })
 #' lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
 #' library(grid)
-#' draw_grob(lg[[1]])
-#' draw_grob(lg[[2]])
-#' draw_grob(lg[[6]])
+#' tern:::draw_grob(lg[[1]])
+#' tern:::draw_grob(lg[[2]])
+#' tern:::draw_grob(lg[[6]])
 decorate_grob_set <- function(grobs, ...) {
   n <- length(grobs)
   lgf <- decorate_grob_factory(npages = n, ...)

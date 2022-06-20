@@ -70,7 +70,7 @@ to avoid warnings from \code{rtables}.}
 \code{\link[=a_count_abnormal_by_baseline]{a_count_abnormal_by_baseline()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
-Patient Counts with Abnormal Range Values by Baseline Status
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
 Note that \code{df} should be filtered to include only post-baseline records.
@@ -116,6 +116,7 @@ statistics function arguments and additional format arguments (see below).
 
 \examples{
 d_count_abnormal_by_baseline("LOW")
+
 df <- data.frame(
   USUBJID = as.character(c(1:6)),
   ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
@@ -124,11 +125,13 @@ df <- data.frame(
 df <- df_explicit_na(df)
 
 # Just for one abnormal level.
-s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
+tern:::s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
+
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
 # so that the `rtables` formatting function `format_fraction()` can be applied correctly.
-afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
+afun <- make_afun(tern:::a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 afun(df, .var = "ANRIND", abnormal = "LOW")
+
 
 # Layout creating function.
 basic_table() \%>\%
@@ -151,4 +154,6 @@ basic_table() \%>\%
     .indent_mods = c(fraction = 2L)
   ) \%>\%
   build_table(df2)
+
 }
+\keyword{internal}

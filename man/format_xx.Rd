@@ -19,12 +19,13 @@ holders, and others as formatting elements.
 \examples{
 test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 
-z <- format_xx("xx (xx.x)")
+z <- tern:::format_xx("xx (xx.x)")
 sapply(test, z)
 
-z <- format_xx("xx.x - xx.x")
+z <- tern:::format_xx("xx.x - xx.x")
 sapply(test, z)
 
-z <- format_xx("xx.x, incl. xx.x\% NE")
+z <- tern:::format_xx("xx.x, incl. xx.x\% NE")
 sapply(test, z)
 }
+\keyword{internal}

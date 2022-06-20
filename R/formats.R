@@ -1,5 +1,7 @@
 #' Additional Formatting Functions
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This summarizes the additional Formatting Functions to work with `rtables`.
 #'
 #' @family formatting functions
@@ -7,6 +9,8 @@
 NULL
 
 #' Formatting Fraction and Percentage
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a fraction together with ratio in percent.
 #'
@@ -42,6 +46,8 @@ format_fraction <- function(x, ...) {
 }
 
 #' Formatting Count and Fraction
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a count together with fraction with special consideration when count is `0`.
 #'
@@ -84,18 +90,18 @@ format_count_fraction <- function(x, ...) {
 #'
 #' @param str (`string`)\cr template.
 #'
-#' @export
+#' @keywords internal
 #' @return A `rtables` formatting function.
 #' @examples
 #' test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 #'
-#' z <- format_xx("xx (xx.x)")
+#' z <- tern:::format_xx("xx (xx.x)")
 #' sapply(test, z)
 #'
-#' z <- format_xx("xx.x - xx.x")
+#' z <- tern:::format_xx("xx.x - xx.x")
 #' sapply(test, z)
 #'
-#' z <- format_xx("xx.x, incl. xx.x% NE")
+#' z <- tern:::format_xx("xx.x, incl. xx.x% NE")
 #' sapply(test, z)
 format_xx <- function(str) {
 
@@ -125,6 +131,8 @@ format_xx <- function(str) {
 }
 
 #' Formatting Fraction with Lower Threshold
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a fraction when the second element of the input `x` is the fraction. It applies
 #' a lower threshold, below which it is just stated that the fraction is smaller than that.
@@ -165,6 +173,8 @@ format_fraction_threshold <- function(threshold) {
 
 #' Formatting Extreme Values
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' `Rtables` Formatting Functions that handle extreme values.
 #'
 #' @details For each input, apply a format to the specified number of `digits`. If the value is
@@ -203,6 +213,7 @@ h_get_format_threshold <- function(digits = 2L) {
 
 #' @describeIn extreme_format Internal helper function to apply a threshold format to a value.
 #'   Creates a formatted string to be used in Formatting Functions.
+#'
 #' @param x (`number`)\cr value to format.
 #' @export
 #' @examples

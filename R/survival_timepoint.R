@@ -1,5 +1,7 @@
 #' Survival Time Point Analysis
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize patient's survival rate and difference of survival rates between groups at a time point.
 #'
 #' @inheritParams argument_convention
@@ -17,8 +19,6 @@
 NULL
 
 #' @describeIn survival_timepoint Statistics Function which analyzes survival rate.
-#'
-#' @export
 #'
 #' @return The statistics are:
 #' * `pt_at_risk` : patients remaining at risk.
@@ -39,7 +39,9 @@ NULL
 #' df <- ADTTE_f %>%
 #'   filter(ARMCD == "ARM A")
 #'
-#' s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#' tern:::s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#'
+#' @keywords internal
 s_surv_timepoint <- function(df,
                              .var,
                              time_point,
@@ -84,10 +86,11 @@ s_surv_timepoint <- function(df,
 
 #' @describeIn survival_timepoint Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
-#' a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#' tern:::a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#'
+#' @keywords internal
 a_surv_timepoint <- make_afun(
   s_surv_timepoint,
   .indent_mods = c(
@@ -109,13 +112,13 @@ a_surv_timepoint <- make_afun(
 #' * `rate_diff` : event free rate difference between two groups.
 #' * `rate_diff_ci` : confidence interval for the difference.
 #' * `ztest_pval` : p-value to test the difference is 0.
-#' @export
+#'
 #' @examples
 #' df_ref_group <- ADTTE_f %>%
 #'   filter(ARMCD == "ARM B")
 #'
-#' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
-#' s_surv_timepoint_diff(
+#' tern:::s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
+#' tern:::s_surv_timepoint_diff(
 #'   df,
 #'   df_ref_group,
 #'   .in_ref_col = FALSE,
@@ -123,6 +126,8 @@ a_surv_timepoint <- make_afun(
 #'   time_point = 7,
 #'   is_event = "is_event"
 #' )
+#'
+#' @keywords internal
 s_surv_timepoint_diff <- function(df,
                                   .var,
                                   .ref_group,
@@ -166,10 +171,9 @@ s_surv_timepoint_diff <- function(df,
 
 #' @describeIn survival_timepoint Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
-#' a_surv_timepoint_diff(
+#' tern:::a_surv_timepoint_diff(
 #'   df,
 #'   df_ref_group,
 #'   .in_ref_col = FALSE,
@@ -177,6 +181,8 @@ s_surv_timepoint_diff <- function(df,
 #'   time_point = 7,
 #'   is_event = "is_event"
 #' )
+#'
+#' @keywords internal
 a_surv_timepoint_diff <- make_afun(
   s_surv_timepoint_diff,
   .indent_mods = c(

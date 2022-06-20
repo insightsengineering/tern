@@ -64,6 +64,8 @@ A list with:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Count the number of unique and non-unique patients in a column (variable).
 }
 \section{Functions}{

@@ -1,5 +1,8 @@
 #' Line plot with the optional table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Line plot with the optional table
 #'
 #' @param df (`data frame`) \cr data set containing all analysis variables.
 #' @param alt_counts_df (`data frame` or `NULL`) \cr
@@ -150,8 +153,8 @@ g_lineplot <- function(df, # nolint
                        subtitle_add_paramcd = TRUE,
                        subtitle_add_unit = TRUE,
                        caption = NULL,
-                       table_format = tern::summary_formats(),
-                       table_labels = tern::summary_labels(),
+                       table_format = tern:::summary_formats(),
+                       table_labels = tern:::summary_labels(),
                        table_font_size = 3,
                        newpage = TRUE,
                        col = getOption("tern.color")) {
@@ -403,6 +406,7 @@ g_lineplot <- function(df, # nolint
 
 #' Helper function to get the right formatting in the optional table in g_lineplot.
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @param x (named `list`) \cr list of numerical values to be formatted and optionally labeled.
 #' Elements of `x` must be `numeric` vectors.
@@ -422,8 +426,6 @@ g_lineplot <- function(df, # nolint
 #'
 #' @return 1-row \code{data.frame} object
 #'
-#' @export
-#'
 #' @examples
 #'
 #' mean_ci <- c(48, 51)
@@ -435,6 +437,8 @@ g_lineplot <- function(df, # nolint
 #' attr(mean_ci, "label") <- "Mean 95% CI"
 #' x <- list(mean = 50, mean_ci = mean_ci)
 #' h_format_row(x, format, labels)
+#'
+#' @export
 h_format_row <- function(x, format, labels = NULL) {
 
   # cell: one row, one column data.frame
@@ -466,6 +470,7 @@ h_format_row <- function(x, format, labels = NULL) {
 
 #' Control Function for g_lineplot Function
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Default values for `variables` parameter in `g_lineplot` function.
 #' A variable's default value can be overwritten for any variable.

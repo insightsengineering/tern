@@ -89,6 +89,9 @@ A list with:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 counts. Multiple occurrences within patient at the lowest term level displayed in the table are

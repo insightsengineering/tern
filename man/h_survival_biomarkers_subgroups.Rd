@@ -42,6 +42,8 @@ are required.}
 displaying unit.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Helper functions which are documented here separately to not confuse the user
 when reading about the user-facing functions.
 }
@@ -81,6 +83,7 @@ adtte_f <- adtte \%>\%
   )
 labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 formatters::var_labels(adtte_f)[names(labels)] <- labels
+
 # This is how the variable list is converted internally.
 h_surv_to_coxreg_variables(
   variables = list(
@@ -129,4 +132,5 @@ h_tab_surv_one_biomarker(
   vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
   time_unit = "days"
 )
+
 }

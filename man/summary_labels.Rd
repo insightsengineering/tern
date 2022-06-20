@@ -9,3 +9,4 @@ summary_labels()
 \description{
 Returns labels of descriptive statistics for numeric variables.
 }
+\keyword{internal}

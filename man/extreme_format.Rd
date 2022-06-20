@@ -22,6 +22,8 @@ format_extreme_values_ci(digits = 2L)
 \item{x}{(\code{number})\cr value to format.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 \code{Rtables} Formatting Functions that handle extreme values.
 }
 \details{

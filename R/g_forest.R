@@ -3,6 +3,8 @@
 #' Create a forest plot from any [rtables::rtable()] object that has a
 #' column with a single value and a column with 2 values.
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams argument_convention
 #' @param tbl (`rtable`)
 #' @param col_x (`integer`)\cr column index with estimator. By default tries to get this from
@@ -61,7 +63,7 @@
 #' tbl <- basic_table() %>%
 #'   tabulate_rsp_subgroups(df)
 #' p <- g_forest(tbl)
-#' draw_grob(p)
+#' tern:::draw_grob(p)
 #' # Odds ratio only table.
 #' tbl_or <- basic_table() %>%
 #'   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
@@ -70,7 +72,7 @@
 #'   tbl_or,
 #'   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 #' )
-#' draw_grob(p)
+#' tern:::draw_grob(p)
 #' # Survival forest plot example.
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #' # Save variable labels before data processing steps.
@@ -282,7 +284,7 @@ g_forest <- function(tbl, # nolint
 #'   vp = grid::plotViewport(margins = c(1, 1, 1, 1))
 #' )
 #'
-#' draw_grob(p)
+#' tern:::draw_grob(p)
 forest_grob <- function(tbl,
                         x,
                         lower,
@@ -811,6 +813,10 @@ grid.forest <- function(...) { # nolint
 
 #' Assign value to attribute footnote of object x
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' This function is deprecated here. Please look at R/footnotes for the correct function.
+#'
 #' @param x an object
 #' @param value character vector
 #'
@@ -828,6 +834,10 @@ grid.forest <- function(...) { # nolint
 
 #' Retrieve value from attribute footnote of object x
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' This function is deprecated here. Please look at R/footnotes for the correct function.
+#'
 #' @param x an object
 #'
 #' @export
@@ -844,6 +854,10 @@ footnotes <- function(x) {
 
 #' Add more footnotes
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' This function is deprecated here. Please look at R/footnotes for the correct function.
+#'
 #' @param x an object
 #' @param value character vector
 #'
@@ -855,6 +869,10 @@ footnotes <- function(x) {
 #' footnotes(x)
 #' add_footnotes(x) <- "Add more footnotes"
 #' footnotes(x)
+`add_footnotes<-` <- function(x, value) { # nolint
+  footnotes(x) <- c(footnotes(x), value)
+  x
+}
 `add_footnotes<-` <- function(x, value) { # nolint
   footnotes(x) <- c(footnotes(x), value)
   x

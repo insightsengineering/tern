@@ -12,3 +12,4 @@ arm(x)
 \description{
 We use \code{arm} to indicate the study arm variable in \code{tern} formulas.
 }
+\keyword{internal}

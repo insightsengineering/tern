@@ -32,6 +32,8 @@ The two columns of this dataset should be named \code{basket} and \code{basket_n
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Helper Function to create a new \code{SMQ} variable in \code{ADAE} that
 consists of all adverse events belonging to selected
 Standardized/Customized queries.
@@ -39,7 +41,6 @@ The new dataset will only contain records of the adverse events
 belonging to any of the selected baskets.
 }
 \examples{
-
 library(scda)
 
 adae <- synthetic_cdisc_data("latest")$adae[1:20, ] \%>\% df_explicit_na()

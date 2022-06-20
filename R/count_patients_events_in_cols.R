@@ -1,5 +1,7 @@
 #' Counting Patients and Events in Columns
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Counting the number of unique patients and the total number of all and specific events
 #' when a column table layout is required.
 #'
@@ -17,7 +19,7 @@ NULL
 #'   that corresponding table cells will stay blank.
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
-#' @export
+#' @keywords internal
 #' @return [s_count_patients_and_multiple_events()] returns a list with the statistics:\cr
 #' - `unique`: number of unique patients in `df`.
 #' - `all`: number of rows in `df`.
@@ -35,7 +37,7 @@ NULL
 #'   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
 #'   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 #' )
-#' s_count_patients_and_multiple_events(
+#' tern:::s_count_patients_and_multiple_events(
 #'   df = df,
 #'   id = "USUBJID",
 #'   filters_list = list(
@@ -101,6 +103,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 
 #' @describeIn count_patients_events_in_cols Layout creating function which adds the count
 #'   statistics of patients and events in the column layout as content rows.
+#'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'  Set to `FALSE` when the required column split has been done already earlier in the layout pipe.

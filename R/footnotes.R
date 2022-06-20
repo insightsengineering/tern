@@ -1,5 +1,7 @@
 #' Assign Footnotes
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Assign value to attribute footnote of object `x`.
 #'
 #' @param x an object
@@ -17,6 +19,8 @@
 
 #' Retrieve Footnotes
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Retrieve value from attribute `footnote` of object `x`.
 #'
 #' @param x an object
@@ -30,6 +34,8 @@ footnotes <- function(x) {
 }
 
 #' Add Footnotes
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' This adds more footnotes.
 #'

@@ -1,5 +1,6 @@
 #' Patient Counts with Abnormal Range Values by Baseline Status
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @details
 #' Note that `df` should be filtered to include only post-baseline records.
@@ -24,13 +25,14 @@
 #'
 #' @name abnormal_by_baseline
 #' @include formats.R
-#'
 NULL
 
 #' @describeIn abnormal_by_baseline Description Function that produces the labels for [s_count_abnormal_by_baseline()].
-#' @export
+#'
 #' @examples
 #' d_count_abnormal_by_baseline("LOW")
+#'
+#' @export
 d_count_abnormal_by_baseline <- function(abnormal) {
   null_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
   not_abn_name <- paste("Not", tolower(abnormal), "baseline status")
@@ -53,8 +55,6 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #' @param na_level (`string`) \cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
 #'   `df_explicit_na()`). The default is `"<Missing>"`.
 #'
-#' @export
-#'
 #' @examples
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1:6)),
@@ -64,7 +64,9 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #' df <- df_explicit_na(df)
 #'
 #' # Just for one abnormal level.
-#' s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
+#' tern:::s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
+#'
+#' @keywords internal
 s_count_abnormal_by_baseline <- function(df,
                                          .var,
                                          abnormal,
@@ -134,13 +136,13 @@ s_count_abnormal_by_baseline <- function(df,
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #' @return [a_count_abnormal_by_baseline()] returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @export
-#'
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
 #' # so that the `rtables` formatting function `format_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
+#' afun <- make_afun(tern:::a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 #' afun(df, .var = "ANRIND", abnormal = "LOW")
+#'
+#' @keywords internal
 a_count_abnormal_by_baseline <- make_afun(
   s_count_abnormal_by_baseline,
   .formats = c(fraction = format_fraction)
@@ -150,8 +152,6 @@ a_count_abnormal_by_baseline <- make_afun(
 #'   statistics function arguments and additional format arguments (see below).
 #'
 #' @inheritParams argument_convention
-#'
-#' @export
 #'
 #' @examples
 #'
@@ -176,6 +176,8 @@ a_count_abnormal_by_baseline <- make_afun(
 #'     .indent_mods = c(fraction = 2L)
 #'   ) %>%
 #'   build_table(df2)
+#'
+#' @export
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,

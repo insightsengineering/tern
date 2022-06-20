@@ -16,6 +16,8 @@ then it is displayed in percentage. If it is positive but below the threshold, i
 "<1" e.g. if the threshold is \code{0.01}. If it is zero, then just "0" is returned.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Formats a fraction when the second element of the input \code{x} is the fraction. It applies
 a lower threshold, below which it is just stated that the fraction is smaller than that.
 }

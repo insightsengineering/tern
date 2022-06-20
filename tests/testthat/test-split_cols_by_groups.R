@@ -1,12 +1,12 @@
 
-# groups_list_to_df ----
-testthat::test_that("groups_list_to_df works as expected", {
+# tern:::groups_list_to_df ----
+testthat::test_that("tern:::groups_list_to_df works as expected", {
   grade_groups <- list(
     "Any Grade (%)" = c("1", "2", "3", "4", "5"),
     "Grade 3-4 (%)" = c("3", "4"),
     "Grade 5 (%)" = "5"
   )
-  result <- groups_list_to_df(grade_groups)
+  result <- tern:::groups_list_to_df(grade_groups)
   expected <- structure(
     list(
       valname = c("AnyGrade", "Grade34", "Grade5"),
@@ -186,35 +186,35 @@ testthat::test_that("split_cols_by_groups manages combinations of columns with r
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-# combine_counts ----
-testthat::test_that("combine_counts combines character vectors", {
+# tern:::combine_counts ----
+testthat::test_that("tern:::combine_counts combines character vectors", {
   fct <- c("A", "A", "A", "B", "B", "C")
   grp <- testthat::expect_warning(combine_groups(fct = fct))
-  result <- testthat::expect_warning(combine_counts(fct, grp))
+  result <- testthat::expect_warning(tern:::combine_counts(fct, grp))
   expected <- c(A = 3, `B/C` = 3)
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("combine_counts combines factors", {
+testthat::test_that("tern:::combine_counts combines factors", {
   fct <- factor(c("A", "A", "A", "B", "B", "C"))
   grp <- combine_groups(fct = fct)
-  result <- combine_counts(fct, grp)
+  result <- tern:::combine_counts(fct, grp)
   expected <- c(A = 3, `B/C` = 3)
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("combine_counts combines factors", {
+testthat::test_that("tern:::combine_counts combines factors", {
   fct <- factor(c("A", "A", "A", "B", "B", "C"))
   grp <- combine_groups(fct = fct, ref = c("A", "C"))
-  result <- combine_counts(fct, grp)
+  result <- tern:::combine_counts(fct, grp)
   expected <- c(`A/C` = 4, B = 2)
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("combine_counts with groups_list NULL", {
+testthat::test_that("tern:::combine_counts with groups_list NULL", {
   fct <- factor(c("A", "A", "A", "B", "B", "C"))
   grp <- combine_groups(fct = fct, ref = c("A", "C"))
-  result <- combine_counts(fct)
+  result <- tern:::combine_counts(fct)
   expected <- c(A = 3, B = 2, C = 1)
   testthat::expect_identical(result, expected)
 })

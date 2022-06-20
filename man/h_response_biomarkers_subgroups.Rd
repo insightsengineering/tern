@@ -38,6 +38,8 @@ see the example).}
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Helper functions which are documented here separately to not confuse the user
 when reading about the user-facing functions.
 }
@@ -72,6 +74,7 @@ adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   mutate(rsp = AVALC == "CR")
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+
 # This is how the variable list is converted internally.
 h_rsp_to_logistic_variables(
   variables = list(
@@ -111,8 +114,9 @@ df1$subgroup <- "All patients"
 df1$row_type <- "content"
 df1$var <- "ALL"
 df1$var_label <- "All patients"
-h_tab_rsp_one_biomarker(
+tern:::h_tab_rsp_one_biomarker(
   df1,
   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
 )
+
 }

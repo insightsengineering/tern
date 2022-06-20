@@ -1,14 +1,23 @@
 #' MMRM Plots
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
 #' This summarizes available plotting functions for MMRM.
 #'
 #' @seealso [g_mmrm_diagnostic], [g_mmrm_lsmeans]
 #' @name g_mmrm
+#'
+#' @section Warning:
+#' Note that the `tern::g_mmrm_diagnostic()` and `tern::g_mmrm_lsmeans()` functions are deprecated and will
+#' be removed in the coming releases. Please use the functions `tern.mmrm::g_mmrm_diagnostic()` and
+#' `tern.mmrm::g_mmrm_lsmeans()` respectively instead.
 NULL
 
-#' Deprecated by `tern.mmrm::g_mmrm_diagnostic`: Diagnostic Plots for MMRM
+#' Diagnostic Plots for MMRM
 #'
 #' @description `r lifecycle::badge("deprecated")`
+#'
+#' Deprecated by `tern.mmrm::g_mmrm_diagnostic`.
 #'
 #' This function produces diagnostic plots.
 #'
@@ -33,6 +42,10 @@ NULL
 #' @export
 #'
 #' @seealso \code{\link{g_mmrm_lsmeans}} for plotting the LS means and contrasts.
+#'
+#' @section Warning:
+#' Note that `tern::g_mmrm_diagnostic()` function is deprecated and will be removed in the coming releases.
+#' Please use the function `tern.mmrm::g_mmrm_diagnostic()` instead.
 #'
 #' @examples
 #' library(dplyr)
@@ -71,9 +84,11 @@ g_mmrm_diagnostic <- function(object,
   )
 }
 
-#' Deprecated by `tern.mmrm::g_mmrm_diagnostic`: Plot LS means for MMRM
+#' Plot LS means for MMRM
 #'
 #' @description `r lifecycle::badge("deprecated")`
+#'
+#' Deprecated by `tern.mmrm::g_mmrm_diagnostic`.
 #'
 #' This function summarizes adjusted \code{lsmeans} and standard error, as well as conducts
 #' comparisons between groups' adjusted \code{lsmeans}, where the first level of the group
@@ -97,6 +112,10 @@ g_mmrm_diagnostic <- function(object,
 #' no matter if `select` argument contains `contrasts` value.
 #'
 #' @export
+#'
+#' @section Warning:
+#' Note that `tern::g_mmrm_lsmeans()` function is deprecated and will be removed in the coming releases.
+#' Please use the function `tern.mmrm::g_mmrm_lsmeans()` instead.
 #'
 #' @examples
 #' library(dplyr)

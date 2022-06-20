@@ -1,5 +1,7 @@
 #' Control Function for Descriptive Statistics
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
 #' details for [s_summary].
 #'
@@ -27,14 +29,15 @@ control_summarize_vars <- function(conf_level = 0.95,
 
 #' Format Function for Descriptive Statistics
 #'
+#' @description
+#'
 #' Returns format patterns for descriptive statistics.
 #' The format is understood by the `rtables`.
 #'
 #' @param type (`string`)\cr choice of a summary data type.
 #' Only `counts` and `numeric` types are currently supported.
 #'
-#' @export
-#'
+#' @keywords internal
 summary_formats <- function(type = "numeric") {
   if (type == "counts") {
     c(
@@ -71,10 +74,11 @@ summary_formats <- function(type = "numeric") {
 
 #' Label Function for Descriptive Statistics
 #'
+#' @description
+#'
 #' Returns labels of descriptive statistics for numeric variables.
 #'
-#' @export
-#'
+#' @keywords internal
 summary_labels <- function() {
   c(
     mean = "Mean",
@@ -96,6 +100,8 @@ summary_labels <- function() {
 }
 
 #' Summarize Variables
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' We use the new S3 generic function [s_summary()] to implement summaries for
 #' different `x` objects. This is used as Statistics Function in combination

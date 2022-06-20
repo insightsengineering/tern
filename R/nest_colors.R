@@ -1,5 +1,7 @@
 #' Color Palettes Used in NEST
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' A standardized color palette to be used for all plots within
 #' the NEST project.
 #'

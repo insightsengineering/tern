@@ -1,5 +1,7 @@
 #' Combine Factor Levels
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Combine specified old factor Levels in a single new level.
 #'
 #' @param x factor
@@ -12,9 +14,9 @@
 #'
 #' @examples
 #' x <- factor(letters[1:5], levels = letters[5:1])
-#' tern:::combine_levels(x, levels = c("a", "b"))
+#' combine_levels(x, levels = c("a", "b"))
 #'
-#' tern:::combine_levels(x, c("e", "b"))
+#' combine_levels(x, c("e", "b"))
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
   stopifnot(
     is.factor(x),
@@ -45,11 +47,11 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' @return The factor with same attributes (except class) as `x`. Does not do any modifications
 #'   if `x` is already a factor.
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
-#' as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
-#' as_factor_keep_attributes(c("a", "b", ""), "id")
+#' tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
+#' tern:::as_factor_keep_attributes(c("a", "b", ""), "id")
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),
                                       na_level = "<Missing>") {
@@ -100,17 +102,16 @@ as_factor_keep_attributes <- function(x,
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
 #'
 #' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
-#' @export
-#'
+#' @keywords internal
 #' @examples
 #' # Just pass the internal probability bounds, then 0 and 100% will be added automatically.
-#' bins_percent_labels(c(0.2, 0.5))
+#' tern:::bins_percent_labels(c(0.2, 0.5))
 #'
 #' # Determine how to round.
-#' bins_percent_labels(0.35224, digits = 1)
+#' tern:::bins_percent_labels(0.35224, digits = 1)
 #'
 #' # Passing an empty vector just gives a single bin 0-100%.
-#' bins_percent_labels(c())
+#' tern:::bins_percent_labels(c())
 bins_percent_labels <- function(probs,
                                 digits = 0) {
   assertthat::assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))
@@ -130,6 +131,8 @@ bins_percent_labels <- function(probs,
 }
 
 #' Cutting Numeric Vector into Empirical Quantile Bins
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' This cuts a numeric vector into sample quantile bins. Note that the intervals are closed on
 #' the right side. That is, the first bin is the interval `[-Inf, q1]` where `q1` is
@@ -236,10 +239,10 @@ fct_discard <- function(x, discard) {
 #' @return The modified factor with inserted and existing `NA` converted to `na_level`.
 #' @seealso [forcats::fct_explicit_na()] which is used internally.
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
-#' fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
+#' tern:::fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   assertthat::assert_that(
     is.factor(x),
@@ -267,10 +270,10 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #'   in the given character vectors input will be set to the missing level.
 #' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
-#' fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
+#' tern:::fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   new_lvls <- names(list(...))
   assertthat::assert_that(

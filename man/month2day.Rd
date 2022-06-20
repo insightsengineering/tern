@@ -13,9 +13,12 @@ month2day(x)
 A \code{numeric} vector with the time in days.
 }
 \description{
-Conversion of Months to Days
+Conversion of Months to Days. This is an approximative calculation because it
+considers each month as having an average of 30.4375 days.
 }
 \examples{
 x <- c(13.25, 8.15, 1, 2.834)
-month2day(x)
+tern:::month2day(x)
+
 }
+\keyword{internal}

@@ -1,5 +1,7 @@
 #' Estimation of Proportions
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Estimate the proportion of responders within a studied population.
 #'
 #' @name estimate_proportions
@@ -248,12 +250,14 @@ estimate_proportion <- function(lyt,
 #'
 #' This is a helper function that describes the analysis in [s_proportion()].
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams argument_convention
 #' @inheritParams s_proportion
 #' @param long (`flag`)\cr Whether a long or a short (default) description is required.
 #'
 #' @return String describing the analysis.
-#' @keywords internal
+#' @export
 #'
 d_proportion <- function(conf_level,
                          method,

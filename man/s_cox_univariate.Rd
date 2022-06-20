@@ -55,6 +55,10 @@ A list with items:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This is a deprecated function. Use \code{fit_coxreg_univar} function instead.
+
 Fit cox (proportional hazard) regression models including the treatment and a single covariate.
 Starting from a univariate model (e.g. survival model including an two-level arm predictor), a list of candidate
 alternative models including an additional covariate (optionally including the interaction terms) is tested.
@@ -96,13 +100,13 @@ ADTTE_f <- within( # nolint
 )
 \dontrun{
 s_cox_univariate(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
   data = ADTTE_f,
   covariates = list(~SEX)
 )
 
 s_cox_univariate(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
   data = ADTTE_f,
   covariates = list("Race" = ~RACE, ~AGE, "a rand. quant var with increments" = ~X),
   interactions = TRUE,

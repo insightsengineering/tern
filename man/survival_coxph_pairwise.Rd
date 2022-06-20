@@ -96,6 +96,8 @@ The statistics are:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
 }
 \section{Functions}{
@@ -122,8 +124,9 @@ df <- ADTTE_f \%>\%
 df_ref_group <- ADTTE_f \%>\%
   filter(ARMCD == "ARM B")
 
-s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
-a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+tern:::s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+
+tern:::a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 
 basic_table() \%>\%
   split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%
@@ -147,3 +150,4 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df = ADTTE_f)
 }
+\keyword{internal}

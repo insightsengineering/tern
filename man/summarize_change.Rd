@@ -52,6 +52,8 @@ to avoid warnings from \code{rtables}.}
 See \code{\link[=s_summary.numeric]{s_summary.numeric()}} for the return values.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 The primary analysis variable \code{.var} indicates the numerical change from baseline results,
 and additional required secondary analysis variables are \code{value} and \code{baseline_flag}.
 Depending on the baseline flag, either the absolute baseline values (at baseline)
@@ -80,12 +82,12 @@ df <- data.frame(
   is_bl = c(TRUE, TRUE, TRUE),
   val = c(4, 5, 6)
 )
-s_change_from_baseline(
+tern:::s_change_from_baseline(
   df,
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")
 )
-a_change_from_baseline(
+tern:::a_change_from_baseline(
   df,
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")
@@ -120,3 +122,4 @@ Viewer(results)
 }
 
 }
+\keyword{internal}

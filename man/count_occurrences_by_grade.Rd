@@ -95,6 +95,9 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Functions for analyzing frequencies and fractions of occurrences by grade for patients
 with occurrence data. Multiple occurrences within one individual are counted once at the
 greatest intensity/highest grade level.

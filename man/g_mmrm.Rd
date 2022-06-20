@@ -4,8 +4,17 @@
 \alias{g_mmrm}
 \title{MMRM Plots}
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 This summarizes available plotting functions for MMRM.
 }
+\section{Warning}{
+
+Note that the \code{tern::g_mmrm_diagnostic()} and \code{tern::g_mmrm_lsmeans()} functions are deprecated and will
+be removed in the coming releases. Please use the functions \code{tern.mmrm::g_mmrm_diagnostic()} and
+\code{tern.mmrm::g_mmrm_lsmeans()} respectively instead.
+}
+
 \seealso{
 \link{g_mmrm_diagnostic}, \link{g_mmrm_lsmeans}
 }

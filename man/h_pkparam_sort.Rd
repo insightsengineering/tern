@@ -15,7 +15,7 @@ h_pkparam_sort(pk_data, key_var = "PARAMCD")
 dataframe with \verb{PK PARAM} variable ordered
 }
 \description{
-Sort \verb{PK PARAM} variable
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
 library(scda)

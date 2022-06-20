@@ -1,5 +1,7 @@
 #' Counting Specific Values
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' We can count the occurrence of specific values in a variable of interest.
 #'
 #' @name count_values_funs

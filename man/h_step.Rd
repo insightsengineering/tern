@@ -52,6 +52,8 @@ h_step_rsp_est(
 \item{subset}{(\code{logical})\cr subset vector.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Helper functions that are used internally for the STEP calculations.
 }
 \section{Functions}{

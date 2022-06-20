@@ -1,6 +1,8 @@
 #' Helper Function to create a new `SMQ` variable in `ADAE` by stacking
 #' `SMQ` and/or `CQ` records.
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper Function to create a new `SMQ` variable in `ADAE` that
 #' consists of all adverse events belonging to selected
 #' Standardized/Customized queries.
@@ -20,7 +22,6 @@
 #' @export
 #'
 #' @examples
-#'
 #' library(scda)
 #'
 #' adae <- synthetic_cdisc_data("latest")$adae[1:20, ] %>% df_explicit_na()

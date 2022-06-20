@@ -1,5 +1,7 @@
 #' Summary numeric variables in columns
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' These functions can be used to produce summary tables for PK datasets.
 #'
 #' @name summarize_variables_in_columns
@@ -8,8 +10,6 @@ NULL
 
 #' @describeIn summarize_variables_in_columns a wrapper of [s_summary.numeric()]
 #'  function that produces a named list of statistics to include as columns.
-#'
-#' `r lifecycle::badge("experimental")`
 #'
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
@@ -46,8 +46,6 @@ summary_in_cols.numeric <- function(x,
 
 #' @describeIn summarize_variables_in_columns a wrapper of
 #' [s_summary.factor()] function that produces a named list of statistics to include as columns.
-#'
-#' `r lifecycle::badge("experimental")`
 #'
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
@@ -112,11 +110,8 @@ summary_in_cols.character <- function(x,
 #' @describeIn summarize_variables_in_columns `summary_in_cols` is a S3 generic
 #' function to produce an object description.
 #'
-#' `r lifecycle::badge("experimental")`
-#'
 #' @export
 #' @order 2
-#'
 summary_in_cols <- function(x,
                             labelstr = "",
                             custom_label = NULL) {
@@ -126,8 +121,6 @@ summary_in_cols <- function(x,
 
 #' @describeIn summarize_variables_in_columns Layout creating
 #' function which can be used for creating summary tables in columns, primarily used for PK data sets.
-#'
-#'  `r lifecycle::badge("experimental")`
 #'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.

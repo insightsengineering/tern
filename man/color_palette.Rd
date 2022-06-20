@@ -30,6 +30,8 @@ colors in the NEST logo.
 }}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 A standardized color palette to be used for all plots within
 the NEST project.
 }

@@ -1,5 +1,7 @@
 #' Helper Functions for Tabulating Survival Duration by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper functions that tabulate in a data frame statistics such as median survival
 #' time and hazard ratio for population subgroups.
 #'
@@ -11,8 +13,8 @@
 #' @param arm (`factor`)\cr the treatment group variable.
 #' @name h_survival_duration_subgroups
 #' @order 1
-#' @examples
 #'
+#' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
@@ -38,19 +40,21 @@
 #'   )
 #' labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
 NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
 #' @inheritParams h_survival_duration_subgroups
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Extract median survival time for one group.
 #' h_survtime_df(
 #'   tte = adtte_f$AVAL,
 #'   is_event = adtte_f$is_event,
 #'   arm = adtte_f$ARM
 #' )
+#'
+#' @export
 h_survtime_df <- function(tte, is_event, arm) {
   assertthat::assert_that(
     is.numeric(tte),
@@ -99,9 +103,8 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
 #'    requires elements `tte`, `is_event`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Extract median survival time for multiple groups.
 #' h_survtime_subgroups_df(
 #'   variables = list(
@@ -130,6 +133,8 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'     )
 #'   )
 #' )
+#'
+#' @export
 h_survtime_subgroups_df <- function(variables,
                                     data,
                                     groups_lists = list(),
@@ -174,14 +179,15 @@ h_survtime_subgroups_df <- function(variables,
 #'   treatment hazard ratio.
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
 #'   required if stratified analysis is performed.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Extract hazard ratio for one group.
 #' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
 #'
 #' # Extract hazard ratio for one group with stratification factor.
 #' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
+#'
+#' @export
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
   assertthat::assert_that(
     is.numeric(tte),
@@ -281,9 +287,8 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   `data`, passed as a named list and requires elements `tte`, `is_event`, `arm` and
 #'   optionally `subgroups` and `strat`. `groups_lists` optionally specifies
 #'   groupings for `subgroups` variables.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Extract hazard ratio for multiple groups.
 #' h_coxph_subgroups_df(
 #'   variables = list(
@@ -324,6 +329,8 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   ),
 #'   data = adtte_f
 #' )
+#'
+#' @export
 h_coxph_subgroups_df <- function(variables,
                                  data,
                                  groups_lists = list(),
@@ -395,8 +402,6 @@ h_coxph_subgroups_df <- function(variables,
 #'
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
 #'
-#' @export
-#'
 #' @examples
 #' library(rtables)
 #'
@@ -419,6 +424,8 @@ h_coxph_subgroups_df <- function(variables,
 #'     y = list("AB" = c("A", "B"), "C" = "C")
 #'   )
 #' )
+#'
+#' @export
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {

@@ -1,5 +1,7 @@
 #' Counting Patients Summing Exposure Across All Patients in Columns
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Counting the number of patients and summing analysis value (i.e exposure values) across all patients
 #' when a column table layout is required.
 #'
@@ -12,7 +14,6 @@ NULL
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #' be used as label.
-#' @export
 #' @return [s_count_patients_sum_exposure()] returns a list with the statistics:\cr
 #' - `n_patients`: number of unique patients in `df`.
 #' - `sum_exposure`: sum of `.var` across all patients in `df`.
@@ -32,12 +33,13 @@ NULL
 #'   stringsAsFactors = TRUE
 #' )
 #'
-#' s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
-#' s_count_patients_sum_exposure(
+#' tern:::s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
+#' tern:::s_count_patients_sum_exposure(
 #'   df = df,
 #'   .N_col = nrow(adsl),
 #'   custom_label = "some user's custom label"
 #' )
+#' @keywords internal
 s_count_patients_sum_exposure <- function(df, # nolintr
                                           .var = "AVAL",
                                           id = "USUBJID",

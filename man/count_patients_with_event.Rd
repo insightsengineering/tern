@@ -121,6 +121,9 @@ by a statistics function.}
 defined event.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 The primary analysis variable \code{.var} denotes the unique patient identifier.
 }
 \section{Functions}{

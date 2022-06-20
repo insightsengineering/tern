@@ -133,6 +133,8 @@ content function.}
 \item{drop_and_remove_str}{string to be dropped and removed}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Logistic regression for binary outcome with categorical/continuous covariates in model statement.
 For each covariate category (if categorical) or specified values (if continuous), present degrees of freedom,
 regression parameter estimate and standard error (SE) relative to reference group or category.
@@ -259,13 +261,18 @@ mod2 <- fit_logistic(
 )
 h_glm_simple_term_extract("AGE", mod1)
 h_glm_simple_term_extract("ARMCD", mod1)
+
 h_glm_interaction_extract("ARMCD:AGE", mod2)
+
 h_glm_inter_term_extract("AGE", "ARMCD", mod2)
+
 h_logistic_simple_terms("AGE", mod1)
 h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
+
 library(broom)
 df <- tidy(mod1, conf_level = 0.99)
 df2 <- tidy(mod2, conf_level = 0.99)
+
 # flagging empty strings with "_"
 df <- tern:::replace_emptys_with_na(df, rep_str = "_")
 df2 <- tern:::replace_emptys_with_na(df2, rep_str = "_")
@@ -285,4 +292,5 @@ result2 <- basic_table() \%>\%
   ) \%>\%
   build_table(df = df2)
 result2
+
 }

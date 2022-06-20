@@ -1,5 +1,7 @@
 #' Pairwise formula special term
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' The special term `pairwise` indicate that the model should be fitted individually for
 #' every tested level in comparison to the reference level.
 #'
@@ -18,6 +20,8 @@ pairwise <- function(x) {
 }
 
 #' Univariate formula special term
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' The special term `univariate` indicate that the model should be fitted individually for
 #' every variable included in univariate.
@@ -40,6 +44,10 @@ univariate <- function(x) {
 }
 
 #' Cox regression including a single covariate - summarized results
+#'
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' This is a deprecated function. Use `fit_coxreg_univar` function instead.
 #'
 #' Fit cox (proportional hazard) regression models including the treatment and a single covariate.
 #' Starting from a univariate model (e.g. survival model including an two-level arm predictor), a list of candidate
@@ -111,13 +119,13 @@ univariate <- function(x) {
 #' )
 #' \dontrun{
 #' s_cox_univariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
 #'   data = ADTTE_f,
 #'   covariates = list(~SEX)
 #' )
 #'
 #' s_cox_univariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
 #'   data = ADTTE_f,
 #'   covariates = list("Race" = ~RACE, ~AGE, "a rand. quant var with increments" = ~X),
 #'   interactions = TRUE,
@@ -167,7 +175,7 @@ s_cox_univariate <- function(formula,
   istr <- attr(tf, "specials")$strata
   tstr <- rownames(attr(tf, "factors"))[istr]
 
-  if (is.null(iarm)) stop("Check `formula`, the arm variable needs to be wrapped in arm()")
+  if (is.null(iarm)) stop("Check `formula`, the arm variable needs to be wrapped in tern:::arm()")
 
   arms <- levels(with(data, eval(parse(text = tarm, keep.source = FALSE))))
   if (length(arms) != 2) stop("Check `formula`, the arm variable needs 2 levels.")
@@ -382,7 +390,7 @@ rht <- function(x) {
 #'   \item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
 #' }
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' library(dplyr)
@@ -406,7 +414,7 @@ rht <- function(x) {
 #' mmat <- stats::model.matrix(mod)[1, ]
 #' mmat[!mmat == 0] <- 0
 #'
-#' estimate_coef(
+#' tern:::estimate_coef(
 #'   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
 #'   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
 #' )
@@ -485,10 +493,8 @@ estimate_coef <- function(variable, given,
 #'
 #' @inheritParams car::Anova
 #'
-#' @md
 #' @return A list with item `aov` for the result of the model and
 #'   `error_text` for the captured warnings.
-#' @keywords internal
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected
@@ -505,9 +511,10 @@ estimate_coef <- function(variable, given,
 #' with_wald <- tern:::try_car_anova(mod = mod, test.statistic = "Wald")
 #' with_lr <- tern:::try_car_anova(mod = mod, test.statistic = "LR")
 #' }
+#'
+#' @keywords internal
 try_car_anova <- function(mod,
                           test.statistic) { # nolint
-
   y <- tryCatch(
     withCallingHandlers(
       expr = {
@@ -585,7 +592,7 @@ fit_n_aov <- function(formula,
 # argument_checks
 check_formula <- function(formula) {
   if (!(inherits(formula, "formula"))) {
-    stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD)`.")
+    stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD)`.")
   }
 
   invisible()
@@ -655,8 +662,6 @@ check_increments <- function(increments, covariates) {
 #'
 #' @md
 #'
-#' @export
-#'
 #' @examples
 #' library(scda)
 #' library(dplyr)
@@ -672,10 +677,12 @@ check_increments <- function(increments, covariates) {
 #' ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
 #' ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)
 #' \dontrun{
-#' s_cox_multivariate(
+#' tern:::s_cox_multivariate(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f
 #' )
 #' }
+#'
+#' @keywords internal
 s_cox_multivariate <- function(formula, data,
                                conf_level = 0.95,
                                pval_method = c("wald", "likelihood"),

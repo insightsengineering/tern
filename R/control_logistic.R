@@ -1,5 +1,7 @@
 #' Control Function for Logistic Regression Model Fitting
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is an auxiliary function for controlling arguments for logistic regression models.
 #' `conf_level` refers to the confidence level used for the Odds Ratio CIs.
 #'

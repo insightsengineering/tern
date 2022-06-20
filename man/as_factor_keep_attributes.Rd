@@ -28,6 +28,7 @@ can decide whether they prefer converting to factor manually (e.g. for full cont
 factor levels).
 }
 \examples{
-as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
-as_factor_keep_attributes(c("a", "b", ""), "id")
+tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
+tern:::as_factor_keep_attributes(c("a", "b", ""), "id")
 }
+\keyword{internal}

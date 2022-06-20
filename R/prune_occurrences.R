@@ -1,5 +1,7 @@
 #' Occurrence Table Pruning
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Family of constructor and condition functions to flexibly prune occurrence tables.
 #' The condition functions always return whether the row result is higher than the threshold.
 #' Since they are of class [CombinationFunction()] they can be logically combined with other condition
@@ -32,6 +34,7 @@ NULL
 #' @return [keep_rows()] returns a pruning function that can be used with [rtables::prune_table()]
 #'   on `[rtables::TableTree()]` objects.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `keep_rows`
@@ -58,10 +61,11 @@ keep_rows <- function(row_condition) {
 #' @return [keep_content_rows()] also returns a pruning function, the difference is that it
 #'   checks the condition on the first content row of leaf tables in the table.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `keep_content_rows`
-#' more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
+#' more_than_twenty <- tern:::has_count_in_cols(atleast = 20L, col_names = names(tab))
 #' prune_table(tab, keep_content_rows(more_than_twenty))
 #' }
 keep_content_rows <- function(content_row_condition) {
@@ -88,13 +92,15 @@ keep_content_rows <- function(content_row_condition) {
 #'   or alternatively `col_indices` (`integer`) giving the indices directly instead.
 #' @return [has_count_in_cols()] returns a condition function that sums the counts in the specified
 #'   column.
-#' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_count_in_cols`
-#' more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
+#' more_than_one <- tern:::has_count_in_cols(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one))
 #' }
+#'
+#' @keywords internal
 has_count_in_cols <- function(atleast, ...) {
   assertthat::assert_that(
     assertthat::is.count(atleast)
@@ -113,6 +119,7 @@ has_count_in_cols <- function(atleast, ...) {
 #' @return [has_count_in_any_col()] returns a condition function that compares the counts in the
 #'   specified columns with the threshold.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_count_in_any_col`
@@ -134,6 +141,7 @@ has_count_in_any_col <- function(atleast, ...) {
 #' @return [has_fraction_in_cols()] returns a condition function that sums the counts in the
 #'   specified column, and computes the fraction by dividing by the total column counts.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_fraction_in_cols`
@@ -159,6 +167,7 @@ has_fraction_in_cols <- function(atleast, ...) {
 #' @return [has_fraction_in_cols()] returns a condition function that looks at the fractions
 #'  in the specified columns and checks whether any of them fulfill the threshold.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_fraction_in_any_col`
@@ -180,6 +189,7 @@ has_fraction_in_any_col <- function(atleast, ...) {
 #' @return [has_fractions_difference()] returns a condition function that extracts the fractions of each
 #'   specified column, and computes the difference of the minimum and maximum.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_fractions_difference`
@@ -201,13 +211,15 @@ has_fractions_difference <- function(atleast, ...) {
 #'   between the counts reported in each specified column.
 #' @return [has_counts_difference()] returns a condition function that extracts the counts of each
 #'   specified column, and computes the difference of the minimum and maximum.
-#' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_counts_difference`
-#' more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
+#' more_than_one_diff <- tern:::has_counts_difference(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one_diff))
 #' }
+#'
+#' @keywords internal
 has_counts_difference <- function(atleast, ...) {
   assertthat::assert_that(
     assertthat::is.count(atleast)

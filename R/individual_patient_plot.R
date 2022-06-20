@@ -26,6 +26,9 @@
 #' @param col (`character`)\cr lines colors.
 #'
 #' @name individual_patient_plot
+#'
+#' @description `r lifecycle::badge("stable")`
+
 NULL
 
 

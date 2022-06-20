@@ -42,7 +42,7 @@ testthat::test_that("h_row_counts returns NA with empty analysis row", {
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("h_row_fractions works as expected", {
+testthat::test_that("tern:::h_row_fractions works as expected", {
   tab <- tbl_example
   sub_tab <- tab[5, ]
   testthat::expect_identical(
@@ -65,14 +65,14 @@ testthat::test_that("h_col_counts works as expected", {
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("is_leaf_table works as expected", {
+testthat::test_that("tern:::is_leaf_table works as expected", {
   simple_tab <- basic_table() %>%
     split_rows_by("RACE") %>%
     summarize_vars("COUNTRY", .stats = "count_fraction") %>%
     build_table(DM)
-  testthat::expect_false(is_leaf_table(simple_tab))
+  testthat::expect_false(tern:::is_leaf_table(simple_tab))
   sub_tab <- tree_children(simple_tab)[[1]]
-  testthat::expect_true(is_leaf_table(sub_tab))
+  testthat::expect_true(tern:::is_leaf_table(sub_tab))
 })
 
 testthat::test_that("h_content_first_row works as expected", {

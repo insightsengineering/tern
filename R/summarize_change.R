@@ -1,5 +1,7 @@
 #' Summarize the Change from Baseline or Absolute Baseline Values
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' The primary analysis variable `.var` indicates the numerical change from baseline results,
 #' and additional required secondary analysis variables are `value` and `baseline_flag`.
 #' Depending on the baseline flag, either the absolute baseline values (at baseline)
@@ -15,19 +17,18 @@ NULL
 #' @note The data in `df` must be either all be from baseline or post-baseline visits. Otherwise
 #'   an error will be thrown.
 #'
-#' @export
-#'
 #' @examples
 #' df <- data.frame(
 #'   chg = c(1, 2, 3),
 #'   is_bl = c(TRUE, TRUE, TRUE),
 #'   val = c(4, 5, 6)
 #' )
-#' s_change_from_baseline(
+#' tern:::s_change_from_baseline(
 #'   df,
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
+#' @keywords internal
 s_change_from_baseline <- function(df,
                                    .var,
                                    variables,
@@ -54,14 +55,14 @@ s_change_from_baseline <- function(df,
 
 #' @describeIn summarize_change Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
-#' a_change_from_baseline(
+#' tern:::a_change_from_baseline(
 #'   df,
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
+#' @keywords internal
 a_change_from_baseline <- make_afun(
   s_change_from_baseline,
   .formats = c(

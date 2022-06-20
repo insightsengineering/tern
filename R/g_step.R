@@ -1,65 +1,6 @@
-#' Custom Tidy Method for STEP Results
-#'
-#' Tidy the STEP results into a `tibble` to format them ready for plotting.
-#'
-#' @param x (`step` matrix)\cr results from [fit_survival_step()].
-#' @param ... not used here.
-#' @return A `tibble` with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,
-#'   respectively. Additional attributes carry meta data also used for plotting.
-#' @seealso [g_step()] which consumes the result from this function.
-#' @method tidy step
-#' @export
-#' @examples
-#' library(survival)
-#' lung$sex <- factor(lung$sex)
-#' vars <- list(
-#'   time = "time",
-#'   event = "status",
-#'   arm = "sex",
-#'   biomarker = "age"
-#' )
-#' step_matrix <- fit_survival_step(
-#'   variables = vars,
-#'   data = lung,
-#'   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
-#' )
-#' broom::tidy(step_matrix)
-tidy.step <- function(x, ...) { # nolint
-  assertthat::assert_that(inherits(x, "step"))
-  dat <- as.data.frame(x)
-  nams <- names(dat)
-  is_surv <- "loghr" %in% names(dat)
-  est_var <- ifelse(is_surv, "loghr", "logor")
-  new_est_var <- ifelse(is_surv, "Hazard Ratio", "Odds Ratio")
-  new_y_vars <- c(new_est_var, c("ci_lower", "ci_upper"))
-  names(dat)[match(est_var, nams)] <- new_est_var
-  dat[, new_y_vars] <- exp(dat[, new_y_vars])
-  any_is_na <- any(is.na(dat[, new_y_vars]))
-  any_is_very_large <- any(abs(dat[, new_y_vars]) > 1e10, na.rm = TRUE)
-  if (any_is_na) {
-    warning(paste(
-      "Missing values in the point estimate or CI columns,",
-      "this will lead to holes in the `g_step()` plot"
-    ))
-  }
-  if (any_is_very_large) {
-    warning(paste(
-      "Very large absolute values in the point estimate or CI columns,",
-      "consider adding `scale_y_log10()` to the `g_step()` result for plotting"
-    ))
-  }
-  if (any_is_na || any_is_very_large) {
-    warning("Consider using larger `bandwidth`, less `num_points` in `control_step()` settings for fitting")
-  }
-  structure(
-    tibble::as_tibble(dat),
-    estimate = new_est_var,
-    biomarker = attr(x, "variables")$biomarker,
-    ci = f_conf_level(attr(x, "control")$conf_level)
-  )
-}
-
 #' Create a STEP Graph
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Based on the STEP results, creates a `ggplot` graph showing the estimated HR or OR
 #' along the continuous biomarker value subgroups.
@@ -170,4 +111,66 @@ g_step <- function(df,
     p <- p + ggplot2::scale_x_continuous(labels = scales::percent)
   }
   p
+}
+
+#' @describeIn g_step Custom Tidy Method for STEP Results
+#'
+#' Tidy the STEP results into a `tibble` to format them ready for plotting.
+#'
+#' @param x (`step` matrix)\cr results from [fit_survival_step()].
+#' @param ... not used here.
+#' @return A `tibble` with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,
+#'   respectively. Additional attributes carry meta data also used for plotting.
+#' @seealso [g_step()] which consumes the result from this function.
+#' @method tidy step
+#' @export
+#'
+#' @examples
+#' library(survival)
+#' lung$sex <- factor(lung$sex)
+#' vars <- list(
+#'   time = "time",
+#'   event = "status",
+#'   arm = "sex",
+#'   biomarker = "age"
+#' )
+#' step_matrix <- fit_survival_step(
+#'   variables = vars,
+#'   data = lung,
+#'   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
+#' )
+#' broom::tidy(step_matrix)
+tidy.step <- function(x, ...) { # nolint
+  assertthat::assert_that(inherits(x, "step"))
+  dat <- as.data.frame(x)
+  nams <- names(dat)
+  is_surv <- "loghr" %in% names(dat)
+  est_var <- ifelse(is_surv, "loghr", "logor")
+  new_est_var <- ifelse(is_surv, "Hazard Ratio", "Odds Ratio")
+  new_y_vars <- c(new_est_var, c("ci_lower", "ci_upper"))
+  names(dat)[match(est_var, nams)] <- new_est_var
+  dat[, new_y_vars] <- exp(dat[, new_y_vars])
+  any_is_na <- any(is.na(dat[, new_y_vars]))
+  any_is_very_large <- any(abs(dat[, new_y_vars]) > 1e10, na.rm = TRUE)
+  if (any_is_na) {
+    warning(paste(
+      "Missing values in the point estimate or CI columns,",
+      "this will lead to holes in the `g_step()` plot"
+    ))
+  }
+  if (any_is_very_large) {
+    warning(paste(
+      "Very large absolute values in the point estimate or CI columns,",
+      "consider adding `scale_y_log10()` to the `g_step()` result for plotting"
+    ))
+  }
+  if (any_is_na || any_is_very_large) {
+    warning("Consider using larger `bandwidth`, less `num_points` in `control_step()` settings for fitting")
+  }
+  structure(
+    tibble::as_tibble(dat),
+    estimate = new_est_var,
+    biomarker = attr(x, "variables")$biomarker,
+    ci = f_conf_level(attr(x, "control")$conf_level)
+  )
 }

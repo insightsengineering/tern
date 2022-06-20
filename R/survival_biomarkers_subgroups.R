@@ -1,5 +1,7 @@
 #' Tabulate Biomarker Effects on Survival by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Tabulate the estimated effects of multiple continuous biomarker variables
 #' across population subgroups.
 #'

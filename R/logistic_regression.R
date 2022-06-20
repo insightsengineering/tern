@@ -1,5 +1,7 @@
 #' Multi-variable logistic regression table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Logistic regression for binary outcome with categorical/continuous covariates in model statement.
 #' For each covariate category (if categorical) or specified values (if continuous), present degrees of freedom,
 #' regression parameter estimate and standard error (SE) relative to reference group or category.
@@ -136,6 +138,7 @@ fit_logistic <- function(data,
 #' @describeIn logistic_regression Helper function to extract interaction variable names from a fitted
 #'   model assuming only one interaction term.
 #'
+#' @export
 h_get_interaction_vars <- function(fit_glm) {
   assertthat::assert_that("glm" %in% class(fit_glm))
   terms_name <- attr(stats::terms(fit_glm), "term.labels")
@@ -154,6 +157,7 @@ h_get_interaction_vars <- function(fit_glm) {
 #' @param second_var_with_level (`character` of length 2)\cr the second variable name with
 #'   the interaction level.
 #'
+#' @export
 h_interaction_coef_name <- function(interaction_vars,
                                     first_var_with_level,
                                     second_var_with_level) {
@@ -178,6 +182,7 @@ h_interaction_coef_name <- function(interaction_vars,
 #' @param odds_ratio_var (`string`)\cr the odds ratio variable.
 #' @param interaction_var (`string`)\cr the interaction variable.
 #'
+#' @export
 h_or_cat_interaction <- function(odds_ratio_var,
                                  interaction_var,
                                  fit_glm,
@@ -233,6 +238,7 @@ h_or_cat_interaction <- function(odds_ratio_var,
 #'   this does not arise in this table, as the treatment arm variable will always be involved
 #'   and categorical.
 #'
+#' @export
 h_or_cont_interaction <- function(odds_ratio_var,
                                   interaction_var,
                                   fit_glm,
@@ -329,6 +335,7 @@ h_or_cont_interaction <- function(odds_ratio_var,
 #'   in case of an interaction. This is a wrapper for [h_or_cont_interaction()] and
 #'   [h_or_cat_interaction()].
 #'
+#' @export
 h_or_interaction <- function(odds_ratio_var,
                              interaction_var,
                              fit_glm,
@@ -360,6 +367,7 @@ h_or_interaction <- function(odds_ratio_var,
 #' @param terms (`character`)\cr simple terms.
 #' @param table (`table`)\cr table containing numbers for terms.
 #'
+#' @export
 h_simple_term_labels <- function(terms,
                                  table) {
   assertthat::assert_that(
@@ -373,11 +381,13 @@ h_simple_term_labels <- function(terms,
 
 #' @describeIn logistic_regression Helper function to construct term labels from interaction terms and the table
 #'   of numbers of patients.
+#'
 #' @param terms1 (`character`)\cr terms for first dimension (rows).
 #' @param terms2 (`character`)\cr terms for second dimension (rows).
 #' @param any (`flag`)\cr whether any of `term1` and `term2` can be fulfilled to count the
 #'   number of patients. In that case they can only be scalar (strings).
 #'
+#' @export
 h_interaction_term_labels <- function(terms1,
                                       terms2,
                                       table,
@@ -406,11 +416,11 @@ h_interaction_term_labels <- function(terms1,
 #' @describeIn logistic_regression Helper function to tabulate the main effect
 #'   results of a (conditional) logistic regression model.
 #'
-#' @export
-#'
 #' @examples
 #' h_glm_simple_term_extract("AGE", mod1)
 #' h_glm_simple_term_extract("ARMCD", mod1)
+#'
+#' @export
 h_glm_simple_term_extract <- function(x, fit_glm) {
   assertthat::assert_that(
     inherits(fit_glm, c("glm", "clogit")),
@@ -506,9 +516,11 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
 
 #' @describeIn logistic_regression Helper function to tabulate the interaction term
 #'   results of a logistic regression model.
-#' @export
+#'
 #' @examples
 #' h_glm_interaction_extract("ARMCD:AGE", mod2)
+#'
+#' @export
 h_glm_interaction_extract <- function(x, fit_glm) {
   vars <- h_get_interaction_vars(fit_glm)
   xs_class <- attr(fit_glm$terms, "dataClasses")
@@ -609,9 +621,11 @@ h_glm_interaction_extract <- function(x, fit_glm) {
 #'   results of a logistic regression model. This basically is a wrapper for
 #'   [h_or_interaction()] and [h_glm_simple_term_extract()] which puts the results
 #'   in the right data frame format.
-#' @export
+#'
 #' @examples
 #' h_glm_inter_term_extract("AGE", "ARMCD", mod2)
+#'
+#' @export
 h_glm_inter_term_extract <- function(odds_ratio_var,
                                      interaction_var,
                                      fit_glm,
@@ -703,6 +717,7 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 #' @describeIn logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of simple terms.
 #' @export
+#'
 #' @examples
 #' h_logistic_simple_terms("AGE", mod1)
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
@@ -730,9 +745,11 @@ h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
 
 #' @describeIn logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of interaction terms.
-#' @export
+#'
 #' @examples
 #' h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
+#'
+#' @export
 h_logistic_inter_terms <- function(x,
                                    fit_glm,
                                    conf_level = 0.95,
@@ -820,11 +837,13 @@ h_logistic_inter_terms <- function(x,
 #'   `glm` object with `binomial` family.
 #' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
 #' @method tidy glm
-#' @export
+#'
 #' @examples
 #' library(broom)
 #' df <- tidy(mod1, conf_level = 0.99)
 #' df2 <- tidy(mod2, conf_level = 0.99)
+#'
+#' @export
 tidy.glm <- function(fit_glm, # nolint
                      conf_level = 0.95,
                      at = NULL) {
@@ -857,8 +876,8 @@ tidy.glm <- function(fit_glm, # nolint
 
 #' @describeIn logistic_regression Layout creating function for a multi-variable column layout summarizing
 #'   logistic regression results.
-#' @export
 #'
+#' @export
 logistic_regression_cols <- function(lyt,
                                      conf_level = 0.95) {
   vars <- c("df", "estimate", "std_error", "odds_ratio", "ci", "pvalue")
@@ -881,8 +900,8 @@ logistic_regression_cols <- function(lyt,
 #'   logistic regression results.
 #' @param flag_var (`string`)\cr variable name identifying which row should be used in this
 #'   content function.
-#' @export
 #'
+#' @export
 logistic_summary_by_flag <- function(flag_var) {
   assertthat::assert_that(assertthat::is.string(flag_var))
   function(lyt) {
@@ -903,7 +922,6 @@ logistic_summary_by_flag <- function(flag_var) {
 
 #' @describeIn logistic_regression Layout creating function which summarizes a logistic variable regression.
 #' @param drop_and_remove_str string to be dropped and removed
-#' @export
 #'
 #' @examples
 #' # flagging empty strings with "_"
@@ -925,6 +943,8 @@ logistic_summary_by_flag <- function(flag_var) {
 #'   ) %>%
 #'   build_table(df = df2)
 #' result2
+#'
+#' @export
 summarize_logistic <- function(lyt,
                                conf_level,
                                drop_and_remove_str = "") {

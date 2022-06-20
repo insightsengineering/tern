@@ -14,6 +14,8 @@ a \code{ggplot}.}
 a \code{ggplot}.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Build the y-axis annotation from a decomposed \code{ggplot}.
 }
 \examples{
@@ -26,23 +28,22 @@ library(grid)
 fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-data_plot <- tern:::h_data_plot(fit_km = fit_km)
-xticks <- tern:::h_xticks(data = data_plot)
-gg <- tern:::h_ggkm(
+data_plot <- h_data_plot(fit_km = fit_km)
+xticks <- h_xticks(data = data_plot)
+gg <- h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
   title = "title", yval = "Survival"
 )
 
-g_el <- tern:::h_decompose_gg(gg)
+g_el <- h_decompose_gg(gg)
 
 grid::grid.newpage()
 pvp <- grid::plotViewport(margins = c(5, 4, 2, 20))
 pushViewport(pvp)
-grid::grid.draw(tern:::h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
+grid::grid.draw(h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
 grid.rect(gp = grid::gpar(lty = 1, col = "gray35", fill = NA))
 }
 
 }
-\keyword{internal}

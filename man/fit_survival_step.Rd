@@ -24,11 +24,12 @@ for the biomarker variable, including where the center of the intervals are and 
 second part of the columns contain the estimates for the treatment arm comparison.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This fits the Subgroup Treatment Effect Pattern models for a survival outcome. The treatment arm
 variable must have exactly 2 levels, where the first one is taken as reference and the estimated
 hazard ratios are for the comparison of the second level vs. the first one.
-}
-\details{
+
 The model which is fit is:\cr
 \code{Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)}\cr
 where \code{degree} is specified by \code{control_step()}.

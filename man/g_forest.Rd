@@ -69,6 +69,9 @@ Only considered if \code{draw = TRUE} is used.}
 (\code{gtree}) object containing the forest plot and table
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} object that has a
 column with a single value and a column with 2 values.
 }
@@ -100,7 +103,7 @@ df <- extract_rsp_subgroups(
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
 p <- g_forest(tbl)
-draw_grob(p)
+tern:::draw_grob(p)
 # Odds ratio only table.
 tbl_or <- basic_table() \%>\%
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
@@ -109,7 +112,7 @@ p <- g_forest(
   tbl_or,
   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 )
-draw_grob(p)
+tern:::draw_grob(p)
 # Survival forest plot example.
 adtte <- synthetic_cdisc_data("latest")$adtte
 # Save variable labels before data processing steps.

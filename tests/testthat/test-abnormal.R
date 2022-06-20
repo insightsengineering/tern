@@ -16,7 +16,7 @@ testthat::test_that("s_count_abnormal works with healthy input and default argum
   )
 
   # Check with LOW and HIGH abnormality.
-  result <- s_count_abnormal(
+  result <- tern:::s_count_abnormal(
     df = df,
     .var = "ANRIND",
     abnormal = list(high = "HIGH", low = "LOW")
@@ -58,7 +58,7 @@ testthat::test_that("s_count_abnormal works when excluding patients with abnorma
   )
 
   # Check with LOW and HIGH abnormality.
-  result <- s_count_abnormal(
+  result <- tern:::s_count_abnormal(
     df = df,
     .var = "ANRIND",
     abnormal = list(high = "HIGH", low = "LOW"),
@@ -101,7 +101,7 @@ testthat::test_that("s_count_abnormal also works with tibble and custom argument
   )
 
   # Check with HIGH and LOW abnormality.
-  result <- s_count_abnormal(
+  result <- tern:::s_count_abnormal(
     df = df,
     .var = "myrange",
     abnormal = list(high = "HIGH", low = "LOW"),
@@ -239,7 +239,7 @@ testthat::test_that("s_count_abnormal works with healthy input and grouped abnor
   )
 
   # Check with LOW and HIGH abnormality.
-  result <- s_count_abnormal(
+  result <- tern:::s_count_abnormal(
     df = df,
     .var = "ANRIND",
     abnormal = list(high = c("HIGH", "HIGH HIGH"), low = c("LOW", "LOW LOW"))

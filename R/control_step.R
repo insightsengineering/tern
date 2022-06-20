@@ -1,5 +1,7 @@
 #' Control Function for Subgroup Treatment Effect Pattern (STEP) Calculations
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is an auxiliary function for controlling arguments for STEP calculations.
 #'
 #' @param biomarker (`numeric` or `NULL`)\cr optional provision of the numeric biomarker variable, which
@@ -20,9 +22,10 @@
 #'   is not included in the model fitted in each biomarker window.
 #' @param num_points (`count`)\cr the number of points at which the hazard ratios are estimated. The
 #'   smallest number is 2.
+#'
 #' @return A list of components with the same names as the arguments, except `biomarker` which is
 #'   just used to calculate the `bandwidth` in case that actual biomarker windows are requested.
-#' @export
+#'
 #' @examples
 #' # Provide biomarker values and request actual values to be used,
 #' # so that bandwidth is chosen from range.
@@ -33,6 +36,8 @@
 #'
 #' # Reduce number of points to be used.
 #' control_step(num_points = 10)
+#'
+#' @export
 control_step <- function(biomarker = NULL,
                          use_percentile = TRUE,
                          bandwidth,

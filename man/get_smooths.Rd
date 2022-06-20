@@ -22,5 +22,7 @@ A \code{data.frame} with original \code{x}, smoothed \code{y}, \code{ylow}, \cod
 optional \code{groups} variables formatted to factor type.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This produces \code{loess} smoothed estimates of \code{y} with Student confidence intervals.
 }
