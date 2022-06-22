@@ -1,6 +1,6 @@
 # tern 0.7.8.9005
 
-### Migration from assertthat to checkmate
+### Migration from `assertthat` to `checkmate`
 * `is_character_or_factor` is now `assert_character_or_factor` and uses 
   `checkmate::assertMultiClass()` and made internal
 * `is_nonnegative_count` is now `assert_nonnegative_count` and uses 
