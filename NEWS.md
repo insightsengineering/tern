@@ -90,6 +90,9 @@
    
 * Deprecated badge added to `g_mmrm`
 
+### Miscellaneous
+* `color_palette` and `color_palette_core` functions removed from `tern` and added to `nestcolor` package, `nest_colors` docs deleted
+
 # tern 0.7.8
 
 ### Fix
