@@ -1,14 +1,12 @@
-#' Additional Assertions for `assert_that`
+#' Additional Assertions for `checkmate`
 #'
-#' We provide additional assertion functions which can be used together with [assertthat::assert_that()].
+#' We provide additional assertion functions which can be used together with [checkmate::assert()].
 #'
 #' @param x object to test
 #' @param df supposed data frame to test
 #' @param variables (named `list` of `character`)\cr supposed variables list to test
 #' @param include_boundaries (`logical`)\cr whether to include boundaries when testing for proportions.
 #' @param ... a collection of objects to test.
-#' @return `flag` whether the assertion holds (`TRUE` or `FALSE`). When used inside
-#'   [assertthat::assert_that()] produces a meaningful error message.
 #' @name assertions
 #' @keywords internal
 #'
@@ -19,14 +17,11 @@ NULL
 #' @examples
 #'
 #' # Check whether `x` is a character or factor vector.
-#' is_character_or_factor(-1)
+#' # is_character_or_factor(-1) # it fails
 #' is_character_or_factor(c("a", "b"))
 #' is_character_or_factor(factor(c("a", "b")))
 is_character_or_factor <- function(x) {
-  is.character(x) || is.factor(x)
-}
-assertthat::on_failure(is_character_or_factor) <- function(call, env) {
-  paste0(deparse(call$x), " is not a character or factor vector")
+  checkmate::assertMultiClass(x, classes = c("factor", "character"))
 }
 
 #' @describeIn assertions Check whether `x` is a nonnegative count.

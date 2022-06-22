@@ -66,19 +66,19 @@ s_incidence_rate <- function(df,
     warning("argument is_event will be deprecated. Please use n_events.")
 
     if (missing(n_events)) {
-      assertthat::assert_that(
-        is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-        assertthat::is.string(.var)
+      checkmate::assert(
+        is_df_with_variables(df, list(tte = .var, is_event = is_event))
       )
+      checkmate::assert_string(.var)
       checkmate::assert_logical(df[[is_event]], any.missing = FALSE)
       checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
       n_events <- is_event
     }
   } else {
-    assertthat::assert_that(
-      is_df_with_variables(df, list(tte = .var, n_events = n_events)),
-      assertthat::is.string(.var)
+    checkmate::assert(
+      is_df_with_variables(df, list(tte = .var, n_events = n_events))
     )
+    checkmate::assert_string(.var)
     checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
     checkmate::assert_integer(df[[n_events]], any.missing = FALSE)
   }
@@ -237,6 +237,8 @@ h_incidence_rate_normal_log <- function(person_years,
 h_incidence_rate_exact <- function(person_years,
                                    n_events,
                                    alpha = 0.05) {
+
+  checkmate::assert_number()
   assertthat::assert_that(
     assertthat::is.number(person_years),
     assertthat::is.number(n_events),
