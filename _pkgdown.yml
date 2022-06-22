@@ -333,7 +333,6 @@ reference:
       - is_proportion_vector
       - is_quantiles_vector
       - is_valid_factor
-      - is_variables
 
   - title: Deprecated Functions
     desc: These functions already are or will eventually be removed.

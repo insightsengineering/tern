@@ -42,21 +42,24 @@ assert_nonnegative_count <- function(x) {
 }
 
 #' @describeIn assertions Check whether `x` is a valid list of variable names.
-#' @export
 #' @examples
 #'
 #' # Check whether `x` is a valid list of variable names.
-#' is_variables(list(val = "a"))
-#' is_variables(list(val = c("a", "b")))
-#' is_variables(list(1, 2))
-#' is_variables(list("bla"))
-is_variables <- function(x) {
-  checkmate::test_list(x, names = "named") &&
-    all(vapply(x, checkmate::test_character, logical(1), min.len = 1, any.missing = FALSE))
+#' assert_list_of_variables(list(val = "a"))
+#' assert_list_of_variables(list(val = c("a", "b")))
+#' # assert_list_of_variables(list(1, 2))
+#' # assert_list_of_variables(list("bla" = 2))
+#'
+#' @keywords internal
+check_list_of_variables <- function(x) {
+  res <- checkmate::check_list(x, names = "named", min.len = 1, any.missing = FALSE, types = "character")
+  if (!isTRUE(res)) {
+    return(paste0(deparse(x), " is not a list of variable names. ", res))
+  } else {
+    return(TRUE)
+  }
 }
-assertthat::on_failure(is_variables) <- function(call, env) {
-  paste0(deparse(call$x), " is not a list of variable names")
-}
+assert_list_of_variables <- checkmate::makeAssertionFunction(check_list_of_variables)
 
 #' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
 #' @export
@@ -67,9 +70,9 @@ assertthat::on_failure(is_variables) <- function(call, env) {
 #' is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 is_df_with_variables <- function(df, variables) {
   assertthat::assert_that(
-    is.data.frame(df),
-    is_variables(variables)
+    is.data.frame(df)
   )
+  assert_list_of_variables(variables)
   all(unlist(variables) %in% names(df))
 }
 assertthat::on_failure(is_df_with_variables) <- function(call, env) {

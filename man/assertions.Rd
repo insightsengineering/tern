@@ -4,7 +4,7 @@
 \alias{assertions}
 \alias{assert_character_or_factor}
 \alias{assert_nonnegative_count}
-\alias{is_variables}
+\alias{check_list_of_variables}
 \alias{is_df_with_variables}
 \alias{is_df_with_factors}
 \alias{is_df_with_nlevels_factor}
@@ -24,7 +24,7 @@ assert_character_or_factor(x)
 
 assert_nonnegative_count(x)
 
-is_variables(x)
+check_list_of_variables(x)
 
 is_df_with_variables(df, variables)
 
@@ -84,7 +84,7 @@ We provide additional assertion functions which can be used together with \code{
 
 \item \code{assert_nonnegative_count}: Check whether \code{x} is a nonnegative count.
 
-\item \code{is_variables}: Check whether \code{x} is a valid list of variable names.
+\item \code{check_list_of_variables}: Check whether \code{x} is a valid list of variable names.
 
 \item \code{is_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
 
@@ -134,10 +134,11 @@ tern:::assert_nonnegative_count(10)
 
 
 # Check whether `x` is a valid list of variable names.
-is_variables(list(val = "a"))
-is_variables(list(val = c("a", "b")))
-is_variables(list(1, 2))
-is_variables(list("bla"))
+assert_list_of_variables(list(val = "a"))
+assert_list_of_variables(list(val = c("a", "b")))
+# assert_list_of_variables(list(1, 2))
+# assert_list_of_variables(list("bla" = 2))
+
 
 # Check whether `df` contains the analysis `variables`.
 is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))

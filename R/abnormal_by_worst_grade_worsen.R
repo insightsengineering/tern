@@ -277,13 +277,13 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
                                                     )) {
   assertthat::assert_that(
     assertthat::is.string(.var),
-    is_variables(variables),
     assertthat::is.string(variables$id),
     assertthat::is.string(variables$baseline_var),
     assertthat::is.string(variables$direction_var),
     setequal(names(variables), c("id", "baseline_var", "direction_var")),
     is_df_with_variables(df, c(aval = .var, variables[1:3]))
   )
+  assert_list_of_variables(variables)
 
   h_worsen_counter(df, variables$id, .var, variables$baseline_var, variables$direction_var)
 }

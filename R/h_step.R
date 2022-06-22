@@ -107,9 +107,9 @@ h_step_trt_effect <- function(data,
 h_step_survival_formula <- function(variables,
                                     control = control_step()) {
   assertthat::assert_that(
-    is.null(variables$covariates) || is.character(variables$covariates),
-    is_variables(variables[c("arm", "biomarker", "event", "time")])
+    is.null(variables$covariates) || is.character(variables$covariates)
   )
+  assert_list_of_variables(variables[c("arm", "biomarker", "event", "time")])
   form <- paste0("Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm)
   if (control$degree > 0) {
     form <- paste0(form, " * stats::poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
@@ -199,9 +199,9 @@ h_step_survival_est <- function(formula,
 h_step_rsp_formula <- function(variables,
                                control = c(control_step(), control_logistic())) {
   assertthat::assert_that(
-    is.null(variables$covariates) || is.character(variables$covariates),
-    is_variables(variables[c("arm", "biomarker", "response")])
+    is.null(variables$covariates) || is.character(variables$covariates)
   )
+  assert_list_of_variables(variables[c("arm", "biomarker", "response")])
   response_definition <- sub(
     pattern = "response",
     replacement = variables$response,

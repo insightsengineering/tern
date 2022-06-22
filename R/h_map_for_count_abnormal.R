@@ -77,7 +77,6 @@ h_map_for_count_abnormal <- function(df,
   assertthat::assert_that(
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
-    is_variables(variables),
     is_df_with_factors(df, list(val = variables$anl)),
     is_df_with_no_na_level(
       df,
@@ -86,6 +85,7 @@ h_map_for_count_abnormal <- function(df,
     !any(is.na(df[variables$split_rows])),
     is_factor_no_na(df[[variables$anl]])
   )
+  assert_list_of_variables(variables)
   checkmate::assert_list(abnormal, types = "character", len = 2)
 
   # Drop usued levels from df as they are not supposed to be in the final map
