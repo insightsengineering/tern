@@ -3,7 +3,7 @@
 \name{assertions}
 \alias{assertions}
 \alias{assert_character_or_factor}
-\alias{is_nonnegative_count}
+\alias{assert_nonnegative_count}
 \alias{is_variables}
 \alias{is_df_with_variables}
 \alias{is_df_with_factors}
@@ -22,7 +22,7 @@
 \usage{
 assert_character_or_factor(x)
 
-is_nonnegative_count(x)
+assert_nonnegative_count(x)
 
 is_variables(x)
 
@@ -82,7 +82,7 @@ We provide additional assertion functions which can be used together with \code{
 \itemize{
 \item \code{assert_character_or_factor}: Check whether \code{x} is a character or factor vector.
 
-\item \code{is_nonnegative_count}: Check whether \code{x} is a nonnegative count.
+\item \code{assert_nonnegative_count}: Check whether \code{x} is a nonnegative count.
 
 \item \code{is_variables}: Check whether \code{x} is a valid list of variable names.
 
@@ -120,16 +120,18 @@ is a factor with \code{n_levels} number of levels.
 
 # Check whether `x` is a character or factor vector.
 # assert_character_or_factor(-1) # it fails
-assert_character_or_factor(c("a", "b"))
-assert_character_or_factor(factor(c("a", "b")))
-
+tern:::assert_character_or_factor(c("a", "b"))
+tern:::assert_character_or_factor(factor(c("a", "b")))
 
 # Check whether `x` is a nonnegative count.
-is_nonnegative_count(-1)
-is_nonnegative_count(0L)
-is_nonnegative_count(10L)
-is_nonnegative_count(0)
-is_nonnegative_count(10)
+# tern:::assert_nonnegative_count(-1) # Error
+# tern:::assert_nonnegative_count(NA) # Error
+# tern:::assert_nonnegative_count(c(1, 2)) # Error
+tern:::assert_nonnegative_count(0L)
+tern:::assert_nonnegative_count(10L)
+tern:::assert_nonnegative_count(0)
+tern:::assert_nonnegative_count(10)
+
 
 # Check whether `x` is a valid list of variable names.
 is_variables(list(val = "a"))

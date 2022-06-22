@@ -329,7 +329,6 @@ reference:
       - is_df_with_variables
       - is_df_with_no_na_level
       - is_factor_no_na
-      - is_nonnegative_count
       - is_proportion
       - is_proportion_vector
       - is_quantiles_vector

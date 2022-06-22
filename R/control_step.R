@@ -46,9 +46,10 @@ control_step <- function(biomarker = NULL,
   assertthat::assert_that(
     is.null(biomarker) || is.numeric(biomarker),
     assertthat::is.flag(use_percentile),
-    is_nonnegative_count(degree),
     assertthat::is.count(num_points) && num_points >= 2
   )
+  assert_nonnegative_count(degree)
+
   if (missing(bandwidth)) {
     # Infer bandwidth.
     bandwidth <- if (use_percentile) {

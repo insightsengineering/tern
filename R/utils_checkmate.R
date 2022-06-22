@@ -1,5 +1,6 @@
 #' Additional Assertions for `checkmate`
 #'
+#' @description
 #' We provide additional assertion functions which can be used together with [checkmate::assert()].
 #'
 #' @param x object to test
@@ -8,8 +9,6 @@
 #' @param include_boundaries (`logical`)\cr whether to include boundaries when testing for proportions.
 #' @param ... a collection of objects to test.
 #' @name assertions
-#' @keywords internal
-#'
 NULL
 
 #' @describeIn assertions Check whether `x` is a character or factor vector.
@@ -17,8 +16,8 @@ NULL
 #'
 #' # Check whether `x` is a character or factor vector.
 #' # assert_character_or_factor(-1) # it fails
-#' assert_character_or_factor(c("a", "b"))
-#' assert_character_or_factor(factor(c("a", "b")))
+#' tern:::assert_character_or_factor(c("a", "b"))
+#' tern:::assert_character_or_factor(factor(c("a", "b")))
 #'
 #' @keywords internal
 assert_character_or_factor <- function(x) {
@@ -26,26 +25,20 @@ assert_character_or_factor <- function(x) {
 }
 
 #' @describeIn assertions Check whether `x` is a nonnegative count.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Check whether `x` is a nonnegative count.
-#' is_nonnegative_count(-1)
-#' is_nonnegative_count(0L)
-#' is_nonnegative_count(10L)
-#' is_nonnegative_count(0)
-#' is_nonnegative_count(10)
-is_nonnegative_count <- function(x) {
-  if (length(x) != 1) {
-    return(FALSE)
-  }
-  if (!rlang::is_integerish(x, n = 1)) {
-    return(FALSE)
-  }
-  x >= 0 && !is.na(x)
-}
-assertthat::on_failure(is_nonnegative_count) <- function(call, env) {
-  paste0(deparse(call$x), " is not a non-negative count (a single integer greater than or equal to 0)")
+#' # tern:::assert_nonnegative_count(-1) # Error
+#' # tern:::assert_nonnegative_count(NA) # Error
+#' # tern:::assert_nonnegative_count(c(1, 2)) # Error
+#' tern:::assert_nonnegative_count(0L)
+#' tern:::assert_nonnegative_count(10L)
+#' tern:::assert_nonnegative_count(0)
+#' tern:::assert_nonnegative_count(10)
+#'
+#' @keywords internal
+assert_nonnegative_count <- function(x) {
+  checkmate::assert_integerish(x, lower = 0, len = 1, any.missing = FALSE)
 }
 
 #' @describeIn assertions Check whether `x` is a valid list of variable names.

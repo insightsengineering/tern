@@ -29,9 +29,9 @@ format_fraction <- function(x, ...) {
 
   assertthat::assert_that(
     is.vector(x),
-    is_nonnegative_count(x["num"]),
-    is_nonnegative_count(x["denom"])
   )
+  assert_nonnegative_count(x["num"])
+  assert_nonnegative_count(x["denom"])
 
   result <- if (x["num"] == 0) {
     paste0(x["num"], "/", x["denom"])

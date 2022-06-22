@@ -36,9 +36,9 @@ NULL
 s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
 
   assertthat::assert_that(
-    assertthat::is.string(labelstr),
-    is_nonnegative_count(.N_col)
+    assertthat::is.string(labelstr)
   )
+  assert_nonnegative_count(.N_col)
   assert_character_or_factor(x)
 
   count1 <- n_available(unique(x))

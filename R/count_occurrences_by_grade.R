@@ -148,10 +148,10 @@ s_count_occurrences_by_grade <- function(df,
     names(l_count) <- grade_levels
   } else {
     assertthat::assert_that(
-      is_nonnegative_count(.N_col),
       assertthat::noNA(df[[id]]),
       is_valid_character(df[[id]]) || is_valid_factor(df[[id]])
     )
+    assert_nonnegative_count(.N_col)
 
     id <- df[[id]]
     grade <- df[[.var]]

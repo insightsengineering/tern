@@ -21,9 +21,9 @@ control_summarize_vars <- function(conf_level = 0.95,
     all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
     identical(length(quantiles), 2L),
     is_proportion(conf_level),
-    is_nonnegative_count(quantile_type),
     quantile_type <= 9
   )
+  assert_nonnegative_count(quantile_type)
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
 }
 
