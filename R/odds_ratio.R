@@ -42,9 +42,9 @@ or_glm <- function(data, conf_level) {
   assertthat::assert_that(
     is_df_with_variables(data, list(rsp = "rsp", grp = "grp")),
     is.logical(data$rsp),
-    is_character_or_factor(data$grp),
     is_proportion(conf_level)
   )
+  assert_character_or_factor(data$grp)
 
   data$grp <- as_factor_keep_attributes(data$grp)
   assertthat::assert_that(
@@ -90,10 +90,10 @@ or_clogit <- function(data, conf_level) {
   assertthat::assert_that(
     is_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata")),
     is.logical(data$rsp),
-    is_character_or_factor(data$grp),
-    is_character_or_factor(data$strata),
     is_proportion(conf_level)
   )
+  assert_character_or_factor(data$grp)
+  assert_character_or_factor(data$strata)
 
   data$grp <- as_factor_keep_attributes(data$grp)
   data$strata <- as_factor_keep_attributes(data$strata)

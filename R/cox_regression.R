@@ -787,9 +787,9 @@ tidy.coxreg.multivar <- function(x, # nolint
 #' s_coxreg(df = df2_covs, .var = "hr")
 s_coxreg <- function(df, .var) {
   assertthat::assert_that(
-    is_df_with_variables(df, list(term = "term", var = .var)),
-    is_character_or_factor(df$term)
+    is_df_with_variables(df, list(term = "term", var = .var))
   )
+  assert_character_or_factor(df$term)
   df$term <- as.character(df$term)
   # We need a list with names corresponding to the stats to display.
   # There can be several covariate to test, but the names of the items should

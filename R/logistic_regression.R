@@ -371,9 +371,9 @@ h_or_interaction <- function(odds_ratio_var,
 h_simple_term_labels <- function(terms,
                                  table) {
   assertthat::assert_that(
-    is_character_or_factor(terms),
     is.table(table)
   )
+  assert_character_or_factor(terms)
   terms <- as.character(terms)
   term_n <- table[terms]
   paste0(terms, ", n = ", term_n)
@@ -393,11 +393,11 @@ h_interaction_term_labels <- function(terms1,
                                       table,
                                       any = FALSE) {
   assertthat::assert_that(
-    is_character_or_factor(terms1),
-    is_character_or_factor(terms2),
     is.table(table),
     assertthat::is.flag(any)
   )
+  assert_character_or_factor(terms1)
+  assert_character_or_factor(terms2)
   terms1 <- as.character(terms1)
   terms2 <- as.character(terms2)
   if (any) {

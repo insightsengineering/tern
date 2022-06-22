@@ -65,9 +65,9 @@ combine_groups <- function(fct,
                            collapse = "/") {
   assertthat::assert_that(
     (is.null(ref) || is_valid_character(ref)),
-    is_character_or_factor(fct),
     assertthat::is.string(collapse)
   )
+  assert_character_or_factor(fct)
 
   fct <- as_factor_keep_attributes(fct)
 
@@ -260,7 +260,7 @@ split_cols_by_groups <- function(lyt,
 #'
 #' @keywords internal
 combine_counts <- function(fct, groups_list = NULL) {
-  assertthat::assert_that(is_character_or_factor(fct))
+  assert_character_or_factor(fct)
 
   fct <- as_factor_keep_attributes(fct)
 

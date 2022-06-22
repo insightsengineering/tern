@@ -1,14 +1,14 @@
-# is_character_or_factor ----
+# assert_character_or_factor ----
 
-testthat::test_that("is_character_or_factor is TRUE with healthy input", {
-  testthat::expect_true(is_character_or_factor(c("a", "b")))
-  testthat::expect_true(is_character_or_factor(factor(c("a", "b"))))
-  testthat::expect_true(is_character_or_factor(NA_character_))
+testthat::test_that("assert_character_or_factor is TRUE with healthy input", {
+  testthat::expect_silent(assert_character_or_factor(c("a", "b")))
+  testthat::expect_silent(assert_character_or_factor(factor(c("a", "b"))))
+  testthat::expect_silent(assert_character_or_factor(NA_character_))
 })
 
-testthat::test_that("is_character_or_factor is FALSE with wrong input", {
-  testthat::expect_false(is_character_or_factor(c(5L, 3L)))
-  testthat::expect_false(is_character_or_factor(NULL))
+testthat::test_that("assert_character_or_factor is FALSE with wrong input", {
+  testthat::expect_error(assert_character_or_factor(c(5L, 3L)))
+  testthat::expect_error(assert_character_or_factor(NULL))
 })
 
 # is_nonnegative_count ----

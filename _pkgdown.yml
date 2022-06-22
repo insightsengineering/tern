@@ -324,7 +324,6 @@ reference:
     desc: These functions supplement those in the assertthat package.
     contents:
       - all_elements_in_ref
-      - is_character_or_factor
       - is_df_with_factors
       - is_df_with_nlevels_factor
       - is_df_with_variables

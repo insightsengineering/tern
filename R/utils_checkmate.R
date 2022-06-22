@@ -13,14 +13,15 @@
 NULL
 
 #' @describeIn assertions Check whether `x` is a character or factor vector.
-#' @export
 #' @examples
 #'
 #' # Check whether `x` is a character or factor vector.
-#' # is_character_or_factor(-1) # it fails
-#' is_character_or_factor(c("a", "b"))
-#' is_character_or_factor(factor(c("a", "b")))
-is_character_or_factor <- function(x) {
+#' # assert_character_or_factor(-1) # it fails
+#' assert_character_or_factor(c("a", "b"))
+#' assert_character_or_factor(factor(c("a", "b")))
+#'
+#' @keywords internal
+assert_character_or_factor <- function(x) {
   checkmate::assertMultiClass(x, classes = c("factor", "character"))
 }
 

@@ -69,11 +69,11 @@ s_count_abnormal <- function(df,
   assertthat::assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
     any(unlist(abnormal) %in% levels(df[[.var]])),
-    is_character_or_factor(df[[variables$baseline]]),
-    is_character_or_factor(df[[variables$id]]),
     is.factor(df[[.var]]),
     assertthat::is.flag(exclude_base_abn)
   )
+  assert_character_or_factor(df[[variables$baseline]])
+  assert_character_or_factor(df[[variables$id]])
 
   count_abnormal_single <- function(abn_name, abn) {
     # Patients in the denominator fulfill:
