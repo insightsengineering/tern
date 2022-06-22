@@ -92,9 +92,6 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 h_logistic_mult_cont_df <- function(variables,
                                     data,
                                     control = control_logistic()) {
-  assertthat::assert_that(
-    is.list(variables)
-  )
   assert_df_with_variables(data, variables)
 
   checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)

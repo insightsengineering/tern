@@ -86,20 +86,15 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = NULL, count_by = NULL) { # nolint
 
-  assertthat::assert_that(
-    is.data.frame(df),
-    assertthat::is.string(.var),
-  )
-  ifelse(
-    is.null(count_by),
-    assert_df_with_variables(df, list(id = .var)),
+  checkmate::assert_string(.var)
+  checkmate::assert_data_frame(df)
+  if (is.null(count_by)) {
+    assert_df_with_variables(df, list(id = .var))
+  } else {
     assert_df_with_variables(df, list(id = .var, count_by = count_by))
-  )
-
+  }
   if (!is.null(required)) {
-    assertthat::assert_that(
-      assertthat::is.string(required)
-    )
+    checkmate::assert_string(required)
     assert_df_with_variables(df, list(required = required))
     df <- df[!is.na(df[[required]]), , drop = FALSE]
   }

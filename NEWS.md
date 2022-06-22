@@ -6,7 +6,7 @@
 * `is_nonnegative_count` is now `assert_nonnegative_count` and uses 
   `checkmate::assert_integerish()` and made internal.
 * `assert_list_of_variables` instead of `is_variables` (made internal).
-* `is_df_with_variables` instead of `is_df_with_variables` (made internal).
+* `assert_df_with_variables` instead of `is_df_with_variables` (made internal).
 * renamed `assertthat.R` into a more appropriate `utils_checkmate.R`.
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 

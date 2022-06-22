@@ -140,7 +140,7 @@ h_step_survival_est <- function(formula,
                                 subset = rep(TRUE, nrow(data)),
                                 control = control_coxph()) {
   assertthat::assert_that(
-    inherits(formula, "formula"),
+    inherits(formula, "formula")
   )
   assert_df_with_variables(data, variables)
   checkmate::assert_logical(subset, min.len = 1, any.missing = FALSE)

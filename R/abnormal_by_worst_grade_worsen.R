@@ -177,7 +177,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
     assertthat::is.string(.var),
     assertthat::is.string(baseline_var),
     length(unique(df[[direction_var]])) == 1,
-    unique(df[[direction_var]]) %in% c("High", "Low"),
+    unique(df[[direction_var]]) %in% c("High", "Low")
   )
   assert_df_with_variables(df, list(val = c(id, .var, baseline_var, direction_var)))
 
@@ -274,7 +274,7 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
     assertthat::is.string(variables$id),
     assertthat::is.string(variables$baseline_var),
     assertthat::is.string(variables$direction_var),
-    setequal(names(variables), c("id", "baseline_var", "direction_var")),
+    setequal(names(variables), c("id", "baseline_var", "direction_var"))
   )
   assert_df_with_variables(df, c(aval = .var, variables[1:3]))
   assert_list_of_variables(variables)
@@ -333,9 +333,7 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                   .formats = NULL,
                                                   .labels = NULL,
                                                   .indent_mods = NULL) {
-  assertthat::assert_that(
-    assertthat::is.string(var)
-  )
+  checkmate::assert_string(var)
 
   afun <- make_afun(
     a_count_abnormal_lab_worsen_by_baseline,

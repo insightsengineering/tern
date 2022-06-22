@@ -5,7 +5,7 @@
 \alias{assert_character_or_factor}
 \alias{assert_nonnegative_count}
 \alias{check_list_of_variables}
-\alias{is_df_with_variables}
+\alias{check_df_with_variables}
 \alias{is_df_with_factors}
 \alias{is_df_with_nlevels_factor}
 \alias{is_equal_length}
@@ -26,7 +26,7 @@ assert_nonnegative_count(x)
 
 check_list_of_variables(x)
 
-is_df_with_variables(df, variables)
+check_df_with_variables(df, variables)
 
 is_df_with_factors(df, variables)
 
@@ -85,8 +85,11 @@ We provide additional assertion functions which can be used together with \code{
 \item \code{assert_nonnegative_count}: Check whether \code{x} is a nonnegative count.
 
 \item \code{check_list_of_variables}: Check whether \code{x} is a valid list of variable names.
+\code{NULL} elements of the list \code{x} are dropped out with \code{x[lengths(x) != 0]}.
 
-\item \code{is_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
+\item \code{check_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
+Please notice how this produces an error when not all variables are present in the
+data.frame while the opposite is not required.
 
 \item \code{is_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
 are all factors.
@@ -132,17 +135,20 @@ tern:::assert_nonnegative_count(10L)
 tern:::assert_nonnegative_count(0)
 tern:::assert_nonnegative_count(10)
 
-
 # Check whether `x` is a valid list of variable names.
 assert_list_of_variables(list(val = "a"))
 assert_list_of_variables(list(val = c("a", "b")))
+assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
 # assert_list_of_variables(list(1, 2))
 # assert_list_of_variables(list("bla" = 2))
 
-
 # Check whether `df` contains the analysis `variables`.
-is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
-is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+# assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
+# assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
+assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
+assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+
 
 # Check whether `df` contains all factor analysis `variables`.
 is_df_with_factors(

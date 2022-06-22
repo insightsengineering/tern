@@ -42,22 +42,29 @@ assert_nonnegative_count <- function(x) {
 }
 
 #' @describeIn assertions Check whether `x` is a valid list of variable names.
+#'   `NULL` elements of the list `x` are dropped out with `x[lengths(x) != 0]`.
 #'
 #' @examples
 #' # Check whether `x` is a valid list of variable names.
 #' assert_list_of_variables(list(val = "a"))
 #' assert_list_of_variables(list(val = c("a", "b")))
+#' assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
 #' # assert_list_of_variables(list(1, 2))
 #' # assert_list_of_variables(list("bla" = 2))
 #'
 #' @keywords internal
 check_list_of_variables <- function(x) {
+
+  # drop NULL elements in list
+  x <- x[lengths(x) != 0]
+
   res <- checkmate::check_list(x,
     names = "named",
     min.len = 1,
     any.missing = FALSE,
     types = "character"
   )
+
   if (!isTRUE(res)) {
     return(paste0(deparse(x, width.cutoff = 500L), " is not a list of variable names. ", res))
   } else {
@@ -67,13 +74,14 @@ check_list_of_variables <- function(x) {
 assert_list_of_variables <- checkmate::makeAssertionFunction(check_list_of_variables)
 
 #' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
-#' @details Please notice how this produces an error when not all variables are present in the
+#'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
 #' @examples
 #' # Check whether `df` contains the analysis `variables`.
 #' # assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
 #' # assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
 #' assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
+#' assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 #' assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 #'
 #' @keywords internal
