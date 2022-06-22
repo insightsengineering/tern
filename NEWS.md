@@ -6,6 +6,7 @@
 * `is_nonnegative_count` is now `assert_nonnegative_count` and uses 
   `checkmate::assert_integerish()` and made internal
 * renamed `assertthat.R` into a more appropriate `utils_checkmate.R`
+* renamed `test-assertthat.R` into `test-utils_checkmate.R`
 
 ### Fix
 * Renaming `rtables.R` as confusing file name due to the package dependence.
