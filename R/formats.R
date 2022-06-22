@@ -28,7 +28,7 @@ format_fraction <- function(x, ...) {
   attr(x, "label") <- NULL
 
   assertthat::assert_that(
-    is.vector(x),
+    is.vector(x)
   )
   assert_nonnegative_count(x["num"])
   assert_nonnegative_count(x["denom"])

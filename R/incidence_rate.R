@@ -238,7 +238,6 @@ h_incidence_rate_exact <- function(person_years,
                                    n_events,
                                    alpha = 0.05) {
 
-  checkmate::assert_number()
   assertthat::assert_that(
     assertthat::is.number(person_years),
     assertthat::is.number(n_events),
