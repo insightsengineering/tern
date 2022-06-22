@@ -2,12 +2,12 @@
 
 ### Migration from `assertthat` to `checkmate`
 * `is_character_or_factor` is now `assert_character_or_factor` and uses 
-  `checkmate::assertMultiClass()` and made internal
+  `checkmate::assertMultiClass()` and made internal.
 * `is_nonnegative_count` is now `assert_nonnegative_count` and uses 
-  `checkmate::assert_integerish()` and made internal
-* `assert_list_of_variables` instead of `is_variables`
-* renamed `assertthat.R` into a more appropriate `utils_checkmate.R`
-* renamed `test-assertthat.R` into `test-utils_checkmate.R`
+  `checkmate::assert_integerish()` and made internal.
+* `assert_list_of_variables` instead of `is_variables` (internal).
+* renamed `assertthat.R` into a more appropriate `utils_checkmate.R`.
+* renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
 ### Fix
 * Renaming `rtables.R` as confusing file name due to the package dependence.

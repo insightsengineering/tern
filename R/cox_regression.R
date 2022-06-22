@@ -329,9 +329,7 @@ fit_coxreg_univar <- function(variables,
     assertthat::assert_that(is.character(variables$covariates))
   }
 
-  assertthat::assert_that(
-    is_df_with_variables(data, as.list(unlist(variables)))
-  )
+  assert_df_with_variables(data, variables)
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$strata)) {
@@ -605,9 +603,9 @@ fit_coxreg_multivar <- function(variables,
   }
 
   assertthat::assert_that(
-    is_df_with_variables(data, as.list(unlist(variables))),
     isFALSE(control$interaction)
   )
+  assert_df_with_variables(data, variables)
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$strata)) {
@@ -785,9 +783,7 @@ tidy.coxreg.multivar <- function(x, # nolint
 #' df2_covs <- broom::tidy(multivar_covs_model)
 #' s_coxreg(df = df2_covs, .var = "hr")
 s_coxreg <- function(df, .var) {
-  assertthat::assert_that(
-    is_df_with_variables(df, list(term = "term", var = .var))
-  )
+  assert_df_with_variables(df, list(term = "term", var = .var))
   assert_character_or_factor(df$term)
   df$term <- as.character(df$term)
   # We need a list with names corresponding to the stats to display.

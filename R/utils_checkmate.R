@@ -42,8 +42,8 @@ assert_nonnegative_count <- function(x) {
 }
 
 #' @describeIn assertions Check whether `x` is a valid list of variable names.
-#' @examples
 #'
+#' @examples
 #' # Check whether `x` is a valid list of variable names.
 #' assert_list_of_variables(list(val = "a"))
 #' assert_list_of_variables(list(val = c("a", "b")))
@@ -52,9 +52,14 @@ assert_nonnegative_count <- function(x) {
 #'
 #' @keywords internal
 check_list_of_variables <- function(x) {
-  res <- checkmate::check_list(x, names = "named", min.len = 1, any.missing = FALSE, types = "character")
+  res <- checkmate::check_list(x,
+    names = "named",
+    min.len = 1,
+    any.missing = FALSE,
+    types = "character"
+  )
   if (!isTRUE(res)) {
-    return(paste0(deparse(x), " is not a list of variable names. ", res))
+    return(paste0(deparse(x, width.cutoff = 500L), " is not a list of variable names. ", res))
   } else {
     return(TRUE)
   }
@@ -62,28 +67,36 @@ check_list_of_variables <- function(x) {
 assert_list_of_variables <- checkmate::makeAssertionFunction(check_list_of_variables)
 
 #' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
-#' @export
+#' @details Please notice how this produces an error when not all variables are present in the
+#'   data.frame while the opposite is not required.
 #' @examples
-#'
 #' # Check whether `df` contains the analysis `variables`.
-#' is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
-#' is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
-is_df_with_variables <- function(df, variables) {
-  assertthat::assert_that(
-    is.data.frame(df)
-  )
+#' # assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
+#' # assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
+#' assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
+#' assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+#'
+#' @keywords internal
+check_df_with_variables <- function(df, variables) {
+  checkmate::assert_data_frame(df)
   assert_list_of_variables(variables)
-  all(unlist(variables) %in% names(df))
+
+  # flag for equal variables and column names
+  err_flag <- all(unlist(variables) %in% colnames(df))
+  checkmate::assert_flag(err_flag)
+
+  if (isFALSE(err_flag)) {
+    vars <- setdiff(unlist(variables), colnames(df))
+    return(paste(
+      deparse(substitute(df)),
+      "does not contain all specified variables as column names. Missing from dataframe:",
+      paste(vars, collapse = "")
+    ))
+  } else {
+    return(TRUE)
+  }
 }
-assertthat::on_failure(is_df_with_variables) <- function(call, env) {
-  var_df <- colnames(eval(call$df, envir = env))
-  vars <- eval(call$variables, envir = env)
-  vars <- vars[!unlist(vars) %in% var_df]
-  paste(
-    deparse(call$df), "does not contain all variables among:",
-    paste(deparse(vars, width.cutoff = 500L), collapse = "")
-  )
-}
+assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_variables)
 
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
 #'   are all factors.
@@ -96,9 +109,7 @@ assertthat::on_failure(is_df_with_variables) <- function(call, env) {
 #'   variables = list(val = "a")
 #' )
 is_df_with_factors <- function(df, variables) {
-  assertthat::assert_that(
-    is_df_with_variables(df, variables)
-  )
+  assert_df_with_variables(df, variables)
   all(vapply(df[, unlist(variables)], is_valid_factor, logical(1)))
 }
 
@@ -354,9 +365,9 @@ assertthat::on_failure(has_tabletree_colnames) <- function(call, env) {
 #' is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
 is_df_with_no_na_level <- function(df, variables, na_level) {
   assertthat::assert_that(
-    is_df_with_variables(df, variables),
     assertthat::is.string(na_level)
   )
+  assert_df_with_variables(df, variables)
   !any(df[, unlist(variables)] == na_level)
 }
 assertthat::on_failure(is_df_with_no_na_level) <- function(call, env) {

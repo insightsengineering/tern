@@ -73,10 +73,10 @@ h_step_trt_effect <- function(data,
                               variables,
                               x) {
   assertthat::assert_that(
-    is_df_with_variables(data, variables),
     inherits(model, "coxph") || inherits(model, "glm"),
     assertthat::is.number(x)
   )
+  assert_df_with_variables(data, variables)
   arm_lvls <- levels(data[[variables$arm]])
   assertthat::assert_that(
     identical(length(arm_lvls), 2L)
@@ -141,8 +141,8 @@ h_step_survival_est <- function(formula,
                                 control = control_coxph()) {
   assertthat::assert_that(
     inherits(formula, "formula"),
-    is_df_with_variables(data, variables)
   )
+  assert_df_with_variables(data, variables)
   checkmate::assert_logical(subset, min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(control, names = "named")
@@ -243,9 +243,9 @@ h_step_rsp_est <- function(formula,
                            subset = rep(TRUE, nrow(data)),
                            control = control_logistic()) {
   assertthat::assert_that(
-    inherits(formula, "formula"),
-    is_df_with_variables(data, variables)
+    inherits(formula, "formula")
   )
+  assert_df_with_variables(data, variables)
   checkmate::assert_logical(subset, min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(control, names = "named")

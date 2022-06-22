@@ -342,9 +342,9 @@ h_coxph_subgroups_df <- function(variables,
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
     is.character(variables$strat) || is.null(variables$strat),
-    is_df_with_variables(data, as.list(unlist(variables))),
     is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
   )
+  assert_df_with_variables(data, as.list(unlist(variables)))
   checkmate::assert_string(label_all)
 
   # Add All Patients.

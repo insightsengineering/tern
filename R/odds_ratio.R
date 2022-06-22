@@ -40,10 +40,10 @@ NULL
 #' or_glm(data, conf_level = 0.95)
 or_glm <- function(data, conf_level) {
   assertthat::assert_that(
-    is_df_with_variables(data, list(rsp = "rsp", grp = "grp")),
     is.logical(data$rsp),
     is_proportion(conf_level)
   )
+  assert_df_with_variables(data, list(rsp = "rsp", grp = "grp"))
   assert_character_or_factor(data$grp)
 
   data$grp <- as_factor_keep_attributes(data$grp)
@@ -88,10 +88,10 @@ or_glm <- function(data, conf_level) {
 #' or_clogit(data, conf_level = 0.95)
 or_clogit <- function(data, conf_level) {
   assertthat::assert_that(
-    is_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata")),
     is.logical(data$rsp),
     is_proportion(conf_level)
   )
+  assert_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata"))
   assert_character_or_factor(data$grp)
   assert_character_or_factor(data$strata)
 
@@ -162,10 +162,10 @@ s_odds_ratio <- function(df,
 
   if (!.in_ref_col) {
     assertthat::assert_that(
-      is_df_with_variables(df, list(rsp = .var)),
-      is_df_with_variables(.ref_group, list(rsp = .var)),
       is_proportion(conf_level)
     )
+    assert_df_with_variables(df, list(rsp = .var))
+    assert_df_with_variables(.ref_group, list(rsp = .var))
 
     if (is.null(variables$strata)) {
       data <- data.frame(
@@ -177,9 +177,7 @@ s_odds_ratio <- function(df,
       )
       y <- or_glm(data, conf_level = conf_level)
     } else {
-      assertthat::assert_that(
-        is_df_with_variables(.df_row, c(list(rsp = .var), variables))
-      )
+      assert_df_with_variables(.df_row, c(list(rsp = .var), variables))
 
       # The group variable prepared for clogit must be synchronised with combination groups definition.
       if (is.null(groups_list)) {

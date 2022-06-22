@@ -105,10 +105,7 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 h_coxreg_mult_cont_df <- function(variables,
                                   data,
                                   control = control_coxreg()) {
-  assertthat::assert_that(
-    is.list(variables),
-    is_df_with_variables(data, as.list(unlist(variables)))
-  )
+  assert_df_with_variables(data, variables)
   checkmate::assert_list(control, names = "named")
   checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)
   conf_level <- control[["conf_level"]]

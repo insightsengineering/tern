@@ -77,9 +77,9 @@ s_count_abnormal_by_baseline <- function(df,
     assertthat::is.string(abnormal),
     assertthat::is.string(na_level),
     is.list(variables),
-    all(names(variables) %in% c("id", "baseline")),
-    is_df_with_variables(df, c(range = .var, variables))
+    all(names(variables) %in% c("id", "baseline"))
   )
+  assert_df_with_variables(df, c(range = .var, variables))
   assert_character_or_factor(df[[variables$id]])
   assert_character_or_factor(df[[variables$baseline]])
   assert_character_or_factor(df[[.var]])
