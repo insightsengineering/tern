@@ -72,9 +72,7 @@ df_explicit_na <- function(data,
   l_target_vars <- split(target_vars, target_vars)
 
   # Makes sure target_vars exist in data and names are not duplicated.
-  assertthat::assert_that(
-    is_df_with_variables(data, l_target_vars)
-  )
+  assert_df_with_variables(data, l_target_vars)
 
   for (x in target_vars) {
     xi <- data[[x]]

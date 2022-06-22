@@ -138,9 +138,9 @@ s_count_occurrences_by_grade <- function(df,
                                          remove_single = TRUE,
                                          labelstr = "") {
   assertthat::assert_that(
-    is_df_with_variables(df, list(grade = .var, id = id)),
     is_valid_factor(df[[.var]])
   )
+  assert_df_with_variables(df, list(grade = .var, id = id))
 
   if (nrow(df) < 1) {
     grade_levels <- levels(df[[.var]])

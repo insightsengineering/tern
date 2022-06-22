@@ -109,11 +109,16 @@ h_map_for_count_abnormal <- function(df,
     # range method follows the rule that at least one observation with ANRLO > 0 for low
     # direction and at least one observation with ANRHI is not missing for high direction.
     assertthat::assert_that(
-      is_df_with_variables(df, variables = list(range_low = variables$range_low, range_high = variables$range_high)),
       "range_low" %in% names(variables),
       "range_high" %in% names(variables),
       "LOW" %in% toupper(names(abnormal)),
       "HIGH" %in% toupper(names(abnormal))
+    )
+    assert_df_with_variables(df,
+      variables = list(
+        range_low = variables$range_low,
+        range_high = variables$range_high
+      )
     )
 
     # Define low direction of map

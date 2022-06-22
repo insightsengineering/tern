@@ -89,10 +89,10 @@ fit_logistic <- function(data,
   assertthat::assert_that(
     is.list(variables),
     all(names(variables) %in% c("response", "arm", "covariates", "interaction", "strata")),
-    is_df_with_variables(data, as.list(unlist(variables))),
     assertthat::is.string(response_definition),
     grepl("response", response_definition)
   )
+  assert_df_with_variables(data, variables)
 
   response_definition <- sub(
     pattern = "response",

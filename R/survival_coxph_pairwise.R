@@ -53,11 +53,11 @@ s_coxph_pairwise <- function(df,
                              strat = NULL,
                              control = control_coxph()) {
   assertthat::assert_that(
-    is_df_with_variables(df, list(tte = .var, is_event = is_event)),
     assertthat::is.string(.var),
     is.numeric(df[[.var]]),
     is.logical(df[[is_event]])
   )
+  assert_df_with_variables(df, list(tte = .var, is_event = is_event))
   pval_method <- control$pval_method
   ties <- control$ties
   conf_level <- control$conf_level

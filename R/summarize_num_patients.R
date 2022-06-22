@@ -89,18 +89,18 @@ s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = N
   assertthat::assert_that(
     is.data.frame(df),
     assertthat::is.string(.var),
-    ifelse(
-      is.null(count_by),
-      is_df_with_variables(df, list(id = .var)),
-      is_df_with_variables(df, list(id = .var, count_by = count_by))
-    )
+  )
+  ifelse(
+    is.null(count_by),
+    assert_df_with_variables(df, list(id = .var)),
+    assert_df_with_variables(df, list(id = .var, count_by = count_by))
   )
 
   if (!is.null(required)) {
     assertthat::assert_that(
-      is_df_with_variables(df, list(required = required)),
       assertthat::is.string(required)
     )
+    assert_df_with_variables(df, list(required = required))
     df <- df[!is.na(df[[required]]), , drop = FALSE]
   }
 

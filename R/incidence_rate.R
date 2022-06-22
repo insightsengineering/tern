@@ -66,18 +66,14 @@ s_incidence_rate <- function(df,
     warning("argument is_event will be deprecated. Please use n_events.")
 
     if (missing(n_events)) {
-      checkmate::assert(
-        is_df_with_variables(df, list(tte = .var, is_event = is_event))
-      )
+      assert_df_with_variables(df, list(tte = .var, is_event = is_event))
       checkmate::assert_string(.var)
       checkmate::assert_logical(df[[is_event]], any.missing = FALSE)
       checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
       n_events <- is_event
     }
   } else {
-    checkmate::assert(
-      is_df_with_variables(df, list(tte = .var, n_events = n_events))
-    )
+    assert_df_with_variables(df, list(tte = .var, n_events = n_events))
     checkmate::assert_string(.var)
     checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
     checkmate::assert_integer(df[[n_events]], any.missing = FALSE)

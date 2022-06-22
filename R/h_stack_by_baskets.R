@@ -89,11 +89,9 @@ h_stack_by_baskets <- function(df,
   )
 
   if (!is.null(aag_summary)) {
-    assertthat::assert_that(
-      is_df_with_variables(
-        df = aag_summary,
-        variables = list(val = c("basket", "basket_name"))
-      )
+    assert_df_with_variables(
+      df = aag_summary,
+      variables = list(val = c("basket", "basket_name"))
     )
     # Warning in case there is no match between `aag_summary$basket` and `baskets` argument.
     # Honestly, I think those should completely match. Target baskets should be the same.

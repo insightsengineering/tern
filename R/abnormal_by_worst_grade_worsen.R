@@ -64,30 +64,24 @@ h_adlb_worsen <- function(adlb,
                           direction_var) {
   assertthat::assert_that(
     assertthat::is.string(direction_var),
-    is_df_with_variables(adlb, list("Col" = direction_var)),
     all(unique(adlb[[direction_var]]) %in% c("B", "L", "H"))
   )
+  assert_df_with_variables(adlb, list("Col" = direction_var))
 
   if (any(unique(adlb[[direction_var]]) == "H")) {
-    assertthat::assert_that(
-      is_df_with_variables(adlb, list("High" = names(worst_flag_high)))
-    )
+    assert_df_with_variables(adlb, list("High" = names(worst_flag_high)))
   }
 
   if (any(unique(adlb[[direction_var]]) == "L")) {
-    assertthat::assert_that(
-      is_df_with_variables(adlb, list("Low" = names(worst_flag_low)))
-    )
+    assert_df_with_variables(adlb, list("Low" = names(worst_flag_low)))
   }
 
   if (any(unique(adlb[[direction_var]]) == "B")) {
-    assertthat::assert_that(
-      is_df_with_variables(
-        adlb,
-        list(
-          "Low" = names(worst_flag_low),
-          "High" = names(worst_flag_high)
-        )
+    assert_df_with_variables(
+      adlb,
+      list(
+        "Low" = names(worst_flag_low),
+        "High" = names(worst_flag_high)
       )
     )
   }
@@ -184,8 +178,8 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
     assertthat::is.string(baseline_var),
     length(unique(df[[direction_var]])) == 1,
     unique(df[[direction_var]]) %in% c("High", "Low"),
-    is_df_with_variables(df, list(val = c(id, .var, baseline_var, direction_var)))
   )
+  assert_df_with_variables(df, list(val = c(id, .var, baseline_var, direction_var)))
 
   # remove post-baseline missing
   df <- df[df[[.var]] != "<Missing>", ]
@@ -281,8 +275,8 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
     assertthat::is.string(variables$baseline_var),
     assertthat::is.string(variables$direction_var),
     setequal(names(variables), c("id", "baseline_var", "direction_var")),
-    is_df_with_variables(df, c(aval = .var, variables[1:3]))
   )
+  assert_df_with_variables(df, c(aval = .var, variables[1:3]))
   assert_list_of_variables(variables)
 
   h_worsen_counter(df, variables$id, .var, variables$baseline_var, variables$direction_var)

@@ -87,9 +87,9 @@ s_count_abnormal_by_marked <- function(df,
     is.list(category),
     all(names(category) %in% c("single", "last_replicated")),
     all(names(variables) %in% c("id", "param", "direction")),
-    is_df_with_variables(df, c(aval = .var, variables)),
     length(unique(df[[variables$direction]])) <= 1L
   )
+  assert_df_with_variables(df, c(aval = .var, variables))
   assert_character_or_factor(df[[.var]])
   assert_character_or_factor(df[[variables$id]])
 

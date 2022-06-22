@@ -42,29 +42,33 @@ testthat::test_that("assert_list_of_variables is FALSE with wrong input", {
   testthat::expect_error(assert_list_of_variables(c(a = 1, a = 2)))
 })
 
-# is_df_with_variables ----
+# assert_df_with_variables ----
 
-testthat::test_that("is_df_with_variables is TRUE with healthy input", {
-  testthat::expect_true(is_df_with_variables(
+testthat::test_that("assert_df_with_variables is TRUE with healthy input", {
+  testthat::expect_silent(assert_df_with_variables(
     df = data.frame(a = 5, b = 3),
     variables = list(val = "a")
   ))
-  testthat::expect_true(is_df_with_variables(
+  testthat::expect_silent(assert_df_with_variables(
     df = data.frame(a = 5, b = 3),
     variables = list(val = c("a", "b"))
   ))
 })
 
-testthat::test_that("is_df_with_variables fails or is FALSE with wrong input", {
-  testthat::expect_false(is_df_with_variables(
+testthat::test_that("assert_df_with_variables fails or is FALSE with wrong input", {
+  testthat::expect_error(assert_df_with_variables(
+    df = matrix(1:6, nrow = 3, ncol = 2),
+    variables = list(val = "c")
+  ))
+  testthat::expect_error(assert_df_with_variables(
     df = data.frame(a = 5, b = 3),
     variables = list(val = "c")
   ))
-  testthat::expect_error(is_df_with_variables(
+  testthat::expect_error(assert_df_with_variables(
     df = data.frame(a = 5, b = 3),
     variables = list("c")
   ))
-  testthat::expect_error(is_df_with_variables(
+  testthat::expect_error(assert_df_with_variables(
     df = list(a = 5, b = 3),
     variables = list(aval = "b")
   ))
