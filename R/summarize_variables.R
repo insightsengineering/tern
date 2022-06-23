@@ -334,10 +334,8 @@ s_summary.factor <- function(x,
                              .N_col, # nolint
                              na_level = "<Missing>",
                              ...) {
-  assertthat::assert_that(
-    is_valid_factor(x),
-    is_factor_no_na(x)
-  )
+
+  assert_valid_factor(x, any.missing = FALSE)
   denom <- match.arg(denom)
 
   if (na.rm) x <- fct_discard(x, na_level)

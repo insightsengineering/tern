@@ -204,14 +204,14 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
     if (is.data.frame(strata_data)) {
       strata_vars <- names(strata_data)
       assertthat::assert_that(
-        assertthat::are_equal(nrow(strata_data), nrow(df_tte)),
-        is_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
+        assertthat::are_equal(nrow(strata_data), nrow(df_tte))
       )
+      assert_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
     } else {
       assertthat::assert_that(
-        is_valid_factor(strata_data),
         assertthat::are_equal(length(strata_data), nrow(df_tte))
       )
+      assert_valid_factor(strata_data)
       strata_vars <- "strata_data"
     }
     df_tte[strata_vars] <- strata_data
@@ -431,10 +431,8 @@ h_split_by_subgroups <- function(data,
                                  groups_lists = list()) {
   checkmate::assert_character(subgroups, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(groups_lists, names = "named")
-  assertthat::assert_that(
-    is_df_with_factors(data, as.list(stats::setNames(subgroups, subgroups))),
-    all(names(groups_lists) %in% subgroups)
-  )
+  checkmate::assert(all(names(groups_lists) %in% subgroups))
+  assert_df_with_factors(data, as.list(stats::setNames(subgroups, subgroups)))
 
   data_labels <- unname(formatters::var_labels(data))
   df_subgroups <- data[, subgroups, drop = FALSE]

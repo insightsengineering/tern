@@ -4,17 +4,15 @@
 \alias{assertions}
 \alias{assert_character_or_factor}
 \alias{assert_nonnegative_count}
-\alias{check_list_of_variables}
-\alias{check_df_with_variables}
-\alias{is_df_with_factors}
+\alias{assert_list_of_variables}
+\alias{assert_df_with_variables}
+\alias{assert_valid_factor}
+\alias{assert_df_with_factors}
 \alias{is_df_with_nlevels_factor}
 \alias{is_equal_length}
 \alias{is_proportion}
 \alias{is_proportion_vector}
 \alias{is_quantiles_vector}
-\alias{is_valid_factor}
-\alias{is_factor_no_na}
-\alias{is_valid_character}
 \alias{all_elements_in_ref}
 \alias{has_tabletree_colnames}
 \alias{is_df_with_no_na_level}
@@ -24,11 +22,28 @@ assert_character_or_factor(x)
 
 assert_nonnegative_count(x)
 
-check_list_of_variables(x)
+assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
 
-check_df_with_variables(df, variables)
+assert_df_with_variables(
+  df,
+  variables,
+  .var.name = checkmate::vname(df),
+  add = NULL
+)
 
-is_df_with_factors(df, variables)
+assert_valid_factor(
+  x,
+  any.missing = TRUE,
+  .var.name = checkmate::vname(x),
+  add = NULL
+)
+
+assert_df_with_factors(
+  df,
+  variables,
+  .var.name = checkmate::vname(df),
+  add = NULL
+)
 
 is_df_with_nlevels_factor(df, variable, n_levels, relation = c("==", ">="))
 
@@ -39,12 +54,6 @@ is_proportion(x, include_boundaries = FALSE)
 is_proportion_vector(x, include_boundaries = FALSE)
 
 is_quantiles_vector(x, include_boundaries = FALSE)
-
-is_valid_factor(x)
-
-is_factor_no_na(x)
-
-is_valid_character(x)
 
 all_elements_in_ref(x, ref)
 
@@ -58,6 +67,9 @@ is_df_with_no_na_level(df, variables, na_level)
 \item{df}{(\verb{data frame})\cr input dataset.}
 
 \item{variables}{(\verb{named list})\cr columns from dataset where you want to check if \code{na_level} exists.}
+
+\item{any.missing}{It defaults to \code{TRUE}, allowing \code{NA} values, but it does not allow them
+if \code{FALSE} is used.}
 
 \item{variable}{(\code{string})\cr name of the single variable.}
 
@@ -84,14 +96,17 @@ We provide additional assertion functions which can be used together with \code{
 
 \item \code{assert_nonnegative_count}: Check whether \code{x} is a nonnegative count.
 
-\item \code{check_list_of_variables}: Check whether \code{x} is a valid list of variable names.
-\code{NULL} elements of the list \code{x} are dropped out with \code{x[lengths(x) != 0]}.
+\item \code{assert_list_of_variables}: Check whether \code{x} is a valid list of variable names.
+\code{NULL} elements of the list \code{x} are dropped out with \code{Filter(Negate(is.null), x)}.
 
-\item \code{check_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
+\item \code{assert_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
 Please notice how this produces an error when not all variables are present in the
 data.frame while the opposite is not required.
 
-\item \code{is_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
+\item \code{assert_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
+Note that \code{NULL} and \code{NA} elements are allowed.
+
+\item \code{assert_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
 are all factors.
 
 \item \code{is_df_with_nlevels_factor}: Check whether \code{df} is a data frame where the analysis \code{variable}
@@ -105,12 +120,6 @@ is a factor with \code{n_levels} number of levels.
 
 \item \code{is_quantiles_vector}: Check whether \code{x} is a sorted vector of unique quantile proportions
 (numbers between 0 and 1).
-
-\item \code{is_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
-
-\item \code{is_factor_no_na}: Check whether \code{NA} has been handled when \code{x} is a factor.
-
-\item \code{is_valid_character}: Check whether \code{x} is a valid character (has no NAs and no empty strings).
 
 \item \code{all_elements_in_ref}: Check whether all elements of \code{x} are in a reference vector.
 
@@ -136,25 +145,37 @@ tern:::assert_nonnegative_count(0)
 tern:::assert_nonnegative_count(10)
 
 # Check whether `x` is a valid list of variable names.
-assert_list_of_variables(list(val = "a"))
-assert_list_of_variables(list(val = c("a", "b")))
-assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
-# assert_list_of_variables(list(1, 2))
-# assert_list_of_variables(list("bla" = 2))
+tern:::assert_list_of_variables(list(val = "a"))
+tern:::assert_list_of_variables(list(val = c("a", "b")))
+tern:::assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
+# tern:::assert_list_of_variables(list(1, 2))
+# tern:::assert_list_of_variables(list("bla" = 2))
 
 # Check whether `df` contains the analysis `variables`.
-# assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
-# assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
-assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
-assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
-assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+# tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
+# tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 
+# Check whether `x` is a valid factor.
+tern:::assert_valid_factor(factor(c("a", "b")))
+tern:::assert_valid_factor(factor(c("a", NULL)))
+tern:::assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
+tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
+# failures
+# tern:::assert_valid_factor(-1)
+# tern:::assert_valid_factor(factor(c("a", "")))
+# tern:::assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
+# tern:::assert_valid_factor(factor(NULL))
+# tern:::assert_valid_factor(factor(c(NULL, "")))
+# tern:::assert_valid_factor(factor())
 
 # Check whether `df` contains all factor analysis `variables`.
-is_df_with_factors(
-  df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
-  variables = list(val = "a")
-)
+adf <- data.frame(a = factor(c("A", "B")), b = 3)
+assert_df_with_factors(df = adf, variables = list(val = "a"))
+# failures
+# assert_df_with_factors(df = adf, variables = list(val = "a", val = "b"))
 
 # Check whether `df` contains a factor `variable` with `n_levels` levels.
 is_df_with_nlevels_factor(
@@ -185,22 +206,6 @@ is_quantiles_vector(c(0.1, 0.3))
 is_quantiles_vector(c(0.3, 0.1))
 is_quantiles_vector(c(0.3, 0.3))
 is_quantiles_vector(0, include_boundaries = TRUE)
-
-# Check whether `x` is a valid factor.
-is_valid_factor(-1)
-is_valid_factor(factor(c("a", "b")))
-is_valid_factor(factor(c("a", "")))
-is_valid_factor(factor())
-
-# Check whether `NA` has been handled when `x` is a factor.
-is_factor_no_na(factor(c("a", NA)))
-is_factor_no_na(factor(c("a", "<Missing>")))
-
-# Check whether `x` is a valid character vector
-is_valid_character(-1)
-is_valid_character(c("a", "b"))
-is_valid_character(c("a", ""))
-is_valid_character("")
 
 # Check whether all elements of `x` are in a reference vector.
 all_elements_in_ref(c("a", "b"), c("a", "b", "c"))

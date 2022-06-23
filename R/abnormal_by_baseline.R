@@ -87,10 +87,10 @@ s_count_abnormal_by_baseline <- function(df,
   # If input is passed as character, changed to factor
   df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_level)
   df[[variables$baseline]] <- as_factor_keep_attributes(df[[variables$baseline]], na_level = na_level)
-  assertthat::assert_that(
-    is_factor_no_na(df[[.var]]),
-    is_factor_no_na(df[[variables$baseline]])
-  )
+
+  assert_valid_factor(df[[.var]], any.missing = FALSE)
+  assert_valid_factor(df[[variables$baseline]], any.missing = FALSE)
+
   # Keep only records with valid analysis value.
   df <- df[df[[.var]] != na_level, ]
 

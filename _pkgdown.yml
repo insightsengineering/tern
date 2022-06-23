@@ -324,14 +324,12 @@ reference:
     desc: These functions supplement those in the assertthat package.
     contents:
       - all_elements_in_ref
-      - is_df_with_factors
+      - assert_df_with_factors
       - is_df_with_nlevels_factor
       - is_df_with_no_na_level
-      - is_factor_no_na
       - is_proportion
       - is_proportion_vector
       - is_quantiles_vector
-      - is_valid_factor
 
   - title: Deprecated Functions
     desc: These functions already are or will eventually be removed.

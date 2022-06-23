@@ -74,31 +74,18 @@ testthat::test_that("assert_df_with_variables fails or is FALSE with wrong input
   ))
 })
 
-# is_valid_factor ----
+# assert_valid_factor ----
 
-testthat::test_that("is_valid_factor is TRUE with healthy input", {
-  testthat::expect_true(is_valid_factor(factor(c("a", "b"))))
-  testthat::expect_true(is_valid_factor(factor(NA, exclude = factor())))
+testthat::test_that("assert_valid_factor is TRUE with healthy input", {
+  testthat::expect_silent(assert_valid_factor(factor(c("a", "b"))))
+  testthat::expect_silent(assert_valid_factor(factor(NA, exclude = factor())))
 })
 
-testthat::test_that("is_valid_factor is FALSE with wrong input", {
-  testthat::expect_false(is_valid_factor(c(5L, 3L)))
-  testthat::expect_false(is_valid_factor(NULL))
-  testthat::expect_false(is_valid_factor(factor(c("a", ""))))
-  testthat::expect_false(is_valid_factor(factor()))
-})
-
-# is_valid_character ----
-
-testthat::test_that("is_valid_character is TRUE with healthy input", {
-  testthat::expect_true(is_valid_character(c("a", "b")))
-})
-
-testthat::test_that("is_valid_character is FALSE with wrong input", {
-  testthat::expect_false(is_valid_character(c(1L, 2L)))
-  testthat::expect_false(is_valid_character(NULL))
-  testthat::expect_false(is_valid_character(c("a", NA)))
-  testthat::expect_false(is_valid_character(c("a", "")))
+testthat::test_that("assert_valid_factor is FALSE with wrong input", {
+  testthat::expect_error(assert_valid_factor(c(5L, 3L)))
+  testthat::expect_error(assert_valid_factor(NULL))
+  testthat::expect_error(assert_valid_factor(factor(c("a", ""))))
+  testthat::expect_error(assert_valid_factor(factor()))
 })
 
 # is_equal_length ----
@@ -172,17 +159,17 @@ testthat::test_that("has_tabletree_colnames works correctly", {
   testthat::expect_false(has_tabletree_colnames(tab, c("all obs", "Arm A")))
 })
 
-# is_df_with_factors ----
+# assert_df_with_factors ----
 
-testthat::test_that("is_df_with_factors is TRUE with healthy input", {
-  testthat::expect_true(is_df_with_factors(
+testthat::test_that("assert_df_with_factors is TRUE with healthy input", {
+  testthat::expect_silent(assert_df_with_factors(
     df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
     variables = list(val = "a")
   ))
 })
 
-testthat::test_that("is_df_with_factors fails or is FALSE with wrong input", {
-  testthat::expect_false(is_df_with_factors(
+testthat::test_that("assert_df_with_factors fails or is FALSE with wrong input", {
+  testthat::expect_error(assert_df_with_factors(
     df = data.frame(a = 1, b = 3),
     variables = list(val = "a")
   ))

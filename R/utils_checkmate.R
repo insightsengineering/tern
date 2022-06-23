@@ -41,8 +41,26 @@ assert_nonnegative_count <- function(x) {
   checkmate::assert_integerish(x, lower = 0, len = 1, any.missing = FALSE)
 }
 
+check_list_of_variables <- function(x) {
+
+  # drop NULL elements in list
+  x <- Filter(Negate(is.null), x)
+
+  res <- checkmate::check_list(x,
+    names = "named",
+    min.len = 1,
+    any.missing = FALSE,
+    types = "character"
+  )
+
+  if (!isTRUE(res)) { # is.string
+    return(paste0(deparse(x, width.cutoff = 500L), " is not a list of variable names. ", res))
+  } else {
+    return(TRUE)
+  }
+}
 #' @describeIn assertions Check whether `x` is a valid list of variable names.
-#'   `NULL` elements of the list `x` are dropped out with `x[lengths(x) != 0]`.
+#'   `NULL` elements of the list `x` are dropped out with `Filter(Negate(is.null), x)`.
 #'
 #' @examples
 #' # Check whether `x` is a valid list of variable names.
@@ -53,38 +71,8 @@ assert_nonnegative_count <- function(x) {
 #' # tern:::assert_list_of_variables(list("bla" = 2))
 #'
 #' @keywords internal
-check_list_of_variables <- function(x) {
-
-  # drop NULL elements in list
-  x <- x[lengths(x) != 0]
-
-  res <- checkmate::check_list(x,
-    names = "named",
-    min.len = 1,
-    any.missing = FALSE,
-    types = "character"
-  )
-
-  if (!isTRUE(res)) {
-    return(paste0(deparse(x, width.cutoff = 500L), " is not a list of variable names. ", res))
-  } else {
-    return(TRUE)
-  }
-}
 assert_list_of_variables <- checkmate::makeAssertionFunction(check_list_of_variables)
 
-#' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
-#'   Please notice how this produces an error when not all variables are present in the
-#'   data.frame while the opposite is not required.
-#' @examples
-#' # Check whether `df` contains the analysis `variables`.
-#' # tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
-#' # tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
-#'
-#' @keywords internal
 check_df_with_variables <- function(df, variables) {
   checkmate::assert_data_frame(df)
   assert_list_of_variables(variables)
@@ -100,60 +88,121 @@ check_df_with_variables <- function(df, variables) {
       "does not contain all specified variables as column names. Missing from dataframe:",
       paste(vars, collapse = "")
     ))
-  } else {
-    return(TRUE)
   }
+  return(TRUE)
 }
+#' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
+#'   Please notice how this produces an error when not all variables are present in the
+#'   data.frame while the opposite is not required.
+#' @examples
+#' # Check whether `df` contains the analysis `variables`.
+#' # tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
+#' # tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+#'
+#' @keywords internal
 assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_variables)
 
+check_valid_factor <- function(x, any.missing = TRUE) {
+  res <- checkmate::check_factor(x,
+    empty.levels.ok = TRUE,
+    min.levels = 1,
+    null.ok = TRUE,
+    any.missing = any.missing
+  )
+  # no empty strings allowed
+  if (isTRUE(res)) {
+    res <- checkmate::check_character(levels(x), min.chars = 1)
+  }
+  return(res)
+}
+#' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
+#'   Note that `NULL` and `NA` elements are allowed.
+#' @param any.missing It defaults to `TRUE`, allowing `NA` values, but it does not allow them
+#'   if `FALSE` is used.
+#'
+#' @examples
+#' # Check whether `x` is a valid factor.
+#' tern:::assert_valid_factor(factor(c("a", "b")))
+#' tern:::assert_valid_factor(factor(c("a", NULL)))
+#' tern:::assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
+#' tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
+#' # failures
+#' # tern:::assert_valid_factor(-1)
+#' # tern:::assert_valid_factor(factor(c("a", "")))
+#' # tern:::assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
+#' # tern:::assert_valid_factor(factor(NULL))
+#' # tern:::assert_valid_factor(factor(c(NULL, "")))
+#' # tern:::assert_valid_factor(factor())
+#'
+#' @keywords internal
+assert_valid_factor <- checkmate::makeAssertionFunction(check_valid_factor)
+
+
+check_df_with_factors <- function(df, variables) {
+  res <- check_df_with_variables(df, variables)
+  # checking if all the columns specified by variables are valid factors
+  if (isTRUE(res)) {
+    res <- lapply(df[, unlist(variables)], check_valid_factor)
+    res_lo <- unlist(vapply(res, Negate(isTRUE), logical(1)))
+    if (any(res_lo)) {
+      return(paste0(
+        deparse(substitute(df)), " does not contain only factor variables among:",
+        "\n* ", paste0(names(res)[res_lo], " -> ", res[res_lo], collapse = "\n* ")
+      ))
+    } else {
+      res <- TRUE
+    }
+    # return(paste0(deparse(df), "does not contain only factor variables among:",
+  }
+  return(res)
+}
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
 #'   are all factors.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Check whether `df` contains all factor analysis `variables`.
-#' is_df_with_factors(
-#'   df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
-#'   variables = list(val = "a")
-#' )
-is_df_with_factors <- function(df, variables) {
-  assert_df_with_variables(df, variables)
-  all(vapply(df[, unlist(variables)], is_valid_factor, logical(1)))
-}
+#' adf <- data.frame(a = factor(c("A", "B")), b = 3)
+#' assert_df_with_factors(df = adf, variables = list(val = "a"))
+#' # failures
+#' # assert_df_with_factors(df = adf, variables = list(val = "a", val = "b"))
+#'
+#' @export
+assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
 
-assertthat::on_failure(is_df_with_factors) <- function(call, env) {
-  var_df <- colnames(eval(call$df, envir = env))
-  vars <- eval(call$variables, envir = env)
-  vars <- vars[!unlist(vars) %in% var_df]
-  paste(
-    deparse(call$df), "does not contain only factor variables among:",
-    paste(deparse(vars, width.cutoff = 500L), collapse = "")
-  )
-}
+# assertthat::on_failure(is_df_with_factors) <- function(call, env) {
+#   var_df <- colnames(eval(call$df, envir = env))
+#   vars <- eval(call$variables, envir = env)
+#   vars <- vars[!unlist(vars) %in% var_df]
+#   paste(
+#     deparse(call$df), "does not contain only factor variables among:",
+#     paste(deparse(vars, width.cutoff = 500L), collapse = "")
+#   )
+# }
 
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variable`
 #'   is a factor with `n_levels` number of levels.
 #' @param variable (`string`)\cr name of the single variable.
 #' @param n_levels (`count`)\cr number of levels to compare with.
 #' @param relation (`string`)\cr which relational operator to use for the comparison.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Check whether `df` contains a factor `variable` with `n_levels` levels.
 #' is_df_with_nlevels_factor(
 #'   df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
 #'   variable = "a",
 #'   n_levels = 2
 #' )
+#' @export
 is_df_with_nlevels_factor <- function(df,
                                       variable,
                                       n_levels,
                                       relation = c("==", ">=")) {
-  assertthat::assert_that(
-    assertthat::is.string(variable),
-    is_df_with_factors(df, variables = list(factor = variable)),
-    assertthat::is.count(n_levels)
-  )
+  assert_df_with_factors(df, variables = list(factor = variable))
+  checkmate::assert_count(n_levels)
+  checkmate::assert_string(variable)
   relation <- match.arg(relation)
   do.call(relation, list(x = nlevels(df[[variable]]), y = n_levels))
 }
@@ -259,55 +308,6 @@ assertthat::on_failure(is_quantiles_vector) <- function(call, env) {
   paste(deparse(call$x), "is not a sorted vector of unique quantile proportions")
 }
 
-#' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
-#' @export
-#' @examples
-#'
-#' # Check whether `x` is a valid factor.
-#' is_valid_factor(-1)
-#' is_valid_factor(factor(c("a", "b")))
-#' is_valid_factor(factor(c("a", "")))
-#' is_valid_factor(factor())
-is_valid_factor <- function(x) {
-  is.factor(x) &&
-    length(levels(x)) > 0 &&
-    all(is.na(levels(x)) | levels(x) != "")
-}
-assertthat::on_failure(is_valid_factor) <- function(call, env) {
-  paste0(deparse(call$x), " is not a valid factor, please check the factor levels (no empty strings allowed)")
-}
-
-#' @describeIn assertions Check whether `NA` has been handled when `x` is a factor.
-#' @export
-#' @examples
-#'
-#' # Check whether `NA` has been handled when `x` is a factor.
-#' is_factor_no_na(factor(c("a", NA)))
-#' is_factor_no_na(factor(c("a", "<Missing>")))
-is_factor_no_na <- function(x) {
-  is_valid_factor(x) & !any(is.na(x))
-}
-assertthat::on_failure(is_factor_no_na) <- function(call, env) {
-  paste0("NA in ", deparse(call$x), " has not been conveyed to na_level, please use explicit factor levels.")
-}
-
-#' @describeIn assertions Check whether `x` is a valid character (has no NAs and no empty strings).
-#' @export
-#' @examples
-#'
-#' # Check whether `x` is a valid character vector
-#' is_valid_character(-1)
-#' is_valid_character(c("a", "b"))
-#' is_valid_character(c("a", ""))
-#' is_valid_character("")
-is_valid_character <- function(x) {
-  is.character(x) &&
-    all(x != "") &&
-    all(!(is.na(x)))
-}
-assertthat::on_failure(is_valid_character) <- function(call, env) {
-  paste0(deparse(call$x), " is not a valid character vector, please check contents (no NAs or empty strings allowed)")
-}
 
 #' @describeIn assertions Check whether all elements of `x` are in a reference vector.
 #' @param ref (`vector`)\cr where matches from `x` are sought for `all_elements_in_ref`.

@@ -7,6 +7,9 @@
   `checkmate::assert_integerish()` and made internal.
 * `assert_list_of_variables` instead of `is_variables` (made internal).
 * `assert_df_with_variables` instead of `is_df_with_variables` (made internal).
+* `assert_valid_factor` instead of `is_valid_factor` (internal) and extension to
+  `is_factor_no_na` (repetition removed).
+* removed `is_valid_character`
 * renamed `assertthat.R` into a more appropriate `utils_checkmate.R`.
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 

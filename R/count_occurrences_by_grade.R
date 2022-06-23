@@ -105,9 +105,8 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #' @describeIn count_occurrences_by_grade Statistics function which given occurrence data counts the
 #'  number of patients by highest grade. Returns a list of counts and fractions with one element
 #'  per grade level or grade level grouping.
-#' @export
-#' @examples
 #'
+#' @examples
 #' library(dplyr)
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1:6, 1)),
@@ -130,6 +129,8 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))
 #' )
+#'
+#' @export
 s_count_occurrences_by_grade <- function(df,
                                          .var,
                                          .N_col, # nolint
@@ -137,9 +138,7 @@ s_count_occurrences_by_grade <- function(df,
                                          grade_groups = list(),
                                          remove_single = TRUE,
                                          labelstr = "") {
-  assertthat::assert_that(
-    is_valid_factor(df[[.var]])
-  )
+  assert_valid_factor(df[[.var]])
   assert_df_with_variables(df, list(grade = .var, id = id))
 
   if (nrow(df) < 1) {
@@ -148,9 +147,13 @@ s_count_occurrences_by_grade <- function(df,
     names(l_count) <- grade_levels
   } else {
     assertthat::assert_that(
-      assertthat::noNA(df[[id]]),
-      is_valid_character(df[[id]]) || is_valid_factor(df[[id]])
+      assertthat::noNA(df[[id]])
     )
+    if (isTRUE(is.factor(df[[id]]))) {
+      assert_valid_factor(df[[id]])
+    } else {
+      checkmate::assert_character(df[[id]], min.chars = 1, any.missing = FALSE)
+    }
     assert_nonnegative_count(.N_col)
 
     id <- df[[id]]
