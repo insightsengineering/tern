@@ -172,16 +172,6 @@ check_df_with_factors <- function(df, variables) {
 #' @export
 assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
 
-# assertthat::on_failure(is_df_with_factors) <- function(call, env) {
-#   var_df <- colnames(eval(call$df, envir = env))
-#   vars <- eval(call$variables, envir = env)
-#   vars <- vars[!unlist(vars) %in% var_df]
-#   paste(
-#     deparse(call$df), "does not contain only factor variables among:",
-#     paste(deparse(vars, width.cutoff = 500L), collapse = "")
-#   )
-# }
-
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variable`
 #'   is a factor with `n_levels` number of levels.
 #' @param variable (`string`)\cr name of the single variable.

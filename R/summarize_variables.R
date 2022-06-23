@@ -334,7 +334,6 @@ s_summary.factor <- function(x,
                              .N_col, # nolint
                              na_level = "<Missing>",
                              ...) {
-
   assert_valid_factor(x, any.missing = FALSE)
   denom <- match.arg(denom)
 

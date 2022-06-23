@@ -63,9 +63,8 @@ groups_list_to_df <- function(groups_list) {
 combine_groups <- function(fct,
                            ref = NULL,
                            collapse = "/") {
-
   checkmate::assert_string(collapse)
-  if(!is.null(ref)) checkmate::assert_character(ref, min.chars = 1, any.missing = FALSE)
+  if (!is.null(ref)) checkmate::assert_character(ref, min.chars = 1, any.missing = FALSE)
   assert_character_or_factor(fct)
 
   fct <- as_factor_keep_attributes(fct)

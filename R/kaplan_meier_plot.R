@@ -1011,6 +1011,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' fit <- survfit(
 #'   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
 #'   data = adtte
+#' )
 #' h_tbl_median_surv(fit_km = fit)
 #' }
 #'
