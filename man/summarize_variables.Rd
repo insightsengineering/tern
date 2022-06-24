@@ -12,7 +12,6 @@
 \alias{a_summary.factor}
 \alias{a_summary.character}
 \alias{a_summary.logical}
-\alias{create_afun_summary}
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
@@ -104,8 +103,6 @@ a_summary(x, ..., .N_row, .N_col, .var)
   ...
 )
 
-create_afun_summary(.stats, .formats, .labels, .indent_mods)
-
 summarize_vars(
   lyt,
   vars,
@@ -151,14 +148,6 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 
 \item{...}{arguments passed to \code{s_summary()}.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -171,6 +160,14 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 If \code{x} is of class \code{numeric}, returns a list with named items: \cr
@@ -220,7 +217,7 @@ to \code{NA} here.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-We use the new S3 generic function \code{\link[=s_summary]{s_summary()}} to implement summaries for
+We use the S3 generic function \code{\link[=s_summary]{s_summary()}} to implement summaries for
 different \code{x} objects. This is used as Statistics Function in combination
 with the new Analyze Function \code{\link[=summarize_vars]{summarize_vars()}}.
 }
@@ -258,10 +255,6 @@ an object description. It is used as \code{afun} in \code{\link[rtables:analyze]
 
 \item \code{a_summary.logical}: Formatted Analysis function method for \code{logical}.
 
-\item \code{create_afun_summary}: Constructor function which creates a combined Formatted
-Analysis function for use in layout creating functions \code{\link[=summarize_vars]{summarize_vars()}} and
-\code{\link[=summarize_colvars]{summarize_colvars()}}.
-
 \item \code{summarize_vars}: Analyze Function to add a descriptive analyze
 layer to \code{rtables} pipelines. The analysis is applied to a vector and
 return the summary, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
@@ -276,13 +269,6 @@ Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
-
-Since \code{\link[=a_summary]{a_summary()}} is generic and we want customization of the formatting arguments
-via \code{\link[rtables:make_afun]{rtables::make_afun()}}, we need to create another temporary generic function, with
-corresponding customized methods. Then in order for the methods to be found,
-we need to wrap them in a combined \code{afun}. Since this is required by two layout creating
-functions (and possibly others in the future), we provide a constructor that does this:
-\code{\link[=create_afun_summary]{create_afun_summary()}}.
 }
 \section{Formatting arguments}{
 
@@ -327,6 +313,7 @@ basic_table() \%>\%
 ## By comparison with `lapply`:
 X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 lapply(X, function(x) s_summary(x$x))
+
 # `s_summary.factor`
 
 ## Basic usage:
@@ -344,11 +331,13 @@ s_summary(x, na.rm = FALSE)
 x <- factor(c("a", "a", "b", "c", "a"))
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
+
 # `s_summary.character`
 
 ## Basic usage:
 s_summary(c("a", "a", "b", "c", "a"), .var = "x")
 s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
+
 # `s_summary.logical`
 
 ## Basic usage:
@@ -363,8 +352,10 @@ s_summary(x, na.rm = FALSE)
 x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
+
 # `a_summary.numeric`
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+
 # `a_summary.factor`
 # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
 # functions can be applied correctly.
@@ -373,40 +364,19 @@ afun <- make_afun(
   .ungroup_stats = c("count", "count_fraction")
 )
 afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+
 # `a_summary.character`
 afun <- make_afun(
   getS3method("a_summary", "character"),
   .ungroup_stats = c("count", "count_fraction")
 )
 afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
+
 # `a_summary.logical`
 afun <- make_afun(
   getS3method("a_summary", "logical")
 )
 afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
-# `create_afun_summary()` to create combined `afun`
-
-afun <- create_afun_summary(
-  .stats = NULL,
-  .formats = c(median = "xx."),
-  .labels = c(median = "My median"),
-  .indent_mods = c(median = 1L)
-)
-## Fabricated dataset.
-dta_test <- data.frame(
-  USUBJID = rep(1:6, each = 3),
-  PARAMCD = rep("lab", 6 * 3),
-  AVISIT  = rep(paste0("V", 1:3), 6),
-  ARM     = rep(LETTERS[1:3], rep(6, 3)),
-  AVAL    = c(9:1, rep(NA, 9))
-)
-
-l <- basic_table() \%>\%
-  split_cols_by(var = "ARM") \%>\%
-  split_rows_by(var = "AVISIT") \%>\%
-  analyze(vars = "AVAL", afun = afun)
-
-build_table(l, df = dta_test)
 
 # `summarize_vars()` in `rtables` pipelines
 

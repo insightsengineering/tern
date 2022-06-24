@@ -10,10 +10,9 @@
 #' @param quantile_type (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 #'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
-#'
 #' @return A list of components with the same names as the arguments.
-#' @export
 #'
+#' @export
 control_summarize_vars <- function(conf_level = 0.95,
                                    quantiles = c(0.25, 0.75),
                                    quantile_type = 2) {
@@ -29,9 +28,7 @@ control_summarize_vars <- function(conf_level = 0.95,
 
 #' Format Function for Descriptive Statistics
 #'
-#' @description
-#'
-#' Returns format patterns for descriptive statistics.
+#' @description Returns format patterns for descriptive statistics.
 #' The format is understood by the `rtables`.
 #'
 #' @param type (`string`)\cr choice of a summary data type.
@@ -74,9 +71,7 @@ summary_formats <- function(type = "numeric") {
 
 #' Label Function for Descriptive Statistics
 #'
-#' @description
-#'
-#' Returns labels of descriptive statistics for numeric variables.
+#' @description Returns labels of descriptive statistics for numeric variables.
 #'
 #' @keywords internal
 summary_labels <- function() {
@@ -103,29 +98,28 @@ summary_labels <- function() {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' We use the new S3 generic function [s_summary()] to implement summaries for
+#' We use the S3 generic function [s_summary()] to implement summaries for
 #' different `x` objects. This is used as Statistics Function in combination
 #' with the new Analyze Function [summarize_vars()].
 #'
-#' @name summarize_variables
+#' @inheritParams argument_convention
 #' @order 1
 #'
+#' @name summarize_variables
 NULL
 
-#' @inheritParams argument_convention
+#' @describeIn summarize_variables `s_summary` is a S3 generic function to produce
+#'   an object description.
+#'
 #' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
 #'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
 #' * `quantiles`: numeric vector of length two to specify the quantiles.
 #' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 #'   See more about `type` in [stats::quantile()].
-#'
-#' @describeIn summarize_variables `s_summary` is a S3 generic function to produce
-#'   an object description.
-#'
-#' @export
 #' @order 2
 #'
+#' @export
 s_summary <- function(x,
                       na.rm = TRUE, # nolint
                       denom,
@@ -170,11 +164,8 @@ s_summary <- function(x,
 #' - `cv`: the coefficient of variation of `x`, i.e.: (`sd()/mean() * 100`).
 #' - `geom_mean`: the geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).
 #' - `geom_cv`: the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x))^2) - 1)*100`).
-#'
 #' @method s_summary numeric
 #' @order 3
-#'
-#' @export
 #'
 #' @examples
 #' # `s_summary.numeric`
@@ -208,6 +199,8 @@ s_summary <- function(x,
 #' ## By comparison with `lapply`:
 #' X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 #' lapply(X, function(x) s_summary(x$x))
+#'
+#' @export
 s_summary.numeric <- function(x, # nolint
                               na.rm = TRUE, # nolint
                               denom,
@@ -293,6 +286,7 @@ s_summary.numeric <- function(x, # nolint
 #'   per factor level. If there are no levels in `x`, the function fails. If `x` contains `NA`,
 #'   it is expected that `NA` have been conveyed to `na_level` appropriately beforehand with
 #'   [df_explicit_na()] or [explicit_na()].
+#'
 #' @param denom (`string`)\cr choice of denominator for factor proportions:\cr
 #'   can be `n` (number of values in this row and column intersection), `N_row` (total
 #'   number of values in this row across columns), or `N_col` (total number of values in
@@ -306,8 +300,6 @@ s_summary.numeric <- function(x, # nolint
 #'      factor `x` relative to the denominator, or `NA` if the denominator is zero.
 #' @method s_summary factor
 #' @order 4
-#'
-#' @export
 #'
 #' @examples
 #' # `s_summary.factor`
@@ -327,6 +319,8 @@ s_summary.numeric <- function(x, # nolint
 #' x <- factor(c("a", "a", "b", "c", "a"))
 #' s_summary(x, denom = "N_row", .N_row = 10L)
 #' s_summary(x, denom = "N_col", .N_col = 20L)
+#'
+#' @export
 s_summary.factor <- function(x,
                              na.rm = TRUE, # nolint
                              denom = c("n", "N_row", "N_col"),
@@ -363,6 +357,7 @@ s_summary.factor <- function(x,
 
 #' @describeIn summarize_variables Method for character class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
+#'
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
@@ -370,14 +365,14 @@ s_summary.factor <- function(x,
 #' @method s_summary character
 #' @order 5
 #'
-#' @export
-#'
 #' @examples
 #' # `s_summary.character`
 #'
 #' ## Basic usage:
 #' s_summary(c("a", "a", "b", "c", "a"), .var = "x")
 #' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
+#'
+#' @export
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
                                 denom = c("n", "N_row", "N_col"),
@@ -399,6 +394,7 @@ s_summary.character <- function(x,
 }
 
 #' @describeIn summarize_variables Method for logical class.
+#'
 #' @param denom (`string`)\cr choice of denominator for proportion:\cr
 #'   can be `n` (number of values in this row and column intersection), `N_row` (total
 #'   number of values in this row across columns), or `N_col` (total number of values in
@@ -411,8 +407,6 @@ s_summary.character <- function(x,
 #'      to `NA` here.
 #' @method s_summary logical
 #' @order 6
-#'
-#' @export
 #'
 #' @examples
 #' # `s_summary.logical`
@@ -429,6 +423,8 @@ s_summary.character <- function(x,
 #' x <- c(TRUE, FALSE, TRUE, TRUE)
 #' s_summary(x, denom = "N_row", .N_row = 10L)
 #' s_summary(x, denom = "N_col", .N_col = 20L)
+#'
+#' @export
 s_summary.logical <- function(x,
                               na.rm = TRUE, # nolint
                               denom = c("n", "N_row", "N_col"),
@@ -452,11 +448,11 @@ s_summary.logical <- function(x,
 }
 
 #' @describeIn summarize_variables S3 generic Formatted Analysis function to produce
-#'   an object description. It is used as `afun` in [rtables::analyze()].
+#' an object description. It is used as `afun` in [rtables::analyze()].
+#'
 #' @order 7
 #'
 #' @export
-#'
 a_summary <- function(x,
                       ...,
                       .N_row, # nolint
@@ -469,11 +465,14 @@ a_summary <- function(x,
 .a_summary_numeric_labels <- summary_labels()
 
 #' @describeIn summarize_variables Formatted Analysis function method for `numeric`.
-#' @export
+#'
 #' @order 8
+#'
 #' @examples
 #' # `a_summary.numeric`
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+#'
+#' @export
 a_summary.numeric <- make_afun(
   s_summary.numeric,
   .formats = .a_summary_numeric_formats,
@@ -483,8 +482,9 @@ a_summary.numeric <- make_afun(
 .a_summary_counts_formats <- summary_formats(type = "counts")
 
 #' @describeIn summarize_variables Method for `factor`.
-#' @export
+#'
 #' @order 9
+#'
 #' @examples
 #' # `a_summary.factor`
 #' # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
@@ -494,14 +494,17 @@ a_summary.numeric <- make_afun(
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
 #' afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+#'
+#' @export
 a_summary.factor <- make_afun(
   s_summary.factor,
   .formats = .a_summary_counts_formats
 )
 
 #' @describeIn summarize_variables Formatted Analysis function method for `character`.
-#' @export
+#'
 #' @order 10
+#'
 #' @examples
 #' # `a_summary.character`
 #' afun <- make_afun(
@@ -509,36 +512,43 @@ a_summary.factor <- make_afun(
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
 #' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
+#'
+#' @export
 a_summary.character <- make_afun(
   s_summary.character,
   .formats = .a_summary_counts_formats
 )
 
 #' @describeIn summarize_variables Formatted Analysis function method for `logical`.
-#' @export
+#'
 #' @order 11
+#'
 #' @examples
 #' # `a_summary.logical`
 #' afun <- make_afun(
 #'   getS3method("a_summary", "logical")
 #' )
 #' afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+#'
+#' @export
 a_summary.logical <- make_afun(
   s_summary.logical,
   .formats = .a_summary_counts_formats
 )
 
-#' @describeIn summarize_variables Constructor function which creates a combined Formatted
-#'   Analysis function for use in layout creating functions [summarize_vars()] and
-#'   [summarize_colvars()].
+#' Constructor Function for [summarize_vars()] and [summarize_colvars()]
+#'
+#' @description Constructor function which creates a combined Formatted
+#' Analysis function for use in layout creating functions [summarize_vars()] and
+#' [summarize_colvars()].
+#'
 #' @note Since [a_summary()] is generic and we want customization of the formatting arguments
 #'   via [rtables::make_afun()], we need to create another temporary generic function, with
 #'   corresponding customized methods. Then in order for the methods to be found,
 #'   we need to wrap them in a combined `afun`. Since this is required by two layout creating
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_summary()].
-#' @order 12
-#' @export
+#'
 #' @examples
 #' # `create_afun_summary()` to create combined `afun`
 #'
@@ -563,6 +573,8 @@ a_summary.logical <- make_afun(
 #'   analyze(vars = "AVAL", afun = afun)
 #'
 #' build_table(l, df = dta_test)
+#'
+#' @keywords internal
 create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
   function(x,
            ...,
@@ -630,15 +642,13 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   accounted for. When factor variables contains `NA`, it is expected that `NA`
 #'   have been conveyed to `na_level` appropriately beforehand with
 #'   [df_explicit_na()].
+#'
 #' @inheritParams rtables::analyze
 #' @param ... arguments passed to `s_summary()`.
-#'
-#' @order 13
+#' @order 12
 #' @template formatting_arguments
 #'
-#' @export
 #' @examples
-#'
 #' # `summarize_vars()` in `rtables` pipelines
 #'
 #' ## Default output within a `rtables` pipeline.
@@ -684,6 +694,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' Viewer(results)
 #' }
 #'
+#' @export
 summarize_vars <- function(lyt,
                            vars,
                            var_labels = vars,

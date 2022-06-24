@@ -12,9 +12,7 @@
 #' @param ci_ribbon (named `list` or `NULL`)\cr `fill` and `alpha` settings for the confidence interval
 #'   ribbon area, or `NULL` to not plot a CI ribbon.
 #' @param col (`character`)\cr colors.
-#'
 #' @return The `ggplot2` object.
-#' @export
 #'
 #' @examples
 #' library(survival)
@@ -74,6 +72,8 @@
 #' )
 #' step_data <- broom::tidy(step_matrix)
 #' g_step(step_data)
+#'
+#' @export
 g_step <- function(df,
                    use_percentile = "Percentile Center" %in% names(df),
                    est = list(col = "black", lty = 1),
@@ -113,9 +113,11 @@ g_step <- function(df,
   p
 }
 
-#' @describeIn g_step Custom Tidy Method for STEP Results
+#' Custom Tidy Method for STEP Results
 #'
-#' Tidy the STEP results into a `tibble` to format them ready for plotting.
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Tidy the STEP results into a `tibble` format ready for plotting.
 #'
 #' @param x (`step` matrix)\cr results from [fit_survival_step()].
 #' @param ... not used here.
@@ -123,7 +125,6 @@ g_step <- function(df,
 #'   respectively. Additional attributes carry meta data also used for plotting.
 #' @seealso [g_step()] which consumes the result from this function.
 #' @method tidy step
-#' @export
 #'
 #' @examples
 #' library(survival)
@@ -140,6 +141,8 @@ g_step <- function(df,
 #'   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
 #' )
 #' broom::tidy(step_matrix)
+#'
+#' @export
 tidy.step <- function(x, ...) { # nolint
   assertthat::assert_that(inherits(x, "step"))
   dat <- as.data.frame(x)

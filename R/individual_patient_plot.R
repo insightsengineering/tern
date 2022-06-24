@@ -1,7 +1,11 @@
 #' Individual Patient Plots
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Line plot(s) displaying trend in patients' parameter values over time is rendered.
 #' Patients' individual baseline values can be added to the plot(s) as reference.
+#' Depending on user preference, renders a single graphic or compiles a list of graphics
+#' that show trends in individual's parameter values over time.
 #'
 #' @inheritParams argument_convention
 #' @param xvar (`string`)\cr time point variable to be plotted on x-axis.
@@ -24,17 +28,133 @@
 #' @param font_size (`number`)\cr text font size.
 #' @param caption (`character` scalar) \cr optional caption below the plot.
 #' @param col (`character`)\cr lines colors.
+#' @return a `ggplot` object or a list of `ggplot` objects.
 #'
-#' @name individual_patient_plot
+#' @examples
+#' plot_list <- g_ipp(
+#'   df = adlb,
+#'   xvar = "AVISIT",
+#'   yvar = "AVAL",
+#'   xlab = "Visit",
+#'   ylab = "SGOT/ALT (U/L)",
+#'   title = "Individual Patient Plots",
+#'   add_baseline_hline = TRUE,
+#'   plotting_choices = "split_by_max_obs",
+#'   max_obs_per_plot = 5
+#' )
+#' plot_list
+#'
+#' @export
+g_ipp <- function(df,
+                  xvar,
+                  yvar,
+                  xlab,
+                  ylab,
+                  id_var = "USUBJID",
+                  title = "Individual Patient Plots",
+                  subtitle = "",
+                  caption = NULL,
+                  add_baseline_hline = FALSE,
+                  yvar_baseline = "BASE",
+                  ggtheme = h_set_nest_theme(10),
+                  plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
+                  max_obs_per_plot = 4,
+                  col = getOption("tern.color")) {
+  assertthat::assert_that(
+    assertthat::is.count(max_obs_per_plot),
+    plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
+  )
+  assertthat::assert_that(is.character(col))
+
+  plotting_choices <- match.arg(plotting_choices)
+
+  if (plotting_choices == "all_in_one") {
+    p <- h_g_ipp(
+      df = df,
+      xvar = xvar,
+      yvar = yvar,
+      xlab = xlab,
+      ylab = ylab,
+      id_var = id_var,
+      title = title,
+      subtitle = subtitle,
+      caption = caption,
+      add_baseline_hline = add_baseline_hline,
+      yvar_baseline = yvar_baseline,
+      ggtheme = ggtheme,
+      col = col
+    )
+
+    return(p)
+  } else if (plotting_choices == "split_by_max_obs") {
+    id_vec <- unique(df[[id_var]])
+    id_list <- split(
+      id_vec,
+      rep(1:ceiling(length(id_vec) / max_obs_per_plot),
+          each = max_obs_per_plot,
+          length.out = length(id_vec)
+      )
+    )
+
+    df_list <- list()
+    plot_list <- list()
+
+    for (i in seq_along(id_list)) {
+      df_list[[i]] <- df[df[[id_var]] %in% id_list[[i]], ]
+
+      plots <- h_g_ipp(
+        df = df_list[[i]],
+        xvar = xvar,
+        yvar = yvar,
+        xlab = xlab,
+        ylab = ylab,
+        id_var = id_var,
+        title = title,
+        subtitle = subtitle,
+        caption = caption,
+        add_baseline_hline = add_baseline_hline,
+        yvar_baseline = yvar_baseline,
+        ggtheme = ggtheme,
+        col = col
+      )
+
+      plot_list[[i]] <- plots
+    }
+    return(plot_list)
+  } else {
+    ind_df <- split(df, df[[id_var]])
+    plot_list <- lapply(
+      ind_df,
+      function(x) {
+        h_g_ipp(
+          df = x,
+          xvar = xvar,
+          yvar = yvar,
+          xlab = xlab,
+          ylab = ylab,
+          id_var = id_var,
+          title = title,
+          subtitle = subtitle,
+          caption = caption,
+          add_baseline_hline = add_baseline_hline,
+          yvar_baseline = yvar_baseline,
+          ggtheme = ggtheme,
+          col = col
+        )
+      }
+    )
+
+    return(plot_list)
+  }
+}
+
+#' Helper Function to Set a `ggplot` Graphical Theme
 #'
 #' @description `r lifecycle::badge("stable")`
-
-NULL
-
-
-#' @describeIn individual_patient_plot sets a `ggplot` graphical theme to control outlook of plot.
-#' @export
 #'
+#' Function that sets a `ggplot` graphical theme to control the outlook of a plot.
+#'
+#' @export
 h_set_nest_theme <- function(font_size) {
   ggplot2::theme(
     panel.grid.major = ggplot2::element_blank(),
@@ -51,14 +171,15 @@ h_set_nest_theme <- function(font_size) {
   )
 }
 
-
-#' @describeIn individual_patient_plot helper function that generates a simple line
-#' plot displaying parameter trends over time.
+#' Helper Function To Create Simple Line Plot over Time
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Function that generates a simple line plot displaying parameter trends over time.
 #'
 #' @inheritParams argument_convention
-#' @export
-#' @examples
 #'
+#' @examples
 #' library(scda)
 #' library(dplyr)
 #'
@@ -77,6 +198,8 @@ h_set_nest_theme <- function(font_size) {
 #'   add_baseline_hline = TRUE
 #' )
 #' p
+#'
+#' @export
 h_g_ipp <- function(df,
                     xvar,
                     yvar,
@@ -154,130 +277,4 @@ h_g_ipp <- function(df,
       ggplot2::scale_color_manual(values = col)
   }
   p
-}
-
-#' Plotting function for Individual Patient Plot
-#'
-#' @describeIn individual_patient_plot depending on user preference, renders a single
-#' graphic or compiles a list of graphics that show trends in individual's parameter
-#' values over time.
-#'
-#' @return a `ggplot` object or a list of `ggplot` objects.
-#'
-#' @export
-#' @examples
-#'
-#' plot_list <- g_ipp(
-#'   df = adlb,
-#'   xvar = "AVISIT",
-#'   yvar = "AVAL",
-#'   xlab = "Visit",
-#'   ylab = "SGOT/ALT (U/L)",
-#'   title = "Individual Patient Plots",
-#'   add_baseline_hline = TRUE,
-#'   plotting_choices = "split_by_max_obs",
-#'   max_obs_per_plot = 5
-#' )
-#' plot_list
-g_ipp <- function(df,
-                  xvar,
-                  yvar,
-                  xlab,
-                  ylab,
-                  id_var = "USUBJID",
-                  title = "Individual Patient Plots",
-                  subtitle = "",
-                  caption = NULL,
-                  add_baseline_hline = FALSE,
-                  yvar_baseline = "BASE",
-                  ggtheme = h_set_nest_theme(10),
-                  plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
-                  max_obs_per_plot = 4,
-                  col = getOption("tern.color")) {
-  assertthat::assert_that(
-    assertthat::is.count(max_obs_per_plot),
-    plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
-  )
-  assertthat::assert_that(is.character(col))
-
-  plotting_choices <- match.arg(plotting_choices)
-
-  if (plotting_choices == "all_in_one") {
-    p <- h_g_ipp(
-      df = df,
-      xvar = xvar,
-      yvar = yvar,
-      xlab = xlab,
-      ylab = ylab,
-      id_var = id_var,
-      title = title,
-      subtitle = subtitle,
-      caption = caption,
-      add_baseline_hline = add_baseline_hline,
-      yvar_baseline = yvar_baseline,
-      ggtheme = ggtheme,
-      col = col
-    )
-
-    return(p)
-  } else if (plotting_choices == "split_by_max_obs") {
-    id_vec <- unique(df[[id_var]])
-    id_list <- split(
-      id_vec,
-      rep(1:ceiling(length(id_vec) / max_obs_per_plot),
-        each = max_obs_per_plot,
-        length.out = length(id_vec)
-      )
-    )
-
-    df_list <- list()
-    plot_list <- list()
-
-    for (i in seq_along(id_list)) {
-      df_list[[i]] <- df[df[[id_var]] %in% id_list[[i]], ]
-
-      plots <- h_g_ipp(
-        df = df_list[[i]],
-        xvar = xvar,
-        yvar = yvar,
-        xlab = xlab,
-        ylab = ylab,
-        id_var = id_var,
-        title = title,
-        subtitle = subtitle,
-        caption = caption,
-        add_baseline_hline = add_baseline_hline,
-        yvar_baseline = yvar_baseline,
-        ggtheme = ggtheme,
-        col = col
-      )
-
-      plot_list[[i]] <- plots
-    }
-    return(plot_list)
-  } else {
-    ind_df <- split(df, df[[id_var]])
-    plot_list <- lapply(
-      ind_df,
-      function(x) {
-        h_g_ipp(
-          df = x,
-          xvar = xvar,
-          yvar = yvar,
-          xlab = xlab,
-          ylab = ylab,
-          id_var = id_var,
-          title = title,
-          subtitle = subtitle,
-          caption = caption,
-          add_baseline_hline = add_baseline_hline,
-          yvar_baseline = yvar_baseline,
-          ggtheme = ggtheme,
-          col = col
-        )
-      }
-    )
-
-    return(plot_list)
-  }
 }

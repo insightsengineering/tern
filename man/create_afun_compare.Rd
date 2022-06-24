@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare_variables.R
 \name{create_afun_compare}
 \alias{create_afun_compare}
-\title{Constructor function for use in \code{\link[=compare_vars]{compare_vars()}}}
+\title{Constructor Function for \code{\link[=compare_vars]{compare_vars()}}}
 \usage{
 create_afun_compare(
   .stats = NULL,

@@ -363,8 +363,8 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("create_afun_summary creates an `afun` that works", {
-  afun <- create_afun_summary(
+testthat::test_that("tern::create_afun_summary creates an `afun` that works", {
+  afun <- tern::create_afun_summary(
     .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
     .formats = c(median = "xx."),
     .labels = c(median = "My median"),

@@ -25,11 +25,11 @@ reference:
     desc: |
           Groups of analyze functions along with any corresponding statistics functions and formatted analysis functions.
 
-          - **Statistics functions** (indicated by `"s_"` prefix) should do the computation of the numbers that are
+          - **Statistics functions** (denoted by `"s_"` prefix) should do the computation of the numbers that are
             tabulated later. In order to separate computation from formatting, they should not take care of `rcell`
             type formatting themselves.
 
-          - **Formatted analysis functions** (indicated by `"a_"` prefix) have the same arguments as the corresponding
+          - **Formatted analysis functions** (denoted by `"a_"` prefix) have the same arguments as the corresponding
             statistics functions, and can be further customized by calling `rtables::make_afun()` on them. They are used
             as `afun` in `rtables::analyze()`.
 
@@ -40,6 +40,7 @@ reference:
       - starts_with("count_")
       - starts_with("estimate_")
       - -estimate_coef
+      - -matches(".*mmrm.*")
       - response_biomarkers_subgroups
       - starts_with("summarize_")
       - starts_with("tabulate_")

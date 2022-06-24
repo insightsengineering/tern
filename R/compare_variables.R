@@ -353,7 +353,7 @@ a_compare.logical <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' Constructor function for use in [compare_vars()]
+#' Constructor Function for [compare_vars()]
 #'
 #' @description Constructor function which creates a combined Formatted Analysis function for use in
 #' layout creating functions [compare_vars()].
