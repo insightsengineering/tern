@@ -44,7 +44,7 @@ or_glm <- function(data, conf_level) {
     is_proportion(conf_level)
   )
   assert_df_with_variables(data, list(rsp = "rsp", grp = "grp"))
-  assert_character_or_factor(data$grp)
+  checkmate::assertMultiClass(data$grp, classes = c("factor", "character"))
 
   data$grp <- as_factor_keep_attributes(data$grp)
   assertthat::assert_that(
@@ -92,8 +92,8 @@ or_clogit <- function(data, conf_level) {
     is_proportion(conf_level)
   )
   assert_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata"))
-  assert_character_or_factor(data$grp)
-  assert_character_or_factor(data$strata)
+  checkmate::assertMultiClass(data$grp, classes = c("factor", "character"))
+  checkmate::assertMultiClass(data$strata, classes = c("factor", "character"))
 
   data$grp <- as_factor_keep_attributes(data$grp)
   data$strata <- as_factor_keep_attributes(data$strata)

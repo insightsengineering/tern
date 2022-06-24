@@ -57,8 +57,8 @@ s_count_occurrences <- function(df,
   )
   assert_df_with_variables(df, list(range = .var, id = id))
   checkmate::assert_count(.N_col)
-  assert_character_or_factor(df[[.var]])
-  assert_character_or_factor(df[[id]])
+  checkmate::assertMultiClass(df[[.var]], classes = c("factor", "character"))
+  checkmate::assertMultiClass(df[[id]], classes = c("factor", "character"))
   denom <- match.arg(denom)
 
   occurrences <- if (drop) {

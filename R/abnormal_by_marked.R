@@ -90,8 +90,8 @@ s_count_abnormal_by_marked <- function(df,
     length(unique(df[[variables$direction]])) <= 1L
   )
   assert_df_with_variables(df, c(aval = .var, variables))
-  assert_character_or_factor(df[[.var]])
-  assert_character_or_factor(df[[variables$id]])
+  checkmate::assertMultiClass(df[[.var]], classes = c("factor", "character"))
+  checkmate::assertMultiClass(df[[variables$id]], classes = c("factor", "character"))
 
 
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ] # nolint

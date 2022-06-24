@@ -2,7 +2,6 @@
 % Please edit documentation in R/utils_checkmate.R
 \name{assertions}
 \alias{assertions}
-\alias{assert_character_or_factor}
 \alias{assert_list_of_variables}
 \alias{assert_df_with_variables}
 \alias{assert_valid_factor}
@@ -17,8 +16,6 @@
 \alias{is_df_with_no_na_level}
 \title{Additional Assertions for \code{checkmate}}
 \usage{
-assert_character_or_factor(x)
-
 assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
 
 assert_df_with_variables(
@@ -89,8 +86,6 @@ We provide additional assertion functions which can be used together with \code{
 }
 \section{Functions}{
 \itemize{
-\item \code{assert_character_or_factor}: Check whether \code{x} is a character or factor vector.
-
 \item \code{assert_list_of_variables}: Check whether \code{x} is a valid list of variable names.
 \code{NULL} elements of the list \code{x} are dropped out with \code{Filter(Negate(is.null), x)}.
 
@@ -124,12 +119,6 @@ is a factor with \code{n_levels} number of levels.
 }}
 
 \examples{
-
-# Check whether `x` is a character or factor vector.
-tern:::assert_character_or_factor(c("a", "b"))
-tern:::assert_character_or_factor(factor(c("a", "b")))
-# tern:::assert_character_or_factor(-1) # it fails
-
 # Check whether `x` is a valid list of variable names.
 tern:::assert_list_of_variables(list(val = "a"))
 tern:::assert_list_of_variables(list(val = c("a", "b")))

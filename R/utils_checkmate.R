@@ -11,19 +11,6 @@
 #' @name assertions
 NULL
 
-#' @describeIn assertions Check whether `x` is a character or factor vector.
-#' @examples
-#'
-#' # Check whether `x` is a character or factor vector.
-#' tern:::assert_character_or_factor(c("a", "b"))
-#' tern:::assert_character_or_factor(factor(c("a", "b")))
-#' # tern:::assert_character_or_factor(-1) # it fails
-#'
-#' @keywords internal
-assert_character_or_factor <- function(x) {
-  checkmate::assertMultiClass(x, classes = c("factor", "character"))
-}
-
 check_list_of_variables <- function(x) {
 
   # drop NULL elements in list
