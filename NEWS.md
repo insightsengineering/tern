@@ -13,6 +13,8 @@
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
 ### Fix
+* Warnings from `as_factor_keep_attributes` are now in verbose for better 
+  `test_examples()` readability
 * Renaming `rtables.R` as confusing file name due to the package dependence.
 * Renamed files to respect the main documented function and fixed file in `R/` 
   folder that does not comply with the standard (starting with the word test).

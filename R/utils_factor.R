@@ -32,7 +32,6 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
   x
 }
 
-
 #' Conversion of a Vector to a Factor
 #'
 #' Converts `x` to a factor and keeps its attributes. Warns appropriately such that the user
@@ -43,31 +42,34 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' @param x_name (`string`)\cr name of `x`.
 #' @param na_level (`string`)\cr the explicit missing level which should be used when
 #'   converting a character vector.
+#' @param verbose defaults to `FALSE`. It prints out warnings and messages.
 #'
 #' @return The factor with same attributes (except class) as `x`. Does not do any modifications
 #'   if `x` is already a factor.
 #'
-#' @keywords internal
-#'
 #' @examples
 #' tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
 #' tern:::as_factor_keep_attributes(c("a", "b", ""), "id")
+#'
+#' @keywords internal
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),
-                                      na_level = "<Missing>") {
-  assertthat::assert_that(
-    is.atomic(x),
-    assertthat::is.string(x_name),
-    assertthat::is.string(na_level)
-  )
+                                      na_level = "<Missing>",
+                                      verbose = FALSE) {
+  checkmate::assert_atomic(x)
+  checkmate::assert_string(x_name)
+  checkmate::assert_string(na_level)
+  checkmate::assert_flag(verbose)
   if (is.factor(x)) {
     return(x)
   }
   x_class <- class(x)[1]
-  warning(paste(
-    "automatically converting", x_class, "variable", x_name,
-    "to factor, better manually convert to factor to avoid failures"
-  ))
+  if (verbose) {
+    warning(paste(
+      "automatically converting", x_class, "variable", x_name,
+      "to factor, better manually convert to factor to avoid failures"
+    ))
+  }
   if (identical(length(x), 0L)) {
     warning(paste(
       x_name, "has length 0, this can lead to tabulation failures, better convert to factor"
