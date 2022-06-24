@@ -43,12 +43,11 @@ control_step <- function(biomarker = NULL,
                          bandwidth,
                          degree = 0L,
                          num_points = 39L) {
-  assertthat::assert_that(
-    is.null(biomarker) || is.numeric(biomarker),
-    assertthat::is.flag(use_percentile),
-    assertthat::is.count(num_points) && num_points >= 2
-  )
-  assert_nonnegative_count(degree)
+
+  if(!is.null(biomarker)) checkmate::assert_numeric(biomarker)
+  checkmate::assert_flag(use_percentile)
+  checkmate::assert_integerish(num_points, len = 1, lower = 2, any.missing = FALSE)
+  checkmate::assert_count(degree)
 
   if (missing(bandwidth)) {
     # Infer bandwidth.

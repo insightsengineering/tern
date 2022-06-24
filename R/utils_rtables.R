@@ -325,7 +325,7 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
     is.data.frame(df),
     is.character(vars)
   )
-  assert_nonnegative_count(indent)
+  checkmate::assert_count(indent)
 
   lab <- formatters::var_labels(df[vars], fill = TRUE)
   lab <- paste(lab, collapse = " / ")

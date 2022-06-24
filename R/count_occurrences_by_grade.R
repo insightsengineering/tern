@@ -154,7 +154,7 @@ s_count_occurrences_by_grade <- function(df,
     } else {
       checkmate::assert_character(df[[id]], min.chars = 1, any.missing = FALSE)
     }
-    assert_nonnegative_count(.N_col)
+    checkmate::assert_count(.N_col)
 
     id <- df[[id]]
     grade <- df[[.var]]

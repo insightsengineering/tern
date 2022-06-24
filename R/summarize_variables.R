@@ -23,7 +23,7 @@ control_summarize_vars <- function(conf_level = 0.95,
     is_proportion(conf_level),
     quantile_type <= 9
   )
-  assert_nonnegative_count(quantile_type)
+  checkmate::assert_count(quantile_type)
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
 }
 

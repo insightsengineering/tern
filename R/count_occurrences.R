@@ -56,7 +56,7 @@ s_count_occurrences <- function(df,
     assertthat::is.flag(drop)
   )
   assert_df_with_variables(df, list(range = .var, id = id))
-  assert_nonnegative_count(.N_col)
+  checkmate::assert_count(.N_col)
   assert_character_or_factor(df[[.var]])
   assert_character_or_factor(df[[id]])
   denom <- match.arg(denom)

@@ -3,7 +3,6 @@
 \name{assertions}
 \alias{assertions}
 \alias{assert_character_or_factor}
-\alias{assert_nonnegative_count}
 \alias{assert_list_of_variables}
 \alias{assert_df_with_variables}
 \alias{assert_valid_factor}
@@ -19,8 +18,6 @@
 \title{Additional Assertions for \code{checkmate}}
 \usage{
 assert_character_or_factor(x)
-
-assert_nonnegative_count(x)
 
 assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
 
@@ -94,8 +91,6 @@ We provide additional assertion functions which can be used together with \code{
 \itemize{
 \item \code{assert_character_or_factor}: Check whether \code{x} is a character or factor vector.
 
-\item \code{assert_nonnegative_count}: Check whether \code{x} is a nonnegative count.
-
 \item \code{assert_list_of_variables}: Check whether \code{x} is a valid list of variable names.
 \code{NULL} elements of the list \code{x} are dropped out with \code{Filter(Negate(is.null), x)}.
 
@@ -131,51 +126,56 @@ is a factor with \code{n_levels} number of levels.
 \examples{
 
 # Check whether `x` is a character or factor vector.
-# assert_character_or_factor(-1) # it fails
 tern:::assert_character_or_factor(c("a", "b"))
 tern:::assert_character_or_factor(factor(c("a", "b")))
-
-# Check whether `x` is a nonnegative count.
-# tern:::assert_nonnegative_count(-1) # Error
-# tern:::assert_nonnegative_count(NA) # Error
-# tern:::assert_nonnegative_count(c(1, 2)) # Error
-tern:::assert_nonnegative_count(0L)
-tern:::assert_nonnegative_count(10L)
-tern:::assert_nonnegative_count(0)
-tern:::assert_nonnegative_count(10)
+# tern:::assert_character_or_factor(-1) # it fails
 
 # Check whether `x` is a valid list of variable names.
 tern:::assert_list_of_variables(list(val = "a"))
 tern:::assert_list_of_variables(list(val = c("a", "b")))
 tern:::assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
-# tern:::assert_list_of_variables(list(1, 2))
-# tern:::assert_list_of_variables(list("bla" = 2))
+
+# The following calls fail
+\dontrun{
+tern:::assert_list_of_variables(list(1, 2))
+tern:::assert_list_of_variables(list("bla" = 2))
+}
 
 # Check whether `df` contains the analysis `variables`.
-# tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
-# tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
 tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
 tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+
+# The following calls fail
+\dontrun{
+tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
+}
 
 # Check whether `x` is a valid factor.
 tern:::assert_valid_factor(factor(c("a", "b")))
 tern:::assert_valid_factor(factor(c("a", NULL)))
 tern:::assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
 tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
-# failures
+
+# The following calls fail
+\dontrun{
 # tern:::assert_valid_factor(-1)
 # tern:::assert_valid_factor(factor(c("a", "")))
 # tern:::assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
 # tern:::assert_valid_factor(factor(NULL))
 # tern:::assert_valid_factor(factor(c(NULL, "")))
 # tern:::assert_valid_factor(factor())
+}
 
 # Check whether `df` contains all factor analysis `variables`.
 adf <- data.frame(a = factor(c("A", "B")), b = 3)
 assert_df_with_factors(df = adf, variables = list(val = "a"))
-# failures
-# assert_df_with_factors(df = adf, variables = list(val = "a", val = "b"))
+
+# The following calls fail
+\dontrun{
+assert_df_with_factors(df = adf, variables = list(val = "a", val = "b"))
+}
 
 # Check whether `df` contains a factor `variable` with `n_levels` levels.
 is_df_with_nlevels_factor(

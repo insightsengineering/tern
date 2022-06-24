@@ -11,22 +11,6 @@ testthat::test_that("assert_character_or_factor is FALSE with wrong input", {
   testthat::expect_error(assert_character_or_factor(NULL))
 })
 
-# assert_nonnegative_count ----
-
-testthat::test_that("assert_nonnegative_count is TRUE with healthy input", {
-  testthat::expect_silent(assert_nonnegative_count(5L))
-  testthat::expect_silent(assert_nonnegative_count(0L))
-  testthat::expect_silent(assert_nonnegative_count(5))
-  testthat::expect_silent(assert_nonnegative_count(0))
-})
-
-testthat::test_that("assert_nonnegative_count is FALSE with wrong input", {
-  testthat::expect_error(assert_nonnegative_count(c(5L, 3L)))
-  testthat::expect_error(assert_nonnegative_count(-5L))
-  testthat::expect_error(assert_nonnegative_count(NULL))
-  testthat::expect_error(assert_nonnegative_count(NA_integer_))
-})
-
 # assert_list_of_variables ----
 
 testthat::test_that("assert_list_of_variables is TRUE with healthy input", {

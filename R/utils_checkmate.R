@@ -15,30 +15,13 @@ NULL
 #' @examples
 #'
 #' # Check whether `x` is a character or factor vector.
-#' # assert_character_or_factor(-1) # it fails
 #' tern:::assert_character_or_factor(c("a", "b"))
 #' tern:::assert_character_or_factor(factor(c("a", "b")))
+#' # tern:::assert_character_or_factor(-1) # it fails
 #'
 #' @keywords internal
 assert_character_or_factor <- function(x) {
   checkmate::assertMultiClass(x, classes = c("factor", "character"))
-}
-
-#' @describeIn assertions Check whether `x` is a nonnegative count.
-#'
-#' @examples
-#' # Check whether `x` is a nonnegative count.
-#' # tern:::assert_nonnegative_count(-1) # Error
-#' # tern:::assert_nonnegative_count(NA) # Error
-#' # tern:::assert_nonnegative_count(c(1, 2)) # Error
-#' tern:::assert_nonnegative_count(0L)
-#' tern:::assert_nonnegative_count(10L)
-#' tern:::assert_nonnegative_count(0)
-#' tern:::assert_nonnegative_count(10)
-#'
-#' @keywords internal
-assert_nonnegative_count <- function(x) {
-  checkmate::assert_integerish(x, lower = 0, len = 1, any.missing = FALSE)
 }
 
 check_list_of_variables <- function(x) {
@@ -67,9 +50,12 @@ check_list_of_variables <- function(x) {
 #' tern:::assert_list_of_variables(list(val = "a"))
 #' tern:::assert_list_of_variables(list(val = c("a", "b")))
 #' tern:::assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
-#' # failures
-#' # tern:::assert_list_of_variables(list(1, 2))
-#' # tern:::assert_list_of_variables(list("bla" = 2))
+#'
+#' # The following calls fail
+#' \dontrun{
+#' tern:::assert_list_of_variables(list(1, 2))
+#' tern:::assert_list_of_variables(list("bla" = 2))
+#' }
 #'
 #' @keywords internal
 assert_list_of_variables <- checkmate::makeAssertionFunction(check_list_of_variables)
@@ -95,13 +81,18 @@ check_df_with_variables <- function(df, variables) {
 #' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
 #'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
+#'
 #' @examples
 #' # Check whether `df` contains the analysis `variables`.
-#' # tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
-#' # tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
 #' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
 #' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 #' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+#'
+#' # The following calls fail
+#' \dontrun{
+#' tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
+#' }
 #'
 #' @keywords internal
 assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_variables)
@@ -130,13 +121,16 @@ check_valid_factor <- function(x, any.missing = TRUE) {
 #' tern:::assert_valid_factor(factor(c("a", NULL)))
 #' tern:::assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
 #' tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
-#' # failures
+#'
+#' # The following calls fail
+#' \dontrun{
 #' # tern:::assert_valid_factor(-1)
 #' # tern:::assert_valid_factor(factor(c("a", "")))
 #' # tern:::assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
 #' # tern:::assert_valid_factor(factor(NULL))
 #' # tern:::assert_valid_factor(factor(c(NULL, "")))
 #' # tern:::assert_valid_factor(factor())
+#' }
 #'
 #' @keywords internal
 assert_valid_factor <- checkmate::makeAssertionFunction(check_valid_factor)
@@ -167,8 +161,11 @@ check_df_with_factors <- function(df, variables) {
 #' # Check whether `df` contains all factor analysis `variables`.
 #' adf <- data.frame(a = factor(c("A", "B")), b = 3)
 #' assert_df_with_factors(df = adf, variables = list(val = "a"))
-#' # failures
-#' # assert_df_with_factors(df = adf, variables = list(val = "a", val = "b"))
+#'
+#' # The following calls fail
+#' \dontrun{
+#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b"))
+#' }
 #'
 #' @export
 assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
