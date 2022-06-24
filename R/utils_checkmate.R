@@ -67,6 +67,7 @@ check_list_of_variables <- function(x) {
 #' tern:::assert_list_of_variables(list(val = "a"))
 #' tern:::assert_list_of_variables(list(val = c("a", "b")))
 #' tern:::assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
+#' # failures
 #' # tern:::assert_list_of_variables(list(1, 2))
 #' # tern:::assert_list_of_variables(list("bla" = 2))
 #'
