@@ -111,7 +111,7 @@ h_proportion_subgroups_df <- function(variables,
   assertthat::assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
+    is.character(variables$subgroups) || is.null(variables$subgroups)
   )
   assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
   assert_df_with_variables(data, variables)
@@ -327,7 +327,7 @@ h_odds_ratio_subgroups_df <- function(variables,
     is.character(variables$rsp),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.character(variables$strat) || is.null(variables$strat),
+    is.character(variables$strat) || is.null(variables$strat)
   )
   assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
   assert_df_with_variables(data, variables)

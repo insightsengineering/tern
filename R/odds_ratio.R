@@ -47,8 +47,6 @@ or_glm <- function(data, conf_level) {
   checkmate::assertMultiClass(data$grp, classes = c("factor", "character"))
 
   data$grp <- as_factor_keep_attributes(data$grp)
-  assertthat::assert_that(
-  )
   assert_df_with_factors(data, list(val = "grp"), min.levels = 2, max.levels = 2)
   formula <- stats::as.formula("rsp ~ grp")
   model_fit <- stats::glm(

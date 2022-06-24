@@ -138,8 +138,9 @@ check_df_with_factors <- function(df, variables, min.levels = 1, max.levels = NU
   res <- check_df_with_variables(df, variables)
   # checking if all the columns specified by variables are valid factors
   if (isTRUE(res)) {
+    # searching the data.frame with selected columns (variables) as a list
     res <- lapply(
-      X = list(df[, unlist(variables)]),
+      X = as.list(df)[unlist(variables)],
       FUN = check_valid_factor,
       min.levels = min.levels,
       max.levels = max.levels

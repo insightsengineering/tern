@@ -336,13 +336,11 @@ h_coxph_subgroups_df <- function(variables,
                                  groups_lists = list(),
                                  control = control_coxph(),
                                  label_all = "All Patients") {
-  assertthat::assert_that(
-    is.character(variables$tte),
-    is.character(variables$is_event),
-    is.character(variables$arm),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.character(variables$strat) || is.null(variables$strat),
-  )
+  checkmate::assert_character(variables$tte)
+  checkmate::assert_character(variables$is_event)
+  checkmate::assert_character(variables$arm)
+  if (!is.null(variables$subgroups)) checkmate::assert_character(variables$subgroups)
+  if (!is.null(variables$strat)) checkmate::assert_character(variables$strat)
   assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
   assert_df_with_variables(data, variables)
   checkmate::assert_string(label_all)
