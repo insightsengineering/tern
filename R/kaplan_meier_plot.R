@@ -200,10 +200,9 @@ g_km <- function(df,
   tte <- variables$tte
   is_event <- variables$is_event
   arm <- variables$arm
-  assertthat::assert_that(
-    is_df_with_variables(df, list(tte = tte, is_event = is_event, arm = arm)),
-    is_valid_factor(df[[arm]])
-  )
+
+  assert_valid_factor(df[[arm]])
+  assert_df_with_variables(df, list(tte = tte, is_event = is_event, arm = arm))
   checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
 
@@ -1012,6 +1011,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' fit <- survfit(
 #'   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
 #'   data = adtte
+#' )
 #' h_tbl_median_surv(fit_km = fit)
 #' }
 #'
@@ -1171,7 +1171,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
                                  control_coxph_pw = control_coxph()) {
-  assertthat::assert_that(is_df_with_variables(df, as.list(unlist(variables))))
+  assert_df_with_variables(df, variables)
   arm <- variables$arm
   df[[arm]] <- factor(df[[arm]])
   ref_group <- levels(df[[arm]])[1]

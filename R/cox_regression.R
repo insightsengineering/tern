@@ -110,11 +110,11 @@ h_coxreg_univar_formulas <- function(variables,
   }
 
   assertthat::assert_that(
-    is_variables(variables[c(arm_name, "event", "time")]),
     assertthat::is.flag(interaction),
     (has_arm || (!interaction)),
     (!is.null(variables$covariates) || (!interaction))
   )
+  assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$covariates)) {
     forms <- paste0(
@@ -197,9 +197,7 @@ h_coxreg_multivar_formula <- function(variables) {
     assertthat::assert_that(is.character(variables$covariates))
   }
 
-  assertthat::assert_that(
-    is_variables(variables[c(arm_name, "event", "time")])
-  )
+  assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   y <- paste0(
     "survival::Surv(", variables$time, ", ", variables$event, ") ~ ",
@@ -331,10 +329,9 @@ fit_coxreg_univar <- function(variables,
     assertthat::assert_that(is.character(variables$covariates))
   }
 
-  assertthat::assert_that(
-    is_variables(variables[c(arm_name, "event", "time")]),
-    is_df_with_variables(data, as.list(unlist(variables)))
-  )
+  assert_df_with_variables(data, variables)
+  assert_list_of_variables(variables[c(arm_name, "event", "time")])
+
   if (!is.null(variables$strata)) {
     assertthat::assert_that(
       control$pval_method != "likelihood"
@@ -606,10 +603,10 @@ fit_coxreg_multivar <- function(variables,
   }
 
   assertthat::assert_that(
-    is_variables(variables[c(arm_name, "event", "time")]),
-    is_df_with_variables(data, as.list(unlist(variables))),
     isFALSE(control$interaction)
   )
+  assert_df_with_variables(data, variables)
+  assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$strata)) {
     assertthat::assert_that(
@@ -786,10 +783,8 @@ tidy.coxreg.multivar <- function(x, # nolint
 #' df2_covs <- broom::tidy(multivar_covs_model)
 #' s_coxreg(df = df2_covs, .var = "hr")
 s_coxreg <- function(df, .var) {
-  assertthat::assert_that(
-    is_df_with_variables(df, list(term = "term", var = .var)),
-    is_character_or_factor(df$term)
-  )
+  assert_df_with_variables(df, list(term = "term", var = .var))
+  assert_character_or_factor(df$term)
   df$term <- as.character(df$term)
   # We need a list with names corresponding to the stats to display.
   # There can be several covariate to test, but the names of the items should

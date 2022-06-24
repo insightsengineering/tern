@@ -28,10 +28,10 @@ format_fraction <- function(x, ...) {
   attr(x, "label") <- NULL
 
   assertthat::assert_that(
-    is.vector(x),
-    is_nonnegative_count(x["num"]),
-    is_nonnegative_count(x["denom"])
+    is.vector(x)
   )
+  checkmate::assert_count(x["num"])
+  checkmate::assert_count(x["denom"])
 
   result <- if (x["num"] == 0) {
     paste0(x["num"], "/", x["denom"])

@@ -35,18 +35,16 @@ h_ancova <- function(.var,
   assertthat::assert_that(
     assertthat::is.string(.var),
     is.list(variables),
-    all(names(variables) %in% c("arm", "covariates")),
-    is_df_with_variables(.df_row, list(rsp = .var))
+    all(names(variables) %in% c("arm", "covariates"))
   )
+  assert_df_with_variables(.df_row, list(rsp = .var))
 
   arm <- variables$arm
   covariates <- variables$covariates
   if (!is.null(covariates)) {
     # Get all covariate variable names in the model.
     var_list <- get_covariates(covariates)
-    assertthat::assert_that(
-      is_df_with_variables(.df_row, var_list)
-    )
+    assert_df_with_variables(.df_row, var_list)
   }
 
   covariates_part <- paste(covariates, collapse = " + ")

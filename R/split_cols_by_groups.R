@@ -63,11 +63,9 @@ groups_list_to_df <- function(groups_list) {
 combine_groups <- function(fct,
                            ref = NULL,
                            collapse = "/") {
-  assertthat::assert_that(
-    (is.null(ref) || is_valid_character(ref)),
-    is_character_or_factor(fct),
-    assertthat::is.string(collapse)
-  )
+  checkmate::assert_string(collapse)
+  if (!is.null(ref)) checkmate::assert_character(ref, min.chars = 1, any.missing = FALSE)
+  assert_character_or_factor(fct)
 
   fct <- as_factor_keep_attributes(fct)
 
@@ -260,7 +258,7 @@ split_cols_by_groups <- function(lyt,
 #'
 #' @keywords internal
 combine_counts <- function(fct, groups_list = NULL) {
-  assertthat::assert_that(is_character_or_factor(fct))
+  assert_character_or_factor(fct)
 
   fct <- as_factor_keep_attributes(fct)
 

@@ -191,27 +191,13 @@ testthat::test_that("s_summary works with factors", {
 
 testthat::test_that("s_summary fails with factors that have no levels or have empty string levels", {
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", ""))
-  testthat::expect_error(
-    s_summary(x),
-    "x is not a valid factor, please check the factor levels (no empty strings allowed)",
-    fixed = TRUE
-  )
-
-  x <- factor()
-  testthat::expect_error(
-    s_summary(x),
-    "x is not a valid factor, please check the factor levels (no empty strings allowed)",
-    fixed = TRUE
-  )
+  testthat::expect_error(s_summary(x))
+  testthat::expect_error(s_summary(factor()))
 })
 
 testthat::test_that("s_summary fails when factors have NA levels", {
   x <- factor(c("Female", "Male", "Female", "Male", "Unknown", "Unknown", NA))
-  testthat::expect_error(
-    s_summary(x, na.rm = FALSE),
-    "NA in x has not been conveyed to na_level, please use explicit factor levels.",
-    fixed = TRUE
-  )
+  testthat::expect_error(s_summary(x, na.rm = FALSE))
 })
 
 testthat::test_that("s_summary works with factors with NA values handled and correctly removes them by default", {

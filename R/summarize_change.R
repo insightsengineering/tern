@@ -35,12 +35,12 @@ s_change_from_baseline <- function(df,
                                    na.rm = TRUE, # nolint
                                    ...) {
   assertthat::assert_that(
-    is_df_with_variables(df, c(variables, list(chg = .var))),
     is.numeric(df[[variables$value]]),
     is.numeric(df[[.var]]),
     is.logical(df[[variables$baseline_flag]]),
     length(unique(df[[variables$baseline_flag]])) < 2
   )
+  assert_df_with_variables(df, c(variables, list(chg = .var)))
 
   combined <- ifelse(
     df[[variables$baseline_flag]],

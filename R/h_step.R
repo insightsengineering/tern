@@ -73,10 +73,10 @@ h_step_trt_effect <- function(data,
                               variables,
                               x) {
   assertthat::assert_that(
-    is_df_with_variables(data, variables),
     inherits(model, "coxph") || inherits(model, "glm"),
     assertthat::is.number(x)
   )
+  assert_df_with_variables(data, variables)
   arm_lvls <- levels(data[[variables$arm]])
   assertthat::assert_that(
     identical(length(arm_lvls), 2L)
@@ -107,9 +107,9 @@ h_step_trt_effect <- function(data,
 h_step_survival_formula <- function(variables,
                                     control = control_step()) {
   assertthat::assert_that(
-    is.null(variables$covariates) || is.character(variables$covariates),
-    is_variables(variables[c("arm", "biomarker", "event", "time")])
+    is.null(variables$covariates) || is.character(variables$covariates)
   )
+  assert_list_of_variables(variables[c("arm", "biomarker", "event", "time")])
   form <- paste0("Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm)
   if (control$degree > 0) {
     form <- paste0(form, " * stats::poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
@@ -140,9 +140,9 @@ h_step_survival_est <- function(formula,
                                 subset = rep(TRUE, nrow(data)),
                                 control = control_coxph()) {
   assertthat::assert_that(
-    inherits(formula, "formula"),
-    is_df_with_variables(data, variables)
+    inherits(formula, "formula")
   )
+  assert_df_with_variables(data, variables)
   checkmate::assert_logical(subset, min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(control, names = "named")
@@ -199,9 +199,9 @@ h_step_survival_est <- function(formula,
 h_step_rsp_formula <- function(variables,
                                control = c(control_step(), control_logistic())) {
   assertthat::assert_that(
-    is.null(variables$covariates) || is.character(variables$covariates),
-    is_variables(variables[c("arm", "biomarker", "response")])
+    is.null(variables$covariates) || is.character(variables$covariates)
   )
+  assert_list_of_variables(variables[c("arm", "biomarker", "response")])
   response_definition <- sub(
     pattern = "response",
     replacement = variables$response,
@@ -243,9 +243,9 @@ h_step_rsp_est <- function(formula,
                            subset = rep(TRUE, nrow(data)),
                            control = control_logistic()) {
   assertthat::assert_that(
-    inherits(formula, "formula"),
-    is_df_with_variables(data, variables)
+    inherits(formula, "formula")
   )
+  assert_df_with_variables(data, variables)
   checkmate::assert_logical(subset, min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(control, names = "named")

@@ -176,10 +176,8 @@ s_test_proportion_diff <- function(df,
   y <- list(pval = "")
 
   if (!.in_ref_col) {
-    assertthat::assert_that(
-      is_df_with_variables(df, list(rsp = .var)),
-      is_df_with_variables(.ref_group, list(rsp = .var))
-    )
+    assert_df_with_variables(df, list(rsp = .var))
+    assert_df_with_variables(.ref_group, list(rsp = .var))
     rsp <- factor(
       c(.ref_group[[.var]], df[[.var]]),
       levels = c("TRUE", "FALSE")
@@ -193,10 +191,10 @@ s_test_proportion_diff <- function(df,
       strata <- variables$strata
       strata_vars <- stats::setNames(as.list(strata), strata)
       assertthat::assert_that(
-        !is.null(strata),
-        is_df_with_variables(df, strata_vars),
-        is_df_with_variables(.ref_group, strata_vars)
+        !is.null(strata)
       )
+      assert_df_with_variables(df, strata_vars)
+      assert_df_with_variables(.ref_group, strata_vars)
       strata <- c(interaction(.ref_group[strata]), interaction(df[strata]))
     }
 
