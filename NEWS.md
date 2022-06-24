@@ -1,12 +1,13 @@
 # tern 0.7.8.9006
 
 ### Migration from `assertthat` to `checkmate`
+* removed `is_df_with_nlevels_factor` by adding parameters to `assert_df_with_factors`
 * `is_character_or_factor` replaced by `checkmate::assertMultiClass()`.
 * `is_nonnegative_count` removed and substituted by `checkmate::assert_count()`.
 * `assert_list_of_variables` instead of `is_variables` (made internal).
 * `assert_df_with_variables` instead of `is_df_with_variables` (made internal).
-* `assert_valid_factor` instead of `is_valid_factor` (internal) and extension to
-  `is_factor_no_na` (repetition removed).
+* `assert_df_with_factors` instead of `is_df_with_factors` (made internal).
+* `assert_valid_factor` instead of `is_valid_factor`.
 * removed `is_valid_character`.
 * renamed `assertthat.R` into a more appropriate `utils_checkmate.R`.
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.

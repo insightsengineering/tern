@@ -48,8 +48,8 @@ or_glm <- function(data, conf_level) {
 
   data$grp <- as_factor_keep_attributes(data$grp)
   assertthat::assert_that(
-    is_df_with_nlevels_factor(data, variable = "grp", n_levels = 2)
   )
+  assert_df_with_factors(data, list(val = "grp"), min.levels = 2, max.levels = 2)
   formula <- stats::as.formula("rsp ~ grp")
   model_fit <- stats::glm(
     formula = formula, data = data,

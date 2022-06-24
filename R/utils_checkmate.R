@@ -22,12 +22,11 @@ check_list_of_variables <- function(x) {
     any.missing = FALSE,
     types = "character"
   )
-
-  if (!isTRUE(res)) { # is.string
-    return(paste0(deparse(x, width.cutoff = 500L), " is not a list of variable names. ", res))
-  } else {
-    return(TRUE)
+  # no empty strings allowed
+  if (isTRUE(res)) {
+    res <- checkmate::check_character(unlist(x), min.chars = 1)
   }
+  return(res)
 }
 #' @describeIn assertions Check whether `x` is a valid list of variable names.
 #'   `NULL` elements of the list `x` are dropped out with `Filter(Negate(is.null), x)`.
@@ -84,11 +83,22 @@ check_df_with_variables <- function(df, variables) {
 #' @keywords internal
 assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_variables)
 
-check_valid_factor <- function(x, any.missing = TRUE) {
+check_valid_factor <- function(x,
+                               any.missing = TRUE,
+                               min.levels = 1,
+                               max.levels = NULL) {
+  # checks on levels insertion
+  checkmate::assert_int(min.levels, lower = 1)
+  # no check of max.levels if it is NULL
+  if (!is.null(max.levels)) {
+    checkmate::assert_int(max.levels, lower = min.levels)
+  }
+  # main factor check
   res <- checkmate::check_factor(x,
     empty.levels.ok = TRUE,
-    min.levels = 1,
+    min.levels = min.levels,
     null.ok = TRUE,
+    max.levels = max.levels,
     any.missing = any.missing
   )
   # no empty strings allowed
@@ -99,8 +109,9 @@ check_valid_factor <- function(x, any.missing = TRUE) {
 }
 #' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
 #'   Note that `NULL` and `NA` elements are allowed.
-#' @param any.missing It defaults to `TRUE`, allowing `NA` values, but it does not allow them
-#'   if `FALSE` is used.
+#' @param any.missing Default is `TRUE`, allowing missing values (`NA`).
+#' @param min.levels Minimum number of levels for `x`.
+#' @param max.levels Maximum number of levels for `x`.
 #'
 #' @examples
 #' # Check whether `x` is a valid factor.
@@ -123,21 +134,28 @@ check_valid_factor <- function(x, any.missing = TRUE) {
 assert_valid_factor <- checkmate::makeAssertionFunction(check_valid_factor)
 
 
-check_df_with_factors <- function(df, variables) {
+check_df_with_factors <- function(df, variables, min.levels = 1, max.levels = NULL) {
   res <- check_df_with_variables(df, variables)
   # checking if all the columns specified by variables are valid factors
   if (isTRUE(res)) {
-    res <- lapply(df[, unlist(variables)], check_valid_factor)
+    res <- lapply(
+      X = list(df[, unlist(variables)]),
+      FUN = check_valid_factor,
+      min.levels = min.levels,
+      max.levels = max.levels
+    )
     res_lo <- unlist(vapply(res, Negate(isTRUE), logical(1)))
     if (any(res_lo)) {
       return(paste0(
         deparse(substitute(df)), " does not contain only factor variables among:",
-        "\n* ", paste0(names(res)[res_lo], " -> ", res[res_lo], collapse = "\n* ")
+        "\n* Column ", paste0(unlist(variables)[res_lo],
+          " of the data.frame -> ", res[res_lo],
+          collapse = "\n* "
+        )
       ))
     } else {
       res <- TRUE
     }
-    # return(paste0(deparse(df), "does not contain only factor variables among:",
   }
   return(res)
 }
@@ -147,55 +165,21 @@ check_df_with_factors <- function(df, variables) {
 #' @examples
 #' # Check whether `df` contains all factor analysis `variables`.
 #' adf <- data.frame(a = factor(c("A", "B")), b = 3)
+#' bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1,2,3)), d = 3)
 #' assert_df_with_factors(df = adf, variables = list(val = "a"))
-#'
+#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
+#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
 #' # The following calls fail
 #' \dontrun{
-#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b"))
+#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
+#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
+#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
+#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
+#' assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
 #' }
 #'
 #' @export
 assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
-
-#' @describeIn assertions Check whether `df` is a data frame where the analysis `variable`
-#'   is a factor with `n_levels` number of levels.
-#' @param variable (`string`)\cr name of the single variable.
-#' @param n_levels (`count`)\cr number of levels to compare with.
-#' @param relation (`string`)\cr which relational operator to use for the comparison.
-#'
-#' @examples
-#' # Check whether `df` contains a factor `variable` with `n_levels` levels.
-#' is_df_with_nlevels_factor(
-#'   df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
-#'   variable = "a",
-#'   n_levels = 2
-#' )
-#' @export
-is_df_with_nlevels_factor <- function(df,
-                                      variable,
-                                      n_levels,
-                                      relation = c("==", ">=")) {
-  assert_df_with_factors(df, variables = list(factor = variable))
-  checkmate::assert_count(n_levels)
-  checkmate::assert_string(variable)
-  relation <- match.arg(relation)
-  do.call(relation, list(x = nlevels(df[[variable]]), y = n_levels))
-}
-
-assertthat::on_failure(is_df_with_nlevels_factor) <- function(call, env) {
-  variable <- eval(call$variable, envir = env)
-  n_levels <- eval(call$n_levels, envir = env)
-  actual_levels <- levels(eval(call$df, envir = env)[[variable]])
-  actual_n_levels <- length(actual_levels)
-  relation_text <- switch(match.arg(eval(call$relation, envir = env), c("==", ">=")),
-    "==" = "exactly",
-    ">=" = "at least"
-  )
-  paste(
-    "variable", variable, "in data frame", deparse(call$df), "should have", relation_text, n_levels,
-    "levels, but has", actual_n_levels, "levels:", paste(actual_levels, collapse = ", ")
-  )
-}
 
 #' @describeIn assertions Check that objects provided are of same length.
 #' @export

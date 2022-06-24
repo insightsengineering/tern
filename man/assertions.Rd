@@ -6,7 +6,6 @@
 \alias{assert_df_with_variables}
 \alias{assert_valid_factor}
 \alias{assert_df_with_factors}
-\alias{is_df_with_nlevels_factor}
 \alias{is_equal_length}
 \alias{is_proportion}
 \alias{is_proportion_vector}
@@ -28,6 +27,8 @@ assert_df_with_variables(
 assert_valid_factor(
   x,
   any.missing = TRUE,
+  min.levels = 1,
+  max.levels = NULL,
   .var.name = checkmate::vname(x),
   add = NULL
 )
@@ -35,11 +36,11 @@ assert_valid_factor(
 assert_df_with_factors(
   df,
   variables,
+  min.levels = 1,
+  max.levels = NULL,
   .var.name = checkmate::vname(df),
   add = NULL
 )
-
-is_df_with_nlevels_factor(df, variable, n_levels, relation = c("==", ">="))
 
 is_equal_length(...)
 
@@ -62,14 +63,11 @@ is_df_with_no_na_level(df, variables, na_level)
 
 \item{variables}{(\verb{named list})\cr columns from dataset where you want to check if \code{na_level} exists.}
 
-\item{any.missing}{It defaults to \code{TRUE}, allowing \code{NA} values, but it does not allow them
-if \code{FALSE} is used.}
+\item{any.missing}{Default is \code{TRUE}, allowing missing values (\code{NA}).}
 
-\item{variable}{(\code{string})\cr name of the single variable.}
+\item{min.levels}{Minimum number of levels for \code{x}.}
 
-\item{n_levels}{(\code{count})\cr number of levels to compare with.}
-
-\item{relation}{(\code{string})\cr which relational operator to use for the comparison.}
+\item{max.levels}{Maximum number of levels for \code{x}.}
 
 \item{...}{a collection of objects to test.}
 
@@ -98,9 +96,6 @@ Note that \code{NULL} and \code{NA} elements are allowed.
 
 \item \code{assert_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
 are all factors.
-
-\item \code{is_df_with_nlevels_factor}: Check whether \code{df} is a data frame where the analysis \code{variable}
-is a factor with \code{n_levels} number of levels.
 
 \item \code{is_equal_length}: Check that objects provided are of same length.
 
@@ -159,19 +154,19 @@ tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
 
 # Check whether `df` contains all factor analysis `variables`.
 adf <- data.frame(a = factor(c("A", "B")), b = 3)
+bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1,2,3)), d = 3)
 assert_df_with_factors(df = adf, variables = list(val = "a"))
-
+assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
+assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
 # The following calls fail
 \dontrun{
-assert_df_with_factors(df = adf, variables = list(val = "a", val = "b"))
+assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
+assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
+assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
+assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
+assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
 }
 
-# Check whether `df` contains a factor `variable` with `n_levels` levels.
-is_df_with_nlevels_factor(
-  df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
-  variable = "a",
-  n_levels = 2
-)
 
 #' # Check whether `x` is a valid list of variable names.
 a <- 1

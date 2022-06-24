@@ -1,12 +1,12 @@
 # assert_list_of_variables ----
 
-testthat::test_that("assert_list_of_variables is TRUE with healthy input", {
+testthat::test_that("assert_list_of_variables is silent with healthy input", {
   testthat::expect_silent(assert_list_of_variables(list(a = "bla", b = "bli")))
   testthat::expect_silent(assert_list_of_variables(list(a = "123")))
   testthat::expect_silent(assert_list_of_variables(list(a = c("bla", "bli"))))
 })
 
-testthat::test_that("assert_list_of_variables is FALSE with wrong input", {
+testthat::test_that("assert_list_of_variables fails with wrong input", {
   testthat::expect_error(assert_list_of_variables(list("bla", b = "bli")))
   testthat::expect_error(assert_list_of_variables(list(a = 1, b = "bla")))
   testthat::expect_error(assert_list_of_variables(c(a = "blo", b = "bla")))
@@ -15,7 +15,7 @@ testthat::test_that("assert_list_of_variables is FALSE with wrong input", {
 
 # assert_df_with_variables ----
 
-testthat::test_that("assert_df_with_variables is TRUE with healthy input", {
+testthat::test_that("assert_df_with_variables is silent with healthy input", {
   testthat::expect_silent(assert_df_with_variables(
     df = data.frame(a = 5, b = 3),
     variables = list(val = "a")
@@ -26,7 +26,7 @@ testthat::test_that("assert_df_with_variables is TRUE with healthy input", {
   ))
 })
 
-testthat::test_that("assert_df_with_variables fails or is FALSE with wrong input", {
+testthat::test_that("assert_df_with_variables fails with wrong input", {
   testthat::expect_error(assert_df_with_variables(
     df = matrix(1:6, nrow = 3, ncol = 2),
     variables = list(val = "c")
@@ -43,20 +43,77 @@ testthat::test_that("assert_df_with_variables fails or is FALSE with wrong input
     df = list(a = 5, b = 3),
     variables = list(aval = "b")
   ))
+  bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
+  testthat::expect_error(
+    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b", val = ""))
+  )
+  testthat::expect_error(
+    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b", val = "d", val = "e"))
+  )
+  testthat::expect_error(
+    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b", val = "e"))
+  )
+  testthat::expect_error(
+    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
+  )
 })
 
 # assert_valid_factor ----
 
-testthat::test_that("assert_valid_factor is TRUE with healthy input", {
+testthat::test_that("assert_valid_factor is silent with healthy input", {
   testthat::expect_silent(assert_valid_factor(factor(c("a", "b"))))
   testthat::expect_silent(assert_valid_factor(factor(NA, exclude = factor())))
 })
 
-testthat::test_that("assert_valid_factor is FALSE with wrong input", {
+testthat::test_that("assert_valid_factor fails with wrong input", {
   testthat::expect_error(assert_valid_factor(c(5L, 3L)))
   testthat::expect_error(assert_valid_factor(NULL))
   testthat::expect_error(assert_valid_factor(factor(c("a", ""))))
   testthat::expect_error(assert_valid_factor(factor()))
+})
+
+# assert_df_with_factors ----
+
+testthat::test_that("assert_df_with_factors is silent with healthy input", {
+  testthat::expect_silent(assert_df_with_factors(
+    df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
+    variables = list(val = "a")
+  ))
+  testthat::expect_silent(assert_df_with_factors(
+    df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
+    variable = list(val = "a"),
+    min.levels = 1
+  ))
+  testthat::expect_silent(assert_df_with_factors(
+    df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
+    variable = list(val = "a"),
+    min.levels = 2,
+    max.levels = 2
+  ))
+})
+
+testthat::test_that("assert_df_with_factors fails with wrong input", {
+  testthat::expect_error(assert_df_with_factors(
+    df = data.frame(a = 1, b = 3),
+    variables = list(val = "a")
+  ))
+  testthat::expect_error(assert_df_with_factors(
+    df = data.frame(a = 1, b = factor("x", levels = c("a", "b", "x"))),
+    variable = list(val = "b"),
+    min.levels = 5
+  ))
+  testthat::expect_error(assert_df_with_factors(
+    df = data.frame(a = 1, b = factor("x", levels = c("a", "b", "x"))),
+    variable = list(val = "b"),
+    min.levels = 2,
+    max.levels = 2
+  ))
+  testthat::expect_error(assert_df_with_factors(
+    df = data.frame(a = 1, b = factor("x", levels = c("a", "b", "x"))),
+    variable = list(val = "b"),
+    min.levels = 5,
+    max.levels = 3
+  ))
 })
 
 # is_equal_length ----
@@ -128,77 +185,6 @@ testthat::test_that("has_tabletree_colnames works correctly", {
     build_table(DM)
   testthat::expect_true(has_tabletree_colnames(tab, "all obs"))
   testthat::expect_false(has_tabletree_colnames(tab, c("all obs", "Arm A")))
-})
-
-# assert_df_with_factors ----
-
-testthat::test_that("assert_df_with_factors is TRUE with healthy input", {
-  testthat::expect_silent(assert_df_with_factors(
-    df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
-    variables = list(val = "a")
-  ))
-})
-
-testthat::test_that("assert_df_with_factors fails or is FALSE with wrong input", {
-  testthat::expect_error(assert_df_with_factors(
-    df = data.frame(a = 1, b = 3),
-    variables = list(val = "a")
-  ))
-})
-
-# is_df_with_nlevels_factor ----
-
-testthat::test_that("is_df_with_nlevels_factor is TRUE with healthy input", {
-  testthat::expect_true(is_df_with_nlevels_factor(
-    df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
-    variable = "a",
-    n_levels = 2
-  ))
-})
-
-testthat::test_that("is_df_with_nlevels_factor is FALSE with wrong input", {
-  testthat::expect_false(is_df_with_nlevels_factor(
-    df = data.frame(a = 1, b = factor("x", levels = c("a", "b", "x"))),
-    variable = "b",
-    n_levels = 2
-  ))
-})
-
-testthat::test_that("is_df_with_nlevels_factor gives expected error message for == relation", {
-  df <- data.frame(a = 1, b = factor("x", levels = c("a", "b", "x")))
-  testthat::expect_error(assertthat::assert_that(is_df_with_nlevels_factor(
-    df = df,
-    variable = "b",
-    n_levels = 2
-  )), "variable b in data frame df should have exactly 2 levels, but has 3 levels: a, b, x")
-})
-
-testthat::test_that("is_df_with_nlevels_factor is TRUE with healthy input for >= relation", {
-  testthat::expect_true(is_df_with_nlevels_factor(
-    df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
-    variable = "a",
-    n_levels = 1,
-    relation = ">="
-  ))
-})
-
-testthat::test_that("is_df_with_nlevels_factor is FALSE with wrong input for >= relation", {
-  testthat::expect_false(is_df_with_nlevels_factor(
-    df = data.frame(a = 1, b = factor("x", levels = c("a", "b", "x"))),
-    variable = "b",
-    n_levels = 5,
-    relation = ">="
-  ))
-})
-
-testthat::test_that("is_df_with_nlevels_factor gives expected error message for >= relation", {
-  df <- data.frame(a = 1, b = factor("x", levels = c("a", "b", "x")))
-  testthat::expect_error(assertthat::assert_that(is_df_with_nlevels_factor(
-    df = df,
-    variable = "b",
-    n_levels = 5,
-    relation = ">="
-  )), "variable b in data frame df should have at least 5 levels, but has 3 levels: a, b, x")
 })
 
 # is_df_with_no_na_level ----
