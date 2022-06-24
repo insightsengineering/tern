@@ -26,7 +26,7 @@ The package provides a large range of functionality, for example:
 
 <!-- markdownlint-enable MD007 MD030 -->
 
-Many of these outputs are available to be added into `teal` applications for interactive exploration of data. These `teal` modules are available in the [`teal.modules.clinical`](https://github.com/insightsengineering/teal.modules.clinical) package.
+Many of these outputs are available to be added into `teal` applications for interactive exploration of data. These `teal` modules are available in the [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical) package.
 
 ## Installation
 
@@ -41,7 +41,7 @@ devtools::install_github("insightsengineering/tern@*release", dependencies = FAL
 You might need to manually install all of the package dependencies before installing this package as without
 the `dependencies = FALSE` argument to `install_github` it may produce an error.
 
-In order to run many of the examples you will also need to install the [`scda`](https://github.com/insightsengineering/scda) package.
+In order to run many of the examples you will also need to install the [`scda`](https://insightsengineering.github.io/scda) package.
 
 See package vignettes `browseVignettes(package = "tern")` for usage of this package.
 

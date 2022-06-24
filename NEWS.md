@@ -1,4 +1,4 @@
-# tern 0.7.8.9006
+# tern 0.7.8.9007
 
 ### Migration from `assertthat` to `checkmate`
 * `is_character_or_factor` is now `assert_character_or_factor` and uses 
