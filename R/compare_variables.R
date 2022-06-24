@@ -109,11 +109,9 @@ s_compare.factor <- function(x,
                              na.rm = TRUE, # nolint
                              na_level = "<Missing>",
                              ...) {
-  assertthat::assert_that(
-    is_factor_no_na(x),
-    is_factor_no_na(.ref_group),
-    assertthat::is.flag(.in_ref_col)
-  )
+  checkmate::assert_flag(.in_ref_col)
+  assert_valid_factor(x, any.missing = FALSE)
+  assert_valid_factor(.ref_group, any.missing = FALSE)
   denom <- match.arg(denom)
 
   y <- s_summary.factor(

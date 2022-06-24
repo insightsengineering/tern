@@ -53,12 +53,12 @@ s_count_occurrences <- function(df,
                                 .var = "MHDECOD",
                                 id = "USUBJID") {
   assertthat::assert_that(
-    is_df_with_variables(df, list(range = .var, id = id)),
-    is_nonnegative_count(.N_col),
-    assertthat::is.flag(drop),
-    is_character_or_factor(df[[.var]]),
-    is_character_or_factor(df[[id]])
+    assertthat::is.flag(drop)
   )
+  assert_df_with_variables(df, list(range = .var, id = id))
+  checkmate::assert_count(.N_col)
+  assert_character_or_factor(df[[.var]])
+  assert_character_or_factor(df[[id]])
   denom <- match.arg(denom)
 
   occurrences <- if (drop) {

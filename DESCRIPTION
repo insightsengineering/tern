@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.8.9005
+Version: 0.7.8.9006
 Date: 2022-06-09
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
@@ -74,7 +74,6 @@ Collate:
     'abnormal_by_worst_grade.R'
     'abnormal_by_worst_grade_worsen.R'
     'argument_convention.R'
-    'assertthat.R'
     'combination_function.R'
     'summarize_variables.R'
     'compare_variables.R'
@@ -146,6 +145,7 @@ Collate:
     'survival_time.R'
     'survival_timepoint.R'
     'utils.R'
+    'utils_checkmate.R'
     'utils_factor.R'
     'utils_grid.R'
     'utils_rtables.R'

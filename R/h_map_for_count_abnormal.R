@@ -77,15 +77,15 @@ h_map_for_count_abnormal <- function(df,
   assertthat::assert_that(
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
-    is_variables(variables),
-    is_df_with_factors(df, list(val = variables$anl)),
     is_df_with_no_na_level(
       df,
       variables = list(anl = variables$anl, split_rows = variables$split_rows), na_level = na_level
     ),
-    !any(is.na(df[variables$split_rows])),
-    is_factor_no_na(df[[variables$anl]])
+    !any(is.na(df[variables$split_rows]))
   )
+  assert_df_with_factors(df, list(val = variables$anl))
+  assert_valid_factor(df[[variables$anl]], any.missing = FALSE)
+  assert_list_of_variables(variables)
   checkmate::assert_list(abnormal, types = "character", len = 2)
 
   # Drop usued levels from df as they are not supposed to be in the final map
@@ -109,11 +109,16 @@ h_map_for_count_abnormal <- function(df,
     # range method follows the rule that at least one observation with ANRLO > 0 for low
     # direction and at least one observation with ANRHI is not missing for high direction.
     assertthat::assert_that(
-      is_df_with_variables(df, variables = list(range_low = variables$range_low, range_high = variables$range_high)),
       "range_low" %in% names(variables),
       "range_high" %in% names(variables),
       "LOW" %in% toupper(names(abnormal)),
       "HIGH" %in% toupper(names(abnormal))
+    )
+    assert_df_with_variables(df,
+      variables = list(
+        range_low = variables$range_low,
+        range_high = variables$range_high
+      )
     )
 
     # Define low direction of map

@@ -77,20 +77,20 @@ s_count_abnormal_by_baseline <- function(df,
     assertthat::is.string(abnormal),
     assertthat::is.string(na_level),
     is.list(variables),
-    all(names(variables) %in% c("id", "baseline")),
-    is_df_with_variables(df, c(range = .var, variables)),
-    is_character_or_factor(df[[variables$id]]),
-    is_character_or_factor(df[[variables$baseline]]),
-    is_character_or_factor(df[[.var]])
+    all(names(variables) %in% c("id", "baseline"))
   )
+  assert_df_with_variables(df, c(range = .var, variables))
+  assert_character_or_factor(df[[variables$id]])
+  assert_character_or_factor(df[[variables$baseline]])
+  assert_character_or_factor(df[[.var]])
 
   # If input is passed as character, changed to factor
   df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_level)
   df[[variables$baseline]] <- as_factor_keep_attributes(df[[variables$baseline]], na_level = na_level)
-  assertthat::assert_that(
-    is_factor_no_na(df[[.var]]),
-    is_factor_no_na(df[[variables$baseline]])
-  )
+
+  assert_valid_factor(df[[.var]], any.missing = FALSE)
+  assert_valid_factor(df[[variables$baseline]], any.missing = FALSE)
+
   # Keep only records with valid analysis value.
   df <- df[df[[.var]] != na_level, ]
 

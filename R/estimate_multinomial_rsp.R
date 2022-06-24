@@ -73,10 +73,10 @@ s_length_proportion <- function(x,
                                 .N_col, # nolint snake_case
                                 ...) {
   assertthat::assert_that(
-    is_character_or_factor(x),
     length(unique(x)) <= 1L,
     length(x) <= .N_col
   )
+  assert_character_or_factor(x)
   n_true <- length(x)
   n_false <- .N_col - n_true
   x_logical <- rep(c(TRUE, FALSE), c(n_true, n_false))

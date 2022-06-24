@@ -151,7 +151,6 @@ h_append_grade_groups(
   ),
   list("1" = 10, "2" = 5, "3" = 0)
 )
-
 library(dplyr)
 df <- data.frame(
   USUBJID = as.character(c(1:6, 1)),
@@ -174,6 +173,7 @@ s_count_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list("ANY" = levels(df$AETOXGR))
 )
+
 #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")
