@@ -3,13 +3,12 @@
 ### Migration from `assertthat` to `checkmate`
 * `is_character_or_factor` is now `assert_character_or_factor` and uses 
   `checkmate::assertMultiClass()` and made internal.
-* `is_nonnegative_count` is now `assert_nonnegative_count` and uses 
-  `checkmate::assert_integerish()` and made internal.
+* `is_nonnegative_count` removed and substituted by `checkmate::assert_count()`.
 * `assert_list_of_variables` instead of `is_variables` (made internal).
 * `assert_df_with_variables` instead of `is_df_with_variables` (made internal).
 * `assert_valid_factor` instead of `is_valid_factor` (internal) and extension to
   `is_factor_no_na` (repetition removed).
-* removed `is_valid_character`
+* removed `is_valid_character`.
 * renamed `assertthat.R` into a more appropriate `utils_checkmate.R`.
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
