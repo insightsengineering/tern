@@ -2,17 +2,11 @@
 % Please edit documentation in R/odds_ratio.R
 \name{odds_ratio}
 \alias{odds_ratio}
-\alias{or_glm}
-\alias{or_clogit}
 \alias{s_odds_ratio}
 \alias{a_odds_ratio}
 \alias{estimate_odds_ratio}
 \title{Odds Ratio Estimation}
 \usage{
-or_glm(data, conf_level)
-
-or_clogit(data, conf_level)
-
 s_odds_ratio(
   df,
   .var,
@@ -48,11 +42,6 @@ estimate_odds_ratio(
 )
 }
 \arguments{
-\item{data}{(\verb{data frame})\cr
-with at least the variables \code{rsp}, \code{grp}, and in addition \code{strata} for \code{\link[=or_clogit]{or_clogit()}}.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -65,6 +54,8 @@ by a statistics function.}
 \item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{groups_list}{(named \code{list} of \code{character})\cr specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
@@ -87,9 +78,13 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+
+\item{data}{(\verb{data frame})\cr
+with at least the variables \code{rsp}, \code{grp}, and in addition \code{strata} for \code{\link[=or_clogit]{or_clogit()}}.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Compares bivariate responses between two groups in terms of odds ratios
 along with a confidence interval.
 }
@@ -106,13 +101,6 @@ possible.
 }
 \section{Functions}{
 \itemize{
-\item \code{or_glm}: estimates the odds ratio based on \code{\link[stats:glm]{stats::glm()}}. Note that there must be
-exactly 2 groups in \code{data} as specified by the \code{grp} variable.
-
-\item \code{or_clogit}: estimates the odds ratio based on \code{\link[survival:clogit]{survival::clogit()}}. This is done for
-the whole data set including all groups, since the results are not the same as when doing
-pairwise comparisons between the groups.
-
 \item \code{s_odds_ratio}: Statistics function which estimates the odds ratio
 between a treatment and a control. Note that a \code{variables} list with \code{arm} and \code{strata} names
 needs to be passed if a stratified analysis is required.
@@ -126,29 +114,6 @@ arguments (see below).
 }}
 
 \examples{
-
-# Data with 2 groups.
-data <- data.frame(
-  rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1)),
-  grp = letters[c(1, 1, 1, 2, 2, 2, 1, 2)],
-  strata = letters[c(1, 2, 1, 2, 2, 2, 1, 2)],
-  stringsAsFactors = TRUE
-)
-
-# Odds ratio based on glm.
-or_glm(data, conf_level = 0.95)
-
-# Data with 3 groups.
-data <- data.frame(
-  rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-  grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
-  strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
-  stringsAsFactors = TRUE
-)
-
-# Odds ratio based on stratified estimation by conditional logistic regression.
-or_clogit(data, conf_level = 0.95)
-
 set.seed(12)
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -174,6 +139,7 @@ s_odds_ratio(
   .df_row = dta,
   variables = list(arm = "grp", strata = "strata")
 )
+
 a_odds_ratio(
   df = subset(dta, grp == "A"),
   .var = "rsp",
@@ -192,4 +158,5 @@ l <- basic_table() \%>\%
   estimate_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)
+
 }

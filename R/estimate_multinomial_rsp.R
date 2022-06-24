@@ -6,19 +6,17 @@
 #' regarding the level of a factor.
 #'
 #' @name estimate_multinomial_rsp
-#'
 NULL
 
-#' @describeIn estimate_multinomial_rsp
 #' Standard Oncology Response
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Describe the oncology response in a standard way.
 #'
 #' @param x (`character`)\cr the standard oncology code to be described.
-#' @export
 #'
 #' @examples
-#'
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "<Missing>", "NE/Missing")
 #' )
@@ -28,6 +26,8 @@ NULL
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "hello", "hi")
 #' )
+#'
+#' @export
 d_onco_rsp_label <- function(x) { # nolint
 
   x <- as.character(x)
@@ -61,6 +61,7 @@ d_onco_rsp_label <- function(x) { # nolint
 #' @describeIn estimate_multinomial_rsp Statistics function which takes the length of the input `x` and takes that
 #'   as the number of successes, and the column number `.N_col` as the total number, and feeds that into
 #'   [s_proportion()].
+#'
 #' @inheritParams argument_convention
 #' @return See [s_proportion()] for statistics and additional possible arguments.
 #'
@@ -85,11 +86,12 @@ s_length_proportion <- function(x,
 
 #' @describeIn estimate_multinomial_rsp Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
 #' a_length_proportion(rep("CR", 10), .N_col = 100)
 #' a_length_proportion(factor(character(0)), .N_col = 100)
+#'
+#' @export
 a_length_proportion <- make_afun(
   s_length_proportion,
   .formats = c(
@@ -101,12 +103,10 @@ a_length_proportion <- make_afun(
 #' @describeIn estimate_multinomial_rsp Analyze Function which adds the multinomial proportion analysis to
 #'   the input layout. Note that additional formatting arguments can be used
 #'   here.
+#'
 #' @inheritParams argument_convention
 #'
-#' @export
-#'
 #' @examples
-#'
 #' library(dplyr)
 #' # Use of the layout creating function.
 #' dta_test <- data.frame(
@@ -132,6 +132,8 @@ a_length_proportion <- make_afun(
 #' \dontrun{
 #' Viewer(html)
 #' }
+#'
+#' @export
 estimate_multinomial_response <- function(lyt,
                                           var,
                                           ...,

@@ -2,14 +2,11 @@
 % Please edit documentation in R/count_occurrences_by_grade.R
 \name{count_occurrences_by_grade}
 \alias{count_occurrences_by_grade}
-\alias{h_append_grade_groups}
 \alias{s_count_occurrences_by_grade}
 \alias{a_count_occurrences_by_grade}
 \alias{summarize_occurrences_by_grade}
 \title{Occurrence Counts by Grade}
 \usage{
-h_append_grade_groups(grade_groups, refs, remove_single = TRUE)
-
 s_count_occurrences_by_grade(
   df,
   .var,
@@ -54,14 +51,6 @@ summarize_occurrences_by_grade(
 )
 }
 \arguments{
-\item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
-
-\item{refs}{(named \code{list} of \code{numeric})\cr where each name corresponds to a reference grade level
-and each entry represents a count.}
-
-\item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
-in the the output list; in this case only the grade groups names will be included in the output.}
-
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -71,6 +60,11 @@ by a statistics function.}
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
 \item{id}{(\code{string}) \cr subject variable name.}
+
+\item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
+
+\item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
+in the the output list; in this case only the grade groups names will be included in the output.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
@@ -93,22 +87,19 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{refs}{(named \code{list} of \code{numeric})\cr where each name corresponds to a reference grade level
+and each entry represents a count.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Functions for analyzing frequencies and fractions of occurrences by grade for patients
 with occurrence data. Multiple occurrences within one individual are counted once at the
 greatest intensity/highest grade level.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_append_grade_groups}: Helper function for \code{\link[=s_count_occurrences_by_grade]{s_count_occurrences_by_grade()}} to
-insert grade groupings into list with individual grade frequencies. The order of the final result
-follows the order of \code{grade_groups}. The elements under any-grade group (if any), i.e.
-the grade group equal to \code{refs} will be moved to the end. Grade groups names must be unique.
-
 \item \code{s_count_occurrences_by_grade}: Statistics function which given occurrence data counts the
 number of patients by highest grade. Returns a list of counts and fractions with one element
 per grade level or grade level grouping.
@@ -124,33 +115,6 @@ statistics function and additional format arguments (see below).
 }}
 
 \examples{
-
-h_append_grade_groups(
-  list(
-    "Any Grade" = as.character(1:5),
-    "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4")
-  ),
-  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
-)
-
-h_append_grade_groups(
-  list(
-    "Any Grade" = as.character(5:1),
-    "Grade A" = "5",
-    "Grade B" = c("4", "3")
-  ),
-  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
-)
-
-h_append_grade_groups(
-  list(
-    "Any Grade" = as.character(1:5),
-    "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4")
-  ),
-  list("1" = 10, "2" = 5, "3" = 0)
-)
 library(dplyr)
 df <- data.frame(
   USUBJID = as.character(c(1:6, 1)),

@@ -2,27 +2,20 @@
 % Please edit documentation in R/estimate_proportion.R
 \name{estimate_proportions}
 \alias{estimate_proportions}
-\alias{prop_wilson}
-\alias{prop_clopper_pearson}
-\alias{prop_wald}
-\alias{prop_agresti_coull}
-\alias{prop_jeffreys}
 \alias{s_proportion}
-\alias{estimate_proportion}
 \alias{a_proportion}
+\alias{estimate_proportion}
 \title{Estimation of Proportions}
 \usage{
-prop_wilson(rsp, conf_level, correct = FALSE)
-
-prop_clopper_pearson(rsp, conf_level)
-
-prop_wald(rsp, conf_level, correct = FALSE)
-
-prop_agresti_coull(rsp, conf_level)
-
-prop_jeffreys(rsp, conf_level)
-
 s_proportion(
+  x,
+  conf_level = 0.95,
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
+    "jeffreys"),
+  long = FALSE
+)
+
+a_proportion(
   x,
   conf_level = 0.95,
   method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
@@ -41,24 +34,12 @@ estimate_proportion(
   .labels = NULL,
   .indent_mods = NULL
 )
-
-a_proportion(
-  x,
-  conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
-    "jeffreys"),
-  long = FALSE
-)
 }
 \arguments{
-\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{correct}{(\code{flag})\cr apply continuity correction.}
-
 \item{x}{(\code{logical})\cr whether each subject is a responder or not.
 \code{TRUE} represents a successful outcome.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{method}{(\code{string}) \cr
 the method used to construct the confidence interval for proportion of
@@ -93,50 +74,20 @@ Estimate the proportion of responders within a studied population.
 }
 \section{Functions}{
 \itemize{
-\item \code{prop_wilson}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}.
-Also referred to as Wilson score interval.
-
-\item \code{prop_clopper_pearson}: the Clopper-Pearson interval calls
-\code{\link[stats:binom.test]{stats::binom.test()}}. Also referred to as the \code{exact} method.
-
-\item \code{prop_wald}: the Wald interval follows the usual
-textbook definition for a single proportion confidence interval using the
-normal approximation.
-
-\item \code{prop_agresti_coull}: the Agresti-Coull interval was created by
-Alan Agresti and Brent Coull and can be understood (for 95\% CI) as adding
-two successes and two failures to the data, and then using the Wald
-formula to construct a CI.
-
-\item \code{prop_jeffreys}: the Jeffreys interval is an equal-tailed
-interval based on the non-informative Jeffreys prior for a binomial
-proportion.
-
 \item \code{s_proportion}: statistics function estimating a
 proportion along with its confidence interval.
 
-\item \code{estimate_proportion}: used in a \code{rtables} pipeline.
-
 \item \code{a_proportion}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
+\item \code{estimate_proportion}: used in a \code{rtables} pipeline.
 }}
 
 \examples{
-rsp <- c(
-  TRUE, TRUE, TRUE, TRUE, TRUE,
-  FALSE, FALSE, FALSE, FALSE, FALSE
-)
-prop_wilson(rsp, conf_level = 0.9)
-
-prop_clopper_pearson(rsp, conf_level = .95)
-
-prop_wald(rsp, conf_level = 0.95)
-prop_wald(rsp, conf_level = 0.95, correct = TRUE)
-
-prop_agresti_coull(rsp, conf_level = 0.95)
-
-prop_jeffreys(rsp, conf_level = 0.95)
 s_proportion(c(1, 0, 1, 0))
+
+a_proportion(c(1, 0, 1, 0))
+
 dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
   ARM     = rep(LETTERS[1:3], each = 4),
@@ -147,5 +98,5 @@ basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   estimate_proportion(vars = "AVAL") \%>\%
   build_table(df = dta_test)
-a_proportion(c(1, 0, 1, 0))
+
 }

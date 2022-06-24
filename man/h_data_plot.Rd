@@ -22,8 +22,6 @@ default)}
 Convert the survival fit data into a data frame designed for plotting
 within \code{g_km}.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This starts from the \code{\link[broom:reexports]{broom::tidy()}} result, and then:
 \itemize{
 \item post-processes the \code{strata} column into a factor,

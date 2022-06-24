@@ -353,16 +353,18 @@ a_compare.logical <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' @describeIn compare_variables Constructor function which creates a combined Formatted
-#'   Analysis function for use in layout creating functions [compare_vars()].
+#' Constructor function for use in [compare_vars()]
+#'
+#' @description Constructor function which creates a combined Formatted Analysis function for use in
+#' layout creating functions [compare_vars()].
+#'
 #' @note Since [a_compare()] is generic and we want customization of the formatting arguments
 #'   via [rtables::make_afun()], we need to create another temporary generic function, with
 #'   corresponding customized methods. Then in order for the methods to be found,
 #'   we need to wrap them in a combined `afun`. Since this is required by two layout creating
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_compare()].
-#' @order 12
-#' @export
+#'
 #' @examples
 #' # `create_afun_compare()` to create combined `afun`
 #'
@@ -388,6 +390,8 @@ a_compare.logical <- make_afun(
 #'     show_labels = "visible"
 #'   )
 #' build_table(lyt, df = ex_adsl)
+#'
+#' @keywords internal
 create_afun_compare <- function(.stats = NULL,
                                 .formats = NULL,
                                 .labels = NULL,
@@ -468,7 +472,7 @@ create_afun_compare <- function(.stats = NULL,
 #' @inheritParams rtables::analyze
 #' @param ... arguments passed to `s_compare()`.
 #'
-#' @order 13
+#' @order 12
 #' @template formatting_arguments
 #'
 #' @export

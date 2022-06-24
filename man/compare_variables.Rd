@@ -12,7 +12,6 @@
 \alias{a_compare.factor}
 \alias{a_compare.character}
 \alias{a_compare.logical}
-\alias{create_afun_compare}
 \alias{compare_vars}
 \title{Compare Variables Between Groups}
 \usage{
@@ -70,13 +69,6 @@ a_compare(x, .ref_group, .in_ref_col, ..., .var)
 
 \method{a_compare}{logical}(x, .ref_group, .in_ref_col, na.rm = TRUE, denom = "n", ...)
 
-create_afun_compare(
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
-
 compare_vars(
   lyt,
   vars,
@@ -110,14 +102,6 @@ can only be \code{n} (number of values in this row and column intersection).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -130,6 +114,14 @@ by a statistics function.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 If \code{x} is of class \code{numeric}, returns a list with named items:
@@ -192,9 +184,6 @@ of p-values. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::
 
 \item \code{a_compare.logical}: Formatted Analysis function method for \code{logical}.
 
-\item \code{create_afun_compare}: Constructor function which creates a combined Formatted
-Analysis function for use in layout creating functions \code{\link[=compare_vars]{compare_vars()}}.
-
 \item \code{compare_vars}: Analyze Function to add a comparison of variables to
 \code{rtables} pipelines. The column split needs to have the reference group defined
 via \code{ref_group} so that the comparison is well defined.
@@ -209,13 +198,6 @@ Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
-
-Since \code{\link[=a_compare]{a_compare()}} is generic and we want customization of the formatting arguments
-via \code{\link[rtables:make_afun]{rtables::make_afun()}}, we need to create another temporary generic function, with
-corresponding customized methods. Then in order for the methods to be found,
-we need to wrap them in a combined \code{afun}. Since this is required by two layout creating
-functions (and possibly others in the future), we provide a constructor that does this:
-\code{\link[=create_afun_compare]{create_afun_compare()}}.
 }
 \section{Formatting arguments}{
 
@@ -307,30 +289,6 @@ afun <- make_afun(
 x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
 y <- c(TRUE, FALSE)
 afun(x, .ref_group = y, .in_ref_col = FALSE)
-# `create_afun_compare()` to create combined `afun`
-
-afun <- create_afun_compare(
-  .stats = c("n", "count_fraction", "mean_sd", "pval"),
-  .indent_mods = c(pval = 1L)
-)
-
-lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
-  analyze(
-    "AGE",
-    afun = afun,
-    show_labels = "visible"
-  )
-build_table(lyt, df = ex_adsl)
-
-lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
-  analyze(
-    "SEX",
-    afun = afun,
-    show_labels = "visible"
-  )
-build_table(lyt, df = ex_adsl)
 
 # `compare_vars()` in `rtables` pipelines
 

@@ -1,10 +1,11 @@
 #' Occurrence Counts by Grade
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Functions for analyzing frequencies and fractions of occurrences by grade for patients
 #' with occurrence data. Multiple occurrences within one individual are counted once at the
 #' greatest intensity/highest grade level.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
 #' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level
@@ -13,17 +14,18 @@
 #' in the the output list; in this case only the grade groups names will be included in the output.
 #'
 #' @name count_occurrences_by_grade
-#'
 NULL
 
-#' @describeIn count_occurrences_by_grade  Helper function for [s_count_occurrences_by_grade()] to
-#'   insert grade groupings into list with individual grade frequencies. The order of the final result
-#'   follows the order of `grade_groups`. The elements under any-grade group (if any), i.e.
-#'   the grade group equal to `refs` will be moved to the end. Grade groups names must be unique.
+#' Helper function for [s_count_occurrences_by_grade()]
 #'
-#' @export
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper function for [s_count_occurrences_by_grade()] to insert grade groupings into list with
+#' individual grade frequencies. The order of the final result follows the order of `grade_groups`.
+#' The elements under any-grade group (if any), i.e. the grade group equal to `refs` will be moved to
+#' the end. Grade groups names must be unique.
+#'
 #' @examples
-#'
 #' h_append_grade_groups(
 #'   list(
 #'     "Any Grade" = as.character(1:5),
@@ -50,6 +52,8 @@ NULL
 #'   ),
 #'   list("1" = 10, "2" = 5, "3" = 0)
 #' )
+#'
+#' @export
 h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
   assertthat::assert_that(
     is.list(grade_groups),

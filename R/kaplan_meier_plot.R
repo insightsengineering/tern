@@ -385,12 +385,10 @@ g_km <- function(df,
 
 #' Helper function: tidy survival fit
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' This starts from the [broom::tidy()] result, and then:
 #' - post-processes the `strata` column into a factor,
@@ -403,6 +401,7 @@ g_km <- function(df,
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`) \cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
+#'
 #' @examples
 #' \dontrun{
 #' library(scda)
