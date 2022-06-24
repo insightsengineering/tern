@@ -30,6 +30,7 @@ adtte <- synthetic_cdisc_data("latest")$adtte \%>\%
 fit <- survfit(
   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
   data = adtte
+)
 h_tbl_median_surv(fit_km = fit)
 }
 
