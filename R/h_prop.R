@@ -10,7 +10,7 @@
 NULL
 
 
-#' @describeIn prop_intervals the Wilson interval calls [stats::prop.test()].
+#' @describeIn h_prop the Wilson interval calls [stats::prop.test()].
 #'  Also referred to as Wilson score interval.
 #'
 #' @examples
@@ -33,7 +33,7 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 }
 
 
-#' @describeIn prop_intervals the Clopper-Pearson interval calls
+#' @describeIn h_prop the Clopper-Pearson interval calls
 #'   [stats::binom.test()]. Also referred to as the `exact` method.
 #'
 #' @inheritParams argument_convention
@@ -52,7 +52,7 @@ prop_clopper_pearson <- function(rsp,
   as.numeric(y$conf.int)
 }
 
-#' @describeIn prop_intervals the Wald interval follows the usual
+#' @describeIn h_prop the Wald interval follows the usual
 #'   textbook definition for a single proportion confidence interval using the
 #'   normal approximation.
 #'
@@ -79,7 +79,7 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
 }
 
 
-#' @describeIn prop_intervals the Agresti-Coull interval was created by
+#' @describeIn h_prop the Agresti-Coull interval was created by
 #'   Alan Agresti and Brent Coull and can be understood (for 95% CI) as adding
 #'   two successes and two failures to the data, and then using the Wald
 #'   formula to construct a CI.
@@ -110,7 +110,7 @@ prop_agresti_coull <- function(rsp, conf_level) {
 }
 
 
-#' @describeIn prop_intervals the Jeffreys interval is an equal-tailed
+#' @describeIn h_prop the Jeffreys interval is an equal-tailed
 #'   interval based on the non-informative Jeffreys prior for a binomial
 #'   proportion.
 #'
