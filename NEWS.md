@@ -1,4 +1,4 @@
-# tern 0.7.8.9006
+# tern 0.7.8.9007
 
 ### Migration from `assertthat` to `checkmate`
 * removed `is_df_with_nlevels_factor` by adding parameters to `assert_df_with_factors`
