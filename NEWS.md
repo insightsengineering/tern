@@ -102,6 +102,9 @@
    
 * Deprecated badge added to `g_mmrm`
 
+### Miscellaneous
+* Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`
+
 # tern 0.7.8
 
 ### Fix
