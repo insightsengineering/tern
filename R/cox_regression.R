@@ -782,7 +782,7 @@ tidy.coxreg.multivar <- function(x, # nolint
 #' s_coxreg(df = df2_covs, .var = "hr")
 s_coxreg <- function(df, .var) {
   assert_df_with_variables(df, list(term = "term", var = .var))
-  checkmate::assertMultiClass(df$term, classes = c("factor", "character"))
+  checkmate::assert_multi_class(df$term, classes = c("factor", "character"))
   df$term <- as.character(df$term)
   # We need a list with names corresponding to the stats to display.
   # There can be several covariate to test, but the names of the items should

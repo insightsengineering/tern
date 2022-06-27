@@ -42,7 +42,7 @@ or_glm <- function(data, conf_level) {
   checkmate::assert_logical(data$rsp)
   assert_proportion_value(conf_level)
   assert_df_with_variables(data, list(rsp = "rsp", grp = "grp"))
-  checkmate::assertMultiClass(data$grp, classes = c("factor", "character"))
+  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
 
   data$grp <- as_factor_keep_attributes(data$grp)
   assert_df_with_factors(data, list(val = "grp"), min.levels = 2, max.levels = 2)
@@ -86,8 +86,8 @@ or_clogit <- function(data, conf_level) {
   checkmate::assert_logical(data$rsp)
   assert_proportion_value(conf_level)
   assert_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata"))
-  checkmate::assertMultiClass(data$grp, classes = c("factor", "character"))
-  checkmate::assertMultiClass(data$strata, classes = c("factor", "character"))
+  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
+  checkmate::assert_multi_class(data$strata, classes = c("factor", "character"))
 
   data$grp <- as_factor_keep_attributes(data$grp)
   data$strata <- as_factor_keep_attributes(data$strata)

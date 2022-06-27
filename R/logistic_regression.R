@@ -373,7 +373,7 @@ h_simple_term_labels <- function(terms,
   assertthat::assert_that(
     is.table(table)
   )
-  checkmate::assertMultiClass(terms, classes = c("factor", "character"))
+  checkmate::assert_multi_class(terms, classes = c("factor", "character"))
   terms <- as.character(terms)
   term_n <- table[terms]
   paste0(terms, ", n = ", term_n)
@@ -396,8 +396,8 @@ h_interaction_term_labels <- function(terms1,
     is.table(table),
     assertthat::is.flag(any)
   )
-  checkmate::assertMultiClass(terms1, classes = c("factor", "character"))
-  checkmate::assertMultiClass(terms2, classes = c("factor", "character"))
+  checkmate::assert_multi_class(terms1, classes = c("factor", "character"))
+  checkmate::assert_multi_class(terms2, classes = c("factor", "character"))
   terms1 <- as.character(terms1)
   terms2 <- as.character(terms2)
   if (any) {

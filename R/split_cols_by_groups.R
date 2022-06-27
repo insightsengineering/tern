@@ -64,8 +64,8 @@ combine_groups <- function(fct,
                            ref = NULL,
                            collapse = "/") {
   checkmate::assert_string(collapse)
-  if (!is.null(ref)) checkmate::assert_character(ref, min.chars = 1, any.missing = FALSE)
-  checkmate::assertMultiClass(fct, classes = c("factor", "character"))
+  checkmate::assert_character(ref, min.chars = 1, any.missing = FALSE, null.ok = TRUE)
+  checkmate::assert_multi_class(fct, classes = c("factor", "character"))
 
   fct <- as_factor_keep_attributes(fct)
 
@@ -258,7 +258,7 @@ split_cols_by_groups <- function(lyt,
 #'
 #' @keywords internal
 combine_counts <- function(fct, groups_list = NULL) {
-  checkmate::assertMultiClass(fct, classes = c("factor", "character"))
+  checkmate::assert_multi_class(fct, classes = c("factor", "character"))
 
   fct <- as_factor_keep_attributes(fct)
 

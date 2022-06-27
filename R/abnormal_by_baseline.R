@@ -80,9 +80,9 @@ s_count_abnormal_by_baseline <- function(df,
     all(names(variables) %in% c("id", "baseline"))
   )
   assert_df_with_variables(df, c(range = .var, variables))
-  checkmate::assertMultiClass(df[[variables$id]], classes = c("factor", "character"))
-  checkmate::assertMultiClass(df[[variables$baseline]], classes = c("factor", "character"))
-  checkmate::assertMultiClass(df[[.var]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(df[[variables$baseline]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))
 
   # If input is passed as character, changed to factor
   df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_level)

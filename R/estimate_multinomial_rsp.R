@@ -76,7 +76,7 @@ s_length_proportion <- function(x,
     length(unique(x)) <= 1L,
     length(x) <= .N_col
   )
-  checkmate::assertMultiClass(x, classes = c("factor", "character"))
+  checkmate::assert_multi_class(x, classes = c("factor", "character"))
   n_true <- length(x)
   n_false <- .N_col - n_true
   x_logical <- rep(c(TRUE, FALSE), c(n_true, n_false))
