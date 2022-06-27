@@ -288,7 +288,7 @@ assert_equal_length <- function(...) {
 #'
 #' @export
 assert_proportion_value <- function(x, include_boundaries = FALSE) {
-  checkmate::assert_number(x,lower = 0, upper = 1)
+  checkmate::assert_number(x, lower = 0, upper = 1)
   checkmate::assert_flag(include_boundaries)
   if (isFALSE(include_boundaries)) {
     checkmate::assert_true(x > 0)
