@@ -121,7 +121,7 @@ df <- df \%>\%
 # For abnormal level "HIGH" we get the following counts.
 tern:::s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
-# Optionally exclude patients with abnormality at baseline.
+# Optionally (bla) exclude patients with abnormality at baseline.
 tern:::s_count_abnormal(
   df,
   .var = "ANRIND",
