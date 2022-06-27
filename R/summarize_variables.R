@@ -17,12 +17,10 @@
 control_summarize_vars <- function(conf_level = 0.95,
                                    quantiles = c(0.25, 0.75),
                                    quantile_type = 2) {
-  assertthat::assert_that(
-    all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
-    identical(length(quantiles), 2L),
-    is_proportion(conf_level),
-    quantile_type <= 9
-  )
+  checkmate::assert_true(length(quantiles) == 2)
+  checkmate::assert_int(quantile_type, lower = 1, upper = 9)
+  nullo <- lapply(quantiles, assert_proportion_value)
+  assert_proportion_value(conf_level)
   checkmate::assert_count(quantile_type)
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
 }

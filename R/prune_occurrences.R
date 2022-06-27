@@ -149,9 +149,7 @@ has_count_in_any_col <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_five_percent))
 #' }
 has_fraction_in_cols <- function(atleast, ...) {
-  assertthat::assert_that(
-    is_proportion(atleast, include_boundaries = TRUE)
-  )
+  assert_proportion_value(atleast, include_boundaries = TRUE)
   CombinationFunction(function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
     total_count <- sum(row_counts)
@@ -175,9 +173,7 @@ has_fraction_in_cols <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_five_percent))
 #' }
 has_fraction_in_any_col <- function(atleast, ...) {
-  assertthat::assert_that(
-    is_proportion(atleast, include_boundaries = TRUE)
-  )
+  assert_proportion_value(atleast, include_boundaries = TRUE)
   CombinationFunction(function(table_row) {
     row_fractions <- h_row_fractions(table_row, ...)
     any(row_fractions >= atleast)
@@ -197,9 +193,7 @@ has_fraction_in_any_col <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_five_percent_diff))
 #' }
 has_fractions_difference <- function(atleast, ...) {
-  assertthat::assert_that(
-    is_proportion(atleast, include_boundaries = TRUE)
-  )
+  assert_proportion_value(atleast, include_boundaries = TRUE)
   CombinationFunction(function(table_row) {
     fractions <- h_row_fractions(table_row, ...)
     difference <- diff(range(fractions))

@@ -240,10 +240,8 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
                            interaction = FALSE) {
   pval_method <- match.arg(pval_method)
   ties <- match.arg(ties)
-  assertthat::assert_that(
-    is_proportion(conf_level),
-    assertthat::is.flag(interaction)
-  )
+  checkmate::assert_flag(interaction)
+  assert_proportion_value(conf_level)
   list(
     pval_method = pval_method,
     ties = ties,

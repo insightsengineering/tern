@@ -45,7 +45,7 @@ h_row_fractions <- function(table_row,
                             col_indices = h_col_indices(table_row, col_names)) {
   row_vals <- row_values(table_row)[col_indices]
   fractions <- sapply(row_vals, "[", 2L)
-  assertthat::assert_that(is_proportion_vector(fractions, include_boundaries = TRUE))
+  checkmate::assert_numeric(fractions, lower = 0, upper = 1)
   fractions
 }
 

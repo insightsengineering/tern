@@ -143,21 +143,21 @@ testthat::test_that("assert_equal_length fails with variable-length inputs", {
   testthat::expect_error(assert_equal_length(1:10, LETTERS[1:3]))
 })
 
-# is_proportion ----
+# assert_proportion_value ----
 
-testthat::test_that("is_proportion is TRUE with healthy input", {
-  testthat::expect_true(is_proportion(0.99))
-  testthat::expect_true(is_proportion(0.01))
-  testthat::expect_true(is_proportion(0, include_boundaries = TRUE))
-  testthat::expect_true(is_proportion(1, include_boundaries = TRUE))
+testthat::test_that("assert_proportion_value is silent with healthy input", {
+  testthat::expect_silent(assert_proportion_value(0.99))
+  testthat::expect_silent(assert_proportion_value(0.01))
+  testthat::expect_silent(assert_proportion_value(0, include_boundaries = TRUE))
+  testthat::expect_silent(assert_proportion_value(1, include_boundaries = TRUE))
 })
 
-testthat::test_that("is_proportion is FALSE with wrong input", {
-  testthat::expect_false(is_proportion(0))
-  testthat::expect_false(is_proportion(1))
-  testthat::expect_false(is_proportion(-1.01))
-  testthat::expect_false(is_proportion("abc"))
-  testthat::expect_false(is_proportion(c(0.4, 0.3)))
+testthat::test_that("assert_proportion_value fails with wrong input", {
+  testthat::expect_error(assert_proportion_value(0))
+  testthat::expect_error(assert_proportion_value(1))
+  testthat::expect_error(assert_proportion_value(-1.01))
+  testthat::expect_error(assert_proportion_value("abc"))
+  testthat::expect_error(assert_proportion_value(c(0.4, 0.3)))
 })
 
 # all_elements_in_ref ----
@@ -173,15 +173,6 @@ testthat::test_that("all_elements_in_ref is FALSE with wrong input", {
   testthat::expect_false(all_elements_in_ref(x = 4, ref = c(1:3)))
   testthat::expect_false(all_elements_in_ref(x = "z", ref = c("a", "b", "c")))
   testthat::expect_error(all_elements_in_ref(x = character(0), ref = c("a", "b", "c")))
-})
-
-# is_proportion_vector ----
-
-testthat::test_that("is_proportion_vector works as expected", {
-  testthat::expect_true(is_proportion_vector(0.99))
-  testthat::expect_true(is_proportion_vector(c(0.01, 0.5)))
-  testthat::expect_false(is_proportion_vector(c(0, 2), include_boundaries = TRUE))
-  testthat::expect_false(is_proportion_vector(c(1, -1), include_boundaries = TRUE))
 })
 
 # is_quantiles_vector ----

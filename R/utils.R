@@ -48,7 +48,7 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 #'
 #' @export
 f_conf_level <- function(conf_level) {
-  assertthat::assert_that(is_proportion(conf_level))
+  assert_proportion_value(conf_level)
   paste0(conf_level * 100, "% CI")
 }
 

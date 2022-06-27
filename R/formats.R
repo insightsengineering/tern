@@ -68,11 +68,9 @@ format_count_fraction <- function(x, ...) {
     return("NA")
   }
 
-  assertthat::assert_that(
-    is.vector(x),
-    rlang::is_integerish(x[1]),
-    is_proportion(x[2], include_boundaries = TRUE)
-  )
+  checkmate::assert_vector(x)
+  checkmate::assert_integerish(x[1])
+  assert_proportion_value(x[2], include_boundaries = TRUE)
 
   result <- if (x[1] == 0) {
     "0"
@@ -152,12 +150,10 @@ format_xx <- function(str) {
 #' format_fun(x = c(2, 0.01))
 #' format_fun(x = c(0, 0))
 format_fraction_threshold <- function(threshold) {
-  assertthat::assert_that(
-    is_proportion(threshold)
-  )
+  assert_proportion_value(threshold)
   string_below_threshold <- paste0("<", round(threshold * 100))
   function(x, ...) {
-    assertthat::assert_that(is_proportion(x[2], include_boundaries = TRUE))
+    assert_proportion_value(x[2], include_boundaries = TRUE)
     ifelse(
       x[2] > 0.01,
       round(x[2] * 100),

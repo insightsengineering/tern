@@ -264,47 +264,36 @@ check_equal_length <- function(...) {
 #' b <- NULL
 #' c <- c(1, "car")
 #' d <- 5
+#' # These fails
 #' \dontrun{
 #' assert_equal_length(a, b, c, d)
 #' }
+#'
 #' @export
 assert_equal_length <- function(...) {
   checkmate::assert(check_equal_length(...))
 }
 
 #' @describeIn assertions Check whether `x` is a proportion: number between 0 and 1.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Check whether `x` is between 0 and 1.
-#' is_proportion(x = 0.3)
-#' is_proportion(x = 1.3)
-#' is_proportion(x = 0, include_boundaries = TRUE)
-is_proportion <- function(x, include_boundaries = FALSE) {
-  checkmate::test_number(x) &&
-    is_proportion_vector(x, include_boundaries = include_boundaries)
-}
-assertthat::on_failure(is_proportion) <- function(call, env) {
-  paste(deparse(call$x), "is not a proportion: number between 0 and 1")
-}
-
-#' @describeIn assertions Check whether `x` is a vector of proportions (numbers between 0 and 1).
-#' @export
-#' @examples
+#' assert_proportion_value(x = 0, include_boundaries = TRUE)
+#' assert_proportion_value(x = 0.3)
+#' # These fails
+#' \dontrun{
+#' assert_proportion_value(x = 1.3)
+#' assert_proportion_value(x = 1)
+#' }
 #'
-#' # Check whether `x` is a vector of numbers between 0 and 1.
-#' is_proportion_vector(c(0.3, 0.1))
-#' is_proportion_vector(c(1.3, 0.1))
-#' is_proportion_vector(0, include_boundaries = TRUE)
-is_proportion_vector <- function(x, include_boundaries = FALSE) {
-  if (include_boundaries) {
-    all(x >= 0 & x <= 1)
-  } else {
-    all(x > 0 & x < 1)
+#' @export
+assert_proportion_value <- function(x, include_boundaries = FALSE) {
+  checkmate::assert_number(x,lower = 0, upper = 1)
+  checkmate::assert_flag(include_boundaries)
+  if (isFALSE(include_boundaries)) {
+    checkmate::assert_true(x > 0)
+    checkmate::assert_true(x < 1)
   }
-}
-assertthat::on_failure(is_proportion_vector) <- function(call, env) {
-  paste(deparse(call$x), "is not a vector of proportions (numbers between 0 and 1)")
 }
 
 #' @describeIn assertions Check whether `x` is a sorted vector of unique quantile proportions

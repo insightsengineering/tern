@@ -1,6 +1,8 @@
 # tern 0.7.8.9007
 
 ### Migration from `assertthat` to `checkmate`
+* removed `is_proportion_vector` and adapted `is_proportion` to `checkmate` style 
+  with `assert_proportion_value`.
 * `is_equal_length` is now `assert_equal_length`.
 * removed `is_df_with_no_na_level` by adding parameters to `assert_df_with_variables`.
 * removed `is_df_with_nlevels_factor` by adding parameters to `assert_df_with_factors`.

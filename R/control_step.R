@@ -49,7 +49,7 @@ control_step <- function(biomarker = NULL,
   checkmate::assert_count(degree)
 
   if (missing(bandwidth)) {
-    # Infer bandwidth.
+    # Infer bandwidth
     bandwidth <- if (use_percentile) {
       0.25
     } else if (!is.null(biomarker)) {
@@ -58,12 +58,15 @@ control_step <- function(biomarker = NULL,
       NULL
     }
   } else {
-    # Check bandwidth.
-    assertthat::assert_that(
-      is.null(bandwidth) ||
-        (use_percentile && is_proportion(bandwidth)) ||
-        (!use_percentile && assertthat::is.scalar(bandwidth) && bandwidth > 0)
-    )
+    # Check bandwidth
+    if (!is.null(bandwidth)) {
+      if (use_percentile) {
+        assert_proportion_value(bandwidth)
+      } else {
+        checkmate::assert_scalar(bandwidth)
+        checkmate::assert_true(bandwidth > 0)
+      }
+    }
   }
   list(
     use_percentile = use_percentile,

@@ -39,10 +39,8 @@ NULL
 #' # Odds ratio based on glm.
 #' or_glm(data, conf_level = 0.95)
 or_glm <- function(data, conf_level) {
-  assertthat::assert_that(
-    is.logical(data$rsp),
-    is_proportion(conf_level)
-  )
+  checkmate::assert_logical(data$rsp)
+  assert_proportion_value(conf_level)
   assert_df_with_variables(data, list(rsp = "rsp", grp = "grp"))
   checkmate::assertMultiClass(data$grp, classes = c("factor", "character"))
 
@@ -85,10 +83,8 @@ or_glm <- function(data, conf_level) {
 #' # Odds ratio based on stratified estimation by conditional logistic regression.
 #' or_clogit(data, conf_level = 0.95)
 or_clogit <- function(data, conf_level) {
-  assertthat::assert_that(
-    is.logical(data$rsp),
-    is_proportion(conf_level)
-  )
+  checkmate::assert_logical(data$rsp)
+  assert_proportion_value(conf_level)
   assert_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata"))
   checkmate::assertMultiClass(data$grp, classes = c("factor", "character"))
   checkmate::assertMultiClass(data$strata, classes = c("factor", "character"))
@@ -159,9 +155,7 @@ s_odds_ratio <- function(df,
   y <- list(or_ci = "", n_tot = "")
 
   if (!.in_ref_col) {
-    assertthat::assert_that(
-      is_proportion(conf_level)
-    )
+    assert_proportion_value(conf_level)
     assert_df_with_variables(df, list(rsp = .var))
     assert_df_with_variables(.ref_group, list(rsp = .var))
 

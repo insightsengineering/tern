@@ -162,7 +162,7 @@ s_cox_univariate <- function(formula,
   )
 
   check_covariate_formulas(covariates)
-  assertthat::assert_that(is_proportion(conf_level, include_boundaries = TRUE))
+  assert_proportion_value(conf_level, include_boundaries = TRUE)
   pval_method <- match.arg(pval_method)
 
   covariates <- name_covariate_names(covariates)
