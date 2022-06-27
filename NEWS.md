@@ -20,6 +20,8 @@
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
 ### Fix
+* Fixed test for `cut_quantile_bins` with empty vector. This is not a good standard
+  input.
 * Warnings from `as_factor_keep_attributes` are now in verbose for better 
   `test_examples()` readability
 * Renaming `rtables.R` as confusing file name due to the package dependence.

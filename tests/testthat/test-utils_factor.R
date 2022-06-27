@@ -95,7 +95,7 @@ testthat::test_that("cut_quantile_bins works with custom labels", {
 
 testthat::test_that("cut_quantile_bins preserves NAs in result", {
   x <- airquality$Ozone
-  assertthat::assert_that(
+  checkmate::assert_true(
     any(is.na(x)),
     !all(is.na(x))
   )
@@ -118,9 +118,10 @@ testthat::test_that("cut_quantile_bins gives understandable error message if the
   )
 })
 
-testthat::test_that("cut_quantile_bins works if an empty `probs` vector is used", {
+testthat::test_that("cut_quantile_bins does not work if an empty `probs` vector is used", {
   x <- 1:10
-  result <- testthat::expect_silent(cut_quantile_bins(x, probs = c()))
+  result <- testthat::expect_silent(cut_quantile_bins(x, probs = c(0, 1)))
+  result <- testthat::expect_error(cut_quantile_bins(x, probs = c()))
   testthat::expect_true(all(result == "[0%,100%]"))
 })
 

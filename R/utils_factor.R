@@ -174,16 +174,15 @@ cut_quantile_bins <- function(x,
                               type = 7,
                               ordered = TRUE) {
   checkmate::assert_character(labels, len = length(probs) + 1, any.missing = FALSE)
-  checkmate::assert_true(!any(duplicated(labels)))
+  checkmate::assert_flag(ordered)
   checkmate::assert_numeric(x)
   checkmate::assert_numeric(probs, lower = 0, upper = 1, unique = TRUE, sorted = TRUE)
-  checkmate::assert_flag(ordered)
+  checkmate::assert_true(!any(duplicated(labels)))
 
   if (all(is.na(x))) {
     # Early return if there are only NAs in input.
     return(factor(x, ordered = ordered, levels = labels))
   }
-  probs <- c(0, probs, 1)
   quantiles <- stats::quantile(
     x,
     probs = probs,
