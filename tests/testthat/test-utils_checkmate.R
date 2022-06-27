@@ -159,13 +159,3 @@ testthat::test_that("assert_proportion_value fails with wrong input", {
   testthat::expect_error(assert_proportion_value("abc"))
   testthat::expect_error(assert_proportion_value(c(0.4, 0.3)))
 })
-
-# has_tabletree_colnames ----
-
-testthat::test_that("has_tabletree_colnames works correctly", {
-  tab <- basic_table() %>%
-    analyze("SEX") %>%
-    build_table(DM)
-  testthat::expect_true(has_tabletree_colnames(tab, "all obs"))
-  testthat::expect_false(has_tabletree_colnames(tab, c("all obs", "Arm A")))
-})

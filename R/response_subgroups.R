@@ -117,12 +117,10 @@ a_response_subgroups <- function(.formats = list(
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)"
                                  )) {
-  assertthat::assert_that(
-    is.list(.formats),
-    all_elements_in_ref(
-      names(.formats),
-      ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
-    )
+  checkmate::assert_list(.formats)
+  checkmate::assert_subset(
+    names(.formats),
+    ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
   )
 
   afun_lst <- Map(function(stat, fmt) {

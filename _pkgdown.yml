@@ -232,7 +232,6 @@ reference:
       - as.rtable
       - as.rtable.data.frame
       - combine_groups
-      - has_tabletree_colnames
       - h_col_counts
       - h_col_indices
       - h_content_first_row

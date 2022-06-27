@@ -8,7 +8,6 @@
 \alias{assert_df_with_factors}
 \alias{assert_equal_length}
 \alias{assert_proportion_value}
-\alias{all_elements_in_ref}
 \alias{has_tabletree_colnames}
 \title{Additional Assertions for \code{checkmate}}
 \usage{
@@ -46,8 +45,6 @@ assert_equal_length(...)
 
 assert_proportion_value(x, include_boundaries = FALSE)
 
-all_elements_in_ref(x, ref)
-
 has_tabletree_colnames(x, col_names)
 }
 \arguments{
@@ -70,8 +67,6 @@ similar approaches.}
 \item{...}{a collection of objects to test.}
 
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing for proportions.}
-
-\item{ref}{(\code{vector})\cr where matches from \code{x} are sought for \code{all_elements_in_ref}.}
 
 \item{col_names}{(\code{character})\cr column names which should be present in the table.}
 }
@@ -97,8 +92,6 @@ trim \code{NA} levels out of the vector list itself.
 \item \code{assert_equal_length}: Check that objects provided are of same length.
 
 \item \code{assert_proportion_value}: Check whether \code{x} is a proportion: number between 0 and 1.
-
-\item \code{all_elements_in_ref}: Check whether all elements of \code{x} are in a reference vector.
 
 \item \code{has_tabletree_colnames}: Check whether \code{rtables} object \code{x} has the specified column names.
 }}
@@ -205,10 +198,5 @@ assert_proportion_value(x = 1.3)
 assert_proportion_value(x = 1)
 }
 
-
-# Check whether all elements of `x` are in a reference vector.
-all_elements_in_ref(c("a", "b"), c("a", "b", "c"))
-all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
-all_elements_in_ref(c(1:3), c(1:5))
 }
 \keyword{internal}
