@@ -21,9 +21,7 @@ NULL
 #'   follows the order of `grade_groups`. The elements under any-grade group (if any), i.e.
 #'   the grade group equal to `refs` will be moved to the end. Grade groups names must be unique.
 #'
-#' @export
 #' @examples
-#'
 #' h_append_grade_groups(
 #'   list(
 #'     "Any Grade" = as.character(1:5),
@@ -50,6 +48,8 @@ NULL
 #'   ),
 #'   list("1" = 10, "2" = 5, "3" = 0)
 #' )
+#'
+#' @export
 h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
   assertthat::assert_that(
     is.list(grade_groups),

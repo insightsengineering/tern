@@ -8,7 +8,6 @@
 \alias{assert_df_with_factors}
 \alias{assert_equal_length}
 \alias{assert_proportion_value}
-\alias{has_tabletree_colnames}
 \title{Additional Assertions for \code{checkmate}}
 \usage{
 assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
@@ -44,8 +43,6 @@ assert_df_with_factors(
 assert_equal_length(...)
 
 assert_proportion_value(x, include_boundaries = FALSE)
-
-has_tabletree_colnames(x, col_names)
 }
 \arguments{
 \item{x}{object to test}
@@ -67,8 +64,6 @@ similar approaches.}
 \item{...}{a collection of objects to test.}
 
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing for proportions.}
-
-\item{col_names}{(\code{character})\cr column names which should be present in the table.}
 }
 \description{
 We provide additional assertion functions which can be used together with \code{\link[checkmate:assert]{checkmate::assert()}}.
@@ -92,8 +87,6 @@ trim \code{NA} levels out of the vector list itself.
 \item \code{assert_equal_length}: Check that objects provided are of same length.
 
 \item \code{assert_proportion_value}: Check whether \code{x} is a proportion: number between 0 and 1.
-
-\item \code{has_tabletree_colnames}: Check whether \code{rtables} object \code{x} has the specified column names.
 }}
 
 \examples{
