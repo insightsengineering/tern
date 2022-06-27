@@ -160,21 +160,6 @@ testthat::test_that("assert_proportion_value fails with wrong input", {
   testthat::expect_error(assert_proportion_value(c(0.4, 0.3)))
 })
 
-# all_elements_in_ref ----
-
-testthat::test_that("all_elements_in_ref is TRUE with healthy input", {
-  testthat::expect_true(all_elements_in_ref(x = 1, ref = c(1:3)))
-  testthat::expect_true(all_elements_in_ref(x = c(1:2), ref = c(1:3)))
-  testthat::expect_true(all_elements_in_ref(x = "a", ref = c("a", "b", "c")))
-  testthat::expect_true(all_elements_in_ref(x = c("a", "c"), ref = c("a", "b", "c")))
-})
-
-testthat::test_that("all_elements_in_ref is FALSE with wrong input", {
-  testthat::expect_false(all_elements_in_ref(x = 4, ref = c(1:3)))
-  testthat::expect_false(all_elements_in_ref(x = "z", ref = c("a", "b", "c")))
-  testthat::expect_error(all_elements_in_ref(x = character(0), ref = c("a", "b", "c")))
-})
-
 # has_tabletree_colnames ----
 
 testthat::test_that("has_tabletree_colnames works correctly", {

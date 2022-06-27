@@ -73,7 +73,7 @@ combine_groups <- function(fct,
   if (is.null(ref)) {
     ref <- group_levels[1]
   } else {
-    assertthat::assert_that(all_elements_in_ref(x = ref, ref = group_levels))
+    checkmate::assert_subset(x = ref, ref = group_levels)
   }
 
   groups <- list(

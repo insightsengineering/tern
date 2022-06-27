@@ -323,7 +323,6 @@ reference:
   - title: Assertion Functions
     desc: These functions supplement those in the assertthat package.
     contents:
-      - all_elements_in_ref
       - assert_df_with_factors
       - assert_proportion_value
 

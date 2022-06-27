@@ -303,11 +303,9 @@ tabulate_rsp_subgroups <- function(lyt,
 d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,
                                     method = NULL) {
-  assertthat::assert_that(
-    is.character(vars),
-    all_elements_in_ref(c("n_tot", "or", "ci"), vars),
-    all_elements_in_ref(vars, ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
-  )
+  checkmate::assert_character(vars)
+  checkmate::assert_subset(c("n_tot", "or", "ci"), vars)
+  checkmate::assert_subset(vars, ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
 
   varlabels <- c(
     n = "n",

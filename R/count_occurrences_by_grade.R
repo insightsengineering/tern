@@ -60,7 +60,7 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 
   ### compute sums in groups
   grp_sum <- lapply(grade_groups, function(i) do.call(sum, refs[i]))
-  if (!all_elements_in_ref(elements, names(refs))) {
+  if (!checkmate::check_subset(elements, names(refs))) {
     padding_el <- setdiff(elements, names(refs))
     refs[padding_el] <- 0
   }
