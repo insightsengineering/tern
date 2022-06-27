@@ -77,6 +77,7 @@ s_count_abnormal <- function(df,
       df[[.var]]),
     assertthat::is.flag(exclude_base_abn)
 
+
   )
   assert_df_with_variables(df, c(range = .var, variables))
   assert_character_or_factor(df[[variables$baseline]])
