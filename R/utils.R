@@ -217,11 +217,9 @@ empty_vector_if_na <- function(x) {
 #'
 #' @keywords internal
 combine_vectors <- function(x, y) {
-  assertthat::assert_that(
-    is.vector(x),
-    is.vector(y),
-    is_equal_length(x, y)
-  )
+  checkmate::assert_vector(x)
+  checkmate::assert_vector(y)
+  assert_equal_length(x, y)
 
   result <- lapply(as.data.frame(rbind(x, y)), `c`)
   names(result) <- NULL

@@ -86,23 +86,37 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
 #'
 #' @examples
 #' # Check whether `df` contains the analysis `variables`.
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
-#' variables = list(val = "a"))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
-#' variables = list(val = c("a", "b")))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
-#' variables = list(val = c("a", "b")))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3, e = "<Missing>"),
-#' variables = list(val = c("a", "b")), na_level = "<Missing>")
+#' tern:::assert_df_with_variables(
+#'   df = data.frame(a = 5, b = 3),
+#'   variables = list(val = "a")
+#' )
+#' tern:::assert_df_with_variables(
+#'   df = data.frame(a = 5, b = 3),
+#'   variables = list(val = c("a", "b"))
+#' )
+#' tern:::assert_df_with_variables(
+#'   df = data.frame(a = 5, b = 3),
+#'   variables = list(val = c("a", "b"))
+#' )
+#' tern:::assert_df_with_variables(
+#'   df = data.frame(a = 5, b = 3, e = "<Missing>"),
+#'   variables = list(val = c("a", "b")), na_level = "<Missing>"
+#' )
 #'
 #' # The following calls fail
 #' \dontrun{
-#' tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3),
-#' variables = list(val = "a"))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
-#' variables = list(val = c("a", "b", "c")))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3, e = "<Missing>"),
-#' variables = list(val = c("a", "b", "e")), na_level = "<Missing>")
+#' tern:::assert_df_with_variables(
+#'   df = matrix(1:5, ncol = 2, nrow = 3),
+#'   variables = list(val = "a")
+#' )
+#' tern:::assert_df_with_variables(
+#'   df = data.frame(a = 5, b = 3),
+#'   variables = list(val = c("a", "b", "c"))
+#' )
+#' tern:::assert_df_with_variables(
+#'   df = data.frame(a = 5, b = 3, e = "<Missing>"),
+#'   variables = list(val = c("a", "b", "e")), na_level = "<Missing>"
+#' )
 #' }
 #'
 #' @keywords internal
@@ -180,8 +194,8 @@ check_df_with_factors <- function(df,
     if (any(res_lo)) {
       return(paste0(
         deparse(substitute(df)), " does not contain only factor variables among:",
-        "\n* Column ", paste0(unlist(variables)[res_lo],
-          " of the data.frame -> ", res[res_lo],
+        "\n* Column `", paste0(unlist(variables)[res_lo],
+          "` of the data.frame -> ", res[res_lo],
           collapse = "\n* "
         )
       ))
@@ -209,10 +223,10 @@ check_df_with_factors <- function(df,
 #' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
 #' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
 #' assert_df_with_factors(
-#' df = data.frame(a = factor(c("A", NA, "B")), b = 3),
-#' variable = list(val = "a"),
-#' min.levels = 2,
-#' max.levels = 2
+#'   df = data.frame(a = factor(c("A", NA, "B")), b = 3),
+#'   variable = list(val = "a"),
+#'   min.levels = 2,
+#'   max.levels = 2
 #' )
 #' # The following calls fail
 #' \dontrun{
@@ -226,36 +240,36 @@ check_df_with_factors <- function(df,
 #' @export
 assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
 
+check_equal_length <- function(...) {
+  args <- tibble::lst(...)
+  args_lens <- vapply(args, length, numeric(1))
+  res <- args_lens != args_lens[1]
+
+  if (any(res)) {
+    paste0(
+      deparse(args), " - Objects must have the same length.\n",
+      "However, variable `",
+      names(args[1]), "` is of length ", args_lens[1], " unlike `",
+      paste(names(args[res]), collapse = "`, `"), "`."
+    )
+  } else {
+    return(TRUE)
+  }
+}
 #' @describeIn assertions Check that objects provided are of same length.
-#' @export
-#' @examples
 #'
+#' @examples
 #' #' # Check whether `x` is a valid list of variable names.
 #' a <- 1
 #' b <- NULL
 #' c <- c(1, "car")
 #' d <- 5
-#' is_equal_length(a, b, c, d)
-is_equal_length <- function(...) {
-  y <- mapply(FUN = length, x = list(...))
-  all(y == y[1])
-}
-
-assertthat::on_failure(is_equal_length) <- function(call, env) {
-  y <- unlist(as.list(call)[-1])
-  y <- stats::setNames(y, nm = y)
-  y <- mapply(
-    FUN = function(expr) eval(expr, envir = parent.frame(n = 2)),
-    expr = y
-  )
-  y <- mapply(length, x = y)
-
-  paste0(
-    deparse(call), " - Objects must have the same length.\n",
-    "However, variable `",
-    names(y[1]), "` is of length ", y[1], " unlike `",
-    paste(names(y[y != y[1]]), collapse = "`, `"), "`."
-  )
+#' \dontrun{
+#' assert_equal_length(a, b, c, d)
+#' }
+#' @export
+assert_equal_length <- function(...) {
+  checkmate::assert(check_equal_length(...))
 }
 
 #' @describeIn assertions Check whether `x` is a proportion: number between 0 and 1.

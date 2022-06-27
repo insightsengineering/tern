@@ -45,9 +45,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
   count2 <- n_available(x)
 
   if (!is.null(count_by)) {
-    assertthat::assert_that(
-      is_equal_length(count_by, x)
-    )
+    assert_equal_length(count_by, x)
     checkmate::assertMultiClass(count_by, classes = c("factor", "character"))
     count2 <- n_available(unique(interaction(x, count_by)))
   }

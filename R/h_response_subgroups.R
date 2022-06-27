@@ -44,9 +44,7 @@ NULL
 #'   arm = factor(c("A", "A", "B"), levels = c("A", "B"))
 #' )
 h_proportion_df <- function(rsp, arm) {
-  assertthat::assert_that(
-    is_equal_length(rsp, arm)
-  )
+  assert_equal_length(rsp, arm)
   checkmate::assert_logical(rsp)
   assert_valid_factor(arm)
   non_missing_rsp <- !is.na(rsp)
@@ -170,10 +168,8 @@ h_proportion_subgroups_df <- function(variables,
 #'   method = "cmh"
 #' )
 h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
-  assertthat::assert_that(
-    is_equal_length(rsp, arm),
-    assertthat::are_equal(nlevels(arm), 2)
-  )
+  assert_equal_length(rsp, arm)
+  checkmate::assert_set_equal(nlevels(arm), 2)
   assert_valid_factor(arm)
 
   df_rsp <- data.frame(

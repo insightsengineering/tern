@@ -132,15 +132,15 @@ testthat::test_that("assert_df_with_factors fails with wrong input", {
   )
 })
 
-# is_equal_length ----
+# assert_equal_length ----
 
-testthat::test_that("is_equal_length is TRUE with same-length inputs", {
-  testthat::expect_true(is_equal_length(1, 5, "car", NA, list(a = list(5, 3))))
+testthat::test_that("assert_equal_length is silent with same-length inputs", {
+  testthat::expect_silent(assert_equal_length(1, 5, "car", NA, list(a = list(5, 3))))
 })
 
-testthat::test_that("is_equal_length is FALSE with variable-length inputs", {
-  testthat::expect_false(is_equal_length(1, NULL))
-  testthat::expect_false(is_equal_length(1:10, LETTERS[1:3]))
+testthat::test_that("assert_equal_length fails with variable-length inputs", {
+  testthat::expect_error(assert_equal_length(1, NULL))
+  testthat::expect_error(assert_equal_length(1:10, LETTERS[1:3]))
 })
 
 # is_proportion ----

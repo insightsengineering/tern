@@ -6,7 +6,7 @@
 \alias{assert_df_with_variables}
 \alias{assert_valid_factor}
 \alias{assert_df_with_factors}
-\alias{is_equal_length}
+\alias{assert_equal_length}
 \alias{is_proportion}
 \alias{is_proportion_vector}
 \alias{is_quantiles_vector}
@@ -44,7 +44,7 @@ assert_df_with_factors(
   add = NULL
 )
 
-is_equal_length(...)
+assert_equal_length(...)
 
 is_proportion(x, include_boundaries = FALSE)
 
@@ -100,7 +100,7 @@ Note that \code{NULL} and \code{NA} elements are allowed.
 are all factors. Note that the creation of \code{NA} by direct call of \code{factor()} will
 trim \code{NA} levels out of the vector list itself.
 
-\item \code{is_equal_length}: Check that objects provided are of same length.
+\item \code{assert_equal_length}: Check that objects provided are of same length.
 
 \item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
 
@@ -127,23 +127,37 @@ tern:::assert_list_of_variables(list("bla" = 2))
 }
 
 # Check whether `df` contains the analysis `variables`.
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
-variables = list(val = "a"))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
-variables = list(val = c("a", "b")))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
-variables = list(val = c("a", "b")))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3, e = "<Missing>"),
-variables = list(val = c("a", "b")), na_level = "<Missing>")
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = "a")
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = c("a", "b"))
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = c("a", "b"))
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3, e = "<Missing>"),
+  variables = list(val = c("a", "b")), na_level = "<Missing>"
+)
 
 # The following calls fail
 \dontrun{
-tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3),
-variables = list(val = "a"))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
-variables = list(val = c("a", "b", "c")))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3, e = "<Missing>"),
-variables = list(val = c("a", "b", "e")), na_level = "<Missing>")
+tern:::assert_df_with_variables(
+  df = matrix(1:5, ncol = 2, nrow = 3),
+  variables = list(val = "a")
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = c("a", "b", "c"))
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3, e = "<Missing>"),
+  variables = list(val = c("a", "b", "e")), na_level = "<Missing>"
+)
 }
 
 # Check whether `x` is a valid factor.
@@ -169,10 +183,10 @@ assert_df_with_factors(df = adf, variables = list(val = "a"))
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
 assert_df_with_factors(
-df = data.frame(a = factor(c("A", NA, "B")), b = 3),
-variable = list(val = "a"),
-min.levels = 2,
-max.levels = 2
+  df = data.frame(a = factor(c("A", NA, "B")), b = 3),
+  variable = list(val = "a"),
+  min.levels = 2,
+  max.levels = 2
 )
 # The following calls fail
 \dontrun{
@@ -189,7 +203,8 @@ a <- 1
 b <- NULL
 c <- c(1, "car")
 d <- 5
-is_equal_length(a, b, c, d)
+check_equal_length(a, b, c, d)
+assert_equal_length(a, b, c, d)
 
 # Check whether `x` is between 0 and 1.
 is_proportion(x = 0.3)
