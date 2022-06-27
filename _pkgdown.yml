@@ -61,7 +61,6 @@ reference:
       - -starts_with("h_row_")
       - -h_set_nest_theme
       - -h_xticks
-      - -prop_diff
 
   - title: Model-Specific Functions
     desc: These functions help with fitting or extracting results from specific models.
@@ -82,7 +81,6 @@ reference:
     contents:
       - starts_with("g_")
       - -g_mmrm
-      - -starts_with("g_mmrm_")
 
   - title: rtables Helper Functions
     desc: These functions help to work with the `rtables` package and may be moved there later.
@@ -115,8 +113,7 @@ reference:
       - CombinationFunction
       - has_count_in_any_col
       - starts_with("has_fraction")
-      - keep_content_rows
-      - keep_rows
+      - starts_with("keep_")
 
   - title: Graph Helper Functions
     desc: These functions are useful to modify graphs.
