@@ -436,7 +436,7 @@ h_coxreg_univar_extract <- function(effect,
                                     control = control_coxreg()) {
   checkmate::assert_string(covar)
   checkmate::assert_string(effect)
-  checkmate::assert_class(x, "coxph")
+  checkmate::assert_class(mod, "coxph")
   test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
 
   mod_aov <- muffled_car_anova(mod, test_statistic)
