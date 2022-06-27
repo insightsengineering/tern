@@ -8,7 +8,6 @@
 \alias{assert_df_with_factors}
 \alias{assert_equal_length}
 \alias{assert_proportion_value}
-\alias{is_quantiles_vector}
 \alias{all_elements_in_ref}
 \alias{has_tabletree_colnames}
 \title{Additional Assertions for \code{checkmate}}
@@ -46,8 +45,6 @@ assert_df_with_factors(
 assert_equal_length(...)
 
 assert_proportion_value(x, include_boundaries = FALSE)
-
-is_quantiles_vector(x, include_boundaries = FALSE)
 
 all_elements_in_ref(x, ref)
 
@@ -100,9 +97,6 @@ trim \code{NA} levels out of the vector list itself.
 \item \code{assert_equal_length}: Check that objects provided are of same length.
 
 \item \code{assert_proportion_value}: Check whether \code{x} is a proportion: number between 0 and 1.
-
-\item \code{is_quantiles_vector}: Check whether \code{x} is a sorted vector of unique quantile proportions
-(numbers between 0 and 1).
 
 \item \code{all_elements_in_ref}: Check whether all elements of \code{x} are in a reference vector.
 
@@ -211,12 +205,6 @@ assert_proportion_value(x = 1.3)
 assert_proportion_value(x = 1)
 }
 
-
-# Check whether `x` is a vector of sorted quantile proportions between 0 and 1.
-is_quantiles_vector(c(0.1, 0.3))
-is_quantiles_vector(c(0.3, 0.1))
-is_quantiles_vector(c(0.3, 0.3))
-is_quantiles_vector(0, include_boundaries = TRUE)
 
 # Check whether all elements of `x` are in a reference vector.
 all_elements_in_ref(c("a", "b"), c("a", "b", "c"))

@@ -326,7 +326,6 @@ reference:
       - all_elements_in_ref
       - assert_df_with_factors
       - assert_proportion_value
-      - is_quantiles_vector
 
   - title: Deprecated Functions
     desc: These functions already are or will eventually be removed.

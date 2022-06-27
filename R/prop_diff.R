@@ -30,7 +30,7 @@ check_diff_prop_ci <- function(rsp,
   checkmate::assert_number(conf_level, lower = 0, upper = 1)
   assert_equal_length(rsp, grp)
 
-  if (!is.null(correct))checkmate::assert_flag(correct)
+  if (!is.null(correct)) checkmate::assert_flag(correct)
 
   if (!is.null(strata)) assert_equal_length(rsp, strata)
 

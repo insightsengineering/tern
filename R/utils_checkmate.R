@@ -296,26 +296,6 @@ assert_proportion_value <- function(x, include_boundaries = FALSE) {
   }
 }
 
-#' @describeIn assertions Check whether `x` is a sorted vector of unique quantile proportions
-#'   (numbers between 0 and 1).
-#' @export
-#' @examples
-#'
-#' # Check whether `x` is a vector of sorted quantile proportions between 0 and 1.
-#' is_quantiles_vector(c(0.1, 0.3))
-#' is_quantiles_vector(c(0.3, 0.1))
-#' is_quantiles_vector(c(0.3, 0.3))
-#' is_quantiles_vector(0, include_boundaries = TRUE)
-is_quantiles_vector <- function(x, include_boundaries = FALSE) {
-  is_proportion_vector(x, include_boundaries = include_boundaries) &&
-    !is.unsorted(x) &&
-    !any(duplicated(x))
-}
-assertthat::on_failure(is_quantiles_vector) <- function(call, env) {
-  paste(deparse(call$x), "is not a sorted vector of unique quantile proportions")
-}
-
-
 #' @describeIn assertions Check whether all elements of `x` are in a reference vector.
 #' @param ref (`vector`)\cr where matches from `x` are sought for `all_elements_in_ref`.
 #' @export

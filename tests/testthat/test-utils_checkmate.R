@@ -175,15 +175,6 @@ testthat::test_that("all_elements_in_ref is FALSE with wrong input", {
   testthat::expect_error(all_elements_in_ref(x = character(0), ref = c("a", "b", "c")))
 })
 
-# is_quantiles_vector ----
-
-testthat::test_that("is_quantiles_vector works as expected", {
-  testthat::expect_true(is_quantiles_vector(c(0.1, 0.3)))
-  testthat::expect_false(is_quantiles_vector(c(0.3, 0.1)))
-  testthat::expect_false(is_quantiles_vector(c(0.3, 0.3)))
-  testthat::expect_true(is_quantiles_vector(0, include_boundaries = TRUE))
-})
-
 # has_tabletree_colnames ----
 
 testthat::test_that("has_tabletree_colnames works correctly", {

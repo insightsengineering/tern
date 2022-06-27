@@ -116,8 +116,8 @@ as_factor_keep_attributes <- function(x,
 #' tern:::bins_percent_labels(c())
 bins_percent_labels <- function(probs,
                                 digits = 0) {
-  assertthat::assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))
   probs <- c(0, probs, 1)
+  checkmate::assert_numeric(probs, lower = 0, upper = 1, unique = TRUE, sorted = TRUE)
   percent <- round(probs * 100, digits = digits)
   left <- paste0(utils::head(percent, -1), "%")
   right <- paste0(utils::tail(percent, -1), "%")
@@ -174,13 +174,11 @@ cut_quantile_bins <- function(x,
                               type = 7,
                               ordered = TRUE) {
   checkmate::assert_character(labels, len = length(probs) + 1, any.missing = FALSE)
+  checkmate::assert_true(!any(duplicated(labels)))
+  checkmate::assert_numeric(x)
+  checkmate::assert_numeric(probs, lower = 0, upper = 1, unique = TRUE, sorted = TRUE)
+  checkmate::assert_flag(ordered)
 
-  assertthat::assert_that(
-    is.numeric(x),
-    is_quantiles_vector(probs, include_boundaries = FALSE),
-    !any(duplicated(labels)),
-    assertthat::is.flag(ordered)
-  )
   if (all(is.na(x))) {
     # Early return if there are only NAs in input.
     return(factor(x, ordered = ordered, levels = labels))

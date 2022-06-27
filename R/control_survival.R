@@ -44,6 +44,7 @@ control_surv_time <- function(conf_level = 0.95,
                               quantiles = c(0.25, 0.75)) {
   conf_type <- match.arg(conf_type)
   checkmate::assert_true(length(quantiles) == 2)
+  checkmate::assert_numeric(quantiles, lower = 0, upper = 1, unique = TRUE, sorted = TRUE)
   nullo <- lapply(quantiles, assert_proportion_value)
   assert_proportion_value(conf_level)
   list(conf_level = conf_level, conf_type = conf_type, quantiles = quantiles)
