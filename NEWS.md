@@ -1,4 +1,4 @@
-# tern 0.7.8.9007
+# tern 0.7.8.9008
 
 ### Migration from `assertthat` to `checkmate`
 * `is_character_or_factor` is now `assert_character_or_factor` and uses 
@@ -108,6 +108,9 @@
 * Tidied up roxygen documentation
 * Separated helper function documentation - created separate files `tidy_cox.R`, `h_prop.R`, `h_prop_diff.R`, `h_prop_diff_test.R`, `h_coxreg.R`, `h_logistic.R`
 * Removed duplicate footnotes functions from `g_forest.R`
+
+### Miscellaneous
+* Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`
 
 # tern 0.7.8
 
