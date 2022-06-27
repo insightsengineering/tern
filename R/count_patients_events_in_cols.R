@@ -6,11 +6,11 @@
 #' when a column table layout is required.
 #'
 #' @name count_patients_events_in_cols
-#'
 NULL
 
-#' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple events
-#'   defined by filters.
+#' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and
+#' multiple events defined by filters.
+#'
 #' @inheritParams argument_convention
 #' @param filters_list (named `list` of `character`)\cr each element in this list describes one
 #'   type of event describe by filters, in the same format as [s_count_patients_with_event()].
@@ -19,14 +19,14 @@ NULL
 #'   that corresponding table cells will stay blank.
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
-#' @keywords internal
+#'
 #' @return [s_count_patients_and_multiple_events()] returns a list with the statistics:\cr
 #' - `unique`: number of unique patients in `df`.
 #' - `all`: number of rows in `df`.
 #' - one element with the same name as in `filters_list`: number of rows in `df`,
 #'   i.e. events, fulfilling the filter condition.
-#' @examples
 #'
+#' @examples
 #' # `s_count_patients_and_multiple_events()`
 #' df <- data.frame(
 #'   USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
@@ -45,6 +45,8 @@ NULL
 #'     fatal = c(AESDTH = "Y")
 #'   )
 #' )
+#'
+#' @keywords internal
 s_count_patients_and_multiple_events <- function(df, # nolint
                                                  id,
                                                  filters_list,
@@ -107,9 +109,8 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'  Set to `FALSE` when the required column split has been done already earlier in the layout pipe.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # `summarize_patients_events_in_cols()`
 #' basic_table() %>%
 #'   summarize_patients_events_in_cols(
@@ -121,6 +122,8 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #'     custom_label = "%s Total number of patients and events"
 #'   ) %>%
 #'   build_table(df)
+#'
+#' @export
 summarize_patients_events_in_cols <- function(lyt, # nolint
                                               id = "USUBJID",
                                               filters_list = list(),

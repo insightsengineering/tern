@@ -27,5 +27,6 @@ sapply(test, z)
 
 z <- tern:::format_xx("xx.x, incl. xx.x\% NE")
 sapply(test, z)
+
 }
 \keyword{internal}

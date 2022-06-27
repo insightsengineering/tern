@@ -9,8 +9,11 @@
 #' @name abnormal_by_worst_grade_worsen
 NULL
 
-#' @describeIn abnormal_by_worst_grade_worsen Helper function
-#' to prepare a `df` for generate the patient count shift table
+#' Helper Function to Prepare ADLB with Worst Labs
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper function to prepare a `df` for generate the patient count shift table
 #'
 #' @param adlb (`data frame`) \cr `ADLB` dataframe
 #' @param worst_flag_low (named `vector`) \cr
@@ -33,7 +36,6 @@ NULL
 #' for the high direction.
 #'
 #' @examples
-#'
 #' library(scda)
 #' library(dplyr)
 #' adlb <- synthetic_cdisc_data("latest")$adlb
@@ -150,8 +152,11 @@ h_adlb_worsen <- function(adlb,
   out
 }
 
-#' @describeIn abnormal_by_worst_grade_worsen Helper function to
-#' count the number of patients and the fraction of patients according to
+#' Helper Function to Analyze Patients for [s_count_abnormal_lab_worsen_by_baseline()]
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper function to count the number of patients and the fraction of patients according to
 #' highest post-baseline lab grade variable `.var`, baseline lab grade variable `baseline_var`,
 #' and the direction of interest specified in `direction_var`.
 #'
@@ -240,11 +245,11 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' @describeIn abnormal_by_worst_grade_worsen Statistics function which calculates the
 #' counts and fraction of patients whose worst post-baseline lab grades are worse than
 #' their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
+#'
 #' @param variables (named `list` of `string`) \cr list of additional analysis variables including:
 #' * `id` (`string`): \cr subject variable name
 #' * `baseline_var` (`string`): \cr name of the data column containing baseline toxicity variable
 #' * `direction_var` (`string`): See `direction_var` for more detail
-
 #' @return [s_count_abnormal_lab_worsen_by_baseline()] returns the
 #' counts and fraction of patients whose worst post-baseline lab grades are worse than
 #' their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
@@ -286,6 +291,7 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
 #' @describeIn abnormal_by_worst_grade_worsen
 #' Formatted Analysis function which can be further customized by
 #' calling [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
 #' @return [a_count_abnormal_lab_worsen_by_baseline()] returns
 #' the corresponding list with formatted [rtables::CellValue()].
 #'

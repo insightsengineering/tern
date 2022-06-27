@@ -8,7 +8,9 @@
 #' @name summarize_ancova
 NULL
 
-#' @describeIn summarize_ancova Helper function to return results of a linear model.
+#' Helper function to Return Results of a Linear Model.
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
 #' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
@@ -71,6 +73,7 @@ h_ancova <- function(.var,
 
 #' @describeIn summarize_ancova Statistics function that produces a named list of results
 #'   of the investigated linear model.
+#'
 #' @inheritParams argument_convention
 #' @inheritParams h_ancova
 #' @return A named list of 5 statistics:
@@ -81,7 +84,6 @@ h_ancova <- function(.var,
 #'   - `lsmean_diff_ci`: confidence level for difference in estimated marginal means in
 #'   comparison to the reference group.
 #'   - `pval`: p-value (not adjusted for multiple comparisons).
-#'
 #'
 #' @examples
 #' library(scda)
@@ -195,10 +197,10 @@ a_ancova <- make_afun(
 
 #' @describeIn summarize_ancova Layout creating function which can be be used for creating
 #'   summary tables for analysis of covariance (ANCOVA).
-#' @inheritParams argument_convention
-#' @export
-#' @examples
 #'
+#' @inheritParams argument_convention
+#'
+#' @examples
 #' library(scda)
 #' library(rtables)
 #' library(dplyr)
@@ -242,6 +244,8 @@ a_ancova <- make_afun(
 #'   ) %>%
 #'   build_table(adqs_multi, alt_counts_df = adsl)
 #' }
+#'
+#' @export
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,

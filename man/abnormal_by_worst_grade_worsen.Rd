@@ -2,22 +2,11 @@
 % Please edit documentation in R/abnormal_by_worst_grade_worsen.R
 \name{abnormal_by_worst_grade_worsen}
 \alias{abnormal_by_worst_grade_worsen}
-\alias{h_adlb_worsen}
-\alias{h_worsen_counter}
 \alias{s_count_abnormal_lab_worsen_by_baseline}
 \alias{a_count_abnormal_lab_worsen_by_baseline}
 \alias{count_abnormal_lab_worsen_by_baseline}
 \title{Patient Counts for Laboratory Events (Worsen From Baseline) by Highest Grade Post-Baseline}
 \usage{
-h_adlb_worsen(
-  adlb,
-  worst_flag_low = NULL,
-  worst_flag_high = NULL,
-  direction_var
-)
-
-h_worsen_counter(df, id, .var, baseline_var, direction_var)
-
 s_count_abnormal_lab_worsen_by_baseline(
   df,
   .var = "ATOXGR",
@@ -42,31 +31,10 @@ count_abnormal_lab_worsen_by_baseline(
 )
 }
 \arguments{
-\item{adlb}{(\verb{data frame}) \cr \code{ADLB} dataframe}
-
-\item{worst_flag_low}{(named \code{vector}) \cr
-Worst low post-baseline lab grade flag variable}
-
-\item{worst_flag_high}{(named \code{vector}) \cr
-Worst high post-baseline lab grade flag variable}
-
-\item{direction_var}{(\code{string}) \cr
-Direction variable specifying the direction of the shift table of interest.
-Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the shift table.
-\itemize{
-\item \code{L}: low direction only
-\item \code{H}: high direction only
-\item \code{B}: both low and high directions
-}}
-
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
-
-\item{id}{(\code{string}) \cr subject variable name.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{baseline_var}{(\code{string}) \cr baseline lab grade variable}
 
 \item{variables}{(named \code{list} of \code{string}) \cr list of additional analysis variables including:
 \itemize{
@@ -91,18 +59,6 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=h_adlb_worsen]{h_adlb_worsen()}} returns the \code{adlb} \verb{data frame} containing only the
-worst labs specified according to \code{worst_flag_low} or \code{worst_flag_high} for the
-direction specified according to \code{direction_var}. For instance, for a lab that is
-needed for the low direction only, only records flagged by \code{worst_flag_low} are
-selected. For a lab that is needed for both low and high directions, the worst
-low records are selected for the low direction, and the worst high record are selected
-for the high direction.
-
-\code{\link[=h_worsen_counter]{h_worsen_counter()}} returns the counts and fraction of patients
-whose worst post-baseline lab grades are worse than their baseline grades, for
-post-baseline worst grades "1", "2", "3", "4" and "Any".
-
 \code{\link[=s_count_abnormal_lab_worsen_by_baseline]{s_count_abnormal_lab_worsen_by_baseline()}} returns the
 counts and fraction of patients whose worst post-baseline lab grades are worse than
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
@@ -117,14 +73,6 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 }
 \section{Functions}{
 \itemize{
-\item \code{h_adlb_worsen}: Helper function
-to prepare a \code{df} for generate the patient count shift table
-
-\item \code{h_worsen_counter}: Helper function to
-count the number of patients and the fraction of patients according to
-highest post-baseline lab grade variable \code{.var}, baseline lab grade variable \code{baseline_var},
-and the direction of interest specified in \code{direction_var}.
-
 \item \code{s_count_abnormal_lab_worsen_by_baseline}: Statistics function which calculates the
 counts and fraction of patients whose worst post-baseline lab grades are worse than
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
@@ -138,39 +86,6 @@ function arguments and additional format arguments (see below).
 }}
 
 \examples{
-
-library(scda)
-library(dplyr)
-adlb <- synthetic_cdisc_data("latest")$adlb
-adsl <- synthetic_cdisc_data("latest")$adsl
-
-# The direction variable, GRADDR, is based on metadata
-adlb <- adlb \%>\%
-  mutate(
-    GRADDR = case_when(
-      PARAMCD == "ALT" ~ "B",
-      PARAMCD == "CRP" ~ "L",
-      PARAMCD == "IGA" ~ "H"
-    )
-  ) \%>\%
-  filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
-
-df <- h_adlb_worsen(
-  adlb,
-  worst_flag_low = c("WGRLOFL" = "Y"),
-  worst_flag_high = c("WGRHIFL" = "Y"),
-  direction_var = "GRADDR"
-)
-
-# `h_worsen_counter`
-h_worsen_counter(
-  df \%>\% filter(PARAMCD == "CRP" & GRADDR == "Low"),
-  id = "USUBJID",
-  .var = "ATOXGR",
-  baseline_var = "BTOXGR",
-  direction_var = "GRADDR"
-)
-
 # Patients with worsening lab grade for CRP in the direction of low
 tern:::s_count_abnormal_lab_worsen_by_baseline(
   df = df \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),

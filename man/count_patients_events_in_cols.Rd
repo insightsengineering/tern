@@ -72,15 +72,14 @@ when a column table layout is required.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_patients_and_multiple_events}: Statistics function which counts numbers of patients and multiple events
-defined by filters.
+\item \code{s_count_patients_and_multiple_events}: Statistics function which counts numbers of patients and
+multiple events defined by filters.
 
 \item \code{summarize_patients_events_in_cols}: Layout creating function which adds the count
 statistics of patients and events in the column layout as content rows.
 }}
 
 \examples{
-
 # `s_count_patients_and_multiple_events()`
 df <- data.frame(
   USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
@@ -111,5 +110,6 @@ basic_table() \%>\%
     custom_label = "\%s Total number of patients and events"
   ) \%>\%
   build_table(df)
+
 }
 \keyword{internal}

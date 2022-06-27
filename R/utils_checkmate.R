@@ -8,12 +8,13 @@
 #' @param variables (named `list` of `character`)\cr supposed variables list to test
 #' @param include_boundaries (`logical`)\cr whether to include boundaries when testing for proportions.
 #' @param ... a collection of objects to test.
+#'
 #' @name assertions
 NULL
 
 #' @describeIn assertions Check whether `x` is a character or factor vector.
-#' @examples
 #'
+#' @examples
 #' # Check whether `x` is a character or factor vector.
 #' tern:::assert_character_or_factor(c("a", "b"))
 #' tern:::assert_character_or_factor(factor(c("a", "b")))
@@ -78,6 +79,7 @@ check_df_with_variables <- function(df, variables) {
   }
   return(TRUE)
 }
+
 #' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
 #'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
@@ -110,8 +112,10 @@ check_valid_factor <- function(x, any.missing = TRUE) {
   }
   return(res)
 }
+
 #' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
 #'   Note that `NULL` and `NA` elements are allowed.
+#'
 #' @param any.missing It defaults to `TRUE`, allowing `NA` values, but it does not allow them
 #'   if `FALSE` is used.
 #'
@@ -154,6 +158,7 @@ check_df_with_factors <- function(df, variables) {
   }
   return(res)
 }
+
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
 #'   are all factors.
 #'
@@ -211,15 +216,16 @@ assertthat::on_failure(is_df_with_nlevels_factor) <- function(call, env) {
 }
 
 #' @describeIn assertions Check that objects provided are of same length.
-#' @export
-#' @examples
 #'
+#' @examples
 #' #' # Check whether `x` is a valid list of variable names.
 #' a <- 1
 #' b <- NULL
 #' c <- c(1, "car")
 #' d <- 5
 #' is_equal_length(a, b, c, d)
+#'
+#' @export
 is_equal_length <- function(...) {
   y <- mapply(FUN = length, x = list(...))
   all(y == y[1])
@@ -243,13 +249,14 @@ assertthat::on_failure(is_equal_length) <- function(call, env) {
 }
 
 #' @describeIn assertions Check whether `x` is a proportion: number between 0 and 1.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Check whether `x` is between 0 and 1.
 #' is_proportion(x = 0.3)
 #' is_proportion(x = 1.3)
 #' is_proportion(x = 0, include_boundaries = TRUE)
+#'
+#' @export
 is_proportion <- function(x, include_boundaries = FALSE) {
   checkmate::test_number(x) &&
     is_proportion_vector(x, include_boundaries = include_boundaries)
@@ -259,13 +266,14 @@ assertthat::on_failure(is_proportion) <- function(call, env) {
 }
 
 #' @describeIn assertions Check whether `x` is a vector of proportions (numbers between 0 and 1).
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Check whether `x` is a vector of numbers between 0 and 1.
 #' is_proportion_vector(c(0.3, 0.1))
 #' is_proportion_vector(c(1.3, 0.1))
 #' is_proportion_vector(0, include_boundaries = TRUE)
+#'
+#' @export
 is_proportion_vector <- function(x, include_boundaries = FALSE) {
   if (include_boundaries) {
     all(x >= 0 & x <= 1)
@@ -279,14 +287,15 @@ assertthat::on_failure(is_proportion_vector) <- function(call, env) {
 
 #' @describeIn assertions Check whether `x` is a sorted vector of unique quantile proportions
 #'   (numbers between 0 and 1).
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Check whether `x` is a vector of sorted quantile proportions between 0 and 1.
 #' is_quantiles_vector(c(0.1, 0.3))
 #' is_quantiles_vector(c(0.3, 0.1))
 #' is_quantiles_vector(c(0.3, 0.3))
 #' is_quantiles_vector(0, include_boundaries = TRUE)
+#'
+#' @export
 is_quantiles_vector <- function(x, include_boundaries = FALSE) {
   is_proportion_vector(x, include_boundaries = include_boundaries) &&
     !is.unsorted(x) &&
@@ -298,14 +307,16 @@ assertthat::on_failure(is_quantiles_vector) <- function(call, env) {
 
 
 #' @describeIn assertions Check whether all elements of `x` are in a reference vector.
-#' @param ref (`vector`)\cr where matches from `x` are sought for `all_elements_in_ref`.
-#' @export
-#' @examples
 #'
+#' @param ref (`vector`)\cr where matches from `x` are sought for `all_elements_in_ref`.
+#'
+#' @examples
 #' # Check whether all elements of `x` are in a reference vector.
 #' all_elements_in_ref(c("a", "b"), c("a", "b", "c"))
 #' all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
 #' all_elements_in_ref(c(1:3), c(1:5))
+#'
+#' @export
 all_elements_in_ref <- function(x, ref) {
   assertthat::assert_that(
     is.vector(x),
@@ -328,8 +339,10 @@ assertthat::on_failure(all_elements_in_ref) <- function(call, env) {
 }
 
 #' @describeIn assertions Check whether `rtables` object `x` has the specified column names.
+#'
 #' @param col_names (`character`)\cr column names which should be present in the table.
 #'
+#' @export
 has_tabletree_colnames <- function(x, col_names) {
   inherits(x, "VTableNodeInfo") &&
     !is.null(names(x)) &&
@@ -347,18 +360,19 @@ assertthat::on_failure(has_tabletree_colnames) <- function(call, env) {
 }
 
 #' @describeIn assertions check if the input `df` has `na_level` in its `variables`.
+#'
 #' @param df (`data frame`)\cr input dataset.
 #' @param variables (`named list`)\cr columns from dataset where you want to check if `na_level` exists.
 #' @param na_level (`string`)\cr the string user has been using to represent NA or missing data.
-#' @export
 #'
 #' @examples
-#'
 #' df <- data.frame(a = 1:3, b = 2:4)
 #' df$a <- ifelse(df$a == 1, "<Missing>", df$a)
 #' is_df_with_no_na_level(df, variables = list(a = "a"), na_level = "<Missing>")
 #' is_df_with_no_na_level(df, variables = list(b = "b"), na_level = "<Missing>")
 #' is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
+#'
+#' @export
 is_df_with_no_na_level <- function(df, variables, na_level) {
   assertthat::assert_that(
     assertthat::is.string(na_level)

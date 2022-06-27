@@ -26,4 +26,5 @@ x <- factor(letters[1:5], levels = letters[5:1])
 combine_levels(x, levels = c("a", "b"))
 
 combine_levels(x, c("e", "b"))
+
 }

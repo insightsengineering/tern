@@ -19,15 +19,14 @@
 #'   * `denom`: the number of patients with at least one valid measurement post-baseline
 #'   * `num`: the number of patients in `denom` who also have at least one abnormality post-baseline
 #'
-#'
 #' @inheritParams argument_convention
 #' @param abnormal (`character`)\cr identifying the abnormal range level(s) in `.var`.
+#' @include formats.R
 #'
 #' @name abnormal_by_baseline
-#' @include formats.R
 NULL
 
-#' @describeIn abnormal_by_baseline Description Function that produces the labels for [s_count_abnormal_by_baseline()].
+#' Description Function that produces the labels for [s_count_abnormal_by_baseline()].
 #'
 #' @examples
 #' d_count_abnormal_by_baseline("LOW")
@@ -134,6 +133,7 @@ s_count_abnormal_by_baseline <- function(df,
 
 #' @describeIn abnormal_by_baseline Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
 #' @return [a_count_abnormal_by_baseline()] returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
@@ -154,7 +154,6 @@ a_count_abnormal_by_baseline <- make_afun(
 #' @inheritParams argument_convention
 #'
 #' @examples
-#'
 #' # Layout creating function.
 #' basic_table() %>%
 #'   count_abnormal_by_baseline(var = "ANRIND", abnormal = c(High = "HIGH")) %>%

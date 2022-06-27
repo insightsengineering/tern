@@ -16,93 +16,96 @@ reference:
       - kaplan_meier
 
   - title: Control Functions
-    desc: Control functions capture options in lists, and take care of defaults (and if it makes sense also checks).
+    desc: These functions capture options in lists and take care of defaults (and checks where applicable).
           They avoid cluttering of function signatures with long lists of single arguments.
     contents:
       - starts_with("control_")
 
-  - title: Analyze Function Groups
+  - title: Analysis Functions
     desc: |
-          Groups of analyze functions along with any corresponding statistics functions and formatted analysis functions.
+          Analyze functions with their corresponding statistics functions and formatted analysis functions.
 
-          - **Statistics functions** (denoted by `"s_"` prefix) should do the computation of the numbers that are
-            tabulated later. In order to separate computation from formatting, they should not take care of `rcell`
+          - **Statistics functions** (denoted by `s_` prefix) compute the numbers that are tabulated later.
+            In order to separate computation from formatting, they do not take care of `rcell`
             type formatting themselves.
 
-          - **Formatted analysis functions** (denoted by `"a_"` prefix) have the same arguments as the corresponding
+          - **Formatted analysis functions** (denoted by `a_` prefix) have the same arguments as the corresponding
             statistics functions, and can be further customized by calling `rtables::make_afun()` on them. They are used
             as `afun` in `rtables::analyze()`.
 
-          - **Analyze functions** are used in combination with the rtables layout functions, in the pipeline which creates
+          - **Analyze functions** are used in combination with `rtables` layout functions in the pipeline which creates
             the table.
     contents:
       - compare_vars
-      - starts_with("count_")
-      - starts_with("estimate_")
-      - -estimate_coef
-      - -matches(".*mmrm.*")
-      - response_biomarkers_subgroups
-      - starts_with("summarize_")
-      - starts_with("tabulate_")
+      - starts_with("count_", internal = TRUE)
+      - starts_with("estimate_", internal = TRUE)
+      - starts_with("summarize_", internal = TRUE)
+      - starts_with("tabulate_", internal = TRUE)
       - test_proportion_diff
+      - -estimate_coef
+      - -tabulate_mmrm
+
 
   - title: Analysis Helper Functions
-    desc: These functions are useful to help definining the analysis.
+    desc: These functions are useful in defining an analysis.
     contents:
       - matches(".*footnotes.*")
       - starts_with("h_")
+      - starts_with("or_")
       - -starts_with("h_col_")
       - -h_content_first_row
       - -h_data_plot
       - -h_g_ipp
       - -starts_with("h_grob_")
+      - -starts_with("h_mmrm_")
       - -starts_with("h_row_")
       - -h_set_nest_theme
       - -h_xticks
-      - starts_with("or_")
-      - starts_with("prop_")
+      - -prop_diff
 
-  - title: Model Specific Functions
+  - title: Model-Specific Functions
     desc: These functions help with fitting or extracting results from specific models.
     contents:
       - estimate_coef
       - starts_with("extract_")
       - starts_with("fit_")
-      - -fit_mmrm
       - get_smooths
       - starts_with("logistic_")
       - pairwise
       - starts_with("tidy.")
-      - -tidy.mmrm
       - univariate
+      - -fit_mmrm
+      - -tidy.mmrm
 
   - title: Graphs
-    desc: Functions that creates graphical type of the output.
+    desc: These function create graphical-type output.
     contents:
       - starts_with("g_")
+      - -g_mmrm
+      - -starts_with("g_mmrm_")
 
   - title: rtables Helper Functions
-    desc: These functions help to work with the new rtables package and might be moved there later.
+    desc: These functions help to work with the `rtables` package and may be moved there later.
     contents:
       - add_rowcounts
       - append_varlabels
       - starts_with("as.rtable")
       - combine_groups
-      - has_tabletree_colnames
       - starts_with("h_col_")
       - h_content_first_row
       - starts_with("h_row_")
       - is_leaf_table
       - split_cols_by_groups
       - to_string_matrix
+      - -as.rtable.mmrm
 
   - title: rtables Formatting Functions
-    desc: These functions provide customized formatting rules to work with the rtables package.
+    desc: These functions provide customized formatting rules to work with the `rtables` package.
     contents:
       - starts_with("format_")
 
   - title: rtables Scoring Functions
-    desc: These functions can help with sorting of tables.
+    desc: These functions can help with table sorting.
     contents:
       - starts_with("score_")
 
@@ -115,7 +118,7 @@ reference:
       - keep_content_rows
       - keep_rows
 
-  - title: Graphs Helper Functions
+  - title: Graph Helper Functions
     desc: These functions are useful to modify graphs.
     contents:
       - starts_with("decorate_")
@@ -145,10 +148,11 @@ reference:
       - to_n
 
   - title: Assertion Functions
-    desc: These functions supplement those in the assertthat package.
+    desc: These functions supplement those in the `assertthat` package.
     contents:
       - all_elements_in_ref
       - assert_df_with_factors
+      - has_tabletree_colnames
       - starts_with("is_")
       - -is_leaf_table
 
@@ -158,4 +162,3 @@ reference:
       - matches(".*mmrm.*")
       - color_palette
       - s_cox_univariate
-

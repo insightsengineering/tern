@@ -20,9 +20,6 @@ h_tab_rsp_one_biomarker(df, vars)
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{control}{(named \code{list})\cr controls for the response definition and the
-confidence level produced by \code{\link[=control_logistic]{control_logistic()}}.}
-
 \item{df}{(\code{data.frame})\cr results for a single biomarker, as part of what is
 returned by \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}} (it needs a couple of columns which are
 added by that high-level function relative to what is returned by \code{\link[=h_logistic_mult_cont_df]{h_logistic_mult_cont_df()}},
@@ -45,18 +42,18 @@ when reading about the user-facing functions.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_rsp_to_logistic_variables}: helps with converting the "response" function variable list
+\item \code{h_rsp_to_logistic_variables}: Helps with converting the "response" function variable list
 to the "logistic regression" variable list. The reason is that currently there is an
 inconsistency between the variable names accepted by \code{extract_rsp_subgroups()} and \code{fit_logistic()}.
 
-\item \code{h_logistic_mult_cont_df}: prepares estimates for number of responses, patients and
+\item \code{h_logistic_mult_cont_df}: Prepares estimates for number of responses, patients and
 overall response rate, as well as odds ratio estimates, confidence intervals and p-values, for multiple
 biomarkers in a given single data set.
 \code{variables} corresponds to names of variables found in \code{data}, passed as a named list and requires elements
 \code{rsp} and \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{covariates}
 and \code{strat}.
 
-\item \code{h_tab_rsp_one_biomarker}: prepares a single sub-table given a \code{df_sub} containing
+\item \code{h_tab_rsp_one_biomarker}: Prepares a single sub-table given a \code{df_sub} containing
 the results for a single biomarker.
 }}
 

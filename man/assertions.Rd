@@ -124,7 +124,6 @@ is a factor with \code{n_levels} number of levels.
 }}
 
 \examples{
-
 # Check whether `x` is a character or factor vector.
 tern:::assert_character_or_factor(c("a", "b"))
 tern:::assert_character_or_factor(factor(c("a", "b")))
@@ -183,7 +182,6 @@ is_df_with_nlevels_factor(
   variable = "a",
   n_levels = 2
 )
-
 #' # Check whether `x` is a valid list of variable names.
 a <- 1
 b <- NULL
@@ -217,5 +215,6 @@ df$a <- ifelse(df$a == 1, "<Missing>", df$a)
 is_df_with_no_na_level(df, variables = list(a = "a"), na_level = "<Missing>")
 is_df_with_no_na_level(df, variables = list(b = "b"), na_level = "<Missing>")
 is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
+
 }
 \keyword{internal}

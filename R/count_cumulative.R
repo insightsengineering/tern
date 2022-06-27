@@ -1,15 +1,19 @@
 #' Cumulative Counts with Thresholds
 #'
 #' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
 #' greater than, or greater or equal to user-specific thresholds.
 #'
 #' @name count_cumulative
-#'
 NULL
 
-#' @describeIn count_cumulative Helper function to calculate count and fraction of
-#'   `x` values in the lower or upper tail given a threshold.
+#' Helper Function for [s_count_cumulative()]
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper function to calculate count and fraction of
+#' `x` values in the lower or upper tail given a threshold.
 #'
 #' @inheritParams argument_convention
 #' @param threshold (`number`)\cr a cutoff value as threshold to count values of `x`.
@@ -22,8 +26,6 @@ NULL
 #'   greater or equal to a threshold of user specification.
 #'   - `fraction`: the fraction of the count.
 #'
-#' @export
-#'
 #' @examples
 #' set.seed(1, kind = "Mersenne-Twister")
 #' x <- c(sample(1:10, 10), NA)
@@ -32,6 +34,8 @@ NULL
 #' h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 #' h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
 #' h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+#'
+#' @export
 h_count_cumulative <- function(x,
                                threshold,
                                lower_tail = TRUE,
@@ -67,10 +71,11 @@ h_count_cumulative <- function(x,
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is a helper function that describes analysis in `s_count_cumulative`
+#'
 #' @inheritParams h_count_cumulative
 #' @return a `string`
-#' @export
 #'
+#' @export
 d_count_cumulative <- function(threshold, lower_tail, include_eq) {
   assertthat::assert_that(
     is.numeric(threshold)
@@ -82,15 +87,18 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 
 #' @describeIn count_cumulative Statistics function that produces a named lists given a
 #' (`numeric`) vector of thresholds.
+#'
 #' @inheritParams h_count_cumulative
 #' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
 #' @return A named list:
 #'   - `count_fraction`: a list with each `thresholds` value as a component, each component
 #'     contains a vector for the count and fraction.
-#' @keywords internal
+#'
 #' @examples
 #' tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 #' tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
+#'
+#' @keywords internal
 s_count_cumulative <- function(x,
                                thresholds,
                                lower_tail = TRUE,
@@ -111,13 +119,16 @@ s_count_cumulative <- function(x,
 
 #' @describeIn count_cumulative Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
 #' @return [a_count_cumulative()] returns the corresponding list with formatted [rtables::CellValue()].
-#' @keywords internal
+#'
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 #' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(tern:::a_count_cumulative, .ungroup_stats = "count_fraction")
 #' afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
+#'
+#' @keywords internal
 a_count_cumulative <- make_afun(
   s_count_cumulative,
   .formats = c(count_fraction = format_count_fraction)
@@ -127,8 +138,9 @@ a_count_cumulative <- make_afun(
 #'   summary tables for cumulative counts of a variable. The ellipsis (`...`) conveys
 #'   arguments to `s_count_cumulative()`, for instance `lower_tail = FALSE` if upper tail
 #'   should be accounted for.
+#'
 #' @inheritParams argument_convention
-#' @export
+#'
 #' @examples
 #' library(scda)
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
@@ -140,6 +152,8 @@ a_count_cumulative <- make_afun(
 #'     thresholds = c(40, 60)
 #'   ) %>%
 #'   build_table(ADSL)
+#'
+#' @export
 count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,

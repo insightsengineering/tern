@@ -8,11 +8,12 @@
 #' or the change from baseline values (post-baseline) are then summarized.
 #'
 #' @name summarize_change
-#'
 NULL
 
-#' @inheritParams argument_convention
+
 #' @describeIn summarize_change Statistics Function that summarizes baseline or post-baseline visits.
+#'
+#' @inheritParams argument_convention
 #' @return See [s_summary.numeric()] for the return values.
 #' @note The data in `df` must be either all be from baseline or post-baseline visits. Otherwise
 #'   an error will be thrown.
@@ -28,6 +29,7 @@ NULL
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
+#'
 #' @keywords internal
 s_change_from_baseline <- function(df,
                                    .var,
@@ -62,6 +64,7 @@ s_change_from_baseline <- function(df,
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
+#'
 #' @keywords internal
 a_change_from_baseline <- make_afun(
   s_change_from_baseline,
@@ -84,11 +87,10 @@ a_change_from_baseline <- make_afun(
 #'   To be used after a split on visits in the layout, such that each data
 #'   subset only contains either baseline or post-baseline data. Allows additional
 #'   formatting options.
+#'
 #' @inheritParams argument_convention
 #'
-#' @export
 #' @examples
-#'
 #' # `summarize_change()`
 #'
 #' ## Fabricated dataset.
@@ -117,6 +119,7 @@ a_change_from_baseline <- make_afun(
 #' Viewer(results)
 #' }
 #'
+#' @export
 summarize_change <- function(lyt,
                              vars,
                              ...,

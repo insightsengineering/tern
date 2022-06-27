@@ -6,17 +6,18 @@
 #' when a column table layout is required.
 #'
 #' @name summarize_patients_exposure_in_cols
-#'
 NULL
 
 #' @describeIn summarize_patients_exposure_in_cols Statistics function which counts numbers
 #'  of patients and the sum of exposure across all patients.
+#'
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #' be used as label.
 #' @return [s_count_patients_sum_exposure()] returns a list with the statistics:\cr
 #' - `n_patients`: number of unique patients in `df`.
 #' - `sum_exposure`: sum of `.var` across all patients in `df`.
+#'
 #' @examples
 #' set.seed(1)
 #' df <- data.frame(
@@ -39,6 +40,7 @@ NULL
 #'   .N_col = nrow(adsl),
 #'   custom_label = "some user's custom label"
 #' )
+#'
 #' @keywords internal
 s_count_patients_sum_exposure <- function(df, # nolintr
                                           .var = "AVAL",
@@ -82,12 +84,12 @@ s_count_patients_sum_exposure <- function(df, # nolintr
 
 #' @describeIn summarize_patients_exposure_in_cols Layout creating function which adds the count
 #'   statistics of patients and the sum of analysis value in the column layout as content rows.
+#'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'  Set to `FALSE` when the required column split has been done already earlier in the layout pipe.
-#' @export
-#' @examples
 #'
+#' @examples
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
@@ -116,6 +118,8 @@ s_count_patients_sum_exposure <- function(df, # nolintr
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
 #' result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 #' result4
+#'
+#' @export
 summarize_patients_exposure_in_cols <- function(lyt, # nolintr
                                                 var,
                                                 ...,

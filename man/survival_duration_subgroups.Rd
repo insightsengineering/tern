@@ -2,19 +2,10 @@
 % Please edit documentation in R/survival_duration_subgroups.R
 \name{survival_duration_subgroups}
 \alias{survival_duration_subgroups}
-\alias{extract_survival_subgroups}
 \alias{a_survival_subgroups}
 \alias{tabulate_survival_subgroups}
 \title{Tabulate Survival Duration by Subgroup}
 \usage{
-extract_survival_subgroups(
-  variables,
-  data,
-  groups_lists = list(),
-  control = control_coxph(),
-  label_all = "All Patients"
-)
-
 a_survival_subgroups(
   .formats = list(n = "xx", n_events = "xx", n_tot_events = "xx", median = "xx.x",
     n_tot = "xx", hr = list(format_extreme_values(2L)), ci =
@@ -29,26 +20,6 @@ tabulate_survival_subgroups(
 )
 }
 \arguments{
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
-
-\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.}
-
-\item{control}{(\code{list}) \cr parameters for comparison details, specified by using \cr
-the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
-\itemize{
-\item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank", can also be set to "wald" or "likelihood".
-\item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
-}}
-
-\item{label_all}{(\code{string})\cr label for the total population analysis.}
-
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -70,6 +41,14 @@ are required.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
 displaying unit.}
+
+\item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
+
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
+
+\item{label_all}{(\code{string})\cr label for the total population analysis.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -82,13 +61,6 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_survival_subgroups}: prepares estimates of median survival times and treatment hazard ratios for
-population subgroups in data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}.
-Result is a list of two data frames: \code{survtime} and \code{hr}.
-\code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
-\code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}. \code{groups_lists} optionally specifies
-groupings for \code{subgroups} variables.
-
 \item \code{a_survival_subgroups}: Formatted Analysis function used to format the results of
 \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}. Returns is a list of Formatted Analysis functions with one element per statistic.
 
@@ -96,7 +68,6 @@ groupings for \code{subgroups} variables.
 }}
 
 \examples{
-
 # Testing dataset.
 library(scda)
 library(dplyr)
@@ -129,34 +100,7 @@ labels <- c(
 )
 formatters::var_labels(adtte_f)[names(labels)] <- labels
 
-df <- extract_survival_subgroups(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    arm = "ARM", subgroups = c("SEX", "BMRKR2")
-  ),
-  data = adtte_f
-)
-df
-
-df_grouped <- extract_survival_subgroups(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    arm = "ARM", subgroups = c("SEX", "BMRKR2")
-  ),
-  data = adtte_f,
-  groups_lists = list(
-    BMRKR2 = list(
-      "low" = "LOW",
-      "low/medium" = c("LOW", "MEDIUM"),
-      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
-    )
-  )
-)
-df_grouped
 tern:::a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
-
 
 ## Table with default columns.
 basic_table() \%>\%
@@ -169,5 +113,6 @@ basic_table() \%>\%
     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
     time_unit = adtte_f$AVALU[1]
   )
+
 }
 \keyword{internal}

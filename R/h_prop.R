@@ -1,7 +1,5 @@
 #' Helper Functions for Calculating Proportion Confidence Intervals
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' Functions to calculate different proportion confidence intervals for use in [estimate_proportion()].
 #'
 #' @inheritParams estimate_proportions
@@ -18,9 +16,9 @@ NULL
 #'   TRUE, TRUE, TRUE, TRUE, TRUE,
 #'   FALSE, FALSE, FALSE, FALSE, FALSE
 #' )
-#' prop_wilson(rsp, conf_level = 0.9)
+#' tern:::prop_wilson(rsp, conf_level = 0.9)
 #'
-#' @export
+#' @keywords internal
 prop_wilson <- function(rsp, conf_level, correct = FALSE) {
   y <- stats::prop.test(
     sum(rsp),
@@ -39,9 +37,9 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #' @inheritParams argument_convention
 #'
 #' @examples
-#' prop_clopper_pearson(rsp, conf_level = .95)
+#' tern:::prop_clopper_pearson(rsp, conf_level = .95)
 #'
-#' @export
+#' @keywords internal
 prop_clopper_pearson <- function(rsp,
                                  conf_level) {
   y <- stats::binom.test(
@@ -60,10 +58,10 @@ prop_clopper_pearson <- function(rsp,
 #' @param correct (`flag`)\cr apply continuity correction.
 #'
 #' @examples
-#' prop_wald(rsp, conf_level = 0.95)
-#' prop_wald(rsp, conf_level = 0.95, correct = TRUE)
+#' tern:::prop_wald(rsp, conf_level = 0.95)
+#' tern:::prop_wald(rsp, conf_level = 0.95, correct = TRUE)
 #'
-#' @export
+#' @keywords internal
 prop_wald <- function(rsp, conf_level, correct = FALSE) {
   n <- length(rsp)
   p_hat <- mean(rsp)
@@ -87,9 +85,9 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
 #' @inheritParams argument_convention
 #'
 #' @examples
-#' prop_agresti_coull(rsp, conf_level = 0.95)
+#' tern:::prop_agresti_coull(rsp, conf_level = 0.95)
 #'
-#' @export
+#' @keywords internal
 prop_agresti_coull <- function(rsp, conf_level) {
   n <- length(rsp)
   x_sum <- sum(rsp)
@@ -117,9 +115,9 @@ prop_agresti_coull <- function(rsp, conf_level) {
 #' @inheritParams argument_convention
 #'
 #' @examples
-#' prop_jeffreys(rsp, conf_level = 0.95)
+#' tern:::prop_jeffreys(rsp, conf_level = 0.95)
 #'
-#' @export
+#' @keywords internal
 prop_jeffreys <- function(rsp,
                           conf_level) {
   n <- length(rsp)

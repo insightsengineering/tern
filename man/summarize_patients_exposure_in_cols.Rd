@@ -127,5 +127,6 @@ lyt4 <- basic_table() \%>\%
   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
 result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 result4
+
 }
 \keyword{internal}

@@ -3,14 +3,11 @@
 \name{count_missed_doses}
 \alias{count_missed_doses}
 \alias{s_count_nonmissing}
-\alias{d_count_missed_doses}
 \alias{s_count_missed_doses}
 \alias{a_count_missed_doses}
 \title{Counting Missed Doses}
 \usage{
 s_count_nonmissing(x)
-
-d_count_missed_doses(thresholds)
 
 s_count_missed_doses(x, thresholds, .N_col)
 
@@ -61,8 +58,6 @@ to avoid warnings from \code{rtables}.}
 \value{
 \code{\link[=s_count_nonmissing]{s_count_nonmissing()}} returns the statistic \code{n} which is the count of non-missing values in \code{x}.
 
-\code{\link[=d_count_missed_doses]{d_count_missed_doses()}} returns a named \code{character} vector with the labels.
-
 \code{\link[=s_count_missed_doses]{s_count_missed_doses()}} returns the statistics \code{n} and
 \code{count_fraction} with one element for each threshold.
 }
@@ -75,8 +70,6 @@ mainly the special labels.
 \section{Functions}{
 \itemize{
 \item \code{s_count_nonmissing}: Statistics function to count non-missing values.
-
-\item \code{d_count_missed_doses}: Description function that calculates labels for  \code{\link[=s_count_missed_doses]{s_count_missed_doses()}}.
 
 \item \code{s_count_missed_doses}: Statistics function to count patients with missed doses when \code{x}
 is the vector of number of missed doses with one value for each patient.
@@ -92,11 +85,14 @@ an additional layer on top of \code{count_cumulative} specifically for missed do
 set.seed(1)
 x <- c(sample(1:10, 10), NA)
 tern:::s_count_nonmissing(x)
+
 tern:::s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+
 #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(tern:::a_count_missed_doses, .ungroup_stats = "count_fraction")
 afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+
 library(dplyr)
 library(scda)
 adex <- synthetic_cdisc_data("latest")$adex
@@ -114,5 +110,6 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") \%>\%
   build_table(anl, alt_counts_df = adsl)
+
 }
 \keyword{internal}

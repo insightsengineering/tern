@@ -5,7 +5,6 @@
 #' Helper function to use mostly within tests.
 #'
 #' @param x the table
-#'
 #' @return A matrix of strings
 #'
 #' @export
@@ -18,7 +17,6 @@ to_string_matrix <- function(x) {
 #' Helper function to use in tabulating model results.
 #'
 #' @param x (`vector`)\cr input for a cell.
-#'
 #' @return Either empty character vector if all entries in `x` are missing (`NA`), or otherwise
 #'   the unlisted version of `x`
 #'
@@ -41,7 +39,6 @@ unlist_and_blank_na <- function(x) {
 #' @param flag_var (`string`)\cr variable name for the logical column identifying which
 #'   row should be returned.
 #' @param format (`string`)\cr `rtables` format to use.
-#'
 #' @return Content function which just gives `df$analysis_var` at the row identified by
 #'   `.df_row$flag` in the given format.
 #'
@@ -68,9 +65,7 @@ cfun_by_flag <- function(analysis_var,
 #' This takes the label of the latest row split level and adds the row total in parentheses.
 #'
 #' @inheritParams argument_convention
-#'
 #' @return `CellValue` that just has the right label.
-#'
 #' @note Important is here to not use `df` but `.N_row` in the implementation, because the former
 #'   is already split by columns and will refer to the first column of the data only.
 #'
@@ -93,10 +88,8 @@ c_label_n <- function(df,
 #' This works analogously to [rtables::add_colcounts()] but on the rows.
 #'
 #' @inheritParams argument_convention
-#'
 #' @return The modified layout where the latest row split labels now have the row-wise
 #'   total counts (i.e. without column based subsetting) attached in parentheses.
-#'
 #'
 #' @examples
 #' basic_table() %>%
@@ -124,7 +117,6 @@ add_rowcounts <- function(lyt) {
 #'
 #' @param table_tree (`VTableTree`)\cr table to extract the indices from.
 #' @param col_names (`character`)\cr vector of column names.
-#'
 #' @return the vector of column indices.
 #'
 #' @export
@@ -139,7 +131,6 @@ h_col_indices <- function(table_tree, col_names) {
 #' don't have labels but names that we can use.
 #'
 #' @param x a list
-#'
 #' @return a character vector with the labels or names for the list elements
 #'
 #' @keywords internal
@@ -160,7 +151,6 @@ labels_or_names <- function(x) {
 #'
 #' @param x the object which should be converted to an `rtable`.
 #' @param ... additional arguments for methods.
-#'
 #' @return The `rtable` object. Note that the concrete class will depend on the method
 #'   which is used.
 #'
@@ -261,7 +251,6 @@ h_split_param <- function(param,
 #' @param .stats (`vector` or `NULL`)\cr input to the layout creating function. Note that `NULL` means
 #'   in this context that all default statistics should be used.
 #' @param all_stats (`character`)\cr all statistics which can be selected here potentially.
-#'
 #' @return Character vector with the selected statistics.
 #'
 #' @keywords internal
@@ -294,7 +283,6 @@ afun_selected_stats <- function(.stats, all_stats) {
 #' @param vars (`character`)\cr variable names of which the labels are to be looked up in `df`.
 #' @param indent (`integer`)\cr non-negative number of nested indent space, default to 0L which means no indent.
 #' 1L means two spaces indent, 2L means four spaces indent and so on.
-#'
 #' @return The modified layout.
 #'
 #' @examples

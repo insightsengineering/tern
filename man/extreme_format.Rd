@@ -4,17 +4,11 @@
 \alias{extreme_format}
 \alias{h_get_format_threshold}
 \alias{h_format_threshold}
-\alias{format_extreme_values}
-\alias{format_extreme_values_ci}
 \title{Formatting Extreme Values}
 \usage{
 h_get_format_threshold(digits = 2L)
 
 h_format_threshold(x, digits = 2L)
-
-format_extreme_values(digits = 2L)
-
-format_extreme_values_ci(digits = 2L)
 }
 \arguments{
 \item{digits}{(\code{integer})\cr number of decimal places to display.}
@@ -39,29 +33,14 @@ used in Formatting Functions. Returns a list with elements \code{threshold} and 
 
 \item \code{h_format_threshold}: Internal helper function to apply a threshold format to a value.
 Creates a formatted string to be used in Formatting Functions.
-
-\item \code{format_extreme_values}: Create Formatting Function for a single extreme value.
-
-\item \code{format_extreme_values_ci}: Create Formatting Function for extreme values part of a confidence interval. Values
-are formatted as e.g. "(xx.xx, xx.xx)" if if the number of \code{digits} is 2.
 }}
 
 \examples{
-
 h_get_format_threshold(2L)
 
 h_format_threshold(0.001)
 h_format_threshold(1000)
 
-format_fun <- format_extreme_values(2L)
-format_fun(x = 0.127)
-format_fun(x = Inf)
-format_fun(x = 0)
-format_fun(x = 0.009)
-
-format_fun <- format_extreme_values_ci(2L)
-format_fun(x = c(0.127, Inf))
-format_fun(x = c(0, 0.009))
 }
 \seealso{
 Other formatting functions: 

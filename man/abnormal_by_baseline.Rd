@@ -2,14 +2,11 @@
 % Please edit documentation in R/abnormal_by_baseline.R
 \name{abnormal_by_baseline}
 \alias{abnormal_by_baseline}
-\alias{d_count_abnormal_by_baseline}
 \alias{s_count_abnormal_by_baseline}
 \alias{a_count_abnormal_by_baseline}
 \alias{count_abnormal_by_baseline}
 \title{Patient Counts with Abnormal Range Values by Baseline Status}
 \usage{
-d_count_abnormal_by_baseline(abnormal)
-
 s_count_abnormal_by_baseline(
   df,
   .var,
@@ -39,12 +36,12 @@ count_abnormal_by_baseline(
 )
 }
 \arguments{
-\item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
-
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
+
+\item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
 
 \item{na_level}{(\code{string}) \cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
 \code{df_explicit_na()}). The default is \code{"<Missing>"}.}
@@ -99,8 +96,6 @@ patients in the numerator and denominator as follows:
 }
 \section{Functions}{
 \itemize{
-\item \code{d_count_abnormal_by_baseline}: Description Function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
-
 \item \code{s_count_abnormal_by_baseline}: For a single \code{abnormal} level, produce a statistic \code{fraction} which is
 a named list with 3 elements: \code{not_abnormal}, \code{abnormal} and \code{total}.
 Each element contains a vector with \code{num} and \code{denom} counts of patients.
@@ -115,8 +110,6 @@ statistics function arguments and additional format arguments (see below).
 }}
 
 \examples{
-d_count_abnormal_by_baseline("LOW")
-
 df <- data.frame(
   USUBJID = as.character(c(1:6)),
   ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
@@ -131,7 +124,6 @@ tern:::s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
 # so that the `rtables` formatting function `format_fraction()` can be applied correctly.
 afun <- make_afun(tern:::a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 afun(df, .var = "ANRIND", abnormal = "LOW")
-
 
 # Layout creating function.
 basic_table() \%>\%

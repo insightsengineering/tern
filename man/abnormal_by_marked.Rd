@@ -100,7 +100,6 @@ which can take statistics function arguments and additional format arguments (se
 }}
 
 \examples{
-
 library(dplyr)
 
 df <- data.frame(
@@ -145,6 +144,7 @@ tern:::s_count_abnormal_by_marked(
   .var = "AVALCAT1",
   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 )
+
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(tern:::a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
@@ -153,6 +153,7 @@ afun(
   .spl_context = spl_context,
   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 )
+
 map <- unique(
   df[df$abn_dir \%in\% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
 ) \%>\%

@@ -45,7 +45,6 @@ These additional formatting arguments can be passed to the layout creating funct
 }
 
 \examples{
-
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
   PARAMCD = rep("lab", 6 * 3),
@@ -82,6 +81,7 @@ basic_table() \%>\%
   split_cols_by_multivar(vars = c("AVAL", "CHG")) \%>\%
   summarize_colvars(na.rm = FALSE) \%>\%
   build_table(dta_test)
+
 }
 \seealso{
 \code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}}

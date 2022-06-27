@@ -22,6 +22,7 @@ Formats a count together with fraction with special consideration when count is 
 \examples{
 format_count_fraction(x = c(2, 0.6667))
 format_count_fraction(x = c(0, 0))
+
 }
 \seealso{
 Other formatting functions: 

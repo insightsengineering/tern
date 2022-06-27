@@ -128,6 +128,7 @@ tern:::s_count_abnormal(
   abnormal = list(high = "HIGH", low = "LOW"),
   exclude_base_abn = TRUE
 )
+
 # Use the Formatted Analysis function for `analyze()`.
 a_fun <- make_afun(tern:::a_count_abnormal, .ungroup_stats = "fraction")
 a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
@@ -157,5 +158,6 @@ basic_table() \%>\%
     variables = list(id = "ID", baseline = "BL_RANGE")
   ) \%>\%
   build_table(df2)
+
 }
 \keyword{internal}

@@ -20,10 +20,9 @@
 #' @param abnormal (`named list`)\cr identifying the abnormal range level(s) in `var`. Default to
 #' `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the name list,
 #' for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`
-#'
-#' @name abnormal
 #' @include formats.R
 #'
+#' @name abnormal
 NULL
 
 #' @describeIn abnormal Statistics function which counts patients with abnormal range values
@@ -58,6 +57,7 @@ NULL
 #'   abnormal = list(high = "HIGH", low = "LOW"),
 #'   exclude_base_abn = TRUE
 #' )
+#'
 #' @keywords internal
 s_count_abnormal <- function(df,
                              .var,
@@ -124,8 +124,9 @@ a_count_abnormal <- make_afun(
 #' @describeIn abnormal Layout creating function which can be used for creating tables, which can take
 #'   statistics function arguments and additional format arguments (see below). Note that it only
 #'   works with a single variable but multiple abnormal levels.
+#'
 #' @return [count_abnormal()] can be used with multiple abnormal levels and modifies the layout.
-#' @export
+#'
 #' @examples
 #' # Layout creating function.
 #' basic_table() %>%
@@ -152,6 +153,8 @@ a_count_abnormal <- make_afun(
 #'     variables = list(id = "ID", baseline = "BL_RANGE")
 #'   ) %>%
 #'   build_table(df2)
+#'
+#' @export
 count_abnormal <- function(lyt,
                            var,
                            ...,

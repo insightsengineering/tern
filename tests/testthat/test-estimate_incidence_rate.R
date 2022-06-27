@@ -57,8 +57,8 @@ testthat::test_that("h_incidence_rate_byar works as expected with healthy input"
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-testthat::test_that("tern:::h_incidence_rate works as expected with healthy input", {
-  result <- tern:::h_incidence_rate(
+testthat::test_that("h_incidence_rate works as expected with healthy input", {
+  result <- h_incidence_rate(
     200,
     2,
     control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", time_unit_output = 100)

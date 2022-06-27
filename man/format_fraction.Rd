@@ -22,6 +22,7 @@ Formats a fraction together with ratio in percent.
 \examples{
 format_fraction(x = c(num = 2L, denom = 3L))
 format_fraction(x = c(num = 0L, denom = 3L))
+
 }
 \seealso{
 Other formatting functions: 

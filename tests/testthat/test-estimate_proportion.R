@@ -6,7 +6,7 @@ testthat::test_that("prop_wilson returns right result", {
   )
 
   expected <- c(0.2692718, 0.7307282)
-  result <- prop_wilson(rsp, conf_level = 0.9)
+  result <- tern:::prop_wilson(rsp, conf_level = 0.9)
 
   testthat::expect_equal(expected, result, tolerance = 1e-5)
 })
@@ -17,7 +17,7 @@ testthat::test_that("prop_clopper_pearson returns right result", {
     FALSE, FALSE, FALSE, FALSE, FALSE
   )
 
-  result <- prop_clopper_pearson(rsp, conf_level = .95)
+  result <- tern:::prop_clopper_pearson(rsp, conf_level = .95)
   expected <- c(0.1871, 0.8129)
   testthat::expect_equal(expected, result, tolerance = 1e-4)
 })
@@ -28,11 +28,11 @@ testthat::test_that("prop_wald returns right result", {
     FALSE, FALSE, FALSE, FALSE, FALSE
   )
 
-  result <- prop_wald(rsp, conf_level = 0.95, correct = TRUE)
+  result <- tern:::prop_wald(rsp, conf_level = 0.95, correct = TRUE)
   expected <- c(0.1401, 0.8599)
   testthat::expect_equal(expected, result, tolerance = 1e-4)
 
-  result <- prop_wald(rsp, conf_level = 0.95, correct = FALSE)
+  result <- tern:::prop_wald(rsp, conf_level = 0.95, correct = FALSE)
   expected <- c(0.1901, 0.8099)
   testthat::expect_equal(expected, result, tolerance = 1e-4)
 })
@@ -43,7 +43,7 @@ testthat::test_that("prop_agresti_coull returns right result", {
     FALSE, FALSE, FALSE, FALSE, FALSE
   )
 
-  result <- prop_agresti_coull(rsp, conf_level = 0.95)
+  result <- tern:::prop_agresti_coull(rsp, conf_level = 0.95)
   expected <- c(0.2366, 0.7634)
   testthat::expect_equal(expected, result, tolerance = 1e-4)
 })
@@ -55,7 +55,7 @@ testthat::test_that("prop_jeffreys returns right result", {
     FALSE, FALSE, FALSE, FALSE, FALSE
   )
 
-  result <- prop_jeffreys(rsp, conf_level = 0.95)
+  result <- tern:::prop_jeffreys(rsp, conf_level = 0.95)
   expected <- c(0.2235, 0.7765)
   testthat::expect_equal(expected, result, tolerance = 1e-4)
 })

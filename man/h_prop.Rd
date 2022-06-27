@@ -27,8 +27,6 @@ prop_jeffreys(rsp, conf_level)
 \item{correct}{(\code{flag})\cr apply continuity correction.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Functions to calculate different proportion confidence intervals for use in \code{\link[=estimate_proportion]{estimate_proportion()}}.
 }
 \section{Functions}{
@@ -58,15 +56,16 @@ rsp <- c(
   TRUE, TRUE, TRUE, TRUE, TRUE,
   FALSE, FALSE, FALSE, FALSE, FALSE
 )
-prop_wilson(rsp, conf_level = 0.9)
+tern:::prop_wilson(rsp, conf_level = 0.9)
 
-prop_clopper_pearson(rsp, conf_level = .95)
+tern:::prop_clopper_pearson(rsp, conf_level = .95)
 
-prop_wald(rsp, conf_level = 0.95)
-prop_wald(rsp, conf_level = 0.95, correct = TRUE)
+tern:::prop_wald(rsp, conf_level = 0.95)
+tern:::prop_wald(rsp, conf_level = 0.95, correct = TRUE)
 
-prop_agresti_coull(rsp, conf_level = 0.95)
+tern:::prop_agresti_coull(rsp, conf_level = 0.95)
 
-prop_jeffreys(rsp, conf_level = 0.95)
+tern:::prop_jeffreys(rsp, conf_level = 0.95)
 
 }
+\keyword{internal}

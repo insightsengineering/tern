@@ -1,16 +1,15 @@
 #' Stack Multiple Grobs
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Stack grobs as a new grob with 1 column and multiple rows layout.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @param ... grobs.
 #' @param grobs list of grobs.
 #' @param padding unit of length 1, space between each grob.
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #' @param name a character identifier for the grob.
 #' @param gp A \code{\link{gpar}} object.
-#'
-#' @export
 #'
 #' @examples
 #' library(grid)
@@ -30,6 +29,8 @@
 #'
 #' showViewport()
 #' grid.ls(grobs = TRUE, viewports = TRUE)
+#'
+#' @export
 stack_grobs <- function(...,
                         grobs = list(...),
                         padding = grid::unit(2, "line"),
@@ -90,8 +91,6 @@ stack_grobs <- function(...,
 #' @param padding_ht unit of length 1, vertical space between each grob.
 #' @param padding_wt unit of length 1, horizontal space between each grob.
 #'
-#' @keywords internal
-#'
 #' @examples
 #' library(grid)
 #'
@@ -118,6 +117,8 @@ stack_grobs <- function(...,
 #' grid.draw(tern:::arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 #'
 #' showViewport()
+#'
+#' @keywords internal
 arrange_grobs <- function(..., # nolint
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
@@ -217,8 +218,6 @@ arrange_grobs <- function(..., # nolint
 #' @param newpage draw on a new page
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #'
-#' @keywords internal
-#'
 #' @examples
 #' library(dplyr)
 #' library(grid)
@@ -231,6 +230,8 @@ arrange_grobs <- function(..., # nolint
 #'   tern:::arrange_grobs(grobs = .) %>%
 #'   tern:::draw_grob()
 #' showViewport()
+#'
+#' @keywords internal
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {
     grid::grid.newpage()

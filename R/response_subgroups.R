@@ -16,10 +16,8 @@
 #'   specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL`
 #'   so no test is performed.
-#' @name response_subgroups
-#' @order 1
-#' @examples
 #'
+#' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
@@ -39,16 +37,24 @@
 #'     rsp = AVALC == "CR"
 #'   )
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+#'
+#' @name response_subgroups
 NULL
 
-#' @describeIn response_subgroups prepares response rates and odds ratios for
-#'   population subgroups in data frames. Simple wrapper for [h_odds_ratio_subgroups_df()] and
-#'   [h_proportion_subgroups_df()]. Result is a list of two data frames:
-#'   `prop` and `or`. `variables` corresponds to the names of variables found in `data`, passed as a
-#'   named list and requires elements `rsp`, `arm` and optionally `subgroups` and `strat`. `groups_lists`
-#'   optionally specifies groupings for `subgroups` variables.
+#' Prepares Response Data for Population Subgroups in Data Frames
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Prepares response rates and odds ratios for population subgroups in data frames. Simple wrapper
+#' for [h_odds_ratio_subgroups_df()] and [h_proportion_subgroups_df()].
+#'   Result is a list of two data frames: `prop` and `or`.
+#'   `variables` corresponds to the names of variables found in `data`, passed as a named
+#'   list and requires elements `rsp`, `arm` and optionally `subgroups` and `strat`.
+#'   `groups_lists` optionally specifies groupings for `subgroups` variables.
+#'
+#' @inheritParams argument_convention
+#' @inheritParams response_subgroups
 #' @param label_all (`string`)\cr label for the total population analysis.
-#' @export
 #'
 #' @examples
 #' # Unstratified analysis.
@@ -78,6 +84,8 @@ NULL
 #'   )
 #' )
 #' df_grouped
+#'
+#' @export
 extract_rsp_subgroups <- function(variables,
                                   data,
                                   groups_lists = list(),
@@ -104,6 +112,7 @@ extract_rsp_subgroups <- function(variables,
 
 #' @describeIn response_subgroups Formatted Analysis function used to format the results of [extract_rsp_subgroups()].
 #'   Returns is a list of Formatted Analysis functions with one element per statistic.
+#'
 #' @examples
 #' tern:::a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
 #'
@@ -144,6 +153,7 @@ a_response_subgroups <- function(.formats = list(
 }
 
 #' @describeIn response_subgroups table creating function.
+#'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_rsp_subgroups()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
@@ -155,9 +165,8 @@ a_response_subgroups <- function(.formats = list(
 #'  `ci` (confidence interval of odds ratio) and
 #'  `pval` (p value of the effect).
 #'  Note, the statistics `n_tot`, `or` and `ci` are required.
-#' @export
-#' @examples
 #'
+#' @examples
 #' ## Table with default columns.
 #' basic_table() %>%
 #'   tabulate_rsp_subgroups(df)
@@ -168,6 +177,8 @@ a_response_subgroups <- function(.formats = list(
 #'     df = df,
 #'     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
 #'   )
+#'
+#' @export
 tabulate_rsp_subgroups <- function(lyt,
                                    df,
                                    vars = c("n_tot", "n", "prop", "or", "ci")) {
@@ -296,7 +307,6 @@ tabulate_rsp_subgroups <- function(lyt,
 #' [tabulate_rsp_subgroups] and create column labels.
 #'
 #' @inheritParams tabulate_rsp_subgroups
-#'
 #' @return `list` of variables to tabulate and their labels.
 #'
 #' @export

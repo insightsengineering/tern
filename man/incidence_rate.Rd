@@ -5,12 +5,7 @@
 \alias{s_incidence_rate}
 \alias{a_incidence_rate}
 \alias{estimate_incidence_rate}
-\alias{h_incidence_rate_normal}
-\alias{h_incidence_rate_normal_log}
-\alias{h_incidence_rate_exact}
-\alias{h_incidence_rate_byar}
-\alias{h_incidence_rate}
-\title{Incidence rate}
+\title{Incidence Rate}
 \usage{
 s_incidence_rate(
   df,
@@ -39,16 +34,6 @@ estimate_incidence_rate(
   .labels = NULL,
   .indent_mods = NULL
 )
-
-h_incidence_rate_normal(person_years, n_events, alpha = 0.05)
-
-h_incidence_rate_normal_log(person_years, n_events, alpha = 0.05)
-
-h_incidence_rate_exact(person_years, n_events, alpha = 0.05)
-
-h_incidence_rate_byar(person_years, n_events, alpha = 0.05)
-
-h_incidence_rate(person_years, n_events, control = control_incidence_rate())
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
@@ -111,35 +96,17 @@ as incidence rate. Primary analysis variable is the person-years at risk.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_incidence_rate}: statistics function which estimates the incidence rate and the
+\item \code{s_incidence_rate}: Statistics function which estimates the incidence rate and the
 associated confidence interval.
 
 \item \code{a_incidence_rate}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{estimate_incidence_rate}: layout creating function which adds analyze rows using the statistics
+\item \code{estimate_incidence_rate}: Layout creating function which adds analyze rows using the statistics
 function \code{s_incidence_rate} and desired format.
-
-\item \code{h_incidence_rate_normal}: helper function to estimate the incidence rate and
-associated confidence interval based on the normal approximation for the
-incidence rate. Unit is one person-year.
-
-\item \code{h_incidence_rate_normal_log}: helper function to estimate the incidence rate and
-associated confidence interval based on the normal approximation for the
-logarithm of the incidence rate. Unit is one person-year.
-
-\item \code{h_incidence_rate_exact}: helper function to estimate the incidence rate and
-associated exact confidence interval. Unit is one person-year.
-
-\item \code{h_incidence_rate_byar}: helper function to estimate the incidence rate and
-associated Byar's confidence interval. Unit is one person-year.
-
-\item \code{h_incidence_rate}: incidence_rate helper function to estimate the incidence rate and
-associated confidence interval.
 }}
 
 \examples{
-
 library(dplyr)
 
 df <- data.frame(
@@ -180,26 +147,6 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df)
-
-h_incidence_rate_normal(200, 2)
-
-h_incidence_rate_normal_log(200, 2)
-
-h_incidence_rate_exact(200, 2)
-
-h_incidence_rate_byar(200, 2)
-
-tern:::h_incidence_rate(200, 2)
-
-tern:::h_incidence_rate(
-  200,
-  2,
-  control_incidence_rate(
-    conf_level = 0.9,
-    conf_type = "normal_log",
-    time_unit_output = 100
-  )
-)
 
 }
 \seealso{

@@ -28,5 +28,6 @@ num \%>\%
   tern:::arrange_grobs(grobs = .) \%>\%
   tern:::draw_grob()
 showViewport()
+
 }
 \keyword{internal}

@@ -11,8 +11,7 @@
 #' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_multivar
 #' @inheritParams survival_duration_subgroups
-#' @name survival_biomarkers_subgroups
-#' @order 1
+#'
 #' @examples
 #' # Testing dataset.
 #' library(scda)
@@ -33,16 +32,22 @@
 #'   )
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
+#' @name survival_biomarkers_subgroups
 NULL
 
-#' @describeIn survival_biomarkers_subgroups prepares estimates for number of events, patients and median survival
-#'   times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
-#'   population subgroups in a single data frame.
-#'   `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
-#'   `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
-#'   `groups_lists` optionally specifies groupings for `subgroups` variables.
+#' Prepares Survival Data Estimates for Multiple Biomarkers in a Single Data Frame
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Prepares estimates for number of events, patients and median survival
+#' times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
+#' population subgroups in a single data frame.
+#' `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
+#' `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
+#' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #' @seealso [h_coxreg_mult_cont_df()] which is used internally.
-#' @export
+#'
 #' @examples
 #' # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 #' # in multiple regression models containing one covariate `RACE`,
@@ -81,6 +86,8 @@ NULL
 #'   )
 #' )
 #' df_grouped
+#'
+#' @export
 extract_survival_biomarkers <- function(variables,
                                         data,
                                         groups_lists = list(),
@@ -130,6 +137,7 @@ extract_survival_biomarkers <- function(variables,
 }
 
 #' @describeIn survival_biomarkers_subgroups table creating function.
+#'
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
 #'   [extract_survival_biomarkers()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
@@ -145,9 +153,8 @@ extract_survival_biomarkers <- function(variables,
 #' @note In contrast to [tabulate_survival_subgroups()] this tabulation function does
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
-#' @export
-#' @examples
 #'
+#' @examples
 #' ## Table with default columns.
 #' # df <- <needs_to_be_inputted>
 #' tabulate_survival_biomarkers(df)
@@ -163,6 +170,8 @@ extract_survival_biomarkers <- function(variables,
 #' \dontrun{
 #' g_forest(tab, xlim = c(0.8, 1.2))
 #' }
+#'
+#' @export
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {

@@ -1,4 +1,4 @@
-#' Incidence rate
+#' Incidence Rate
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -24,7 +24,7 @@
 NULL
 
 
-#' @describeIn incidence_rate statistics function which estimates the incidence rate and the
+#' @describeIn incidence_rate Statistics function which estimates the incidence rate and the
 #'   associated confidence interval.
 #'
 #' @return The statistics are:
@@ -34,7 +34,6 @@ NULL
 #'   * `rate_ci`: confidence interval for the incidence rate
 #'
 #' @examples
-#'
 #' library(dplyr)
 #'
 #' df <- data.frame(
@@ -126,10 +125,8 @@ a_incidence_rate <- make_afun(
   )
 )
 
-#' @describeIn incidence_rate layout creating function which adds analyze rows using the statistics
+#' @describeIn incidence_rate Layout creating function which adds analyze rows using the statistics
 #' function `s_incidence_rate` and desired format.
-#'
-#' @export
 #'
 #' @examples
 #' basic_table() %>%
@@ -145,7 +142,7 @@ a_incidence_rate <- make_afun(
 #'   ) %>%
 #'   build_table(df)
 #'
-#' @md
+#' @export
 estimate_incidence_rate <- function(lyt,
                                     vars,
                                     ...,
@@ -173,7 +170,26 @@ estimate_incidence_rate <- function(lyt,
   )
 }
 
-#' @describeIn incidence_rate helper function to estimate the incidence rate and
+#' Helper Functions for Incidence Rate
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' @param control (`list`) \cr parameters for estimation details, specified by using
+#'   the helper function [control_incidence_rate()]. Possible parameter options are: \cr
+#' * `conf_level`: (`proportion`) \cr confidence level for the estimated incidence rate.
+#' * `conf_type`: (`string`) \cr `normal` (default), `normal_log`, `exact`, or `byar`
+#'   for confidence interval type.
+#' * `time_unit_input`: (`string`) \cr `day`, `week`, `month`, or `year` (default)
+#'   indicating time unit for data input.
+#' * `time_unit_output`: (`numeric`) \cr time unit for desired output (in person-years).
+#' @param person_years (`numeric`) \cr total person-years at risk.
+#' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
+#' @param n_events (`integer`) \cr number of events observed.
+#'
+#' @name h_incidence_rate
+NULL
+
+#' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
 #'   associated confidence interval based on the normal approximation for the
 #'   incidence rate. Unit is one person-year.
 #'
@@ -197,7 +213,7 @@ h_incidence_rate_normal <- function(person_years,
   list(rate = est, rate_ci = ci)
 }
 
-#' @describeIn incidence_rate helper function to estimate the incidence rate and
+#' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
 #'   associated confidence interval based on the normal approximation for the
 #'   logarithm of the incidence rate. Unit is one person-year.
 #'
@@ -223,7 +239,7 @@ h_incidence_rate_normal_log <- function(person_years,
   list(rate = rate_est, rate_ci = ci)
 }
 
-#' @describeIn incidence_rate helper function to estimate the incidence rate and
+#' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
 #'   associated exact confidence interval. Unit is one person-year.
 #'
 #' @examples
@@ -246,7 +262,7 @@ h_incidence_rate_exact <- function(person_years,
   list(rate = est, rate_ci = c(lcl, ucl))
 }
 
-#' @describeIn incidence_rate helper function to estimate the incidence rate and
+#' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
 #'   associated Byar's confidence interval. Unit is one person-year.
 #'
 #' @examples
@@ -272,13 +288,12 @@ h_incidence_rate_byar <- function(person_years,
   list(rate = est, rate_ci = c(lcl, ucl))
 }
 
-#' @describeIn incidence_rate incidence_rate helper function to estimate the incidence rate and
-#'   associated confidence interval.
+#' @describeIn h_incidence_rate Helper function to estimate the incidence rate
+#' and associated confidence interval.
 #'
 #' @examples
-#' tern:::h_incidence_rate(200, 2)
-#'
-#' tern:::h_incidence_rate(
+#' h_incidence_rate(200, 2)
+#' h_incidence_rate(
 #'   200,
 #'   2,
 #'   control_incidence_rate(
@@ -288,9 +303,7 @@ h_incidence_rate_byar <- function(person_years,
 #'   )
 #' )
 #'
-#' @keywords internal
-#'
-#' @md
+#' @export
 h_incidence_rate <- function(person_years,
                              n_events,
                              control = control_incidence_rate()) {

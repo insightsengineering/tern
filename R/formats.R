@@ -5,6 +5,7 @@
 #' This summarizes the additional Formatting Functions to work with `rtables`.
 #'
 #' @family formatting functions
+#'
 #' @name formatting_functions
 NULL
 
@@ -17,13 +18,14 @@ NULL
 #' @param x (`integer`)\cr with elements `num` and `denom`.
 #' @param ... required for `rtables` interface.
 #' @return a string in the format `num / denom (ratio %)`. If `num` is 0 the format is `num / denom`.
-#'
 #' @family formatting functions
-#' @export
+#'
 #'
 #' @examples
 #' format_fraction(x = c(num = 2L, denom = 3L))
 #' format_fraction(x = c(num = 0L, denom = 3L))
+#'
+#' @export
 format_fraction <- function(x, ...) {
   attr(x, "label") <- NULL
 
@@ -54,13 +56,14 @@ format_fraction <- function(x, ...) {
 #' @param x (`integer`)\cr vector of length 2, count and fraction.
 #' @param ... required for `rtables` interface.
 #' @return a string in the format `count (fraction %)`. If `count` is 0 the format is `0`.
-#'
 #' @family formatting functions
-#' @export
+#'
 #'
 #' @examples
 #' format_count_fraction(x = c(2, 0.6667))
 #' format_count_fraction(x = c(0, 0))
+#'
+#' @export
 format_count_fraction <- function(x, ...) {
   attr(x, "label") <- NULL
 
@@ -89,9 +92,8 @@ format_count_fraction <- function(x, ...) {
 #' holders, and others as formatting elements.
 #'
 #' @param str (`string`)\cr template.
-#'
-#' @keywords internal
 #' @return A `rtables` formatting function.
+#'
 #' @examples
 #' test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 #'
@@ -103,6 +105,8 @@ format_count_fraction <- function(x, ...) {
 #'
 #' z <- tern:::format_xx("xx.x, incl. xx.x% NE")
 #' sapply(test, z)
+#'
+#' @keywords internal
 format_xx <- function(str) {
 
   # Find position in the string.
@@ -142,15 +146,15 @@ format_xx <- function(str) {
 #'   element is the fraction that is formatted. If the fraction is above or equal to the threshold,
 #'   then it is displayed in percentage. If it is positive but below the threshold, it returns
 #'   "<1" e.g. if the threshold is `0.01`. If it is zero, then just "0" is returned.
-#'
 #' @family formatting functions
-#' @export
 #'
 #' @examples
 #' format_fun <- format_fraction_threshold(0.05)
 #' format_fun(x = c(20, 0.1))
 #' format_fun(x = c(2, 0.01))
 #' format_fun(x = c(0, 0))
+#'
+#' @export
 format_fraction_threshold <- function(threshold) {
   assertthat::assert_that(
     is_proportion(threshold)
@@ -183,17 +187,18 @@ format_fraction_threshold <- function(threshold) {
 #'    If it is zero, then returns "0.00".
 #' @param digits (`integer`)\cr number of decimal places to display.
 #' @family formatting functions
-#' @name extreme_format
 #' @order 1
 #'
+#' @name extreme_format
 NULL
 
 #' @describeIn extreme_format Internal helper function to calculate the threshold and create formatted strings
 #'  used in Formatting Functions. Returns a list with elements `threshold` and `format_string`.
-#' @export
-#' @examples
 #'
+#' @examples
 #' h_get_format_threshold(2L)
+#'
+#' @export
 h_get_format_threshold <- function(digits = 2L) {
   assertthat::assert_that(
     is.integer(digits)
@@ -215,11 +220,12 @@ h_get_format_threshold <- function(digits = 2L) {
 #'   Creates a formatted string to be used in Formatting Functions.
 #'
 #' @param x (`number`)\cr value to format.
-#' @export
-#' @examples
 #'
+#' @examples
 #' h_format_threshold(0.001)
 #' h_format_threshold(1000)
+#'
+#' @export
 h_format_threshold <- function(x, digits = 2L) {
   if (is.na(x)) {
     return(x)
@@ -243,15 +249,20 @@ h_format_threshold <- function(x, digits = 2L) {
   unname(result)
 }
 
-#' @describeIn extreme_format Create Formatting Function for a single extreme value.
-#' @export
-#' @examples
+#' Formatting a Single Extreme Value
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Create Formatting Function for a single extreme value.
+#'
+#' @examples
 #' format_fun <- format_extreme_values(2L)
 #' format_fun(x = 0.127)
 #' format_fun(x = Inf)
 #' format_fun(x = 0)
 #' format_fun(x = 0.009)
+#'
+#' @export
 format_extreme_values <- function(digits = 2L) {
   function(x, ...) {
     assertthat::assert_that(length(x) == 1)
@@ -260,14 +271,19 @@ format_extreme_values <- function(digits = 2L) {
   }
 }
 
-#' @describeIn extreme_format Create Formatting Function for extreme values part of a confidence interval. Values
-#'   are formatted as e.g. "(xx.xx, xx.xx)" if if the number of `digits` is 2.
-#' @export
-#' @examples
+#' Formatting Extreme Values Part of a Confidence Interval
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Formatting Function for extreme values part of a confidence interval. Values
+#' are formatted as e.g. "(xx.xx, xx.xx)" if if the number of `digits` is 2.
+#'
+#' @examples
 #' format_fun <- format_extreme_values_ci(2L)
 #' format_fun(x = c(0.127, Inf))
 #' format_fun(x = c(0, 0.009))
+#'
+#' @export
 format_extreme_values_ci <- function(digits = 2L) {
   function(x, ...) {
     assertthat::assert_that(length(x) == 2)

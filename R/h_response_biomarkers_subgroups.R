@@ -7,8 +7,7 @@
 #'
 #' @inheritParams response_biomarkers_subgroups
 #' @inheritParams argument_convention
-#' @name h_response_biomarkers_subgroups
-#' @order 1
+#'
 #' @examples
 #' # Testing dataset.
 #' library(scda)
@@ -24,11 +23,13 @@
 #'   mutate(rsp = AVALC == "CR")
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 #'
+#' @name h_response_biomarkers_subgroups
 NULL
 
-#' @describeIn h_response_biomarkers_subgroups helps with converting the "response" function variable list
+#' @describeIn h_response_biomarkers_subgroups Helps with converting the "response" function variable list
 #'   to the "logistic regression" variable list. The reason is that currently there is an
 #'   inconsistency between the variable names accepted by `extract_rsp_subgroups()` and `fit_logistic()`.
+#'
 #' @param biomarker (`string`)\cr the name of the biomarker variable.
 #'
 #' @examples
@@ -57,7 +58,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
   )
 }
 
-#' @describeIn h_response_biomarkers_subgroups prepares estimates for number of responses, patients and
+#' @describeIn h_response_biomarkers_subgroups Prepares estimates for number of responses, patients and
 #'   overall response rate, as well as odds ratio estimates, confidence intervals and p-values, for multiple
 #'   biomarkers in a given single data set.
 #'   `variables` corresponds to names of variables found in `data`, passed as a named list and requires elements
@@ -155,8 +156,9 @@ h_logistic_mult_cont_df <- function(variables,
   }
 }
 
-#' @describeIn h_response_biomarkers_subgroups prepares a single sub-table given a `df_sub` containing
+#' @describeIn h_response_biomarkers_subgroups Prepares a single sub-table given a `df_sub` containing
 #'   the results for a single biomarker.
+#'
 #' @param df (`data.frame`)\cr results for a single biomarker, as part of what is
 #'   returned by [extract_rsp_biomarkers()] (it needs a couple of columns which are
 #'   added by that high-level function relative to what is returned by [h_logistic_mult_cont_df()],

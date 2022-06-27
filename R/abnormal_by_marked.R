@@ -20,17 +20,18 @@
 #' @inheritParams argument_convention
 #' @param category (`list`)\cr with different marked category names for single
 #' and last or replicated.
-#' @name abnormal_by_marked
 #'
+#' @name abnormal_by_marked
 NULL
+
 #' @describeIn abnormal_by_marked Statistics function which returns
 #' the counts and fractions of patients with `Single, not last`, `Last or replicated` and `Any`
 #' marked laboratory abnormalities for a single `abnormal` level.
+#'
 #' @return [s_count_abnormal_by_marked()] the single statistic `count_fraction`
 #' with `Single, not last`, `Last or replicated` and `Any` results.
 #'
 #' @examples
-#'
 #' library(dplyr)
 #'
 #' df <- data.frame(
@@ -75,6 +76,7 @@ NULL
 #'   .var = "AVALCAT1",
 #'   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 #' )
+#'
 #' @keywords internal
 s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1",
@@ -132,7 +134,9 @@ s_count_abnormal_by_marked <- function(df,
 
 #' @describeIn abnormal_by_marked Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
 #' @return [a_count_abnormal_by_marked()] returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 #' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
@@ -142,6 +146,7 @@ s_count_abnormal_by_marked <- function(df,
 #'   .spl_context = spl_context,
 #'   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 #' )
+#'
 #' @keywords internal
 a_count_abnormal_by_marked <- make_afun(
   s_count_abnormal_by_marked,

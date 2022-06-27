@@ -41,8 +41,6 @@ h_odds_ratio_subgroups_df(
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
-\item{label_all}{(\code{string})\cr label for the total population analysis.}
-
 \item{strata_data}{(\code{factor}, \code{data.frame} or \code{NULL})\cr
 required if stratified analysis is performed.}
 

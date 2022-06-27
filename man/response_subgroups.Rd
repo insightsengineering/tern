@@ -2,20 +2,10 @@
 % Please edit documentation in R/response_subgroups.R
 \name{response_subgroups}
 \alias{response_subgroups}
-\alias{extract_rsp_subgroups}
 \alias{a_response_subgroups}
 \alias{tabulate_rsp_subgroups}
 \title{Tabulate Binary Response by Subgroup}
 \usage{
-extract_rsp_subgroups(
-  variables,
-  data,
-  groups_lists = list(),
-  conf_level = 0.95,
-  method = NULL,
-  label_all = "All Patients"
-)
-
 a_response_subgroups(
   .formats = list(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
     list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
@@ -25,23 +15,6 @@ a_response_subgroups(
 tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
 }
 \arguments{
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
-
-\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{method}{(\code{string})\cr
-specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL}
-so no test is performed.}
-
-\item{label_all}{(\code{string})\cr label for the total population analysis.}
-
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -58,6 +31,17 @@ created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 \code{ci} (confidence interval of odds ratio) and
 \code{pval} (p value of the effect).
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
+
+\item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
+
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
+
+\item{method}{(\code{string})\cr
+specifies the test used to calculate the p-value for the difference between
+two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL}
+so no test is performed.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -70,13 +54,6 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_rsp_subgroups}: prepares response rates and odds ratios for
-population subgroups in data frames. Simple wrapper for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and
-\code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}. Result is a list of two data frames:
-\code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data}, passed as a
-named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}. \code{groups_lists}
-optionally specifies groupings for \code{subgroups} variables.
-
 \item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
 Returns is a list of Formatted Analysis functions with one element per statistic.
 
@@ -84,7 +61,6 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 }}
 
 \examples{
-
 # Testing dataset.
 library(scda)
 library(dplyr)
@@ -104,35 +80,8 @@ adrs_f <- adrs \%>\%
     rsp = AVALC == "CR"
   )
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
-# Unstratified analysis.
-df <- extract_rsp_subgroups(
-  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
-  data = adrs_f
-)
-df
 
-# Stratified analysis.
-df_strat <- extract_rsp_subgroups(
-  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
-  data = adrs_f
-)
-df_strat
-
-# Grouping of the BMRKR2 levels.
-df_grouped <- extract_rsp_subgroups(
-  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
-  data = adrs_f,
-  groups_lists = list(
-    BMRKR2 = list(
-      "low" = "LOW",
-      "low/medium" = c("LOW", "MEDIUM"),
-      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
-    )
-  )
-)
-df_grouped
 tern:::a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
-
 
 ## Table with default columns.
 basic_table() \%>\%
@@ -144,5 +93,6 @@ basic_table() \%>\%
     df = df,
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
   )
+
 }
 \keyword{internal}

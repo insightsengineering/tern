@@ -32,7 +32,7 @@ include the continuity correction.}
 with one level per stratum and same length as \code{rsp}.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+Helper Functions to Calculate Proportion Difference
 }
 \section{Functions}{
 \itemize{
@@ -58,18 +58,18 @@ weights. For the CMH chi-squared test, use \code{\link[stats:mantelhaen.test]{st
 set.seed(2)
 rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 grp <- c(rep("A", 10), rep("B", 10))
-prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
+tern:::prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
 
 # Anderson-Hauck confidence interval
 ## "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
 rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
 grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
-prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
+tern:::prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
 
 ## Edge case: Same proportion of response in A and B.
 rsp <- c(TRUE, FALSE, TRUE, FALSE)
 grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
-prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
+tern:::prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
 
 # Newcombe confidence interval
 
@@ -80,7 +80,7 @@ rsp <- c(
 )
 grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A"))
 table(rsp, grp)
-prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
+tern:::prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
 
 # Cochran-Mantel-Haenszel confidence interval
 
@@ -94,9 +94,10 @@ strata_data <- data.frame(
   stringsAsFactors = TRUE
 )
 
-prop_diff_cmh(
+tern:::prop_diff_cmh(
   rsp = rsp, grp = grp, strata = interaction(strata_data),
   conf_level = 0.90
 )
 
 }
+\keyword{internal}
