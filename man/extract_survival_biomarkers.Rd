@@ -12,6 +12,20 @@ extract_survival_biomarkers(
   label_all = "All Patients"
 )
 }
+\arguments{
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
+
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
+
+\item{control}{(\code{list})\cr a list of parameters as returned by the
+helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+
+\item{label_all}{(\code{string})\cr label for the total population analysis.}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

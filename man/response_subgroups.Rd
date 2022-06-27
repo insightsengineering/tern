@@ -38,6 +38,8 @@ Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
+\item{label_all}{(\code{string})\cr label for the total population analysis.}
+
 \item{method}{(\code{string})\cr
 specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL}

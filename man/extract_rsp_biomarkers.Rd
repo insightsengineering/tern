@@ -23,6 +23,8 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{control}{(named \code{list})\cr controls for the response definition and the
 confidence level produced by \code{\link[=control_logistic]{control_logistic()}}.}
+
+\item{label_all}{(\code{string})\cr label for the total population analysis.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

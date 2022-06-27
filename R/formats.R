@@ -185,9 +185,9 @@ format_fraction_threshold <- function(threshold) {
 #'    below a threshold, it returns "<0.01" e.g. if the number of `digits` is 2. If the value is
 #'    above a threshold, it returns ">999.99" e.g. if the number of `digits` is 2.
 #'    If it is zero, then returns "0.00".
+#'
 #' @param digits (`integer`)\cr number of decimal places to display.
 #' @family formatting functions
-#' @order 1
 #'
 #' @name extreme_format
 NULL
@@ -255,6 +255,8 @@ h_format_threshold <- function(x, digits = 2L) {
 #'
 #' Create Formatting Function for a single extreme value.
 #'
+#' @inheritParams extreme_format
+#'
 #' @examples
 #' format_fun <- format_extreme_values(2L)
 #' format_fun(x = 0.127)
@@ -277,6 +279,8 @@ format_extreme_values <- function(digits = 2L) {
 #'
 #' Formatting Function for extreme values part of a confidence interval. Values
 #' are formatted as e.g. "(xx.xx, xx.xx)" if if the number of `digits` is 2.
+#'
+#' @inheritParams extreme_format
 #'
 #' @examples
 #' format_fun <- format_extreme_values_ci(2L)

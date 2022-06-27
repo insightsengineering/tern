@@ -6,6 +6,9 @@
 \usage{
 h_set_nest_theme(font_size)
 }
+\arguments{
+\item{font_size}{(\code{number})\cr text font size.}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

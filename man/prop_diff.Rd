@@ -77,10 +77,6 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
-\item{grp}{(\code{factor})\cr
-vector assigning observations to one out of two groups
-(e.g. reference and treatment group).}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

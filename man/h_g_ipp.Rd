@@ -22,6 +22,33 @@ h_g_ipp(
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
+\item{xvar}{(\code{string})\cr time point variable to be plotted on x-axis.}
+
+\item{yvar}{(\code{string})\cr continuous analysis variable to be plotted on y-axis.}
+
+\item{xlab}{(\code{string})\cr plot label for x-axis.}
+
+\item{ylab}{(\code{string})\cr plot label for y-axis.}
+
+\item{id_var}{(\code{string})\cr variable used as patient identifier.}
+
+\item{title}{(\code{string})\cr title for plot.}
+
+\item{subtitle}{(\code{string})\cr subtitle for plot.}
+
+\item{caption}{(\code{character} scalar) \cr optional caption below the plot.}
+
+\item{add_baseline_hline}{(\code{flag})\cr adds horizontal line at baseline y-value on
+plot when TRUE.}
+
+\item{yvar_baseline}{(\code{string})\cr variable with baseline values only.
+Ignored when \code{add_baseline_hline} is FALSE.}
+
+\item{ggtheme}{(\code{theme})\cr optional graphical theme function as provided
+by \code{ggplot2} to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
+
+\item{col}{(\code{character})\cr lines colors.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

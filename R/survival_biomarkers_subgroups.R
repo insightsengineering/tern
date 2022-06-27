@@ -46,6 +46,11 @@ NULL
 #' `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
 #' `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
 #' `groups_lists` optionally specifies groupings for `subgroups` variables.
+#'
+#' @inheritParams argument_convention
+#' @inheritParams fit_coxreg_multivar
+#' @inheritParams survival_duration_subgroups
+#'
 #' @seealso [h_coxreg_mult_cont_df()] which is used internally.
 #'
 #' @examples

@@ -12,6 +12,7 @@
 #' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
 #'   list, which specifies the new group levels via the names and the
 #'   levels that belong to it in the character vectors that are elements of the list.
+#' @param label_all (`string`)\cr label for the total population analysis.
 #' @param method (`string`)\cr
 #'   specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL`
@@ -54,7 +55,6 @@ NULL
 #'
 #' @inheritParams argument_convention
 #' @inheritParams response_subgroups
-#' @param label_all (`string`)\cr label for the total population analysis.
 #'
 #' @examples
 #' # Unstratified analysis.
@@ -306,6 +306,7 @@ tabulate_rsp_subgroups <- function(lyt,
 #' Internal function to check variables included in
 #' [tabulate_rsp_subgroups] and create column labels.
 #'
+#' @inheritParams argument_convention
 #' @inheritParams tabulate_rsp_subgroups
 #' @return `list` of variables to tabulate and their labels.
 #'

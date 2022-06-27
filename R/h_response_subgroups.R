@@ -1,16 +1,16 @@
 #' Helper Functions for Tabulating Binary Response by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper functions that tabulate in a data frame statistics such as response rate
 #' and odds ratio for population subgroups.
 #'
 #' @details Main functionality is to prepare data for use in a layout creating function.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @inheritParams response_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.
-#' @name h_response_subgroups
-#' @order 1
+#'
 #' @examples
 #'
 #' # Testing dataset.
@@ -32,17 +32,21 @@
 #'     rsp = AVALC == "CR"
 #'   )
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+#'
+#' @name h_response_subgroups
 NULL
 
 #' @describeIn h_response_subgroups helper to prepare a data frame of binary responses by arm.
-#' @inheritParams h_response_subgroups
-#' @export
-#' @examples
 #'
+#' @inheritParams h_response_subgroups
+#'
+#' @examples
 #' h_proportion_df(
 #'   c(TRUE, FALSE, FALSE),
 #'   arm = factor(c("A", "A", "B"), levels = c("A", "B"))
 #' )
+#'
+#' @export
 h_proportion_df <- function(rsp, arm) {
   assertthat::assert_that(
     is_equal_length(rsp, arm)
@@ -84,9 +88,8 @@ h_proportion_df <- function(rsp, arm) {
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
 #'    requires elements `rsp`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
-#' @export
-#' @examples
 #'
+#' @examples
 #' h_proportion_subgroups_df(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
 #'   data = adrs_f
@@ -104,6 +107,8 @@ h_proportion_df <- function(rsp, arm) {
 #'     )
 #'   )
 #' )
+#'
+#' @export
 h_proportion_subgroups_df <- function(variables,
                                       data,
                                       groups_lists = list(),
@@ -147,12 +152,12 @@ h_proportion_subgroups_df <- function(variables,
 
 #' @describeIn h_response_subgroups helper to prepare a data frame with estimates of
 #'   the odds ratio between a treatment and a control arm.
+#'
 #' @inheritParams response_subgroups
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
 #'   required if stratified analysis is performed.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Unstratatified analysis.
 #' h_odds_ratio_df(
 #'   c(TRUE, FALSE, FALSE, TRUE),
@@ -169,6 +174,8 @@ h_proportion_subgroups_df <- function(variables,
 #'   strata_data = adrs_f[, c("STRATA1", "STRATA2")],
 #'   method = "cmh"
 #' )
+#'
+#' @export
 h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
   assertthat::assert_that(
     is_equal_length(rsp, arm),
@@ -281,9 +288,8 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #'   arm across subgroups in a data frame. `variables` corresponds to the names of variables found in
 #'   `data`, passed as a named list and requires elements `rsp`, `arm` and optionally `subgroups`
 #'   and `strat`. `groups_lists` optionally specifies groupings for `subgroups` variables.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Unstratified analysis.
 #' h_odds_ratio_subgroups_df(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -317,6 +323,8 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #'     )
 #'   )
 #' )
+#'
+#' @export
 h_odds_ratio_subgroups_df <- function(variables,
                                       data,
                                       groups_lists = list(),

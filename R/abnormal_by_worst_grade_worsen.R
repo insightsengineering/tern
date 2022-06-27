@@ -160,7 +160,10 @@ h_adlb_worsen <- function(adlb,
 #' highest post-baseline lab grade variable `.var`, baseline lab grade variable `baseline_var`,
 #' and the direction of interest specified in `direction_var`.
 #'
+#' @inheritParams argument_convention
+#' @inheritParams h_adlb_worsen
 #' @param baseline_var (`string`) \cr baseline lab grade variable
+#'
 #' @return [h_worsen_counter()] returns the counts and fraction of patients
 #' whose worst post-baseline lab grades are worse than their baseline grades, for
 #' post-baseline worst grades "1", "2", "3", "4" and "Any".

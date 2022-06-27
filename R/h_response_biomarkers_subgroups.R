@@ -6,6 +6,7 @@
 #' when reading about the user-facing functions.
 #'
 #' @inheritParams response_biomarkers_subgroups
+#' @inheritParams extract_rsp_biomarkers
 #' @inheritParams argument_convention
 #'
 #' @examples

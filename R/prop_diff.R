@@ -3,9 +3,6 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
-#' @param grp (`factor`)\cr
-#'   vector assigning observations to one out of two groups
-#'   (e.g. reference and treatment group).
 #'
 #' @seealso [h_prop_diff()] for relevant helper functions.
 #'

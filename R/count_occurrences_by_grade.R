@@ -8,8 +8,6 @@
 #'
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
-#' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level
-#'   and each entry represents a count.
 #' @param remove_single (`logical`)\cr `TRUE` to not include the elements of one-element grade groups
 #' in the the output list; in this case only the grade groups names will be included in the output.
 #'
@@ -24,6 +22,10 @@ NULL
 #' individual grade frequencies. The order of the final result follows the order of `grade_groups`.
 #' The elements under any-grade group (if any), i.e. the grade group equal to `refs` will be moved to
 #' the end. Grade groups names must be unique.
+#'
+#' @inheritParams count_occurrences_by_grade
+#' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level
+#'   and each entry represents a count.
 #'
 #' @examples
 #' h_append_grade_groups(

@@ -5,8 +5,6 @@
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'
-#' @param data (`data frame`)\cr
-#'   with at least the variables `rsp`, `grp`, and in addition `strata` for [or_clogit()].
 #' @details This function uses either logistic regression for unstratified
 #'   analyses, or conditional logistic regression for stratified analyses.
 #'   The Wald confidence interval with the specified confidence level is

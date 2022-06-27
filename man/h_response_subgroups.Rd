@@ -41,6 +41,8 @@ h_odds_ratio_subgroups_df(
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
+\item{label_all}{(\code{string})\cr label for the total population analysis.}
+
 \item{strata_data}{(\code{factor}, \code{data.frame} or \code{NULL})\cr
 required if stratified analysis is performed.}
 
@@ -53,11 +55,11 @@ so no test is performed.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Helper functions that tabulate in a data frame statistics such as response rate
 and odds ratio for population subgroups.
-
+}
+\details{
 Main functionality is to prepare data for use in a layout creating function.
 }
 \section{Functions}{
@@ -173,4 +175,5 @@ h_odds_ratio_subgroups_df(
     )
   )
 )
+
 }

@@ -186,6 +186,8 @@ fit_logistic <- function(data,
 #' with `binomial` family.
 #'
 #' @inheritParams argument_convention
+#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise
+#'   the median is used.
 #' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
 #' @method tidy glm
 #'

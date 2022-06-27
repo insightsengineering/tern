@@ -87,9 +87,6 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{refs}{(named \code{list} of \code{numeric})\cr where each name corresponds to a reference grade level
-and each entry represents a count.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

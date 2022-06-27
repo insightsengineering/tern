@@ -11,8 +11,7 @@ or_glm(data, conf_level)
 or_clogit(data, conf_level)
 }
 \arguments{
-\item{data}{(\verb{data frame})\cr
-with at least the variables \code{rsp}, \code{grp}, and in addition \code{strata} for \code{\link[=or_clogit]{or_clogit()}}.}
+\item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }

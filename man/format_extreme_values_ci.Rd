@@ -6,6 +6,9 @@
 \usage{
 format_extreme_values_ci(digits = 2L)
 }
+\arguments{
+\item{digits}{(\code{integer})\cr number of decimal places to display.}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

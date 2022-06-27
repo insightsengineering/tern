@@ -10,6 +10,9 @@
 \item{fit_glm}{logistic regression model fitted by \code{\link[stats:glm]{stats::glm()}} with "binomial" family.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{at}{(\code{NULL} or \code{numeric})\cr optional values for the interaction variable. Otherwise
+the median is used.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

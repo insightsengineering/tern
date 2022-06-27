@@ -6,6 +6,15 @@
 \usage{
 h_append_grade_groups(grade_groups, refs, remove_single = TRUE)
 }
+\arguments{
+\item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
+
+\item{refs}{(named \code{list} of \code{numeric})\cr where each name corresponds to a reference grade level
+and each entry represents a count.}
+
+\item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
+in the the output list; in this case only the grade groups names will be included in the output.}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

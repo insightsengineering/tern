@@ -57,8 +57,6 @@ plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}
 plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
 
 \item{col}{(\code{character})\cr lines colors.}
-
-\item{font_size}{(\code{number})\cr text font size.}
 }
 \value{
 a \code{ggplot} object or a list of \code{ggplot} objects.
