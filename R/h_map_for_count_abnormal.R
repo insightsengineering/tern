@@ -77,11 +77,11 @@ h_map_for_count_abnormal <- function(df,
   assertthat::assert_that(
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
-    is_df_with_no_na_level(
-      df,
-      variables = list(anl = variables$anl, split_rows = variables$split_rows), na_level = na_level
-    ),
     !any(is.na(df[variables$split_rows]))
+  )
+  assert_df_with_variables(df,
+    variables = list(anl = variables$anl, split_rows = variables$split_rows),
+    na_level = na_level
   )
   assert_df_with_factors(df, list(val = variables$anl))
   assert_valid_factor(df[[variables$anl]], any.missing = FALSE)

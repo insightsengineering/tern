@@ -12,7 +12,6 @@
 \alias{is_quantiles_vector}
 \alias{all_elements_in_ref}
 \alias{has_tabletree_colnames}
-\alias{is_df_with_no_na_level}
 \title{Additional Assertions for \code{checkmate}}
 \usage{
 assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
@@ -20,15 +19,16 @@ assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
 assert_df_with_variables(
   df,
   variables,
+  na_level = NULL,
   .var.name = checkmate::vname(df),
   add = NULL
 )
 
 assert_valid_factor(
   x,
-  any.missing = TRUE,
   min.levels = 1,
   max.levels = NULL,
+  any.missing = TRUE,
   .var.name = checkmate::vname(x),
   add = NULL
 )
@@ -38,6 +38,8 @@ assert_df_with_factors(
   variables,
   min.levels = 1,
   max.levels = NULL,
+  any.missing = TRUE,
+  na_level = NULL,
   .var.name = checkmate::vname(df),
   add = NULL
 )
@@ -53,21 +55,23 @@ is_quantiles_vector(x, include_boundaries = FALSE)
 all_elements_in_ref(x, ref)
 
 has_tabletree_colnames(x, col_names)
-
-is_df_with_no_na_level(df, variables, na_level)
 }
 \arguments{
 \item{x}{object to test}
 
-\item{df}{(\verb{data frame})\cr input dataset.}
+\item{df}{supposed data frame to test}
 
-\item{variables}{(\verb{named list})\cr columns from dataset where you want to check if \code{na_level} exists.}
+\item{variables}{(named \code{list} of \code{character})\cr supposed variables list to test}
 
-\item{any.missing}{Default is \code{TRUE}, allowing missing values (\code{NA}).}
+\item{na_level}{(\code{string})\cr the string user has been using to represent NA or
+missing data. For \code{NA} values please consider using directly \code{base::is.na} or
+similar approaches.}
 
 \item{min.levels}{Minimum number of levels for \code{x}.}
 
 \item{max.levels}{Maximum number of levels for \code{x}.}
+
+\item{any.missing}{Default is \code{TRUE}, allowing missing values (\code{NA}).}
 
 \item{...}{a collection of objects to test.}
 
@@ -76,8 +80,6 @@ is_df_with_no_na_level(df, variables, na_level)
 \item{ref}{(\code{vector})\cr where matches from \code{x} are sought for \code{all_elements_in_ref}.}
 
 \item{col_names}{(\code{character})\cr column names which should be present in the table.}
-
-\item{na_level}{(\code{string})\cr the string user has been using to represent NA or missing data.}
 }
 \description{
 We provide additional assertion functions which can be used together with \code{\link[checkmate:assert]{checkmate::assert()}}.
@@ -95,7 +97,8 @@ data.frame while the opposite is not required.
 Note that \code{NULL} and \code{NA} elements are allowed.
 
 \item \code{assert_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
-are all factors.
+are all factors. Note that the creation of \code{NA} by direct call of \code{factor()} will
+trim \code{NA} levels out of the vector list itself.
 
 \item \code{is_equal_length}: Check that objects provided are of same length.
 
@@ -109,8 +112,6 @@ are all factors.
 \item \code{all_elements_in_ref}: Check whether all elements of \code{x} are in a reference vector.
 
 \item \code{has_tabletree_colnames}: Check whether \code{rtables} object \code{x} has the specified column names.
-
-\item \code{is_df_with_no_na_level}: check if the input \code{df} has \code{na_level} in its \code{variables}.
 }}
 
 \examples{
@@ -126,14 +127,23 @@ tern:::assert_list_of_variables(list("bla" = 2))
 }
 
 # Check whether `df` contains the analysis `variables`.
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
+variables = list(val = "a"))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
+variables = list(val = c("a", "b")))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
+variables = list(val = c("a", "b")))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3, e = "<Missing>"),
+variables = list(val = c("a", "b")), na_level = "<Missing>")
 
 # The following calls fail
 \dontrun{
-tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
+tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3),
+variables = list(val = "a"))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
+variables = list(val = c("a", "b", "c")))
+tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3, e = "<Missing>"),
+variables = list(val = c("a", "b", "e")), na_level = "<Missing>")
 }
 
 # Check whether `x` is a valid factor.
@@ -158,6 +168,12 @@ bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
 assert_df_with_factors(df = adf, variables = list(val = "a"))
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
+assert_df_with_factors(
+df = data.frame(a = factor(c("A", NA, "B")), b = 3),
+variable = list(val = "a"),
+min.levels = 2,
+max.levels = 2
+)
 # The following calls fail
 \dontrun{
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
@@ -195,11 +211,5 @@ is_quantiles_vector(0, include_boundaries = TRUE)
 all_elements_in_ref(c("a", "b"), c("a", "b", "c"))
 all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
 all_elements_in_ref(c(1:3), c(1:5))
-
-df <- data.frame(a = 1:3, b = 2:4)
-df$a <- ifelse(df$a == 1, "<Missing>", df$a)
-is_df_with_no_na_level(df, variables = list(a = "a"), na_level = "<Missing>")
-is_df_with_no_na_level(df, variables = list(b = "b"), na_level = "<Missing>")
-is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
 }
 \keyword{internal}

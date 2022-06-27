@@ -46,7 +46,7 @@ check_list_of_variables <- function(x) {
 #' @keywords internal
 assert_list_of_variables <- checkmate::makeAssertionFunction(check_list_of_variables)
 
-check_df_with_variables <- function(df, variables) {
+check_df_with_variables <- function(df, variables, na_level = NULL) {
   checkmate::assert_data_frame(df)
   assert_list_of_variables(variables)
 
@@ -62,31 +62,56 @@ check_df_with_variables <- function(df, variables) {
       paste(vars, collapse = ", ")
     ))
   }
+  # checking if na_level is present and in which column
+  if (!is.null(na_level)) {
+    checkmate::assert_string(na_level)
+    res <- unlist(lapply(as.list(df)[unlist(variables)], function(x) any(x == na_level)))
+    if (any(res)) {
+      return(paste0(
+        deparse(substitute(df)), " contains explicit na_level (", na_level,
+        ") in the following columns: ", paste0(unlist(variables)[res],
+          collapse = ", "
+        )
+      ))
+    }
+  }
   return(TRUE)
 }
 #' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
 #'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
+#' @param na_level (`string`)\cr the string user has been using to represent NA or
+#'   missing data. For `NA` values please consider using directly `base::is.na` or
+#'   similar approaches.
 #'
 #' @examples
 #' # Check whether `df` contains the analysis `variables`.
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
+#' variables = list(val = "a"))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
+#' variables = list(val = c("a", "b")))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
+#' variables = list(val = c("a", "b")))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3, e = "<Missing>"),
+#' variables = list(val = c("a", "b")), na_level = "<Missing>")
 #'
 #' # The following calls fail
 #' \dontrun{
-#' tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
-#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
+#' tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3),
+#' variables = list(val = "a"))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3),
+#' variables = list(val = c("a", "b", "c")))
+#' tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3, e = "<Missing>"),
+#' variables = list(val = c("a", "b", "e")), na_level = "<Missing>")
 #' }
 #'
 #' @keywords internal
 assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_variables)
 
 check_valid_factor <- function(x,
-                               any.missing = TRUE,
                                min.levels = 1,
-                               max.levels = NULL) {
+                               max.levels = NULL,
+                               any.missing = TRUE) {
   # checks on levels insertion
   checkmate::assert_int(min.levels, lower = 1)
   # no check of max.levels if it is NULL
@@ -109,9 +134,9 @@ check_valid_factor <- function(x,
 }
 #' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
 #'   Note that `NULL` and `NA` elements are allowed.
-#' @param any.missing Default is `TRUE`, allowing missing values (`NA`).
 #' @param min.levels Minimum number of levels for `x`.
 #' @param max.levels Maximum number of levels for `x`.
+#' @param any.missing Default is `TRUE`, allowing missing values (`NA`).
 #'
 #' @examples
 #' # Check whether `x` is a valid factor.
@@ -134,8 +159,13 @@ check_valid_factor <- function(x,
 assert_valid_factor <- checkmate::makeAssertionFunction(check_valid_factor)
 
 
-check_df_with_factors <- function(df, variables, min.levels = 1, max.levels = NULL) {
-  res <- check_df_with_variables(df, variables)
+check_df_with_factors <- function(df,
+                                  variables,
+                                  min.levels = 1,
+                                  max.levels = NULL,
+                                  any.missing = TRUE,
+                                  na_level = NULL) {
+  res <- check_df_with_variables(df, variables, na_level)
   # checking if all the columns specified by variables are valid factors
   if (isTRUE(res)) {
     # searching the data.frame with selected columns (variables) as a list
@@ -143,7 +173,8 @@ check_df_with_factors <- function(df, variables, min.levels = 1, max.levels = NU
       X = as.list(df)[unlist(variables)],
       FUN = check_valid_factor,
       min.levels = min.levels,
-      max.levels = max.levels
+      max.levels = max.levels,
+      any.missing = any.missing
     )
     res_lo <- unlist(vapply(res, Negate(isTRUE), logical(1)))
     if (any(res_lo)) {
@@ -161,7 +192,14 @@ check_df_with_factors <- function(df, variables, min.levels = 1, max.levels = NU
   return(res)
 }
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
-#'   are all factors.
+#'   are all factors. Note that the creation of `NA` by direct call of `factor()` will
+#'   trim `NA` levels out of the vector list itself.
+#' @param min.levels Minimum number of levels for `x`.
+#' @param max.levels Maximum number of levels for `x`.
+#' @param any.missing Default is `TRUE`, allowing missing values (`NA`).
+#' @param na_level (`string`)\cr the string user has been using to represent NA or
+#'   missing data. For `NA` values please consider using directly `base::is.na` or
+#'   similar approaches.
 #'
 #' @examples
 #' # Check whether `df` contains all factor analysis `variables`.
@@ -170,6 +208,12 @@ check_df_with_factors <- function(df, variables, min.levels = 1, max.levels = NU
 #' assert_df_with_factors(df = adf, variables = list(val = "a"))
 #' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
 #' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
+#' assert_df_with_factors(
+#' df = data.frame(a = factor(c("A", NA, "B")), b = 3),
+#' variable = list(val = "a"),
+#' min.levels = 2,
+#' max.levels = 2
+#' )
 #' # The following calls fail
 #' \dontrun{
 #' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
@@ -316,28 +360,4 @@ assertthat::on_failure(has_tabletree_colnames) <- function(call, env) {
     "required column names ", paste(deparse(missing_col_names, width.cutoff = 500L), collapse = ""),
     " are not found in table"
   )
-}
-
-#' @describeIn assertions check if the input `df` has `na_level` in its `variables`.
-#' @param df (`data frame`)\cr input dataset.
-#' @param variables (`named list`)\cr columns from dataset where you want to check if `na_level` exists.
-#' @param na_level (`string`)\cr the string user has been using to represent NA or missing data.
-#' @export
-#'
-#' @examples
-#'
-#' df <- data.frame(a = 1:3, b = 2:4)
-#' df$a <- ifelse(df$a == 1, "<Missing>", df$a)
-#' is_df_with_no_na_level(df, variables = list(a = "a"), na_level = "<Missing>")
-#' is_df_with_no_na_level(df, variables = list(b = "b"), na_level = "<Missing>")
-#' is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
-is_df_with_no_na_level <- function(df, variables, na_level) {
-  assertthat::assert_that(
-    assertthat::is.string(na_level)
-  )
-  assert_df_with_variables(df, variables)
-  !any(df[, unlist(variables)] == na_level)
-}
-assertthat::on_failure(is_df_with_no_na_level) <- function(call, env) {
-  paste(deparse(call$df), "contains missing data as defined by the argument na_level")
 }

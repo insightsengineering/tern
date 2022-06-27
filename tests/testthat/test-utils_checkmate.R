@@ -24,6 +24,11 @@ testthat::test_that("assert_df_with_variables is silent with healthy input", {
     df = data.frame(a = 5, b = 3),
     variables = list(val = c("a", "b"))
   ))
+  testthat::expect_silent(assert_df_with_variables(
+    df = data.frame(a = "A", b = 3),
+    variables = list(vars = c("a", "b")),
+    na_level = "<Missing>"
+  ))
 })
 
 testthat::test_that("assert_df_with_variables fails with wrong input", {
@@ -43,19 +48,11 @@ testthat::test_that("assert_df_with_variables fails with wrong input", {
     df = list(a = 5, b = 3),
     variables = list(aval = "b")
   ))
-  bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
-  testthat::expect_error(
-    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b", val = ""))
-  )
-  testthat::expect_error(
-    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b", val = "d", val = "e"))
-  )
-  testthat::expect_error(
-    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b", val = "e"))
-  )
-  testthat::expect_error(
-    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
-  )
+  testthat::expect_error(assert_df_with_variables(
+    df = data.frame(a = "A", b = "<Missing>"),
+    variables = list(vars = c("a", "b")),
+    na_level = "<Missing>"
+  ))
 })
 
 # assert_valid_factor ----
@@ -85,7 +82,13 @@ testthat::test_that("assert_df_with_factors is silent with healthy input", {
     min.levels = 1
   ))
   testthat::expect_silent(assert_df_with_factors(
-    df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
+    df = data.frame(a = factor("A", levels = c("A", NA, "B")), b = 3),
+    variable = list(val = "a"),
+    min.levels = 2,
+    max.levels = 2
+  ))
+  testthat::expect_silent(assert_df_with_factors(
+    df = data.frame(a = factor(c("A", NA, "B")), b = 3),
     variable = list(val = "a"),
     min.levels = 2,
     max.levels = 2
@@ -114,6 +117,19 @@ testthat::test_that("assert_df_with_factors fails with wrong input", {
     min.levels = 5,
     max.levels = 3
   ))
+  bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
+  testthat::expect_error(
+    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b", val = ""))
+  )
+  testthat::expect_error(
+    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b", val = "d", val = "e"))
+  )
+  testthat::expect_error(
+    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b", val = "e"))
+  )
+  testthat::expect_error(
+    assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
+  )
 })
 
 # is_equal_length ----
@@ -185,22 +201,4 @@ testthat::test_that("has_tabletree_colnames works correctly", {
     build_table(DM)
   testthat::expect_true(has_tabletree_colnames(tab, "all obs"))
   testthat::expect_false(has_tabletree_colnames(tab, c("all obs", "Arm A")))
-})
-
-# is_df_with_no_na_level ----
-
-testthat::test_that("is_df_with_no_na_level is TRUE with healthy input", {
-  testthat::expect_true(is_df_with_no_na_level(
-    df = data.frame(a = "A", b = 3),
-    variables = list(vars = c("a", "b")),
-    na_level = "<Missing>"
-  ))
-})
-
-testthat::test_that("is_df_with_no_na_level is FALSE with missing data", {
-  testthat::expect_false(is_df_with_no_na_level(
-    df = data.frame(a = "A", b = "<Missing>"),
-    variables = list(vars = c("a", "b")),
-    na_level = "<Missing>"
-  ))
 })

@@ -325,7 +325,6 @@ reference:
     contents:
       - all_elements_in_ref
       - assert_df_with_factors
-      - is_df_with_no_na_level
       - is_proportion
       - is_proportion_vector
       - is_quantiles_vector
