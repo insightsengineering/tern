@@ -60,7 +60,7 @@
    `fit_survival_step`, `footnotes`, `footnotes-set` (note: this function is defined twice in the footnotes file), 
    `format_count_fraction`, `format_fraction_threshold`, `formatting_functions`, 
    `format_fraction`, `combination_function` (S4 method), `compare_variables` (S3 method),
-   `h_stack_by_baskets`, `h_pkparam_sort`, `h_adsl_adlb_merge_using_worst_flag`, `kaplan_meier`.
+   `h_stack_by_baskets`, `h_pkparam_sort`, `h_adsl_adlb_merge_using_worst_flag`, `kaplan_meier`, `h_incidence_rate`.
 
 *  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
    tests, examples, and vignettes when present for the following functions:
@@ -98,9 +98,16 @@
    `h_content_first_row`, `a_response_subgroups`, `range_noinf`, `has_count_in_cols`, 
    `has_counts_difference`, `prop_chisq`, `prop_cmh`, `prop_schouten`, `prop_fisher`, 
    `s_test_proportion_diff`, `a_test_proportion_diff`,`h_split_param`,
-   `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`.
+   `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`, `create_afun_summary`, `create_afun_compare`,
+   `prop_wilson`, `prop_clopper_pearson`, `prop_wald`, `prop_agresti_coull`, `prop_jeffreys`, 
+   `prop_diff_wald`, `prop_diff_ha`, `prop_diff_nc`, `prop_diff_cmh`.
    
 * Deprecated badge added to `g_mmrm`
+
+* Updated `_pkgdown.yml` to clean up `tern` Reference webpage
+* Tidied up roxygen documentation
+* Separated helper function documentation - created separate files `tidy_cox.R`, `h_prop.R`, `h_prop_diff.R`, `h_prop_diff_test.R`, `h_coxreg.R`, `h_logistic.R`
+* Removed duplicate footnotes functions from `g_forest.R`
 
 # tern 0.7.8
 

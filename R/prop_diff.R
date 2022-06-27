@@ -40,6 +40,45 @@ check_diff_prop_ci <- function(rsp,
   invisible()
 }
 
+#' Description of Method Used for Proportion Comparison
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' This is an auxiliary function that describes the analysis in [s_proportion_diff()].
+#'
+#' @inheritParams s_proportion_diff
+#' @param long (`logical`)\cr
+#'   Whether a long or a short (default) description is required.
+#' @return String describing the analysis.
+#'
+#' @export
+d_proportion_diff <- function(conf_level,
+                              method,
+                              long = FALSE) {
+  label <- paste0(conf_level * 100, "% CI")
+  if (long) {
+    label <- paste(
+      label,
+      ifelse(
+        method == "cmh",
+        "for adjusted difference",
+        "for difference"
+      )
+    )
+  }
+
+  method_part <- switch(method,
+                        "cmh" = "CMH, without correction",
+                        "waldcc" = "Wald, with correction",
+                        "wald" = "Wald, without correction",
+                        "ha" = "Anderson-Hauck",
+                        "newcombe" = "Newcombe, without correction",
+                        "newcombecc" = "Newcombe, with correction",
+                        stop(paste(method, "does not have a description"))
+  )
+  paste0(label, " (", method_part, ")")
+}
+
 #' @describeIn prop_diff Statistics function estimating the difference
 #'   in terms of responder proportion.
 #'
@@ -189,43 +228,4 @@ estimate_proportion_diff <- function(lyt,
     show_labels = show_labels,
     table_names = table_names
   )
-}
-
-#' Description of Method Used for Proportion Comparison
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' This is an auxiliary function that describes the analysis in [s_proportion_diff()].
-#'
-#' @inheritParams s_proportion_diff
-#' @param long (`logical`)\cr
-#'   Whether a long or a short (default) description is required.
-#' @return String describing the analysis.
-#'
-#' @export
-d_proportion_diff <- function(conf_level,
-                              method,
-                              long = FALSE) {
-  label <- paste0(conf_level * 100, "% CI")
-  if (long) {
-    label <- paste(
-      label,
-      ifelse(
-        method == "cmh",
-        "for adjusted difference",
-        "for difference"
-      )
-    )
-  }
-
-  method_part <- switch(method,
-                        "cmh" = "CMH, without correction",
-                        "waldcc" = "Wald, with correction",
-                        "wald" = "Wald, without correction",
-                        "ha" = "Anderson-Hauck",
-                        "newcombe" = "Newcombe, without correction",
-                        "newcombecc" = "Newcombe, with correction",
-                        stop(paste(method, "does not have a description"))
-  )
-  paste0(label, " (", method_part, ")")
 }

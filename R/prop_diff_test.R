@@ -90,6 +90,29 @@ s_test_proportion_diff <- function(df,
   y
 }
 
+#' Description of the Difference Test Between Two Proportions
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' This is an auxiliary function that describes the analysis in
+#' `s_test_proportion_diff`.
+#'
+#' @inheritParams s_test_proportion_diff
+#' @return `string` describing the test from which the p-value is derived.
+#'
+#' @export
+d_test_proportion_diff <- function(method) {
+  assertthat::assert_that(assertthat::is.string(method))
+  meth_part <- switch(method,
+                      "schouten" = "Chi-Squared Test with Schouten Correction",
+                      "chisq" = "Chi-Squared Test",
+                      "cmh" = "Cochran-Mantel-Haenszel Test",
+                      "fisher" = "Fisher's Exact Test",
+                      stop(paste(method, "does not have a description"))
+  )
+  paste0("p-value (", meth_part, ")")
+}
+
 #' @describeIn prop_diff_test Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
@@ -152,27 +175,4 @@ test_proportion_diff <- function(lyt,
     show_labels = show_labels,
     table_names = table_names
   )
-}
-
-#' Description of the Difference Test Between Two Proportions
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' This is an auxiliary function that describes the analysis in
-#' `s_test_proportion_diff`.
-#'
-#' @inheritParams s_test_proportion_diff
-#' @return `string` describing the test from which the p-value is derived.
-#'
-#' @export
-d_test_proportion_diff <- function(method) {
-  assertthat::assert_that(assertthat::is.string(method))
-  meth_part <- switch(method,
-                      "schouten" = "Chi-Squared Test with Schouten Correction",
-                      "chisq" = "Chi-Squared Test",
-                      "cmh" = "Cochran-Mantel-Haenszel Test",
-                      "fisher" = "Fisher's Exact Test",
-                      stop(paste(method, "does not have a description"))
-  )
-  paste0("p-value (", meth_part, ")")
 }
