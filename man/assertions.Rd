@@ -197,14 +197,14 @@ assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d
 assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
 }
 
-
 #' # Check whether `x` is a valid list of variable names.
 a <- 1
 b <- NULL
 c <- c(1, "car")
 d <- 5
-check_equal_length(a, b, c, d)
+\dontrun{
 assert_equal_length(a, b, c, d)
+}
 
 # Check whether `x` is between 0 and 1.
 is_proportion(x = 0.3)
