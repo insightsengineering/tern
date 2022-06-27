@@ -12,7 +12,7 @@ Summarize patient's survival rate and difference of survival rates between group
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,12 +35,6 @@ Summarize patient's survival rate and difference of survival rates between group
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -69,56 +63,56 @@ Summarize patient's survival rate and difference of survival rates between group
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">s_surv_timepoint</span><span class="op">(</span>
-  <span class="va">df</span>,
-  <span class="va">.var</span>,
-  <span class="va">time_point</span>,
-  <span class="va">is_event</span>,
-  control <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">a_surv_timepoint</span><span class="op">(</span>
-  <span class="va">df</span>,
-  <span class="va">.var</span>,
-  <span class="va">time_point</span>,
-  <span class="va">is_event</span>,
-  control <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">s_surv_timepoint_diff</span><span class="op">(</span>
-  <span class="va">df</span>,
-  <span class="va">.var</span>,
-  <span class="va">.ref_group</span>,
-  <span class="va">.in_ref_col</span>,
-  <span class="va">time_point</span>,
-  control <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">a_surv_timepoint_diff</span><span class="op">(</span>
-  <span class="va">df</span>,
-  <span class="va">.var</span>,
-  <span class="va">.ref_group</span>,
-  <span class="va">.in_ref_col</span>,
-  <span class="va">time_point</span>,
-  control <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">surv_timepoint</span><span class="op">(</span>
-  <span class="va">lyt</span>,
-  <span class="va">vars</span>,
-  <span class="va">...</span>,
-  table_names_suffix <span class="op">=</span> <span class="st">""</span>,
-  var_labels <span class="op">=</span> <span class="st">"Time"</span>,
-  show_labels <span class="op">=</span> <span class="st">"visible"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surv"</span>, <span class="st">"surv_diff"</span>, <span class="st">"both"</span><span class="op">)</span>,
-  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pt_at_risk"</span>, <span class="st">"event_free_rate"</span>, <span class="st">"rate_ci"</span>, <span class="st">"rate_diff"</span>, <span class="st">"rate_diff_ci"</span>,
-    <span class="st">"ztest_pval"</span><span class="op">)</span>,
-  .formats <span class="op">=</span> <span class="cn">NULL</span>,
-  .labels <span class="op">=</span> <span class="cn">NULL</span>,
-  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_surv_timepoint</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">time_point</span>,</span>
+<span>  <span class="va">is_event</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">a_surv_timepoint</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">time_point</span>,</span>
+<span>  <span class="va">is_event</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_surv_timepoint_diff</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">.ref_group</span>,</span>
+<span>  <span class="va">.in_ref_col</span>,</span>
+<span>  <span class="va">time_point</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">a_surv_timepoint_diff</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">.ref_group</span>,</span>
+<span>  <span class="va">.in_ref_col</span>,</span>
+<span>  <span class="va">time_point</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">surv_timepoint</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">vars</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  table_names_suffix <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  var_labels <span class="op">=</span> <span class="st">"Time"</span>,</span>
+<span>  show_labels <span class="op">=</span> <span class="st">"visible"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surv"</span>, <span class="st">"surv_diff"</span>, <span class="st">"both"</span><span class="op">)</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pt_at_risk"</span>, <span class="st">"event_free_rate"</span>, <span class="st">"rate_ci"</span>, <span class="st">"rate_diff"</span>, <span class="st">"rate_diff_ci"</span>,</span>
+<span>    <span class="st">"ztest_pval"</span><span class="op">)</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -230,20 +224,20 @@ Note that additional formatting arguments can be used here.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ADTTE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span>
-<span class="r-in"><span class="va">ADTTE_f</span> <span class="op">&lt;-</span> <span class="va">ADTTE</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span class="r-in">    AVAL <span class="op">=</span> <span class="fu"><a href="day2month.html">day2month</a></span><span class="op">(</span><span class="va">AVAL</span><span class="op">)</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">ADTTE_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_surv_timepoint</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, time_point <span class="op">=</span> <span class="fl">7</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ADTTE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span></span>
+<span class="r-in"><span><span class="va">ADTTE_f</span> <span class="op">&lt;-</span> <span class="va">ADTTE</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    AVAL <span class="op">=</span> <span class="fu"><a href="day2month.html">day2month</a></span><span class="op">(</span><span class="va">AVAL</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">ADTTE_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_surv_timepoint</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, time_point <span class="op">=</span> <span class="fl">7</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pt_at_risk</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 103</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
@@ -264,8 +258,8 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_surv_timepoint</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, time_point <span class="op">=</span> <span class="fl">7</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_surv_timepoint</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, time_point <span class="op">=</span> <span class="fl">7</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          row_name formatted_cell indent_mod                         row_label</span>
@@ -273,11 +267,11 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 event_free_rate          83.83          0               Event Free Rate (%)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         rate_se           3.23          1 Standard Error of Event Free Rate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4         rate_ci (77.49, 90.17)          1                            95% CI</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">df_ref_group</span> <span class="op">&lt;-</span> <span class="va">ADTTE_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM B"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_surv_timepoint_diff</span><span class="op">(</span><span class="va">df</span>, <span class="va">df_ref_group</span>, .in_ref_col <span class="op">=</span> <span class="cn">TRUE</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df_ref_group</span> <span class="op">&lt;-</span> <span class="va">ADTTE_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM B"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_surv_timepoint_diff</span><span class="op">(</span><span class="va">df</span>, <span class="va">df_ref_group</span>, .in_ref_col <span class="op">=</span> <span class="cn">TRUE</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $rate_diff</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
@@ -293,14 +287,14 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "p-value (Z-test)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_surv_timepoint_diff</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">df</span>,</span>
-<span class="r-in">  <span class="va">df_ref_group</span>,</span>
-<span class="r-in">  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">  time_point <span class="op">=</span> <span class="fl">7</span>,</span>
-<span class="r-in">  is_event <span class="op">=</span> <span class="st">"is_event"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_surv_timepoint_diff</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">df</span>,</span></span>
+<span class="r-in"><span>  <span class="va">df_ref_group</span>,</span></span>
+<span class="r-in"><span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>  time_point <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>  is_event <span class="op">=</span> <span class="st">"is_event"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $rate_diff</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.100492</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
@@ -316,34 +310,34 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "p-value (Z-test)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_surv_timepoint_diff</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">df</span>,</span>
-<span class="r-in">  <span class="va">df_ref_group</span>,</span>
-<span class="r-in">  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">  time_point <span class="op">=</span> <span class="fl">7</span>,</span>
-<span class="r-in">  is_event <span class="op">=</span> <span class="st">"is_event"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_surv_timepoint_diff</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">df</span>,</span></span>
+<span class="r-in"><span>  <span class="va">df_ref_group</span>,</span></span>
+<span class="r-in"><span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>  time_point <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>  is_event <span class="op">=</span> <span class="st">"is_event"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       row_name formatted_cell indent_mod                     row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    rate_diff           1.10          1 Difference in Event Free Rate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 rate_diff_ci (-8.03, 10.23)          2                        95% CI</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3   ztest_pval         0.8133          2              p-value (Z-test)</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Survival at given time points.</span></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">surv_timepoint</span><span class="op">(</span></span>
-<span class="r-in">    vars <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    var_labels <span class="op">=</span> <span class="st">"Months"</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span>
-<span class="r-in">    time_point <span class="op">=</span> <span class="fl">7</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">ADTTE_f</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Survival at given time points.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">surv_timepoint</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    var_labels <span class="op">=</span> <span class="st">"Months"</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
+<span class="r-in"><span>    time_point <span class="op">=</span> <span class="fl">7</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">ADTTE_f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    ARM A            ARM B            ARM C     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   (N=134)          (N=134)          (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————</span>
@@ -351,20 +345,20 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Patients remaining at risk        103              102               83      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Event Free Rate (%)              83.83            82.73            66.98     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                       (77.49, 90.17)   (76.15, 89.30)   (58.79, 75.17)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Difference in survival at given time points.</span></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">surv_timepoint</span><span class="op">(</span></span>
-<span class="r-in">    vars <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    var_labels <span class="op">=</span> <span class="st">"Months"</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span>
-<span class="r-in">    time_point <span class="op">=</span> <span class="fl">9</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="st">"surv_diff"</span>,</span>
-<span class="r-in">    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rate_diff"</span> <span class="op">=</span> <span class="fl">0L</span>, <span class="st">"rate_diff_ci"</span> <span class="op">=</span> <span class="fl">2L</span>, <span class="st">"ztest_pval"</span> <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">ADTTE_f</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Difference in survival at given time points.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">surv_timepoint</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    var_labels <span class="op">=</span> <span class="st">"Months"</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
+<span class="r-in"><span>    time_point <span class="op">=</span> <span class="fl">9</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="st">"surv_diff"</span>,</span></span>
+<span class="r-in"><span>    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rate_diff"</span> <span class="op">=</span> <span class="fl">0L</span>, <span class="st">"rate_diff_ci"</span> <span class="op">=</span> <span class="fl">2L</span>, <span class="st">"ztest_pval"</span> <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">ADTTE_f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    ARM A        ARM B             ARM C     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   (N=134)      (N=134)           (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————</span>
@@ -372,19 +366,19 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Event Free Rate                 -4.34            -20.05     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       95% CI                                (-14.48, 5.79)   (-31.02, -9.09)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       p-value (Z-test)                          0.4012           0.0003     </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Survival and difference in survival at given time points.</span></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">surv_timepoint</span><span class="op">(</span></span>
-<span class="r-in">    vars <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    var_labels <span class="op">=</span> <span class="st">"Months"</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span>
-<span class="r-in">    time_point <span class="op">=</span> <span class="fl">9</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="st">"both"</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">ADTTE_f</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Survival and difference in survival at given time points.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">surv_timepoint</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    var_labels <span class="op">=</span> <span class="st">"Months"</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
+<span class="r-in"><span>    time_point <span class="op">=</span> <span class="fl">9</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="st">"both"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">ADTTE_f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                     ARM A            ARM B             ARM C     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    (N=134)          (N=134)           (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————</span>

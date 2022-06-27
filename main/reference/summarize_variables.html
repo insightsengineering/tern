@@ -16,7 +16,7 @@ with the new Analyze Function summarize_vars()."><!-- mathjax --><script src="ht
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,12 +39,6 @@ with the new Analyze Function summarize_vars()."><!-- mathjax --><script src="ht
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -75,117 +69,117 @@ with the new Analyze Function <code>summarize_vars()</code>.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">denom</span>, <span class="va">.N_row</span>, <span class="va">.N_col</span>, <span class="va">na_level</span>, <span class="va">.var</span>, <span class="va">control</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for numeric</span>
-<span class="fu">s_summary</span><span class="op">(</span>
-  <span class="va">x</span>,
-  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">denom</span>,
-  <span class="va">.N_row</span>,
-  <span class="va">.N_col</span>,
-  <span class="va">na_level</span>,
-  <span class="va">.var</span>,
-  control <span class="op">=</span> <span class="fu"><a href="control_summarize_vars.html">control_summarize_vars</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for factor</span>
-<span class="fu">s_summary</span><span class="op">(</span>
-  <span class="va">x</span>,
-  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,
-  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,
-  <span class="va">.N_row</span>,
-  <span class="va">.N_col</span>,
-  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for character</span>
-<span class="fu">s_summary</span><span class="op">(</span>
-  <span class="va">x</span>,
-  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,
-  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,
-  <span class="va">.N_row</span>,
-  <span class="va">.N_col</span>,
-  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,
-  <span class="va">.var</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for logical</span>
-<span class="fu">s_summary</span><span class="op">(</span>
-  <span class="va">x</span>,
-  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,
-  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,
-  <span class="va">.N_row</span>,
-  <span class="va">.N_col</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">a_summary</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, <span class="va">.N_row</span>, <span class="va">.N_col</span>, <span class="va">.var</span><span class="op">)</span>
-
-<span class="co"># S3 method for numeric</span>
-<span class="fu">a_summary</span><span class="op">(</span>
-  <span class="va">x</span>,
-  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">denom</span>,
-  <span class="va">.N_row</span>,
-  <span class="va">.N_col</span>,
-  <span class="va">na_level</span>,
-  <span class="va">.var</span>,
-  control <span class="op">=</span> <span class="fu"><a href="control_summarize_vars.html">control_summarize_vars</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for factor</span>
-<span class="fu">a_summary</span><span class="op">(</span>
-  <span class="va">x</span>,
-  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,
-  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,
-  <span class="va">.N_row</span>,
-  <span class="va">.N_col</span>,
-  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for character</span>
-<span class="fu">a_summary</span><span class="op">(</span>
-  <span class="va">x</span>,
-  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,
-  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,
-  <span class="va">.N_row</span>,
-  <span class="va">.N_col</span>,
-  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,
-  <span class="va">.var</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for logical</span>
-<span class="fu">a_summary</span><span class="op">(</span>
-  <span class="va">x</span>,
-  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,
-  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,
-  <span class="va">.N_row</span>,
-  <span class="va">.N_col</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">create_afun_summary</span><span class="op">(</span><span class="va">.stats</span>, <span class="va">.formats</span>, <span class="va">.labels</span>, <span class="va">.indent_mods</span><span class="op">)</span>
-
-<span class="fu">summarize_vars</span><span class="op">(</span>
-  <span class="va">lyt</span>,
-  <span class="va">vars</span>,
-  var_labels <span class="op">=</span> <span class="va">vars</span>,
-  nested <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>,
-  show_labels <span class="op">=</span> <span class="st">"default"</span>,
-  table_names <span class="op">=</span> <span class="va">vars</span>,
-  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"median"</span>, <span class="st">"range"</span>, <span class="st">"count_fraction"</span><span class="op">)</span>,
-  .formats <span class="op">=</span> <span class="cn">NULL</span>,
-  .labels <span class="op">=</span> <span class="cn">NULL</span>,
-  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">denom</span>, <span class="va">.N_row</span>, <span class="va">.N_col</span>, <span class="va">na_level</span>, <span class="va">.var</span>, <span class="va">control</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for numeric</span></span>
+<span><span class="fu">s_summary</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">denom</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  <span class="va">na_level</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="control_summarize_vars.html">control_summarize_vars</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for factor</span></span>
+<span><span class="fu">s_summary</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for character</span></span>
+<span><span class="fu">s_summary</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for logical</span></span>
+<span><span class="fu">s_summary</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">a_summary</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, <span class="va">.N_row</span>, <span class="va">.N_col</span>, <span class="va">.var</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for numeric</span></span>
+<span><span class="fu">a_summary</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">denom</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  <span class="va">na_level</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="control_summarize_vars.html">control_summarize_vars</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for factor</span></span>
+<span><span class="fu">a_summary</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for character</span></span>
+<span><span class="fu">a_summary</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for logical</span></span>
+<span><span class="fu">a_summary</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">create_afun_summary</span><span class="op">(</span><span class="va">.stats</span>, <span class="va">.formats</span>, <span class="va">.labels</span>, <span class="va">.indent_mods</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">summarize_vars</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">vars</span>,</span>
+<span>  var_labels <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  show_labels <span class="op">=</span> <span class="st">"default"</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"median"</span>, <span class="st">"range"</span>, <span class="st">"count_fraction"</span><span class="op">)</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -387,10 +381,10 @@ functions (and possibly others in the future), we provide a constructor that doe
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># `s_summary.numeric`</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Basic usage: empty numeric returns NA-filled items.</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># `s_summary.numeric`</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Basic usage: empty numeric returns NA-filled items.</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0 </span>
@@ -489,10 +483,10 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      NA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Management of NA values.</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_real_</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Management of NA values.</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_real_</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 </span>
@@ -591,7 +585,7 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      NA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 </span>
@@ -690,9 +684,9 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      NA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_real_</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, stats <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_real_</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, stats <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 </span>
@@ -791,21 +785,21 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 52.10922 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Benefits in `rtables` contructions:</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  Group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span class="r-in">  sub_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">  x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The summary obtained in with `rtables`:</span></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"sub_group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"x"</span>, afun <span class="op">=</span> <span class="va">s_summary</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Benefits in `rtables` contructions:</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  Group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  sub_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The summary obtained in with `rtables`:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"sub_group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"x"</span>, afun <span class="op">=</span> <span class="va">s_summary</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                            A                       B                      C                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a                                                                                                            </span>
@@ -852,10 +846,10 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span>   geom_mean                                NA                      4               5.47722557505166          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Geometric Mean 95% CI                    NA                     NA      1.71994304449266, 17.4424380482025 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   geom_cv                                  NA                     NA               12.945835316564           </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## By comparison with `lapply`:</span></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">dta_test</span>, f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">dta_test</span>, <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">Group</span>, <span class="va">sub_group</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">X</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## By comparison with `lapply`:</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">dta_test</span>, f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">dta_test</span>, <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">Group</span>, <span class="va">sub_group</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">X</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $A.a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $A.a$n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
@@ -1456,10 +1450,10 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12.94584 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="co"># `s_summary.factor`</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Basic usage:</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># `s_summary.factor`</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Basic usage:</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1488,8 +1482,8 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="co"># Empty factor returns NA-filled items.</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># Empty factor returns NA-filled items.</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1518,11 +1512,11 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Management of NA values.</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="explicit_na.html">explicit_na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Management of NA values.</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="explicit_na.html">explicit_na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1539,7 +1533,7 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1562,10 +1556,10 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Different denominators.</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, denom <span class="op">=</span> <span class="st">"N_row"</span>, .N_row <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Different denominators.</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, denom <span class="op">=</span> <span class="st">"N_row"</span>, .N_row <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1594,7 +1588,7 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, denom <span class="op">=</span> <span class="st">"N_col"</span>, .N_col <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, denom <span class="op">=</span> <span class="st">"N_col"</span>, .N_col <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1623,10 +1617,10 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="co"># `s_summary.character`</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Basic usage:</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># `s_summary.character`</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Basic usage:</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
@@ -1656,7 +1650,7 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span>, <span class="st">""</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"x"</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span>, <span class="st">""</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"x"</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
@@ -1692,10 +1686,10 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="co"># `s_summary.logical`</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Basic usage:</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># `s_summary.logical`</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Basic usage:</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1708,10 +1702,10 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Management of NA values.</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Management of NA values.</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1724,7 +1718,7 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1737,10 +1731,10 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Different denominators.</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, denom <span class="op">=</span> <span class="st">"N_row"</span>, .N_row <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Different denominators.</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, denom <span class="op">=</span> <span class="st">"N_row"</span>, .N_row <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1753,7 +1747,7 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, denom <span class="op">=</span> <span class="st">"N_col"</span>, .N_col <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">s_summary</span><span class="op">(</span><span class="va">x</span>, denom <span class="op">=</span> <span class="st">"N_col"</span>, .N_col <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1766,8 +1760,8 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="co"># `a_summary.numeric`</span></span>
-<span class="r-in"><span class="fu">a_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">20</span>, .var <span class="op">=</span> <span class="st">"bla"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># `a_summary.numeric`</span></span></span>
+<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">20</span>, .var <span class="op">=</span> <span class="st">"bla"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        row_name formatted_cell indent_mod                 row_label</span>
@@ -1792,14 +1786,14 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19    geom_mean             NA          0            Geometric Mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20 geom_mean_ci         NA, NA          0     Geometric Mean 95% CI</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21      geom_cv             NA          0       CV % Geometric Mean</span>
-<span class="r-in"><span class="co"># `a_summary.factor`</span></span>
-<span class="r-in"><span class="co"># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span>
-<span class="r-in"><span class="co"># functions can be applied correctly.</span></span>
-<span class="r-in"><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
-<span class="r-in">  .ungroup_stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"count_fraction"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">afun</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, .N_col <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># `a_summary.factor`</span></span></span>
+<span class="r-in"><span><span class="co"># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span></span>
+<span class="r-in"><span><span class="co"># functions can be applied correctly.</span></span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .ungroup_stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, .N_col <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
@@ -1811,12 +1805,12 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        b        1 (20%)          0         b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7        c        1 (20%)          0         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8    n_blq              0          0     n_blq</span>
-<span class="r-in"><span class="co"># `a_summary.character`</span></span>
-<span class="r-in"><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"character"</span><span class="op">)</span>,</span>
-<span class="r-in">  .ungroup_stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"count_fraction"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">afun</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"C"</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"x"</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># `a_summary.character`</span></span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"character"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .ungroup_stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"C"</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"x"</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>automatically converting character variable x to factor, better manually convert to factor to avoid failures</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
@@ -1829,11 +1823,11 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        B        1 (25%)          0         B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7        C        1 (25%)          0         C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8    n_blq              0          0     n_blq</span>
-<span class="r-in"><span class="co"># `a_summary.logical`</span></span>
-<span class="r-in"><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"logical"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">afun</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, .N_col <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># `a_summary.logical`</span></span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"logical"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, .N_col <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         row_name formatted_cell indent_mod      row_label</span>
@@ -1841,29 +1835,29 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2          count              3          0          count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 count_fraction        3 (60%)          0 count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4          n_blq              0          0          n_blq</span>
-<span class="r-in"><span class="co"># `create_afun_summary()` to create combined `afun`</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">create_afun_summary</span><span class="op">(</span></span>
-<span class="r-in">  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"xx."</span><span class="op">)</span>,</span>
-<span class="r-in">  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"My median"</span><span class="op">)</span>,</span>
-<span class="r-in">  .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co">## Fabricated dataset.</span></span>
-<span class="r-in"><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">  PARAMCD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"lab"</span>, <span class="fl">6</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">  AVISIT  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"V"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, <span class="fl">6</span><span class="op">)</span>,</span>
-<span class="r-in">  ARM     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  AVAL    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span><span class="op">:</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, afun <span class="op">=</span> <span class="va">afun</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># `create_afun_summary()` to create combined `afun`</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">create_afun_summary</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"xx."</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"My median"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Fabricated dataset.</span></span></span>
+<span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  PARAMCD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"lab"</span>, <span class="fl">6</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  AVISIT  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"V"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ARM     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  AVAL    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span><span class="op">:</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, afun <span class="op">=</span> <span class="va">afun</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                      A              B          C    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V1                                                                  </span>
@@ -1929,17 +1923,17 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Maximum                           7.0            1.0         NA   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Geometric Mean                    5.3            1.0         NA   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   CV % Geometric Mean              41.2            NA          NA   </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># `summarize_vars()` in `rtables` pipelines</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Default output within a `rtables` pipeline.</span></span>
-<span class="r-in"><span class="co"># dta_test &lt;- &lt;needs_to_be_inputted_to_work&gt;</span></span>
-<span class="r-in"><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `summarize_vars()` in `rtables` pipelines</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Default output within a `rtables` pipeline.</span></span></span>
+<span class="r-in"><span><span class="co"># dta_test &lt;- &lt;needs_to_be_inputted_to_work&gt;</span></span></span>
+<span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_vars</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   A           B          C   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V1                                           </span>
@@ -1957,20 +1951,20 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   5.5 (2.1)   1.0 (NA)    NA (NA)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Median         5.5         1.0        NA   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   4.0 - 7.0   1.0 - 1.0   NA - NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Select and format statistics output.</span></span>
-<span class="r-in"><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars</span><span class="op">(</span></span>
-<span class="r-in">    vars <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"quantiles"</span><span class="op">)</span>,</span>
-<span class="r-in">    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean_sd"</span> <span class="op">=</span> <span class="st">"xx.x, xx.x"</span><span class="op">)</span>,</span>
-<span class="r-in">    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"n"</span>, mean_sd <span class="op">=</span> <span class="st">"Mean, SD"</span>, quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Q1 - Q3"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/as_html.html" class="external-link">as_html</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Select and format statistics output.</span></span></span>
+<span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_vars</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"quantiles"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean_sd"</span> <span class="op">=</span> <span class="st">"xx.x, xx.x"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"n"</span>, mean_sd <span class="op">=</span> <span class="st">"Mean, SD"</span>, quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Q1 - Q3"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/as_html.html" class="external-link">as_html</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;div class="rtables-all-parts-block rtables-container"&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;table class="table table-condensed table-hover"&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
@@ -2061,27 +2055,27 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;/table&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;div class="rtables-footers-block rtables-container"&gt;&lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/div&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Use arguments interpreted by `s_summary`.</span></span>
-<span class="r-in"><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Handle `NA` levels first when summarizing factors.</span></span>
-<span class="r-in"><span class="va">dta_test</span><span class="op">$</span><span class="va">AVISIT</span> <span class="op">&lt;-</span> <span class="cn">NA_character_</span></span>
-<span class="r-in"><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="df_explicit_na.html">df_explicit_na</a></span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVISIT"</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/Viewer.html" class="external-link">Viewer</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Use arguments interpreted by `s_summary`.</span></span></span>
+<span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_vars</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Handle `NA` levels first when summarizing factors.</span></span></span>
+<span class="r-in"><span><span class="va">dta_test</span><span class="op">$</span><span class="va">AVISIT</span> <span class="op">&lt;-</span> <span class="cn">NA_character_</span></span></span>
+<span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="df_explicit_na.html">df_explicit_na</a></span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_vars</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVISIT"</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/Viewer.html" class="external-link">Viewer</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

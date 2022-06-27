@@ -14,7 +14,7 @@ along the continuous biomarker value subgroups."><!-- mathjax --><script src="ht
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ along the continuous biomarker value subgroups."><!-- mathjax --><script src="ht
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -72,16 +66,16 @@ along the continuous biomarker value subgroups.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">g_step</span><span class="op">(</span>
-  <span class="va">df</span>,
-  use_percentile <span class="op">=</span> <span class="st">"Percentile Center"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,
-  est <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
-  ci_ribbon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"lightblue"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,
-  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tern.color"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for step</span>
-<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">g_step</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  use_percentile <span class="op">=</span> <span class="st">"Percentile Center"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
+<span>  est <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  ci_ribbon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"lightblue"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tern.color"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for step</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -139,82 +133,82 @@ respectively. Additional attributes carry meta data also used for plotting.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lung</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">lung</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Survival example.</span></span>
-<span class="r-in"><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  time <span class="op">=</span> <span class="st">"time"</span>,</span>
-<span class="r-in">  event <span class="op">=</span> <span class="st">"status"</span>,</span>
-<span class="r-in">  arm <span class="op">=</span> <span class="st">"sex"</span>,</span>
-<span class="r-in">  biomarker <span class="op">=</span> <span class="st">"age"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_survival_step.html">fit_survival_step</a></span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">vars</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">lung</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>num_points <span class="op">=</span> <span class="fl">10</span>, degree <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">step_data</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Default plot.</span></span>
-<span class="r-in"><span class="fu">g_step</span><span class="op">(</span><span class="va">step_data</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lung</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">lung</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Survival example.</span></span></span>
+<span class="r-in"><span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  time <span class="op">=</span> <span class="st">"time"</span>,</span></span>
+<span class="r-in"><span>  event <span class="op">=</span> <span class="st">"status"</span>,</span></span>
+<span class="r-in"><span>  arm <span class="op">=</span> <span class="st">"sex"</span>,</span></span>
+<span class="r-in"><span>  biomarker <span class="op">=</span> <span class="st">"age"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_survival_step.html">fit_survival_step</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">vars</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">lung</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>num_points <span class="op">=</span> <span class="fl">10</span>, degree <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">step_data</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Default plot.</span></span></span>
+<span class="r-in"><span><span class="fu">g_step</span><span class="op">(</span><span class="va">step_data</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_step-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Add the reference 1 horizontal line.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">g_step</span><span class="op">(</span><span class="va">step_data</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Add the reference 1 horizontal line.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">g_step</span><span class="op">(</span><span class="va">step_data</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_step-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use actual values instead of percentiles, different color for estimate and no CI,</span></span>
-<span class="r-in"><span class="co"># use log scale for y axis.</span></span>
-<span class="r-in"><span class="fu">g_step</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">step_data</span>,</span>
-<span class="r-in">  use_percentile <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  est <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">  ci_ribbon <span class="op">=</span> <span class="cn">NULL</span></span>
-<span class="r-in"><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use actual values instead of percentiles, different color for estimate and no CI,</span></span></span>
+<span class="r-in"><span><span class="co"># use log scale for y axis.</span></span></span>
+<span class="r-in"><span><span class="fu">g_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">step_data</span>,</span></span>
+<span class="r-in"><span>  use_percentile <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  est <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ci_ribbon <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_step-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Adding another curve based on additional column.</span></span>
-<span class="r-in"><span class="va">step_data</span><span class="op">$</span><span class="va">extra</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">step_data</span><span class="op">$</span><span class="va">`Percentile Center`</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">g_step</span><span class="op">(</span><span class="va">step_data</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">extra</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Adding another curve based on additional column.</span></span></span>
+<span class="r-in"><span><span class="va">step_data</span><span class="op">$</span><span class="va">extra</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">step_data</span><span class="op">$</span><span class="va">`Percentile Center`</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">g_step</span><span class="op">(</span><span class="va">step_data</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">extra</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_step-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Response example.</span></span>
-<span class="r-in"><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  response <span class="op">=</span> <span class="st">"status"</span>,</span>
-<span class="r-in">  arm <span class="op">=</span> <span class="st">"sex"</span>,</span>
-<span class="r-in">  biomarker <span class="op">=</span> <span class="st">"age"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_rsp_step.html">fit_rsp_step</a></span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">vars</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">lung</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span>response_definition <span class="op">=</span> <span class="st">"I(response == 2)"</span><span class="op">)</span>,</span>
-<span class="r-in">    <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">step_data</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">g_step</span><span class="op">(</span><span class="va">step_data</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Response example.</span></span></span>
+<span class="r-in"><span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="st">"status"</span>,</span></span>
+<span class="r-in"><span>  arm <span class="op">=</span> <span class="st">"sex"</span>,</span></span>
+<span class="r-in"><span>  biomarker <span class="op">=</span> <span class="st">"age"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_rsp_step.html">fit_rsp_step</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">vars</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">lung</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span>response_definition <span class="op">=</span> <span class="st">"I(response == 2)"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">step_data</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">g_step</span><span class="op">(</span><span class="va">step_data</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_step-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lung</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">lung</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  time <span class="op">=</span> <span class="st">"time"</span>,</span>
-<span class="r-in">  event <span class="op">=</span> <span class="st">"status"</span>,</span>
-<span class="r-in">  arm <span class="op">=</span> <span class="st">"sex"</span>,</span>
-<span class="r-in">  biomarker <span class="op">=</span> <span class="st">"age"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_survival_step.html">fit_survival_step</a></span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">vars</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">lung</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>num_points <span class="op">=</span> <span class="fl">10</span>, degree <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lung</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">lung</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  time <span class="op">=</span> <span class="st">"time"</span>,</span></span>
+<span class="r-in"><span>  event <span class="op">=</span> <span class="st">"status"</span>,</span></span>
+<span class="r-in"><span>  arm <span class="op">=</span> <span class="st">"sex"</span>,</span></span>
+<span class="r-in"><span>  biomarker <span class="op">=</span> <span class="st">"age"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_survival_step.html">fit_survival_step</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">vars</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">lung</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>num_points <span class="op">=</span> <span class="fl">10</span>, degree <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 12</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    `Percentile Center` `Percentile Lower` `Percentile Upper` `Interval Center`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  <span style="color: #BCBCBC;">*</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

@@ -32,7 +32,7 @@ special characters."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,12 +55,6 @@ special characters."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -99,66 +93,66 @@ special characters.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fit_logistic</span><span class="op">(</span>
-  <span class="va">data</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>response <span class="op">=</span> <span class="st">"Response"</span>, arm <span class="op">=</span> <span class="st">"ARMCD"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span>, interaction
-    <span class="op">=</span> <span class="cn">NULL</span>, strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,
-  response_definition <span class="op">=</span> <span class="st">"response"</span>
-<span class="op">)</span>
-
-<span class="fu">h_get_interaction_vars</span><span class="op">(</span><span class="va">fit_glm</span><span class="op">)</span>
-
-<span class="fu">h_interaction_coef_name</span><span class="op">(</span>
-  <span class="va">interaction_vars</span>,
-  <span class="va">first_var_with_level</span>,
-  <span class="va">second_var_with_level</span>
-<span class="op">)</span>
-
-<span class="fu">h_or_cat_interaction</span><span class="op">(</span>
-  <span class="va">odds_ratio_var</span>,
-  <span class="va">interaction_var</span>,
-  <span class="va">fit_glm</span>,
-  conf_level <span class="op">=</span> <span class="fl">0.95</span>
-<span class="op">)</span>
-
-<span class="fu">h_or_cont_interaction</span><span class="op">(</span>
-  <span class="va">odds_ratio_var</span>,
-  <span class="va">interaction_var</span>,
-  <span class="va">fit_glm</span>,
-  at <span class="op">=</span> <span class="cn">NULL</span>,
-  conf_level <span class="op">=</span> <span class="fl">0.95</span>
-<span class="op">)</span>
-
-<span class="fu">h_or_interaction</span><span class="op">(</span>
-  <span class="va">odds_ratio_var</span>,
-  <span class="va">interaction_var</span>,
-  <span class="va">fit_glm</span>,
-  at <span class="op">=</span> <span class="cn">NULL</span>,
-  conf_level <span class="op">=</span> <span class="fl">0.95</span>
-<span class="op">)</span>
-
-<span class="fu">h_simple_term_labels</span><span class="op">(</span><span class="va">terms</span>, <span class="va">table</span><span class="op">)</span>
-
-<span class="fu">h_interaction_term_labels</span><span class="op">(</span><span class="va">terms1</span>, <span class="va">terms2</span>, <span class="va">table</span>, any <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">h_glm_simple_term_extract</span><span class="op">(</span><span class="va">x</span>, <span class="va">fit_glm</span><span class="op">)</span>
-
-<span class="fu">h_glm_interaction_extract</span><span class="op">(</span><span class="va">x</span>, <span class="va">fit_glm</span><span class="op">)</span>
-
-<span class="fu">h_glm_inter_term_extract</span><span class="op">(</span><span class="va">odds_ratio_var</span>, <span class="va">interaction_var</span>, <span class="va">fit_glm</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">h_logistic_simple_terms</span><span class="op">(</span><span class="va">x</span>, <span class="va">fit_glm</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>
-
-<span class="fu">h_logistic_inter_terms</span><span class="op">(</span><span class="va">x</span>, <span class="va">fit_glm</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span>, at <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="co"># S3 method for glm</span>
-<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit_glm</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span>, at <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">logistic_regression_cols</span><span class="op">(</span><span class="va">lyt</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>
-
-<span class="fu">logistic_summary_by_flag</span><span class="op">(</span><span class="va">flag_var</span><span class="op">)</span>
-
-<span class="fu">summarize_logistic</span><span class="op">(</span><span class="va">lyt</span>, <span class="va">conf_level</span>, drop_and_remove_str <span class="op">=</span> <span class="st">""</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_logistic</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>response <span class="op">=</span> <span class="st">"Response"</span>, arm <span class="op">=</span> <span class="st">"ARMCD"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span>, interaction</span>
+<span>    <span class="op">=</span> <span class="cn">NULL</span>, strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
+<span>  response_definition <span class="op">=</span> <span class="st">"response"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_get_interaction_vars</span><span class="op">(</span><span class="va">fit_glm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_interaction_coef_name</span><span class="op">(</span></span>
+<span>  <span class="va">interaction_vars</span>,</span>
+<span>  <span class="va">first_var_with_level</span>,</span>
+<span>  <span class="va">second_var_with_level</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_or_cat_interaction</span><span class="op">(</span></span>
+<span>  <span class="va">odds_ratio_var</span>,</span>
+<span>  <span class="va">interaction_var</span>,</span>
+<span>  <span class="va">fit_glm</span>,</span>
+<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_or_cont_interaction</span><span class="op">(</span></span>
+<span>  <span class="va">odds_ratio_var</span>,</span>
+<span>  <span class="va">interaction_var</span>,</span>
+<span>  <span class="va">fit_glm</span>,</span>
+<span>  at <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_or_interaction</span><span class="op">(</span></span>
+<span>  <span class="va">odds_ratio_var</span>,</span>
+<span>  <span class="va">interaction_var</span>,</span>
+<span>  <span class="va">fit_glm</span>,</span>
+<span>  at <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_simple_term_labels</span><span class="op">(</span><span class="va">terms</span>, <span class="va">table</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_interaction_term_labels</span><span class="op">(</span><span class="va">terms1</span>, <span class="va">terms2</span>, <span class="va">table</span>, any <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_glm_simple_term_extract</span><span class="op">(</span><span class="va">x</span>, <span class="va">fit_glm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_glm_interaction_extract</span><span class="op">(</span><span class="va">x</span>, <span class="va">fit_glm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_glm_inter_term_extract</span><span class="op">(</span><span class="va">odds_ratio_var</span>, <span class="va">interaction_var</span>, <span class="va">fit_glm</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_logistic_simple_terms</span><span class="op">(</span><span class="va">x</span>, <span class="va">fit_glm</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_logistic_inter_terms</span><span class="op">(</span><span class="va">x</span>, <span class="va">fit_glm</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span>, at <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for glm</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit_glm</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span>, at <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">logistic_regression_cols</span><span class="op">(</span><span class="va">lyt</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">logistic_summary_by_flag</span><span class="op">(</span><span class="va">flag_var</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">summarize_logistic</span><span class="op">(</span><span class="va">lyt</span>, <span class="va">conf_level</span>, drop_and_remove_str <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -292,7 +286,7 @@ in the right data frame format.</p></li>
 odds ratios and confidence intervals of simple terms.</p></li>
 <li><p><code>h_logistic_inter_terms</code>: Helper function to tabulate the results including
 odds ratios and confidence intervals of interaction terms.</p></li>
-<li><p><code>tidy.glm</code>: Helper method (for <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code>) to prepare a data frame from an
+<li><p><code>tidy.glm</code>: Helper method (for <code><a href="https://broom.tidymodels.org/reference/reexports.html" class="external-link">broom::tidy()</a></code>) to prepare a data frame from an
 <code>glm</code> object with <code>binomial</code> family.</p></li>
 <li><p><code>logistic_regression_cols</code>: Layout creating function for a multi-variable column layout summarizing
 logistic regression results.</p></li>
@@ -322,45 +316,45 @@ with the treatment arm is included in the model.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span>
-<span class="r-in"><span class="va">adrs_f</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">RACE</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ASIAN"</span>, <span class="st">"WHITE"</span>, <span class="st">"BLACK OR AFRICAN AMERICAN"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span class="r-in">    Response <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">AVALC</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PR"</span>, <span class="st">"CR"</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, <span class="cn">TRUE</span> <span class="op">~</span> <span class="fl">0</span><span class="op">)</span>,</span>
-<span class="r-in">    RACE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">RACE</span><span class="op">)</span>,</span>
-<span class="r-in">    SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">SEX</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs_f</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs</span><span class="op">)</span>, Response <span class="op">=</span> <span class="st">"Response"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mod1</span> <span class="op">&lt;-</span> <span class="fu">fit_logistic</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adrs_f</span>,</span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    response <span class="op">=</span> <span class="st">"Response"</span>,</span>
-<span class="r-in">    arm <span class="op">=</span> <span class="st">"ARMCD"</span>,</span>
-<span class="r-in">    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"RACE"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu">fit_logistic</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adrs_f</span>,</span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    response <span class="op">=</span> <span class="st">"Response"</span>,</span>
-<span class="r-in">    arm <span class="op">=</span> <span class="st">"ARMCD"</span>,</span>
-<span class="r-in">    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"RACE"</span><span class="op">)</span>,</span>
-<span class="r-in">    interaction <span class="op">=</span> <span class="st">"AGE"</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">h_glm_simple_term_extract</span><span class="op">(</span><span class="st">"AGE"</span>, <span class="va">mod1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span></span>
+<span class="r-in"><span><span class="va">adrs_f</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">RACE</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ASIAN"</span>, <span class="st">"WHITE"</span>, <span class="st">"BLACK OR AFRICAN AMERICAN"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    Response <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">AVALC</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PR"</span>, <span class="st">"CR"</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, <span class="cn">TRUE</span> <span class="op">~</span> <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    RACE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">RACE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">SEX</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs_f</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs</span><span class="op">)</span>, Response <span class="op">=</span> <span class="st">"Response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mod1</span> <span class="op">&lt;-</span> <span class="fu">fit_logistic</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    response <span class="op">=</span> <span class="st">"Response"</span>,</span></span>
+<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"ARMCD"</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"RACE"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu">fit_logistic</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    response <span class="op">=</span> <span class="st">"Response"</span>,</span></span>
+<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"ARMCD"</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"RACE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    interaction <span class="op">=</span> <span class="st">"AGE"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">h_glm_simple_term_extract</span><span class="op">(</span><span class="st">"AGE"</span>, <span class="va">mod1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable variable_label term term_label interaction interaction_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      AGE            Age  AGE        Age                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   reference reference_label   estimate  std_error df    pvalue</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                           0.06746155 0.05343377  1 0.2067594</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   is_variable_summary is_term_summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1               FALSE            TRUE</span>
-<span class="r-in"><span class="fu">h_glm_simple_term_extract</span><span class="op">(</span><span class="st">"ARMCD"</span>, <span class="va">mod1</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">h_glm_simple_term_extract</span><span class="op">(</span><span class="st">"ARMCD"</span>, <span class="va">mod1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable   variable_label  term               term_label interaction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    ARMCD Planned Arm Code ARM A Reference ARM A, n = 126            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    ARMCD Planned Arm Code ARM B           ARM B, n = 121            </span>
@@ -373,8 +367,8 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.03677249                TRUE           FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.04676489               FALSE            TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.9286955               FALSE            TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">h_glm_interaction_extract</span><span class="op">(</span><span class="st">"ARMCD:AGE"</span>, <span class="va">mod2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">h_glm_interaction_extract</span><span class="op">(</span><span class="st">"ARMCD:AGE"</span>, <span class="va">mod2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    variable                        variable_label  term</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 ARMCD:AGE Interaction of Planned Arm Code * Age ARM A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 ARMCD:AGE Interaction of Planned Arm Code * Age ARM B</span>
@@ -391,8 +385,8 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2            TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3            TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">h_glm_inter_term_extract</span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"ARMCD"</span>, <span class="va">mod2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">h_glm_inter_term_extract</span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"ARMCD"</span>, <span class="va">mod2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable variable_label term term_label interaction interaction_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      AGE            Age  AGE        Age                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      AGE            Age  AGE        Age       ARMCD  Planned Arm Code</span>
@@ -408,8 +402,8 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 NA        NA               FALSE           FALSE                 TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 NA        NA               FALSE           FALSE                 TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 NA        NA               FALSE           FALSE                 TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">h_logistic_simple_terms</span><span class="op">(</span><span class="st">"AGE"</span>, <span class="va">mod1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">h_logistic_simple_terms</span><span class="op">(</span><span class="st">"AGE"</span>, <span class="va">mod1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable variable_label term term_label interaction interaction_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      AGE            Age  AGE        Age                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   reference reference_label   estimate  std_error df    pvalue</span>
@@ -418,7 +412,7 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1               FALSE            TRUE   1.069789 0.9634191 1.187903</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.9634191, 1.1879033</span>
-<span class="r-in"><span class="fu">h_logistic_inter_terms</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RACE"</span>, <span class="st">"AGE"</span>, <span class="st">"ARMCD"</span>, <span class="st">"AGE:ARMCD"</span><span class="op">)</span>, <span class="va">mod2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">h_logistic_inter_terms</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RACE"</span>, <span class="st">"AGE"</span>, <span class="st">"ARMCD"</span>, <span class="st">"AGE:ARMCD"</span><span class="op">)</span>, <span class="va">mod2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        variable                        variable_label                      term</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1          RACE                                  Race                     ASIAN</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2          RACE                                  Race BLACK OR AFRICAN AMERICAN</span>
@@ -499,22 +493,22 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12                   FALSE                     NA, NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22                   FALSE                     NA, NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 32                   FALSE                     NA, NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/" class="external-link">broom</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod1</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod2</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># flagging empty strings with "_"</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df2</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_logistic</span><span class="op">(</span></span>
-<span class="r-in">    conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span class="r-in">    drop_and_remove_str <span class="op">=</span> <span class="st">"_"</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/" class="external-link">broom</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod1</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod2</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># flagging empty strings with "_"</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df2</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_logistic</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>    drop_and_remove_str <span class="op">=</span> <span class="st">"_"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                       Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio    Wald 95% CI    p-value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Planned Arm Code                              2                                                                               0.0368 </span>
@@ -527,14 +521,14 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ASIAN, n = 208                                                                                                           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   BLACK OR AFRICAN AMERICAN, n = 91           1                  1.027              1.098           2.79      (0.17, 47.24)   0.3498 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   WHITE, n = 74                               1                  0.294              0.850           1.34      (0.15, 11.99)   0.7294 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_logistic</span><span class="op">(</span></span>
-<span class="r-in">    conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span class="r-in">    drop_and_remove_str <span class="op">=</span> <span class="st">"_"</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result2</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_logistic</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>    drop_and_remove_str <span class="op">=</span> <span class="st">"_"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                         Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 95% CI      p-value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Race                                            2                                                                                  0.6027 </span>
@@ -559,7 +553,7 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ARM A, n = 126                                                                                                                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ARM B, n = 121                                1                  -0.868             0.630                                        0.1680 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ARM C, n = 126                                1                  -0.618             0.671                                        0.3577 </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

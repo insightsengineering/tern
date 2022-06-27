@@ -12,7 +12,7 @@ These functions can be used to produce summary tables for PK datasets."><!-- mat
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,12 +35,6 @@ These functions can be used to produce summary tables for PK datasets."><!-- mat
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -69,29 +63,29 @@ These functions can be used to produce summary tables for PK datasets."><!-- mat
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">x</span>, labelstr <span class="op">=</span> <span class="st">""</span>, custom_label <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="co"># S3 method for numeric</span>
-<span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">x</span>, labelstr <span class="op">=</span> <span class="st">""</span>, custom_label <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for factor</span>
-<span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">x</span>, labelstr <span class="op">=</span> <span class="st">""</span>, custom_label <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for character</span>
-<span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">x</span>, labelstr <span class="op">=</span> <span class="st">""</span>, custom_label <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">summarize_vars_in_cols</span><span class="op">(</span>
-  <span class="va">lyt</span>,
-  <span class="va">var</span>,
-  var_type <span class="op">=</span> <span class="st">"numeric"</span>,
-  <span class="va">...</span>,
-  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"se"</span>, <span class="st">"cv"</span>, <span class="st">"geom_cv"</span><span class="op">)</span>,
-  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"n"</span>, mean <span class="op">=</span> <span class="st">"Mean"</span>, sd <span class="op">=</span> <span class="st">"SD"</span>, se <span class="op">=</span> <span class="st">"SE"</span>, cv <span class="op">=</span> <span class="st">"CV (%)"</span>, geom_cv <span class="op">=</span>
-    <span class="st">"CV % Geometric Mean"</span><span class="op">)</span>,
-  .formats <span class="op">=</span> <span class="cn">NULL</span>,
-  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,
-  col_split <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">x</span>, labelstr <span class="op">=</span> <span class="st">""</span>, custom_label <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for numeric</span></span>
+<span><span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">x</span>, labelstr <span class="op">=</span> <span class="st">""</span>, custom_label <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for factor</span></span>
+<span><span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">x</span>, labelstr <span class="op">=</span> <span class="st">""</span>, custom_label <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for character</span></span>
+<span><span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">x</span>, labelstr <span class="op">=</span> <span class="st">""</span>, custom_label <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">summarize_vars_in_cols</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">var</span>,</span>
+<span>  var_type <span class="op">=</span> <span class="st">"numeric"</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"se"</span>, <span class="st">"cv"</span>, <span class="st">"geom_cv"</span><span class="op">)</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"n"</span>, mean <span class="op">=</span> <span class="st">"Mean"</span>, sd <span class="op">=</span> <span class="st">"SD"</span>, se <span class="op">=</span> <span class="st">"SE"</span>, cv <span class="op">=</span> <span class="st">"CV (%)"</span>, geom_cv <span class="op">=</span></span>
+<span>    <span class="st">"CV % Geometric Mean"</span><span class="op">)</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col_split <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -183,20 +177,20 @@ function which can be used for creating summary tables in columns, primarily use
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ADPP</span> <span class="op">&lt;-</span> <span class="fu">scda</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adpp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="h_pkparam_sort.html">h_pkparam_sort</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">ADPP</span><span class="op">$</span><span class="va">AGE</span>, custom_label <span class="op">=</span> <span class="st">"stats"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ADPP</span> <span class="op">&lt;-</span> <span class="fu">scda</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adpp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="h_pkparam_sort.html">h_pkparam_sort</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">summary_in_cols</span><span class="op">(</span><span class="va">ADPP</span><span class="op">$</span><span class="va">AGE</span>, custom_label <span class="op">=</span> <span class="st">"stats"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     n </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13134 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26268 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    sum </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 458007 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 916014 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -208,37 +202,37 @@ function which can be used for creating summary tables in columns, primarily use
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7.364199 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7.364059 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         se </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.06425797 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.04543638 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      mean        sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34.871859  7.364199 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34.871859  7.364059 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    34.74590    34.99781 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    34.78280    34.96092 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sei</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sei_lwr mean_sei_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     34.80760     34.93612 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     34.82642     34.91730 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sdi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     27.50766     42.23606 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     27.50780     42.23592 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -258,7 +252,7 @@ function which can be used for creating summary tables in columns, primarily use
 <span class="r-out co"><span class="r-pr">#&gt;</span> median_ci_lwr median_ci_upr </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            34            34 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf_level")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9503914</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9509612</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -294,7 +288,7 @@ function which can be used for creating summary tables in columns, primarily use
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21.11788 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21.11748 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -306,113 +300,113 @@ function which can be used for creating summary tables in columns, primarily use
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    34.02024    34.25946 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    34.05518    34.22432 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20.70071 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> geom_cv </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20.7003 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "stats"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"SEX"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AGE"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPP</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"SEX"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_vars_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AGE"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPP</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ARM                                                                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   SEX             n     Mean   SD    SE    CV (%)   CV % Geometric Mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A: Drug X                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F              2607   32.8   6.0   0.1    18.5           18.7        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M              1815   35.2   6.9   0.2    19.6           19.7        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F              5214   32.8   6.0   0.1    18.5           18.7        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M              3630   35.2   6.9   0.1    19.6           19.7        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> B: Placebo                                                             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   F               0      NA    NA    NA      NA             NA         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   M               0      NA    NA    NA      NA             NA         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F              4620   35.2   7.3   0.1    20.8           20.4        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M              4092   35.7   8.1   0.1    22.7           21.9        </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># By selecting just some statistics and ad-hoc labels</span></span>
-<span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"SEX"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars_in_cols</span><span class="op">(</span></span>
-<span class="r-in">    var <span class="op">=</span> <span class="st">"AGE"</span>,</span>
-<span class="r-in">    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"cv"</span>, <span class="st">"geom_mean"</span>, <span class="st">"mean_ci"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span><span class="op">)</span>,</span>
-<span class="r-in">    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">      n <span class="op">=</span> <span class="st">"myN"</span>,</span>
-<span class="r-in">      cv <span class="op">=</span> <span class="st">"myCV"</span>,</span>
-<span class="r-in">      geom_mean <span class="op">=</span> <span class="st">"myGeomMean"</span>,</span>
-<span class="r-in">      mean_ci <span class="op">=</span> <span class="st">"Mean (95%CI)"</span>,</span>
-<span class="r-in">      median <span class="op">=</span> <span class="st">"Median"</span>,</span>
-<span class="r-in">      min <span class="op">=</span> <span class="st">"Minimum"</span>,</span>
-<span class="r-in">      max <span class="op">=</span> <span class="st">"Maximum"</span></span>
-<span class="r-in">    <span class="op">)</span>,</span>
-<span class="r-in">    col_split <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPP</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F              9240   35.2   7.3   0.1    20.8           20.4        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M              8184   35.7   8.1   0.1    22.7           21.9        </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># By selecting just some statistics and ad-hoc labels</span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"SEX"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_vars_in_cols</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"AGE"</span>,</span></span>
+<span class="r-in"><span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"cv"</span>, <span class="st">"geom_mean"</span>, <span class="st">"mean_ci"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      n <span class="op">=</span> <span class="st">"myN"</span>,</span></span>
+<span class="r-in"><span>      cv <span class="op">=</span> <span class="st">"myCV"</span>,</span></span>
+<span class="r-in"><span>      geom_mean <span class="op">=</span> <span class="st">"myGeomMean"</span>,</span></span>
+<span class="r-in"><span>      mean_ci <span class="op">=</span> <span class="st">"Mean (95%CI)"</span>,</span></span>
+<span class="r-in"><span>      median <span class="op">=</span> <span class="st">"Median"</span>,</span></span>
+<span class="r-in"><span>      min <span class="op">=</span> <span class="st">"Minimum"</span>,</span></span>
+<span class="r-in"><span>      max <span class="op">=</span> <span class="st">"Maximum"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    col_split <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPP</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ARM                                                                                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   SEX            myN    myCV   myGeomMean    Mean (95%CI)    Median   Minimum   Maximum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A: Drug X                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F              2607   18.5      32.2      (32.53, 32.99)    32.0     21.0      47.0  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M              1815   19.6      34.6      (34.90, 35.54)    34.0     23.0      50.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F              5214   18.5      32.2      (32.60, 32.92)    32.0     21.0      47.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M              3630   19.6      34.6      (34.99, 35.44)    34.0     23.0      50.0  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> B: Placebo                                                                             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   F               0      NA        NA          (NA, NA)        NA       NA        NA   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   M               0      NA        NA          (NA, NA)        NA       NA        NA   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F              4620   20.8      34.5      (34.99, 35.41)    35.0     21.0      64.0  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M              4092   22.7      34.8      (35.45, 35.94)    35.0     20.0      69.0  </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars_in_cols</span><span class="op">(</span></span>
-<span class="r-in">    var <span class="op">=</span> <span class="st">"AGE"</span>,</span>
-<span class="r-in">    col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">    custom_label <span class="op">=</span> <span class="st">"some custom label"</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPP</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F              9240   20.8      34.5      (35.05, 35.35)    35.0     21.0      64.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M              8184   22.7      34.8      (35.52, 35.87)    35.0     20.0      69.0  </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_vars_in_cols</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"AGE"</span>,</span></span>
+<span class="r-in"><span>    col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    custom_label <span class="op">=</span> <span class="st">"some custom label"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPP</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       n     Mean   SD    SE    CV (%)   CV % Geometric Mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> some custom label   13134   34.9   7.4   0.1    21.1           20.7        </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># PKPT03</span></span>
-<span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"TLG_DISPLAY"</span>, split_label <span class="op">=</span> <span class="st">"PK Parameter"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_vars_in_cols</span><span class="op">(</span></span>
-<span class="r-in">    var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"cv"</span>, <span class="st">"geom_mean"</span>, <span class="st">"geom_cv"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span><span class="op">)</span>,</span>
-<span class="r-in">    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">      n <span class="op">=</span> <span class="st">"n"</span>,</span>
-<span class="r-in">      mean <span class="op">=</span> <span class="st">"Mean"</span>,</span>
-<span class="r-in">      sd <span class="op">=</span> <span class="st">"SD"</span>,</span>
-<span class="r-in">      cv <span class="op">=</span> <span class="st">"CV (%)"</span>,</span>
-<span class="r-in">      geom_mean <span class="op">=</span> <span class="st">"Geometric Mean"</span>,</span>
-<span class="r-in">      geom_cv <span class="op">=</span> <span class="st">"CV % Geometric Mean"</span>,</span>
-<span class="r-in">      median <span class="op">=</span> <span class="st">"Median"</span>,</span>
-<span class="r-in">      min <span class="op">=</span> <span class="st">"Minimum"</span>,</span>
-<span class="r-in">      max <span class="op">=</span> <span class="st">"Maximum"</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPP</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> some custom label   26268   34.9   7.4   0.0    21.1           20.7        </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># PKPT03</span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"TLG_DISPLAY"</span>, split_label <span class="op">=</span> <span class="st">"PK Parameter"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_vars_in_cols</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"cv"</span>, <span class="st">"geom_mean"</span>, <span class="st">"geom_cv"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      n <span class="op">=</span> <span class="st">"n"</span>,</span></span>
+<span class="r-in"><span>      mean <span class="op">=</span> <span class="st">"Mean"</span>,</span></span>
+<span class="r-in"><span>      sd <span class="op">=</span> <span class="st">"SD"</span>,</span></span>
+<span class="r-in"><span>      cv <span class="op">=</span> <span class="st">"CV (%)"</span>,</span></span>
+<span class="r-in"><span>      geom_mean <span class="op">=</span> <span class="st">"Geometric Mean"</span>,</span></span>
+<span class="r-in"><span>      geom_cv <span class="op">=</span> <span class="st">"CV % Geometric Mean"</span>,</span></span>
+<span class="r-in"><span>      median <span class="op">=</span> <span class="st">"Median"</span>,</span></span>
+<span class="r-in"><span>      min <span class="op">=</span> <span class="st">"Minimum"</span>,</span></span>
+<span class="r-in"><span>      max <span class="op">=</span> <span class="st">"Maximum"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ADPP</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PK Parameter    n     Mean     SD    CV (%)   Geometric Mean   CV % Geometric Mean   Median   Minimum   Maximum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Cmax           1194   29.8    6.0     20.1         29.2               21.6            29.9      9.3      48.6  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AUCinf obs     1194   199.3   38.9    19.5        195.3               20.7           198.0     74.1      318.3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CL obs         1194    5.0    1.0     20.4         4.9                21.7            5.0       2.0       8.2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Ae             2388    1.6    0.3     19.2         1.5                20.7            1.6       0.6       2.5  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fe             2388   15.7    3.1     19.7         15.4               20.9            15.8      7.0      26.4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CLR            1194    0.0    0.0     20.3         0.0                21.9            0.1       0.0       0.1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rmax           1194   10.1    2.0     19.8         9.9                21.2            10.0      4.3      16.2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Tonset         1194    3.0    0.6     19.8         2.9                21.3            3.0       1.2       4.6  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RENALCLD       1194    0.0    0.0     19.7         0.0                20.6            0.0       0.0       0.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Cmax           2388   30.1    6.1     20.4         29.5               22.0            30.1     10.1      48.9  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AUCinf obs     2388   199.3   39.8    19.9        195.1               21.3           198.6     71.5      323.5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CL obs         2388    5.0    1.0     20.0         4.9                21.4            5.0       1.3       8.4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ae             4776    1.6    0.3     20.0         1.5                21.0            1.6       0.6       2.6  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Fe             4776   15.6    3.1     19.9         15.3               21.2            15.6      4.3      26.4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CLR            2388    0.0    0.0     20.2         0.0                21.9            0.0       0.0       0.1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rmax           2388   10.0    2.0     19.5         9.8                20.7            10.0      3.2      17.3  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tonset         2388    3.0    0.6     19.8         2.9                21.2            3.0       1.1       5.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RENALCLD       2388    0.0    0.0     19.6         0.0                21.3            0.0       0.0       0.0  </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

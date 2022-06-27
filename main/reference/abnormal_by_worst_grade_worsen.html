@@ -12,7 +12,7 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,12 +35,6 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -69,37 +63,37 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">h_adlb_worsen</span><span class="op">(</span>
-  <span class="va">adlb</span>,
-  worst_flag_low <span class="op">=</span> <span class="cn">NULL</span>,
-  worst_flag_high <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">direction_var</span>
-<span class="op">)</span>
-
-<span class="fu">h_worsen_counter</span><span class="op">(</span><span class="va">df</span>, <span class="va">id</span>, <span class="va">.var</span>, <span class="va">baseline_var</span>, <span class="va">direction_var</span><span class="op">)</span>
-
-<span class="fu">s_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span>
-  <span class="va">df</span>,
-  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>, direction_var <span class="op">=</span> <span class="st">"GRADDR"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">a_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span>
-  <span class="va">df</span>,
-  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>, direction_var <span class="op">=</span> <span class="st">"GRADDR"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span>
-  <span class="va">lyt</span>,
-  <span class="va">var</span>,
-  <span class="va">...</span>,
-  table_names <span class="op">=</span> <span class="cn">NULL</span>,
-  .stats <span class="op">=</span> <span class="cn">NULL</span>,
-  .formats <span class="op">=</span> <span class="cn">NULL</span>,
-  .labels <span class="op">=</span> <span class="cn">NULL</span>,
-  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">h_adlb_worsen</span><span class="op">(</span></span>
+<span>  <span class="va">adlb</span>,</span>
+<span>  worst_flag_low <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  worst_flag_high <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">direction_var</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_worsen_counter</span><span class="op">(</span><span class="va">df</span>, <span class="va">id</span>, <span class="va">.var</span>, <span class="va">baseline_var</span>, <span class="va">direction_var</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>, direction_var <span class="op">=</span> <span class="st">"GRADDR"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">a_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>, direction_var <span class="op">=</span> <span class="st">"GRADDR"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">var</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -229,38 +223,38 @@ function arguments and additional format arguments (see below).</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adlb</span></span>
-<span class="r-in"><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The direction variable, GRADDR, is based on metadata</span></span>
-<span class="r-in"><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="va">adlb</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span class="r-in">    GRADDR <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span> <span class="op">~</span> <span class="st">"B"</span>,</span>
-<span class="r-in">      <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CRP"</span> <span class="op">~</span> <span class="st">"L"</span>,</span>
-<span class="r-in">      <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"IGA"</span> <span class="op">~</span> <span class="st">"H"</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">&amp;</span> <span class="va">ONTRTFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">&amp;</span> <span class="va">GRADDR</span> <span class="op">!=</span> <span class="st">""</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">h_adlb_worsen</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">adlb</span>,</span>
-<span class="r-in">  worst_flag_low <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WGRLOFL"</span> <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
-<span class="r-in">  worst_flag_high <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WGRHIFL"</span> <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
-<span class="r-in">  direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># `h_worsen_counter`</span></span>
-<span class="r-in"><span class="fu">h_worsen_counter</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CRP"</span> <span class="op">&amp;</span> <span class="va">GRADDR</span> <span class="op">==</span> <span class="st">"Low"</span><span class="op">)</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
-<span class="r-in">  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span>
-<span class="r-in">  baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>,</span>
-<span class="r-in">  direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adlb</span></span></span>
+<span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The direction variable, GRADDR, is based on metadata</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="va">adlb</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    GRADDR <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span> <span class="op">~</span> <span class="st">"B"</span>,</span></span>
+<span class="r-in"><span>      <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CRP"</span> <span class="op">~</span> <span class="st">"L"</span>,</span></span>
+<span class="r-in"><span>      <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"IGA"</span> <span class="op">~</span> <span class="st">"H"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">&amp;</span> <span class="va">ONTRTFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">&amp;</span> <span class="va">GRADDR</span> <span class="op">!=</span> <span class="st">""</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">h_adlb_worsen</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">adlb</span>,</span></span>
+<span class="r-in"><span>  worst_flag_low <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WGRLOFL"</span> <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  worst_flag_high <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WGRHIFL"</span> <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `h_worsen_counter`</span></span></span>
+<span class="r-in"><span><span class="fu">h_worsen_counter</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CRP"</span> <span class="op">&amp;</span> <span class="va">GRADDR</span> <span class="op">==</span> <span class="st">"Low"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
+<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span></span>
+<span class="r-in"><span>  baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>,</span></span>
+<span class="r-in"><span>  direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
@@ -283,17 +277,17 @@ function arguments and additional format arguments (see below).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   151   388 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Patients with worsening lab grade for CRP in the direction of low</span></span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span> <span class="op">&amp;</span> <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CRP"</span><span class="op">)</span>,</span>
-<span class="r-in">  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
-<span class="r-in">    baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>,</span>
-<span class="r-in">    direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Patients with worsening lab grade for CRP in the direction of low</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span> <span class="op">&amp;</span> <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CRP"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
+<span class="r-in"><span>    baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>,</span></span>
+<span class="r-in"><span>    direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
@@ -316,12 +310,12 @@ function arguments and additional format arguments (see below).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    57   131 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span> <span class="op">&amp;</span> <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CRP"</span><span class="op">)</span>,</span>
-<span class="r-in">  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>, direction_var <span class="op">=</span> <span class="st">"GRADDR"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span> <span class="op">&amp;</span> <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CRP"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>, direction_var <span class="op">=</span> <span class="st">"GRADDR"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
@@ -330,22 +324,22 @@ function arguments and additional format arguments (see below).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3        3  12/129 (9.3%)          0         3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4        4  10/131 (7.6%)          0         4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5      Any 57/131 (43.5%)          0       Any</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARMCD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">add_colcounts</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"PARAMCD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"GRADDR"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span>
-<span class="r-in">    var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span>
-<span class="r-in">    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">      id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
-<span class="r-in">      baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>,</span>
-<span class="r-in">      direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">append_topleft</span><span class="op">(</span><span class="st">"Direction of Abnormality"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">build_table</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARMCD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">add_colcounts</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"PARAMCD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"GRADDR"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span></span>
+<span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
+<span class="r-in"><span>      baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>,</span></span>
+<span class="r-in"><span>      direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">append_topleft</span><span class="op">(</span><span class="st">"Direction of Abnormality"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Direction of Abnormality       ARM A            ARM B            ARM C     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                               (N=134)          (N=134)          (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————</span>
@@ -376,7 +370,7 @@ function arguments and additional format arguments (see below).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     3                      11/124 (8.9%)    10/128 (7.8%)    17/128 (13.3%)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     4                      11/129 (8.5%)     13/130 (10%)     4/130 (3.1%) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Any                    59/129 (45.7%)   54/130 (41.5%)   47/130 (36.2%)</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

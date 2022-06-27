@@ -26,7 +26,7 @@ Note that for the default degree 0 the biomarker variable is not included in the
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,12 +49,6 @@ Note that for the default degree 0 the biomarker variable is not included in the
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -89,7 +83,7 @@ Note that for the default degree 0 the <code>biomarker</code> variable is not in
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fit_rsp_step</span><span class="op">(</span><span class="va">variables</span>, <span class="va">data</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_rsp_step</span><span class="op">(</span><span class="va">variables</span>, <span class="va">data</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -126,42 +120,42 @@ customization options.</p></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co"># Testing dataset with just two treatment arms.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span>
-<span class="r-in"><span class="va">adrs_f</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span>,</span>
-<span class="r-in">    <span class="va">ARM</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="co"># Reorder levels of ARM to have Placebo as reference arm for Odds Ratio calculations.</span></span>
-<span class="r-in">    ARM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span><span class="va">ARM</span>, <span class="st">"B: Placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    RSP <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">AVALC</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PR"</span>, <span class="st">"CR"</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, <span class="cn">TRUE</span> <span class="op">~</span> <span class="fl">0</span><span class="op">)</span>,</span>
-<span class="r-in">    SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">SEX</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  arm <span class="op">=</span> <span class="st">"ARM"</span>,</span>
-<span class="r-in">  biomarker <span class="op">=</span> <span class="st">"BMRKR1"</span>,</span>
-<span class="r-in">  covariates <span class="op">=</span> <span class="st">"AGE"</span>,</span>
-<span class="r-in">  response <span class="op">=</span> <span class="st">"RSP"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Fit default STEP models: Here a constant treatment effect is estimated in each subgroup.</span></span>
-<span class="r-in"><span class="co"># We use a large enough bandwidth to avoid too small subgroups and linear separation in those.</span></span>
-<span class="r-in"><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu">fit_rsp_step</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">variables</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adrs_f</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Testing dataset with just two treatment arms.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span></span>
+<span class="r-in"><span><span class="va">adrs_f</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span>,</span></span>
+<span class="r-in"><span>    <span class="va">ARM</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="co"># Reorder levels of ARM to have Placebo as reference arm for Odds Ratio calculations.</span></span></span>
+<span class="r-in"><span>    ARM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span><span class="va">ARM</span>, <span class="st">"B: Placebo"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    RSP <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">AVALC</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PR"</span>, <span class="st">"CR"</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, <span class="cn">TRUE</span> <span class="op">~</span> <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">SEX</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
+<span class="r-in"><span>  biomarker <span class="op">=</span> <span class="st">"BMRKR1"</span>,</span></span>
+<span class="r-in"><span>  covariates <span class="op">=</span> <span class="st">"AGE"</span>,</span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="st">"RSP"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Fit default STEP models: Here a constant treatment effect is estimated in each subgroup.</span></span></span>
+<span class="r-in"><span><span class="co"># We use a large enough bandwidth to avoid too small subgroups and linear separation in those.</span></span></span>
+<span class="r-in"><span><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu">fit_rsp_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">variables</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39 11</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Percentile Center Percentile Lower Percentile Upper Interval Center</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]             0.025                0            0.525        1.240529</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]             0.050                0            0.550        1.628805</span>
@@ -176,36 +170,36 @@ customization options.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,]      0.4055982       5.996697 161 0.5901414 1.236425 -1.833207 3.013490</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5,]      0.4055982       6.206216 167 0.9757680 1.166698 -1.310917 3.262453</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6,]      0.4055982       6.384348 174 1.0373428 1.167055 -1.250043 3.324728</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Specify different polynomial degree for the biomarker interaction to use more flexible local</span></span>
-<span class="r-in"><span class="co"># models. Or specify different logistic regression options, including confidence level.</span></span>
-<span class="r-in"><span class="va">step_matrix2</span> <span class="op">&lt;-</span> <span class="fu">fit_rsp_step</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">variables</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adrs_f</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="fl">0.6</span>, degree <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use a global constant model. This is helpful as a reference for the subgroup models.</span></span>
-<span class="r-in"><span class="va">step_matrix3</span> <span class="op">&lt;-</span> <span class="fu">fit_rsp_step</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">variables</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adrs_f</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="cn">NULL</span>, num_points <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># It is also possible to use strata, i.e. use conditional logistic regression models.</span></span>
-<span class="r-in"><span class="va">variables2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  arm <span class="op">=</span> <span class="st">"ARM"</span>,</span>
-<span class="r-in">  biomarker <span class="op">=</span> <span class="st">"BMRKR1"</span>,</span>
-<span class="r-in">  covariates <span class="op">=</span> <span class="st">"AGE"</span>,</span>
-<span class="r-in">  response <span class="op">=</span> <span class="st">"RSP"</span>,</span>
-<span class="r-in">  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STRATA1"</span>, <span class="st">"STRATA2"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">step_matrix4</span> <span class="op">&lt;-</span> <span class="fu">fit_rsp_step</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">variables2</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adrs_f</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Specify different polynomial degree for the biomarker interaction to use more flexible local</span></span></span>
+<span class="r-in"><span><span class="co"># models. Or specify different logistic regression options, including confidence level.</span></span></span>
+<span class="r-in"><span><span class="va">step_matrix2</span> <span class="op">&lt;-</span> <span class="fu">fit_rsp_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">variables</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="fl">0.6</span>, degree <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use a global constant model. This is helpful as a reference for the subgroup models.</span></span></span>
+<span class="r-in"><span><span class="va">step_matrix3</span> <span class="op">&lt;-</span> <span class="fu">fit_rsp_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">variables</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="cn">NULL</span>, num_points <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It is also possible to use strata, i.e. use conditional logistic regression models.</span></span></span>
+<span class="r-in"><span><span class="va">variables2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
+<span class="r-in"><span>  biomarker <span class="op">=</span> <span class="st">"BMRKR1"</span>,</span></span>
+<span class="r-in"><span>  covariates <span class="op">=</span> <span class="st">"AGE"</span>,</span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="st">"RSP"</span>,</span></span>
+<span class="r-in"><span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STRATA1"</span>, <span class="st">"STRATA2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">step_matrix4</span> <span class="op">&lt;-</span> <span class="fu">fit_rsp_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">variables2</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

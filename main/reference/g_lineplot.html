@@ -12,7 +12,7 @@ Line plot with the optional table"><!-- mathjax --><script src="https://cdnjs.cl
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,12 +35,6 @@ Line plot with the optional table"><!-- mathjax --><script src="https://cdnjs.cl
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -69,36 +63,36 @@ Line plot with the optional table"><!-- mathjax --><script src="https://cdnjs.cl
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">g_lineplot</span><span class="op">(</span>
-  <span class="va">df</span>,
-  alt_counts_df <span class="op">=</span> <span class="cn">NULL</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="control_lineplot_vars.html">control_lineplot_vars</a></span><span class="op">(</span><span class="op">)</span>,
-  mid <span class="op">=</span> <span class="st">"mean"</span>,
-  interval <span class="op">=</span> <span class="st">"mean_ci"</span>,
-  whiskers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean_ci_lwr"</span>, <span class="st">"mean_ci_upr"</span><span class="op">)</span>,
-  table <span class="op">=</span> <span class="cn">NULL</span>,
-  sfun <span class="op">=</span> <span class="fu">tern</span><span class="fu">::</span><span class="va"><a href="summarize_variables.html">s_summary</a></span>,
-  <span class="va">...</span>,
-  mid_type <span class="op">=</span> <span class="st">"pl"</span>,
-  mid_point_size <span class="op">=</span> <span class="fl">2</span>,
-  position <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,
-  legend_title <span class="op">=</span> <span class="cn">NULL</span>,
-  legend_position <span class="op">=</span> <span class="st">"bottom"</span>,
-  ggtheme <span class="op">=</span> <span class="cn">NULL</span>,
-  y_lab <span class="op">=</span> <span class="cn">NULL</span>,
-  y_lab_add_paramcd <span class="op">=</span> <span class="cn">TRUE</span>,
-  y_lab_add_unit <span class="op">=</span> <span class="cn">TRUE</span>,
-  title <span class="op">=</span> <span class="st">"Plot of Mean and 95% Confidence Limits by Visit"</span>,
-  subtitle <span class="op">=</span> <span class="st">""</span>,
-  subtitle_add_paramcd <span class="op">=</span> <span class="cn">TRUE</span>,
-  subtitle_add_unit <span class="op">=</span> <span class="cn">TRUE</span>,
-  caption <span class="op">=</span> <span class="cn">NULL</span>,
-  table_format <span class="op">=</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="summary_formats.html">summary_formats</a></span><span class="op">(</span><span class="op">)</span>,
-  table_labels <span class="op">=</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="summary_labels.html">summary_labels</a></span><span class="op">(</span><span class="op">)</span>,
-  table_font_size <span class="op">=</span> <span class="fl">3</span>,
-  newpage <span class="op">=</span> <span class="cn">TRUE</span>,
-  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tern.color"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">g_lineplot</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  alt_counts_df <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="control_lineplot_vars.html">control_lineplot_vars</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  mid <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  interval <span class="op">=</span> <span class="st">"mean_ci"</span>,</span>
+<span>  whiskers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean_ci_lwr"</span>, <span class="st">"mean_ci_upr"</span><span class="op">)</span>,</span>
+<span>  table <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sfun <span class="op">=</span> <span class="fu">tern</span><span class="fu">::</span><span class="va"><a href="summarize_variables.html">s_summary</a></span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  mid_type <span class="op">=</span> <span class="st">"pl"</span>,</span>
+<span>  mid_point_size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  position <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>  legend_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  legend_position <span class="op">=</span> <span class="st">"bottom"</span>,</span>
+<span>  ggtheme <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y_lab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y_lab_add_paramcd <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  y_lab_add_unit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Plot of Mean and 95% Confidence Limits by Visit"</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  subtitle_add_paramcd <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  subtitle_add_unit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  caption <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  table_format <span class="op">=</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="summary_formats.html">summary_formats</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  table_labels <span class="op">=</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="summary_labels.html">summary_labels</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  table_font_size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  newpage <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tern.color"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -269,65 +263,65 @@ controls the font size of values in the table.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">scda</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span>
-<span class="r-in"><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">scda</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adlb</span></span>
-<span class="r-in"><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adlb</span>, <span class="va">ANL01FL</span> <span class="op">==</span> <span class="st">"Y"</span>, <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span>, <span class="va">AVISIT</span> <span class="op">!=</span> <span class="st">"SCREENING"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">adlb</span><span class="op">$</span><span class="va">AVISIT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">adlb</span><span class="op">$</span><span class="va">AVISIT</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">adlb</span>, AVISIT <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">AVISIT</span>, <span class="va">AVISITN</span>, <span class="va">min</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Mean with CI</span></span>
-<span class="r-in"><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb</span>, <span class="va">adsl</span>, subtitle <span class="op">=</span> <span class="st">"Laboratory Test:"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">scda</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">scda</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adlb</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adlb</span>, <span class="va">ANL01FL</span> <span class="op">==</span> <span class="st">"Y"</span>, <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span>, <span class="va">AVISIT</span> <span class="op">!=</span> <span class="st">"SCREENING"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span><span class="op">$</span><span class="va">AVISIT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">adlb</span><span class="op">$</span><span class="va">AVISIT</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">adlb</span>, AVISIT <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">AVISIT</span>, <span class="va">AVISITN</span>, <span class="va">min</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Mean with CI</span></span></span>
+<span class="r-in"><span><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb</span>, <span class="va">adsl</span>, subtitle <span class="op">=</span> <span class="st">"Laboratory Test:"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_lineplot-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Mean with CI, no stratification</span></span>
-<span class="r-in"><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb</span>, variables <span class="op">=</span> <span class="fu"><a href="control_lineplot_vars.html">control_lineplot_vars</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Mean with CI, no stratification</span></span></span>
+<span class="r-in"><span><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb</span>, variables <span class="op">=</span> <span class="fu"><a href="control_lineplot_vars.html">control_lineplot_vars</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_lineplot-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Mean, upper whisker of CI, no strata counts N</span></span>
-<span class="r-in"><span class="fu">g_lineplot</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">adlb</span>,</span>
-<span class="r-in">  whiskers <span class="op">=</span> <span class="st">"mean_ci_upr"</span>,</span>
-<span class="r-in">  title <span class="op">=</span> <span class="st">"Plot of Mean and Upper 95% Confidence Limit by Visit"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Mean, upper whisker of CI, no strata counts N</span></span></span>
+<span class="r-in"><span><span class="fu">g_lineplot</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">adlb</span>,</span></span>
+<span class="r-in"><span>  whiskers <span class="op">=</span> <span class="st">"mean_ci_upr"</span>,</span></span>
+<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"Plot of Mean and Upper 95% Confidence Limit by Visit"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_lineplot-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Median with CI</span></span>
-<span class="r-in"><span class="fu">g_lineplot</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">adlb</span>,</span>
-<span class="r-in">  <span class="va">adsl</span>,</span>
-<span class="r-in">  mid <span class="op">=</span> <span class="st">"median"</span>,</span>
-<span class="r-in">  interval <span class="op">=</span> <span class="st">"median_ci"</span>,</span>
-<span class="r-in">  whiskers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median_ci_lwr"</span>, <span class="st">"median_ci_upr"</span><span class="op">)</span>,</span>
-<span class="r-in">  title <span class="op">=</span> <span class="st">"Plot of Median and 95% Confidence Limits by Visit"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Median with CI</span></span></span>
+<span class="r-in"><span><span class="fu">g_lineplot</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">adlb</span>,</span></span>
+<span class="r-in"><span>  <span class="va">adsl</span>,</span></span>
+<span class="r-in"><span>  mid <span class="op">=</span> <span class="st">"median"</span>,</span></span>
+<span class="r-in"><span>  interval <span class="op">=</span> <span class="st">"median_ci"</span>,</span></span>
+<span class="r-in"><span>  whiskers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median_ci_lwr"</span>, <span class="st">"median_ci_upr"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"Plot of Median and 95% Confidence Limits by Visit"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>is.na() applied to non-(list or vector) of type 'closure'</span>
 <span class="r-plt img"><img src="g_lineplot-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Mean, +/- SD</span></span>
-<span class="r-in"><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb</span>, <span class="va">adsl</span>,</span>
-<span class="r-in">  interval <span class="op">=</span> <span class="st">"mean_sdi"</span>,</span>
-<span class="r-in">  whiskers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean_sdi_lwr"</span>, <span class="st">"mean_sdi_upr"</span><span class="op">)</span>,</span>
-<span class="r-in">  title <span class="op">=</span> <span class="st">"Plot of Median +/- SD by Visit"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Mean, +/- SD</span></span></span>
+<span class="r-in"><span><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb</span>, <span class="va">adsl</span>,</span></span>
+<span class="r-in"><span>  interval <span class="op">=</span> <span class="st">"mean_sdi"</span>,</span></span>
+<span class="r-in"><span>  whiskers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean_sdi_lwr"</span>, <span class="st">"mean_sdi_upr"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"Plot of Median +/- SD by Visit"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_lineplot-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Mean with CI plot with stats table</span></span>
-<span class="r-in"><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb</span>, <span class="va">adsl</span>, table <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"mean_ci"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Mean with CI plot with stats table</span></span></span>
+<span class="r-in"><span><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb</span>, <span class="va">adsl</span>, table <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"mean_ci"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_lineplot-6.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Mean with CI, table and customized confidence level</span></span>
-<span class="r-in"><span class="fu">g_lineplot</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">adlb</span>,</span>
-<span class="r-in">  <span class="va">adsl</span>,</span>
-<span class="r-in">  table <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"mean_ci"</span><span class="op">)</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="control_summarize_vars.html">control_summarize_vars</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span>,</span>
-<span class="r-in">  title <span class="op">=</span> <span class="st">"Plot of Mean and 80% Confidence Limits by Visit"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Mean with CI, table and customized confidence level</span></span></span>
+<span class="r-in"><span><span class="fu">g_lineplot</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">adlb</span>,</span></span>
+<span class="r-in"><span>  <span class="va">adsl</span>,</span></span>
+<span class="r-in"><span>  table <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"mean_ci"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="control_summarize_vars.html">control_summarize_vars</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"Plot of Mean and 80% Confidence Limits by Visit"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_lineplot-7.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Mean with CI, table, filtered data</span></span>
-<span class="r-in"><span class="va">adlb_f</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adlb</span>, <span class="va">ARMCD</span> <span class="op">!=</span> <span class="st">"ARM A"</span> <span class="op">|</span> <span class="va">AVISIT</span> <span class="op">==</span> <span class="st">"BASELINE"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb_f</span>, table <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Mean with CI, table, filtered data</span></span></span>
+<span class="r-in"><span><span class="va">adlb_f</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adlb</span>, <span class="va">ARMCD</span> <span class="op">!=</span> <span class="st">"ARM A"</span> <span class="op">|</span> <span class="va">AVISIT</span> <span class="op">==</span> <span class="st">"BASELINE"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">g_lineplot</span><span class="op">(</span><span class="va">adlb_f</span>, table <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_lineplot-8.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

@@ -16,7 +16,7 @@ per group."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,12 +39,6 @@ per group."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -75,37 +69,37 @@ per group.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">g_km</span><span class="op">(</span>
-  <span class="va">df</span>,
-  <span class="va">variables</span>,
-  control_surv <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span>,
-  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tern.color"</span><span class="op">)</span>,
-  lty <span class="op">=</span> <span class="cn">NULL</span>,
-  lwd <span class="op">=</span> <span class="fl">0.5</span>,
-  censor_show <span class="op">=</span> <span class="cn">TRUE</span>,
-  pch <span class="op">=</span> <span class="fl">3</span>,
-  size <span class="op">=</span> <span class="fl">2</span>,
-  max_time <span class="op">=</span> <span class="cn">NULL</span>,
-  xticks <span class="op">=</span> <span class="cn">NULL</span>,
-  xlab <span class="op">=</span> <span class="st">"Days"</span>,
-  yval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Survival"</span>, <span class="st">"Failure"</span><span class="op">)</span>,
-  ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">yval</span>, <span class="st">"Probability"</span><span class="op">)</span>,
-  title <span class="op">=</span> <span class="cn">NULL</span>,
-  draw <span class="op">=</span> <span class="cn">TRUE</span>,
-  newpage <span class="op">=</span> <span class="cn">TRUE</span>,
-  gp <span class="op">=</span> <span class="cn">NULL</span>,
-  vp <span class="op">=</span> <span class="cn">NULL</span>,
-  name <span class="op">=</span> <span class="cn">NULL</span>,
-  font_size <span class="op">=</span> <span class="fl">12</span>,
-  ci_ribbon <span class="op">=</span> <span class="cn">FALSE</span>,
-  ggtheme <span class="op">=</span> <span class="cn">NULL</span>,
-  annot_at_risk <span class="op">=</span> <span class="cn">TRUE</span>,
-  annot_surv_med <span class="op">=</span> <span class="cn">TRUE</span>,
-  annot_coxph <span class="op">=</span> <span class="cn">FALSE</span>,
-  control_coxph_pw <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>,
-  position_coxph <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.05</span><span class="op">)</span>,
-  position_surv_med <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.9</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">g_km</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">variables</span>,</span>
+<span>  control_surv <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tern.color"</span><span class="op">)</span>,</span>
+<span>  lty <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  censor_show <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  max_time <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  xticks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"Days"</span>,</span>
+<span>  yval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Survival"</span>, <span class="st">"Failure"</span><span class="op">)</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">yval</span>, <span class="st">"Probability"</span><span class="op">)</span>,</span>
+<span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  draw <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  newpage <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  gp <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  vp <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  font_size <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  ci_ribbon <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ggtheme <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  annot_at_risk <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  annot_surv_med <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  annot_coxph <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  control_coxph_pw <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  position_coxph <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.05</span><span class="op">)</span>,</span>
+<span>  position_surv_med <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.9</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -268,90 +262,90 @@ estimating median survival time per group</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tte <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span>, arm <span class="op">=</span> <span class="st">"ARMCD"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># 1. Example - basic option</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, yval <span class="op">=</span> <span class="st">"Failure"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>,</span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">variables</span>,</span>
-<span class="r-in">  control_surv <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>,</span>
-<span class="r-in">  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"grey25"</span>, <span class="st">"grey50"</span>, <span class="st">"grey75"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, ggtheme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, ggtheme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, max <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 2. Example - Arrange several KM curve on a single graph device</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 2.1 Use case: A general graph on the top, a zoom on the bottom.</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/grid.layout.html" class="external-link">grid.layout</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, newpage <span class="op">=</span> <span class="cn">FALSE</span>, annot_surv_med <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">1</span>, layout.pos.col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, max <span class="op">=</span> <span class="fl">1000</span>, newpage <span class="op">=</span> <span class="cn">FALSE</span>, annot_surv_med <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  ggtheme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_dark</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">  vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">2</span>, layout.pos.col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 2.1 Use case: No annotations on top, annotated graph on bottom</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/grid.layout.html" class="external-link">grid.layout</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, newpage <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  annot_surv_med <span class="op">=</span> <span class="cn">FALSE</span>, annot_at_risk <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">1</span>, layout.pos.col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, max <span class="op">=</span> <span class="fl">2000</span>, newpage <span class="op">=</span> <span class="cn">FALSE</span>, annot_surv_med <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  annot_at_risk <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">  ggtheme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_dark</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">  vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">2</span>, layout.pos.col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Add annotation from a pairwise coxph analysis</span></span>
-<span class="r-in"><span class="fu">g_km</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>,</span>
-<span class="r-in">  annot_coxph <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">g_km</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">variables</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strat <span class="op">=</span> <span class="st">"SEX"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  font_size <span class="op">=</span> <span class="fl">15</span>,</span>
-<span class="r-in">  annot_coxph <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">  control_coxph <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span>pval_method <span class="op">=</span> <span class="st">"wald"</span>, ties <span class="op">=</span> <span class="st">"exact"</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span>,</span>
-<span class="r-in">  position_coxph <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.5</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Change position of the treatment group annotation table.</span></span>
-<span class="r-in"><span class="fu">g_km</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">variables</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strat <span class="op">=</span> <span class="st">"SEX"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  font_size <span class="op">=</span> <span class="fl">15</span>,</span>
-<span class="r-in">  annot_coxph <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">  control_coxph <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span>pval_method <span class="op">=</span> <span class="st">"wald"</span>, ties <span class="op">=</span> <span class="st">"exact"</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span>,</span>
-<span class="r-in">  position_surv_med <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.7</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tte <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span>, arm <span class="op">=</span> <span class="st">"ARMCD"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># 1. Example - basic option</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, yval <span class="op">=</span> <span class="st">"Failure"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">variables</span>,</span></span>
+<span class="r-in"><span>  control_surv <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"grey25"</span>, <span class="st">"grey50"</span>, <span class="st">"grey75"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, ggtheme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, ggtheme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, max <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 2. Example - Arrange several KM curve on a single graph device</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 2.1 Use case: A general graph on the top, a zoom on the bottom.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/grid.layout.html" class="external-link">grid.layout</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, newpage <span class="op">=</span> <span class="cn">FALSE</span>, annot_surv_med <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">1</span>, layout.pos.col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, max <span class="op">=</span> <span class="fl">1000</span>, newpage <span class="op">=</span> <span class="cn">FALSE</span>, annot_surv_med <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  ggtheme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_dark</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">2</span>, layout.pos.col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 2.1 Use case: No annotations on top, annotated graph on bottom</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/grid.layout.html" class="external-link">grid.layout</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, newpage <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  annot_surv_med <span class="op">=</span> <span class="cn">FALSE</span>, annot_at_risk <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">1</span>, layout.pos.col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">g_km</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>, max <span class="op">=</span> <span class="fl">2000</span>, newpage <span class="op">=</span> <span class="cn">FALSE</span>, annot_surv_med <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  annot_at_risk <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  ggtheme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_dark</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">2</span>, layout.pos.col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Add annotation from a pairwise coxph analysis</span></span></span>
+<span class="r-in"><span><span class="fu">g_km</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="va">variables</span>,</span></span>
+<span class="r-in"><span>  annot_coxph <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">g_km</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">variables</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strat <span class="op">=</span> <span class="st">"SEX"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  font_size <span class="op">=</span> <span class="fl">15</span>,</span></span>
+<span class="r-in"><span>  annot_coxph <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  control_coxph <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span>pval_method <span class="op">=</span> <span class="st">"wald"</span>, ties <span class="op">=</span> <span class="st">"exact"</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  position_coxph <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Change position of the treatment group annotation table.</span></span></span>
+<span class="r-in"><span><span class="fu">g_km</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">variables</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strat <span class="op">=</span> <span class="st">"SEX"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  font_size <span class="op">=</span> <span class="fl">15</span>,</span></span>
+<span class="r-in"><span>  annot_coxph <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  control_coxph <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span>pval_method <span class="op">=</span> <span class="st">"wald"</span>, ties <span class="op">=</span> <span class="st">"exact"</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  position_surv_med <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.7</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

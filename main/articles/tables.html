@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,12 +51,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -103,14 +97,14 @@ to tern”</a> and <a href="https://roche.github.io/rtables/articles/introductio
 to <code>rtables</code>”</a> vignettes.</p>
 <p>The packages used in this vignette are:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/insightsengineering/tern" class="external-link">tern</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/insightsengineering/tern" class="external-link">tern</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 <p>The datasets used in this vignette are:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="va">ex_adsl</span>
-<span class="va">adae</span> <span class="op">&lt;-</span> <span class="va">ex_adae</span>
-<span class="va">adrs</span> <span class="op">&lt;-</span> <span class="va">ex_adrs</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="va">ex_adsl</span></span>
+<span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="va">ex_adae</span></span>
+<span><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="va">ex_adrs</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="tern-analyze-functions">
@@ -140,7 +134,7 @@ internals of <code>tern</code> analyze functions.</strong></p>
 <p>Internally <code>tern</code> analyze functions like
 <code><a href="../reference/summarize_ancova.html">tern::summarize_ancova</a></code> are mainly built in the 4 elements
 chain:</p>
-<pre><code><span class="fu"><a href="../reference/summarize_ancova.html">h_ancova</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="../reference/summarize_ancova.html">s_ancova</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="../reference/summarize_ancova.html">a_ancova</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="fu"><a href="../reference/summarize_ancova.html">summarize_ancova</a></span><span class="op">(</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="../reference/summarize_ancova.html">h_ancova</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="../reference/summarize_ancova.html">s_ancova</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="../reference/summarize_ancova.html">a_ancova</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="fu"><a href="../reference/summarize_ancova.html">summarize_ancova</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 <p>The descriptions for each function type:</p>
 <ul>
 <li>analysis helper functions <code>h_*</code>. These functions are
@@ -162,28 +156,28 @@ element of the chain.</strong></li>
 <p>We will use the native <code><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">rtables::analyze</a></code> function with
 the <code>tern</code> formatted analysis functions as a
 <code>afun</code> parameter.</p>
-<pre><code><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, afun <span class="op">=</span> <span class="va">a_summary</span><span class="op">)</span>
-
-<span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">adrs</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, afun <span class="op">=</span> <span class="va">a_summary</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">adrs</span><span class="op">)</span></span></code></pre>
 <p>The <code><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">rtables::make_afun</a></code> function is helpful when somebody
 wants to attach some format to the formatted analysis function.</p>
-<pre><code><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span>
-    <span class="va">a_summary</span>,
-    .stats <span class="op">=</span> <span class="cn">NULL</span>,
-    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"xx."</span><span class="op">)</span>,
-    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"My median"</span><span class="op">)</span>,
-    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="va">l2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, afun <span class="op">=</span> <span class="va">afun</span><span class="op">)</span>
-
-<span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l2</span>, df <span class="op">=</span> <span class="va">adrs</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span>
+<span>    <span class="va">a_summary</span>,</span>
+<span>    .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"xx."</span><span class="op">)</span>,</span>
+<span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"My median"</span><span class="op">)</span>,</span>
+<span>    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">l2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, afun <span class="op">=</span> <span class="va">afun</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l2</span>, df <span class="op">=</span> <span class="va">adrs</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -234,68 +228,68 @@ demographic properties such as age, sex, race, etc.</p>
 <code><a href="../reference/summarize_variables.html">summarize_vars()</a></code> and the remaining layout functions are
 from <code>rtables</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Select variables to include in table.</span>
-<span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"SEX"</span><span class="op">)</span>
-<span class="va">var_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age (yr)"</span>, <span class="st">"Sex"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="va">vars</span>,
-    var_labels <span class="op">=</span> <span class="va">var_labels</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span>
-<span class="co">#&gt;                       A: Drug X    B: Placebo    C: Combination   All Patients</span>
-<span class="co">#&gt;                        (N=134)       (N=134)        (N=132)         (N=400)   </span>
-<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                      </span>
-<span class="co">#&gt;   n                      134           134            132             400     </span>
-<span class="co">#&gt;   Mean (SD)          33.8 (6.6)    35.4 (7.9)      35.4 (7.7)      34.9 (7.4) </span>
-<span class="co">#&gt;   Median                33.0          35.0            35.0            34.0    </span>
-<span class="co">#&gt;   Min - Max          21.0 - 50.0   21.0 - 62.0    20.0 - 69.0     20.0 - 69.0 </span>
-<span class="co">#&gt; Sex                                                                           </span>
-<span class="co">#&gt;   n                      134           134            132             400     </span>
-<span class="co">#&gt;   F                   79 (59%)     77 (57.5%)       66 (50%)      222 (55.5%) </span>
-<span class="co">#&gt;   M                  51 (38.1%)     55 (41%)       60 (45.5%)     166 (41.5%) </span>
-<span class="co">#&gt;   U                   3 (2.2%)      2 (1.5%)         4 (3%)         9 (2.2%)  </span>
-<span class="co">#&gt;   UNDIFFERENTIATED    1 (0.7%)          0           2 (1.5%)        3 (0.8%)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Select variables to include in table.</span></span>
+<span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"SEX"</span><span class="op">)</span></span>
+<span><span class="va">var_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age (yr)"</span>, <span class="st">"Sex"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>    var_labels <span class="op">=</span> <span class="va">var_labels</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                       A: Drug X    B: Placebo    C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                        (N=134)       (N=134)        (N=132)         (N=400)   </span></span>
+<span><span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Age (yr)                                                                      </span></span>
+<span><span class="co">#&gt;   n                      134           134            132             400     </span></span>
+<span><span class="co">#&gt;   Mean (SD)          33.8 (6.6)    35.4 (7.9)      35.4 (7.7)      34.9 (7.4) </span></span>
+<span><span class="co">#&gt;   Median                33.0          35.0            35.0            34.0    </span></span>
+<span><span class="co">#&gt;   Min - Max          21.0 - 50.0   21.0 - 62.0    20.0 - 69.0     20.0 - 69.0 </span></span>
+<span><span class="co">#&gt; Sex                                                                           </span></span>
+<span><span class="co">#&gt;   n                      134           134            132             400     </span></span>
+<span><span class="co">#&gt;   F                   79 (59%)     77 (57.5%)       66 (50%)      222 (55.5%) </span></span>
+<span><span class="co">#&gt;   M                  51 (38.1%)     55 (41%)       60 (45.5%)     166 (41.5%) </span></span>
+<span><span class="co">#&gt;   U                   3 (2.2%)      2 (1.5%)         4 (3%)         9 (2.2%)  </span></span>
+<span><span class="co">#&gt;   UNDIFFERENTIATED    1 (0.7%)          0           2 (1.5%)        3 (0.8%)</span></span></code></pre></div>
 <p>To change the display order of categorical variables in a table use
 factor variables and explicitly set the order of the levels. This is the
 case for the display order in columns and rows. Note that the
 <code>forcats</code> package has many useful functions to help with
 these types of data processing steps (not used below).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Reorder the levels in the ARM variable.</span>
-<span class="va">adsl</span><span class="op">$</span><span class="va">ARM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">$</span><span class="va">ARM</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span>, <span class="st">"C: Combination"</span><span class="op">)</span><span class="op">)</span> <span class="co"># nolint</span>
-
-<span class="co"># Reorder the levels in the SEX variable.</span>
-<span class="va">adsl</span><span class="op">$</span><span class="va">SEX</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">$</span><span class="va">SEX</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"U"</span>, <span class="st">"UNDIFFERENTIATED"</span><span class="op">)</span><span class="op">)</span> <span class="co"># nolint</span>
-
-<span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="va">vars</span>,
-    var_labels <span class="op">=</span> <span class="va">var_labels</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span>
-<span class="co">#&gt;                      B: Placebo     A: Drug X    C: Combination   All Patients</span>
-<span class="co">#&gt;                        (N=134)       (N=134)        (N=132)         (N=400)   </span>
-<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                      </span>
-<span class="co">#&gt;   n                      134           134            132             400     </span>
-<span class="co">#&gt;   Mean (SD)          35.4 (7.9)    33.8 (6.6)      35.4 (7.7)      34.9 (7.4) </span>
-<span class="co">#&gt;   Median                35.0          33.0            35.0            34.0    </span>
-<span class="co">#&gt;   Min - Max          21.0 - 62.0   21.0 - 50.0    20.0 - 69.0     20.0 - 69.0 </span>
-<span class="co">#&gt; Sex                                                                           </span>
-<span class="co">#&gt;   n                      134           134            132             400     </span>
-<span class="co">#&gt;   M                   55 (41%)     51 (38.1%)      60 (45.5%)     166 (41.5%) </span>
-<span class="co">#&gt;   F                  77 (57.5%)     79 (59%)        66 (50%)      222 (55.5%) </span>
-<span class="co">#&gt;   U                   2 (1.5%)      3 (2.2%)         4 (3%)         9 (2.2%)  </span>
-<span class="co">#&gt;   UNDIFFERENTIATED        0         1 (0.7%)        2 (1.5%)        3 (0.8%)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Reorder the levels in the ARM variable.</span></span>
+<span><span class="va">adsl</span><span class="op">$</span><span class="va">ARM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">$</span><span class="va">ARM</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span>, <span class="st">"C: Combination"</span><span class="op">)</span><span class="op">)</span> <span class="co"># nolint</span></span>
+<span></span>
+<span><span class="co"># Reorder the levels in the SEX variable.</span></span>
+<span><span class="va">adsl</span><span class="op">$</span><span class="va">SEX</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">$</span><span class="va">SEX</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"U"</span>, <span class="st">"UNDIFFERENTIATED"</span><span class="op">)</span><span class="op">)</span> <span class="co"># nolint</span></span>
+<span></span>
+<span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>    var_labels <span class="op">=</span> <span class="va">var_labels</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                      B: Placebo     A: Drug X    C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                        (N=134)       (N=134)        (N=132)         (N=400)   </span></span>
+<span><span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Age (yr)                                                                      </span></span>
+<span><span class="co">#&gt;   n                      134           134            132             400     </span></span>
+<span><span class="co">#&gt;   Mean (SD)          35.4 (7.9)    33.8 (6.6)      35.4 (7.7)      34.9 (7.4) </span></span>
+<span><span class="co">#&gt;   Median                35.0          33.0            35.0            34.0    </span></span>
+<span><span class="co">#&gt;   Min - Max          21.0 - 62.0   21.0 - 50.0    20.0 - 69.0     20.0 - 69.0 </span></span>
+<span><span class="co">#&gt; Sex                                                                           </span></span>
+<span><span class="co">#&gt;   n                      134           134            132             400     </span></span>
+<span><span class="co">#&gt;   M                   55 (41%)     51 (38.1%)      60 (45.5%)     166 (41.5%) </span></span>
+<span><span class="co">#&gt;   F                  77 (57.5%)     79 (59%)        66 (50%)      222 (55.5%) </span></span>
+<span><span class="co">#&gt;   U                   2 (1.5%)      3 (2.2%)         4 (3%)         9 (2.2%)  </span></span>
+<span><span class="co">#&gt;   UNDIFFERENTIATED        0         1 (0.7%)        2 (1.5%)        3 (0.8%)</span></span></code></pre></div>
 <p>The <code>tern</code> package includes many functions similar to
 <code><a href="../reference/summarize_variables.html">summarize_vars()</a></code>. These functions are called layout
 creating functions and are used in combination with other
@@ -320,76 +314,76 @@ records and the counts of categories. We also modify the display format
 for the mean and standard deviation to print two decimal places instead
 of just one.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Select statistics and modify default formats.</span>
-<span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="va">vars</span>,
-    var_labels <span class="op">=</span> <span class="va">var_labels</span>,
-    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"count"</span><span class="op">)</span>,
-    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean_sd <span class="op">=</span> <span class="st">"xx.xx (xx.xx)"</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span>
-<span class="co">#&gt;                       B: Placebo     A: Drug X     C: Combination   All Patients</span>
-<span class="co">#&gt;                        (N=134)        (N=134)         (N=132)         (N=400)   </span>
-<span class="co">#&gt; ————————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                        </span>
-<span class="co">#&gt;   n                      134            134             132             400     </span>
-<span class="co">#&gt;   Mean (SD)          35.43 (7.90)   33.77 (6.55)    35.43 (7.72)    34.88 (7.44)</span>
-<span class="co">#&gt; Sex                                                                             </span>
-<span class="co">#&gt;   n                      134            134             132             400     </span>
-<span class="co">#&gt;   M                       55             51              60             166     </span>
-<span class="co">#&gt;   F                       77             79              66             222     </span>
-<span class="co">#&gt;   U                       2              3               4               9      </span>
-<span class="co">#&gt;   UNDIFFERENTIATED        0              1               2               3</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Select statistics and modify default formats.</span></span>
+<span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>    var_labels <span class="op">=</span> <span class="va">var_labels</span>,</span>
+<span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"count"</span><span class="op">)</span>,</span>
+<span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean_sd <span class="op">=</span> <span class="st">"xx.xx (xx.xx)"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                       B: Placebo     A: Drug X     C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                        (N=134)        (N=134)         (N=132)         (N=400)   </span></span>
+<span><span class="co">#&gt; ————————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Age (yr)                                                                        </span></span>
+<span><span class="co">#&gt;   n                      134            134             132             400     </span></span>
+<span><span class="co">#&gt;   Mean (SD)          35.43 (7.90)   33.77 (6.55)    35.43 (7.72)    34.88 (7.44)</span></span>
+<span><span class="co">#&gt; Sex                                                                             </span></span>
+<span><span class="co">#&gt;   n                      134            134             132             400     </span></span>
+<span><span class="co">#&gt;   M                       55             51              60             166     </span></span>
+<span><span class="co">#&gt;   F                       77             79              66             222     </span></span>
+<span><span class="co">#&gt;   U                       2              3               4               9      </span></span>
+<span><span class="co">#&gt;   UNDIFFERENTIATED        0              1               2               3</span></span></code></pre></div>
 <p>One feature of a <code>layout</code> is that it can be used with
 different datasets to create different summaries. For example, here we
 can easily create the same summary of demographics for the Brazil and
 China subgroups, respectively:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="va">vars</span>,
-    var_labels <span class="op">=</span> <span class="va">var_labels</span>
-  <span class="op">)</span>
-
-<span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adsl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">COUNTRY</span> <span class="op">==</span> <span class="st">"BRA"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;                      B: Placebo     A: Drug X    C: Combination   All Patients</span>
-<span class="co">#&gt;                         (N=7)        (N=13)          (N=10)          (N=30)   </span>
-<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                      </span>
-<span class="co">#&gt;   n                       7            13              10              30     </span>
-<span class="co">#&gt;   Mean (SD)          32.0 (6.1)    36.7 (6.4)     38.3 (10.6)      36.1 (8.1) </span>
-<span class="co">#&gt;   Median                32.0          37.0            35.0            35.5    </span>
-<span class="co">#&gt;   Min - Max          25.0 - 42.0   24.0 - 47.0    25.0 - 64.0     24.0 - 64.0 </span>
-<span class="co">#&gt; Sex                                                                           </span>
-<span class="co">#&gt;   n                       7            13              10              30     </span>
-<span class="co">#&gt;   M                   4 (57.1%)     8 (61.5%)       5 (50%)        17 (56.7%) </span>
-<span class="co">#&gt;   F                   3 (42.9%)     5 (38.5%)       5 (50%)        13 (43.3%) </span>
-<span class="co">#&gt;   U                       0             0              0               0      </span>
-<span class="co">#&gt;   UNDIFFERENTIATED        0             0              0               0</span>
-
-<span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adsl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">COUNTRY</span> <span class="op">==</span> <span class="st">"CHN"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;                      B: Placebo     A: Drug X    C: Combination   All Patients</span>
-<span class="co">#&gt;                        (N=81)        (N=74)          (N=64)         (N=219)   </span>
-<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Age (yr)                                                                      </span>
-<span class="co">#&gt;   n                      81            74              64             219     </span>
-<span class="co">#&gt;   Mean (SD)          35.7 (7.3)    33.0 (6.4)      35.2 (6.4)      34.6 (6.8) </span>
-<span class="co">#&gt;   Median                36.0          32.0            35.0            34.0    </span>
-<span class="co">#&gt;   Min - Max          21.0 - 58.0   23.0 - 48.0    21.0 - 49.0     21.0 - 58.0 </span>
-<span class="co">#&gt; Sex                                                                           </span>
-<span class="co">#&gt;   n                      81            74              64             219     </span>
-<span class="co">#&gt;   M                  35 (43.2%)    27 (36.5%)      30 (46.9%)       92 (42%)  </span>
-<span class="co">#&gt;   F                  45 (55.6%)    44 (59.5%)      29 (45.3%)     118 (53.9%) </span>
-<span class="co">#&gt;   U                   1 (1.2%)      2 (2.7%)        3 (4.7%)        6 (2.7%)  </span>
-<span class="co">#&gt;   UNDIFFERENTIATED        0         1 (1.4%)        2 (3.1%)        3 (1.4%)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>    var_labels <span class="op">=</span> <span class="va">var_labels</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adsl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">COUNTRY</span> <span class="op">==</span> <span class="st">"BRA"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                      B: Placebo     A: Drug X    C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                         (N=7)        (N=13)          (N=10)          (N=30)   </span></span>
+<span><span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Age (yr)                                                                      </span></span>
+<span><span class="co">#&gt;   n                       7            13              10              30     </span></span>
+<span><span class="co">#&gt;   Mean (SD)          32.0 (6.1)    36.7 (6.4)     38.3 (10.6)      36.1 (8.1) </span></span>
+<span><span class="co">#&gt;   Median                32.0          37.0            35.0            35.5    </span></span>
+<span><span class="co">#&gt;   Min - Max          25.0 - 42.0   24.0 - 47.0    25.0 - 64.0     24.0 - 64.0 </span></span>
+<span><span class="co">#&gt; Sex                                                                           </span></span>
+<span><span class="co">#&gt;   n                       7            13              10              30     </span></span>
+<span><span class="co">#&gt;   M                   4 (57.1%)     8 (61.5%)       5 (50%)        17 (56.7%) </span></span>
+<span><span class="co">#&gt;   F                   3 (42.9%)     5 (38.5%)       5 (50%)        13 (43.3%) </span></span>
+<span><span class="co">#&gt;   U                       0             0              0               0      </span></span>
+<span><span class="co">#&gt;   UNDIFFERENTIATED        0             0              0               0</span></span>
+<span></span>
+<span><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adsl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">COUNTRY</span> <span class="op">==</span> <span class="st">"CHN"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                      B: Placebo     A: Drug X    C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                        (N=81)        (N=74)          (N=64)         (N=219)   </span></span>
+<span><span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Age (yr)                                                                      </span></span>
+<span><span class="co">#&gt;   n                      81            74              64             219     </span></span>
+<span><span class="co">#&gt;   Mean (SD)          35.7 (7.3)    33.0 (6.4)      35.2 (6.4)      34.6 (6.8) </span></span>
+<span><span class="co">#&gt;   Median                36.0          32.0            35.0            34.0    </span></span>
+<span><span class="co">#&gt;   Min - Max          21.0 - 58.0   23.0 - 48.0    21.0 - 49.0     21.0 - 58.0 </span></span>
+<span><span class="co">#&gt; Sex                                                                           </span></span>
+<span><span class="co">#&gt;   n                      81            74              64             219     </span></span>
+<span><span class="co">#&gt;   M                  35 (43.2%)    27 (36.5%)      30 (46.9%)       92 (42%)  </span></span>
+<span><span class="co">#&gt;   F                  45 (55.6%)    44 (59.5%)      29 (45.3%)     118 (53.9%) </span></span>
+<span><span class="co">#&gt;   U                   1 (1.2%)      2 (2.7%)        3 (4.7%)        6 (2.7%)  </span></span>
+<span><span class="co">#&gt;   UNDIFFERENTIATED        0         1 (1.4%)        2 (3.1%)        3 (1.4%)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="adverse-event-table">Adverse Event Table<a class="anchor" aria-label="anchor" href="#adverse-event-table"></a>
@@ -404,27 +398,27 @@ layout creating functions in a tabulation pipeline.</p>
 function in <code>tern</code> that can do this is
 <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span>
-    var <span class="op">=</span> <span class="st">"USUBJID"</span>,
-    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,
-    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,
-      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span>
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>
-    df <span class="op">=</span> <span class="va">adae</span>,
-    alt_counts_df <span class="op">=</span> <span class="va">adsl</span>
-  <span class="op">)</span>
-<span class="co">#&gt;                                                 A: Drug X   B: Placebo    C: Combination   All Patients</span>
-<span class="co">#&gt;                                                  (N=134)      (N=134)        (N=132)         (N=400)   </span>
-<span class="co">#&gt; ———————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Total number of patients with at least one AE   122 (91%)   123 (91.8%)    120 (90.9%)     365 (91.2%) </span>
-<span class="co">#&gt; Overall total number of events                     609          622            703             1934</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span>
+<span>    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,</span>
+<span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,</span>
+<span>      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span>
+<span>    df <span class="op">=</span> <span class="va">adae</span>,</span>
+<span>    alt_counts_df <span class="op">=</span> <span class="va">adsl</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt;                                                 A: Drug X   B: Placebo    C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                                                  (N=134)      (N=134)        (N=132)         (N=400)   </span></span>
+<span><span class="co">#&gt; ———————————————————————————————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Total number of patients with at least one AE   122 (91%)   123 (91.8%)    120 (90.9%)     365 (91.2%) </span></span>
+<span><span class="co">#&gt; Overall total number of events                     609          622            703             1934</span></span></code></pre></div>
 <p>Note that for this table, the denominator used for percentages and
 shown in the header of the table <code>(N = xx)</code> is defined based
 on the subject-level dataset <code>adsl</code>. This is done by using
@@ -456,17 +450,17 @@ The results of this Statistics function is a list with the elements
 <code>unique</code>, <code>nonunique</code> and
 <code>unique_count</code>:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/summarize_num_patients.html">s_num_patients</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">adae</span><span class="op">$</span><span class="va">USUBJID</span>, labelstr <span class="op">=</span> <span class="st">""</span>, .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">adae</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; $unique</span>
-<span class="co">#&gt; [1] 365.000000   0.188728</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $nonunique</span>
-<span class="co">#&gt; [1] 1934</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $unique_count</span>
-<span class="co">#&gt; [1] 365</span>
-<span class="co">#&gt; attr(,"label")</span>
-<span class="co">#&gt; [1] " (n)"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/summarize_num_patients.html">s_num_patients</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">adae</span><span class="op">$</span><span class="va">USUBJID</span>, labelstr <span class="op">=</span> <span class="st">""</span>, .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">adae</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $unique</span></span>
+<span><span class="co">#&gt; [1] 365.000000   0.188728</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $nonunique</span></span>
+<span><span class="co">#&gt; [1] 1934</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $unique_count</span></span>
+<span><span class="co">#&gt; [1] 365</span></span>
+<span><span class="co">#&gt; attr(,"label")</span></span>
+<span><span class="co">#&gt; [1] " (n)"</span></span></code></pre></div>
 <p>From these results you can see that the <code>unique</code> and
 <code>nonunique</code> statistics are those displayed in the “All
 Patients” column in the initial AE table output above. Also you can see
@@ -483,23 +477,23 @@ we make this update in both the <code>.stats</code> and
 <code>.labels</code> argument of
 <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span>
-    var <span class="op">=</span> <span class="st">"USUBJID"</span>,
-    .stats <span class="op">=</span> <span class="st">"unique_count"</span>,
-    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>unique_count <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>
-    df <span class="op">=</span> <span class="va">adae</span>,
-    alt_counts_df <span class="op">=</span> <span class="va">adsl</span>
-  <span class="op">)</span>
-<span class="co">#&gt;                                                 A: Drug X   B: Placebo   C: Combination   All Patients</span>
-<span class="co">#&gt;                                                  (N=134)     (N=134)        (N=132)         (N=400)   </span>
-<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Total number of patients with at least one AE      122         123            120             365</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span>
+<span>    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>    .stats <span class="op">=</span> <span class="st">"unique_count"</span>,</span>
+<span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>unique_count <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span>
+<span>    df <span class="op">=</span> <span class="va">adae</span>,</span>
+<span>    alt_counts_df <span class="op">=</span> <span class="va">adsl</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt;                                                 A: Drug X   B: Placebo   C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                                                  (N=134)     (N=134)        (N=132)         (N=400)   </span></span>
+<span><span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Total number of patients with at least one AE      122         123            120             365</span></span></code></pre></div>
 <p>Let’s now continue building on the layout for the adverse event
 table.</p>
 <p>After we have the top-level summary, we can repeat the same summary
@@ -507,161 +501,161 @@ at each system organ class level. To do this we split the analysis data
 with <code><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by()</a></code> before calling again
 <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span>
-    var <span class="op">=</span> <span class="st">"USUBJID"</span>,
-    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,
-    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,
-      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span>
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>
-    <span class="st">"AEBODSYS"</span>,
-    child_labels <span class="op">=</span> <span class="st">"visible"</span>,
-    nested <span class="op">=</span> <span class="cn">FALSE</span>,
-    indent_mod <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,
-    split_fun <span class="op">=</span> <span class="va">drop_split_levels</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span>
-    var <span class="op">=</span> <span class="st">"USUBJID"</span>,
-    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,
-    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,
-      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span>
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>
-    df <span class="op">=</span> <span class="va">adae</span>,
-    alt_counts_df <span class="op">=</span> <span class="va">adsl</span>
-  <span class="op">)</span>
-<span class="co">#&gt;                                                   A: Drug X    B: Placebo    C: Combination   All Patients</span>
-<span class="co">#&gt;                                                    (N=134)       (N=134)        (N=132)         (N=400)   </span>
-<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Total number of patients with at least one AE     122 (91%)    123 (91.8%)    120 (90.9%)     365 (91.2%) </span>
-<span class="co">#&gt; Overall total number of events                       609           622            703             1934    </span>
-<span class="co">#&gt; cl A.1                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   78 (58.2%)    75 (56%)       89 (67.4%)     242 (60.5%) </span>
-<span class="co">#&gt;   Overall total number of events                     132           130            160             422     </span>
-<span class="co">#&gt; cl B.1                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   47 (35.1%)   49 (36.6%)      43 (32.6%)     139 (34.8%) </span>
-<span class="co">#&gt;   Overall total number of events                      56           60              62             178     </span>
-<span class="co">#&gt; cl B.2                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE    79 (59%)    74 (55.2%)      85 (64.4%)     238 (59.5%) </span>
-<span class="co">#&gt;   Overall total number of events                     129           138            143             410     </span>
-<span class="co">#&gt; cl C.1                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   43 (32.1%)   46 (34.3%)      43 (32.6%)      132 (33%)  </span>
-<span class="co">#&gt;   Overall total number of events                      55           63              64             182     </span>
-<span class="co">#&gt; cl C.2                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   35 (26.1%)   48 (35.8%)      55 (41.7%)     138 (34.5%) </span>
-<span class="co">#&gt;   Overall total number of events                      48           53              65             166     </span>
-<span class="co">#&gt; cl D.1                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE    79 (59%)     67 (50%)       80 (60.6%)     226 (56.5%) </span>
-<span class="co">#&gt;   Overall total number of events                     127           106            135             368     </span>
-<span class="co">#&gt; cl D.2                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   47 (35.1%)   58 (43.3%)      57 (43.2%)     162 (40.5%) </span>
-<span class="co">#&gt;   Overall total number of events                      62           72              74             208</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span>
+<span>    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,</span>
+<span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,</span>
+<span>      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span></span>
+<span>    <span class="st">"AEBODSYS"</span>,</span>
+<span>    child_labels <span class="op">=</span> <span class="st">"visible"</span>,</span>
+<span>    nested <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    indent_mod <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
+<span>    split_fun <span class="op">=</span> <span class="va">drop_split_levels</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span>
+<span>    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,</span>
+<span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,</span>
+<span>      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span>
+<span>    df <span class="op">=</span> <span class="va">adae</span>,</span>
+<span>    alt_counts_df <span class="op">=</span> <span class="va">adsl</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt;                                                   A: Drug X    B: Placebo    C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                                                    (N=134)       (N=134)        (N=132)         (N=400)   </span></span>
+<span><span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Total number of patients with at least one AE     122 (91%)    123 (91.8%)    120 (90.9%)     365 (91.2%) </span></span>
+<span><span class="co">#&gt; Overall total number of events                       609           622            703             1934    </span></span>
+<span><span class="co">#&gt; cl A.1                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   78 (58.2%)    75 (56%)       89 (67.4%)     242 (60.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                     132           130            160             422     </span></span>
+<span><span class="co">#&gt; cl B.1                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   47 (35.1%)   49 (36.6%)      43 (32.6%)     139 (34.8%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                      56           60              62             178     </span></span>
+<span><span class="co">#&gt; cl B.2                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE    79 (59%)    74 (55.2%)      85 (64.4%)     238 (59.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                     129           138            143             410     </span></span>
+<span><span class="co">#&gt; cl C.1                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   43 (32.1%)   46 (34.3%)      43 (32.6%)      132 (33%)  </span></span>
+<span><span class="co">#&gt;   Overall total number of events                      55           63              64             182     </span></span>
+<span><span class="co">#&gt; cl C.2                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   35 (26.1%)   48 (35.8%)      55 (41.7%)     138 (34.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                      48           53              65             166     </span></span>
+<span><span class="co">#&gt; cl D.1                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE    79 (59%)     67 (50%)       80 (60.6%)     226 (56.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                     127           106            135             368     </span></span>
+<span><span class="co">#&gt; cl D.2                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   47 (35.1%)   58 (43.3%)      57 (43.2%)     162 (40.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                      62           72              74             208</span></span></code></pre></div>
 <p>The table looks almost ready. For the final step, we need a layout
 creating function that can produce a count table of event frequencies.
 The layout creating function for this is
 <code><a href="../reference/count_occurrences.html">count_occurrences()</a></code>. Let’s first try using this function in
 a simpler layout without row splits:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/count_occurrences.html">count_occurrences</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AEDECOD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>
-    df <span class="op">=</span> <span class="va">adae</span>,
-    alt_counts_df <span class="op">=</span> <span class="va">adsl</span>
-  <span class="op">)</span>
-<span class="co">#&gt;                 A: Drug X    B: Placebo   C: Combination   All Patients</span>
-<span class="co">#&gt;                  (N=134)      (N=134)        (N=132)         (N=400)   </span>
-<span class="co">#&gt; ———————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; dcd A.1.1.1.1   50 (37.3%)   45 (33.6%)     63 (47.7%)     158 (39.5%) </span>
-<span class="co">#&gt; dcd A.1.1.1.2   48 (35.8%)   48 (35.8%)     50 (37.9%)     146 (36.5%) </span>
-<span class="co">#&gt; dcd B.1.1.1.1   47 (35.1%)   49 (36.6%)     43 (32.6%)     139 (34.8%) </span>
-<span class="co">#&gt; dcd B.2.1.2.1   49 (36.6%)   44 (32.8%)     52 (39.4%)     145 (36.2%) </span>
-<span class="co">#&gt; dcd B.2.2.3.1   48 (35.8%)   54 (40.3%)     51 (38.6%)     153 (38.2%) </span>
-<span class="co">#&gt; dcd C.1.1.1.3   43 (32.1%)   46 (34.3%)     43 (32.6%)      132 (33%)  </span>
-<span class="co">#&gt; dcd C.2.1.2.1   35 (26.1%)   48 (35.8%)     55 (41.7%)     138 (34.5%) </span>
-<span class="co">#&gt; dcd D.1.1.1.1   50 (37.3%)   42 (31.3%)     51 (38.6%)     143 (35.8%) </span>
-<span class="co">#&gt; dcd D.1.1.4.2   48 (35.8%)   42 (31.3%)     50 (37.9%)      140 (35%)  </span>
-<span class="co">#&gt; dcd D.2.1.5.3   47 (35.1%)   58 (43.3%)     57 (43.2%)     162 (40.5%)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/count_occurrences.html">count_occurrences</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AEDECOD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span>
+<span>    df <span class="op">=</span> <span class="va">adae</span>,</span>
+<span>    alt_counts_df <span class="op">=</span> <span class="va">adsl</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt;                 A: Drug X    B: Placebo   C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                  (N=134)      (N=134)        (N=132)         (N=400)   </span></span>
+<span><span class="co">#&gt; ———————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; dcd A.1.1.1.1   50 (37.3%)   45 (33.6%)     63 (47.7%)     158 (39.5%) </span></span>
+<span><span class="co">#&gt; dcd A.1.1.1.2   48 (35.8%)   48 (35.8%)     50 (37.9%)     146 (36.5%) </span></span>
+<span><span class="co">#&gt; dcd B.1.1.1.1   47 (35.1%)   49 (36.6%)     43 (32.6%)     139 (34.8%) </span></span>
+<span><span class="co">#&gt; dcd B.2.1.2.1   49 (36.6%)   44 (32.8%)     52 (39.4%)     145 (36.2%) </span></span>
+<span><span class="co">#&gt; dcd B.2.2.3.1   48 (35.8%)   54 (40.3%)     51 (38.6%)     153 (38.2%) </span></span>
+<span><span class="co">#&gt; dcd C.1.1.1.3   43 (32.1%)   46 (34.3%)     43 (32.6%)      132 (33%)  </span></span>
+<span><span class="co">#&gt; dcd C.2.1.2.1   35 (26.1%)   48 (35.8%)     55 (41.7%)     138 (34.5%) </span></span>
+<span><span class="co">#&gt; dcd D.1.1.1.1   50 (37.3%)   42 (31.3%)     51 (38.6%)     143 (35.8%) </span></span>
+<span><span class="co">#&gt; dcd D.1.1.4.2   48 (35.8%)   42 (31.3%)     50 (37.9%)      140 (35%)  </span></span>
+<span><span class="co">#&gt; dcd D.2.1.5.3   47 (35.1%)   58 (43.3%)     57 (43.2%)     162 (40.5%)</span></span></code></pre></div>
 <p>Putting everything together, the final AE table looks like this:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span>
-    var <span class="op">=</span> <span class="st">"USUBJID"</span>,
-    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,
-    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,
-      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span>
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>
-    <span class="st">"AEBODSYS"</span>,
-    child_labels <span class="op">=</span> <span class="st">"visible"</span>,
-    nested <span class="op">=</span> <span class="cn">FALSE</span>,
-    indent_mod <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,
-    split_fun <span class="op">=</span> <span class="va">drop_split_levels</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span>
-    var <span class="op">=</span> <span class="st">"USUBJID"</span>,
-    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,
-    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,
-      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span>
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/count_occurrences.html">count_occurrences</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AEDECOD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>
-    df <span class="op">=</span> <span class="va">adae</span>,
-    alt_counts_df <span class="op">=</span> <span class="va">adsl</span>
-  <span class="op">)</span>
-<span class="co">#&gt;                                                   A: Drug X    B: Placebo    C: Combination   All Patients</span>
-<span class="co">#&gt;                                                    (N=134)       (N=134)        (N=132)         (N=400)   </span>
-<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Total number of patients with at least one AE     122 (91%)    123 (91.8%)    120 (90.9%)     365 (91.2%) </span>
-<span class="co">#&gt; Overall total number of events                       609           622            703             1934    </span>
-<span class="co">#&gt; cl A.1                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   78 (58.2%)    75 (56%)       89 (67.4%)     242 (60.5%) </span>
-<span class="co">#&gt;   Overall total number of events                     132           130            160             422     </span>
-<span class="co">#&gt;     dcd A.1.1.1.1                                 50 (37.3%)   45 (33.6%)      63 (47.7%)     158 (39.5%) </span>
-<span class="co">#&gt;     dcd A.1.1.1.2                                 48 (35.8%)   48 (35.8%)      50 (37.9%)     146 (36.5%) </span>
-<span class="co">#&gt; cl B.1                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   47 (35.1%)   49 (36.6%)      43 (32.6%)     139 (34.8%) </span>
-<span class="co">#&gt;   Overall total number of events                      56           60              62             178     </span>
-<span class="co">#&gt;     dcd B.1.1.1.1                                 47 (35.1%)   49 (36.6%)      43 (32.6%)     139 (34.8%) </span>
-<span class="co">#&gt; cl B.2                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE    79 (59%)    74 (55.2%)      85 (64.4%)     238 (59.5%) </span>
-<span class="co">#&gt;   Overall total number of events                     129           138            143             410     </span>
-<span class="co">#&gt;     dcd B.2.1.2.1                                 49 (36.6%)   44 (32.8%)      52 (39.4%)     145 (36.2%) </span>
-<span class="co">#&gt;     dcd B.2.2.3.1                                 48 (35.8%)   54 (40.3%)      51 (38.6%)     153 (38.2%) </span>
-<span class="co">#&gt; cl C.1                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   43 (32.1%)   46 (34.3%)      43 (32.6%)      132 (33%)  </span>
-<span class="co">#&gt;   Overall total number of events                      55           63              64             182     </span>
-<span class="co">#&gt;     dcd C.1.1.1.3                                 43 (32.1%)   46 (34.3%)      43 (32.6%)      132 (33%)  </span>
-<span class="co">#&gt; cl C.2                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   35 (26.1%)   48 (35.8%)      55 (41.7%)     138 (34.5%) </span>
-<span class="co">#&gt;   Overall total number of events                      48           53              65             166     </span>
-<span class="co">#&gt;     dcd C.2.1.2.1                                 35 (26.1%)   48 (35.8%)      55 (41.7%)     138 (34.5%) </span>
-<span class="co">#&gt; cl D.1                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE    79 (59%)     67 (50%)       80 (60.6%)     226 (56.5%) </span>
-<span class="co">#&gt;   Overall total number of events                     127           106            135             368     </span>
-<span class="co">#&gt;     dcd D.1.1.1.1                                 50 (37.3%)   42 (31.3%)      51 (38.6%)     143 (35.8%) </span>
-<span class="co">#&gt;     dcd D.1.1.4.2                                 48 (35.8%)   42 (31.3%)      50 (37.9%)      140 (35%)  </span>
-<span class="co">#&gt; cl D.2                                                                                                    </span>
-<span class="co">#&gt;   Total number of patients with at least one AE   47 (35.1%)   58 (43.3%)      57 (43.2%)     162 (40.5%) </span>
-<span class="co">#&gt;   Overall total number of events                      62           72              74             208     </span>
-<span class="co">#&gt;     dcd D.2.1.5.3                                 47 (35.1%)   58 (43.3%)      57 (43.2%)     162 (40.5%)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span>
+<span>    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,</span>
+<span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,</span>
+<span>      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span></span>
+<span>    <span class="st">"AEBODSYS"</span>,</span>
+<span>    child_labels <span class="op">=</span> <span class="st">"visible"</span>,</span>
+<span>    nested <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    indent_mod <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
+<span>    split_fun <span class="op">=</span> <span class="va">drop_split_levels</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span>
+<span>    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,</span>
+<span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      unique <span class="op">=</span> <span class="st">"Total number of patients with at least one AE"</span>,</span>
+<span>      nonunique <span class="op">=</span> <span class="st">"Overall total number of events"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/count_occurrences.html">count_occurrences</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AEDECOD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span>
+<span>    df <span class="op">=</span> <span class="va">adae</span>,</span>
+<span>    alt_counts_df <span class="op">=</span> <span class="va">adsl</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt;                                                   A: Drug X    B: Placebo    C: Combination   All Patients</span></span>
+<span><span class="co">#&gt;                                                    (N=134)       (N=134)        (N=132)         (N=400)   </span></span>
+<span><span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Total number of patients with at least one AE     122 (91%)    123 (91.8%)    120 (90.9%)     365 (91.2%) </span></span>
+<span><span class="co">#&gt; Overall total number of events                       609           622            703             1934    </span></span>
+<span><span class="co">#&gt; cl A.1                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   78 (58.2%)    75 (56%)       89 (67.4%)     242 (60.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                     132           130            160             422     </span></span>
+<span><span class="co">#&gt;     dcd A.1.1.1.1                                 50 (37.3%)   45 (33.6%)      63 (47.7%)     158 (39.5%) </span></span>
+<span><span class="co">#&gt;     dcd A.1.1.1.2                                 48 (35.8%)   48 (35.8%)      50 (37.9%)     146 (36.5%) </span></span>
+<span><span class="co">#&gt; cl B.1                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   47 (35.1%)   49 (36.6%)      43 (32.6%)     139 (34.8%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                      56           60              62             178     </span></span>
+<span><span class="co">#&gt;     dcd B.1.1.1.1                                 47 (35.1%)   49 (36.6%)      43 (32.6%)     139 (34.8%) </span></span>
+<span><span class="co">#&gt; cl B.2                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE    79 (59%)    74 (55.2%)      85 (64.4%)     238 (59.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                     129           138            143             410     </span></span>
+<span><span class="co">#&gt;     dcd B.2.1.2.1                                 49 (36.6%)   44 (32.8%)      52 (39.4%)     145 (36.2%) </span></span>
+<span><span class="co">#&gt;     dcd B.2.2.3.1                                 48 (35.8%)   54 (40.3%)      51 (38.6%)     153 (38.2%) </span></span>
+<span><span class="co">#&gt; cl C.1                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   43 (32.1%)   46 (34.3%)      43 (32.6%)      132 (33%)  </span></span>
+<span><span class="co">#&gt;   Overall total number of events                      55           63              64             182     </span></span>
+<span><span class="co">#&gt;     dcd C.1.1.1.3                                 43 (32.1%)   46 (34.3%)      43 (32.6%)      132 (33%)  </span></span>
+<span><span class="co">#&gt; cl C.2                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   35 (26.1%)   48 (35.8%)      55 (41.7%)     138 (34.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                      48           53              65             166     </span></span>
+<span><span class="co">#&gt;     dcd C.2.1.2.1                                 35 (26.1%)   48 (35.8%)      55 (41.7%)     138 (34.5%) </span></span>
+<span><span class="co">#&gt; cl D.1                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE    79 (59%)     67 (50%)       80 (60.6%)     226 (56.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                     127           106            135             368     </span></span>
+<span><span class="co">#&gt;     dcd D.1.1.1.1                                 50 (37.3%)   42 (31.3%)      51 (38.6%)     143 (35.8%) </span></span>
+<span><span class="co">#&gt;     dcd D.1.1.4.2                                 48 (35.8%)   42 (31.3%)      50 (37.9%)      140 (35%)  </span></span>
+<span><span class="co">#&gt; cl D.2                                                                                                    </span></span>
+<span><span class="co">#&gt;   Total number of patients with at least one AE   47 (35.1%)   58 (43.3%)      57 (43.2%)     162 (40.5%) </span></span>
+<span><span class="co">#&gt;   Overall total number of events                      62           72              74             208     </span></span>
+<span><span class="co">#&gt;     dcd D.2.1.5.3                                 47 (35.1%)   58 (43.3%)      57 (43.2%)     162 (40.5%)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -685,111 +679,111 @@ analysis dataset. We select the endpoint to analyze from
 which indicates whether a patient is classified as a responder or
 not.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Preprocessing to select an analysis endpoint.</span>
-<span class="va">anl</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>is_rsp <span class="op">=</span> <span class="va">AVALC</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CR"</span>, <span class="st">"PR"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Preprocessing to select an analysis endpoint.</span></span>
+<span><span class="va">anl</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>is_rsp <span class="op">=</span> <span class="va">AVALC</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CR"</span>, <span class="st">"PR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>To create a summary of the proportion of responders in each treatment
 group, use the <code><a href="../reference/estimate_proportions.html">estimate_proportion()</a></code> layout creating
 function:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/estimate_proportions.html">estimate_proportion</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,
-    table_names <span class="op">=</span> <span class="st">"est_prop"</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span>
-<span class="co">#&gt;                                   A: Drug X      B: Placebo    C: Combination</span>
-<span class="co">#&gt;                                    (N=134)        (N=134)         (N=132)    </span>
-<span class="co">#&gt; —————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Responders                       114 (85.1%)     90 (67.2%)     120 (90.9%)  </span>
-<span class="co">#&gt; 95% CI (Wald, with correction)   (78.7, 91.5)   (58.8, 75.5)    (85.6, 96.2)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/estimate_proportions.html">estimate_proportion</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,</span>
+<span>    table_names <span class="op">=</span> <span class="st">"est_prop"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                   A: Drug X      B: Placebo    C: Combination</span></span>
+<span><span class="co">#&gt;                                    (N=134)        (N=134)         (N=132)    </span></span>
+<span><span class="co">#&gt; —————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Responders                       114 (85.1%)     90 (67.2%)     120 (90.9%)  </span></span>
+<span><span class="co">#&gt; 95% CI (Wald, with correction)   (78.7, 91.5)   (58.8, 75.5)    (85.6, 96.2)</span></span></code></pre></div>
 <p>To specify which arm in the table should be used as the reference,
 use the argument <code>ref_group</code> from
 <code><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by()</a></code>. Below we change the reference arm to “B:
 Placebo” and so this arm is displayed as the first column:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/estimate_proportions.html">estimate_proportion</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="st">"is_rsp"</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span>
-<span class="co">#&gt;                                   B: Placebo     A: Drug X     C: Combination</span>
-<span class="co">#&gt;                                    (N=134)        (N=134)         (N=132)    </span>
-<span class="co">#&gt; —————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Responders                        90 (67.2%)    114 (85.1%)     120 (90.9%)  </span>
-<span class="co">#&gt; 95% CI (Wald, with correction)   (58.8, 75.5)   (78.7, 91.5)    (85.6, 96.2)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/estimate_proportions.html">estimate_proportion</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="st">"is_rsp"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                   B: Placebo     A: Drug X     C: Combination</span></span>
+<span><span class="co">#&gt;                                    (N=134)        (N=134)         (N=132)    </span></span>
+<span><span class="co">#&gt; —————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Responders                        90 (67.2%)    114 (85.1%)     120 (90.9%)  </span></span>
+<span><span class="co">#&gt; 95% CI (Wald, with correction)   (58.8, 75.5)   (78.7, 91.5)    (85.6, 96.2)</span></span></code></pre></div>
 <p>To further customize the analysis, we can use the <code>method</code>
 and <code>conf_level</code> arguments to modify the type of confidence
 interval that is calculated:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/estimate_proportions.html">estimate_proportion</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,
-    method <span class="op">=</span> <span class="st">"clopper-pearson"</span>,
-    conf_level <span class="op">=</span> <span class="fl">0.9</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span>
-<span class="co">#&gt;                             B: Placebo     A: Drug X     C: Combination</span>
-<span class="co">#&gt;                              (N=134)        (N=134)         (N=132)    </span>
-<span class="co">#&gt; ———————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Responders                  90 (67.2%)    114 (85.1%)     120 (90.9%)  </span>
-<span class="co">#&gt; 90% CI (Clopper-Pearson)   (59.9, 73.9)   (79.1, 89.9)    (85.7, 94.7)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/estimate_proportions.html">estimate_proportion</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,</span>
+<span>    method <span class="op">=</span> <span class="st">"clopper-pearson"</span>,</span>
+<span>    conf_level <span class="op">=</span> <span class="fl">0.9</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                             B: Placebo     A: Drug X     C: Combination</span></span>
+<span><span class="co">#&gt;                              (N=134)        (N=134)         (N=132)    </span></span>
+<span><span class="co">#&gt; ———————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Responders                  90 (67.2%)    114 (85.1%)     120 (90.9%)  </span></span>
+<span><span class="co">#&gt; 90% CI (Clopper-Pearson)   (59.9, 73.9)   (79.1, 89.9)    (85.7, 94.7)</span></span></code></pre></div>
 <p>The next table section needed should summarize the difference in
 response rates between the reference arm each comparison arm. Use
 <code><a href="../reference/prop_diff.html">estimate_proportion_diff()</a></code> layout creating function for
 this:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/prop_diff.html">estimate_proportion_diff</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,
-    show_labels <span class="op">=</span> <span class="st">"visible"</span>,
-    var_labels <span class="op">=</span> <span class="st">"Unstratified Analysis"</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span>
-<span class="co">#&gt;                                      B: Placebo    A: Drug X    C: Combination</span>
-<span class="co">#&gt;                                       (N=134)       (N=134)        (N=132)    </span>
-<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Unstratified Analysis                                                         </span>
-<span class="co">#&gt;   Difference in Response rate (%)                    17.9            23.7     </span>
-<span class="co">#&gt;     95% CI (Wald, with correction)                (7.2, 28.6)    (13.7, 33.8)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/prop_diff.html">estimate_proportion_diff</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,</span>
+<span>    show_labels <span class="op">=</span> <span class="st">"visible"</span>,</span>
+<span>    var_labels <span class="op">=</span> <span class="st">"Unstratified Analysis"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                      B: Placebo    A: Drug X    C: Combination</span></span>
+<span><span class="co">#&gt;                                       (N=134)       (N=134)        (N=132)    </span></span>
+<span><span class="co">#&gt; ——————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Unstratified Analysis                                                         </span></span>
+<span><span class="co">#&gt;   Difference in Response rate (%)                    17.9            23.7     </span></span>
+<span><span class="co">#&gt;     95% CI (Wald, with correction)                (7.2, 28.6)    (13.7, 33.8)</span></span></code></pre></div>
 <p>The final section needed to complete the table includes a statistical
 test for the difference in response rates. Use the
 <code><a href="../reference/prop_diff_test.html">test_proportion_diff()</a></code> layout creating function for
 this:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/prop_diff_test.html">test_proportion_diff</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"is_rsp"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span>
-<span class="co">#&gt;                                B: Placebo   A: Drug X   C: Combination</span>
-<span class="co">#&gt;                                 (N=134)      (N=134)       (N=132)    </span>
-<span class="co">#&gt; ——————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt;   p-value (Chi-Squared Test)                 0.0006        &lt;0.0001</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/prop_diff_test.html">test_proportion_diff</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"is_rsp"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                B: Placebo   A: Drug X   C: Combination</span></span>
+<span><span class="co">#&gt;                                 (N=134)      (N=134)       (N=132)    </span></span>
+<span><span class="co">#&gt; ——————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt;   p-value (Chi-Squared Test)                 0.0006        &lt;0.0001</span></span></code></pre></div>
 <p>To customize the output, we use the <code>method</code> argument to
 select a Chi-Squared test with Schouten correction.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/prop_diff_test.html">test_proportion_diff</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,
-    method <span class="op">=</span> <span class="st">"schouten"</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span>
-<span class="co">#&gt;                                                         B: Placebo   A: Drug X   C: Combination</span>
-<span class="co">#&gt;                                                          (N=134)      (N=134)       (N=132)    </span>
-<span class="co">#&gt; ———————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt;   p-value (Chi-Squared Test with Schouten Correction)                 0.0008        &lt;0.0001</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/prop_diff_test.html">test_proportion_diff</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,</span>
+<span>    method <span class="op">=</span> <span class="st">"schouten"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                                         B: Placebo   A: Drug X   C: Combination</span></span>
+<span><span class="co">#&gt;                                                          (N=134)      (N=134)       (N=132)    </span></span>
+<span><span class="co">#&gt; ———————————————————————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt;   p-value (Chi-Squared Test with Schouten Correction)                 0.0008        &lt;0.0001</span></span></code></pre></div>
 <p>Now we can put all the table sections together in one layout
 pipeline. Note there is one more small change needed. Since the primary
 analysis variable in all table sections is the same
@@ -797,36 +791,36 @@ analysis variable in all table sections is the same
 This is done by adding the <code>table_names</code> argument and
 providing unique names through that:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/estimate_proportions.html">estimate_proportion</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,
-    method <span class="op">=</span> <span class="st">"clopper-pearson"</span>,
-    conf_level <span class="op">=</span> <span class="fl">0.9</span>,
-    table_names <span class="op">=</span> <span class="st">"est_prop"</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/prop_diff.html">estimate_proportion_diff</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,
-    show_labels <span class="op">=</span> <span class="st">"visible"</span>,
-    var_labels <span class="op">=</span> <span class="st">"Unstratified Analysis"</span>,
-    table_names <span class="op">=</span> <span class="st">"est_prop_diff"</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/prop_diff_test.html">test_proportion_diff</a></span><span class="op">(</span>
-    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,
-    method <span class="op">=</span> <span class="st">"schouten"</span>,
-    table_names <span class="op">=</span> <span class="st">"test_prop_diff"</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span>
-<span class="co">#&gt;                                                          B: Placebo     A: Drug X     C: Combination</span>
-<span class="co">#&gt;                                                           (N=134)        (N=134)         (N=132)    </span>
-<span class="co">#&gt; ————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="co">#&gt; Responders                                               90 (67.2%)    114 (85.1%)     120 (90.9%)  </span>
-<span class="co">#&gt; 90% CI (Clopper-Pearson)                                (59.9, 73.9)   (79.1, 89.9)    (85.7, 94.7) </span>
-<span class="co">#&gt; Unstratified Analysis                                                                               </span>
-<span class="co">#&gt;   Difference in Response rate (%)                                          17.9            23.7     </span>
-<span class="co">#&gt;     95% CI (Wald, with correction)                                     (7.2, 28.6)     (13.7, 33.8) </span>
-<span class="co">#&gt;   p-value (Chi-Squared Test with Schouten Correction)                     0.0008         &lt;0.0001</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/estimate_proportions.html">estimate_proportion</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,</span>
+<span>    method <span class="op">=</span> <span class="st">"clopper-pearson"</span>,</span>
+<span>    conf_level <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>    table_names <span class="op">=</span> <span class="st">"est_prop"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/prop_diff.html">estimate_proportion_diff</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,</span>
+<span>    show_labels <span class="op">=</span> <span class="st">"visible"</span>,</span>
+<span>    var_labels <span class="op">=</span> <span class="st">"Unstratified Analysis"</span>,</span>
+<span>    table_names <span class="op">=</span> <span class="st">"est_prop_diff"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/prop_diff_test.html">test_proportion_diff</a></span><span class="op">(</span></span>
+<span>    vars <span class="op">=</span> <span class="st">"is_rsp"</span>,</span>
+<span>    method <span class="op">=</span> <span class="st">"schouten"</span>,</span>
+<span>    table_names <span class="op">=</span> <span class="st">"test_prop_diff"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">anl</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                                          B: Placebo     A: Drug X     C: Combination</span></span>
+<span><span class="co">#&gt;                                                           (N=134)        (N=134)         (N=132)    </span></span>
+<span><span class="co">#&gt; ————————————————————————————————————————————————————————————————————————————————————————————————————</span></span>
+<span><span class="co">#&gt; Responders                                               90 (67.2%)    114 (85.1%)     120 (90.9%)  </span></span>
+<span><span class="co">#&gt; 90% CI (Clopper-Pearson)                                (59.9, 73.9)   (79.1, 89.9)    (85.7, 94.7) </span></span>
+<span><span class="co">#&gt; Unstratified Analysis                                                                               </span></span>
+<span><span class="co">#&gt;   Difference in Response rate (%)                                          17.9            23.7     </span></span>
+<span><span class="co">#&gt;     95% CI (Wald, with correction)                                     (7.2, 28.6)     (13.7, 33.8) </span></span>
+<span><span class="co">#&gt;   p-value (Chi-Squared Test with Schouten Correction)                     0.0008         &lt;0.0001</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

@@ -30,7 +30,7 @@ Any: Numerator is number of patients with at least one abnormality, which means 
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,12 +53,6 @@ Any: Numerator is number of patients with at least one abnormality, which means 
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -93,29 +87,29 @@ and patients in the numerator as follows:</p><ul><li><p><code>1</code> to <code>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">s_count_abnormal_by_worst_grade</span><span class="op">(</span>
-  <span class="va">df</span>,
-  .var <span class="op">=</span> <span class="st">"GRADE_ANL"</span>,
-  <span class="va">.spl_context</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, param <span class="op">=</span> <span class="st">"PARAM"</span>, grade_dir <span class="op">=</span> <span class="st">"GRADE_DIR"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">a_count_abnormal_by_worst_grade</span><span class="op">(</span>
-  <span class="va">df</span>,
-  .var <span class="op">=</span> <span class="st">"GRADE_ANL"</span>,
-  <span class="va">.spl_context</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, param <span class="op">=</span> <span class="st">"PARAM"</span>, grade_dir <span class="op">=</span> <span class="st">"GRADE_DIR"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">count_abnormal_by_worst_grade</span><span class="op">(</span>
-  <span class="va">lyt</span>,
-  <span class="va">var</span>,
-  <span class="va">...</span>,
-  .stats <span class="op">=</span> <span class="cn">NULL</span>,
-  .formats <span class="op">=</span> <span class="cn">NULL</span>,
-  .labels <span class="op">=</span> <span class="cn">NULL</span>,
-  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_count_abnormal_by_worst_grade</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  .var <span class="op">=</span> <span class="st">"GRADE_ANL"</span>,</span>
+<span>  <span class="va">.spl_context</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, param <span class="op">=</span> <span class="st">"PARAM"</span>, grade_dir <span class="op">=</span> <span class="st">"GRADE_DIR"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">a_count_abnormal_by_worst_grade</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  .var <span class="op">=</span> <span class="st">"GRADE_ANL"</span>,</span>
+<span>  <span class="va">.spl_context</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, param <span class="op">=</span> <span class="st">"PARAM"</span>, grade_dir <span class="op">=</span> <span class="st">"GRADE_DIR"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">count_abnormal_by_worst_grade</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">var</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -195,60 +189,60 @@ which can take statistics function arguments and additional format arguments (se
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org" class="external-link">forcats</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adlb</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Data is modified in order to have some parameters with grades only in one direction</span></span>
-<span class="r-in"><span class="co"># and simulate the real data.</span></span>
-<span class="r-in"><span class="va">adlb</span><span class="op">$</span><span class="va">ATOXGR</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span> <span class="op">&amp;</span> <span class="va">adlb</span><span class="op">$</span><span class="va">ATOXGR</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"-1"</span></span>
-<span class="r-in"><span class="va">adlb</span><span class="op">$</span><span class="va">ANRIND</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span> <span class="op">&amp;</span> <span class="va">adlb</span><span class="op">$</span><span class="va">ANRIND</span> <span class="op">==</span> <span class="st">"HIGH"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"LOW"</span></span>
-<span class="r-in"><span class="va">adlb</span><span class="op">$</span><span class="va">WGRHIFL</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">""</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adlb</span><span class="op">$</span><span class="va">ATOXGR</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"IGA"</span> <span class="op">&amp;</span> <span class="va">adlb</span><span class="op">$</span><span class="va">ATOXGR</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-1"</span>, <span class="st">"-2"</span>, <span class="st">"-3"</span>, <span class="st">"-4"</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"1"</span></span>
-<span class="r-in"><span class="va">adlb</span><span class="op">$</span><span class="va">ANRIND</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"IGA"</span> <span class="op">&amp;</span> <span class="va">adlb</span><span class="op">$</span><span class="va">ANRIND</span> <span class="op">==</span> <span class="st">"LOW"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"HIGH"</span></span>
-<span class="r-in"><span class="va">adlb</span><span class="op">$</span><span class="va">WGRLOFL</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"IGA"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">""</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Here starts the real pre-processing.</span></span>
-<span class="r-in"><span class="va">adlb_f</span> <span class="op">&lt;-</span> <span class="va">adlb</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">AVISIT</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SCREENING"</span>, <span class="st">"BASELINE"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span class="r-in">    GRADE_DIR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="va">ATOXGR</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-1"</span>, <span class="st">"-2"</span>, <span class="st">"-3"</span>, <span class="st">"-4"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"LOW"</span>,</span>
-<span class="r-in">      <span class="va">ATOXGR</span> <span class="op">==</span> <span class="st">"0"</span> <span class="op">~</span> <span class="st">"ZERO"</span>,</span>
-<span class="r-in">      <span class="va">ATOXGR</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"HIGH"</span></span>
-<span class="r-in">    <span class="op">)</span>,</span>
-<span class="r-in">    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"ZERO"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span>,</span>
-<span class="r-in">    GRADE_ANL <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html" class="external-link">fct_recode</a></span><span class="op">(</span><span class="va">ATOXGR</span>, `1` <span class="op">=</span> <span class="st">"-1"</span>, `2` <span class="op">=</span> <span class="st">"-2"</span>, `3` <span class="op">=</span> <span class="st">"-3"</span>, `4` <span class="op">=</span> <span class="st">"-4"</span><span class="op">)</span>,</span>
-<span class="r-in">      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">WGRLOFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">|</span> <span class="va">WGRHIFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adlb_f_alt</span> <span class="op">&lt;-</span> <span class="va">adlb_f</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">full_parent_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">adlb_f_alt</span>, <span class="st">"not_needed"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cur_col_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">adlb_f_alt</span><span class="op">)</span><span class="op">)</span>, <span class="st">"not_needed"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This mimics a split structure on PARAM and GRADE_DIR for a total column</span></span>
-<span class="r-in"><span class="va">spl_context</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  split <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PARAM"</span>, <span class="st">"GRADE_DIR"</span><span class="op">)</span>,</span>
-<span class="r-in">  full_parent_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">full_parent_df</span><span class="op">)</span>,</span>
-<span class="r-in">  cur_col_subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">cur_col_subset</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_abnormal_by_worst_grade</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">adlb_f_alt</span>,</span>
-<span class="r-in">  .spl_context <span class="op">=</span> <span class="va">spl_context</span>,</span>
-<span class="r-in">  .var <span class="op">=</span> <span class="st">"GRADE_ANL"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org" class="external-link">forcats</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adlb</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Data is modified in order to have some parameters with grades only in one direction</span></span></span>
+<span class="r-in"><span><span class="co"># and simulate the real data.</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span><span class="op">$</span><span class="va">ATOXGR</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span> <span class="op">&amp;</span> <span class="va">adlb</span><span class="op">$</span><span class="va">ATOXGR</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"-1"</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span><span class="op">$</span><span class="va">ANRIND</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span> <span class="op">&amp;</span> <span class="va">adlb</span><span class="op">$</span><span class="va">ANRIND</span> <span class="op">==</span> <span class="st">"HIGH"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"LOW"</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span><span class="op">$</span><span class="va">WGRHIFL</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">""</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adlb</span><span class="op">$</span><span class="va">ATOXGR</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"IGA"</span> <span class="op">&amp;</span> <span class="va">adlb</span><span class="op">$</span><span class="va">ATOXGR</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-1"</span>, <span class="st">"-2"</span>, <span class="st">"-3"</span>, <span class="st">"-4"</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"1"</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span><span class="op">$</span><span class="va">ANRIND</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"IGA"</span> <span class="op">&amp;</span> <span class="va">adlb</span><span class="op">$</span><span class="va">ANRIND</span> <span class="op">==</span> <span class="st">"LOW"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"HIGH"</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span><span class="op">$</span><span class="va">WGRLOFL</span><span class="op">[</span><span class="va">adlb</span><span class="op">$</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"IGA"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">""</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Here starts the real pre-processing.</span></span></span>
+<span class="r-in"><span><span class="va">adlb_f</span> <span class="op">&lt;-</span> <span class="va">adlb</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">AVISIT</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SCREENING"</span>, <span class="st">"BASELINE"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    GRADE_DIR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="va">ATOXGR</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-1"</span>, <span class="st">"-2"</span>, <span class="st">"-3"</span>, <span class="st">"-4"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"LOW"</span>,</span></span>
+<span class="r-in"><span>      <span class="va">ATOXGR</span> <span class="op">==</span> <span class="st">"0"</span> <span class="op">~</span> <span class="st">"ZERO"</span>,</span></span>
+<span class="r-in"><span>      <span class="va">ATOXGR</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"HIGH"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"ZERO"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    GRADE_ANL <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html" class="external-link">fct_recode</a></span><span class="op">(</span><span class="va">ATOXGR</span>, `1` <span class="op">=</span> <span class="st">"-1"</span>, `2` <span class="op">=</span> <span class="st">"-2"</span>, `3` <span class="op">=</span> <span class="st">"-3"</span>, `4` <span class="op">=</span> <span class="st">"-4"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">WGRLOFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">|</span> <span class="va">WGRHIFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adlb_f_alt</span> <span class="op">&lt;-</span> <span class="va">adlb_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">full_parent_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">adlb_f_alt</span>, <span class="st">"not_needed"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cur_col_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">adlb_f_alt</span><span class="op">)</span><span class="op">)</span>, <span class="st">"not_needed"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This mimics a split structure on PARAM and GRADE_DIR for a total column</span></span></span>
+<span class="r-in"><span><span class="va">spl_context</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  split <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PARAM"</span>, <span class="st">"GRADE_DIR"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  full_parent_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">full_parent_df</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cur_col_subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">cur_col_subset</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_abnormal_by_worst_grade</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">adlb_f_alt</span>,</span></span>
+<span class="r-in"><span>  .spl_context <span class="op">=</span> <span class="va">spl_context</span>,</span></span>
+<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"GRADE_ANL"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
@@ -281,11 +275,11 @@ which can take statistics function arguments and additional format arguments (se
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Any"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first</span></span>
-<span class="r-in"><span class="co"># so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.</span></span>
-<span class="r-in"><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="fu">tern</span><span class="fu">:::</span><span class="va">a_count_abnormal_by_worst_grade</span>, .ungroup_stats <span class="op">=</span> <span class="st">"count_fraction"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">afun</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adlb_f_alt</span>, .spl_context <span class="op">=</span> <span class="va">spl_context</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first</span></span></span>
+<span class="r-in"><span><span class="co"># so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.</span></span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="fu">tern</span><span class="fu">:::</span><span class="va">a_count_abnormal_by_worst_grade</span>, .ungroup_stats <span class="op">=</span> <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adlb_f_alt</span>, .spl_context <span class="op">=</span> <span class="va">spl_context</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
@@ -294,22 +288,22 @@ which can take statistics function arguments and additional format arguments (se
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3        3     42 (10.5%)          0         3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4        4      25 (6.2%)          0         4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5      Any      148 (37%)          0       Any</span>
-<span class="r-in"><span class="co"># Map excludes records without abnormal grade since they should not be displayed</span></span>
-<span class="r-in"><span class="co"># in the table.</span></span>
-<span class="r-in"><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">adlb_f</span><span class="op">[</span><span class="va">adlb_f</span><span class="op">$</span><span class="va">GRADE_DIR</span> <span class="op">!=</span> <span class="st">"ZERO"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PARAM"</span>, <span class="st">"GRADE_DIR"</span>, <span class="st">"GRADE_ANL"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">as.character</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">PARAM</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">GRADE_DIR</span><span class="op">)</span>, <span class="va">GRADE_ANL</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARMCD"</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"PARAM"</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"GRADE_DIR"</span>, split_fun <span class="op">=</span> <span class="fu">trim_levels_to_map</span><span class="op">(</span><span class="va">map</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">count_abnormal_by_worst_grade</span><span class="op">(</span></span>
-<span class="r-in">    var <span class="op">=</span> <span class="st">"GRADE_ANL"</span>,</span>
-<span class="r-in">    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, param <span class="op">=</span> <span class="st">"PARAM"</span>, grade_dir <span class="op">=</span> <span class="st">"GRADE_DIR"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://forcats.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">build_table</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adlb_f</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># Map excludes records without abnormal grade since they should not be displayed</span></span></span>
+<span class="r-in"><span><span class="co"># in the table.</span></span></span>
+<span class="r-in"><span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">adlb_f</span><span class="op">[</span><span class="va">adlb_f</span><span class="op">$</span><span class="va">GRADE_DIR</span> <span class="op">!=</span> <span class="st">"ZERO"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PARAM"</span>, <span class="st">"GRADE_DIR"</span>, <span class="st">"GRADE_ANL"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">as.character</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">PARAM</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">GRADE_DIR</span><span class="op">)</span>, <span class="va">GRADE_ANL</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARMCD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"PARAM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"GRADE_DIR"</span>, split_fun <span class="op">=</span> <span class="fu">trim_levels_to_map</span><span class="op">(</span><span class="va">map</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">count_abnormal_by_worst_grade</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"GRADE_ANL"</span>,</span></span>
+<span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, param <span class="op">=</span> <span class="st">"PARAM"</span>, grade_dir <span class="op">=</span> <span class="st">"GRADE_DIR"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adlb_f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                          ARM A        ARM B        ARM C   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Alanine Aminotransferase Measurement                                       </span>
@@ -339,7 +333,7 @@ which can take statistics function arguments and additional format arguments (se
 <span class="r-out co"><span class="r-pr">#&gt;</span>     3                                   12 (9%)     13 (9.7%)    17 (12.9%)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     4                                  11 (8.2%)    13 (9.7%)      4 (3%)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Any                                62 (46.3%)   60 (44.8%)   50 (37.9%)</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

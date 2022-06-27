@@ -12,7 +12,7 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,12 +35,6 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -69,25 +63,25 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">s_num_patients</span><span class="op">(</span><span class="va">x</span>, <span class="va">labelstr</span>, <span class="va">.N_col</span>, count_by <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">s_num_patients_content</span><span class="op">(</span>
-  <span class="va">df</span>,
-  labelstr <span class="op">=</span> <span class="st">""</span>,
-  <span class="va">.N_col</span>,
-  <span class="va">.var</span>,
-  required <span class="op">=</span> <span class="cn">NULL</span>,
-  count_by <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span>
-
-<span class="fu">summarize_num_patients</span><span class="op">(</span>
-  <span class="va">lyt</span>,
-  <span class="va">var</span>,
-  .stats <span class="op">=</span> <span class="cn">NULL</span>,
-  .formats <span class="op">=</span> <span class="cn">NULL</span>,
-  .labels <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_num_patients</span><span class="op">(</span><span class="va">x</span>, <span class="va">labelstr</span>, <span class="va">.N_col</span>, count_by <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_num_patients_content</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  required <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  count_by <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">summarize_num_patients</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">var</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -169,8 +163,8 @@ function <code>s_num_patients_content()</code> and desired format.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Use the statistics function to count number of unique and nonunique patients.</span></span>
-<span class="r-in"><span class="fu">s_num_patients</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>, labelstr <span class="op">=</span> <span class="st">""</span>, .N_col <span class="op">=</span> <span class="fl">6L</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Use the statistics function to count number of unique and nonunique patients.</span></span></span>
+<span class="r-in"><span><span class="fu">s_num_patients</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>, labelstr <span class="op">=</span> <span class="st">""</span>, .N_col <span class="op">=</span> <span class="fl">6L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $unique</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -182,12 +176,12 @@ function <code>s_num_patients_content()</code> and desired format.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] " (n)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">s_num_patients</span><span class="op">(</span></span>
-<span class="r-in">  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  labelstr <span class="op">=</span> <span class="st">""</span>,</span>
-<span class="r-in">  .N_col <span class="op">=</span> <span class="fl">6L</span>,</span>
-<span class="r-in">  count_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">s_num_patients</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span></span>
+<span class="r-in"><span>  .N_col <span class="op">=</span> <span class="fl">6L</span>,</span></span>
+<span class="r-in"><span>  count_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $unique</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -199,12 +193,12 @@ function <code>s_num_patients_content()</code> and desired format.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] " (n)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="co"># Count number of unique and non-unique patients.</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  EVENT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">10</span>, <span class="fl">17</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">s_num_patients_content</span><span class="op">(</span><span class="va">df</span>, .N_col <span class="op">=</span> <span class="fl">5</span>, .var <span class="op">=</span> <span class="st">"USUBJID"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># Count number of unique and non-unique patients.</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  EVENT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">10</span>, <span class="fl">17</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_num_patients_content</span><span class="op">(</span><span class="va">df</span>, .N_col <span class="op">=</span> <span class="fl">5</span>, .var <span class="op">=</span> <span class="st">"USUBJID"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $unique</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -216,12 +210,12 @@ function <code>s_num_patients_content()</code> and desired format.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] " (n)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">df_by_event</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  EVENT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">10</span>, <span class="fl">17</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">s_num_patients_content</span><span class="op">(</span><span class="va">df_by_event</span>, .N_col <span class="op">=</span> <span class="fl">5</span>, .var <span class="op">=</span> <span class="st">"USUBJID"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df_by_event</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  EVENT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">10</span>, <span class="fl">17</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_num_patients_content</span><span class="op">(</span><span class="va">df_by_event</span>, .N_col <span class="op">=</span> <span class="fl">5</span>, .var <span class="op">=</span> <span class="st">"USUBJID"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $unique</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -233,7 +227,7 @@ function <code>s_num_patients_content()</code> and desired format.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] " (n)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">s_num_patients_content</span><span class="op">(</span><span class="va">df_by_event</span>, .N_col <span class="op">=</span> <span class="fl">5</span>, .var <span class="op">=</span> <span class="st">"USUBJID"</span>, count_by <span class="op">=</span> <span class="st">"EVENT"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">s_num_patients_content</span><span class="op">(</span><span class="va">df_by_event</span>, .N_col <span class="op">=</span> <span class="fl">5</span>, .var <span class="op">=</span> <span class="st">"USUBJID"</span>, count_by <span class="op">=</span> <span class="st">"EVENT"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $unique</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

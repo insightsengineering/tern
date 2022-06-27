@@ -14,7 +14,7 @@ when a column table layout is required."><!-- mathjax --><script src="https://cd
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ when a column table layout is required."><!-- mathjax --><script src="https://cd
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -72,24 +66,24 @@ when a column table layout is required.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">s_count_patients_sum_exposure</span><span class="op">(</span>
-  <span class="va">df</span>,
-  .var <span class="op">=</span> <span class="st">"AVAL"</span>,
-  id <span class="op">=</span> <span class="st">"USUBJID"</span>,
-  labelstr <span class="op">=</span> <span class="st">""</span>,
-  <span class="va">.N_col</span>,
-  custom_label <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span>
-
-<span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>
-  <span class="va">lyt</span>,
-  <span class="va">var</span>,
-  <span class="va">...</span>,
-  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_patients"</span>, <span class="st">"sum_exposure"</span><span class="op">)</span>,
-  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n_patients <span class="op">=</span> <span class="st">"Patients"</span>, sum_exposure <span class="op">=</span> <span class="st">"Person time"</span><span class="op">)</span>,
-  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,
-  col_split <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_count_patients_sum_exposure</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  custom_label <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">var</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_patients"</span>, <span class="st">"sum_exposure"</span><span class="op">)</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n_patients <span class="op">=</span> <span class="st">"Patients"</span>, sum_exposure <span class="op">=</span> <span class="st">"Person time"</span><span class="op">)</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col_split <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -168,22 +162,22 @@ statistics of patients and the sum of analysis value in the column layout as con
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">12</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  ARMCD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ARM A"</span>, <span class="fl">6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ARM B"</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Female"</span>, <span class="fl">6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  AVAL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">12</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  ARMCD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ARM A"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ARM B"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Female"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_patients_sum_exposure</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">12</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ARMCD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ARM A"</span>, <span class="fl">6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ARM B"</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Female"</span>, <span class="fl">6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  AVAL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">12</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ARMCD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ARM A"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ARM B"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Female"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_patients_sum_exposure</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_patients</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
@@ -194,11 +188,11 @@ statistics of patients and the sum of analysis value in the column layout as con
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Total patients numbers/person time"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_patients_sum_exposure</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>,</span>
-<span class="r-in">  .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span>,</span>
-<span class="r-in">  custom_label <span class="op">=</span> <span class="st">"some user's custom label"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_patients_sum_exposure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>,</span></span>
+<span class="r-in"><span>  .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  custom_label <span class="op">=</span> <span class="st">"some user's custom label"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_patients</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
@@ -209,50 +203,50 @@ statistics of patients and the sum of analysis value in the column layout as con
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "some user's custom label"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, split_fun <span class="op">=</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_level.html" class="external-link">add_overall_level</a></span><span class="op">(</span><span class="st">"Total"</span>, first <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"SEX"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, split_fun <span class="op">=</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_level.html" class="external-link">add_overall_level</a></span><span class="op">(</span><span class="st">"Total"</span>, first <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"SEX"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               ARM A                      ARM B                       Total          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                       Patients    Person time    Patients    Person time    Patients     Person time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total patients numbers/person time   6 (100.0%)       46        6 (100.0%)       68        12 (100.0%)       114    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Female                             6 (100.0%)       46         0 (0.0%)         0         6 (50.0%)        46     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Male                                0 (0.0%)         0        6 (100.0%)       68         6 (50.0%)        68     </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lyt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, split_fun <span class="op">=</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_level.html" class="external-link">add_overall_level</a></span><span class="op">(</span><span class="st">"Total"</span>, first <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span></span>
-<span class="r-in">    var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">    .stats <span class="op">=</span> <span class="st">"n_patients"</span>, custom_label <span class="op">=</span> <span class="st">"some custom label"</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"SEX"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt2</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result2</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lyt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, split_fun <span class="op">=</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/add_overall_level.html" class="external-link">add_overall_level</a></span><span class="op">(</span><span class="st">"Total"</span>, first <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    .stats <span class="op">=</span> <span class="st">"n_patients"</span>, custom_label <span class="op">=</span> <span class="st">"some custom label"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"SEX"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt2</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       ARM A        ARM B         Total   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      Patients     Patients     Patients  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> some custom label   6 (100.0%)   6 (100.0%)   12 (100.0%)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Female            6 (100.0%)       0         6 (50.0%) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Male               0 (0.0%)        68        6 (50.0%) </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lyt3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt3</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result3</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lyt3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt3</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result3</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                       Patients     Person time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total patients numbers/person time   12 (100.0%)       114    </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lyt4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span>, .stats <span class="op">=</span> <span class="st">"sum_exposure"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt4</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result4</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lyt4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_patients_exposure_in_cols</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVAL"</span>, col_split <span class="op">=</span> <span class="cn">TRUE</span>, .stats <span class="op">=</span> <span class="st">"sum_exposure"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt4</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result4</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                      Person time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total patients numbers/person time       114    </span>

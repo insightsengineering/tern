@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -66,16 +60,16 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">g_waterfall</span><span class="op">(</span>
-  <span class="va">height</span>,
-  <span class="va">id</span>,
-  col_var <span class="op">=</span> <span class="cn">NULL</span>,
-  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tern.color"</span><span class="op">)</span>,
-  xlab <span class="op">=</span> <span class="cn">NULL</span>,
-  ylab <span class="op">=</span> <span class="cn">NULL</span>,
-  col_legend_title <span class="op">=</span> <span class="cn">NULL</span>,
-  title <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">g_waterfall</span><span class="op">(</span></span>
+<span>  <span class="va">height</span>,</span>
+<span>  <span class="va">id</span>,</span>
+<span>  col_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tern.color"</span><span class="op">)</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col_legend_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  title <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -140,31 +134,31 @@ markup.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">g_waterfall</span><span class="op">(</span>height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, id <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">g_waterfall</span><span class="op">(</span>height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, id <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_waterfall-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">g_waterfall</span><span class="op">(</span></span>
-<span class="r-in">  height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>,</span>
-<span class="r-in">  col_var <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">g_waterfall</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>  col_var <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_waterfall-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span>
-<span class="r-in"><span class="va">ADSL_f</span> <span class="op">&lt;-</span> <span class="va">ADSL</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">STUDYID</span>, <span class="va">ARM</span>, <span class="va">ARMCD</span>, <span class="va">SEX</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ADRS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span>
-<span class="r-in"><span class="va">ADRS_f</span> <span class="op">&lt;-</span> <span class="va">ADRS</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OVRINV"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pchg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">10</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ADRS_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ADRS_f</span>, <span class="fl">30</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ADRS_f</span> <span class="op">&lt;-</span> <span class="va">ADRS_f</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span><span class="op">)</span>, <span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ADRS_f</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span></span>
+<span class="r-in"><span><span class="va">ADSL_f</span> <span class="op">&lt;-</span> <span class="va">ADSL</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">STUDYID</span>, <span class="va">ARM</span>, <span class="va">ARMCD</span>, <span class="va">SEX</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ADRS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span></span>
+<span class="r-in"><span><span class="va">ADRS_f</span> <span class="op">&lt;-</span> <span class="va">ADRS</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OVRINV"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pchg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">10</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ADRS_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ADRS_f</span>, <span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ADRS_f</span> <span class="op">&lt;-</span> <span class="va">ADRS_f</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span><span class="op">)</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ADRS_f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 55</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   STUDYID USUBJID     SUBJID SITEID   AGE AGEU  SEX   RACE  ETHNIC COUNTRY DTHFL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span>
@@ -180,35 +174,35 @@ markup.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   TRTEDTM &lt;dttm&gt;, EOSSTT &lt;fct&gt;, EOTSTT &lt;fct&gt;, EOSDT &lt;date&gt;, EOSDY &lt;int&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   DCSREAS &lt;fct&gt;, DTHDT &lt;date&gt;, DTHCAUS &lt;fct&gt;, DTHCAT &lt;fct&gt;, LDDTHELD &lt;int&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   LDDTHGR1 &lt;fct&gt;, LSTALVDT &lt;date&gt;, DTHADY &lt;int&gt;, study_duration_secs &lt;dbl&gt;, …</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">g_waterfall</span><span class="op">(</span></span>
-<span class="r-in">  height <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">pchg</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span>,</span>
-<span class="r-in">  col_var <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">AVALC</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">g_waterfall</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  height <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">pchg</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span>,</span></span>
+<span class="r-in"><span>  col_var <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">AVALC</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_waterfall-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">g_waterfall</span><span class="op">(</span></span>
-<span class="r-in">  height <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">pchg</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span>,</span>
-<span class="r-in">  col_var <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">AVALC</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">g_waterfall</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  height <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">pchg</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span>,</span></span>
+<span class="r-in"><span>  col_var <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">AVALC</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_waterfall-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">g_waterfall</span><span class="op">(</span></span>
-<span class="r-in">  height <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">pchg</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"asdfdsfdsfsd"</span>, <span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span><span class="op">)</span>,</span>
-<span class="r-in">  col_var <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">SEX</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">g_waterfall</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  height <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">pchg</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"asdfdsfdsfsd"</span>, <span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  col_var <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">SEX</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_waterfall-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">g_waterfall</span><span class="op">(</span></span>
-<span class="r-in">  height <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">pchg</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"asdfdsfdsfsd"</span>, <span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span><span class="op">)</span>,</span>
-<span class="r-in">  xlab <span class="op">=</span> <span class="st">"ID"</span>,</span>
-<span class="r-in">  ylab <span class="op">=</span> <span class="st">"Percentage Change"</span>,</span>
-<span class="r-in">  title <span class="op">=</span> <span class="st">"Waterfall plot"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">g_waterfall</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  height <span class="op">=</span> <span class="va">ADRS_f</span><span class="op">$</span><span class="va">pchg</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"asdfdsfdsfsd"</span>, <span class="va">ADRS_f</span><span class="op">$</span><span class="va">USUBJID</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  xlab <span class="op">=</span> <span class="st">"ID"</span>,</span></span>
+<span class="r-in"><span>  ylab <span class="op">=</span> <span class="st">"Percentage Change"</span>,</span></span>
+<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"Waterfall plot"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="g_waterfall-6.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

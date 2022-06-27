@@ -14,7 +14,7 @@ on a binary response endpoint across population subgroups."><!-- mathjax --><scr
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ on a binary response endpoint across population subgroups."><!-- mathjax --><scr
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -72,18 +66,18 @@ on a binary response endpoint across population subgroups.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">extract_rsp_biomarkers</span><span class="op">(</span>
-  <span class="va">variables</span>,
-  <span class="va">data</span>,
-  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  control <span class="op">=</span> <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>,
-  label_all <span class="op">=</span> <span class="st">"All Patients"</span>
-<span class="op">)</span>
-
-<span class="fu">tabulate_rsp_biomarkers</span><span class="op">(</span>
-  <span class="va">df</span>,
-  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot"</span>, <span class="st">"n_rsp"</span>, <span class="st">"prop"</span>, <span class="st">"or"</span>, <span class="st">"ci"</span>, <span class="st">"pval"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extract_rsp_biomarkers</span><span class="op">(</span></span>
+<span>  <span class="va">variables</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  label_all <span class="op">=</span> <span class="st">"All Patients"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tabulate_rsp_biomarkers</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot"</span>, <span class="st">"n_rsp"</span>, <span class="st">"prop"</span>, <span class="st">"or"</span>, <span class="st">"ci"</span>, <span class="st">"pval"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -161,32 +155,32 @@ created by combining multiple subtables.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Testing dataset.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org" class="external-link">forcats</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span>
-<span class="r-in"><span class="va">adrs_labels</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adrs_f</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="va">AVALC</span> <span class="op">==</span> <span class="st">"CR"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs_f</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">adrs_labels</span>, <span class="st">"Response"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,</span></span>
-<span class="r-in"><span class="co"># in logistic regression models with one covariate `RACE`. The subgroups</span></span>
-<span class="r-in"><span class="co"># are defined by the levels of `BMRKR2`.</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">extract_rsp_biomarkers</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    rsp <span class="op">=</span> <span class="st">"rsp"</span>,</span>
-<span class="r-in">    biomarkers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span>
-<span class="r-in">    covariates <span class="op">=</span> <span class="st">"SEX"</span>,</span>
-<span class="r-in">    subgroups <span class="op">=</span> <span class="st">"BMRKR2"</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adrs_f</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Testing dataset.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org" class="external-link">forcats</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span></span>
+<span class="r-in"><span><span class="va">adrs_labels</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adrs_f</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="va">AVALC</span> <span class="op">==</span> <span class="st">"CR"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs_f</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">adrs_labels</span>, <span class="st">"Response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,</span></span></span>
+<span class="r-in"><span><span class="co"># in logistic regression models with one covariate `RACE`. The subgroups</span></span></span>
+<span class="r-in"><span><span class="co"># are defined by the levels of `BMRKR2`.</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">extract_rsp_biomarkers</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    rsp <span class="op">=</span> <span class="st">"rsp"</span>,</span></span>
+<span class="r-in"><span>    biomarkers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="st">"SEX"</span>,</span></span>
+<span class="r-in"><span>    subgroups <span class="op">=</span> <span class="st">"BMRKR2"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   biomarker              biomarker_label n_tot n_rsp      prop        or</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    BMRKR1 Continuous Level Biomarker 1   400   336 0.8400000 1.0573123</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       AGE                          Age   400   336 0.8400000 0.9989522</span>
@@ -214,32 +208,32 @@ created by combining multiple subtables.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 Categorical Level Biomarker 2 analysis</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Here we group the levels of `BMRKR2` manually, and we add a stratification</span></span>
-<span class="r-in"><span class="co"># variable `STRATA1`. We also here use a continuous variable `EOSDY`</span></span>
-<span class="r-in"><span class="co"># which is then binarized internally (response is defined as this variable</span></span>
-<span class="r-in"><span class="co"># being larger than 500).</span></span>
-<span class="r-in"><span class="va">df_grouped</span> <span class="op">&lt;-</span> <span class="fu">extract_rsp_biomarkers</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    rsp <span class="op">=</span> <span class="st">"EOSDY"</span>,</span>
-<span class="r-in">    biomarkers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span>
-<span class="r-in">    covariates <span class="op">=</span> <span class="st">"SEX"</span>,</span>
-<span class="r-in">    subgroups <span class="op">=</span> <span class="st">"BMRKR2"</span>,</span>
-<span class="r-in">    strat <span class="op">=</span> <span class="st">"STRATA1"</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adrs_f</span>,</span>
-<span class="r-in">  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    BMRKR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="st">"low"</span> <span class="op">=</span> <span class="st">"LOW"</span>,</span>
-<span class="r-in">      <span class="st">"low/medium"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span><span class="op">)</span>,</span>
-<span class="r-in">      <span class="st">"low/medium/high"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span></span>
-<span class="r-in">    response_definition <span class="op">=</span> <span class="st">"I(response &gt; 500)"</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">df_grouped</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Here we group the levels of `BMRKR2` manually, and we add a stratification</span></span></span>
+<span class="r-in"><span><span class="co"># variable `STRATA1`. We also here use a continuous variable `EOSDY`</span></span></span>
+<span class="r-in"><span><span class="co"># which is then binarized internally (response is defined as this variable</span></span></span>
+<span class="r-in"><span><span class="co"># being larger than 500).</span></span></span>
+<span class="r-in"><span><span class="va">df_grouped</span> <span class="op">&lt;-</span> <span class="fu">extract_rsp_biomarkers</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    rsp <span class="op">=</span> <span class="st">"EOSDY"</span>,</span></span>
+<span class="r-in"><span>    biomarkers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="st">"SEX"</span>,</span></span>
+<span class="r-in"><span>    subgroups <span class="op">=</span> <span class="st">"BMRKR2"</span>,</span></span>
+<span class="r-in"><span>    strat <span class="op">=</span> <span class="st">"STRATA1"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
+<span class="r-in"><span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    BMRKR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"low"</span> <span class="op">=</span> <span class="st">"LOW"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"low/medium"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"low/medium/high"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    response_definition <span class="op">=</span> <span class="st">"I(response &gt; 500)"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df_grouped</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   biomarker              biomarker_label n_tot n_rsp      prop        or</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    BMRKR1 Continuous Level Biomarker 1   330   243 0.7363636 0.9908758</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       AGE                          Age   330   243 0.7363636 0.9693622</span>
@@ -267,9 +261,9 @@ created by combining multiple subtables.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 BMRKR2 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7 BMRKR2 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 BMRKR2 Categorical Level Biomarker 2 analysis</span>
-<span class="r-in"><span class="co">## Table with default columns.</span></span>
-<span class="r-in"><span class="co"># df &lt;- &lt;need_data_input_to_work&gt;</span></span>
-<span class="r-in"><span class="fu">tabulate_rsp_biomarkers</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Table with default columns.</span></span></span>
+<span class="r-in"><span><span class="co"># df &lt;- &lt;need_data_input_to_work&gt;</span></span></span>
+<span class="r-in"><span><span class="fu">tabulate_rsp_biomarkers</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   Total n   Responders   Response (%)   Odds Ratio      95% CI      p-value (Wald)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Age                                                                                                               </span>
@@ -284,17 +278,17 @@ created by combining multiple subtables.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     LOW                             135        120          88.9%          1.06      (0.89, 1.27)       0.5054    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     MEDIUM                          135        110          81.5%          1.02      (0.90, 1.16)       0.7294    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     HIGH                            130        106          81.5%          1.11      (0.96, 1.30)       0.1701    </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Table with a manually chosen set of columns: leave out "pval", reorder.</span></span>
-<span class="r-in"><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">tabulate_rsp_biomarkers</span><span class="op">(</span></span>
-<span class="r-in">  df <span class="op">=</span> <span class="va">df</span>,</span>
-<span class="r-in">  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_rsp"</span>, <span class="st">"ci"</span>, <span class="st">"n_tot"</span>, <span class="st">"prop"</span>, <span class="st">"or"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Finally produce the forest plot.</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="g_forest.html">g_forest</a></span><span class="op">(</span><span class="va">tab</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">1.4</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Table with a manually chosen set of columns: leave out "pval", reorder.</span></span></span>
+<span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">tabulate_rsp_biomarkers</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>,</span></span>
+<span class="r-in"><span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_rsp"</span>, <span class="st">"ci"</span>, <span class="st">"n_tot"</span>, <span class="st">"prop"</span>, <span class="st">"or"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Finally produce the forest plot.</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="g_forest.html">g_forest</a></span><span class="op">(</span><span class="va">tab</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">1.4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

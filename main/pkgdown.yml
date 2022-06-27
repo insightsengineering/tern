@@ -1,10 +1,10 @@
 pandoc: 2.17.1.1
-pkgdown: 2.0.4
+pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
   tables: tables.html
   tern: tern.html
-last_built: 2022-06-24T14:30Z
+last_built: 2022-06-27T19:53Z
 urls:
   reference: https://insightsengineering.github.io/tern/main/reference
   article: https://insightsengineering.github.io/tern/main/articles

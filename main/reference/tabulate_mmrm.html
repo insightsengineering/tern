@@ -14,7 +14,7 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -72,32 +66,32 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for mmrm</span>
-<span class="fu"><a href="as.rtable.html">as.rtable</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fixed"</span>, <span class="st">"cov"</span>, <span class="st">"diagnostic"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">h_mmrm_fixed</span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"xx.xxxx"</span><span class="op">)</span>
-
-<span class="fu">h_mmrm_cov</span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"xx.xxxx"</span><span class="op">)</span>
-
-<span class="fu">h_mmrm_diagnostic</span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"xx.xxxx"</span><span class="op">)</span>
-
-<span class="co"># S3 method for mmrm</span>
-<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">s_mmrm_lsmeans</span><span class="op">(</span><span class="va">df</span>, <span class="va">.in_ref_col</span>, show_relative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"reduction"</span>, <span class="st">"increase"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">s_mmrm_lsmeans_single</span><span class="op">(</span><span class="va">df</span><span class="op">)</span>
-
-<span class="fu">summarize_lsmeans</span><span class="op">(</span>
-  <span class="va">lyt</span>,
-  arms <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>,
-  table_names <span class="op">=</span> <span class="st">"lsmeans_summary"</span>,
-  .stats <span class="op">=</span> <span class="cn">NULL</span>,
-  .formats <span class="op">=</span> <span class="cn">NULL</span>,
-  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,
-  .labels <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for mmrm</span></span>
+<span><span class="fu"><a href="as.rtable.html">as.rtable</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fixed"</span>, <span class="st">"cov"</span>, <span class="st">"diagnostic"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_mmrm_fixed</span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"xx.xxxx"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_mmrm_cov</span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"xx.xxxx"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_mmrm_diagnostic</span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"xx.xxxx"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for mmrm</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_mmrm_lsmeans</span><span class="op">(</span><span class="va">df</span>, <span class="va">.in_ref_col</span>, show_relative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"reduction"</span>, <span class="st">"increase"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_mmrm_lsmeans_single</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">summarize_lsmeans</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  arms <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="st">"lsmeans_summary"</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -175,7 +169,7 @@ diagnostic statistics tables.</p>
 <li><p><code>h_mmrm_fixed</code>: Deprecated by <code>tern.mmrm::tabulate_mmrm</code>: Helper function to produce fixed effects table.</p></li>
 <li><p><code>h_mmrm_cov</code>: Deprecated by <code>tern.mmrm::tabulate_mmrm</code>: Helper function to produce covariance matrix table.</p></li>
 <li><p><code>h_mmrm_diagnostic</code>: Deprecated by <code>tern.mmrm::tabulate_mmrm</code>: Helper function to produce diagnostic statistics table.</p></li>
-<li><p><code>tidy.mmrm</code>: Deprecated by <code>tern.mmrm::tabulate_mmrm</code>: Helper method (for <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code>) to prepare a data frame from an
+<li><p><code>tidy.mmrm</code>: Deprecated by <code>tern.mmrm::tabulate_mmrm</code>: Helper method (for <code><a href="https://broom.tidymodels.org/reference/reexports.html" class="external-link">broom::tidy()</a></code>) to prepare a data frame from an
 <code>mmrm</code> object containing the LS means and contrasts.</p></li>
 <li><p><code>s_mmrm_lsmeans</code>: Deprecated by <code>tern.mmrm::tabulate_mmrm</code>: Statistics function which is extracting estimates from a tidied LS means
 data frame.</p></li>
@@ -186,86 +180,86 @@ data frame when <code>ARM</code> is not considered in the model.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">sleepstudy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span class="r-in">    group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sleepstudy</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    days_grouped <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="va">Days</span>,</span>
-<span class="r-in">      breaks <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">Days</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">      include.lowest <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in">    <span class="op">)</span>,</span>
-<span class="r-in">    Subject <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">Subject</span><span class="op">)</span>,</span>
-<span class="r-in">      <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">Subject</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">50</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct_all.html" class="external-link">distinct_at</a></span><span class="op">(</span>.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subject"</span>, <span class="st">"days_grouped"</span>, <span class="st">"group"</span><span class="op">)</span>, .keep_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span>
-<span class="r-in">  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    response <span class="op">=</span> <span class="st">"Reaction"</span>,</span>
-<span class="r-in">    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">    id <span class="op">=</span> <span class="st">"Subject"</span>,</span>
-<span class="r-in">    arm <span class="op">=</span> <span class="st">"group"</span>,</span>
-<span class="r-in">    visit <span class="op">=</span> <span class="st">"days_grouped"</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">dat</span>,</span>
-<span class="r-in">  cor_struct <span class="op">=</span> <span class="st">"compound-symmetry"</span>,</span>
-<span class="r-in">  parallel <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="as.rtable.html">as.rtable</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"cov"</span>, format <span class="op">=</span> <span class="st">"xx.x"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">result_no_arm</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span>
-<span class="r-in">  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    response <span class="op">=</span> <span class="st">"Reaction"</span>,</span>
-<span class="r-in">    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">    id <span class="op">=</span> <span class="st">"Subject"</span>,</span>
-<span class="r-in">    visit <span class="op">=</span> <span class="st">"days_grouped"</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">dat</span>,</span>
-<span class="r-in">  cor_struct <span class="op">=</span> <span class="st">"compound-symmetry"</span>,</span>
-<span class="r-in">  parallel <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="as.rtable.html">as.rtable</a></span><span class="op">(</span><span class="va">result_no_arm</span>, type <span class="op">=</span> <span class="st">"cov"</span>, format <span class="op">=</span> <span class="st">"xx.x"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/" class="external-link">broom</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df_no_arm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result_no_arm</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu">s_mmrm_lsmeans</span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="fl">8</span>, <span class="op">]</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu">s_mmrm_lsmeans_single</span><span class="op">(</span><span class="va">df_no_arm</span><span class="op">[</span><span class="fl">4</span>, <span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">dat_adsl</span> <span class="op">&lt;-</span> <span class="va">dat</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Subject</span>, <span class="va">group</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"group"</span>, ref_group <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">ref_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"days_grouped"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_lsmeans</span><span class="op">(</span>show_relative <span class="op">=</span> <span class="st">"increase"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span>
-<span class="r-in">    df <span class="op">=</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span>,</span>
-<span class="r-in">    alt_counts_df <span class="op">=</span> <span class="va">dat_adsl</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"days_grouped"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">summarize_lsmeans</span><span class="op">(</span>arms <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span>
-<span class="r-in">    df <span class="op">=</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result_no_arm</span><span class="op">)</span>,</span>
-<span class="r-in">    alt_counts_df <span class="op">=</span> <span class="va">dat_adsl</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">sleepstudy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sleepstudy</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    days_grouped <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="va">Days</span>,</span></span>
+<span class="r-in"><span>      breaks <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">Days</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      include.lowest <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    Subject <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">Subject</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">Subject</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct_all.html" class="external-link">distinct_at</a></span><span class="op">(</span>.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subject"</span>, <span class="st">"days_grouped"</span>, <span class="st">"group"</span><span class="op">)</span>, .keep_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    response <span class="op">=</span> <span class="st">"Reaction"</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"Subject"</span>,</span></span>
+<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"group"</span>,</span></span>
+<span class="r-in"><span>    visit <span class="op">=</span> <span class="st">"days_grouped"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">dat</span>,</span></span>
+<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"compound-symmetry"</span>,</span></span>
+<span class="r-in"><span>  parallel <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="as.rtable.html">as.rtable</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"cov"</span>, format <span class="op">=</span> <span class="st">"xx.x"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">result_no_arm</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    response <span class="op">=</span> <span class="st">"Reaction"</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"Subject"</span>,</span></span>
+<span class="r-in"><span>    visit <span class="op">=</span> <span class="st">"days_grouped"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">dat</span>,</span></span>
+<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"compound-symmetry"</span>,</span></span>
+<span class="r-in"><span>  parallel <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="as.rtable.html">as.rtable</a></span><span class="op">(</span><span class="va">result_no_arm</span>, type <span class="op">=</span> <span class="st">"cov"</span>, format <span class="op">=</span> <span class="st">"xx.x"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/" class="external-link">broom</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df_no_arm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result_no_arm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">s_mmrm_lsmeans</span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="fl">8</span>, <span class="op">]</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">s_mmrm_lsmeans_single</span><span class="op">(</span><span class="va">df_no_arm</span><span class="op">[</span><span class="fl">4</span>, <span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">dat_adsl</span> <span class="op">&lt;-</span> <span class="va">dat</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Subject</span>, <span class="va">group</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"group"</span>, ref_group <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">ref_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"days_grouped"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_lsmeans</span><span class="op">(</span>show_relative <span class="op">=</span> <span class="st">"increase"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    df <span class="op">=</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    alt_counts_df <span class="op">=</span> <span class="va">dat_adsl</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"days_grouped"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_lsmeans</span><span class="op">(</span>arms <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    df <span class="op">=</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result_no_arm</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    alt_counts_df <span class="op">=</span> <span class="va">dat_adsl</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

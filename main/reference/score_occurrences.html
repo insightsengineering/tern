@@ -14,7 +14,7 @@ sorting of occurrence tables.
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ sorting of occurrence tables.
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -72,13 +66,13 @@ sorting of occurrence tables.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">score_occurrences</span><span class="op">(</span><span class="va">table_row</span><span class="op">)</span>
-
-<span class="fu">score_occurrences_cols</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">score_occurrences_subtable</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">score_occurrences_cont_cols</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">score_occurrences</span><span class="op">(</span><span class="va">table_row</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">score_occurrences_cols</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">score_occurrences_subtable</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">score_occurrences_cont_cols</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -122,39 +116,39 @@ specified columns. Note that this is extending <code><a href="https://roche.gith
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">assertthat</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span>
-<span class="r-in"><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adae</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span>
-<span class="r-in">    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
-<span class="r-in">    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span><span class="op">)</span>,</span>
-<span class="r-in">    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Total number of patients with at least one event"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"AEBODSYS"</span>, child_labels <span class="op">=</span> <span class="st">"visible"</span>, nested <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span>
-<span class="r-in">    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
-<span class="r-in">    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,</span>
-<span class="r-in">    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="st">"Total number of patients with at least one event"</span>,</span>
-<span class="r-in">      <span class="st">"Total number of events"</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="count_occurrences.html">count_occurrences</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AEDECOD"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rtable_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, <span class="va">adae</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/prune_table.html" class="external-link">prune_table</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rtable_object_sorted</span> <span class="op">&lt;-</span> <span class="va">rtable_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/sort_at_path.html" class="external-link">sort_at_path</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AEBODSYS"</span>, <span class="st">"*"</span>, <span class="st">"AEDECOD"</span><span class="op">)</span>, scorefun <span class="op">=</span> <span class="va">score_occurrences</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rtable_object_sorted</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">assertthat</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span></span>
+<span class="r-in"><span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adae</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
+<span class="r-in"><span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Total number of patients with at least one event"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"AEBODSYS"</span>, child_labels <span class="op">=</span> <span class="st">"visible"</span>, nested <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="summarize_num_patients.html">summarize_num_patients</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
+<span class="r-in"><span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unique"</span>, <span class="st">"nonunique"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"Total number of patients with at least one event"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"Total number of events"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="count_occurrences.html">count_occurrences</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AEDECOD"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rtable_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, <span class="va">adae</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/prune_table.html" class="external-link">prune_table</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rtable_object_sorted</span> <span class="op">&lt;-</span> <span class="va">rtable_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/sort_at_path.html" class="external-link">sort_at_path</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AEBODSYS"</span>, <span class="st">"*"</span>, <span class="st">"AEDECOD"</span><span class="op">)</span>, scorefun <span class="op">=</span> <span class="va">score_occurrences</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rtable_object_sorted</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                        A: Drug X    B: Placebo    C: Combination</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                         (N=134)       (N=134)        (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————</span>
@@ -190,14 +184,14 @@ specified columns. Note that this is extending <code><a href="https://roche.gith
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Total number of patients with at least one event   47 (35.1%)   58 (43.3%)      57 (43.2%)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Total number of events                                 62           72              74      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       dcd D.2.1.5.3                                    47 (35.1%)   58 (43.3%)      57 (43.2%)  </span>
-<span class="r-in"><span class="va">score_cols_a_and_b</span> <span class="op">&lt;-</span> <span class="fu">score_occurrences_cols</span><span class="op">(</span>col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A: Drug X"</span>, <span class="st">"B: Placebo"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note that this here just sorts the AEDECOD inside the AEBODSYS. The AEBODSYS are not sorted.</span></span>
-<span class="r-in"><span class="co"># That would require a second pass of `sort_at_path`.</span></span>
-<span class="r-in"><span class="va">rtable_object_sorted</span> <span class="op">&lt;-</span> <span class="va">rtable_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/sort_at_path.html" class="external-link">sort_at_path</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AEBODSYS"</span>, <span class="st">"*"</span>, <span class="st">"AEDECOD"</span><span class="op">)</span>, scorefun <span class="op">=</span> <span class="va">score_cols_a_and_b</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rtable_object_sorted</span></span>
+<span class="r-in"><span><span class="va">score_cols_a_and_b</span> <span class="op">&lt;-</span> <span class="fu">score_occurrences_cols</span><span class="op">(</span>col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A: Drug X"</span>, <span class="st">"B: Placebo"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note that this here just sorts the AEDECOD inside the AEBODSYS. The AEBODSYS are not sorted.</span></span></span>
+<span class="r-in"><span><span class="co"># That would require a second pass of `sort_at_path`.</span></span></span>
+<span class="r-in"><span><span class="va">rtable_object_sorted</span> <span class="op">&lt;-</span> <span class="va">rtable_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/sort_at_path.html" class="external-link">sort_at_path</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AEBODSYS"</span>, <span class="st">"*"</span>, <span class="st">"AEDECOD"</span><span class="op">)</span>, scorefun <span class="op">=</span> <span class="va">score_cols_a_and_b</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rtable_object_sorted</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                        A: Drug X    B: Placebo    C: Combination</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                         (N=134)       (N=134)        (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————</span>
@@ -233,14 +227,14 @@ specified columns. Note that this is extending <code><a href="https://roche.gith
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Total number of patients with at least one event   47 (35.1%)   58 (43.3%)      57 (43.2%)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Total number of events                                 62           72              74      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       dcd D.2.1.5.3                                    47 (35.1%)   58 (43.3%)      57 (43.2%)  </span>
-<span class="r-in"><span class="va">score_subtable_all</span> <span class="op">&lt;-</span> <span class="fu">score_occurrences_subtable</span><span class="op">(</span>col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">rtable_object</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note that this code just sorts the AEBODSYS, not the AEDECOD within AEBODSYS. That</span></span>
-<span class="r-in"><span class="co"># would require a second pass of `sort_at_path`.</span></span>
-<span class="r-in"><span class="va">rtable_object_sorted</span> <span class="op">&lt;-</span> <span class="va">rtable_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://roche.github.io/rtables/reference/sort_at_path.html" class="external-link">sort_at_path</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AEBODSYS"</span><span class="op">)</span>, scorefun <span class="op">=</span> <span class="va">score_subtable_all</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rtable_object_sorted</span></span>
+<span class="r-in"><span><span class="va">score_subtable_all</span> <span class="op">&lt;-</span> <span class="fu">score_occurrences_subtable</span><span class="op">(</span>col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">rtable_object</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note that this code just sorts the AEBODSYS, not the AEDECOD within AEBODSYS. That</span></span></span>
+<span class="r-in"><span><span class="co"># would require a second pass of `sort_at_path`.</span></span></span>
+<span class="r-in"><span><span class="va">rtable_object_sorted</span> <span class="op">&lt;-</span> <span class="va">rtable_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/sort_at_path.html" class="external-link">sort_at_path</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AEBODSYS"</span><span class="op">)</span>, scorefun <span class="op">=</span> <span class="va">score_subtable_all</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rtable_object_sorted</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                        A: Drug X    B: Placebo    C: Combination</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                         (N=134)       (N=134)        (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————</span>

@@ -24,7 +24,7 @@ Note that for the default degree 0 the biomarker variable is not included in the
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,12 +47,6 @@ Note that for the default degree 0 the biomarker variable is not included in the
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -86,11 +80,11 @@ Note that for the default degree 0 the <code>biomarker</code> variable is not in
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fit_survival_step</span><span class="op">(</span>
-  <span class="va">variables</span>,
-  <span class="va">data</span>,
-  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_survival_step</span><span class="op">(</span></span>
+<span>  <span class="va">variables</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -123,43 +117,43 @@ second part of the columns contain the estimates for the treatment arm compariso
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co"># Testing dataset with just two treatment arms.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span>,</span>
-<span class="r-in">    <span class="va">ARM</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="co"># Reorder levels of ARM to display reference arm before treatment arm.</span></span>
-<span class="r-in">    ARM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span><span class="va">ARM</span>, <span class="st">"B: Placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ARM"</span> <span class="op">=</span> <span class="st">"Treatment Arm"</span>, <span class="st">"is_event"</span> <span class="op">=</span> <span class="st">"Event Flag"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte_f</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">labels</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  arm <span class="op">=</span> <span class="st">"ARM"</span>,</span>
-<span class="r-in">  biomarker <span class="op">=</span> <span class="st">"BMRKR1"</span>,</span>
-<span class="r-in">  covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span>,</span>
-<span class="r-in">  event <span class="op">=</span> <span class="st">"is_event"</span>,</span>
-<span class="r-in">  time <span class="op">=</span> <span class="st">"AVAL"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Fit default STEP models: Here a constant treatment effect is estimated in each subgroup.</span></span>
-<span class="r-in"><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu">fit_survival_step</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">variables</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adtte_f</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Testing dataset with just two treatment arms.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span>,</span></span>
+<span class="r-in"><span>    <span class="va">ARM</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="co"># Reorder levels of ARM to display reference arm before treatment arm.</span></span></span>
+<span class="r-in"><span>    ARM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span><span class="va">ARM</span>, <span class="st">"B: Placebo"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ARM"</span> <span class="op">=</span> <span class="st">"Treatment Arm"</span>, <span class="st">"is_event"</span> <span class="op">=</span> <span class="st">"Event Flag"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte_f</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">labels</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
+<span class="r-in"><span>  biomarker <span class="op">=</span> <span class="st">"BMRKR1"</span>,</span></span>
+<span class="r-in"><span>  covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
+<span class="r-in"><span>  time <span class="op">=</span> <span class="st">"AVAL"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Fit default STEP models: Here a constant treatment effect is estimated in each subgroup.</span></span></span>
+<span class="r-in"><span><span class="va">step_matrix</span> <span class="op">&lt;-</span> <span class="fu">fit_survival_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">variables</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39 12</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Percentile Center Percentile Lower Percentile Upper Interval Center</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]             0.025                0            0.275        1.240529</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]             0.050                0            0.300        1.628805</span>
@@ -181,21 +175,21 @@ second part of the columns contain the estimates for the treatment arm compariso
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.7025181</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.6321620</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.5873699</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Specify different polynomial degree for the biomarker interaction to use more flexible local</span></span>
-<span class="r-in"><span class="co"># models. Or specify different Cox regression options.</span></span>
-<span class="r-in"><span class="va">step_matrix2</span> <span class="op">&lt;-</span> <span class="fu">fit_survival_step</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">variables</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adtte_f</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>degree <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use a global model with cubic interaction and only 5 points.</span></span>
-<span class="r-in"><span class="va">step_matrix3</span> <span class="op">&lt;-</span> <span class="fu">fit_survival_step</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="va">variables</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adtte_f</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="cn">NULL</span>, degree <span class="op">=</span> <span class="fl">3</span>, num_points <span class="op">=</span> <span class="fl">5L</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Specify different polynomial degree for the biomarker interaction to use more flexible local</span></span></span>
+<span class="r-in"><span><span class="co"># models. Or specify different Cox regression options.</span></span></span>
+<span class="r-in"><span><span class="va">step_matrix2</span> <span class="op">&lt;-</span> <span class="fu">fit_survival_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">variables</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>degree <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use a global model with cubic interaction and only 5 points.</span></span></span>
+<span class="r-in"><span><span class="va">step_matrix3</span> <span class="op">&lt;-</span> <span class="fu">fit_survival_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="va">variables</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="cn">NULL</span>, degree <span class="op">=</span> <span class="fl">3</span>, num_points <span class="op">=</span> <span class="fl">5L</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

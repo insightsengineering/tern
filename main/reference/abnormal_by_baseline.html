@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -66,35 +60,35 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">d_count_abnormal_by_baseline</span><span class="op">(</span><span class="va">abnormal</span><span class="op">)</span>
-
-<span class="fu">s_count_abnormal_by_baseline</span><span class="op">(</span>
-  <span class="va">df</span>,
-  <span class="va">.var</span>,
-  <span class="va">abnormal</span>,
-  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline <span class="op">=</span> <span class="st">"BNRIND"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">a_count_abnormal_by_baseline</span><span class="op">(</span>
-  <span class="va">df</span>,
-  <span class="va">.var</span>,
-  <span class="va">abnormal</span>,
-  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline <span class="op">=</span> <span class="st">"BNRIND"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">count_abnormal_by_baseline</span><span class="op">(</span>
-  <span class="va">lyt</span>,
-  <span class="va">var</span>,
-  <span class="va">abnormal</span>,
-  <span class="va">...</span>,
-  table_names <span class="op">=</span> <span class="va">abnormal</span>,
-  .stats <span class="op">=</span> <span class="cn">NULL</span>,
-  .formats <span class="op">=</span> <span class="cn">NULL</span>,
-  .labels <span class="op">=</span> <span class="cn">NULL</span>,
-  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">d_count_abnormal_by_baseline</span><span class="op">(</span><span class="va">abnormal</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_count_abnormal_by_baseline</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">abnormal</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline <span class="op">=</span> <span class="st">"BNRIND"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">a_count_abnormal_by_baseline</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">abnormal</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline <span class="op">=</span> <span class="st">"BNRIND"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">count_abnormal_by_baseline</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">var</span>,</span>
+<span>  <span class="va">abnormal</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="va">abnormal</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -189,7 +183,7 @@ statistics function arguments and additional format arguments (see below).</p></
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">d_count_abnormal_by_baseline</span><span class="op">(</span><span class="st">"LOW"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">d_count_abnormal_by_baseline</span><span class="op">(</span><span class="st">"LOW"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $not_abnormal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Not low baseline status"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -199,16 +193,16 @@ statistics function arguments and additional format arguments (see below).</p></
 <span class="r-out co"><span class="r-pr">#&gt;</span> $total</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Total"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  ANRIND <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"NORMAL"</span>, <span class="st">"HIGH"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  BNRIND <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"NORMAL"</span>, <span class="st">"HIGH"</span>, <span class="cn">NA</span>, <span class="st">"LOW"</span>, <span class="st">"NORMAL"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="df_explicit_na.html">df_explicit_na</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Just for one abnormal level.</span></span>
-<span class="r-in"><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_abnormal_by_baseline</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ANRIND <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"NORMAL"</span>, <span class="st">"HIGH"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  BNRIND <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"NORMAL"</span>, <span class="st">"HIGH"</span>, <span class="cn">NA</span>, <span class="st">"LOW"</span>, <span class="st">"NORMAL"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="df_explicit_na.html">df_explicit_na</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Just for one abnormal level.</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_abnormal_by_baseline</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$not_abnormal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
@@ -229,53 +223,53 @@ statistics function arguments and additional format arguments (see below).</p></
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Total"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first</span></span>
-<span class="r-in"><span class="co"># so that the `rtables` formatting function `format_fraction()` can be applied correctly.</span></span>
-<span class="r-in"><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="fu">tern</span><span class="fu">:::</span><span class="va">a_count_abnormal_by_baseline</span>, .ungroup_stats <span class="op">=</span> <span class="st">"fraction"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">afun</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="st">"LOW"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first</span></span></span>
+<span class="r-in"><span><span class="co"># so that the `rtables` formatting function `format_fraction()` can be applied correctly.</span></span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="fu">tern</span><span class="fu">:::</span><span class="va">a_count_abnormal_by_baseline</span>, .ungroup_stats <span class="op">=</span> <span class="st">"fraction"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="st">"LOW"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       row_name formatted_cell indent_mod               row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 not_abnormal    2/3 (66.7%)          0 Not low baseline status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2     abnormal      1/2 (50%)          0     Low baseline status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3        total    4/6 (66.7%)          0                   Total</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Layout creating function.</span></span>
-<span class="r-in"><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">count_abnormal_by_baseline</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>High <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">build_table</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Layout creating function.</span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">count_abnormal_by_baseline</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>High <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                all obs  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> High                                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Not high baseline status    1/4 (25%) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   High baseline status           0/1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Total                      1/6 (16.7%)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Passing of statistics function and formatting arguments.</span></span>
-<span class="r-in"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  RANGE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NORMAL"</span>, <span class="st">"LOW"</span>, <span class="st">"HIGH"</span>, <span class="st">"HIGH"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  BLRANGE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"HIGH"</span>, <span class="st">"HIGH"</span>, <span class="st">"NORMAL"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">count_abnormal_by_baseline</span><span class="op">(</span></span>
-<span class="r-in">    var <span class="op">=</span> <span class="st">"RANGE"</span>,</span>
-<span class="r-in">    abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Low <span class="op">=</span> <span class="st">"LOW"</span><span class="op">)</span>,</span>
-<span class="r-in">    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"ID"</span>, baseline <span class="op">=</span> <span class="st">"BLRANGE"</span><span class="op">)</span>,</span>
-<span class="r-in">    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="st">"xx / xx"</span><span class="op">)</span>,</span>
-<span class="r-in">    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">build_table</span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Passing of statistics function and formatting arguments.</span></span></span>
+<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  RANGE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NORMAL"</span>, <span class="st">"LOW"</span>, <span class="st">"HIGH"</span>, <span class="st">"HIGH"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  BLRANGE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"HIGH"</span>, <span class="st">"HIGH"</span>, <span class="st">"NORMAL"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">count_abnormal_by_baseline</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"RANGE"</span>,</span></span>
+<span class="r-in"><span>    abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Low <span class="op">=</span> <span class="st">"LOW"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"ID"</span>, baseline <span class="op">=</span> <span class="st">"BLRANGE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="st">"xx / xx"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                 all obs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Low                                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Not low baseline status    1 / 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Low baseline status        0 / 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Total                      1 / 4 </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

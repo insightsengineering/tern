@@ -14,7 +14,7 @@ time and hazard ratio for population subgroups."><!-- mathjax --><script src="ht
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ time and hazard ratio for population subgroups."><!-- mathjax --><script src="ht
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -72,24 +66,24 @@ time and hazard ratio for population subgroups.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">h_survtime_df</span><span class="op">(</span><span class="va">tte</span>, <span class="va">is_event</span>, <span class="va">arm</span><span class="op">)</span>
-
-<span class="fu">h_survtime_subgroups_df</span><span class="op">(</span>
-  <span class="va">variables</span>,
-  <span class="va">data</span>,
-  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  label_all <span class="op">=</span> <span class="st">"All Patients"</span>
-<span class="op">)</span>
-
-<span class="fu">h_coxph_df</span><span class="op">(</span><span class="va">tte</span>, <span class="va">is_event</span>, <span class="va">arm</span>, strata_data <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">h_coxph_subgroups_df</span><span class="op">(</span>
-  <span class="va">variables</span>,
-  <span class="va">data</span>,
-  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  control <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>,
-  label_all <span class="op">=</span> <span class="st">"All Patients"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">h_survtime_df</span><span class="op">(</span><span class="va">tte</span>, <span class="va">is_event</span>, <span class="va">arm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_survtime_subgroups_df</span><span class="op">(</span></span>
+<span>  <span class="va">variables</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  label_all <span class="op">=</span> <span class="st">"All Patients"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_coxph_df</span><span class="op">(</span><span class="va">tte</span>, <span class="va">is_event</span>, <span class="va">arm</span>, strata_data <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h_coxph_subgroups_df</span><span class="op">(</span></span>
+<span>  <span class="va">variables</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="control_coxph.html">control_coxph</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  label_all <span class="op">=</span> <span class="st">"All Patients"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -162,52 +156,52 @@ groupings for <code>subgroups</code> variables.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Testing dataset.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org" class="external-link">forcats</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Save variable labels before data processing steps.</span></span>
-<span class="r-in"><span class="va">adtte_labels</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span>,</span>
-<span class="r-in">    <span class="va">ARM</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span><span class="op">)</span>,</span>
-<span class="r-in">    <span class="va">SEX</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="co"># Reorder levels of ARM to display reference arm before treatment arm.</span></span>
-<span class="r-in">    ARM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span><span class="va">ARM</span>, <span class="st">"B: Placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">SEX</span><span class="op">)</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ARM"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"ARM"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"SEX"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"SEX"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"is_event"</span> <span class="op">=</span> <span class="st">"Event Flag"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte_f</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">labels</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Extract median survival time for one group.</span></span>
-<span class="r-in"><span class="fu">h_survtime_df</span><span class="op">(</span></span>
-<span class="r-in">  tte <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">AVAL</span>,</span>
-<span class="r-in">  is_event <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">is_event</span>,</span>
-<span class="r-in">  arm <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">ARM</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Testing dataset.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org" class="external-link">forcats</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Save variable labels before data processing steps.</span></span></span>
+<span class="r-in"><span><span class="va">adtte_labels</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span>,</span></span>
+<span class="r-in"><span>    <span class="va">ARM</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="va">SEX</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="co"># Reorder levels of ARM to display reference arm before treatment arm.</span></span></span>
+<span class="r-in"><span>    ARM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span><span class="va">ARM</span>, <span class="st">"B: Placebo"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">SEX</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ARM"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"ARM"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"SEX"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"SEX"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"is_event"</span> <span class="op">=</span> <span class="st">"Event Flag"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte_f</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">labels</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extract median survival time for one group.</span></span></span>
+<span class="r-in"><span><span class="fu">h_survtime_df</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  tte <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">AVAL</span>,</span></span>
+<span class="r-in"><span>  is_event <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">is_event</span>,</span></span>
+<span class="r-in"><span>  arm <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">ARM</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          arm   n n_events   median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 B: Placebo 134       87  837.428</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  A: Drug X 134       79 1260.491</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Extract median survival time for multiple groups.</span></span>
-<span class="r-in"><span class="fu">h_survtime_subgroups_df</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span>
-<span class="r-in">    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span>
-<span class="r-in">    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adtte_f</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extract median survival time for multiple groups.</span></span></span>
+<span class="r-in"><span><span class="fu">h_survtime_subgroups_df</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
+<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
+<span class="r-in"><span>    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           arm   n n_events    median     subgroup    var</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 134       87  837.4280 All Patients    ALL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 134       79 1260.4905 All Patients    ALL</span>
@@ -234,24 +228,24 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 Categorical Level Biomarker 2 analysis</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Define groupings for BMRKR2 levels.</span></span>
-<span class="r-in"><span class="fu">h_survtime_subgroups_df</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span>
-<span class="r-in">    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span>
-<span class="r-in">    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adtte_f</span>,</span>
-<span class="r-in">  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    BMRKR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="st">"low"</span> <span class="op">=</span> <span class="st">"LOW"</span>,</span>
-<span class="r-in">      <span class="st">"low/medium"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span><span class="op">)</span>,</span>
-<span class="r-in">      <span class="st">"low/medium/high"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Define groupings for BMRKR2 levels.</span></span></span>
+<span class="r-in"><span><span class="fu">h_survtime_subgroups_df</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
+<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
+<span class="r-in"><span>    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span>,</span></span>
+<span class="r-in"><span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    BMRKR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"low"</span> <span class="op">=</span> <span class="st">"LOW"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"low/medium"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"low/medium/high"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           arm   n n_events    median        subgroup    var</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 134       87  837.4280    All Patients    ALL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 134       79 1260.4905    All Patients    ALL</span>
@@ -278,31 +272,31 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 Categorical Level Biomarker 2 analysis</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Extract hazard ratio for one group.</span></span>
-<span class="r-in"><span class="fu">h_coxph_df</span><span class="op">(</span><span class="va">adtte_f</span><span class="op">$</span><span class="va">AVAL</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">is_event</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">ARM</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extract hazard ratio for one group.</span></span></span>
+<span class="r-in"><span><span class="fu">h_coxph_df</span><span class="op">(</span><span class="va">adtte_f</span><span class="op">$</span><span class="va">AVAL</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">is_event</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">ARM</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           pval_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 p-value (log-rank)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Extract hazard ratio for one group with stratification factor.</span></span>
-<span class="r-in"><span class="fu">h_coxph_df</span><span class="op">(</span><span class="va">adtte_f</span><span class="op">$</span><span class="va">AVAL</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">is_event</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">ARM</span>, strata_data <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">STRATA1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extract hazard ratio for one group with stratification factor.</span></span></span>
+<span class="r-in"><span><span class="fu">h_coxph_df</span><span class="op">(</span><span class="va">adtte_f</span><span class="op">$</span><span class="va">AVAL</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">is_event</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">ARM</span>, strata_data <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">STRATA1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl      ucl conf_level       pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       268          166 0.7343822 0.5376802 1.003045       0.95 0.05142933</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           pval_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 p-value (log-rank)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Extract hazard ratio for multiple groups.</span></span>
-<span class="r-in"><span class="fu">h_coxph_subgroups_df</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span>
-<span class="r-in">    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span>
-<span class="r-in">    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adtte_f</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extract hazard ratio for multiple groups.</span></span></span>
+<span class="r-in"><span><span class="fu">h_coxph_subgroups_df</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
+<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
+<span class="r-in"><span>    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       161           95 0.6979693 0.4647812 1.0481517       0.95 0.08148174</span>
@@ -317,24 +311,24 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 p-value (log-rank)          LOW BMRKR2 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 p-value (log-rank)       MEDIUM BMRKR2 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 p-value (log-rank)         HIGH BMRKR2 Categorical Level Biomarker 2 analysis</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Define groupings of BMRKR2 levels.</span></span>
-<span class="r-in"><span class="fu">h_coxph_subgroups_df</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span>
-<span class="r-in">    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span>
-<span class="r-in">    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adtte_f</span>,</span>
-<span class="r-in">  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    BMRKR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="st">"low"</span> <span class="op">=</span> <span class="st">"LOW"</span>,</span>
-<span class="r-in">      <span class="st">"low/medium"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span><span class="op">)</span>,</span>
-<span class="r-in">      <span class="st">"low/medium/high"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Define groupings of BMRKR2 levels.</span></span></span>
+<span class="r-in"><span><span class="fu">h_coxph_subgroups_df</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
+<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
+<span class="r-in"><span>    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span>,</span></span>
+<span class="r-in"><span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    BMRKR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"low"</span> <span class="op">=</span> <span class="st">"LOW"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"low/medium"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"low/medium/high"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       268          166 0.7173651 0.5275231 0.9755262       0.95 0.03340293</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       161           95 0.6979693 0.4647812 1.0481517       0.95 0.08148174</span>
@@ -356,18 +350,18 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 analysis</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Extract hazard ratio for multiple groups with stratification factors.</span></span>
-<span class="r-in"><span class="fu">h_coxph_subgroups_df</span><span class="op">(</span></span>
-<span class="r-in">  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span class="r-in">    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span>
-<span class="r-in">    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span>
-<span class="r-in">    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span>,</span>
-<span class="r-in">    strat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STRATA1"</span>, <span class="st">"STRATA2"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">adtte_f</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extract hazard ratio for multiple groups with stratification factors.</span></span></span>
+<span class="r-in"><span><span class="fu">h_coxph_subgroups_df</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
+<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
+<span class="r-in"><span>    subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    strat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STRATA1"</span>, <span class="st">"STRATA2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl      ucl conf_level       pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       268          166 0.7412854 0.5390265 1.019438       0.95 0.06468801</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       161           95 0.7328179 0.4794740 1.120023       0.95 0.14954837</span>
@@ -382,7 +376,7 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 p-value (log-rank)          LOW BMRKR2 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 p-value (log-rank)       MEDIUM BMRKR2 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 p-value (log-rank)         HIGH BMRKR2 Categorical Level Biomarker 2 analysis</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
