@@ -130,7 +130,7 @@ a_survival_subgroups <- function(.formats = list(
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
-    ref = c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval")
+    c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval")
   )
 
   afun_lst <- Map(function(stat, fmt) {
@@ -336,7 +336,10 @@ d_survival_subgroups_colvars <- function(vars,
   checkmate::assert_string(time_unit, null.ok = TRUE)
   checkmate::assert_subset(c("hr", "ci"), vars)
   checkmate::assert_true(any(c("n_tot", "n_tot_events") %in% vars))
-  checkmate::assert_subset(vars, ref = c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval"))
+  checkmate::assert_subset(
+    vars,
+    c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval")
+  )
 
   propcase_time_label <- if (!is.null(time_unit)) {
     paste0("Median (", time_unit, ")")

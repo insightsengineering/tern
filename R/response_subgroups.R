@@ -303,7 +303,8 @@ d_rsp_subgroups_colvars <- function(vars,
                                     method = NULL) {
   checkmate::assert_character(vars)
   checkmate::assert_subset(c("n_tot", "or", "ci"), vars)
-  checkmate::assert_subset(vars, ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
+  checkmate::assert_subset(vars,
+                           c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
 
   varlabels <- c(
     n = "n",
