@@ -145,7 +145,7 @@ labels_or_names <- function(x) {
 
 #' Convert to `rtable`
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' This is a new generic function to convert objects to `rtable` tables.
 #'

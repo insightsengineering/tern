@@ -189,6 +189,8 @@ fit_logistic <- function(data,
 #' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
 #' @method tidy glm
 #'
+#' @seealso [h_logistic()] for relevant helper functions.
+#'
 #' @examples
 #' library(broom)
 #' df <- tidy(mod1, conf_level = 0.99)

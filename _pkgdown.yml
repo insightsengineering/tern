@@ -80,7 +80,7 @@ reference:
     desc: These function create graphical-type output.
     contents:
       - starts_with("g_")
-      - -g_mmrm
+      - -matches("g_mmrm.*")
 
   - title: rtables Helper Functions
     desc: These functions help to work with the `rtables` package and may be moved there later.

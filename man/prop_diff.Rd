@@ -138,3 +138,6 @@ l <- basic_table() \%>\%
 build_table(l, df = dta)
 
 }
+\seealso{
+\code{\link[=h_prop_diff]{h_prop_diff()}} for relevant helper functions.
+}

@@ -126,7 +126,7 @@ summary_in_cols <- function(x,
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #' @param var_type Variable type, "numeric" by default.
 #'
-#' @seealso [summarize_vars].
+#' @seealso [summarize_vars()].
 #'
 #' @export
 #' @examples

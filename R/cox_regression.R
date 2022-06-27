@@ -261,6 +261,8 @@ summarize_coxreg <- function(lyt,
 #'
 #' Fitting functions for univariate and multivariate Cox regression models.
 #'
+#' @seealso [h_coxreg()] for relevant helper functions.
+#'
 #' @examples
 #' # Testing dataset [survival::bladder].
 #'

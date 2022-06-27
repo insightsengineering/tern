@@ -155,3 +155,6 @@ multivar_covs_model <- fit_coxreg_multivar(
 )
 
 }
+\seealso{
+\code{\link[=h_coxreg]{h_coxreg()}} for relevant helper functions.
+}

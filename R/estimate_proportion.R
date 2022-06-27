@@ -4,6 +4,8 @@
 #'
 #' Estimate the proportion of responders within a studied population.
 #'
+#' @seealso [h_prop()] for relevant helper functions.
+#'
 #' @name estimate_proportions
 NULL
 

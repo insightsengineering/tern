@@ -3,18 +3,19 @@ NULL
 
 #' Helper Functions for Subgroup Treatment Effect Pattern (STEP) Calculations
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Helper functions that are used internally for the STEP calculations.
 #'
 #' @inheritParams argument_convention
-#' @name h_step
 #'
+#' @name h_step
 NULL
 
 #' @describeIn h_step creates the windows for STEP, based on the control settings
 #'   provided. Returns a list containing the window-selection matrix `sel`
 #'   and the interval information matrix `interval`.
+#'
 #' @param x (`numeric`) biomarker value(s) to use (without `NA`).
 #' @param control (named `list`) from `control_step()`.
 #'
@@ -65,6 +66,7 @@ h_step_window <- function(x,
 #'   on `data` given `variables` specification, for a single biomarker value `x`.
 #'   This works for both `coxph` and `glm` models, i.e. for calculating log hazard ratio or log odds
 #'   ratio estimates. It returns a vector with elements `est` and `se`.
+#'
 #' @param model the regression model object.
 #'
 #' @export
@@ -129,6 +131,7 @@ h_step_survival_formula <- function(variables,
 #'   `events` as well as log hazard ratio estimates `loghr`, standard error `se`
 #'   and Wald confidence interval bounds `ci_lower` and `ci_upper`. One row is
 #'   included here for each biomarker value in `x`.
+#'
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
 #'
@@ -232,6 +235,7 @@ h_step_rsp_formula <- function(variables,
 #'   as well as log odds ratio estimates `logor`, standard error `se`
 #'   and Wald confidence interval bounds `ci_lower` and `ci_upper`. One row is
 #'   included here for each biomarker value in `x`.
+#'
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
 #'

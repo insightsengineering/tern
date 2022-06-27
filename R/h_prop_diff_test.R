@@ -9,6 +9,8 @@
 #'   with two groups in rows and the binary response (`TRUE`/`FALSE`) in
 #'   columns.
 #'
+#' @seealso [prop_diff_test()] for implementation of these helper functions.
+#'
 #' @name h_prop_diff_test
 NULL
 

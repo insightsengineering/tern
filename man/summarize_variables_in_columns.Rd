@@ -158,5 +158,5 @@ result <- build_table(lyt, df = ADPP)
 result
 }
 \seealso{
-\link{summarize_vars}.
+\code{\link[=summarize_vars]{summarize_vars()}}.
 }

@@ -23,3 +23,6 @@ df <- tidy(mod1, conf_level = 0.99)
 df2 <- tidy(mod2, conf_level = 0.99)
 
 }
+\seealso{
+\code{\link[=h_logistic]{h_logistic()}} for relevant helper functions.
+}

@@ -468,7 +468,7 @@ h_data_plot <- function(fit_km,
 
 #' Helper function: x tick positions
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Calculate the positions of ticks on the x-axis. However, if `xticks` already
 #' exists it is kept as is. It is based on the same function `ggplot2` relies on,
@@ -1145,11 +1145,12 @@ h_grob_y_annot <- function(ylab, yaxis) {
 
 #' Helper Function: Pairwise CoxPH table
 #'
-#' #' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
+#'
 #' @examples
 #' \dontrun{
 #' library(scda)

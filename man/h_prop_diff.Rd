@@ -100,4 +100,7 @@ tern:::prop_diff_cmh(
 )
 
 }
+\seealso{
+\code{\link[=prop_diff]{prop_diff()}} for implementation of these helper functions.
+}
 \keyword{internal}

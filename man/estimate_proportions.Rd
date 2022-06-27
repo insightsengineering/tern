@@ -100,3 +100,6 @@ basic_table() \%>\%
   build_table(df = dta_test)
 
 }
+\seealso{
+\code{\link[=h_prop]{h_prop()}} for relevant helper functions.
+}

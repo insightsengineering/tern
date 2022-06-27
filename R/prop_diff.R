@@ -7,6 +7,8 @@
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
 #'
+#' @seealso [h_prop_diff()] for relevant helper functions.
+#'
 #' @name prop_diff
 NULL
 

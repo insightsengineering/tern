@@ -82,4 +82,7 @@ tern:::prop_schouten(tbl)
 tern:::prop_fisher(tbl)
 
 }
+\seealso{
+\code{\link[=prop_diff_test]{prop_diff_test()}} for implementation of these helper functions.
+}
 \keyword{internal}

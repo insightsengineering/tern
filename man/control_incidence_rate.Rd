@@ -35,5 +35,5 @@ internally to specify details in \code{s_incidence_rate()}.
 control_incidence_rate(0.9, "exact", "month", 100)
 }
 \seealso{
-\link{incidence_rate}, \code{\link[=estimate_incidence_rate]{estimate_incidence_rate()}}
+\code{\link[=incidence_rate]{incidence_rate()}}, \code{\link[=estimate_incidence_rate]{estimate_incidence_rate()}}
 }
