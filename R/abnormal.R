@@ -30,7 +30,7 @@ NULL
 #'   for a single `abnormal` level.
 #' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
 #'   from numerator and denominator.
-#' @return [s_count_abnormal()] returns the statistic `fraction` which is a
+#' @return [s_count_abnormal()] (docs chagne) returns the statistic `fraction` which is a
 #'   vector with `num` and `denom` counts of patients.
 #'
 #' @examples
@@ -66,9 +66,12 @@ s_count_abnormal <- function(df,
                              exclude_base_abn = FALSE) {
   checkmate::assert_list(abnormal, types = "character", names = "named", len = 2, any.missing = FALSE)
 
+
   assertthat::assert_that(
-    any(unlist(abnormal) %in% levels(df[[.var]])),
-    is.factor(df[[.var]]),
+
+    any(unlist(abnormal)
+      %in% levels(df[[.var]])),
+    is.factor(    df[[.var]]),
     assertthat::is.flag(exclude_base_abn)
   )
   assert_df_with_variables(df, c(range = .var, variables))
