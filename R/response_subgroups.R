@@ -120,7 +120,7 @@ a_response_subgroups <- function(.formats = list(
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
-    ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
+    c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
   )
 
   afun_lst <- Map(function(stat, fmt) {

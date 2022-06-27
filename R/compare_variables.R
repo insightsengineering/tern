@@ -145,6 +145,8 @@ s_compare.factor <- function(x,
 
 #' @describeIn compare_variables Method for character class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
+#' @param verbose defaults to `TRUE`. It prints out warnings and messages. It is mainly used
+#'   to print out information about factor casting.
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
@@ -152,21 +154,27 @@ s_compare.factor <- function(x,
 #' @method s_compare character
 #' @order 5
 #'
-#' @export
-#'
 #' @examples
 #' # `s_compare.character`
 #'
 #' ## Basic usage:
 #' x <- c("a", "a", "b", "c", "a")
 #' y <- c("a", "b", "c")
-#' s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
+#' s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", verbose = FALSE)
 #'
 #' ## Note that missing values handling can make a large difference:
 #' x <- c("a", "a", "b", "c", "a", NA)
 #' y <- c("a", "b", "c", rep(NA, 20))
-#' s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
-#' s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", na.rm = FALSE)
+#' s_compare(x,
+#'   .ref_group = y, .in_ref_col = FALSE,
+#'   .var = "x", verbose = FALSE
+#' )
+#' s_compare(x,
+#'   .ref_group = y, .in_ref_col = FALSE, .var = "x",
+#'   na.rm = FALSE, verbose = FALSE
+#' )
+#'
+#' @export
 s_compare.character <- function(x,
                                 .ref_group,
                                 .in_ref_col,
@@ -174,9 +182,10 @@ s_compare.character <- function(x,
                                 na.rm = TRUE, # nolint
                                 na_level = "<Missing>",
                                 .var,
+                                verbose = TRUE,
                                 ...) {
-  x <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level)
-  .ref_group <- as_factor_keep_attributes(.ref_group, x_name = .var, na_level = na_level)
+  x <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level, verbose = verbose)
+  .ref_group <- as_factor_keep_attributes(.ref_group, x_name = .var, na_level = na_level, verbose = verbose)
   s_compare(
     x = x,
     .ref_group = .ref_group,
