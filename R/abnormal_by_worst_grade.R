@@ -104,15 +104,7 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
   checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
 
   # To verify that the `split_rows_by` are performed with correct variables.
-  assertthat::assert_that(
-    all(
-      c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split
-    ),
-    msg = paste(
-      "variabes$param and variables$grade_dir must match",
-      "the variables used for splitting rows in the layout."
-    )
-  )
+  checkmate::assert_subset(c(variables[["param"]], variables[["grade_dir"]]), .spl_context$split)
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ] # nolint
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "Any")
   result <- split(numeric(0), factor(x_lvls))

@@ -128,7 +128,7 @@ prop_schouten <- function(tbl) {
 #'
 #' @keywords internal
 prop_fisher <- function(tbl) {
-  assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
+  checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
   stats::fisher.test(tbl)$p.value
 }
@@ -190,9 +190,7 @@ s_test_proportion_diff <- function(df,
     if (!is.null(variables$strata) || method == "cmh") {
       strata <- variables$strata
       strata_vars <- stats::setNames(as.list(strata), strata)
-      assertthat::assert_that(
-        !is.null(strata)
-      )
+      checkmate::assert_true(!is.null(strata))
       assert_df_with_variables(df, strata_vars)
       assert_df_with_variables(.ref_group, strata_vars)
       strata <- c(interaction(.ref_group[strata]), interaction(df[strata]))
@@ -228,7 +226,7 @@ s_test_proportion_diff <- function(df,
 #'
 #' @export
 d_test_proportion_diff <- function(method) {
-  assertthat::assert_that(assertthat::is.string(method))
+  checkmate::assert_string(method)
   meth_part <- switch(method,
     "schouten" = "Chi-Squared Test with Schouten Correction",
     "chisq" = "Chi-Squared Test",
