@@ -51,7 +51,7 @@ NULL
 #' # For abnormal level "HIGH" we get the following counts.
 #' tern:::s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 #'
-#' # Optionally exclude patients with abnormality at baseline.
+#' # Optionally (bla) exclude patients with abnormality at baseline.
 #' tern:::s_count_abnormal(
 #'   df,
 #'   .var = "ANRIND",
@@ -70,8 +70,11 @@ s_count_abnormal <- function(df,
   assertthat::assert_that(
 
     any(unlist(abnormal)
+
       %in% levels(df[[.var]])),
-    is.factor(    df[[.var]]),
+    is.factor(
+
+      df[[.var]]),
     assertthat::is.flag(exclude_base_abn)
   )
   assert_df_with_variables(df, c(range = .var, variables))
