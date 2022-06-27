@@ -104,7 +104,7 @@ testthat::test_that(
       ) %>%
       build_table(df = df, alt_counts_df = adsl)
 
-    result <- col_paths_summary(table)$label
+    invisible(capture.output(result <- col_paths_summary(table)$label))
     expected_string <- "Patients"
     testthat::expect_identical(result, expected_string)
   }
