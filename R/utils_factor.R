@@ -42,20 +42,20 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' @param x_name (`string`)\cr name of `x`.
 #' @param na_level (`string`)\cr the explicit missing level which should be used when
 #'   converting a character vector.
-#' @param verbose defaults to `FALSE`. It prints out warnings and messages.
+#' @param verbose defaults to `TRUE`. It prints out warnings and messages.
 #'
 #' @return The factor with same attributes (except class) as `x`. Does not do any modifications
 #'   if `x` is already a factor.
 #'
 #' @examples
-#' tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
-#' tern:::as_factor_keep_attributes(c("a", "b", ""), "id")
+#' tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
+#' tern:::as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
 #'
 #' @keywords internal
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),
                                       na_level = "<Missing>",
-                                      verbose = FALSE) {
+                                      verbose = TRUE) {
   checkmate::assert_atomic(x)
   checkmate::assert_string(x_name)
   checkmate::assert_string(na_level)

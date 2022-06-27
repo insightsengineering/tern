@@ -154,7 +154,7 @@ tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
 
 # Check whether `df` contains all factor analysis `variables`.
 adf <- data.frame(a = factor(c("A", "B")), b = 3)
-bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1,2,3)), d = 3)
+bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
 assert_df_with_factors(df = adf, variables = list(val = "a"))
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)

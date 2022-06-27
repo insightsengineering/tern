@@ -19,7 +19,7 @@ testthat::test_that("combine_vectors works correctly", {
 testthat::test_that("as_factor_keep_attributes works correctly for a character vector", {
   foo <- formatters::with_label(c("a", "b"), "alphabet")
   result <- testthat::expect_warning(
-    as_factor_keep_attributes(foo),
+    as_factor_keep_attributes(foo, verbose = TRUE),
     "automatically converting character variable foo to factor"
   )
   expected <- formatters::with_label(factor(c("a", "b")), "alphabet")
@@ -29,7 +29,7 @@ testthat::test_that("as_factor_keep_attributes works correctly for a character v
 testthat::test_that("as_factor_keep_attributes converts empty strings for a character vector", {
   foo <- formatters::with_label(c("a", "", "b"), "alphabet")
   result <- testthat::expect_warning(
-    as_factor_keep_attributes(foo, na_level = "missing"),
+    as_factor_keep_attributes(foo, na_level = "missing", verbose = TRUE),
     "automatically converting character variable foo to factor"
   )
   expected <- formatters::with_label(factor(c("a", "missing", "b"), levels = c("a", "b", "missing")), "alphabet")
@@ -39,7 +39,7 @@ testthat::test_that("as_factor_keep_attributes converts empty strings for a char
 testthat::test_that("as_factor_keep_attributes shows correct name of vector in warning", {
   foo <- formatters::with_label(c("a", "b"), "alphabet")
   testthat::expect_warning(
-    as_factor_keep_attributes(foo, x_name = "FOO"),
+    as_factor_keep_attributes(foo, x_name = "FOO", verbose = TRUE),
     "automatically converting character variable FOO to factor"
   )
 })

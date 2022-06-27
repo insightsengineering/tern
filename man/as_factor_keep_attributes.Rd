@@ -8,7 +8,7 @@ as_factor_keep_attributes(
   x,
   x_name = deparse(substitute(x)),
   na_level = "<Missing>",
-  verbose = FALSE
+  verbose = TRUE
 )
 }
 \arguments{
@@ -19,7 +19,7 @@ as_factor_keep_attributes(
 \item{na_level}{(\code{string})\cr the explicit missing level which should be used when
 converting a character vector.}
 
-\item{verbose}{defaults to \code{FALSE}. It prints out warnings and messages.}
+\item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages.}
 }
 \value{
 The factor with same attributes (except class) as \code{x}. Does not do any modifications
@@ -31,8 +31,8 @@ can decide whether they prefer converting to factor manually (e.g. for full cont
 factor levels).
 }
 \examples{
-tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
-tern:::as_factor_keep_attributes(c("a", "b", ""), "id")
+tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
+tern:::as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
 
 }
 \keyword{internal}

@@ -59,7 +59,7 @@ check_df_with_variables <- function(df, variables) {
     return(paste(
       deparse(substitute(df)),
       "does not contain all specified variables as column names. Missing from dataframe:",
-      paste(vars, collapse = "")
+      paste(vars, collapse = ", ")
     ))
   }
   return(TRUE)
