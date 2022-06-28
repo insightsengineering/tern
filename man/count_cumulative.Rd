@@ -100,6 +100,9 @@ should be accounted for.
 }}
 
 \examples{
+set.seed(1, kind = "Mersenne-Twister")
+x <- c(sample(1:10, 10), NA)
+.N_col <- length(x)
 tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 
