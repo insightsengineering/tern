@@ -529,7 +529,6 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
 #' @inheritParams kaplan_meier
-#' @export
 #' @examples
 #' \dontrun{
 #'
@@ -555,6 +554,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' gg
 #' }
 #'
+#' @export
 h_ggkm <- function(data,
                    xticks = NULL,
                    yval = "Survival",
