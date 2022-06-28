@@ -37,8 +37,7 @@ s_change_from_baseline <- function(df,
   checkmate::assert_numeric(df[[variables$value]])
   checkmate::assert_numeric(df[[.var]])
   checkmate::assert_logical(df[[variables$baseline_flag]])
-  # checkmate::assert_scalar(unique(df[[variables$baseline_flag]]))
-  checkmate::assert_true(length(unique(df[[variables$baseline_flag]])) < 2)
+  checkmate::assert_true(length(unique(df[[variables$baseline_flag]])), upper = 1)
   assert_df_with_variables(df, c(variables, list(chg = .var)))
 
   combined <- ifelse(
