@@ -55,11 +55,9 @@ s_compare.numeric <- function(x,
                               .ref_group,
                               .in_ref_col,
                               ...) {
-  assertthat::assert_that(
-    is.numeric(x),
-    is.numeric(.ref_group),
-    assertthat::is.flag(.in_ref_col)
-  )
+  checkmate::assert_numeric(x)
+  checkmate::assert_numeric(.ref_group)
+  checkmate::assert_flag(.in_ref_col)
 
   y <- s_summary.numeric(x = x, ...)
 

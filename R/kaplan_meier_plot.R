@@ -191,12 +191,11 @@ g_km <- function(df,
                  control_coxph_pw = control_coxph(),
                  position_coxph = c(0, 0.05),
                  position_surv_med = c(0.9, 0.9)) {
-  assertthat::assert_that(
-    is.list(variables),
-    all(c("tte", "arm", "is_event") %in% names(variables)),
-    assertthat::is.string(title) || is.null(title),
-    is.character(col)
-  )
+  checkmate::assert_list(variables)
+  checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
+  checkmate::assert_string(title, null.ok = TRUE)
+  checkmate::assert_string(col)
+
   tte <- variables$tte
   is_event <- variables$is_event
   arm <- variables$arm
@@ -571,10 +570,8 @@ h_ggkm <- function(data,
                    col = getOption("tern.color"),
                    ci_ribbon = FALSE,
                    ggtheme = NULL) {
-  assertthat::assert_that(
-    (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty)),
-    is.character(col)
-  )
+  checkmate::assert_numeric(lty, null.ok = TRUE)
+  checkmate::assert_character(col)
 
   # change estimates of survival to estimates of failure (1 - survival)
   if (yval == "Failure") {

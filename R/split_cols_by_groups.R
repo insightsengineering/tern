@@ -19,9 +19,7 @@
 #' @keywords internal
 groups_list_to_df <- function(groups_list) {
   checkmate::assert_list(groups_list, names = "named")
-  assertthat::assert_that(
-    all(sapply(groups_list, is.character))
-  )
+  lapply(groups_list, checkmate::assert_character)
   tibble::tibble(
     valname = make_names(names(groups_list)),
     label = names(groups_list),

@@ -72,14 +72,11 @@ s_count_abnormal_by_baseline <- function(df,
                                          abnormal,
                                          na_level = "<Missing>",
                                          variables = list(id = "USUBJID", baseline = "BNRIND")) {
-  assertthat::assert_that(
-    assertthat::is.string(.var),
-    assertthat::is.string(abnormal),
-    assertthat::is.string(na_level),
-    is.list(variables),
-    all(names(variables) %in% c("id", "baseline"))
-  )
+  checkmate::assert_string(.var)
+  checkmate::assert_string(abnormal)
+  checkmate::assert_string(na_level)
   assert_df_with_variables(df, c(range = .var, variables))
+  checkmate::assert_subset(names(variables), c("id", "baseline"))
   checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
   checkmate::assert_multi_class(df[[variables$baseline]], classes = c("factor", "character"))
   checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))

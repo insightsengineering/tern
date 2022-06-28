@@ -206,10 +206,8 @@ s_odds_ratio <- function(df,
         strata = interaction(.df_row[variables$strata])
       )
       y_all <- or_clogit(data, conf_level = conf_level)
-      assertthat::assert_that(
-        assertthat::is.string(trt_grp),
-        trt_grp %in% names(y_all$or_ci)
-      )
+      checkmate::assert_string(trt_grp)
+      checkmate::assert_subset(trt_grp, names(y_all$or_ci))
       y$or_ci <- y_all$or_ci[[trt_grp]]
       y$n_tot <- y_all$n_tot
     }

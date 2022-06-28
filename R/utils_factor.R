@@ -220,11 +220,8 @@ cut_quantile_bins <- function(x,
 #' @examples
 #' fct_discard(factor(c("a", "b", "c")), "c")
 fct_discard <- function(x, discard) {
-  assertthat::assert_that(
-    is.factor(x),
-    is.character(discard),
-    assertthat::noNA(discard)
-  )
+  checkmate::assert_factor(x)
+  checkmate::assert_character(discard, any.missing = FALSE)
   new_obs <- x[!(x %in% discard)]
   new_levels <- setdiff(levels(x), discard)
   factor(new_obs, levels = new_levels)
@@ -247,11 +244,9 @@ fct_discard <- function(x, discard) {
 #' @examples
 #' tern:::fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
-  assertthat::assert_that(
-    is.factor(x),
-    is.logical(condition),
-    identical(length(x), length(condition))
-  )
+  checkmate::assert_factor(x)
+  checkmate::assert_logical(condition)
+  checkmate::assert_true(length(x) == length(condition))
   x[condition] <- NA
   forcats::fct_explicit_na(x, na_level = na_level)
 }
@@ -279,10 +274,9 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' tern:::fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   new_lvls <- names(list(...))
-  assertthat::assert_that(
-    !(.na_level %in% new_lvls),
-    msg = paste0(".na_level currently set to '", .na_level, "' must not be contained in the new levels")
-  )
+  if (checkmate::test_subset(.na_level, new_lvls)) {
+    stop(paste0(".na_level currently set to '", .na_level, "' must not be contained in the new levels"))
+  }
   x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }

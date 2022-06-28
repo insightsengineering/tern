@@ -318,7 +318,7 @@ d_rsp_subgroups_colvars <- function(vars,
   colvars <- vars
 
   if ("ci" %in% colvars) {
-    assertthat::assert_that(!is.null(conf_level))
+    checkmate::assert_false(is.null(conf_level))
 
     varlabels <- c(
       varlabels,

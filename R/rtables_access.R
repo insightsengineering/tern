@@ -32,7 +32,7 @@ h_row_counts <- function(table_row,
       rv[1L]
     }
   }, FUN.VALUE = numeric(1))
-  assertthat::assert_that(rlang::is_integerish(counts))
+  checkmate::assert_integerish(counts)
   counts
 }
 
