@@ -206,9 +206,9 @@ g_lineplot <- function(df, # nolint
     checkmate::assert_set_equal(unique(alt_counts_df[[strata]]), unique(df[[strata]]))
   }
 
-  #######################################|
+  ####################################### |
   # ---- Compute required statistics ----
-  #######################################|
+  ####################################### |
   if (!is.null(strata)) {
     df_grp <- tidyr::expand(df, .data[[strata]], .data[[x]]) # expand based on levels of factors
   } else {
@@ -244,9 +244,9 @@ g_lineplot <- function(df, # nolint
     strata_N <- NULL # nolint
   }
 
-  ###############################################|
+  ############################################### |
   # ---- Prepare certain plot's properties. ----
-  ###############################################|
+  ############################################### |
   # legend title
   if (is.null(legend_title) && !is.null(strata) && legend_position != "none") {
     legend_title <- attr(df[[strata]], "label")
@@ -278,9 +278,9 @@ g_lineplot <- function(df, # nolint
     subtitle <- trimws(subtitle)
   }
 
-  ###############################|
+  ############################### |
   # ---- Build plot object. ----
-  ###############################|
+  ############################### |
   p <- ggplot2::ggplot(
     data = df_stats,
     mapping = ggplot2::aes_string(
@@ -355,9 +355,9 @@ g_lineplot <- function(df, # nolint
       )
   }
 
-  #############################################################|
+  ############################################################# |
   # ---- Optionally, add table to the bottom of the plot. ----
-  #############################################################|
+  ############################################################# |
   if (!is.null(table)) {
     df_stats_table <- df_grp %>%
       dplyr::summarise(
