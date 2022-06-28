@@ -456,7 +456,7 @@ h_coxreg_univar_extract <- function(effect,
       ")"
     )
   } else {
-    unname(labels_or_names(data[var]))
+    unname(labels_or_names(data[covar]))
   }
   data.frame(
     effect = ifelse(covar == effect, "Treatment:", "Covariate:"),
