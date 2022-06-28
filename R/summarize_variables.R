@@ -133,9 +133,7 @@ s_summary <- function(x,
                       .var,
                       control,
                       ...) {
-  assertthat::assert_that(
-    assertthat::is.flag(na.rm)
-  )
+  checmate::assert_flag(na.rm)
   UseMethod("s_summary", x)
 }
 
@@ -215,7 +213,7 @@ s_summary.numeric <- function(x, # nolint
                               .var,
                               control = control_summarize_vars(),
                               ...) {
-  assertthat::assert_that(is.numeric(x))
+  checkmate::assert_numeric(x)
 
   if (na.rm) {
     x <- x[!is.na(x)]

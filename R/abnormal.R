@@ -65,12 +65,9 @@ s_count_abnormal <- function(df,
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE) {
   checkmate::assert_list(abnormal, types = "character", names = "named", len = 2, any.missing = FALSE)
-
-  assertthat::assert_that(
-    any(unlist(abnormal) %in% levels(df[[.var]])),
-    is.factor(df[[.var]]),
-    assertthat::is.flag(exclude_base_abn)
-  )
+  checkmate::assert_true(any(unlist(abnormal) %in% levels(df[[.var]])))
+  checkmate::assert_factor(df[[.var]])
+  checkmate::assert_flag(exclude_base_abn)
   assert_df_with_variables(df, c(range = .var, variables))
   checkmate::assert_multi_class(df[[variables$baseline]], classes = c("factor", "character"))
   checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
@@ -168,9 +165,8 @@ count_abnormal <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "fraction"
   )
-  assertthat::assert_that(
-    assertthat::is.string(var)
-  )
+
+  checkmate::assert_string(var)
 
   analyze(
     lyt = lyt,

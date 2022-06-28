@@ -49,10 +49,8 @@ unlist_and_blank_na <- function(x) {
 cfun_by_flag <- function(analysis_var,
                          flag_var,
                          format = "xx") {
-  assertthat::assert_that(
-    assertthat::is.string(analysis_var),
-    assertthat::is.string(flag_var)
-  )
+  checkmate::assert_string(analysis_var)
+  checkmate::assert_string(flag_var)
   function(df, labelstr) {
     row_index <- which(df[[flag_var]])
     x <- unlist_and_blank_na(df[[analysis_var]][row_index])
@@ -145,7 +143,7 @@ h_col_indices <- function(table_tree, col_names) {
 #'
 #' @keywords internal
 labels_or_names <- function(x) {
-  assertthat::assert_that(is.list(x))
+  checkmate::assert_list(x)
   labs <- sapply(x, obj_label)
   nams <- rlang::names2(x)
   label_is_null <- sapply(labs, is.null)
@@ -184,7 +182,7 @@ as.rtable <- function(x, ...) { # nolint
 #'
 #' @export
 as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
-  assertthat::assert_that(all(sapply(x, is.numeric)), msg = "only works with numeric data frame columns")
+  checkmate::assert_numeric(unlist(x))
   do.call(
     rtable,
     c(
@@ -267,10 +265,8 @@ h_split_param <- function(param,
 #'
 #' @keywords internal
 afun_selected_stats <- function(.stats, all_stats) {
-  assertthat::assert_that(
-    is.null(.stats) || is.character(.stats),
-    is.character(all_stats)
-  )
+  checkmate::assert_character(.stats, null.ok = TRUE)
+  checkmate::assert_character(all_stats)
   if (is.null(.stats)) {
     all_stats
   } else {
@@ -322,10 +318,8 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
     indent <- as.integer(indent)
   }
 
-  assertthat::assert_that(
-    is.data.frame(df),
-    is.character(vars)
-  )
+  checkmate::assert_data_frame(df)
+  checkmate::assert_character(vars)
   checkmate::assert_count(indent)
 
   lab <- formatters::var_labels(df[vars], fill = TRUE)

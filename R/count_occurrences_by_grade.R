@@ -51,10 +51,8 @@ NULL
 #'
 #' @export
 h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
-  assertthat::assert_that(
-    is.list(grade_groups),
-    is.list(refs)
-  )
+  checkmate::assert_list(grade_groups)
+  checkmate::assert_list(refs)
   refs_orig <- refs
   elements <- unique(unlist(grade_groups))
 
@@ -146,9 +144,7 @@ s_count_occurrences_by_grade <- function(df,
     l_count <- as.list(rep(0, length(grade_levels)))
     names(l_count) <- grade_levels
   } else {
-    assertthat::assert_that(
-      assertthat::noNA(df[[id]])
-    )
+    checkmate::assert_false(anyNA(df[[id]]))
     if (isTRUE(is.factor(df[[id]]))) {
       assert_valid_factor(df[[id]])
     } else {

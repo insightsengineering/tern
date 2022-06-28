@@ -194,7 +194,7 @@ g_km <- function(df,
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_string(title, null.ok = TRUE)
-  checkmate::assert_string(col)
+  checkmate::assert_character(col)
 
   tte <- variables$tte
   is_event <- variables$is_event

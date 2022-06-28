@@ -74,11 +74,8 @@ h_map_for_count_abnormal <- function(df,
                                      method = c("default", "range"),
                                      na_level = "<Missing>") {
   method <- match.arg(method)
-  assertthat::assert_that(
-    "anl" %in% names(variables),
-    "split_rows" %in% names(variables),
-    !any(is.na(df[variables$split_rows]))
-  )
+  checkmate::assert_subset(c("anl", "split_rows"), names(variables))
+  checkmate::assert_false(anyNA(df[variables$split_rows]))
   assert_df_with_variables(df,
     variables = list(anl = variables$anl, split_rows = variables$split_rows),
     na_level = na_level
@@ -92,10 +89,9 @@ h_map_for_count_abnormal <- function(df,
   df <- droplevels(df)
 
   normal_value <- setdiff(levels(df[[variables$anl]]), unlist(abnormal))
-  assertthat::assert_that(
-    # Based on the understanding of clinical data, there should only be one level of normal which is "NORMAL"
-    length(normal_value) == 1
-  )
+
+  # Based on the understanding of clinical data, there should only be one level of normal which is "NORMAL"
+  checkmate::assert_int(length(normal_value), lower = 1, upper = 1)
 
   # Default method will only have what is observed in the df, and records with all normal values will be excluded to
   # avoid error in layout building.
@@ -108,12 +104,9 @@ h_map_for_count_abnormal <- function(df,
   } else if (method == "range") {
     # range method follows the rule that at least one observation with ANRLO > 0 for low
     # direction and at least one observation with ANRHI is not missing for high direction.
-    assertthat::assert_that(
-      "range_low" %in% names(variables),
-      "range_high" %in% names(variables),
-      "LOW" %in% toupper(names(abnormal)),
-      "HIGH" %in% toupper(names(abnormal))
-    )
+    checkmate::assert_subset(c("range_low", "range_high"), names(variables))
+    checkmate::assert_subset(c("LOW", "HIGH"), toupper(names(abnormal)))
+
     assert_df_with_variables(df,
       variables = list(
         range_low = variables$range_low,
