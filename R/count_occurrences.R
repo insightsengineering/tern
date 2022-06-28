@@ -65,13 +65,12 @@ s_count_occurrences <- function(df,
     # Note that we don't try to preserve original level order here since a) that would required
     # more time to look up in large original levels and b) that would fail for character input variable.
     occurrence_levels <- sort(unique(.df_row[[.var]]))
-    assertthat::assert_that(
-      length(occurrence_levels) > 0,
-      msg = paste(
+    if (length(occurrence_levels) == 0) {
+      stop(
         "no empty `.df_row` input allowed when `drop = TRUE`,",
-        "please use `split_fun = drop_split_levels` in the `rtables` `split_rows_by` calls"
+        " please use `split_fun = drop_split_levels` in the `rtables` `split_rows_by` calls"
       )
-    )
+    }
     factor(df[[.var]], levels = occurrence_levels)
   } else {
     df[[.var]]

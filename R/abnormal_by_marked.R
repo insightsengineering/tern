@@ -81,14 +81,12 @@ s_count_abnormal_by_marked <- function(df,
                                        .spl_context,
                                        category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
                                        variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")) {
-  assertthat::assert_that(
-    assertthat::is.string(.var),
-    is.list(variables),
-    is.list(category),
-    all(names(category) %in% c("single", "last_replicated")),
-    all(names(variables) %in% c("id", "param", "direction")),
-    length(unique(df[[variables$direction]])) <= 1L
-  )
+  checkmate::assert_string(.var)
+  checkmate::assert_list(variables)
+  checkmate::assert_list(category)
+  checkmate::assert_subset(names(category), c("single", "last_replicated"))
+  checkmate::assert_subset(names(variables), c("id", "param", "direction"))
+  checkmate::assert_scalar(unique(df[[variables$direction]]))
   assert_df_with_variables(df, c(aval = .var, variables))
   checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))
   checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
@@ -210,9 +208,8 @@ count_abnormal_by_marked <- function(lyt,
                                      .formats = NULL,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
-  assertthat::assert_that(
-    assertthat::is.string(var)
-  )
+  checkmate::assert_string(var)
+
   afun <- make_afun(
     a_count_abnormal_by_marked,
     .stats = .stats,

@@ -456,7 +456,7 @@ h_coxreg_univar_extract <- function(effect,
       ")"
     )
   } else {
-    unname(labels_or_names(data[covar]))
+    unname(labels_or_names(as.list(data[var], all.names = TRUE)))
   }
   data.frame(
     effect = ifelse(covar == effect, "Treatment:", "Covariate:"),
@@ -644,7 +644,7 @@ h_coxreg_multivar_extract <- function(var,
     ret_cox <- sum_cox[(var == sum_cox$level), !(names(sum_cox) %in% "exp(-coef)")]
   }
   names(ret_cox)[1:4] <- c("pval", "hr", "lcl", "ucl")
-  varlab <- unname(labels_or_names(data[var]))
+  varlab <- unname(labels_or_names(as.list(data[var], all.names = TRUE)))
   ret_cox$term <- varlab
 
   if (is.numeric(data[[var]])) {

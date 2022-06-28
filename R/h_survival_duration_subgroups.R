@@ -137,10 +137,10 @@ h_survtime_subgroups_df <- function(variables,
                                     data,
                                     groups_lists = list(),
                                     label_all = "All Patients") {
-  checkmate::assert_string(variables$tte)
-  checkmate::assert_string(variables$is_event)
-  checkmate::assert_string(variables$arm)
-  checkmate::assert_string(variables$subgroups, null.ok = TRUE)
+  checkmate::assert_character(variables$tte)
+  checkmate::assert_character(variables$is_event)
+  checkmate::assert_character(variables$arm)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
 
   assert_df_with_variables(data, variables)
 

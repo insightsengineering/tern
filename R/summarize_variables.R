@@ -133,7 +133,7 @@ s_summary <- function(x,
                       .var,
                       control,
                       ...) {
-  checmate::assert_flag(na.rm)
+  checkmate::assert_flag(na.rm)
   UseMethod("s_summary", x)
 }
 
