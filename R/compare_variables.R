@@ -368,7 +368,7 @@ a_compare.logical <- make_afun(
 #' @examples
 #' # `create_afun_compare()` to create combined `afun`
 #'
-#' afun <- create_afun_compare(
+#' afun <- tern:::create_afun_compare(
 #'   .stats = c("n", "count_fraction", "mean_sd", "pval"),
 #'   .indent_mods = c(pval = 1L)
 #' )
