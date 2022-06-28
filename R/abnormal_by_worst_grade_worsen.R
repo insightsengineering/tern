@@ -258,6 +258,29 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
 #' @examples
+#' library(scda)
+#' library(dplyr)
+#' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adsl <- synthetic_cdisc_data("latest")$adsl
+#'
+#' # The direction variable, GRADDR, is based on metadata
+#' adlb <- adlb %>%
+#'   mutate(
+#'     GRADDR = case_when(
+#'       PARAMCD == "ALT" ~ "B",
+#'       PARAMCD == "CRP" ~ "L",
+#'       PARAMCD == "IGA" ~ "H"
+#'     )
+#'   ) %>%
+#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+#'
+#' df <- h_adlb_worsen(
+#'   adlb,
+#'   worst_flag_low = c("WGRLOFL" = "Y"),
+#'   worst_flag_high = c("WGRHIFL" = "Y"),
+#'   direction_var = "GRADDR"
+#' )
+#'
 #' # Patients with worsening lab grade for CRP in the direction of low
 #' tern:::s_count_abnormal_lab_worsen_by_baseline(
 #'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
