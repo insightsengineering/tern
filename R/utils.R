@@ -281,11 +281,8 @@ extract <- function(x, names) {
 #' aesi_label(adae$CQ01NAM)
 #'
 aesi_label <- function(aesi, scope = NULL) {
-  assertthat::assert_that(
-    is.character(aesi),
-    is.character(scope) || is.null(scope)
-  )
-
+  checkmate::assert_character(aesi)
+  checkmate::assert_character(scope, null.ok = TRUE)
   aesi_label <- obj_label(aesi)
   aesi <- sas_na(aesi)
   aesi <- unique(aesi)[!is.na(unique(aesi))]
@@ -293,9 +290,7 @@ aesi_label <- function(aesi, scope = NULL) {
   lbl <- if (length(aesi) == 1 & !is.null(scope)) {
     scope <- sas_na(scope)
     scope <- unique(scope)[!is.na(unique(scope))]
-    assertthat::assert_that(
-      assertthat::is.string(scope)
-    )
+    checkmate::assert_string(scope)
     paste0(aesi, " (", scope, ")")
   } else if (length(aesi) == 1 & is.null(scope)) {
     aesi
@@ -336,11 +331,19 @@ arm <- function(x) {
 #' @export
 #'
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
-  assertthat::assert_that(is.data.frame(df))
+  checkmate::assert_data_frame(df)
   df_cols <- colnames(df)
-  assertthat::assert_that(assertthat::is.string(x) && (x %in% df_cols) && is.numeric(df[[x]]))
-  assertthat::assert_that(assertthat::is.string(y) && (y %in% df_cols) && is.numeric(df[[y]]))
-  assertthat::assert_that(is.null(groups) || (is.character(groups) && all(groups %in% df_cols)))
+  checkmate::assert_string(x)
+  checkmate::assert_subset(x, df_cols)
+  checkmate::assert_numeric(df[[x]])
+  checkmate::assert_string(y)
+  checkmate::assert_subset(y, df_cols)
+  checkmate::assert_numeric(df[[y]])
+
+  if (!is.null(groups)) {
+    checkmate::assert_character(groups)
+    checkmate::assert_subset(groups, df_cols)
+  }
 
   smooths <- function(x, y) {
     stats::predict(stats::loess(y ~ x), se = TRUE)

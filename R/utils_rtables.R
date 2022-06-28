@@ -143,7 +143,7 @@ h_col_indices <- function(table_tree, col_names) {
 #'
 #' @keywords internal
 labels_or_names <- function(x) {
-  checkmate::assert_list(x)
+  checkmate::assert_multi_class(x, c("data.frame", "list"))
   labs <- sapply(x, obj_label)
   nams <- rlang::names2(x)
   label_is_null <- sapply(labs, is.null)

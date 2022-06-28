@@ -183,8 +183,10 @@ g_lineplot <- function(df, # nolint
   y <- variables[["y"]]
   paramcd <- variables["paramcd"] # NA if paramcd == NA or it is not in variables
   y_unit <- variables["y_unit"] # NA if y_unit == NA or it is not in variables
-  if (!is.na(variables["strata"])) {
-    strata <- variables[["strata"]] # NULL if strata == NA or it is not in variables
+  if (is.na(variables["strata"])) {
+    strata <- NULL # NULL if strata == NA or it is not in variables
+  } else {
+    strata <- variables[["strata"]]
   }
   checkmate::assert_flag(y_lab_add_paramcd, null.ok = TRUE)
   checkmate::assert_flag(subtitle_add_paramcd, null.ok = TRUE)
