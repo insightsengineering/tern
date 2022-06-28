@@ -90,8 +90,8 @@ g_ipp <- function(df,
     id_list <- split(
       id_vec,
       rep(1:ceiling(length(id_vec) / max_obs_per_plot),
-          each = max_obs_per_plot,
-          length.out = length(id_vec)
+        each = max_obs_per_plot,
+        length.out = length(id_vec)
       )
     )
 

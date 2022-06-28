@@ -313,4 +313,3 @@ or_clogit <- function(data, conf_level) {
   }
   list(or_ci = or_ci, n_tot = c(n_tot = model_fit$n))
 }
-

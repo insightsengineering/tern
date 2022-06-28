@@ -106,11 +106,11 @@ s_test_proportion_diff <- function(df,
 d_test_proportion_diff <- function(method) {
   assertthat::assert_that(assertthat::is.string(method))
   meth_part <- switch(method,
-                      "schouten" = "Chi-Squared Test with Schouten Correction",
-                      "chisq" = "Chi-Squared Test",
-                      "cmh" = "Cochran-Mantel-Haenszel Test",
-                      "fisher" = "Fisher's Exact Test",
-                      stop(paste(method, "does not have a description"))
+    "schouten" = "Chi-Squared Test with Schouten Correction",
+    "chisq" = "Chi-Squared Test",
+    "cmh" = "Cochran-Mantel-Haenszel Test",
+    "fisher" = "Fisher's Exact Test",
+    stop(paste(method, "does not have a description"))
   )
   paste0("p-value (", meth_part, ")")
 }

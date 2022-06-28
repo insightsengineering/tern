@@ -67,13 +67,13 @@ d_proportion_diff <- function(conf_level,
   }
 
   method_part <- switch(method,
-                        "cmh" = "CMH, without correction",
-                        "waldcc" = "Wald, with correction",
-                        "wald" = "Wald, without correction",
-                        "ha" = "Anderson-Hauck",
-                        "newcombe" = "Newcombe, without correction",
-                        "newcombecc" = "Newcombe, with correction",
-                        stop(paste(method, "does not have a description"))
+    "cmh" = "CMH, without correction",
+    "waldcc" = "Wald, with correction",
+    "wald" = "Wald, without correction",
+    "ha" = "Anderson-Hauck",
+    "newcombe" = "Newcombe, without correction",
+    "newcombecc" = "Newcombe, with correction",
+    stop(paste(method, "does not have a description"))
   )
   paste0(label, " (", method_part, ")")
 }
