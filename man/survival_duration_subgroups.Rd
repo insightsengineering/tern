@@ -100,6 +100,16 @@ labels <- c(
 )
 formatters::var_labels(adtte_f)[names(labels)] <- labels
 
+df <- extract_survival_subgroups(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    arm = "ARM", subgroups = c("SEX", "BMRKR2")
+  ),
+  data = adtte_f
+)
+df
+
 tern:::a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
 
 ## Table with default columns.

@@ -652,7 +652,15 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' # `summarize_vars()` in `rtables` pipelines
 #'
 #' ## Default output within a `rtables` pipeline.
-#' # dta_test <- <needs_to_be_inputted_to_work>
+#' ## Fabricated dataset.
+#' dta_test <- data.frame(
+#'   USUBJID = rep(1:6, each = 3),
+#'   PARAMCD = rep("lab", 6 * 3),
+#'   AVISIT  = rep(paste0("V", 1:3), 6),
+#'   ARM     = rep(LETTERS[1:3], rep(6, 3)),
+#'   AVAL    = c(9:1, rep(NA, 9))
+#' )
+#'
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%

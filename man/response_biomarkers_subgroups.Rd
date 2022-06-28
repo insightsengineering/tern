@@ -54,7 +54,17 @@ adrs_f <- adrs \%>\%
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 
 ## Table with default columns.
-# df <- <need_data_input_to_work>
+df <- extract_rsp_biomarkers(
+  variables = list(
+    rsp = "rsp",
+    biomarkers = c("BMRKR1", "AGE"),
+    covariates = "SEX",
+    subgroups = "BMRKR2"
+  ),
+  data = adrs_f
+)
+df
+
 tabulate_rsp_biomarkers(df)
 
 ## Table with a manually chosen set of columns: leave out "pval", reorder.

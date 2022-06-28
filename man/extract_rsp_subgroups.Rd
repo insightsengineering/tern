@@ -61,6 +61,7 @@ adrs_f <- adrs \%>\%
     rsp = AVALC == "CR"
   )
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+
 # Unstratified analysis.
 df <- extract_rsp_subgroups(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),

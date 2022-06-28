@@ -30,6 +30,14 @@
 #' @return a `ggplot` object or a list of `ggplot` objects.
 #'
 #' @examples
+#' library(scda)
+#' library(dplyr)
+#'
+#' # Select a small sample of data to plot.
+#' adlb <- synthetic_cdisc_data("latest")$adlb %>%
+#'   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
+#'   slice(1:36)
+#'
 #' plot_list <- g_ipp(
 #'   df = adlb,
 #'   xvar = "AVISIT",

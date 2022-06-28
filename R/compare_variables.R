@@ -9,20 +9,21 @@ NULL
 #' different `x` objects. This is used as Statistics Function in combination
 #' with the new Analyze Function [compare_vars()].
 #'
-#' @name compare_variables
 #' @order 1
 #'
+#' @name compare_variables
 NULL
 
-#' @inheritParams argument_convention
+
 #' @describeIn compare_variables `s_compare` is a S3 generic function to produce
 #'   an object description and comparison versus the reference column in the form
 #'   of p-values.
-#' @seealso [s_summary()] which is used internally for the summary part per column.
 #'
-#' @export
+#' @seealso [s_summary()] which is used internally for the summary part per column.
+#' @inheritParams argument_convention
 #' @order 2
 #'
+#' @export
 s_compare <- function(x,
                       .ref_group,
                       .in_ref_col,
@@ -32,13 +33,12 @@ s_compare <- function(x,
 
 #' @describeIn compare_variables Method for numeric class. This uses the standard t-test
 #'   to calculate the p-value.
+#'
 #' @return If `x` is of class `numeric`, returns a list with named items:
 #' - all items from [s_summary.numeric()].
 #' - `pval`: the p-value.
 #' @method s_compare numeric
 #' @order 3
-#'
-#' @export
 #'
 #' @examples
 #' # `s_compare.numeric`
@@ -51,6 +51,8 @@ s_compare <- function(x,
 #'
 #' ## Empty numeric does not fail, it returns NA-filled items and no p-value.
 #' s_compare(numeric(), .ref_group = numeric(), .in_ref_col = FALSE)
+#'
+#' @export
 s_compare.numeric <- function(x,
                               .ref_group,
                               .in_ref_col,
@@ -78,6 +80,7 @@ s_compare.numeric <- function(x,
 #'   Therefore a row-based proportion would not make sense. Also proportion based on `N_col` would
 #'   be difficult since for the chi-squared test statistic we use the counts. Therefore
 #'   missing values should be accounted for explicitly as factor levels.
+#'
 #' @param denom (`string`)\cr choice of denominator for factor proportions,
 #'   can only be `n` (number of values in this row and column intersection).
 #' @return If `x` is of class `factor` or converted from `character`, returns a list with
@@ -86,8 +89,6 @@ s_compare.numeric <- function(x,
 #'   - `pval`: the p-value.
 #' @method s_compare factor
 #' @order 4
-#'
-#' @export
 #'
 #' @examples
 #' # `s_compare.factor`
@@ -102,6 +103,8 @@ s_compare.numeric <- function(x,
 #' y <- explicit_na(factor(c("a", "b", "c", NA)))
 #' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 #' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+#'
+#' @export
 s_compare.factor <- function(x,
                              .ref_group,
                              .in_ref_col,
@@ -145,14 +148,13 @@ s_compare.factor <- function(x,
 
 #' @describeIn compare_variables Method for character class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
+#'
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
 #'   created from character variables before passing the dataset to [rtables::build_table()].
 #' @method s_compare character
 #' @order 5
-#'
-#' @export
 #'
 #' @examples
 #' # `s_compare.character`
@@ -167,6 +169,8 @@ s_compare.factor <- function(x,
 #' y <- c("a", "b", "c", rep(NA, 20))
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", na.rm = FALSE)
+#'
+#' @export
 s_compare.character <- function(x,
                                 .ref_group,
                                 .in_ref_col,
@@ -190,13 +194,12 @@ s_compare.character <- function(x,
 
 #' @describeIn compare_variables Method for logical class. A chi-squared test
 #'   is used. If missing values are not removed, then they are counted as `FALSE`.
+#'
 #' @return If `x` is of class `logical`, returns a list with named items:
 #'   - all items from [s_summary.logical()].
 #'   - `pval`: the p-value.
 #' @method s_compare logical
 #' @order 6
-#'
-#' @export
 #'
 #' @examples
 #' # `s_compare.logical`
@@ -211,6 +214,8 @@ s_compare.character <- function(x,
 #' y <- c(NA, NA, NA, NA, FALSE)
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+#'
+#' @export
 s_compare.logical <- function(x,
                               .ref_group,
                               .in_ref_col,
@@ -253,7 +258,6 @@ s_compare.logical <- function(x,
 #' @order 7
 #'
 #' @export
-#'
 a_compare <- function(x,
                       .ref_group,
                       .in_ref_col,
@@ -263,8 +267,9 @@ a_compare <- function(x,
 }
 
 #' @describeIn compare_variables Formatted Analysis function method for `numeric`.
-#' @export
+#'
 #' @order 8
+#'
 #' @examples
 #' # `a_compare.numeric`
 #' a_compare(
@@ -273,6 +278,8 @@ a_compare <- function(x,
 #'   .in_ref_col = FALSE,
 #'   .var = "bla"
 #' )
+#'
+#' @export
 a_compare.numeric <- make_afun(
   s_compare.numeric,
   .formats = c(
@@ -296,8 +303,9 @@ a_compare.numeric <- make_afun(
 )
 
 #' @describeIn compare_variables Formatted Analysis function method for `factor`.
-#' @export
+#'
 #' @order 9
+#'
 #' @examples
 #' # `a_compare.factor`
 #' # We need to ungroup `count` and `count_fraction` first so that the `rtables` formatting
@@ -309,6 +317,8 @@ a_compare.numeric <- make_afun(
 #' x <- factor(c("a", "a", "b", "c", "a"))
 #' y <- factor(c("a", "a", "b", "c"))
 #' afun(x, .ref_group = y, .in_ref_col = FALSE)
+#'
+#' @export
 a_compare.factor <- make_afun(
   s_compare.factor,
   .formats = .a_compare_counts_formats,
@@ -317,8 +327,9 @@ a_compare.factor <- make_afun(
 )
 
 #' @describeIn compare_variables Formatted Analysis function method for `character`.
-#' @export
+#'
 #' @order 10
+#'
 #' @examples
 #' # `a_compare.character`
 #' afun <- make_afun(
@@ -328,6 +339,8 @@ a_compare.factor <- make_afun(
 #' x <- c("A", "B", "A", "C")
 #' y <- c("B", "A", "C")
 #' afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
+#'
+#' @export
 a_compare.character <- make_afun(
   s_compare.character,
   .formats = .a_compare_counts_formats,
@@ -469,15 +482,14 @@ create_afun_compare <- function(.stats = NULL,
 #'   When factor variables contains `NA`, it is expected that `NA`
 #'   have been conveyed to `na_level` appropriately beforehand with
 #'   [df_explicit_na()].
+#'
 #' @inheritParams rtables::analyze
 #' @param ... arguments passed to `s_compare()`.
-#'
 #' @order 12
 #' @template formatting_arguments
 #'
-#' @export
-#' @examples
 #'
+#' @examples
 #' # `compare_vars()` in `rtables` pipelines
 #'
 #' ## Default output within a `rtables` pipeline.
@@ -496,6 +508,8 @@ create_afun_compare <- function(.stats = NULL,
 #'     .labels = c(mean_sd = "Mean, SD")
 #'   )
 #' build_table(lyt, df = ex_adsl)
+#'
+#' @export
 compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,

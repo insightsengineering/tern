@@ -70,6 +70,14 @@ Depending on user preference, renders a single graphic or compiles a list of gra
 that show trends in individual's parameter values over time.
 }
 \examples{
+library(scda)
+library(dplyr)
+
+# Select a small sample of data to plot.
+adlb <- synthetic_cdisc_data("latest")$adlb \%>\%
+  filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
+  slice(1:36)
+
 plot_list <- g_ipp(
   df = adlb,
   xvar = "AVISIT",

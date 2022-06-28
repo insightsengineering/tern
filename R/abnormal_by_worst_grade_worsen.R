@@ -169,6 +169,29 @@ h_adlb_worsen <- function(adlb,
 #' post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
 #' @examples
+#' library(scda)
+#' library(dplyr)
+#' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adsl <- synthetic_cdisc_data("latest")$adsl
+#'
+#' # The direction variable, GRADDR, is based on metadata
+#' adlb <- adlb %>%
+#'   mutate(
+#'     GRADDR = case_when(
+#'       PARAMCD == "ALT" ~ "B",
+#'       PARAMCD == "CRP" ~ "L",
+#'       PARAMCD == "IGA" ~ "H"
+#'     )
+#'   ) %>%
+#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+#'
+#' df <- h_adlb_worsen(
+#'   adlb,
+#'   worst_flag_low = c("WGRLOFL" = "Y"),
+#'   worst_flag_high = c("WGRHIFL" = "Y"),
+#'   direction_var = "GRADDR"
+#' )
+#'
 #' # `h_worsen_counter`
 #' h_worsen_counter(
 #'   df %>% filter(PARAMCD == "CRP" & GRADDR == "Low"),

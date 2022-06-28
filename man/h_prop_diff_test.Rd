@@ -3,18 +3,18 @@
 \name{h_prop_diff_test}
 \alias{h_prop_diff_test}
 \alias{prop_chisq}
-\alias{prop_cmh}
 \alias{prop_schouten}
 \alias{prop_fisher}
+\alias{prop_cmh}
 \title{Helper Functions to Test Proportion Differences}
 \usage{
 prop_chisq(tbl)
 
-prop_cmh(ary)
-
 prop_schouten(tbl)
 
 prop_fisher(tbl)
+
+prop_cmh(ary)
 }
 \arguments{
 \item{tbl}{(\code{matrix})\cr
@@ -36,15 +36,15 @@ proportions.
 \item \code{prop_chisq}: performs Chi-Squared test.
 Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 
-\item \code{prop_cmh}: performs stratified Cochran-Mantel-Haenszel test.
-Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations
-are automatically discarded.
-
 \item \code{prop_schouten}: performs the Chi-Squared test with Schouten
 correction (\href{https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305}{Schouten 1980}).
 
 \item \code{prop_fisher}: performs the Fisher's exact test.
 Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
+
+\item \code{prop_cmh}: performs stratified Cochran-Mantel-Haenszel test.
+Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations
+are automatically discarded.
 }}
 
 \examples{
@@ -64,6 +64,12 @@ tbl <- table(grp, rsp)
 ## Chi-Squared test
 tern:::prop_chisq(tbl)
 
+## Chi-Squared test + Schouten correction.
+tern:::prop_schouten(tbl)
+
+## Fisher's exact test
+tern:::prop_fisher(tbl)
+
 # Stratified proportion difference test
 
 ## Data
@@ -74,12 +80,6 @@ tbl <- table(grp, rsp, strata)
 
 ## Cochran-Mantel-Haenszel test
 tern:::prop_cmh(tbl)
-
-## Chi-Squared test + Schouten correction.
-tern:::prop_schouten(tbl)
-
-## Fisher's exact test
-tern:::prop_fisher(tbl)
 
 }
 \seealso{

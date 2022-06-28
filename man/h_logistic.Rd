@@ -153,6 +153,38 @@ this does not arise in this table, as the treatment arm variable will always be 
 and categorical.
 }
 \examples{
+library(scda)
+library(dplyr)
+library(rtables)
+
+adrs <- synthetic_cdisc_data("latest")$adrs
+adrs_f <- adrs \%>\%
+  filter(PARAMCD == "BESRSPI") \%>\%
+  filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) \%>\%
+  mutate(
+    Response = case_when(AVALC \%in\% c("PR", "CR") ~ 1, TRUE ~ 0),
+    RACE = factor(RACE),
+    SEX = factor(SEX)
+  )
+formatters::var_labels(adrs_f) <- c(formatters::var_labels(adrs), Response = "Response")
+mod1 <- fit_logistic(
+  data = adrs_f,
+  variables = list(
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE")
+  )
+)
+mod2 <- fit_logistic(
+  data = adrs_f,
+  variables = list(
+    response = "Response",
+    arm = "ARMCD",
+    covariates = c("AGE", "RACE"),
+    interaction = "AGE"
+  )
+)
+
 h_glm_simple_term_extract("AGE", mod1)
 h_glm_simple_term_extract("ARMCD", mod1)
 

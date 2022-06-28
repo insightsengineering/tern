@@ -38,6 +38,29 @@ highest post-baseline lab grade variable \code{.var}, baseline lab grade variabl
 and the direction of interest specified in \code{direction_var}.
 }
 \examples{
+library(scda)
+library(dplyr)
+adlb <- synthetic_cdisc_data("latest")$adlb
+adsl <- synthetic_cdisc_data("latest")$adsl
+
+# The direction variable, GRADDR, is based on metadata
+adlb <- adlb \%>\%
+  mutate(
+    GRADDR = case_when(
+      PARAMCD == "ALT" ~ "B",
+      PARAMCD == "CRP" ~ "L",
+      PARAMCD == "IGA" ~ "H"
+    )
+  ) \%>\%
+  filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+
+df <- h_adlb_worsen(
+  adlb,
+  worst_flag_low = c("WGRLOFL" = "Y"),
+  worst_flag_high = c("WGRHIFL" = "Y"),
+  direction_var = "GRADDR"
+)
+
 # `h_worsen_counter`
 h_worsen_counter(
   df \%>\% filter(PARAMCD == "CRP" & GRADDR == "Low"),

@@ -33,6 +33,19 @@
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
+#' df <- extract_survival_biomarkers(
+#'   variables = list(
+#'     tte = "AVAL",
+#'     is_event = "is_event",
+#'     biomarkers = c("BMRKR1", "AGE"),
+#'     strata = "STRATA1",
+#'     covariates = "SEX",
+#'     subgroups = "BMRKR2"
+#'   ),
+#'   data = adtte_f
+#' )
+#' df
+#'
 #' @name survival_biomarkers_subgroups
 NULL
 

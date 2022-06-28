@@ -74,6 +74,27 @@ tidy.summary.coxph <- function(x, # nolint
 #'
 #' @examples
 #' library(broom)
+#'
+#' ## Cox regression: arm + 1 covariate.
+#' mod1 <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd",
+#'     covariates = "covar1"
+#'   ),
+#'   data = dta_bladder,
+#'   control = control_coxreg(conf_level = 0.91)
+#' )
+#'
+#' ## Cox regression: arm + 1 covariate + interaction, 2 candidate covariates.
+#' mod2 <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder,
+#'   control = control_coxreg(conf_level = 0.91, interaction = TRUE)
+#' )
+#'
 #' tidy(mod1)
 #' tidy(mod2)
 #'
@@ -147,6 +168,16 @@ tidy.coxreg.univar <- function(x, # nolint
 #'
 #' @examples
 #' library(broom)
+#'
+#' ## Cox regression: multivariate Cox regression.
+#' multivar_model <- fit_coxreg_multivar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder
+#' )
+#'
 #' broom::tidy(multivar_model)
 #'
 #' @export
