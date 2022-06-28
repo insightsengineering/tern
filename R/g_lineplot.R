@@ -234,6 +234,7 @@ g_lineplot <- function(df, # nolint
     df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")") # nolint
 
     assertthat::assert_that(!(strata_N %in% colnames(df_stats)))
+    checkmate::assert_disjunct()
     df_stats <- merge(x = df_stats, y = df_N[, c(strata, strata_N)], by = strata)
   } else if (!is.null(strata)) {
     strata_N <- strata # nolint
@@ -491,11 +492,11 @@ h_format_row <- function(x, format, labels = NULL) {
 #' control_lineplot_vars()
 #' control_lineplot_vars(strata = NA)
 control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU") {
-  assertthat::assert_that(is.character(x))
-  assertthat::assert_that(is.character(y))
-  assertthat::assert_that(is.character(strata) || is.na(strata))
-  assertthat::assert_that(is.character(paramcd) || is.na(paramcd))
-  assertthat::assert_that(is.character(y_unit) || is.na(y_unit))
+  checkmate::assert_string(x)
+  checkmate::assert_string(y)
+  checkmate::assert_string(strata, na.ok = TRUE)
+  checkmate::assert_string(paramcd, na.ok = TRUE)
+  checkmate::assert_string(y_unit, na.ok = TRUE)
 
   variables <- c(x = x, y = y, strata = strata, paramcd = paramcd, y_unit = y_unit)
   return(variables)

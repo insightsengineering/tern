@@ -417,7 +417,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     c("estimate" = "coef", "std_error" = "se(coef)", "pvalue" = "Pr(>|z|)")
   }
   # Make sure x is not an interaction term.
-  assertthat::assert_that(x %in% names(xs_class))
+  checkmate::assert_subset(x, names(xs_class))
   x_sel <- if (xs_class[x] == "numeric") x else paste0(x, xs_level[[x]][-1])
   x_stats <- as.data.frame(xs_coef[x_sel, stats, drop = FALSE], stringsAsFactors = FALSE)
   colnames(x_stats) <- names(stats)
@@ -436,10 +436,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     x_stats$is_variable_summary <- FALSE
     x_stats$is_term_summary <- TRUE
   } else {
-    assertthat::assert_that(
-      inherits(fit_glm, "glm"),
-      msg = "for non-numeric variables only glm models are supported"
-    )
+    checkmate::assert_class(fit_glm, "glm")
     # The reason is that we don't have the original data set in the `clogit` object
     # and therefore cannot determine the `x_numbers` here.
     x_numbers <- table(fit_glm$data[[x]])
@@ -506,15 +503,15 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
 h_glm_interaction_extract <- function(x, fit_glm) {
   vars <- h_get_interaction_vars(fit_glm)
   xs_class <- attr(fit_glm$terms, "dataClasses")
-  assertthat::assert_that(
-    assertthat::is.string(x)
-  )
+
+  checkmate::assert_string(x)
+
   # Only take two-way interaction
-  assertthat::assert_that(
-    length(vars) == 2,
-    # Only consider simple case: first variable in interaction is arm, a categorical variable
-    xs_class[vars[1]] != "numeric"
-  )
+  checkmate::assert_int(length(vars), lower = 2, upper = 2)
+
+  # Only consider simple case: first variable in interaction is arm, a categorical variable
+  checkmate::assert_false(xs_class[vars[1]] == "numeric")
+
   xs_level <- fit_glm$xlevels
   xs_coef <- summary(fit_glm)$coefficients
   main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
@@ -703,17 +700,17 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 #' @examples
 #' h_logistic_simple_terms("AGE", mod1)
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
-  assertthat::assert_that(inherits(fit_glm, c("glm", "clogit")))
+  checkmate::assert_multi_class(fit_glm, c("glm", "clogit"))
   if (inherits(fit_glm, "glm")) {
-    assertthat::assert_that(fit_glm$family$family == "binomial")
+    checkmate::assert_set_equal(fit_glm$family$family, "binomial")
   }
   terms_name <- attr(stats::terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
-  assertthat::assert_that(all(x %in% terms_name))
+  checkmate::assert_subset(x, terms_name)
   if (length(interaction) != 0) {
     # Make sure any item in x is not part of interaction term
-    assertthat::assert_that(all(!x %in% unlist(strsplit(interaction, ":"))))
+    checkmate::assert_false(any(x %in% unlist(strsplit(interaction, ":"))))
   }
   x_stats <- lapply(x, h_glm_simple_term_extract, fit_glm)
   x_stats <- do.call(rbind, x_stats)
@@ -738,7 +735,8 @@ h_logistic_inter_terms <- function(x,
                                    at = NULL) {
   # Find out the interaction variables and interaction term.
   inter_vars <- h_get_interaction_vars(fit_glm)
-  assertthat::assert_that(identical(length(inter_vars), 2L))
+  checkmate::assert_int(length(inter_vars), lower = 2, upper = 2)
+
   inter_term_index <- intersect(grep(inter_vars[1], x), grep(inter_vars[2], x))
   inter_term <- x[inter_term_index]
 
@@ -829,10 +827,9 @@ h_logistic_inter_terms <- function(x,
 tidy.glm <- function(fit_glm, # nolint
                      conf_level = 0.95,
                      at = NULL) {
-  assertthat::assert_that(
-    "glm" %in% class(fit_glm),
-    fit_glm$family$family == "binomial"
-  )
+  checkmate::assert_class(fit_glm, "glm")
+  checkmate::assert_set_equal(fit_glm$family$family, "binomial")
+
   terms_name <- attr(stats::terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
@@ -885,7 +882,7 @@ logistic_regression_cols <- function(lyt,
 #'
 #' @export
 logistic_summary_by_flag <- function(flag_var) {
-  assertthat::assert_that(assertthat::is.string(flag_var))
+  checkmate::assert_string(flag_var)
   function(lyt) {
     cfun_list <- list(
       df = cfun_by_flag("df", flag_var, format = "xx."),

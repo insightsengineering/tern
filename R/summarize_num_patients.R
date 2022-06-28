@@ -35,9 +35,7 @@ NULL
 #' )
 s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
 
-  assertthat::assert_that(
-    assertthat::is.string(labelstr)
-  )
+  checkmate::assert_string(labelstr)
   checkmate::assert_count(.N_col)
   checkmate::assert_multi_class(x, classes = c("factor", "character"))
 

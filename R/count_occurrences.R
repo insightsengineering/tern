@@ -52,9 +52,7 @@ s_count_occurrences <- function(df,
                                 drop = TRUE,
                                 .var = "MHDECOD",
                                 id = "USUBJID") {
-  assertthat::assert_that(
-    assertthat::is.flag(drop)
-  )
+  checkmate::assert_flag(drop)
   assert_df_with_variables(df, list(range = .var, id = id))
   checkmate::assert_count(.N_col)
   checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))
