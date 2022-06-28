@@ -22,7 +22,7 @@ functions (and possibly others in the future), we provide a constructor that doe
 \examples{
 # `create_afun_summary()` to create combined `afun`
 
-afun <- create_afun_summary(
+afun <- tern:::create_afun_summary(
   .stats = NULL,
   .formats = c(median = "xx."),
   .labels = c(median = "My median"),
