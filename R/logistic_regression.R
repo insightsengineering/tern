@@ -929,7 +929,7 @@ summarize_logistic <- function(lyt,
                                drop_and_remove_str = "") {
 
   # checks
-  stopifnot(assertthat::is.string(drop_and_remove_str))
+  checkmate::assert_string(drop_and_remove_str)
 
   sum_logistic_variable_test <- logistic_summary_by_flag("is_variable_summary")
   sum_logistic_term_estimates <- logistic_summary_by_flag("is_term_summary")

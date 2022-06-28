@@ -303,7 +303,7 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 replace_emptys_with_na <- function(df, rep_str = "NA") {
 
   # checks
-  stopifnot(assertthat::is.string(rep_str))
+  checkmate::assert_string(rep_str)
 
   # col logical v
   where_to_mod <- apply(df, 2, function(x) any(nchar(x) == 0))

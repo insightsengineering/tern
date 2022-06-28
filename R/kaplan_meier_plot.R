@@ -503,7 +503,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
     } else {
       labeling::extended(range(data$time)[1], max(range(data$time)[2], max_time), m = 5)
     }
-  } else if (assertthat::is.number(xticks)) {
+  } else if (checkmate::test_number(xticks)) {
     if (is.null(max_time)) {
       seq(0, max(data$time), xticks)
     } else {
@@ -602,7 +602,7 @@ h_ggkm <- function(data,
   gg <- if (is.null(lty)) {
     gg +
       ggplot2::geom_step(lwd = lwd)
-  } else if (assertthat::is.number(lty)) {
+  } else if (checkmate::test_number(lty)) {
     gg +
       ggplot2::geom_step(lwd = lwd, lty = lty)
   } else if (is.numeric(lty)) {

@@ -1,6 +1,10 @@
 # tern 0.7.8.9008
 
+
 ### Migration from `assertthat` to `checkmate`
+* complete substitution of `assertthat` calls with `checkmate`.
+* `assert_df_with_factors`, `assert_equal_length`, and `assert_proportion_value` 
+  made internals.
 * removed `has_tabletree_colnames`.
 * removed `is_quantiles_vector` and `all_elements_in_ref` (substituted by 
   `checkmate::subset()`).

@@ -42,7 +42,7 @@ NULL
 #' prune_table(tab, keep_rows(is_non_empty))
 #' }
 keep_rows <- function(row_condition) {
-  assertthat::assert_that(is.function(row_condition))
+  checkmate::assert_function(row_condition)
   function(table_tree) {
     if (inherits(table_tree, "TableRow")) {
       return(!row_condition(table_tree))
@@ -69,7 +69,7 @@ keep_rows <- function(row_condition) {
 #' prune_table(tab, keep_content_rows(more_than_twenty))
 #' }
 keep_content_rows <- function(content_row_condition) {
-  assertthat::assert_that(is.function(content_row_condition))
+  checkmate::assert_function(content_row_condition)
   function(table_tree) {
     if (is_leaf_table(table_tree)) {
       content_row <- h_content_first_row(table_tree)
@@ -102,9 +102,7 @@ keep_content_rows <- function(content_row_condition) {
 #'
 #' @keywords internal
 has_count_in_cols <- function(atleast, ...) {
-  assertthat::assert_that(
-    assertthat::is.count(atleast)
-  )
+  checkmate::assert_count(atleast)
   CombinationFunction(function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
     total_count <- sum(row_counts)
@@ -127,9 +125,7 @@ has_count_in_cols <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(any_more_than_one))
 #' }
 has_count_in_any_col <- function(atleast, ...) {
-  assertthat::assert_that(
-    assertthat::is.count(atleast)
-  )
+  checkmate::assert_count(atleast)
   CombinationFunction(function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
     any(row_counts >= atleast)
@@ -215,9 +211,7 @@ has_fractions_difference <- function(atleast, ...) {
 #'
 #' @keywords internal
 has_counts_difference <- function(atleast, ...) {
-  assertthat::assert_that(
-    assertthat::is.count(atleast)
-  )
+  checkmate::assert_count(atleast)
   CombinationFunction(function(table_row) {
     counts <- h_row_counts(table_row, ...)
     difference <- diff(range(counts))

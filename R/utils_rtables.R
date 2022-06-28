@@ -313,7 +313,7 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'
 #' @export
 append_varlabels <- function(lyt, df, vars, indent = 0L) {
-  if (assertthat::is.flag(indent)) {
+  if (checkmate::test_flag(indent)) {
     warning("indent argument is now accepting integers. Boolean indent will be converted to integers.")
     indent <- as.integer(indent)
   }

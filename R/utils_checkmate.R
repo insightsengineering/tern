@@ -219,10 +219,10 @@ check_df_with_factors <- function(df,
 #' # Check whether `df` contains all factor analysis `variables`.
 #' adf <- data.frame(a = factor(c("A", "B")), b = 3)
 #' bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
-#' assert_df_with_factors(df = adf, variables = list(val = "a"))
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
-#' assert_df_with_factors(
+#' tern:::assert_df_with_factors(df = adf, variables = list(val = "a"))
+#' tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
+#' tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
+#' tern:::assert_df_with_factors(
 #'   df = data.frame(a = factor(c("A", NA, "B")), b = 3),
 #'   variable = list(val = "a"),
 #'   min.levels = 2,
@@ -237,7 +237,7 @@ check_df_with_factors <- function(df,
 #' assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
 #' }
 #'
-#' @export
+#' @keywords internal
 assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
 
 check_equal_length <- function(...) {
@@ -269,7 +269,7 @@ check_equal_length <- function(...) {
 #' assert_equal_length(a, b, c, d)
 #' }
 #'
-#' @export
+#' @keywords internal
 assert_equal_length <- function(...) {
   checkmate::assert(check_equal_length(...))
 }
@@ -278,15 +278,15 @@ assert_equal_length <- function(...) {
 #'
 #' @examples
 #' # Check whether `x` is between 0 and 1.
-#' assert_proportion_value(x = 0, include_boundaries = TRUE)
-#' assert_proportion_value(x = 0.3)
+#' tern:::assert_proportion_value(x = 0, include_boundaries = TRUE)
+#' tern:::assert_proportion_value(x = 0.3)
 #' # These fails
 #' \dontrun{
 #' assert_proportion_value(x = 1.3)
 #' assert_proportion_value(x = 1)
 #' }
 #'
-#' @export
+#' @keywords internal
 assert_proportion_value <- function(x, include_boundaries = FALSE) {
   checkmate::assert_number(x, lower = 0, upper = 1)
   checkmate::assert_flag(include_boundaries)

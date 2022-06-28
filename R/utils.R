@@ -21,7 +21,7 @@
 #' @keywords internal
 range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
-  assertthat::assert_that(is.numeric(x), msg = "Argument x in range_noinf function must be of class numeric.")
+  checkmate::assert_numeric(x)
 
   if (finite) {
     x <- x[is.finite(x)] # removes NAs too
@@ -60,7 +60,7 @@ f_conf_level <- function(conf_level) {
 #'
 #' @keywords internal
 get_covariates <- function(covariates) {
-  assertthat::assert_that(is.character(covariates))
+  checkmate::assert_character(covariates)
   cov_vars <- unique(trimws(unlist(strsplit(covariates, "\\*"))))
   stats::setNames(as.list(cov_vars), cov_vars)
 }
@@ -166,7 +166,7 @@ make_names <- function(nams) {
 #'
 #' @keywords internal
 month2day <- function(x) {
-  assertthat::assert_that(is.numeric(x))
+  checkmate::assert_numeric(x)
   x * 30.4375
 }
 
@@ -182,7 +182,7 @@ month2day <- function(x) {
 #'
 #' @export
 day2month <- function(x) {
-  assertthat::assert_that(is.numeric(x))
+  checkmate::assert_numeric(x)
   x / 30.4375
 }
 
@@ -247,10 +247,8 @@ extract <- function(x, names) {
   if (is.null(x)) {
     return(NULL)
   }
-  assertthat::assert_that(
-    rlang::is_named(x),
-    is.character(names)
-  )
+  checkmate::assert_named(x)
+  checkmate::assert_character(names)
   which_extract <- intersect(names(x), names)
   if (length(which_extract) > 0) {
     x[which_extract]

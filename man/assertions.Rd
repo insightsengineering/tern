@@ -154,10 +154,10 @@ tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
 # Check whether `df` contains all factor analysis `variables`.
 adf <- data.frame(a = factor(c("A", "B")), b = 3)
 bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
-assert_df_with_factors(df = adf, variables = list(val = "a"))
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
-assert_df_with_factors(
+tern:::assert_df_with_factors(df = adf, variables = list(val = "a"))
+tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
+tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
+tern:::assert_df_with_factors(
   df = data.frame(a = factor(c("A", NA, "B")), b = 3),
   variable = list(val = "a"),
   min.levels = 2,
@@ -183,8 +183,8 @@ assert_equal_length(a, b, c, d)
 }
 
 # Check whether `x` is between 0 and 1.
-assert_proportion_value(x = 0, include_boundaries = TRUE)
-assert_proportion_value(x = 0.3)
+tern:::assert_proportion_value(x = 0, include_boundaries = TRUE)
+tern:::assert_proportion_value(x = 0.3)
 # These fails
 \dontrun{
 assert_proportion_value(x = 1.3)

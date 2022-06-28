@@ -137,7 +137,7 @@ h_step_survival_est <- function(formula,
                                 x,
                                 subset = rep(TRUE, nrow(data)),
                                 control = control_coxph()) {
-  checkmate::assert_class(formula, "formula")
+  checkmate::assert_formula(formula)
   assert_df_with_variables(data, variables)
   checkmate::assert_logical(subset, min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
@@ -237,7 +237,7 @@ h_step_rsp_est <- function(formula,
                            x,
                            subset = rep(TRUE, nrow(data)),
                            control = control_logistic()) {
-  checkmate::assert_class(formula, "formula")
+  checkmate::assert_formula(formula)
   assert_df_with_variables(data, variables)
   checkmate::assert_logical(subset, min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)

@@ -319,10 +319,9 @@ reference:
       - to_n
 
   - title: Assertion Functions
-    desc: These functions supplement those in the assertthat package.
+    desc: These functions supplement those in the checkmate package.
     contents:
-      - assert_df_with_factors
-      - assert_proportion_value
+      - assertions
 
   - title: Deprecated Functions
     desc: These functions already are or will eventually be removed.
