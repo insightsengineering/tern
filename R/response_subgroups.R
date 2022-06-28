@@ -57,6 +57,25 @@ NULL
 #' @inheritParams response_subgroups
 #'
 #' @examples
+#' # Testing dataset.
+#' library(scda)
+#' library(dplyr)
+#' library(forcats)
+#' library(rtables)
+#'
+#' adrs <- synthetic_cdisc_data("latest")$adrs
+#' adrs_labels <- formatters::var_labels(adrs)
+#'
+#' adrs_f <- adrs %>%
+#'   filter(PARAMCD == "BESRSPI") %>%
+#'   filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
+#'   droplevels() %>%
+#'   mutate(
+#'     # Reorder levels of factor to make the placebo group the reference arm.
+#'     ARM = fct_relevel(ARM, "B: Placebo"),
+#'     rsp = AVALC == "CR"
+#'   )
+#' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 #' # Unstratified analysis.
 #' df <- extract_rsp_subgroups(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
