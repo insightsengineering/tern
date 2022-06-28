@@ -109,6 +109,10 @@ tabulate_rsp_biomarkers <- function(df,
 #'   variable reflecting binary response.
 #'
 #' @examples
+#' # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
+#' # in logistic regression models with one covariate `RACE`. The subgroups
+#' # are defined by the levels of `BMRKR2`.
+#'
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
@@ -122,9 +126,7 @@ tabulate_rsp_biomarkers <- function(df,
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   mutate(rsp = AVALC == "CR")
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
-#' # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
-#' # in logistic regression models with one covariate `RACE`. The subgroups
-#' # are defined by the levels of `BMRKR2`.
+#'
 #' df <- extract_rsp_biomarkers(
 #'   variables = list(
 #'     rsp = "rsp",

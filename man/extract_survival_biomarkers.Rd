@@ -41,6 +41,27 @@ population subgroups in a single data frame.
 # in multiple regression models containing one covariate `RACE`,
 # as well as one stratification variable `STRATA1`. The subgroups
 # are defined by the levels of `BMRKR2`.
+
+# Testing dataset.
+library(scda)
+library(dplyr)
+library(forcats)
+library(rtables)
+
+adtte <- synthetic_cdisc_data("latest")$adtte
+
+# Save variable labels before data processing steps.
+adtte_labels <- formatters::var_labels(adtte)
+
+adtte_f <- adtte \%>\%
+  filter(PARAMCD == "OS") \%>\%
+  mutate(
+    AVALU = as.character(AVALU),
+    is_event = CNSR == 0
+  )
+labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
+formatters::var_labels(adtte_f)[names(labels)] <- labels
+
 df <- extract_survival_biomarkers(
   variables = list(
     tte = "AVAL",

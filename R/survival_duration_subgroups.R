@@ -69,6 +69,38 @@ NULL
 #' @inheritParams survival_duration_subgroups
 #'
 #' @examples
+#' # Testing dataset.
+#' library(scda)
+#' library(dplyr)
+#' library(forcats)
+#' library(rtables)
+#'
+#' adtte <- synthetic_cdisc_data("latest")$adtte
+#'
+#' # Save variable labels before data processing steps.
+#' adtte_labels <- formatters::var_labels(adtte)
+#'
+#' adtte_f <- adtte %>%
+#'   filter(
+#'     PARAMCD == "OS",
+#'     ARM %in% c("B: Placebo", "A: Drug X"),
+#'     SEX %in% c("M", "F")
+#'   ) %>%
+#'   mutate(
+#'     # Reorder levels of ARM to display reference arm before treatment arm.
+#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+#'     SEX = droplevels(SEX),
+#'     AVALU = as.character(AVALU),
+#'     is_event = CNSR == 0
+#'   )
+#' labels <- c(
+#'   "ARM" = adtte_labels[["ARM"]],
+#'   "SEX" = adtte_labels[["SEX"]],
+#'   "AVALU" = adtte_labels[["AVALU"]],
+#'   "is_event" = "Event Flag"
+#' )
+#' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
 #' df <- extract_survival_subgroups(
 #'   variables = list(
 #'     tte = "AVAL",
