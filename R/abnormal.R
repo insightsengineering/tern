@@ -69,8 +69,9 @@ s_count_abnormal <- function(df,
   checkmate::assert_factor(df[[.var]])
   checkmate::assert_flag(exclude_base_abn)
   assert_df_with_variables(df, c(range = .var, variables))
-  checkmate::assert_multi_class(df[[variables$baseline]], classes = c("factor", "character"))
-  checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(  df[[variables$baseline]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(    df[[variables$id]], classes =c("factor", "character"))
+
 
   count_abnormal_single <- function(abn_name, abn) {
     # Patients in the denominator fulfill:
