@@ -26,7 +26,7 @@
 #'
 NULL
 
-#' @describeIn abnormal Statistics (test2) function which counts patients with abnormal range values
+#' @describeIn abnormal Statistics (test3) function which counts patients with abnormal range values
 #'   for a single `abnormal` level.
 #' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
 #'   from numerator and denominator.
