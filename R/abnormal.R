@@ -30,7 +30,7 @@ NULL
 #'   for a single `abnormal` level.
 #' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
 #'   from numerator and denominator.
-#' @return [s_count_abnormal()] (docs chagned) returns the statistic `fraction` which is a
+#' @return [s_count_abnormal()] (docs are chagned) returns the statistic `fraction` which is a
 #'   vector with `num` and `denom` counts of patients.
 #'
 #' @examples
