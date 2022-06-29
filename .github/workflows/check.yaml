@@ -42,7 +42,7 @@ jobs:
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
     with:
-      update: true
+      auto-update: true
   gitleaks:
     name: gitleaks 💧
     uses: insightsengineering/r.pkg.template/.github/workflows/gitleaks.yaml@main
@@ -71,4 +71,4 @@ jobs:
     name: Style Check 👗
     uses: insightsengineering/r.pkg.template/.github/workflows/style.yaml@302_man_page_update
     with:
-      update: true
+      auto-update: true
