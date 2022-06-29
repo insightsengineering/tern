@@ -1,4 +1,4 @@
-# tern 0.7.8.9009
+# tern 0.7.8.9010
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.
@@ -117,6 +117,7 @@
    `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`.
    
 * Deprecated badge added to `g_mmrm`
+* Removed `tern:::` prefix from internal function uses in tests
 
 ### Miscellaneous
 * Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`

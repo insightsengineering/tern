@@ -57,8 +57,8 @@ testthat::test_that("h_incidence_rate_byar works as expected with healthy input"
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-testthat::test_that("tern:::h_incidence_rate works as expected with healthy input", {
-  result <- tern:::h_incidence_rate(
+testthat::test_that("h_incidence_rate works as expected with healthy input", {
+  result <- h_incidence_rate(
     200,
     2,
     control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", time_unit_output = 100)
@@ -70,7 +70,7 @@ testthat::test_that("tern:::h_incidence_rate works as expected with healthy inpu
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
-testthat::test_that("tern:::s_incidence_rate works as expected with healthy input", {
+testthat::test_that("s_incidence_rate works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(seq(6)),
     CNSR = c(0, 1, 1, 0, 0, 0),
@@ -79,7 +79,7 @@ testthat::test_that("tern:::s_incidence_rate works as expected with healthy inpu
   ) %>%
     dplyr::mutate(is_event = CNSR == 0) %>%
     dplyr::mutate(n_events = as.integer(is_event))
-  result <- tern:::s_incidence_rate(
+  result <- s_incidence_rate(
     df,
     .var = "AVAL",
     n_events = "n_events",

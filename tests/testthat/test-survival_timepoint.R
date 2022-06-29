@@ -3,7 +3,7 @@ library(dplyr)
 
 adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
-testthat::test_that("tern:::s_surv_timepoint works with default arguments", {
+testthat::test_that("s_surv_timepoint works with default arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -11,7 +11,7 @@ testthat::test_that("tern:::s_surv_timepoint works with default arguments", {
       is_event = CNSR == 0
     )
 
-  result <- tern:::s_surv_timepoint(
+  result <- s_surv_timepoint(
     adtte_f %>% dplyr::filter(ARMCD == "ARM B"),
     .var = "AVAL",
     time_point = 6,
@@ -26,7 +26,7 @@ testthat::test_that("tern:::s_surv_timepoint works with default arguments", {
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-testthat::test_that("tern:::s_surv_timepoint works with customized arguments", {
+testthat::test_that("s_surv_timepoint works with customized arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -34,7 +34,7 @@ testthat::test_that("tern:::s_surv_timepoint works with customized arguments", {
       is_event = CNSR == 0
     )
 
-  result <- tern:::s_surv_timepoint(
+  result <- s_surv_timepoint(
     adtte_f %>% dplyr::filter(ARMCD == "ARM C"),
     .var = "AVAL",
     is_event = "is_event",
@@ -52,7 +52,7 @@ testthat::test_that("tern:::s_surv_timepoint works with customized arguments", {
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-testthat::test_that("tern:::s_surv_timepoint also works when there are 0 patients at risk", {
+testthat::test_that("s_surv_timepoint also works when there are 0 patients at risk", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -63,7 +63,7 @@ testthat::test_that("tern:::s_surv_timepoint also works when there are 0 patient
     # such that no patients are at risk anymore beyond 6 months.
     dplyr::filter(ARMCD == "ARM A", AVAL <= 6)
 
-  result <- testthat::expect_silent(tern:::s_surv_timepoint(
+  result <- testthat::expect_silent(s_surv_timepoint(
     adtte_f,
     .var = "AVAL",
     time_point = 6,
@@ -146,7 +146,7 @@ testthat::test_that("surv_timepoint works with customized arguments", {
 })
 
 
-testthat::test_that("tern:::s_surv_timepoint_diff works with default arguments for comparison group", {
+testthat::test_that("s_surv_timepoint_diff works with default arguments for comparison group", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -157,7 +157,7 @@ testthat::test_that("tern:::s_surv_timepoint_diff works with default arguments f
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
-  result <- tern:::s_surv_timepoint_diff(
+  result <- s_surv_timepoint_diff(
     df = df,
     .var = "AVAL",
     .ref_group = df_ref,
@@ -175,7 +175,7 @@ testthat::test_that("tern:::s_surv_timepoint_diff works with default arguments f
 })
 
 
-testthat::test_that("tern:::s_surv_timepoint_diff works with customized arguments for comparison arm", {
+testthat::test_that("s_surv_timepoint_diff works with customized arguments for comparison arm", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -186,7 +186,7 @@ testthat::test_that("tern:::s_surv_timepoint_diff works with customized argument
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
-  result <- tern:::s_surv_timepoint_diff(
+  result <- s_surv_timepoint_diff(
     df = df,
     .var = "AVAL",
     .ref_group = df_ref,

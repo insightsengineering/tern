@@ -24,8 +24,8 @@ adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 # h_surv_to_coxreg_variables ----
 
-testthat::test_that("tern:::h_surv_to_coxreg_variables works as expected", {
-  result <- testthat::expect_silent(tern:::h_surv_to_coxreg_variables(
+testthat::test_that("h_surv_to_coxreg_variables works as expected", {
+  result <- testthat::expect_silent(h_surv_to_coxreg_variables(
     variables = list(
       tte = "AVAL",
       is_event = "EVNT",
