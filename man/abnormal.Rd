@@ -65,7 +65,7 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=s_count_abnormal]{s_count_abnormal()}} returns the statistic \code{fraction} which is a
+\code{\link[=s_count_abnormal]{s_count_abnormal()}} (docs chagne) returns the statistic \code{fraction} which is a
 vector with \code{num} and \code{denom} counts of patients.
 
 \code{\link[=a_count_abnormal]{a_count_abnormal()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
@@ -121,7 +121,7 @@ df <- df \%>\%
 # For abnormal level "HIGH" we get the following counts.
 tern:::s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
-# Optionally exclude patients with abnormality at baseline.
+# Optionally (bla) exclude patients with abnormality at baseline.
 tern:::s_count_abnormal(
   df,
   .var = "ANRIND",
