@@ -36,6 +36,12 @@ NULL
 #' @export
 #'
 h_set_nest_theme <- function(font_size) {
+  lifecycle::deprecate_soft(
+    what = "h_set_nest_theme()",
+    details = "h_set_nest_theme() will be removed in a future release.",
+    with = "nestcolor::theme_nest()",
+    when = "0.7.9"
+  )
   ggplot2::theme(
     panel.grid.major = ggplot2::element_blank(),
     panel.grid.minor = ggplot2::element_blank(),
