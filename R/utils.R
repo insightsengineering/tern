@@ -74,11 +74,11 @@ get_covariates <- function(covariates) {
 #'
 #' @inheritParams argument_convention
 #' @param n (`count`)\cr how many entries we need.
-#' @export
 #'
 #' @return Just input `x` if it has the required length already or is `NULL`,
 #'   otherwise if it is scalar the replicated version of it with `n` entries.
 #'
+#' @export
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
