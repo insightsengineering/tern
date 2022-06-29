@@ -1,18 +1,33 @@
-# tern 0.7.8.9008
+# tern 0.7.8.9009
+
 
 ### Migration from `assertthat` to `checkmate`
-* `is_character_or_factor` is now `assert_character_or_factor` and uses
-  `checkmate::assertMultiClass()` and made internal.
+* complete substitution of `assertthat` calls with `checkmate`.
+* `assert_df_with_factors`, `assert_equal_length`, and `assert_proportion_value` 
+  made internals.
+* removed `has_tabletree_colnames`.
+* removed `is_quantiles_vector` and `all_elements_in_ref` (substituted by 
+  `checkmate::subset()`).
+* removed `is_proportion_vector` and adapted `is_proportion` to `checkmate` style 
+  with `assert_proportion_value`.
+* `is_equal_length` is now `assert_equal_length`.
+* removed `is_df_with_no_na_level` by adding parameters to `assert_df_with_variables`.
+* removed `is_df_with_nlevels_factor` by adding parameters to `assert_df_with_factors`.
+* `is_character_or_factor` replaced by `checkmate::assert_multi_class()`.
 * `is_nonnegative_count` removed and substituted by `checkmate::assert_count()`.
 * `assert_list_of_variables` instead of `is_variables` (made internal).
 * `assert_df_with_variables` instead of `is_df_with_variables` (made internal).
-* `assert_valid_factor` instead of `is_valid_factor` (internal) and extension to
-  `is_factor_no_na` (repetition removed).
+* `assert_df_with_factors` instead of `is_df_with_factors` (made internal).
+* `assert_valid_factor` instead of `is_valid_factor`.
 * removed `is_valid_character`.
 * renamed `assertthat.R` into a more appropriate `utils_checkmate.R`.
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
 ### Fix
+* Fixed test for `cut_quantile_bins` with empty vector. This is not a good standard
+  input.
+* Warnings from `as_factor_keep_attributes` are now in verbose for better 
+  `test_examples()` readability
 * Renaming `rtables.R` as confusing file name due to the package dependence.
 * Renamed files to respect the main documented function and fixed file in `R/`
   folder that does not comply with the standard (starting with the word test).

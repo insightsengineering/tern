@@ -16,7 +16,6 @@ NULL
 #'
 #' @examples
 #'
-#' library(assertthat)
 #' library(scda)
 #' library(rtables)
 #' adsl <- synthetic_cdisc_data("latest")$adsl
