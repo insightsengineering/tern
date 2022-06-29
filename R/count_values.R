@@ -41,14 +41,12 @@ s_count_values.character <- function(x,
                                      values = "Y",
                                      na.rm = TRUE, # nolint
                                      ...) {
-  assertthat::assert_that(
-    is.character(values)
-  )
+  checkmate::assert_character(values)
   if (na.rm) x <- x[!is.na(x)]
   is_in_values <- x %in% values
-  assertthat::assert_that(
-    assertthat::noNA(is_in_values)
-  )
+
+  checkmate::assert_false(anyNA(is_in_values))
+
   s_summary(is_in_values, ...)
 }
 
@@ -79,7 +77,7 @@ s_count_values.factor <- function(x,
 #' # `s_count_values.logical`
 #' s_count_values(x = c(TRUE, FALSE, TRUE))
 s_count_values.logical <- function(x, values = TRUE, ...) {
-  assertthat::assert_that(is.logical(values))
+  checkmate::assert_logical(values)
   s_count_values(as.character(x), values = as.character(values), ...)
 }
 

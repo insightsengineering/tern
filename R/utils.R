@@ -21,7 +21,7 @@
 #' @keywords internal
 range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
-  assertthat::assert_that(is.numeric(x), msg = "Argument x in range_noinf function must be of class numeric.")
+  checkmate::assert_numeric(x)
 
   if (finite) {
     x <- x[is.finite(x)] # removes NAs too
@@ -48,7 +48,7 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 #'
 #' @export
 f_conf_level <- function(conf_level) {
-  assertthat::assert_that(is_proportion(conf_level))
+  assert_proportion_value(conf_level)
   paste0(conf_level * 100, "% CI")
 }
 
@@ -60,7 +60,7 @@ f_conf_level <- function(conf_level) {
 #'
 #' @keywords internal
 get_covariates <- function(covariates) {
-  assertthat::assert_that(is.character(covariates))
+  checkmate::assert_character(covariates)
   cov_vars <- unique(trimws(unlist(strsplit(covariates, "\\*"))))
   stats::setNames(as.list(cov_vars), cov_vars)
 }
@@ -166,7 +166,7 @@ make_names <- function(nams) {
 #'
 #' @keywords internal
 month2day <- function(x) {
-  assertthat::assert_that(is.numeric(x))
+  checkmate::assert_numeric(x)
   x * 30.4375
 }
 
@@ -182,7 +182,7 @@ month2day <- function(x) {
 #'
 #' @export
 day2month <- function(x) {
-  assertthat::assert_that(is.numeric(x))
+  checkmate::assert_numeric(x)
   x / 30.4375
 }
 
@@ -217,11 +217,9 @@ empty_vector_if_na <- function(x) {
 #'
 #' @keywords internal
 combine_vectors <- function(x, y) {
-  assertthat::assert_that(
-    is.vector(x),
-    is.vector(y),
-    is_equal_length(x, y)
-  )
+  checkmate::assert_vector(x)
+  checkmate::assert_vector(y)
+  assert_equal_length(x, y)
 
   result <- lapply(as.data.frame(rbind(x, y)), `c`)
   names(result) <- NULL
@@ -249,10 +247,8 @@ extract <- function(x, names) {
   if (is.null(x)) {
     return(NULL)
   }
-  assertthat::assert_that(
-    rlang::is_named(x),
-    is.character(names)
-  )
+  checkmate::assert_named(x)
+  checkmate::assert_character(names)
   which_extract <- intersect(names(x), names)
   if (length(which_extract) > 0) {
     x[which_extract]
@@ -283,11 +279,8 @@ extract <- function(x, names) {
 #' aesi_label(adae$CQ01NAM)
 #'
 aesi_label <- function(aesi, scope = NULL) {
-  assertthat::assert_that(
-    is.character(aesi),
-    is.character(scope) || is.null(scope)
-  )
-
+  checkmate::assert_character(aesi)
+  checkmate::assert_character(scope, null.ok = TRUE)
   aesi_label <- obj_label(aesi)
   aesi <- sas_na(aesi)
   aesi <- unique(aesi)[!is.na(unique(aesi))]
@@ -295,9 +288,7 @@ aesi_label <- function(aesi, scope = NULL) {
   lbl <- if (length(aesi) == 1 & !is.null(scope)) {
     scope <- sas_na(scope)
     scope <- unique(scope)[!is.na(unique(scope))]
-    assertthat::assert_that(
-      assertthat::is.string(scope)
-    )
+    checkmate::assert_string(scope)
     paste0(aesi, " (", scope, ")")
   } else if (length(aesi) == 1 & is.null(scope)) {
     aesi
@@ -338,11 +329,19 @@ arm <- function(x) {
 #' @export
 #'
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
-  assertthat::assert_that(is.data.frame(df))
+  checkmate::assert_data_frame(df)
   df_cols <- colnames(df)
-  assertthat::assert_that(assertthat::is.string(x) && (x %in% df_cols) && is.numeric(df[[x]]))
-  assertthat::assert_that(assertthat::is.string(y) && (y %in% df_cols) && is.numeric(df[[y]]))
-  assertthat::assert_that(is.null(groups) || (is.character(groups) && all(groups %in% df_cols)))
+  checkmate::assert_string(x)
+  checkmate::assert_subset(x, df_cols)
+  checkmate::assert_numeric(df[[x]])
+  checkmate::assert_string(y)
+  checkmate::assert_subset(y, df_cols)
+  checkmate::assert_numeric(df[[y]])
+
+  if (!is.null(groups)) {
+    checkmate::assert_character(groups)
+    checkmate::assert_subset(groups, df_cols)
+  }
 
   smooths <- function(x, y) {
     stats::predict(stats::loess(y ~ x), se = TRUE)

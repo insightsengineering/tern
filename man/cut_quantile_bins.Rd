@@ -7,7 +7,7 @@
 cut_quantile_bins(
   x,
   probs = c(0.25, 0.5, 0.75),
-  labels = bins_percent_labels(probs),
+  labels = NULL,
   type = 7,
   ordered = TRUE
 )

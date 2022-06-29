@@ -32,7 +32,6 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
   x
 }
 
-
 #' Conversion of a Vector to a Factor
 #'
 #' Converts `x` to a factor and keeps its attributes. Warns appropriately such that the user
@@ -43,31 +42,34 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' @param x_name (`string`)\cr name of `x`.
 #' @param na_level (`string`)\cr the explicit missing level which should be used when
 #'   converting a character vector.
+#' @param verbose defaults to `TRUE`. It prints out warnings and messages.
 #'
 #' @return The factor with same attributes (except class) as `x`. Does not do any modifications
 #'   if `x` is already a factor.
 #'
-#' @keywords internal
-#'
 #' @examples
-#' tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
-#' tern:::as_factor_keep_attributes(c("a", "b", ""), "id")
+#' tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
+#' tern:::as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
+#'
+#' @keywords internal
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),
-                                      na_level = "<Missing>") {
-  assertthat::assert_that(
-    is.atomic(x),
-    assertthat::is.string(x_name),
-    assertthat::is.string(na_level)
-  )
+                                      na_level = "<Missing>",
+                                      verbose = TRUE) {
+  checkmate::assert_atomic(x)
+  checkmate::assert_string(x_name)
+  checkmate::assert_string(na_level)
+  checkmate::assert_flag(verbose)
   if (is.factor(x)) {
     return(x)
   }
   x_class <- class(x)[1]
-  warning(paste(
-    "automatically converting", x_class, "variable", x_name,
-    "to factor, better manually convert to factor to avoid failures"
-  ))
+  if (verbose) {
+    warning(paste(
+      "automatically converting", x_class, "variable", x_name,
+      "to factor, better manually convert to factor to avoid failures"
+    ))
+  }
   if (identical(length(x), 0L)) {
     warning(paste(
       x_name, "has length 0, this can lead to tabulation failures, better convert to factor"
@@ -111,11 +113,12 @@ as_factor_keep_attributes <- function(x,
 #' tern:::bins_percent_labels(0.35224, digits = 1)
 #'
 #' # Passing an empty vector just gives a single bin 0-100%.
-#' tern:::bins_percent_labels(c())
+#' tern:::bins_percent_labels(c(0, 1))
 bins_percent_labels <- function(probs,
                                 digits = 0) {
-  assertthat::assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))
-  probs <- c(0, probs, 1)
+  if (isFALSE(0 %in% probs)) probs <- c(0, probs)
+  if (isFALSE(1 %in% probs)) probs <- c(probs, 1)
+  checkmate::assert_numeric(probs, lower = 0, upper = 1, unique = TRUE, sorted = TRUE)
   percent <- round(probs * 100, digits = digits)
   left <- paste0(utils::head(percent, -1), "%")
   right <- paste0(utils::tail(percent, -1), "%")
@@ -168,32 +171,32 @@ bins_percent_labels <- function(probs,
 #' explicit_na(ozone_binned)
 cut_quantile_bins <- function(x,
                               probs = c(0.25, 0.5, 0.75),
-                              labels = bins_percent_labels(probs),
+                              labels = NULL,
                               type = 7,
                               ordered = TRUE) {
-  checkmate::assert_character(labels, len = length(probs) + 1, any.missing = FALSE)
+  checkmate::assert_flag(ordered)
+  checkmate::assert_numeric(x)
+  if (isFALSE(0 %in% probs)) probs <- c(0, probs)
+  if (isFALSE(1 %in% probs)) probs <- c(probs, 1)
+  checkmate::assert_numeric(probs, lower = 0, upper = 1, unique = TRUE, sorted = TRUE)
+  if (is.null(labels)) labels <- bins_percent_labels(probs)
+  checkmate::assert_character(labels, len = length(probs) - 1, any.missing = FALSE, unique = TRUE)
 
-  assertthat::assert_that(
-    is.numeric(x),
-    is_quantiles_vector(probs, include_boundaries = FALSE),
-    !any(duplicated(labels)),
-    assertthat::is.flag(ordered)
-  )
   if (all(is.na(x))) {
     # Early return if there are only NAs in input.
     return(factor(x, ordered = ordered, levels = labels))
   }
-  probs <- c(0, probs, 1)
+
+
   quantiles <- stats::quantile(
     x,
     probs = probs,
     type = type,
     na.rm = TRUE
   )
-  assertthat::assert_that(
-    !any(duplicated(quantiles)),
-    msg = "Duplicate quantiles produced, please use a coarser `probs` vector"
-  )
+
+  checkmate::assert_numeric(quantiles, unique = TRUE)
+
   cut(
     x,
     breaks = quantiles,
@@ -217,11 +220,8 @@ cut_quantile_bins <- function(x,
 #' @examples
 #' fct_discard(factor(c("a", "b", "c")), "c")
 fct_discard <- function(x, discard) {
-  assertthat::assert_that(
-    is.factor(x),
-    is.character(discard),
-    assertthat::noNA(discard)
-  )
+  checkmate::assert_factor(x)
+  checkmate::assert_character(discard, any.missing = FALSE)
   new_obs <- x[!(x %in% discard)]
   new_levels <- setdiff(levels(x), discard)
   factor(new_obs, levels = new_levels)
@@ -244,11 +244,9 @@ fct_discard <- function(x, discard) {
 #' @examples
 #' tern:::fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
-  assertthat::assert_that(
-    is.factor(x),
-    is.logical(condition),
-    identical(length(x), length(condition))
-  )
+  checkmate::assert_factor(x)
+  checkmate::assert_logical(condition)
+  checkmate::assert_true(length(x) == length(condition))
   x[condition] <- NA
   forcats::fct_explicit_na(x, na_level = na_level)
 }
@@ -276,10 +274,9 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' tern:::fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   new_lvls <- names(list(...))
-  assertthat::assert_that(
-    !(.na_level %in% new_lvls),
-    msg = paste0(".na_level currently set to '", .na_level, "' must not be contained in the new levels")
-  )
+  if (checkmate::test_subset(.na_level, new_lvls)) {
+    stop(paste0(".na_level currently set to '", .na_level, "' must not be contained in the new levels"))
+  }
   x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
@@ -306,7 +303,7 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 replace_emptys_with_na <- function(df, rep_str = "NA") {
 
   # checks
-  stopifnot(assertthat::is.string(rep_str))
+  checkmate::assert_string(rep_str)
 
   # col logical v
   where_to_mod <- apply(df, 2, function(x) any(nchar(x) == 0))

@@ -89,7 +89,9 @@ g_waterfall <- function(height,
   } else {
     check_same_n(height = height, id = id)
   }
-  assertthat::assert_that(is.character(col_var) || is.factor(col_var) || is.null(col_var), is.character(col))
+
+  checkmate::assert_multi_class(col_var, c("character", "factor"), null.ok = TRUE)
+  checkmate::assert_character(col)
 
   xlabel <- deparse(substitute(id))
   ylabel <- deparse(substitute(height))
