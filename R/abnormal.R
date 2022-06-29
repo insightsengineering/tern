@@ -26,7 +26,7 @@
 #'
 NULL
 
-#' @describeIn abnormal Statistics (test3) function which counts patients with abnormal range values
+#' @describeIn abnormal Statistics (test4) function which counts patients with abnormal range values
 #'   for a single `abnormal` level.
 #' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
 #'   from numerator and denominator.
@@ -62,8 +62,8 @@ NULL
 s_count_abnormal <- function(df,
 
                              .var,
-                             abnormal = list(Low = "LOW", High = "HIGH"),
-                             variables = list(id = "USUBJID", baseline = "BNRIND"),
+                             abnormal = list(Low =        "LOW", High = "HIGH"),
+                             variables = list(         id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE) {
   checkmate::assert_list(abnormal, types = "character", names = "named", len = 2, any.missing = FALSE)
   checkmate::assert_true(any(unlist(    abnormal)      %in% levels(df[[.var]])))
