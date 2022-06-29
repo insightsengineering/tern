@@ -71,6 +71,7 @@ s_count_abnormal <- function(df,
 
 
 
+
   checkmate::assert_flag(exclude_base_abn)
   assert_df_with_variables(df, c(range = .var, variables))
   checkmate::assert_multi_class(df[[variables$baseline]], classes = c("factor", "character"))
