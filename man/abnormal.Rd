@@ -92,7 +92,7 @@ Note that \code{df} should be filtered to include only post-baseline records.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal}: Statistics (test3) function which counts patients with abnormal range values
+\item \code{s_count_abnormal}: Statistics (test4) function which counts patients with abnormal range values
 for a single \code{abnormal} level.
 
 \item \code{a_count_abnormal}: Formatted Analysis function which can be further customized by calling
