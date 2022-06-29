@@ -92,7 +92,7 @@ Note that \code{df} should be filtered to include only post-baseline records.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal}: Statistics (test2) function which counts patients with abnormal range values
+\item \code{s_count_abnormal}: Statistics (test3) function which counts patients with abnormal range values
 for a single \code{abnormal} level.
 
 \item \code{a_count_abnormal}: Formatted Analysis function which can be further customized by calling
@@ -121,7 +121,7 @@ df <- df \%>\%
 # For abnormal level "HIGH" we get the following counts.
 tern:::s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
-# Optionally (bla) exclude patients with abnormality at baseline.
+# Optionally (bla2) exclude patients with abnormality at baseline.
 tern:::s_count_abnormal(
   df,
   .var = "ANRIND",
