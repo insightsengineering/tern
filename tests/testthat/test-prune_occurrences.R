@@ -36,7 +36,7 @@ testthat::test_that("keep_rows keeps everything if condition is always `TRUE`", 
 })
 
 testthat::test_that("keep_content_rows works as expected", {
-  more_than_twenty <- tern:::has_count_in_cols(atleast = 21L, col_names = names(tab))
+  more_than_twenty <- has_count_in_cols(atleast = 21L, col_names = names(tab))
   result <- prune_table(tab, keep_content_rows(more_than_twenty))
   result_leaves <- collect_leaves(result)
   result_content_rows <- result_leaves[sapply(result_leaves, class) == "ContentRow"]
@@ -46,14 +46,14 @@ testthat::test_that("keep_content_rows works as expected", {
   testthat::expect_true(all(result_counts > 20))
 })
 
-testthat::test_that("tern:::has_count_in_cols result works in a special case identical to standard pruning", {
-  row_condition <- tern:::has_count_in_cols(atleast = 1L, col_names = names(tab))
+testthat::test_that("has_count_in_cols result works in a special case identical to standard pruning", {
+  row_condition <- has_count_in_cols(atleast = 1L, col_names = names(tab))
   result <- prune_table(tab, keep_rows(row_condition))
   expected <- prune_table(tab)
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("tern:::has_count_in_cols result performs comparisons correctly", {
+testthat::test_that("has_count_in_cols result performs comparisons correctly", {
   sub_tab <- tab[5, ]
   testthat::expect_identical(
     to_string_matrix(sub_tab),
@@ -63,11 +63,11 @@ testthat::test_that("tern:::has_count_in_cols result performs comparisons correc
     )
   )
   table_row <- collect_leaves(sub_tab)[[1]]
-  row_condition <- tern:::has_count_in_cols(atleast = 4L, col_names = "A: Drug X")
+  row_condition <- has_count_in_cols(atleast = 4L, col_names = "A: Drug X")
   testthat::expect_false(row_condition(table_row))
-  row_condition <- tern:::has_count_in_cols(atleast = 1L, col_names = "A: Drug X")
+  row_condition <- has_count_in_cols(atleast = 1L, col_names = "A: Drug X")
   testthat::expect_true(row_condition(table_row))
-  row_condition <- tern:::has_count_in_cols(atleast = 5L, col_names = c("A: Drug X", "B: Placebo"))
+  row_condition <- has_count_in_cols(atleast = 5L, col_names = c("A: Drug X", "B: Placebo"))
   testthat::expect_true(row_condition(table_row))
 })
 
@@ -154,7 +154,7 @@ testthat::test_that("has_fractions_difference result performs comparisons correc
   testthat::expect_false(row_condition(table_row))
 })
 
-testthat::test_that("tern:::has_counts_difference result performs comparisons correctly", {
+testthat::test_that("has_counts_difference result performs comparisons correctly", {
   sub_tab <- tab[5, ]
   testthat::expect_identical(
     to_string_matrix(sub_tab),
@@ -164,11 +164,11 @@ testthat::test_that("tern:::has_counts_difference result performs comparisons co
     )
   )
   table_row <- collect_leaves(sub_tab)[[1]]
-  row_condition <- tern:::has_counts_difference(atleast = 3L, col_names = c("A: Drug X", "B: Placebo"))
+  row_condition <- has_counts_difference(atleast = 3L, col_names = c("A: Drug X", "B: Placebo"))
   testthat::expect_true(row_condition(table_row))
-  row_condition <- tern:::has_counts_difference(atleast = 4L, col_names = c("A: Drug X", "B: Placebo"))
+  row_condition <- has_counts_difference(atleast = 4L, col_names = c("A: Drug X", "B: Placebo"))
   testthat::expect_false(row_condition(table_row))
-  row_condition <- tern:::has_counts_difference(atleast = 1L, col_names = c("A: Drug X", "C: Combination"))
+  row_condition <- has_counts_difference(atleast = 1L, col_names = c("A: Drug X", "C: Combination"))
   testthat::expect_false(row_condition(table_row))
 })
 
@@ -177,8 +177,8 @@ testthat::test_that("combination of pruning functions works", {
     prune_table(
       keep_rows(
         has_fractions_difference(atleast = 0.1, c("A: Drug X", "C: Combination")) &
-          tern:::has_counts_difference(atleast = 2L, c("B: Placebo", "A: Drug X")) &
-          tern:::has_count_in_cols(atleast = 3L, "A: Drug X")
+          has_counts_difference(atleast = 2L, c("B: Placebo", "A: Drug X")) &
+          has_count_in_cols(atleast = 3L, "A: Drug X")
       )
     )
   result_matrix <- to_string_matrix(result)

@@ -117,7 +117,7 @@ testthat::test_that("h_worsen_counter counts data (low) correctly", {
 
   df_test <- cbind(USUBJID = 1:100, df_test, GRADDR = "Low")
 
-  result <- tern:::h_worsen_counter(
+  result <- h_worsen_counter(
     df_test,
     id = "USUBJID",
     .var = "ATOXGR",
@@ -145,7 +145,7 @@ testthat::test_that("h_worsen_counter counts data (high) correctly", {
 
   df_test <- cbind(USUBJID = 1:100, df_test, GRADDR = "High")
 
-  result <- tern:::h_worsen_counter(
+  result <- h_worsen_counter(
     df_test,
     id = "USUBJID",
     .var = "ATOXGR",
@@ -173,7 +173,7 @@ testthat::test_that("h_worsen_counter counts data (low), no high correctly", {
 
   df_test <- cbind(USUBJID = 1:36, df_test, GRADDR = "Low")
 
-  result <- tern:::h_worsen_counter(
+  result <- h_worsen_counter(
     df_test,
     id = "USUBJID",
     .var = "ATOXGR",
@@ -201,7 +201,7 @@ testthat::test_that("h_worsen_counter counts data (low), no low correctly", {
 
   df_test <- cbind(USUBJID = 1:36, df_test, GRADDR = "Low")
 
-  result <- tern:::h_worsen_counter(
+  result <- h_worsen_counter(
     df_test,
     id = "USUBJID",
     .var = "ATOXGR",
@@ -221,7 +221,7 @@ testthat::test_that("h_worsen_counter counts data (low), no low correctly", {
   testthat::expect_equal(result, expected)
 })
 
-testthat::test_that("tern:::s_count_abnormal_lab_worsen_by_baseline", {
+testthat::test_that("s_count_abnormal_lab_worsen_by_baseline", {
   df_test <- expand.grid(
     ATOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>"),
     BTOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>")
@@ -229,7 +229,7 @@ testthat::test_that("tern:::s_count_abnormal_lab_worsen_by_baseline", {
 
   df_test <- cbind(USUBJID = 1:100, df_test, GRADDR = "Low")
 
-  result <- tern:::s_count_abnormal_lab_worsen_by_baseline(
+  result <- s_count_abnormal_lab_worsen_by_baseline(
     df = df_test,
     .var = "ATOXGR",
     variables = list(

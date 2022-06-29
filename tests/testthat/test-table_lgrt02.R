@@ -8,10 +8,10 @@ adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 
 adsl_cached <- adsl %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  tern:::reapply_varlabels(formatters::var_labels(adsl))
+  reapply_varlabels(formatters::var_labels(adsl))
 adrs_cached <- adrs %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  tern:::reapply_varlabels(formatters::var_labels(adrs))
+  reapply_varlabels(formatters::var_labels(adrs))
 
 
 get_adrs <- function() {

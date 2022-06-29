@@ -3,7 +3,7 @@ library(dplyr)
 
 adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
-testthat::test_that("tern:::s_surv_time works with default arguments", {
+testthat::test_that("s_surv_time works with default arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -11,7 +11,7 @@ testthat::test_that("tern:::s_surv_time works with default arguments", {
       is_event = CNSR == 0
     )
 
-  result <- tern:::s_surv_time(
+  result <- s_surv_time(
     adtte_f %>% dplyr::filter(ARMCD == "ARM B"),
     .var = "AVAL",
     is_event = "is_event"
@@ -27,7 +27,7 @@ testthat::test_that("tern:::s_surv_time works with default arguments", {
   testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
-testthat::test_that("tern:::s_surv_time works with customized arguments", {
+testthat::test_that("s_surv_time works with customized arguments", {
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -35,7 +35,7 @@ testthat::test_that("tern:::s_surv_time works with customized arguments", {
       is_event = CNSR == 0
     )
 
-  result <- tern:::s_surv_time(
+  result <- s_surv_time(
     adtte_f %>% dplyr::filter(ARMCD == "ARM B"),
     .var = "AVAL",
     is_event = "is_event",

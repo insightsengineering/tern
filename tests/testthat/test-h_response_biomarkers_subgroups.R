@@ -21,8 +21,8 @@ adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
 # h_rsp_to_logistic_variables ----
 
-testthat::test_that("tern:::h_rsp_to_logistic_variables works as expected", {
-  result <- testthat::expect_silent(tern:::h_rsp_to_logistic_variables(
+testthat::test_that("h_rsp_to_logistic_variables works as expected", {
+  result <- testthat::expect_silent(h_rsp_to_logistic_variables(
     variables = list(
       rsp = "RSP",
       covariates = c("A", "B"),
@@ -41,11 +41,11 @@ testthat::test_that("tern:::h_rsp_to_logistic_variables works as expected", {
 
 # h_logistic_mult_cont_df ----
 
-testthat::test_that("tern:::h_logistic_mult_cont_df works as expected", {
+testthat::test_that("h_logistic_mult_cont_df works as expected", {
   adrs_f <- adrs %>%
     preprocess_adrs()
 
-  result <- testthat::expect_silent(tern:::h_logistic_mult_cont_df(
+  result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
       rsp = "rsp",
       biomarkers = c("BMRKR1", "AGE"),
@@ -70,11 +70,11 @@ testthat::test_that("tern:::h_logistic_mult_cont_df works as expected", {
   testthat::expect_equal(result, expected, tol = 1e-5)
 })
 
-testthat::test_that("tern:::h_logistic_mult_cont_df returns missing values if data is empty (0 rows)", {
+testthat::test_that("h_logistic_mult_cont_df returns missing values if data is empty (0 rows)", {
   adrs_f <- adrs %>%
     preprocess_adrs()
 
-  result <- testthat::expect_silent(tern:::h_logistic_mult_cont_df(
+  result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
       rsp = "rsp",
       biomarkers = c("BMRKR1", "AGE"),
@@ -99,12 +99,12 @@ testthat::test_that("tern:::h_logistic_mult_cont_df returns missing values if da
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("tern:::h_logistic_mult_cont_df also works with response not being called rsp", {
+testthat::test_that("h_logistic_mult_cont_df also works with response not being called rsp", {
   adrs_f <- adrs %>%
     preprocess_adrs() %>%
     dplyr::rename(RESP = rsp)
 
-  result <- testthat::expect_silent(tern:::h_logistic_mult_cont_df(
+  result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
       rsp = "RESP",
       biomarkers = c("BMRKR1", "AGE"),
@@ -131,7 +131,7 @@ testthat::test_that("tern:::h_logistic_mult_cont_df also works with response not
 
 # h_tab_rsp_one_biomarker ----
 
-testthat::test_that("tern:::h_tab_rsp_one_biomarker works as expected", {
+testthat::test_that("h_tab_rsp_one_biomarker works as expected", {
   df <- data.frame(
     n_tot = c(48L, 48L),
     n_rsp = c(24L, 24L),
@@ -147,7 +147,7 @@ testthat::test_that("tern:::h_tab_rsp_one_biomarker works as expected", {
     var = c("ALL", "ALL"),
     var_label = c("All patients", "All patients")
   )
-  result <- testthat::expect_silent(tern:::h_tab_rsp_one_biomarker(
+  result <- testthat::expect_silent(h_tab_rsp_one_biomarker(
     df = df,
     vars = c("n_tot", "or", "ci")
   ))

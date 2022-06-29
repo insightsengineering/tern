@@ -3,7 +3,7 @@
 testthat::test_that("combine_vectors works correctly", {
   x <- c(1:3)
   y <- c(4:6)
-  result <- tern:::combine_vectors(x, y)
+  result <- combine_vectors(x, y)
 
   expected <- list(
     c(1, 4),
