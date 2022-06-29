@@ -92,7 +92,7 @@ Note that \code{df} should be filtered to include only post-baseline records.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal}: Statistics (test1) function which counts patients with abnormal range values
+\item \code{s_count_abnormal}: Statistics (test2) function which counts patients with abnormal range values
 for a single \code{abnormal} level.
 
 \item \code{a_count_abnormal}: Formatted Analysis function which can be further customized by calling
@@ -116,7 +116,6 @@ df <- data.frame(
 
 # Select only post-baseline records.
 df <- df \%>\%
-
   filter(ONTRTFL == "Y")
 
 # For abnormal level "HIGH" we get the following counts.
