@@ -2,13 +2,10 @@
 % Please edit documentation in R/summarize_ancova.R
 \name{summarize_ancova}
 \alias{summarize_ancova}
-\alias{h_ancova}
 \alias{s_ancova}
 \alias{a_ancova}
 \title{Summary for analysis of covariance (ANCOVA).}
 \usage{
-h_ancova(.var, .df_row, variables)
-
 s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col, conf_level)
 
 a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col, conf_level)
@@ -27,23 +24,14 @@ summarize_ancova(
 )
 }
 \arguments{
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\verb{data frame})\cr data set that includes all the variables that are called
-in \code{.var} and \code{variables}.}
+\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
-expected elements:
-\itemize{
-\item \code{arm}: (\code{string})\cr group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
-reference group.
-\item \code{covariates}: (\code{character})\cr a vector that can contain single variable names (such as
-\code{"X1"}), and/or interaction terms indicated by \code{"X1 * X2"}.
-}}
-
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
 
@@ -92,8 +80,6 @@ multiple timepoints within the same response variable \code{.var}.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_ancova}: Helper function to return results of a linear model.
-
 \item \code{s_ancova}: Statistics function that produces a named list of results
 of the investigated linear model.
 
@@ -105,12 +91,6 @@ summary tables for analysis of covariance (ANCOVA).
 }}
 
 \examples{
-h_ancova(
-  .var = "Sepal.Length",
-  .df_row = iris,
-  variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
-)
-
 library(scda)
 library(dplyr)
 
@@ -136,7 +116,6 @@ conf_level <- 0.95
 tern:::s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 
 tern:::a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
-
 
 library(scda)
 library(rtables)
@@ -181,5 +160,6 @@ basic_table() \%>\%
   ) \%>\%
   build_table(adqs_multi, alt_counts_df = adsl)
 }
+
 }
 \keyword{internal}

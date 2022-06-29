@@ -8,11 +8,11 @@
 #' @param variables (named `list` of `character`)\cr supposed variables list to test
 #' @param include_boundaries (`logical`)\cr whether to include boundaries when testing for proportions.
 #' @param ... a collection of objects to test.
+#'
 #' @name assertions
 NULL
 
 check_list_of_variables <- function(x) {
-
   # drop NULL elements in list
   x <- Filter(Negate(is.null), x)
 
@@ -28,6 +28,7 @@ check_list_of_variables <- function(x) {
   }
   return(res)
 }
+
 #' @describeIn assertions Check whether `x` is a valid list of variable names.
 #'   `NULL` elements of the list `x` are dropped out with `Filter(Negate(is.null), x)`.
 #'
@@ -77,6 +78,7 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
   }
   return(TRUE)
 }
+
 #' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
 #'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
@@ -146,8 +148,10 @@ check_valid_factor <- function(x,
   }
   return(res)
 }
+
 #' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
 #'   Note that `NULL` and `NA` elements are allowed.
+#'
 #' @param min.levels Minimum number of levels for `x`.
 #' @param max.levels Maximum number of levels for `x`.
 #' @param any.missing Default is `TRUE`, allowing missing values (`NA`).
@@ -205,6 +209,7 @@ check_df_with_factors <- function(df,
   }
   return(res)
 }
+
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
 #'   are all factors. Note that the creation of `NA` by direct call of `factor()` will
 #'   trim `NA` levels out of the vector list itself.

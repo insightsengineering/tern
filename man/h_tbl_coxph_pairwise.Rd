@@ -28,9 +28,8 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 }}
 }
 \description{
-#' @description \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Create an \code{rtable} of pairwise stratified or unstratified CoxPH analysis results.
 }
 \examples{

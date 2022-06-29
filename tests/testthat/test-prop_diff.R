@@ -4,7 +4,7 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
 
-  result <- prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
+  result <- tern:::prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
   # according to SAS.
   expected <- list(
     diff = 0.25,
@@ -16,7 +16,7 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
-  result <- prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
+  result <- tern:::prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
   # according to SAS.
   expected <- list(
     diff = 0,
@@ -33,7 +33,7 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
 
   result <- suppressWarnings(
-    prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
+    tern:::prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
   )
   # according to SAS.
   expected <- list(
@@ -46,7 +46,7 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
   result <- testthat::expect_warning(
-    prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.6)
+    tern:::prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.6)
   )
   # according to SAS.
   expected <- list(
@@ -68,7 +68,7 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
     stringsAsFactors = TRUE
   )
 
-  result <- prop_diff_cmh(
+  result <- tern:::prop_diff_cmh(
     rsp = rsp, grp = grp, strata = interaction(strata_data),
     conf_level = 0.90
   )
@@ -99,7 +99,7 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
   # Deliberately remove all `Treatment` patients from one stratum.
   grp[strata_data$f1 == "a" & strata_data$f2 == "x"] <- "Placebo"
 
-  result <- testthat::expect_silent(prop_diff_cmh(
+  result <- testthat::expect_silent(tern:::prop_diff_cmh(
     rsp = rsp, grp = grp, strata = interaction(strata_data),
     conf_level = 0.90
   ))

@@ -33,13 +33,9 @@
 #' }
 #'
 #' @return a grid grob (\code{gTree})
-#'
-#' @export
-#'
 #' @template author_waddella
 #'
 #' @examples
-#'
 #' titles <- c(
 #'   "Edgar Anderson's Iris Data",
 #'   paste(
@@ -56,7 +52,6 @@
 #'     "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
 #'   )
 #' )
-#'
 #'
 #' ## empty plot
 #' library(grid)
@@ -140,6 +135,8 @@
 #'     border = FALSE
 #'   )
 #' )
+#'
+#' @export
 decorate_grob <- function(grob,
                           titles,
                           footnotes,
@@ -436,11 +433,7 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #'
 #' @param npages number of pages in total
 #' @param ... passed on to \code{\link{decorate_grob}}
-#'
-#' @return closure that increments the page number
-#'
-#' @keywords internal
-#'
+#' @return closure that increments the page number#'
 #' @template author_waddella
 #'
 #' @examples
@@ -454,6 +447,8 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' tern:::draw_grob(pf(NULL))
 #' tern:::draw_grob(pf(NULL))
 #' tern:::draw_grob(pf(NULL))
+#'
+#' @keywords internal
 decorate_grob_factory <- function(npages, ...) {
   current_page <- 0
   function(grob) {
@@ -473,10 +468,7 @@ decorate_grob_factory <- function(npages, ...) {
 #' Note that this uses the `decorate_grob_factory` function.
 #'
 #' @param grobs a list of grid grobs
-#' @param ... arguments passed on to \code{\link{decorate_grob}}
-#'
-#' @export
-#'
+#' @param ... arguments passed on to \code{\link{decorate_grob}}#'
 #' @template author_waddella
 #'
 #' @examples
@@ -496,6 +488,8 @@ decorate_grob_factory <- function(npages, ...) {
 #' tern:::draw_grob(lg[[1]])
 #' tern:::draw_grob(lg[[2]])
 #' tern:::draw_grob(lg[[6]])
+#'
+#' @export
 decorate_grob_set <- function(grobs, ...) {
   n <- length(grobs)
   lgf <- decorate_grob_factory(npages = n, ...)

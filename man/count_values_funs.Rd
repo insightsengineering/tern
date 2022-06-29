@@ -6,8 +6,8 @@
 \alias{s_count_values.character}
 \alias{s_count_values.factor}
 \alias{s_count_values.logical}
-\alias{count_values}
 \alias{a_count_values}
+\alias{count_values}
 \title{Counting Specific Values}
 \usage{
 s_count_values(
@@ -25,6 +25,15 @@ s_count_values(
 
 \method{s_count_values}{logical}(x, values = TRUE, ...)
 
+a_count_values(
+  x,
+  values,
+  na.rm = TRUE,
+  .N_col,
+  .N_row,
+  denom = c("n", "N_row", "N_col")
+)
+
 count_values(
   lyt,
   vars,
@@ -35,15 +44,6 @@ count_values(
   .formats = NULL,
   .labels = c(count_fraction = paste(values, collapse = ", ")),
   .indent_mods = NULL
-)
-
-a_count_values(
-  x,
-  values,
-  na.rm = TRUE,
-  .N_col,
-  .N_row,
-  denom = c("n", "N_row", "N_col")
 )
 }
 \arguments{
@@ -100,12 +100,12 @@ and calling \code{s_count_values.character}.
 
 \item \code{s_count_values.logical}: method for \code{logical} vectors \code{x}.
 
+\item \code{a_count_values}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{count_values}: Analyze Function which adds the counting analysis to
 the input layout. Note that additional formatting arguments can be used
 here.
-
-\item \code{a_count_values}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 }}
 
 \note{
@@ -116,14 +116,19 @@ are hidden.
 # `s_count_values.character`
 s_count_values(x = c("a", "b", "a"), values = "a")
 s_count_values(x = c("a", "b", "a", NA, NA), values = "b", na.rm = FALSE)
+
 # `s_count_values.factor`
 s_count_values(x = factor(c("a", "b", "a")), values = "a")
+
 # `s_count_values.logical`
 s_count_values(x = c(TRUE, FALSE, TRUE))
+
+# `a_count_values`
+a_count_values(x = factor(c("a", "b", "a")), values = "a", .N_col = 10, .N_row = 10)
+
 # `count_values`
 basic_table() \%>\%
   count_values("Species", values = "setosa") \%>\%
   build_table(iris)
-# `a_count_values`
-a_count_values(x = factor(c("a", "b", "a")), values = "a", .N_col = 10, .N_row = 10)
+
 }

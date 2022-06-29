@@ -21,7 +21,6 @@ String describing the analysis.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 This is a helper function that describes the analysis in \code{\link[=s_proportion]{s_proportion()}}.
 }

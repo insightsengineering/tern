@@ -87,6 +87,7 @@ tern:::s_change_from_baseline(
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")
 )
+
 tern:::a_change_from_baseline(
   df,
   .var = "chg",

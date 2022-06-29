@@ -79,7 +79,6 @@ The layout can be illustrated as follows:
 }
 }
 \examples{
-
 titles <- c(
   "Edgar Anderson's Iris Data",
   paste(
@@ -96,7 +95,6 @@ footnotes <- c(
     "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
   )
 )
-
 
 ## empty plot
 library(grid)
@@ -180,6 +178,7 @@ grid.draw(
     border = FALSE
   )
 )
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

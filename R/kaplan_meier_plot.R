@@ -384,12 +384,10 @@ g_km <- function(df,
 
 #' Helper function: tidy survival fit
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' This starts from the [broom::tidy()] result, and then:
 #' - post-processes the `strata` column into a factor,
@@ -402,6 +400,7 @@ g_km <- function(df,
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`) \cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
+#'
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -468,7 +467,7 @@ h_data_plot <- function(fit_km,
 
 #' Helper function: x tick positions
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Calculate the positions of ticks on the x-axis. However, if `xticks` already
 #' exists it is kept as is. It is based on the same function `ggplot2` relies on,
@@ -1143,11 +1142,12 @@ h_grob_y_annot <- function(ylab, yaxis) {
 
 #' Helper Function: Pairwise CoxPH table
 #'
-#' #' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
+#'
 #' @examples
 #' \dontrun{
 #' library(scda)

@@ -9,7 +9,7 @@ decorate_grob_set(grobs, ...)
 \arguments{
 \item{grobs}{a list of grid grobs}
 
-\item{...}{arguments passed on to \code{\link{decorate_grob}}}
+\item{...}{arguments passed on to \code{\link{decorate_grob}}#'}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -33,6 +33,7 @@ library(grid)
 tern:::draw_grob(lg[[1]])
 tern:::draw_grob(lg[[2]])
 tern:::draw_grob(lg[[6]])
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

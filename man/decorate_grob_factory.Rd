@@ -12,7 +12,7 @@ decorate_grob_factory(npages, ...)
 \item{...}{passed on to \code{\link{decorate_grob}}}
 }
 \value{
-closure that increments the page number
+closure that increments the page number#'
 }
 \description{
 Automatically updates page number.
@@ -28,6 +28,7 @@ library(grid)
 tern:::draw_grob(pf(NULL))
 tern:::draw_grob(pf(NULL))
 tern:::draw_grob(pf(NULL))
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

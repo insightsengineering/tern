@@ -128,7 +128,7 @@ testthat::test_that("cut_quantile_bins does work also if an empty `probs` vector
 
 testthat::test_that("fct_discard works as expected", {
   x <- factor(c("a", "b", "c"))
-  result <- fct_discard(x, "b")
+  result <- tern:::fct_discard(x, "b")
   expected <- factor(c("a", "c"))
   testthat::expect_identical(result, expected)
 })

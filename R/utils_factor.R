@@ -7,16 +7,15 @@
 #' @param x factor
 #' @param levels level names to be combined
 #' @param new_level name of new level
-#'
 #' @return a factor
-#'
-#' @export
 #'
 #' @examples
 #' x <- factor(letters[1:5], levels = letters[5:1])
 #' combine_levels(x, levels = c("a", "b"))
 #'
 #' combine_levels(x, c("e", "b"))
+#'
+#' @export
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
   stopifnot(
     is.factor(x),
@@ -102,9 +101,8 @@ as_factor_keep_attributes <- function(x,
 #'   This is a sorted vector of unique `proportion` values, i.e. between 0 and 1, where
 #'   the boundaries 0 and 1 must not be included.
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
-#'
 #' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
-#' @keywords internal
+#'
 #' @examples
 #' # Just pass the internal probability bounds, then 0 and 100% will be added automatically.
 #' tern:::bins_percent_labels(c(0.2, 0.5))
@@ -113,7 +111,9 @@ as_factor_keep_attributes <- function(x,
 #' tern:::bins_percent_labels(0.35224, digits = 1)
 #'
 #' # Passing an empty vector just gives a single bin 0-100%.
-#' tern:::bins_percent_labels(c(0, 1))
+#' tern:::bins_percent_labels(c())
+#'
+#' @keywords internal
 bins_percent_labels <- function(probs,
                                 digits = 0) {
   if (isFALSE(0 %in% probs)) probs <- c(0, probs)
@@ -150,9 +150,7 @@ bins_percent_labels <- function(probs,
 #'   probabilities in `probs`, then this must be `n + 1` long.
 #' @param type (`integer`)\cr type of quantiles to use, see [stats::quantile()] for details.
 #' @param ordered (`flag`)\cr should the result be an ordered factor.
-#'
 #' @return The factor variable with the appropriately labeled bins as levels.
-#' @export
 #'
 #' @examples
 #' # Default is to cut into quartile bins.
@@ -169,6 +167,8 @@ bins_percent_labels <- function(probs,
 #' which(is.na(ozone_binned))
 #' # So you might want to make these explicit.
 #' explicit_na(ozone_binned)
+#'
+#' @export
 cut_quantile_bins <- function(x,
                               probs = c(0.25, 0.5, 0.75),
                               labels = NULL,
@@ -213,12 +213,12 @@ cut_quantile_bins <- function(x,
 #'
 #' @param x (`factor`)\cr the original factor.
 #' @param discard (`character`)\cr which levels to discard.
-#'
 #' @return The modified factor with observations as well as levels from `discard` dropped.
-#' @export
 #'
 #' @examples
-#' fct_discard(factor(c("a", "b", "c")), "c")
+#' tern:::fct_discard(factor(c("a", "b", "c")), "c")
+#'
+#' @keywords internal
 fct_discard <- function(x, discard) {
   checkmate::assert_factor(x)
   checkmate::assert_character(discard, any.missing = FALSE)
@@ -235,14 +235,13 @@ fct_discard <- function(x, discard) {
 #' @param x (`factor`)\cr the original factor.
 #' @param condition (`logical`)\cr where to insert missings.
 #' @param na_level (`string`)\cr which level to use for missings.
-#'
 #' @return The modified factor with inserted and existing `NA` converted to `na_level`.
 #' @seealso [forcats::fct_explicit_na()] which is used internally.
 #'
-#' @keywords internal
-#'
 #' @examples
 #' tern:::fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
+#'
+#' @keywords internal
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   checkmate::assert_factor(x)
   checkmate::assert_logical(condition)
@@ -263,15 +262,14 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #'   the new level given by the respective name.
 #' @param .na_level (`string`)\cr which level to use for other levels, which should be missing in the
 #'   new factor. Note that this level must not be contained in the new levels specified in `...`.
-#'
 #' @return The modified factor with collapsed levels. Values and levels which are not included
 #'   in the given character vectors input will be set to the missing level.
 #' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'
-#' @keywords internal
-#'
 #' @examples
 #' tern:::fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
+#'
+#' @keywords internal
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   new_lvls <- names(list(...))
   if (checkmate::test_subset(.na_level, new_lvls)) {
@@ -283,23 +281,18 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 
 #' Replace all empty string values in data frame
 #'
-#' @description
-#' Function used to fix for update in `Rtables issue` `tern#593` (`NA` alternative -> `" "`)
+#' @description Function used to fix for update in `Rtables issue` `tern#593` (`NA` alternative -> `" "`)
 #' This function is similar in scope as `df_explicit_na()`. In the future a merge
 #' is to be expected.
 #'
 #' @param df `data.frame` table to act upon
 #' @param rep_str replacement string for empty strings
-#'
 #' @details this functions relies onto `for` loop, `levels`, and `nchar`. It can
 #' easily be optimized for different cases. For the moment, this fits the purpose
 #' to fix issue `tern#593`
-#'
 #' @seealso [df_explicit_na()]
 #'
 #' @keywords internal
-#'
-#' @md
 replace_emptys_with_na <- function(df, rep_str = "NA") {
 
   # checks

@@ -12,7 +12,6 @@
 \alias{a_compare.factor}
 \alias{a_compare.character}
 \alias{a_compare.logical}
-\alias{create_afun_compare}
 \alias{compare_vars}
 \title{Compare Variables Between Groups}
 \usage{
@@ -72,13 +71,6 @@ a_compare(x, .ref_group, .in_ref_col, ..., .var)
 
 \method{a_compare}{logical}(x, .ref_group, .in_ref_col, na.rm = TRUE, denom = "n", ...)
 
-create_afun_compare(
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
-
 compare_vars(
   lyt,
   vars,
@@ -115,14 +107,6 @@ by a statistics function.}
 \item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -135,6 +119,14 @@ to print out information about factor casting.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 If \code{x} is of class \code{numeric}, returns a list with named items:
@@ -197,9 +189,6 @@ of p-values. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::
 
 \item \code{a_compare.logical}: Formatted Analysis function method for \code{logical}.
 
-\item \code{create_afun_compare}: Constructor function which creates a combined Formatted
-Analysis function for use in layout creating functions \code{\link[=compare_vars]{compare_vars()}}.
-
 \item \code{compare_vars}: Analyze Function to add a comparison of variables to
 \code{rtables} pipelines. The column split needs to have the reference group defined
 via \code{ref_group} so that the comparison is well defined.
@@ -214,13 +203,6 @@ Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
-
-Since \code{\link[=a_compare]{a_compare()}} is generic and we want customization of the formatting arguments
-via \code{\link[rtables:make_afun]{rtables::make_afun()}}, we need to create another temporary generic function, with
-corresponding customized methods. Then in order for the methods to be found,
-we need to wrap them in a combined \code{afun}. Since this is required by two layout creating
-functions (and possibly others in the future), we provide a constructor that does this:
-\code{\link[=create_afun_compare]{create_afun_compare()}}.
 }
 \section{Formatting arguments}{
 
@@ -244,6 +226,7 @@ s_compare(rnorm(10, 5, 1), .ref_group = 1, .in_ref_col = FALSE)
 
 ## Empty numeric does not fail, it returns NA-filled items and no p-value.
 s_compare(numeric(), .ref_group = numeric(), .in_ref_col = FALSE)
+
 # `s_compare.factor`
 
 ## Basic usage:
@@ -256,6 +239,7 @@ x <- explicit_na(factor(c("a", "a", "b", "c", "a", NA, NA)))
 y <- explicit_na(factor(c("a", "b", "c", NA)))
 s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+
 # `s_compare.character`
 
 ## Basic usage:
@@ -287,6 +271,7 @@ x <- c(NA, TRUE, FALSE)
 y <- c(NA, NA, NA, NA, FALSE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+
 # `a_compare.numeric`
 a_compare(
   rnorm(10, 5, 1),
@@ -294,6 +279,7 @@ a_compare(
   .in_ref_col = FALSE,
   .var = "bla"
 )
+
 # `a_compare.factor`
 # We need to ungroup `count` and `count_fraction` first so that the `rtables` formatting
 # functions can be applied correctly.
@@ -304,6 +290,7 @@ afun <- make_afun(
 x <- factor(c("a", "a", "b", "c", "a"))
 y <- factor(c("a", "a", "b", "c"))
 afun(x, .ref_group = y, .in_ref_col = FALSE)
+
 # `a_compare.character`
 afun <- make_afun(
   getS3method("a_compare", "character"),
@@ -312,6 +299,7 @@ afun <- make_afun(
 x <- c("A", "B", "A", "C")
 y <- c("B", "A", "C")
 afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
+
 # `a_compare.logical`
 afun <- make_afun(
   getS3method("a_compare", "logical")
@@ -319,31 +307,6 @@ afun <- make_afun(
 x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
 y <- c(TRUE, FALSE)
 afun(x, .ref_group = y, .in_ref_col = FALSE)
-# `create_afun_compare()` to create combined `afun`
-
-afun <- create_afun_compare(
-  .stats = c("n", "count_fraction", "mean_sd", "pval"),
-  .indent_mods = c(pval = 1L)
-)
-
-lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
-  analyze(
-    "AGE",
-    afun = afun,
-    show_labels = "visible"
-  )
-build_table(lyt, df = ex_adsl)
-
-lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
-  analyze(
-    "SEX",
-    afun = afun,
-    show_labels = "visible"
-  )
-build_table(lyt, df = ex_adsl)
-
 # `compare_vars()` in `rtables` pipelines
 
 ## Default output within a `rtables` pipeline.
@@ -362,6 +325,7 @@ lyt <- basic_table() \%>\%
     .labels = c(mean_sd = "Mean, SD")
   )
 build_table(lyt, df = ex_adsl)
+
 }
 \seealso{
 \code{\link[=s_summary]{s_summary()}} which is used internally for the summary part per column.

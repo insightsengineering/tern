@@ -64,5 +64,6 @@ vp1 <- grid::viewport(layout.pos.row = 1, layout.pos.col = 2)
 grid.draw(tern:::arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 
 showViewport()
+
 }
 \keyword{internal}

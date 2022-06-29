@@ -16,10 +16,8 @@
 #' @param label_all (`string`)\cr label for the total population analysis.
 #' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips
 #'   displaying unit.
-#' @name survival_duration_subgroups
-#' @order 1
-#' @examples
 #'
+#' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
@@ -51,16 +49,67 @@
 #'   "is_event" = "Event Flag"
 #' )
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
+#' df <- extract_survival_subgroups(
+#'   variables = list(
+#'     tte = "AVAL",
+#'     is_event = "is_event",
+#'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
+#'   ),
+#'   data = adtte_f
+#' )
+#' df
+#'
+#' @name survival_duration_subgroups
 NULL
 
-#' @describeIn survival_duration_subgroups prepares estimates of median survival times and treatment hazard ratios for
-#'   population subgroups in data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()].
+#' Prepares Survival Data for Population Subgroups in Data Frames
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Prepares estimates of median survival times and treatment hazard ratios for population subgroups in
+#' data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()].
 #'   Result is a list of two data frames: `survtime` and `hr`.
 #'   `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
 #'   `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`. `groups_lists` optionally specifies
 #'   groupings for `subgroups` variables.
-#' @export
+#'
+#' @inheritParams argument_convention
+#' @inheritParams survival_coxph_pairwise
+#' @inheritParams survival_duration_subgroups
+#'
 #' @examples
+#' # Testing dataset.
+#' library(scda)
+#' library(dplyr)
+#' library(forcats)
+#' library(rtables)
+#'
+#' adtte <- synthetic_cdisc_data("latest")$adtte
+#'
+#' # Save variable labels before data processing steps.
+#' adtte_labels <- formatters::var_labels(adtte)
+#'
+#' adtte_f <- adtte %>%
+#'   filter(
+#'     PARAMCD == "OS",
+#'     ARM %in% c("B: Placebo", "A: Drug X"),
+#'     SEX %in% c("M", "F")
+#'   ) %>%
+#'   mutate(
+#'     # Reorder levels of ARM to display reference arm before treatment arm.
+#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+#'     SEX = droplevels(SEX),
+#'     AVALU = as.character(AVALU),
+#'     is_event = CNSR == 0
+#'   )
+#' labels <- c(
+#'   "ARM" = adtte_labels[["ARM"]],
+#'   "SEX" = adtte_labels[["SEX"]],
+#'   "AVALU" = adtte_labels[["AVALU"]],
+#'   "is_event" = "Event Flag"
+#' )
+#' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
 #' df <- extract_survival_subgroups(
 #'   variables = list(
@@ -88,6 +137,8 @@ NULL
 #'   )
 #' )
 #' df_grouped
+#'
+#' @export
 extract_survival_subgroups <- function(variables,
                                        data,
                                        groups_lists = list(),
@@ -160,6 +211,7 @@ a_survival_subgroups <- function(.formats = list(
 }
 
 #' @describeIn survival_duration_subgroups table creating function.
+#'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
@@ -173,9 +225,8 @@ a_survival_subgroups <- function(.formats = list(
 #'  `pval` (p value of the effect).
 #'  Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
 #'  are required.
-#' @export
-#' @examples
 #'
+#' @examples
 #' ## Table with default columns.
 #' basic_table() %>%
 #'   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
@@ -187,6 +238,8 @@ a_survival_subgroups <- function(.formats = list(
 #'     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
 #'     time_unit = adtte_f$AVALU[1]
 #'   )
+#'
+#' @export
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),

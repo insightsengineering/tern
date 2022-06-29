@@ -9,142 +9,23 @@
 #'   with two groups in rows and the binary response (`TRUE`/`FALSE`) in
 #'   columns.
 #'
-#' @order 1
-#' @name prop_diff_test
+#' @seealso [h_prop_diff_test()] for relevant helper functions.
 #'
+#' @name prop_diff_test
 NULL
 
-#' @describeIn prop_diff_test performs Chi-Squared test.
-#'   Internally calls [stats::prop.test()].
-#' @order 2
-#'
-#' @examples
-#' # Non-stratified proportion difference test
-#'
-#' ## Data
-#' A <- 20
-#' B <- 20
-#' set.seed(1)
-#' rsp <- c(
-#'   sample(c(TRUE, FALSE), size = A, prob = c(3 / 4, 1 / 4), replace = TRUE),
-#'   sample(c(TRUE, FALSE), size = A, prob = c(1 / 2, 1 / 2), replace = TRUE)
-#' )
-#' grp <- c(rep("A", A), rep("B", B))
-#' tbl <- table(grp, rsp)
-#'
-#' ## Chi-Squared test
-#' tern:::prop_chisq(tbl)
-#'
-#' @keywords internal
-prop_chisq <- function(tbl) {
-  checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
-  tbl <- tbl[, c("TRUE", "FALSE")]
-  if (any(colSums(tbl) == 0)) {
-    return(1)
-  }
-  stats::prop.test(tbl, correct = FALSE)$p.value
-}
-
-#' @describeIn prop_diff_test performs stratified Cochran-Mantel-Haenszel test.
-#'   Internally calls [stats::mantelhaen.test()]. Note that strata with less than two observations
-#'   are automatically discarded.
-#' @param ary (`array`, 3 dimensions)\cr
-#'   with two groups in rows, the binary response (`TRUE`/`FALSE`) in
-#'   columns, the strata in the third dimension.
-#' @order 3
-#'
-#' @examples
-#' # Stratified proportion difference test
-#'
-#' ## Data
-#' rsp <- sample(c(TRUE, FALSE), 100, TRUE)
-#' grp <- factor(rep(c("A", "B"), each = 50))
-#' strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-#' tbl <- table(grp, rsp, strata)
-#'
-#' ## Cochran-Mantel-Haenszel test
-#' tern:::prop_cmh(tbl)
-#'
-#' @keywords internal
-prop_cmh <- function(ary) {
-  checkmate::assert_array(ary)
-  checkmate::assert_integer(c(ncol(ary), nrow(ary)), lower = 2, upper = 2)
-  checkmate::assert_integer(length(dim(ary)), lower = 3, upper = 3)
-  strata_sizes <- apply(ary, MARGIN = 3, sum)
-  if (any(strata_sizes < 5)) {
-    warning("<5 data points in some strata. CMH test may be incorrect.")
-    ary <- ary[, , strata_sizes > 1]
-  }
-
-  stats::mantelhaen.test(ary, correct = FALSE)$p.value
-}
-
-
-#' @describeIn prop_diff_test performs the Chi-Squared test with Schouten
-#'   correction ([Schouten 1980](
-#'   https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305)).
-#' @order 2
-#'
-#' @examples
-#' ## Chi-Squared test + Schouten correction.
-#' tern:::prop_schouten(tbl)
-#'
-#' @keywords internal
-prop_schouten <- function(tbl) {
-  checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
-  tbl <- tbl[, c("TRUE", "FALSE")]
-  if (any(colSums(tbl) == 0)) {
-    return(1)
-  }
-
-  n <- sum(tbl)
-  n1 <- sum(tbl[1, ])
-  n2 <- sum(tbl[2, ])
-
-  ad <- diag(tbl)
-  bc <- diag(apply(tbl, 2, rev))
-  ac <- tbl[, 1]
-  bd <- tbl[, 2]
-
-  t_schouten <- (n - 1) *
-    (abs(prod(ad) - prod(bc)) - 0.5 * min(n1, n2))^2 /
-    (n1 * n2 * sum(ac) * sum(bd))
-
-  1 - stats::pchisq(t_schouten, df = 1)
-}
-
-
-#' @describeIn prop_diff_test performs the Fisher's exact test.
-#'   Internally calls [stats::fisher.test()].
-#' @order 2
-#'
-#' @examples
-#' ## Fisher's exact test
-#' tern:::prop_fisher(tbl)
-#'
-#' @keywords internal
-prop_fisher <- function(tbl) {
-  checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
-  tbl <- tbl[, c("TRUE", "FALSE")]
-  stats::fisher.test(tbl)$p.value
-}
-
-
-#' @describeIn prop_diff_test Statistics function which test the difference
-#'  between two proportions.
+#' @describeIn prop_diff_test Statistics function which tests the difference
+#' between two proportions.
 #'
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr
 #'   one of (`chisq`, `cmh`, `fisher`, `schouten`; specifies the test used
 #'   to calculate the p-value.
-#'
 #' @return Named `list` with a single item `pval` with an attribute `label`
 #'   describing the method used. The p-value tests the null hypothesis that
 #'   proportions in two groups are the same.
 #'
-#' @order 4
 #' @examples
-#'
 #' # Statistics function
 #' dta <- data.frame(
 #'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -209,7 +90,6 @@ s_test_proportion_diff <- function(df,
   y
 }
 
-
 #' Description of the Difference Test Between Two Proportions
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -256,6 +136,7 @@ a_test_proportion_diff <- make_afun(
 #' @describeIn prop_diff_test Layout creating function which can be used for
 #'   creating tables, which can take statistics function arguments and
 #'   additional format arguments.
+#'
 #' @param ... other arguments are passed to [s_test_proportion_diff()].
 #' @inheritParams argument_convention
 #' @export

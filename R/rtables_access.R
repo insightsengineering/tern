@@ -1,12 +1,12 @@
 #' `rtables` Access Helper Functions
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' These are a couple of functions that help with accessing the data in `rtables` objects.
 #' Currently these work for occurrence tables, which are defined
 #' as having a count as the first element and a fraction as the second element in each cell.
 #'
-#' @seealso `[prune_occurrences]` for usage of these functions.
+#' @seealso [prune_occurrences()] for usage of these functions.
 #'
 #' @name rtables_access
 NULL
@@ -51,6 +51,7 @@ h_row_fractions <- function(table_row,
 
 #' @describeIn rtables_access Helper function to extract column counts from specified columns
 #'   in a table.
+#'
 #' @param table (`VTableNodeInfo`)\cr an occurrence table or row.
 #'
 #' @export

@@ -6,21 +6,26 @@
 #' mainly the special labels.
 #'
 #' @name count_missed_doses
-#'
 NULL
 
 #' @describeIn count_missed_doses Statistics function to count non-missing values.
+#'
 #' @return [s_count_nonmissing()] returns the statistic `n` which is the count of non-missing values in `x`.
+#'
 #' @examples
 #' set.seed(1)
 #' x <- c(sample(1:10, 10), NA)
 #' tern:::s_count_nonmissing(x)
+#'
 #' @keywords internal
 s_count_nonmissing <- function(x) {
   list(n = n_available(x))
 }
 
-#' @describeIn count_missed_doses Description function that calculates labels for  [s_count_missed_doses()].
+#' Description Function that Calculates Labels for [s_count_missed_doses()].
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams s_count_missed_doses
 #' @return [d_count_missed_doses()] returns a named `character` vector with the labels.
 #'
@@ -31,13 +36,16 @@ d_count_missed_doses <- function(thresholds) {
 
 #' @describeIn count_missed_doses Statistics function to count patients with missed doses when `x`
 #'   is the vector of number of missed doses with one value for each patient.
+#'
 #' @inheritParams argument_convention
 #' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
 #' @return [s_count_missed_doses()] returns the statistics `n` and
 #'  `count_fraction` with one element for each threshold.
-#' @keywords internal
+#'
 #' @examples
 #' tern:::s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+#'
+#' @keywords internal
 s_count_missed_doses <- function(x,
                                  thresholds,
                                  .N_col) { # nolint
@@ -57,12 +65,14 @@ s_count_missed_doses <- function(x,
 }
 
 #' @describeIn count_missed_doses Formatted Analysis function to count non-missing values.
-#' @keywords internal
+#'
 #' @examples
 #' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(tern:::a_count_missed_doses, .ungroup_stats = "count_fraction")
 #' afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+#'
+#' @keywords internal
 a_count_missed_doses <- make_afun(
   s_count_missed_doses,
   .formats = c(n = "xx", count_fraction = format_count_fraction)
@@ -71,9 +81,10 @@ a_count_missed_doses <- make_afun(
 #' @describeIn count_missed_doses Layout creating function which can be be used for creating
 #'   summary tables for summarizing missed doses given user-specified `thresholds`. This is
 #'   an additional layer on top of `count_cumulative` specifically for missed doses.
+#'
 #' @inheritParams argument_convention
 #' @inheritParams s_count_cumulative
-#' @export
+#'
 #' @examples
 #' library(dplyr)
 #' library(scda)
@@ -92,6 +103,8 @@ a_count_missed_doses <- make_afun(
 #'   add_colcounts() %>%
 #'   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") %>%
 #'   build_table(anl, alt_counts_df = adsl)
+#'
+#' @export
 count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,
