@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9008</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -66,19 +60,20 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assert_character_or_factor</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">assert_list_of_variables</span><span class="op">(</span><span class="va">x</span>, .var.name <span class="op">=</span> <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/vname.html" class="external-link">vname</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assert_list_of_variables</span><span class="op">(</span><span class="va">x</span>, .var.name <span class="op">=</span> <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/vname.html" class="external-link">vname</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">assert_df_with_variables</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">variables</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .var.name <span class="op">=</span> <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/vname.html" class="external-link">vname</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">assert_valid_factor</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
+<span>  min.levels <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  max.levels <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  any.missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .var.name <span class="op">=</span> <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/vname.html" class="external-link">vname</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -87,25 +82,17 @@
 <span><span class="fu">assert_df_with_factors</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">variables</span>,</span>
+<span>  min.levels <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  max.levels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  any.missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .var.name <span class="op">=</span> <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/vname.html" class="external-link">vname</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">is_df_with_nlevels_factor</span><span class="op">(</span><span class="va">df</span>, <span class="va">variable</span>, <span class="va">n_levels</span>, relation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"=="</span>, <span class="st">"&gt;="</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">assert_equal_length</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">is_equal_length</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">is_proportion</span><span class="op">(</span><span class="va">x</span>, include_boundaries <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">is_proportion_vector</span><span class="op">(</span><span class="va">x</span>, include_boundaries <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">is_quantiles_vector</span><span class="op">(</span><span class="va">x</span>, include_boundaries <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">all_elements_in_ref</span><span class="op">(</span><span class="va">x</span>, <span class="va">ref</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">has_tabletree_colnames</span><span class="op">(</span><span class="va">x</span>, <span class="va">col_names</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">is_df_with_no_na_level</span><span class="op">(</span><span class="va">df</span>, <span class="va">variables</span>, <span class="va">na_level</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">assert_proportion_value</span><span class="op">(</span><span class="va">x</span>, include_boundaries <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -115,28 +102,29 @@
 
 
 <dt>df</dt>
-<dd><p>(<code>data frame</code>)<br> input dataset.</p></dd>
+<dd><p>supposed data frame to test</p></dd>
 
 
 <dt>variables</dt>
-<dd><p>(<code>named list</code>)<br> columns from dataset where you want to check if <code>na_level</code> exists.</p></dd>
+<dd><p>(named <code>list</code> of <code>character</code>)<br> supposed variables list to test</p></dd>
+
+
+<dt>na_level</dt>
+<dd><p>(<code>string</code>)<br> the string user has been using to represent NA or
+missing data. For <code>NA</code> values please consider using directly <code><a href="https://rdrr.io/r/base/NA.html" class="external-link">base::is.na</a></code> or
+similar approaches.</p></dd>
+
+
+<dt>min.levels</dt>
+<dd><p>Minimum number of levels for <code>x</code>.</p></dd>
+
+
+<dt>max.levels</dt>
+<dd><p>Maximum number of levels for <code>x</code>.</p></dd>
 
 
 <dt>any.missing</dt>
-<dd><p>It defaults to <code>TRUE</code>, allowing <code>NA</code> values, but it does not allow them
-if <code>FALSE</code> is used.</p></dd>
-
-
-<dt>variable</dt>
-<dd><p>(<code>string</code>)<br> name of the single variable.</p></dd>
-
-
-<dt>n_levels</dt>
-<dd><p>(<code>count</code>)<br> number of levels to compare with.</p></dd>
-
-
-<dt>relation</dt>
-<dd><p>(<code>string</code>)<br> which relational operator to use for the comparison.</p></dd>
+<dd><p>Default is <code>TRUE</code>, allowing missing values (<code>NA</code>).</p></dd>
 
 
 <dt>...</dt>
@@ -146,24 +134,11 @@ if <code>FALSE</code> is used.</p></dd>
 <dt>include_boundaries</dt>
 <dd><p>(<code>logical</code>)<br> whether to include boundaries when testing for proportions.</p></dd>
 
-
-<dt>ref</dt>
-<dd><p>(<code>vector</code>)<br> where matches from <code>x</code> are sought for <code>all_elements_in_ref</code>.</p></dd>
-
-
-<dt>col_names</dt>
-<dd><p>(<code>character</code>)<br> column names which should be present in the table.</p></dd>
-
-
-<dt>na_level</dt>
-<dd><p>(<code>string</code>)<br> the string user has been using to represent NA or missing data.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>assert_character_or_factor</code>: Check whether <code>x</code> is a character or factor vector.</p></li>
-<li><p><code>assert_list_of_variables</code>: Check whether <code>x</code> is a valid list of variable names.
+<ul><li><p><code>assert_list_of_variables</code>: Check whether <code>x</code> is a valid list of variable names.
 <code>NULL</code> elements of the list <code>x</code> are dropped out with <code>Filter(Negate(is.null), x)</code>.</p></li>
 <li><p><code>assert_df_with_variables</code>: Check whether <code>df</code> is a data frame with the analysis <code>variables</code>.
 Please notice how this produces an error when not all variables are present in the
@@ -171,28 +146,15 @@ data.frame while the opposite is not required.</p></li>
 <li><p><code>assert_valid_factor</code>: Check whether <code>x</code> is a valid factor (has levels and no empty string levels).
 Note that <code>NULL</code> and <code>NA</code> elements are allowed.</p></li>
 <li><p><code>assert_df_with_factors</code>: Check whether <code>df</code> is a data frame where the analysis <code>variables</code>
-are all factors.</p></li>
-<li><p><code>is_df_with_nlevels_factor</code>: Check whether <code>df</code> is a data frame where the analysis <code>variable</code>
-is a factor with <code>n_levels</code> number of levels.</p></li>
-<li><p><code>is_equal_length</code>: Check that objects provided are of same length.</p></li>
-<li><p><code>is_proportion</code>: Check whether <code>x</code> is a proportion: number between 0 and 1.</p></li>
-<li><p><code>is_proportion_vector</code>: Check whether <code>x</code> is a vector of proportions (numbers between 0 and 1).</p></li>
-<li><p><code>is_quantiles_vector</code>: Check whether <code>x</code> is a sorted vector of unique quantile proportions
-(numbers between 0 and 1).</p></li>
-<li><p><code>all_elements_in_ref</code>: Check whether all elements of <code>x</code> are in a reference vector.</p></li>
-<li><p><code>has_tabletree_colnames</code>: Check whether <code>rtables</code> object <code>x</code> has the specified column names.</p></li>
-<li><p><code>is_df_with_no_na_level</code>: check if the input <code>df</code> has <code>na_level</code> in its <code>variables</code>.</p></li>
+are all factors. Note that the creation of <code>NA</code> by direct call of <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor()</a></code> will
+trim <code>NA</code> levels out of the vector list itself.</p></li>
+<li><p><code>assert_equal_length</code>: Check that objects provided are of same length.</p></li>
+<li><p><code>assert_proportion_value</code>: Check whether <code>x</code> is a proportion: number between 0 and 1.</p></li>
 </ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Check whether `x` is a character or factor vector.</span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_character_or_factor</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_character_or_factor</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># tern:::assert_character_or_factor(-1) # it fails</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Check whether `x` is a valid list of variable names.</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Check whether `x` is a valid list of variable names.</span></span></span>
 <span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_list_of_variables</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_list_of_variables</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_list_of_variables</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>, val2 <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -204,14 +166,37 @@ is a factor with <code>n_levels</code> number of levels.</p></li>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Check whether `df` contains the analysis `variables`.</span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span>df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span>df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span>df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span>, e <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span>, na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The following calls fail</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span>df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span>df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_variables</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span>, b <span class="op">=</span> <span class="fl">3</span>, e <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"e"</span><span class="op">)</span><span class="op">)</span>, na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Check whether `x` is a valid factor.</span></span></span>
@@ -232,71 +217,44 @@ is a factor with <code>n_levels</code> number of levels.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Check whether `df` contains all factor analysis `variables`.</span></span></span>
 <span class="r-in"><span><span class="va">adf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, d <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span>, min.levels <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span>, min.levels <span class="op">=</span> <span class="fl">2</span>, max.levels <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_df_with_factors</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="cn">NA</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  min.levels <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  max.levels <span class="op">=</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># The following calls fail</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span>, val <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span>, min.levels <span class="op">=</span> <span class="fl">1</span>, max.levels <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span>, min.levels <span class="op">=</span> <span class="fl">1</span>, max.levels <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span>, val <span class="op">=</span> <span class="st">"b"</span>, val <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span>, val <span class="op">=</span> <span class="st">"b"</span>, val <span class="op">=</span> <span class="st">"d"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assert_df_with_factors</span><span class="op">(</span>df <span class="op">=</span> <span class="va">bdf</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>val <span class="op">=</span> <span class="st">"a"</span>, val <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>, min.levels <span class="op">=</span> <span class="fl">1</span>, max.levels <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Check whether `df` contains a factor `variable` with `n_levels` levels.</span></span></span>
-<span class="r-in"><span><span class="fu">is_df_with_nlevels_factor</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="st">"A"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  variable <span class="op">=</span> <span class="st">"a"</span>,</span></span>
-<span class="r-in"><span>  n_levels <span class="op">=</span> <span class="fl">2</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#' # Check whether `x` is a valid list of variable names.</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"car"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
-<span class="r-in"><span><span class="fu">is_equal_length</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">c</span>, <span class="va">d</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-in"><span><span class="co"># These fails</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">assert_equal_length</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">c</span>, <span class="va">d</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Check whether `x` is between 0 and 1.</span></span></span>
-<span class="r-in"><span><span class="fu">is_proportion</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span><span class="fu">is_proportion</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1.3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span><span class="fu">is_proportion</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span>, include_boundaries <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_proportion_value</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span>, include_boundaries <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">assert_proportion_value</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># These fails</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">assert_proportion_value</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1.3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assert_proportion_value</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Check whether `x` is a vector of numbers between 0 and 1.</span></span></span>
-<span class="r-in"><span><span class="fu">is_proportion_vector</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span><span class="fu">is_proportion_vector</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.3</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span><span class="fu">is_proportion_vector</span><span class="op">(</span><span class="fl">0</span>, include_boundaries <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Check whether `x` is a vector of sorted quantile proportions between 0 and 1.</span></span></span>
-<span class="r-in"><span><span class="fu">is_quantiles_vector</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span><span class="fu">is_quantiles_vector</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span><span class="fu">is_quantiles_vector</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span><span class="fu">is_quantiles_vector</span><span class="op">(</span><span class="fl">0</span>, include_boundaries <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Check whether all elements of `x` are in a reference vector.</span></span></span>
-<span class="r-in"><span><span class="fu">all_elements_in_ref</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span><span class="fu">all_elements_in_ref</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"d"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span><span class="fu">all_elements_in_ref</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df</span><span class="op">$</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">a</span> <span class="op">==</span> <span class="fl">1</span>, <span class="st">"&lt;Missing&gt;"</span>, <span class="va">df</span><span class="op">$</span><span class="va">a</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">is_df_with_no_na_level</span><span class="op">(</span><span class="va">df</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span>, na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span><span class="fu">is_df_with_no_na_level</span><span class="op">(</span><span class="va">df</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>b <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>, na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span><span class="fu">is_df_with_no_na_level</span><span class="op">(</span><span class="va">df</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="st">"a"</span>, b <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>, na_level <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

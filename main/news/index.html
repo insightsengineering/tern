@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9007</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9008</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -60,12 +54,22 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.7.8.9007" id="tern-0789007">tern 0.7.8.9007<a class="anchor" aria-label="anchor" href="#tern-0789007"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.7.8.9008" id="tern-0789008">tern 0.7.8.9008<a class="anchor" aria-label="anchor" href="#tern-0789008"></a></h2>
 <div class="section level4">
-<h4 id="migration-from-assertthat-to-checkmate-0-7-8-9007">Migration from <code>assertthat</code> to <code>checkmate</code>
-<a class="anchor" aria-label="anchor" href="#migration-from-assertthat-to-checkmate-0-7-8-9007"></a></h4>
-<ul><li>
-<code>is_character_or_factor</code> is now <code>assert_character_or_factor</code> and uses <code><a href="https://mllg.github.io/checkmate/reference/checkMultiClass.html" class="external-link">checkmate::assertMultiClass()</a></code> and made internal.</li>
+<h4 id="migration-from-assertthat-to-checkmate-0-7-8-9008">Migration from <code>assertthat</code> to <code>checkmate</code>
+<a class="anchor" aria-label="anchor" href="#migration-from-assertthat-to-checkmate-0-7-8-9008"></a></h4>
+<ul><li>complete substitution of <code>assertthat</code> calls with <code>checkmate</code>.</li>
+<li>
+<code>assert_df_with_factors</code>, <code>assert_equal_length</code>, and <code>assert_proportion_value</code> made internals.</li>
+<li>removed <code>has_tabletree_colnames</code>.</li>
+<li>removed <code>is_quantiles_vector</code> and <code>all_elements_in_ref</code> (substituted by <code>checkmate::subset()</code>).</li>
+<li>removed <code>is_proportion_vector</code> and adapted <code>is_proportion</code> to <code>checkmate</code> style with <code>assert_proportion_value</code>.</li>
+<li>
+<code>is_equal_length</code> is now <code>assert_equal_length</code>.</li>
+<li>removed <code>is_df_with_no_na_level</code> by adding parameters to <code>assert_df_with_variables</code>.</li>
+<li>removed <code>is_df_with_nlevels_factor</code> by adding parameters to <code>assert_df_with_factors</code>.</li>
+<li>
+<code>is_character_or_factor</code> replaced by <code><a href="https://mllg.github.io/checkmate/reference/checkMultiClass.html" class="external-link">checkmate::assert_multi_class()</a></code>.</li>
 <li>
 <code>is_nonnegative_count</code> removed and substituted by <code><a href="https://mllg.github.io/checkmate/reference/checkCount.html" class="external-link">checkmate::assert_count()</a></code>.</li>
 <li>
@@ -73,14 +77,18 @@
 <li>
 <code>assert_df_with_variables</code> instead of <code>is_df_with_variables</code> (made internal).</li>
 <li>
-<code>assert_valid_factor</code> instead of <code>is_valid_factor</code> (internal) and extension to <code>is_factor_no_na</code> (repetition removed).</li>
+<code>assert_df_with_factors</code> instead of <code>is_df_with_factors</code> (made internal).</li>
+<li>
+<code>assert_valid_factor</code> instead of <code>is_valid_factor</code>.</li>
 <li>removed <code>is_valid_character</code>.</li>
 <li>renamed <code>assertthat.R</code> into a more appropriate <code>utils_checkmate.R</code>.</li>
 <li>renamed <code>test-assertthat.R</code> into <code>test-utils_checkmate.R</code>.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="fix-0-7-8-9007">Fix<a class="anchor" aria-label="anchor" href="#fix-0-7-8-9007"></a></h4>
-<ul><li>Renaming <code>rtables.R</code> as confusing file name due to the package dependence.</li>
+<h4 id="fix-0-7-8-9008">Fix<a class="anchor" aria-label="anchor" href="#fix-0-7-8-9008"></a></h4>
+<ul><li>Fixed test for <code>cut_quantile_bins</code> with empty vector. This is not a good standard input.</li>
+<li>Warnings from <code>as_factor_keep_attributes</code> are now in verbose for better <code>test_examples()</code> readability</li>
+<li>Renaming <code>rtables.R</code> as confusing file name due to the package dependence.</li>
 <li>Renamed files to respect the main documented function and fixed file in <code>R/</code> folder that does not comply with the standard (starting with the word test).</li>
 <li>Extracted <code>cox_regression_inter</code> from <code>cox_regression</code>.</li>
 <li>
@@ -92,7 +100,7 @@
 <li>Added <code>@md</code> and removed <code>@order</code> from <code>incidence_rate.R</code>. The presented order is automatically the final order in the documentation. There is no specific need to add this tag. Modified examples accordingly.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="documentation-and-namespace-polishing-0-7-8-9007">Documentation and NAMESPACE polishing<a class="anchor" aria-label="anchor" href="#documentation-and-namespace-polishing-0-7-8-9007"></a></h4>
+<h4 id="documentation-and-namespace-polishing-0-7-8-9008">Documentation and NAMESPACE polishing<a class="anchor" aria-label="anchor" href="#documentation-and-namespace-polishing-0-7-8-9008"></a></h4>
 <ul><li>Added stable badge for:
 <ul><li>
 <code>count_abnormal_by_marked</code> (reference to <code>abnormal_by_marked</code>), <code>count_abnormal_lab_worsen_by_baseline</code> and <code>h_adlb_worsen</code> (reference to <code>abnormal_by_worst_grade_worsen_from_baseline</code>), <code>count_abnormal_by_worst_grade</code> (reference to <code>abnormal_by_worst_grade</code>), <code>to_string_matrix</code>, <code>tidy.summary.coxph</code>, <code>tidy.step</code>, <code>surv_timepoint</code>, (reference to <code>survival_timepoint</code>), <code>surv_time</code> (reference to <code>survival_time</code>), <code>coxph_pairwise</code> (reference to <code>survival_coxph_pairwise</code>), <code>extract_survival_subgroups</code> and <code>tabulate_survival_subgroups</code> (reference to <code>survival_duration_subgroups</code>), <code>extract_survival_biomarkers</code> and <code>tabulate_survival_biomarkers</code> (reference to <code>survival_biomarkers_subgroups</code>), <code>control_summarize_vars</code>, <code>s_summary</code> and <code>a_summary</code> (reference to <code>summarize_variables</code>) and kept the S3 method tree.</li>
@@ -129,7 +137,7 @@
 </li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-7-8-9007">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-8-9007"></a></h4>
+<h4 id="miscellaneous-0-7-8-9008">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-8-9008"></a></h4>
 <ul><li>Deprecated the <code>color_palette</code> function with <code><a href="https://rdrr.io/pkg/nestcolor/man/color_palette.html" class="external-link">nestcolor::color_palette</a></code> and removed <code>color_palette_core</code>
 </li>
 </ul></div>
