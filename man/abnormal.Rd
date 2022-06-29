@@ -75,7 +75,7 @@ vector with \code{num} and \code{denom} counts of patients.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates the abnormal range result (character or factor)
+Primary analysis (this is a test) variable \code{.var} indicates the abnormal range result (character or factor)
 and additional analysis variables are \code{id} (character or factor) and \code{baseline} (character or
 factor). For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
 numerator and denominator as follows:
