@@ -51,7 +51,7 @@ NULL
 #' # For abnormal level "HIGH" we get the following counts.
 #' tern:::s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 #'
-#' # Optionally (bla) exclude patients with abnormality at baseline.
+#' # Optionally (bla2) exclude patients with abnormality at baseline.
 #' tern:::s_count_abnormal(
 #'   df,
 #'   .var = "ANRIND",
@@ -66,7 +66,7 @@ s_count_abnormal <- function(df,
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE) {
   checkmate::assert_list(abnormal, types = "character", names = "named", len = 2, any.missing = FALSE)
-  checkmate::assert_true(any(unlist(abnormal) %in% levels(df[[.var]])))
+  checkmate::assert_true(any(unlist(    abnormal)      %in% levels(df[[.var]])))
   checkmate::assert_factor(  df[[  .var]])
 
 
