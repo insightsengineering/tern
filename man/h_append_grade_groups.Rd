@@ -30,7 +30,7 @@ h_append_grade_groups(
     "Grade 1-2" = c("1", "2"),
     "Grade 3-4" = c("3", "4")
   ),
-  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50)
 )
 
 h_append_grade_groups(
@@ -39,7 +39,7 @@ h_append_grade_groups(
     "Grade A" = "5",
     "Grade B" = c("4", "3")
   ),
-  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50)
 )
 
 h_append_grade_groups(

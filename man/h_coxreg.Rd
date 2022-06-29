@@ -49,6 +49,10 @@ into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Helper functions used in \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.
+
+Creates a formulas string. It is used internally by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}
+for the comparison of multi-variable Cox regression models. Interactions will not
+be included in multi-variable Cox regression model.
 }
 \section{Functions}{
 \itemize{
@@ -58,10 +62,6 @@ Creates a list of formulas. It is used internally by \code{\link[=fit_coxreg_uni
 for the comparison of univariate Cox regression models.
 
 \item \code{h_coxreg_multivar_formula}: Helper for Multi-variable Cox Regression Formula
-
-Creates a formulas string. It is used internally by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}
-for the comparison of multi-variable Cox regression models. Interactions will not
-be included in multi-variable Cox regression model.
 
 \item \code{h_coxreg_univar_extract}: Utility function to help tabulate the result of
 a univariate Cox regression model.

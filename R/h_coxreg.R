@@ -61,15 +61,12 @@ h_coxreg_univar_formulas <- function(variables,
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
-  if (!is.null(variables$covariates)) {
-    assertthat::assert_that(is.character(variables$covariates))
-  }
+  checkmate::assert_character(variables$covariates, null.ok = TRUE)
 
-  assertthat::assert_that(
-    assertthat::is.flag(interaction),
-    (has_arm || (!interaction)),
-    (!is.null(variables$covariates) || (!interaction))
-  )
+  checkmate::assert_flag(interaction)
+  checkmate::assert_true((has_arm || (!interaction)))
+  checkmate::assert_true((!is.null(variables$covariates) || (!interaction)))
+
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$covariates)) {
@@ -108,7 +105,7 @@ h_coxreg_univar_formulas <- function(variables,
 
 #' @describeIn h_coxreg Helper for Multi-variable Cox Regression Formula
 #'
-#' Creates a formulas string. It is used internally by [fit_coxreg_multivar()]
+#' @description Creates a formulas string. It is used internally by [fit_coxreg_multivar()]
 #' for the comparison of multi-variable Cox regression models. Interactions will not
 #' be included in multi-variable Cox regression model.
 #'
@@ -148,9 +145,7 @@ h_coxreg_multivar_formula <- function(variables) {
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
-  if (!is.null(variables$covariates)) {
-    assertthat::assert_that(is.character(variables$covariates))
-  }
+  checkmate::assert_character(variables$covariates, null.ok = TRUE)
 
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 

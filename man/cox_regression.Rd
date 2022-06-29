@@ -2,10 +2,28 @@
 % Please edit documentation in R/cox_regression.R
 \name{cox_regression}
 \alias{cox_regression}
+\alias{fit_coxreg_univar}
+\alias{tidy.summary.coxph}
+\alias{h_coxreg_univar_extract}
+\alias{tidy.coxreg.univar}
+\alias{fit_coxreg_multivar}
+\alias{h_coxreg_multivar_extract}
 \alias{s_coxreg}
 \alias{summarize_coxreg}
 \title{Cox Proportional Hazards Regression}
 \usage{
+fit_coxreg_univar(variables, data, at = list(), control = control_coxreg())
+
+\method{tidy}{summary.coxph}(x, ...)
+
+h_coxreg_univar_extract(effect, covar, data, mod, control = control_coxreg())
+
+\method{tidy}{coxreg.univar}(x, ...)
+
+fit_coxreg_multivar(variables, data, control = control_coxreg())
+
+h_coxreg_multivar_extract(var, data, mod, control = control_coxreg())
+
 s_coxreg(df, .var)
 
 summarize_coxreg(
@@ -16,9 +34,35 @@ summarize_coxreg(
 )
 }
 \arguments{
+\item{variables}{(\code{list})\cr a named list corresponds to the names of variables found
+in \code{data}, passed as a named list and corresponding to \code{time}, \code{event}, \code{arm},
+\code{strata}, and \code{covariates} terms. If \code{arm} is missing from \code{variables}, then
+only Cox model(s) including the \code{covariates} will be fitted and the corresponding
+effect estimates will be tabulated later.}
+
+\item{data}{(\verb{data frame})\cr the dataset containing the variables to fit the
+models.}
+
+\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a
+\code{numeric}, use \code{at} to specify the value of the covariate at which the
+effect should be estimated.}
+
+\item{control}{(\code{list})\cr a list of parameters as returned by the
+helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+
+\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{effect}{(\code{string})\cr the treatment variable.}
+
+\item{covar}{(\code{string})\cr the name of the covariate in the model.}
+
+\item{mod}{(\code{coxph})\cr Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
+
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -40,6 +84,26 @@ of the treatment arm effect estimate across models.}
 \code{pval_inter} (the p.value of the interaction effect between the treatment
 and the covariate).}
 }
+\value{
+The function \code{fit_coxreg_univar} returns a \code{coxreg.univar} class object which is a named list
+with 5 elements:
+\itemize{
+\item \code{mod}: Cox regression models fitted by \code{\link[survival:coxph]{survival::coxph()}}.
+\item \code{data}: The original data frame input.
+\item \code{control}: The original control input.
+\item \code{vars}: The variables used in the model.
+\item \code{at}: Value of the covariate at which the effect should be estimated.
+}
+
+The function \code{fit_coxreg_multivar} returns a \code{coxreg.multivar} class object which is a named list
+with 4 elements:
+\itemize{
+\item \code{mod}: Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.
+\item \code{data}: The original data frame input.
+\item \code{control}: The original control input.
+\item \code{vars}: The variables used in the model.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -56,6 +120,27 @@ analysis (NEST Team, 2020).
 }
 \section{Functions}{
 \itemize{
+\item \code{fit_coxreg_univar}: Fit a series of univariate Cox regression models
+given the inputs.
+
+\item \code{tidy.summary.coxph}: Custom tidy method for \code{\link[survival:coxph]{survival::coxph()}} summary results.
+
+Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{data.frame} to extract model results.
+
+\item \code{h_coxreg_univar_extract}: Utility function to help tabulate the result of
+a univariate Cox regression model.
+
+\item \code{tidy.coxreg.univar}: Custom tidy method for a Univariate Cox Regression
+
+Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}.
+
+\item \code{fit_coxreg_multivar}: Fit a multi-variable Cox regression model.
+
+\item \code{h_coxreg_multivar_extract}: Tabulation of Multi-variable Cox Regressions
+
+Utility function to help tabulate the result of a multi-variable Cox regression model
+for a treatment/covariate variable.
+
 \item \code{s_coxreg}: transforms the tabulated results from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
 and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list. Not much calculation is done here,
 it rather prepares the data to be used by the layout creating function.
@@ -67,6 +152,8 @@ it rather prepares the data to be used by the layout creating function.
 The usual formatting arguments for the \emph{layout creating} function
 \code{summarize_coxreg} are not yet accepted (\code{.stats}, \code{.indent_mod}, \code{.formats},
 \code{.labels}).
+
+When using \code{fit_coxreg_univar} there should be two study arms.
 }
 \examples{
 # Testing dataset [survival::bladder].
@@ -98,6 +185,116 @@ plot(
   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 )
 
+# fit_coxreg_univar
+
+## Cox regression: arm + 1 covariate.
+mod1 <- fit_coxreg_univar(
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = "covar1"
+  ),
+  data = dta_bladder,
+  control = control_coxreg(conf_level = 0.91)
+)
+
+## Cox regression: arm + 1 covariate + interaction, 2 candidate covariates.
+mod2 <- fit_coxreg_univar(
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder,
+  control = control_coxreg(conf_level = 0.91, interaction = TRUE)
+)
+
+## Cox regression: arm + 1 covariate, stratified analysis.
+mod3 <- fit_coxreg_univar(
+  variables = list(
+    time = "time", event = "status", arm = "armcd", strata = "covar2",
+    covariates = c("covar1")
+  ),
+  data = dta_bladder,
+  control = control_coxreg(conf_level = 0.91)
+)
+
+## Cox regression: no arm, only covariates.
+mod4 <- fit_coxreg_univar(
+  variables = list(
+    time = "time", event = "status",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+library(survival)
+library(broom)
+library(rtables)
+
+set.seed(1, kind = "Mersenne-Twister")
+
+dta_bladder <- with(
+  data = bladder[bladder$enum < 5, ],
+  data.frame(
+    time = stop,
+    status = event,
+    armcd = as.factor(rx),
+    covar1 = as.factor(enum),
+    covar2 = factor(
+      sample(as.factor(enum)),
+      levels = 1:4, labels = c("F", "F", "M", "M")
+    )
+  )
+)
+labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+formatters::var_labels(dta_bladder)[names(labels)] <- labels
+dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
+
+formula <- "survival::Surv(time, status) ~ armcd + covar1"
+msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
+tidy(msum)
+library(survival)
+
+dta_simple <- data.frame(
+  time = c(5, 5, 10, 10, 5, 5, 10, 10),
+  status = c(0, 0, 1, 0, 0, 1, 1, 1),
+  armcd = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
+  var1 = c(45, 55, 65, 75, 55, 65, 85, 75),
+  var2 = c("F", "M", "F", "M", "F", "M", "F", "U")
+)
+mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
+result <- h_coxreg_univar_extract(
+  effect = "armcd", covar = "armcd", mod = mod, data = dta_simple
+)
+result
+
+library(broom)
+tidy(mod1)
+tidy(mod2)
+# fit_coxreg_multivar
+
+## Cox regression: multivariate Cox regression.
+multivar_model <- fit_coxreg_multivar(
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+
+# Example without treatment arm.
+multivar_covs_model <- fit_coxreg_multivar(
+  variables = list(
+    time = "time", event = "status",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+library(survival)
+
+mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
+result <- h_coxreg_multivar_extract(
+  var = "var1", mod = mod, data = dta_simple
+)
+result
 # s_coxreg
 
 univar_model <- fit_coxreg_univar(

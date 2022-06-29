@@ -104,6 +104,8 @@ can only be \code{n} (number of values in this row and column intersection).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
+\item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
+to print out information about factor casting.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

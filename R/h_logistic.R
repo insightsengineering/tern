@@ -19,11 +19,11 @@ NULL
 #'
 #' @export
 h_get_interaction_vars <- function(fit_glm) {
-  assertthat::assert_that("glm" %in% class(fit_glm))
+  checkmate::assert_class(fit_glm, "glm")
   terms_name <- attr(stats::terms(fit_glm), "term.labels")
   terms_order <- attr(stats::terms(fit_glm), "order")
   interaction_term <- terms_name[terms_order == 2]
-  assertthat::assert_that(assertthat::is.string(interaction_term))
+  checkmate::assert_string(interaction_term)
   strsplit(interaction_term, split = ":")[[1]]
 }
 
@@ -44,10 +44,8 @@ h_interaction_coef_name <- function(interaction_vars,
   checkmate::assert_character(interaction_vars, len = 2, any.missing = FALSE)
   checkmate::assert_character(first_var_with_level, len = 2, any.missing = FALSE)
   checkmate::assert_character(second_var_with_level, len = 2, any.missing = FALSE)
+  checkmate::assert_subset(c(first_var_with_level[1], second_var_with_level[1]), interaction_vars)
 
-  assertthat::assert_that(
-    all(c(first_var_with_level[1], second_var_with_level[1]) %in% interaction_vars)
-  )
   first_name <- paste(first_var_with_level, collapse = "")
   second_name <- paste(second_var_with_level, collapse = "")
   if (first_var_with_level[1] == interaction_vars[1]) {
@@ -69,12 +67,11 @@ h_or_cat_interaction <- function(odds_ratio_var,
                                  fit_glm,
                                  conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
-  assertthat::assert_that(
-    assertthat::is.string(odds_ratio_var),
-    assertthat::is.string(interaction_var),
-    all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
-    identical(length(interaction_vars), 2L)
-  )
+  checkmate::assert_string(odds_ratio_var)
+  checkmate::assert_string(interaction_var)
+  checkmate::assert_subset(c(odds_ratio_var, interaction_var), interaction_vars)
+  checkmate::assert_int(length(interaction_vars), lower = 2, upper = 2)
+
   xs_level <- fit_glm$xlevels
   xs_coef <- stats::coef(fit_glm)
   xs_vcov <- stats::vcov(fit_glm)
@@ -127,12 +124,10 @@ h_or_cont_interaction <- function(odds_ratio_var,
                                   at = NULL,
                                   conf_level = 0.95) {
   interaction_vars <- h_get_interaction_vars(fit_glm)
-  assertthat::assert_that(
-    assertthat::is.string(odds_ratio_var),
-    assertthat::is.string(interaction_var),
-    all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
-    identical(length(interaction_vars), 2L)
-  )
+  checkmate::assert_string(odds_ratio_var)
+  checkmate::assert_string(interaction_var)
+  checkmate::assert_subset(c(odds_ratio_var, interaction_var), interaction_vars)
+  checkmate::assert_int(length(interaction_vars), lower = 2, upper = 2)
   checkmate::assert_numeric(at, min.len = 1, null.ok = TRUE, any.missing = FALSE)
   xs_level <- fit_glm$xlevels
   xs_coef <- stats::coef(fit_glm)
@@ -140,9 +135,7 @@ h_or_cont_interaction <- function(odds_ratio_var,
   xs_class <- attr(fit_glm$terms, "dataClasses")
   model_data <- fit_glm$model
   if (!is.null(at)) {
-    assertthat::assert_that(
-      xs_class[interaction_var] == "numeric"
-    )
+    checkmate::assert_set_equal(xs_class[interaction_var], "numeric")
   }
   y <- list()
   if (xs_class[interaction_var] == "numeric") {
@@ -180,10 +173,8 @@ h_or_cont_interaction <- function(odds_ratio_var,
       y[[var_level]] <- x
     }
   } else {
-    assertthat::assert_that(
-      xs_class[odds_ratio_var] == "numeric",
-      xs_class[interaction_var] == "factor"
-    )
+    checkmate::assert_set_equal(xs_class[odds_ratio_var], "numeric")
+    checkmate::assert_set_equal(xs_class[interaction_var], "factor")
     for (var_level in xs_level[[interaction_var]]) {
       coef_names <- odds_ratio_var
       if (var_level != xs_level[[interaction_var]][1]) {
@@ -253,10 +244,8 @@ h_or_interaction <- function(odds_ratio_var,
 #' @export
 h_simple_term_labels <- function(terms,
                                  table) {
-  assertthat::assert_that(
-    is.table(table)
-  )
-  assert_character_or_factor(terms)
+  checkmate::assert_true(is.table(table))
+  checkmate::assert_multi_class(terms, classes = c("factor", "character"))
   terms <- as.character(terms)
   term_n <- table[terms]
   paste0(terms, ", n = ", term_n)
@@ -275,16 +264,15 @@ h_interaction_term_labels <- function(terms1,
                                       terms2,
                                       table,
                                       any = FALSE) {
-  assertthat::assert_that(
-    is.table(table),
-    assertthat::is.flag(any)
-  )
-  assert_character_or_factor(terms1)
-  assert_character_or_factor(terms2)
+  checkmate::assert_true(is.table(table))
+  checkmate::assert_flag(any)
+  checkmate::assert_multi_class(terms1, classes = c("factor", "character"))
+  checkmate::assert_multi_class(terms2, classes = c("factor", "character"))
   terms1 <- as.character(terms1)
   terms2 <- as.character(terms2)
   if (any) {
-    assertthat::assert_that(assertthat::is.scalar(terms1), assertthat::is.scalar(terms2))
+    checkmate::assert_scalar(terms1)
+    checkmate::assert_scalar(terms2)
     paste0(
       terms1, " or ", terms2, ", n = ",
       # Note that we double count in the initial sum the cell [terms1, terms2], therefore subtract.
@@ -337,10 +325,9 @@ h_interaction_term_labels <- function(terms1,
 #'
 #' @export
 h_glm_simple_term_extract <- function(x, fit_glm) {
-  assertthat::assert_that(
-    inherits(fit_glm, c("glm", "clogit")),
-    assertthat::is.string(x)
-  )
+  checkmate::assert_multi_class(fit_glm, c("glm", "clogit"))
+  checkmate::assert_string(x)
+
   xs_class <- attr(fit_glm$terms, "dataClasses")
   xs_level <- fit_glm$xlevels
   xs_coef <- summary(fit_glm)$coefficients
@@ -350,7 +337,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     c("estimate" = "coef", "std_error" = "se(coef)", "pvalue" = "Pr(>|z|)")
   }
   # Make sure x is not an interaction term.
-  assertthat::assert_that(x %in% names(xs_class))
+  checkmate::assert_subset(x, names(xs_class))
   x_sel <- if (xs_class[x] == "numeric") x else paste0(x, xs_level[[x]][-1])
   x_stats <- as.data.frame(xs_coef[x_sel, stats, drop = FALSE], stringsAsFactors = FALSE)
   colnames(x_stats) <- names(stats)
@@ -369,10 +356,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     x_stats$is_variable_summary <- FALSE
     x_stats$is_term_summary <- TRUE
   } else {
-    assertthat::assert_that(
-      inherits(fit_glm, "glm"),
-      msg = "for non-numeric variables only glm models are supported"
-    )
+    checkmate::assert_class(fit_glm, "glm")
     # The reason is that we don't have the original data set in the `clogit` object
     # and therefore cannot determine the `x_numbers` here.
     x_numbers <- table(fit_glm$data[[x]])
@@ -439,15 +423,15 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
 h_glm_interaction_extract <- function(x, fit_glm) {
   vars <- h_get_interaction_vars(fit_glm)
   xs_class <- attr(fit_glm$terms, "dataClasses")
-  assertthat::assert_that(
-    assertthat::is.string(x)
-  )
+
+  checkmate::assert_string(x)
+
   # Only take two-way interaction
-  assertthat::assert_that(
-    length(vars) == 2,
-    # Only consider simple case: first variable in interaction is arm, a categorical variable
-    xs_class[vars[1]] != "numeric"
-  )
+  checkmate::assert_int(length(vars), lower = 2, upper = 2)
+
+  # Only consider simple case: first variable in interaction is arm, a categorical variable
+  checkmate::assert_false(xs_class[vars[1]] == "numeric")
+
   xs_level <- fit_glm$xlevels
   xs_coef <- summary(fit_glm)$coefficients
   main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
@@ -637,17 +621,17 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 #'
 #' @export
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
-  assertthat::assert_that(inherits(fit_glm, c("glm", "clogit")))
+  checkmate::assert_multi_class(fit_glm, c("glm", "clogit"))
   if (inherits(fit_glm, "glm")) {
-    assertthat::assert_that(fit_glm$family$family == "binomial")
+    checkmate::assert_set_equal(fit_glm$family$family, "binomial")
   }
   terms_name <- attr(stats::terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
-  assertthat::assert_that(all(x %in% terms_name))
+  checkmate::assert_subset(x, terms_name)
   if (length(interaction) != 0) {
     # Make sure any item in x is not part of interaction term
-    assertthat::assert_that(all(!x %in% unlist(strsplit(interaction, ":"))))
+    checkmate::assert_false(any(x %in% unlist(strsplit(interaction, ":"))))
   }
   x_stats <- lapply(x, h_glm_simple_term_extract, fit_glm)
   x_stats <- do.call(rbind, x_stats)
@@ -672,7 +656,8 @@ h_logistic_inter_terms <- function(x,
                                    at = NULL) {
   # Find out the interaction variables and interaction term.
   inter_vars <- h_get_interaction_vars(fit_glm)
-  assertthat::assert_that(identical(length(inter_vars), 2L))
+  checkmate::assert_int(length(inter_vars), lower = 2, upper = 2)
+
   inter_term_index <- intersect(grep(inter_vars[1], x), grep(inter_vars[2], x))
   inter_term <- x[inter_term_index]
 

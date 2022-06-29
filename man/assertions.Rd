@@ -90,7 +90,6 @@ trim \code{NA} levels out of the vector list itself.
 }}
 
 \examples{
-
 # Check whether `x` is a valid list of variable names.
 tern:::assert_list_of_variables(list(val = "a"))
 tern:::assert_list_of_variables(list(val = c("a", "b")))

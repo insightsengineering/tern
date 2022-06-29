@@ -36,7 +36,7 @@ NULL
 #'
 #' @keywords internal
 prop_chisq <- function(tbl) {
-  assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
+  checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
   if (any(colSums(tbl) == 0)) {
     return(1)
@@ -54,8 +54,7 @@ prop_chisq <- function(tbl) {
 #'
 #' @keywords internal
 prop_schouten <- function(tbl) {
-  assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
-
+  checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
   if (any(colSums(tbl) == 0)) {
     return(1)
@@ -86,7 +85,7 @@ prop_schouten <- function(tbl) {
 #'
 #' @keywords internal
 prop_fisher <- function(tbl) {
-  assertthat::assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
+  checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
   stats::fisher.test(tbl)$p.value
 }
@@ -113,12 +112,9 @@ prop_fisher <- function(tbl) {
 #'
 #' @keywords internal
 prop_cmh <- function(ary) {
-  assertthat::assert_that(
-    is.array(ary),
-    ncol(ary) == 2, nrow(ary) == 2,
-    length(dim(ary)) == 3
-  )
-
+  checkmate::assert_array(ary)
+  checkmate::assert_integer(c(ncol(ary), nrow(ary)), lower = 2, upper = 2)
+  checkmate::assert_integer(length(dim(ary)), lower = 3, upper = 3)
   strata_sizes <- apply(ary, MARGIN = 3, sum)
   if (any(strata_sizes < 5)) {
     warning("<5 data points in some strata. CMH test may be incorrect.")

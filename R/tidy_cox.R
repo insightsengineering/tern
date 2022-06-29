@@ -183,10 +183,7 @@ tidy.coxreg.univar <- function(x, # nolint
 #' @export
 tidy.coxreg.multivar <- function(x, # nolint
                                  ...) {
-  assertthat::assert_that(
-    class(x) == "coxreg.multivar"
-  )
-
+  checkmate::assert_class(x, "coxreg.multivar")
   vars <- c(x$vars$arm, x$vars$covariates)
 
   # Convert the model summaries to data.
