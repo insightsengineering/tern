@@ -153,6 +153,9 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 
 \item{...}{arguments passed to \code{s_summary()}.}
 
+\item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
+to print out information about factor casting.}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}

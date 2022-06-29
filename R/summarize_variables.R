@@ -359,6 +359,8 @@ s_summary.factor <- function(x,
 
 #' @describeIn summarize_variables Method for character class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
+#' @param verbose defaults to `TRUE`. It prints out warnings and messages. It is mainly used
+#'   to print out information about factor casting.
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
