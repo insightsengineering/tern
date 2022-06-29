@@ -26,7 +26,7 @@
 #'
 NULL
 
-#' @describeIn abnormal Statistics function which counts patients with abnormal range values
+#' @describeIn abnormal Statistics (test1) function which counts patients with abnormal range values
 #'   for a single `abnormal` level.
 #' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
 #'   from numerator and denominator.
@@ -46,6 +46,7 @@ NULL
 #'
 #' # Select only post-baseline records.
 #' df <- df %>%
+#'
 #'   filter(ONTRTFL == "Y")
 #'
 #' # For abnormal level "HIGH" we get the following counts.
@@ -72,12 +73,15 @@ s_count_abnormal <- function(df,
   checkmate::assert_multi_class(df[[variables$baseline]], classes = c("factor", "character"))
   checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
 
-  count_abnormal_single <- function(abn_name, abn) {
+  count_abnormal_single <- function(abn_name, abn)
+  {
+
     # Patients in the denominator fulfill:
     # - have at least one post-baseline visit
     # - their baseline must not be abnormal if `exclude_base_abn`.
     if (exclude_base_abn) {
-      denom_select <- !(df[[variables$baseline]] %in% abn)
+      denom_select <- !
+      (df[[variables$baseline]] %in% abn)
     } else {
       denom_select <- TRUE
     }
