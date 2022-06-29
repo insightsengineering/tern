@@ -239,10 +239,10 @@ fct_discard <- function(x, discard) {
 #' @return The modified factor with inserted and existing `NA` converted to `na_level`.
 #' @seealso [forcats::fct_explicit_na()] which is used internally.
 #'
-#' @keywords internal
-#'
 #' @examples
-#' tern:::fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
+#' fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
+#'
+#' @export
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   checkmate::assert_factor(x)
   checkmate::assert_logical(condition)
@@ -268,10 +268,10 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #'   in the given character vectors input will be set to the missing level.
 #' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'
-#' @keywords internal
-#'
 #' @examples
-#' tern:::fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
+#' fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
+#'
+#' @export
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   new_lvls <- names(list(...))
   if (checkmate::test_subset(.na_level, new_lvls)) {
@@ -298,8 +298,6 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 #' @seealso [df_explicit_na()]
 #'
 #' @keywords internal
-#'
-#' @md
 replace_emptys_with_na <- function(df, rep_str = "NA") {
 
   # checks

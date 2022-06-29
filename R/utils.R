@@ -162,9 +162,9 @@ make_names <- function(nams) {
 #'
 #' @examples
 #' x <- c(13.25, 8.15, 1, 2.834)
-#' tern:::month2day(x)
+#' month2day(x)
 #'
-#' @keywords internal
+#' @export
 month2day <- function(x) {
   checkmate::assert_numeric(x)
   x * 30.4375

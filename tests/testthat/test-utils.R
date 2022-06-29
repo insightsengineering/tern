@@ -28,7 +28,7 @@ testthat::test_that("get_covariates fails for non-character input", {
 
 testthat::test_that("month2day works correctly", {
   x <- c(13.25, 8.15, 1, 2.834, NA)
-  result <- tern:::month2day(x)
+  result <- month2day(x)
   expected <- c(403.296875, 248.065625, 30.4375, 86.259875, NA)
   testthat::expect_equal(result, expected)
 })
