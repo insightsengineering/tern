@@ -48,9 +48,7 @@ NULL
 #'
 #' @export
 h_proportion_df <- function(rsp, arm) {
-  assertthat::assert_that(
-    is_equal_length(rsp, arm)
-  )
+  assert_equal_length(rsp, arm)
   checkmate::assert_logical(rsp)
   assert_valid_factor(arm)
   non_missing_rsp <- !is.na(rsp)
@@ -113,12 +111,10 @@ h_proportion_subgroups_df <- function(variables,
                                       data,
                                       groups_lists = list(),
                                       label_all = "All Patients") {
-  assertthat::assert_that(
-    is.character(variables$rsp),
-    is.character(variables$arm),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
-    is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
-  )
+  checkmate::assert_character(variables$rsp)
+  checkmate::assert_character(variables$arm)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
+  assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
   assert_df_with_variables(data, variables)
   checkmate::assert_string(label_all)
 
@@ -177,10 +173,8 @@ h_proportion_subgroups_df <- function(variables,
 #'
 #' @export
 h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
-  assertthat::assert_that(
-    is_equal_length(rsp, arm),
-    assertthat::are_equal(nlevels(arm), 2)
-  )
+  assert_equal_length(rsp, arm)
+  checkmate::assert_set_equal(nlevels(arm), 2)
   assert_valid_factor(arm)
 
   df_rsp <- data.frame(
@@ -192,9 +186,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
     strata_var <- interaction(strata_data, drop = TRUE)
     strata_name <- "strata"
 
-    assertthat::assert_that(
-      assertthat::are_equal(length(strata_var), nrow(df_rsp))
-    )
+    checkmate::assert_true(length(strata_var) == nrow(df_rsp))
     assert_valid_factor(strata_var)
 
     df_rsp[[strata_name]] <- strata_var
@@ -331,13 +323,11 @@ h_odds_ratio_subgroups_df <- function(variables,
                                       conf_level = 0.95,
                                       method = NULL,
                                       label_all = "All Patients") {
-  assertthat::assert_that(
-    is.character(variables$rsp),
-    is.character(variables$arm),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.character(variables$strat) || is.null(variables$strat),
-    is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
-  )
+  checkmate::assert_character(variables$rsp)
+  checkmate::assert_character(variables$arm)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
+  checkmate::assert_character(variables$strat, null.ok = TRUE)
+  assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
   assert_df_with_variables(data, variables)
   checkmate::assert_string(label_all)
 

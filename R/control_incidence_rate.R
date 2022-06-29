@@ -22,10 +22,8 @@ control_incidence_rate <- function(conf_level = 0.95,
                                    time_unit_output = 1) {
   conf_type <- match.arg(conf_type)
   time_unit_input <- match.arg(time_unit_input)
-  assertthat::assert_that(
-    is_proportion(conf_level),
-    assertthat::is.number(time_unit_output)
-  )
+  checkmate::assert_number(time_unit_output)
+  assert_proportion_value(conf_level)
 
   list(
     conf_level = conf_level,

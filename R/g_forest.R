@@ -159,8 +159,9 @@ g_forest <- function(tbl, # nolint
   nr <- nrow(tbl)
   nc <- ncol(tbl)
 
-  assertthat::assert_that(!is.null(col_x), msg = "Please specify `col_x` manually.")
-  assertthat::assert_that(!is.null(col_ci), msg = "Please specify `col_ci` manually.")
+  checkmate::assert_false(is.null(col_x))
+  checkmate::assert_false(is.null(col_ci))
+
   stopifnot(
     col_x > 0 && col_x <= nc,
     col_ci > 0 && col_ci <= nc,

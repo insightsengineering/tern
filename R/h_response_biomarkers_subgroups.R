@@ -46,11 +46,9 @@ NULL
 #'
 #' @export
 h_rsp_to_logistic_variables <- function(variables, biomarker) {
-  assertthat::assert_that(
-    is.list(variables),
-    assertthat::is.string(variables$rsp),
-    assertthat::is.string(biomarker)
-  )
+  checkmate::assert_list(variables)
+  checkmate::assert_string(variables$rsp)
+  checkmate::assert_string(biomarker)
   list(
     response = variables$rsp,
     arm = biomarker,

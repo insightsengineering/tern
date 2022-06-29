@@ -73,11 +73,10 @@ d_onco_rsp_label <- function(x) { # nolint
 s_length_proportion <- function(x,
                                 .N_col, # nolint snake_case
                                 ...) {
-  assertthat::assert_that(
-    length(unique(x)) <= 1L,
-    length(x) <= .N_col
-  )
-  assert_character_or_factor(x)
+  checkmate::assert_int(length(x), lower = 0, upper = .N_col)
+  checkmate::assert_int(length(unique(x)), lower = 0, upper = 1)
+  checkmate::assert_multi_class(x, classes = c("factor", "character"))
+
   n_true <- length(x)
   n_false <- .N_col - n_true
   x_logical <- rep(c(TRUE, FALSE), c(n_true, n_false))

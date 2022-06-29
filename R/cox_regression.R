@@ -80,16 +80,435 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
                            interaction = FALSE) {
   pval_method <- match.arg(pval_method)
   ties <- match.arg(ties)
-  assertthat::assert_that(
-    is_proportion(conf_level),
-    assertthat::is.flag(interaction)
-  )
+  checkmate::assert_flag(interaction)
+  assert_proportion_value(conf_level)
   list(
     pval_method = pval_method,
     ties = ties,
     conf_level = conf_level,
     interaction = interaction
   )
+}
+
+#' @describeIn cox_regression Fit a series of univariate Cox regression models
+#'   given the inputs.
+#' @param variables (`list`)\cr a named list corresponds to the names of variables found
+#'   in `data`, passed as a named list and corresponding to `time`, `event`, `arm`,
+#'   `strata`, and `covariates` terms. If `arm` is missing from `variables`, then
+#'   only Cox model(s) including the `covariates` will be fitted and the corresponding
+#'   effect estimates will be tabulated later.
+#' @param data (`data frame`)\cr the dataset containing the variables to fit the
+#'   models.
+#' @param at (`list` of `numeric`)\cr when the candidate covariate is a
+#'  `numeric`, use `at` to specify the value of the covariate at which the
+#'  effect should be estimated.
+#' @param control (`list`)\cr a list of parameters as returned by the
+#'   helper function [control_coxreg()].
+#' @return The function `fit_coxreg_univar` returns a `coxreg.univar` class object which is a named list
+#' with 5 elements:
+#'   - `mod`: Cox regression models fitted by [survival::coxph()].
+#'   - `data`: The original data frame input.
+#'   - `control`: The original control input.
+#'   - `vars`: The variables used in the model.
+#'   - `at`: Value of the covariate at which the effect should be estimated.
+#' @note When using `fit_coxreg_univar` there should be two study arms.
+#' @export
+#'
+#' @examples
+#' # fit_coxreg_univar
+#'
+#' ## Cox regression: arm + 1 covariate.
+#' mod1 <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd",
+#'     covariates = "covar1"
+#'   ),
+#'   data = dta_bladder,
+#'   control = control_coxreg(conf_level = 0.91)
+#' )
+#'
+#' ## Cox regression: arm + 1 covariate + interaction, 2 candidate covariates.
+#' mod2 <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder,
+#'   control = control_coxreg(conf_level = 0.91, interaction = TRUE)
+#' )
+#'
+#' ## Cox regression: arm + 1 covariate, stratified analysis.
+#' mod3 <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd", strata = "covar2",
+#'     covariates = c("covar1")
+#'   ),
+#'   data = dta_bladder,
+#'   control = control_coxreg(conf_level = 0.91)
+#' )
+#'
+#' ## Cox regression: no arm, only covariates.
+#' mod4 <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder
+#' )
+fit_coxreg_univar <- function(variables,
+                              data,
+                              at = list(),
+                              control = control_coxreg()) {
+  checkmate::assert_list(variables, names = "named")
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
+
+  checkmate::assert_character(variables$covariates, null.ok = TRUE)
+
+  assert_df_with_variables(data, variables)
+  assert_list_of_variables(variables[c(arm_name, "event", "time")])
+
+  if (!is.null(variables$strata)) {
+    checkmate::assert_true(control$pval_method != "likelihood")
+  }
+  if (has_arm) {
+    assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
+  }
+  vars <- unlist(variables[c(arm_name, "covariates", "strata")], use.names = FALSE)
+  for (i in vars) {
+    if (is.factor(data[[i]])) {
+      attr(data[[i]], "levels") <- levels(droplevels(data[[i]]))
+    }
+  }
+  forms <- h_coxreg_univar_formulas(variables, interaction = control$interaction)
+  mod <- lapply(
+    forms, function(x) {
+      survival::coxph(formula = stats::as.formula(x), data = data, ties = control$ties)
+    }
+  )
+  structure(
+    list(
+      mod = mod,
+      data = data,
+      control = control,
+      vars = variables,
+      at = at
+    ),
+    class = "coxreg.univar"
+  )
+}
+
+#' @describeIn cox_regression Custom tidy method for [survival::coxph()] summary results.
+#'
+#' Tidy the [survival::coxph()] results into a `data.frame` to extract model results.
+#'
+#' @inheritParams argument_convention
+#' @method tidy summary.coxph
+#' @export
+#'
+#' @examples
+#' library(survival)
+#' library(broom)
+#' library(rtables)
+#'
+#' set.seed(1, kind = "Mersenne-Twister")
+#'
+#' dta_bladder <- with(
+#'   data = bladder[bladder$enum < 5, ],
+#'   data.frame(
+#'     time = stop,
+#'     status = event,
+#'     armcd = as.factor(rx),
+#'     covar1 = as.factor(enum),
+#'     covar2 = factor(
+#'       sample(as.factor(enum)),
+#'       levels = 1:4, labels = c("F", "F", "M", "M")
+#'     )
+#'   )
+#' )
+#' labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+#' formatters::var_labels(dta_bladder)[names(labels)] <- labels
+#' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
+#'
+#' formula <- "survival::Surv(time, status) ~ armcd + covar1"
+#' msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
+#' tidy(msum)
+tidy.summary.coxph <- function(x, # nolint
+                               ...) {
+  checkmate::assert_class(x, "summary.coxph")
+  pval <- x$coefficients
+  confint <- x$conf.int
+  levels <- rownames(pval)
+
+  pval <- tibble::as_tibble(pval)
+  confint <- tibble::as_tibble(confint)
+
+  ret <- cbind(pval[, grepl("Pr", names(pval))], confint)
+  ret$level <- levels
+  ret$n <- x[["n"]]
+  ret
+}
+
+#' @describeIn cox_regression Utility function to help tabulate the result of
+#' a univariate Cox regression model.
+#'
+#' @inheritParams argument_convention
+#' @inheritParams cox_regression_inter
+#' @param effect (`string`)\cr the treatment variable.
+#' @param mod (`coxph`)\cr Cox regression model fitted by [survival::coxph()].
+#'
+#' @examples
+#' library(survival)
+#'
+#' dta_simple <- data.frame(
+#'   time = c(5, 5, 10, 10, 5, 5, 10, 10),
+#'   status = c(0, 0, 1, 0, 0, 1, 1, 1),
+#'   armcd = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
+#'   var1 = c(45, 55, 65, 75, 55, 65, 85, 75),
+#'   var2 = c("F", "M", "F", "M", "F", "M", "F", "U")
+#' )
+#' mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
+#' result <- h_coxreg_univar_extract(
+#'   effect = "armcd", covar = "armcd", mod = mod, data = dta_simple
+#' )
+#' result
+#'
+#' @export
+h_coxreg_univar_extract <- function(effect,
+                                    covar,
+                                    data,
+                                    mod,
+                                    control = control_coxreg()) {
+  checkmate::assert_string(covar)
+  checkmate::assert_string(effect)
+  checkmate::assert_class(mod, "coxph")
+  test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
+
+  mod_aov <- muffled_car_anova(mod, test_statistic)
+  msum <- summary(mod, conf.int = control$conf_level)
+  sum_cox <- broom::tidy(msum)
+
+  # Combine results together.
+  effect_aov <- mod_aov[effect, , drop = TRUE]
+  pval <- effect_aov[[grep(pattern = "Pr", x = names(effect_aov)), drop = TRUE]]
+  sum_main <- sum_cox[grepl(effect, sum_cox$level), ]
+
+  term_label <- if (effect == covar) {
+    paste0(
+      levels(data[[covar]])[2],
+      " vs control (",
+      levels(data[[covar]])[1],
+      ")"
+    )
+  } else {
+    unname(labels_or_names(data[covar]))
+  }
+  data.frame(
+    effect = ifelse(covar == effect, "Treatment:", "Covariate:"),
+    term = covar,
+    term_label = term_label,
+    level = levels(data[[effect]])[2],
+    n = mod[["n"]],
+    hr = unname(sum_main["exp(coef)"]),
+    lcl = unname(sum_main[grep("lower", names(sum_main))]),
+    ucl = unname(sum_main[grep("upper", names(sum_main))]),
+    pval = pval,
+    stringsAsFactors = FALSE
+  )
+}
+
+#' @describeIn cox_regression Custom tidy method for a Univariate Cox Regression
+#'
+#' Tidy up the result of a Cox regression model fitted by [`fit_coxreg_univar()`].
+#'
+#' @inheritParams argument_convention
+#' @param x (`list`)\cr Result of the Cox regression model fitted by [`fit_coxreg_univar()`].
+#'
+#' @method tidy coxreg.univar
+#' @export
+#'
+#' @examples
+#' library(broom)
+#' tidy(mod1)
+#' tidy(mod2)
+tidy.coxreg.univar <- function(x, # nolint
+                               ...) {
+  checkmate::assert_class(x, "coxreg.univar")
+  mod <- x$mod
+  vars <- c(x$vars$arm, x$vars$covariates)
+  has_arm <- "arm" %in% names(x$vars)
+
+  result <- if (!has_arm) {
+    Map(
+      mod = mod, vars = vars,
+      f = function(mod, vars) {
+        h_coxreg_multivar_extract(
+          var = vars,
+          data = x$data,
+          mod = mod,
+          control = x$control
+        )
+      }
+    )
+  } else if (x$control$interaction) {
+    Map(
+      mod = mod, covar = vars,
+      f = function(mod, covar) {
+        h_coxreg_extract_interaction(
+          effect = x$vars$arm, covar = covar, mod = mod, data = x$data,
+          at = x$at, control = x$control
+        )
+      }
+    )
+  } else {
+    Map(
+      mod = mod, vars = vars,
+      f = function(mod, vars) {
+        h_coxreg_univar_extract(
+          effect = x$vars$arm, covar = vars, data = x$data, mod = mod,
+          control = x$control
+        )
+      }
+    )
+  }
+  result <- do.call(rbind, result)
+
+  result$ci <- Map(lcl = result$lcl, ucl = result$ucl, f = function(lcl, ucl) c(lcl, ucl))
+  result$n <- lapply(result$n, empty_vector_if_na)
+  result$ci <- lapply(result$ci, empty_vector_if_na)
+  result$hr <- lapply(result$hr, empty_vector_if_na)
+  if (x$control$interaction) {
+    result$pval_inter <- lapply(result$pval_inter, empty_vector_if_na)
+    # Remove interaction p-values due to change in specifications.
+    result$pval[result$effect != "Treatment:"] <- NA
+  }
+  result$pval <- lapply(result$pval, empty_vector_if_na)
+  attr(result, "conf_level") <- x$control$conf_level
+  result
+}
+
+#' @describeIn cox_regression Fit a multi-variable Cox regression model.
+#' @inheritParams fit_coxreg_univar
+#' @return The function `fit_coxreg_multivar` returns a `coxreg.multivar` class object which is a named list
+#'   with 4 elements:
+#'   - `mod`: Cox regression model fitted by [survival::coxph()].
+#'   - `data`: The original data frame input.
+#'   - `control`: The original control input.
+#'   - `vars`: The variables used in the model.
+#' @export
+#'
+#' @examples
+#' # fit_coxreg_multivar
+#'
+#' ## Cox regression: multivariate Cox regression.
+#' multivar_model <- fit_coxreg_multivar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder
+#' )
+#'
+#' # Example without treatment arm.
+#' multivar_covs_model <- fit_coxreg_multivar(
+#'   variables = list(
+#'     time = "time", event = "status",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder
+#' )
+fit_coxreg_multivar <- function(variables,
+                                data,
+                                control = control_coxreg()) {
+  checkmate::assert_list(variables, names = "named")
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
+
+  if (!is.null(variables$covariates)) {
+    checkmate::assert_character(variables$covariates)
+  }
+
+  checkmate::assert_false(control$interaction)
+  assert_df_with_variables(data, variables)
+  assert_list_of_variables(variables[c(arm_name, "event", "time")])
+
+  if (!is.null(variables$strata)) {
+    checkmate::assert_true(control$pval_method != "likelihood")
+  }
+
+  form <- h_coxreg_multivar_formula(variables)
+  mod <- survival::coxph(
+    formula = stats::as.formula(form),
+    data = data,
+    ties = control$ties
+  )
+  structure(
+    list(
+      mod = mod,
+      data = data,
+      control = control,
+      vars = variables
+    ),
+    class = "coxreg.multivar"
+  )
+}
+
+#' @describeIn cox_regression Tabulation of Multi-variable Cox Regressions
+#'
+#' Utility function to help tabulate the result of a multi-variable Cox regression model
+#' for a treatment/covariate variable.
+#'
+#' @inheritParams argument_convention
+#' @inheritParams h_coxreg_univar_extract
+#' @export
+#'
+#' @examples
+#' library(survival)
+#'
+#' mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
+#' result <- h_coxreg_multivar_extract(
+#'   var = "var1", mod = mod, data = dta_simple
+#' )
+#' result
+h_coxreg_multivar_extract <- function(var,
+                                      data,
+                                      mod,
+                                      control = control_coxreg()) {
+  test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
+  mod_aov <- muffled_car_anova(mod, test_statistic)
+
+  msum <- summary(mod, conf.int = control$conf_level)
+  sum_anova <- broom::tidy(mod_aov)
+  sum_cox <- broom::tidy(msum)
+
+  ret_anova <- sum_anova[sum_anova$term == var, c("term", "p.value")]
+  names(ret_anova)[2] <- "pval"
+  if (is.factor(data[[var]])) {
+    ret_cox <- sum_cox[startsWith(prefix = var, x = sum_cox$level), !(names(sum_cox) %in% "exp(-coef)")]
+  } else {
+    ret_cox <- sum_cox[(var == sum_cox$level), !(names(sum_cox) %in% "exp(-coef)")]
+  }
+  names(ret_cox)[1:4] <- c("pval", "hr", "lcl", "ucl")
+  varlab <- unname(labels_or_names(data[var]))
+  ret_cox$term <- varlab
+
+  if (is.numeric(data[[var]])) {
+    ret <- ret_cox
+    ret$term_label <- ret$term
+  } else if (length(levels(data[[var]])) <= 2) {
+    ret_anova$pval <- NA
+    ret_anova$term_label <- paste0(varlab, " (reference = ", levels(data[[var]])[1], ")")
+    ret_cox$level <- gsub(var, "", ret_cox$level)
+    ret_cox$term_label <- ret_cox$level
+    ret <- dplyr::bind_rows(ret_anova, ret_cox)
+  } else {
+    ret_anova$term_label <- paste0(varlab, " (reference = ", levels(data[[var]])[1], ")")
+    ret_cox$level <- gsub(var, "", ret_cox$level)
+    ret_cox$term_label <- ret_cox$level
+    ret <- dplyr::bind_rows(ret_anova, ret_cox)
+  }
+
+  as.data.frame(ret)
 }
 
 #' @describeIn cox_regression transforms the tabulated results from [`fit_coxreg_univar()`]
@@ -145,7 +564,7 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #' @export
 s_coxreg <- function(df, .var) {
   assert_df_with_variables(df, list(term = "term", var = .var))
-  assert_character_or_factor(df$term)
+  checkmate::assert_multi_class(df$term, classes = c("factor", "character"))
   df$term <- as.character(df$term)
   # We need a list with names corresponding to the stats to display.
   # There can be several covariate to test, but the names of the items should

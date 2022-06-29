@@ -34,7 +34,7 @@ NULL
 #'     "Grade 1-2" = c("1", "2"),
 #'     "Grade 3-4" = c("3", "4")
 #'   ),
-#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50)
 #' )
 #'
 #' h_append_grade_groups(
@@ -43,7 +43,7 @@ NULL
 #'     "Grade A" = "5",
 #'     "Grade B" = c("4", "3")
 #'   ),
-#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50)
 #' )
 #'
 #' h_append_grade_groups(
@@ -57,16 +57,14 @@ NULL
 #'
 #' @export
 h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
-  assertthat::assert_that(
-    is.list(grade_groups),
-    is.list(refs)
-  )
+  checkmate::assert_list(grade_groups)
+  checkmate::assert_list(refs)
   refs_orig <- refs
   elements <- unique(unlist(grade_groups))
 
   ### compute sums in groups
   grp_sum <- lapply(grade_groups, function(i) do.call(sum, refs[i]))
-  if (!all_elements_in_ref(elements, names(refs))) {
+  if (!checkmate::test_subset(elements, names(refs))) {
     padding_el <- setdiff(elements, names(refs))
     refs[padding_el] <- 0
   }
@@ -152,9 +150,7 @@ s_count_occurrences_by_grade <- function(df,
     l_count <- as.list(rep(0, length(grade_levels)))
     names(l_count) <- grade_levels
   } else {
-    assertthat::assert_that(
-      assertthat::noNA(df[[id]])
-    )
+    checkmate::assert_false(anyNA(df[[id]]))
     if (isTRUE(is.factor(df[[id]]))) {
       assert_valid_factor(df[[id]])
     } else {

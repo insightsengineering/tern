@@ -56,12 +56,10 @@ NULL
 #'
 #' @export
 h_survtime_df <- function(tte, is_event, arm) {
-  assertthat::assert_that(
-    is.numeric(tte),
-    is.logical(is_event),
-    is.factor(arm),
-    is_equal_length(tte, is_event, arm)
-  )
+  checkmate::assert_numeric(tte)
+  checkmate::assert_logical(is_event)
+  assert_valid_factor(arm)
+  assert_equal_length(tte, is_event, arm)
 
   df_tte <- data.frame(
     tte = tte,
@@ -139,12 +137,11 @@ h_survtime_subgroups_df <- function(variables,
                                     data,
                                     groups_lists = list(),
                                     label_all = "All Patients") {
-  assertthat::assert_that(
-    is.character(variables$tte),
-    is.character(variables$is_event),
-    is.character(variables$arm),
-    is.character(variables$subgroups) || is.null(variables$subgroups)
-  )
+  checkmate::assert_character(variables$tte)
+  checkmate::assert_character(variables$is_event)
+  checkmate::assert_character(variables$arm)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
+
   assert_df_with_variables(data, variables)
 
   checkmate::assert_string(label_all)
@@ -189,13 +186,11 @@ h_survtime_subgroups_df <- function(variables,
 #'
 #' @export
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
-  assertthat::assert_that(
-    is.numeric(tte),
-    is.logical(is_event),
-    is.factor(arm),
-    assertthat::are_equal(nlevels(arm), 2),
-    is_equal_length(tte, is_event, arm)
-  )
+  checkmate::assert_numeric(tte)
+  checkmate::assert_logical(is_event)
+  assert_valid_factor(arm)
+  checkmate::assert_set_equal(nlevels(arm), 2)
+  assert_equal_length(tte, is_event, arm)
 
   df_tte <- data.frame(tte = tte, is_event = is_event)
   strata_vars <- NULL
@@ -203,14 +198,10 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   if (!is.null(strata_data)) {
     if (is.data.frame(strata_data)) {
       strata_vars <- names(strata_data)
-      assertthat::assert_that(
-        assertthat::are_equal(nrow(strata_data), nrow(df_tte))
-      )
+      checkmate::assert_true(nrow(strata_data) == nrow(df_tte))
       assert_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
     } else {
-      assertthat::assert_that(
-        assertthat::are_equal(length(strata_data), nrow(df_tte))
-      )
+      checkmate::assert_true(length(strata_data) == nrow(df_tte))
       assert_valid_factor(strata_data)
       strata_vars <- "strata_data"
     }
@@ -336,14 +327,12 @@ h_coxph_subgroups_df <- function(variables,
                                  groups_lists = list(),
                                  control = control_coxph(),
                                  label_all = "All Patients") {
-  assertthat::assert_that(
-    is.character(variables$tte),
-    is.character(variables$is_event),
-    is.character(variables$arm),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.character(variables$strat) || is.null(variables$strat),
-    is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
-  )
+  checkmate::assert_character(variables$tte)
+  checkmate::assert_character(variables$is_event)
+  checkmate::assert_character(variables$arm)
+  if (!is.null(variables$subgroups)) checkmate::assert_character(variables$subgroups)
+  if (!is.null(variables$strat)) checkmate::assert_character(variables$strat)
+  assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
   assert_df_with_variables(data, variables)
   checkmate::assert_string(label_all)
 

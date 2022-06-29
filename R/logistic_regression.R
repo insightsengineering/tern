@@ -80,7 +80,7 @@ summarize_logistic <- function(lyt,
                                drop_and_remove_str = "") {
 
   # checks
-  stopifnot(assertthat::is.string(drop_and_remove_str))
+  checkmate::assert_string(drop_and_remove_str)
 
   sum_logistic_variable_test <- logistic_summary_by_flag("is_variable_summary")
   sum_logistic_term_estimates <- logistic_summary_by_flag("is_term_summary")
@@ -165,13 +165,10 @@ fit_logistic <- function(data,
                            strata = NULL
                          ),
                          response_definition = "response") {
-  assertthat::assert_that(
-    is.list(variables),
-    all(names(variables) %in% c("response", "arm", "covariates", "interaction", "strata")),
-    assertthat::is.string(response_definition),
-    grepl("response", response_definition)
-  )
   assert_df_with_variables(data, variables)
+  checkmate::assert_subset(names(variables), c("response", "arm", "covariates", "interaction", "strata"))
+  checkmate::assert_string(response_definition)
+  checkmate::assert_true(grepl("response", response_definition))
 
   response_definition <- sub(
     pattern = "response",
@@ -184,10 +181,8 @@ fit_logistic <- function(data,
     form <- paste0(form, " + ", paste(variables$covariates, collapse = " + "))
   }
   if (!is.null(variables$interaction)) {
-    assertthat::assert_that(
-      assertthat::is.string(variables$interaction),
-      variables$interaction %in% variables$covariates
-    )
+    checkmate::assert_string(variables$interaction)
+    checkmate::assert_subset(variables$interaction, variables$covariates)
     form <- paste0(form, " + ", variables$arm, ":", variables$interaction)
   }
   if (!is.null(variables$strata)) {
@@ -270,10 +265,9 @@ fit_logistic <- function(data,
 tidy.glm <- function(fit_glm, # nolint
                      conf_level = 0.95,
                      at = NULL) {
-  assertthat::assert_that(
-    "glm" %in% class(fit_glm),
-    fit_glm$family$family == "binomial"
-  )
+  checkmate::assert_class(fit_glm, "glm")
+  checkmate::assert_set_equal(fit_glm$family$family, "binomial")
+
   terms_name <- attr(stats::terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
@@ -337,7 +331,7 @@ logistic_regression_cols <- function(lyt,
 #'
 #' @export
 logistic_summary_by_flag <- function(flag_var) {
-  assertthat::assert_that(assertthat::is.string(flag_var))
+  checkmate::assert_string(flag_var)
   function(lyt) {
     cfun_list <- list(
       df = cfun_by_flag("df", flag_var, format = "xx."),

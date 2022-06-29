@@ -53,12 +53,10 @@ NULL
 #'
 #' @export
 h_surv_to_coxreg_variables <- function(variables, biomarker) {
-  assertthat::assert_that(
-    is.list(variables),
-    assertthat::is.string(variables$tte),
-    assertthat::is.string(variables$is_event),
-    assertthat::is.string(biomarker)
-  )
+  checkmate::assert_list(variables)
+  checkmate::assert_string(variables$tte)
+  checkmate::assert_string(variables$is_event)
+  checkmate::assert_string(biomarker)
   list(
     time = variables$tte,
     event = variables$is_event,

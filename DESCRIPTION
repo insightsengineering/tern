@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.8.9008
+Version: 0.7.8.9009
 Date: 2022-06-09
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
@@ -23,7 +23,6 @@ Depends:
     R (>= 3.6),
     rtables (>= 0.5.1)
 Imports:
-    assertthat,
     broom,
     car,
     checkmate,

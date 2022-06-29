@@ -29,9 +29,7 @@ NULL
 format_fraction <- function(x, ...) {
   attr(x, "label") <- NULL
 
-  assertthat::assert_that(
-    is.vector(x)
-  )
+  checkmate::assert_vector(x)
   checkmate::assert_count(x["num"])
   checkmate::assert_count(x["denom"])
 
@@ -71,11 +69,9 @@ format_count_fraction <- function(x, ...) {
     return("NA")
   }
 
-  assertthat::assert_that(
-    is.vector(x),
-    rlang::is_integerish(x[1]),
-    is_proportion(x[2], include_boundaries = TRUE)
-  )
+  checkmate::assert_vector(x)
+  checkmate::assert_integerish(x[1])
+  assert_proportion_value(x[2], include_boundaries = TRUE)
 
   result <- if (x[1] == 0) {
     "0"
@@ -156,12 +152,10 @@ format_xx <- function(str) {
 #'
 #' @export
 format_fraction_threshold <- function(threshold) {
-  assertthat::assert_that(
-    is_proportion(threshold)
-  )
+  assert_proportion_value(threshold)
   string_below_threshold <- paste0("<", round(threshold * 100))
   function(x, ...) {
-    assertthat::assert_that(is_proportion(x[2], include_boundaries = TRUE))
+    assert_proportion_value(x[2], include_boundaries = TRUE)
     ifelse(
       x[2] > 0.01,
       round(x[2] * 100),
@@ -200,9 +194,7 @@ NULL
 #'
 #' @export
 h_get_format_threshold <- function(digits = 2L) {
-  assertthat::assert_that(
-    is.integer(digits)
-  )
+  checkmate::assert_integer(digits)
 
   low_threshold <- 1 / (10 ^ digits) # styler: off
   high_threshold <- 1000 - (1 / (10 ^ digits)) # styler: off
@@ -231,10 +223,7 @@ h_format_threshold <- function(x, digits = 2L) {
     return(x)
   }
 
-  assertthat::assert_that(
-    is.numeric(x),
-    x >= 0
-  )
+  checkmate::assert_numeric(x, lower = 0)
 
   l_fmt <- h_get_format_threshold(digits)
 
@@ -267,7 +256,7 @@ h_format_threshold <- function(x, digits = 2L) {
 #' @export
 format_extreme_values <- function(digits = 2L) {
   function(x, ...) {
-    assertthat::assert_that(length(x) == 1)
+    checkmate::assert_int(length(x), lower = 1, upper = 1)
 
     h_format_threshold(x = x, digits = digits)
   }
@@ -290,8 +279,7 @@ format_extreme_values <- function(digits = 2L) {
 #' @export
 format_extreme_values_ci <- function(digits = 2L) {
   function(x, ...) {
-    assertthat::assert_that(length(x) == 2)
-
+    checkmate::assert_int(length(x), lower = 2, upper = 2)
     l_result <- h_format_threshold(x = x[1], digits = digits)
     h_result <- h_format_threshold(x = x[2], digits = digits)
 

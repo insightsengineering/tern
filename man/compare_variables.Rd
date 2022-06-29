@@ -37,6 +37,7 @@ s_compare(x, .ref_group, .in_ref_col, ...)
   na.rm = TRUE,
   na_level = "<Missing>",
   .var,
+  verbose = TRUE,
   ...
 )
 
@@ -64,6 +65,7 @@ a_compare(x, .ref_group, .in_ref_col, ..., .var)
   na.rm = TRUE,
   na_level = "<Missing>",
   .var,
+  verbose = TRUE,
   ...
 )
 
@@ -101,6 +103,7 @@ can only be \code{n} (number of values in this row and column intersection).}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
+
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -240,13 +243,19 @@ s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
 ## Basic usage:
 x <- c("a", "a", "b", "c", "a")
 y <- c("a", "b", "c")
-s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
+s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", verbose = FALSE)
 
 ## Note that missing values handling can make a large difference:
 x <- c("a", "a", "b", "c", "a", NA)
 y <- c("a", "b", "c", rep(NA, 20))
-s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
-s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", na.rm = FALSE)
+s_compare(x,
+  .ref_group = y, .in_ref_col = FALSE,
+  .var = "x", verbose = FALSE
+)
+s_compare(x,
+  .ref_group = y, .in_ref_col = FALSE, .var = "x",
+  na.rm = FALSE, verbose = FALSE
+)
 
 # `s_compare.logical`
 

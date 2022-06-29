@@ -200,11 +200,9 @@ NULL
 h_incidence_rate_normal <- function(person_years,
                                     n_events,
                                     alpha = 0.05) {
-  assertthat::assert_that(
-    assertthat::is.number(person_years),
-    assertthat::is.number(n_events),
-    is_proportion(alpha)
-  )
+  checkmate::assert_number(person_years)
+  checkmate::assert_number(n_events)
+  assert_proportion_value(alpha)
 
   est <- n_events / person_years
   se <- sqrt(est / person_years)
@@ -224,11 +222,9 @@ h_incidence_rate_normal <- function(person_years,
 h_incidence_rate_normal_log <- function(person_years,
                                         n_events,
                                         alpha = 0.05) {
-  assertthat::assert_that(
-    assertthat::is.number(person_years),
-    assertthat::is.number(n_events),
-    is_proportion(alpha)
-  )
+  checkmate::assert_number(person_years)
+  checkmate::assert_number(n_events)
+  assert_proportion_value(alpha)
 
   rate_est <- n_events / person_years
   rate_se <- sqrt(rate_est / person_years)
@@ -249,11 +245,9 @@ h_incidence_rate_normal_log <- function(person_years,
 h_incidence_rate_exact <- function(person_years,
                                    n_events,
                                    alpha = 0.05) {
-  assertthat::assert_that(
-    assertthat::is.number(person_years),
-    assertthat::is.number(n_events),
-    is_proportion(alpha)
-  )
+  checkmate::assert_number(person_years)
+  checkmate::assert_number(n_events)
+  assert_proportion_value(alpha)
 
   est <- n_events / person_years
   lcl <- stats::qchisq(p = (alpha) / 2, df = 2 * n_events) / (2 * person_years)
@@ -272,11 +266,9 @@ h_incidence_rate_exact <- function(person_years,
 h_incidence_rate_byar <- function(person_years,
                                   n_events,
                                   alpha = 0.05) {
-  assertthat::assert_that(
-    assertthat::is.number(person_years),
-    assertthat::is.number(n_events),
-    is_proportion(alpha)
-  )
+  checkmate::assert_number(person_years)
+  checkmate::assert_number(n_events)
+  assert_proportion_value(alpha)
 
   est <- n_events / person_years
   seg_1 <- n_events + 0.5

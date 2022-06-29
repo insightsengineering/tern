@@ -23,18 +23,15 @@ check_diff_prop_ci <- function(rsp,
                                strata = NULL,
                                conf_level,
                                correct = NULL) {
-  assertthat::assert_that(
-    is.logical(rsp),
-    !anyNA(c(rsp, grp)),
-    is_equal_length(rsp, grp),
-    nlevels(grp) == 2,
-    conf_level >= 0,
-    conf_level <= 1
-  )
+  checkmate::assert(!anyNA(c(rsp, grp)))
+  checkmate::assert_logical(rsp)
+  checkmate::assert_set_equal(nlevels(grp), 2)
+  checkmate::assert_number(conf_level, lower = 0, upper = 1)
+  assert_equal_length(rsp, grp)
 
-  if (!is.null(correct)) assertthat::assert_that(assertthat::is.flag(correct))
+  if (!is.null(correct)) checkmate::assert_flag(correct)
 
-  if (!is.null(strata)) assertthat::assert_that(is_equal_length(rsp, strata))
+  if (!is.null(strata)) assert_equal_length(rsp, strata)
 
   invisible()
 }
@@ -129,9 +126,7 @@ s_proportion_diff <- function(df,
     if (!is.null(variables$strata)) {
       strata <- variables$strata
       strata_vars <- stats::setNames(as.list(strata), strata)
-      assertthat::assert_that(
-        !is.null(strata)
-      )
+      checkmate::assert_false(is.null(strata))
       assert_df_with_variables(df, strata_vars)
       assert_df_with_variables(.ref_group, strata_vars)
       strata <- factor(c(interaction(.ref_group[strata]), interaction(df[strata])))

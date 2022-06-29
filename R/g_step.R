@@ -79,12 +79,9 @@ g_step <- function(df,
                    est = list(col = "black", lty = 1),
                    ci_ribbon = list(fill = "lightblue", alpha = 0.5),
                    col = getOption("tern.color")) {
-  assertthat::assert_that(
-    tibble::is_tibble(df),
-    assertthat::is.flag(use_percentile),
-    is.character(col)
-  )
-
+  checkmate::assert_tibble(df)
+  checkmate::assert_flag(use_percentile)
+  checkmate::assert_character(col)
   checkmate::assert_list(est, names = "named")
   checkmate::assert_list(ci_ribbon, names = "named", null.ok = TRUE)
 
@@ -144,7 +141,7 @@ g_step <- function(df,
 #'
 #' @export
 tidy.step <- function(x, ...) { # nolint
-  assertthat::assert_that(inherits(x, "step"))
+  checkmate::assert_class(x, "step")
   dat <- as.data.frame(x)
   nams <- names(dat)
   is_surv <- "loghr" %in% names(dat)

@@ -64,10 +64,8 @@ h_adlb_worsen <- function(adlb,
                           worst_flag_low = NULL,
                           worst_flag_high = NULL,
                           direction_var) {
-  assertthat::assert_that(
-    assertthat::is.string(direction_var),
-    all(unique(adlb[[direction_var]]) %in% c("B", "L", "H"))
-  )
+  checkmate::assert_string(direction_var)
+  checkmate::assert_subset(unique(adlb[[direction_var]]), c("B", "L", "H"))
   assert_df_with_variables(adlb, list("Col" = direction_var))
 
   if (any(unique(adlb[[direction_var]]) == "H")) {
@@ -203,13 +201,11 @@ h_adlb_worsen <- function(adlb,
 #'
 #' @export
 h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
-  assertthat::assert_that(
-    assertthat::is.string(id),
-    assertthat::is.string(.var),
-    assertthat::is.string(baseline_var),
-    length(unique(df[[direction_var]])) == 1,
-    unique(df[[direction_var]]) %in% c("High", "Low")
-  )
+  checkmate::assert_string(id)
+  checkmate::assert_string(.var)
+  checkmate::assert_string(baseline_var)
+  checkmate::assert_scalar(unique(df[[direction_var]]))
+  checkmate::assert_subset(unique(df[[direction_var]]), c("High", "Low"))
   assert_df_with_variables(df, list(val = c(id, .var, baseline_var, direction_var)))
 
   # remove post-baseline missing
@@ -323,13 +319,11 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
                                                       baseline_var = "BTOXGR",
                                                       direction_var = "GRADDR"
                                                     )) {
-  assertthat::assert_that(
-    assertthat::is.string(.var),
-    assertthat::is.string(variables$id),
-    assertthat::is.string(variables$baseline_var),
-    assertthat::is.string(variables$direction_var),
-    setequal(names(variables), c("id", "baseline_var", "direction_var"))
-  )
+  checkmate::assert_string(.var)
+  checkmate::assert_string(variables$id)
+  checkmate::assert_string(variables$baseline_var)
+  checkmate::assert_string(variables$direction_var)
+  checkmate::assert_set_equal(names(variables), c("id", "baseline_var", "direction_var"))
   assert_df_with_variables(df, c(aval = .var, variables[1:3]))
   assert_list_of_variables(variables)
 

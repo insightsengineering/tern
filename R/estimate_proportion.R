@@ -35,11 +35,8 @@ s_proportion <- function(x,
   x <- as.logical(x)
 
   method <- match.arg(method)
-  assertthat::assert_that(
-    conf_level >= 0,
-    conf_level <= 1,
-    assertthat::is.flag(long)
-  )
+  checkmate::assert_flag(long)
+  checkmate::assert_number(conf_level, lower = 0, upper = 1)
 
   rsp <- x
   n <- sum(rsp)

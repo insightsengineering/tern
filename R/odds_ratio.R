@@ -64,9 +64,7 @@ s_odds_ratio <- function(df,
   y <- list(or_ci = "", n_tot = "")
 
   if (!.in_ref_col) {
-    assertthat::assert_that(
-      is_proportion(conf_level)
-    )
+    assert_proportion_value(conf_level)
     assert_df_with_variables(df, list(rsp = .var))
     assert_df_with_variables(.ref_group, list(rsp = .var))
 
@@ -117,10 +115,8 @@ s_odds_ratio <- function(df,
         strata = interaction(.df_row[variables$strata])
       )
       y_all <- or_clogit(data, conf_level = conf_level)
-      assertthat::assert_that(
-        assertthat::is.string(trt_grp),
-        trt_grp %in% names(y_all$or_ci)
-      )
+      checkmate::assert_string(trt_grp)
+      checkmate::assert_subset(trt_grp, names(y_all$or_ci))
       y$or_ci <- y_all$or_ci[[trt_grp]]
       y$n_tot <- y_all$n_tot
     }
@@ -235,17 +231,13 @@ NULL
 #'
 #' @export
 or_glm <- function(data, conf_level) {
-  assertthat::assert_that(
-    is.logical(data$rsp),
-    is_proportion(conf_level)
-  )
+  checkmate::assert_logical(data$rsp)
+  assert_proportion_value(conf_level)
   assert_df_with_variables(data, list(rsp = "rsp", grp = "grp"))
-  assert_character_or_factor(data$grp)
+  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
 
   data$grp <- as_factor_keep_attributes(data$grp)
-  assertthat::assert_that(
-    is_df_with_nlevels_factor(data, variable = "grp", n_levels = 2)
-  )
+  assert_df_with_factors(data, list(val = "grp"), min.levels = 2, max.levels = 2)
   formula <- stats::as.formula("rsp ~ grp")
   model_fit <- stats::glm(
     formula = formula, data = data,
@@ -284,13 +276,11 @@ or_glm <- function(data, conf_level) {
 #'
 #' @export
 or_clogit <- function(data, conf_level) {
-  assertthat::assert_that(
-    is.logical(data$rsp),
-    is_proportion(conf_level)
-  )
+  checkmate::assert_logical(data$rsp)
+  assert_proportion_value(conf_level)
   assert_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata"))
-  assert_character_or_factor(data$grp)
-  assert_character_or_factor(data$strata)
+  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
+  checkmate::assert_multi_class(data$strata, classes = c("factor", "character"))
 
   data$grp <- as_factor_keep_attributes(data$grp)
   data$strata <- as_factor_keep_attributes(data$strata)
