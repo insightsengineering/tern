@@ -272,7 +272,7 @@ testthat::test_that("extract_survival_subgroups functions as expected with NULL 
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
-testthat::test_that("tern:::a_survival_subgroups functions as expected with valid input", {
+testthat::test_that("a_survival_subgroups functions as expected with valid input", {
   df <- data.frame(
     hr = c(0.1234, 0.5678),
     pval = c(0.00001, 1.302309),
@@ -280,7 +280,7 @@ testthat::test_that("tern:::a_survival_subgroups functions as expected with vali
     stringsAsFactors = FALSE
   )
 
-  afun <- tern:::a_survival_subgroups(.formats = list("hr" = "xx.xx", pval = "x.xxxx | (<0.0001)"))
+  afun <- a_survival_subgroups(.formats = list("hr" = "xx.xx", pval = "x.xxxx | (<0.0001)"))
 
   result <- basic_table() %>%
     split_cols_by_multivar(c("hr", "pval")) %>%

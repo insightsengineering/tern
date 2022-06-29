@@ -48,10 +48,10 @@ testthat::test_that("h_ancova fails wrong inputs", {
   )
 })
 
-testthat::test_that("tern:::s_ancova works with healthy input", {
+testthat::test_that("s_ancova works with healthy input", {
   df_col <- iris %>% dplyr::filter(Species == "versicolor")
   df_ref <- iris %>% dplyr::filter(Species == "setosa")
-  result <- tern:::s_ancova(
+  result <- s_ancova(
     df = df_col,
     .var = "Sepal.Length",
     .df_row = iris,
@@ -72,9 +72,9 @@ testthat::test_that("tern:::s_ancova works with healthy input", {
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-testthat::test_that("tern:::s_ancova fails wrong inputs", {
+testthat::test_that("s_ancova fails wrong inputs", {
   testthat::expect_error(
-    tern:::s_ancova(
+    s_ancova(
       df = iris,
       .var = "Sepal.Length",
       variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width")),

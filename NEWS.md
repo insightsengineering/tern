@@ -116,6 +116,7 @@
    `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`.
    
 * Deprecated badge added to `g_mmrm`
+* Removed `tern:::` prefix from internal function uses in tests
 
 ### Miscellaneous
 * Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`
