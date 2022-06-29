@@ -192,11 +192,9 @@ h_coxreg_univar_extract <- function(effect,
                                     data,
                                     mod,
                                     control = control_coxreg()) {
-  assertthat::assert_that(
-    assertthat::is.string(covar),
-    assertthat::is.string(effect),
-    class(mod) == "coxph"
-  )
+  checkmate::assert_string(covar)
+  checkmate::assert_string(effect)
+  checkmate::assert_class(mod, "coxph")
   test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
 
   mod_aov <- muffled_car_anova(mod, test_statistic)

@@ -47,10 +47,7 @@ NULL
 #' @export
 tidy.summary.coxph <- function(x, # nolint
                                ...) {
-  assertthat::assert_that(
-    class(x) == "summary.coxph"
-  )
-
+  checkmate::assert_class(x, "summary.coxph")
   pval <- x$coefficients
   confint <- x$conf.int
   levels <- rownames(pval)
@@ -101,10 +98,7 @@ tidy.summary.coxph <- function(x, # nolint
 #' @export
 tidy.coxreg.univar <- function(x, # nolint
                                ...) {
-  assertthat::assert_that(
-    class(x) == "coxreg.univar"
-  )
-
+  checkmate::assert_class(x, "coxreg.univar")
   mod <- x$mod
   vars <- c(x$vars$arm, x$vars$covariates)
   has_arm <- "arm" %in% names(x$vars)
