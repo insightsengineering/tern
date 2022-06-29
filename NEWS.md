@@ -1,4 +1,4 @@
-# tern 0.7.8.9007
+# tern 0.7.8.9008
 
 ### Migration from `assertthat` to `checkmate`
 * `is_character_or_factor` is now `assert_character_or_factor` and uses 
@@ -101,6 +101,9 @@
    `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`.
    
 * Deprecated badge added to `g_mmrm`
+
+### Miscellaneous
+* Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`
 
 # tern 0.7.8
 

@@ -275,7 +275,6 @@ reference:
     desc: These functions are useful to modify graphs.
     contents:
       - arrange_grobs
-      - color_palette
       - decorate_grob
       - decorate_grob_factory
       - decorate_grob_set
@@ -336,6 +335,7 @@ reference:
     contents:
       - as.rtable.mmrm
       - starts_with("a_mmrm")
+      - color_palette
       - fit_mmrm
       - starts_with("g_mmrm")
       - starts_with("h_mmrm")
