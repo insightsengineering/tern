@@ -111,12 +111,6 @@ summary_labels <- function() {
 NULL
 
 #' @inheritParams argument_convention
-#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
-#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
-#' * `quantiles`: numeric vector of length two to specify the quantiles.
-#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   See more about `type` in [stats::quantile()].
 #'
 #' @describeIn summarize_variables `s_summary` is a S3 generic function to produce
 #'   an object description.
@@ -131,7 +125,6 @@ s_summary <- function(x,
                       .N_col, # nolint
                       na_level,
                       .var,
-                      control,
                       ...) {
   checkmate::assert_flag(na.rm)
   UseMethod("s_summary", x)
@@ -143,6 +136,13 @@ s_summary <- function(x,
 #'   intersection of a column and a row delimits an empty data selection.
 #'   Also, when the `mean` function is applied to an empty vector, `NA` will
 #'   be returned instead of `NaN`, the latter being standard behavior in R.
+#'
+#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
+#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
+#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
+#' * `quantiles`: numeric vector of length two to specify the quantiles.
+#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
+#'   See more about `type` in [stats::quantile()].
 #'
 #' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.

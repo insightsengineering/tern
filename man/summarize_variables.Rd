@@ -16,7 +16,7 @@
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
-s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, control, ...)
+s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, ...)
 
 \method{s_summary}{numeric}(
   x,
@@ -142,6 +142,8 @@ this column across rows).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
+\item{...}{arguments passed to \code{s_summary()}.}
+
 \item{control}{a (\code{list}) of parameters for descriptive statistics details, specified by using \cr
 the helper function \code{\link[=control_summarize_vars]{control_summarize_vars()}}. Some possible parameter options are: \cr
 \itemize{
@@ -150,8 +152,6 @@ the helper function \code{\link[=control_summarize_vars]{control_summarize_vars(
 \item \code{quantile_type} (\code{numeric}) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 }}
-
-\item{...}{arguments passed to \code{s_summary()}.}
 
 \item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
