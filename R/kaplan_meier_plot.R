@@ -191,12 +191,11 @@ g_km <- function(df,
                  control_coxph_pw = control_coxph(),
                  position_coxph = c(0, 0.05),
                  position_surv_med = c(0.9, 0.9)) {
-  assertthat::assert_that(
-    is.list(variables),
-    all(c("tte", "arm", "is_event") %in% names(variables)),
-    assertthat::is.string(title) || is.null(title),
-    is.character(col)
-  )
+  checkmate::assert_list(variables)
+  checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
+  checkmate::assert_string(title, null.ok = TRUE)
+  checkmate::assert_character(col)
+
   tte <- variables$tte
   is_event <- variables$is_event
   arm <- variables$arm
@@ -504,7 +503,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
     } else {
       labeling::extended(range(data$time)[1], max(range(data$time)[2], max_time), m = 5)
     }
-  } else if (assertthat::is.number(xticks)) {
+  } else if (checkmate::test_number(xticks)) {
     if (is.null(max_time)) {
       seq(0, max(data$time), xticks)
     } else {
@@ -530,7 +529,6 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
 #' @inheritParams kaplan_meier
-#' @export
 #' @examples
 #' \dontrun{
 #'
@@ -556,6 +554,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' gg
 #' }
 #'
+#' @export
 h_ggkm <- function(data,
                    xticks = NULL,
                    yval = "Survival",
@@ -571,10 +570,8 @@ h_ggkm <- function(data,
                    col = getOption("tern.color"),
                    ci_ribbon = FALSE,
                    ggtheme = NULL) {
-  assertthat::assert_that(
-    (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty)),
-    is.character(col)
-  )
+  checkmate::assert_numeric(lty, null.ok = TRUE)
+  checkmate::assert_character(col)
 
   # change estimates of survival to estimates of failure (1 - survival)
   if (yval == "Failure") {
@@ -605,7 +602,7 @@ h_ggkm <- function(data,
   gg <- if (is.null(lty)) {
     gg +
       ggplot2::geom_step(lwd = lwd)
-  } else if (assertthat::is.number(lty)) {
+  } else if (checkmate::test_number(lty)) {
     gg +
       ggplot2::geom_step(lwd = lwd, lty = lty)
   } else if (is.numeric(lty)) {

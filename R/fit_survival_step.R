@@ -75,9 +75,7 @@
 fit_survival_step <- function(variables,
                               data,
                               control = c(control_step(), control_coxph())) {
-  assertthat::assert_that(
-    is.list(control)
-  )
+  checkmate::assert_list(control)
   assert_df_with_variables(data, variables)
   data <- data[!is.na(data[[variables$biomarker]]), ]
   window_sel <- h_step_window(x = data[[variables$biomarker]], control = control)

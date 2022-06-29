@@ -2,34 +2,28 @@
 % Please edit documentation in R/utils_checkmate.R
 \name{assertions}
 \alias{assertions}
-\alias{assert_character_or_factor}
 \alias{assert_list_of_variables}
 \alias{assert_df_with_variables}
 \alias{assert_valid_factor}
 \alias{assert_df_with_factors}
-\alias{is_df_with_nlevels_factor}
-\alias{is_equal_length}
-\alias{is_proportion}
-\alias{is_proportion_vector}
-\alias{is_quantiles_vector}
-\alias{all_elements_in_ref}
-\alias{has_tabletree_colnames}
-\alias{is_df_with_no_na_level}
+\alias{assert_equal_length}
+\alias{assert_proportion_value}
 \title{Additional Assertions for \code{checkmate}}
 \usage{
-assert_character_or_factor(x)
-
 assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
 
 assert_df_with_variables(
   df,
   variables,
+  na_level = NULL,
   .var.name = checkmate::vname(df),
   add = NULL
 )
 
 assert_valid_factor(
   x,
+  min.levels = 1,
+  max.levels = NULL,
   any.missing = TRUE,
   .var.name = checkmate::vname(x),
   add = NULL
@@ -38,59 +32,44 @@ assert_valid_factor(
 assert_df_with_factors(
   df,
   variables,
+  min.levels = 1,
+  max.levels = NULL,
+  any.missing = TRUE,
+  na_level = NULL,
   .var.name = checkmate::vname(df),
   add = NULL
 )
 
-is_df_with_nlevels_factor(df, variable, n_levels, relation = c("==", ">="))
+assert_equal_length(...)
 
-is_equal_length(...)
-
-is_proportion(x, include_boundaries = FALSE)
-
-is_proportion_vector(x, include_boundaries = FALSE)
-
-is_quantiles_vector(x, include_boundaries = FALSE)
-
-all_elements_in_ref(x, ref)
-
-has_tabletree_colnames(x, col_names)
-
-is_df_with_no_na_level(df, variables, na_level)
+assert_proportion_value(x, include_boundaries = FALSE)
 }
 \arguments{
 \item{x}{object to test}
 
-\item{df}{(\verb{data frame})\cr input dataset.}
+\item{df}{supposed data frame to test}
 
-\item{variables}{(\verb{named list})\cr columns from dataset where you want to check if \code{na_level} exists.}
+\item{variables}{(named \code{list} of \code{character})\cr supposed variables list to test}
 
-\item{any.missing}{It defaults to \code{TRUE}, allowing \code{NA} values, but it does not allow them
-if \code{FALSE} is used.}
+\item{na_level}{(\code{string})\cr the string user has been using to represent NA or
+missing data. For \code{NA} values please consider using directly \code{base::is.na} or
+similar approaches.}
 
-\item{variable}{(\code{string})\cr name of the single variable.}
+\item{min.levels}{Minimum number of levels for \code{x}.}
 
-\item{n_levels}{(\code{count})\cr number of levels to compare with.}
+\item{max.levels}{Maximum number of levels for \code{x}.}
 
-\item{relation}{(\code{string})\cr which relational operator to use for the comparison.}
+\item{any.missing}{Default is \code{TRUE}, allowing missing values (\code{NA}).}
 
 \item{...}{a collection of objects to test.}
 
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing for proportions.}
-
-\item{ref}{(\code{vector})\cr where matches from \code{x} are sought for \code{all_elements_in_ref}.}
-
-\item{col_names}{(\code{character})\cr column names which should be present in the table.}
-
-\item{na_level}{(\code{string})\cr the string user has been using to represent NA or missing data.}
 }
 \description{
 We provide additional assertion functions which can be used together with \code{\link[checkmate:assert]{checkmate::assert()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{assert_character_or_factor}: Check whether \code{x} is a character or factor vector.
-
 \item \code{assert_list_of_variables}: Check whether \code{x} is a valid list of variable names.
 \code{NULL} elements of the list \code{x} are dropped out with \code{Filter(Negate(is.null), x)}.
 
@@ -102,34 +81,15 @@ data.frame while the opposite is not required.
 Note that \code{NULL} and \code{NA} elements are allowed.
 
 \item \code{assert_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
-are all factors.
+are all factors. Note that the creation of \code{NA} by direct call of \code{factor()} will
+trim \code{NA} levels out of the vector list itself.
 
-\item \code{is_df_with_nlevels_factor}: Check whether \code{df} is a data frame where the analysis \code{variable}
-is a factor with \code{n_levels} number of levels.
+\item \code{assert_equal_length}: Check that objects provided are of same length.
 
-\item \code{is_equal_length}: Check that objects provided are of same length.
-
-\item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
-
-\item \code{is_proportion_vector}: Check whether \code{x} is a vector of proportions (numbers between 0 and 1).
-
-\item \code{is_quantiles_vector}: Check whether \code{x} is a sorted vector of unique quantile proportions
-(numbers between 0 and 1).
-
-\item \code{all_elements_in_ref}: Check whether all elements of \code{x} are in a reference vector.
-
-\item \code{has_tabletree_colnames}: Check whether \code{rtables} object \code{x} has the specified column names.
-
-\item \code{is_df_with_no_na_level}: check if the input \code{df} has \code{na_level} in its \code{variables}.
+\item \code{assert_proportion_value}: Check whether \code{x} is a proportion: number between 0 and 1.
 }}
 
 \examples{
-
-# Check whether `x` is a character or factor vector.
-tern:::assert_character_or_factor(c("a", "b"))
-tern:::assert_character_or_factor(factor(c("a", "b")))
-# tern:::assert_character_or_factor(-1) # it fails
-
 # Check whether `x` is a valid list of variable names.
 tern:::assert_list_of_variables(list(val = "a"))
 tern:::assert_list_of_variables(list(val = c("a", "b")))
@@ -142,14 +102,37 @@ tern:::assert_list_of_variables(list("bla" = 2))
 }
 
 # Check whether `df` contains the analysis `variables`.
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = "a")
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = c("a", "b"))
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = c("a", "b"))
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3, e = "<Missing>"),
+  variables = list(val = c("a", "b")), na_level = "<Missing>"
+)
 
 # The following calls fail
 \dontrun{
-tern:::assert_df_with_variables(df = matrix(1:5, ncol = 2, nrow = 3), variables = list(val = "a"))
-tern:::assert_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b", "c")))
+tern:::assert_df_with_variables(
+  df = matrix(1:5, ncol = 2, nrow = 3),
+  variables = list(val = "a")
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = c("a", "b", "c"))
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3, e = "<Missing>"),
+  variables = list(val = c("a", "b", "e")), na_level = "<Missing>"
+)
 }
 
 # Check whether `x` is a valid factor.
@@ -170,52 +153,43 @@ tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
 
 # Check whether `df` contains all factor analysis `variables`.
 adf <- data.frame(a = factor(c("A", "B")), b = 3)
-assert_df_with_factors(df = adf, variables = list(val = "a"))
-
+bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
+tern:::assert_df_with_factors(df = adf, variables = list(val = "a"))
+tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
+tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
+tern:::assert_df_with_factors(
+  df = data.frame(a = factor(c("A", NA, "B")), b = 3),
+  variable = list(val = "a"),
+  min.levels = 2,
+  max.levels = 2
+)
 # The following calls fail
 \dontrun{
-assert_df_with_factors(df = adf, variables = list(val = "a", val = "b"))
+assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
+assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
+assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
+assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
+assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
 }
-
-# Check whether `df` contains a factor `variable` with `n_levels` levels.
-is_df_with_nlevels_factor(
-  df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
-  variable = "a",
-  n_levels = 2
-)
 
 #' # Check whether `x` is a valid list of variable names.
 a <- 1
 b <- NULL
 c <- c(1, "car")
 d <- 5
-is_equal_length(a, b, c, d)
+# These fails
+\dontrun{
+assert_equal_length(a, b, c, d)
+}
 
 # Check whether `x` is between 0 and 1.
-is_proportion(x = 0.3)
-is_proportion(x = 1.3)
-is_proportion(x = 0, include_boundaries = TRUE)
+tern:::assert_proportion_value(x = 0, include_boundaries = TRUE)
+tern:::assert_proportion_value(x = 0.3)
+# These fails
+\dontrun{
+assert_proportion_value(x = 1.3)
+assert_proportion_value(x = 1)
+}
 
-# Check whether `x` is a vector of numbers between 0 and 1.
-is_proportion_vector(c(0.3, 0.1))
-is_proportion_vector(c(1.3, 0.1))
-is_proportion_vector(0, include_boundaries = TRUE)
-
-# Check whether `x` is a vector of sorted quantile proportions between 0 and 1.
-is_quantiles_vector(c(0.1, 0.3))
-is_quantiles_vector(c(0.3, 0.1))
-is_quantiles_vector(c(0.3, 0.3))
-is_quantiles_vector(0, include_boundaries = TRUE)
-
-# Check whether all elements of `x` are in a reference vector.
-all_elements_in_ref(c("a", "b"), c("a", "b", "c"))
-all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
-all_elements_in_ref(c(1:3), c(1:5))
-
-df <- data.frame(a = 1:3, b = 2:4)
-df$a <- ifelse(df$a == 1, "<Missing>", df$a)
-is_df_with_no_na_level(df, variables = list(a = "a"), na_level = "<Missing>")
-is_df_with_no_na_level(df, variables = list(b = "b"), na_level = "<Missing>")
-is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
 }
 \keyword{internal}

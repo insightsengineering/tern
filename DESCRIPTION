@@ -23,7 +23,6 @@ Depends:
     R (>= 3.6),
     rtables (>= 0.5.1)
 Imports:
-    assertthat,
     broom,
     car,
     checkmate,

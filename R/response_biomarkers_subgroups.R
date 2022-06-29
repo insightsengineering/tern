@@ -88,12 +88,11 @@ extract_rsp_biomarkers <- function(variables,
                                    groups_lists = list(),
                                    control = control_logistic(),
                                    label_all = "All Patients") {
-  assertthat::assert_that(
-    is.list(variables),
-    assertthat::is.string(variables$rsp),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
-    assertthat::is.string(label_all)
-  )
+  assert_list_of_variables(variables)
+  checkmate::assert_string(variables$rsp)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
+  checkmate::assert_string(label_all)
+
   # Start with all patients.
   result_all <- h_logistic_mult_cont_df(
     variables = variables,
@@ -166,12 +165,11 @@ extract_rsp_biomarkers <- function(variables,
 #' }
 tabulate_rsp_biomarkers <- function(df,
                                     vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")) {
-  assertthat::assert_that(
-    is.data.frame(df),
-    is.character(df$biomarker),
-    is.character(df$biomarker_label),
-    all(vars %in% c("n_tot", "n_rsp", "prop", "or", "ci", "pval"))
-  )
+  checkmate::assert_data_frame(df)
+  checkmate::assert_character(df$biomarker)
+  checkmate::assert_character(df$biomarker_label)
+  checkmate::assert_subset(vars, c("n_tot", "n_rsp", "prop", "or", "ci", "pval"))
+
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {
     tab_sub <- h_tab_rsp_one_biomarker(

@@ -19,7 +19,7 @@ testthat::test_that("combine_vectors works correctly", {
 testthat::test_that("as_factor_keep_attributes works correctly for a character vector", {
   foo <- formatters::with_label(c("a", "b"), "alphabet")
   result <- testthat::expect_warning(
-    as_factor_keep_attributes(foo),
+    as_factor_keep_attributes(foo, verbose = TRUE),
     "automatically converting character variable foo to factor"
   )
   expected <- formatters::with_label(factor(c("a", "b")), "alphabet")
@@ -29,7 +29,7 @@ testthat::test_that("as_factor_keep_attributes works correctly for a character v
 testthat::test_that("as_factor_keep_attributes converts empty strings for a character vector", {
   foo <- formatters::with_label(c("a", "", "b"), "alphabet")
   result <- testthat::expect_warning(
-    as_factor_keep_attributes(foo, na_level = "missing"),
+    as_factor_keep_attributes(foo, na_level = "missing", verbose = TRUE),
     "automatically converting character variable foo to factor"
   )
   expected <- formatters::with_label(factor(c("a", "missing", "b"), levels = c("a", "b", "missing")), "alphabet")
@@ -39,7 +39,7 @@ testthat::test_that("as_factor_keep_attributes converts empty strings for a char
 testthat::test_that("as_factor_keep_attributes shows correct name of vector in warning", {
   foo <- formatters::with_label(c("a", "b"), "alphabet")
   testthat::expect_warning(
-    as_factor_keep_attributes(foo, x_name = "FOO"),
+    as_factor_keep_attributes(foo, x_name = "FOO", verbose = TRUE),
     "automatically converting character variable FOO to factor"
   )
 })
@@ -95,7 +95,7 @@ testthat::test_that("cut_quantile_bins works with custom labels", {
 
 testthat::test_that("cut_quantile_bins preserves NAs in result", {
   x <- airquality$Ozone
-  assertthat::assert_that(
+  checkmate::assert_true(
     any(is.na(x)),
     !all(is.na(x))
   )
@@ -110,16 +110,16 @@ testthat::test_that("cut_quantile_bins also works when there are only NAs", {
   testthat::expect_identical(levels(result), c("[0%,25%]", "(25%,50%]", "(50%,75%]", "(75%,100%]"))
 })
 
-testthat::test_that("cut_quantile_bins gives understandable error message if there are duplicate quantiles", {
+testthat::test_that("cut_quantile_bins gives error message if there are duplicate quantiles", {
   x <- c(rep(NA_real_, 10), 1)
   testthat::expect_error(
-    cut_quantile_bins(x),
-    "Duplicate quantiles produced, please use a coarser `probs` vector"
+    cut_quantile_bins(x)
   )
 })
 
-testthat::test_that("cut_quantile_bins works if an empty `probs` vector is used", {
+testthat::test_that("cut_quantile_bins does work also if an empty `probs` vector is used", {
   x <- 1:10
+  result <- testthat::expect_silent(cut_quantile_bins(x, probs = c(0, 1)))
   result <- testthat::expect_silent(cut_quantile_bins(x, probs = c()))
   testthat::expect_true(all(result == "[0%,100%]"))
 })

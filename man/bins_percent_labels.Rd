@@ -28,6 +28,6 @@ tern:::bins_percent_labels(c(0.2, 0.5))
 tern:::bins_percent_labels(0.35224, digits = 1)
 
 # Passing an empty vector just gives a single bin 0-100\%.
-tern:::bins_percent_labels(c())
+tern:::bins_percent_labels(c(0, 1))
 }
 \keyword{internal}

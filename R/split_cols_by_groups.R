@@ -19,9 +19,7 @@
 #' @keywords internal
 groups_list_to_df <- function(groups_list) {
   checkmate::assert_list(groups_list, names = "named")
-  assertthat::assert_that(
-    all(sapply(groups_list, is.character))
-  )
+  lapply(groups_list, checkmate::assert_character)
   tibble::tibble(
     valname = make_names(names(groups_list)),
     label = names(groups_list),
@@ -64,8 +62,8 @@ combine_groups <- function(fct,
                            ref = NULL,
                            collapse = "/") {
   checkmate::assert_string(collapse)
-  if (!is.null(ref)) checkmate::assert_character(ref, min.chars = 1, any.missing = FALSE)
-  assert_character_or_factor(fct)
+  checkmate::assert_character(ref, min.chars = 1, any.missing = FALSE, null.ok = TRUE)
+  checkmate::assert_multi_class(fct, classes = c("factor", "character"))
 
   fct <- as_factor_keep_attributes(fct)
 
@@ -73,7 +71,7 @@ combine_groups <- function(fct,
   if (is.null(ref)) {
     ref <- group_levels[1]
   } else {
-    assertthat::assert_that(all_elements_in_ref(x = ref, ref = group_levels))
+    checkmate::assert_subset(ref, group_levels)
   }
 
   groups <- list(
@@ -258,7 +256,7 @@ split_cols_by_groups <- function(lyt,
 #'
 #' @keywords internal
 combine_counts <- function(fct, groups_list = NULL) {
-  assert_character_or_factor(fct)
+  checkmate::assert_multi_class(fct, classes = c("factor", "character"))
 
   fct <- as_factor_keep_attributes(fct)
 

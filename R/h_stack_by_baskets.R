@@ -75,18 +75,15 @@ h_stack_by_baskets <- function(df,
   smq_sc <- gsub(pattern = "NAM", replacement = "SC", x = smq_nam, fixed = TRUE)
   smq <- stats::setNames(smq_sc, smq_nam)
 
-  assertthat::assert_that(
-    is.character(baskets),
-    assertthat::is.string(smq_varlabel),
-    is.data.frame(df),
-    all(startsWith(baskets, "SMQ") | startsWith(baskets, "CQ")),
-    all(endsWith(baskets, "NAM")),
-    all(baskets %in% names(df)),
-    all(keys %in% names(df)),
-    all(smq_sc %in% names(df)),
-    assertthat::is.string(na_level),
-    sum(baskets %in% names(df)) > 0
-  )
+  checkmate::assert_character(baskets)
+  checkmate::assert_string(smq_varlabel)
+  checkmate::assert_data_frame(df)
+  checkmate::assert_true(all(startsWith(baskets, "SMQ") | startsWith(baskets, "CQ")))
+  checkmate::assert_true(all(endsWith(baskets, "NAM")))
+  checkmate::assert_subset(baskets, names(df))
+  checkmate::assert_subset(keys, names(df))
+  checkmate::assert_subset(smq_sc, names(df))
+  checkmate::assert_string(na_level)
 
   if (!is.null(aag_summary)) {
     assert_df_with_variables(
