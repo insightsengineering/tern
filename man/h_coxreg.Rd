@@ -152,4 +152,5 @@ result <- h_coxreg_multivar_extract(
   var = "var1", mod = mod, data = dta_simple
 )
 result
+
 }

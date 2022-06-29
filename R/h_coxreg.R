@@ -237,7 +237,6 @@ h_coxreg_univar_extract <- function(effect,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams h_coxreg_univar_extract
-#' @export
 #'
 #' @examples
 #' library(survival)
@@ -247,6 +246,8 @@ h_coxreg_univar_extract <- function(effect,
 #'   var = "var1", mod = mod, data = dta_simple
 #' )
 #' result
+#'
+#' @export
 h_coxreg_multivar_extract <- function(var,
                                       data,
                                       mod,
