@@ -29,7 +29,7 @@
 #' grid.draw(stack_grobs(g1, g2, g3, vp = vp1, name = "test"))
 #'
 #' showViewport()
-#' grid.ls(grobs = TRUE, viewports = TRUE)
+#' grid.ls(grobs = TRUE, viewports = TRUE, print = FALSE)
 stack_grobs <- function(...,
                         grobs = list(...),
                         padding = grid::unit(2, "line"),

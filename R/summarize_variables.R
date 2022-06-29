@@ -372,8 +372,8 @@ s_summary.factor <- function(x,
 #' # `s_summary.character`
 #'
 #' ## Basic usage:
-#' s_summary(c("a", "a", "b", "c", "a"), .var = "x")
-#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
                                 denom = c("n", "N_row", "N_col"),
@@ -381,8 +381,9 @@ s_summary.character <- function(x,
                                 .N_col, # nolint
                                 na_level = "<Missing>",
                                 .var,
+                                verbose = TRUE,
                                 ...) {
-  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level)
+  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level, verbose = verbose)
   s_summary(
     x = y,
     na.rm = na.rm,
@@ -504,7 +505,7 @@ a_summary.factor <- make_afun(
 #'   getS3method("a_summary", "character"),
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
-#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
+#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 a_summary.character <- make_afun(
   s_summary.character,
   .formats = .a_summary_counts_formats

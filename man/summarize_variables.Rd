@@ -48,6 +48,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, control, ...)
   .N_col,
   na_level = "<Missing>",
   .var,
+  verbose = TRUE,
   ...
 )
 
@@ -92,6 +93,7 @@ a_summary(x, ..., .N_row, .N_col, .var)
   .N_col,
   na_level = "<Missing>",
   .var,
+  verbose = TRUE,
   ...
 )
 
@@ -347,8 +349,8 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 # `s_summary.character`
 
 ## Basic usage:
-s_summary(c("a", "a", "b", "c", "a"), .var = "x")
-s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
+s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
+s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
 # `s_summary.logical`
 
 ## Basic usage:
@@ -378,7 +380,7 @@ afun <- make_afun(
   getS3method("a_summary", "character"),
   .ungroup_stats = c("count", "count_fraction")
 )
-afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
+afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 # `a_summary.logical`
 afun <- make_afun(
   getS3method("a_summary", "logical")
