@@ -38,9 +38,11 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/linter.yaml@main
   roxygen:
     name: Roxygen 🅾
-    uses: insightsengineering/r.pkg.template/.github/workflows/roxygen.yaml@main
+    uses: insightsengineering/r.pkg.template/.github/workflows/roxygen.yaml@302_only_man_page_update
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
+    with:
+      auto-update: true
   gitleaks:
     name: gitleaks 💧
     uses: insightsengineering/r.pkg.template/.github/workflows/gitleaks.yaml@main

@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates the abnormal range result (character or factor)
+#' Primary analysis (this is a test) variable `.var` indicates the abnormal range result (character or factor)
 #' and additional analysis variables are `id` (character or factor) and `baseline` (character or
 #' factor). For each direction specified in `abnormal` (e.g. high or low) count patients in the
 #' numerator and denominator as follows:
