@@ -117,12 +117,10 @@ a_response_subgroups <- function(.formats = list(
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)"
                                  )) {
-  assertthat::assert_that(
-    is.list(.formats),
-    all_elements_in_ref(
-      names(.formats),
-      ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
-    )
+  checkmate::assert_list(.formats)
+  checkmate::assert_subset(
+    names(.formats),
+    c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
   )
 
   afun_lst <- Map(function(stat, fmt) {
@@ -303,10 +301,11 @@ tabulate_rsp_subgroups <- function(lyt,
 d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,
                                     method = NULL) {
-  assertthat::assert_that(
-    is.character(vars),
-    all_elements_in_ref(c("n_tot", "or", "ci"), vars),
-    all_elements_in_ref(vars, ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
+  checkmate::assert_character(vars)
+  checkmate::assert_subset(c("n_tot", "or", "ci"), vars)
+  checkmate::assert_subset(
+    vars,
+    c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
   )
 
   varlabels <- c(
@@ -319,7 +318,7 @@ d_rsp_subgroups_colvars <- function(vars,
   colvars <- vars
 
   if ("ci" %in% colvars) {
-    assertthat::assert_that(!is.null(conf_level))
+    checkmate::assert_false(is.null(conf_level))
 
     varlabels <- c(
       varlabels,

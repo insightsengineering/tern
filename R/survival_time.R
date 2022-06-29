@@ -47,9 +47,7 @@ s_surv_time <- function(df,
                         .var,
                         is_event,
                         control = control_surv_time()) {
-  assertthat::assert_that(
-    assertthat::is.string(.var)
-  )
+  checkmate::assert_string(.var)
   assert_df_with_variables(df, list(tte = .var, is_event = is_event))
   checkmate::assert_numeric(df[[.var]], min.len = 1, any.missing = FALSE)
   checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)

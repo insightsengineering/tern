@@ -38,14 +38,12 @@ h_count_cumulative <- function(x,
                                include_eq = TRUE,
                                na.rm = TRUE, # nolint
                                .N_col) { # nolint
-  assertthat::assert_that(
-    is.numeric(x),
-    is.numeric(threshold),
-    assertthat::is.flag(lower_tail),
-    assertthat::is.flag(include_eq),
-    assertthat::is.flag(na.rm),
-    is.numeric(.N_col)
-  )
+  checkmate::assert_numeric(x)
+  checkmate::assert_numeric(threshold)
+  checkmate::assert_numeric(.N_col)
+  checkmate::assert_flag(lower_tail)
+  checkmate::assert_flag(include_eq)
+  checkmate::assert_flag(na.rm)
 
   is_keep <- if (na.rm) !is.na(x) else rep(TRUE, length(x))
   count <- if (lower_tail & include_eq) {
@@ -72,9 +70,7 @@ h_count_cumulative <- function(x,
 #' @export
 #'
 d_count_cumulative <- function(threshold, lower_tail, include_eq) {
-  assertthat::assert_that(
-    is.numeric(threshold)
-  )
+  checkmate::assert_numeric(threshold)
   lg <- if (lower_tail) "<" else ">"
   eq <- if (include_eq) "=" else ""
   paste0(lg, eq, " ", threshold)

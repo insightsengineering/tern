@@ -99,6 +99,7 @@ tern:::s_count_patients_sum_exposure(
   custom_label = "some user's custom label"
 )
 
+
 lyt <- basic_table() \%>\%
   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) \%>\%

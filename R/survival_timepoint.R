@@ -47,9 +47,7 @@ s_surv_timepoint <- function(df,
                              time_point,
                              is_event,
                              control = control_surv_timepoint()) {
-  assertthat::assert_that(
-    assertthat::is.string(.var)
-  )
+  checkmate::assert_string(.var)
   assert_df_with_variables(df, list(tte = .var, is_event = is_event))
   checkmate::assert_numeric(df[[.var]], min.len = 1, any.missing = FALSE)
   checkmate::assert_number(time_point)
@@ -260,7 +258,7 @@ surv_timepoint <- function(lyt,
                            .labels = NULL,
                            .indent_mods = NULL) {
   method <- match.arg(method)
-  assertthat::assert_that(assertthat::is.string(table_names_suffix))
+  checkmate::assert_string(table_names_suffix)
 
   f <- list(
     surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),

@@ -96,20 +96,18 @@ h_g_ipp <- function(df,
                     yvar_baseline = "BASE",
                     ggtheme = h_set_nest_theme(10),
                     col = getOption("tern.color")) {
-  assertthat::assert_that(
-    is.data.frame(df),
-    assertthat::is.string(xvar),
-    assertthat::is.string(yvar),
-    assertthat::is.string(yvar_baseline),
-    assertthat::is.string(id_var),
-    all(c(xvar, yvar, yvar_baseline, id_var) %in% colnames(df)),
-    assertthat::is.string(xlab),
-    assertthat::is.string(ylab),
-    assertthat::is.string(title),
-    assertthat::is.string(subtitle),
-    is.logical(add_baseline_hline),
-    is.character(col)
-  )
+  checkmate::assert_string(xvar)
+  checkmate::assert_string(yvar)
+  checkmate::assert_string(yvar_baseline)
+  checkmate::assert_string(id_var)
+  checkmate::assert_string(xlab)
+  checkmate::assert_string(ylab)
+  checkmate::assert_string(title)
+  checkmate::assert_string(subtitle)
+  checkmate::assert_subset(c(xvar, yvar, yvar_baseline, id_var), colnames(df))
+  checkmate::assert_data_frame(df)
+  checkmate::assert_flag(add_baseline_hline)
+  checkmate::assert_character(col)
 
   p <- ggplot2::ggplot(
     data = df,
@@ -200,11 +198,9 @@ g_ipp <- function(df,
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
                   max_obs_per_plot = 4,
                   col = getOption("tern.color")) {
-  assertthat::assert_that(
-    assertthat::is.count(max_obs_per_plot),
-    plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
-  )
-  assertthat::assert_that(is.character(col))
+  checkmate::assert_count(max_obs_per_plot)
+  checkmate::assert_subset(plotting_choices, c("all_in_one", "split_by_max_obs", "separate_by_obs"))
+  checkmate::assert_character(col)
 
   plotting_choices <- match.arg(plotting_choices)
 

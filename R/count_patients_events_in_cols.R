@@ -52,15 +52,13 @@ s_count_patients_and_multiple_events <- function(df, # nolint
                                                  labelstr = "",
                                                  custom_label = NULL) {
   checkmate::assert_list(filters_list, names = "named")
+  checkmate::assert_data_frame(df)
+  checkmate::assert_string(id)
+  checkmate::assert_disjunct(c("unique", "all"), names(filters_list))
+  checkmate::assert_character(empty_stats)
+  checkmate::assert_string(labelstr)
+  checkmate::assert_string(custom_label, null.ok = TRUE)
 
-  assertthat::assert_that(
-    is.data.frame(df),
-    assertthat::is.string(id),
-    !(any(c("unique", "all") %in% names(filters_list))),
-    is.character(empty_stats),
-    assertthat::is.string(labelstr),
-    is.null(custom_label) || assertthat::is.string(custom_label)
-  )
   # Below we want to count each row in `df` once, therefore introducing this helper index column.
   df$.row_index <- as.character(seq_len(nrow(df)))
   y <- list()

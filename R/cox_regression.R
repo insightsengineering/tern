@@ -105,15 +105,12 @@ h_coxreg_univar_formulas <- function(variables,
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
-  if (!is.null(variables$covariates)) {
-    assertthat::assert_that(is.character(variables$covariates))
-  }
+  checkmate::assert_character(variables$covariates, null.ok = TRUE)
 
-  assertthat::assert_that(
-    assertthat::is.flag(interaction),
-    (has_arm || (!interaction)),
-    (!is.null(variables$covariates) || (!interaction))
-  )
+  checkmate::assert_flag(interaction)
+  checkmate::assert_true((has_arm || (!interaction)))
+  checkmate::assert_true((!is.null(variables$covariates) || (!interaction)))
+
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$covariates)) {
@@ -193,9 +190,7 @@ h_coxreg_multivar_formula <- function(variables) {
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
-  if (!is.null(variables$covariates)) {
-    assertthat::assert_that(is.character(variables$covariates))
-  }
+  checkmate::assert_character(variables$covariates, null.ok = TRUE)
 
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
@@ -240,10 +235,8 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
                            interaction = FALSE) {
   pval_method <- match.arg(pval_method)
   ties <- match.arg(ties)
-  assertthat::assert_that(
-    is_proportion(conf_level),
-    assertthat::is.flag(interaction)
-  )
+  checkmate::assert_flag(interaction)
+  assert_proportion_value(conf_level)
   list(
     pval_method = pval_method,
     ties = ties,
@@ -325,20 +318,16 @@ fit_coxreg_univar <- function(variables,
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
-  if (!is.null(variables$covariates)) {
-    assertthat::assert_that(is.character(variables$covariates))
-  }
+  checkmate::assert_character(variables$covariates, null.ok = TRUE)
 
   assert_df_with_variables(data, variables)
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$strata)) {
-    assertthat::assert_that(
-      control$pval_method != "likelihood"
-    )
+    checkmate::assert_true(control$pval_method != "likelihood")
   }
   if (has_arm) {
-    assertthat::assert_that(is_df_with_nlevels_factor(data, variables$arm, 2L))
+    assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
   }
   vars <- unlist(variables[c(arm_name, "covariates", "strata")], use.names = FALSE)
   for (i in vars) {
@@ -401,10 +390,7 @@ fit_coxreg_univar <- function(variables,
 #' tidy(msum)
 tidy.summary.coxph <- function(x, # nolint
                                ...) {
-  assertthat::assert_that(
-    class(x) == "summary.coxph"
-  )
-
+  checkmate::assert_class(x, "summary.coxph")
   pval <- x$coefficients
   confint <- x$conf.int
   levels <- rownames(pval)
@@ -448,11 +434,9 @@ h_coxreg_univar_extract <- function(effect,
                                     data,
                                     mod,
                                     control = control_coxreg()) {
-  assertthat::assert_that(
-    assertthat::is.string(covar),
-    assertthat::is.string(effect),
-    class(mod) == "coxph"
-  )
+  checkmate::assert_string(covar)
+  checkmate::assert_string(effect)
+  checkmate::assert_class(mod, "coxph")
   test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
 
   mod_aov <- muffled_car_anova(mod, test_statistic)
@@ -504,10 +488,7 @@ h_coxreg_univar_extract <- function(effect,
 #' tidy(mod2)
 tidy.coxreg.univar <- function(x, # nolint
                                ...) {
-  assertthat::assert_that(
-    class(x) == "coxreg.univar"
-  )
-
+  checkmate::assert_class(x, "coxreg.univar")
   mod <- x$mod
   vars <- c(x$vars$arm, x$vars$covariates)
   has_arm <- "arm" %in% names(x$vars)
@@ -599,19 +580,15 @@ fit_coxreg_multivar <- function(variables,
   arm_name <- if (has_arm) "arm" else NULL
 
   if (!is.null(variables$covariates)) {
-    assertthat::assert_that(is.character(variables$covariates))
+    checkmate::assert_character(variables$covariates)
   }
 
-  assertthat::assert_that(
-    isFALSE(control$interaction)
-  )
+  checkmate::assert_false(control$interaction)
   assert_df_with_variables(data, variables)
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$strata)) {
-    assertthat::assert_that(
-      control$pval_method != "likelihood"
-    )
+    checkmate::assert_true(control$pval_method != "likelihood")
   }
 
   form <- h_coxreg_multivar_formula(variables)
@@ -704,10 +681,7 @@ h_coxreg_multivar_extract <- function(var,
 #' broom::tidy(multivar_model)
 tidy.coxreg.multivar <- function(x, # nolint
                                  ...) {
-  assertthat::assert_that(
-    class(x) == "coxreg.multivar"
-  )
-
+  checkmate::assert_class(x, "coxreg.multivar")
   vars <- c(x$vars$arm, x$vars$covariates)
 
   # Convert the model summaries to data.
@@ -784,7 +758,7 @@ tidy.coxreg.multivar <- function(x, # nolint
 #' s_coxreg(df = df2_covs, .var = "hr")
 s_coxreg <- function(df, .var) {
   assert_df_with_variables(df, list(term = "term", var = .var))
-  assert_character_or_factor(df$term)
+  checkmate::assert_multi_class(df$term, classes = c("factor", "character"))
   df$term <- as.character(df$term)
   # We need a list with names corresponding to the stats to display.
   # There can be several covariate to test, but the names of the items should
