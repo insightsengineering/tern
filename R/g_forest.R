@@ -303,19 +303,18 @@ forest_grob <- function(tbl,
                         name = NULL,
                         gp = NULL,
                         vp = NULL) {
-  stopifnot(
-    !is.null(vline) || is.null(forest_header),
-    is.null(forest_header) || length(forest_header) == 2,
-    is.null(vline) || length(vline) == 1
-  )
-
   nr <- nrow(tbl)
-  stopifnot(
-    is.numeric(x) && length(x) == nr,
-    is.numeric(lower) && length(lower) == nr,
-    is.numeric(upper) && length(upper) == nr,
-    is.null(symbol_size) || length(symbol_size) == nr
-  )
+  if (is.null(vline)) {
+    checkmate::assert_true(is.null(forest_header))
+  } else {
+    checkmate::assert_number(vline)
+    checkmate::assert_character(forest_header, len = 2, null.ok = T)
+  }
+
+  checkmate::assert_numeric(x, len = nr)
+  checkmate::assert_numeric(lower, len = nr)
+  checkmate::assert_numeric(upper, len = nr)
+  checkmate::assert_numeric(symbol_size, len = nr, null.ok = TRUE)
 
   if (is.null(symbol_size)) {
     symbol_size <- rep(1, nr)
@@ -490,9 +489,7 @@ cell_in_rows <- function(row_name,
                          cell_spans,
                          row_index,
                          underline_colspan = FALSE) {
-  stopifnot(
-    length(cells) == length(cell_spans)
-  )
+  assert_equal_length(cells, cell_spans)
   checkmate::assert_string(row_name)
   checkmate::assert_character(cells, min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(cell_spans, min.len = 1, any.missing = FALSE)
@@ -678,12 +675,15 @@ forest_viewport <- function(tbl,
                             gap_column = grid::unit(1, "lines"),
                             gap_header = grid::unit(1, "lines"),
                             mat_form = NULL) {
-  stopifnot(
-    inherits(tbl, "VTableTree"),
-    is.null(width_row_names) || grid::is.unit(width_row_names),
-    is.null(width_columns) || grid::is.unit(width_columns),
-    grid::is.unit(width_forest)
-  )
+
+  checkmate::assert_class(tbl, "VTableTree")
+  checkmate::assert_true(grid::is.unit(width_forest))
+  if (!is.null(width_row_names)) {
+    checkmate::assert_true(grid::is.unit(width_row_names))
+  }
+  if (!is.null(width_columns)) {
+    checkmate::assert_true(grid::is.unit(width_columns))
+  }
 
   if (is.null(mat_form)) mat_form <- matrix_form(tbl)
 

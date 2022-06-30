@@ -241,15 +241,29 @@ decorate_grob <- function(grob,
 #' @importFrom grid validDetails
 #' @export
 validDetails.decoratedGrob <- function(x) { # nolint
-  stopifnot(
-    grid::is.grob(x$grob) || is.null(x$grob),
-    is.character(x$titles),
-    is.character(x$footnotes),
-    is.character(x$page) || length(x$page) != 1,
-    grid::is.unit(x$outer_margins) || length(x$outer_margins) == 4,
-    grid::is.unit(x$margins) || length(x$margins) == 4,
-    grid::is.unit(x$padding) || length(x$padding) == 4
-  )
+
+  checkmate::assert_character(x$titles)
+  checkmate::assert_character(x$footnotes)
+
+  if (!is.null(x$grob)) {
+    checkmate::assert_true(grid::is.grob(x$grob))
+  }
+
+  if (length(x$page) == 1) {
+    checkmate::assert_character(x$page)
+  }
+
+  if (length(x$outer_margins != 4)) {
+    checkmate::assert_true(grid::is.unit(x$outer_margins) )
+  }
+
+  if (length(x$margins != 4)) {
+    checkmate::assert_true(grid::is.unit(x$margins) )
+  }
+
+  if (length(x$padding != 4)) {
+    checkmate::assert_true(grid::is.unit(x$padding) )
+  }
 
   x
 }
@@ -360,7 +374,8 @@ split_text_grob <- function(text,
     y <- grid::unit(y, default.units)
   }
 
-  stopifnot(grid::is.unit(width) && length(width) == 1)
+  checkmate::assert_true(grid::is.unit(width))
+  checkmate::assert_vector(width, len = 1)
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
   if (!inherits(width, "unit.arithmetic") &&
@@ -388,11 +403,9 @@ split_text_grob <- function(text,
 #' @importFrom grid validDetails
 #' @export
 validDetails.dynamicSplitText <- function(x) { # nolint
-  stopifnot(
-    is.character(x$text),
-    grid::is.unit(x$width) && length(x$width) == 1
-  )
-
+  checkmate::assert_character(x$text)
+  checkmate::assert_true(grid::is.unit(x$width))
+  checkmate::assert_vector(x$width, len = 1)
   x
 }
 
