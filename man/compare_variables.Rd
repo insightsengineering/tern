@@ -311,7 +311,7 @@ afun <- make_afun(
 )
 x <- c("A", "B", "A", "C")
 y <- c("B", "A", "C")
-afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
+afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", verbose = FALSE)
 # `a_compare.logical`
 afun <- make_afun(
   getS3method("a_compare", "logical")

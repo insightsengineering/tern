@@ -18,10 +18,10 @@ get_adsl <- function() {
   )
 }
 
-testthat::test_that("tern:::s_count_patients_sum_exposure works as expected", {
+testthat::test_that("s_count_patients_sum_exposure works as expected", {
   df <- get_anl()
   adsl <- get_adsl()
-  result <- tern:::s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl)) # nolintr
+  result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl)) # nolintr
   expected <- list(
     n_patients = formatters::with_label(c(12, 1), "Total patients numbers/person time"),
     sum_exposure = formatters::with_label(35, "Total patients numbers/person time")

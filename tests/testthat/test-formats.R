@@ -34,7 +34,7 @@ testthat::test_that("format_fraction fails with bad inputs", {
 
 testthat::test_that("format_xx works with easy inputs", {
   test <- list(c(1.658, 0.5761), c(1e1, 785.6))
-  z <- tern:::format_xx("xx (xx.x)")
+  z <- format_xx("xx (xx.x)")
   result <- sapply(test, z)
   expected <- c("2 (0.6)", "10 (785.6)")
   testthat::expect_identical(result, expected)

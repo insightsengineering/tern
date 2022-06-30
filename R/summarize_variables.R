@@ -111,12 +111,6 @@ summary_labels <- function() {
 NULL
 
 #' @inheritParams argument_convention
-#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
-#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
-#' * `quantiles`: numeric vector of length two to specify the quantiles.
-#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   See more about `type` in [stats::quantile()].
 #'
 #' @describeIn summarize_variables `s_summary` is a S3 generic function to produce
 #'   an object description.
@@ -131,7 +125,6 @@ s_summary <- function(x,
                       .N_col, # nolint
                       na_level,
                       .var,
-                      control,
                       ...) {
   checkmate::assert_flag(na.rm)
   UseMethod("s_summary", x)
@@ -143,6 +136,13 @@ s_summary <- function(x,
 #'   intersection of a column and a row delimits an empty data selection.
 #'   Also, when the `mean` function is applied to an empty vector, `NA` will
 #'   be returned instead of `NaN`, the latter being standard behavior in R.
+#'
+#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
+#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
+#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
+#' * `quantiles`: numeric vector of length two to specify the quantiles.
+#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
+#'   See more about `type` in [stats::quantile()].
 #'
 #' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.
@@ -359,6 +359,8 @@ s_summary.factor <- function(x,
 
 #' @describeIn summarize_variables Method for character class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
+#' @param verbose defaults to `TRUE`. It prints out warnings and messages. It is mainly used
+#'   to print out information about factor casting.
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
@@ -372,8 +374,8 @@ s_summary.factor <- function(x,
 #' # `s_summary.character`
 #'
 #' ## Basic usage:
-#' s_summary(c("a", "a", "b", "c", "a"), .var = "x")
-#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
                                 denom = c("n", "N_row", "N_col"),
@@ -381,8 +383,9 @@ s_summary.character <- function(x,
                                 .N_col, # nolint
                                 na_level = "<Missing>",
                                 .var,
+                                verbose = TRUE,
                                 ...) {
-  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level)
+  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level, verbose = verbose)
   s_summary(
     x = y,
     na.rm = na.rm,
@@ -504,7 +507,7 @@ a_summary.factor <- make_afun(
 #'   getS3method("a_summary", "character"),
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
-#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
+#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 a_summary.character <- make_afun(
   s_summary.character,
   .formats = .a_summary_counts_formats

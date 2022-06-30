@@ -332,7 +332,7 @@ a_compare.factor <- make_afun(
 #' )
 #' x <- c("A", "B", "A", "C")
 #' y <- c("B", "A", "C")
-#' afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x")
+#' afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", verbose = FALSE)
 a_compare.character <- make_afun(
   s_compare.character,
   .formats = .a_compare_counts_formats,

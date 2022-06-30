@@ -26,9 +26,9 @@ only be included if there are missings). Note that any existing \code{NA} in the
 not be replaced by the missing level. If needed \code{\link[=explicit_na]{explicit_na()}} can be called separately on the result.
 }
 \examples{
-tern:::fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
+fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
+
 }
 \seealso{
 \code{\link[forcats:fct_collapse]{forcats::fct_collapse()}}, \code{\link[forcats:fct_relevel]{forcats::fct_relevel()}} which are used internally.
 }
-\keyword{internal}

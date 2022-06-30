@@ -74,11 +74,11 @@ get_covariates <- function(covariates) {
 #'
 #' @inheritParams argument_convention
 #' @param n (`count`)\cr how many entries we need.
-#' @export
 #'
 #' @return Just input `x` if it has the required length already or is `NULL`,
 #'   otherwise if it is scalar the replicated version of it with `n` entries.
 #'
+#' @export
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -162,9 +162,9 @@ make_names <- function(nams) {
 #'
 #' @examples
 #' x <- c(13.25, 8.15, 1, 2.834)
-#' tern:::month2day(x)
+#' month2day(x)
 #'
-#' @keywords internal
+#' @export
 month2day <- function(x) {
   checkmate::assert_numeric(x)
   x * 30.4375
