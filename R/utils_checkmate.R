@@ -125,7 +125,8 @@ assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_varia
 check_valid_factor <- function(x,
                                min.levels = 1,
                                max.levels = NULL,
-                               any.missing = TRUE) {
+                               any.missing = TRUE,
+                               ...) {
   # checks on levels insertion
   checkmate::assert_int(min.levels, lower = 1)
   # no check of max.levels if it is NULL
@@ -138,7 +139,8 @@ check_valid_factor <- function(x,
     min.levels = min.levels,
     null.ok = TRUE,
     max.levels = max.levels,
-    any.missing = any.missing
+    any.missing = any.missing,
+    ...
   )
   # no empty strings allowed
   if (isTRUE(res)) {
@@ -148,14 +150,16 @@ check_valid_factor <- function(x,
 }
 #' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
 #'   Note that `NULL` and `NA` elements are allowed.
-#' @param min.levels Minimum number of levels for `x`.
-#' @param max.levels Maximum number of levels for `x`.
-#' @param any.missing Default is `TRUE`, allowing missing values (`NA`).
+#' @param min.levels minimum number of levels for `x`.
+#' @param max.levels maximum number of levels for `x`.
+#' @param any.missing default is `TRUE`, allowing missing values (`NA`).
+#' @param ... additional parameters for [checkmate::assert_factor()]
 #'
 #' @examples
 #' # Check whether `x` is a valid factor.
-#' tern:::assert_valid_factor(factor(c("a", "b")))
 #' tern:::assert_valid_factor(factor(c("a", NULL)))
+#' tern:::assert_valid_factor(factor(c("a", "b")))
+#' tern:::assert_valid_factor(factor(c("a", "b")), len = 2)
 #' tern:::assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
 #' tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
 #'

@@ -25,6 +25,7 @@ assert_valid_factor(
   min.levels = 1,
   max.levels = NULL,
   any.missing = TRUE,
+  ...,
   .var.name = checkmate::vname(x),
   add = NULL
 )
@@ -61,7 +62,7 @@ similar approaches.}
 
 \item{any.missing}{Default is \code{TRUE}, allowing missing values (\code{NA}).}
 
-\item{...}{a collection of objects to test.}
+\item{...}{additional parameters for \code{\link[checkmate:checkFactor]{checkmate::assert_factor()}}}
 
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing for proportions.}
 }
@@ -136,8 +137,9 @@ tern:::assert_df_with_variables(
 }
 
 # Check whether `x` is a valid factor.
-tern:::assert_valid_factor(factor(c("a", "b")))
 tern:::assert_valid_factor(factor(c("a", NULL)))
+tern:::assert_valid_factor(factor(c("a", "b")))
+tern:::assert_valid_factor(factor(c("a", "b")), len = 2)
 tern:::assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
 tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
 

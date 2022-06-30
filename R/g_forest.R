@@ -875,7 +875,3 @@ footnotes <- function(x) {
   footnotes(x) <- c(footnotes(x), value)
   x
 }
-`add_footnotes<-` <- function(x, value) { # nolint
-  footnotes(x) <- c(footnotes(x), value)
-  x
-}

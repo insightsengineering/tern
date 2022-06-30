@@ -308,8 +308,8 @@ s_cox_univariate <- function(formula,
     ref_mod = with(
       fit$ref_mod,
       unname(switch(pval_method,
-        "wald" = msum$waldtest["pvalue"],
-        "likelihood" = msum$logtest["pvalue"]
+                    "wald" = msum$waldtest["pvalue"],
+                    "likelihood" = msum$logtest["pvalue"]
       ))
     ),
     lapply(X = fit[-1], FUN = function(x) x$aov[tarm, "Pr(>Chisq)"])
@@ -573,8 +573,8 @@ fit_n_aov <- function(formula,
   aov <- try_car_anova(
     mod,
     test.statistic = switch(pval_method,
-      "wald" = "Wald",
-      "likelihood" = "LR"
+                            "wald" = "Wald",
+                            "likelihood" = "LR"
     )
   )
 

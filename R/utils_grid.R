@@ -36,9 +36,8 @@ stack_grobs <- function(...,
                         vp = NULL,
                         gp = NULL,
                         name = NULL) {
-  checkmate::assert(
-    vapply(grobs, grid::is.grob, logical(1)),
-    combine = "and"
+  checkmate::assert_true(
+    vapply(grobs, grid::is.grob, logical(1))
   )
 
   if (length(grobs) == 1) {
@@ -129,9 +128,8 @@ arrange_grobs <- function(..., # nolint
                           vp = NULL,
                           gp = NULL,
                           name = NULL) {
-  checkmate::assert(
-    vapply(grobs, grid::is.grob, logical(1)),
-    combine = "and"
+  checkmate::assert_true(
+    vapply(grobs, grid::is.grob, logical(1))
   )
 
   if (length(grobs) == 1) {
