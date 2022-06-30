@@ -130,7 +130,8 @@ check_valid_factor <- function(x,
                                empty.levels.ok = TRUE,
                                null.ok = TRUE,
                                any.missing = TRUE,
-                               n.levels = NULL) {
+                               n.levels = NULL,
+                               len = NULL) {
   # checks on levels insertion
   checkmate::assert_int(min.levels, lower = 1)
   # no check of max.levels if it is NULL

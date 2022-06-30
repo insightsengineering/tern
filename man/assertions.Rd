@@ -19,6 +19,7 @@ assert_valid_factor(
   null.ok = TRUE,
   any.missing = TRUE,
   n.levels = NULL,
+  len = NULL,
   .var.name = checkmate::vname(x),
   add = NULL
 )
@@ -39,7 +40,7 @@ assert_equal_length(...)
 assert_proportion_value(x, include_boundaries = FALSE)
 }
 \arguments{
-\item{x}{Object to test}
+\item{x}{\link{any} Object to test}
 
 \item{.var.name}{[\code{character(1)}]\cr
 Name of the checked object to print in assertions. Defaults to
@@ -71,17 +72,22 @@ Are vectors with missing values allowed? Default is \code{TRUE}.}
 Exact number of factor levels.
 Default is \code{NULL} (no check).}
 
-\item{df}{Supposed data frame to test}
+\item{len}{[\code{integer(1)}]\cr
+Exact expected length of \code{x}.}
+
+\item{df}{\code{\link{data.frame(1)}}Supposed data frame to test}
 
 \item{variables}{(named \code{list} of \code{character})\cr Supposed variables list to test}
 
-\item{na_level}{(\code{string})\cr The string user has been using to represent NA or
+\item{na_level}{\code{\link{character(1)}}\cr The string user has been using to represent NA or
 missing data. For \code{NA} values please consider using directly \code{base::is.na} or
 similar approaches.}
 
 \item{...}{A collection of objects to test.}
 
-\item{include_boundaries}{(\code{logical})\cr Whether to include boundaries when testing for proportions.}
+\item{include_boundaries}{\code{\link{logical(1)}}\cr Whether to include boundaries when testing for proportions.}
+
+\item{[integer(1)]}{Minimum number of factor levels. Default is \code{1}.}
 }
 \description{
 We provide additional assertion functions which can be used together with \link{checkmate}.
