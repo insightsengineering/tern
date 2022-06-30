@@ -65,13 +65,13 @@ d_proportion_diff <- function(conf_level,
   }
 
   method_part <- switch(method,
-                        "cmh" = "CMH, without correction",
-                        "waldcc" = "Wald, with correction",
-                        "wald" = "Wald, without correction",
-                        "ha" = "Anderson-Hauck",
-                        "newcombe" = "Newcombe, without correction",
-                        "newcombecc" = "Newcombe, with correction",
-                        stop(paste(method, "does not have a description"))
+    "cmh" = "CMH, without correction",
+    "waldcc" = "Wald, with correction",
+    "wald" = "Wald, without correction",
+    "ha" = "Anderson-Hauck",
+    "newcombe" = "Newcombe, without correction",
+    "newcombecc" = "Newcombe, with correction",
+    stop(paste(method, "does not have a description"))
   )
   paste0(label, " (", method_part, ")")
 }
@@ -344,12 +344,12 @@ s_proportion_diff <- function(df,
     }
 
     y <- switch(method,
-                wald = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
-                waldcc = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
-                ha = prop_diff_ha(rsp, grp, conf_level),
-                newcombe = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
-                newcombecc = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
-                cmh = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
+      wald = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
+      waldcc = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
+      ha = prop_diff_ha(rsp, grp, conf_level),
+      newcombe = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
+      newcombecc = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
+      cmh = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
     )
 
     y$diff <- y$diff * 100

@@ -238,7 +238,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
     )
   } else if (
     (nrow(l_df[[1]]) == 0 && nrow(l_df[[2]]) > 0) ||
-    (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
+      (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
   ) {
     df_tte_complete <- df_tte[stats::complete.cases(df_tte), ]
     df <- data.frame(

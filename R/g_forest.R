@@ -675,7 +675,6 @@ forest_viewport <- function(tbl,
                             gap_column = grid::unit(1, "lines"),
                             gap_header = grid::unit(1, "lines"),
                             mat_form = NULL) {
-
   checkmate::assert_class(tbl, "VTableTree")
   checkmate::assert_true(grid::is.unit(width_forest))
   if (!is.null(width_row_names)) {
