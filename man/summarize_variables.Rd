@@ -16,7 +16,7 @@
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
-s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, control, ...)
+s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, ...)
 
 \method{s_summary}{numeric}(
   x,
@@ -48,6 +48,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, control, ...)
   .N_col,
   na_level = "<Missing>",
   .var,
+  verbose = TRUE,
   ...
 )
 
@@ -92,6 +93,7 @@ a_summary(x, ..., .N_row, .N_col, .var)
   .N_col,
   na_level = "<Missing>",
   .var,
+  verbose = TRUE,
   ...
 )
 
@@ -140,6 +142,8 @@ this column across rows).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
+\item{...}{arguments passed to \code{s_summary()}.}
+
 \item{control}{a (\code{list}) of parameters for descriptive statistics details, specified by using \cr
 the helper function \code{\link[=control_summarize_vars]{control_summarize_vars()}}. Some possible parameter options are: \cr
 \itemize{
@@ -149,7 +153,8 @@ the helper function \code{\link[=control_summarize_vars]{control_summarize_vars(
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 }}
 
-\item{...}{arguments passed to \code{s_summary()}.}
+\item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
+to print out information about factor casting.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -347,8 +352,8 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 # `s_summary.character`
 
 ## Basic usage:
-s_summary(c("a", "a", "b", "c", "a"), .var = "x")
-s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
+s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
+s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
 # `s_summary.logical`
 
 ## Basic usage:
@@ -378,7 +383,7 @@ afun <- make_afun(
   getS3method("a_summary", "character"),
   .ungroup_stats = c("count", "count_fraction")
 )
-afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
+afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 # `a_summary.logical`
 afun <- make_afun(
   getS3method("a_summary", "logical")

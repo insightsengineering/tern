@@ -47,6 +47,7 @@
 * Added `@md` and removed `@order` from `incidence_rate.R`. The presented order
   is automatically the final order in the documentation. There is no specific 
   need to add this tag. Modified examples accordingly.
+* Fixed warnings occurring in example tests
 
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:

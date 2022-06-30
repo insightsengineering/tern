@@ -152,7 +152,7 @@ should be accounted for.
 # Wald confidence interval
 set.seed(2)
 rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
-grp <- c(rep("A", 10), rep("B", 10))
+grp <- factor(c(rep("A", 10), rep("B", 10)))
 prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
 
 # Anderson-Hauck confidence interval
