@@ -1,6 +1,5 @@
 # tern 0.7.8.9010
 
-
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.
 * `assert_df_with_factors`, `assert_equal_length`, and `assert_proportion_value` 
@@ -24,6 +23,8 @@
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
 ### Fix
+* `fct_collapse_only`, `fct_collapse_only`, and `month2day`/`day2month` reverted
+  to export.
 * Fixed test for `cut_quantile_bins` with empty vector. This is not a good standard
   input.
 * Warnings from `as_factor_keep_attributes` are now in verbose for better 
