@@ -248,13 +248,18 @@ validDetails.decoratedGrob <- function(x) { # nolint
   if (!is.null(x$grob)) {
     checkmate::assert_true(grid::is.grob(x$grob))
   }
-
   if (length(x$page) == 1) {
     checkmate::assert_character(x$page)
   }
-  checkmate::assert_true(grid::is.unit(x$outer_margins))
-  checkmate::assert_true(grid::is.unit(x$margins))
-  checkmate::assert_true(grid::is.unit(x$padding))
+  if (!grid::is.unit(x$outer_margins)) {
+    checkmate::assert_vector(x$outer_margins, len = 4)
+  }
+  if (!grid::is.unit(x$margins)) {
+    checkmate::assert_vector(x$margins, len = 4)
+  }
+  if (!grid::is.unit(x$padding)) {
+    checkmate::assert_vector(x$padding, len = 4)
+  }
 
   x
 }

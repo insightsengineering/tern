@@ -1,13 +1,18 @@
 #' Additional Assertions for `checkmate`
 #'
 #' @description
-#' We provide additional assertion functions which can be used together with [checkmate::assert()].
+#' We provide additional assertion functions which can be used together with [checkmate].
 #'
-#' @param x object to test
-#' @param df supposed data frame to test
-#' @param variables (named `list` of `character`)\cr supposed variables list to test
-#' @param include_boundaries (`logical`)\cr whether to include boundaries when testing for proportions.
-#' @param ... a collection of objects to test.
+#' @param x [any] Object to test
+#' @param df [`data.frame(1)`]Supposed data frame to test
+#' @param variables (named `list` of `character`)\cr Supposed variables list to test
+#' @param include_boundaries [`logical(1)`]\cr Whether to include boundaries when testing for proportions.
+#' @param na_level [`character(1)`]\cr The string user has been using to represent NA or
+#'   missing data. For `NA` values please consider using directly `base::is.na` or
+#'   similar approaches.
+#' @inheritParams checkmate::assert_factor
+#' @param [integer(1)] Minimum number of factor levels. Default is `1`.
+#' @param ... A collection of objects to test.
 #' @name assertions
 NULL
 
@@ -77,12 +82,9 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
   }
   return(TRUE)
 }
-#' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
+#' @describeIn Assertions Check whether `df` is a data frame with the analysis `variables`.
 #'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
-#' @param na_level (`string`)\cr the string user has been using to represent NA or
-#'   missing data. For `NA` values please consider using directly `base::is.na` or
-#'   similar approaches.
 #'
 #' @examples
 #' # Check whether `df` contains the analysis `variables`.
@@ -125,8 +127,10 @@ assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_varia
 check_valid_factor <- function(x,
                                min.levels = 1,
                                max.levels = NULL,
+                               empty.levels.ok = TRUE,
+                               null.ok = TRUE,
                                any.missing = TRUE,
-                               ...) {
+                               n.levels = NULL) {
   # checks on levels insertion
   checkmate::assert_int(min.levels, lower = 1)
   # no check of max.levels if it is NULL
@@ -135,12 +139,12 @@ check_valid_factor <- function(x,
   }
   # main factor check
   res <- checkmate::check_factor(x,
-    empty.levels.ok = TRUE,
+    empty.levels.ok = empty.levels.ok,
     min.levels = min.levels,
-    null.ok = TRUE,
+    null.ok = null.ok,
     max.levels = max.levels,
     any.missing = any.missing,
-    ...
+    n.levels = n.levels
   )
   # no empty strings allowed
   if (isTRUE(res)) {
@@ -150,10 +154,6 @@ check_valid_factor <- function(x,
 }
 #' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
 #'   Note that `NULL` and `NA` elements are allowed.
-#' @param min.levels minimum number of levels for `x`.
-#' @param max.levels maximum number of levels for `x`.
-#' @param any.missing default is `TRUE`, allowing missing values (`NA`).
-#' @param ... additional parameters for [checkmate::assert_factor()]
 #'
 #' @examples
 #' # Check whether `x` is a valid factor.
@@ -212,12 +212,6 @@ check_df_with_factors <- function(df,
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
 #'   are all factors. Note that the creation of `NA` by direct call of `factor()` will
 #'   trim `NA` levels out of the vector list itself.
-#' @param min.levels Minimum number of levels for `x`.
-#' @param max.levels Maximum number of levels for `x`.
-#' @param any.missing Default is `TRUE`, allowing missing values (`NA`).
-#' @param na_level (`string`)\cr the string user has been using to represent NA or
-#'   missing data. For `NA` values please consider using directly `base::is.na` or
-#'   similar approaches.
 #'
 #' @examples
 #' # Check whether `df` contains all factor analysis `variables`.
