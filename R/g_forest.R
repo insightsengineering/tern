@@ -154,7 +154,7 @@ g_forest <- function(tbl, # nolint
                      col_symbol_size = attr(tbl, "col_symbol_size"),
                      draw = TRUE,
                      newpage = TRUE) {
-  stopifnot(inherits(tbl, "VTableTree"))
+  checkmate::assert_class(tbl, "VTableTree")
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
@@ -162,11 +162,12 @@ g_forest <- function(tbl, # nolint
   checkmate::assert_false(is.null(col_x))
   checkmate::assert_false(is.null(col_ci))
 
-  stopifnot(
-    col_x > 0 && col_x <= nc,
-    col_ci > 0 && col_ci <= nc,
-    is.null(col_symbol_size) || col_symbol_size > 0 && col_symbol_size <= nc
-  )
+  checkmate::assert_number(col_x, lower = 0, upper = nc)
+  checkmate::assert_number(col_ci, lower = 0, upper = nc)
+  checkmate::assert_number(col_symbol_size, lower = 0, upper = nc, null.ok = TRUE)
+  checkmate::assert_true(col_x > 0)
+  checkmate::assert_true(col_ci > 0)
+  checkmate::assert_true(col_symbol_size > 0)
 
   x_e <- vapply(seq_len(nr), function(i) {
     xi <- as.vector(tbl[i, col_x, drop = TRUE])
