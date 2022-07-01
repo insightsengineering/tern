@@ -24,7 +24,6 @@ assert_valid_factor(
   x,
   min.levels = 1,
   max.levels = NULL,
-  empty.levels.ok = TRUE,
   null.ok = TRUE,
   any.missing = TRUE,
   n.levels = NULL,
@@ -73,10 +72,6 @@ Default is \code{NULL} (no check).}
 \item{max.levels}{[\code{integer(1)}]\cr
 Maximum number of factor levels.
 Default is \code{NULL} (no check).}
-
-\item{empty.levels.ok}{[\code{logical(1)}]\cr
-Are empty levels allowed?
-Default is \code{TRUE}.}
 
 \item{null.ok}{[\code{logical(1)}]\cr
 If set to \code{TRUE}, \code{x} may also be \code{NULL}.
