@@ -127,10 +127,10 @@ assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_varia
 check_valid_factor <- function(x,
                                min.levels = 1,
                                max.levels = NULL,
-                               empty.levels.ok = TRUE,
-                               null.ok = TRUE,
-                               any.missing = TRUE,
-                               n.levels = NULL,
+                               empty.levels.ok = TRUE, #nolint
+                               null.ok = TRUE, #nolint
+                               any.missing = TRUE, #nolint
+                               n.levels = NULL, #nolint
                                len = NULL) {
   # checks on levels insertion
   checkmate::assert_int(min.levels, lower = 1)
@@ -182,7 +182,7 @@ check_df_with_factors <- function(df,
                                   variables,
                                   min.levels = 1,
                                   max.levels = NULL,
-                                  any.missing = TRUE,
+                                  any.missing = TRUE, #nolint
                                   na_level = NULL) {
   res <- check_df_with_variables(df, variables, na_level)
   # checking if all the columns specified by variables are valid factors
