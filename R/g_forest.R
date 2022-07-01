@@ -308,7 +308,7 @@ forest_grob <- function(tbl,
     checkmate::assert_true(is.null(forest_header))
   } else {
     checkmate::assert_number(vline)
-    checkmate::assert_character(forest_header, len = 2, null.ok = T)
+    checkmate::assert_character(forest_header, len = 2, null.ok = TRUE)
   }
 
   checkmate::assert_numeric(x, len = nr)
