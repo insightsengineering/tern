@@ -154,7 +154,7 @@ g_forest <- function(tbl, # nolint
                      col_symbol_size = attr(tbl, "col_symbol_size"),
                      draw = TRUE,
                      newpage = TRUE) {
-  stopifnot(inherits(tbl, "VTableTree"))
+  checkmate::assert_class(tbl, "VTableTree")
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
@@ -162,11 +162,14 @@ g_forest <- function(tbl, # nolint
   checkmate::assert_false(is.null(col_x))
   checkmate::assert_false(is.null(col_ci))
 
-  stopifnot(
-    col_x > 0 && col_x <= nc,
-    col_ci > 0 && col_ci <= nc,
-    is.null(col_symbol_size) || col_symbol_size > 0 && col_symbol_size <= nc
-  )
+  checkmate::assert_number(col_x, lower = 0, upper = nc)
+  checkmate::assert_number(col_ci, lower = 0, upper = nc)
+  checkmate::assert_number(col_symbol_size, lower = 0, upper = nc, null.ok = TRUE)
+  checkmate::assert_true(col_x > 0)
+  checkmate::assert_true(col_ci > 0)
+  if (!is.null(col_symbol_size)) {
+    checkmate::assert_true(col_symbol_size > 0)
+  }
 
   x_e <- vapply(seq_len(nr), function(i) {
     xi <- as.vector(tbl[i, col_x, drop = TRUE])
@@ -302,19 +305,18 @@ forest_grob <- function(tbl,
                         name = NULL,
                         gp = NULL,
                         vp = NULL) {
-  stopifnot(
-    !is.null(vline) || is.null(forest_header),
-    is.null(forest_header) || length(forest_header) == 2,
-    is.null(vline) || length(vline) == 1
-  )
-
   nr <- nrow(tbl)
-  stopifnot(
-    is.numeric(x) && length(x) == nr,
-    is.numeric(lower) && length(lower) == nr,
-    is.numeric(upper) && length(upper) == nr,
-    is.null(symbol_size) || length(symbol_size) == nr
-  )
+  if (is.null(vline)) {
+    checkmate::assert_true(is.null(forest_header))
+  } else {
+    checkmate::assert_number(vline)
+    checkmate::assert_character(forest_header, len = 2, null.ok = TRUE)
+  }
+
+  checkmate::assert_numeric(x, len = nr)
+  checkmate::assert_numeric(lower, len = nr)
+  checkmate::assert_numeric(upper, len = nr)
+  checkmate::assert_numeric(symbol_size, len = nr, null.ok = TRUE)
 
   if (is.null(symbol_size)) {
     symbol_size <- rep(1, nr)
@@ -489,9 +491,7 @@ cell_in_rows <- function(row_name,
                          cell_spans,
                          row_index,
                          underline_colspan = FALSE) {
-  stopifnot(
-    length(cells) == length(cell_spans)
-  )
+  assert_equal_length(cells, cell_spans)
   checkmate::assert_string(row_name)
   checkmate::assert_character(cells, min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(cell_spans, min.len = 1, any.missing = FALSE)
@@ -677,12 +677,14 @@ forest_viewport <- function(tbl,
                             gap_column = grid::unit(1, "lines"),
                             gap_header = grid::unit(1, "lines"),
                             mat_form = NULL) {
-  stopifnot(
-    inherits(tbl, "VTableTree"),
-    is.null(width_row_names) || grid::is.unit(width_row_names),
-    is.null(width_columns) || grid::is.unit(width_columns),
-    grid::is.unit(width_forest)
-  )
+  checkmate::assert_class(tbl, "VTableTree")
+  checkmate::assert_true(grid::is.unit(width_forest))
+  if (!is.null(width_row_names)) {
+    checkmate::assert_true(grid::is.unit(width_row_names))
+  }
+  if (!is.null(width_columns)) {
+    checkmate::assert_true(grid::is.unit(width_columns))
+  }
 
   if (is.null(mat_form)) mat_form <- matrix_form(tbl)
 
@@ -870,10 +872,6 @@ footnotes <- function(x) {
 #' footnotes(x)
 #' add_footnotes(x) <- "Add more footnotes"
 #' footnotes(x)
-`add_footnotes<-` <- function(x, value) { # nolint
-  footnotes(x) <- c(footnotes(x), value)
-  x
-}
 `add_footnotes<-` <- function(x, value) { # nolint
   footnotes(x) <- c(footnotes(x), value)
   x

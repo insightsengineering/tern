@@ -167,8 +167,7 @@ h_proportion_subgroups_df <- function(variables,
 #' )
 h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
   assert_equal_length(rsp, arm)
-  checkmate::assert_set_equal(nlevels(arm), 2)
-  assert_valid_factor(arm)
+  assert_valid_factor(arm, n.levels = 2)
 
   df_rsp <- data.frame(
     rsp = rsp,

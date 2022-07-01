@@ -349,7 +349,7 @@ s_cox_univariate <- function(formula,
 
 # Get the right-hand-term of a formula
 rht <- function(x) {
-  stopifnot(inherits(x, "formula"))
+  checkmate::assert_formula(x)
   y <- as.character(rev(x)[[1]])
   return(y)
 }
