@@ -1,7 +1,7 @@
 #' Additional Assertions for `checkmate`
 #'
 #' @description
-#' We provide additional assertion functions which can be used together with [checkmate].
+#' Additional assertion functions which can be used together with the `checkmate` package.
 #'
 #' @param x [any] Object to test
 #' @param df [`data.frame(1)`]Supposed data frame to test
