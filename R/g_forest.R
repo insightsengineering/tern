@@ -167,7 +167,9 @@ g_forest <- function(tbl, # nolint
   checkmate::assert_number(col_symbol_size, lower = 0, upper = nc, null.ok = TRUE)
   checkmate::assert_true(col_x > 0)
   checkmate::assert_true(col_ci > 0)
-  checkmate::assert_true(col_symbol_size > 0)
+  if (!is.null(col_symbol_size)) {
+    checkmate::assert_true(col_symbol_size > 0)
+  }
 
   x_e <- vapply(seq_len(nr), function(i) {
     xi <- as.vector(tbl[i, col_x, drop = TRUE])
