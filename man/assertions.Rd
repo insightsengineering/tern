@@ -3,6 +3,7 @@
 \name{assertions}
 \alias{assertions}
 \alias{assert_list_of_variables}
+\alias{assert_df_with_variables}
 \alias{assert_valid_factor}
 \alias{assert_df_with_factors}
 \alias{assert_equal_length}
@@ -10,6 +11,14 @@
 \title{Additional Assertions for \code{checkmate}}
 \usage{
 assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
+
+assert_df_with_variables(
+  df,
+  variables,
+  na_level = NULL,
+  .var.name = checkmate::vname(df),
+  add = NULL
+)
 
 assert_valid_factor(
   x,
@@ -40,7 +49,7 @@ assert_equal_length(...)
 assert_proportion_value(x, include_boundaries = FALSE)
 }
 \arguments{
-\item{x}{\link{any} Object to test}
+\item{x}{(\code{any})\cr object to test.}
 
 \item{.var.name}{[\code{character(1)}]\cr
 Name of the checked object to print in assertions. Defaults to
@@ -48,6 +57,14 @@ the heuristic implemented in \code{\link[checkmate]{vname}}.}
 
 \item{add}{[\code{AssertCollection}]\cr
 Collection to store assertion messages. See \code{\link[checkmate]{AssertCollection}}.}
+
+\item{df}{(\verb{data frame})\cr data set to test.}
+
+\item{variables}{(named \code{list} of \code{character})\cr list of variables to test.}
+
+\item{na_level}{(\code{character})\cr the string you have been using to represent NA or
+missing data. For \code{NA} values please consider using directly \code{base::is.na} or
+similar approaches.}
 
 \item{min.levels}{[\code{integer(1)}]\cr
 Minimum number of factor levels.
@@ -75,27 +92,23 @@ Default is \code{NULL} (no check).}
 \item{len}{[\code{integer(1)}]\cr
 Exact expected length of \code{x}.}
 
-\item{df}{\code{\link{data.frame(1)}}Supposed data frame to test}
+\item{...}{a collection of objects to test.}
 
-\item{variables}{(named \code{list} of \code{character})\cr Supposed variables list to test}
+\item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing for proportions.}
 
-\item{na_level}{\code{\link{character(1)}}\cr The string user has been using to represent NA or
-missing data. For \code{NA} values please consider using directly \code{base::is.na} or
-similar approaches.}
-
-\item{...}{A collection of objects to test.}
-
-\item{include_boundaries}{\code{\link{logical(1)}}\cr Whether to include boundaries when testing for proportions.}
-
-\item{[integer(1)]}{Minimum number of factor levels. Default is \code{1}.}
+\item{(`integer`)\cr}{minimum number of factor levels. Default is \code{1}.}
 }
 \description{
-We provide additional assertion functions which can be used together with \link{checkmate}.
+Additional assertion functions which can be used together with the \code{checkmate} package.
 }
 \section{Functions}{
 \itemize{
 \item \code{assert_list_of_variables}: Check whether \code{x} is a valid list of variable names.
 \code{NULL} elements of the list \code{x} are dropped out with \code{Filter(Negate(is.null), x)}.
+
+\item \code{assert_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
+Please notice how this produces an error when not all variables are present in the
+data.frame while the opposite is not required.
 
 \item \code{assert_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
 Note that \code{NULL} and \code{NA} elements are allowed.
@@ -119,6 +132,40 @@ tern:::assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
 \dontrun{
 tern:::assert_list_of_variables(list(1, 2))
 tern:::assert_list_of_variables(list("bla" = 2))
+}
+
+# Check whether `df` contains the analysis `variables`.
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = "a")
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = c("a", "b"))
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = c("a", "b"))
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3, e = "<Missing>"),
+  variables = list(val = c("a", "b")), na_level = "<Missing>"
+)
+
+# The following calls fail
+\dontrun{
+tern:::assert_df_with_variables(
+  df = matrix(1:5, ncol = 2, nrow = 3),
+  variables = list(val = "a")
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3),
+  variables = list(val = c("a", "b", "c"))
+)
+tern:::assert_df_with_variables(
+  df = data.frame(a = 5, b = 3, e = "<Missing>"),
+  variables = list(val = c("a", "b", "e")), na_level = "<Missing>"
+)
 }
 
 # Check whether `x` is a valid factor.

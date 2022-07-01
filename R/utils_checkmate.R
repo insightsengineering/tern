@@ -82,7 +82,7 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
   }
   return(TRUE)
 }
-#' @describeIn Assertions Check whether `df` is a data frame with the analysis `variables`.
+#' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
 #'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
 #'
