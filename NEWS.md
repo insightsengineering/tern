@@ -122,7 +122,7 @@
 
 ### Miscellaneous
 * Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`.
-* Deprecated `h_set_nest_theme()` in favour of `nestcolor::theme_nest()`.
+* Deprecated `h_set_nest_theme()` in favor of `nestcolor::theme_nest()`.
 
 # tern 0.7.8
 
