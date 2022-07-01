@@ -3,16 +3,16 @@
 #' @description
 #' Additional assertion functions which can be used together with the `checkmate` package.
 #'
-#' @param x [any] Object to test
-#' @param df [`data.frame(1)`]Supposed data frame to test
-#' @param variables (named `list` of `character`)\cr Supposed variables list to test
-#' @param include_boundaries [`logical(1)`]\cr Whether to include boundaries when testing for proportions.
-#' @param na_level [`character(1)`]\cr The string user has been using to represent NA or
+#' @param x (`any`)\cr object to test.
+#' @param df (`data frame`)\cr data set to test.
+#' @param variables (named `list` of `character`)\cr list of variables to test.
+#' @param include_boundaries (`logical`)\cr whether to include boundaries when testing for proportions.
+#' @param na_level (`character`)\cr the string you have been using to represent NA or
 #'   missing data. For `NA` values please consider using directly `base::is.na` or
 #'   similar approaches.
 #' @inheritParams checkmate::assert_factor
-#' @param [integer(1)] Minimum number of factor levels. Default is `1`.
-#' @param ... A collection of objects to test.
+#' @param (`integer`)\cr minimum number of factor levels. Default is `1`.
+#' @param ... a collection of objects to test.
 #' @name assertions
 NULL
 
