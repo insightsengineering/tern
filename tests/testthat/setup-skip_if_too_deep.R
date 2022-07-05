@@ -1,5 +1,5 @@
 skip_if_too_deep <- function(depth) { # nolintr
-  stopifnot(length(depth) == 1 && is.numeric(depth) && depth >= 0 && depth <= 5)
+  checkmate::assert_number(depth, lower = 0, upper = 5)
 
   testing_depth <- getOption("TESTING_DEPTH")
   if (is.null(testing_depth)) testing_depth <- Sys.getenv("TESTING_DEPTH")

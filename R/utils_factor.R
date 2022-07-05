@@ -18,10 +18,8 @@
 #'
 #' combine_levels(x, c("e", "b"))
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
-  stopifnot(
-    is.factor(x),
-    all(levels %in% levels(x))
-  )
+  checkmate::assert_factor(x)
+  checkmate::assert_subset(levels, levels(x))
 
   lvls <- levels(x)
 

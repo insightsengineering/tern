@@ -24,7 +24,10 @@ assert_valid_factor(
   x,
   min.levels = 1,
   max.levels = NULL,
+  null.ok = TRUE,
   any.missing = TRUE,
+  n.levels = NULL,
+  len = NULL,
   .var.name = checkmate::vname(x),
   add = NULL
 )
@@ -45,28 +48,53 @@ assert_equal_length(...)
 assert_proportion_value(x, include_boundaries = FALSE)
 }
 \arguments{
-\item{x}{object to test}
+\item{x}{(\code{any})\cr object to test.}
 
-\item{df}{supposed data frame to test}
+\item{.var.name}{[\code{character(1)}]\cr
+Name of the checked object to print in assertions. Defaults to
+the heuristic implemented in \code{\link[checkmate]{vname}}.}
 
-\item{variables}{(named \code{list} of \code{character})\cr supposed variables list to test}
+\item{add}{[\code{AssertCollection}]\cr
+Collection to store assertion messages. See \code{\link[checkmate]{AssertCollection}}.}
 
-\item{na_level}{(\code{string})\cr the string user has been using to represent NA or
+\item{df}{(\verb{data frame})\cr data set to test.}
+
+\item{variables}{(named \code{list} of \code{character})\cr list of variables to test.}
+
+\item{na_level}{(\code{character})\cr the string you have been using to represent NA or
 missing data. For \code{NA} values please consider using directly \code{base::is.na} or
 similar approaches.}
 
-\item{min.levels}{Minimum number of levels for \code{x}.}
+\item{min.levels}{[\code{integer(1)}]\cr
+Minimum number of factor levels.
+Default is \code{NULL} (no check).}
 
-\item{max.levels}{Maximum number of levels for \code{x}.}
+\item{max.levels}{[\code{integer(1)}]\cr
+Maximum number of factor levels.
+Default is \code{NULL} (no check).}
 
-\item{any.missing}{Default is \code{TRUE}, allowing missing values (\code{NA}).}
+\item{null.ok}{[\code{logical(1)}]\cr
+If set to \code{TRUE}, \code{x} may also be \code{NULL}.
+In this case only a type check of \code{x} is performed, all additional checks are disabled.}
+
+\item{any.missing}{[\code{logical(1)}]\cr
+Are vectors with missing values allowed? Default is \code{TRUE}.}
+
+\item{n.levels}{[\code{integer(1)}]\cr
+Exact number of factor levels.
+Default is \code{NULL} (no check).}
+
+\item{len}{[\code{integer(1)}]\cr
+Exact expected length of \code{x}.}
 
 \item{...}{a collection of objects to test.}
 
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing for proportions.}
+
+\item{(`integer`)\cr}{minimum number of factor levels. Default is \code{1}.}
 }
 \description{
-We provide additional assertion functions which can be used together with \code{\link[checkmate:assert]{checkmate::assert()}}.
+Additional assertion functions which can be used together with the \code{checkmate} package.
 }
 \section{Functions}{
 \itemize{
@@ -136,8 +164,9 @@ tern:::assert_df_with_variables(
 }
 
 # Check whether `x` is a valid factor.
-tern:::assert_valid_factor(factor(c("a", "b")))
 tern:::assert_valid_factor(factor(c("a", NULL)))
+tern:::assert_valid_factor(factor(c("a", "b")))
+tern:::assert_valid_factor(factor(c("a", "b")), len = 2)
 tern:::assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
 tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
 

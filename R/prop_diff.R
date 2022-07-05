@@ -24,7 +24,7 @@ check_diff_prop_ci <- function(rsp,
                                strata = NULL,
                                conf_level,
                                correct = NULL) {
-  checkmate::assert(!anyNA(c(rsp, grp)))
+  checkmate::assert_false(anyNA(c(rsp, grp)))
   checkmate::assert_logical(rsp)
   checkmate::assert_set_equal(nlevels(grp), 2)
   checkmate::assert_number(conf_level, lower = 0, upper = 1)
