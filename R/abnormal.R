@@ -103,7 +103,7 @@ s_count_abnormal <- function(df,
 }
 
 #' @describeIn abnormal Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'   [rtables::make_afun()]. It is used as `afun` in [rtables::analyze()].
 #'
 #' @return [a_count_abnormal()] returns the corresponding list with formatted [rtables::CellValue()].
 #'
@@ -115,7 +115,7 @@ s_count_abnormal <- function(df,
 #' @keywords internal
 a_count_abnormal <- make_afun(
   s_count_abnormal,
-  .formats = c(fraction = format_fraction)
+  .formats = c(fraction=format_fraction)
 )
 
 #' @describeIn abnormal Layout creating function which can be used for creating tables, which can take
