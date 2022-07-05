@@ -115,7 +115,7 @@ s_count_abnormal <- function(df,
 #' @keywords internal
 a_count_abnormal <- make_afun(
   s_count_abnormal,
-  .formats = c(fraction=format_fraction)
+  .formats = c(fraction = format_fraction)
 )
 
 #' @describeIn abnormal Layout creating function which can be used for creating tables, which can take
