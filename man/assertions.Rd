@@ -212,7 +212,8 @@ assert_df_with_factors(
   df = bdf,
   variables = list(val = "a", val = "b"),
   min.levels = 1,
-  max.levels = 1)
+  max.levels = 1
+)
 }
 
 # Check whether `x` is a valid list of variable names.

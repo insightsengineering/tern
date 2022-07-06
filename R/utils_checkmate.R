@@ -245,7 +245,8 @@ check_df_with_factors <- function(df,
 #'   df = bdf,
 #'   variables = list(val = "a", val = "b"),
 #'   min.levels = 1,
-#'   max.levels = 1)
+#'   max.levels = 1
+#' )
 #' }
 #'
 #' @keywords internal
