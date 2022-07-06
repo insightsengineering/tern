@@ -86,11 +86,12 @@ format_count_fraction <- function(x, ...) {
 #'
 #' @param str (`string`)\cr template.
 #'
-#' @keywords internal
 #' @return A `rtables` formatting function.
 #' @examples
 #' test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 #'
+#' # Internal function - format_xx
+#' \dontrun{
 #' z <- tern:::format_xx("xx (xx.x)")
 #' sapply(test, z)
 #'
@@ -99,6 +100,9 @@ format_count_fraction <- function(x, ...) {
 #'
 #' z <- tern:::format_xx("xx.x, incl. xx.x% NE")
 #' sapply(test, z)
+#' }
+#'
+#' @keywords internal
 format_xx <- function(str) {
 
   # Find position in the string.

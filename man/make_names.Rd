@@ -17,7 +17,10 @@ Character vector of proper names, which does not use dots in contrast to
 Make Names Without Dots
 }
 \examples{
+# Internal function - make_names
+\dontrun{
 tern:::make_names(c("foo Bar", "1 2 3 bla"))
+}
 
 }
 \keyword{internal}

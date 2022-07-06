@@ -17,7 +17,10 @@ Return an empty numeric if all elements are \code{NA}.
 }
 \examples{
 x <- c(NA, NA, NA)
+# Internal function - empty_vector_if_na
+\dontrun{
 tern:::empty_vector_if_na(x)
+}
 
 }
 \keyword{internal}

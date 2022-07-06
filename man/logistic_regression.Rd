@@ -273,6 +273,8 @@ library(broom)
 df <- tidy(mod1, conf_level = 0.99)
 df2 <- tidy(mod2, conf_level = 0.99)
 
+# Internal function - replace_emptys_with_na
+\dontrun{
 # flagging empty strings with "_"
 df <- tern:::replace_emptys_with_na(df, rep_str = "_")
 df2 <- tern:::replace_emptys_with_na(df2, rep_str = "_")
@@ -292,5 +294,6 @@ result2 <- basic_table() \%>\%
   ) \%>\%
   build_table(df = df2)
 result2
+}
 
 }

@@ -155,7 +155,10 @@ df_grouped <- extract_survival_subgroups(
   )
 )
 df_grouped
+# Internal function - a_survival_subgroups
+\dontrun{
 tern:::a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
+}
 
 
 ## Table with default columns.

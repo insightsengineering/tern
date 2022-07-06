@@ -390,8 +390,6 @@ rht <- function(x) {
 #'   \item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
 #' }
 #'
-#' @keywords internal
-#'
 #' @examples
 #' library(dplyr)
 #' library(scda)
@@ -400,7 +398,7 @@ rht <- function(x) {
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' ADSL <- ADSL %>%
 #'   filter(SEX %in% c("F", "M"))
-#' \dontrun{
+#'
 #' ADTTE <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "PFS")
 #' ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
@@ -414,12 +412,15 @@ rht <- function(x) {
 #' mmat <- stats::model.matrix(mod)[1, ]
 #' mmat[!mmat == 0] <- 0
 #'
+#' # Internal function - estimate_coef
+#' \dontrun{
 #' tern:::estimate_coef(
 #'   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
 #'   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
 #' )
 #' }
 #'
+#' @keywords internal
 estimate_coef <- function(variable, given,
                           lvl_var, lvl_given,
                           coef,
@@ -500,7 +501,7 @@ estimate_coef <- function(variable, given,
 #' # `car::Anova` on cox regression model including strata and expected
 #' # a likelihood ratio test triggers a warning as only Wald method is
 #' # accepted.
-#' \dontrun{
+#'
 #' library(survival)
 #'
 #' mod <- coxph(
@@ -508,6 +509,8 @@ estimate_coef <- function(variable, given,
 #'   data = ovarian
 #' )
 #'
+#' # Internal function - try_car_anova
+#' \dontrun{
 #' with_wald <- tern:::try_car_anova(mod = mod, test.statistic = "Wald")
 #' with_lr <- tern:::try_car_anova(mod = mod, test.statistic = "LR")
 #' }
@@ -660,8 +663,6 @@ check_increments <- function(increments, covariates) {
 #'     but is out of scope as defined by the  Global Data Standards Repository
 #'     (**`GDS_Standard_TLG_Specs_Tables_2.doc`**).
 #'
-#' @md
-#'
 #' @examples
 #' library(scda)
 #' library(dplyr)
@@ -676,6 +677,8 @@ check_increments <- function(increments, covariates) {
 #' )
 #' ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
 #' ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)
+#'
+#' # Internal function - s_cox_multivariate
 #' \dontrun{
 #' tern:::s_cox_multivariate(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f

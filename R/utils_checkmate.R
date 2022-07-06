@@ -38,12 +38,14 @@ check_list_of_variables <- function(x) {
 #'
 #' @examples
 #' # Check whether `x` is a valid list of variable names.
+#'
+#' # Internal function - assert_list_of_variables
+#' \dontrun{
 #' tern:::assert_list_of_variables(list(val = "a"))
 #' tern:::assert_list_of_variables(list(val = c("a", "b")))
 #' tern:::assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
 #'
 #' # The following calls fail
-#' \dontrun{
 #' tern:::assert_list_of_variables(list(1, 2))
 #' tern:::assert_list_of_variables(list("bla" = 2))
 #' }
@@ -88,6 +90,9 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
 #'
 #' @examples
 #' # Check whether `df` contains the analysis `variables`.
+#'
+#' # Internal function - assert_df_with_variables
+#' \dontrun{
 #' tern:::assert_df_with_variables(
 #'   df = data.frame(a = 5, b = 3),
 #'   variables = list(val = "a")
@@ -106,7 +111,6 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
 #' )
 #'
 #' # The following calls fail
-#' \dontrun{
 #' tern:::assert_df_with_variables(
 #'   df = matrix(1:5, ncol = 2, nrow = 3),
 #'   variables = list(val = "a")
@@ -156,6 +160,9 @@ check_valid_factor <- function(x,
 #'
 #' @examples
 #' # Check whether `x` is a valid factor.
+#'
+#' # Internal function - assert_valid_factor
+#' \dontrun{
 #' tern:::assert_valid_factor(factor(c("a", NULL)))
 #' tern:::assert_valid_factor(factor(c("a", "b")))
 #' tern:::assert_valid_factor(factor(c("a", "b")), len = 2)
@@ -163,13 +170,12 @@ check_valid_factor <- function(x,
 #' tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
 #'
 #' # The following calls fail
-#' \dontrun{
-#' # tern:::assert_valid_factor(-1)
-#' # tern:::assert_valid_factor(factor(c("a", "")))
-#' # tern:::assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
-#' # tern:::assert_valid_factor(factor(NULL))
-#' # tern:::assert_valid_factor(factor(c(NULL, "")))
-#' # tern:::assert_valid_factor(factor())
+#' tern:::assert_valid_factor(-1)
+#' tern:::assert_valid_factor(factor(c("a", "")))
+#' tern:::assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
+#' tern:::assert_valid_factor(factor(NULL))
+#' tern:::assert_valid_factor(factor(c(NULL, "")))
+#' tern:::assert_valid_factor(factor())
 #' }
 #'
 #' @keywords internal
@@ -216,6 +222,9 @@ check_df_with_factors <- function(df,
 #' # Check whether `df` contains all factor analysis `variables`.
 #' adf <- data.frame(a = factor(c("A", "B")), b = 3)
 #' bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
+#'
+#' # Internal function - assert_df_with_factors
+#' \dontrun{
 #' tern:::assert_df_with_factors(df = adf, variables = list(val = "a"))
 #' tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
 #' tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
@@ -225,13 +234,13 @@ check_df_with_factors <- function(df,
 #'   min.levels = 2,
 #'   max.levels = 2
 #' )
+#'
 #' # The following calls fail
-#' \dontrun{
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
-#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
-#' assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
+#' tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
+#' tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
+#' tern:::assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
+#' tern:::assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
+#' tern:::assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
 #' }
 #'
 #' @keywords internal
@@ -256,14 +265,16 @@ check_equal_length <- function(...) {
 #' @describeIn assertions Check that objects provided are of same length.
 #'
 #' @examples
-#' #' # Check whether `x` is a valid list of variable names.
+#' # Check whether `x` is a valid list of variable names.
 #' a <- 1
 #' b <- NULL
 #' c <- c(1, "car")
 #' d <- 5
-#' # These fails
+#'
+#' # Internal function - assert_equal_length
 #' \dontrun{
-#' assert_equal_length(a, b, c, d)
+#' # This fails
+#' tern:::assert_equal_length(a, b, c, d)
 #' }
 #'
 #' @keywords internal
@@ -275,12 +286,14 @@ assert_equal_length <- function(...) {
 #'
 #' @examples
 #' # Check whether `x` is between 0 and 1.
+#' # Internal function - assert_proportion_value
+#' \dontrun{
 #' tern:::assert_proportion_value(x = 0, include_boundaries = TRUE)
 #' tern:::assert_proportion_value(x = 0.3)
-#' # These fails
-#' \dontrun{
-#' assert_proportion_value(x = 1.3)
-#' assert_proportion_value(x = 1)
+#'
+#' # These fail
+#' tern:::assert_proportion_value(x = 1.3)
+#' tern:::assert_proportion_value(x = 1)
 #' }
 #'
 #' @keywords internal

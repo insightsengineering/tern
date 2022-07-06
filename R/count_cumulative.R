@@ -83,10 +83,15 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 #' @return A named list:
 #'   - `count_fraction`: a list with each `thresholds` value as a component, each component
 #'     contains a vector for the count and fraction.
-#' @keywords internal
+#'
 #' @examples
+#' # Internal function - s_count_cumulative
+#' \dontrun{
 #' tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 #' tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
+#' }
+#'
+#' @keywords internal
 s_count_cumulative <- function(x,
                                thresholds,
                                lower_tail = TRUE,
@@ -108,12 +113,17 @@ s_count_cumulative <- function(x,
 #' @describeIn count_cumulative Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #' @return [a_count_cumulative()] returns the corresponding list with formatted [rtables::CellValue()].
-#' @keywords internal
+#'
 #' @examples
+#' # Internal function - a_count_cumulative
+#' \dontrun{
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 #' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(tern:::a_count_cumulative, .ungroup_stats = "count_fraction")
 #' afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
+#' }
+#'
+#' @keywords internal
 a_count_cumulative <- make_afun(
   s_count_cumulative,
   .formats = c(count_fraction = format_count_fraction)

@@ -33,12 +33,15 @@ NULL
 #'   stringsAsFactors = TRUE
 #' )
 #'
+#' # Internal function - s_count_patients_sum_exposure
+#' \dontrun{
 #' tern:::s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
 #' tern:::s_count_patients_sum_exposure(
 #'   df = df,
 #'   .N_col = nrow(adsl),
 #'   custom_label = "some user's custom label"
 #' )
+#' }
 #'
 #' @keywords internal
 s_count_patients_sum_exposure <- function(df, # nolintr

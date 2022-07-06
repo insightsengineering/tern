@@ -57,6 +57,8 @@ ADTTE_f <- filter(
 )
 ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
 ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)
+
+# Internal function - s_cox_multivariate
 \dontrun{
 tern:::s_cox_multivariate(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f

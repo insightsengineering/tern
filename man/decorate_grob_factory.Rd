@@ -18,6 +18,8 @@ closure that increments the page number
 Automatically updates page number.
 }
 \examples{
+# Internal function - decorate_grob_factory
+\dontrun{
 pf <- tern:::decorate_grob_factory(
   titles = "This is a test\nHello World",
   footnotes = "Here belong the footnotess",
@@ -28,6 +30,7 @@ library(grid)
 tern:::draw_grob(pf(NULL))
 tern:::draw_grob(pf(NULL))
 tern:::draw_grob(pf(NULL))
+}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

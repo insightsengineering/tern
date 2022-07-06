@@ -100,11 +100,18 @@ df <- extract_rsp_subgroups(
   data = adrs
 )
 # Full commonly used response table.
+
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
 p <- g_forest(tbl)
+
+# Internal function - draw_grob
+\dontrun{
 tern:::draw_grob(p)
+}
+
 # Odds ratio only table.
+
 tbl_or <- basic_table() \%>\%
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 tbl_or
@@ -112,7 +119,12 @@ p <- g_forest(
   tbl_or,
   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 )
+
+# Internal function - draw_grob
+\dontrun{
 tern:::draw_grob(p)
+}
+
 # Survival forest plot example.
 adtte <- synthetic_cdisc_data("latest")$adtte
 # Save variable labels before data processing steps.

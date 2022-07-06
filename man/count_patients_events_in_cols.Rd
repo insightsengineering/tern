@@ -91,6 +91,9 @@ df <- data.frame(
   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 )
+
+# Internal function - s_count_patients_and_multiple_events
+\dontrun{
 tern:::s_count_patients_and_multiple_events(
   df = df,
   id = "USUBJID",
@@ -99,6 +102,8 @@ tern:::s_count_patients_and_multiple_events(
     fatal = c(AESDTH = "Y")
   )
 )
+}
+
 
 # `summarize_patients_events_in_cols()`
 basic_table() \%>\%

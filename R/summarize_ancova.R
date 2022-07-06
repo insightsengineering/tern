@@ -104,7 +104,10 @@ h_ancova <- function(.var,
 #'   filter(ARMCD == "ARM A")
 #' conf_level <- 0.95
 #'
+#' # Internal function - s_ancova
+#' \dontrun{
 #' tern:::s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#' }
 #'
 #' @keywords internal
 s_ancova <- function(df,
@@ -175,7 +178,10 @@ s_ancova <- function(df,
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
 #' @examples
+#' # Internal function - a_ancova
+#' \dontrun{
 #' tern:::a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#' }
 #'
 #' @keywords internal
 a_ancova <- make_afun(

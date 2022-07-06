@@ -167,10 +167,14 @@ h_logistic_mult_cont_df <- function(variables,
 #' df1$row_type <- "content"
 #' df1$var <- "ALL"
 #' df1$var_label <- "All patients"
+#'
+#' # Internal function - h_tab_rsp_one_biomarker
+#' \dontrun{
 #' tern:::h_tab_rsp_one_biomarker(
 #'   df1,
 #'   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
 #' )
+#' }
 #'
 #' @export
 h_tab_rsp_one_biomarker <- function(df,

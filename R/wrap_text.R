@@ -9,14 +9,18 @@
 #'
 #' @return e vector with the new strings
 #'
-#' @noRd
-#'
 #' @author Adrian Waddell
 #'
 #' @examples
 #' text <- "This is a test with many words and more"
-#' teal.modules.clinical:::wrap_text(txt = text, width = grid::unit(4, "cm"), collapse = "\n")
-#' teal.modules.clinical:::wrap_text(txt = text, width = grid::unit(5, "cm"), collapse = "\n")
+#'
+#' # Internal function - wrap_text
+#' \dontrun{
+#' tern:::wrap_text(txt = text, width = grid::unit(4, "cm"), collapse = "\n")
+#' tern:::wrap_text(txt = text, width = grid::unit(5, "cm"), collapse = "\n")
+#' }
+#'
+#' @keywords internal
 wrap_text <- function(txt, # nolint
                       width = grid::convertWidth(grid::unit(1, "npc"), "inch", TRUE),
                       gp = grid::gpar(),

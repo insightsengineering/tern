@@ -30,9 +30,14 @@ g <- with(iris, {
 })
 lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
 library(grid)
+
+# Internal function - draw_grob
+\dontrun{
 tern:::draw_grob(lg[[1]])
 tern:::draw_grob(lg[[2]])
 tern:::draw_grob(lg[[6]])
+}
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

@@ -124,13 +124,19 @@ df <- data.frame(
 )
 df <- df_explicit_na(df)
 
+# Internal function - s_count_abnormal_by_baseline
+\dontrun{
 # Just for one abnormal level.
 tern:::s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
+}
 
+# Internal function - a_count_abnormal_by_baseline
+\dontrun{
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
 # so that the `rtables` formatting function `format_fraction()` can be applied correctly.
 afun <- make_afun(tern:::a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 afun(df, .var = "ANRIND", abnormal = "LOW")
+}
 
 
 # Layout creating function.

@@ -33,7 +33,10 @@ NULL
 #' tbl <- table(grp, rsp)
 #'
 #' ## Chi-Squared test
+#' # Internal function - prop_chisq
+#' \dontrun{
 #' tern:::prop_chisq(tbl)
+#' }
 #'
 #' @keywords internal
 prop_chisq <- function(tbl) {
@@ -63,7 +66,10 @@ prop_chisq <- function(tbl) {
 #' tbl <- table(grp, rsp, strata)
 #'
 #' ## Cochran-Mantel-Haenszel test
+#' # Internal function - prop_cmh
+#' \dontrun{
 #' tern:::prop_cmh(tbl)
+#' }
 #'
 #' @keywords internal
 prop_cmh <- function(ary) {
@@ -87,7 +93,10 @@ prop_cmh <- function(ary) {
 #'
 #' @examples
 #' ## Chi-Squared test + Schouten correction.
+#' # Internal function - prop_schouten
+#' \dontrun{
 #' tern:::prop_schouten(tbl)
+#' }
 #'
 #' @keywords internal
 prop_schouten <- function(tbl) {
@@ -120,7 +129,10 @@ prop_schouten <- function(tbl) {
 #'
 #' @examples
 #' ## Fisher's exact test
+#' # Internal function - prop_fisher
+#' \dontrun{
 #' tern:::prop_fisher(tbl)
+#' }
 #'
 #' @keywords internal
 prop_fisher <- function(tbl) {
@@ -152,6 +164,8 @@ prop_fisher <- function(tbl) {
 #'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 #' )
 #'
+#' # Internal function - s_test_proportion_diff
+#' \dontrun{
 #' tern:::s_test_proportion_diff(
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
@@ -160,6 +174,7 @@ prop_fisher <- function(tbl) {
 #'   variables = list(strata = "strat"),
 #'   method = "cmh"
 #' )
+#' }
 #'
 #' @keywords internal
 s_test_proportion_diff <- function(df,
@@ -237,6 +252,8 @@ d_test_proportion_diff <- function(method) {
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
 #' @examples
+#' # Internal function - a_test_proportion_diff
+#' \dontrun{
 #' tern:::a_test_proportion_diff(
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
@@ -245,6 +262,7 @@ d_test_proportion_diff <- function(method) {
 #'   variables = list(strata = "strat"),
 #'   method = "cmh"
 #' )
+#' }
 #'
 #' @keywords internal
 a_test_proportion_diff <- make_afun(

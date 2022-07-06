@@ -60,14 +60,16 @@ keep_rows <- function(row_condition) {
 #'   first content rows of leaf tables and flags whether these leaf tables should be kept in the pruned table.
 #' @return [keep_content_rows()] also returns a pruning function, the difference is that it
 #'   checks the condition on the first content row of leaf tables in the table.
-#' @export
 #'
 #' @examples
-#' \dontrun{
 #' # `keep_content_rows`
+#' # Internal function - has_count_in_cols
+#' \dontrun{
 #' more_than_twenty <- tern:::has_count_in_cols(atleast = 20L, col_names = names(tab))
 #' prune_table(tab, keep_content_rows(more_than_twenty))
 #' }
+#'
+#' @export
 keep_content_rows <- function(content_row_condition) {
   checkmate::assert_function(content_row_condition)
   function(table_tree) {
@@ -94,8 +96,8 @@ keep_content_rows <- function(content_row_condition) {
 #'   column.
 #'
 #' @examples
+#' # Internal function - has_count_in_cols
 #' \dontrun{
-#' # `has_count_in_cols`
 #' more_than_one <- tern:::has_count_in_cols(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one))
 #' }
@@ -203,8 +205,8 @@ has_fractions_difference <- function(atleast, ...) {
 #'   specified column, and computes the difference of the minimum and maximum.
 #'
 #' @examples
+#' # Internal function - has_counts_difference
 #' \dontrun{
-#' # `has_counts_difference`
 #' more_than_one_diff <- tern:::has_counts_difference(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one_diff))
 #' }

@@ -19,7 +19,7 @@ NULL
 #'   that corresponding table cells will stay blank.
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
-#' @keywords internal
+#'
 #' @return [s_count_patients_and_multiple_events()] returns a list with the statistics:\cr
 #' - `unique`: number of unique patients in `df`.
 #' - `all`: number of rows in `df`.
@@ -37,6 +37,9 @@ NULL
 #'   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
 #'   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 #' )
+#'
+#' # Internal function - s_count_patients_and_multiple_events
+#' \dontrun{
 #' tern:::s_count_patients_and_multiple_events(
 #'   df = df,
 #'   id = "USUBJID",
@@ -45,6 +48,9 @@ NULL
 #'     fatal = c(AESDTH = "Y")
 #'   )
 #' )
+#' }
+#'
+#' @keywords internal
 s_count_patients_and_multiple_events <- function(df, # nolint
                                                  id,
                                                  filters_list,

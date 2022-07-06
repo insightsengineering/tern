@@ -130,12 +130,20 @@ h_count_cumulative(x, 5, .N_col = .N_col)
 h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+# Internal function - s_count_cumulative
+\dontrun{
 tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
+}
+
+# Internal function - a_count_cumulative
+\dontrun{
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(tern:::a_count_cumulative, .ungroup_stats = "count_fraction")
 afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
+}
+
 library(scda)
 ADSL <- synthetic_cdisc_data("latest")$adsl
 basic_table() \%>\%

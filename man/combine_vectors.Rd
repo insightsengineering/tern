@@ -18,7 +18,10 @@ A \code{list} where each element combines corresponding elements of \code{x} and
 Combine Two Vectors Element Wise
 }
 \examples{
+# Internal function - combine_vectors
+\dontrun{
 tern:::combine_vectors(1:3, 4:6)
+}
 
 }
 \keyword{internal}

@@ -114,7 +114,10 @@ extract_survival_subgroups <- function(variables,
 #'   [extract_survival_subgroups()]. Returns is a list of Formatted Analysis functions with one element per statistic.
 #'
 #' @examples
+#' # Internal function - a_survival_subgroups
+#' \dontrun{
 #' tern:::a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
+#' }
 #'
 #' @keywords internal
 a_survival_subgroups <- function(.formats = list(

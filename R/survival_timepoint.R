@@ -39,7 +39,10 @@ NULL
 #' df <- ADTTE_f %>%
 #'   filter(ARMCD == "ARM A")
 #'
+#' # Internal function - s_surv_timepoint
+#' \dontrun{
 #' tern:::s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#' }
 #'
 #' @keywords internal
 s_surv_timepoint <- function(df,
@@ -86,7 +89,10 @@ s_surv_timepoint <- function(df,
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
 #' @examples
+#' # Internal function - a_surv_timepoint
+#' \dontrun{
 #' tern:::a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#' }
 #'
 #' @keywords internal
 a_surv_timepoint <- make_afun(
@@ -115,6 +121,8 @@ a_surv_timepoint <- make_afun(
 #' df_ref_group <- ADTTE_f %>%
 #'   filter(ARMCD == "ARM B")
 #'
+#' # Internal function - s_surv_timepoint_diff
+#' \dontrun{
 #' tern:::s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 #' tern:::s_surv_timepoint_diff(
 #'   df,
@@ -124,6 +132,7 @@ a_surv_timepoint <- make_afun(
 #'   time_point = 7,
 #'   is_event = "is_event"
 #' )
+#' }
 #'
 #' @keywords internal
 s_surv_timepoint_diff <- function(df,
@@ -171,6 +180,8 @@ s_surv_timepoint_diff <- function(df,
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
 #' @examples
+#' # Internal function - a_surv_timepoint_diff
+#' \dontrun{
 #' tern:::a_surv_timepoint_diff(
 #'   df,
 #'   df_ref_group,
@@ -179,6 +190,7 @@ s_surv_timepoint_diff <- function(df,
 #'   time_point = 7,
 #'   is_event = "is_event"
 #' )
+#' }
 #'
 #' @keywords internal
 a_surv_timepoint_diff <- make_afun(
