@@ -36,19 +36,13 @@ NULL
 #' @export
 #'
 h_set_nest_theme <- function(font_size) {
-  ggplot2::theme(
-    panel.grid.major = ggplot2::element_blank(),
-    panel.grid.minor = ggplot2::element_blank(),
-    panel.background = ggplot2::element_blank(),
-    panel.border = ggplot2::element_rect(colour = "grey", fill = NA, size = 1),
-    legend.position = "bottom",
-    legend.background = ggplot2::element_blank(),
-    legend.box.background = ggplot2::element_rect(colour = "grey", fill = NA, size = 1),
-    legend.direction = "horizontal",
-    legend.title = ggplot2::element_text(face = "bold"),
-    text = ggplot2::element_text(size = font_size),
-    plot.caption = ggplot2::element_text(hjust = 0)
+  lifecycle::deprecate_soft(
+    what = "h_set_nest_theme()",
+    details = "h_set_nest_theme() will be removed in a future release.",
+    with = "nestcolor::theme_nest()",
+    when = "0.7.9"
   )
+  nestcolor::theme_nest(font_size = font_size)
 }
 
 
