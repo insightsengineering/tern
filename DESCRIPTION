@@ -59,6 +59,10 @@ VignetteBuilder:
     knitr
 RdMacros:
     lifecycle
+Remotes:
+    insightsengineering/scda.2022@*release,
+    insightsengineering/scda@*release,
+    insightsengineering/nestcolor@*release
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
