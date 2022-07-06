@@ -283,7 +283,6 @@ reference:
       - h_grob_median_surv
       - h_grob_tbl_at_risk
       - h_grob_y_annot
-      - h_set_nest_theme
       - h_xticks
       - stack_grobs
       - stat_mean_ci
@@ -333,6 +332,7 @@ reference:
       - fit_mmrm
       - starts_with("g_mmrm")
       - starts_with("h_mmrm")
+      - h_set_nest_theme
       - s_cox_univariate
       - starts_with("s_mmrm")
       - tidy.mmrm

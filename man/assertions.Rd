@@ -89,7 +89,8 @@ Exact expected length of \code{x}.}
 
 \item{...}{a collection of objects to test.}
 
-\item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing for proportions.}
+\item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing
+for proportions.}
 
 \item{(`integer`)\cr}{minimum number of factor levels. Default is \code{1}.}
 }
@@ -105,8 +106,8 @@ Additional assertion functions which can be used together with the \code{checkma
 Please notice how this produces an error when not all variables are present in the
 data.frame while the opposite is not required.
 
-\item \code{assert_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
-Note that \code{NULL} and \code{NA} elements are allowed.
+\item \code{assert_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty
+string levels). Note that \code{NULL} and \code{NA} elements are allowed.
 
 \item \code{assert_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
 are all factors. Note that the creation of \code{NA} by direct call of \code{factor()} will
@@ -207,7 +208,11 @@ assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, ma
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
 assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
 assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
-assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
+assert_df_with_factors(
+  df = bdf,
+  variables = list(val = "a", val = "b"),
+  min.levels = 1,
+  max.levels = 1)
 }
 
 # Check whether `x` is a valid list of variable names.

@@ -6,7 +6,8 @@
 #' @param x (`any`)\cr object to test.
 #' @param df (`data frame`)\cr data set to test.
 #' @param variables (named `list` of `character`)\cr list of variables to test.
-#' @param include_boundaries (`logical`)\cr whether to include boundaries when testing for proportions.
+#' @param include_boundaries (`logical`)\cr whether to include boundaries when testing
+#'   for proportions.
 #' @param na_level (`character`)\cr the string you have been using to represent NA or
 #'   missing data. For `NA` values please consider using directly `base::is.na` or
 #'   similar approaches.
@@ -155,8 +156,8 @@ check_valid_factor <- function(x,
   }
   return(res)
 }
-#' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
-#'   Note that `NULL` and `NA` elements are allowed.
+#' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty
+#'   string levels). Note that `NULL` and `NA` elements are allowed.
 #'
 #' @examples
 #' # Check whether `x` is a valid factor.
@@ -240,7 +241,11 @@ check_df_with_factors <- function(df,
 #' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
 #' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
 #' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
-#' assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
+#' assert_df_with_factors(
+#'   df = bdf,
+#'   variables = list(val = "a", val = "b"),
+#'   min.levels = 1,
+#'   max.levels = 1)
 #' }
 #'
 #' @keywords internal
