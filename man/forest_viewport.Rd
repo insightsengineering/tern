@@ -33,10 +33,10 @@ tbl <- rtable(
 # Internal function - forest_viewport
 \dontrun{
 v <- forest_viewport(tbl)
-}
 
 grid::grid.newpage()
 showViewport(v)
+}
 
 }
 \keyword{internal}

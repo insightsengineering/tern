@@ -682,10 +682,10 @@ forest_dot_line <- function(x, # nolint
 #' # Internal function - forest_viewport
 #' \dontrun{
 #' v <- forest_viewport(tbl)
-#' }
 #'
 #' grid::grid.newpage()
 #' showViewport(v)
+#' }
 #'
 #' @keywords internal
 forest_viewport <- function(tbl,
