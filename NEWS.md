@@ -48,6 +48,7 @@
   is automatically the final order in the documentation. There is no specific
   need to add this tag. Modified examples accordingly.
 * Fixed warnings occurring in example tests
+* Removed `tern:::` prefix and added `dontrun` to internal function examples.
 
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:
