@@ -33,8 +33,8 @@ factor levels).
 \examples{
 # Internal function - as_factor_keep_attributes
 \dontrun{
-tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
-tern:::as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
+as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
+as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
 }
 
 }

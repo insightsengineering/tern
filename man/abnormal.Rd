@@ -121,10 +121,10 @@ df <- df \%>\%
 # Internal function - s_count_abnormal
 \dontrun{
 # For abnormal level "HIGH" we get the following counts.
-tern:::s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
+s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
 # Optionally exclude patients with abnormality at baseline.
-tern:::s_count_abnormal(
+s_count_abnormal(
   df,
   .var = "ANRIND",
   abnormal = list(high = "HIGH", low = "LOW"),
@@ -135,7 +135,7 @@ tern:::s_count_abnormal(
 # Internal function - a_count_abnormal
 \dontrun{
 # Use the Formatted Analysis function for `analyze()`.
-a_fun <- make_afun(tern:::a_count_abnormal, .ungroup_stats = "fraction")
+a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
 a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
 }
 

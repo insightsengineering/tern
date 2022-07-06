@@ -119,13 +119,13 @@ univariate <- function(x) {
 #' )
 #' \dontrun{
 #' s_cox_univariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
 #'   data = ADTTE_f,
 #'   covariates = list(~SEX)
 #' )
 #'
 #' s_cox_univariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
 #'   data = ADTTE_f,
 #'   covariates = list("Race" = ~RACE, ~AGE, "a rand. quant var with increments" = ~X),
 #'   interactions = TRUE,
@@ -175,7 +175,7 @@ s_cox_univariate <- function(formula,
   istr <- attr(tf, "specials")$strata
   tstr <- rownames(attr(tf, "factors"))[istr]
 
-  if (is.null(iarm)) stop("Check `formula`, the arm variable needs to be wrapped in tern:::arm()")
+  if (is.null(iarm)) stop("Check `formula`, the arm variable needs to be wrapped in arm()")
 
   arms <- levels(with(data, eval(parse(text = tarm, keep.source = FALSE))))
   if (length(arms) != 2) stop("Check `formula`, the arm variable needs 2 levels.")
@@ -414,7 +414,7 @@ rht <- function(x) {
 #'
 #' # Internal function - estimate_coef
 #' \dontrun{
-#' tern:::estimate_coef(
+#' estimate_coef(
 #'   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
 #'   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
 #' )
@@ -511,8 +511,8 @@ estimate_coef <- function(variable, given,
 #'
 #' # Internal function - try_car_anova
 #' \dontrun{
-#' with_wald <- tern:::try_car_anova(mod = mod, test.statistic = "Wald")
-#' with_lr <- tern:::try_car_anova(mod = mod, test.statistic = "LR")
+#' with_wald <- try_car_anova(mod = mod, test.statistic = "Wald")
+#' with_lr <- try_car_anova(mod = mod, test.statistic = "LR")
 #' }
 #'
 #' @keywords internal
@@ -595,7 +595,7 @@ fit_n_aov <- function(formula,
 # argument_checks
 check_formula <- function(formula) {
   if (!(inherits(formula, "formula"))) {
-    stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD)`.")
+    stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD)`.")
   }
 
   invisible()
@@ -680,7 +680,7 @@ check_increments <- function(increments, covariates) {
 #'
 #' # Internal function - s_cox_multivariate
 #' \dontrun{
-#' tern:::s_cox_multivariate(
+#' s_cox_multivariate(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f
 #' )
 #' }

@@ -16,7 +16,7 @@
 #' )
 #' # Internal function - groups_list_to_df
 #' \dontrun{
-#' tern:::groups_list_to_df(grade_groups)
+#' groups_list_to_df(grade_groups)
 #' }
 #'
 #' @keywords internal
@@ -236,7 +236,7 @@ split_cols_by_groups <- function(lyt,
 #'
 #' # Internal function - combine_counts
 #' \dontrun{
-#' col_counts <- tern:::combine_counts(
+#' col_counts <- combine_counts(
 #'   fct = DM$ARM,
 #'   groups_list = groups
 #' )
@@ -249,7 +249,7 @@ split_cols_by_groups <- function(lyt,
 #'
 #' ref <- "A: Drug X"
 #' groups <- combine_groups(fct = DM$ARM, ref = ref)
-#' col_counts <- tern:::combine_counts(
+#' col_counts <- combine_counts(
 #'   fct = DM$ARM,
 #'   groups_list = groups
 #' )

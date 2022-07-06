@@ -276,8 +276,8 @@ df2 <- tidy(mod2, conf_level = 0.99)
 # Internal function - replace_emptys_with_na
 \dontrun{
 # flagging empty strings with "_"
-df <- tern:::replace_emptys_with_na(df, rep_str = "_")
-df2 <- tern:::replace_emptys_with_na(df2, rep_str = "_")
+df <- replace_emptys_with_na(df, rep_str = "_")
+df2 <- replace_emptys_with_na(df2, rep_str = "_")
 
 result1 <- basic_table() \%>\%
   summarize_logistic(

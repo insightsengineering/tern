@@ -108,7 +108,7 @@ extract_rsp_subgroups <- function(variables,
 #' @examples
 #' # Internal function - a_response_subgroups
 #' \dontrun{
-#' tern:::a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
+#' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
 #' }
 #'
 #' @keywords internal

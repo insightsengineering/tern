@@ -35,7 +35,7 @@ NULL
 #' ## Chi-Squared test
 #' # Internal function - prop_chisq
 #' \dontrun{
-#' tern:::prop_chisq(tbl)
+#' prop_chisq(tbl)
 #' }
 #'
 #' @keywords internal
@@ -68,7 +68,7 @@ prop_chisq <- function(tbl) {
 #' ## Cochran-Mantel-Haenszel test
 #' # Internal function - prop_cmh
 #' \dontrun{
-#' tern:::prop_cmh(tbl)
+#' prop_cmh(tbl)
 #' }
 #'
 #' @keywords internal
@@ -95,7 +95,7 @@ prop_cmh <- function(ary) {
 #' ## Chi-Squared test + Schouten correction.
 #' # Internal function - prop_schouten
 #' \dontrun{
-#' tern:::prop_schouten(tbl)
+#' prop_schouten(tbl)
 #' }
 #'
 #' @keywords internal
@@ -131,7 +131,7 @@ prop_schouten <- function(tbl) {
 #' ## Fisher's exact test
 #' # Internal function - prop_fisher
 #' \dontrun{
-#' tern:::prop_fisher(tbl)
+#' prop_fisher(tbl)
 #' }
 #'
 #' @keywords internal
@@ -166,7 +166,7 @@ prop_fisher <- function(tbl) {
 #'
 #' # Internal function - s_test_proportion_diff
 #' \dontrun{
-#' tern:::s_test_proportion_diff(
+#' s_test_proportion_diff(
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
 #'   .ref_group = subset(dta, grp == "B"),
@@ -254,7 +254,7 @@ d_test_proportion_diff <- function(method) {
 #' @examples
 #' # Internal function - a_test_proportion_diff
 #' \dontrun{
-#' tern:::a_test_proportion_diff(
+#' a_test_proportion_diff(
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
 #'   .ref_group = subset(dta, grp == "B"),

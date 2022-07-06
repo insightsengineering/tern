@@ -87,8 +87,8 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 #' @examples
 #' # Internal function - s_count_cumulative
 #' \dontrun{
-#' tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
-#' tern:::s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
+#' s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
+#' s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 #' }
 #'
 #' @keywords internal
@@ -119,7 +119,7 @@ s_count_cumulative <- function(x,
 #' \dontrun{
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 #' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(tern:::a_count_cumulative, .ungroup_stats = "count_fraction")
+#' afun <- make_afun(a_count_cumulative, .ungroup_stats = "count_fraction")
 #' afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 #' }
 #'

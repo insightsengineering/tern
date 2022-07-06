@@ -20,7 +20,7 @@ Combine Two Vectors Element Wise
 \examples{
 # Internal function - combine_vectors
 \dontrun{
-tern:::combine_vectors(1:3, 4:6)
+combine_vectors(1:3, 4:6)
 }
 
 }

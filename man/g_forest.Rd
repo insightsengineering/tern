@@ -107,7 +107,7 @@ p <- g_forest(tbl)
 
 # Internal function - draw_grob
 \dontrun{
-tern:::draw_grob(p)
+draw_grob(p)
 }
 
 # Odds ratio only table.
@@ -122,7 +122,7 @@ p <- g_forest(
 
 # Internal function - draw_grob
 \dontrun{
-tern:::draw_grob(p)
+draw_grob(p)
 }
 
 # Survival forest plot example.

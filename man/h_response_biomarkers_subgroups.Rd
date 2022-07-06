@@ -117,7 +117,7 @@ df1$var_label <- "All patients"
 
 # Internal function - h_tab_rsp_one_biomarker
 \dontrun{
-tern:::h_tab_rsp_one_biomarker(
+h_tab_rsp_one_biomarker(
   df1,
   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
 )

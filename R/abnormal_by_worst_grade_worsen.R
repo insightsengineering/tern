@@ -249,7 +249,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' # Internal function - s_count_abnormal_lab_worsen_by_baseline
 #' \dontrun{
 #' # Patients with worsening lab grade for CRP in the direction of low
-#' tern:::s_count_abnormal_lab_worsen_by_baseline(
+#' s_count_abnormal_lab_worsen_by_baseline(
 #'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
 #'   .var = "ATOXGR",
 #'   variables = list(
@@ -289,7 +289,7 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
 #' @examples
 #' # Internal function - a_count_abnormal_lab_worsen_by_baseline
 #' \dontrun{
-#' tern:::a_count_abnormal_lab_worsen_by_baseline(
+#' a_count_abnormal_lab_worsen_by_baseline(
 #'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
 #'   .var = "ATOXGR",
 #'   variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR")

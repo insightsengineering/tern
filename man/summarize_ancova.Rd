@@ -135,12 +135,12 @@ conf_level <- 0.95
 
 # Internal function - s_ancova
 \dontrun{
-tern:::s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 }
 
 # Internal function - a_ancova
 \dontrun{
-tern:::a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 }
 
 

@@ -19,7 +19,7 @@ Make Names Without Dots
 \examples{
 # Internal function - make_names
 \dontrun{
-tern:::make_names(c("foo Bar", "1 2 3 bla"))
+make_names(c("foo Bar", "1 2 3 bla"))
 }
 
 }

@@ -45,8 +45,8 @@ mod <- coxph(
 
 # Internal function - try_car_anova
 \dontrun{
-with_wald <- tern:::try_car_anova(mod = mod, test.statistic = "Wald")
-with_lr <- tern:::try_car_anova(mod = mod, test.statistic = "LR")
+with_wald <- try_car_anova(mod = mod, test.statistic = "Wald")
+with_lr <- try_car_anova(mod = mod, test.statistic = "LR")
 }
 
 }

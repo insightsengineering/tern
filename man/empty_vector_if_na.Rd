@@ -19,7 +19,7 @@ Return an empty numeric if all elements are \code{NA}.
 x <- c(NA, NA, NA)
 # Internal function - empty_vector_if_na
 \dontrun{
-tern:::empty_vector_if_na(x)
+empty_vector_if_na(x)
 }
 
 }

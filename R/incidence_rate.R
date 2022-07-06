@@ -48,7 +48,7 @@ NULL
 #'
 #' # Internal function - s_incidence_rate
 #' \dontrun{
-#' tern:::s_incidence_rate(
+#' s_incidence_rate(
 #'   df,
 #'   .var = "AVAL",
 #'   n_events = "n_events",
@@ -113,7 +113,7 @@ s_incidence_rate <- function(df,
 #' @examples
 #' # Internal function - a_incidence_rate
 #' \dontrun{
-#' tern:::a_incidence_rate(
+#' a_incidence_rate(
 #'   df,
 #'   .var = "AVAL",
 #'   n_events = "n_events",
@@ -276,9 +276,9 @@ h_incidence_rate_byar <- function(person_years,
 #' @examples
 #' # Internal function - h_incidence_rate
 #' \dontrun{
-#' tern:::h_incidence_rate(200, 2)
+#' h_incidence_rate(200, 2)
 #'
-#' tern:::h_incidence_rate(
+#' h_incidence_rate(
 #'   200,
 #'   2,
 #'   control_incidence_rate(

@@ -41,7 +41,7 @@ NULL
 #'
 #' # Internal function - s_surv_timepoint
 #' \dontrun{
-#' tern:::s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#' s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
 #' }
 #'
 #' @keywords internal
@@ -91,7 +91,7 @@ s_surv_timepoint <- function(df,
 #' @examples
 #' # Internal function - a_surv_timepoint
 #' \dontrun{
-#' tern:::a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#' a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
 #' }
 #'
 #' @keywords internal
@@ -123,8 +123,8 @@ a_surv_timepoint <- make_afun(
 #'
 #' # Internal function - s_surv_timepoint_diff
 #' \dontrun{
-#' tern:::s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
-#' tern:::s_surv_timepoint_diff(
+#' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
+#' s_surv_timepoint_diff(
 #'   df,
 #'   df_ref_group,
 #'   .in_ref_col = FALSE,
@@ -182,7 +182,7 @@ s_surv_timepoint_diff <- function(df,
 #' @examples
 #' # Internal function - a_surv_timepoint_diff
 #' \dontrun{
-#' tern:::a_surv_timepoint_diff(
+#' a_surv_timepoint_diff(
 #'   df,
 #'   df_ref_group,
 #'   .in_ref_col = FALSE,

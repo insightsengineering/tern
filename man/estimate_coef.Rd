@@ -82,7 +82,7 @@ mmat[!mmat == 0] <- 0
 
 # Internal function - estimate_coef
 \dontrun{
-tern:::estimate_coef(
+estimate_coef(
   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
 )

@@ -85,7 +85,7 @@ df <- data.frame(
 
 # Internal function - s_change_from_baseline
 \dontrun{
-tern:::s_change_from_baseline(
+s_change_from_baseline(
   df,
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")
@@ -94,7 +94,7 @@ tern:::s_change_from_baseline(
 
 # Internal function - a_change_from_baseline
 \dontrun{
-tern:::a_change_from_baseline(
+a_change_from_baseline(
   df,
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")

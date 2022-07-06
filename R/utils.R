@@ -11,14 +11,14 @@
 #' @examples
 #' # Internal function - range_noinf
 #' \dontrun{
-#' tern:::range_noinf(1:5)
-#' tern:::range_noinf(c(1:5, NA, NA), na.rm = TRUE)
-#' tern:::range_noinf(numeric(), na.rm = TRUE)
-#' tern:::range_noinf(c(1:5, NA, NA, Inf), na.rm = TRUE, finite = TRUE)
-#' tern:::range_noinf(Inf)
-#' tern:::range_noinf(Inf, na.rm = TRUE, finite = TRUE)
-#' tern:::range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
-#' tern:::range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
+#' range_noinf(1:5)
+#' range_noinf(c(1:5, NA, NA), na.rm = TRUE)
+#' range_noinf(numeric(), na.rm = TRUE)
+#' range_noinf(c(1:5, NA, NA, Inf), na.rm = TRUE, finite = TRUE)
+#' range_noinf(Inf)
+#' range_noinf(Inf, na.rm = TRUE, finite = TRUE)
+#' range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
+#' range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
 #' }
 #'
 #' @keywords internal
@@ -146,7 +146,7 @@ check_same_n <- function(..., omit_null = TRUE) {
 #' @examples
 #' # Internal function - make_names
 #' \dontrun{
-#' tern:::make_names(c("foo Bar", "1 2 3 bla"))
+#' make_names(c("foo Bar", "1 2 3 bla"))
 #' }
 #'
 #' @keywords internal
@@ -202,7 +202,7 @@ day2month <- function(x) {
 #' x <- c(NA, NA, NA)
 #' # Internal function - empty_vector_if_na
 #' \dontrun{
-#' tern:::empty_vector_if_na(x)
+#' empty_vector_if_na(x)
 #' }
 #'
 #' @keywords internal
@@ -224,7 +224,7 @@ empty_vector_if_na <- function(x) {
 #' @examples
 #' # Internal function - combine_vectors
 #' \dontrun{
-#' tern:::combine_vectors(1:3, 4:6)
+#' combine_vectors(1:3, 4:6)
 #' }
 #'
 #' @keywords internal
@@ -409,7 +409,7 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 #' @examples
 #' # Internal function - n_available
 #' \dontrun{
-#' tern:::n_available(c(1, NA, 2))
+#' n_available(c(1, NA, 2))
 #' }
 #'
 #' @keywords internal

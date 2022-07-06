@@ -130,13 +130,13 @@ prune_table(tab, keep_rows(is_non_empty))
 # `keep_content_rows`
 # Internal function - has_count_in_cols
 \dontrun{
-more_than_twenty <- tern:::has_count_in_cols(atleast = 20L, col_names = names(tab))
+more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
 prune_table(tab, keep_content_rows(more_than_twenty))
 }
 
 # Internal function - has_count_in_cols
 \dontrun{
-more_than_one <- tern:::has_count_in_cols(atleast = 1L, col_names = names(tab))
+more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one))
 }
 
@@ -162,7 +162,7 @@ prune_table(tab, keep_rows(more_than_five_percent_diff))
 }
 # Internal function - has_counts_difference
 \dontrun{
-more_than_one_diff <- tern:::has_counts_difference(atleast = 1L, col_names = names(tab))
+more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one_diff))
 }
 

@@ -319,7 +319,7 @@ split_string <- function(text, width) {
 #' @examples
 #' # Internal function - split_text_grob
 #' \dontrun{
-#' sg <- tern:::split_text_grob(text = paste(
+#' sg <- split_text_grob(text = paste(
 #'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
 #'   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
 #'   "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
@@ -344,11 +344,11 @@ split_string <- function(text, width) {
 #'   height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
 #' )
 #'
-#' # stack tern:::split_text_grob
+#' # stack split_text_grob
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.rect()
-#' grid.draw(tern:::split_text_grob(
+#' grid.draw(split_text_grob(
 #'   c("Hello, this is a test", "and yet another test"),
 #'   just = c("left", "top"), x = 0, y = 1
 #' ))
@@ -458,16 +458,16 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' @examples
 #' # Internal function - decorate_grob_factory
 #' \dontrun{
-#' pf <- tern:::decorate_grob_factory(
+#' pf <- decorate_grob_factory(
 #'   titles = "This is a test\nHello World",
 #'   footnotes = "Here belong the footnotess",
 #'   npages = 3
 #' )
 #'
 #' library(grid)
-#' tern:::draw_grob(pf(NULL))
-#' tern:::draw_grob(pf(NULL))
-#' tern:::draw_grob(pf(NULL))
+#' draw_grob(pf(NULL))
+#' draw_grob(pf(NULL))
+#' draw_grob(pf(NULL))
 #' }
 decorate_grob_factory <- function(npages, ...) {
   current_page <- 0
@@ -508,9 +508,9 @@ decorate_grob_factory <- function(npages, ...) {
 #'
 #' # Internal function - draw_grob
 #' \dontrun{
-#' tern:::draw_grob(lg[[1]])
-#' tern:::draw_grob(lg[[2]])
-#' tern:::draw_grob(lg[[6]])
+#' draw_grob(lg[[1]])
+#' draw_grob(lg[[2]])
+#' draw_grob(lg[[6]])
 #' }
 #'
 #' @export

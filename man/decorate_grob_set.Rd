@@ -33,9 +33,9 @@ library(grid)
 
 # Internal function - draw_grob
 \dontrun{
-tern:::draw_grob(lg[[1]])
-tern:::draw_grob(lg[[2]])
-tern:::draw_grob(lg[[6]])
+draw_grob(lg[[1]])
+draw_grob(lg[[2]])
+draw_grob(lg[[6]])
 }
 
 }

@@ -94,7 +94,7 @@ df <- data.frame(
 
 # Internal function - s_count_patients_and_multiple_events
 \dontrun{
-tern:::s_count_patients_and_multiple_events(
+s_count_patients_and_multiple_events(
   df = df,
   id = "USUBJID",
   filters_list = list(

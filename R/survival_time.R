@@ -43,7 +43,7 @@ NULL
 #'
 #' # Internal function - s_surv_time
 #' \dontrun{
-#' tern:::s_surv_time(df, .var = "AVAL", is_event = "is_event")
+#' s_surv_time(df, .var = "AVAL", is_event = "is_event")
 #' }
 #'
 #' @keywords internal
@@ -92,7 +92,7 @@ s_surv_time <- function(df,
 #' @examples
 #' # Internal function - a_surv_time
 #' \dontrun{
-#' tern:::a_surv_time(df, .var = "AVAL", is_event = "is_event")
+#' a_surv_time(df, .var = "AVAL", is_event = "is_event")
 #' }
 #'
 #' @keywords internal

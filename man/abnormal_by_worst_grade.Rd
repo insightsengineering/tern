@@ -149,7 +149,7 @@ spl_context <- data.frame(
 
 # Internal function - s_count_abnormal_by_worst_grade
 \dontrun{
-tern:::s_count_abnormal_by_worst_grade(
+s_count_abnormal_by_worst_grade(
   df = adlb_f_alt,
   .spl_context = spl_context,
   .var = "GRADE_ANL"
@@ -160,7 +160,7 @@ tern:::s_count_abnormal_by_worst_grade(
 \dontrun{
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(tern:::a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
+afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 afun(df = adlb_f_alt, .spl_context = spl_context)
 }
 

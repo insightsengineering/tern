@@ -16,8 +16,8 @@
 #'
 #' # Internal function - wrap_text
 #' \dontrun{
-#' tern:::wrap_text(txt = text, width = grid::unit(4, "cm"), collapse = "\n")
-#' tern:::wrap_text(txt = text, width = grid::unit(5, "cm"), collapse = "\n")
+#' wrap_text(txt = text, width = grid::unit(4, "cm"), collapse = "\n")
+#' wrap_text(txt = text, width = grid::unit(5, "cm"), collapse = "\n")
 #' }
 #'
 #' @keywords internal

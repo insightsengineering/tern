@@ -25,7 +25,7 @@ grade_groups <- list(
 )
 # Internal function - groups_list_to_df
 \dontrun{
-tern:::groups_list_to_df(grade_groups)
+groups_list_to_df(grade_groups)
 }
 
 }

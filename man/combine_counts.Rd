@@ -25,7 +25,7 @@ groups <- combine_groups(fct = DM$ARM, ref = ref)
 
 # Internal function - combine_counts
 \dontrun{
-col_counts <- tern:::combine_counts(
+col_counts <- combine_counts(
   fct = DM$ARM,
   groups_list = groups
 )
@@ -38,7 +38,7 @@ basic_table() \%>\%
 
 ref <- "A: Drug X"
 groups <- combine_groups(fct = DM$ARM, ref = ref)
-col_counts <- tern:::combine_counts(
+col_counts <- combine_counts(
   fct = DM$ARM,
   groups_list = groups
 )

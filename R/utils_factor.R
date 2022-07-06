@@ -48,8 +48,8 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' @examples
 #' # Internal function - as_factor_keep_attributes
 #' \dontrun{
-#' tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
-#' tern:::as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
+#' as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
+#' as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
 #' }
 #'
 #' @keywords internal
@@ -110,13 +110,13 @@ as_factor_keep_attributes <- function(x,
 #' # Internal function - bins_percent_labels
 #' \dontrun{
 #' # Just pass the internal probability bounds, then 0 and 100% will be added automatically.
-#' tern:::bins_percent_labels(c(0.2, 0.5))
+#' bins_percent_labels(c(0.2, 0.5))
 #'
 #' # Determine how to round.
-#' tern:::bins_percent_labels(0.35224, digits = 1)
+#' bins_percent_labels(0.35224, digits = 1)
 #'
 #' # Passing an empty vector just gives a single bin 0-100%.
-#' tern:::bins_percent_labels(c(0, 1))
+#' bins_percent_labels(c(0, 1))
 #' }
 #'
 #' @keywords internal

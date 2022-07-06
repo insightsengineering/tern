@@ -44,7 +44,7 @@ NULL
 #'
 #' # Internal function - s_coxph_pairwise
 #' \dontrun{
-#' tern:::s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+#' s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 #' }
 #'
 #' @keywords internal
@@ -120,7 +120,7 @@ s_coxph_pairwise <- function(df,
 #' @examples
 #' # Internal function - a_coxph_pairwise
 #' \dontrun{
-#' tern:::a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+#' a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 #' }
 #'
 #' @keywords internal

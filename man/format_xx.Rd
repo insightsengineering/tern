@@ -21,13 +21,13 @@ test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 
 # Internal function - format_xx
 \dontrun{
-z <- tern:::format_xx("xx (xx.x)")
+z <- format_xx("xx (xx.x)")
 sapply(test, z)
 
-z <- tern:::format_xx("xx.x - xx.x")
+z <- format_xx("xx.x - xx.x")
 sapply(test, z)
 
-z <- tern:::format_xx("xx.x, incl. xx.x\% NE")
+z <- format_xx("xx.x, incl. xx.x\% NE")
 sapply(test, z)
 }
 

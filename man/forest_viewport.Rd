@@ -32,7 +32,7 @@ tbl <- rtable(
 
 # Internal function - forest_viewport
 \dontrun{
-v <- tern:::forest_viewport(tbl)
+v <- forest_viewport(tbl)
 }
 
 grid::grid.newpage()

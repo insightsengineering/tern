@@ -103,12 +103,12 @@ df <- ADTTE_f \%>\% filter(ARMCD == "ARM A")
 
 # Internal function - s_surv_time
 \dontrun{
-tern:::s_surv_time(df, .var = "AVAL", is_event = "is_event")
+s_surv_time(df, .var = "AVAL", is_event = "is_event")
 }
 
 # Internal function - a_surv_time
 \dontrun{
-tern:::a_surv_time(df, .var = "AVAL", is_event = "is_event")
+a_surv_time(df, .var = "AVAL", is_event = "is_event")
 }
 
 basic_table() \%>\%

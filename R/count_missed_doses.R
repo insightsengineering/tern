@@ -17,7 +17,7 @@ NULL
 #'
 #' # Internal function - s_count_nonmissing
 #' \dontrun{
-#' tern:::s_count_nonmissing(x)
+#' s_count_nonmissing(x)
 #' }
 #'
 #' @keywords internal
@@ -44,7 +44,7 @@ d_count_missed_doses <- function(thresholds) {
 #' @examples
 #' # Internal function - s_count_missed_doses
 #' \dontrun{
-#' tern:::s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+#' s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
 #' }
 #'
 #' @keywords internal
@@ -73,7 +73,7 @@ s_count_missed_doses <- function(x,
 #' \dontrun{
 #' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(tern:::a_count_missed_doses, .ungroup_stats = "count_fraction")
+#' afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
 #' afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
 #' }
 #'

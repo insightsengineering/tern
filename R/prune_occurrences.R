@@ -65,7 +65,7 @@ keep_rows <- function(row_condition) {
 #' # `keep_content_rows`
 #' # Internal function - has_count_in_cols
 #' \dontrun{
-#' more_than_twenty <- tern:::has_count_in_cols(atleast = 20L, col_names = names(tab))
+#' more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
 #' prune_table(tab, keep_content_rows(more_than_twenty))
 #' }
 #'
@@ -98,7 +98,7 @@ keep_content_rows <- function(content_row_condition) {
 #' @examples
 #' # Internal function - has_count_in_cols
 #' \dontrun{
-#' more_than_one <- tern:::has_count_in_cols(atleast = 1L, col_names = names(tab))
+#' more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one))
 #' }
 #'
@@ -207,7 +207,7 @@ has_fractions_difference <- function(atleast, ...) {
 #' @examples
 #' # Internal function - has_counts_difference
 #' \dontrun{
-#' more_than_one_diff <- tern:::has_counts_difference(atleast = 1L, col_names = names(tab))
+#' more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one_diff))
 #' }
 #'

@@ -153,7 +153,7 @@ df <- data.frame(
 
 # Internal function - s_incidence_rate
 \dontrun{
-tern:::s_incidence_rate(
+s_incidence_rate(
   df,
   .var = "AVAL",
   n_events = "n_events",
@@ -166,7 +166,7 @@ tern:::s_incidence_rate(
 
 # Internal function - a_incidence_rate
 \dontrun{
-tern:::a_incidence_rate(
+a_incidence_rate(
   df,
   .var = "AVAL",
   n_events = "n_events",
@@ -197,9 +197,9 @@ h_incidence_rate_byar(200, 2)
 
 # Internal function - h_incidence_rate
 \dontrun{
-tern:::h_incidence_rate(200, 2)
+h_incidence_rate(200, 2)
 
-tern:::h_incidence_rate(
+h_incidence_rate(
   200,
   2,
   control_incidence_rate(
