@@ -159,11 +159,8 @@ g_forest <- function(tbl, # nolint
   nr <- nrow(tbl)
   nc <- ncol(tbl)
 
-  checkmate::assert_false(is.null(col_x))
-  checkmate::assert_false(is.null(col_ci))
-
-  checkmate::assert_number(col_x, lower = 0, upper = nc)
-  checkmate::assert_number(col_ci, lower = 0, upper = nc)
+  checkmate::assert_number(col_x, lower = 0, upper = nc, null.ok = FALSE)
+  checkmate::assert_number(col_ci, lower = 0, upper = nc, null.ok = FALSE)
   checkmate::assert_number(col_symbol_size, lower = 0, upper = nc, null.ok = TRUE)
   checkmate::assert_true(col_x > 0)
   checkmate::assert_true(col_ci > 0)

@@ -507,10 +507,10 @@ h_glm_interaction_extract <- function(x, fit_glm) {
   checkmate::assert_string(x)
 
   # Only take two-way interaction
-  checkmate::assert_int(length(vars), lower = 2, upper = 2)
+  checkmate::assert_vector(vars, len = 2)
 
   # Only consider simple case: first variable in interaction is arm, a categorical variable
-  checkmate::assert_false(xs_class[vars[1]] == "numeric")
+  checkmate::assert_disjunct(xs_class[vars[1]], "numeric")
 
   xs_level <- fit_glm$xlevels
   xs_coef <- summary(fit_glm)$coefficients
@@ -710,7 +710,7 @@ h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
   checkmate::assert_subset(x, terms_name)
   if (length(interaction) != 0) {
     # Make sure any item in x is not part of interaction term
-    checkmate::assert_false(any(x %in% unlist(strsplit(interaction, ":"))))
+    checkmate::assert_disjunct(x, unlist(strsplit(interaction, ":")))
   }
   x_stats <- lapply(x, h_glm_simple_term_extract, fit_glm)
   x_stats <- do.call(rbind, x_stats)

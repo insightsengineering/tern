@@ -42,10 +42,12 @@ s_count_values.character <- function(x,
                                      na.rm = TRUE, # nolint
                                      ...) {
   checkmate::assert_character(values)
-  if (na.rm) x <- x[!is.na(x)]
-  is_in_values <- x %in% values
 
-  checkmate::assert_false(anyNA(is_in_values))
+  if (na.rm) {
+    x <- x[!is.na(x)]
+  }
+
+  is_in_values <- x %in% values
 
   s_summary(is_in_values, ...)
 }
