@@ -98,7 +98,6 @@ reference:
        - summarize_colvars
        - summarize_coxreg
        - summarize_logistic
-       - summarize_lsmeans
        - summarize_num_patients
        - summarize_occurrences_by_grade
        - summarize_patients_events_in_cols
@@ -326,13 +325,6 @@ reference:
   - title: Deprecated Functions
     desc: These functions already are or will eventually be removed.
     contents:
-      - as.rtable.mmrm
-      - starts_with("a_mmrm")
       - color_palette
-      - fit_mmrm
-      - starts_with("g_mmrm")
-      - starts_with("h_mmrm")
       - h_set_nest_theme
       - s_cox_univariate
-      - starts_with("s_mmrm")
-      - tidy.mmrm
