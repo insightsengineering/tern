@@ -132,17 +132,6 @@ testthat::test_that("assert_df_with_factors fails with wrong input", {
   )
 })
 
-# assert_equal_length ----
-
-testthat::test_that("assert_equal_length is silent with same-length inputs", {
-  testthat::expect_silent(assert_equal_length(1, 5, "car", NA, list(a = list(5, 3))))
-})
-
-testthat::test_that("assert_equal_length fails with variable-length inputs", {
-  testthat::expect_error(assert_equal_length(1, NULL))
-  testthat::expect_error(assert_equal_length(1:10, LETTERS[1:3]))
-})
-
 # assert_proportion_value ----
 
 testthat::test_that("assert_proportion_value is silent with healthy input", {

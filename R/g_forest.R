@@ -488,10 +488,9 @@ cell_in_rows <- function(row_name,
                          cell_spans,
                          row_index,
                          underline_colspan = FALSE) {
-  assert_equal_length(cells, cell_spans)
   checkmate::assert_string(row_name)
   checkmate::assert_character(cells, min.len = 1, any.missing = FALSE)
-  checkmate::assert_numeric(cell_spans, min.len = 1, any.missing = FALSE)
+  checkmate::assert_numeric(cell_spans, len = lenght(cells), any.missing = FALSE)
   checkmate::assert_number(row_index)
   checkmate::assert_flag(underline_colspan)
 
