@@ -1,4 +1,4 @@
-# tern 0.7.8.9014
+# tern 0.7.8.9015
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.

@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.8.9014
+Version: 0.7.8.9015
 Date: 2022-06-09
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
@@ -60,9 +60,9 @@ VignetteBuilder:
 RdMacros:
     lifecycle
 Remotes:
+    insightsengineering/nestcolor@*release,
     insightsengineering/scda.2022@*release,
-    insightsengineering/scda@*release,
-    insightsengineering/nestcolor@*release
+    insightsengineering/scda@*release
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
