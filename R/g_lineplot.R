@@ -167,7 +167,7 @@ g_lineplot <- function(df, # nolint
   checkmate::assert_string(subtitle, null.ok = TRUE)
 
   if (is.character(interval)) {
-    checkmate::assert_int(length(whiskers), lower = 0, upper = 2)
+    checkmate::assert_vector(whiskers, min.len = 0, max.len = 2)
   }
 
   if (length(whiskers) == 1) {

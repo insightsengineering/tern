@@ -133,10 +133,7 @@ check_valid_factor <- function(x,
                                len = NULL) {
   # checks on levels insertion
   checkmate::assert_int(min.levels, lower = 1)
-  # no check of max.levels if it is NULL
-  if (!is.null(max.levels)) {
-    checkmate::assert_int(max.levels, lower = min.levels)
-  }
+
   # main factor check
   res <- checkmate::check_factor(x,
     min.levels = min.levels,
@@ -145,10 +142,12 @@ check_valid_factor <- function(x,
     any.missing = any.missing,
     n.levels = n.levels
   )
+
   # no empty strings allowed
   if (isTRUE(res)) {
     res <- checkmate::check_character(levels(x), min.chars = 1)
   }
+
   return(res)
 }
 #' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).

@@ -184,7 +184,7 @@ h_or_cat_interaction <- function(odds_ratio_var,
   checkmate::assert_string(odds_ratio_var)
   checkmate::assert_string(interaction_var)
   checkmate::assert_subset(c(odds_ratio_var, interaction_var), interaction_vars)
-  checkmate::assert_int(length(interaction_vars), lower = 2, upper = 2)
+  checkmate::assert_vector(interaction_vars, len = 2)
 
   xs_level <- fit_glm$xlevels
   xs_coef <- stats::coef(fit_glm)
@@ -240,7 +240,7 @@ h_or_cont_interaction <- function(odds_ratio_var,
   checkmate::assert_string(odds_ratio_var)
   checkmate::assert_string(interaction_var)
   checkmate::assert_subset(c(odds_ratio_var, interaction_var), interaction_vars)
-  checkmate::assert_int(length(interaction_vars), lower = 2, upper = 2)
+  checkmate::assert_vector(interaction_vars, len = 2)
   checkmate::assert_numeric(at, min.len = 1, null.ok = TRUE, any.missing = FALSE)
   xs_level <- fit_glm$xlevels
   xs_coef <- stats::coef(fit_glm)
@@ -735,7 +735,8 @@ h_logistic_inter_terms <- function(x,
                                    at = NULL) {
   # Find out the interaction variables and interaction term.
   inter_vars <- h_get_interaction_vars(fit_glm)
-  checkmate::assert_int(length(inter_vars), lower = 2, upper = 2)
+  checkmate::assert_vector(inter_vars, len = 2)
+
 
   inter_term_index <- intersect(grep(inter_vars[1], x), grep(inter_vars[2], x))
   inter_term <- x[inter_term_index]

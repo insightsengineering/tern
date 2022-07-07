@@ -243,7 +243,7 @@ h_format_threshold <- function(x, digits = 2L) {
 #' format_fun(x = 0.009)
 format_extreme_values <- function(digits = 2L) {
   function(x, ...) {
-    checkmate::assert_int(length(x), lower = 1, upper = 1)
+    checkmate::assert_vector(x, len = 1)
 
     h_format_threshold(x = x, digits = digits)
   }
@@ -259,7 +259,7 @@ format_extreme_values <- function(digits = 2L) {
 #' format_fun(x = c(0, 0.009))
 format_extreme_values_ci <- function(digits = 2L) {
   function(x, ...) {
-    checkmate::assert_int(length(x), lower = 2, upper = 2)
+    checkmate::assert_vector(x, len = 2)
     l_result <- h_format_threshold(x = x[1], digits = digits)
     h_result <- h_format_threshold(x = x[2], digits = digits)
 
