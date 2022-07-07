@@ -1,4 +1,4 @@
-# tern 0.7.8.9019
+# tern 0.7.8.9020
 
 ### Enhancements 
 * `checkmate::assert()`, `checkmate::assert_true()`, and `checkmate::assert_false()`
