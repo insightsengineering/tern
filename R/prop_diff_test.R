@@ -200,8 +200,8 @@ s_test_proportion_diff <- function(df,
 
     if (!is.null(variables$strata) || method == "cmh") {
       strata <- variables$strata
+      checkmate::assert_false(is.null(strata))
       strata_vars <- stats::setNames(as.list(strata), strata)
-      checkmate::assert_true(!is.null(strata))
       assert_df_with_variables(df, strata_vars)
       assert_df_with_variables(.ref_group, strata_vars)
       strata <- c(interaction(.ref_group[strata]), interaction(df[strata]))

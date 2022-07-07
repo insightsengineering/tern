@@ -184,7 +184,7 @@ h_or_cat_interaction <- function(odds_ratio_var,
   checkmate::assert_string(odds_ratio_var)
   checkmate::assert_string(interaction_var)
   checkmate::assert_subset(c(odds_ratio_var, interaction_var), interaction_vars)
-  checkmate::assert_int(length(interaction_vars), lower = 2, upper = 2)
+  checkmate::assert_vector(interaction_vars, len = 2)
 
   xs_level <- fit_glm$xlevels
   xs_coef <- stats::coef(fit_glm)
@@ -240,7 +240,7 @@ h_or_cont_interaction <- function(odds_ratio_var,
   checkmate::assert_string(odds_ratio_var)
   checkmate::assert_string(interaction_var)
   checkmate::assert_subset(c(odds_ratio_var, interaction_var), interaction_vars)
-  checkmate::assert_int(length(interaction_vars), lower = 2, upper = 2)
+  checkmate::assert_vector(interaction_vars, len = 2)
   checkmate::assert_numeric(at, min.len = 1, null.ok = TRUE, any.missing = FALSE)
   xs_level <- fit_glm$xlevels
   xs_coef <- stats::coef(fit_glm)
@@ -507,10 +507,10 @@ h_glm_interaction_extract <- function(x, fit_glm) {
   checkmate::assert_string(x)
 
   # Only take two-way interaction
-  checkmate::assert_int(length(vars), lower = 2, upper = 2)
+  checkmate::assert_vector(vars, len = 2)
 
   # Only consider simple case: first variable in interaction is arm, a categorical variable
-  checkmate::assert_false(xs_class[vars[1]] == "numeric")
+  checkmate::assert_disjunct(xs_class[vars[1]], "numeric")
 
   xs_level <- fit_glm$xlevels
   xs_coef <- summary(fit_glm)$coefficients
@@ -710,7 +710,7 @@ h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
   checkmate::assert_subset(x, terms_name)
   if (length(interaction) != 0) {
     # Make sure any item in x is not part of interaction term
-    checkmate::assert_false(any(x %in% unlist(strsplit(interaction, ":"))))
+    checkmate::assert_disjunct(x, unlist(strsplit(interaction, ":")))
   }
   x_stats <- lapply(x, h_glm_simple_term_extract, fit_glm)
   x_stats <- do.call(rbind, x_stats)
@@ -735,7 +735,8 @@ h_logistic_inter_terms <- function(x,
                                    at = NULL) {
   # Find out the interaction variables and interaction term.
   inter_vars <- h_get_interaction_vars(fit_glm)
-  checkmate::assert_int(length(inter_vars), lower = 2, upper = 2)
+  checkmate::assert_vector(inter_vars, len = 2)
+
 
   inter_term_index <- intersect(grep(inter_vars[1], x), grep(inter_vars[2], x))
   inter_term <- x[inter_term_index]

@@ -57,9 +57,8 @@ NULL
 #' @export
 h_survtime_df <- function(tte, is_event, arm) {
   checkmate::assert_numeric(tte)
-  checkmate::assert_logical(is_event)
-  assert_valid_factor(arm)
-  assert_equal_length(tte, is_event, arm)
+  checkmate::assert_logical(is_event, len = length(tte))
+  assert_valid_factor(arm, len = length(tte))
 
   df_tte <- data.frame(
     tte = tte,
@@ -187,10 +186,8 @@ h_survtime_subgroups_df <- function(variables,
 #' @export
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
   checkmate::assert_numeric(tte)
-  checkmate::assert_logical(is_event)
-  assert_valid_factor(arm)
-  checkmate::assert_set_equal(nlevels(arm), 2)
-  assert_equal_length(tte, is_event, arm)
+  checkmate::assert_logical(is_event, len = length(tte))
+  assert_valid_factor(arm, n.levels = 2, len = length(tte))
 
   df_tte <- data.frame(tte = tte, is_event = is_event)
   strata_vars <- NULL
@@ -198,11 +195,10 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   if (!is.null(strata_data)) {
     if (is.data.frame(strata_data)) {
       strata_vars <- names(strata_data)
-      checkmate::assert_true(nrow(strata_data) == nrow(df_tte))
+      checkmate::assert_data_frame(strata_data, nrows = nrow(df_tte))
       assert_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
     } else {
-      checkmate::assert_true(length(strata_data) == nrow(df_tte))
-      assert_valid_factor(strata_data)
+      assert_valid_factor(strata_data, len = nrow(df_tte))
       strata_vars <- "strata_data"
     }
     df_tte[strata_vars] <- strata_data
@@ -330,8 +326,8 @@ h_coxph_subgroups_df <- function(variables,
   checkmate::assert_character(variables$tte)
   checkmate::assert_character(variables$is_event)
   checkmate::assert_character(variables$arm)
-  if (!is.null(variables$subgroups)) checkmate::assert_character(variables$subgroups)
-  if (!is.null(variables$strat)) checkmate::assert_character(variables$strat)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
+  checkmate::assert_character(variables$strat, null.ok = TRUE)
   assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
   assert_df_with_variables(data, variables)
   checkmate::assert_string(label_all)

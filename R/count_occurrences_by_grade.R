@@ -144,9 +144,8 @@ s_count_occurrences_by_grade <- function(df,
     l_count <- as.list(rep(0, length(grade_levels)))
     names(l_count) <- grade_levels
   } else {
-    checkmate::assert_false(anyNA(df[[id]]))
     if (isTRUE(is.factor(df[[id]]))) {
-      assert_valid_factor(df[[id]])
+      assert_valid_factor(df[[id]], any.missing = FALSE)
     } else {
       checkmate::assert_character(df[[id]], min.chars = 1, any.missing = FALSE)
     }

@@ -91,7 +91,7 @@ h_map_for_count_abnormal <- function(df,
   normal_value <- setdiff(levels(df[[variables$anl]]), unlist(abnormal))
 
   # Based on the understanding of clinical data, there should only be one level of normal which is "NORMAL"
-  checkmate::assert_int(length(normal_value), lower = 1, upper = 1)
+  checkmate::assert_vector(normal_value, len = 1)
 
   # Default method will only have what is observed in the df, and records with all normal values will be excluded to
   # avoid error in layout building.

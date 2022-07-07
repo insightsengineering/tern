@@ -250,9 +250,8 @@ fct_discard <- function(x, discard) {
 #'
 #' @export
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
-  checkmate::assert_factor(x)
+  checkmate::assert_factor(x, len = length(condition))
   checkmate::assert_logical(condition)
-  checkmate::assert_true(length(x) == length(condition))
   x[condition] <- NA
   forcats::fct_explicit_na(x, na_level = na_level)
 }

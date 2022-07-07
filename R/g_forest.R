@@ -171,11 +171,8 @@ g_forest <- function(tbl, # nolint
   nr <- nrow(tbl)
   nc <- ncol(tbl)
 
-  checkmate::assert_false(is.null(col_x))
-  checkmate::assert_false(is.null(col_ci))
-
-  checkmate::assert_number(col_x, lower = 0, upper = nc)
-  checkmate::assert_number(col_ci, lower = 0, upper = nc)
+  checkmate::assert_number(col_x, lower = 0, upper = nc, null.ok = FALSE)
+  checkmate::assert_number(col_ci, lower = 0, upper = nc, null.ok = FALSE)
   checkmate::assert_number(col_symbol_size, lower = 0, upper = nc, null.ok = TRUE)
   checkmate::assert_true(col_x > 0)
   checkmate::assert_true(col_ci > 0)
@@ -506,10 +503,9 @@ cell_in_rows <- function(row_name,
                          cell_spans,
                          row_index,
                          underline_colspan = FALSE) {
-  assert_equal_length(cells, cell_spans)
   checkmate::assert_string(row_name)
   checkmate::assert_character(cells, min.len = 1, any.missing = FALSE)
-  checkmate::assert_numeric(cell_spans, min.len = 1, any.missing = FALSE)
+  checkmate::assert_numeric(cell_spans, len = length(cells), any.missing = FALSE)
   checkmate::assert_number(row_index)
   checkmate::assert_flag(underline_colspan)
 

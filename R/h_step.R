@@ -74,15 +74,12 @@ h_step_trt_effect <- function(data,
                               x) {
   checkmate::assert_multi_class(model, c("coxph", "glm"))
   checkmate::assert_number(x)
-
   assert_df_with_variables(data, variables)
-  arm_lvls <- levels(data[[variables$arm]])
-
-  checkmate::assert_int(length(arm_lvls), lower = 2, upper = 2)
+  checkmate::assert_factor(data[[variables$arm]], n.levels = 2)
 
   newdata <- data[c(1, 1), ]
   newdata[, variables$biomarker] <- x
-  newdata[, variables$arm] <- arm_lvls
+  newdata[, variables$arm] <- levels(data[[variables$arm]])
   model_terms <- stats::delete.response(stats::terms(model))
   model_frame <- stats::model.frame(model_terms, data = newdata, xlev = model$xlevels)
   mat <- stats::model.matrix(model_terms, data = model_frame, contrasts.arg = model$contrasts)

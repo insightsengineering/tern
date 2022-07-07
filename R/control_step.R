@@ -43,7 +43,7 @@ control_step <- function(biomarker = NULL,
                          bandwidth,
                          degree = 0L,
                          num_points = 39L) {
-  if (!is.null(biomarker)) checkmate::assert_numeric(biomarker)
+  checkmate::assert_numeric(biomarker, null.ok = TRUE)
   checkmate::assert_flag(use_percentile)
   checkmate::assert_int(num_points, lower = 2)
   checkmate::assert_count(degree)
