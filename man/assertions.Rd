@@ -6,7 +6,6 @@
 \alias{assert_df_with_variables}
 \alias{assert_valid_factor}
 \alias{assert_df_with_factors}
-\alias{assert_equal_length}
 \alias{assert_proportion_value}
 \title{Additional Assertions for \code{checkmate}}
 \usage{
@@ -42,8 +41,6 @@ assert_df_with_factors(
   .var.name = checkmate::vname(df),
   add = NULL
 )
-
-assert_equal_length(...)
 
 assert_proportion_value(x, include_boundaries = FALSE)
 }
@@ -87,12 +84,12 @@ Default is \code{NULL} (no check).}
 \item{len}{[\code{integer(1)}]\cr
 Exact expected length of \code{x}.}
 
-\item{...}{a collection of objects to test.}
-
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing
 for proportions.}
 
 \item{(`integer`)\cr}{minimum number of factor levels. Default is \code{1}.}
+
+\item{...}{a collection of objects to test.}
 }
 \description{
 Additional assertion functions which can be used together with the \code{checkmate} package.
@@ -112,8 +109,6 @@ string levels). Note that \code{NULL} and \code{NA} elements are allowed.
 \item \code{assert_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
 are all factors. Note that the creation of \code{NA} by direct call of \code{factor()} will
 trim \code{NA} levels out of the vector list itself.
-
-\item \code{assert_equal_length}: Check that objects provided are of same length.
 
 \item \code{assert_proportion_value}: Check whether \code{x} is a proportion: number between 0 and 1.
 }}
@@ -214,18 +209,6 @@ assert_df_with_factors(
   min.levels = 1,
   max.levels = 1
 )
-}
-
-# Check whether `x` is a valid list of variable names.
-a <- 1
-b <- NULL
-c <- c(1, "car")
-d <- 5
-
-# Internal function - assert_equal_length
-\dontrun{
-# This fails
-assert_equal_length(a, b, c, d)
 }
 
 # Check whether `x` is between 0 and 1.
