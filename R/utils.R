@@ -258,7 +258,7 @@ extract <- function(x, names) {
   if (is.null(x)) {
     return(NULL)
   }
-  checkmate::assert_character(names, names = "named")
+  checkmate::assert_character(x, names = "named")
   which_extract <- intersect(names(x), names)
   if (length(which_extract) > 0) {
     x[which_extract]
