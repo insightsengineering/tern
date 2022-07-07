@@ -178,8 +178,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
     strata_var <- interaction(strata_data, drop = TRUE)
     strata_name <- "strata"
 
-    checkmate::assert_true(length(strata_var) == nrow(df_rsp))
-    assert_valid_factor(strata_var)
+    assert_valid_factor(strata_var, len = nrow(df_rsp))
 
     df_rsp[[strata_name]] <- strata_var
   } else {

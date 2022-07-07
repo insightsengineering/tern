@@ -198,11 +198,10 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   if (!is.null(strata_data)) {
     if (is.data.frame(strata_data)) {
       strata_vars <- names(strata_data)
-      checkmate::assert_true(nrow(strata_data) == nrow(df_tte))
+      checkmate::assert_data_frame(strata_data, nrows = nrow(df_tte))
       assert_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
     } else {
-      checkmate::assert_true(length(strata_data) == nrow(df_tte))
-      assert_valid_factor(strata_data)
+      assert_valid_factor(strata_data, len = nrow(df_tte))
       strata_vars <- "strata_data"
     }
     df_tte[strata_vars] <- strata_data

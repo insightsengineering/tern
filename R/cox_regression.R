@@ -108,8 +108,10 @@ h_coxreg_univar_formulas <- function(variables,
   checkmate::assert_character(variables$covariates, null.ok = TRUE)
 
   checkmate::assert_flag(interaction)
-  checkmate::assert_true((has_arm || (!interaction)))
-  checkmate::assert_true((!is.null(variables$covariates) || (!interaction)))
+
+  if (!has_arm || is.null(variables$covariates)) {
+    checkmate::assert_false(interaction)
+  }
 
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
@@ -324,7 +326,7 @@ fit_coxreg_univar <- function(variables,
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$strata)) {
-    checkmate::assert_true(control$pval_method != "likelihood")
+    checkmate::assert_disjunct(control$pval_method, "likelihood")
   }
   if (has_arm) {
     assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
@@ -588,7 +590,7 @@ fit_coxreg_multivar <- function(variables,
   assert_list_of_variables(variables[c(arm_name, "event", "time")])
 
   if (!is.null(variables$strata)) {
-    checkmate::assert_true(control$pval_method != "likelihood")
+    checkmate::assert_disjunct(control$pval_method, "likelihood")
   }
 
   form <- h_coxreg_multivar_formula(variables)
