@@ -153,8 +153,8 @@ g_lineplot <- function(df, # nolint
                        subtitle_add_paramcd = TRUE,
                        subtitle_add_unit = TRUE,
                        caption = NULL,
-                       table_format = tern:::summary_formats(),
-                       table_labels = tern:::summary_labels(),
+                       table_format = summary_formats(),
+                       table_labels = summary_labels(),
                        table_font_size = 3,
                        newpage = TRUE,
                        col = getOption("tern.color")) {

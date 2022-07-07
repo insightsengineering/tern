@@ -131,7 +131,10 @@ df_grouped <- extract_rsp_subgroups(
   )
 )
 df_grouped
-tern:::a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
+# Internal function - a_response_subgroups
+\dontrun{
+a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
+}
 
 
 ## Table with default columns.

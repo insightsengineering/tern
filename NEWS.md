@@ -1,4 +1,4 @@
-# tern 0.7.8.9016
+# tern 0.7.8.9018
 
 ### Enhancements 
 * `checkmate::assert()`, `checkmate::assert_true()`, and `checkmate::assert_false()`
@@ -32,6 +32,7 @@
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
 ### Fix
+* Fixing error coming from comparing factors vector to characters vector.
 * `fct_collapse_only`, `fct_collapse_only`, and `month2day`/`day2month` reverted
   to export.
 * Fixed test for `cut_quantile_bins` with empty vector. This is not a good standard
@@ -57,6 +58,7 @@
   is automatically the final order in the documentation. There is no specific
   need to add this tag. Modified examples accordingly.
 * Fixed warnings occurring in example tests
+* Removed `tern:::` prefix and added `dontrun` to internal function examples.
 
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:

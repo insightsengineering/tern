@@ -144,13 +144,22 @@ grp <- c(rep("A", A), rep("B", B))
 tbl <- table(grp, rsp)
 
 ## Chi-Squared test
-tern:::prop_chisq(tbl)
+# Internal function - prop_chisq
+\dontrun{
+prop_chisq(tbl)
+}
 
 ## Chi-Squared test + Schouten correction.
-tern:::prop_schouten(tbl)
+# Internal function - prop_schouten
+\dontrun{
+prop_schouten(tbl)
+}
 
 ## Fisher's exact test
-tern:::prop_fisher(tbl)
+# Internal function - prop_fisher
+\dontrun{
+prop_fisher(tbl)
+}
 
 # Stratified proportion difference test
 
@@ -161,7 +170,10 @@ strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 tbl <- table(grp, rsp, strata)
 
 ## Cochran-Mantel-Haenszel test
-tern:::prop_cmh(tbl)
+# Internal function - prop_cmh
+\dontrun{
+prop_cmh(tbl)
+}
 
 
 # Statistics function
@@ -171,7 +183,9 @@ dta <- data.frame(
   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 )
 
-tern:::s_test_proportion_diff(
+# Internal function - s_test_proportion_diff
+\dontrun{
+s_test_proportion_diff(
   df = subset(dta, grp == "A"),
   .var = "rsp",
   .ref_group = subset(dta, grp == "B"),
@@ -179,8 +193,11 @@ tern:::s_test_proportion_diff(
   variables = list(strata = "strat"),
   method = "cmh"
 )
+}
 
-tern:::a_test_proportion_diff(
+# Internal function - a_test_proportion_diff
+\dontrun{
+a_test_proportion_diff(
   df = subset(dta, grp == "A"),
   .var = "rsp",
   .ref_group = subset(dta, grp == "B"),
@@ -188,6 +205,7 @@ tern:::a_test_proportion_diff(
   variables = list(strata = "strat"),
   method = "cmh"
 )
+}
 
 # With `rtables` pipelines.
 l <- basic_table() \%>\%

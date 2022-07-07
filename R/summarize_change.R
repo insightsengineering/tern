@@ -23,11 +23,16 @@ NULL
 #'   is_bl = c(TRUE, TRUE, TRUE),
 #'   val = c(4, 5, 6)
 #' )
-#' tern:::s_change_from_baseline(
+#'
+#' # Internal function - s_change_from_baseline
+#' \dontrun{
+#' s_change_from_baseline(
 #'   df,
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
+#' }
+#'
 #' @keywords internal
 s_change_from_baseline <- function(df,
                                    .var,
@@ -55,11 +60,15 @@ s_change_from_baseline <- function(df,
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
 #' @examples
-#' tern:::a_change_from_baseline(
+#' # Internal function - a_change_from_baseline
+#' \dontrun{
+#' a_change_from_baseline(
 #'   df,
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
+#' }
+#'
 #' @keywords internal
 a_change_from_baseline <- make_afun(
   s_change_from_baseline,

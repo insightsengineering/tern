@@ -20,13 +20,17 @@ Draw grob on device page.
 library(dplyr)
 library(grid)
 
+# Internal function - draw_grob
+\dontrun{
 rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
-rect \%>\% tern:::draw_grob(vp = grid::viewport(angle = 45))
+rect \%>\% draw_grob(vp = grid::viewport(angle = 45))
 
 num <- lapply(1:10, textGrob)
 num \%>\%
-  tern:::arrange_grobs(grobs = .) \%>\%
-  tern:::draw_grob()
+  arrange_grobs(grobs = .) \%>\%
+  draw_grob()
 showViewport()
+}
+
 }
 \keyword{internal}

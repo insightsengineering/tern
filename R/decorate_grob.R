@@ -317,7 +317,9 @@ split_string <- function(text, width) {
 #' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 #'
 #' @examples
-#' sg <- tern:::split_text_grob(text = paste(
+#' # Internal function - split_text_grob
+#' \dontrun{
+#' sg <- split_text_grob(text = paste(
 #'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
 #'   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
 #'   "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
@@ -342,14 +344,15 @@ split_string <- function(text, width) {
 #'   height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
 #' )
 #'
-#' # stack tern:::split_text_grob
+#' # stack split_text_grob
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.rect()
-#' grid.draw(tern:::split_text_grob(
+#' grid.draw(split_text_grob(
 #'   c("Hello, this is a test", "and yet another test"),
 #'   just = c("left", "top"), x = 0, y = 1
 #' ))
+#' }
 #'
 #' @keywords internal
 split_text_grob <- function(text,
@@ -453,16 +456,19 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' @template author_waddella
 #'
 #' @examples
-#' pf <- tern:::decorate_grob_factory(
+#' # Internal function - decorate_grob_factory
+#' \dontrun{
+#' pf <- decorate_grob_factory(
 #'   titles = "This is a test\nHello World",
 #'   footnotes = "Here belong the footnotess",
 #'   npages = 3
 #' )
 #'
 #' library(grid)
-#' tern:::draw_grob(pf(NULL))
-#' tern:::draw_grob(pf(NULL))
-#' tern:::draw_grob(pf(NULL))
+#' draw_grob(pf(NULL))
+#' draw_grob(pf(NULL))
+#' draw_grob(pf(NULL))
+#' }
 decorate_grob_factory <- function(npages, ...) {
   current_page <- 0
   function(grob) {
@@ -474,7 +480,6 @@ decorate_grob_factory <- function(npages, ...) {
   }
 }
 
-
 #' Decorate Set of `grobs` and Add Page Numbering
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -483,8 +488,6 @@ decorate_grob_factory <- function(npages, ...) {
 #'
 #' @param grobs a list of grid grobs
 #' @param ... arguments passed on to \code{\link{decorate_grob}}
-#'
-#' @export
 #'
 #' @template author_waddella
 #'
@@ -502,9 +505,15 @@ decorate_grob_factory <- function(npages, ...) {
 #' })
 #' lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
 #' library(grid)
-#' tern:::draw_grob(lg[[1]])
-#' tern:::draw_grob(lg[[2]])
-#' tern:::draw_grob(lg[[6]])
+#'
+#' # Internal function - draw_grob
+#' \dontrun{
+#' draw_grob(lg[[1]])
+#' draw_grob(lg[[2]])
+#' draw_grob(lg[[6]])
+#' }
+#'
+#' @export
 decorate_grob_set <- function(grobs, ...) {
   n <- length(grobs)
   lgf <- decorate_grob_factory(npages = n, ...)

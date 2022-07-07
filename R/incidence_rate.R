@@ -46,7 +46,9 @@ NULL
 #'   mutate(is_event = CNSR == 0) %>%
 #'   mutate(n_events = as.integer(is_event))
 #'
-#' tern:::s_incidence_rate(
+#' # Internal function - s_incidence_rate
+#' \dontrun{
+#' s_incidence_rate(
 #'   df,
 #'   .var = "AVAL",
 #'   n_events = "n_events",
@@ -55,6 +57,7 @@ NULL
 #'     time_unit_output = 100
 #'   )
 #' )
+#' }
 #'
 #' @keywords internal
 s_incidence_rate <- function(df,
@@ -108,12 +111,15 @@ s_incidence_rate <- function(df,
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
 #' @examples
-#' tern:::a_incidence_rate(
+#' # Internal function - a_incidence_rate
+#' \dontrun{
+#' a_incidence_rate(
 #'   df,
 #'   .var = "AVAL",
 #'   n_events = "n_events",
 #'   control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
 #' )
+#' }
 #'
 #' @keywords internal
 a_incidence_rate <- make_afun(
@@ -268,9 +274,11 @@ h_incidence_rate_byar <- function(person_years,
 #'   associated confidence interval.
 #'
 #' @examples
-#' tern:::h_incidence_rate(200, 2)
+#' # Internal function - h_incidence_rate
+#' \dontrun{
+#' h_incidence_rate(200, 2)
 #'
-#' tern:::h_incidence_rate(
+#' h_incidence_rate(
 #'   200,
 #'   2,
 #'   control_incidence_rate(
@@ -279,10 +287,9 @@ h_incidence_rate_byar <- function(person_years,
 #'     time_unit_output = 100
 #'   )
 #' )
+#' }
 #'
 #' @keywords internal
-#'
-#' @md
 h_incidence_rate <- function(person_years,
                              n_events,
                              control = control_incidence_rate()) {

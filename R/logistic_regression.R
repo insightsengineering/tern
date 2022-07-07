@@ -904,9 +904,11 @@ logistic_summary_by_flag <- function(flag_var) {
 #' @param drop_and_remove_str string to be dropped and removed
 #'
 #' @examples
+#' # Internal function - replace_emptys_with_na
+#' \dontrun{
 #' # flagging empty strings with "_"
-#' df <- tern:::replace_emptys_with_na(df, rep_str = "_")
-#' df2 <- tern:::replace_emptys_with_na(df2, rep_str = "_")
+#' df <- replace_emptys_with_na(df, rep_str = "_")
+#' df2 <- replace_emptys_with_na(df2, rep_str = "_")
 #'
 #' result1 <- basic_table() %>%
 #'   summarize_logistic(
@@ -923,6 +925,7 @@ logistic_summary_by_flag <- function(flag_var) {
 #'   ) %>%
 #'   build_table(df = df2)
 #' result2
+#' }
 #'
 #' @export
 summarize_logistic <- function(lyt,

@@ -282,7 +282,6 @@ reference:
       - h_grob_median_surv
       - h_grob_tbl_at_risk
       - h_grob_y_annot
-      - h_set_nest_theme
       - h_xticks
       - stack_grobs
       - stat_mean_ci
@@ -327,4 +326,5 @@ reference:
     desc: These functions already are or will eventually be removed.
     contents:
       - color_palette
+      - h_set_nest_theme
       - s_cox_univariate

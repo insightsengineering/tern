@@ -158,15 +158,23 @@ ADTTE_f <- ADTTE \%>\%
 df <- ADTTE_f \%>\%
   filter(ARMCD == "ARM A")
 
-tern:::s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+# Internal function - s_surv_timepoint
+\dontrun{
+s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+}
 
-tern:::a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+# Internal function - a_surv_timepoint
+\dontrun{
+a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+}
 
 df_ref_group <- ADTTE_f \%>\%
   filter(ARMCD == "ARM B")
 
-tern:::s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
-tern:::s_surv_timepoint_diff(
+# Internal function - s_surv_timepoint_diff
+\dontrun{
+s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
+s_surv_timepoint_diff(
   df,
   df_ref_group,
   .in_ref_col = FALSE,
@@ -174,8 +182,11 @@ tern:::s_surv_timepoint_diff(
   time_point = 7,
   is_event = "is_event"
 )
+}
 
-tern:::a_surv_timepoint_diff(
+# Internal function - a_surv_timepoint_diff
+\dontrun{
+a_surv_timepoint_diff(
   df,
   df_ref_group,
   .in_ref_col = FALSE,
@@ -183,6 +194,7 @@ tern:::a_surv_timepoint_diff(
   time_point = 7,
   is_event = "is_event"
 )
+}
 
 
 # Survival at given time points.
