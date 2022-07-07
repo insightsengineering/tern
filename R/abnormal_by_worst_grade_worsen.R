@@ -63,7 +63,7 @@ h_adlb_worsen <- function(adlb,
                           worst_flag_high = NULL,
                           direction_var) {
   checkmate::assert_string(direction_var)
-  checkmate::assert_subset(unique(adlb[[direction_var]]), c("B", "L", "H"))
+  checkmate::assert_subset(as.character(unique(adlb[[direction_var]])), c("B", "L", "H"))
   assert_df_with_variables(adlb, list("Col" = direction_var))
 
   if (any(unique(adlb[[direction_var]]) == "H")) {

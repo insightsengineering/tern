@@ -1,4 +1,4 @@
-# tern 0.7.8.9016
+# tern 0.7.8.9017
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.
@@ -23,6 +23,7 @@
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
 ### Fix
+* Fixing error coming from comparing factors vector to characters vector.
 * `fct_collapse_only`, `fct_collapse_only`, and `month2day`/`day2month` reverted
   to export.
 * Fixed test for `cut_quantile_bins` with empty vector. This is not a good standard
