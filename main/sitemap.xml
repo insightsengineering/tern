@@ -247,9 +247,6 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/fct_explicit_na_if.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/fit_mmrm.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/fit_rsp_step.html</loc>
   </url>
   <url>
@@ -284,15 +281,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/g_lineplot.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/g_mmrm.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/g_mmrm_diagnostic.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/g_mmrm_lsmeans.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/g_step.html</loc>
@@ -512,9 +500,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/survival_timepoint.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/tabulate_mmrm.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/tern-package.html</loc>

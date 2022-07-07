@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9015</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -413,11 +407,6 @@
           <code><a href="logistic_regression.html">fit_logistic()</a></code> <code><a href="logistic_regression.html">h_get_interaction_vars()</a></code> <code><a href="logistic_regression.html">h_interaction_coef_name()</a></code> <code><a href="logistic_regression.html">h_or_cat_interaction()</a></code> <code><a href="logistic_regression.html">h_or_cont_interaction()</a></code> <code><a href="logistic_regression.html">h_or_interaction()</a></code> <code><a href="logistic_regression.html">h_simple_term_labels()</a></code> <code><a href="logistic_regression.html">h_interaction_term_labels()</a></code> <code><a href="logistic_regression.html">h_glm_simple_term_extract()</a></code> <code><a href="logistic_regression.html">h_glm_interaction_extract()</a></code> <code><a href="logistic_regression.html">h_glm_inter_term_extract()</a></code> <code><a href="logistic_regression.html">h_logistic_simple_terms()</a></code> <code><a href="logistic_regression.html">h_logistic_inter_terms()</a></code> <code><a href="logistic_regression.html">tidy(<i>&lt;glm&gt;</i>)</a></code> <code><a href="logistic_regression.html">logistic_regression_cols()</a></code> <code><a href="logistic_regression.html">logistic_summary_by_flag()</a></code> <code><a href="logistic_regression.html">summarize_logistic()</a></code> 
         </dt>
         <dd>Multi-variable logistic regression table</dd>
-      </dl><dl><dt>
-          
-          <code><a href="tabulate_mmrm.html">as.rtable(<i>&lt;mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_fixed()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_cov()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_diagnostic()</a></code> <code><a href="tabulate_mmrm.html">tidy(<i>&lt;mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">summarize_lsmeans()</a></code> 
-        </dt>
-        <dd>Tabulation of MMRM Results</dd>
       </dl><dl><dt>
           
           <code><a href="summarize_num_patients.html">s_num_patients()</a></code> <code><a href="summarize_num_patients.html">s_num_patients_content()</a></code> <code><a href="summarize_num_patients.html">summarize_num_patients()</a></code> 
@@ -1127,34 +1116,9 @@
 
       <dl><dt>
           
-          <code><a href="tabulate_mmrm.html">as.rtable(<i>&lt;mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_fixed()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_cov()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_diagnostic()</a></code> <code><a href="tabulate_mmrm.html">tidy(<i>&lt;mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">summarize_lsmeans()</a></code> 
-        </dt>
-        <dd>Tabulation of MMRM Results</dd>
-      </dl><dl><dt>
-          
           <code><a href="color_palette.html">color_palette()</a></code> 
         </dt>
         <dd>Deprecated by <code><a href="https://rdrr.io/pkg/nestcolor/man/color_palette.html" class="external-link">nestcolor::color_palette</a></code>: Color Palettes Used in NEST</dd>
-      </dl><dl><dt>
-          
-          <code><a href="fit_mmrm.html">fit_mmrm()</a></code> 
-        </dt>
-        <dd>Deprecated by <code>tern.mmrm::fit_mmrm</code>: MMRM Analysis</dd>
-      </dl><dl><dt>
-          
-          <code><a href="g_mmrm.html">g_mmrm</a></code> 
-        </dt>
-        <dd>MMRM Plots</dd>
-      </dl><dl><dt>
-          
-          <code><a href="g_mmrm_diagnostic.html">g_mmrm_diagnostic()</a></code> 
-        </dt>
-        <dd>Diagnostic Plots for MMRM</dd>
-      </dl><dl><dt>
-          
-          <code><a href="g_mmrm_lsmeans.html">g_mmrm_lsmeans()</a></code> 
-        </dt>
-        <dd>Plot LS means for MMRM</dd>
       </dl><dl><dt>
           
           <code><a href="s_cox_univariate.html">s_cox_univariate()</a></code> 
