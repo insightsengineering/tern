@@ -188,8 +188,7 @@ h_survtime_subgroups_df <- function(variables,
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
   checkmate::assert_numeric(tte)
   checkmate::assert_logical(is_event)
-  assert_valid_factor(arm)
-  checkmate::assert_set_equal(nlevels(arm), 2)
+  assert_valid_factor(arm, n.levels = 2)
   assert_equal_length(tte, is_event, arm)
 
   df_tte <- data.frame(tte = tte, is_event = is_event)
