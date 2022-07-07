@@ -27,10 +27,7 @@ check_diff_prop_ci <- function(rsp,
   checkmate::assert_logical(rsp, any.missing = FALSE)
   checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
   checkmate::assert_number(conf_level, lower = 0, upper = 1)
-
-  if (!is.null(correct)) {
-    checkmate::assert_flag(correct)
-  }
+  checkmate::assert_flag(correct, null.ok = TRUE)
 
   if (!is.null(strata)) {
     checkmate::assert_factor(strata, len = length(rsp))
