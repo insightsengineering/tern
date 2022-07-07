@@ -133,9 +133,15 @@ variables <- list(arm = "ARMCD", covariates = "SEX * AGE")
   filter(ARMCD == "ARM A")
 conf_level <- 0.95
 
-tern:::s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+# Internal function - s_ancova
+\dontrun{
+s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+}
 
-tern:::a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+# Internal function - a_ancova
+\dontrun{
+a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+}
 
 
 library(scda)

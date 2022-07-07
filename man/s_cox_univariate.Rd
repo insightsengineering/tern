@@ -100,13 +100,13 @@ ADTTE_f <- within( # nolint
 )
 \dontrun{
 s_cox_univariate(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
   data = ADTTE_f,
   covariates = list(~SEX)
 )
 
 s_cox_univariate(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ tern:::arm(ARMCD),
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
   data = ADTTE_f,
   covariates = list("Race" = ~RACE, ~AGE, "a rand. quant var with increments" = ~X),
   interactions = TRUE,

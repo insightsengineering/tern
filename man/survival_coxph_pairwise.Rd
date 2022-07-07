@@ -124,9 +124,15 @@ df <- ADTTE_f \%>\%
 df_ref_group <- ADTTE_f \%>\%
   filter(ARMCD == "ARM B")
 
-tern:::s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+# Internal function - s_coxph_pairwise
+\dontrun{
+s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+}
 
-tern:::a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+# Internal function - a_coxph_pairwise
+\dontrun{
+a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+}
 
 basic_table() \%>\%
   split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%

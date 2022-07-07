@@ -82,7 +82,7 @@ h_g_ipp <- function(df,
                     caption = NULL,
                     add_baseline_hline = FALSE,
                     yvar_baseline = "BASE",
-                    ggtheme = h_set_nest_theme(10),
+                    ggtheme = nestcolor::theme_nest(),
                     col = getOption("tern.color")) {
   checkmate::assert_string(xvar)
   checkmate::assert_string(yvar)
@@ -182,7 +182,7 @@ g_ipp <- function(df,
                   caption = NULL,
                   add_baseline_hline = FALSE,
                   yvar_baseline = "BASE",
-                  ggtheme = h_set_nest_theme(10),
+                  ggtheme = nestcolor::theme_nest(),
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
                   max_obs_per_plot = 4,
                   col = getOption("tern.color")) {

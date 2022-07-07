@@ -82,16 +82,25 @@ df <- data.frame(
   is_bl = c(TRUE, TRUE, TRUE),
   val = c(4, 5, 6)
 )
-tern:::s_change_from_baseline(
+
+# Internal function - s_change_from_baseline
+\dontrun{
+s_change_from_baseline(
   df,
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")
 )
-tern:::a_change_from_baseline(
+}
+
+# Internal function - a_change_from_baseline
+\dontrun{
+a_change_from_baseline(
   df,
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")
 )
+}
+
 
 # `summarize_change()`
 

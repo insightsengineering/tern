@@ -1,4 +1,4 @@
-# tern 0.7.8.9014
+# tern 0.7.8.9018
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.
@@ -23,6 +23,7 @@
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
 ### Fix
+* Fixing error coming from comparing factors vector to characters vector.
 * `fct_collapse_only`, `fct_collapse_only`, and `month2day`/`day2month` reverted
   to export.
 * Fixed test for `cut_quantile_bins` with empty vector. This is not a good standard
@@ -48,6 +49,7 @@
   is automatically the final order in the documentation. There is no specific
   need to add this tag. Modified examples accordingly.
 * Fixed warnings occurring in example tests
+* Removed `tern:::` prefix and added `dontrun` to internal function examples.
 
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:
@@ -123,6 +125,9 @@
 ### Miscellaneous
 * Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`.
 * Deprecated `h_set_nest_theme()` in favor of `nestcolor::theme_nest()`.
+* Removed deprecated `mmrm` functions: `fit_mmrm`, `g_mmrm_diagnostic`, `g_mmrm_lsmeans`, `as.rtable.mmrm`, `h_mmrm_fixed`,
+  `h_mmrm_cov`, `h_mmrm_diagnostic`, `tidy.mmrm`, `s_mmrm_lsmeans`, `s_mmrm_lsmeans_single`, `summarize_lsmeans`.
+
 
 # tern 0.7.8
 

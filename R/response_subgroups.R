@@ -104,8 +104,12 @@ extract_rsp_subgroups <- function(variables,
 
 #' @describeIn response_subgroups Formatted Analysis function used to format the results of [extract_rsp_subgroups()].
 #'   Returns is a list of Formatted Analysis functions with one element per statistic.
+#'
 #' @examples
-#' tern:::a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
+#' # Internal function - a_response_subgroups
+#' \dontrun{
+#' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
+#' }
 #'
 #' @keywords internal
 a_response_subgroups <- function(.formats = list(

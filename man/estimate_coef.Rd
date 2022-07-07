@@ -66,7 +66,7 @@ library(survival)
 ADSL <- synthetic_cdisc_data("latest")$adsl
 ADSL <- ADSL \%>\%
   filter(SEX \%in\% c("F", "M"))
-\dontrun{
+
 ADTTE <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "PFS")
 ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
@@ -80,7 +80,9 @@ mod <- coxph(
 mmat <- stats::model.matrix(mod)[1, ]
 mmat[!mmat == 0] <- 0
 
-tern:::estimate_coef(
+# Internal function - estimate_coef
+\dontrun{
+estimate_coef(
   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
 )

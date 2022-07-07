@@ -40,7 +40,11 @@ NULL
 #'     is_event = CNSR == 0
 #'   )
 #' df <- ADTTE_f %>% filter(ARMCD == "ARM A")
-#' tern:::s_surv_time(df, .var = "AVAL", is_event = "is_event")
+#'
+#' # Internal function - s_surv_time
+#' \dontrun{
+#' s_surv_time(df, .var = "AVAL", is_event = "is_event")
+#' }
 #'
 #' @keywords internal
 s_surv_time <- function(df,
@@ -86,7 +90,10 @@ s_surv_time <- function(df,
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #'
 #' @examples
-#' tern:::a_surv_time(df, .var = "AVAL", is_event = "is_event")
+#' # Internal function - a_surv_time
+#' \dontrun{
+#' a_surv_time(df, .var = "AVAL", is_event = "is_event")
+#' }
 #'
 #' @keywords internal
 a_surv_time <- make_afun(

@@ -89,7 +89,8 @@ Exact expected length of \code{x}.}
 
 \item{...}{a collection of objects to test.}
 
-\item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing for proportions.}
+\item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing
+for proportions.}
 
 \item{(`integer`)\cr}{minimum number of factor levels. Default is \code{1}.}
 }
@@ -105,8 +106,8 @@ Additional assertion functions which can be used together with the \code{checkma
 Please notice how this produces an error when not all variables are present in the
 data.frame while the opposite is not required.
 
-\item \code{assert_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
-Note that \code{NULL} and \code{NA} elements are allowed.
+\item \code{assert_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty
+string levels). Note that \code{NULL} and \code{NA} elements are allowed.
 
 \item \code{assert_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
 are all factors. Note that the creation of \code{NA} by direct call of \code{factor()} will
@@ -119,103 +120,121 @@ trim \code{NA} levels out of the vector list itself.
 
 \examples{
 # Check whether `x` is a valid list of variable names.
-tern:::assert_list_of_variables(list(val = "a"))
-tern:::assert_list_of_variables(list(val = c("a", "b")))
-tern:::assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
+
+# Internal function - assert_list_of_variables
+\dontrun{
+assert_list_of_variables(list(val = "a"))
+assert_list_of_variables(list(val = c("a", "b")))
+assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
 
 # The following calls fail
-\dontrun{
-tern:::assert_list_of_variables(list(1, 2))
-tern:::assert_list_of_variables(list("bla" = 2))
+assert_list_of_variables(list(1, 2))
+assert_list_of_variables(list("bla" = 2))
 }
 
 # Check whether `df` contains the analysis `variables`.
-tern:::assert_df_with_variables(
+
+# Internal function - assert_df_with_variables
+\dontrun{
+assert_df_with_variables(
   df = data.frame(a = 5, b = 3),
   variables = list(val = "a")
 )
-tern:::assert_df_with_variables(
+assert_df_with_variables(
   df = data.frame(a = 5, b = 3),
   variables = list(val = c("a", "b"))
 )
-tern:::assert_df_with_variables(
+assert_df_with_variables(
   df = data.frame(a = 5, b = 3),
   variables = list(val = c("a", "b"))
 )
-tern:::assert_df_with_variables(
+assert_df_with_variables(
   df = data.frame(a = 5, b = 3, e = "<Missing>"),
   variables = list(val = c("a", "b")), na_level = "<Missing>"
 )
 
 # The following calls fail
-\dontrun{
-tern:::assert_df_with_variables(
+assert_df_with_variables(
   df = matrix(1:5, ncol = 2, nrow = 3),
   variables = list(val = "a")
 )
-tern:::assert_df_with_variables(
+assert_df_with_variables(
   df = data.frame(a = 5, b = 3),
   variables = list(val = c("a", "b", "c"))
 )
-tern:::assert_df_with_variables(
+assert_df_with_variables(
   df = data.frame(a = 5, b = 3, e = "<Missing>"),
   variables = list(val = c("a", "b", "e")), na_level = "<Missing>"
 )
 }
 
 # Check whether `x` is a valid factor.
-tern:::assert_valid_factor(factor(c("a", NULL)))
-tern:::assert_valid_factor(factor(c("a", "b")))
-tern:::assert_valid_factor(factor(c("a", "b")), len = 2)
-tern:::assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
-tern:::assert_valid_factor(factor("A", levels = c("A", "B")))
+
+# Internal function - assert_valid_factor
+\dontrun{
+assert_valid_factor(factor(c("a", NULL)))
+assert_valid_factor(factor(c("a", "b")))
+assert_valid_factor(factor(c("a", "b")), len = 2)
+assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
+assert_valid_factor(factor("A", levels = c("A", "B")))
 
 # The following calls fail
-\dontrun{
-# tern:::assert_valid_factor(-1)
-# tern:::assert_valid_factor(factor(c("a", "")))
-# tern:::assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
-# tern:::assert_valid_factor(factor(NULL))
-# tern:::assert_valid_factor(factor(c(NULL, "")))
-# tern:::assert_valid_factor(factor())
+assert_valid_factor(-1)
+assert_valid_factor(factor(c("a", "")))
+assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
+assert_valid_factor(factor(NULL))
+assert_valid_factor(factor(c(NULL, "")))
+assert_valid_factor(factor())
 }
 
 # Check whether `df` contains all factor analysis `variables`.
 adf <- data.frame(a = factor(c("A", "B")), b = 3)
 bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
-tern:::assert_df_with_factors(df = adf, variables = list(val = "a"))
-tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
-tern:::assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
-tern:::assert_df_with_factors(
+
+# Internal function - assert_df_with_factors
+\dontrun{
+assert_df_with_factors(df = adf, variables = list(val = "a"))
+assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
+assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
+assert_df_with_factors(
   df = data.frame(a = factor(c("A", NA, "B")), b = 3),
   variable = list(val = "a"),
   min.levels = 2,
   max.levels = 2
 )
+
 # The following calls fail
-\dontrun{
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
 assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
 assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
 assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
-assert_df_with_factors(df = bdf, variables = list(val = "a", val = "b"), min.levels = 1, max.levels = 1)
+assert_df_with_factors(
+  df = bdf,
+  variables = list(val = "a", val = "b"),
+  min.levels = 1,
+  max.levels = 1
+)
 }
 
-#' # Check whether `x` is a valid list of variable names.
+# Check whether `x` is a valid list of variable names.
 a <- 1
 b <- NULL
 c <- c(1, "car")
 d <- 5
-# These fails
+
+# Internal function - assert_equal_length
 \dontrun{
+# This fails
 assert_equal_length(a, b, c, d)
 }
 
 # Check whether `x` is between 0 and 1.
-tern:::assert_proportion_value(x = 0, include_boundaries = TRUE)
-tern:::assert_proportion_value(x = 0.3)
-# These fails
+# Internal function - assert_proportion_value
 \dontrun{
+assert_proportion_value(x = 0, include_boundaries = TRUE)
+assert_proportion_value(x = 0.3)
+
+# These fail
 assert_proportion_value(x = 1.3)
 assert_proportion_value(x = 1)
 }
