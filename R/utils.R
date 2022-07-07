@@ -9,14 +9,17 @@
 #' @return 2-elements vector of class numeric.
 #'
 #' @examples
-#' tern:::range_noinf(1:5)
-#' tern:::range_noinf(c(1:5, NA, NA), na.rm = TRUE)
-#' tern:::range_noinf(numeric(), na.rm = TRUE)
-#' tern:::range_noinf(c(1:5, NA, NA, Inf), na.rm = TRUE, finite = TRUE)
-#' tern:::range_noinf(Inf)
-#' tern:::range_noinf(Inf, na.rm = TRUE, finite = TRUE)
-#' tern:::range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
-#' tern:::range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
+#' # Internal function - range_noinf
+#' \dontrun{
+#' range_noinf(1:5)
+#' range_noinf(c(1:5, NA, NA), na.rm = TRUE)
+#' range_noinf(numeric(), na.rm = TRUE)
+#' range_noinf(c(1:5, NA, NA, Inf), na.rm = TRUE, finite = TRUE)
+#' range_noinf(Inf)
+#' range_noinf(Inf, na.rm = TRUE, finite = TRUE)
+#' range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
+#' range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
+#' }
 #'
 #' @keywords internal
 range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
@@ -141,7 +144,10 @@ check_same_n <- function(..., omit_null = TRUE) {
 #'   [base::make.names()].
 #'
 #' @examples
-#' tern:::make_names(c("foo Bar", "1 2 3 bla"))
+#' # Internal function - make_names
+#' \dontrun{
+#' make_names(c("foo Bar", "1 2 3 bla"))
+#' }
 #'
 #' @keywords internal
 make_names <- function(nams) {
@@ -194,7 +200,10 @@ day2month <- function(x) {
 #'
 #' @examples
 #' x <- c(NA, NA, NA)
-#' tern:::empty_vector_if_na(x)
+#' # Internal function - empty_vector_if_na
+#' \dontrun{
+#' empty_vector_if_na(x)
+#' }
 #'
 #' @keywords internal
 empty_vector_if_na <- function(x) {
@@ -213,7 +222,10 @@ empty_vector_if_na <- function(x) {
 #' @return A `list` where each element combines corresponding elements of `x` and `y`.
 #'
 #' @examples
-#' tern:::combine_vectors(1:3, 4:6)
+#' # Internal function - combine_vectors
+#' \dontrun{
+#' combine_vectors(1:3, 4:6)
+#' }
 #'
 #' @keywords internal
 combine_vectors <- function(x, y) {
@@ -395,7 +407,10 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 #' @return Number of non-missing values.
 #'
 #' @examples
-#' tern:::n_available(c(1, NA, 2))
+#' # Internal function - n_available
+#' \dontrun{
+#' n_available(c(1, NA, 2))
+#' }
 #'
 #' @keywords internal
 n_available <- function(x) {

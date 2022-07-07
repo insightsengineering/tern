@@ -92,14 +92,16 @@ stack_grobs <- function(...,
 #' @param padding_ht unit of length 1, vertical space between each grob.
 #' @param padding_wt unit of length 1, horizontal space between each grob.
 #'
-#' @keywords internal
+#'
 #'
 #' @examples
 #' library(grid)
 #'
+#' # Internal function - arrange_grobs
+#' \dontrun{
 #' num <- lapply(1:9, textGrob)
 #' grid::grid.newpage()
-#' grid.draw(tern:::arrange_grobs(grobs = num, ncol = 2))
+#' grid.draw(arrange_grobs(grobs = num, ncol = 2))
 #'
 #' showViewport()
 #'
@@ -107,19 +109,22 @@ stack_grobs <- function(...,
 #' g2 <- circleGrob(gp = gpar(col = "red"))
 #' g3 <- textGrob("TEST TEXT")
 #' grid::grid.newpage()
-#' grid.draw(tern:::arrange_grobs(g1, g2, g3, nrow = 2))
+#' grid.draw(arrange_grobs(g1, g2, g3, nrow = 2))
 #'
 #' showViewport()
 #'
 #' grid::grid.newpage()
-#' grid.draw(tern:::arrange_grobs(g1, g2, g3, ncol = 3))
+#' grid.draw(arrange_grobs(g1, g2, g3, ncol = 3))
 #'
 #' grid::grid.newpage()
 #' grid::pushViewport(grid::viewport(layout = grid::grid.layout(1, 2)))
 #' vp1 <- grid::viewport(layout.pos.row = 1, layout.pos.col = 2)
-#' grid.draw(tern:::arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
+#' grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 #'
 #' showViewport()
+#' }
+#'
+#' @keywords internal
 arrange_grobs <- function(..., # nolint
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
@@ -221,20 +226,23 @@ arrange_grobs <- function(..., # nolint
 #' @param newpage draw on a new page
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #'
-#' @keywords internal
-#'
 #' @examples
 #' library(dplyr)
 #' library(grid)
 #'
+#' # Internal function - draw_grob
+#' \dontrun{
 #' rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
-#' rect %>% tern:::draw_grob(vp = grid::viewport(angle = 45))
+#' rect %>% draw_grob(vp = grid::viewport(angle = 45))
 #'
 #' num <- lapply(1:10, textGrob)
 #' num %>%
-#'   tern:::arrange_grobs(grobs = .) %>%
-#'   tern:::draw_grob()
+#'   arrange_grobs(grobs = .) %>%
+#'   draw_grob()
 #' showViewport()
+#' }
+#'
+#' @keywords internal
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {
     grid::grid.newpage()

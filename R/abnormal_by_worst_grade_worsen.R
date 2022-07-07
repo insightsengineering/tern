@@ -246,8 +246,10 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
 #' @examples
+#' # Internal function - s_count_abnormal_lab_worsen_by_baseline
+#' \dontrun{
 #' # Patients with worsening lab grade for CRP in the direction of low
-#' tern:::s_count_abnormal_lab_worsen_by_baseline(
+#' s_count_abnormal_lab_worsen_by_baseline(
 #'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
 #'   .var = "ATOXGR",
 #'   variables = list(
@@ -256,6 +258,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #'     direction_var = "GRADDR"
 #'   )
 #' )
+#' }
 #'
 #' @keywords internal
 s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
@@ -284,11 +287,14 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
 #' the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
-#' tern:::a_count_abnormal_lab_worsen_by_baseline(
+#' # Internal function - a_count_abnormal_lab_worsen_by_baseline
+#' \dontrun{
+#' a_count_abnormal_lab_worsen_by_baseline(
 #'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
 #'   .var = "ATOXGR",
 #'   variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR")
 #' )
+#' }
 #'
 #' @keywords internal
 a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint

@@ -48,16 +48,20 @@ NULL
 #' df <- df %>%
 #'   filter(ONTRTFL == "Y")
 #'
+#' # Internal function - s_count_abnormal
+#' \dontrun{
 #' # For abnormal level "HIGH" we get the following counts.
-#' tern:::s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
+#' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 #'
 #' # Optionally exclude patients with abnormality at baseline.
-#' tern:::s_count_abnormal(
+#' s_count_abnormal(
 #'   df,
 #'   .var = "ANRIND",
 #'   abnormal = list(high = "HIGH", low = "LOW"),
 #'   exclude_base_abn = TRUE
 #' )
+#' }
+#'
 #' @keywords internal
 s_count_abnormal <- function(df,
                              .var,
@@ -108,9 +112,12 @@ s_count_abnormal <- function(df,
 #' @return [a_count_abnormal()] returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
+#' # Internal function - a_count_abnormal
+#' \dontrun{
 #' # Use the Formatted Analysis function for `analyze()`.
-#' a_fun <- make_afun(tern:::a_count_abnormal, .ungroup_stats = "fraction")
+#' a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
 #' a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
+#' }
 #'
 #' @keywords internal
 a_count_abnormal <- make_afun(

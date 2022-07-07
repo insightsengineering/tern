@@ -16,7 +16,10 @@ Number of non-missing values.
 Small utility function for better readability.
 }
 \examples{
-tern:::n_available(c(1, NA, 2))
+# Internal function - n_available
+\dontrun{
+n_available(c(1, NA, 2))
+}
 
 }
 \keyword{internal}

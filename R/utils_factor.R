@@ -46,8 +46,11 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #'   if `x` is already a factor.
 #'
 #' @examples
-#' tern:::as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
-#' tern:::as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
+#' # Internal function - as_factor_keep_attributes
+#' \dontrun{
+#' as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
+#' as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
+#' }
 #'
 #' @keywords internal
 as_factor_keep_attributes <- function(x,
@@ -102,16 +105,21 @@ as_factor_keep_attributes <- function(x,
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
 #'
 #' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
-#' @keywords internal
+#'
 #' @examples
+#' # Internal function - bins_percent_labels
+#' \dontrun{
 #' # Just pass the internal probability bounds, then 0 and 100% will be added automatically.
-#' tern:::bins_percent_labels(c(0.2, 0.5))
+#' bins_percent_labels(c(0.2, 0.5))
 #'
 #' # Determine how to round.
-#' tern:::bins_percent_labels(0.35224, digits = 1)
+#' bins_percent_labels(0.35224, digits = 1)
 #'
 #' # Passing an empty vector just gives a single bin 0-100%.
-#' tern:::bins_percent_labels(c(0, 1))
+#' bins_percent_labels(c(0, 1))
+#' }
+#'
+#' @keywords internal
 bins_percent_labels <- function(probs,
                                 digits = 0) {
   if (isFALSE(0 %in% probs)) probs <- c(0, probs)

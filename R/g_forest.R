@@ -60,11 +60,18 @@
 #'   data = adrs
 #' )
 #' # Full commonly used response table.
+#'
 #' tbl <- basic_table() %>%
 #'   tabulate_rsp_subgroups(df)
 #' p <- g_forest(tbl)
-#' tern:::draw_grob(p)
+#'
+#' # Internal function - draw_grob
+#' \dontrun{
+#' draw_grob(p)
+#' }
+#'
 #' # Odds ratio only table.
+#'
 #' tbl_or <- basic_table() %>%
 #'   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 #' tbl_or
@@ -72,7 +79,12 @@
 #'   tbl_or,
 #'   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 #' )
-#' tern:::draw_grob(p)
+#'
+#' # Internal function - draw_grob
+#' \dontrun{
+#' draw_grob(p)
+#' }
+#'
 #' # Survival forest plot example.
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #' # Save variable labels before data processing steps.
@@ -282,13 +294,16 @@ g_forest <- function(tbl, # nolint
 #' # default radius is 1/3.5 lines
 #' symbol_scale <- c(1, 1.25, 1.5)
 #'
-#' p <- tern:::forest_grob(tbl, x, lower, upper,
+#' # Internal function - forest_grob
+#' \dontrun{
+#' p <- forest_grob(tbl, x, lower, upper,
 #'   vline = 1, forest_header = c("A", "B"),
 #'   x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
 #'   vp = grid::plotViewport(margins = c(1, 1, 1, 1))
 #' )
 #'
-#' tern:::draw_grob(p)
+#' draw_grob(p)
+#' }
 forest_grob <- function(tbl,
                         x,
                         lower,
@@ -651,8 +666,6 @@ forest_dot_line <- function(x, # nolint
 
 #' Create a Viewport Tree for the Forest Plot
 #'
-#' @noRd
-#'
 #' @examples
 #' library(grid)
 #'
@@ -666,10 +679,15 @@ forest_dot_line <- function(x, # nolint
 #'   rrow("row 3", 1.2, 0.8, 1.2)
 #' )
 #'
-#' v <- tern:::forest_viewport(tbl)
+#' # Internal function - forest_viewport
+#' \dontrun{
+#' v <- forest_viewport(tbl)
 #'
 #' grid::grid.newpage()
 #' showViewport(v)
+#' }
+#'
+#' @keywords internal
 forest_viewport <- function(tbl,
                             width_row_names = NULL,
                             width_columns = NULL,
