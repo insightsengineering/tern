@@ -82,7 +82,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nolint
     pattern = effect,
     x = attrs[!grepl("strata\\(", attrs)]
   )
-  checkmate::assert_int(length(term_indices), lower = 2, upper = 2)
+  checkmate::assert_vector(term_indices, len = 2)
   betas <- betas[term_indices]
   betas_var <- diag(stats::vcov(mod))[term_indices]
   betas_cov <- stats::vcov(mod)[term_indices[1], term_indices[2]]

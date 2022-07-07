@@ -88,7 +88,7 @@ s_count_abnormal_by_marked <- function(df,
   checkmate::assert_list(category)
   checkmate::assert_subset(names(category), c("single", "last_replicated"))
   checkmate::assert_subset(names(variables), c("id", "param", "direction"))
-  checkmate::assert_int(length(unique(df[[variables$direction]])), upper = 1)
+  checkmate::assert_vector(unique(df[[variables$direction]]), max.len = 1)
 
   assert_df_with_variables(df, c(aval = .var, variables))
   checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))

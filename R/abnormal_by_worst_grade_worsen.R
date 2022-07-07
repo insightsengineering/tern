@@ -269,10 +269,10 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
                                                       direction_var = "GRADDR"
                                                     )) {
   checkmate::assert_string(.var)
+  checkmate::assert_set_equal(names(variables), c("id", "baseline_var", "direction_var"))
   checkmate::assert_string(variables$id)
   checkmate::assert_string(variables$baseline_var)
   checkmate::assert_string(variables$direction_var)
-  checkmate::assert_set_equal(names(variables), c("id", "baseline_var", "direction_var"))
   assert_df_with_variables(df, c(aval = .var, variables[1:3]))
   assert_list_of_variables(variables)
 

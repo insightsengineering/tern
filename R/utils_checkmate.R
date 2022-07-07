@@ -138,10 +138,7 @@ check_valid_factor <- function(x,
                                len = NULL) {
   # checks on levels insertion
   checkmate::assert_int(min.levels, lower = 1)
-  # no check of max.levels if it is NULL
-  if (!is.null(max.levels)) {
-    checkmate::assert_int(max.levels, lower = min.levels)
-  }
+
   # main factor check
   res <- checkmate::check_factor(x,
     min.levels = min.levels,
@@ -150,10 +147,12 @@ check_valid_factor <- function(x,
     any.missing = any.missing,
     n.levels = n.levels
   )
+
   # no empty strings allowed
   if (isTRUE(res)) {
     res <- checkmate::check_character(levels(x), min.chars = 1)
   }
+
   return(res)
 }
 #' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty
@@ -251,42 +250,6 @@ check_df_with_factors <- function(df,
 #'
 #' @keywords internal
 assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
-
-check_equal_length <- function(...) {
-  args <- tibble::lst(...)
-  args_lens <- vapply(args, length, numeric(1))
-  res <- args_lens != args_lens[1]
-
-  if (any(res)) {
-    paste0(
-      deparse(args), " - Objects must have the same length.\n",
-      "However, variable `",
-      names(args[1]), "` is of length ", args_lens[1], " unlike `",
-      paste(names(args[res]), collapse = "`, `"), "`."
-    )
-  } else {
-    return(TRUE)
-  }
-}
-#' @describeIn assertions Check that objects provided are of same length.
-#'
-#' @examples
-#' # Check whether `x` is a valid list of variable names.
-#' a <- 1
-#' b <- NULL
-#' c <- c(1, "car")
-#' d <- 5
-#'
-#' # Internal function - assert_equal_length
-#' \dontrun{
-#' # This fails
-#' assert_equal_length(a, b, c, d)
-#' }
-#'
-#' @keywords internal
-assert_equal_length <- function(...) {
-  checkmate::assert(check_equal_length(...))
-}
 
 #' @describeIn assertions Check whether `x` is a proportion: number between 0 and 1.
 #'

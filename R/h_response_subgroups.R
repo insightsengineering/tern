@@ -44,9 +44,8 @@ NULL
 #'   arm = factor(c("A", "A", "B"), levels = c("A", "B"))
 #' )
 h_proportion_df <- function(rsp, arm) {
-  assert_equal_length(rsp, arm)
   checkmate::assert_logical(rsp)
-  assert_valid_factor(arm)
+  assert_valid_factor(arm, len = length(rsp))
   non_missing_rsp <- !is.na(rsp)
   rsp <- rsp[non_missing_rsp]
   arm <- arm[non_missing_rsp]
@@ -166,8 +165,7 @@ h_proportion_subgroups_df <- function(variables,
 #'   method = "cmh"
 #' )
 h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
-  assert_equal_length(rsp, arm)
-  assert_valid_factor(arm, n.levels = 2)
+  assert_valid_factor(arm, n.levels = 2, len = length(rsp))
 
   df_rsp <- data.frame(
     rsp = rsp,
@@ -178,8 +176,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
     strata_var <- interaction(strata_data, drop = TRUE)
     strata_name <- "strata"
 
-    checkmate::assert_true(length(strata_var) == nrow(df_rsp))
-    assert_valid_factor(strata_var)
+    assert_valid_factor(strata_var, len = nrow(df_rsp))
 
     df_rsp[[strata_name]] <- strata_var
   } else {

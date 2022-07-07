@@ -1,4 +1,13 @@
-# tern 0.7.8.9018
+# tern 0.7.8.9019
+
+### Enhancements 
+* `checkmate::assert()`, `checkmate::assert_true()`, and `checkmate::assert_false()`
+   use is kept to a minimum due to its ambiguous messages. 
+* `checkmate::assert_set_equal()` and `checkmate::assert_int()` have been changed
+  when checking for the length of vectors, either by checking the right input and
+  its length or by using `checkmate::assert_vector()`.
+* Removed `assert_equal_length` as comparing lengths of multiple vectors can be 
+  done without the need of a custom function.
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.

@@ -125,8 +125,7 @@ s_compare.factor <- function(x,
     .ref_group <- fct_discard(.ref_group, na_level)
   }
 
-  checkmate::assert_true(identical(levels(x), levels(.ref_group)))
-  checkmate::assert_int(nlevels(x), lower = 2)
+  checkmate::assert_factor(x, levels = levels(.ref_group), min.levels = 2)
 
   y$pval <- if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
     tab <- rbind(table(x), table(.ref_group))
