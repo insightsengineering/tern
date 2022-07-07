@@ -247,7 +247,7 @@ h_format_threshold <- function(x, digits = 2L) {
 #' format_fun(x = 0.009)
 format_extreme_values <- function(digits = 2L) {
   function(x, ...) {
-    checkmate::assert_scalar(x)
+    checkmate::assert_scalar(x, na.ok = TRUE)
 
     h_format_threshold(x = x, digits = digits)
   }
