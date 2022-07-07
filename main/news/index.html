@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9015</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9016</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -60,10 +54,10 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.7.8.9015" id="tern-0789015">tern 0.7.8.9015<a class="anchor" aria-label="anchor" href="#tern-0789015"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.7.8.9016" id="tern-0789016">tern 0.7.8.9016<a class="anchor" aria-label="anchor" href="#tern-0789016"></a></h2>
 <div class="section level4">
-<h4 id="migration-from-assertthat-to-checkmate-0-7-8-9015">Migration from <code>assertthat</code> to <code>checkmate</code>
-<a class="anchor" aria-label="anchor" href="#migration-from-assertthat-to-checkmate-0-7-8-9015"></a></h4>
+<h4 id="migration-from-assertthat-to-checkmate-0-7-8-9016">Migration from <code>assertthat</code> to <code>checkmate</code>
+<a class="anchor" aria-label="anchor" href="#migration-from-assertthat-to-checkmate-0-7-8-9016"></a></h4>
 <ul><li>complete substitution of <code>assertthat</code> calls with <code>checkmate</code>.</li>
 <li>
 <code>assert_df_with_factors</code>, <code>assert_equal_length</code>, and <code>assert_proportion_value</code> made internals.</li>
@@ -91,8 +85,9 @@
 <li>renamed <code>test-assertthat.R</code> into <code>test-utils_checkmate.R</code>.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="fix-0-7-8-9015">Fix<a class="anchor" aria-label="anchor" href="#fix-0-7-8-9015"></a></h4>
-<ul><li>
+<h4 id="fix-0-7-8-9016">Fix<a class="anchor" aria-label="anchor" href="#fix-0-7-8-9016"></a></h4>
+<ul><li>Fixing error coming from comparing factors vector to characters vector.</li>
+<li>
 <code>fct_collapse_only</code>, <code>fct_collapse_only</code>, and <code>month2day</code>/<code>day2month</code> reverted to export.</li>
 <li>Fixed test for <code>cut_quantile_bins</code> with empty vector. This is not a good standard input.</li>
 <li>Warnings from <code>as_factor_keep_attributes</code> are now in verbose for better <code>test_examples()</code> readability</li>
@@ -109,7 +104,7 @@
 <li>Fixed warnings occurring in example tests</li>
 </ul></div>
 <div class="section level4">
-<h4 id="documentation-and-namespace-polishing-0-7-8-9015">Documentation and NAMESPACE polishing<a class="anchor" aria-label="anchor" href="#documentation-and-namespace-polishing-0-7-8-9015"></a></h4>
+<h4 id="documentation-and-namespace-polishing-0-7-8-9016">Documentation and NAMESPACE polishing<a class="anchor" aria-label="anchor" href="#documentation-and-namespace-polishing-0-7-8-9016"></a></h4>
 <ul><li>Added stable badge for:
 <ul><li>
 <code>count_abnormal_by_marked</code> (reference to <code>abnormal_by_marked</code>), <code>count_abnormal_lab_worsen_by_baseline</code> and <code>h_adlb_worsen</code> (reference to <code>abnormal_by_worst_grade_worsen_from_baseline</code>), <code>count_abnormal_by_worst_grade</code> (reference to <code>abnormal_by_worst_grade</code>), <code>to_string_matrix</code>, <code>tidy.summary.coxph</code>, <code>tidy.step</code>, <code>surv_timepoint</code>, (reference to <code>survival_timepoint</code>), <code>surv_time</code> (reference to <code>survival_time</code>), <code>coxph_pairwise</code> (reference to <code>survival_coxph_pairwise</code>), <code>extract_survival_subgroups</code> and <code>tabulate_survival_subgroups</code> (reference to <code>survival_duration_subgroups</code>), <code>extract_survival_biomarkers</code> and <code>tabulate_survival_biomarkers</code> (reference to <code>survival_biomarkers_subgroups</code>), <code>control_summarize_vars</code>, <code>s_summary</code> and <code>a_summary</code> (reference to <code>summarize_variables</code>) and kept the S3 method tree.</li>
@@ -147,7 +142,7 @@
 <li>Removed <code>tern:::</code> prefix from internal function uses in tests</li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-7-8-9015">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-8-9015"></a></h4>
+<h4 id="miscellaneous-0-7-8-9016">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-8-9016"></a></h4>
 <ul><li>Deprecated the <code>color_palette</code> function with <code><a href="https://rdrr.io/pkg/nestcolor/man/color_palette.html" class="external-link">nestcolor::color_palette</a></code> and removed <code>color_palette_core</code>.</li>
 <li>Deprecated <code><a href="../reference/individual_patient_plot.html">h_set_nest_theme()</a></code> in favor of <code><a href="https://rdrr.io/pkg/nestcolor/man/theme_nest.html" class="external-link">nestcolor::theme_nest()</a></code>.</li>
 <li>Removed deprecated <code>mmrm</code> functions: <code>fit_mmrm</code>, <code>g_mmrm_diagnostic</code>, <code>g_mmrm_lsmeans</code>, <code>as.rtable.mmrm</code>, <code>h_mmrm_fixed</code>, <code>h_mmrm_cov</code>, <code>h_mmrm_diagnostic</code>, <code>tidy.mmrm</code>, <code>s_mmrm_lsmeans</code>, <code>s_mmrm_lsmeans_single</code>, <code>summarize_lsmeans</code>.</li>
