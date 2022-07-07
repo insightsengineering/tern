@@ -44,8 +44,8 @@ NULL
 #'   arm = factor(c("A", "A", "B"), levels = c("A", "B"))
 #' )
 h_proportion_df <- function(rsp, arm) {
-  checkmate::assert_logical(rsp, len = length(arm))
-  assert_valid_factor(arm)
+  checkmate::assert_logical(rsp)
+  assert_valid_factor(arm, len = length(rsp))
   non_missing_rsp <- !is.na(rsp)
   rsp <- rsp[non_missing_rsp]
   arm <- arm[non_missing_rsp]
