@@ -14,7 +14,7 @@ survival time range of censored/event patients."><!-- mathjax --><script src="ht
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ survival time range of censored/event patients."><!-- mathjax --><script src="ht
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -185,48 +179,16 @@ to the input layout. Note that additional formatting arguments can be used here.
 <span class="r-in"><span>    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">ADTTE_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_surv_time</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 41.41242</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Median"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 27.65076 54.73122</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "95% CI"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $quantiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 15.40087 75.24796</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "25% and 75%-ile"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $range_censor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   0.3958452 154.7000110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Range (censored)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $range_event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   0.2605094 116.3984412</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Range (event)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $range</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   0.2605094 154.7000110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Range"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_surv_time</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       row_name formatted_cell indent_mod        row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       median           41.4          0           Median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    median_ci   (27.7, 54.7)          1           95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    quantiles     15.4, 75.2          0  25% and 75%-ile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 range_censor   0.4 to 154.7          0 Range (censored)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  range_event   0.3 to 116.4          0    Range (event)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        range   0.3 to 154.7          0            Range</span>
+<span class="r-in"><span><span class="co"># Internal function - s_surv_time</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">s_surv_time</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - a_surv_time</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">a_surv_time</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>

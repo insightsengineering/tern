@@ -14,7 +14,7 @@ as incidence rate. Primary analysis variable is the person-years at risk."><!-- 
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ as incidence rate. Primary analysis variable is the person-years at risk."><!-- 
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -236,7 +230,9 @@ associated confidence interval.</p></li>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>n_events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">is_event</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_incidence_rate</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - s_incidence_rate</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">s_incidence_rate</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">df</span>,</span></span>
 <span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
 <span class="r-in"><span>  n_events <span class="op">=</span> <span class="st">"n_events"</span>,</span></span>
@@ -245,40 +241,17 @@ associated confidence interval.</p></li>
 <span class="r-in"><span>    time_unit_output <span class="op">=</span> <span class="fl">100</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $person_years</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9.058333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Total patient-years at risk"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $n_events</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Number of adverse events observed"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 44.15823</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "AE rate per 100 patient-years"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $rate_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  0.8839599 87.4325075</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "95% CI"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_incidence_rate</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - a_incidence_rate</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">a_incidence_rate</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">df</span>,</span></span>
 <span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
 <span class="r-in"><span>  n_events <span class="op">=</span> <span class="st">"n_events"</span>,</span></span>
 <span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="control_incidence_rate.html">control_incidence_rate</a></span><span class="op">(</span>time_unit_input <span class="op">=</span> <span class="st">"month"</span>, time_unit_output <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       row_name formatted_cell indent_mod                         row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 person_years            9.1          0       Total patient-years at risk</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     n_events              4          0 Number of adverse events observed</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         rate          44.16          0     AE rate per 100 patient-years</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      rate_ci  (0.88, 87.43)          0                            95% CI</span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -332,15 +305,11 @@ associated confidence interval.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.001994207 0.032054171</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">h_incidence_rate</span><span class="op">(</span><span class="fl">200</span>, <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $rate_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.003859038  0.023859038</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># Internal function - h_incidence_rate</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">h_incidence_rate</span><span class="op">(</span><span class="fl">200</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">h_incidence_rate</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">h_incidence_rate</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fl">200</span>,</span></span>
 <span class="r-in"><span>  <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="control_incidence_rate.html">control_incidence_rate</a></span><span class="op">(</span></span></span>
@@ -349,12 +318,7 @@ associated confidence interval.</p></li>
 <span class="r-in"><span>    time_unit_output <span class="op">=</span> <span class="fl">100</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $rate_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3125199 3.1997963</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

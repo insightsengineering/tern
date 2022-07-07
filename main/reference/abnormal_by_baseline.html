@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -207,39 +201,19 @@ statistics function arguments and additional format arguments (see below).</p></
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="df_explicit_na.html">df_explicit_na</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - s_count_abnormal_by_baseline</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># Just for one abnormal level.</span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_abnormal_by_baseline</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$not_abnormal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Not high baseline status"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$abnormal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     0     1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "High baseline status"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$total</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Total"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">s_count_abnormal_by_baseline</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - a_count_abnormal_by_baseline</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first</span></span></span>
 <span class="r-in"><span><span class="co"># so that the `rtables` formatting function `format_fraction()` can be applied correctly.</span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="fu">tern</span><span class="fu">:::</span><span class="va">a_count_abnormal_by_baseline</span>, .ungroup_stats <span class="op">=</span> <span class="st">"fraction"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="va">a_count_abnormal_by_baseline</span>, .ungroup_stats <span class="op">=</span> <span class="st">"fraction"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">afun</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="st">"LOW"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       row_name formatted_cell indent_mod               row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 not_abnormal    2/3 (66.7%)          0 Not low baseline status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     abnormal      1/2 (50%)          0     Low baseline status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        total    4/6 (66.7%)          0                   Total</span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Layout creating function.</span></span></span>

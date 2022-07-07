@@ -18,7 +18,7 @@ functions."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,12 +41,6 @@ functions."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -203,14 +197,16 @@ should be pruned though, to conform with the <code><a href="https://roche.github
 <span class="r-in"><span><span class="va">is_non_empty</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="fu"><a href="combination_function.html">CombinationFunction</a></span><span class="op">(</span><span class="va">all_zero_or_na</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/prune_table.html" class="external-link">prune_table</a></span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_rows</span><span class="op">(</span><span class="va">is_non_empty</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># `keep_content_rows`</span></span></span>
-<span class="r-in"><span><span class="va">more_than_twenty</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu">has_count_in_cols</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">20L</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - has_count_in_cols</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">more_than_twenty</span> <span class="op">&lt;-</span> <span class="fu">has_count_in_cols</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">20L</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/prune_table.html" class="external-link">prune_table</a></span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_content_rows</span><span class="op">(</span><span class="va">more_than_twenty</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - has_count_in_cols</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># `has_count_in_cols`</span></span></span>
-<span class="r-in"><span><span class="va">more_than_one</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu">has_count_in_cols</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">1L</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">more_than_one</span> <span class="op">&lt;-</span> <span class="fu">has_count_in_cols</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">1L</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/prune_table.html" class="external-link">prune_table</a></span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_rows</span><span class="op">(</span><span class="va">more_than_one</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
@@ -234,9 +230,9 @@ should be pruned though, to conform with the <code><a href="https://roche.github
 <span class="r-in"><span><span class="va">more_than_five_percent_diff</span> <span class="op">&lt;-</span> <span class="fu">has_fractions_difference</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">0.05</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/prune_table.html" class="external-link">prune_table</a></span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_rows</span><span class="op">(</span><span class="va">more_than_five_percent_diff</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - has_counts_difference</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># `has_counts_difference`</span></span></span>
-<span class="r-in"><span><span class="va">more_than_one_diff</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu">has_counts_difference</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">1L</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">more_than_one_diff</span> <span class="op">&lt;-</span> <span class="fu">has_counts_difference</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">1L</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/prune_table.html" class="external-link">prune_table</a></span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_rows</span><span class="op">(</span><span class="va">more_than_one_diff</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>

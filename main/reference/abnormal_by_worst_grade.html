@@ -30,7 +30,7 @@ Any: Numerator is number of patients with at least one abnormality, which means 
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,12 +53,6 @@ Any: Numerator is number of patients with at least one abnormality, which means 
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -244,56 +238,23 @@ which can take statistics function arguments and additional format arguments (se
 <span class="r-in"><span>  cur_col_subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">cur_col_subset</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">s_count_abnormal_by_worst_grade</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - s_count_abnormal_by_worst_grade</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">s_count_abnormal_by_worst_grade</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  df <span class="op">=</span> <span class="va">adlb_f_alt</span>,</span></span>
 <span class="r-in"><span>  .spl_context <span class="op">=</span> <span class="va">spl_context</span>,</span></span>
 <span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"GRADE_ANL"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`1`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  39.0000   0.0975 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`2`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   42.000    0.105 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`3`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   42.000    0.105 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`4`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  25.0000   0.0625 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$Any</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   148.00     0.37 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Any"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - a_count_abnormal_by_worst_grade</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first</span></span></span>
 <span class="r-in"><span><span class="co"># so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.</span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="fu">tern</span><span class="fu">:::</span><span class="va">a_count_abnormal_by_worst_grade</span>, .ungroup_stats <span class="op">=</span> <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="va">a_count_abnormal_by_worst_grade</span>, .ungroup_stats <span class="op">=</span> <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">afun</span><span class="op">(</span>df <span class="op">=</span> <span class="va">adlb_f_alt</span>, .spl_context <span class="op">=</span> <span class="va">spl_context</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1      39 (9.8%)          0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        2     42 (10.5%)          0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        3     42 (10.5%)          0         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        4      25 (6.2%)          0         4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Any      148 (37%)          0       Any</span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Map excludes records without abnormal grade since they should not be displayed</span></span></span>
 <span class="r-in"><span><span class="co"># in the table.</span></span></span>
 <span class="r-in"><span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">adlb_f</span><span class="op">[</span><span class="va">adlb_f</span><span class="op">$</span><span class="va">GRADE_DIR</span> <span class="op">!=</span> <span class="st">"ZERO"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PARAM"</span>, <span class="st">"GRADE_DIR"</span>, <span class="st">"GRADE_ANL"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>

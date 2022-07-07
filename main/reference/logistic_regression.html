@@ -32,7 +32,7 @@ special characters."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,12 +55,6 @@ special characters."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -504,9 +498,11 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod1</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod2</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Internal function - replace_emptys_with_na</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># flagging empty strings with "_"</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">tern</span><span class="fu">:::</span><span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df2</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="replace_emptys_with_na.html">replace_emptys_with_na</a></span><span class="op">(</span><span class="va">df2</span>, rep_str <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_logistic</span><span class="op">(</span></span></span>
@@ -515,18 +511,6 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result1</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                       Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio    Wald 95% CI    p-value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Planned Arm Code                              2                                                                               0.0368 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ARM A, n = 126                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM B, n = 121                              1                  -2.155             1.084           0.12      (&lt;0.01, 1.89)   0.0468 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM C, n = 126                              1                  -0.127             1.425           0.88      (0.02, 34.55)   0.9287 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Age                                                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Age                                         1                  0.067              0.053           1.07      (0.93, 1.23)    0.2068 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Race                                          2                                                                               0.6369 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ASIAN, n = 208                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   BLACK OR AFRICAN AMERICAN, n = 91           1                  1.027              1.098           2.79      (0.17, 47.24)   0.3498 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   WHITE, n = 74                               1                  0.294              0.850           1.34      (0.15, 11.99)   0.7294 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_logistic</span><span class="op">(</span></span></span>
@@ -535,30 +519,7 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result2</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 95% CI      p-value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Race                                            2                                                                                  0.6027 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ASIAN, n = 208                                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   BLACK OR AFRICAN AMERICAN, n = 91             1                  1.079              1.136           2.94       (0.16, 54.88)     0.3423 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   WHITE, n = 74                                 1                  0.455              0.900           1.58       (0.16, 16.01)     0.6127 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Planned Arm Code                                2                                                                                  0.2890 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ARM A, n = 126                                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM B, n = 121                                1                  20.235             14.787                                       0.1712 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Age                                                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       34                                                                                              0.00      (&lt;0.01, &gt;999.99)          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM C, n = 126                                1                  14.713             16.087                                       0.3604 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Age                                                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       34                                                                                              0.00      (&lt;0.01, &gt;999.99)          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Age                                                                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Age                                           1                  0.896              0.629                                        0.1546 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Planned Arm Code                                                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       ARM A                                                                                           2.45       (0.48, 12.39)            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       ARM B                                                                                           1.03        (0.90, 1.18)            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       ARM C                                                                                           1.32        (0.72, 2.43)            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Interaction of Planned Arm Code * Age           2                                                                                  0.2306 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Reference ARM A, n = 126                                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM B, n = 121                                1                  -0.868             0.630                                        0.1680 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ARM C, n = 126                                1                  -0.618             0.671                                        0.3577 </span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
