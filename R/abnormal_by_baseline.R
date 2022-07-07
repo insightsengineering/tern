@@ -190,8 +190,7 @@ count_abnormal_by_baseline <- function(lyt,
                                        .formats = NULL,
                                        .labels = NULL,
                                        .indent_mods = NULL) {
-  checkmate::assert_named(abnormal, type = "named")
-  checkmate::assert_character(abnormal, len = length(table_names))
+  checkmate::assert_character(abnormal, len = length(table_names), names = "named")
   checkmate::assert_string(var)
   afun <- make_afun(
     a_count_abnormal_by_baseline,
