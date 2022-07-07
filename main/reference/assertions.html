@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9018</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -98,8 +92,6 @@
 <span>  .var.name <span class="op">=</span> <span class="fu">checkmate</span><span class="fu">::</span><span class="fu"><a href="https://mllg.github.io/checkmate/reference/vname.html" class="external-link">vname</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">assert_equal_length</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">assert_proportion_value</span><span class="op">(</span><span class="va">x</span>, include_boundaries <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -169,10 +161,6 @@ Default is <code>NULL</code> (no check).</p></dd>
 Exact expected length of <code>x</code>.</p></dd>
 
 
-<dt>...</dt>
-<dd><p>a collection of objects to test.</p></dd>
-
-
 <dt>include_boundaries</dt>
 <dd><p>(<code>logical</code>)<br> whether to include boundaries when testing
 for proportions.</p></dd>
@@ -180,6 +168,10 @@ for proportions.</p></dd>
 
 <dt>(`integer`)<br></dt>
 <dd><p>minimum number of factor levels. Default is <code>1</code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>a collection of objects to test.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -195,7 +187,6 @@ string levels). Note that <code>NULL</code> and <code>NA</code> elements are all
 <li><p><code>assert_df_with_factors</code>: Check whether <code>df</code> is a data frame where the analysis <code>variables</code>
 are all factors. Note that the creation of <code>NA</code> by direct call of <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor()</a></code> will
 trim <code>NA</code> levels out of the vector list itself.</p></li>
-<li><p><code>assert_equal_length</code>: Check that objects provided are of same length.</p></li>
 <li><p><code>assert_proportion_value</code>: Check whether <code>x</code> is a proportion: number between 0 and 1.</p></li>
 </ul></div>
 
@@ -296,18 +287,6 @@ trim <code>NA</code> levels out of the vector list itself.</p></li>
 <span class="r-in"><span>  min.levels <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>  max.levels <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Check whether `x` is a valid list of variable names.</span></span></span>
-<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
-<span class="r-in"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
-<span class="r-in"><span><span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"car"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - assert_equal_length</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># This fails</span></span></span>
-<span class="r-in"><span><span class="fu">assert_equal_length</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">c</span>, <span class="va">d</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Check whether `x` is between 0 and 1.</span></span></span>
