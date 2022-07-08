@@ -1,6 +1,7 @@
 # tern 0.7.8.9020
 
 ### Enhancements 
+* exported `draw_grob` function (needed by `enableRF`).
 * `checkmate::assert()`, `checkmate::assert_true()`, and `checkmate::assert_false()`
    use is kept to a minimum due to its ambiguous messages. 
 * `checkmate::assert_set_equal()` and `checkmate::assert_int()` have been changed

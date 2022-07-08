@@ -218,7 +218,10 @@ arrange_grobs <- function(..., # nolint
 }
 
 
+
 #' Draw `grob`
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Draw grob on device page.
 #'
@@ -226,11 +229,13 @@ arrange_grobs <- function(..., # nolint
 #' @param newpage draw on a new page
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #'
+#' @export
+#'
 #' @examples
 #' library(dplyr)
 #' library(grid)
 #'
-#' # Internal function - draw_grob
+#' # Internal function - arrange_grob
 #' \dontrun{
 #' rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
 #' rect %>% draw_grob(vp = grid::viewport(angle = 45))
@@ -241,8 +246,6 @@ arrange_grobs <- function(..., # nolint
 #'   draw_grob()
 #' showViewport()
 #' }
-#'
-#' @keywords internal
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {
     grid::grid.newpage()
