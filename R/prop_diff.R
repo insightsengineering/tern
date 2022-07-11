@@ -95,7 +95,8 @@ d_proportion_diff <- function(conf_level,
 prop_diff_wald <- function(rsp,
                            grp,
                            conf_level,
-                           correct) {
+                           correct
+) {
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = conf_level, correct = correct
@@ -105,11 +106,12 @@ prop_diff_wald <- function(rsp,
   diff_ci <- if (all(rsp == rsp[1])) {
     c(NA, NA)
   } else {
-    stats::prop.test(
-      table(grp, rsp),
-      correct = correct,
-      conf.level = conf_level
-    )$conf.int[1:2]
+    DescTools::BinomDiffCI(
+      table(grp, rsp)[1], sum(table(grp, rsp)[1],table(grp, rsp)[3]),
+      table(grp, rsp)[2], sum(table(grp, rsp)[2],table(grp, rsp)[4]),
+      conf.level = conf_level,
+      method="waldcc"
+    )[2:3]
   }
 
   list(
@@ -117,7 +119,6 @@ prop_diff_wald <- function(rsp,
     diff_ci = diff_ci
   )
 }
-
 
 #' @describeIn prop_diff Anderson-Hauck confidence interval.
 #'
