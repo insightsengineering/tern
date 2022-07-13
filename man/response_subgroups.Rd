@@ -60,6 +60,8 @@ created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Tabulate statistics such as response rate and odds ratio for population subgroups.
 }
 \details{
@@ -102,7 +104,6 @@ adrs_f <- adrs \%>\%
     rsp = AVALC == "CR"
   )
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
-
 # Unstratified analysis.
 df <- extract_rsp_subgroups(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -130,7 +131,11 @@ df_grouped <- extract_rsp_subgroups(
   )
 )
 df_grouped
+# Internal function - a_response_subgroups
+\dontrun{
 a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
+}
+
 
 ## Table with default columns.
 basic_table() \%>\%
@@ -143,3 +148,4 @@ basic_table() \%>\%
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
   )
 }
+\keyword{internal}

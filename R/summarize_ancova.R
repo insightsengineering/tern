@@ -1,13 +1,15 @@
 #' Summary for analysis of covariance (ANCOVA).
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
 #' @name summarize_ancova
-#'
 NULL
 
 #' @describeIn summarize_ancova Helper function to return results of a linear model.
+#'
 #' @inheritParams argument_convention
 #' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
@@ -19,32 +21,28 @@ NULL
 #'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'
-#' @export
-#'
 #' @examples
 #' h_ancova(
 #'   .var = "Sepal.Length",
 #'   .df_row = iris,
 #'   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 #' )
+#'
+#' @export
 h_ancova <- function(.var,
                      .df_row,
                      variables) {
-  assertthat::assert_that(
-    assertthat::is.string(.var),
-    is.list(variables),
-    all(names(variables) %in% c("arm", "covariates")),
-    is_df_with_variables(.df_row, list(rsp = .var))
-  )
+  checkmate::assert_string(.var)
+  checkmate::assert_list(variables)
+  checkmate::assert_subset(names(variables), c("arm", "covariates"))
+  assert_df_with_variables(.df_row, list(rsp = .var))
 
   arm <- variables$arm
   covariates <- variables$covariates
   if (!is.null(covariates)) {
     # Get all covariate variable names in the model.
     var_list <- get_covariates(covariates)
-    assertthat::assert_that(
-      is_df_with_variables(.df_row, var_list)
-    )
+    assert_df_with_variables(.df_row, var_list)
   }
 
   covariates_part <- paste(covariates, collapse = " + ")
@@ -82,7 +80,6 @@ h_ancova <- function(.var,
 #'   comparison to the reference group.
 #'   - `pval`: p-value (not adjusted for multiple comparisons).
 #'
-#' @export
 #'
 #' @examples
 #' library(scda)
@@ -107,7 +104,12 @@ h_ancova <- function(.var,
 #'   filter(ARMCD == "ARM A")
 #' conf_level <- 0.95
 #'
+#' # Internal function - s_ancova
+#' \dontrun{
 #' s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#' }
+#'
+#' @keywords internal
 s_ancova <- function(df,
                      .var,
                      .df_row,
@@ -126,10 +128,10 @@ s_ancova <- function(df,
 
   y <- df[[.var]]
   sum_level <- as.character(unique(df[[arm]]))
+
   # Ensure that there is only one element in sum_level.
-  assertthat::assert_that(
-    assertthat::is.scalar(sum_level)
-  )
+  checkmate::assert_scalar(sum_level)
+
   sum_fit_level <- sum_fit[sum_fit[[arm]] == sum_level, ]
 
   if (.in_ref_col) {
@@ -174,10 +176,14 @@ s_ancova <- function(df,
 
 #' @describeIn summarize_ancova Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
+#' # Internal function - a_ancova
+#' \dontrun{
 #' a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#' }
+#'
+#' @keywords internal
 a_ancova <- make_afun(
   s_ancova,
   .indent_mods = c("n" = 0L, "lsmean" = 0L, "lsmean_diff" = 0L, "lsmean_diff_ci" = 1L, "pval" = 1L),

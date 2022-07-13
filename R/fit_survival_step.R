@@ -1,5 +1,7 @@
 #' Subgroup Treatment Effect Pattern (STEP) Fit for Survival Outcome
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This fits the Subgroup Treatment Effect Pattern models for a survival outcome. The treatment arm
 #' variable must have exactly 2 levels, where the first one is taken as reference and the estimated
 #' hazard ratios are for the comparison of the second level vs. the first one.
@@ -73,10 +75,8 @@
 fit_survival_step <- function(variables,
                               data,
                               control = c(control_step(), control_coxph())) {
-  assertthat::assert_that(
-    is_df_with_variables(data, variables),
-    is.list(control)
-  )
+  checkmate::assert_list(control)
+  assert_df_with_variables(data, variables)
   data <- data[!is.na(data[[variables$biomarker]]), ]
   window_sel <- h_step_window(x = data[[variables$biomarker]], control = control)
   interval_center <- window_sel$interval[, "Interval Center"]

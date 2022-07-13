@@ -1,5 +1,7 @@
 #' Counting Missed Doses
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' These are specific functions to count patients with missed doses. The difference to [count_cumulative()] is
 #' mainly the special labels.
 #'
@@ -9,11 +11,16 @@ NULL
 
 #' @describeIn count_missed_doses Statistics function to count non-missing values.
 #' @return [s_count_nonmissing()] returns the statistic `n` which is the count of non-missing values in `x`.
-#' @export
 #' @examples
 #' set.seed(1)
 #' x <- c(sample(1:10, 10), NA)
+#'
+#' # Internal function - s_count_nonmissing
+#' \dontrun{
 #' s_count_nonmissing(x)
+#' }
+#'
+#' @keywords internal
 s_count_nonmissing <- function(x) {
   list(n = n_available(x))
 }
@@ -22,6 +29,7 @@ s_count_nonmissing <- function(x) {
 #' @inheritParams s_count_missed_doses
 #' @return [d_count_missed_doses()] returns a named `character` vector with the labels.
 #'
+#' @export
 d_count_missed_doses <- function(thresholds) {
   paste0("At least ", thresholds, " missed dose", ifelse(thresholds > 1, "s", ""))
 }
@@ -32,9 +40,14 @@ d_count_missed_doses <- function(thresholds) {
 #' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
 #' @return [s_count_missed_doses()] returns the statistics `n` and
 #'  `count_fraction` with one element for each threshold.
-#' @export
+#'
 #' @examples
+#' # Internal function - s_count_missed_doses
+#' \dontrun{
 #' s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+#' }
+#'
+#' @keywords internal
 s_count_missed_doses <- function(x,
                                  thresholds,
                                  .N_col) { # nolint
@@ -54,12 +67,17 @@ s_count_missed_doses <- function(x,
 }
 
 #' @describeIn count_missed_doses Formatted Analysis function to count non-missing values.
-#' @export
+#'
 #' @examples
+#' # Internal function - a_count_missed_doses
+#' \dontrun{
 #' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
 #' afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+#' }
+#'
+#' @keywords internal
 a_count_missed_doses <- make_afun(
   s_count_missed_doses,
   .formats = c(n = "xx", count_fraction = format_count_fraction)

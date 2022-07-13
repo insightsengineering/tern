@@ -7,6 +7,7 @@
 #'
 NULL
 
+#' @description `r lifecycle::badge("stable")`
 #' @describeIn score_occurrences Scoring function which sums the counts across all columns.
 #' @inheritParams rtables_access
 #' @return [score_occurrences()] returns the sum of counts across all columns of a table row.
@@ -15,7 +16,6 @@ NULL
 #'
 #' @examples
 #'
-#' library(assertthat)
 #' library(scda)
 #' library(rtables)
 #' adsl <- synthetic_cdisc_data("latest")$adsl

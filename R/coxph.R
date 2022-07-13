@@ -1,5 +1,7 @@
 #' Pairwise formula special term
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' The special term `pairwise` indicate that the model should be fitted individually for
 #' every tested level in comparison to the reference level.
 #'
@@ -18,6 +20,8 @@ pairwise <- function(x) {
 }
 
 #' Univariate formula special term
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' The special term `univariate` indicate that the model should be fitted individually for
 #' every variable included in univariate.
@@ -40,6 +44,10 @@ univariate <- function(x) {
 }
 
 #' Cox regression including a single covariate - summarized results
+#'
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' This is a deprecated function. Use `fit_coxreg_univar` function instead.
 #'
 #' Fit cox (proportional hazard) regression models including the treatment and a single covariate.
 #' Starting from a univariate model (e.g. survival model including an two-level arm predictor), a list of candidate
@@ -154,7 +162,7 @@ s_cox_univariate <- function(formula,
   )
 
   check_covariate_formulas(covariates)
-  assertthat::assert_that(is_proportion(conf_level, include_boundaries = TRUE))
+  assert_proportion_value(conf_level, include_boundaries = TRUE)
   pval_method <- match.arg(pval_method)
 
   covariates <- name_covariate_names(covariates)
@@ -341,7 +349,7 @@ s_cox_univariate <- function(formula,
 
 # Get the right-hand-term of a formula
 rht <- function(x) {
-  stopifnot(inherits(x, "formula"))
+  checkmate::assert_formula(x)
   y <- as.character(rev(x)[[1]])
   return(y)
 }
@@ -382,8 +390,6 @@ rht <- function(x) {
 #'   \item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
 #' }
 #'
-#' @export
-#'
 #' @examples
 #' library(dplyr)
 #' library(scda)
@@ -392,7 +398,7 @@ rht <- function(x) {
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' ADSL <- ADSL %>%
 #'   filter(SEX %in% c("F", "M"))
-#' \dontrun{
+#'
 #' ADTTE <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "PFS")
 #' ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
@@ -406,12 +412,15 @@ rht <- function(x) {
 #' mmat <- stats::model.matrix(mod)[1, ]
 #' mmat[!mmat == 0] <- 0
 #'
+#' # Internal function - estimate_coef
+#' \dontrun{
 #' estimate_coef(
 #'   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
 #'   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
 #' )
 #' }
 #'
+#' @keywords internal
 estimate_coef <- function(variable, given,
                           lvl_var, lvl_given,
                           coef,
@@ -485,16 +494,14 @@ estimate_coef <- function(variable, given,
 #'
 #' @inheritParams car::Anova
 #'
-#' @md
 #' @return A list with item `aov` for the result of the model and
 #'   `error_text` for the captured warnings.
-#' @keywords internal
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected
 #' # a likelihood ratio test triggers a warning as only Wald method is
 #' # accepted.
-#' \dontrun{
+#'
 #' library(survival)
 #'
 #' mod <- coxph(
@@ -502,12 +509,15 @@ estimate_coef <- function(variable, given,
 #'   data = ovarian
 #' )
 #'
-#' with_wald <- tern:::try_car_anova(mod = mod, test.statistic = "Wald")
-#' with_lr <- tern:::try_car_anova(mod = mod, test.statistic = "LR")
+#' # Internal function - try_car_anova
+#' \dontrun{
+#' with_wald <- try_car_anova(mod = mod, test.statistic = "Wald")
+#' with_lr <- try_car_anova(mod = mod, test.statistic = "LR")
 #' }
+#'
+#' @keywords internal
 try_car_anova <- function(mod,
                           test.statistic) { # nolint
-
   y <- tryCatch(
     withCallingHandlers(
       expr = {
@@ -653,10 +663,6 @@ check_increments <- function(increments, covariates) {
 #'     but is out of scope as defined by the  Global Data Standards Repository
 #'     (**`GDS_Standard_TLG_Specs_Tables_2.doc`**).
 #'
-#' @md
-#'
-#' @export
-#'
 #' @examples
 #' library(scda)
 #' library(dplyr)
@@ -671,11 +677,15 @@ check_increments <- function(increments, covariates) {
 #' )
 #' ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
 #' ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)
+#'
+#' # Internal function - s_cox_multivariate
 #' \dontrun{
 #' s_cox_multivariate(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f
 #' )
 #' }
+#'
+#' @keywords internal
 s_cox_multivariate <- function(formula, data,
                                conf_level = 0.95,
                                pval_method = c("wald", "likelihood"),

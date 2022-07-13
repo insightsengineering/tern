@@ -2,6 +2,7 @@
 #'
 #' Stack grobs as a new grob with 1 column and multiple rows layout.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @param ... grobs.
 #' @param grobs list of grobs.
 #' @param padding unit of length 1, space between each grob.
@@ -28,14 +29,16 @@
 #' grid.draw(stack_grobs(g1, g2, g3, vp = vp1, name = "test"))
 #'
 #' showViewport()
-#' grid.ls(grobs = TRUE, viewports = TRUE)
+#' grid.ls(grobs = TRUE, viewports = TRUE, print = FALSE)
 stack_grobs <- function(...,
                         grobs = list(...),
                         padding = grid::unit(2, "line"),
                         vp = NULL,
                         gp = NULL,
                         name = NULL) {
-  stopifnot(all(vapply(grobs, grid::is.grob, logical(1))))
+  checkmate::assert_true(
+    all(vapply(grobs, grid::is.grob, logical(1)))
+  )
 
   if (length(grobs) == 1) {
     return(grobs[[1]])
@@ -89,11 +92,13 @@ stack_grobs <- function(...,
 #' @param padding_ht unit of length 1, vertical space between each grob.
 #' @param padding_wt unit of length 1, horizontal space between each grob.
 #'
-#' @export
+#'
 #'
 #' @examples
 #' library(grid)
 #'
+#' # Internal function - arrange_grobs
+#' \dontrun{
 #' num <- lapply(1:9, textGrob)
 #' grid::grid.newpage()
 #' grid.draw(arrange_grobs(grobs = num, ncol = 2))
@@ -117,6 +122,9 @@ stack_grobs <- function(...,
 #' grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 #'
 #' showViewport()
+#' }
+#'
+#' @keywords internal
 arrange_grobs <- function(..., # nolint
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
@@ -125,7 +133,9 @@ arrange_grobs <- function(..., # nolint
                           vp = NULL,
                           gp = NULL,
                           name = NULL) {
-  stopifnot(all(vapply(grobs, grid::is.grob, logical(1))))
+  checkmate::assert_true(
+    all(vapply(grobs, grid::is.grob, logical(1)))
+  )
 
   if (length(grobs) == 1) {
     return(grobs[[1]])
@@ -208,7 +218,10 @@ arrange_grobs <- function(..., # nolint
 }
 
 
+
 #' Draw `grob`
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Draw grob on device page.
 #'
@@ -222,6 +235,8 @@ arrange_grobs <- function(..., # nolint
 #' library(dplyr)
 #' library(grid)
 #'
+#' # Internal function - arrange_grob
+#' \dontrun{
 #' rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
 #' rect %>% draw_grob(vp = grid::viewport(angle = 45))
 #'
@@ -230,6 +245,7 @@ arrange_grobs <- function(..., # nolint
 #'   arrange_grobs(grobs = .) %>%
 #'   draw_grob()
 #' showViewport()
+#' }
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {
     grid::grid.newpage()

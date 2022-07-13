@@ -19,6 +19,8 @@ holders, and others as formatting elements.
 \examples{
 test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 
+# Internal function - format_xx
+\dontrun{
 z <- format_xx("xx (xx.x)")
 sapply(test, z)
 
@@ -28,3 +30,6 @@ sapply(test, z)
 z <- format_xx("xx.x, incl. xx.x\% NE")
 sapply(test, z)
 }
+
+}
+\keyword{internal}

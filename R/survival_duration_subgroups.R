@@ -1,5 +1,7 @@
 #' Tabulate Survival Duration by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Tabulate statistics such as median survival time and hazard ratio for population subgroups.
 #'
 #' @details These functions create a layout starting from a data frame which contains
@@ -110,9 +112,14 @@ extract_survival_subgroups <- function(variables,
 
 #' @describeIn survival_duration_subgroups Formatted Analysis function used to format the results of
 #'   [extract_survival_subgroups()]. Returns is a list of Formatted Analysis functions with one element per statistic.
-#' @export
+#'
 #' @examples
+#' # Internal function - a_survival_subgroups
+#' \dontrun{
 #' a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
+#' }
+#'
+#' @keywords internal
 a_survival_subgroups <- function(.formats = list(
                                    n = "xx",
                                    n_events = "xx",
@@ -123,12 +130,10 @@ a_survival_subgroups <- function(.formats = list(
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)"
                                  )) {
-  assertthat::assert_that(
-    is.list(.formats),
-    all_elements_in_ref(
-      names(.formats),
-      ref = c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval")
-    )
+  checkmate::assert_list(.formats)
+  checkmate::assert_subset(
+    names(.formats),
+    c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval")
   )
 
   afun_lst <- Map(function(stat, fmt) {
@@ -314,6 +319,8 @@ tabulate_survival_subgroups <- function(lyt,
 
 #' Labels for Column Variables in Survival Duration by Subgroup Table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Internal function to check variables included in
 #' [tabulate_survival_subgroups()] and create column labels.
 #' Note that at least one of `n_tot` and `n_tot_events` needs to be provided in `vars`.
@@ -322,18 +329,19 @@ tabulate_survival_subgroups <- function(lyt,
 #' @inheritParams argument_convention
 #' @param method p-value method for testing hazard ratio = 1.
 #' @return `list` of variables to tabulate and their labels.
-#' @keywords internal
 #'
+#' @export
 d_survival_subgroups_colvars <- function(vars,
                                          conf_level,
                                          method,
                                          time_unit = NULL) {
-  assertthat::assert_that(
-    is.character(vars),
-    assertthat::is.string(time_unit) || is.null(time_unit),
-    all_elements_in_ref(c("hr", "ci"), vars),
-    any(c("n_tot", "n_tot_events") %in% vars),
-    all_elements_in_ref(vars, ref = c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval"))
+  checkmate::assert_character(vars)
+  checkmate::assert_string(time_unit, null.ok = TRUE)
+  checkmate::assert_subset(c("hr", "ci"), vars)
+  checkmate::assert_true(any(c("n_tot", "n_tot_events") %in% vars))
+  checkmate::assert_subset(
+    vars,
+    c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval")
   )
 
   propcase_time_label <- if (!is.null(time_unit)) {

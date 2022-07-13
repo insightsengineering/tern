@@ -72,6 +72,8 @@ are required.}
 displaying unit.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Tabulate statistics such as median survival time and hazard ratio for population subgroups.
 }
 \details{
@@ -153,7 +155,11 @@ df_grouped <- extract_survival_subgroups(
   )
 )
 df_grouped
+# Internal function - a_survival_subgroups
+\dontrun{
 a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
+}
+
 
 ## Table with default columns.
 basic_table() \%>\%
@@ -167,3 +173,4 @@ basic_table() \%>\%
     time_unit = adtte_f$AVALU[1]
   )
 }
+\keyword{internal}

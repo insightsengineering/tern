@@ -20,6 +20,8 @@ Only data values less than or up to to this threshold value will be plotted.(\co
 default)}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Calculate the positions of ticks on the x-axis. However, if \code{xticks} already
 exists it is kept as is. It is based on the same function \code{ggplot2} relies on,
 and is required in the graphic and the patient-at-risk annotation table.
@@ -33,15 +35,14 @@ library(survival)
 data <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
-  tern:::h_data_plot()
+  h_data_plot()
 
-tern:::h_xticks(data)
-tern:::h_xticks(data, xticks = seq(0, 3000, 500))
-tern:::h_xticks(data, xticks = 500)
-tern:::h_xticks(data, xticks = 500, max_time = 6000)
-tern:::h_xticks(data, xticks = c(0, 500), max_time = 300)
-tern:::h_xticks(data, xticks = 500, max_time = 300)
+h_xticks(data)
+h_xticks(data, xticks = seq(0, 3000, 500))
+h_xticks(data, xticks = 500)
+h_xticks(data, xticks = 500, max_time = 6000)
+h_xticks(data, xticks = c(0, 500), max_time = 300)
+h_xticks(data, xticks = 500, max_time = 300)
 }
 
 }
-\keyword{internal}

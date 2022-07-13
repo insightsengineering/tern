@@ -4,6 +4,7 @@
 #' with occurrence data. Multiple occurrences within one individual are counted once at the
 #' greatest intensity/highest grade level.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
 #' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level
@@ -19,16 +20,15 @@ NULL
 #'   insert grade groupings into list with individual grade frequencies. The order of the final result
 #'   follows the order of `grade_groups`. The elements under any-grade group (if any), i.e.
 #'   the grade group equal to `refs` will be moved to the end. Grade groups names must be unique.
-#' @export
-#' @examples
 #'
+#' @examples
 #' h_append_grade_groups(
 #'   list(
 #'     "Any Grade" = as.character(1:5),
 #'     "Grade 1-2" = c("1", "2"),
 #'     "Grade 3-4" = c("3", "4")
 #'   ),
-#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50)
 #' )
 #'
 #' h_append_grade_groups(
@@ -37,7 +37,7 @@ NULL
 #'     "Grade A" = "5",
 #'     "Grade B" = c("4", "3")
 #'   ),
-#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50)
 #' )
 #'
 #' h_append_grade_groups(
@@ -48,17 +48,17 @@ NULL
 #'   ),
 #'   list("1" = 10, "2" = 5, "3" = 0)
 #' )
+#'
+#' @export
 h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
-  assertthat::assert_that(
-    is.list(grade_groups),
-    is.list(refs)
-  )
+  checkmate::assert_list(grade_groups)
+  checkmate::assert_list(refs)
   refs_orig <- refs
   elements <- unique(unlist(grade_groups))
 
   ### compute sums in groups
   grp_sum <- lapply(grade_groups, function(i) do.call(sum, refs[i]))
-  if (!all_elements_in_ref(elements, names(refs))) {
+  if (!checkmate::test_subset(elements, names(refs))) {
     padding_el <- setdiff(elements, names(refs))
     refs[padding_el] <- 0
   }
@@ -103,9 +103,8 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #' @describeIn count_occurrences_by_grade Statistics function which given occurrence data counts the
 #'  number of patients by highest grade. Returns a list of counts and fractions with one element
 #'  per grade level or grade level grouping.
-#' @export
-#' @examples
 #'
+#' @examples
 #' library(dplyr)
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1:6, 1)),
@@ -128,6 +127,8 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))
 #' )
+#'
+#' @export
 s_count_occurrences_by_grade <- function(df,
                                          .var,
                                          .N_col, # nolint
@@ -135,21 +136,20 @@ s_count_occurrences_by_grade <- function(df,
                                          grade_groups = list(),
                                          remove_single = TRUE,
                                          labelstr = "") {
-  assertthat::assert_that(
-    is_df_with_variables(df, list(grade = .var, id = id)),
-    is_valid_factor(df[[.var]])
-  )
+  assert_valid_factor(df[[.var]])
+  assert_df_with_variables(df, list(grade = .var, id = id))
 
   if (nrow(df) < 1) {
     grade_levels <- levels(df[[.var]])
     l_count <- as.list(rep(0, length(grade_levels)))
     names(l_count) <- grade_levels
   } else {
-    assertthat::assert_that(
-      is_nonnegative_count(.N_col),
-      assertthat::noNA(df[[id]]),
-      is_valid_character(df[[id]]) || is_valid_factor(df[[id]])
-    )
+    if (isTRUE(is.factor(df[[id]]))) {
+      assert_valid_factor(df[[id]], any.missing = FALSE)
+    } else {
+      checkmate::assert_character(df[[id]], min.chars = 1, any.missing = FALSE)
+    }
+    checkmate::assert_count(.N_col)
 
     id <- df[[id]]
     grade <- df[[.var]]

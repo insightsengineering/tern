@@ -1,5 +1,6 @@
 #' Odds Ratio Estimation
 #'
+#' @description `r lifecycle::badge("stable")`
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'
@@ -38,17 +39,13 @@ NULL
 #' # Odds ratio based on glm.
 #' or_glm(data, conf_level = 0.95)
 or_glm <- function(data, conf_level) {
-  assertthat::assert_that(
-    is_df_with_variables(data, list(rsp = "rsp", grp = "grp")),
-    is.logical(data$rsp),
-    is_character_or_factor(data$grp),
-    is_proportion(conf_level)
-  )
+  checkmate::assert_logical(data$rsp)
+  assert_proportion_value(conf_level)
+  assert_df_with_variables(data, list(rsp = "rsp", grp = "grp"))
+  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
 
   data$grp <- as_factor_keep_attributes(data$grp)
-  assertthat::assert_that(
-    is_df_with_nlevels_factor(data, variable = "grp", n_levels = 2)
-  )
+  assert_df_with_factors(data, list(val = "grp"), min.levels = 2, max.levels = 2)
   formula <- stats::as.formula("rsp ~ grp")
   model_fit <- stats::glm(
     formula = formula, data = data,
@@ -86,13 +83,11 @@ or_glm <- function(data, conf_level) {
 #' # Odds ratio based on stratified estimation by conditional logistic regression.
 #' or_clogit(data, conf_level = 0.95)
 or_clogit <- function(data, conf_level) {
-  assertthat::assert_that(
-    is_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata")),
-    is.logical(data$rsp),
-    is_character_or_factor(data$grp),
-    is_character_or_factor(data$strata),
-    is_proportion(conf_level)
-  )
+  checkmate::assert_logical(data$rsp)
+  assert_proportion_value(conf_level)
+  assert_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata"))
+  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
+  checkmate::assert_multi_class(data$strata, classes = c("factor", "character"))
 
   data$grp <- as_factor_keep_attributes(data$grp)
   data$strata <- as_factor_keep_attributes(data$strata)
@@ -160,11 +155,9 @@ s_odds_ratio <- function(df,
   y <- list(or_ci = "", n_tot = "")
 
   if (!.in_ref_col) {
-    assertthat::assert_that(
-      is_df_with_variables(df, list(rsp = .var)),
-      is_df_with_variables(.ref_group, list(rsp = .var)),
-      is_proportion(conf_level)
-    )
+    assert_proportion_value(conf_level)
+    assert_df_with_variables(df, list(rsp = .var))
+    assert_df_with_variables(.ref_group, list(rsp = .var))
 
     if (is.null(variables$strata)) {
       data <- data.frame(
@@ -176,9 +169,7 @@ s_odds_ratio <- function(df,
       )
       y <- or_glm(data, conf_level = conf_level)
     } else {
-      assertthat::assert_that(
-        is_df_with_variables(.df_row, c(list(rsp = .var), variables))
-      )
+      assert_df_with_variables(.df_row, c(list(rsp = .var), variables))
 
       # The group variable prepared for clogit must be synchronised with combination groups definition.
       if (is.null(groups_list)) {
@@ -215,10 +206,8 @@ s_odds_ratio <- function(df,
         strata = interaction(.df_row[variables$strata])
       )
       y_all <- or_clogit(data, conf_level = conf_level)
-      assertthat::assert_that(
-        assertthat::is.string(trt_grp),
-        trt_grp %in% names(y_all$or_ci)
-      )
+      checkmate::assert_string(trt_grp)
+      checkmate::assert_subset(trt_grp, names(y_all$or_ci))
       y$or_ci <- y_all$or_ci[[trt_grp]]
       y$n_tot <- y_all$n_tot
     }

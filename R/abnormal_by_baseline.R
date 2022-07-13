@@ -1,5 +1,6 @@
 #' Patient Counts with Abnormal Range Values by Baseline Status
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @details
 #' Note that `df` should be filtered to include only post-baseline records.
@@ -24,13 +25,14 @@
 #'
 #' @name abnormal_by_baseline
 #' @include formats.R
-#'
 NULL
 
 #' @describeIn abnormal_by_baseline Description Function that produces the labels for [s_count_abnormal_by_baseline()].
-#' @export
+#'
 #' @examples
 #' d_count_abnormal_by_baseline("LOW")
+#'
+#' @export
 d_count_abnormal_by_baseline <- function(abnormal) {
   null_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
   not_abn_name <- paste("Not", tolower(abnormal), "baseline status")
@@ -53,8 +55,6 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #' @param na_level (`string`) \cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
 #'   `df_explicit_na()`). The default is `"<Missing>"`.
 #'
-#' @export
-#'
 #' @examples
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1:6)),
@@ -63,32 +63,34 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #' )
 #' df <- df_explicit_na(df)
 #'
+#' # Internal function - s_count_abnormal_by_baseline
+#' \dontrun{
 #' # Just for one abnormal level.
 #' s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
+#' }
+#'
+#' @keywords internal
 s_count_abnormal_by_baseline <- function(df,
                                          .var,
                                          abnormal,
                                          na_level = "<Missing>",
                                          variables = list(id = "USUBJID", baseline = "BNRIND")) {
-  assertthat::assert_that(
-    assertthat::is.string(.var),
-    assertthat::is.string(abnormal),
-    assertthat::is.string(na_level),
-    is.list(variables),
-    all(names(variables) %in% c("id", "baseline")),
-    is_df_with_variables(df, c(range = .var, variables)),
-    is_character_or_factor(df[[variables$id]]),
-    is_character_or_factor(df[[variables$baseline]]),
-    is_character_or_factor(df[[.var]])
-  )
+  checkmate::assert_string(.var)
+  checkmate::assert_string(abnormal)
+  checkmate::assert_string(na_level)
+  assert_df_with_variables(df, c(range = .var, variables))
+  checkmate::assert_subset(names(variables), c("id", "baseline"))
+  checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(df[[variables$baseline]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))
 
   # If input is passed as character, changed to factor
   df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_level)
   df[[variables$baseline]] <- as_factor_keep_attributes(df[[variables$baseline]], na_level = na_level)
-  assertthat::assert_that(
-    is_factor_no_na(df[[.var]]),
-    is_factor_no_na(df[[variables$baseline]])
-  )
+
+  assert_valid_factor(df[[.var]], any.missing = FALSE)
+  assert_valid_factor(df[[variables$baseline]], any.missing = FALSE)
+
   # Keep only records with valid analysis value.
   df <- df[df[[.var]] != na_level, ]
 
@@ -134,13 +136,16 @@ s_count_abnormal_by_baseline <- function(df,
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #' @return [a_count_abnormal_by_baseline()] returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @export
-#'
 #' @examples
+#' # Internal function - a_count_abnormal_by_baseline
+#' \dontrun{
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
 #' # so that the `rtables` formatting function `format_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 #' afun(df, .var = "ANRIND", abnormal = "LOW")
+#' }
+#'
+#' @keywords internal
 a_count_abnormal_by_baseline <- make_afun(
   s_count_abnormal_by_baseline,
   .formats = c(fraction = format_fraction)
@@ -150,8 +155,6 @@ a_count_abnormal_by_baseline <- make_afun(
 #'   statistics function arguments and additional format arguments (see below).
 #'
 #' @inheritParams argument_convention
-#'
-#' @export
 #'
 #' @examples
 #'
@@ -176,6 +179,8 @@ a_count_abnormal_by_baseline <- make_afun(
 #'     .indent_mods = c(fraction = 2L)
 #'   ) %>%
 #'   build_table(df2)
+#'
+#' @export
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,
@@ -185,11 +190,8 @@ count_abnormal_by_baseline <- function(lyt,
                                        .formats = NULL,
                                        .labels = NULL,
                                        .indent_mods = NULL) {
-  assertthat::assert_that(
-    assertthat::is.string(var),
-    !is.null(names(abnormal)),
-    is_equal_length(abnormal, table_names)
-  )
+  checkmate::assert_character(abnormal, len = length(table_names), names = "named")
+  checkmate::assert_string(var)
   afun <- make_afun(
     a_count_abnormal_by_baseline,
     .stats = .stats,

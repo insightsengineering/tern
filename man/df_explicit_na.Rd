@@ -31,6 +31,8 @@ values inside non-\code{omit_columns} columns.}
 The data frame with the desired changes made.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is a helper function to encode missing entries across groups of categorical
 variables in a data frame.
 }

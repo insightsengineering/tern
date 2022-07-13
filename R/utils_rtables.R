@@ -1,13 +1,14 @@
 #' Convert Table into Matrix of Strings
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper function to use mostly within tests.
 #'
 #' @param x the table
 #'
-#' @return matrix of strings
+#' @return A matrix of strings
 #'
 #' @export
-#'
 to_string_matrix <- function(x) {
   matrix_form(x)$string
 }
@@ -17,11 +18,11 @@ to_string_matrix <- function(x) {
 #' Helper function to use in tabulating model results.
 #'
 #' @param x (`vector`)\cr input for a cell.
-#' @keywords internal
 #'
 #' @return Either empty character vector if all entries in `x` are missing (`NA`), or otherwise
 #'   the unlisted version of `x`
 #'
+#' @keywords internal
 unlist_and_blank_na <- function(x) {
   unl <- unlist(x)
   if (all(is.na(unl))) {
@@ -43,15 +44,13 @@ unlist_and_blank_na <- function(x) {
 #'
 #' @return Content function which just gives `df$analysis_var` at the row identified by
 #'   `.df_row$flag` in the given format.
-#' @keywords internal
 #'
+#' @keywords internal
 cfun_by_flag <- function(analysis_var,
                          flag_var,
                          format = "xx") {
-  assertthat::assert_that(
-    assertthat::is.string(analysis_var),
-    assertthat::is.string(flag_var)
-  )
+  checkmate::assert_string(analysis_var)
+  checkmate::assert_string(flag_var)
   function(df, labelstr) {
     row_index <- which(df[[flag_var]])
     x <- unlist_and_blank_na(df[[analysis_var]][row_index])
@@ -72,8 +71,8 @@ cfun_by_flag <- function(analysis_var,
 #'
 #' @note Important is here to not use `df` but `.N_row` in the implementation, because the former
 #'   is already split by columns and will refer to the first column of the data only.
-#' @keywords internal
 #'
+#' @keywords internal
 c_label_n <- function(df,
                       labelstr,
                       .N_row # nolint
@@ -87,6 +86,8 @@ c_label_n <- function(df,
 
 #' Layout Creating Function to Add Row Total Counts
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This works analogously to [rtables::add_colcounts()] but on the rows.
 #'
 #' @inheritParams argument_convention
@@ -94,7 +95,6 @@ c_label_n <- function(df,
 #' @return The modified layout where the latest row split labels now have the row-wise
 #'   total counts (i.e. without column based subsetting) attached in parentheses.
 #'
-#' @export
 #'
 #' @examples
 #' basic_table() %>%
@@ -104,6 +104,8 @@ c_label_n <- function(df,
 #'   add_rowcounts() %>%
 #'   analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") %>%
 #'   build_table(DM)
+#'
+#' @export
 add_rowcounts <- function(lyt) {
   summarize_row_groups(
     lyt,
@@ -113,6 +115,8 @@ add_rowcounts <- function(lyt) {
 
 #' Obtain Column Indices
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper function to extract column indices from a `VTableTree` for a given
 #' vector of column names.
 #'
@@ -120,10 +124,11 @@ add_rowcounts <- function(lyt) {
 #' @param col_names (`character`)\cr vector of column names.
 #'
 #' @return the vector of column indices.
-#' @keywords internal
 #'
+#' @export
 h_col_indices <- function(table_tree, col_names) {
-  assertthat::assert_that(has_tabletree_colnames(table_tree, col_names))
+  checkmate::assert_class(table_tree, "VTableNodeInfo")
+  checkmate::assert_subset(col_names, names(table_tree), empty.ok = FALSE)
   match(col_names, names(table_tree))
 }
 
@@ -135,10 +140,10 @@ h_col_indices <- function(table_tree, col_names) {
 #' @param x a list
 #'
 #' @return a character vector with the labels or names for the list elements
-#' @keywords internal
 #'
+#' @keywords internal
 labels_or_names <- function(x) {
-  assertthat::assert_that(is.list(x))
+  checkmate::assert_multi_class(x, c("data.frame", "list"))
   labs <- sapply(x, obj_label)
   nams <- rlang::names2(x)
   label_is_null <- sapply(labs, is.null)
@@ -148,6 +153,8 @@ labels_or_names <- function(x) {
 
 #' Convert to `rtable`
 #'
+#' @description`r lifecycle::badge("stable")`
+#'
 #' This is a new generic function to convert objects to `rtable` tables.
 #'
 #' @param x the object which should be converted to an `rtable`.
@@ -155,24 +162,27 @@ labels_or_names <- function(x) {
 #'
 #' @return The `rtable` object. Note that the concrete class will depend on the method
 #'   which is used.
-#' @export
 #'
+#' @export
 as.rtable <- function(x, ...) { # nolint
   UseMethod("as.rtable", x)
 }
 
 #' @describeIn as.rtable method for converting `data.frame` that contain numeric columns to `rtable`.
+#'
 #' @param format the format which should be used for the columns.
 #' @method as.rtable data.frame
-#' @export
+#'
 #' @examples
 #' x <- data.frame(
 #'   a = 1:10,
 #'   b = rnorm(10)
 #' )
 #' as.rtable(x)
+#'
+#' @export
 as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
-  assertthat::assert_that(all(sapply(x, is.numeric)), msg = "only works with numeric data frame columns")
+  checkmate::assert_numeric(unlist(x))
   do.call(
     rtable,
     c(
@@ -198,6 +208,8 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 
 #' Split parameters
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' It divides the data in the vector `param` into the groups defined by `f`
 #' based on specified `values`.
 #' It is relevant in `rtables` layers so as to distribute parameters
@@ -208,8 +220,6 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' @param value (`vector`)\cr the value used to split.
 #' @param f (`list` of `vectors`)\cr the reference to make the split
 #'
-#'
-#' @export
 #' @examples
 #' f <- list(
 #'   surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),
@@ -234,6 +244,8 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' #
 #' # $surv_diff
 #' # NULL
+#'
+#' @export
 h_split_param <- function(param,
                           value,
                           f) {
@@ -250,13 +262,11 @@ h_split_param <- function(param,
 #' @param all_stats (`character`)\cr all statistics which can be selected here potentially.
 #'
 #' @return Character vector with the selected statistics.
-#' @keywords internal
 #'
+#' @keywords internal
 afun_selected_stats <- function(.stats, all_stats) {
-  assertthat::assert_that(
-    is.null(.stats) || is.character(.stats),
-    is.character(all_stats)
-  )
+  checkmate::assert_character(.stats, null.ok = TRUE)
+  checkmate::assert_character(all_stats)
   if (is.null(.stats)) {
     all_stats
   } else {
@@ -266,6 +276,8 @@ afun_selected_stats <- function(.stats, all_stats) {
 
 
 #' Add Variable Labels to Top Left Corner in Table
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Helper layout creating function to just append the variable labels of a given variables vector
 #' from a given dataset in the top left corner. If a variable label is not found then the
@@ -281,8 +293,6 @@ afun_selected_stats <- function(.stats, all_stats) {
 #' 1L means two spaces indent, 2L means four spaces indent and so on.
 #'
 #' @return The modified layout.
-#'
-#' @export
 #'
 #' @examples
 #' lyt <- basic_table() %>%
@@ -300,17 +310,17 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'   analyze("AGE", afun = mean) %>%
 #'   append_varlabels(DM, c("SEX", "AGE"))
 #' build_table(lyt, DM)
+#'
+#' @export
 append_varlabels <- function(lyt, df, vars, indent = 0L) {
-  if (assertthat::is.flag(indent)) {
+  if (checkmate::test_flag(indent)) {
     warning("indent argument is now accepting integers. Boolean indent will be converted to integers.")
     indent <- as.integer(indent)
   }
 
-  assertthat::assert_that(
-    is.data.frame(df),
-    is.character(vars),
-    is_nonnegative_count(indent)
-  )
+  checkmate::assert_data_frame(df)
+  checkmate::assert_character(vars)
+  checkmate::assert_count(indent)
 
   lab <- formatters::var_labels(df[vars], fill = TRUE)
   lab <- paste(lab, collapse = " / ")

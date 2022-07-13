@@ -1,5 +1,7 @@
 #' Control Function for Descriptive Statistics
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
 #' details for [s_summary].
 #'
@@ -15,17 +17,16 @@
 control_summarize_vars <- function(conf_level = 0.95,
                                    quantiles = c(0.25, 0.75),
                                    quantile_type = 2) {
-  assertthat::assert_that(
-    all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
-    identical(length(quantiles), 2L),
-    is_proportion(conf_level),
-    is_nonnegative_count(quantile_type),
-    quantile_type <= 9
-  )
+  checkmate::assert_vector(quantiles, len = 2)
+  checkmate::assert_int(quantile_type, lower = 1, upper = 9)
+  nullo <- lapply(quantiles, assert_proportion_value)
+  assert_proportion_value(conf_level)
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
 }
 
 #' Format Function for Descriptive Statistics
+#'
+#' @description
 #'
 #' Returns format patterns for descriptive statistics.
 #' The format is understood by the `rtables`.
@@ -33,8 +34,7 @@ control_summarize_vars <- function(conf_level = 0.95,
 #' @param type (`string`)\cr choice of a summary data type.
 #' Only `counts` and `numeric` types are currently supported.
 #'
-#' @export
-#'
+#' @keywords internal
 summary_formats <- function(type = "numeric") {
   if (type == "counts") {
     c(
@@ -71,10 +71,11 @@ summary_formats <- function(type = "numeric") {
 
 #' Label Function for Descriptive Statistics
 #'
+#' @description
+#'
 #' Returns labels of descriptive statistics for numeric variables.
 #'
-#' @export
-#'
+#' @keywords internal
 summary_labels <- function() {
   c(
     mean = "Mean",
@@ -97,6 +98,8 @@ summary_labels <- function() {
 
 #' Summarize Variables
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' We use the new S3 generic function [s_summary()] to implement summaries for
 #' different `x` objects. This is used as Statistics Function in combination
 #' with the new Analyze Function [summarize_vars()].
@@ -107,12 +110,6 @@ summary_labels <- function() {
 NULL
 
 #' @inheritParams argument_convention
-#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
-#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
-#' * `quantiles`: numeric vector of length two to specify the quantiles.
-#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   See more about `type` in [stats::quantile()].
 #'
 #' @describeIn summarize_variables `s_summary` is a S3 generic function to produce
 #'   an object description.
@@ -127,11 +124,8 @@ s_summary <- function(x,
                       .N_col, # nolint
                       na_level,
                       .var,
-                      control,
                       ...) {
-  assertthat::assert_that(
-    assertthat::is.flag(na.rm)
-  )
+  checkmate::assert_flag(na.rm)
   UseMethod("s_summary", x)
 }
 
@@ -141,6 +135,13 @@ s_summary <- function(x,
 #'   intersection of a column and a row delimits an empty data selection.
 #'   Also, when the `mean` function is applied to an empty vector, `NA` will
 #'   be returned instead of `NaN`, the latter being standard behavior in R.
+#'
+#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
+#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
+#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
+#' * `quantiles`: numeric vector of length two to specify the quantiles.
+#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
+#'   See more about `type` in [stats::quantile()].
 #'
 #' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.
@@ -211,7 +212,7 @@ s_summary.numeric <- function(x, # nolint
                               .var,
                               control = control_summarize_vars(),
                               ...) {
-  assertthat::assert_that(is.numeric(x))
+  checkmate::assert_numeric(x)
 
   if (na.rm) {
     x <- x[!is.na(x)]
@@ -328,10 +329,7 @@ s_summary.factor <- function(x,
                              .N_col, # nolint
                              na_level = "<Missing>",
                              ...) {
-  assertthat::assert_that(
-    is_valid_factor(x),
-    is_factor_no_na(x)
-  )
+  assert_valid_factor(x, any.missing = FALSE)
   denom <- match.arg(denom)
 
   if (na.rm) x <- fct_discard(x, na_level)
@@ -360,6 +358,8 @@ s_summary.factor <- function(x,
 
 #' @describeIn summarize_variables Method for character class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
+#' @param verbose defaults to `TRUE`. It prints out warnings and messages. It is mainly used
+#'   to print out information about factor casting.
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
@@ -373,8 +373,8 @@ s_summary.factor <- function(x,
 #' # `s_summary.character`
 #'
 #' ## Basic usage:
-#' s_summary(c("a", "a", "b", "c", "a"), .var = "x")
-#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
                                 denom = c("n", "N_row", "N_col"),
@@ -382,8 +382,9 @@ s_summary.character <- function(x,
                                 .N_col, # nolint
                                 na_level = "<Missing>",
                                 .var,
+                                verbose = TRUE,
                                 ...) {
-  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level)
+  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level, verbose = verbose)
   s_summary(
     x = y,
     na.rm = na.rm,
@@ -505,7 +506,7 @@ a_summary.factor <- make_afun(
 #'   getS3method("a_summary", "character"),
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
-#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
+#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 a_summary.character <- make_afun(
   s_summary.character,
   .formats = .a_summary_counts_formats

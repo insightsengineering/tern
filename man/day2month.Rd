@@ -18,4 +18,5 @@ Conversion of Days to Months
 \examples{
 x <- c(403, 248, 30, 86)
 day2month(x)
+
 }

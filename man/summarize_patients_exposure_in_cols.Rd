@@ -62,6 +62,8 @@ Set to \code{FALSE} when the required column split has been done already earlier
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Counting the number of patients and summing analysis value (i.e exposure values) across all patients
 when a column table layout is required.
 }
@@ -90,12 +92,16 @@ adsl <- data.frame(
   stringsAsFactors = TRUE
 )
 
+# Internal function - s_count_patients_sum_exposure
+\dontrun{
 s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
 s_count_patients_sum_exposure(
   df = df,
   .N_col = nrow(adsl),
   custom_label = "some user's custom label"
 )
+}
+
 
 lyt <- basic_table() \%>\%
   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
@@ -126,3 +132,4 @@ lyt4 <- basic_table() \%>\%
 result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 result4
 }
+\keyword{internal}

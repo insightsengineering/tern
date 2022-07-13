@@ -27,6 +27,8 @@ control_lineplot_vars(
 A named character vector with names of variables.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Default values for \code{variables} parameter in \code{g_lineplot} function.
 A variable's default value can be overwritten for any variable.
 }

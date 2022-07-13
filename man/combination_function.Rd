@@ -24,6 +24,8 @@
 \item{x}{(\code{CombinationFunction})\cr the function which should be negated.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 \code{CombinationFunction} is an S4 class which extends standard functions. These are special functions that
 can be combined and negated with the logical operators.
 }

@@ -1,5 +1,7 @@
 #' Counting Patients and Events in Columns
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Counting the number of unique patients and the total number of all and specific events
 #' when a column table layout is required.
 #'
@@ -17,7 +19,7 @@ NULL
 #'   that corresponding table cells will stay blank.
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
-#' @export
+#'
 #' @return [s_count_patients_and_multiple_events()] returns a list with the statistics:\cr
 #' - `unique`: number of unique patients in `df`.
 #' - `all`: number of rows in `df`.
@@ -35,6 +37,9 @@ NULL
 #'   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
 #'   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 #' )
+#'
+#' # Internal function - s_count_patients_and_multiple_events
+#' \dontrun{
 #' s_count_patients_and_multiple_events(
 #'   df = df,
 #'   id = "USUBJID",
@@ -43,6 +48,9 @@ NULL
 #'     fatal = c(AESDTH = "Y")
 #'   )
 #' )
+#' }
+#'
+#' @keywords internal
 s_count_patients_and_multiple_events <- function(df, # nolint
                                                  id,
                                                  filters_list,
@@ -50,15 +58,13 @@ s_count_patients_and_multiple_events <- function(df, # nolint
                                                  labelstr = "",
                                                  custom_label = NULL) {
   checkmate::assert_list(filters_list, names = "named")
+  checkmate::assert_data_frame(df)
+  checkmate::assert_string(id)
+  checkmate::assert_disjunct(c("unique", "all"), names(filters_list))
+  checkmate::assert_character(empty_stats)
+  checkmate::assert_string(labelstr)
+  checkmate::assert_string(custom_label, null.ok = TRUE)
 
-  assertthat::assert_that(
-    is.data.frame(df),
-    assertthat::is.string(id),
-    !(any(c("unique", "all") %in% names(filters_list))),
-    is.character(empty_stats),
-    assertthat::is.string(labelstr),
-    is.null(custom_label) || assertthat::is.string(custom_label)
-  )
   # Below we want to count each row in `df` once, therefore introducing this helper index column.
   df$.row_index <- as.character(seq_len(nrow(df)))
   y <- list()
@@ -101,6 +107,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 
 #' @describeIn count_patients_events_in_cols Layout creating function which adds the count
 #'   statistics of patients and events in the column layout as content rows.
+#'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'  Set to `FALSE` when the required column split has been done already earlier in the layout pipe.

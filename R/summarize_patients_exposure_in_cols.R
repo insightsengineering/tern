@@ -1,5 +1,7 @@
 #' Counting Patients Summing Exposure Across All Patients in Columns
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Counting the number of patients and summing analysis value (i.e exposure values) across all patients
 #' when a column table layout is required.
 #'
@@ -12,7 +14,6 @@ NULL
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #' be used as label.
-#' @export
 #' @return [s_count_patients_sum_exposure()] returns a list with the statistics:\cr
 #' - `n_patients`: number of unique patients in `df`.
 #' - `sum_exposure`: sum of `.var` across all patients in `df`.
@@ -32,26 +33,28 @@ NULL
 #'   stringsAsFactors = TRUE
 #' )
 #'
+#' # Internal function - s_count_patients_sum_exposure
+#' \dontrun{
 #' s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
 #' s_count_patients_sum_exposure(
 #'   df = df,
 #'   .N_col = nrow(adsl),
 #'   custom_label = "some user's custom label"
 #' )
+#' }
+#'
+#' @keywords internal
 s_count_patients_sum_exposure <- function(df, # nolintr
                                           .var = "AVAL",
                                           id = "USUBJID",
                                           labelstr = "",
                                           .N_col, # nolintr
                                           custom_label = NULL) {
-  assertthat::assert_that(
-    is.data.frame(df),
-    assertthat::is.string(id),
-    assertthat::is.string(labelstr),
-    is.null(custom_label) || assertthat::is.string(custom_label),
-    is_df_with_variables(df, list(.var = .var, id = id)),
-    is.numeric(df[[.var]])
-  )
+  assert_df_with_variables(df, list(.var = .var, id = id))
+  checkmate::assert_string(id)
+  checkmate::assert_string(labelstr)
+  checkmate::assert_string(custom_label, null.ok = TRUE)
+  checkmate::assert_numeric(df[[.var]])
 
   row_label <- if (labelstr != "") {
     labelstr

@@ -15,6 +15,8 @@ format_fraction(x, ...)
 a string in the format \verb{num / denom (ratio \%)}. If \code{num} is 0 the format is \code{num / denom}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Formats a fraction together with ratio in percent.
 }
 \examples{

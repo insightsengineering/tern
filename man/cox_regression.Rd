@@ -5,6 +5,7 @@
 \alias{h_coxreg_univar_formulas}
 \alias{h_coxreg_multivar_formula}
 \alias{fit_coxreg_univar}
+\alias{tidy.summary.coxph}
 \alias{h_coxreg_univar_extract}
 \alias{tidy.coxreg.univar}
 \alias{fit_coxreg_multivar}
@@ -19,6 +20,8 @@ h_coxreg_univar_formulas(variables, interaction = FALSE)
 h_coxreg_multivar_formula(variables)
 
 fit_coxreg_univar(variables, data, at = list(), control = control_coxreg())
+
+\method{tidy}{summary.coxph}(x, ...)
 
 h_coxreg_univar_extract(effect, covar, data, mod, control = control_coxreg())
 
@@ -61,15 +64,15 @@ effect should be estimated.}
 \item{control}{(\code{list})\cr a list of parameters as returned by the
 helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
+\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.}
+
+\item{...}{additional arguments for the lower level functions.}
+
 \item{effect}{(\code{string})\cr the treatment variable.}
 
 \item{covar}{(\code{string})\cr the name of the covariate in the model.}
 
 \item{mod}{(\code{coxph})\cr Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
-
-\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.}
-
-\item{...}{additional arguments for the lower level functions.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
@@ -122,6 +125,8 @@ with 4 elements:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Fits a Cox regression model and estimate hazard ratio to describe the effect
 size in a survival analysis.
 }
@@ -148,6 +153,10 @@ be included in multi-variable Cox regression model.
 
 \item \code{fit_coxreg_univar}: Fit a series of univariate Cox regression models
 given the inputs.
+
+\item \code{tidy.summary.coxph}: Custom tidy method for \code{\link[survival:coxph]{survival::coxph()}} summary results.
+
+Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{data.frame} to extract model results.
 
 \item \code{h_coxreg_univar_extract}: Utility function to help tabulate the result of
 a univariate Cox regression model.
@@ -182,7 +191,6 @@ The usual formatting arguments for the \emph{layout creating} function
 When using \code{fit_coxreg_univar} there should be two study arms.
 }
 \examples{
-
 # Testing dataset [survival::bladder].
 
 library(survival)
@@ -211,7 +219,6 @@ plot(
   xlab = "Months",
   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 )
-
 # `h_coxreg_univar_formulas`
 
 ## Simple formulas.
@@ -268,7 +275,6 @@ h_coxreg_multivar_formula(
     strata = "SITE"
   )
 )
-
 # fit_coxreg_univar
 
 ## Cox regression: arm + 1 covariate.
@@ -310,6 +316,32 @@ mod4 <- fit_coxreg_univar(
   data = dta_bladder
 )
 library(survival)
+library(broom)
+library(rtables)
+
+set.seed(1, kind = "Mersenne-Twister")
+
+dta_bladder <- with(
+  data = bladder[bladder$enum < 5, ],
+  data.frame(
+    time = stop,
+    status = event,
+    armcd = as.factor(rx),
+    covar1 = as.factor(enum),
+    covar2 = factor(
+      sample(as.factor(enum)),
+      levels = 1:4, labels = c("F", "F", "M", "M")
+    )
+  )
+)
+labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+formatters::var_labels(dta_bladder)[names(labels)] <- labels
+dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
+
+formula <- "survival::Surv(time, status) ~ armcd + covar1"
+msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
+tidy(msum)
+library(survival)
 
 dta_simple <- data.frame(
   time = c(5, 5, 10, 10, 5, 5, 10, 10),
@@ -323,10 +355,10 @@ result <- h_coxreg_univar_extract(
   effect = "armcd", covar = "armcd", mod = mod, data = dta_simple
 )
 result
+
 library(broom)
 tidy(mod1)
 tidy(mod2)
-
 # fit_coxreg_multivar
 
 ## Cox regression: multivariate Cox regression.
@@ -355,7 +387,6 @@ result <- h_coxreg_multivar_extract(
 result
 library(broom)
 broom::tidy(multivar_model)
-
 # s_coxreg
 
 univar_model <- fit_coxreg_univar(
@@ -400,7 +431,6 @@ multivar_covs_model <- fit_coxreg_multivar(
 )
 df2_covs <- broom::tidy(multivar_covs_model)
 s_coxreg(df = df2_covs, .var = "hr")
-
 # summarize_coxreg
 result_univar <- basic_table() \%>\%
   split_rows_by("effect") \%>\%

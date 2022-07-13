@@ -43,6 +43,8 @@ column split.)}
 \item{table}{(\code{VTableNodeInfo})\cr an occurrence table or row.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 These are a couple of functions that help with accessing the data in \code{rtables} objects.
 Currently these work for occurrence tables, which are defined
 as having a count as the first element and a fraction as the second element in each cell.
@@ -66,3 +68,4 @@ in a table.
 \seealso{
 \verb{[prune_occurrences]} for usage of these functions.
 }
+\keyword{internal}

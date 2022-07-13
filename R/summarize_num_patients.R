@@ -1,5 +1,7 @@
 #' Number of patients
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Count the number of unique and non-unique patients in a column (variable).
 #'
 #' @inheritParams argument_convention
@@ -33,20 +35,16 @@ NULL
 #' )
 s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
 
-  assertthat::assert_that(
-    is_character_or_factor(x),
-    assertthat::is.string(labelstr),
-    is_nonnegative_count(.N_col)
-  )
+  checkmate::assert_string(labelstr)
+  checkmate::assert_count(.N_col)
+  checkmate::assert_multi_class(x, classes = c("factor", "character"))
 
   count1 <- n_available(unique(x))
   count2 <- n_available(x)
 
   if (!is.null(count_by)) {
-    assertthat::assert_that(
-      is_character_or_factor(count_by),
-      is_equal_length(count_by, x)
-    )
+    checkmate::assert_vector(count_by, len = length(x))
+    checkmate::assert_multi_class(count_by, classes = c("factor", "character"))
     count2 <- n_available(unique(interaction(x, count_by)))
   }
 
@@ -84,21 +82,16 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = NULL, count_by = NULL) { # nolint
 
-  assertthat::assert_that(
-    is.data.frame(df),
-    assertthat::is.string(.var),
-    ifelse(
-      is.null(count_by),
-      is_df_with_variables(df, list(id = .var)),
-      is_df_with_variables(df, list(id = .var, count_by = count_by))
-    )
-  )
-
+  checkmate::assert_string(.var)
+  checkmate::assert_data_frame(df)
+  if (is.null(count_by)) {
+    assert_df_with_variables(df, list(id = .var))
+  } else {
+    assert_df_with_variables(df, list(id = .var, count_by = count_by))
+  }
   if (!is.null(required)) {
-    assertthat::assert_that(
-      is_df_with_variables(df, list(required = required)),
-      assertthat::is.string(required)
-    )
+    checkmate::assert_string(required)
+    assert_df_with_variables(df, list(required = required))
     df <- df[!is.na(df[[required]]), , drop = FALSE]
   }
 

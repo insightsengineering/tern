@@ -109,7 +109,7 @@ testthat::test_that("h_adlb_worsen stacks data correctly", {
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
-testthat::test_that("h_group_counter counts data (low) correctly", {
+testthat::test_that("h_worsen_counter counts data (low) correctly", {
   df_test <- expand.grid(
     ATOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>"),
     BTOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>")
@@ -137,7 +137,7 @@ testthat::test_that("h_group_counter counts data (low) correctly", {
   testthat::expect_equal(result, expected)
 })
 
-testthat::test_that("h_group_counter counts data (high) correctly", {
+testthat::test_that("h_worsen_counter counts data (high) correctly", {
   df_test <- expand.grid(
     ATOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>"),
     BTOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>")
@@ -165,7 +165,7 @@ testthat::test_that("h_group_counter counts data (high) correctly", {
   testthat::expect_equal(result, expected)
 })
 
-testthat::test_that("h_group_counter counts data (low), no high correctly", {
+testthat::test_that("h_worsen_counter counts data (low), no high correctly", {
   df_test <- expand.grid(
     ATOXGR = c(-4, -3, -2, -1, 0, "<Missing>"),
     BTOXGR = c(-4, -3, -2, -1, 0, "<Missing>")
@@ -193,7 +193,7 @@ testthat::test_that("h_group_counter counts data (low), no high correctly", {
   testthat::expect_equal(result, expected)
 })
 
-testthat::test_that("h_group_counter counts data (low), no low correctly", {
+testthat::test_that("h_worsen_counter counts data (low), no low correctly", {
   df_test <- expand.grid(
     ATOXGR = c(0, 1, 2, 3, 4, "<Missing>"),
     BTOXGR = c(0, 1, 2, 3, 4, "<Missing>")

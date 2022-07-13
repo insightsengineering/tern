@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{combine_vectors}
 \alias{combine_vectors}
-\title{Combine Two Vectors Elementwise}
+\title{Combine Two Vectors Element Wise}
 \usage{
 combine_vectors(x, y)
 }
@@ -15,8 +15,13 @@ combine_vectors(x, y)
 A \code{list} where each element combines corresponding elements of \code{x} and \code{y}.
 }
 \description{
-Combine Two Vectors Elementwise
+Combine Two Vectors Element Wise
 }
 \examples{
+# Internal function - combine_vectors
+\dontrun{
 combine_vectors(1:3, 4:6)
 }
+
+}
+\keyword{internal}

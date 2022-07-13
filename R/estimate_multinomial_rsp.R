@@ -1,5 +1,7 @@
 #' Estimation of Proportions per Level of Factor
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Estimate the proportion along with confidence interval of a proportion
 #' regarding the level of a factor.
 #'
@@ -70,11 +72,10 @@ d_onco_rsp_label <- function(x) { # nolint
 s_length_proportion <- function(x,
                                 .N_col, # nolint snake_case
                                 ...) {
-  assertthat::assert_that(
-    is_character_or_factor(x),
-    length(unique(x)) <= 1L,
-    length(x) <= .N_col
-  )
+  checkmate::assert_multi_class(x, classes = c("factor", "character"))
+  checkmate::assert_vector(x, min.len = 0, max.len = .N_col)
+  checkmate::assert_vector(unique(x), min.len = 0, max.len = 1)
+
   n_true <- length(x)
   n_false <- .N_col - n_true
   x_logical <- rep(c(TRUE, FALSE), c(n_true, n_false))

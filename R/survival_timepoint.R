@@ -1,5 +1,7 @@
 #' Survival Time Point Analysis
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize patient's survival rate and difference of survival rates between groups at a time point.
 #'
 #' @inheritParams argument_convention
@@ -17,8 +19,6 @@
 NULL
 
 #' @describeIn survival_timepoint Statistics Function which analyzes survival rate.
-#'
-#' @export
 #'
 #' @return The statistics are:
 #' * `pt_at_risk` : patients remaining at risk.
@@ -39,16 +39,19 @@ NULL
 #' df <- ADTTE_f %>%
 #'   filter(ARMCD == "ARM A")
 #'
+#' # Internal function - s_surv_timepoint
+#' \dontrun{
 #' s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#' }
+#'
+#' @keywords internal
 s_surv_timepoint <- function(df,
                              .var,
                              time_point,
                              is_event,
                              control = control_surv_timepoint()) {
-  assertthat::assert_that(
-    is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    assertthat::is.string(.var)
-  )
+  checkmate::assert_string(.var)
+  assert_df_with_variables(df, list(tte = .var, is_event = is_event))
   checkmate::assert_numeric(df[[.var]], min.len = 1, any.missing = FALSE)
   checkmate::assert_number(time_point)
   checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
@@ -84,10 +87,14 @@ s_surv_timepoint <- function(df,
 
 #' @describeIn survival_timepoint Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
+#' # Internal function - a_surv_timepoint
+#' \dontrun{
 #' a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+#' }
+#'
+#' @keywords internal
 a_surv_timepoint <- make_afun(
   s_surv_timepoint,
   .indent_mods = c(
@@ -109,11 +116,13 @@ a_surv_timepoint <- make_afun(
 #' * `rate_diff` : event free rate difference between two groups.
 #' * `rate_diff_ci` : confidence interval for the difference.
 #' * `ztest_pval` : p-value to test the difference is 0.
-#' @export
+#'
 #' @examples
 #' df_ref_group <- ADTTE_f %>%
 #'   filter(ARMCD == "ARM B")
 #'
+#' # Internal function - s_surv_timepoint_diff
+#' \dontrun{
 #' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 #' s_surv_timepoint_diff(
 #'   df,
@@ -123,6 +132,9 @@ a_surv_timepoint <- make_afun(
 #'   time_point = 7,
 #'   is_event = "is_event"
 #' )
+#' }
+#'
+#' @keywords internal
 s_surv_timepoint_diff <- function(df,
                                   .var,
                                   .ref_group,
@@ -166,9 +178,10 @@ s_surv_timepoint_diff <- function(df,
 
 #' @describeIn survival_timepoint Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
+#' # Internal function - a_surv_timepoint_diff
+#' \dontrun{
 #' a_surv_timepoint_diff(
 #'   df,
 #'   df_ref_group,
@@ -177,6 +190,9 @@ s_surv_timepoint_diff <- function(df,
 #'   time_point = 7,
 #'   is_event = "is_event"
 #' )
+#' }
+#'
+#' @keywords internal
 a_surv_timepoint_diff <- make_afun(
   s_surv_timepoint_diff,
   .indent_mods = c(
@@ -254,7 +270,7 @@ surv_timepoint <- function(lyt,
                            .labels = NULL,
                            .indent_mods = NULL) {
   method <- match.arg(method)
-  assertthat::assert_that(assertthat::is.string(table_names_suffix))
+  checkmate::assert_string(table_names_suffix)
 
   f <- list(
     surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),

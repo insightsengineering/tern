@@ -1,5 +1,7 @@
 #' Summarize the Change from Baseline or Absolute Baseline Values
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' The primary analysis variable `.var` indicates the numerical change from baseline results,
 #' and additional required secondary analysis variables are `value` and `baseline_flag`.
 #' Depending on the baseline flag, either the absolute baseline values (at baseline)
@@ -15,31 +17,33 @@ NULL
 #' @note The data in `df` must be either all be from baseline or post-baseline visits. Otherwise
 #'   an error will be thrown.
 #'
-#' @export
-#'
 #' @examples
 #' df <- data.frame(
 #'   chg = c(1, 2, 3),
 #'   is_bl = c(TRUE, TRUE, TRUE),
 #'   val = c(4, 5, 6)
 #' )
+#'
+#' # Internal function - s_change_from_baseline
+#' \dontrun{
 #' s_change_from_baseline(
 #'   df,
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
+#' }
+#'
+#' @keywords internal
 s_change_from_baseline <- function(df,
                                    .var,
                                    variables,
                                    na.rm = TRUE, # nolint
                                    ...) {
-  assertthat::assert_that(
-    is_df_with_variables(df, c(variables, list(chg = .var))),
-    is.numeric(df[[variables$value]]),
-    is.numeric(df[[.var]]),
-    is.logical(df[[variables$baseline_flag]]),
-    length(unique(df[[variables$baseline_flag]])) < 2
-  )
+  checkmate::assert_numeric(df[[variables$value]])
+  checkmate::assert_numeric(df[[.var]])
+  checkmate::assert_logical(df[[variables$baseline_flag]])
+  checkmate::assert_vector(unique(df[[variables$baseline_flag]]), max.len = 1)
+  assert_df_with_variables(df, c(variables, list(chg = .var)))
 
   combined <- ifelse(
     df[[variables$baseline_flag]],
@@ -54,14 +58,18 @@ s_change_from_baseline <- function(df,
 
 #' @describeIn summarize_change Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
+#' # Internal function - a_change_from_baseline
+#' \dontrun{
 #' a_change_from_baseline(
 #'   df,
 #'   .var = "chg",
 #'   variables = list(value = "val", baseline_flag = "is_bl")
 #' )
+#' }
+#'
+#' @keywords internal
 a_change_from_baseline <- make_afun(
   s_change_from_baseline,
   .formats = c(

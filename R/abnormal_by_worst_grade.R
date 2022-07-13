@@ -1,5 +1,7 @@
 #' Patient Counts with the Most Extreme Post-baseline Toxicity Grade per Direction of Abnormality
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Primary analysis variable `.var` indicates the toxicity grade (factor), and additional
 #' analysis variables are `id` (character or factor), `param` (`factor`) and `grade_dir` (`factor`).
 #' The pre-processing steps are crucial when using this function.
@@ -29,8 +31,6 @@ NULL
 #'   `1` to `4`, and `Any` non-zero grade.
 #' @return [s_count_abnormal_by_worst_grade()] the single statistic `count_fraction` with grade 1 to 4
 #'   and "Any" results.
-#'
-#' @export
 #'
 #' @examples
 #' library(scda)
@@ -81,11 +81,16 @@ NULL
 #'   cur_col_subset = I(cur_col_subset)
 #' )
 #'
+#' # Internal function - s_count_abnormal_by_worst_grade
+#' \dontrun{
 #' s_count_abnormal_by_worst_grade(
 #'   df = adlb_f_alt,
 #'   .spl_context = spl_context,
 #'   .var = "GRADE_ANL"
 #' )
+#' }
+#'
+#' @keywords internal
 s_count_abnormal_by_worst_grade <- function(df, # nolint
                                             .var = "GRADE_ANL",
                                             .spl_context,
@@ -94,24 +99,15 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
                                               param = "PARAM",
                                               grade_dir = "GRADE_DIR"
                                             )) {
-  assertthat::assert_that(
-    assertthat::is.string(.var),
-    is_df_with_variables(df, c(a = .var, variables)),
-    is_valid_factor(df[[.var]]),
-    is_character_or_factor(df[[variables$id]]),
-    is_valid_factor(df[[variables$param]]),
-    is_valid_factor(df[[variables$grade_dir]])
-  )
+  checkmate::assert_string(.var)
+  assert_valid_factor(df[[.var]])
+  assert_valid_factor(df[[variables$param]])
+  assert_valid_factor(df[[variables$grade_dir]])
+  assert_df_with_variables(df, c(a = .var, variables))
+  checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
+
   # To verify that the `split_rows_by` are performed with correct variables.
-  assertthat::assert_that(
-    all(
-      c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split
-    ),
-    msg = paste(
-      "variabes$param and variables$grade_dir must match",
-      "the variables used for splitting rows in the layout."
-    )
-  )
+  checkmate::assert_subset(c(variables[["param"]], variables[["grade_dir"]]), .spl_context$split)
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ] # nolint
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "Any")
   result <- split(numeric(0), factor(x_lvls))
@@ -139,13 +135,19 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 
 #' @describeIn abnormal_by_worst_grade Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
 #' @return [a_count_abnormal_by_worst_grade()] returns the corresponding list with formatted [rtables::CellValue()].
-#' @export
+#'
 #' @examples
+#' # Internal function - a_count_abnormal_by_worst_grade
+#' \dontrun{
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 #' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 #' afun(df = adlb_f_alt, .spl_context = spl_context)
+#' }
+#'
+#' @keywords internal
 a_count_abnormal_by_worst_grade <- make_afun( # nolint
   s_count_abnormal_by_worst_grade,
   .formats = c(count_fraction = format_count_fraction)
@@ -153,9 +155,8 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 
 #' @describeIn abnormal_by_worst_grade Layout creating function which can be used for creating tables,
 #'    which can take statistics function arguments and additional format arguments (see below).
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Map excludes records without abnormal grade since they should not be displayed
 #' # in the table.
 #' map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
@@ -172,6 +173,8 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 #'     variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
 #'   ) %>%
 #'   build_table(df = adlb_f)
+#'
+#' @export
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
                                           ...,

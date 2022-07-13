@@ -1,5 +1,7 @@
 #' Combine Factor Levels
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Combine specified old factor Levels in a single new level.
 #'
 #' @param x factor
@@ -12,14 +14,12 @@
 #'
 #' @examples
 #' x <- factor(letters[1:5], levels = letters[5:1])
-#' tern:::combine_levels(x, levels = c("a", "b"))
+#' combine_levels(x, levels = c("a", "b"))
 #'
-#' tern:::combine_levels(x, c("e", "b"))
+#' combine_levels(x, c("e", "b"))
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
-  stopifnot(
-    is.factor(x),
-    all(levels %in% levels(x))
-  )
+  checkmate::assert_factor(x)
+  checkmate::assert_subset(levels, levels(x))
 
   lvls <- levels(x)
 
@@ -29,7 +29,6 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 
   x
 }
-
 
 #' Conversion of a Vector to a Factor
 #'
@@ -41,31 +40,37 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' @param x_name (`string`)\cr name of `x`.
 #' @param na_level (`string`)\cr the explicit missing level which should be used when
 #'   converting a character vector.
+#' @param verbose defaults to `TRUE`. It prints out warnings and messages.
 #'
 #' @return The factor with same attributes (except class) as `x`. Does not do any modifications
 #'   if `x` is already a factor.
 #'
-#' @export
-#'
 #' @examples
-#' as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"))
-#' as_factor_keep_attributes(c("a", "b", ""), "id")
+#' # Internal function - as_factor_keep_attributes
+#' \dontrun{
+#' as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
+#' as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
+#' }
+#'
+#' @keywords internal
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),
-                                      na_level = "<Missing>") {
-  assertthat::assert_that(
-    is.atomic(x),
-    assertthat::is.string(x_name),
-    assertthat::is.string(na_level)
-  )
+                                      na_level = "<Missing>",
+                                      verbose = TRUE) {
+  checkmate::assert_atomic(x)
+  checkmate::assert_string(x_name)
+  checkmate::assert_string(na_level)
+  checkmate::assert_flag(verbose)
   if (is.factor(x)) {
     return(x)
   }
   x_class <- class(x)[1]
-  warning(paste(
-    "automatically converting", x_class, "variable", x_name,
-    "to factor, better manually convert to factor to avoid failures"
-  ))
+  if (verbose) {
+    warning(paste(
+      "automatically converting", x_class, "variable", x_name,
+      "to factor, better manually convert to factor to avoid failures"
+    ))
+  }
   if (identical(length(x), 0L)) {
     warning(paste(
       x_name, "has length 0, this can lead to tabulation failures, better convert to factor"
@@ -100,9 +105,10 @@ as_factor_keep_attributes <- function(x,
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
 #'
 #' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
-#' @export
 #'
 #' @examples
+#' # Internal function - bins_percent_labels
+#' \dontrun{
 #' # Just pass the internal probability bounds, then 0 and 100% will be added automatically.
 #' bins_percent_labels(c(0.2, 0.5))
 #'
@@ -110,11 +116,15 @@ as_factor_keep_attributes <- function(x,
 #' bins_percent_labels(0.35224, digits = 1)
 #'
 #' # Passing an empty vector just gives a single bin 0-100%.
-#' bins_percent_labels(c())
+#' bins_percent_labels(c(0, 1))
+#' }
+#'
+#' @keywords internal
 bins_percent_labels <- function(probs,
                                 digits = 0) {
-  assertthat::assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))
-  probs <- c(0, probs, 1)
+  if (isFALSE(0 %in% probs)) probs <- c(0, probs)
+  if (isFALSE(1 %in% probs)) probs <- c(probs, 1)
+  checkmate::assert_numeric(probs, lower = 0, upper = 1, unique = TRUE, sorted = TRUE)
   percent <- round(probs * 100, digits = digits)
   left <- paste0(utils::head(percent, -1), "%")
   right <- paste0(utils::tail(percent, -1), "%")
@@ -130,6 +140,8 @@ bins_percent_labels <- function(probs,
 }
 
 #' Cutting Numeric Vector into Empirical Quantile Bins
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' This cuts a numeric vector into sample quantile bins. Note that the intervals are closed on
 #' the right side. That is, the first bin is the interval `[-Inf, q1]` where `q1` is
@@ -165,32 +177,32 @@ bins_percent_labels <- function(probs,
 #' explicit_na(ozone_binned)
 cut_quantile_bins <- function(x,
                               probs = c(0.25, 0.5, 0.75),
-                              labels = bins_percent_labels(probs),
+                              labels = NULL,
                               type = 7,
                               ordered = TRUE) {
-  checkmate::assert_character(labels, len = length(probs) + 1, any.missing = FALSE)
+  checkmate::assert_flag(ordered)
+  checkmate::assert_numeric(x)
+  if (isFALSE(0 %in% probs)) probs <- c(0, probs)
+  if (isFALSE(1 %in% probs)) probs <- c(probs, 1)
+  checkmate::assert_numeric(probs, lower = 0, upper = 1, unique = TRUE, sorted = TRUE)
+  if (is.null(labels)) labels <- bins_percent_labels(probs)
+  checkmate::assert_character(labels, len = length(probs) - 1, any.missing = FALSE, unique = TRUE)
 
-  assertthat::assert_that(
-    is.numeric(x),
-    is_quantiles_vector(probs, include_boundaries = FALSE),
-    !any(duplicated(labels)),
-    assertthat::is.flag(ordered)
-  )
   if (all(is.na(x))) {
     # Early return if there are only NAs in input.
     return(factor(x, ordered = ordered, levels = labels))
   }
-  probs <- c(0, probs, 1)
+
+
   quantiles <- stats::quantile(
     x,
     probs = probs,
     type = type,
     na.rm = TRUE
   )
-  assertthat::assert_that(
-    !any(duplicated(quantiles)),
-    msg = "Duplicate quantiles produced, please use a coarser `probs` vector"
-  )
+
+  checkmate::assert_numeric(quantiles, unique = TRUE)
+
   cut(
     x,
     breaks = quantiles,
@@ -214,11 +226,8 @@ cut_quantile_bins <- function(x,
 #' @examples
 #' fct_discard(factor(c("a", "b", "c")), "c")
 fct_discard <- function(x, discard) {
-  assertthat::assert_that(
-    is.factor(x),
-    is.character(discard),
-    assertthat::noNA(discard)
-  )
+  checkmate::assert_factor(x)
+  checkmate::assert_character(discard, any.missing = FALSE)
   new_obs <- x[!(x %in% discard)]
   new_levels <- setdiff(levels(x), discard)
   factor(new_obs, levels = new_levels)
@@ -236,16 +245,13 @@ fct_discard <- function(x, discard) {
 #' @return The modified factor with inserted and existing `NA` converted to `na_level`.
 #' @seealso [forcats::fct_explicit_na()] which is used internally.
 #'
-#' @export
-#'
 #' @examples
 #' fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
+#'
+#' @export
 fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
-  assertthat::assert_that(
-    is.factor(x),
-    is.logical(condition),
-    identical(length(x), length(condition))
-  )
+  checkmate::assert_factor(x, len = length(condition))
+  checkmate::assert_logical(condition)
   x[condition] <- NA
   forcats::fct_explicit_na(x, na_level = na_level)
 }
@@ -267,16 +273,15 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #'   in the given character vectors input will be set to the missing level.
 #' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'
-#' @export
-#'
 #' @examples
 #' fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
+#'
+#' @export
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   new_lvls <- names(list(...))
-  assertthat::assert_that(
-    !(.na_level %in% new_lvls),
-    msg = paste0(".na_level currently set to '", .na_level, "' must not be contained in the new levels")
-  )
+  if (checkmate::test_subset(.na_level, new_lvls)) {
+    stop(paste0(".na_level currently set to '", .na_level, "' must not be contained in the new levels"))
+  }
   x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
@@ -298,12 +303,10 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 #' @seealso [df_explicit_na()]
 #'
 #' @keywords internal
-#'
-#' @md
 replace_emptys_with_na <- function(df, rep_str = "NA") {
 
   # checks
-  stopifnot(assertthat::is.string(rep_str))
+  checkmate::assert_string(rep_str)
 
   # col logical v
   where_to_mod <- apply(df, 2, function(x) any(nchar(x) == 0))

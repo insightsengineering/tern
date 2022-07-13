@@ -21,7 +21,7 @@ h_g_ipp(
   caption = NULL,
   add_baseline_hline = FALSE,
   yvar_baseline = "BASE",
-  ggtheme = h_set_nest_theme(10),
+  ggtheme = nestcolor::theme_nest(),
   col = getOption("tern.color")
 )
 
@@ -37,7 +37,7 @@ g_ipp(
   caption = NULL,
   add_baseline_hline = FALSE,
   yvar_baseline = "BASE",
-  ggtheme = h_set_nest_theme(10),
+  ggtheme = nestcolor::theme_nest(),
   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
   max_obs_per_plot = 4,
   col = getOption("tern.color")
@@ -85,6 +85,9 @@ plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
 a \code{ggplot} object or a list of \code{ggplot} objects.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Line plot(s) displaying trend in patients' parameter values over time is rendered.
 Patients' individual baseline values can be added to the plot(s) as reference.
 }

@@ -1,5 +1,7 @@
 #' Helper Functions for Tabulating Survival Duration by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper functions that tabulate in a data frame statistics such as median survival
 #' time and hazard ratio for population subgroups.
 #'
@@ -11,8 +13,8 @@
 #' @param arm (`factor`)\cr the treatment group variable.
 #' @name h_survival_duration_subgroups
 #' @order 1
-#' @examples
 #'
+#' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
@@ -38,26 +40,25 @@
 #'   )
 #' labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
 NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
 #' @inheritParams h_survival_duration_subgroups
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Extract median survival time for one group.
 #' h_survtime_df(
 #'   tte = adtte_f$AVAL,
 #'   is_event = adtte_f$is_event,
 #'   arm = adtte_f$ARM
 #' )
+#'
+#' @export
 h_survtime_df <- function(tte, is_event, arm) {
-  assertthat::assert_that(
-    is.numeric(tte),
-    is.logical(is_event),
-    is.factor(arm),
-    is_equal_length(tte, is_event, arm)
-  )
+  checkmate::assert_numeric(tte)
+  checkmate::assert_logical(is_event, len = length(tte))
+  assert_valid_factor(arm, len = length(tte))
 
   df_tte <- data.frame(
     tte = tte,
@@ -99,9 +100,8 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
 #'    requires elements `tte`, `is_event`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Extract median survival time for multiple groups.
 #' h_survtime_subgroups_df(
 #'   variables = list(
@@ -130,17 +130,18 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'     )
 #'   )
 #' )
+#'
+#' @export
 h_survtime_subgroups_df <- function(variables,
                                     data,
                                     groups_lists = list(),
                                     label_all = "All Patients") {
-  assertthat::assert_that(
-    is.character(variables$tte),
-    is.character(variables$is_event),
-    is.character(variables$arm),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
-    is_df_with_variables(data, as.list(unlist(variables)))
-  )
+  checkmate::assert_character(variables$tte)
+  checkmate::assert_character(variables$is_event)
+  checkmate::assert_character(variables$arm)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
+
+  assert_df_with_variables(data, variables)
 
   checkmate::assert_string(label_all)
 
@@ -174,22 +175,19 @@ h_survtime_subgroups_df <- function(variables,
 #'   treatment hazard ratio.
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
 #'   required if stratified analysis is performed.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Extract hazard ratio for one group.
 #' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
 #'
 #' # Extract hazard ratio for one group with stratification factor.
 #' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
+#'
+#' @export
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
-  assertthat::assert_that(
-    is.numeric(tte),
-    is.logical(is_event),
-    is.factor(arm),
-    assertthat::are_equal(nlevels(arm), 2),
-    is_equal_length(tte, is_event, arm)
-  )
+  checkmate::assert_numeric(tte)
+  checkmate::assert_logical(is_event, len = length(tte))
+  assert_valid_factor(arm, n.levels = 2, len = length(tte))
 
   df_tte <- data.frame(tte = tte, is_event = is_event)
   strata_vars <- NULL
@@ -197,15 +195,10 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   if (!is.null(strata_data)) {
     if (is.data.frame(strata_data)) {
       strata_vars <- names(strata_data)
-      assertthat::assert_that(
-        assertthat::are_equal(nrow(strata_data), nrow(df_tte)),
-        is_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
-      )
+      checkmate::assert_data_frame(strata_data, nrows = nrow(df_tte))
+      assert_df_with_factors(strata_data, as.list(stats::setNames(strata_vars, strata_vars)))
     } else {
-      assertthat::assert_that(
-        is_valid_factor(strata_data),
-        assertthat::are_equal(length(strata_data), nrow(df_tte))
-      )
+      assert_valid_factor(strata_data, len = nrow(df_tte))
       strata_vars <- "strata_data"
     }
     df_tte[strata_vars] <- strata_data
@@ -281,9 +274,8 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   `data`, passed as a named list and requires elements `tte`, `is_event`, `arm` and
 #'   optionally `subgroups` and `strat`. `groups_lists` optionally specifies
 #'   groupings for `subgroups` variables.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Extract hazard ratio for multiple groups.
 #' h_coxph_subgroups_df(
 #'   variables = list(
@@ -324,20 +316,20 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   ),
 #'   data = adtte_f
 #' )
+#'
+#' @export
 h_coxph_subgroups_df <- function(variables,
                                  data,
                                  groups_lists = list(),
                                  control = control_coxph(),
                                  label_all = "All Patients") {
-  assertthat::assert_that(
-    is.character(variables$tte),
-    is.character(variables$is_event),
-    is.character(variables$arm),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.character(variables$strat) || is.null(variables$strat),
-    is_df_with_variables(data, as.list(unlist(variables))),
-    is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
-  )
+  checkmate::assert_character(variables$tte)
+  checkmate::assert_character(variables$is_event)
+  checkmate::assert_character(variables$arm)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
+  checkmate::assert_character(variables$strat, null.ok = TRUE)
+  assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
+  assert_df_with_variables(data, variables)
   checkmate::assert_string(label_all)
 
   # Add All Patients.
@@ -395,8 +387,6 @@ h_coxph_subgroups_df <- function(variables,
 #'
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
 #'
-#' @export
-#'
 #' @examples
 #' library(rtables)
 #'
@@ -419,15 +409,15 @@ h_coxph_subgroups_df <- function(variables,
 #'     y = list("AB" = c("A", "B"), "C" = "C")
 #'   )
 #' )
+#'
+#' @export
 h_split_by_subgroups <- function(data,
                                  subgroups,
                                  groups_lists = list()) {
   checkmate::assert_character(subgroups, min.len = 1, any.missing = FALSE)
   checkmate::assert_list(groups_lists, names = "named")
-  assertthat::assert_that(
-    is_df_with_factors(data, as.list(stats::setNames(subgroups, subgroups))),
-    all(names(groups_lists) %in% subgroups)
-  )
+  checkmate::assert_subset(names(groups_lists), subgroups)
+  assert_df_with_factors(data, as.list(stats::setNames(subgroups, subgroups)))
 
   data_labels <- unname(formatters::var_labels(data))
   df_subgroups <- data[, subgroups, drop = FALSE]

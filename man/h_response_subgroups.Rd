@@ -54,10 +54,12 @@ two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_pr
 so no test is performed.}
 }
 \description{
-Helper functions that tabulate in a data frame statistics such as response rate
-and odds ratio for population subgroups.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
+Helper functions that tabulate in a data frame statistics such as response rate
+and odds ratio for population subgroups.
+
 Main functionality is to prepare data for use in a layout creating function.
 }
 \section{Functions}{

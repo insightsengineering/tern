@@ -1,5 +1,8 @@
 #' Line plot with the optional table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Line plot with the optional table
 #'
 #' @param df (`data frame`) \cr data set containing all analysis variables.
 #' @param alt_counts_df (`data frame` or `NULL`) \cr
@@ -150,61 +153,62 @@ g_lineplot <- function(df, # nolint
                        subtitle_add_paramcd = TRUE,
                        subtitle_add_unit = TRUE,
                        caption = NULL,
-                       table_format = tern::summary_formats(),
-                       table_labels = tern::summary_labels(),
+                       table_format = summary_formats(),
+                       table_labels = summary_labels(),
                        table_font_size = 3,
                        newpage = TRUE,
                        col = getOption("tern.color")) {
-  assertthat::assert_that(is.character(variables) || is.na(variables))
-  assertthat::assert_that(is.character(mid) || is.null(mid))
-  assertthat::assert_that(is.character(interval) || is.null(interval))
-  assertthat::assert_that(ifelse(is.character(interval), length(whiskers) <= 2, TRUE))
-  assertthat::assert_that(ifelse(length(whiskers) == 1, is.character(mid), TRUE))
-  assertthat::assert_that(assertthat::is.string(title) || is.null(title))
-  assertthat::assert_that(assertthat::is.string(subtitle) || is.null(subtitle))
-  assertthat::assert_that(
-    ifelse(
-      is.character(mid),
-      (length(mid_type) == 1) && mid_type %in% c("pl", "p", "l"),
-      TRUE
-    )
-  )
-  assertthat::assert_that(is.character(col))
+  checkmate::assert_character(variables, any.missing = TRUE)
+  checkmate::assert_character(mid, null.ok = TRUE)
+  checkmate::assert_character(interval, null.ok = TRUE)
+  checkmate::assert_character(col)
 
+  checkmate::assert_string(title, null.ok = TRUE)
+  checkmate::assert_string(subtitle, null.ok = TRUE)
+
+  if (is.character(interval)) {
+    checkmate::assert_vector(whiskers, min.len = 0, max.len = 2)
+  }
+
+  if (length(whiskers) == 1) {
+    checkmate::assert_character(mid)
+  }
+
+  if (is.character(mid)) {
+    checkmate::assert_scalar(mid_type)
+    checkmate::assert_subset(mid_type, c("pl", "p", "l"))
+  }
 
   x <- variables[["x"]]
   y <- variables[["y"]]
-  paramcd <- variables["paramcd"] # NA if paramcd == NA or it is not in variables # nolint
-  y_unit <- variables["y_unit"] # NA if y_unit == NA or it is not in variables # nolint
-  strata <- if (!is.na(variables["strata"])) variables[["strata"]] # NULL if strata == NA or it is not in variables # nolint
+  paramcd <- variables["paramcd"] # NA if paramcd == NA or it is not in variables
+  y_unit <- variables["y_unit"] # NA if y_unit == NA or it is not in variables
+  if (is.na(variables["strata"])) {
+    strata <- NULL # NULL if strata == NA or it is not in variables
+  } else {
+    strata <- variables[["strata"]]
+  }
+  checkmate::assert_flag(y_lab_add_paramcd, null.ok = TRUE)
+  checkmate::assert_flag(subtitle_add_paramcd, null.ok = TRUE)
+  if ((!is.null(y_lab) && y_lab_add_paramcd) || (!is.null(subtitle) && subtitle_add_paramcd)) {
+    checkmate::assert_false(is.na(paramcd))
+    checkmate::assert_scalar(unique(df[[paramcd]]))
+  }
 
-  assertthat::assert_that(
-    ifelse(
-      (!is.null(y_lab) && y_lab_add_paramcd) || (!is.null(subtitle) && subtitle_add_paramcd),
-      !is.na(paramcd),
-      TRUE
-    )
-  )
-  assertthat::assert_that(
-    ifelse(
-      (!is.null(y_lab) && y_lab_add_unit) || (!is.null(subtitle) && subtitle_add_unit),
-      !is.na(y_unit),
-      TRUE
-    )
-  )
-  assertthat::assert_that(ifelse(!is.na(paramcd), length(unique(df[[paramcd]])) == 1, TRUE))
-  assertthat::assert_that(ifelse(!is.na(y_unit), length(unique(df[[y_unit]])) == 1, TRUE))
-  assertthat::assert_that(
-    ifelse(
-      !is.null(strata) && !is.null(alt_counts_df),
-      all(unique(alt_counts_df[[strata]]) %in% unique(df[[strata]])),
-      TRUE
-    )
-  )
+  checkmate::assert_flag(y_lab_add_unit, null.ok = TRUE)
+  checkmate::assert_flag(subtitle_add_unit, null.ok = TRUE)
+  if ((!is.null(y_lab) && y_lab_add_unit) || (!is.null(subtitle) && subtitle_add_unit)) {
+    checkmate::assert_false(is.na(y_unit))
+    checkmate::assert_scalar(unique(df[[y_unit]]))
+  }
 
-  ##################################################
-  ## Compute required statistics.
-  ##################################################
+  if (!is.null(strata) && !is.null(alt_counts_df)) {
+    checkmate::assert_set_equal(unique(alt_counts_df[[strata]]), unique(df[[strata]]))
+  }
+
+  ####################################### |
+  # ---- Compute required statistics ----
+  ####################################### |
   if (!is.null(strata)) {
     df_grp <- tidyr::expand(df, .data[[strata]], .data[[x]]) # expand based on levels of factors
   } else {
@@ -220,7 +224,7 @@ g_lineplot <- function(df, # nolint
       .groups = "drop"
     )
 
-  df_stats <- df_stats %>% dplyr::filter(!is.na(mean))
+  df_stats <- df_stats %>% dplyr::filter(!is.na(mid))
 
   # add number of objects N in strata
   if (!is.null(strata) && !is.null(alt_counts_df)) {
@@ -230,7 +234,9 @@ g_lineplot <- function(df, # nolint
     colnames(df_N) <- c(strata, "N") # nolint
     df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")") # nolint
 
-    assertthat::assert_that(!(strata_N %in% colnames(df_stats)))
+    # strata_N should not be in clonames(df_stats)
+    checkmate::assert_disjunct(strata_N, colnames(df_stats))
+
     df_stats <- merge(x = df_stats, y = df_N[, c(strata, strata_N)], by = strata)
   } else if (!is.null(strata)) {
     strata_N <- strata # nolint
@@ -238,9 +244,9 @@ g_lineplot <- function(df, # nolint
     strata_N <- NULL # nolint
   }
 
-  ##################################################
-  ## Prepare certain plot's properties.
-  ##################################################
+  ############################################### |
+  # ---- Prepare certain plot's properties. ----
+  ############################################### |
   # legend title
   if (is.null(legend_title) && !is.null(strata) && legend_position != "none") {
     legend_title <- attr(df[[strata]], "label")
@@ -272,9 +278,9 @@ g_lineplot <- function(df, # nolint
     subtitle <- trimws(subtitle)
   }
 
-  ##################################################
-  ## Build plot object.
-  ##################################################
+  ############################### |
+  # ---- Build plot object. ----
+  ############################### |
   p <- ggplot2::ggplot(
     data = df_stats,
     mapping = ggplot2::aes_string(
@@ -349,9 +355,9 @@ g_lineplot <- function(df, # nolint
       )
   }
 
-  ##################################################
-  ## Optionally, add table to the bottom of the plot.
-  ##################################################
+  ############################################################# |
+  # ---- Optionally, add table to the bottom of the plot. ----
+  ############################################################# |
   if (!is.null(table)) {
     df_stats_table <- df_grp %>%
       dplyr::summarise(
@@ -403,6 +409,7 @@ g_lineplot <- function(df, # nolint
 
 #' Helper function to get the right formatting in the optional table in g_lineplot.
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @param x (named `list`) \cr list of numerical values to be formatted and optionally labeled.
 #' Elements of `x` must be `numeric` vectors.
@@ -422,8 +429,6 @@ g_lineplot <- function(df, # nolint
 #'
 #' @return 1-row \code{data.frame} object
 #'
-#' @export
-#'
 #' @examples
 #'
 #' mean_ci <- c(48, 51)
@@ -435,6 +440,8 @@ g_lineplot <- function(df, # nolint
 #' attr(mean_ci, "label") <- "Mean 95% CI"
 #' x <- list(mean = 50, mean_ci = mean_ci)
 #' h_format_row(x, format, labels)
+#'
+#' @export
 h_format_row <- function(x, format, labels = NULL) {
 
   # cell: one row, one column data.frame
@@ -466,6 +473,7 @@ h_format_row <- function(x, format, labels = NULL) {
 
 #' Control Function for g_lineplot Function
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Default values for `variables` parameter in `g_lineplot` function.
 #' A variable's default value can be overwritten for any variable.
@@ -486,11 +494,11 @@ h_format_row <- function(x, format, labels = NULL) {
 #' control_lineplot_vars()
 #' control_lineplot_vars(strata = NA)
 control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU") {
-  assertthat::assert_that(is.character(x))
-  assertthat::assert_that(is.character(y))
-  assertthat::assert_that(is.character(strata) || is.na(strata))
-  assertthat::assert_that(is.character(paramcd) || is.na(paramcd))
-  assertthat::assert_that(is.character(y_unit) || is.na(y_unit))
+  checkmate::assert_string(x)
+  checkmate::assert_string(y)
+  checkmate::assert_string(strata, na.ok = TRUE)
+  checkmate::assert_string(paramcd, na.ok = TRUE)
+  checkmate::assert_string(y_unit, na.ok = TRUE)
 
   variables <- c(x = x, y = y, strata = strata, paramcd = paramcd, y_unit = y_unit)
   return(variables)

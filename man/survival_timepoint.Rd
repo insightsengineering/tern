@@ -124,6 +124,8 @@ The statistics are:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Summarize patient's survival rate and difference of survival rates between groups at a time point.
 }
 \section{Functions}{
@@ -156,11 +158,21 @@ ADTTE_f <- ADTTE \%>\%
 df <- ADTTE_f \%>\%
   filter(ARMCD == "ARM A")
 
+# Internal function - s_surv_timepoint
+\dontrun{
 s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+}
+
+# Internal function - a_surv_timepoint
+\dontrun{
 a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+}
+
 df_ref_group <- ADTTE_f \%>\%
   filter(ARMCD == "ARM B")
 
+# Internal function - s_surv_timepoint_diff
+\dontrun{
 s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 s_surv_timepoint_diff(
   df,
@@ -170,6 +182,10 @@ s_surv_timepoint_diff(
   time_point = 7,
   is_event = "is_event"
 )
+}
+
+# Internal function - a_surv_timepoint_diff
+\dontrun{
 a_surv_timepoint_diff(
   df,
   df_ref_group,
@@ -178,6 +194,8 @@ a_surv_timepoint_diff(
   time_point = 7,
   is_event = "is_event"
 )
+}
+
 
 # Survival at given time points.
 basic_table() \%>\%
@@ -218,3 +236,4 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df = ADTTE_f)
 }
+\keyword{internal}

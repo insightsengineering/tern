@@ -67,6 +67,8 @@ to avoid warnings from \code{rtables}.}
 \code{count_fraction} with one element for each threshold.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 These are specific functions to count patients with missed doses. The difference to \code{\link[=count_cumulative]{count_cumulative()}} is
 mainly the special labels.
 }
@@ -89,12 +91,25 @@ an additional layer on top of \code{count_cumulative} specifically for missed do
 \examples{
 set.seed(1)
 x <- c(sample(1:10, 10), NA)
+
+# Internal function - s_count_nonmissing
+\dontrun{
 s_count_nonmissing(x)
+}
+
+# Internal function - s_count_missed_doses
+\dontrun{
 s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+}
+
+# Internal function - a_count_missed_doses
+\dontrun{
 #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
 afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+}
+
 library(dplyr)
 library(scda)
 adex <- synthetic_cdisc_data("latest")$adex
@@ -113,3 +128,4 @@ basic_table() \%>\%
   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") \%>\%
   build_table(anl, alt_counts_df = adsl)
 }
+\keyword{internal}

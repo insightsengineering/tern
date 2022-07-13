@@ -65,6 +65,8 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 control outlook of the Kaplan-Meier curve.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Draw the Kaplan-Meier plot using \code{ggplot2}.
 }
 \examples{
@@ -77,9 +79,9 @@ library(survival)
 fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-data_plot <- tern:::h_data_plot(fit_km = fit_km)
-xticks <- tern:::h_xticks(data = data_plot)
-gg <- tern:::h_ggkm(
+data_plot <- h_data_plot(fit_km = fit_km)
+xticks <- h_xticks(data = data_plot)
+gg <- h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks,
@@ -93,4 +95,3 @@ gg
 }
 
 }
-\keyword{internal}

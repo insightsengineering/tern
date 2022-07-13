@@ -34,6 +34,8 @@ across all specified columns.
 \description{
 Functions to score occurrence table subtables and rows which can be used in the
 sorting of occurrence tables.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \section{Functions}{
 \itemize{
@@ -52,7 +54,6 @@ specified columns. Note that this is extending \code{\link[rtables:score_funs]{r
 
 \examples{
 
-library(assertthat)
 library(scda)
 library(rtables)
 adsl <- synthetic_cdisc_data("latest")$adsl

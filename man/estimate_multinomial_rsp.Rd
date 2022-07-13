@@ -56,6 +56,8 @@ to avoid warnings from \code{rtables}.}
 See \code{\link[=s_proportion]{s_proportion()}} for statistics and additional possible arguments.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Estimate the proportion along with confidence interval of a proportion
 regarding the level of a factor.
 }

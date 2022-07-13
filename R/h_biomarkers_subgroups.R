@@ -1,5 +1,7 @@
 #' Helper Function for Tabulation of a Single Biomarker Result
 #'
+#' @description`r lifecycle::badge("stable")`
+#'
 #' This is used by [h_tab_surv_one_biomarker()] and [h_tab_rsp_one_biomarker()],
 #' please see there for examples.
 #'
@@ -8,6 +10,7 @@
 #' @param colvars (`list` with `vars` and `labels`)\cr variables to tabulate and their labels.
 #'
 #' @return The `rtables` table object.
+#'
 #' @export
 h_tab_one_biomarker <- function(df,
                                 afuns,

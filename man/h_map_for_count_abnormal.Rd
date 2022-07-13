@@ -32,11 +32,12 @@ for low direction and at least one observation with high range is not missing fo
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Helper Function to create a map dataframe from the input dataset, which can be used as an argument in the
 \code{trim_levels_to_map} split function. Based on different method, the map is constructed differently.
 }
 \examples{
-
 library(scda)
 adlb <- synthetic_cdisc_data("latest")$adlb
 adlb <- df_explicit_na(adlb)
@@ -81,4 +82,5 @@ h_map_for_count_abnormal(
   method = "range",
   na_level = "<Missing>"
 )
+
 }

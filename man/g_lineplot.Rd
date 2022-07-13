@@ -28,8 +28,8 @@ g_lineplot(
   subtitle_add_paramcd = TRUE,
   subtitle_add_unit = TRUE,
   caption = NULL,
-  table_format = tern::summary_formats(),
-  table_labels = tern::summary_labels(),
+  table_format = summary_formats(),
+  table_labels = summary_labels(),
   table_font_size = 3,
   newpage = TRUE,
   col = getOption("tern.color")
@@ -137,6 +137,8 @@ controls the font size of values in the table.}
 \code{ggplot}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Line plot with the optional table
 }
 \examples{

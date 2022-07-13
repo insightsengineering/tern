@@ -1,5 +1,7 @@
 #' Combination Functions Class
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' `CombinationFunction` is an S4 class which extends standard functions. These are special functions that
 #' can be combined and negated with the logical operators.
 #'

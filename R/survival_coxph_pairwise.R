@@ -1,5 +1,7 @@
 #' Pairwise CoxPH model
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
 #'
 #' @md
@@ -19,8 +21,6 @@
 NULL
 
 #' @describeIn survival_coxph_pairwise Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
-#'
-#' @export
 #'
 #' @return The statistics are:
 #' * `pvalue` : p-value to test HR = 1.
@@ -42,7 +42,12 @@ NULL
 #' df_ref_group <- ADTTE_f %>%
 #'   filter(ARMCD == "ARM B")
 #'
+#' # Internal function - s_coxph_pairwise
+#' \dontrun{
 #' s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+#' }
+#'
+#' @keywords internal
 s_coxph_pairwise <- function(df,
                              .ref_group,
                              .in_ref_col,
@@ -50,12 +55,10 @@ s_coxph_pairwise <- function(df,
                              is_event,
                              strat = NULL,
                              control = control_coxph()) {
-  assertthat::assert_that(
-    is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    assertthat::is.string(.var),
-    is.numeric(df[[.var]]),
-    is.logical(df[[is_event]])
-  )
+  checkmate::assert_string(.var)
+  checkmate::assert_numeric(df[[.var]])
+  checkmate::assert_logical(df[[is_event]])
+  assert_df_with_variables(df, list(tte = .var, is_event = is_event))
   pval_method <- control$pval_method
   ties <- control$ties
   conf_level <- control$conf_level
@@ -113,10 +116,14 @@ s_coxph_pairwise <- function(df,
 
 #' @describeIn survival_coxph_pairwise Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
+#' # Internal function - a_coxph_pairwise
+#' \dontrun{
 #' a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+#' }
+#'
+#' @keywords internal
 a_coxph_pairwise <- make_afun(
   s_coxph_pairwise,
   .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L, n_tot = 0L, n_tot_events = 0L),
@@ -133,8 +140,8 @@ a_coxph_pairwise <- make_afun(
 #' @describeIn survival_coxph_pairwise Analyze Function which adds the pairwise coxph analysis
 #'   to the input layout. Note that additional formatting arguments can be used here.
 #' @export
-#' @examples
 #'
+#' @examples
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%

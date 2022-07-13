@@ -2,8 +2,7 @@
 % Please edit documentation in R/kaplan_meier_plot.R
 \name{h_grob_coxph}
 \alias{h_grob_coxph}
-\title{Helper Function: CoxPH Grob
-Grob of \code{rtable} output from \link{h_tbl_coxph_pairwise}}
+\title{Helper Function: CoxPH Grob}
 \usage{
 h_grob_coxph(
   ...,
@@ -23,7 +22,8 @@ h_grob_coxph(
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }
 \description{
-Helper Function: CoxPH Grob
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Grob of \code{rtable} output from \link{h_tbl_coxph_pairwise}
 }
 \examples{
@@ -38,7 +38,7 @@ grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 data <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
-tbl_grob <- tern:::h_grob_coxph(
+tbl_grob <- h_grob_coxph(
   df = data,
   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),
   control_coxph_pw = control_coxph(conf_level = 0.9), x = 0.5, y = 0.5
@@ -47,4 +47,3 @@ grid::grid.draw(tbl_grob)
 }
 
 }
-\keyword{internal}

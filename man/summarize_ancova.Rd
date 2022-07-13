@@ -85,6 +85,8 @@ comparison to the reference group.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
 multiple timepoints within the same response variable \code{.var}.
 }
@@ -108,6 +110,7 @@ h_ancova(
   .df_row = iris,
   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 )
+
 library(scda)
 library(dplyr)
 
@@ -130,8 +133,16 @@ variables <- list(arm = "ARMCD", covariates = "SEX * AGE")
   filter(ARMCD == "ARM A")
 conf_level <- 0.95
 
+# Internal function - s_ancova
+\dontrun{
 s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+}
+
+# Internal function - a_ancova
+\dontrun{
 a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+}
+
 
 library(scda)
 library(rtables)
@@ -177,3 +188,4 @@ basic_table() \%>\%
   build_table(adqs_multi, alt_counts_df = adsl)
 }
 }
+\keyword{internal}

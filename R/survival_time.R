@@ -1,5 +1,7 @@
 #' Survival Time Analysis
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize median survival time and CIs, percentiles of survival times, \cr
 #' survival time range of censored/event patients.
 #'
@@ -18,8 +20,6 @@ NULL
 
 #' @describeIn survival_time Statistics Function which analyzes survival times.
 #'  `range_censor` and `range_event`.
-#'
-#' @export
 #'
 #' @return The statistics are:
 #' * `median` : median survival time.
@@ -40,15 +40,19 @@ NULL
 #'     is_event = CNSR == 0
 #'   )
 #' df <- ADTTE_f %>% filter(ARMCD == "ARM A")
+#'
+#' # Internal function - s_surv_time
+#' \dontrun{
 #' s_surv_time(df, .var = "AVAL", is_event = "is_event")
+#' }
+#'
+#' @keywords internal
 s_surv_time <- function(df,
                         .var,
                         is_event,
                         control = control_surv_time()) {
-  assertthat::assert_that(
-    is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    assertthat::is.string(.var)
-  )
+  checkmate::assert_string(.var)
+  assert_df_with_variables(df, list(tte = .var, is_event = is_event))
   checkmate::assert_numeric(df[[.var]], min.len = 1, any.missing = FALSE)
   checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
 
@@ -84,10 +88,14 @@ s_surv_time <- function(df,
 
 #' @describeIn survival_time Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
+#' # Internal function - a_surv_time
+#' \dontrun{
 #' a_surv_time(df, .var = "AVAL", is_event = "is_event")
+#' }
+#'
+#' @keywords internal
 a_surv_time <- make_afun(
   s_surv_time,
   .indent_mods = c(

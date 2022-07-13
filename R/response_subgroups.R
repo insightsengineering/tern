@@ -1,5 +1,7 @@
 #' Tabulate Binary Response by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Tabulate statistics such as response rate and odds ratio for population subgroups.
 #'
 #' @details These functions create a layout starting from a data frame which contains
@@ -47,8 +49,8 @@ NULL
 #'   optionally specifies groupings for `subgroups` variables.
 #' @param label_all (`string`)\cr label for the total population analysis.
 #' @export
-#' @examples
 #'
+#' @examples
 #' # Unstratified analysis.
 #' df <- extract_rsp_subgroups(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -102,9 +104,14 @@ extract_rsp_subgroups <- function(variables,
 
 #' @describeIn response_subgroups Formatted Analysis function used to format the results of [extract_rsp_subgroups()].
 #'   Returns is a list of Formatted Analysis functions with one element per statistic.
-#' @export
+#'
 #' @examples
+#' # Internal function - a_response_subgroups
+#' \dontrun{
 #' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
+#' }
+#'
+#' @keywords internal
 a_response_subgroups <- function(.formats = list(
                                    n = "xx",
                                    n_rsp = "xx",
@@ -114,12 +121,10 @@ a_response_subgroups <- function(.formats = list(
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)"
                                  )) {
-  assertthat::assert_that(
-    is.list(.formats),
-    all_elements_in_ref(
-      names(.formats),
-      ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
-    )
+  checkmate::assert_list(.formats)
+  checkmate::assert_subset(
+    names(.formats),
+    c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
   )
 
   afun_lst <- Map(function(stat, fmt) {
@@ -287,20 +292,24 @@ tabulate_rsp_subgroups <- function(lyt,
 
 #' Labels for Column Variables in Binary Response by Subgroup Table
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Internal function to check variables included in
 #' [tabulate_rsp_subgroups] and create column labels.
 #'
 #' @inheritParams tabulate_rsp_subgroups
-#' @return `list` of variables to tabulate and their labels.
-#' @keywords internal
 #'
+#' @return `list` of variables to tabulate and their labels.
+#'
+#' @export
 d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,
                                     method = NULL) {
-  assertthat::assert_that(
-    is.character(vars),
-    all_elements_in_ref(c("n_tot", "or", "ci"), vars),
-    all_elements_in_ref(vars, ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
+  checkmate::assert_character(vars)
+  checkmate::assert_subset(c("n_tot", "or", "ci"), vars)
+  checkmate::assert_subset(
+    vars,
+    c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
   )
 
   varlabels <- c(
@@ -313,7 +322,7 @@ d_rsp_subgroups_colvars <- function(vars,
   colvars <- vars
 
   if ("ci" %in% colvars) {
-    assertthat::assert_that(!is.null(conf_level))
+    checkmate::assert_false(is.null(conf_level))
 
     varlabels <- c(
       varlabels,

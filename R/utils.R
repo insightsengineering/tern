@@ -8,9 +8,9 @@
 #'
 #' @return 2-elements vector of class numeric.
 #'
-#' @export
-#'
 #' @examples
+#' # Internal function - range_noinf
+#' \dontrun{
 #' range_noinf(1:5)
 #' range_noinf(c(1:5, NA, NA), na.rm = TRUE)
 #' range_noinf(numeric(), na.rm = TRUE)
@@ -19,9 +19,12 @@
 #' range_noinf(Inf, na.rm = TRUE, finite = TRUE)
 #' range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
 #' range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
+#' }
+#'
+#' @keywords internal
 range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
-  assertthat::assert_that(is.numeric(x), msg = "Argument x in range_noinf function must be of class numeric.")
+  checkmate::assert_numeric(x)
 
   if (finite) {
     x <- x[is.finite(x)] # removes NAs too
@@ -41,12 +44,14 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
 #' Utility function to create label for confidence interval
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams argument_convention
 #' @return a `string`
-#' @export
 #'
+#' @export
 f_conf_level <- function(conf_level) {
-  assertthat::assert_that(is_proportion(conf_level))
+  assert_proportion_value(conf_level)
   paste0(conf_level * 100, "% CI")
 }
 
@@ -55,25 +60,28 @@ f_conf_level <- function(conf_level) {
 #' @param covariates (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #' @return a named `list` of character vector.
-#' @keywords internal
 #'
+#' @keywords internal
 get_covariates <- function(covariates) {
-  assertthat::assert_that(is.character(covariates))
+  checkmate::assert_character(covariates)
   cov_vars <- unique(trimws(unlist(strsplit(covariates, "\\*"))))
   stats::setNames(as.list(cov_vars), cov_vars)
 }
 
 #' Replicate Entries of a Vector if Required
 #'
-#' Note that this will fail if `x` is not having length `n` or being a scalar.
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Replicate entries of a vector if required. Note that this will fail if `x`
+#' is not of length `n` or is not a scalar.
 #'
 #' @inheritParams argument_convention
 #' @param n (`count`)\cr how many entries we need.
 #'
 #' @return Just input `x` if it has the required length already or is `NULL`,
 #'   otherwise if it is scalar the replicated version of it with `n` entries.
-#' @keywords internal
 #'
+#' @export
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -88,13 +96,14 @@ to_n <- function(x, n) {
 
 #' Check Element Dimension
 #'
+#' @description
+#'
 #' Checks if the elements in `...` have the same dimension.
 #'
 #' @param ... data.frames or vectors
 #' @param omit_null are \code{NULL} elements in \code{...} to be omitted from the check?
 #'
 #' @keywords internal
-#'
 check_same_n <- function(..., omit_null = TRUE) {
   dots <- list(...)
 
@@ -134,9 +143,13 @@ check_same_n <- function(..., omit_null = TRUE) {
 #' @return Character vector of proper names, which does not use dots in contrast to
 #'   [base::make.names()].
 #'
-#' @export
 #' @examples
+#' # Internal function - make_names
+#' \dontrun{
 #' make_names(c("foo Bar", "1 2 3 bla"))
+#' }
+#'
+#' @keywords internal
 make_names <- function(nams) {
   orig <- make.names(nams)
   gsub(".", "", x = orig, fixed = TRUE)
@@ -144,15 +157,22 @@ make_names <- function(nams) {
 
 #' Conversion of Months to Days
 #'
+#' @description
+#'
+#' Conversion of Months to Days. This is an approximative calculation because it
+#' considers each month as having an average of 30.4375 days.
+#'
 #' @param x (`numeric`)\cr time in months.
 #'
 #' @return A `numeric` vector with the time in days.
-#' @export
+#'
 #' @examples
 #' x <- c(13.25, 8.15, 1, 2.834)
 #' month2day(x)
+#'
+#' @export
 month2day <- function(x) {
-  assertthat::assert_that(is.numeric(x))
+  checkmate::assert_numeric(x)
   x * 30.4375
 }
 
@@ -161,12 +181,14 @@ month2day <- function(x) {
 #' @param x (`numeric`)\cr time in days.
 #'
 #' @return A `numeric` vector with the time in months.
-#' @export
+#'
 #' @examples
 #' x <- c(403, 248, 30, 86)
 #' day2month(x)
+#'
+#' @export
 day2month <- function(x) {
-  assertthat::assert_that(is.numeric(x))
+  checkmate::assert_numeric(x)
   x / 30.4375
 }
 
@@ -175,10 +197,15 @@ day2month <- function(x) {
 #' @param x (`numeric`)\cr vector.
 #'
 #' @return An empty `numeric`.
-#' @export
+#'
 #' @examples
 #' x <- c(NA, NA, NA)
+#' # Internal function - empty_vector_if_na
+#' \dontrun{
 #' empty_vector_if_na(x)
+#' }
+#'
+#' @keywords internal
 empty_vector_if_na <- function(x) {
   if (all(is.na(x))) {
     numeric()
@@ -187,21 +214,23 @@ empty_vector_if_na <- function(x) {
   }
 }
 
-#' Combine Two Vectors Elementwise
+#' Combine Two Vectors Element Wise
 #'
 #' @param x (`vector`)\cr first vector to combine.
 #' @param y (`vector`)\cr second vector to combine.
 #'
 #' @return A `list` where each element combines corresponding elements of `x` and `y`.
-#' @export
+#'
 #' @examples
+#' # Internal function - combine_vectors
+#' \dontrun{
 #' combine_vectors(1:3, 4:6)
+#' }
+#'
+#' @keywords internal
 combine_vectors <- function(x, y) {
-  assertthat::assert_that(
-    is.vector(x),
-    is.vector(y),
-    is_equal_length(x, y)
-  )
+  checkmate::assert_vector(x)
+  checkmate::assert_vector(y, len = length(x))
 
   result <- lapply(as.data.frame(rbind(x, y)), `c`)
   names(result) <- NULL
@@ -209,6 +238,8 @@ combine_vectors <- function(x, y) {
 }
 
 #' Extract Elements by Name
+#'
+#' @description
 #'
 #' This utility function extracts elements from a vector `x` by `names`.
 #' Differences to the standard [base::`[`()] function are:
@@ -221,16 +252,14 @@ combine_vectors <- function(x, y) {
 #' @param names (`character`)\cr vector of names to extract.
 #'
 #' @return Either `NULL` or the extracted elements from `x`.
-#' @keywords internal
 #'
+#' @keywords internal
 extract <- function(x, names) {
   if (is.null(x)) {
     return(NULL)
   }
-  assertthat::assert_that(
-    rlang::is_named(x),
-    is.character(names)
-  )
+  checkmate::assert_named(x)
+  checkmate::assert_character(names)
   which_extract <- intersect(names(x), names)
   if (length(which_extract) > 0) {
     x[which_extract]
@@ -241,11 +270,13 @@ extract <- function(x, names) {
 
 #' Labels for Adverse Event Baskets
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @param aesi (`character`)\cr with standardized MedDRA query name (e.g. `SMQzzNAM`) or customized query
 #'   name (e.g. `CQzzNAM`).
 #' @param scope (`character`)\cr with scope of query (e.g. `SMQzzSC`).
 #'
 #' @return A `string` with the standard label for the AE basket.
+#'
 #' @export
 #'
 #' @examples
@@ -257,12 +288,10 @@ extract <- function(x, names) {
 #'
 #' # Customized query label.
 #' aesi_label(adae$CQ01NAM)
+#'
 aesi_label <- function(aesi, scope = NULL) {
-  assertthat::assert_that(
-    is.character(aesi),
-    is.character(scope) || is.null(scope)
-  )
-
+  checkmate::assert_character(aesi)
+  checkmate::assert_character(scope, null.ok = TRUE)
   aesi_label <- obj_label(aesi)
   aesi <- sas_na(aesi)
   aesi <- unique(aesi)[!is.na(unique(aesi))]
@@ -270,9 +299,7 @@ aesi_label <- function(aesi, scope = NULL) {
   lbl <- if (length(aesi) == 1 & !is.null(scope)) {
     scope <- sas_na(scope)
     scope <- unique(scope)[!is.na(unique(scope))]
-    assertthat::assert_that(
-      assertthat::is.string(scope)
-    )
+    checkmate::assert_string(scope)
     paste0(aesi, " (", scope, ")")
   } else if (length(aesi) == 1 & is.null(scope)) {
     aesi
@@ -285,17 +312,21 @@ aesi_label <- function(aesi, scope = NULL) {
 
 #' Indicate Arm Variable in Formula
 #'
+#' @description
+#'
 #' We use `arm` to indicate the study arm variable in `tern` formulas.
 #'
 #' @param x arm information
 #'
-#' @export
+#' @keywords internal
 #'
 arm <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }
 
 #' Smooth Function with Optional Grouping
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' This produces \code{loess} smoothed estimates of `y` with Student confidence intervals.
 #'
@@ -306,15 +337,22 @@ arm <- function(x) {
 #' @param level (`numeric`) level of confidence interval to use (0.95 by default).
 #' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, `yhigh` and
 #' optional `groups` variables formatted to factor type.
-#'
 #' @export
 #'
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
-  assertthat::assert_that(is.data.frame(df))
+  checkmate::assert_data_frame(df)
   df_cols <- colnames(df)
-  assertthat::assert_that(assertthat::is.string(x) && (x %in% df_cols) && is.numeric(df[[x]]))
-  assertthat::assert_that(assertthat::is.string(y) && (y %in% df_cols) && is.numeric(df[[y]]))
-  assertthat::assert_that(is.null(groups) || (is.character(groups) && all(groups %in% df_cols)))
+  checkmate::assert_string(x)
+  checkmate::assert_subset(x, df_cols)
+  checkmate::assert_numeric(df[[x]])
+  checkmate::assert_string(y)
+  checkmate::assert_subset(y, df_cols)
+  checkmate::assert_numeric(df[[y]])
+
+  if (!is.null(groups)) {
+    checkmate::assert_character(groups)
+    checkmate::assert_subset(groups, df_cols)
+  }
 
   smooths <- function(x, y) {
     stats::predict(stats::loess(y ~ x), se = TRUE)
@@ -359,15 +397,21 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 
 #' Number of Available (Non-Missing Entries) in a Vector
 #'
+#' @description
+#'
 #' Small utility function for better readability.
 #'
 #' @param x (`vector`)\cr where to count the non-missing values.
 #'
 #' @return Number of non-missing values.
-#' @export
 #'
 #' @examples
+#' # Internal function - n_available
+#' \dontrun{
 #' n_available(c(1, NA, 2))
+#' }
+#'
+#' @keywords internal
 n_available <- function(x) {
   sum(!is.na(x))
 }

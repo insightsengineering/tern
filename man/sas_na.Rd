@@ -14,11 +14,12 @@ sas_na(x, empty = TRUE, whitespaces = TRUE)
 \item{whitespaces}{boolean, if true then strings made from whitespaces only get replaced with \code{NA}}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 SAS imports missing data as empty strings or strings with whitespaces only. This helper function can be used to
 convert these values to \code{NA}s.
 }
 \examples{
-
 sas_na(c("1", "", " ", "   ", "b"))
 sas_na(factor(c("", " ", "b")))
 

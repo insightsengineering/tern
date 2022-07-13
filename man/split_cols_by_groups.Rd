@@ -23,7 +23,7 @@ levels that belong to it in the character vectors that are elements of the list.
 the modified layout.
 }
 \description{
-Split Columns by Groups of Levels
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \note{
 The ellipse (\code{...}) conveys arguments to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}

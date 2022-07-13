@@ -95,6 +95,9 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Functions for analyzing frequencies and fractions of occurrences by grade for patients
 with occurrence data. Multiple occurrences within one individual are counted once at the
 greatest intensity/highest grade level.
@@ -121,14 +124,13 @@ statistics function and additional format arguments (see below).
 }}
 
 \examples{
-
 h_append_grade_groups(
   list(
     "Any Grade" = as.character(1:5),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-4" = c("3", "4")
   ),
-  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50)
 )
 
 h_append_grade_groups(
@@ -137,7 +139,7 @@ h_append_grade_groups(
     "Grade A" = "5",
     "Grade B" = c("4", "3")
   ),
-  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50)
 )
 
 h_append_grade_groups(
@@ -171,6 +173,7 @@ s_count_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list("ANY" = levels(df$AETOXGR))
 )
+
 #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")

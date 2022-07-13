@@ -1,6 +1,6 @@
 Package: tern
-Title: Create Common TLGs used in Clinical Trials
-Version: 0.7.8.9003
+Title: Create Common TLGs Used in Clinical Trials
+Version: 0.7.8.9020
 Date: 2022-06-09
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
@@ -23,7 +23,6 @@ Depends:
     R (>= 3.6),
     rtables (>= 0.5.1)
 Imports:
-    assertthat,
     broom,
     car,
     checkmate,
@@ -40,6 +39,7 @@ Imports:
     lifecycle,
     magrittr,
     methods,
+    nestcolor,
     rlang,
     scales,
     stats,
@@ -59,6 +59,10 @@ VignetteBuilder:
     knitr
 RdMacros:
     lifecycle
+Remotes:
+    insightsengineering/nestcolor@*release,
+    insightsengineering/scda.2022@*release,
+    insightsengineering/scda@*release
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
@@ -73,10 +77,10 @@ Collate:
     'abnormal_by_worst_grade.R'
     'abnormal_by_worst_grade_worsen.R'
     'argument_convention.R'
-    'assertthat.R'
     'combination_function.R'
     'summarize_variables.R'
     'compare_variables.R'
+    'control_incidence_rate.R'
     'control_logistic.R'
     'control_step.R'
     'control_survival.R'
@@ -88,14 +92,12 @@ Collate:
     'count_patients_with_event.R'
     'count_values.R'
     'cox_regression.R'
+    'cox_regression_inter.R'
     'coxph.R'
     'd_pkparam.R'
     'decorate_grob.R'
-    'deprec-fit_mmrm.R'
-    'deprec-g_mmrm.R'
-    'deprec-tabulate_mmrm.R'
+    'deprec-nest_colors.R'
     'df_explicit_na.R'
-    'estimate_incidence_rate.R'
     'estimate_multinomial_rsp.R'
     'estimate_proportion.R'
     'fit_rsp_step.R'
@@ -115,18 +117,18 @@ Collate:
     'h_step.R'
     'h_survival_biomarkers_subgroups.R'
     'h_survival_duration_subgroups.R'
+    'incidence_rate.R'
     'individual_patient_plot.R'
     'kaplan_meier_plot.R'
     'logistic_regression.R'
     'missing_data.R'
-    'nest_colors.R'
     'odds_ratio.R'
     'package.R'
     'prop_diff.R'
+    'prop_diff_test.R'
     'prune_occurrences.R'
     'response_biomarkers_subgroups.R'
     'response_subgroups.R'
-    'rtables.R'
     'rtables_access.R'
     'score_occurrences.R'
     'split_cols_by_groups.R'
@@ -142,9 +144,10 @@ Collate:
     'survival_duration_subgroups.R'
     'survival_time.R'
     'survival_timepoint.R'
-    'test_proportion_diff.R'
     'utils.R'
+    'utils_checkmate.R'
     'utils_factor.R'
     'utils_grid.R'
+    'utils_rtables.R'
     'wrap_text.R'
     'zzz.R'

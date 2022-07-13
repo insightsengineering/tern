@@ -1,5 +1,7 @@
 #' Helper Functions for Tabulating Biomarker Effects on Survival by Subgroup
 #'
+#' @description`r lifecycle::badge("stable")`
+#'
 #' Helper functions which are documented here separately to not confuse the user
 #' when reading about the user-facing functions.
 #'
@@ -8,6 +10,7 @@
 #' @inheritParams fit_coxreg_multivar
 #' @name h_survival_biomarkers_subgroups
 #' @order 1
+#'
 #' @examples
 #' # Testing dataset.
 #' library(scda)
@@ -28,13 +31,14 @@
 #'   )
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
 NULL
 
 #' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list
 #'   to the "Cox regression" variable list. The reason is that currently there is an inconsistency between the variable
 #'   names accepted by `extract_survival_subgroups()` and `fit_coxreg_multivar()`.
 #' @param biomarker (`string`)\cr the name of the biomarker variable.
-#' @export
+#'
 #' @examples
 #' # This is how the variable list is converted internally.
 #' h_surv_to_coxreg_variables(
@@ -46,13 +50,13 @@ NULL
 #'   ),
 #'   biomarker = "AGE"
 #' )
+#'
+#' @export
 h_surv_to_coxreg_variables <- function(variables, biomarker) {
-  assertthat::assert_that(
-    is.list(variables),
-    assertthat::is.string(variables$tte),
-    assertthat::is.string(variables$is_event),
-    assertthat::is.string(biomarker)
-  )
+  checkmate::assert_list(variables)
+  checkmate::assert_string(variables$tte)
+  checkmate::assert_string(variables$is_event)
+  checkmate::assert_string(biomarker)
   list(
     time = variables$tte,
     event = variables$is_event,
@@ -67,9 +71,8 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #'   in a given single data set.
 #'   `variables` corresponds to names of variables found in `data`, passed as a named list and requires elements
 #'   `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # For a single population, estimate separately the effects
 #' # of two biomarkers.
 #' df <- h_coxreg_mult_cont_df(
@@ -95,13 +98,12 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #'   ),
 #'   data = adtte_f[NULL, ]
 #' )
+#'
+#' @export
 h_coxreg_mult_cont_df <- function(variables,
                                   data,
                                   control = control_coxreg()) {
-  assertthat::assert_that(
-    is.list(variables),
-    is_df_with_variables(data, as.list(unlist(variables)))
-  )
+  assert_df_with_variables(data, variables)
   checkmate::assert_list(control, names = "named")
   checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)
   conf_level <- control[["conf_level"]]
@@ -169,9 +171,8 @@ h_coxreg_mult_cont_df <- function(variables,
 #'   returned by [extract_survival_biomarkers()] (it needs a couple of columns which are
 #'   added by that high-level function relative to what is returned by [h_coxreg_mult_cont_df()],
 #'   see the example).
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Starting from above `df`, zoom in on one biomarker and add required columns.
 #' df1 <- df[1, ]
 #' df1$subgroup <- "All patients"
@@ -183,6 +184,8 @@ h_coxreg_mult_cont_df <- function(variables,
 #'   vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
 #'   time_unit = "days"
 #' )
+#'
+#' @export
 h_tab_surv_one_biomarker <- function(df,
                                      vars,
                                      time_unit) {

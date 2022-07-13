@@ -1,4 +1,6 @@
-#' Color Palettes Used in NEST
+#' Deprecated by `nestcolor::color_palette`: Color Palettes Used in NEST
+#'
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' A standardized color palette to be used for all plots within
 #' the NEST project.
@@ -28,6 +30,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' library(grid)
 #'
 #' plot_pal <- function(x) {
@@ -47,6 +50,11 @@
 #' plot_pal(color_palette(n = 10, palette = "stream"))
 #'
 #' plot_pal(color_palette(n = 10, palette = "viridis"))
+#' }
 color_palette <- function(n = 10, palette = "nest") {
-  color_palette_core(n, palette)
+  lifecycle::deprecate_stop(
+    when = "0.7.9",
+    what = "tern::color_palette()",
+    with = "nestcolor::color_palette()"
+  )
 }

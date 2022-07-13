@@ -1,5 +1,7 @@
 #' Patient Counts with Abnormal Range Values
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Primary analysis variable `.var` indicates the abnormal range result (character or factor)
 #' and additional analysis variables are `id` (character or factor) and `baseline` (character or
 #' factor). For each direction specified in `abnormal` (e.g. high or low) count patients in the
@@ -30,7 +32,7 @@ NULL
 #'   from numerator and denominator.
 #' @return [s_count_abnormal()] returns the statistic `fraction` which is a
 #'   vector with `num` and `denom` counts of patients.
-#' @export
+#'
 #' @examples
 #' library(dplyr)
 #'
@@ -46,6 +48,8 @@ NULL
 #' df <- df %>%
 #'   filter(ONTRTFL == "Y")
 #'
+#' # Internal function - s_count_abnormal
+#' \dontrun{
 #' # For abnormal level "HIGH" we get the following counts.
 #' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 #'
@@ -56,21 +60,21 @@ NULL
 #'   abnormal = list(high = "HIGH", low = "LOW"),
 #'   exclude_base_abn = TRUE
 #' )
+#' }
+#'
+#' @keywords internal
 s_count_abnormal <- function(df,
                              .var,
                              abnormal = list(Low = "LOW", High = "HIGH"),
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE) {
   checkmate::assert_list(abnormal, types = "character", names = "named", len = 2, any.missing = FALSE)
-
-  assertthat::assert_that(
-    is_df_with_variables(df, c(range = .var, variables)),
-    any(unlist(abnormal) %in% levels(df[[.var]])),
-    is_character_or_factor(df[[variables$baseline]]),
-    is_character_or_factor(df[[variables$id]]),
-    is.factor(df[[.var]]),
-    assertthat::is.flag(exclude_base_abn)
-  )
+  checkmate::assert_true(any(unlist(abnormal) %in% levels(df[[.var]])))
+  checkmate::assert_factor(df[[.var]])
+  checkmate::assert_flag(exclude_base_abn)
+  assert_df_with_variables(df, c(range = .var, variables))
+  checkmate::assert_multi_class(df[[variables$baseline]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
 
   count_abnormal_single <- function(abn_name, abn) {
     # Patients in the denominator fulfill:
@@ -104,12 +108,18 @@ s_count_abnormal <- function(df,
 
 #' @describeIn abnormal Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
 #' @return [a_count_abnormal()] returns the corresponding list with formatted [rtables::CellValue()].
-#' @export
+#'
 #' @examples
+#' # Internal function - a_count_abnormal
+#' \dontrun{
 #' # Use the Formatted Analysis function for `analyze()`.
 #' a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
 #' a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
+#' }
+#'
+#' @keywords internal
 a_count_abnormal <- make_afun(
   s_count_abnormal,
   .formats = c(fraction = format_fraction)
@@ -162,9 +172,8 @@ count_abnormal <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "fraction"
   )
-  assertthat::assert_that(
-    assertthat::is.string(var)
-  )
+
+  checkmate::assert_string(var)
 
   analyze(
     lyt = lyt,

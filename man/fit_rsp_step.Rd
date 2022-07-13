@@ -23,12 +23,13 @@ center of the intervals are and their bounds. The second part of the
 columns contain the estimates for the treatment arm comparison.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This fits the Subgroup Treatment Effect Pattern logistic regression models for a binary
 (response) outcome. The treatment arm variable must have exactly 2 levels,
 where the first one is taken as reference and the estimated odds ratios are
 for the comparison of the second level vs. the first one.
-}
-\details{
+
 The (conditional) logistic regression model which is fit is:\cr
 \code{response ~ arm * poly(biomarker, degree) + covariates + strata(strata)}\cr
 where \code{degree} is specified by \code{control_step()}.

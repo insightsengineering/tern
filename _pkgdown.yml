@@ -34,28 +34,18 @@ reference:
           In order to separate computation from formatting, they should not take care of `rcell` type
           formatting themselves.
     contents:
-      - s_ancova
-      - s_change_from_baseline
       - s_compare
-      - s_count_abnormal
-      - s_count_abnormal_by_baseline
-      - s_count_abnormal_by_marked
-      - s_count_abnormal_by_worst_grade
       - s_count_cumulative
       - s_count_missed_doses
       - s_count_nonmissing
       - s_count_occurrences
       - s_count_occurrences_by_grade
       - s_count_patients_and_multiple_events
-      - s_count_patients_sum_exposure
       - s_count_patients_with_event
       - s_count_patients_with_flags
       - s_count_values
-      - s_coxph_pairwise
       - s_coxreg
-      - s_cox_multivariate
       - s_cox_univariate
-      - s_incidence_rate
       - s_length_proportion
       - s_num_patients
       - s_num_patients_content
@@ -63,37 +53,20 @@ reference:
       - s_proportion
       - s_proportion_diff
       - s_summary
-      - s_surv_time
-      - s_surv_timepoint
-      - s_surv_timepoint_diff
-      - s_test_proportion_diff
 
   - title: Formatted Analysis functions
     desc: These have the same arguments as the corresponding statistics functions, and can be further
           customized by calling `rtables::make_afun()` on them. They are used as `afun` in
           `rtables::analyze()`.
     contents:
-       - a_ancova
-       - a_count_abnormal
-       - a_count_abnormal_by_baseline
-       - a_count_abnormal_by_marked
-       - a_count_abnormal_by_worst_grade
-       - a_count_abnormal_lab_worsen_by_baseline
        - a_count_cumulative
        - a_count_missed_doses
        - a_count_occurrences
        - a_count_occurrences_by_grade
        - a_count_patients_with_event
        - a_count_patients_with_flags
-       - a_coxph_pairwise
        - a_odds_ratio
        - a_proportion
-       - a_response_subgroups
-       - a_survival_subgroups
-       - a_surv_time
-       - a_surv_timepoint
-       - a_surv_timepoint_diff
-       - a_test_proportion_diff
        - create_afun_compare
        - create_afun_summary
 
@@ -113,6 +86,7 @@ reference:
        - count_occurrences_by_grade
        - count_patients_with_event
        - count_patients_with_flags
+       - count_values_funs
        - estimate_incidence_rate
        - estimate_multinomial_response
        - estimate_odds_ratio
@@ -124,7 +98,6 @@ reference:
        - summarize_colvars
        - summarize_coxreg
        - summarize_logistic
-       - summarize_lsmeans
        - summarize_num_patients
        - summarize_occurrences_by_grade
        - summarize_patients_events_in_cols
@@ -137,16 +110,16 @@ reference:
        - test_proportion_diff
 
   - title: Analysis Helper Functions
-    desc: these functions are useful to help definining the analysis
+    desc: These functions are useful to help definining the analysis.
     contents:
       - add_footnotes<-
-      - arm
       - footnotes
       - footnotes<-
       - h_adlb_worsen
       - h_adsl_adlb_merge_using_worst_flag
       - h_ancova
       - h_append_grade_groups
+      - h_col_indices
       - h_count_cumulative
       - h_coxph_df
       - h_coxph_subgroups_df
@@ -160,8 +133,12 @@ reference:
       - h_coxreg_multivar_formula
       - h_coxreg_univar_extract
       - h_coxreg_univar_formulas
+      - h_decompose_gg
+      - h_format_threshold
       - h_format_row
+      - h_get_format_threshold
       - h_get_interaction_vars
+      - h_ggkm
       - h_glm_inter_term_extract
       - h_glm_interaction_extract
       - h_glm_simple_term_extract
@@ -172,7 +149,9 @@ reference:
       - h_incidence_rate_normal_log
       - h_interaction_coef_name
       - h_interaction_term_labels
+      - h_km_layout
       - h_logistic_inter_terms
+      - h_logistic_mult_cont_df
       - h_logistic_simple_terms
       - h_map_for_count_abnormal
       - h_odds_ratio_df
@@ -184,9 +163,10 @@ reference:
       - h_proportion_df
       - h_proportion_subgroups_df
       - h_response_biomarkers_subgroups
+      - h_rsp_to_logistic_variables
       - h_simple_term_labels
-      - h_split_param
       - h_split_by_subgroups
+      - h_split_param
       - h_stack_by_baskets
       - h_step_rsp_est
       - h_step_rsp_formula
@@ -198,24 +178,20 @@ reference:
       - h_survtime_df
       - h_survtime_subgroups_df
       - h_tab_one_biomarker
+      - h_tab_rsp_one_biomarker
       - h_tab_surv_one_biomarker
+      - h_tbl_coxph_pairwise
+      - h_tbl_median_surv
       - h_worsen_counter
       - or_clogit
       - or_glm
-      - prop_chisq
-      - prop_cmh
       - prop_diff_cmh
       - prop_diff_ha
       - prop_diff_nc
       - prop_diff_wald
-      - prop_fisher
-      - prop_schouten
-      - summary_formats
-      - summary_labels
-      - summary_numeric_in_cols
 
   - title: Model Specific Functions
-    desc: these functions help with fitting or extracting results from specific models
+    desc: These functions help with fitting or extracting results from specific models.
     contents:
       - estimate_coef
       - extract_rsp_subgroups
@@ -238,7 +214,7 @@ reference:
       - univariate
 
   - title: Graphs
-    desc: Graphs
+    desc: Functions that creates graphical type of the output.
     contents:
       - g_forest
       - g_ipp
@@ -248,28 +224,24 @@ reference:
       - g_waterfall
 
   - title: rtables Helper Functions
-    desc: these functions help to work with the new rtables package and might be moved there later
+    desc: These functions help to work with the new rtables package and might be moved there later.
     contents:
       - add_rowcounts
       - append_varlabels
       - as.rtable
       - as.rtable.data.frame
-      - combine_counts
       - combine_groups
-      - groups_list_to_df
-      - has_tabletree_colnames
       - h_col_counts
+      - h_col_indices
       - h_content_first_row
-      - h_format_row
       - h_row_counts
       - h_row_fractions
       - is_leaf_table
-      - make_names
       - split_cols_by_groups
       - to_string_matrix
 
   - title: rtables Formatting Functions
-    desc: these functions provide customized formatting rules to work with the rtables package
+    desc: These functions provide customized formatting rules to work with the rtables package.
     contents:
       - format_count_fraction
       - format_extreme_values
@@ -279,7 +251,7 @@ reference:
       - format_xx
 
   - title: rtables Scoring Functions
-    desc: these functions can help with sorting of tables
+    desc: These functions can help with sorting of tables.
     contents:
       - score_occurrences
       - score_occurrences_cols
@@ -287,12 +259,10 @@ reference:
       - score_occurrences_subtable
 
   - title: rtables Pruning Functions
-    desc: these functions and classes help with flexible pruning of tables
+    desc: These functions and classes help with flexible pruning of tables.
     contents:
       - CombinationFunction
-      - has_counts_difference
       - has_count_in_any_col
-      - has_count_in_cols
       - has_fractions_difference
       - has_fraction_in_any_col
       - has_fraction_in_cols
@@ -300,69 +270,61 @@ reference:
       - keep_rows
 
   - title: Graphs Helper Functions
-    desc: these functions are useful to modify graphs
+    desc: These functions are useful to modify graphs.
     contents:
       - arrange_grobs
-      - color_palette
       - decorate_grob
       - decorate_grob_factory
       - decorate_grob_set
       - draw_grob
       - h_g_ipp
-      - h_set_nest_theme
-      - split_text_grob
+      - h_grob_coxph
+      - h_grob_median_surv
+      - h_grob_tbl_at_risk
+      - h_grob_y_annot
+      - h_xticks
       - stack_grobs
       - stat_mean_ci
       - stat_median_ci
 
   - title: Data Helper Functions
-    desc: these functions are used by other functions to derive data
+    desc: These functions are used by other functions to derive data.
     contents:
       - aesi_label
       - as_factor_keep_attributes
       - bins_percent_labels
       - combine_levels
-      - combine_vectors
       - cut_quantile_bins
       - day2month
+      - month2day
       - df_explicit_na
+      - d_onco_rsp_label
+      - d_count_abnormal_by_baseline
+      - d_count_missed_doses
+      - d_count_cumulative
       - d_pkparam
-      - empty_vector_if_na
+      - d_proportion
+      - d_proportion_diff
+      - d_rsp_subgroups_colvars
+      - d_survival_subgroups_colvars
+      - d_test_proportion_diff
       - explicit_na
       - fct_collapse_only
       - fct_discard
       - fct_explicit_na_if
-      - month2day
-      - n_available
-      - range_noinf
-      - sas_na
       - f_conf_level
+      - h_data_plot
+      - sas_na
+      - to_n
 
   - title: Assertion Functions
-    desc: these functions supplement those in the assertthat package
+    desc: These functions supplement those in the checkmate package.
     contents:
-      - all_elements_in_ref
-      - is_character_or_factor
-      - is_df_with_factors
-      - is_df_with_nlevels_factor
-      - is_df_with_variables
-      - is_df_with_no_na_level
-      - is_factor_no_na
-      - is_nonnegative_count
-      - is_proportion
-      - is_proportion_vector
-      - is_quantiles_vector
-      - is_valid_factor
-      - is_variables
+      - assertions
 
   - title: Deprecated Functions
-    desc: These functions already are or will eventually be removed
+    desc: These functions already are or will eventually be removed.
     contents:
-      - as.rtable.mmrm
-      - starts_with("a_mmrm")
-      - fit_mmrm
-      - starts_with("g_mmrm")
-      - starts_with("h_mmrm")
+      - color_palette
+      - h_set_nest_theme
       - s_cox_univariate
-      - starts_with("s_mmrm")
-      - tidy.mmrm

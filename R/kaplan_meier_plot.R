@@ -1,5 +1,6 @@
 #' Kaplan-Meier Plot
 #'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @param df (`data frame`)\cr data set containing all analysis variables.
 #' @param variables (named `list`) of variable names. Details are: \cr
@@ -61,6 +62,8 @@
 NULL
 
 #' Kaplan-Meier Plot
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' From a survival model, a graphic is rendered along with tabulated annotation
 #' including the number of patient at risk at given time and the median survival
@@ -188,19 +191,17 @@ g_km <- function(df,
                  control_coxph_pw = control_coxph(),
                  position_coxph = c(0, 0.05),
                  position_surv_med = c(0.9, 0.9)) {
-  assertthat::assert_that(
-    is.list(variables),
-    all(c("tte", "arm", "is_event") %in% names(variables)),
-    assertthat::is.string(title) || is.null(title),
-    is.character(col)
-  )
+  checkmate::assert_list(variables)
+  checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
+  checkmate::assert_string(title, null.ok = TRUE)
+  checkmate::assert_character(col)
+
   tte <- variables$tte
   is_event <- variables$is_event
   arm <- variables$arm
-  assertthat::assert_that(
-    is_df_with_variables(df, list(tte = tte, is_event = is_event, arm = arm)),
-    is_valid_factor(df[[arm]])
-  )
+
+  assert_valid_factor(df[[arm]])
+  assert_df_with_variables(df, list(tte = tte, is_event = is_event, arm = arm))
   checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
 
@@ -383,8 +384,12 @@ g_km <- function(df,
 
 #' Helper function: tidy survival fit
 #'
+#' @description`r lifecycle::badge("stable")`
+#'
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' This starts from the [broom::tidy()] result, and then:
 #' - post-processes the `strata` column into a factor,
@@ -397,7 +402,6 @@ g_km <- function(df,
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`) \cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
-#' @keywords internal
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -408,15 +412,16 @@ g_km <- function(df,
 #' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   tern:::h_data_plot()
+#'   h_data_plot()
 #'
 #' # Test with single arm
 #' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   tern:::h_data_plot(armval = "ARM B")
+#'   h_data_plot(armval = "ARM B")
 #' }
 #'
+#' @export
 h_data_plot <- function(fit_km,
                         armval = "All",
                         max_time = NULL) {
@@ -463,12 +468,13 @@ h_data_plot <- function(fit_km,
 
 #' Helper function: x tick positions
 #'
+#' @description`r lifecycle::badge("stable")`
+#'
 #' Calculate the positions of ticks on the x-axis. However, if `xticks` already
 #' exists it is kept as is. It is based on the same function `ggplot2` relies on,
 #' and is required in the graphic and the patient-at-risk annotation table.
 #'
 #' @inheritParams kaplan_meier
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -479,16 +485,17 @@ h_data_plot <- function(fit_km,
 #' data <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   tern:::h_data_plot()
+#'   h_data_plot()
 #'
-#' tern:::h_xticks(data)
-#' tern:::h_xticks(data, xticks = seq(0, 3000, 500))
-#' tern:::h_xticks(data, xticks = 500)
-#' tern:::h_xticks(data, xticks = 500, max_time = 6000)
-#' tern:::h_xticks(data, xticks = c(0, 500), max_time = 300)
-#' tern:::h_xticks(data, xticks = 500, max_time = 300)
+#' h_xticks(data)
+#' h_xticks(data, xticks = seq(0, 3000, 500))
+#' h_xticks(data, xticks = 500)
+#' h_xticks(data, xticks = 500, max_time = 6000)
+#' h_xticks(data, xticks = c(0, 500), max_time = 300)
+#' h_xticks(data, xticks = 500, max_time = 300)
 #' }
 #'
+#' @export
 h_xticks <- function(data, xticks = NULL, max_time = NULL) {
   if (is.null(xticks)) {
     if (is.null(max_time)) {
@@ -496,7 +503,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
     } else {
       labeling::extended(range(data$time)[1], max(range(data$time)[2], max_time), m = 5)
     }
-  } else if (assertthat::is.number(xticks)) {
+  } else if (checkmate::test_number(xticks)) {
     if (is.null(max_time)) {
       seq(0, max(data$time), xticks)
     } else {
@@ -517,10 +524,11 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 
 #' Helper function: KM plot
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
 #' @inheritParams kaplan_meier
-#' @keywords internal
 #' @examples
 #' \dontrun{
 #'
@@ -531,9 +539,9 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
-#' gg <- tern:::h_ggkm(
+#' data_plot <- h_data_plot(fit_km = fit_km)
+#' xticks <- h_xticks(data = data_plot)
+#' gg <- h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks,
@@ -546,6 +554,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' gg
 #' }
 #'
+#' @export
 h_ggkm <- function(data,
                    xticks = NULL,
                    yval = "Survival",
@@ -561,10 +570,8 @@ h_ggkm <- function(data,
                    col = getOption("tern.color"),
                    ci_ribbon = FALSE,
                    ggtheme = NULL) {
-  assertthat::assert_that(
-    (is.null(lty) || assertthat::is.number(lty) || is.numeric(lty)),
-    is.character(col)
-  )
+  checkmate::assert_numeric(lty, null.ok = TRUE)
+  checkmate::assert_character(col)
 
   # change estimates of survival to estimates of failure (1 - survival)
   if (yval == "Failure") {
@@ -595,7 +602,7 @@ h_ggkm <- function(data,
   gg <- if (is.null(lty)) {
     gg +
       ggplot2::geom_step(lwd = lwd)
-  } else if (assertthat::is.number(lty)) {
+  } else if (checkmate::test_number(lty)) {
     gg +
       ggplot2::geom_step(lwd = lwd, lty = lty)
   } else if (is.numeric(lty)) {
@@ -662,7 +669,7 @@ h_ggkm <- function(data,
 
 
 #' `ggplot` Decomposition
-#'
+#' @description `r lifecycle::badge("stable")`
 #' The elements composing the `ggplot` are extracted and organized in a
 #' list containing:
 #' the panel (`panel`),
@@ -671,7 +678,6 @@ h_ggkm <- function(data,
 #' the legend (`guide`).
 #'
 #' @param gg (`ggplot`)\cr a graphic to decompose.
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -683,9 +689,9 @@ h_ggkm <- function(data,
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
-#' gg <- tern:::h_ggkm(
+#' data_plot <- h_data_plot(fit_km = fit_km)
+#' xticks <- h_xticks(data = data_plot)
+#' gg <- h_ggkm(
 #'   data = data_plot,
 #'   yval = "Survival",
 #'   censor_show = TRUE,
@@ -693,7 +699,7 @@ h_ggkm <- function(data,
 #'   title = "tt"
 #' )
 #'
-#' g_el <- tern:::h_decompose_gg(gg)
+#' g_el <- h_decompose_gg(gg)
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "red", fill = "gray85", lwd = 5))
 #' grid::grid.draw(g_el$panel)
@@ -703,6 +709,7 @@ h_ggkm <- function(data,
 #' grid::grid.draw(with(g_el, cbind(ylab, yaxis)))
 #' }
 #'
+#' @export
 h_decompose_gg <- function(gg) {
   g_el <- ggplot2::ggplotGrob(gg)
   y <- c(
@@ -719,6 +726,8 @@ h_decompose_gg <- function(gg) {
 
 #' Helper: KM Layout
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
 #'
 #' @inheritParams kaplan_meier
@@ -726,7 +735,7 @@ h_decompose_gg <- function(gg) {
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table
 #'   reporting the number of patient at risk matching the main grid of the
 #'   Kaplan-Meier curve.
-#' @keywords internal
+#' @export
 #'
 #' @details
 #' The layout corresponds to a grid of two columns and five rows of unequal
@@ -748,16 +757,16 @@ h_decompose_gg <- function(gg) {
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
-#' gg <- tern:::h_ggkm(
+#' data_plot <- h_data_plot(fit_km = fit_km)
+#' xticks <- h_xticks(data = data_plot)
+#' gg <- h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
 #'   title = "tt", yval = "Survival"
 #' )
-#' g_el <- tern:::h_decompose_gg(gg)
-#' lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
+#' g_el <- h_decompose_gg(gg)
+#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
 #' grid.show.layout(lyt)
 #' }
 #'
@@ -836,6 +845,8 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 
 #' Helper: Patient-at-Risk Grobs
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Two Graphical Objects are obtained, one corresponding to row labeling and
 #' the second to the number of patient at risk.
 #'
@@ -845,7 +856,6 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'   patients at risk at given time points.
 #' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
 #'   ensure the at risk table aligns with the KM graph).
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -858,11 +868,11 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #'
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' data_plot <- h_data_plot(fit_km = fit_km)
 #'
-#' xticks <- tern:::h_xticks(data = data_plot)
+#' xticks <- h_xticks(data = data_plot)
 #'
-#' gg <- tern:::h_ggkm(
+#' gg <- h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
@@ -885,12 +895,12 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #' }
 #'
 #' # The annotation table is transformed into a grob.
-#' tbl <- tern:::h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xticks))
+#' tbl <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xticks))
 #'
 #' # For the representation, the layout is estimated for which the decomposition
 #' # of the graphic element is necessary.
-#' g_el <- tern:::h_decompose_gg(gg)
-#' lyt <- tern:::h_km_layout(data = data_plot, g_el = g_el, title = "t")
+#' g_el <- h_decompose_gg(gg)
+#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
 #'
 #' grid::grid.newpage()
 #' pushViewport(viewport(layout = lyt, height = .95, width = .95))
@@ -904,6 +914,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #' grid::grid.draw(tbl$label)
 #' }
 #'
+#' @export
 h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
@@ -978,11 +989,12 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 
 #' Helper Function: Survival Estimations
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Transform a survival fit to a table with groups in rows characterized
 #' by N, median and confidence interval.
 #'
 #' @inheritParams h_data_plot
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -997,9 +1009,10 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #'   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
 #'   data = adtte
 #' )
-#' tern:::h_tbl_median_surv(fit_km = fit)
+#' h_tbl_median_surv(fit_km = fit)
 #' }
 #'
+#' @export
 h_tbl_median_surv <- function(fit_km, armval = "All") {
   y <- if (is.null(fit_km$strata)) {
     as.data.frame(t(summary(fit_km)$table), row.names = armval)
@@ -1024,6 +1037,8 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 
 #' Helper Function: Survival Estimation Grob
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' The survival fit is transformed in a grob containing a table with groups in
 #' rows characterized by N, median and 95% confidence interval.
 #'
@@ -1032,7 +1047,6 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.
 #' @inheritParams h_data_plot
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -1046,10 +1060,11 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   tern:::h_grob_median_surv() %>%
+#'   h_grob_median_surv() %>%
 #'   grid::grid.draw()
 #' }
 #'
+#' @export
 h_grob_median_surv <- function(fit_km,
                                armval = "All",
                                x = 0.9,
@@ -1075,13 +1090,14 @@ h_grob_median_surv <- function(fit_km,
 
 #' Helper: Grid Object with y-axis Annotation
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Build the y-axis annotation from a decomposed `ggplot`.
 #'
 #' @param ylab (`gtable`)\cr the y-lab as a graphical object derived from
 #'   a `ggplot`.
 #' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from
 #'   a `ggplot`.
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -1093,24 +1109,25 @@ h_grob_median_surv <- function(fit_km,
 #' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
-#' xticks <- tern:::h_xticks(data = data_plot)
-#' gg <- tern:::h_ggkm(
+#' data_plot <- h_data_plot(fit_km = fit_km)
+#' xticks <- h_xticks(data = data_plot)
+#' gg <- h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
 #'   title = "title", yval = "Survival"
 #' )
 #'
-#' g_el <- tern:::h_decompose_gg(gg)
+#' g_el <- h_decompose_gg(gg)
 #'
 #' grid::grid.newpage()
 #' pvp <- grid::plotViewport(margins = c(5, 4, 2, 20))
 #' pushViewport(pvp)
-#' grid::grid.draw(tern:::h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
+#' grid::grid.draw(h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "gray35", fill = NA))
 #' }
 #'
+#' @export
 h_grob_y_annot <- function(ylab, yaxis) {
   grid::gList(
     grid::gTree(
@@ -1126,10 +1143,11 @@ h_grob_y_annot <- function(ylab, yaxis) {
 
 #' Helper Function: Pairwise CoxPH table
 #'
+#' #' @description `r lifecycle::badge("stable")`
+#'
 #' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
-#' @keywords internal
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -1139,17 +1157,18 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #'
-#' tern:::h_tbl_coxph_pairwise(
+#' h_tbl_coxph_pairwise(
 #'   df = adtte,
 #'   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
 #'   control_coxph_pw = control_coxph(conf_level = 0.9)
 #' )
 #' }
 #'
+#' @export
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
                                  control_coxph_pw = control_coxph()) {
-  assertthat::assert_that(is_df_with_variables(df, as.list(unlist(variables))))
+  assert_df_with_variables(df, variables)
   arm <- variables$arm
   df[[arm]] <- factor(df[[arm]])
   ref_group <- levels(df[[arm]])[1]
@@ -1180,13 +1199,16 @@ h_tbl_coxph_pairwise <- function(df,
   do.call(rbind, results)
 }
 #' Helper Function: CoxPH Grob
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Grob of `rtable` output from [h_tbl_coxph_pairwise]
 #'
 #' @inheritParams h_grob_median_surv
 #' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -1200,7 +1222,7 @@ h_tbl_coxph_pairwise <- function(df,
 #' data <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
-#' tbl_grob <- tern:::h_grob_coxph(
+#' tbl_grob <- h_grob_coxph(
 #'   df = data,
 #'   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),
 #'   control_coxph_pw = control_coxph(conf_level = 0.9), x = 0.5, y = 0.5

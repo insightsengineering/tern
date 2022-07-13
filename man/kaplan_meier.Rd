@@ -90,5 +90,5 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 estimating median survival time per group}
 }
 \description{
-Kaplan-Meier Plot
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }

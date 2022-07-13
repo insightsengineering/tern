@@ -1,12 +1,13 @@
 #' Proportion Difference
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams argument_convention
 #' @param grp (`factor`)\cr
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
 #'
-#' @name prop_difference
-#'
+#' @name prop_diff
 NULL
 
 #' Check: Proportion Difference Arguments
@@ -14,27 +15,23 @@ NULL
 #' Verifies that and/or convert arguments into valid values to be used in the
 #' estimation of difference in responder proportions.
 #'
-#' @inheritParams prop_difference
+#' @inheritParams prop_diff
 #' @inheritParams prop_diff_wald
-#' @keywords internal
 #'
+#' @keywords internal
 check_diff_prop_ci <- function(rsp,
                                grp,
                                strata = NULL,
                                conf_level,
                                correct = NULL) {
-  assertthat::assert_that(
-    is.logical(rsp),
-    !anyNA(c(rsp, grp)),
-    is_equal_length(rsp, grp),
-    nlevels(grp) == 2,
-    conf_level >= 0,
-    conf_level <= 1
-  )
+  checkmate::assert_logical(rsp, any.missing = FALSE)
+  checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
+  checkmate::assert_number(conf_level, lower = 0, upper = 1)
+  checkmate::assert_flag(correct, null.ok = TRUE)
 
-  if (!is.null(correct)) assertthat::assert_that(assertthat::is.flag(correct))
-
-  if (!is.null(strata)) assertthat::assert_that(is_equal_length(rsp, strata))
+  if (!is.null(strata)) {
+    checkmate::assert_factor(strata, len = length(rsp))
+  }
 
   invisible()
 }
@@ -42,15 +39,15 @@ check_diff_prop_ci <- function(rsp,
 
 #' Description of Method Used for Proportion Comparison
 #'
-#' This is an auxiliary function that describes the analysis in
+#' @describeIn prop_diff This is an auxiliary function that describes the analysis in
 #' `s_proportion_diff`.
 #'
 #' @inheritParams s_proportion_diff
 #' @param long (`logical`)\cr
 #'   Whether a long or a short (default) description is required.
 #' @return String describing the analysis.
-#' @keywords internal
 #'
+#' @export
 d_proportion_diff <- function(conf_level,
                               method,
                               long = FALSE) {
@@ -79,22 +76,22 @@ d_proportion_diff <- function(conf_level,
 }
 
 
-#' @describeIn prop_difference The Wald interval follows the usual textbook
+#' @describeIn prop_diff The Wald interval follows the usual textbook
 #'   definition for a single proportion confidence interval using the normal
 #'   approximation. It is possible to include a continuity correction for Wald's
 #'   interval.
 #'
 #' @param correct `logical`\cr
 #'   include the continuity correction.
-#' @export
+#'
 #' @examples
-#'
 #' # Wald confidence interval
-#'
 #' set.seed(2)
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
-#' grp <- c(rep("A", 10), rep("B", 10))
+#' grp <- factor(c(rep("A", 10), rep("B", 10)))
 #' prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
+#'
+#' @export
 prop_diff_wald <- function(rsp,
                            grp,
                            conf_level,
@@ -122,11 +119,10 @@ prop_diff_wald <- function(rsp,
 }
 
 
-#' @describeIn prop_difference Anderson-Hauck confidence interval.
-#' @export
+#' @describeIn prop_diff Anderson-Hauck confidence interval.
+#'
 #' @examples
 #' # Anderson-Hauck confidence interval
-#'
 #' ## "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
 #' rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
 #' grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
@@ -136,6 +132,8 @@ prop_diff_wald <- function(rsp,
 #' rsp <- c(TRUE, FALSE, TRUE, FALSE)
 #' grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
 #' prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
+#'
+#' @export
 prop_diff_ha <- function(rsp,
                          grp,
                          conf_level) {
@@ -157,11 +155,10 @@ prop_diff_ha <- function(rsp,
 }
 
 
-#' @describeIn prop_difference Newcombe confidence interval. It is based on
+#' @describeIn prop_diff Newcombe confidence interval. It is based on
 #'   the Wilson score confidence interval for a single binomial proportion.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Newcombe confidence interval
 #'
 #' set.seed(1)
@@ -172,6 +169,8 @@ prop_diff_ha <- function(rsp,
 #' grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A"))
 #' table(rsp, grp)
 #' prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
+#'
+#' @export
 prop_diff_nc <- function(rsp,
                          grp,
                          conf_level,
@@ -198,7 +197,7 @@ prop_diff_nc <- function(rsp,
 }
 
 
-#' @describeIn prop_difference Calculates the weighted difference.
+#' @describeIn prop_diff Calculates the weighted difference.
 #'     This is defined as the difference in response rates between the
 #'     experimental treatment group and the control treatment group, adjusted
 #'     for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
@@ -206,9 +205,8 @@ prop_diff_nc <- function(rsp,
 #'
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Cochran-Mantel-Haenszel confidence interval
 #'
 #' set.seed(2)
@@ -225,6 +223,8 @@ prop_diff_nc <- function(rsp,
 #'   rsp = rsp, grp = grp, strata = interaction(strata_data),
 #'   conf_level = 0.90
 #' )
+#'
+#' @export
 prop_diff_cmh <- function(rsp,
                           grp,
                           strata,
@@ -286,13 +286,12 @@ prop_diff_cmh <- function(rsp,
 }
 
 
-#' @describeIn prop_difference Statistics function estimating the difference
+#' @describeIn prop_diff Statistics function estimating the difference
 #'   in terms of responder proportion.
 #' @param method (`string`)\cr
 #'   the method used for the confidence interval estimation.
-#' @export
-#' @examples
 #'
+#' @examples
 #' # Summary
 #'
 #' ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
@@ -309,6 +308,8 @@ prop_diff_cmh <- function(rsp,
 #'   conf_level = 0.90,
 #'   method = "ha"
 #' )
+#'
+#' @export
 s_proportion_diff <- function(df,
                               .var,
                               .ref_group,
@@ -334,12 +335,10 @@ s_proportion_diff <- function(df,
 
     if (!is.null(variables$strata)) {
       strata <- variables$strata
+      checkmate::assert_false(is.null(strata))
       strata_vars <- stats::setNames(as.list(strata), strata)
-      assertthat::assert_that(
-        !is.null(strata),
-        is_df_with_variables(df, strata_vars),
-        is_df_with_variables(.ref_group, strata_vars)
-      )
+      assert_df_with_variables(df, strata_vars)
+      assert_df_with_variables(.ref_group, strata_vars)
       strata <- factor(c(interaction(.ref_group[strata]), interaction(df[strata])))
     }
 
@@ -365,9 +364,9 @@ s_proportion_diff <- function(df,
   y
 }
 
-#' @describeIn prop_difference Formatted Analysis function which can be further customized by calling
+#' @describeIn prop_diff Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
+#'
 #' @examples
 #' a_proportion_diff(
 #'   df = subset(dta, grp == "A"),
@@ -377,22 +376,23 @@ s_proportion_diff <- function(df,
 #'   conf_level = 0.90,
 #'   method = "ha"
 #' )
+#'
+#' @export
 a_proportion_diff <- make_afun(
   s_proportion_diff,
   .formats =  c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
   .indent_mods = c(diff = 0L, diff_ci = 1L)
 )
 
-#' @describeIn prop_difference Adds a descriptive analyze layer to `rtables`
+#' @describeIn prop_diff Adds a descriptive analyze layer to `rtables`
 #'   pipelines. The analysis is applied to a `dataframe` and return the
 #'   estimations, in `rcells`. The ellipsis (`...`) conveys arguments to
 #'   `s_proportion_diff()`, for instance `na.rm = FALSE` if missing data
 #'   should be accounted for.
 #' @inheritParams rtables::analyze
 #' @param ... arguments passed to `s_proportion_diff()`.
-#' @export
-#' @examples
 #'
+#' @examples
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "grp", ref_group = "B") %>%
 #'   estimate_proportion_diff(
@@ -402,6 +402,8 @@ a_proportion_diff <- make_afun(
 #'   )
 #'
 #' build_table(l, df = dta)
+#'
+#' @export
 estimate_proportion_diff <- function(lyt,
                                      vars,
                                      ...,
