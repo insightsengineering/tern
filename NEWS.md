@@ -9,6 +9,8 @@
   its length or by using `checkmate::assert_vector()`.
 * Removed `assert_equal_length` as comparing lengths of multiple vectors can be 
   done without the need of a custom function.
+* Switched `prop_diff_wald` test from `stats::prop.test` to `DescTools::BinomDiffCI`
+  to implement `Yates` correction term.
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.
