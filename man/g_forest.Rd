@@ -105,10 +105,7 @@ tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
 p <- g_forest(tbl)
 
-# Internal function - draw_grob
-\dontrun{
 draw_grob(p)
-}
 
 # Odds ratio only table.
 
@@ -120,10 +117,7 @@ p <- g_forest(
   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 )
 
-# Internal function - draw_grob
-\dontrun{
 draw_grob(p)
-}
 
 # Survival forest plot example.
 adtte <- synthetic_cdisc_data("latest")$adtte

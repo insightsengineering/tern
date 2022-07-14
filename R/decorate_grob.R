@@ -506,12 +506,9 @@ decorate_grob_factory <- function(npages, ...) {
 #' lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
 #' library(grid)
 #'
-#' # Internal function - draw_grob
-#' \dontrun{
 #' draw_grob(lg[[1]])
 #' draw_grob(lg[[2]])
 #' draw_grob(lg[[6]])
-#' }
 #'
 #' @export
 decorate_grob_set <- function(grobs, ...) {
