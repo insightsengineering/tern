@@ -8,7 +8,7 @@ g_waterfall(
   height,
   id,
   col_var = NULL,
-  col = getOption("tern.color"),
+  col = getOption("ggplot2.discrete.colour"),
   xlab = NULL,
   ylab = NULL,
   col_legend_title = NULL,
@@ -51,6 +51,8 @@ This basic waterfall plot visualizes a quantity \code{height} ordered by value w
 markup.
 }
 \examples{
+library(nestcolor)
+
 g_waterfall(height = c(3, 5, -1), id = letters[1:3])
 
 g_waterfall(
@@ -74,12 +76,6 @@ ADRS_f <- ADRS \%>\%
 ADRS_f <- head(ADRS_f, 30)
 ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID), ]
 head(ADRS_f)
-
-g_waterfall(
-  height = ADRS_f$pchg,
-  id = ADRS_f$USUBJID,
-  col_var = ADRS_f$AVALC
-)
 
 g_waterfall(
   height = ADRS_f$pchg,
