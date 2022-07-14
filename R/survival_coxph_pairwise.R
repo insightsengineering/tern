@@ -103,8 +103,8 @@ s_coxph_pairwise <- function(df,
   orginal_survdiff <- survival::survdiff(
     formula_cox,
     data = df_cox
-    )
-  log_rank_pvalue <-  1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
+  )
+  log_rank_pvalue <- 1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
 
   pval <- switch(pval_method,
     "wald" = sum_cox$waldtest["pvalue"],
