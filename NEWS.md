@@ -60,6 +60,8 @@
   need to add this tag. Modified examples accordingly.
 * Fixed warnings occurring in example tests
 * Removed `tern:::` prefix and added `dontrun` to internal function examples.
+* Enhanced `s_coxph_pairwise` with generating log-rank p value by original 
+  log-rank test, instead of cox ph model.
 
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:
