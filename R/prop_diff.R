@@ -95,10 +95,10 @@ d_proportion_diff <- function(conf_level,
 prop_diff_wald <- function(rsp,
                            grp,
                            conf_level,
-                           correct
-) {
-  if(correct == TRUE){mthd <- "waldcc"}
-  else{
+                           correct) {
+  if (correct == TRUE) {
+    mthd <- "waldcc"
+  } else {
     mthd <- "wald"
   }
   grp <- as_factor_keep_attributes(grp)
@@ -110,12 +110,12 @@ prop_diff_wald <- function(rsp,
   diff_ci <- if (all(rsp == rsp[1])) {
     c(NA, NA)
   } else {
-    tbl <- table(grp,rsp)
+    tbl <- table(grp, rsp)
     DescTools::BinomDiffCI(
-      tbl[1], sum(tbl[1],tbl[3]),
-      tbl[2], sum(tbl[2],tbl[4]),
+      tbl[1], sum(tbl[1], tbl[3]),
+      tbl[2], sum(tbl[2], tbl[4]),
       conf.level = conf_level,
-      method=mthd
+      method = mthd
     )[2:3]
   }
 
@@ -312,7 +312,7 @@ prop_diff_cmh <- function(rsp,
 #'   .ref_group = subset(dta, grp == "B"),
 #'   .in_ref_col = FALSE,
 #'   conf_level = 0.90,
-#'   method = "wald"
+#'   method = "ha"
 #' )
 #'
 #' @export
