@@ -96,7 +96,7 @@ prop_diff_wald <- function(rsp,
                            grp,
                            conf_level,
                            correct) {
-  if (correct == TRUE) {
+  if (isTRUE(correct)) {
     mthd <- "waldcc"
   } else {
     mthd <- "wald"
@@ -110,7 +110,12 @@ prop_diff_wald <- function(rsp,
   diff_ci <- if (all(rsp == rsp[1])) {
     c(NA, NA)
   } else {
-    tbl <- table(grp, rsp)
+    # check if binary response is coded as logical
+    checkmate::assert_logical(rsp, any.missing = FALSE)
+    checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
+
+    # TRUE is a "success"
+    tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
     DescTools::BinomDiffCI(
       tbl[1], sum(tbl[1], tbl[3]),
       tbl[2], sum(tbl[2], tbl[4]),

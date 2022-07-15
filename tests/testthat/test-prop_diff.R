@@ -64,10 +64,9 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
 
   result <- prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = TRUE)
 
-  # according to SAS.
   expected <- list(
     diff = 0.25,
-    diff_ci = c(-0.8069, 1.0000)
+    diff_ci = c(-1.0000, 0.8069)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
 
@@ -92,10 +91,9 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
   result <- suppressWarnings(
     prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = FALSE)
   )
-  # according to SAS.
   expected <- list(
     diff = 0.25,
-    diff_ci = c(-0.4319, 0.9319)
+    diff_ci = c(-0.9319, 0.4319)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
 
