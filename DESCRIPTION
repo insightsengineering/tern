@@ -60,7 +60,6 @@ VignetteBuilder:
 RdMacros:
     lifecycle
 Remotes:
-    insightsengineering/nestcolor@*release,
     insightsengineering/scda.2022@*release,
     insightsengineering/scda@*release
 Config/Needs/website: insightsengineering/nesttemplate
