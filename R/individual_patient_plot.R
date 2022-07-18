@@ -55,6 +55,7 @@ h_set_nest_theme <- function(font_size) {
 #'
 #' library(scda)
 #' library(dplyr)
+#' library(nestcolor)
 #'
 #' # Select a small sample of data to plot.
 #' adlb <- synthetic_cdisc_data("latest")$adlb %>%
@@ -83,7 +84,7 @@ h_g_ipp <- function(df,
                     add_baseline_hline = FALSE,
                     yvar_baseline = "BASE",
                     ggtheme = nestcolor::theme_nest(),
-                    col = getOption("tern.color")) {
+                    col = NULL) {
   checkmate::assert_string(xvar)
   checkmate::assert_string(yvar)
   checkmate::assert_string(yvar_baseline)
@@ -95,7 +96,7 @@ h_g_ipp <- function(df,
   checkmate::assert_subset(c(xvar, yvar, yvar_baseline, id_var), colnames(df))
   checkmate::assert_data_frame(df)
   checkmate::assert_flag(add_baseline_hline)
-  checkmate::assert_character(col)
+  checkmate::assert_character(col, null.ok = TRUE)
 
   p <- ggplot2::ggplot(
     data = df,
@@ -142,8 +143,12 @@ h_g_ipp <- function(df,
         nudge_y = 0.025 * (max(df[, yvar], na.rm = TRUE) - min(df[, yvar], na.rm = TRUE)),
         vjust = "right",
         size = 2
-      ) +
-      ggplot2::scale_color_manual(values = col)
+      )
+
+    if (!is.null(col)) {
+      p <- p +
+        ggplot2::scale_color_manual(values = col)
+    }
   }
   p
 }
@@ -185,10 +190,10 @@ g_ipp <- function(df,
                   ggtheme = nestcolor::theme_nest(),
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
                   max_obs_per_plot = 4,
-                  col = getOption("tern.color")) {
+                  col = NULL) {
   checkmate::assert_count(max_obs_per_plot)
   checkmate::assert_subset(plotting_choices, c("all_in_one", "split_by_max_obs", "separate_by_obs"))
-  checkmate::assert_character(col)
+  checkmate::assert_character(col, null.ok = TRUE)
 
   plotting_choices <- match.arg(plotting_choices)
 

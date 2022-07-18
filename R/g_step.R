@@ -17,6 +17,7 @@
 #' @export
 #'
 #' @examples
+#' library(nestcolor)
 #' library(survival)
 #' lung$sex <- factor(lung$sex)
 #'
@@ -77,11 +78,11 @@
 g_step <- function(df,
                    use_percentile = "Percentile Center" %in% names(df),
                    est = list(col = "black", lty = 1),
-                   ci_ribbon = list(fill = "lightblue", alpha = 0.5),
-                   col = getOption("tern.color")) {
+                   ci_ribbon = list(fill = getOption("ggplot2.discrete.colour")[1], alpha = 0.5),
+                   col = getOption("ggplot2.discrete.colour")) {
   checkmate::assert_tibble(df)
   checkmate::assert_flag(use_percentile)
-  checkmate::assert_character(col)
+  checkmate::assert_character(col, null.ok = TRUE)
   checkmate::assert_list(est, names = "named")
   checkmate::assert_list(ci_ribbon, names = "named", null.ok = TRUE)
 
@@ -90,7 +91,16 @@ g_step <- function(df,
   attrs <- attributes(df)
   df$y <- df[[attrs$estimate]]
   p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "x"))
+
+  if (!is.null(col)) {
+    p <- p +
+      ggplot2::scale_color_manual(values = col)
+  }
+
   if (!is.null(ci_ribbon)) {
+    if (is.null(ci_ribbon$fill)) {
+      ci_ribbon$fill <- "lightblue"
+    }
     p <- p + ggplot2::geom_ribbon(
       ggplot2::aes_string(ymin = "ci_lower", ymax = "ci_upper"),
       fill = ci_ribbon$fill,
@@ -101,8 +111,8 @@ g_step <- function(df,
     ggplot2::aes_string(y = "y"),
     color = est$col,
     linetype = est$lty
-  ) +
-    ggplot2::scale_color_manual(values = col)
+  )
+
   p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate)
   if (use_percentile) {
     p <- p + ggplot2::scale_x_continuous(labels = scales::percent)

@@ -27,6 +27,8 @@
 #' @export
 #'
 #' @examples
+#' library(nestcolor)
+#'
 #' g_waterfall(height = c(3, 5, -1), id = letters[1:3])
 #'
 #' g_waterfall(
@@ -59,12 +61,6 @@
 #'
 #' g_waterfall(
 #'   height = ADRS_f$pchg,
-#'   id = ADRS_f$USUBJID,
-#'   col_var = ADRS_f$AVALC
-#' )
-#'
-#' g_waterfall(
-#'   height = ADRS_f$pchg,
 #'   id = paste("asdfdsfdsfsd", ADRS_f$USUBJID),
 #'   col_var = ADRS_f$SEX
 #' )
@@ -79,7 +75,7 @@
 g_waterfall <- function(height,
                         id,
                         col_var = NULL,
-                        col = getOption("tern.color"),
+                        col = getOption("ggplot2.discrete.colour"),
                         xlab = NULL,
                         ylab = NULL,
                         col_legend_title = NULL,
@@ -91,7 +87,7 @@ g_waterfall <- function(height,
   }
 
   checkmate::assert_multi_class(col_var, c("character", "factor"), null.ok = TRUE)
-  checkmate::assert_character(col)
+  checkmate::assert_character(col, null.ok = TRUE)
 
   xlabel <- deparse(substitute(id))
   ylabel <- deparse(substitute(height))
@@ -132,7 +128,11 @@ g_waterfall <- function(height,
         legend.background = ggplot2::element_blank(),
         legend.title = ggplot2::element_text(face = "bold"),
         legend.box.background = ggplot2::element_rect(colour = "black")
-      ) +
+      )
+  }
+
+  if (!is.null(col)) {
+    p <- p +
       ggplot2::scale_fill_manual(values = col)
   }
 
