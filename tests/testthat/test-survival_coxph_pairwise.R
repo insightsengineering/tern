@@ -246,7 +246,7 @@ testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by surv
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
-  adtte_f <- adtte_f[1:x1,]
+  adtte_f <- adtte_f[1:x1, ]
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
@@ -261,9 +261,9 @@ testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by surv
 
   data <- rbind(df_ref, df)
   group <- factor(rep(c("ref", "x"), c(nrow(df_ref), nrow(df))), levels = c("ref", "x"))
-  .in_ref_col = FALSE
-  .var = "AVAL"
-  is_event = "is_event"
+  .in_ref_col <- FALSE
+  .var <- "AVAL"
+  is_event <- "is_event"
   assert_df_with_variables(df, list(tte = .var, is_event = is_event))
   df_cox <- data.frame(
     tte = data[[.var]],
@@ -274,7 +274,7 @@ testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by surv
     survival::Surv(tte, is_event) ~ arm,
     data = df_cox
   )
-  log_rank_pvalue <-  1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
+  log_rank_pvalue <- 1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
 
   testthat::expect_equal(as.numeric(result$pvalue), log_rank_pvalue, tolerance = 0.000001)
 })
