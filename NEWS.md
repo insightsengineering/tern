@@ -63,7 +63,7 @@
 * Fixed warnings occurring in example tests
 * Removed `tern:::` prefix and added `dontrun` to internal function examples.
 * Enhanced `s_coxph_pairwise` with generating log-rank p value by original 
-  log-rank test, instead of cox ph model.
+  log-rank test, instead of Cox Proportional-Hazards Model.
 
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:
