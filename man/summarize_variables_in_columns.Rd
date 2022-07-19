@@ -75,22 +75,22 @@ These functions can be used to produce summary tables for PK datasets.
 }
 \section{Functions}{
 \itemize{
-\item \code{summary_in_cols}: \code{summary_in_cols} is a S3 generic
+\item \code{summary_in_cols()}: \code{summary_in_cols} is a S3 generic
 function to produce an object description.
 
-\item \code{summary_in_cols.numeric}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}}
+\item \code{summary_in_cols(numeric)}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}}
 function that produces a named list of statistics to include as columns.
 
-\item \code{summary_in_cols.factor}: a wrapper of
+\item \code{summary_in_cols(factor)}: a wrapper of
 \code{\link[=s_summary.factor]{s_summary.factor()}} function that produces a named list of statistics to include as columns.
 
-\item \code{summary_in_cols.character}: a wrapper of \code{\link[=s_summary.character]{s_summary.character()}}
+\item \code{summary_in_cols(character)}: a wrapper of \code{\link[=s_summary.character]{s_summary.character()}}
 function that produces a named list of statistics to include as columns.
 
-\item \code{summarize_vars_in_cols}: Layout creating
+\item \code{summarize_vars_in_cols()}: Layout creating
 function which can be used for creating summary tables in columns, primarily used for PK data sets.
-}}
 
+}}
 \examples{
 
 library(scda)

@@ -92,17 +92,17 @@ Note that \code{df} should be filtered to include only post-baseline records.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal}: Statistics function which counts patients with abnormal range values
+\item \code{s_count_abnormal()}: Statistics function which counts patients with abnormal range values
 for a single \code{abnormal} level.
 
-\item \code{a_count_abnormal}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_abnormal()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_abnormal}: Layout creating function which can be used for creating tables, which can take
+\item \code{count_abnormal()}: Layout creating function which can be used for creating tables, which can take
 statistics function arguments and additional format arguments (see below). Note that it only
 works with a single variable but multiple abnormal levels.
-}}
 
+}}
 \examples{
 library(dplyr)
 
