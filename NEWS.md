@@ -1,4 +1,4 @@
-# tern 0.7.8.9020
+# tern 0.7.8.9021
 
 ### Enhancements 
 * exported `draw_grob` function (needed by `enableRF`).
@@ -9,6 +9,8 @@
   its length or by using `checkmate::assert_vector()`.
 * Removed `assert_equal_length` as comparing lengths of multiple vectors can be 
   done without the need of a custom function.
+* Implemented `nestcolor` in all examples with slight refactoring to `g_km`, `g_ipp`, 
+  `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.

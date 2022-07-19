@@ -17,6 +17,7 @@ g_forest(
   width_columns = NULL,
   width_forest = grid::unit(1, "null"),
   col_symbol_size = attr(tbl, "col_symbol_size"),
+  col = getOption("ggplot2.discrete.colour")[1],
   draw = TRUE,
   newpage = TRUE
 )
@@ -60,6 +61,8 @@ sample size used to calculate the estimator. If \code{NULL}, the same symbol
 size is used for all subgroups. By default tries to get this from
 \code{tbl} attribute \code{col_symbol_size}, otherwise needs to be manually specified.}
 
+\item{col}{(\code{character})\cr color(s).}
+
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
 \item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
@@ -81,6 +84,7 @@ library(scda)
 library(dplyr)
 library(forcats)
 library(rtables)
+library(nestcolor)
 adrs <- synthetic_cdisc_data("latest")$adrs
 n_records <- 20
 adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
