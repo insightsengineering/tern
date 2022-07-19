@@ -79,6 +79,8 @@
 #' @export
 #'
 #' @examples
+#' library(nestcolor)
+#'
 #' adsl <- scda::synthetic_cdisc_data("latest")$adsl
 #' adlb <- scda::synthetic_cdisc_data("latest")$adlb
 #' adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
@@ -144,7 +146,7 @@ g_lineplot <- function(df, # nolint
                        position = ggplot2::position_dodge(width = 0.4),
                        legend_title = NULL,
                        legend_position = "bottom",
-                       ggtheme = NULL,
+                       ggtheme = nestcolor::theme_nest(),
                        y_lab = NULL,
                        y_lab_add_paramcd = TRUE,
                        y_lab_add_unit = TRUE,
@@ -157,11 +159,11 @@ g_lineplot <- function(df, # nolint
                        table_labels = summary_labels(),
                        table_font_size = 3,
                        newpage = TRUE,
-                       col = getOption("tern.color")) {
+                       col = NULL) {
   checkmate::assert_character(variables, any.missing = TRUE)
   checkmate::assert_character(mid, null.ok = TRUE)
   checkmate::assert_character(interval, null.ok = TRUE)
-  checkmate::assert_character(col)
+  checkmate::assert_character(col, null.ok = TRUE)
 
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(subtitle, null.ok = TRUE)
@@ -336,8 +338,12 @@ g_lineplot <- function(df, # nolint
       shape = legend_title,
       x = attr(df[[x]], "label"),
       y = y_lab
-    ) +
-    ggplot2::scale_color_manual(values = col)
+    )
+
+  if (!is.null(col)) {
+    p <- p +
+      ggplot2::scale_color_manual(values = col)
+  }
 
   if (!is.null(ggtheme)) {
     p <- p + ggtheme

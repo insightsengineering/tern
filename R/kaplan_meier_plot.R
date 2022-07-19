@@ -84,6 +84,7 @@ NULL
 #' library(ggplot2)
 #' library(survival)
 #' library(grid)
+#' library(nestcolor)
 #'
 #' df <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
@@ -165,7 +166,7 @@ NULL
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
-                 col = getOption("tern.color"),
+                 col = NULL,
                  lty = NULL,
                  lwd = .5,
                  censor_show = TRUE,
@@ -184,7 +185,7 @@ g_km <- function(df,
                  name = NULL,
                  font_size = 12,
                  ci_ribbon = FALSE,
-                 ggtheme = NULL,
+                 ggtheme = nestcolor::theme_nest(),
                  annot_at_risk = TRUE,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
@@ -194,7 +195,7 @@ g_km <- function(df,
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_string(title, null.ok = TRUE)
-  checkmate::assert_character(col)
+  checkmate::assert_character(col, null.ok = TRUE)
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -567,11 +568,11 @@ h_ggkm <- function(data,
                    lty = NULL,
                    pch = 3,
                    size = 2,
-                   col = getOption("tern.color"),
+                   col = NULL,
                    ci_ribbon = FALSE,
-                   ggtheme = NULL) {
+                   ggtheme = nestcolor::theme_nest()) {
   checkmate::assert_numeric(lty, null.ok = TRUE)
-  checkmate::assert_character(col)
+  checkmate::assert_character(col, null.ok = TRUE)
 
   # change estimates of survival to estimates of failure (1 - survival)
   if (yval == "Failure") {

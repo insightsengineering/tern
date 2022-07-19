@@ -9,8 +9,8 @@ g_step(
   df,
   use_percentile = "Percentile Center" \%in\% names(df),
   est = list(col = "black", lty = 1),
-  ci_ribbon = list(fill = "lightblue", alpha = 0.5),
-  col = getOption("tern.color")
+  ci_ribbon = list(fill = getOption("ggplot2.discrete.colour")[1], alpha = 0.5),
+  col = getOption("ggplot2.discrete.colour")
 )
 
 \method{tidy}{step}(x, ...)
@@ -52,6 +52,7 @@ Tidy the STEP results into a \code{tibble} to format them ready for plotting.
 }}
 
 \examples{
+library(nestcolor)
 library(survival)
 lung$sex <- factor(lung$sex)
 

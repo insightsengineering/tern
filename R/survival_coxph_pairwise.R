@@ -11,7 +11,7 @@
 #' @param control (`list`) \cr parameters for comparison details, specified by using \cr
 #'    the helper function [control_coxph()]. Some possible parameter options are: \cr
 #' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
-#'   Default method is "log-rank", can also be set to "wald" or "likelihood".
+#'   Default method is "log-rank" which comes from [survival::survdiff()], can also be set to "wald" or "likelihood" that comes from [survival::coxph()].
 #' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
 #'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
@@ -100,9 +100,15 @@ s_coxph_pairwise <- function(df,
     ties = ties
   )
   sum_cox <- summary(cox_fit, conf.int = conf_level, extend = TRUE)
+  orginal_survdiff <- survival::survdiff(
+    formula_cox,
+    data = df_cox
+  )
+  log_rank_pvalue <- 1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
+
   pval <- switch(pval_method,
     "wald" = sum_cox$waldtest["pvalue"],
-    "log-rank" = sum_cox$sctest["pvalue"], # Score (logrank) test,
+    "log-rank" = log_rank_pvalue, # pvalue from original log-rank test survival::survdiff()
     "likelihood" = sum_cox$logtest["pvalue"]
   )
   list(

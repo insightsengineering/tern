@@ -22,7 +22,7 @@ h_g_ipp(
   add_baseline_hline = FALSE,
   yvar_baseline = "BASE",
   ggtheme = nestcolor::theme_nest(),
-  col = getOption("tern.color")
+  col = NULL
 )
 
 g_ipp(
@@ -40,7 +40,7 @@ g_ipp(
   ggtheme = nestcolor::theme_nest(),
   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
   max_obs_per_plot = 4,
-  col = getOption("tern.color")
+  col = NULL
 )
 }
 \arguments{
@@ -107,6 +107,7 @@ values over time.
 
 library(scda)
 library(dplyr)
+library(nestcolor)
 
 # Select a small sample of data to plot.
 adlb <- synthetic_cdisc_data("latest")$adlb \%>\%

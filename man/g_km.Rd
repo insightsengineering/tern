@@ -8,7 +8,7 @@ g_km(
   df,
   variables,
   control_surv = control_surv_timepoint(),
-  col = getOption("tern.color"),
+  col = NULL,
   lty = NULL,
   lwd = 0.5,
   censor_show = TRUE,
@@ -27,7 +27,7 @@ g_km(
   name = NULL,
   font_size = 12,
   ci_ribbon = FALSE,
-  ggtheme = NULL,
+  ggtheme = nestcolor::theme_nest(),
   annot_at_risk = TRUE,
   annot_surv_med = TRUE,
   annot_coxph = FALSE,
@@ -151,6 +151,7 @@ library(dplyr)
 library(ggplot2)
 library(survival)
 library(grid)
+library(nestcolor)
 
 df <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%

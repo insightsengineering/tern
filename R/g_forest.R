@@ -32,6 +32,7 @@
 #'  sample size used to calculate the estimator. If `NULL`, the same symbol
 #'  size is used for all subgroups. By default tries to get this from
 #'  `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
+#' @param col (`character`)\cr color(s).
 #' @return (`gtree`) object containing the forest plot and table
 #' @export
 #'
@@ -41,6 +42,7 @@
 #' library(dplyr)
 #' library(forcats)
 #' library(rtables)
+#' library(nestcolor)
 #' adrs <- synthetic_cdisc_data("latest")$adrs
 #' n_records <- 20
 #' adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
@@ -158,18 +160,23 @@ g_forest <- function(tbl, # nolint
                      width_columns = NULL,
                      width_forest = grid::unit(1, "null"),
                      col_symbol_size = attr(tbl, "col_symbol_size"),
+                     col = getOption("ggplot2.discrete.colour")[1],
                      draw = TRUE,
                      newpage = TRUE) {
   checkmate::assert_class(tbl, "VTableTree")
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
+  if (is.null(col)) {
+    col <- "blue"
+  }
 
   checkmate::assert_number(col_x, lower = 0, upper = nc, null.ok = FALSE)
   checkmate::assert_number(col_ci, lower = 0, upper = nc, null.ok = FALSE)
   checkmate::assert_number(col_symbol_size, lower = 0, upper = nc, null.ok = TRUE)
   checkmate::assert_true(col_x > 0)
   checkmate::assert_true(col_ci > 0)
+  checkmate::assert_character(col)
   if (!is.null(col_symbol_size)) {
     checkmate::assert_true(col_symbol_size > 0)
   }
@@ -235,6 +242,7 @@ g_forest <- function(tbl, # nolint
     width_columns,
     width_forest,
     symbol_size = symbol_size,
+    col = col,
     vp = grid::plotViewport(margins = rep(1, 4))
   )
 
@@ -308,6 +316,7 @@ forest_grob <- function(tbl,
                         width_columns = NULL,
                         width_forest = grid::unit(1, "null"),
                         symbol_size = NULL,
+                        col = "blue",
                         name = NULL,
                         gp = NULL,
                         vp = NULL) {
@@ -323,6 +332,7 @@ forest_grob <- function(tbl,
   checkmate::assert_numeric(lower, len = nr)
   checkmate::assert_numeric(upper, len = nr)
   checkmate::assert_numeric(symbol_size, len = nr, null.ok = TRUE)
+  checkmate::assert_character(col)
 
   if (is.null(symbol_size)) {
     symbol_size <- rep(1, nr)
@@ -463,7 +473,7 @@ forest_grob <- function(tbl,
         children = do.call(
           grid::gList,
           Map(
-            function(xi, li, ui, row_index, size_i) {
+            function(xi, li, ui, row_index, size_i, col) {
               forest_dot_line(
                 xi,
                 li,
@@ -471,6 +481,7 @@ forest_grob <- function(tbl,
                 row_index,
                 xlim,
                 symbol_size = size_i,
+                col = col,
                 datavp = data_forest_vp
               )
             },
@@ -479,6 +490,7 @@ forest_grob <- function(tbl,
             upper,
             seq_along(x),
             symbol_size,
+            col,
             USE.NAMES = FALSE
           )
         ),
@@ -587,6 +599,7 @@ forest_dot_line <- function(x, # nolint
                             row_index,
                             xlim,
                             symbol_size = 1,
+                            col = "blue",
                             datavp) {
   ci <- c(lower, upper)
   if (any(!is.na(c(x, ci)))) {
@@ -644,7 +657,7 @@ forest_dot_line <- function(x, # nolint
             )
           ),
           vp = datavp,
-          gp = grid::gpar(col = "blue", fill = "blue")
+          gp = grid::gpar(col = col, fill = col)
         )
       ),
       vp = grid::vpPath(paste0("forest-", row_index))
