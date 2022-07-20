@@ -1,4 +1,4 @@
-# tern 0.7.8.9021
+# tern 0.7.8.9022
 
 ### Enhancements 
 * exported `draw_grob` function (needed by `enableRF`).
@@ -141,6 +141,7 @@
 * Deprecated `h_set_nest_theme()` in favor of `nestcolor::theme_nest()`.
 * Removed deprecated `mmrm` functions: `fit_mmrm`, `g_mmrm_diagnostic`, `g_mmrm_lsmeans`, `as.rtable.mmrm`, `h_mmrm_fixed`,
   `h_mmrm_cov`, `h_mmrm_diagnostic`, `tidy.mmrm`, `s_mmrm_lsmeans`, `s_mmrm_lsmeans_single`, `summarize_lsmeans`.
+* Changed function names `arm` to `study_arm` and `extract` to `extract_by_name`.
 
 
 # tern 0.7.8
