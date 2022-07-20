@@ -1,4 +1,4 @@
-# tern 0.7.8.9020
+# tern 0.7.8.9021
 
 ### Enhancements 
 * exported `draw_grob` function (needed by `enableRF`).
@@ -11,6 +11,8 @@
   done without the need of a custom function.
 * Switched `prop_diff_wald` test from `stats::prop.test` to `DescTools::BinomDiffCI`
   to implement `Yates` correction term.
+* Implemented `nestcolor` in all examples with slight refactoring to `g_km`, `g_ipp`, 
+  `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.
@@ -62,6 +64,8 @@
   need to add this tag. Modified examples accordingly.
 * Fixed warnings occurring in example tests
 * Removed `tern:::` prefix and added `dontrun` to internal function examples.
+* Enhanced `s_coxph_pairwise` with generating log-rank p value by original 
+  log-rank test, instead of Cox Proportional-Hazards Model.
 
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:

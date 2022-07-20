@@ -17,9 +17,9 @@ h_ggkm(
   lty = NULL,
   pch = 3,
   size = 2,
-  col = getOption("tern.color"),
+  col = NULL,
   ci_ribbon = FALSE,
-  ggtheme = NULL
+  ggtheme = nestcolor::theme_nest()
 )
 }
 \arguments{
