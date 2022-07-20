@@ -87,17 +87,17 @@ the correct denominators when building the layout as it is used to define row sp
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_by_worst_grade}: Statistics function which counts patients with worst grade,
+\item \code{s_count_abnormal_by_worst_grade()}: Statistics function which counts patients with worst grade,
 consisting of counts and percentages of patients with worst grade
 \code{1} to \code{4}, and \code{Any} non-zero grade.
 
-\item \code{a_count_abnormal_by_worst_grade}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_abnormal_by_worst_grade()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_abnormal_by_worst_grade}: Layout creating function which can be used for creating tables,
+\item \code{count_abnormal_by_worst_grade()}: Layout creating function which can be used for creating tables,
 which can take statistics function arguments and additional format arguments (see below).
-}}
 
+}}
 \examples{
 library(scda)
 library(dplyr)
