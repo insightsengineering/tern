@@ -70,19 +70,19 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_rsp_subgroups()}: prepares response rates and odds ratios for
+\item \code{extract_rsp_subgroups}: prepares response rates and odds ratios for
 population subgroups in data frames. Simple wrapper for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and
 \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}. Result is a list of two data frames:
 \code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data}, passed as a
 named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}. \code{groups_lists}
 optionally specifies groupings for \code{subgroups} variables.
 
-\item \code{a_response_subgroups()}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
+\item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
 Returns is a list of Formatted Analysis functions with one element per statistic.
 
-\item \code{tabulate_rsp_subgroups()}: table creating function.
-
+\item \code{tabulate_rsp_subgroups}: table creating function.
 }}
+
 \examples{
 
 # Testing dataset.

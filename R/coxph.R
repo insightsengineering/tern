@@ -55,7 +55,7 @@ univariate <- function(x) {
 #'
 #' @param formula (`formula`) \cr
 #'   Specifies \code{\link[survival:Surv]{survival model}}.
-#'   The arm variable needs to be wrapped in \code{\link{arm}}. The
+#'   The arm variable needs to be wrapped in \code{\link{study_arm}}. The
 #'   \code{\link[survival]{strata}} special will only be used for the stratified analysis. If there is not
 #'   \code{\link[survival]{strata}} specification then the stratified analysis is omitted.
 #' @param covariates a list of single right-hand-term formulas, if named, named will be used in the output

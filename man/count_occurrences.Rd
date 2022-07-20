@@ -102,15 +102,15 @@ calls. Use \code{drop = FALSE} if you would like to show all occurrences.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_occurrences()}: Statistics function which counts number of patients that report an
+\item \code{s_count_occurrences}: Statistics function which counts number of patients that report an
 occurrence.
 
-\item \code{a_count_occurrences()}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_occurrences}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_occurrences()}: Analyze Function that counts occurrences as part of \code{rtables} layouts.
-
+\item \code{count_occurrences}: Analyze Function that counts occurrences as part of \code{rtables} layouts.
 }}
+
 \examples{
 df <- data.frame(
   USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),

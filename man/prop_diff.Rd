@@ -116,38 +116,38 @@ String describing the analysis.
 }
 \section{Functions}{
 \itemize{
-\item \code{d_proportion_diff()}: This is an auxiliary function that describes the analysis in
+\item \code{d_proportion_diff}: This is an auxiliary function that describes the analysis in
 \code{s_proportion_diff}.
 
-\item \code{prop_diff_wald()}: The Wald interval follows the usual textbook
+\item \code{prop_diff_wald}: The Wald interval follows the usual textbook
 definition for a single proportion confidence interval using the normal
 approximation. It is possible to include a continuity correction for Wald's
 interval.
 
-\item \code{prop_diff_ha()}: Anderson-Hauck confidence interval.
+\item \code{prop_diff_ha}: Anderson-Hauck confidence interval.
 
-\item \code{prop_diff_nc()}: Newcombe confidence interval. It is based on
+\item \code{prop_diff_nc}: Newcombe confidence interval. It is based on
 the Wilson score confidence interval for a single binomial proportion.
 
-\item \code{prop_diff_cmh()}: Calculates the weighted difference.
+\item \code{prop_diff_cmh}: Calculates the weighted difference.
 This is defined as the difference in response rates between the
 experimental treatment group and the control treatment group, adjusted
 for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
 weights. For the CMH chi-squared test, use \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
 
-\item \code{s_proportion_diff()}: Statistics function estimating the difference
+\item \code{s_proportion_diff}: Statistics function estimating the difference
 in terms of responder proportion.
 
-\item \code{a_proportion_diff()}: Formatted Analysis function which can be further customized by calling
+\item \code{a_proportion_diff}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{estimate_proportion_diff()}: Adds a descriptive analyze layer to \code{rtables}
+\item \code{estimate_proportion_diff}: Adds a descriptive analyze layer to \code{rtables}
 pipelines. The analysis is applied to a \code{dataframe} and return the
 estimations, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
 \code{s_proportion_diff()}, for instance \code{na.rm = FALSE} if missing data
 should be accounted for.
-
 }}
+
 \examples{
 # Wald confidence interval
 set.seed(2)

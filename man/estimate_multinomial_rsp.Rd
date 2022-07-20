@@ -63,22 +63,22 @@ regarding the level of a factor.
 }
 \section{Functions}{
 \itemize{
-\item \code{d_onco_rsp_label()}: Standard Oncology Response
+\item \code{d_onco_rsp_label}: Standard Oncology Response
 
 Describe the oncology response in a standard way.
 
-\item \code{s_length_proportion()}: Statistics function which takes the length of the input \code{x} and takes that
+\item \code{s_length_proportion}: Statistics function which takes the length of the input \code{x} and takes that
 as the number of successes, and the column number \code{.N_col} as the total number, and feeds that into
 \code{\link[=s_proportion]{s_proportion()}}.
 
-\item \code{a_length_proportion()}: Formatted Analysis function which can be further customized by calling
+\item \code{a_length_proportion}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{estimate_multinomial_response()}: Analyze Function which adds the multinomial proportion analysis to
+\item \code{estimate_multinomial_response}: Analyze Function which adds the multinomial proportion analysis to
 the input layout. Note that additional formatting arguments can be used
 here.
-
 }}
+
 \examples{
 
 d_onco_rsp_label(

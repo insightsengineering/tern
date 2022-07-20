@@ -117,26 +117,26 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 }
 \section{Functions}{
 \itemize{
-\item \code{h_adlb_worsen()}: Helper function
+\item \code{h_adlb_worsen}: Helper function
 to prepare a \code{df} for generate the patient count shift table
 
-\item \code{h_worsen_counter()}: Helper function to
+\item \code{h_worsen_counter}: Helper function to
 count the number of patients and the fraction of patients according to
 highest post-baseline lab grade variable \code{.var}, baseline lab grade variable \code{baseline_var},
 and the direction of interest specified in \code{direction_var}.
 
-\item \code{s_count_abnormal_lab_worsen_by_baseline()}: Statistics function which calculates the
+\item \code{s_count_abnormal_lab_worsen_by_baseline}: Statistics function which calculates the
 counts and fraction of patients whose worst post-baseline lab grades are worse than
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 
-\item \code{a_count_abnormal_lab_worsen_by_baseline()}: Formatted Analysis function which can be further customized by
+\item \code{a_count_abnormal_lab_worsen_by_baseline}: Formatted Analysis function which can be further customized by
 calling \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_abnormal_lab_worsen_by_baseline()}: Layout
+\item \code{count_abnormal_lab_worsen_by_baseline}: Layout
 creating function which can be used for creating tables, which can take statistics
 function arguments and additional format arguments (see below).
-
 }}
+
 \examples{
 
 library(scda)

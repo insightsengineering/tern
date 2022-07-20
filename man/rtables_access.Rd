@@ -51,20 +51,20 @@ as having a count as the first element and a fraction as the second element in e
 }
 \section{Functions}{
 \itemize{
-\item \code{h_row_counts()}: helper function to extract counts from specified columns
+\item \code{h_row_counts}: helper function to extract counts from specified columns
 in a \code{TableRow}.
 
-\item \code{h_row_fractions()}: helper function to extract fractions from specified columns
+\item \code{h_row_fractions}: helper function to extract fractions from specified columns
 in a \code{TableRow}.
 
-\item \code{h_col_counts()}: Helper function to extract column counts from specified columns
+\item \code{h_col_counts}: Helper function to extract column counts from specified columns
 in a table.
 
-\item \code{is_leaf_table()}: Helper function which says whether current table is a leaf in the tree.
+\item \code{is_leaf_table}: Helper function which says whether current table is a leaf in the tree.
 
-\item \code{h_content_first_row()}: Helper function to get first row of content table of current table.
-
+\item \code{h_content_first_row}: Helper function to get first row of content table of current table.
 }}
+
 \seealso{
 \verb{[prune_occurrences]} for usage of these functions.
 }
