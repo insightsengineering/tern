@@ -27,9 +27,9 @@ This is a new generic function to convert objects to \code{rtable} tables.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{data.frame}: method for converting \code{data.frame} that contain numeric columns to \code{rtable}.
-}}
+\item \code{as.rtable(data.frame)}: method for converting \code{data.frame} that contain numeric columns to \code{rtable}.
 
+}}
 \examples{
 x <- data.frame(
   a = 1:10,

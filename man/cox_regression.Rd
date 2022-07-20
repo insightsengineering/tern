@@ -140,49 +140,49 @@ analysis (NEST Team, 2020).
 }
 \section{Functions}{
 \itemize{
-\item \code{h_coxreg_univar_formulas}: Helper for Cox Regression Formula
+\item \code{h_coxreg_univar_formulas()}: Helper for Cox Regression Formula
 
 Creates a list of formulas. It is used internally by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
 for the comparison of univariate Cox regression models.
 
-\item \code{h_coxreg_multivar_formula}: Helper for Multi-variable Cox Regression Formula
+\item \code{h_coxreg_multivar_formula()}: Helper for Multi-variable Cox Regression Formula
 
 Creates a formulas string. It is used internally by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}
 for the comparison of multi-variable Cox regression models. Interactions will not
 be included in multi-variable Cox regression model.
 
-\item \code{fit_coxreg_univar}: Fit a series of univariate Cox regression models
+\item \code{fit_coxreg_univar()}: Fit a series of univariate Cox regression models
 given the inputs.
 
-\item \code{tidy.summary.coxph}: Custom tidy method for \code{\link[survival:coxph]{survival::coxph()}} summary results.
+\item \code{tidy(summary.coxph)}: Custom tidy method for \code{\link[survival:coxph]{survival::coxph()}} summary results.
 
 Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{data.frame} to extract model results.
 
-\item \code{h_coxreg_univar_extract}: Utility function to help tabulate the result of
+\item \code{h_coxreg_univar_extract()}: Utility function to help tabulate the result of
 a univariate Cox regression model.
 
-\item \code{tidy.coxreg.univar}: Custom tidy method for a Univariate Cox Regression
+\item \code{tidy(coxreg.univar)}: Custom tidy method for a Univariate Cox Regression
 
 Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}.
 
-\item \code{fit_coxreg_multivar}: Fit a multi-variable Cox regression model.
+\item \code{fit_coxreg_multivar()}: Fit a multi-variable Cox regression model.
 
-\item \code{h_coxreg_multivar_extract}: Tabulation of Multi-variable Cox Regressions
+\item \code{h_coxreg_multivar_extract()}: Tabulation of Multi-variable Cox Regressions
 
 Utility function to help tabulate the result of a multi-variable Cox regression model
 for a treatment/covariate variable.
 
-\item \code{tidy.coxreg.multivar}: Custom tidy method for a Multi-variable Cox Regression
+\item \code{tidy(coxreg.multivar)}: Custom tidy method for a Multi-variable Cox Regression
 
 Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.
 
-\item \code{s_coxreg}: transforms the tabulated results from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
+\item \code{s_coxreg()}: transforms the tabulated results from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
 and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list. Not much calculation is done here,
 it rather prepares the data to be used by the layout creating function.
 
-\item \code{summarize_coxreg}: layout creating function.
-}}
+\item \code{summarize_coxreg()}: layout creating function.
 
+}}
 \note{
 The usual formatting arguments for the \emph{layout creating} function
 \code{summarize_coxreg} are not yet accepted (\code{.stats}, \code{.indent_mod}, \code{.formats},

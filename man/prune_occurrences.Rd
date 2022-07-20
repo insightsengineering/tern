@@ -77,35 +77,35 @@ functions.
 }
 \section{Functions}{
 \itemize{
-\item \code{keep_rows}: constructor for creating pruning functions based on
+\item \code{keep_rows()}: constructor for creating pruning functions based on
 a row condition function. This removes all analysis rows (\code{TableRow}) that should be
 pruned, i.e., don't fulfill the row condition. It removes the sub tree if there are no
 children left.
 
-\item \code{keep_content_rows}: constructor for creating pruning functions based on
+\item \code{keep_content_rows()}: constructor for creating pruning functions based on
 a condition for the (first) content row in leaf tables. This removes all leaf tables where
 the first content row does not fulfill the condition. It does not check individual rows.
 It then proceeds recursively by removing the sub tree if there are no children left.
 
-\item \code{has_count_in_cols}: constructor for creating condition functions on total counts in
+\item \code{has_count_in_cols()}: constructor for creating condition functions on total counts in
 the specified columns.
 
-\item \code{has_count_in_any_col}: constructor for creating condition functions on any of the counts in
+\item \code{has_count_in_any_col()}: constructor for creating condition functions on any of the counts in
 the specified columns satisfying a threshold.
 
-\item \code{has_fraction_in_cols}: constructor for creating condition functions on total fraction in
+\item \code{has_fraction_in_cols()}: constructor for creating condition functions on total fraction in
 the specified columns.
 
-\item \code{has_fraction_in_any_col}: constructor for creating condition functions on any fraction in
+\item \code{has_fraction_in_any_col()}: constructor for creating condition functions on any fraction in
 the specified columns.
 
-\item \code{has_fractions_difference}: constructor for creating condition function that checks the difference
+\item \code{has_fractions_difference()}: constructor for creating condition function that checks the difference
 between the fractions reported in each specified column.
 
-\item \code{has_counts_difference}: constructor for creating condition function that checks the difference
+\item \code{has_counts_difference()}: constructor for creating condition function that checks the difference
 between the counts reported in each specified column.
-}}
 
+}}
 \note{
 Since most table specifications are worded positively, we name our constructor and condition
 functions positively, too. However, note that the result of \code{\link[=keep_rows]{keep_rows()}} says what

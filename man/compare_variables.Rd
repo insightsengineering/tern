@@ -165,50 +165,50 @@ with the new Analyze Function \code{\link[=compare_vars]{compare_vars()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_compare}: \code{s_compare} is a S3 generic function to produce
+\item \code{s_compare()}: \code{s_compare} is a S3 generic function to produce
 an object description and comparison versus the reference column in the form
 of p-values.
 
-\item \code{s_compare.numeric}: Method for numeric class. This uses the standard t-test
+\item \code{s_compare(numeric)}: Method for numeric class. This uses the standard t-test
 to calculate the p-value.
 
-\item \code{s_compare.factor}: Method for factor class. This uses the chi-squared test
+\item \code{s_compare(factor)}: Method for factor class. This uses the chi-squared test
 to calculate the p-value. Note that the \code{denom} for factor proportions can only be \code{n} here
 since the usage is for comparing proportions between columns.
 Therefore a row-based proportion would not make sense. Also proportion based on \code{N_col} would
 be difficult since for the chi-squared test statistic we use the counts. Therefore
 missing values should be accounted for explicitly as factor levels.
 
-\item \code{s_compare.character}: Method for character class. This makes an automatic
+\item \code{s_compare(character)}: Method for character class. This makes an automatic
 conversion to factor (with a warning) and then forwards to the method for factors.
 
-\item \code{s_compare.logical}: Method for logical class. A chi-squared test
+\item \code{s_compare(logical)}: Method for logical class. A chi-squared test
 is used. If missing values are not removed, then they are counted as \code{FALSE}.
 
-\item \code{a_compare}: S3 generic Formatted Analysis function to produce
+\item \code{a_compare()}: S3 generic Formatted Analysis function to produce
 an object description and comparison versus the reference column in the form
 of p-values. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{a_compare.numeric}: Formatted Analysis function method for \code{numeric}.
+\item \code{a_compare(numeric)}: Formatted Analysis function method for \code{numeric}.
 
-\item \code{a_compare.factor}: Formatted Analysis function method for \code{factor}.
+\item \code{a_compare(factor)}: Formatted Analysis function method for \code{factor}.
 
-\item \code{a_compare.character}: Formatted Analysis function method for \code{character}.
+\item \code{a_compare(character)}: Formatted Analysis function method for \code{character}.
 
-\item \code{a_compare.logical}: Formatted Analysis function method for \code{logical}.
+\item \code{a_compare(logical)}: Formatted Analysis function method for \code{logical}.
 
-\item \code{create_afun_compare}: Constructor function which creates a combined Formatted
+\item \code{create_afun_compare()}: Constructor function which creates a combined Formatted
 Analysis function for use in layout creating functions \code{\link[=compare_vars]{compare_vars()}}.
 
-\item \code{compare_vars}: Analyze Function to add a comparison of variables to
+\item \code{compare_vars()}: Analyze Function to add a comparison of variables to
 \code{rtables} pipelines. The column split needs to have the reference group defined
 via \code{ref_group} so that the comparison is well defined.
 The ellipsis (\code{...}) conveys arguments to \code{\link[=s_compare]{s_compare()}}.
 When factor variables contains \code{NA}, it is expected that \code{NA}
 have been conveyed to \code{na_level} appropriately beforehand with
 \code{\link[=df_explicit_na]{df_explicit_na()}}.
-}}
 
+}}
 \note{
 Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.

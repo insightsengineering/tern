@@ -578,9 +578,9 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
     afun.numeric <- make_afun( # nolint
       a_summary.numeric,
       .stats = numeric_stats,
-      .formats = extract(.formats, numeric_stats),
-      .labels = extract(.labels, numeric_stats),
-      .indent_mods = extract(.indent_mods, numeric_stats)
+      .formats = extract_by_name(.formats, numeric_stats),
+      .labels = extract_by_name(.labels, numeric_stats),
+      .indent_mods = extract_by_name(.indent_mods, numeric_stats)
     )
 
     factor_stats <- afun_selected_stats(.stats, c("n", "count", "count_fraction"))
@@ -588,27 +588,27 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
     afun.factor <- make_afun( # nolint
       a_summary.factor,
       .stats = factor_stats,
-      .formats = extract(.formats, factor_stats),
-      .labels = extract(.labels, factor_stats),
-      .indent_mods = extract(.indent_mods, factor_stats),
+      .formats = extract_by_name(.formats, factor_stats),
+      .labels = extract_by_name(.labels, factor_stats),
+      .indent_mods = extract_by_name(.indent_mods, factor_stats),
       .ungroup_stats = ungroup_stats
     )
 
     afun.character <- make_afun( # nolint
       a_summary.character,
       .stats = factor_stats,
-      .formats = extract(.formats, factor_stats),
-      .labels = extract(.labels, factor_stats),
-      .indent_mods = extract(.indent_mods, factor_stats),
+      .formats = extract_by_name(.formats, factor_stats),
+      .labels = extract_by_name(.labels, factor_stats),
+      .indent_mods = extract_by_name(.indent_mods, factor_stats),
       .ungroup_stats = ungroup_stats
     )
 
     afun.logical <- make_afun( # nolint
       a_summary.logical,
       .stats = factor_stats,
-      .formats = extract(.formats, factor_stats),
-      .labels = extract(.labels, factor_stats),
-      .indent_mods = extract(.indent_mods, factor_stats)
+      .formats = extract_by_name(.formats, factor_stats),
+      .labels = extract_by_name(.labels, factor_stats),
+      .indent_mods = extract_by_name(.indent_mods, factor_stats)
     )
 
     afun(

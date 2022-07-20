@@ -412,9 +412,9 @@ create_afun_compare <- function(.stats = NULL,
     afun.numeric <- make_afun( # nolint
       a_compare.numeric,
       .stats = numeric_stats,
-      .formats = extract(.formats, numeric_stats),
-      .labels = extract(.labels, numeric_stats),
-      .indent_mods = extract(.indent_mods, numeric_stats),
+      .formats = extract_by_name(.formats, numeric_stats),
+      .labels = extract_by_name(.labels, numeric_stats),
+      .indent_mods = extract_by_name(.indent_mods, numeric_stats),
       .null_ref_cells = FALSE
     )
 
@@ -426,9 +426,9 @@ create_afun_compare <- function(.stats = NULL,
     afun.factor <- make_afun( # nolint
       a_compare.factor,
       .stats = factor_stats,
-      .formats = extract(.formats, factor_stats),
-      .labels = extract(.labels, factor_stats),
-      .indent_mods = extract(.indent_mods, factor_stats),
+      .formats = extract_by_name(.formats, factor_stats),
+      .labels = extract_by_name(.labels, factor_stats),
+      .indent_mods = extract_by_name(.indent_mods, factor_stats),
       .ungroup_stats = ungroup_stats,
       .null_ref_cells = FALSE
     )
@@ -436,9 +436,9 @@ create_afun_compare <- function(.stats = NULL,
     afun.character <- make_afun( # nolint
       a_compare.character,
       .stats = factor_stats,
-      .formats = extract(.formats, factor_stats),
-      .labels = extract(.labels, factor_stats),
-      .indent_mods = extract(.indent_mods, factor_stats),
+      .formats = extract_by_name(.formats, factor_stats),
+      .labels = extract_by_name(.labels, factor_stats),
+      .indent_mods = extract_by_name(.indent_mods, factor_stats),
       .ungroup_stats = ungroup_stats,
       .null_ref_cells = FALSE
     )
@@ -446,9 +446,9 @@ create_afun_compare <- function(.stats = NULL,
     afun.logical <- make_afun( # nolint
       a_compare.logical,
       .stats = factor_stats,
-      .formats = extract(.formats, factor_stats),
-      .labels = extract(.labels, factor_stats),
-      .indent_mods = extract(.indent_mods, factor_stats),
+      .formats = extract_by_name(.formats, factor_stats),
+      .labels = extract_by_name(.labels, factor_stats),
+      .indent_mods = extract_by_name(.indent_mods, factor_stats),
       .null_ref_cells = FALSE
     )
 
