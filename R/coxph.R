@@ -169,8 +169,8 @@ s_cox_univariate <- function(formula,
   check_increments(increments, covariates)
 
   # Formula univariate survival model, terms (t) and term index (i) for conveniency
-  tf <- stats::terms(formula, specials = c("arm", "strata"))
-  iarm <- attr(tf, "specials")$arm
+  tf <- stats::terms(formula, specials = c("study_arm", "strata"))
+  iarm <- attr(tf, "specials")$study_arm
   tarm <- rownames(attr(tf, "factors"))[iarm]
   istr <- attr(tf, "specials")$strata
   tstr <- rownames(attr(tf, "factors"))[istr]
