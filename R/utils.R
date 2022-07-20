@@ -254,7 +254,7 @@ combine_vectors <- function(x, y) {
 #' @return Either `NULL` or the extracted elements from `x`.
 #'
 #' @keywords internal
-extract <- function(x, names) {
+extract_by_name <- function(x, names) {
   if (is.null(x)) {
     return(NULL)
   }
@@ -310,17 +310,17 @@ aesi_label <- function(aesi, scope = NULL) {
   lbl
 }
 
-#' Indicate Arm Variable in Formula
+#' Indicate Study Arm Variable in Formula
 #'
 #' @description
 #'
-#' We use `arm` to indicate the study arm variable in `tern` formulas.
+#' We use `study_arm` to indicate the study arm variable in `tern` formulas.
 #'
 #' @param x arm information
 #'
 #' @keywords internal
 #'
-arm <- function(x) {
+study_arm <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }
 

@@ -55,7 +55,7 @@ univariate <- function(x) {
 #'
 #' @param formula (`formula`) \cr
 #'   Specifies \code{\link[survival:Surv]{survival model}}.
-#'   The arm variable needs to be wrapped in \code{\link{arm}}. The
+#'   The arm variable needs to be wrapped in \code{\link{study_arm}}. The
 #'   \code{\link[survival]{strata}} special will only be used for the stratified analysis. If there is not
 #'   \code{\link[survival]{strata}} specification then the stratified analysis is omitted.
 #' @param covariates a list of single right-hand-term formulas, if named, named will be used in the output
@@ -119,13 +119,13 @@ univariate <- function(x) {
 #' )
 #' \dontrun{
 #' s_cox_univariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ study_arm(ARMCD),
 #'   data = ADTTE_f,
 #'   covariates = list(~SEX)
 #' )
 #'
 #' s_cox_univariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ study_arm(ARMCD),
 #'   data = ADTTE_f,
 #'   covariates = list("Race" = ~RACE, ~AGE, "a rand. quant var with increments" = ~X),
 #'   interactions = TRUE,
@@ -169,13 +169,13 @@ s_cox_univariate <- function(formula,
   check_increments(increments, covariates)
 
   # Formula univariate survival model, terms (t) and term index (i) for conveniency
-  tf <- stats::terms(formula, specials = c("arm", "strata"))
-  iarm <- attr(tf, "specials")$arm
+  tf <- stats::terms(formula, specials = c("study_arm", "strata"))
+  iarm <- attr(tf, "specials")$study_arm
   tarm <- rownames(attr(tf, "factors"))[iarm]
   istr <- attr(tf, "specials")$strata
   tstr <- rownames(attr(tf, "factors"))[istr]
 
-  if (is.null(iarm)) stop("Check `formula`, the arm variable needs to be wrapped in arm()")
+  if (is.null(iarm)) stop("Check `formula`, the arm variable needs to be wrapped in study_arm()")
 
   arms <- levels(with(data, eval(parse(text = tarm, keep.source = FALSE))))
   if (length(arms) != 2) stop("Check `formula`, the arm variable needs 2 levels.")
@@ -595,7 +595,7 @@ fit_n_aov <- function(formula,
 # argument_checks
 check_formula <- function(formula) {
   if (!(inherits(formula, "formula"))) {
-    stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD)`.")
+    stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ study_arm(ARMCD)`.")
   }
 
   invisible()
