@@ -72,13 +72,13 @@ when a column table layout is required.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_patients_and_multiple_events}: Statistics function which counts numbers of patients and multiple events
+\item \code{s_count_patients_and_multiple_events()}: Statistics function which counts numbers of patients and multiple events
 defined by filters.
 
-\item \code{summarize_patients_events_in_cols}: Layout creating function which adds the count
+\item \code{summarize_patients_events_in_cols()}: Layout creating function which adds the count
 statistics of patients and events in the column layout as content rows.
-}}
 
+}}
 \examples{
 
 # `s_count_patients_and_multiple_events()`

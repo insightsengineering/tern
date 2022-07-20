@@ -49,20 +49,20 @@ when reading about the user-facing functions.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_surv_to_coxreg_variables}: helps with converting the "survival" function variable list
+\item \code{h_surv_to_coxreg_variables()}: helps with converting the "survival" function variable list
 to the "Cox regression" variable list. The reason is that currently there is an inconsistency between the variable
 names accepted by \code{extract_survival_subgroups()} and \code{fit_coxreg_multivar()}.
 
-\item \code{h_coxreg_mult_cont_df}: prepares estimates for number of events, patients and median survival
+\item \code{h_coxreg_mult_cont_df()}: prepares estimates for number of events, patients and median survival
 times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers
 in a given single data set.
 \code{variables} corresponds to names of variables found in \code{data}, passed as a named list and requires elements
 \code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{subgroups} and \code{strat}.
 
-\item \code{h_tab_surv_one_biomarker}: prepares a single sub-table given a \code{df_sub} containing
+\item \code{h_tab_surv_one_biomarker()}: prepares a single sub-table given a \code{df_sub} containing
 the results for a single biomarker.
-}}
 
+}}
 \examples{
 # Testing dataset.
 library(scda)

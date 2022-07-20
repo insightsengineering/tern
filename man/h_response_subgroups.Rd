@@ -64,22 +64,22 @@ Main functionality is to prepare data for use in a layout creating function.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_proportion_df}: helper to prepare a data frame of binary responses by arm.
+\item \code{h_proportion_df()}: helper to prepare a data frame of binary responses by arm.
 
-\item \code{h_proportion_subgroups_df}: summarizes proportion of binary responses by arm and across subgroups
+\item \code{h_proportion_subgroups_df()}: summarizes proportion of binary responses by arm and across subgroups
 in a data frame. \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and
 requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}. \code{groups_lists} optionally specifies
 groupings for \code{subgroups} variables.
 
-\item \code{h_odds_ratio_df}: helper to prepare a data frame with estimates of
+\item \code{h_odds_ratio_df()}: helper to prepare a data frame with estimates of
 the odds ratio between a treatment and a control arm.
 
-\item \code{h_odds_ratio_subgroups_df}: summarizes estimates of the odds ratio between a treatment and a control
+\item \code{h_odds_ratio_subgroups_df()}: summarizes estimates of the odds ratio between a treatment and a control
 arm across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
 \code{data}, passed as a named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}
 and \code{strat}. \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
-}}
 
+}}
 \examples{
 
 # Testing dataset.

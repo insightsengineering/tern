@@ -92,18 +92,18 @@ multiple timepoints within the same response variable \code{.var}.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_ancova}: Helper function to return results of a linear model.
+\item \code{h_ancova()}: Helper function to return results of a linear model.
 
-\item \code{s_ancova}: Statistics function that produces a named list of results
+\item \code{s_ancova()}: Statistics function that produces a named list of results
 of the investigated linear model.
 
-\item \code{a_ancova}: Formatted Analysis function which can be further customized by calling
+\item \code{a_ancova()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{summarize_ancova}: Layout creating function which can be be used for creating
+\item \code{summarize_ancova()}: Layout creating function which can be be used for creating
 summary tables for analysis of covariance (ANCOVA).
-}}
 
+}}
 \examples{
 h_ancova(
   .var = "Sepal.Length",
