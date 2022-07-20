@@ -93,34 +93,34 @@ Estimate the proportion of responders within a studied population.
 }
 \section{Functions}{
 \itemize{
-\item \code{prop_wilson}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}.
+\item \code{prop_wilson()}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 Also referred to as Wilson score interval.
 
-\item \code{prop_clopper_pearson}: the Clopper-Pearson interval calls
+\item \code{prop_clopper_pearson()}: the Clopper-Pearson interval calls
 \code{\link[stats:binom.test]{stats::binom.test()}}. Also referred to as the \code{exact} method.
 
-\item \code{prop_wald}: the Wald interval follows the usual
+\item \code{prop_wald()}: the Wald interval follows the usual
 textbook definition for a single proportion confidence interval using the
 normal approximation.
 
-\item \code{prop_agresti_coull}: the Agresti-Coull interval was created by
+\item \code{prop_agresti_coull()}: the Agresti-Coull interval was created by
 Alan Agresti and Brent Coull and can be understood (for 95\% CI) as adding
 two successes and two failures to the data, and then using the Wald
 formula to construct a CI.
 
-\item \code{prop_jeffreys}: the Jeffreys interval is an equal-tailed
+\item \code{prop_jeffreys()}: the Jeffreys interval is an equal-tailed
 interval based on the non-informative Jeffreys prior for a binomial
 proportion.
 
-\item \code{s_proportion}: statistics function estimating a
+\item \code{s_proportion()}: statistics function estimating a
 proportion along with its confidence interval.
 
-\item \code{estimate_proportion}: used in a \code{rtables} pipeline.
+\item \code{estimate_proportion()}: used in a \code{rtables} pipeline.
 
-\item \code{a_proportion}: Formatted Analysis function which can be further customized by calling
+\item \code{a_proportion()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
-}}
 
+}}
 \examples{
 rsp <- c(
   TRUE, TRUE, TRUE, TRUE, TRUE,

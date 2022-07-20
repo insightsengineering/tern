@@ -104,25 +104,25 @@ greatest intensity/highest grade level.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_append_grade_groups}: Helper function for \code{\link[=s_count_occurrences_by_grade]{s_count_occurrences_by_grade()}} to
+\item \code{h_append_grade_groups()}: Helper function for \code{\link[=s_count_occurrences_by_grade]{s_count_occurrences_by_grade()}} to
 insert grade groupings into list with individual grade frequencies. The order of the final result
 follows the order of \code{grade_groups}. The elements under any-grade group (if any), i.e.
 the grade group equal to \code{refs} will be moved to the end. Grade groups names must be unique.
 
-\item \code{s_count_occurrences_by_grade}: Statistics function which given occurrence data counts the
+\item \code{s_count_occurrences_by_grade()}: Statistics function which given occurrence data counts the
 number of patients by highest grade. Returns a list of counts and fractions with one element
 per grade level or grade level grouping.
 
-\item \code{a_count_occurrences_by_grade}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_occurrences_by_grade()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_occurrences_by_grade}: Layout creating function which can be used for creating tables,
+\item \code{count_occurrences_by_grade()}: Layout creating function which can be used for creating tables,
 which can take statistics function arguments and additional format arguments (see below).
 
-\item \code{summarize_occurrences_by_grade}: Layout creating function which adds content rows using the
+\item \code{summarize_occurrences_by_grade()}: Layout creating function which adds content rows using the
 statistics function and additional format arguments (see below).
-}}
 
+}}
 \examples{
 h_append_grade_groups(
   list(

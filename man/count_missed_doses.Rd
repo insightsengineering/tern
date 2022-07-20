@@ -74,20 +74,20 @@ mainly the special labels.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_nonmissing}: Statistics function to count non-missing values.
+\item \code{s_count_nonmissing()}: Statistics function to count non-missing values.
 
-\item \code{d_count_missed_doses}: Description function that calculates labels for  \code{\link[=s_count_missed_doses]{s_count_missed_doses()}}.
+\item \code{d_count_missed_doses()}: Description function that calculates labels for  \code{\link[=s_count_missed_doses]{s_count_missed_doses()}}.
 
-\item \code{s_count_missed_doses}: Statistics function to count patients with missed doses when \code{x}
+\item \code{s_count_missed_doses()}: Statistics function to count patients with missed doses when \code{x}
 is the vector of number of missed doses with one value for each patient.
 
-\item \code{a_count_missed_doses}: Formatted Analysis function to count non-missing values.
+\item \code{a_count_missed_doses()}: Formatted Analysis function to count non-missing values.
 
-\item \code{count_missed_doses}: Layout creating function which can be be used for creating
+\item \code{count_missed_doses()}: Layout creating function which can be be used for creating
 summary tables for summarizing missed doses given user-specified \code{thresholds}. This is
 an additional layer on top of \code{count_cumulative} specifically for missed doses.
-}}
 
+}}
 \examples{
 set.seed(1)
 x <- c(sample(1:10, 10), NA)
