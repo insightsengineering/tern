@@ -47,12 +47,12 @@ testthat::test_that("empty_vector_if_na works correctly", {
   testthat::expect_equal(result, expected)
 })
 
-testthat::test_that("extract works for NULL input", {
-  testthat::expect_identical(extract(NULL, "bla"), NULL)
+testthat::test_that("extract_by_name works for NULL input", {
+  testthat::expect_identical(extract_by_name(NULL, "bla"), NULL)
 })
 
-testthat::test_that("extract works for non-NULL input", {
-  result <- extract(
+testthat::test_that("extract_by_name works for non-NULL input", {
+  result <- extract_by_name(
     x = c(a = "xx", b = function(x) paste(x, "bla")),
     c("b", "c")
   )
@@ -60,8 +60,8 @@ testthat::test_that("extract works for non-NULL input", {
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("extract returns NULL when there is no overlap", {
-  result <- extract(
+testthat::test_that("extract_by_name returns NULL when there is no overlap", {
+  result <- extract_by_name(
     x = c(a = "xx", b = "xx.xx"),
     c("d", "c")
   )

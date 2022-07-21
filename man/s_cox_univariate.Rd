@@ -18,7 +18,7 @@ s_cox_univariate(
 \arguments{
 \item{formula}{(\code{formula}) \cr
 Specifies \code{\link[survival:Surv]{survival model}}.
-The arm variable needs to be wrapped in \code{\link{arm}}. The
+The arm variable needs to be wrapped in \code{\link{study_arm}}. The
 \code{\link[survival]{strata}} special will only be used for the stratified analysis. If there is not
 \code{\link[survival]{strata}} specification then the stratified analysis is omitted.}
 
@@ -100,13 +100,13 @@ ADTTE_f <- within( # nolint
 )
 \dontrun{
 s_cox_univariate(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ study_arm(ARMCD),
   data = ADTTE_f,
   covariates = list(~SEX)
 )
 
 s_cox_univariate(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ study_arm(ARMCD),
   data = ADTTE_f,
   covariates = list("Race" = ~RACE, ~AGE, "a rand. quant var with increments" = ~X),
   interactions = TRUE,
