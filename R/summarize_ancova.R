@@ -136,7 +136,7 @@ s_ancova <- function(df,
 
   # get the index of ref arm
   ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
-  ref_key <- tail(ref_key, n=1)
+  ref_key <- tail(ref_key, n = 1)
 
   if (.in_ref_col) {
     list(
