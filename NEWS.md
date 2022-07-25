@@ -64,6 +64,8 @@
 * Removed `tern:::` prefix and added `dontrun` to internal function examples.
 * Enhanced `s_coxph_pairwise` with generating log-rank p value by original 
   log-rank test, instead of Cox Proportional-Hazards Model.
+* Fixed bug in `s_ancova`, avoiding error when the first level of the arm factor 
+  is not the control arm.
 
 ### Documentation and NAMESPACE polishing
 *  Added stable badge for:
