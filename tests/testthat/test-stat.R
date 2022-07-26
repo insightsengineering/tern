@@ -20,7 +20,8 @@ testthat::test_that("stat_mean_ci works for series without NAs
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("stat_mean_ci works for series with NAs (including extreme case n = 1 and various n_min values)", {
+testthat::test_that("stat_mean_ci works for series with NAs
+                    (including extreme case n = 1 and various n_min values)", {
 
   # n = 0, na.rm = TRUE, n_min = 2
   result <- stat_mean_ci(x = rep(NA, 10), gg_helper = FALSE)
@@ -96,7 +97,8 @@ testthat::test_that("stat_mean_pval works for series without NAs
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("stat_mean_pval works for series with NAs (including extreme case n = 1 and various n_min values)", {
+testthat::test_that("stat_mean_pval works for series with NAs
+                    (including extreme case n = 1 and various n_min values)", {
 
   # n = 0, na.rm = TRUE, n_min = 2
   result <- stat_mean_pval(x = rep(NA, 10))
