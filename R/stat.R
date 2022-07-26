@@ -136,3 +136,43 @@ stat_median_ci <- function(x,
 
   return(ci)
 }
+
+#' p-Value of the Mean
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Convenient function for calculating the two-sided p-value of the mean.
+#'
+#' @inheritParams argument_convention
+#' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
+#'     the p-value of the mean.
+#' @param diff_test (`number`)\cr mean value to test under the null hypothesis.
+#'
+#' @examples
+#' stat_mean_pval(sample(10))
+#'
+#' stat_mean_pval(rnorm(10), diff_test = 0.5)
+#'
+#' @export
+stat_mean_pval <- function(x,
+                         na.rm = TRUE,
+                         n_min = 2,
+                         diff_test = 0) {
+  if (na.rm) {
+    x <- stats::na.omit(x)
+  }
+  n <- length(x)
+
+  x_mean <- mean(x)
+  x_sd <- sd(x)
+
+  if (n < n_min) {
+    pv <- c(p_value = NA_real_)
+  } else {
+    x_se <- sd(x) / sqrt(n)
+    ttest <- (x_mean - diff_test) / x_se
+    pv <- c(p_value = 2 * pt(-abs(ttest), df = n - 1))
+  }
+
+  return(pv)
+}
