@@ -6,6 +6,9 @@
 \usage{
 f_pval(diff_test)
 }
+\arguments{
+\item{diff_test}{(\code{number})\cr mean value to test under the null hypothesis.}
+}
 \value{
 a \code{string}
 }

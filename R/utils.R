@@ -59,7 +59,7 @@ f_conf_level <- function(conf_level) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @inheritParams argument_convention
+#' @param diff_test (`number`)\cr mean value to test under the null hypothesis.
 #' @return a `string`
 #'
 #' @export
