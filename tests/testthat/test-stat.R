@@ -80,21 +80,21 @@ testthat::test_that("stat_mean_ci works for series with NAs (including extreme c
 testthat::test_that("stat_mean_pval works for series without NAs
                     (including extreme case n = 1 and various n_min values)", {
 
-                      # n = 1, na.rm = TRUE, n_min = 2
-                      result <- stat_mean_pval(x = 1)
-                      expected <- c(p_value = NA_real_)
-                      testthat::expect_identical(result, expected)
+  # n = 1, na.rm = TRUE, n_min = 2
+  result <- stat_mean_pval(x = 1)
+  expected <- c(p_value = NA_real_)
+  testthat::expect_identical(result, expected)
 
-                      # n = 2, na.rm = TRUE, n_min = 2
-                      result <- round(stat_mean_pval(x = 1:2), digits = 2)
-                      expected <- c(p_value = 0.2)
-                      testthat::expect_identical(result, expected)
+  # n = 2, na.rm = TRUE, n_min = 2
+  result <- round(stat_mean_pval(x = 1:2), digits = 2)
+  expected <- c(p_value = 0.2)
+  testthat::expect_identical(result, expected)
 
-                      # n = 2, na.rm = TRUE, n_min = 3
-                      result <- stat_mean_pval(x = 1:2, n_min = 3)
-                      expected <- c(p_value = NA_real_)
-                      testthat::expect_identical(result, expected)
-                    })
+  # n = 2, na.rm = TRUE, n_min = 3
+  result <- stat_mean_pval(x = 1:2, n_min = 3)
+  expected <- c(p_value = NA_real_)
+  testthat::expect_identical(result, expected)
+})
 
 testthat::test_that("stat_mean_pval works for series with NAs (including extreme case n = 1 and various n_min values)", {
 

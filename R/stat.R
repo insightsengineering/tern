@@ -155,9 +155,9 @@ stat_median_ci <- function(x,
 #'
 #' @export
 stat_mean_pval <- function(x,
-                         na.rm = TRUE,
-                         n_min = 2,
-                         diff_test = 0) {
+                           na.rm = TRUE,
+                           n_min = 2,
+                           diff_test = 0) {
   if (na.rm) {
     x <- stats::na.omit(x)
   }
