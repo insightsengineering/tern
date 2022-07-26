@@ -285,6 +285,7 @@ reference:
       - h_xticks
       - stack_grobs
       - stat_mean_ci
+      - stat_mean_pval
       - stat_median_ci
 
   - title: Data Helper Functions
@@ -313,6 +314,7 @@ reference:
       - fct_discard
       - fct_explicit_na_if
       - f_conf_level
+      - f_pval
       - h_data_plot
       - sas_na
       - to_n

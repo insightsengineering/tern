@@ -77,6 +77,73 @@ testthat::test_that("stat_mean_ci works for series with NAs (including extreme c
   testthat::expect_identical(result, expected)
 })
 
+testthat::test_that("stat_mean_pval works for series without NAs
+                    (including extreme case n = 1 and various n_min values)", {
+
+                      # n = 1, na.rm = TRUE, n_min = 2
+                      result <- stat_mean_pval(x = 1)
+                      expected <- c(p_value = NA_real_)
+                      testthat::expect_identical(result, expected)
+
+                      # n = 2, na.rm = TRUE, n_min = 2
+                      result <- round(stat_mean_pval(x = 1:2), digits = 2)
+                      expected <- c(p_value = 0.2)
+                      testthat::expect_identical(result, expected)
+
+                      # n = 2, na.rm = TRUE, n_min = 3
+                      result <- stat_mean_pval(x = 1:2, n_min = 3)
+                      expected <- c(p_value = NA_real_)
+                      testthat::expect_identical(result, expected)
+                    })
+
+testthat::test_that("stat_mean_pval works for series with NAs (including extreme case n = 1 and various n_min values)", {
+
+  # n = 0, na.rm = TRUE, n_min = 2
+  result <- stat_mean_pval(x = rep(NA, 10))
+  expected <- c(p_value = NA_real_)
+  testthat::expect_identical(result, expected)
+
+  # n = 0, na.rm = FALSE, n_min = 2
+  result <- stat_mean_pval(x = rep(NA, 10), na.rm = FALSE)
+  expected <- c(p_value = NA_real_)
+  testthat::expect_identical(result, expected)
+
+  # n = 1, na.rm = TRUE, n_min = 2
+  result <- stat_mean_pval(x = c(1, NA, NA, NA))
+  expected <- c(p_value = NA_real_)
+  testthat::expect_identical(result, expected)
+
+  # n = 1, na.rm = FALSE, n_min = 2
+  result <- stat_mean_pval(x = c(1, NA, NA, NA), na.rm = FALSE)
+  expected <- c(p_value = NA_real_)
+  testthat::expect_identical(result, expected)
+
+  # n = 2, na.rm = TRUE, n_min = 2
+  result <- round(stat_mean_pval(x = c(1:2, NA, NA, NA)), digits = 2)
+  expected <- c(p_value = 0.2)
+  testthat::expect_identical(result, expected)
+
+  # n = 2, na.rm = TRUE, n_min = 3
+  result <- stat_mean_pval(x = c(1:2, NA, NA, NA), n_min = 3)
+  expected <- c(p_value = NA_real_)
+  testthat::expect_identical(result, expected)
+
+  # n = 2, na.rm = FALSE, n_min = 2
+  result <- stat_mean_pval(x = c(1:2, NA, NA, NA), na.rm = FALSE)
+  expected <- c(p_value = NA_real_)
+  testthat::expect_identical(result, expected)
+
+  # n = 2, na.rm = FALSE, n_min = 3
+  result <- round(
+    stat_mean_pval(
+      x = c(1:2, NA, NA, NA), na.rm = FALSE, n_min = 3
+    ),
+    digits = 2
+  )
+  expected <- c(p_value = NA_real_)
+  testthat::expect_identical(result, expected)
+})
+
 testthat::test_that("stat_median_ci works for series without NAs (including extreme case n = 1)", {
 
   # n = 1, na.rm = TRUE
