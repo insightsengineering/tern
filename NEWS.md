@@ -1,4 +1,4 @@
-# tern 0.7.8.9024
+# tern 9.4.2
 
 ### Enhancements 
 * exported `draw_grob` function (needed by `enableRF`).
