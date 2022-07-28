@@ -292,7 +292,10 @@ testthat::test_that("fit_coxreg_univar returns model results as expected", {
   expected <- list(
     mod = lapply(
       forms, function(x) {
-        survival::coxph(formula = stats::as.formula(x), data = data, ties = control$ties)
+        structure(
+          survival::coxph(formula = stats::as.formula(x), data = data, ties = control$ties),
+          converged = TRUE
+        )
       }
     ),
     data = data,
@@ -910,4 +913,37 @@ testthat::test_that("summarize_coxreg works without treatment arm in univariate 
     .Dim = c(7L, 4L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
+})
+
+testthat::test_that("fit_coxreg_univar returns correct convergance status", {
+  wont_converge <- data.frame(
+    time = c(4, 3, 1, 1, 2, 2, 3),
+    status = c(1, 1, 1, 0, 0, 0, 0),
+    arm = as.factor(c(0, 0, 0, 0, 1, 1, 1))
+  )
+  will_converge <- data.frame(
+    time = c(4, 3, 1, 1, 2, 2, 3),
+    status = c(1, 1, 1, 0, 1, 0, 0),
+    arm = as.factor(c(0, 0, 0, 0, 1, 1, 1))
+  )
+
+  mod_not_converged <- tern::fit_coxreg_univar(
+    variables = list(
+      time = "time",
+      event = "status",
+      arm = "arm"
+    ),
+    data = wont_converge
+  )
+  mod_converged <- tern::fit_coxreg_univar(
+    variables = list(
+      time = "time",
+      event = "status",
+      arm = "arm"
+    ),
+    data = will_converge
+  )
+
+  expect_false(attr(mod_not_converged$mod$ref, "converged"))
+  expect_true(attr(mod_converged$mod$ref, "converged"))
 })
