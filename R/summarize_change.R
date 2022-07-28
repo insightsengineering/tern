@@ -78,7 +78,8 @@ a_change_from_baseline <- make_afun(
     median = "xx.xx",
     range = "xx.xx - xx.xx",
     mean_ci = "(xx.xx, xx.xx)",
-    median_ci = "(xx.xx, xx.xx)"
+    median_ci = "(xx.xx, xx.xx)",
+    mean_pval = "xx.xx"
   ),
   .labels = c(
     mean_sd = "Mean (SD)",

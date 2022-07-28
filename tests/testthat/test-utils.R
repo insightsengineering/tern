@@ -3,9 +3,21 @@ testthat::test_that("f_conf_level works for proportion", {
   expected <- "95% CI"
   testthat::expect_identical(result, expected)
 })
+
 testthat::test_that("f_conf_level fails for non-proportion input", {
   testthat::expect_error(f_conf_level(1.1))
   testthat::expect_error(f_conf_level(-1))
+})
+
+testthat::test_that("f_pval works for numeric input", {
+  result <- f_pval(0.05)
+  expected <- "p-value (H0: mean = 0.05)"
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("f_pval fails for non-numeric input", {
+  testthat::expect_error(f_pval("a"))
+  testthat::expect_error(f_pval(NULL))
 })
 
 testthat::test_that("make_names works as expected", {

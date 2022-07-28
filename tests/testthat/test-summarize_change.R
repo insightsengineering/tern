@@ -21,6 +21,7 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = NA_real_), "Mean p-value (H0: mean = 0)"),
     median = c(median = NA_real_),
     mad = c(mad = NA_real_),
     median_ci = formatters::with_label(
@@ -64,6 +65,7 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
     mean_ci = formatters::with_label(c(mean_ci_lwr = -4.452413, mean_ci_upr = 10.452413), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = 1.267949, mean_sei_upr = 4.732051), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = 0, mean_sdi_upr = 6), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = 0.2254033), "Mean p-value (H0: mean = 0)"),
     median = c(median = 3),
     mad = c(mad = 0),
     median_ci = formatters::with_label(
@@ -110,6 +112,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       mean_ci = formatters::with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
       mean_sei = formatters::with_label(c(mean_sei_lwr = 1, mean_sei_upr = 2), "Mean -/+ 1xSE"),
       mean_sdi = formatters::with_label(c(mean_sdi_lwr = 0.7928932, mean_sdi_upr = 2.2071068), "Mean -/+ 1xSD"),
+      mean_pval = formatters::with_label(c(p_value = 0.2048328), "Mean p-value (H0: mean = 0)"),
       median = c(median = 1.5),
       mad = c(mad = 0),
       median_ci = formatters::with_label(
@@ -140,6 +143,7 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       mean_ci = formatters::with_label(c(mean_ci_lwr = -16.55931, mean_ci_upr = 21.55931), "Mean 95% CI"),
       mean_sei = formatters::with_label(c(mean_sei_lwr = 1, mean_sei_upr = 4), "Mean -/+ 1xSE"),
       mean_sdi = formatters::with_label(c(mean_sdi_lwr = 0.3786797, mean_sdi_upr = 4.6213203), "Mean -/+ 1xSD"),
+      mean_pval = formatters::with_label(c(p_value = 0.3440417), "Mean p-value (H0: mean = 0)"),
       median = c(median = 2.5),
       mad = c(mad = 0),
       median_ci = formatters::with_label(
