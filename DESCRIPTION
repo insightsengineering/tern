@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.7.8.9024
-Date: 2022-06-09
+Version: 9.4.2
+Date: 2022-07-29
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -39,7 +39,7 @@ Imports:
     lifecycle,
     magrittr,
     methods,
-    nestcolor,
+    nestcolor (>= 0.3.10),
     rlang,
     scales,
     stats,
