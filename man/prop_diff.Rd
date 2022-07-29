@@ -164,14 +164,14 @@ set.seed(2)
 rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 grp <- factor(c(rep("A", 10), rep("B", 10)))
 tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-DescTools_Binom (tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]), conf.level = 0.90, method = "waldcc")
+DescTools_Binom_Wald(tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]), conf.level = 0.90, method = "waldcc")
 }
 
 # Wald confidence interval
 set.seed(2)
 rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 grp <- factor(c(rep("A", 10), rep("B", 10)))
-prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = TRUE)
+prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.95, correct = FALSE)
 
 # Anderson-Hauck confidence interval
 ## "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
