@@ -6,6 +6,7 @@
 \alias{summary_in_cols.numeric}
 \alias{summary_in_cols.factor}
 \alias{summary_in_cols.character}
+\alias{summary_in_cols.logical}
 \alias{summarize_vars_in_cols}
 \title{Summary numeric variables in columns}
 \usage{
@@ -16,6 +17,8 @@ summary_in_cols(x, labelstr = "", custom_label = NULL)
 \method{summary_in_cols}{factor}(x, labelstr = "", custom_label = NULL, ...)
 
 \method{summary_in_cols}{character}(x, labelstr = "", custom_label = NULL, ...)
+
+\method{summary_in_cols}{logical}(x, labelstr = "", custom_label = NULL, ...)
 
 summarize_vars_in_cols(
   lyt,
@@ -67,6 +70,9 @@ See \code{\link[=s_summary.factor]{s_summary.factor()}} to be aware of all avail
 
 A named list of all statistics returned by \code{\link[=s_summary.character]{s_summary.character()}}.
 See \code{\link[=s_summary.character]{s_summary.character()}} to be aware of all available statistics.
+
+A named list of all statistics returned by \code{\link[=s_summary.logical]{s_summary.logical()}}.
+See \code{\link[=s_summary.logical]{s_summary.logical()}} to be aware of all available statistics.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -85,6 +91,9 @@ function that produces a named list of statistics to include as columns.
 \code{\link[=s_summary.factor]{s_summary.factor()}} function that produces a named list of statistics to include as columns.
 
 \item \code{summary_in_cols(character)}: a wrapper of \code{\link[=s_summary.character]{s_summary.character()}}
+function that produces a named list of statistics to include as columns.
+
+\item \code{summary_in_cols(logical)}: a wrapper of \code{\link[=s_summary.logical]{s_summary.logical()}}
 function that produces a named list of statistics to include as columns.
 
 \item \code{summarize_vars_in_cols()}: Layout creating
