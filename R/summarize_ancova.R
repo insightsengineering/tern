@@ -134,6 +134,10 @@ s_ancova <- function(df,
 
   sum_fit_level <- sum_fit[sum_fit[[arm]] == sum_level, ]
 
+  # Get the index of ref arm
+  ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
+  ref_key <- tail(ref_key, n = 1)
+
   if (.in_ref_col) {
     list(
       n = length(y[!is.na(y)]),
@@ -148,8 +152,8 @@ s_ancova <- function(df,
       emmeans_fit,
       # Compare all arms versus the control arm.
       method = "trt.vs.ctrl",
-      # Take the first level of the arm factor as the control arm.
-      ref = 1
+      # Take the arm factor from .ref_group as the control arm.
+      ref = ref_key
     )
     sum_contrasts <- summary(
       emmeans_contrasts,
