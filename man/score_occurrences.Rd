@@ -39,19 +39,19 @@ sorting of occurrence tables.
 }
 \section{Functions}{
 \itemize{
-\item \code{score_occurrences}: Scoring function which sums the counts across all columns.
+\item \code{score_occurrences()}: Scoring function which sums the counts across all columns.
 
-\item \code{score_occurrences_cols}: Scoring functions can be produced by this constructor to only include
+\item \code{score_occurrences_cols()}: Scoring functions can be produced by this constructor to only include
 specific columns in the scoring.
 
-\item \code{score_occurrences_subtable}: Scoring functions produced by this constructor can be used on
+\item \code{score_occurrences_subtable()}: Scoring functions produced by this constructor can be used on
 subtables: They sum up all specified column counts in the subtable. This is useful when
 there is no available content row summing up these counts.
 
-\item \code{score_occurrences_cont_cols}: Produce score function for sorting table by summing the first content row in
+\item \code{score_occurrences_cont_cols()}: Produce score function for sorting table by summing the first content row in
 specified columns. Note that this is extending \code{\link[rtables:score_funs]{rtables::cont_n_onecol()}} and \code{\link[rtables:score_funs]{rtables::cont_n_allcols()}}.
-}}
 
+}}
 \examples{
 
 library(scda)
