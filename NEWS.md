@@ -1,6 +1,7 @@
 # tern 0.7.8.9022
 
 ### Enhancements 
+* Added `DescTools` `BinomDiffCI` function within `tern`.
 * exported `draw_grob` function (needed by `enableRF`).
 * `checkmate::assert()`, `checkmate::assert_true()`, and `checkmate::assert_false()`
    use is kept to a minimum due to its ambiguous messages. 
@@ -9,7 +10,6 @@
   its length or by using `checkmate::assert_vector()`.
 * Removed `assert_equal_length` as comparing lengths of multiple vectors can be 
   done without the need of a custom function.
-* Switched `prop_diff_wald` test from `stats::prop.test` to `DescTools::BinomDiffCI`
   to implement `Yates` correction term.
 * Implemented `nestcolor` in all examples with slight refactoring to `g_km`, `g_ipp`, 
   `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.

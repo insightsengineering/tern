@@ -130,20 +130,20 @@ Summarize patient's survival rate and difference of survival rates between group
 }
 \section{Functions}{
 \itemize{
-\item \code{s_surv_timepoint()}: Statistics Function which analyzes survival rate.
+\item \code{s_surv_timepoint}: Statistics Function which analyzes survival rate.
 
-\item \code{a_surv_timepoint()}: Formatted Analysis function which can be further customized by calling
+\item \code{a_surv_timepoint}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{s_surv_timepoint_diff()}: Statistics Function which analyzes difference between two survival rates.
+\item \code{s_surv_timepoint_diff}: Statistics Function which analyzes difference between two survival rates.
 
-\item \code{a_surv_timepoint_diff()}: Formatted Analysis function which can be further customized by calling
+\item \code{a_surv_timepoint_diff}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{surv_timepoint()}: Analyze Function which adds the survival rate analysis to the input layout.
+\item \code{surv_timepoint}: Analyze Function which adds the survival rate analysis to the input layout.
 Note that additional formatting arguments can be used here.
-
 }}
+
 \examples{
 library(scda)
 library(dplyr)

@@ -57,7 +57,7 @@ the required statistics. The tables are then typically used as input for forest 
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_rsp_biomarkers()}: prepares estimates for number of responses, patients and
+\item \code{extract_rsp_biomarkers}: prepares estimates for number of responses, patients and
 overall response rate, as well as odds ratio estimates, confidence intervals and p-values,
 for multiple biomarkers across population subgroups in a single data frame.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a
@@ -65,9 +65,9 @@ named list and requires elements \code{rsp} and \code{biomarkers} (vector of con
 biomarker variables) and optionally \code{covariates}, \code{subgroups} and \code{strat}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 
-\item \code{tabulate_rsp_biomarkers()}: table creating function.
-
+\item \code{tabulate_rsp_biomarkers}: table creating function.
 }}
+
 \note{
 You can also specify a continuous variable in \code{rsp} and then use the
 \code{response_definition} control to convert that internally to a logical

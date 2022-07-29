@@ -89,7 +89,7 @@ d_proportion_diff <- function(conf_level,
 #' set.seed(2)
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 #' grp <- factor(c(rep("A", 10), rep("B", 10)))
-#' prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
+#' prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.95, correct = FALSE)
 #'
 #' @export
 prop_diff_wald <- function(rsp,
@@ -97,9 +97,9 @@ prop_diff_wald <- function(rsp,
                            conf_level,
                            correct) {
   if (isTRUE(correct)) {
-    mthd <- "waldcc"
+    method <- "waldcc"
   } else {
-    mthd <- "wald"
+    method <- "wald"
   }
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(
@@ -116,11 +116,11 @@ prop_diff_wald <- function(rsp,
 
     # TRUE is a "success"
     tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-    DescTools::BinomDiffCI(
+    DescTools_Binom_Wald(
       tbl[1], sum(tbl[1], tbl[3]),
       tbl[2], sum(tbl[2], tbl[4]),
       conf.level = conf_level,
-      method = mthd
+      method = method
     )[2:3]
   }
 

@@ -102,15 +102,15 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_coxph_pairwise()}: Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
+\item \code{s_coxph_pairwise}: Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
 
-\item \code{a_coxph_pairwise()}: Formatted Analysis function which can be further customized by calling
+\item \code{a_coxph_pairwise}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{coxph_pairwise()}: Analyze Function which adds the pairwise coxph analysis
+\item \code{coxph_pairwise}: Analyze Function which adds the pairwise coxph analysis
 to the input layout. Note that additional formatting arguments can be used here.
-
 }}
+
 \examples{
 library(scda)
 library(dplyr)

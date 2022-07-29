@@ -93,16 +93,16 @@ Patients' individual baseline values can be added to the plot(s) as reference.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_set_nest_theme()}: sets a \code{ggplot} graphical theme to control outlook of plot.
+\item \code{h_set_nest_theme}: sets a \code{ggplot} graphical theme to control outlook of plot.
 
-\item \code{h_g_ipp()}: helper function that generates a simple line
+\item \code{h_g_ipp}: helper function that generates a simple line
 plot displaying parameter trends over time.
 
-\item \code{g_ipp()}: depending on user preference, renders a single
+\item \code{g_ipp}: depending on user preference, renders a single
 graphic or compiles a list of graphics that show trends in individual's parameter
 values over time.
-
 }}
+
 \examples{
 
 library(scda)
