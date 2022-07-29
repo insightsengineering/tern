@@ -68,23 +68,23 @@ Main functionality is to prepare data for use in a layout creating function.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_survtime_df()}: helper to prepare a data frame of median survival times by arm.
+\item \code{h_survtime_df}: helper to prepare a data frame of median survival times by arm.
 
-\item \code{h_survtime_subgroups_df()}: summarizes median survival times by arm and across subgroups
+\item \code{h_survtime_subgroups_df}: summarizes median survival times by arm and across subgroups
 in a data frame. \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and
 requires elements \code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups}. \code{groups_lists} optionally specifies
 groupings for \code{subgroups} variables.
 
-\item \code{h_coxph_df()}: helper to prepare a data frame with estimates of
+\item \code{h_coxph_df}: helper to prepare a data frame with estimates of
 treatment hazard ratio.
 
-\item \code{h_coxph_subgroups_df()}: summarizes estimates of the treatment hazard ratio
+\item \code{h_coxph_subgroups_df}: summarizes estimates of the treatment hazard ratio
 across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
 \code{data}, passed as a named list and requires elements \code{tte}, \code{is_event}, \code{arm} and
 optionally \code{subgroups} and \code{strat}. \code{groups_lists} optionally specifies
 groupings for \code{subgroups} variables.
-
 }}
+
 \examples{
 # Testing dataset.
 library(scda)

@@ -111,33 +111,33 @@ as incidence rate. Primary analysis variable is the person-years at risk.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_incidence_rate()}: statistics function which estimates the incidence rate and the
+\item \code{s_incidence_rate}: statistics function which estimates the incidence rate and the
 associated confidence interval.
 
-\item \code{a_incidence_rate()}: Formatted Analysis function which can be further customized by calling
+\item \code{a_incidence_rate}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{estimate_incidence_rate()}: layout creating function which adds analyze rows using the statistics
+\item \code{estimate_incidence_rate}: layout creating function which adds analyze rows using the statistics
 function \code{s_incidence_rate} and desired format.
 
-\item \code{h_incidence_rate_normal()}: helper function to estimate the incidence rate and
+\item \code{h_incidence_rate_normal}: helper function to estimate the incidence rate and
 associated confidence interval based on the normal approximation for the
 incidence rate. Unit is one person-year.
 
-\item \code{h_incidence_rate_normal_log()}: helper function to estimate the incidence rate and
+\item \code{h_incidence_rate_normal_log}: helper function to estimate the incidence rate and
 associated confidence interval based on the normal approximation for the
 logarithm of the incidence rate. Unit is one person-year.
 
-\item \code{h_incidence_rate_exact()}: helper function to estimate the incidence rate and
+\item \code{h_incidence_rate_exact}: helper function to estimate the incidence rate and
 associated exact confidence interval. Unit is one person-year.
 
-\item \code{h_incidence_rate_byar()}: helper function to estimate the incidence rate and
+\item \code{h_incidence_rate_byar}: helper function to estimate the incidence rate and
 associated Byar's confidence interval. Unit is one person-year.
 
-\item \code{h_incidence_rate()}: incidence_rate helper function to estimate the incidence rate and
+\item \code{h_incidence_rate}: incidence_rate helper function to estimate the incidence rate and
 associated confidence interval.
-
 }}
+
 \examples{
 
 library(dplyr)

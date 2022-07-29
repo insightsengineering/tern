@@ -28,6 +28,7 @@ Imports:
     checkmate,
     cowplot,
     dplyr,
+    DescTools,
     emmeans (>= 1.4.5),
     forcats,
     formatters (>= 0.3.1),
@@ -96,6 +97,7 @@ Collate:
     'd_pkparam.R'
     'decorate_grob.R'
     'deprec-nest_colors.R'
+    'desctool_binom_diff.R'
     'df_explicit_na.R'
     'estimate_multinomial_rsp.R'
     'estimate_proportion.R'

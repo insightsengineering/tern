@@ -70,20 +70,20 @@ Count the number of unique and non-unique patients in a column (variable).
 }
 \section{Functions}{
 \itemize{
-\item \code{s_num_patients()}: Statistics function which counts the number of
+\item \code{s_num_patients}: Statistics function which counts the number of
 unique patients, the corresponding percentage taken with respect to the
 total number of patients, and the number of non-unique patients.
 
-\item \code{s_num_patients_content()}: Counts the number of unique patients in a column
+\item \code{s_num_patients_content}: Counts the number of unique patients in a column
 (variable), the corresponding percentage taken with respect to the total
 number of patients, and the number of non-unique patients in the column.
 Function serves as a wrapper that carries over both expected arguments \code{df}
 and \code{labelstr} in \code{cfun} of \code{\link[=summarize_row_groups]{summarize_row_groups()}}.
 
-\item \code{summarize_num_patients()}: Layout creating function which adds content rows using the statistics
+\item \code{summarize_num_patients}: Layout creating function which adds content rows using the statistics
 function \code{\link[=s_num_patients_content]{s_num_patients_content()}} and desired format.
-
 }}
+
 \examples{
 # Use the statistics function to count number of unique and nonunique patients.
 s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)), labelstr = "", .N_col = 6L)
