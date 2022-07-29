@@ -89,13 +89,18 @@ d_proportion_diff <- function(conf_level,
 #' set.seed(2)
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 #' grp <- factor(c(rep("A", 10), rep("B", 10)))
-#' prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
+#' prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.95, correct = FALSE)
 #'
 #' @export
 prop_diff_wald <- function(rsp,
                            grp,
                            conf_level,
                            correct) {
+  if (isTRUE(correct)) {
+    method <- "waldcc"
+  } else {
+    method <- "wald"
+  }
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = conf_level, correct = correct
@@ -105,11 +110,18 @@ prop_diff_wald <- function(rsp,
   diff_ci <- if (all(rsp == rsp[1])) {
     c(NA, NA)
   } else {
-    stats::prop.test(
-      table(grp, rsp),
-      correct = correct,
-      conf.level = conf_level
-    )$conf.int[1:2]
+    # check if binary response is coded as logical
+    checkmate::assert_logical(rsp, any.missing = FALSE)
+    checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
+
+    # TRUE is a "success"
+    tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
+    DescTools_Binom_Wald(
+      tbl[1], sum(tbl[1], tbl[3]),
+      tbl[2], sum(tbl[2], tbl[4]),
+      conf.level = conf_level,
+      method = method
+    )[2:3]
   }
 
   list(
@@ -117,7 +129,6 @@ prop_diff_wald <- function(rsp,
     diff_ci = diff_ci
   )
 }
-
 
 #' @describeIn prop_diff Anderson-Hauck confidence interval.
 #'
