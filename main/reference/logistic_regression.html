@@ -10,7 +10,7 @@ response in model containing all specified covariates.
 Allow option to include one two-way interaction and present similar output for
 each interaction degree of freedom.
 Note: For the formula, the variable names need to be standard dataframe column name without
-special characters."><title>Multi-variable logistic regression table — logistic_regression • tern</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Multi-variable logistic regression table — logistic_regression"><meta property="og:description" content="
+special characters."><title>Multi-variable logistic regression table — logistic_regression • tern</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Multi-variable logistic regression table — logistic_regression"><meta property="og:description" content="
 Logistic regression for binary outcome with categorical/continuous covariates in model statement.
 For each covariate category (if categorical) or specified values (if continuous), present degrees of freedom,
 regression parameter estimate and standard error (SE) relative to reference group or category.
@@ -32,7 +32,7 @@ special characters."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9020</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9024</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,12 +55,6 @@ special characters."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -101,8 +95,8 @@ special characters.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_logistic</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>response <span class="op">=</span> <span class="st">"Response"</span>, arm <span class="op">=</span> <span class="st">"ARMCD"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span>, interaction</span>
-<span>    <span class="op">=</span> <span class="cn">NULL</span>, strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>response <span class="op">=</span> <span class="st">"Response"</span>, arm <span class="op">=</span> <span class="st">"ARMCD"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span>, interaction <span class="op">=</span></span>
+<span>    <span class="cn">NULL</span>, strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
 <span>  response_definition <span class="op">=</span> <span class="st">"response"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -263,42 +257,42 @@ survival package (&lt; 3.2-13) is used.</p>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>fit_logistic</code>: Fit a (conditional) logistic regression model.</p></li>
-<li><p><code>h_get_interaction_vars</code>: Helper function to extract interaction variable names from a fitted
+<ul><li><p><code>fit_logistic()</code>: Fit a (conditional) logistic regression model.</p></li>
+<li><p><code>h_get_interaction_vars()</code>: Helper function to extract interaction variable names from a fitted
 model assuming only one interaction term.</p></li>
-<li><p><code>h_interaction_coef_name</code>: Helper function to get the right coefficient name from the
+<li><p><code>h_interaction_coef_name()</code>: Helper function to get the right coefficient name from the
 interaction variable names and the given levels. The main value here is that the order
 of first and second variable is checked in the <code>interaction_vars</code> input.</p></li>
-<li><p><code>h_or_cat_interaction</code>: Helper function to calculate the odds ratio estimates
+<li><p><code>h_or_cat_interaction()</code>: Helper function to calculate the odds ratio estimates
 for the case when both the odds ratio and the interaction variable are categorical.</p></li>
-<li><p><code>h_or_cont_interaction</code>: Helper function to calculate the odds ratio estimates
+<li><p><code>h_or_cont_interaction()</code>: Helper function to calculate the odds ratio estimates
 for the case when either the odds ratio or the interaction variable is continuous.</p></li>
-<li><p><code>h_or_interaction</code>: Helper function to calculate the odds ratio estimates
+<li><p><code>h_or_interaction()</code>: Helper function to calculate the odds ratio estimates
 in case of an interaction. This is a wrapper for <code>h_or_cont_interaction()</code> and
 <code>h_or_cat_interaction()</code>.</p></li>
-<li><p><code>h_simple_term_labels</code>: Helper function to construct term labels from simple terms and the table
+<li><p><code>h_simple_term_labels()</code>: Helper function to construct term labels from simple terms and the table
 of numbers of patients.</p></li>
-<li><p><code>h_interaction_term_labels</code>: Helper function to construct term labels from interaction terms and the table
+<li><p><code>h_interaction_term_labels()</code>: Helper function to construct term labels from interaction terms and the table
 of numbers of patients.</p></li>
-<li><p><code>h_glm_simple_term_extract</code>: Helper function to tabulate the main effect
+<li><p><code>h_glm_simple_term_extract()</code>: Helper function to tabulate the main effect
 results of a (conditional) logistic regression model.</p></li>
-<li><p><code>h_glm_interaction_extract</code>: Helper function to tabulate the interaction term
+<li><p><code>h_glm_interaction_extract()</code>: Helper function to tabulate the interaction term
 results of a logistic regression model.</p></li>
-<li><p><code>h_glm_inter_term_extract</code>: Helper function to tabulate the interaction
+<li><p><code>h_glm_inter_term_extract()</code>: Helper function to tabulate the interaction
 results of a logistic regression model. This basically is a wrapper for
 <code>h_or_interaction()</code> and <code>h_glm_simple_term_extract()</code> which puts the results
 in the right data frame format.</p></li>
-<li><p><code>h_logistic_simple_terms</code>: Helper function to tabulate the results including
+<li><p><code>h_logistic_simple_terms()</code>: Helper function to tabulate the results including
 odds ratios and confidence intervals of simple terms.</p></li>
-<li><p><code>h_logistic_inter_terms</code>: Helper function to tabulate the results including
+<li><p><code>h_logistic_inter_terms()</code>: Helper function to tabulate the results including
 odds ratios and confidence intervals of interaction terms.</p></li>
-<li><p><code>tidy.glm</code>: Helper method (for <code><a href="https://broom.tidymodels.org/reference/reexports.html" class="external-link">broom::tidy()</a></code>) to prepare a data frame from an
+<li><p><code>tidy(glm)</code>: Helper method (for <code><a href="https://broom.tidymodels.org/reference/reexports.html" class="external-link">broom::tidy()</a></code>) to prepare a data frame from an
 <code>glm</code> object with <code>binomial</code> family.</p></li>
-<li><p><code>logistic_regression_cols</code>: Layout creating function for a multi-variable column layout summarizing
+<li><p><code>logistic_regression_cols()</code>: Layout creating function for a multi-variable column layout summarizing
 logistic regression results.</p></li>
-<li><p><code>logistic_summary_by_flag</code>: Constructor for content functions to be used to summarize
+<li><p><code>logistic_summary_by_flag()</code>: Constructor for content functions to be used to summarize
 logistic regression results.</p></li>
-<li><p><code>summarize_logistic</code>: Layout creating function which summarizes a logistic variable regression.</p></li>
+<li><p><code>summarize_logistic()</code>: Layout creating function which summarizes a logistic variable regression.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>

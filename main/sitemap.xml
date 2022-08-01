@@ -70,9 +70,6 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/argument_convention.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/arm.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/arrange_grobs.html</loc>
   </url>
   <url>
@@ -229,7 +226,7 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/explicit_na.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/extract.html</loc>
+    <loc>https://insightsengineering.github.io/tern/main/reference/extract_by_name.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/extreme_format.html</loc>
@@ -461,6 +458,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/stat_median_ci.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/study_arm.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/summarize_ancova.html</loc>
