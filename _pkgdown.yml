@@ -63,55 +63,55 @@ reference:
           `rtables::make_afun()` on them. They are used as `afun` in
           `rtables::analyze()`.
     contents:
-       - a_count_cumulative
-       - a_count_missed_doses
-       - a_count_occurrences
-       - a_count_occurrences_by_grade
-       - a_count_patients_with_event
-       - a_count_patients_with_flags
-       - a_odds_ratio
-       - a_proportion
-       - create_afun_compare
-       - create_afun_summary
+      - a_count_cumulative
+      - a_count_missed_doses
+      - a_count_occurrences
+      - a_count_occurrences_by_grade
+      - a_count_patients_with_event
+      - a_count_patients_with_flags
+      - a_odds_ratio
+      - a_proportion
+      - create_afun_compare
+      - create_afun_summary
 
   - title: Analyze Functions
     desc: Analyze Functions are used in combination with the rtables layout
           functions, in the pipeline which creates the table.
     contents:
-       - compare_vars
-       - count_abnormal
-       - count_abnormal_by_baseline
-       - count_abnormal_by_marked
-       - count_abnormal_by_worst_grade
-       - count_abnormal_lab_worsen_by_baseline
-       - count_cumulative
-       - count_missed_doses
-       - count_occurrences
-       - count_occurrences_by_grade
-       - count_patients_with_event
-       - count_patients_with_flags
-       - count_values_funs
-       - estimate_incidence_rate
-       - estimate_multinomial_response
-       - estimate_odds_ratio
-       - estimate_proportion
-       - estimate_proportion_diff
-       - response_biomarkers_subgroups
-       - summarize_ancova
-       - summarize_change
-       - summarize_colvars
-       - summarize_coxreg
-       - summarize_logistic
-       - summarize_num_patients
-       - summarize_occurrences_by_grade
-       - summarize_patients_events_in_cols
-       - summarize_patients_exposure_in_cols
-       - summarize_vars_in_cols
-       - summarize_vars
-       - tabulate_rsp_subgroups
-       - tabulate_survival_biomarkers
-       - tabulate_survival_subgroups
-       - test_proportion_diff
+      - compare_vars
+      - count_abnormal
+      - count_abnormal_by_baseline
+      - count_abnormal_by_marked
+      - count_abnormal_by_worst_grade
+      - count_abnormal_lab_worsen_by_baseline
+      - count_cumulative
+      - count_missed_doses
+      - count_occurrences
+      - count_occurrences_by_grade
+      - count_patients_with_event
+      - count_patients_with_flags
+      - count_values_funs
+      - estimate_incidence_rate
+      - estimate_multinomial_response
+      - estimate_odds_ratio
+      - estimate_proportion
+      - estimate_proportion_diff
+      - response_biomarkers_subgroups
+      - summarize_ancova
+      - summarize_change
+      - summarize_colvars
+      - summarize_coxreg
+      - summarize_logistic
+      - summarize_num_patients
+      - summarize_occurrences_by_grade
+      - summarize_patients_events_in_cols
+      - summarize_patients_exposure_in_cols
+      - summarize_vars_in_cols
+      - summarize_vars
+      - tabulate_rsp_subgroups
+      - tabulate_survival_biomarkers
+      - tabulate_survival_subgroups
+      - test_proportion_diff
 
   - title: Analysis Helper Functions
     desc: These functions are useful to help definining the analysis.
