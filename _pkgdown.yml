@@ -1,3 +1,4 @@
+---
 url: https://insightsengineering.github.io/tern
 
 template:
@@ -16,8 +17,9 @@ reference:
       - kaplan_meier
 
   - title: Control Functions
-    desc: Control functions capture options in lists, and take care of defaults (and if it makes sense also checks).
-          They avoid cluttering of function signatures with long lists of single arguments.
+    desc: Control functions capture options in lists, and take care of defaults
+          (and if it makes sense also checks). They avoid cluttering of
+          function signatures with long lists of single arguments.
     contents:
       - control_coxph
       - control_coxreg
@@ -30,9 +32,10 @@ reference:
       - control_surv_timepoint
 
   - title: Statistics Functions
-    desc: Statistics functions should do the computation of the numbers that are tabulated later.
-          In order to separate computation from formatting, they should not take care of `rcell` type
-          formatting themselves.
+    desc: Statistics functions should do the computation of the numbers that
+          are tabulated later. In order to separate computation from
+          formatting, they should not take care of `rcell` type formatting
+          themselves.
     contents:
       - s_compare
       - s_count_cumulative
@@ -55,8 +58,9 @@ reference:
       - s_summary
 
   - title: Formatted Analysis functions
-    desc: These have the same arguments as the corresponding statistics functions, and can be further
-          customized by calling `rtables::make_afun()` on them. They are used as `afun` in
+    desc: These have the same arguments as the corresponding statistics
+          functions, and can be further customized by calling
+          `rtables::make_afun()` on them. They are used as `afun` in
           `rtables::analyze()`.
     contents:
        - a_count_cumulative
@@ -71,8 +75,8 @@ reference:
        - create_afun_summary
 
   - title: Analyze Functions
-    desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
-          the table.
+    desc: Analyze Functions are used in combination with the rtables layout
+          functions, in the pipeline which creates the table.
     contents:
        - compare_vars
        - count_abnormal
@@ -191,7 +195,8 @@ reference:
       - prop_diff_wald
 
   - title: Model Specific Functions
-    desc: These functions help with fitting or extracting results from specific models.
+    desc: These functions help with fitting or extracting results from specific
+          models.
     contents:
       - estimate_coef
       - extract_rsp_subgroups
@@ -224,7 +229,8 @@ reference:
       - g_waterfall
 
   - title: rtables Helper Functions
-    desc: These functions help to work with the new rtables package and might be moved there later.
+    desc: These functions help to work with the new rtables package and might
+          be moved there later.
     contents:
       - add_rowcounts
       - append_varlabels
@@ -241,7 +247,8 @@ reference:
       - to_string_matrix
 
   - title: rtables Formatting Functions
-    desc: These functions provide customized formatting rules to work with the rtables package.
+    desc: These functions provide customized formatting rules to work with the
+          rtables package.
     contents:
       - format_count_fraction
       - format_extreme_values
@@ -285,6 +292,7 @@ reference:
       - h_xticks
       - stack_grobs
       - stat_mean_ci
+      - stat_mean_pval
       - stat_median_ci
 
   - title: Data Helper Functions
@@ -313,6 +321,7 @@ reference:
       - fct_discard
       - fct_explicit_na_if
       - f_conf_level
+      - f_pval
       - h_data_plot
       - sas_na
       - to_n
