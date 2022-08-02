@@ -59,13 +59,13 @@ f_conf_level <- function(conf_level) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param diff_test (`number`)\cr mean value to test under the null hypothesis.
+#' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
 #' @return a `string`
 #'
 #' @export
-f_pval <- function(diff_test) {
-  checkmate::assert_numeric(diff_test, len = 1)
-  paste0("p-value (H0: mean = ", diff_test, ")")
+f_pval <- function(test_mean) {
+  checkmate::assert_numeric(test_mean, len = 1)
+  paste0("p-value (H0: mean = ", test_mean, ")")
 }
 
 #' Utility function to return a named list of covariate names.

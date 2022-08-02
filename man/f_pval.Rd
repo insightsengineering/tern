@@ -4,10 +4,10 @@
 \alias{f_pval}
 \title{Utility function to create label for p-value}
 \usage{
-f_pval(diff_test)
+f_pval(test_mean)
 }
 \arguments{
-\item{diff_test}{(\code{number})\cr mean value to test under the null hypothesis.}
+\item{test_mean}{(\code{number})\cr mean value to test under the null hypothesis.}
 }
 \value{
 a \code{string}

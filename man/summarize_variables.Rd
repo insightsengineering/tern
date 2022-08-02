@@ -151,7 +151,7 @@ the helper function \code{\link[=control_summarize_vars]{control_summarize_vars(
 \item \code{quantiles}: numeric vector of length two to specify the quantiles.
 \item \code{quantile_type} (\code{numeric}) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
-\item \code{diff_test}: (\code{numeric}) \cr to test against the mean under the null hypothesis when calculating p-value.
+\item \code{test_mean}: (\code{numeric}) \cr to test against the mean under the null hypothesis when calculating p-value.
 }}
 
 \item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used

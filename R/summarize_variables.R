@@ -10,7 +10,7 @@
 #' @param quantile_type (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 #'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
-#' @param diff_test (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
+#' @param test_mean (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return A list of components with the same names as the arguments.
 #' @export
@@ -18,13 +18,13 @@
 control_summarize_vars <- function(conf_level = 0.95,
                                    quantiles = c(0.25, 0.75),
                                    quantile_type = 2,
-                                   diff_test = 0) {
+                                   test_mean = 0) {
   checkmate::assert_vector(quantiles, len = 2)
   checkmate::assert_int(quantile_type, lower = 1, upper = 9)
-  checkmate::assert_numeric(diff_test)
+  checkmate::assert_numeric(test_mean)
   nullo <- lapply(quantiles, assert_proportion_value)
   assert_proportion_value(conf_level)
-  list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, diff_test = diff_test)
+  list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
 
 #' Format Function for Descriptive Statistics
@@ -146,7 +146,7 @@ s_summary <- function(x,
 #' * `quantiles`: numeric vector of length two to specify the quantiles.
 #' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 #'   See more about `type` in [stats::quantile()].
-#' * `diff_test`: (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
+#' * `test_mean`: (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.
@@ -249,8 +249,8 @@ s_summary.numeric <- function(x, # nolint
   names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
   y$mean_sdi <- formatters::with_label(mean_sdi, "Mean -/+ 1xSD")
 
-  mean_pval <- stat_mean_pval(x, diff_test = control$diff_test, na.rm = FALSE, n_min = 2)
-  y$mean_pval <- formatters::with_label(mean_pval, paste("Mean", f_pval(control$diff_test)))
+  mean_pval <- stat_mean_pval(x, test_mean = control$test_mean, na.rm = FALSE, n_min = 2)
+  y$mean_pval <- formatters::with_label(mean_pval, paste("Mean", f_pval(control$test_mean)))
 
   y$median <- c("median" = stats::median(x, na.rm = FALSE))
 

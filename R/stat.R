@@ -146,18 +146,18 @@ stat_median_ci <- function(x,
 #' @inheritParams argument_convention
 #' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
 #'     the p-value of the mean.
-#' @param diff_test (`number`)\cr mean value to test under the null hypothesis.
+#' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
 #'
 #' @examples
 #' stat_mean_pval(sample(10))
 #'
-#' stat_mean_pval(rnorm(10), diff_test = 0.5)
+#' stat_mean_pval(rnorm(10), test_mean = 0.5)
 #'
 #' @export
 stat_mean_pval <- function(x,
                            na.rm = TRUE,
                            n_min = 2,
-                           diff_test = 0) {
+                           test_mean = 0) {
   if (na.rm) {
     x <- stats::na.omit(x)
   }
@@ -170,7 +170,7 @@ stat_mean_pval <- function(x,
     pv <- c(p_value = NA_real_)
   } else {
     x_se <- sd(x) / sqrt(n)
-    ttest <- (x_mean - diff_test) / x_se
+    ttest <- (x_mean - test_mean) / x_se
     pv <- c(p_value = 2 * pt(-abs(ttest), df = n - 1))
   }
 

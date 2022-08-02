@@ -4,7 +4,7 @@
 \alias{stat_mean_pval}
 \title{p-Value of the Mean}
 \usage{
-stat_mean_pval(x, na.rm = TRUE, n_min = 2, diff_test = 0)
+stat_mean_pval(x, na.rm = TRUE, n_min = 2, test_mean = 0)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -14,7 +14,7 @@ stat_mean_pval(x, na.rm = TRUE, n_min = 2, diff_test = 0)
 \item{n_min}{(\code{number})\cr a minimum number of non-missing \code{x} to estimate
 the p-value of the mean.}
 
-\item{diff_test}{(\code{number})\cr mean value to test under the null hypothesis.}
+\item{test_mean}{(\code{number})\cr mean value to test under the null hypothesis.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -24,6 +24,6 @@ Convenient function for calculating the two-sided p-value of the mean.
 \examples{
 stat_mean_pval(sample(10))
 
-stat_mean_pval(rnorm(10), diff_test = 0.5)
+stat_mean_pval(rnorm(10), test_mean = 0.5)
 
 }

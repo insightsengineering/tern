@@ -9,7 +9,7 @@ testthat::test_that("control_summarize_vars works with customized parameters", {
     conf_level = 0.9,
     quantiles = c(0.1, 0.9),
     quantile_type = 2,
-    diff_test = 0
+    test_mean = 0
   )
   testthat::expect_identical(result, expected)
 })

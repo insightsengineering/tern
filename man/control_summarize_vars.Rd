@@ -8,7 +8,7 @@ control_summarize_vars(
   conf_level = 0.95,
   quantiles = c(0.25, 0.75),
   quantile_type = 2,
-  diff_test = 0
+  test_mean = 0
 )
 }
 \arguments{
@@ -20,7 +20,7 @@ control_summarize_vars(
 Default is set to \code{2} as this matches the default quantile algorithm in SAS \verb{proc univariate} set by \code{QNTLDEF=5}.
 This differs from R's default. See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.}
 
-\item{diff_test}{(\code{numeric}) \cr to test against the mean under the null hypothesis when calculating p-value.}
+\item{test_mean}{(\code{numeric}) \cr to test against the mean under the null hypothesis when calculating p-value.}
 }
 \value{
 A list of components with the same names as the arguments.
