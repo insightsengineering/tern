@@ -149,13 +149,13 @@ testthat::test_that("stat_mean_pval works for series with NAs
 testthat::test_that("stat_mean_pval returns the correct p-value", {
 
   # test_mean = 0
-  x = 1:5
+  x <- 1:5
   result <- stat_mean_pval(x)
   expected <- c(p_value = t.test(x)$p.value)
   testthat::expect_identical(result, expected)
 
   # test_mean = 0.5
-  x = 1:3
+  x <- 1:3
   result <- stat_mean_pval(x, test_mean = 0.5)
   expected <- c(p_value = t.test(x, mu = 0.5)$p.value)
   testthat::expect_identical(result, expected)

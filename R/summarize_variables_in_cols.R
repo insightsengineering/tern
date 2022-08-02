@@ -103,7 +103,34 @@ summary_in_cols.character <- function(x,
   lapply(results, formatters::with_label, row_label)
 }
 
+#' @describeIn summarize_variables_in_columns a wrapper of [s_summary.logical()]
+#'  function that produces a named list of statistics to include as columns.
+#'
+#' @inheritParams argument_convention
+#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
+#'  empty then this will be used as the row label.
+#'
+#' @return A named list of all statistics returned by [s_summary.logical()].
+#' See [s_summary.logical()] to be aware of all available statistics.
+#'
+#' @export
+summary_in_cols.logical <- function(x,
+                                    labelstr = "",
+                                    custom_label = NULL,
+                                    ...) {
+  row_label <- if (labelstr != "") {
+    labelstr
+  } else if (!is.null(custom_label)) {
+    custom_label
+  } else {
+    "Statistics"
+  }
 
+  # Calling s_summary.logical
+  results <- s_summary.logical(x)
+
+  lapply(results, formatters::with_label, row_label)
+}
 
 #' @inheritParams argument_convention
 #'
