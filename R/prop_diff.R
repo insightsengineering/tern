@@ -95,7 +95,7 @@ d_proportion_diff <- function(conf_level,
 prop_diff_wald <- function(rsp,
                            grp,
                            conf_level,
-                           correct=FALSE) {
+                           correct = FALSE) {
   if (isTRUE(correct)) {
     method <- "waldcc"
   } else {
@@ -158,7 +158,8 @@ prop_diff_ha <- function(rsp,
     tbl[1], sum(tbl[1], tbl[3]),
     tbl[2], sum(tbl[2], tbl[4]),
     conf.level = conf_level,
-    method = "ha")
+    method = "ha"
+  )
   list(
     "diff" = diff_p,
     "diff_ci" = ci[2:3]
@@ -203,7 +204,8 @@ prop_diff_nc <- function(rsp,
     tbl[1], sum(tbl[1], tbl[3]),
     tbl[2], sum(tbl[2], tbl[4]),
     conf.level = conf_level,
-    method = method)
+    method = method
+  )
   list(
     "diff" = diff_p,
     "diff_ci" = ci[2:3]
