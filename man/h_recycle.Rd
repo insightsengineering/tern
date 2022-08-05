@@ -7,7 +7,6 @@
 h_recycle(...)
 }
 \description{
-This function recycles all supplied elments to the maximal dimension.
-Author: Andri Signorell
+This function recycles all supplied elements to the maximal dimension.
 }
 \keyword{internal}

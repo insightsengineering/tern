@@ -69,13 +69,13 @@ when a column table layout is required.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_patients_sum_exposure()}: Statistics function which counts numbers
+\item \code{s_count_patients_sum_exposure}: Statistics function which counts numbers
 of patients and the sum of exposure across all patients.
 
-\item \code{summarize_patients_exposure_in_cols()}: Layout creating function which adds the count
+\item \code{summarize_patients_exposure_in_cols}: Layout creating function which adds the count
 statistics of patients and the sum of analysis value in the column layout as content rows.
-
 }}
+
 \examples{
 set.seed(1)
 df <- data.frame(

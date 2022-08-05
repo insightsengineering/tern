@@ -31,19 +31,19 @@ can be combined and negated with the logical operators.
 }
 \section{Functions}{
 \itemize{
-\item \code{e1 & e2}: Logical "AND" combination of \code{CombinationFunction} functions.
+\item \code{&,CombinationFunction,CombinationFunction-method}: Logical "AND" combination of \code{CombinationFunction} functions.
 The resulting object is of the same class, and evaluates the two argument functions. The result
 is then the "AND" of the two individual results.
 
-\item \code{e1 | e2}: Logical "OR" combination of \code{CombinationFunction} functions.
+\item \code{|,CombinationFunction,CombinationFunction-method}: Logical "OR" combination of \code{CombinationFunction} functions.
 The resulting object is of the same class, and evaluates the two argument functions. The result
 is then the "OR" of the two individual results.
 
-\item \code{`!`(CombinationFunction)}: Logical negation of \code{CombinationFunction} functions.
+\item \code{!,CombinationFunction-method}: Logical negation of \code{CombinationFunction} functions.
 The resulting object is of the same class, and evaluates the original function. The result
 is then the opposite of this results.
-
 }}
+
 \examples{
 higher <- function(a) {
   force(a)

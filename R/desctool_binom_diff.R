@@ -14,8 +14,7 @@ NULL
 
 #' Recycle list of parameters
 #'
-#' This function recycles all supplied elments to the maximal dimension.
-#' Author: Andri Signorell
+#' This function recycles all supplied elements to the maximal dimension.
 #'
 #' @keywords internal
 h_recycle <- function(...) {
@@ -66,7 +65,7 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
       conf.level <- 1 - 2 * (1 - conf.level)
     }
     alpha <- 1 - conf.level
-    kappa <- qnorm(1 - alpha / 2)
+    kappa <- stats::qnorm(1 - alpha / 2)
     p1.hat <- x1 / n1
     p2.hat <- x2 / n2
     est <- p1.hat - p2.hat
@@ -168,13 +167,13 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
             p1.hat, n1, p2.hat,
             n2, delta
           )
-          2 * min(pnorm(z), 1 - pnorm(z))
+          2 * min(stats::pnorm(z), 1 - stats::pnorm(z))
         }
-        CI.lower <- max(-1, uniroot(function(delta) {
+        CI.lower <- max(-1, stats::uniroot(function(delta) {
           pval(delta) -
             alpha
         }, interval = c(-1 + 1e-06, est - 1e-06))$root)
-        CI.upper <- min(1, uniroot(function(delta) {
+        CI.upper <- min(1, stats::uniroot(function(delta) {
           pval(delta) -
             alpha
         }, interval = c(est + 1e-06, 1 - 1e-06))$root)
@@ -243,7 +242,7 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
           }
           return(res)
         }
-        z <- qchisq(conf.level, 1)
+        z <- stats::qchisq(conf.level, 1)
         CI.lower <- max(-1, .conf(x1, n1, x2, n2, z, TRUE))
         CI.upper <- min(1, .conf(x1, n1, x2, n2, z, FALSE))
       },
@@ -254,7 +253,7 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
         v <- ((1 / n1) - (1 / n2)) / 4
         V <- u * ((2 - a) * a - b^2) + 2 * v * (1 - a) *
           b
-        z <- qchisq(p = 1 - alpha / 2, df = 1)
+        z <- stats::qchisq(p = 1 - alpha / 2, df = 1)
         A <- sqrt(z * (V + z * u^2 * (2 - a) * a + z * v^2 *
           (1 - a)^2))
         B <- (b + z * v * (1 - a)) / (1 + z * u)
@@ -387,7 +386,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
       conf.level <- 1 - 2 * (1 - conf.level)
     }
     alpha <- 1 - conf.level
-    kappa <- qnorm(1 - alpha / 2)
+    kappa <- stats::qnorm(1 - alpha / 2)
     p.hat <- x / n
     q.hat <- 1 - p.hat
     est <- p.hat
@@ -440,7 +439,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
       if (x == 0) {
         CI.lower <- 0
       } else {
-        CI.lower <- qbeta(
+        CI.lower <- stats::qbeta(
           alpha / 2,
           x + 0.5, n - x + 0.5
         )
@@ -448,7 +447,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
       if (x == n) {
         CI.upper <- 1
       } else {
-        CI.upper <- qbeta(1 -
+        CI.upper <- stats::qbeta(1 -
           alpha / 2, x + 0.5, n - x + 0.5)
       }
     },
@@ -458,14 +457,14 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
         q.hat + kappa^2 / (4 * n))
       if ((n <= 50 & x %in% c(1, 2)) | (n >= 51 & x %in%
         c(1:3))) {
-        CI.lower <- 0.5 * qchisq(alpha, 2 *
+        CI.lower <- 0.5 * stats::qchisq(alpha, 2 *
           x) / n
       } else {
         CI.lower <- max(0, term1 - term2)
       }
       if ((n <= 50 & x %in% c(n - 1, n - 2)) | (n >= 51 &
         x %in% c(n - (1:3)))) {
-        CI.upper <- 1 - 0.5 * qchisq(
+        CI.upper <- 1 - 0.5 * stats::qchisq(
           alpha,
           2 * (n - x)
         ) / n
@@ -481,7 +480,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
         if (x <= 1) {
           CI.lower <- 0
         } else {
-          CI.lower <- qbeta(
+          CI.lower <- stats::qbeta(
             alpha / 2,
             x + 0.5, n - x + 0.5
           )
@@ -493,14 +492,14 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
         if (x >= n - 1) {
           CI.upper <- 1
         } else {
-          CI.upper <- qbeta(1 -
+          CI.upper <- stats::qbeta(1 -
             alpha / 2, x + 0.5, n - x + 0.5)
         }
       }
     },
     `clopper-pearson` = {
-      CI.lower <- qbeta(alpha / 2, x, n - x + 1)
-      CI.upper <- qbeta(1 - alpha / 2, x + 1, n - x)
+      CI.lower <- stats::qbeta(alpha / 2, x, n - x + 1)
+      CI.upper <- stats::qbeta(1 - alpha / 2, x + 1, n - x)
     },
     arcsine = {
       p.tilde <- (x + 0.375) / (n + 0.75)
@@ -518,18 +517,18 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
     },
     witting = {
       set.seed(rand)
-      x.tilde <- x + runif(1, min = 0, max = 1)
+      x.tilde <- x + stats::runif(1, min = 0, max = 1)
       pbinom.abscont <- function(q, size, prob) {
         v <- trunc(q)
-        term1 <- pbinom(v - 1, size = size, prob = prob)
-        term2 <- (q - v) * dbinom(v, size = size, prob = prob)
+        term1 <- stats::pbinom(v - 1, size = size, prob = prob)
+        term2 <- (q - v) * stats::dbinom(v, size = size, prob = prob)
         return(term1 + term2)
       }
       qbinom.abscont <- function(p, size, x) {
         fun <- function(prob, size, x, p) {
           pbinom.abscont(x, size, prob) - p
         }
-        uniroot(fun,
+        stats::uniroot(fun,
           interval = c(0, 1), size = size,
           x = x, p = p
         )$root
@@ -551,7 +550,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
         CI.lower <- alpha^(1 / n)
         CI.upper <- 1
       } else {
-        z <- qnorm(1 - alpha / 2)
+        z <- stats::qnorm(1 - alpha / 2)
         A <- ((x + 1) / (n - x))^2
         B <- 81 * (x + 1) * (n - x) - 9 * n - 8
         C <- (0 - 3) * z * sqrt(9 * (x + 1) * (n - x) *
@@ -571,25 +570,25 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
     },
     midp = {
       f.low <- function(pi, x, n) {
-        1 / 2 * dbinom(x, size = n, prob = pi) + pbinom(x,
+        1 / 2 * stats::dbinom(x, size = n, prob = pi) + stats::pbinom(x,
           size = n, prob = pi, lower.tail = FALSE
         ) -
           (1 - conf.level) / 2
       }
       f.up <- function(pi, x, n) {
-        1 / 2 * dbinom(x, size = n, prob = pi) + pbinom(x -
+        1 / 2 * stats::dbinom(x, size = n, prob = pi) + stats::pbinom(x -
           1, size = n, prob = pi) - (1 - conf.level) / 2
       }
       CI.lower <- 0
       CI.upper <- 1
       if (x != 0) {
-        CI.lower <- uniroot(f.low,
+        CI.lower <- stats::uniroot(f.low,
           interval = c(0, p.hat),
           x = x, n = n
         )$root
       }
       if (x != n) {
-        CI.upper <- uniroot(f.up, interval = c(
+        CI.upper <- stats::uniroot(f.up, interval = c(
           p.hat,
           1
         ), x = x, n = n)$root
@@ -602,11 +601,11 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
       tol <- .Machine$double.eps^0.5
       BinDev <- function(y, x, mu, wt, bound = 0, tol = .Machine$double.eps^0.5,
                          ...) {
-        ll.y <- ifelse(y %in% c(0, 1), 0, dbinom(x, wt,
+        ll.y <- ifelse(y %in% c(0, 1), 0, stats::dbinom(x, wt,
           y,
           log = TRUE
         ))
-        ll.mu <- ifelse(mu %in% c(0, 1), 0, dbinom(x,
+        ll.mu <- ifelse(mu %in% c(0, 1), 0, stats::dbinom(x,
           wt, mu,
           log = TRUE
         ))
@@ -619,7 +618,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
           tol, x, p.hat, n, -z,
           tol
         ) <= 0) {
-          uniroot(
+          stats::uniroot(
             f = BinDev, interval = c(tol, if (p.hat <
               tol || p.hat == 1) {
               1 - tol
@@ -643,13 +642,13 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
             }, n,
             -z, tol
           ) <= 0) {
-            uniroot(
+            stats::uniroot(
               f = BinDev, interval = c(tol, p.hat),
               bound = -z, x = x, mu = p.hat, wt = n
             )$root
           }
         } else {
-          uniroot(
+          stats::uniroot(
             f = BinDev, interval = c(if (p.hat >
               1 - tol) {
               tol
@@ -663,11 +662,11 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
     },
     blaker = {
       acceptbin <- function(x, n, p) {
-        p1 <- 1 - pbinom(x - 1, n, p)
-        p2 <- pbinom(x, n, p)
-        a1 <- p1 + pbinom(qbinom(p1, n, p) - 1, n, p)
-        a2 <- p2 + 1 - pbinom(
-          qbinom(1 - p2, n, p), n,
+        p1 <- 1 - stats::pbinom(x - 1, n, p)
+        p2 <- stats::pbinom(x, n, p)
+        a1 <- p1 + stats::pbinom(qbinom(p1, n, p) - 1, n, p)
+        a2 <- p2 + 1 - stats::pbinom(
+          stats::qbinom(1 - p2, n, p), n,
           p
         )
         return(min(a1, a2))
@@ -675,7 +674,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
       CI.lower <- 0
       CI.upper <- 1
       if (x != 0) {
-        CI.lower <- qbeta((1 - conf.level) / 2, x, n -
+        CI.lower <- stats::qbeta((1 - conf.level) / 2, x, n -
           x + 1)
         while (acceptbin(x, n, CI.lower + tol) < (1 -
           conf.level)) {
@@ -683,7 +682,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
         }
       }
       if (x != n) {
-        CI.upper <- qbeta(1 - (1 - conf.level) / 2, x +
+        CI.upper <- stats::qbeta(1 - (1 - conf.level) / 2, x +
           1, n - x)
         while (acceptbin(x, n, CI.upper - tol) < (1 -
           conf.level)) {

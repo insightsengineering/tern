@@ -91,19 +91,19 @@ is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a numerical
+\item \code{h_coxreg_inter_effect.numeric}: Estimate the interaction with a numerical
 covariate
 
-\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a factor
+\item \code{h_coxreg_inter_effect.factor}: Estimate the interaction with a factor
 covariate.
 
-\item \code{h_coxreg_extract_interaction()}: a higher level function that returns
+\item \code{h_coxreg_extract_interaction}: a higher level function that returns
 the test of the interaction test and the estimated values. If
 no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied.
 
-\item \code{h_coxreg_inter_estimations()}: hazard ratio estimation in interactions.
-
+\item \code{h_coxreg_inter_estimations}: hazard ratio estimation in interactions.
 }}
+
 \examples{
 # Testing dataset [survival::bladder].
 library(survival)

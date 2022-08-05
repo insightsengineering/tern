@@ -16,8 +16,8 @@ extract_survival_subgroups(
 )
 
 a_survival_subgroups(
-  .formats = list(n = "xx", n_events = "xx", n_tot_events = "xx", median = "xx.x", n_tot
-    = "xx", hr = list(format_extreme_values(2L)), ci =
+  .formats = list(n = "xx", n_events = "xx", n_tot_events = "xx", median = "xx.x",
+    n_tot = "xx", hr = list(format_extreme_values(2L)), ci =
     list(format_extreme_values_ci(2L)), pval = "x.xxxx | (<0.0001)")
 )
 
@@ -82,19 +82,19 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_survival_subgroups()}: prepares estimates of median survival times and treatment hazard ratios for
+\item \code{extract_survival_subgroups}: prepares estimates of median survival times and treatment hazard ratios for
 population subgroups in data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}.
 Result is a list of two data frames: \code{survtime} and \code{hr}.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
 \code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}. \code{groups_lists} optionally specifies
 groupings for \code{subgroups} variables.
 
-\item \code{a_survival_subgroups()}: Formatted Analysis function used to format the results of
+\item \code{a_survival_subgroups}: Formatted Analysis function used to format the results of
 \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}. Returns is a list of Formatted Analysis functions with one element per statistic.
 
-\item \code{tabulate_survival_subgroups()}: table creating function.
-
+\item \code{tabulate_survival_subgroups}: table creating function.
 }}
+
 \examples{
 
 # Testing dataset.

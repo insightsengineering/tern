@@ -62,16 +62,16 @@ the required statistics. The tables are then typically used as input for forest 
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_survival_biomarkers()}: prepares estimates for number of events, patients and median survival
+\item \code{extract_survival_biomarkers}: prepares estimates for number of events, patients and median survival
 times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
 population subgroups in a single data frame.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
 \code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{subgroups} and \code{strat}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 
-\item \code{tabulate_survival_biomarkers()}: table creating function.
-
+\item \code{tabulate_survival_biomarkers}: table creating function.
 }}
+
 \note{
 In contrast to \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}} this tabulation function does
 not start from an input layout \code{lyt}. This is because internally the table is

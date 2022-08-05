@@ -105,30 +105,30 @@ proportions.
 }
 \section{Functions}{
 \itemize{
-\item \code{prop_chisq()}: performs Chi-Squared test.
+\item \code{prop_chisq}: performs Chi-Squared test.
 Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 
-\item \code{prop_schouten()}: performs the Chi-Squared test with Schouten
+\item \code{prop_schouten}: performs the Chi-Squared test with Schouten
 correction (\href{https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305}{Schouten 1980}).
 
-\item \code{prop_fisher()}: performs the Fisher's exact test.
+\item \code{prop_fisher}: performs the Fisher's exact test.
 Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
 
-\item \code{prop_cmh()}: performs stratified Cochran-Mantel-Haenszel test.
+\item \code{prop_cmh}: performs stratified Cochran-Mantel-Haenszel test.
 Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations
 are automatically discarded.
 
-\item \code{s_test_proportion_diff()}: Statistics function which test the difference
+\item \code{s_test_proportion_diff}: Statistics function which test the difference
 between two proportions.
 
-\item \code{a_test_proportion_diff()}: Formatted Analysis function which can be further customized by calling
+\item \code{a_test_proportion_diff}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{test_proportion_diff()}: Layout creating function which can be used for
+\item \code{test_proportion_diff}: Layout creating function which can be used for
 creating tables, which can take statistics function arguments and
 additional format arguments.
-
 }}
+
 \examples{
 # Non-stratified proportion difference test
 
