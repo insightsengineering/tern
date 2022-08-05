@@ -12,8 +12,8 @@ DescTools_Binom(
   n2,
   conf.level = 0.95,
   sides = c("two.sided", "left", "right"),
-  method = c("ac", "wald", "waldcc", "score", "scorecc", "mn", "mee", "blj", "ha",
-    "hal", "jp")
+  method = c("ac", "wald", "waldcc", "score", "scorecc", "mn", "mee", "blj", "ha", "hal",
+    "jp")
 )
 }
 \arguments{
@@ -31,12 +31,12 @@ Several confidence intervals for the difference between proportions.
 }
 \section{Functions}{
 \itemize{
-\item \code{DescTools_Binom}: The Wald interval follows the usual textbook
+\item \code{DescTools_Binom()}: The Wald interval follows the usual textbook
 definition for a single proportion confidence interval using the normal
 approximation. It is possible to include a continuity correction for Wald's
 interval.
-}}
 
+}}
 \examples{
 # Internal function -
 \dontrun{
