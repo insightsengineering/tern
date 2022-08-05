@@ -25,7 +25,7 @@ h_recycle <- function(...) {
   return(res)
 }
 
-#' @describeIn prop_diff The Wald interval follows the usual textbook
+#' @describeIn desctool_binom The Wald interval follows the usual textbook
 #'   definition for a single proportion confidence interval using the normal
 #'   approximation. It is possible to include a continuity correction for Wald's
 #'   interval.
@@ -341,6 +341,7 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
   return(res)
 }
 
+#' @keywords internal
 DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
                                 "two.sided", "left",
                                 "right"
