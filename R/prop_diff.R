@@ -89,13 +89,18 @@ d_proportion_diff <- function(conf_level,
 #' set.seed(2)
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 #' grp <- factor(c(rep("A", 10), rep("B", 10)))
-#' prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
+#' prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.95, correct = FALSE)
 #'
 #' @export
 prop_diff_wald <- function(rsp,
                            grp,
                            conf_level,
-                           correct) {
+                           correct=FALSE) {
+  if (isTRUE(correct)) {
+    method <- "waldcc"
+  } else {
+    method <- "wald"
+  }
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = conf_level, correct = correct
@@ -105,11 +110,18 @@ prop_diff_wald <- function(rsp,
   diff_ci <- if (all(rsp == rsp[1])) {
     c(NA, NA)
   } else {
-    stats::prop.test(
-      table(grp, rsp),
-      correct = correct,
-      conf.level = conf_level
-    )$conf.int[1:2]
+    # check if binary response is coded as logical
+    checkmate::assert_logical(rsp, any.missing = FALSE)
+    checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
+
+    # TRUE is a "success"
+    tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
+    DescTools_Binom(
+      tbl[1], sum(tbl[1], tbl[3]),
+      tbl[2], sum(tbl[2], tbl[4]),
+      conf.level = conf_level,
+      method = method
+    )[2:3]
   }
 
   list(
@@ -117,7 +129,6 @@ prop_diff_wald <- function(rsp,
     diff_ci = diff_ci
   )
 }
-
 
 #' @describeIn prop_diff Anderson-Hauck confidence interval.
 #'
@@ -140,19 +151,21 @@ prop_diff_ha <- function(rsp,
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
 
-  n_grp <- tapply(rsp, grp, length)
   p_grp <- tapply(rsp, grp, mean)
   diff_p <- unname(diff(p_grp))
-  z <- stats::qnorm((1 + conf_level) / 2)
-  err <- 1 /
-    (2 * min(n_grp)) + z * sqrt(sum(p_grp * (1 - p_grp) / (n_grp - 1)))
-  l_ci <- max(-1, diff_p - err)
-  u_ci <- min(1, diff_p + err)
+  tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
+  ci <- DescTools_Binom(
+    tbl[1], sum(tbl[1], tbl[3]),
+    tbl[2], sum(tbl[2], tbl[4]),
+    conf.level = conf_level,
+    method = "ha")
   list(
     "diff" = diff_p,
-    "diff_ci" = c(l_ci, u_ci)
+    "diff_ci" = ci[2:3]
   )
 }
+
+
 
 
 #' @describeIn prop_diff Newcombe confidence interval. It is based on
@@ -175,24 +188,25 @@ prop_diff_nc <- function(rsp,
                          grp,
                          conf_level,
                          correct = FALSE) {
+  if (isTRUE(correct)) {
+    method <- "scorecc"
+  } else {
+    method <- "score"
+  }
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
 
-  # Source:
-  # https://www.lexjansen.com/wuss/2016/127_Final_Paper_PDF.pdf
   p_grp <- tapply(rsp, grp, mean)
   diff_p <- unname(diff(p_grp))
-  x_grp <- split(rsp, f = grp)
-  ci_grp <- lapply(x_grp, FUN = prop_wilson, correct = correct, conf_level = conf_level)
-  l1 <- ci_grp[[1]][1]
-  u1 <- ci_grp[[1]][2]
-  l2 <- ci_grp[[2]][1]
-  u2 <- ci_grp[[2]][2]
-  l_ci <- max(-1, diff_p - sqrt((u1 - p_grp[1])^2 + (p_grp[2] - l2)^2))
-  u_ci <- min(1, diff_p + sqrt((p_grp[1] - l1)^2 + (u2 - p_grp[2])^2))
+  tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
+  ci <- DescTools_Binom(
+    tbl[1], sum(tbl[1], tbl[3]),
+    tbl[2], sum(tbl[2], tbl[4]),
+    conf.level = conf_level,
+    method = method)
   list(
     "diff" = diff_p,
-    "diff_ci" = c(l_ci, u_ci)
+    "diff_ci" = ci[2:3]
   )
 }
 
