@@ -44,13 +44,13 @@ respectively. Additional attributes carry meta data also used for plotting.
 Based on the STEP results, creates a \code{ggplot} graph showing the estimated HR or OR
 along the continuous biomarker value subgroups.
 }
-\section{Methods (by generic)}{
+\section{Functions}{
 \itemize{
-\item \code{tidy}: Custom Tidy Method for STEP Results
+\item \code{tidy(step)}: Custom Tidy Method for STEP Results
 
 Tidy the STEP results into a \code{tibble} to format them ready for plotting.
-}}
 
+}}
 \examples{
 library(nestcolor)
 library(survival)
