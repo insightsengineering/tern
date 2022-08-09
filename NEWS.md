@@ -11,6 +11,7 @@
   done without the need of a custom function.
 * Implemented `nestcolor` in all examples with slight refactoring to `g_km`, `g_ipp`, 
   `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
+* Added `stat_mean_pval` function to calculate the p-value of the mean as a new summary statistic.
 * New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
   and related functions.
 
