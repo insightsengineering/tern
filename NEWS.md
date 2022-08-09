@@ -1,4 +1,4 @@
-# tern 0.7.8.9025.2
+# tern 0.7.8.9025.4
 
 ### Enhancements 
 * exported `draw_grob` function (needed by `enableRF`).
@@ -12,6 +12,8 @@
 * Implemented `nestcolor` in all examples with slight refactoring to `g_km`, `g_ipp`, 
   `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
 * Added `stat_mean_pval` function to calculate the p-value of the mean as a new summary statistic.
+* New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
+  and related functions.
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.
@@ -138,6 +140,7 @@
 
 * Deprecated badge added to `g_mmrm`
 * Removed `tern:::` prefix from internal function uses in tests
+* Removed hyperlink from `prop_schouten` function documentation.
 
 ### Miscellaneous
 * Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`.

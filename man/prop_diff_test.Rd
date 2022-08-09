@@ -111,6 +111,7 @@ Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 \item \code{prop_schouten()}: performs the Chi-Squared test with Schouten
 correction (\href{https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305}{Schouten 1980}).
 
+
 \item \code{prop_fisher()}: performs the Fisher's exact test.
 Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
 
@@ -216,5 +217,10 @@ l <- basic_table() \%>\%
   )
 
 build_table(l, df = dta)
+}
+
+\seealso{
+For information on the Schouten correction (Schouten, 1980),
+visit https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305.
 }
 \keyword{internal}

@@ -30,6 +30,7 @@ testthat::test_that("s_summary return NA for x length 0L", {
     sd = c(sd = NA_real_),
     se = c(se = NA_real_),
     mean_sd = c(mean = NA_real_, sd = NA_real_),
+    mean_se = c(mean = NA_real_, se = NA_real_),
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
@@ -62,6 +63,7 @@ testthat::test_that("s_summary handles NA", {
     sd = c(sd = NA_real_),
     se = c(se = NA_real_),
     mean_sd = c(mean = 1, sd = NA_real_),
+    mean_se = c(mean = 1, se = NA_real_),
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
@@ -90,6 +92,7 @@ testthat::test_that("s_summary handles NA", {
     sd = c(sd = NA_real_),
     se = c(se = NA_real_),
     mean_sd = c(mean = NA_real_, sd = NA_real_),
+    mean_se = c(mean = NA_real_, se = NA_real_),
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
@@ -120,6 +123,7 @@ testthat::test_that("s_summary returns right results for n = 2", {
     sd = c(sd = 0.7071068),
     se = c(se = 0.5),
     mean_sd = c(mean = 1.5, sd = 0.7071068),
+    mean_se = c(mean = 1.5, se = 0.5),
     mean_ci = formatters::with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = 1, mean_sei_upr = 2), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = 0.7928932, mean_sdi_upr = 2.2071068), "Mean -/+ 1xSD"),
@@ -153,6 +157,7 @@ testthat::test_that("s_summary returns right results for n = 8", {
     sd = c(sd = 3.207135),
     se = c(se = 1.133893),
     mean_sd = c(mean = 6, sd = 3.207135),
+    mean_se = c(mean = 6, se = 1.133893),
     mean_ci = formatters::with_label(c(mean_ci_lwr = 3.318768, mean_ci_upr = 8.681232), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = 4.866107, mean_sei_upr = 7.133893), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = 2.792865, mean_sdi_upr = 9.207135), "Mean -/+ 1xSD"),
@@ -440,16 +445,16 @@ testthat::test_that("`summarize_vars` works with healthy input, and control func
     summarize_vars(
       vars = "AVAL",
       control = control_summarize_vars(quantiles = c(0.1, 0.9), conf_level = 0.9),
-      .stats = c("n", "mean_sd", "mean_ci", "quantiles")
+      .stats = c("n", "mean_sd", "mean_se", "mean_ci", "quantiles")
     )
   result <- build_table(l, df = dta_test)
 
   expected <- structure(
     c(
-      "", "n", "Mean (SD)", "Mean 90% CI", "10% and 90%-ile", "all obs",
-      "9", "5.0 (2.7)", "(3.30, 6.70)", "1.0 - 9.0"
+      "", "n", "Mean (SD)", "Mean (SE)", "Mean 90% CI", "10% and 90%-ile", "all obs",
+      "9", "5.0 (2.7)", "5.0 (0.9)", "(3.30, 6.70)", "1.0 - 9.0"
     ),
-    .Dim = c(5L, 2L)
+    .Dim = c(6L, 2L)
   )
 
   testthat::expect_identical(to_string_matrix(result), expected)
