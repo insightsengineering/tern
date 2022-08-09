@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.843579667892002" branch-rate="0" lines-covered="6655" lines-valid="7889" branches-covered="0" branches-valid="0" complexity="0" version="3.5.1" timestamp="2022-08-02 16:15:10">
+<coverage line-rate="0.843579667892002" branch-rate="0" lines-covered="6655" lines-valid="7889" branches-covered="0" branches-valid="0" complexity="0" version="3.5.1" timestamp="2022-08-09 12:06:29">
   <sources/>
   <packages>
     <package name="tern" line-rate="0.843579667892002" branch-rate="0" complexity="0">
@@ -15408,15 +15408,14 @@
           <methods>
             <method name="s_coxph_pairwise" signature="" line-rate="0.842105263157895" branch-rate="0">
               <lines>
-                <line number="58" hits="89" branch="false"/>
                 <line number="59" hits="89" branch="false"/>
                 <line number="60" hits="89" branch="false"/>
                 <line number="61" hits="89" branch="false"/>
                 <line number="62" hits="89" branch="false"/>
                 <line number="63" hits="89" branch="false"/>
                 <line number="64" hits="89" branch="false"/>
-                <line number="66" hits="89" branch="false"/>
-                <line number="67" hits="0" branch="false"/>
+                <line number="65" hits="89" branch="false"/>
+                <line number="67" hits="89" branch="false"/>
                 <line number="68" hits="0" branch="false"/>
                 <line number="69" hits="0" branch="false"/>
                 <line number="70" hits="0" branch="false"/>
@@ -15425,16 +15424,16 @@
                 <line number="73" hits="0" branch="false"/>
                 <line number="74" hits="0" branch="false"/>
                 <line number="75" hits="0" branch="false"/>
-                <line number="77" hits="89" branch="false"/>
+                <line number="76" hits="0" branch="false"/>
                 <line number="78" hits="89" branch="false"/>
-                <line number="80" hits="89" branch="false"/>
+                <line number="79" hits="89" branch="false"/>
                 <line number="81" hits="89" branch="false"/>
                 <line number="82" hits="89" branch="false"/>
                 <line number="83" hits="89" branch="false"/>
                 <line number="84" hits="89" branch="false"/>
                 <line number="85" hits="89" branch="false"/>
-                <line number="86" hits="80" branch="false"/>
-                <line number="88" hits="9" branch="false"/>
+                <line number="86" hits="89" branch="false"/>
+                <line number="87" hits="80" branch="false"/>
                 <line number="89" hits="9" branch="false"/>
                 <line number="90" hits="9" branch="false"/>
                 <line number="91" hits="9" branch="false"/>
@@ -15442,7 +15441,7 @@
                 <line number="93" hits="9" branch="false"/>
                 <line number="94" hits="9" branch="false"/>
                 <line number="95" hits="9" branch="false"/>
-                <line number="97" hits="89" branch="false"/>
+                <line number="96" hits="9" branch="false"/>
                 <line number="98" hits="89" branch="false"/>
                 <line number="99" hits="89" branch="false"/>
                 <line number="100" hits="89" branch="false"/>
@@ -15453,7 +15452,7 @@
                 <line number="105" hits="89" branch="false"/>
                 <line number="106" hits="89" branch="false"/>
                 <line number="107" hits="89" branch="false"/>
-                <line number="109" hits="89" branch="false"/>
+                <line number="108" hits="89" branch="false"/>
                 <line number="110" hits="89" branch="false"/>
                 <line number="111" hits="89" branch="false"/>
                 <line number="112" hits="89" branch="false"/>
@@ -15465,11 +15464,11 @@
                 <line number="118" hits="89" branch="false"/>
                 <line number="119" hits="89" branch="false"/>
                 <line number="120" hits="89" branch="false"/>
+                <line number="121" hits="89" branch="false"/>
               </lines>
             </method>
             <method name="coxph_pairwise" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="182" hits="14" branch="false"/>
                 <line number="183" hits="14" branch="false"/>
                 <line number="184" hits="14" branch="false"/>
                 <line number="185" hits="14" branch="false"/>
@@ -15485,19 +15484,19 @@
                 <line number="195" hits="14" branch="false"/>
                 <line number="196" hits="14" branch="false"/>
                 <line number="197" hits="14" branch="false"/>
+                <line number="198" hits="14" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="58" hits="89" branch="false"/>
             <line number="59" hits="89" branch="false"/>
             <line number="60" hits="89" branch="false"/>
             <line number="61" hits="89" branch="false"/>
             <line number="62" hits="89" branch="false"/>
             <line number="63" hits="89" branch="false"/>
             <line number="64" hits="89" branch="false"/>
-            <line number="66" hits="89" branch="false"/>
-            <line number="67" hits="0" branch="false"/>
+            <line number="65" hits="89" branch="false"/>
+            <line number="67" hits="89" branch="false"/>
             <line number="68" hits="0" branch="false"/>
             <line number="69" hits="0" branch="false"/>
             <line number="70" hits="0" branch="false"/>
@@ -15506,16 +15505,16 @@
             <line number="73" hits="0" branch="false"/>
             <line number="74" hits="0" branch="false"/>
             <line number="75" hits="0" branch="false"/>
-            <line number="77" hits="89" branch="false"/>
+            <line number="76" hits="0" branch="false"/>
             <line number="78" hits="89" branch="false"/>
-            <line number="80" hits="89" branch="false"/>
+            <line number="79" hits="89" branch="false"/>
             <line number="81" hits="89" branch="false"/>
             <line number="82" hits="89" branch="false"/>
             <line number="83" hits="89" branch="false"/>
             <line number="84" hits="89" branch="false"/>
             <line number="85" hits="89" branch="false"/>
-            <line number="86" hits="80" branch="false"/>
-            <line number="88" hits="9" branch="false"/>
+            <line number="86" hits="89" branch="false"/>
+            <line number="87" hits="80" branch="false"/>
             <line number="89" hits="9" branch="false"/>
             <line number="90" hits="9" branch="false"/>
             <line number="91" hits="9" branch="false"/>
@@ -15523,7 +15522,7 @@
             <line number="93" hits="9" branch="false"/>
             <line number="94" hits="9" branch="false"/>
             <line number="95" hits="9" branch="false"/>
-            <line number="97" hits="89" branch="false"/>
+            <line number="96" hits="9" branch="false"/>
             <line number="98" hits="89" branch="false"/>
             <line number="99" hits="89" branch="false"/>
             <line number="100" hits="89" branch="false"/>
@@ -15534,7 +15533,7 @@
             <line number="105" hits="89" branch="false"/>
             <line number="106" hits="89" branch="false"/>
             <line number="107" hits="89" branch="false"/>
-            <line number="109" hits="89" branch="false"/>
+            <line number="108" hits="89" branch="false"/>
             <line number="110" hits="89" branch="false"/>
             <line number="111" hits="89" branch="false"/>
             <line number="112" hits="89" branch="false"/>
@@ -15546,7 +15545,7 @@
             <line number="118" hits="89" branch="false"/>
             <line number="119" hits="89" branch="false"/>
             <line number="120" hits="89" branch="false"/>
-            <line number="182" hits="14" branch="false"/>
+            <line number="121" hits="89" branch="false"/>
             <line number="183" hits="14" branch="false"/>
             <line number="184" hits="14" branch="false"/>
             <line number="185" hits="14" branch="false"/>
@@ -15562,6 +15561,7 @@
             <line number="195" hits="14" branch="false"/>
             <line number="196" hits="14" branch="false"/>
             <line number="197" hits="14" branch="false"/>
+            <line number="198" hits="14" branch="false"/>
           </lines>
         </class>
         <class name="survival_duration_subgroups.R" filename="R/survival_duration_subgroups.R" line-rate="1" branch-rate="0" complexity="0">
