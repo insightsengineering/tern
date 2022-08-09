@@ -1,7 +1,7 @@
 # tern 0.7.8.9025.1
 
 ### Enhancements 
-* Exported `draw_grob` function (needed by `enableRF`).
+* Exported `draw_grob` function.
 * Added new parameter to `summarize_logistic` to specify which pivoted value should be removed during analysis.
 * Updated `s_coxph_pairwise` to generate log-rank p-value using original log-rank test instead 
   of Cox Proportional-Hazards Model.
