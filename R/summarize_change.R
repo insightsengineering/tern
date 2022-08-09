@@ -75,6 +75,7 @@ a_change_from_baseline <- make_afun(
   .formats = c(
     n = "xx",
     mean_sd = "xx.xx (xx.xx)",
+    mean_se = "xx.xx (xx.xx)",
     median = "xx.xx",
     range = "xx.xx - xx.xx",
     mean_ci = "(xx.xx, xx.xx)",
@@ -82,6 +83,7 @@ a_change_from_baseline <- make_afun(
   ),
   .labels = c(
     mean_sd = "Mean (SD)",
+    mean_se = "Mean (SE)",
     median = "Median",
     range = "Min - Max"
   )
