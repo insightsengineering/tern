@@ -16,7 +16,7 @@ NULL
 #'
 #' This function recycles all supplied elements to the maximal dimension.
 #'
-#' @keywords internal
+#' @export
 h_recycle <- function(...) {
   lst <- list(...)
   maxdim <- max(lengths(lst))
@@ -44,8 +44,7 @@ h_recycle <- function(...) {
 #' DescTools_Binom(tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]), conf.level = 0.90, method = "waldcc")
 #' }
 #'
-#' @keywords internal
-
+#' @export
 DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
                               "two.sided",
                               "left", "right"
@@ -101,11 +100,11 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
         CI.upper <- NA
       },
       score = {
-        w1 <- DescTools_BinomCI(
+        w1 <- DescTools::BinomCI(
           x = x1, n = n1, conf.level = conf.level,
           method = "wilson"
         )
-        w2 <- DescTools_BinomCI(
+        w2 <- DescTools::BinomCI(
           x = x2, n = n2, conf.level = conf.level,
           method = "wilson"
         )
@@ -119,11 +118,11 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
           l2 * (1 - l2) / n2)
       },
       scorecc = {
-        w1 <- DescTools_BinomCI(
+        w1 <- DescTools::BinomCI(
           x = x1, n = n1, conf.level = conf.level,
           method = "wilsoncc"
         )
-        w2 <- DescTools_BinomCI(
+        w2 <- DescTools::BinomCI(
           x = x2, n = n2, conf.level = conf.level,
           method = "wilsoncc"
         )
@@ -341,7 +340,7 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
   return(res)
 }
 
-#' @keywords internal
+#' @export
 DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
                                 "two.sided", "left",
                                 "right"

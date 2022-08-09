@@ -94,19 +94,17 @@ d_proportion_diff <- function(conf_level,
 #' @export
 prop_diff_wald <- function(rsp,
                            grp,
-                           conf_level,
+                           conf_level = 0.95,
                            correct = FALSE) {
   if (isTRUE(correct)) {
-    method <- "waldcc"
+    mthd <- "waldcc"
   } else {
-    method <- "wald"
+    mthd <- "wald"
   }
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = conf_level, correct = correct
   )
-
-  p_grp <- tapply(rsp, grp, mean)
   diff_ci <- if (all(rsp == rsp[1])) {
     c(NA, NA)
   } else {
@@ -114,19 +112,18 @@ prop_diff_wald <- function(rsp,
     checkmate::assert_logical(rsp, any.missing = FALSE)
     checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
 
-    # TRUE is a "success"
     tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-    DescTools_Binom(
+    tern:::DescTools_Binom(
       tbl[1], sum(tbl[1], tbl[3]),
       tbl[2], sum(tbl[2], tbl[4]),
       conf.level = conf_level,
-      method = method
-    )[2:3]
+      method = mthd
+    )
   }
 
   list(
-    diff = unname(diff(p_grp)),
-    diff_ci = diff_ci
+    "diff" = unname(diff_ci[1]),
+    "diff_ci" = diff_ci[2:3]
   )
 }
 
@@ -151,17 +148,16 @@ prop_diff_ha <- function(rsp,
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
 
-  p_grp <- tapply(rsp, grp, mean)
   diff_p <- unname(diff(p_grp))
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
   ci <- DescTools_Binom(
-    tbl[1], sum(tbl[1], tbl[3]),
-    tbl[2], sum(tbl[2], tbl[4]),
+    x1=tbl[1], n1=sum(tbl[1], tbl[3]),
+    x2=tbl[2], n2=sum(tbl[2], tbl[4]),
     conf.level = conf_level,
     method = "ha"
   )
   list(
-    "diff" = diff_p,
+    "diff" = unname(ci[1]),
     "diff_ci" = ci[2:3]
   )
 }
@@ -190,9 +186,9 @@ prop_diff_nc <- function(rsp,
                          conf_level,
                          correct = FALSE) {
   if (isTRUE(correct)) {
-    method <- "scorecc"
+    mthd <- "scorecc"
   } else {
-    method <- "score"
+    mthd <- "score"
   }
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
@@ -201,13 +197,13 @@ prop_diff_nc <- function(rsp,
   diff_p <- unname(diff(p_grp))
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
   ci <- DescTools_Binom(
-    tbl[1], sum(tbl[1], tbl[3]),
-    tbl[2], sum(tbl[2], tbl[4]),
+    x1=tbl[1], n1=sum(tbl[1], tbl[3]),
+    x2=tbl[2], n2=sum(tbl[2], tbl[4]),
     conf.level = conf_level,
-    method = method
+    method = mthd
   )
   list(
-    "diff" = diff_p,
+    "diff" = ci[1],
     "diff_ci" = ci[2:3]
   )
 }

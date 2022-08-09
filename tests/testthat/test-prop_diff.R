@@ -7,7 +7,7 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
   result <- prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
   # according to SAS.
   expected <- list(
-    diff = 0.25,
+    diff = -0.25,
     diff_ci = c(-1.0000, 0.9195)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
@@ -37,7 +37,7 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
   )
   # according to SAS.
   expected <- list(
-    diff = 0.25,
+    diff = -0.25,
     diff_ci = c(-0.6750, 0.2967)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
@@ -64,7 +64,7 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
   result <- prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = TRUE)
 
   expected <- list(
-    diff = 0.25,
+    diff = -0.25,
     diff_ci = c(-1.0000, 0.8069)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
@@ -91,7 +91,7 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
     prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = FALSE)
   )
   expected <- list(
-    diff = 0.25,
+    diff = -0.25,
     diff_ci = c(-0.9319, 0.4319)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
@@ -191,7 +191,7 @@ testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
   expected <- structure(
     c(
       "", "Difference in Response rate (%)", "90% CI (Anderson-Hauck)",
-      "B", "", "", "A", "25.0", "(-100.0, 92.0)"
+      "B", "", "", "A", "-25.0", "(-100.0, 92.0)"
     ),
     .Dim = c(3L, 3L)
   )
