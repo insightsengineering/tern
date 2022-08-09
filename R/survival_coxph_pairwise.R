@@ -16,6 +16,7 @@
 #'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
 #'
+#' @importFrom stats pchisq
 #' @name survival_coxph_pairwise
 #'
 NULL
