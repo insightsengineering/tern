@@ -5,7 +5,7 @@ testthat::test_that("s_compare works for numeric", {
     .in_ref_col = FALSE
   ))
   testthat::expect_named(result, c(
-    "n", "sum", "mean", "sd", "se", "mean_sd", "mean_ci", "mean_sei", "mean_sdi",
+    "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei", "mean_sdi",
     "median", "mad", "median_ci", "quantiles", "iqr", "range",
     "min", "max", "cv", "geom_mean", "geom_mean_ci", "geom_cv", "pval"
   ))
