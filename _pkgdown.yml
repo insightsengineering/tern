@@ -189,6 +189,7 @@ reference:
       - prop_diff_ha
       - prop_diff_nc
       - prop_diff_wald
+      - desctool_binom
 
   - title: Model Specific Functions
     desc: These functions help with fitting or extracting results from specific models.
