@@ -108,8 +108,7 @@ proportions.
 \item \code{prop_chisq()}: performs Chi-Squared test.
 Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 
-\item \code{prop_schouten()}: performs the Chi-Squared test with Schouten
-correction.
+\item \code{prop_schouten()}: performs the Chi-Squared test with Schouten correction.
 
 \item \code{prop_fisher()}: performs the Fisher's exact test.
 Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
