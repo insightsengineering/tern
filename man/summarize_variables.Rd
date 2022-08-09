@@ -186,6 +186,7 @@ If \code{x} is of class \code{numeric}, returns a list with named items: \cr
 \item \code{sd}: the \code{\link[stats:sd]{stats::sd()}} of \code{x}.
 \item \code{se}: the standard error of \code{x} mean, i.e.: (\verb{sd()/sqrt(length())]}).
 \item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[stats:sd]{stats::sd()}} of \code{x}.
+\item \code{mean_se}: the \code{\link[=mean]{mean()}} of \code{x} and its standard error (see above).
 \item \code{mean_ci}: the CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
 \item \code{mean_sei}: the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}/\code{\link[=sqrt]{sqrt()}}).
 \item \code{mean_sdi}: the SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}).

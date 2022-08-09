@@ -11,6 +11,8 @@
   done without the need of a custom function.
 * Implemented `nestcolor` in all examples with slight refactoring to `g_km`, `g_ipp`, 
   `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
+* New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
+  and related functions.
 
 ### Migration from `assertthat` to `checkmate`
 * complete substitution of `assertthat` calls with `checkmate`.
