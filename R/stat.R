@@ -164,14 +164,14 @@ stat_mean_pval <- function(x,
   n <- length(x)
 
   x_mean <- mean(x)
-  x_sd <- sd(x)
+  x_sd <- stats::sd(x)
 
   if (n < n_min) {
     pv <- c(p_value = NA_real_)
   } else {
-    x_se <- sd(x) / sqrt(n)
+    x_se <- stats::sd(x) / sqrt(n)
     ttest <- (x_mean - test_mean) / x_se
-    pv <- c(p_value = 2 * pt(-abs(ttest), df = n - 1))
+    pv <- c(p_value = 2 * stats::pt(-abs(ttest), df = n - 1))
   }
 
   return(pv)
