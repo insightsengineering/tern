@@ -151,8 +151,8 @@ prop_diff_ha <- function(rsp,
   diff_p <- unname(diff(p_grp))
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
   ci <- DescTools_Binom(
-    x1=tbl[1], n1=sum(tbl[1], tbl[3]),
-    x2=tbl[2], n2=sum(tbl[2], tbl[4]),
+    x1 = tbl[1], n1 = sum(tbl[1], tbl[3]),
+    x2 = tbl[2], n2 = sum(tbl[2], tbl[4]),
     conf.level = conf_level,
     method = "ha"
   )
@@ -197,8 +197,8 @@ prop_diff_nc <- function(rsp,
   diff_p <- unname(diff(p_grp))
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
   ci <- DescTools_Binom(
-    x1=tbl[1], n1=sum(tbl[1], tbl[3]),
-    x2=tbl[2], n2=sum(tbl[2], tbl[4]),
+    x1 = tbl[1], n1 = sum(tbl[1], tbl[3]),
+    x2 = tbl[2], n2 = sum(tbl[2], tbl[4]),
     conf.level = conf_level,
     method = mthd
   )
