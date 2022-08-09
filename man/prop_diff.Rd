@@ -14,7 +14,7 @@
 \usage{
 d_proportion_diff(conf_level, method, long = FALSE)
 
-prop_diff_wald(rsp, grp, conf_level, correct = FALSE)
+prop_diff_wald(rsp, grp, conf_level = 0.95, correct = FALSE)
 
 prop_diff_ha(rsp, grp, conf_level)
 

@@ -49,4 +49,3 @@ DescTools_Binom(tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]), conf.l
 }
 
 }
-\keyword{internal}
