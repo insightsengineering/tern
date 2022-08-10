@@ -151,6 +151,7 @@ the helper function \code{\link[=control_summarize_vars]{control_summarize_vars(
 \item \code{quantiles}: numeric vector of length two to specify the quantiles.
 \item \code{quantile_type} (\code{numeric}) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
+\item \code{test_mean}: (\code{numeric}) \cr to test against the mean under the null hypothesis when calculating p-value.
 }}
 
 \item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
@@ -186,9 +187,11 @@ If \code{x} is of class \code{numeric}, returns a list with named items: \cr
 \item \code{sd}: the \code{\link[stats:sd]{stats::sd()}} of \code{x}.
 \item \code{se}: the standard error of \code{x} mean, i.e.: (\verb{sd()/sqrt(length())]}).
 \item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[stats:sd]{stats::sd()}} of \code{x}.
+\item \code{mean_se}: the \code{\link[=mean]{mean()}} of \code{x} and its standard error (see above).
 \item \code{mean_ci}: the CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
 \item \code{mean_sei}: the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}/\code{\link[=sqrt]{sqrt()}}).
 \item \code{mean_sdi}: the SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}).
+\item \code{mean_pval}: the two-sided p-value of the mean of \code{x} (from \code{\link[=stat_mean_pval]{stat_mean_pval()}}).
 \item \code{median}: the \code{\link[stats:median]{stats::median()}} of \code{x}.
 \item \code{mad}:
 the median absolute deviation of \code{x}, i.e.: (\code{\link[stats:median]{stats::median()}} of \code{xc}, where \code{xc} = \code{x} - \code{\link[stats:median]{stats::median()}}).

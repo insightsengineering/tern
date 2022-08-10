@@ -55,6 +55,19 @@ f_conf_level <- function(conf_level) {
   paste0(conf_level * 100, "% CI")
 }
 
+#' Utility function to create label for p-value
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
+#' @return a `string`
+#'
+#' @export
+f_pval <- function(test_mean) {
+  checkmate::assert_numeric(test_mean, len = 1)
+  paste0("p-value (H0: mean = ", test_mean, ")")
+}
+
 #' Utility function to return a named list of covariate names.
 #'
 #' @param covariates (`character`)\cr a vector that can contain single variable names (such as
