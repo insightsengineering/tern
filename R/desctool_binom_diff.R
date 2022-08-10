@@ -13,7 +13,7 @@ NULL
 
 #' Recycle list of parameters
 #'
-#' @describeIn DescTools_Binom This function recycles all supplied elements to the maximal dimension.
+#' @describeIn desctools_binom This function recycles all supplied elements to the maximal dimension.
 #'
 #' @keywords internal
 h_recycle <- function(...) {
@@ -24,7 +24,7 @@ h_recycle <- function(...) {
   return(res)
 }
 
-#' @describeIn DescTools_Binom Several Confidence Intervals for the difference between proportions.
+#' @describeIn desctools_binom Several Confidence Intervals for the difference between proportions.
 #'
 #'
 #' @return A named list of 3 values:
@@ -338,7 +338,7 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
   return(res)
 }
 
-#' @describeIn DescTools_Binom Compute confidence intervals for binomial proportions.
+#' @describeIn desctools_binom Compute confidence intervals for binomial proportions.
 #'
 #' @param x \cr number of successes
 #' @param n \cr number of trials
