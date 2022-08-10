@@ -1,4 +1,4 @@
-# tern 0.7.8.9025.2
+# tern 0.7.8.9025.4
 
 ### Enhancements 
 * Exported `draw_grob` function.
@@ -8,6 +8,9 @@
 * Added more verbose warnings from `as_factor_keep_attributes` for better `test_examples()` readability.
 * Implemented `nestcolor` in all examples, with slight refactoring to `g_km`, `g_ipp`, 
   `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
+* Added `stat_mean_pval` function to calculate the p-value of the mean as a new summary statistic.
+* New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
+  and related functions.
 
 ### Migration from `assertthat` to `checkmate`
 * Substituted all `assertthat` calls with `checkmate`.
@@ -119,6 +122,7 @@
 * Renamed `estimate_incidence_rate.R` to `incidence_rate.R` to match the documentation grouping name.
 * Extracted `control_incidence_rate` into a separate file as it was exported and documented separately.
 * Added `@md` and removed `@order` from `incidence_rate.R`. Modified examples accordingly.
+* Removed hyperlink from `prop_schouten` function documentation.
 
 ### Miscellaneous
 * Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`.
