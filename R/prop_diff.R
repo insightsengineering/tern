@@ -113,7 +113,7 @@ prop_diff_wald <- function(rsp,
     checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
 
     tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-    tern:::DescTools_Binom(
+    DescTools_Binom(
       tbl[1], sum(tbl[1], tbl[3]),
       tbl[2], sum(tbl[2], tbl[4]),
       conf.level = conf_level,
@@ -148,7 +148,6 @@ prop_diff_ha <- function(rsp,
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
 
-  diff_p <- unname(diff(p_grp))
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
   ci <- DescTools_Binom(
     x1 = tbl[1], n1 = sum(tbl[1], tbl[3]),

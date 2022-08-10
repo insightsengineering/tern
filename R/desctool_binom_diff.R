@@ -4,7 +4,6 @@
 #'
 #' Several confidence intervals for the difference between proportions.
 #'
-#' @inheritParams argument_convention
 #' @param grp (`factor`)\cr
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
@@ -14,9 +13,9 @@ NULL
 
 #' Recycle list of parameters
 #'
-#' This function recycles all supplied elements to the maximal dimension.
+#' @describeIn DescTools_Binom This function recycles all supplied elements to the maximal dimension.
 #'
-#' @export
+#' @keywords internal
 h_recycle <- function(...) {
   lst <- list(...)
   maxdim <- max(lengths(lst))
@@ -25,18 +24,17 @@ h_recycle <- function(...) {
   return(res)
 }
 
-#' @describeIn desctool_binom The Wald interval follows the usual textbook
-#'   definition for a single proportion confidence interval using the normal
-#'   approximation. It is possible to include a continuity correction for Wald's
-#'   interval.
+#' @describeIn DescTools_Binom Several Confidence Intervals for the difference between proportions.
 #'
-#' @param correct `logical`\cr
-#'   include the continuity correction.
 #'
+#' @return A named list of 3 values:
+#'   - `est`: estimate of proportion difference.
+#'   - `lwrci`: estimate of lower end of the confidence interval
+#'   - `upci`: estiamte of upper end of the confidence interval.
 #' @examples
 #' # Internal function -
 #' \dontrun{
-#' # Wald confidence interval
+#'
 #' set.seed(2)
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 #' grp <- factor(c(rep("A", 10), rep("B", 10)))
@@ -44,7 +42,7 @@ h_recycle <- function(...) {
 #' DescTools_Binom(tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]), conf.level = 0.90, method = "waldcc")
 #' }
 #'
-#' @export
+#' @keywords internal
 DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
                               "two.sided",
                               "left", "right"
@@ -100,11 +98,11 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
         CI.upper <- NA
       },
       score = {
-        w1 <- DescTools::BinomCI(
+        w1 <- DescTools_BinomCI(
           x = x1, n = n1, conf.level = conf.level,
           method = "wilson"
         )
-        w2 <- DescTools::BinomCI(
+        w2 <- DescTools_BinomCI(
           x = x2, n = n2, conf.level = conf.level,
           method = "wilson"
         )
@@ -118,11 +116,11 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
           l2 * (1 - l2) / n2)
       },
       scorecc = {
-        w1 <- DescTools::BinomCI(
+        w1 <- DescTools_BinomCI(
           x = x1, n = n1, conf.level = conf.level,
           method = "wilsoncc"
         )
-        w2 <- DescTools::BinomCI(
+        w2 <- DescTools_BinomCI(
           x = x2, n = n2, conf.level = conf.level,
           method = "wilsoncc"
         )
@@ -340,7 +338,22 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
   return(res)
 }
 
-#' @export
+#' @describeIn DescTools_Binom Compute confidence intervals for binomial proportions.
+#'
+#' @param x \cr number of successes
+#' @param n \cr number of trials
+#' @param conf.level \cr confidence level, defaults to 0.95
+#' @param sides \cr a character string specifying the side of the confidence interval. Must be one of "two-sided" (default), "left" or "right".
+#' @param method \cr character string specifying which method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull", "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine.
+#' ", "logit", "witting", "pratt", "midp", "lik" and "blaker"
+#'
+#'
+#'  @return A matric with 3 columns containing:
+#'   - `est`: estimate of proportion difference.
+#'   - `lwrci`: lower end of the confidence interval
+#'   - `upci`:  upper end of the confidence interval.
+#'
+#' @keywords internal
 DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
                                 "two.sided", "left",
                                 "right"
@@ -597,7 +610,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
     lik = {
       CI.lower <- 0
       CI.upper <- 1
-      z <- qnorm(1 - alpha * 0.5)
+      z <- stats::qnorm(1 - alpha * 0.5)
       tol <- .Machine$double.eps^0.5
       BinDev <- function(y, x, mu, wt, bound = 0, tol = .Machine$double.eps^0.5,
                          ...) {
@@ -664,7 +677,7 @@ DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
       acceptbin <- function(x, n, p) {
         p1 <- 1 - stats::pbinom(x - 1, n, p)
         p2 <- stats::pbinom(x, n, p)
-        a1 <- p1 + stats::pbinom(qbinom(p1, n, p) - 1, n, p)
+        a1 <- p1 + stats::pbinom(stats::qbinom(p1, n, p) - 1, n, p)
         a2 <- p2 + 1 - stats::pbinom(
           stats::qbinom(1 - p2, n, p), n,
           p

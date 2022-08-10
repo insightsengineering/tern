@@ -2,51 +2,14 @@
 % Please edit documentation in R/desctool_binom_diff.R
 \name{desctool_binom}
 \alias{desctool_binom}
-\alias{DescTools_Binom}
 \title{Confidence Intervals for a Difference of Binomials}
-\usage{
-DescTools_Binom(
-  x1,
-  n1,
-  x2,
-  n2,
-  conf.level = 0.95,
-  sides = c("two.sided", "left", "right"),
-  method = c("ac", "wald", "waldcc", "score", "scorecc", "mn", "mee", "blj", "ha", "hal",
-    "jp")
-)
-}
 \arguments{
 \item{grp}{(\code{factor})\cr
 vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}
-
-\item{correct}{\code{logical}\cr
-include the continuity correction.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Several confidence intervals for the difference between proportions.
 }
-\section{Functions}{
-\itemize{
-\item \code{DescTools_Binom()}: The Wald interval follows the usual textbook
-definition for a single proportion confidence interval using the normal
-approximation. It is possible to include a continuity correction for Wald's
-interval.
-
-}}
-\examples{
-# Internal function -
-\dontrun{
-# Wald confidence interval
-set.seed(2)
-rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
-grp <- factor(c(rep("A", 10), rep("B", 10)))
-tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-DescTools_Binom(tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]), conf.level = 0.90, method = "waldcc")
-}
-
-}
-\keyword{internal}

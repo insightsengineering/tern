@@ -28,7 +28,6 @@ Imports:
     checkmate,
     cowplot,
     dplyr,
-    DescTools,
     emmeans (>= 1.4.5),
     forcats,
     formatters (>= 0.3.1),
