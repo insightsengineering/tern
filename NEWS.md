@@ -39,6 +39,7 @@
 * renamed `test-assertthat.R` into `test-utils_checkmate.R`.
 
 ### Fix
+* Identified bug in `prop_diff` functions. Coding of responses have been corrected (TRUE is a success).
 * Fixing error coming from comparing factors vector to characters vector.
 * `fct_collapse_only`, `fct_collapse_only`, and `month2day`/`day2month` reverted
   to export.

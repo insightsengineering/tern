@@ -122,8 +122,8 @@ prop_diff_wald <- function(rsp,
   }
 
   list(
-    "diff" = unname(diff_ci[1]),
-    "diff_ci" = diff_ci[2:3]
+    "diff" = unname(diff_ci[, "est"]),
+    "diff_ci" = unname(diff_ci[, c("lwr.ci", "upr.ci")])
   )
 }
 
@@ -156,8 +156,8 @@ prop_diff_ha <- function(rsp,
     method = "ha"
   )
   list(
-    "diff" = unname(ci[1]),
-    "diff_ci" = ci[2:3]
+    "diff" = unname(ci[, "est"]),
+    "diff_ci" = unname(ci[, c("lwr.ci", "upr.ci")])
   )
 }
 
@@ -202,8 +202,8 @@ prop_diff_nc <- function(rsp,
     method = mthd
   )
   list(
-    "diff" = ci[1],
-    "diff_ci" = ci[2:3]
+    "diff" = unname(ci[, "est"]),
+    "diff_ci" = unname(ci[, c("lwr.ci", "upr.ci")])
   )
 }
 
