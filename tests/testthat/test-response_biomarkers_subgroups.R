@@ -1,5 +1,6 @@
 library(scda)
 library(dplyr)
+library(survival)
 
 preprocess_adrs <- function(adrs) {
 
@@ -17,7 +18,7 @@ preprocess_adrs <- function(adrs) {
   )
 }
 
-adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 
 # extract_rsp_biomarkers ----
 
@@ -39,10 +40,10 @@ testthat::test_that("extract_rsp_biomarkers functions as expected with valid inp
       "AGE", "BMRKR1", "AGE", "BMRKR1", "AGE", "BMRKR1", "AGE", "BMRKR1"
     ),
     biomarker_label = c(
-      "Age", "Continous Level Biomarker 1",
-      "Age", "Continous Level Biomarker 1", "Age", "Continous Level Biomarker 1",
-      "Age", "Continous Level Biomarker 1", "Age", "Continous Level Biomarker 1",
-      "Age", "Continous Level Biomarker 1"
+      "Age", "Continuous Level Biomarker 1",
+      "Age", "Continuous Level Biomarker 1", "Age", "Continuous Level Biomarker 1",
+      "Age", "Continuous Level Biomarker 1", "Age", "Continuous Level Biomarker 1",
+      "Age", "Continuous Level Biomarker 1"
     ),
     n_tot = c(
       400L, 400L, 231L, 231L, 169L, 169L, 135L, 135L, 135L, 135L,
@@ -185,7 +186,7 @@ testthat::test_that("tabulate_rsp_biomarkers works as expected with valid input"
       ncol = 7,
       data = c(
         "", "Age", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
-        "LOW", "MEDIUM", "HIGH", "Continous Level Biomarker 1", "All Patients",
+        "LOW", "MEDIUM", "HIGH", "Continuous Level Biomarker 1", "All Patients",
         "Sex", "F", "M", "Categorical Level Biomarker 2", "LOW", "MEDIUM",
         "HIGH", "Total n", "", "400", "", "231", "169", "", "135", "135",
         "130", "", "400", "", "231", "169", "", "135", "135", "130",
@@ -229,14 +230,14 @@ testthat::test_that("tabulate_rsp_biomarkers functions as expected with NULL sub
 
   result <- tabulate_rsp_biomarkers(df)
   result_matrix <- to_string_matrix(result)
-  expected_first_col <- c("", "Age", "All Patients", "Continous Level Biomarker 1", "All Patients")
+  expected_first_col <- c("", "Age", "All Patients", "Continuous Level Biomarker 1", "All Patients")
   testthat::expect_identical(result_matrix[, 1L], expected_first_col)
 })
 
 testthat::test_that("tabulate_rsp_biomarkers works with only a single biomarker in the data frame", {
   df1 <- data.frame(
     biomarker = "BMRKR1",
-    biomarker_label = "Continous Level Biomarker 1",
+    biomarker_label = "Continuous Level Biomarker 1",
     n_tot = 400L,
     n_rsp = 282L,
     prop = 0.705,
@@ -255,7 +256,7 @@ testthat::test_that("tabulate_rsp_biomarkers works with only a single biomarker 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- matrix(
     data = c(
-      "", "Continous Level Biomarker 1", "All Patients",
+      "", "Continuous Level Biomarker 1", "All Patients",
       "Total n", "", "400", "Responders", "", "282", "Response (%)",
       "", "70.5%", "Odds Ratio", "", "0.98", "95% CI", "", "(0.95, 1.01)",
       "p-value (Wald)", "", "0.3000"
