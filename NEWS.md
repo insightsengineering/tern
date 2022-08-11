@@ -1,4 +1,4 @@
-# tern 0.7.8.9025.7
+# tern 0.7.8.9025.8
 
 ### Enhancements 
 * Exported `draw_grob` function.
