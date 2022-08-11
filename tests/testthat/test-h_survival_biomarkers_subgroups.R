@@ -20,7 +20,7 @@ preprocess_adtte <- function(adtte) {
   )
 }
 
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
 
 # h_surv_to_coxreg_variables ----
 
@@ -62,7 +62,7 @@ testthat::test_that("h_coxreg_mult_cont_df works as expected", {
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(400L, 400L),
     n_tot_events = c(282, 282),
     median = c(680.959764183532, 680.959764183532),
@@ -92,7 +92,7 @@ testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is emp
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(0L, 0L),
     n_tot_events = c(0L, 0L),
     median = c(NA, NA),

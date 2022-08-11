@@ -1,79 +1,54 @@
-# tern 0.7.8.9025.4
+# tern 0.7.8.9025.10
 
 ### Enhancements 
 * Added `DescTools` `BinomDiffCI` function within `tern`.
-* exported `draw_grob` function (needed by `enableRF`).
-* `checkmate::assert()`, `checkmate::assert_true()`, and `checkmate::assert_false()`
-   use is kept to a minimum due to its ambiguous messages. 
-* `checkmate::assert_set_equal()` and `checkmate::assert_int()` have been changed
-  when checking for the length of vectors, either by checking the right input and
-  its length or by using `checkmate::assert_vector()`.
-* Removed `assert_equal_length` as comparing lengths of multiple vectors can be 
-  done without the need of a custom function.
-  to implement `Yates` correction term.
-* Implemented `nestcolor` in all examples with slight refactoring to `g_km`, `g_ipp`, 
+* Exported `draw_grob` function.
+* Added new parameter to `summarize_logistic` to specify which pivoted value should be removed during analysis.
+* Updated `s_coxph_pairwise` to generate log-rank p-value using original log-rank test instead 
+  of Cox Proportional-Hazards Model.
+* Added more verbose warnings from `as_factor_keep_attributes` for better `test_examples()` readability.
+* Implemented `nestcolor` in all examples, with slight refactoring to `g_km`, `g_ipp`, 
   `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
+* Added `stat_mean_pval` function to calculate the p-value of the mean as a new summary statistic.
 * New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
   and related functions.
 
 ### Migration from `assertthat` to `checkmate`
-* complete substitution of `assertthat` calls with `checkmate`.
-* `assert_df_with_factors`, `assert_equal_length`, and `assert_proportion_value` 
-  made internals.
-* removed `has_tabletree_colnames`.
-* removed `is_quantiles_vector` and `all_elements_in_ref` (substituted by 
-  `checkmate::subset()`).
-* removed `is_proportion_vector` and adapted `is_proportion` to `checkmate` style 
-  with `assert_proportion_value`.
-* `is_equal_length` is now `assert_equal_length`.
-* removed `is_df_with_no_na_level` by adding parameters to `assert_df_with_variables`.
-* removed `is_df_with_nlevels_factor` by adding parameters to `assert_df_with_factors`.
-* `is_character_or_factor` replaced by `checkmate::assert_multi_class()`.
-* `is_nonnegative_count` removed and substituted by `checkmate::assert_count()`.
-* `assert_list_of_variables` instead of `is_variables` (made internal).
-* `assert_df_with_variables` instead of `is_df_with_variables` (made internal).
-* `assert_df_with_factors` instead of `is_df_with_factors` (made internal).
-* `assert_valid_factor` instead of `is_valid_factor`.
-* removed `is_valid_character`.
-* renamed `assertthat.R` into a more appropriate `utils_checkmate.R`.
-* renamed `test-assertthat.R` into `test-utils_checkmate.R`.
+* Substituted all `assertthat` calls with `checkmate`.
+* Implemented `checkmate::assert_vector()`, `checkmate::assert_set_equal()`, and 
+  `checkmate::assert_int()` to validate vector type, length, and input.
+* Made `assert_df_with_factors` and `assert_proportion_value` internal functions.
+* Removed assertion functions `all_elements_in_ref`, `is_df_with_nlevels_factor`, 
+  `is_df_with_no_na_level`, `is_proportion`, `is_proportion_vector`, `is_quantiles_vector`, 
+  `is_valid_character`,
+  `assert_character_or_factor`, `assert_equal_length` and `has_tabletree_colnames`.
+* Renamed `is_proportion` to `assert_proportion_value`.
+* Renamed `is_equal_length` to `assert_equal_length`.
+* Refactored `assert_df_with_variables` to replace `is_df_with_no_na_level`.
+* Refactored `assert_df_with_factors` to replace `is_df_with_nlevels_factor`.
+* Replaced usage of `is_quantiles_vector` and `all_elements_in_ref` with `checkmate::subset()`.
+* Replaced `is_character_or_factor` with `checkmate::assert_multi_class()`.
+* Replaced `is_nonnegative_count` with `checkmate::assert_count()`.
+* Replaced `is_variables` with `assert_list_of_variables`.
+* Replaced `is_df_with_variables` with `assert_df_with_variables`.
+* Replaced `is_df_with_factors` with `assert_df_with_factors`.
+* Replaced `is_valid_factor` with `assert_valid_factor`.
+* Renamed `assertthat.R` to `utils_checkmate.R`.
+* Renamed `test-assertthat.R` to `test-utils_checkmate.R`.
 
-### Fix
+### Bug Fixes
 * Identified bug in `prop_diff` functions. Coding of responses have been corrected (TRUE is a success).
-* Fixing error coming from comparing factors vector to characters vector.
-* `fct_collapse_only`, `fct_collapse_only`, and `month2day`/`day2month` reverted
-  to export.
-* Fixed test for `cut_quantile_bins` with empty vector. This is not a good standard
-  input.
-* Warnings from `as_factor_keep_attributes` are now in verbose for better 
-  `test_examples()` readability
-* Renaming `rtables.R` as confusing file name due to the package dependence.
-* Renamed files to respect the main documented function and fixed file in `R/`
-  folder that does not comply with the standard (starting with the word test).
-* Extracted `cox_regression_inter` from `cox_regression`.
-* `d_` and `h_` functions are all reverted or confirmed as export functions to
-  allow future users to utilize their added flexibility.
-* Fixing bug related to error flag for empty strings coming from `rtables` split
+* Fixed error coming from comparing factors vector to characters vector.
+* Fixed empty vector test for `cut_quantile_bins`.
+* Fixed bug related to error flag for empty strings coming from `rtables` split
   functions. Creation of `replace_emptys_with_na` to replace empty strings with
   custom strings across data.frame (this can be merged with `df_explicit_na`).
-* Add of new parameter for `summarize_logistic` that specify which pivoted value
-  is meant to be removed during the analysis.
-* Renamed `estimate_incidence_rate.R` into `incidence_rate.R` to match the
-  documentation grouping name.
-* Extracted `control_incidence_rate` into a separated file as it was exported and
-  documented separately.
-* Added `@md` and removed `@order` from `incidence_rate.R`. The presented order
-  is automatically the final order in the documentation. There is no specific
-  need to add this tag. Modified examples accordingly.
-* Fixed warnings occurring in example tests
-* Removed `tern:::` prefix and added `dontrun` to internal function examples.
-* Enhanced `s_coxph_pairwise` with generating log-rank p value by original 
-  log-rank test, instead of Cox Proportional-Hazards Model.
-* Fixed bug in `s_ancova`, avoiding error when the first level of the arm factor 
-  is not the control arm.
+* Fixed warnings occurring in example tests.
+* Fixed internal function examples errors by removing `tern:::` prefix and added `dontrun` to internal function examples.
+* Fixed bug in `s_ancova` causing an error when the first level of the arm factor is not the control arm.
 
-### Documentation and NAMESPACE polishing
-*  Added stable badge for:
+### Documentation and NAMESPACE Polishing
+* Added stable badges for:
    - `count_abnormal_by_marked` (reference to `abnormal_by_marked`),
    `count_abnormal_lab_worsen_by_baseline` and `h_adlb_worsen` (reference to
    `abnormal_by_worst_grade_worsen_from_baseline`), `count_abnormal_by_worst_grade`
@@ -86,7 +61,7 @@
    `a_summary` (reference to `summarize_variables`) and kept the S3 method tree.
    - `summarize_patients_exposure_in_cols`, `summarize_num_patients` with
    `s_num_patients`, `s_num_patients_content`, `summarize_num_patients`.
-   - `count_cumulative`, `count_missed_doses`, `count_patients_events_in_cols`, `summarize_colvars`, `summarize_change`, `summarize_ancova`,`as.rtable`, `color_palette`, `add_footnotes` (note, this function is defined in two different files: footnotes and g_forest).
+   - `count_cumulative`, `count_missed_doses`, `count_patients_events_in_cols`, `summarize_colvars`, `summarize_change`, `summarize_ancova`,`as.rtable`, `color_palette`, `add_footnotes`.
    - (statistical function controls)  `control_coxreg`, `control_coxph`,
    `control_incidence_rate`, `control_lineplot_vars`, `control_surv_time`,
    `control_surv_timepoint`, `control_logisitic`, `control_step`.
@@ -94,16 +69,15 @@
    `tabulate_rsp_biomarkers`, `keep_rows`, `keep_content_rows`, `has_count_in_any_col`,
    `has_fraction_in_cols`, `has_fraction_in_any_col`, `has_fractions_difference`,
    `test_proportion_diff`, `pairwise`, `logistic_regression`,
-   `estimate_incidence_rate`, `control_incidence_rate` (another file), reference to
-   `incidence_rate`, `cut_quantile_bins`, `d_pkparam` (note: d function but required by tern_ex file),
+   `estimate_incidence_rate`, `control_incidence_rate` (reference to
+   `incidence_rate`), `cut_quantile_bins`, `d_pkparam`,
    `estimate_multinomial_rsp`, `decorate_grob_set`, `extreme_format`, `fit_rsp_step`,
-   `fit_survival_step`, `footnotes`, `footnotes-set` (note: this function is defined twice in the footnotes file),
+   `fit_survival_step`, `footnotes`, `footnotes-set`,
    `format_count_fraction`, `format_fraction_threshold`, `formatting_functions`,
    `format_fraction`, `combination_function` (S4 method), `compare_variables` (S3 method),
    `h_stack_by_baskets`, `h_pkparam_sort`, `h_adsl_adlb_merge_using_worst_flag`, `kaplan_meier`.
-
-*  Internal keywords added, export removed, `_pkgdown.yml` polished and `tern:::` for
-   tests, examples, and vignettes when present for the following functions:
+* Internal keywords added, export removed, `_pkgdown.yml` updated, and `tern:::` added for
+   tests/examples/vignettes where present for the following functions:
    - (chain functions, reference to `abnormal_by_marked`) `s_count_abnormal_by_marked`,
    `a_count_abnormal_by_marked`.
    - (chain functions, reference to `abnormal_by_worst_grade_worsen_from_baseline`)
@@ -138,10 +112,18 @@
    `h_content_first_row`, `a_response_subgroups`, `range_noinf`, `has_count_in_cols`,
    `has_counts_difference`, `prop_chisq`, `prop_cmh`, `prop_schouten`, `prop_fisher`,
    `s_test_proportion_diff`, `a_test_proportion_diff`,`h_split_param`,
-   `fct_collapse_only`, `fct_discard`, `fct_explicit_na_if`.
-
-* Deprecated badge added to `g_mmrm`
-* Removed `tern:::` prefix from internal function uses in tests
+   `fct_discard`, `fct_explicit_na_if`.
+* Added deprecated badge to `g_mmrm`.
+* Removed `tern:::` prefix from internal function uses in tests.
+* Reverted `fct_collapse_only`, `month2day`, and `day2month` to export.
+* Reverted all `d_` and `h_` functions to export, allowing users to utilize their flexibility.
+* Renamed `rtables.R` as file name is confusing due to the package dependence.
+* Renamed files to reflect main documented function and fixed `R` files starting with the word test
+  not complying with the standard.
+* Extracted `cox_regression_inter` into a separate file from `cox_regression`.
+* Renamed `estimate_incidence_rate.R` to `incidence_rate.R` to match the documentation grouping name.
+* Extracted `control_incidence_rate` into a separate file as it was exported and documented separately.
+* Added `@md` and removed `@order` from `incidence_rate.R`. Modified examples accordingly.
 * Removed hyperlink from `prop_schouten` function documentation.
 
 ### Miscellaneous
@@ -149,8 +131,7 @@
 * Deprecated `h_set_nest_theme()` in favor of `nestcolor::theme_nest()`.
 * Removed deprecated `mmrm` functions: `fit_mmrm`, `g_mmrm_diagnostic`, `g_mmrm_lsmeans`, `as.rtable.mmrm`, `h_mmrm_fixed`,
   `h_mmrm_cov`, `h_mmrm_diagnostic`, `tidy.mmrm`, `s_mmrm_lsmeans`, `s_mmrm_lsmeans_single`, `summarize_lsmeans`.
-* Changed function names `arm` to `study_arm` and `extract` to `extract_by_name`.
-
+* Renamed functions `arm` to `study_arm` and `extract` to `extract_by_name`.
 
 # tern 0.7.8
 
@@ -173,7 +154,7 @@
    tests, examples, and vignettes when present for the following functions:
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal`
    - (utils functions) `make_names`, `month2day`, `day2month`
-     `empty_vector_if_na`, `combine_vectors`, `aesi_label`,
+     `empty_vector_if_na`, `aesi_label`,
      `n_available`, `format_xx`, `arm`.
    - `count_values_funs`, `prop_difference`, `combine_counts`.
    - (chain functions) `s_count_abnormal`, `a_count_abnormal`.

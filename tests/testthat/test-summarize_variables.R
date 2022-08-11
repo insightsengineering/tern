@@ -8,7 +8,8 @@ testthat::test_that("control_summarize_vars works with customized parameters", {
   expected <- list(
     conf_level = 0.9,
     quantiles = c(0.1, 0.9),
-    quantile_type = 2
+    quantile_type = 2,
+    test_mean = 0
   )
   testthat::expect_identical(result, expected)
 })
@@ -33,6 +34,7 @@ testthat::test_that("s_summary return NA for x length 0L", {
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = NA_real_), "Mean p-value (H0: mean = 0)"),
     median = c(median = NA_real_),
     mad = c(mad = NA_real_),
     median_ci = formatters::with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
@@ -65,6 +67,7 @@ testthat::test_that("s_summary handles NA", {
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = NA_real_), "Mean p-value (H0: mean = 0)"),
     median = c(median = 1),
     mad = c(mad = 0),
     median_ci = formatters::with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
@@ -93,6 +96,7 @@ testthat::test_that("s_summary handles NA", {
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = NA_real_), "Mean p-value (H0: mean = 0)"),
     median = c(median = NA_real_),
     mad = c(mad = NA_real_),
     median_ci = formatters::with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
@@ -123,6 +127,7 @@ testthat::test_that("s_summary returns right results for n = 2", {
     mean_ci = formatters::with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = 1, mean_sei_upr = 2), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = 0.7928932, mean_sdi_upr = 2.2071068), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = 0.2048328), "Mean p-value (H0: mean = 0)"),
     median = c(median = 1.5),
     mad = c(mad = 0),
     median_ci = formatters::with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
@@ -156,6 +161,7 @@ testthat::test_that("s_summary returns right results for n = 8", {
     mean_ci = formatters::with_label(c(mean_ci_lwr = 3.318768, mean_ci_upr = 8.681232), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = 4.866107, mean_sei_upr = 7.133893), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = 2.792865, mean_sdi_upr = 9.207135), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = 0.001133783), "Mean p-value (H0: mean = 0)"),
     median = c(median = 6.5),
     mad = c(mad = 0),
     median_ci = formatters::with_label(c(median_ci_lwr = 1, median_ci_upr = 10), "Median 95% CI"),
