@@ -113,14 +113,14 @@ prop_diff_wald <- function(rsp,
     checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
 
     tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
+    # x1 and n1 are non-reference groups.
     DescTools_Binom(
-      tbl[1], sum(tbl[1], tbl[3]),
-      tbl[2], sum(tbl[2], tbl[4]),
+      x1 = tbl[2], n1 = sum(tbl[2], tbl[4]),
+      x2 = tbl[1], n2 = sum(tbl[1], tbl[3]),
       conf.level = conf_level,
       method = mthd
     )
   }
-
   list(
     "diff" = unname(diff_ci[, "est"]),
     "diff_ci" = unname(diff_ci[, c("lwr.ci", "upr.ci")])
@@ -149,9 +149,10 @@ prop_diff_ha <- function(rsp,
   check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
 
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
+  # x1 and n1 are non-reference groups.
   ci <- DescTools_Binom(
-    x1 = tbl[1], n1 = sum(tbl[1], tbl[3]),
-    x2 = tbl[2], n2 = sum(tbl[2], tbl[4]),
+    x1 = tbl[2], n1 = sum(tbl[2], tbl[4]),
+    x2 = tbl[1], n2 = sum(tbl[1], tbl[3]),
     conf.level = conf_level,
     method = "ha"
   )
@@ -196,8 +197,9 @@ prop_diff_nc <- function(rsp,
   diff_p <- unname(diff(p_grp))
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
   ci <- DescTools_Binom(
-    x1 = tbl[1], n1 = sum(tbl[1], tbl[3]),
-    x2 = tbl[2], n2 = sum(tbl[2], tbl[4]),
+    # x1 and n1 are non-reference groups.
+    x1 = tbl[2], n1 = sum(tbl[2], tbl[4]),
+    x2 = tbl[1], n2 = sum(tbl[1], tbl[3]),
     conf.level = conf_level,
     method = mthd
   )
