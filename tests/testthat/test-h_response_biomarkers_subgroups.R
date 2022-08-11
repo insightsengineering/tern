@@ -17,7 +17,7 @@ preprocess_adrs <- function(adrs) {
   )
 }
 
-adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 
 # h_rsp_to_logistic_variables ----
 
@@ -56,7 +56,7 @@ testthat::test_that("h_logistic_mult_cont_df works as expected", {
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(400L, 400L),
     n_rsp = c(336L, 336L),
     prop = c(0.84, 0.84),
@@ -85,7 +85,7 @@ testthat::test_that("h_logistic_mult_cont_df returns missing values if data is e
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(0L, 0L),
     n_rsp = c(0L, 0L),
     prop = c(NA, NA),
@@ -115,7 +115,7 @@ testthat::test_that("h_logistic_mult_cont_df also works with response not being 
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(400L, 400L),
     n_rsp = c(336L, 336L),
     prop = c(0.84, 0.84),

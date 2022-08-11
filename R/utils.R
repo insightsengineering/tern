@@ -235,12 +235,9 @@ empty_vector_if_na <- function(x) {
 #' @return A `list` where each element combines corresponding elements of `x` and `y`.
 #'
 #' @examples
-#' # Internal function - combine_vectors
-#' \dontrun{
 #' combine_vectors(1:3, 4:6)
-#' }
 #'
-#' @keywords internal
+#' @export
 combine_vectors <- function(x, y) {
   checkmate::assert_vector(x)
   checkmate::assert_vector(y, len = length(x))
