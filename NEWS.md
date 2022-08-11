@@ -152,7 +152,7 @@
    tests, examples, and vignettes when present for the following functions:
    - (helper functions) `h_format_row`, `h_map_for_count_abnormal`
    - (utils functions) `make_names`, `month2day`, `day2month`
-     `empty_vector_if_na`, `combine_vectors`, `aesi_label`,
+     `empty_vector_if_na`, `aesi_label`,
      `n_available`, `format_xx`, `arm`.
    - `count_values_funs`, `prop_difference`, `combine_counts`.
    - (chain functions) `s_count_abnormal`, `a_count_abnormal`.

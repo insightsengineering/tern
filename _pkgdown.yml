@@ -237,6 +237,7 @@ reference:
       - as.rtable
       - as.rtable.data.frame
       - combine_groups
+      - combine_vectors
       - h_col_counts
       - h_col_indices
       - h_content_first_row
