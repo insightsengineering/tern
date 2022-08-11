@@ -237,8 +237,8 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
 })
 
 testthat::test_that("count_patients_with_flags works with label row specified", {
-  adsl <- scda::synthetic_cdisc_data("rcd_2021_07_07")$adsl
-  adae <- scda::synthetic_cdisc_data("rcd_2021_07_07")$adae
+  adsl <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adsl
+  adae <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adae
 
   # Create custom flags:
   adae <- adae %>%
