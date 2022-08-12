@@ -166,6 +166,7 @@ reference:
       - h_pkparam_sort
       - h_proportion_df
       - h_proportion_subgroups_df
+      - h_recycle
       - h_response_biomarkers_subgroups
       - h_rsp_to_logistic_variables
       - h_simple_term_labels
@@ -193,7 +194,8 @@ reference:
       - prop_diff_ha
       - prop_diff_nc
       - prop_diff_wald
-      - desctool_binom
+      - desctools_binom
+      - desctools_binomci
 
   - title: Model Specific Functions
     desc: These functions help with fitting or extracting results from specific

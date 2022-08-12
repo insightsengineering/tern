@@ -7,7 +7,7 @@
 #' @param grp (`factor`)\cr
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
-#' @name desctool_binom
+#' @name desctools_binom
 
 NULL
 
@@ -30,7 +30,7 @@ h_recycle <- function(...) {
 #' @return A named list of 3 values:
 #'   - `est`: estimate of proportion difference.
 #'   - `lwrci`: estimate of lower end of the confidence interval
-#'   - `upci`: estiamte of upper end of the confidence interval.
+#'   - `upci`: estimate of upper end of the confidence interval.
 #' @examples
 #' # Internal function -
 #' \dontrun{
@@ -39,11 +39,11 @@ h_recycle <- function(...) {
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 #' grp <- factor(c(rep("A", 10), rep("B", 10)))
 #' tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-#' DescTools_Binom(tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]), conf.level = 0.90, method = "waldcc")
+#' desctools_binom(tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]), conf.level = 0.90, method = "waldcc")
 #' }
 #'
 #' @keywords internal
-DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
+desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
                               "two.sided",
                               "left", "right"
                             ), method = c(
@@ -98,11 +98,11 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
         CI.upper <- NA
       },
       score = {
-        w1 <- DescTools_BinomCI(
+        w1 <- desctools_binomci(
           x = x1, n = n1, conf.level = conf.level,
           method = "wilson"
         )
-        w2 <- DescTools_BinomCI(
+        w2 <- desctools_binomci(
           x = x2, n = n2, conf.level = conf.level,
           method = "wilson"
         )
@@ -116,11 +116,11 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
           l2 * (1 - l2) / n2)
       },
       scorecc = {
-        w1 <- DescTools_BinomCI(
+        w1 <- desctools_binomci(
           x = x1, n = n1, conf.level = conf.level,
           method = "wilsoncc"
         )
-        w2 <- DescTools_BinomCI(
+        w2 <- desctools_binomci(
           x = x2, n = n2, conf.level = conf.level,
           method = "wilsoncc"
         )
@@ -354,7 +354,7 @@ DescTools_Binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
 #'   - `upci`:  upper end of the confidence interval.
 #'
 #' @keywords internal
-DescTools_BinomCI <- function(x, n, conf.level = 0.95, sides = c(
+desctools_binomci <- function(x, n, conf.level = 0.95, sides = c(
                                 "two.sided", "left",
                                 "right"
                               ), method = c(

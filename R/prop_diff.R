@@ -114,7 +114,7 @@ prop_diff_wald <- function(rsp,
 
     tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
     # x1 and n1 are non-reference groups.
-    DescTools_Binom(
+    desctools_binom(
       x1 = tbl[2], n1 = sum(tbl[2], tbl[4]),
       x2 = tbl[1], n2 = sum(tbl[1], tbl[3]),
       conf.level = conf_level,
@@ -150,7 +150,7 @@ prop_diff_ha <- function(rsp,
 
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
   # x1 and n1 are non-reference groups.
-  ci <- DescTools_Binom(
+  ci <- desctools_binom(
     x1 = tbl[2], n1 = sum(tbl[2], tbl[4]),
     x2 = tbl[1], n2 = sum(tbl[1], tbl[3]),
     conf.level = conf_level,
@@ -196,7 +196,7 @@ prop_diff_nc <- function(rsp,
   p_grp <- tapply(rsp, grp, mean)
   diff_p <- unname(diff(p_grp))
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-  ci <- DescTools_Binom(
+  ci <- desctools_binom(
     # x1 and n1 are non-reference groups.
     x1 = tbl[2], n1 = sum(tbl[2], tbl[4]),
     x2 = tbl[1], n2 = sum(tbl[1], tbl[3]),
