@@ -15,8 +15,8 @@ desctools_binom(
   n2,
   conf.level = 0.95,
   sides = c("two.sided", "left", "right"),
-  method = c("ac", "wald", "waldcc", "score", "scorecc", "mn", "mee", "blj", "ha",
-    "hal", "jp")
+  method = c("ac", "wald", "waldcc", "score", "scorecc", "mn", "mee", "blj", "ha", "hal",
+    "jp")
 )
 
 desctools_binomci(
@@ -24,9 +24,9 @@ desctools_binomci(
   n,
   conf.level = 0.95,
   sides = c("two.sided", "left", "right"),
-  method = c("wilson", "wald", "waldcc", "agresti-coull", "jeffreys",
-    "modified wilson", "wilsoncc", "modified jeffreys", "clopper-pearson", "arcsine",
-    "logit", "witting", "pratt", "midp", "lik", "blaker"),
+  method = c("wilson", "wald", "waldcc", "agresti-coull", "jeffreys", "modified wilson",
+    "wilsoncc", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting",
+    "pratt", "midp", "lik", "blaker"),
   rand = 123,
   tol = 1e-05
 )
@@ -69,13 +69,13 @@ Several confidence intervals for the difference between proportions.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_recycle}: This function recycles all supplied elements to the maximal dimension.
+\item \code{h_recycle()}: This function recycles all supplied elements to the maximal dimension.
 
-\item \code{desctools_binom}: Several Confidence Intervals for the difference between proportions.
+\item \code{desctools_binom()}: Several Confidence Intervals for the difference between proportions.
 
-\item \code{desctools_binomci}: Compute confidence intervals for binomial proportions.
+\item \code{desctools_binomci()}: Compute confidence intervals for binomial proportions.
+
 }}
-
 \examples{
 # Internal function -
 \dontrun{
