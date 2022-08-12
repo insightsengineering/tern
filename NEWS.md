@@ -1,6 +1,7 @@
 # tern 0.7.8.9025.10
 
 ### Enhancements 
+* Added `DescTools` `BinomDiffCI` function within `tern`.
 * Exported `draw_grob` function.
 * Added new parameter to `summarize_logistic` to specify which pivoted value should be removed during analysis.
 * Updated `s_coxph_pairwise` to generate log-rank p-value using original log-rank test instead 
@@ -36,6 +37,7 @@
 * Renamed `test-assertthat.R` to `test-utils_checkmate.R`.
 
 ### Bug Fixes
+* Identified bug in `prop_diff` functions. Coding of responses have been corrected (TRUE is a success).
 * Fixed error coming from comparing factors vector to characters vector.
 * Fixed empty vector test for `cut_quantile_bins`.
 * Fixed bug related to error flag for empty strings coming from `rtables` split
