@@ -205,6 +205,9 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/decorate_grob_set.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/desctools_binom.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/df_explicit_na.html</loc>
   </url>
   <url>
@@ -233,6 +236,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/f_conf_level.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/f_pval.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/fct_collapse_only.html</loc>
@@ -455,6 +461,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/stat_mean_ci.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/stat_mean_pval.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/stat_median_ci.html</loc>

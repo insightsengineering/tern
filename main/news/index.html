@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.8.9024</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.9</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -60,82 +54,63 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.7.8.9024" id="tern-0789024">tern 0.7.8.9024<a class="anchor" aria-label="anchor" href="#tern-0789024"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.7.9" id="tern-079">tern 0.7.9<a class="anchor" aria-label="anchor" href="#tern-079"></a></h2>
 <div class="section level4">
-<h4 id="enhancements-0-7-8-9024">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-8-9024"></a></h4>
-<ul><li>exported <code>draw_grob</code> function (needed by <code>enableRF</code>).</li>
-<li>
-<code><a href="https://mllg.github.io/checkmate/reference/assert.html" class="external-link">checkmate::assert()</a></code>, <code><a href="https://mllg.github.io/checkmate/reference/checkTRUE.html" class="external-link">checkmate::assert_true()</a></code>, and <code><a href="https://mllg.github.io/checkmate/reference/checkFALSE.html" class="external-link">checkmate::assert_false()</a></code> use is kept to a minimum due to its ambiguous messages.</li>
-<li>
-<code><a href="https://mllg.github.io/checkmate/reference/checkSetEqual.html" class="external-link">checkmate::assert_set_equal()</a></code> and <code><a href="https://mllg.github.io/checkmate/reference/checkInt.html" class="external-link">checkmate::assert_int()</a></code> have been changed when checking for the length of vectors, either by checking the right input and its length or by using <code><a href="https://mllg.github.io/checkmate/reference/checkVector.html" class="external-link">checkmate::assert_vector()</a></code>.</li>
-<li>Removed <code>assert_equal_length</code> as comparing lengths of multiple vectors can be done without the need of a custom function.</li>
-<li>Implemented <code>nestcolor</code> in all examples with slight refactoring to <code>g_km</code>, <code>g_ipp</code>, <code>g_waterfall</code>, <code>g_step</code>, <code>g_lineplot</code>, and <code>g_forest</code>.</li>
+<h4 id="enhancements-0-7-9">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-9"></a></h4>
+<ul><li>Added <code>DescTools</code> <code>BinomDiffCI</code> function within <code>tern</code>.</li>
+<li>Exported <code>draw_grob</code> function.</li>
+<li>Added new parameter to <code>summarize_logistic</code> to specify which pivoted value should be removed during analysis.</li>
+<li>Updated <code>s_coxph_pairwise</code> to generate log-rank p-value using original log-rank test instead of Cox Proportional-Hazards Model.</li>
+<li>Added more verbose warnings from <code>as_factor_keep_attributes</code> for better <code>test_examples()</code> readability.</li>
+<li>Implemented <code>nestcolor</code> in all examples, with slight refactoring to <code>g_km</code>, <code>g_ipp</code>, <code>g_waterfall</code>, <code>g_step</code>, <code>g_lineplot</code>, and <code>g_forest</code>.</li>
+<li>Added <code>stat_mean_pval</code> function to calculate the p-value of the mean as a new summary statistic.</li>
+<li>New statistic <code>mean_se</code> (mean with standard error) for <code><a href="../reference/summarize_variables.html">summarize_variables()</a></code> and related functions.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="migration-from-assertthat-to-checkmate-0-7-8-9024">Migration from <code>assertthat</code> to <code>checkmate</code>
-<a class="anchor" aria-label="anchor" href="#migration-from-assertthat-to-checkmate-0-7-8-9024"></a></h4>
-<ul><li>complete substitution of <code>assertthat</code> calls with <code>checkmate</code>.</li>
-<li>
-<code>assert_df_with_factors</code>, <code>assert_equal_length</code>, and <code>assert_proportion_value</code> made internals.</li>
-<li>removed <code>has_tabletree_colnames</code>.</li>
-<li>removed <code>is_quantiles_vector</code> and <code>all_elements_in_ref</code> (substituted by <code>checkmate::subset()</code>).</li>
-<li>removed <code>is_proportion_vector</code> and adapted <code>is_proportion</code> to <code>checkmate</code> style with <code>assert_proportion_value</code>.</li>
-<li>
-<code>is_equal_length</code> is now <code>assert_equal_length</code>.</li>
-<li>removed <code>is_df_with_no_na_level</code> by adding parameters to <code>assert_df_with_variables</code>.</li>
-<li>removed <code>is_df_with_nlevels_factor</code> by adding parameters to <code>assert_df_with_factors</code>.</li>
-<li>
-<code>is_character_or_factor</code> replaced by <code><a href="https://mllg.github.io/checkmate/reference/checkMultiClass.html" class="external-link">checkmate::assert_multi_class()</a></code>.</li>
-<li>
-<code>is_nonnegative_count</code> removed and substituted by <code><a href="https://mllg.github.io/checkmate/reference/checkCount.html" class="external-link">checkmate::assert_count()</a></code>.</li>
-<li>
-<code>assert_list_of_variables</code> instead of <code>is_variables</code> (made internal).</li>
-<li>
-<code>assert_df_with_variables</code> instead of <code>is_df_with_variables</code> (made internal).</li>
-<li>
-<code>assert_df_with_factors</code> instead of <code>is_df_with_factors</code> (made internal).</li>
-<li>
-<code>assert_valid_factor</code> instead of <code>is_valid_factor</code>.</li>
-<li>removed <code>is_valid_character</code>.</li>
-<li>renamed <code>assertthat.R</code> into a more appropriate <code>utils_checkmate.R</code>.</li>
-<li>renamed <code>test-assertthat.R</code> into <code>test-utils_checkmate.R</code>.</li>
+<h4 id="migration-from-assertthat-to-checkmate-0-7-9">Migration from <code>assertthat</code> to <code>checkmate</code>
+<a class="anchor" aria-label="anchor" href="#migration-from-assertthat-to-checkmate-0-7-9"></a></h4>
+<ul><li>Substituted all <code>assertthat</code> calls with <code>checkmate</code>.</li>
+<li>Implemented <code><a href="https://mllg.github.io/checkmate/reference/checkVector.html" class="external-link">checkmate::assert_vector()</a></code>, <code><a href="https://mllg.github.io/checkmate/reference/checkSetEqual.html" class="external-link">checkmate::assert_set_equal()</a></code>, and <code><a href="https://mllg.github.io/checkmate/reference/checkInt.html" class="external-link">checkmate::assert_int()</a></code> to validate vector type, length, and input.</li>
+<li>Made <code>assert_df_with_factors</code> and <code>assert_proportion_value</code> internal functions.</li>
+<li>Removed assertion functions <code>all_elements_in_ref</code>, <code>is_df_with_nlevels_factor</code>, <code>is_df_with_no_na_level</code>, <code>is_proportion</code>, <code>is_proportion_vector</code>, <code>is_quantiles_vector</code>, <code>is_valid_character</code>, <code>assert_character_or_factor</code>, <code>assert_equal_length</code> and <code>has_tabletree_colnames</code>.</li>
+<li>Renamed <code>is_proportion</code> to <code>assert_proportion_value</code>.</li>
+<li>Renamed <code>is_equal_length</code> to <code>assert_equal_length</code>.</li>
+<li>Refactored <code>assert_df_with_variables</code> to replace <code>is_df_with_no_na_level</code>.</li>
+<li>Refactored <code>assert_df_with_factors</code> to replace <code>is_df_with_nlevels_factor</code>.</li>
+<li>Replaced usage of <code>is_quantiles_vector</code> and <code>all_elements_in_ref</code> with <code>checkmate::subset()</code>.</li>
+<li>Replaced <code>is_character_or_factor</code> with <code><a href="https://mllg.github.io/checkmate/reference/checkMultiClass.html" class="external-link">checkmate::assert_multi_class()</a></code>.</li>
+<li>Replaced <code>is_nonnegative_count</code> with <code><a href="https://mllg.github.io/checkmate/reference/checkCount.html" class="external-link">checkmate::assert_count()</a></code>.</li>
+<li>Replaced <code>is_variables</code> with <code>assert_list_of_variables</code>.</li>
+<li>Replaced <code>is_df_with_variables</code> with <code>assert_df_with_variables</code>.</li>
+<li>Replaced <code>is_df_with_factors</code> with <code>assert_df_with_factors</code>.</li>
+<li>Replaced <code>is_valid_factor</code> with <code>assert_valid_factor</code>.</li>
+<li>Renamed <code>assertthat.R</code> to <code>utils_checkmate.R</code>.</li>
+<li>Renamed <code>test-assertthat.R</code> to <code>test-utils_checkmate.R</code>.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="fix-0-7-8-9024">Fix<a class="anchor" aria-label="anchor" href="#fix-0-7-8-9024"></a></h4>
-<ul><li>Fixing error coming from comparing factors vector to characters vector.</li>
-<li>
-<code>fct_collapse_only</code>, <code>fct_collapse_only</code>, and <code>month2day</code>/<code>day2month</code> reverted to export.</li>
-<li>Fixed test for <code>cut_quantile_bins</code> with empty vector. This is not a good standard input.</li>
-<li>Warnings from <code>as_factor_keep_attributes</code> are now in verbose for better <code>test_examples()</code> readability</li>
-<li>Renaming <code>rtables.R</code> as confusing file name due to the package dependence.</li>
-<li>Renamed files to respect the main documented function and fixed file in <code>R/</code> folder that does not comply with the standard (starting with the word test).</li>
-<li>Extracted <code>cox_regression_inter</code> from <code>cox_regression</code>.</li>
-<li>
-<code>d_</code> and <code>h_</code> functions are all reverted or confirmed as export functions to allow future users to utilize their added flexibility.</li>
-<li>Fixing bug related to error flag for empty strings coming from <code>rtables</code> split functions. Creation of <code>replace_emptys_with_na</code> to replace empty strings with custom strings across data.frame (this can be merged with <code>df_explicit_na</code>).</li>
-<li>Add of new parameter for <code>summarize_logistic</code> that specify which pivoted value is meant to be removed during the analysis.</li>
-<li>Renamed <code>estimate_incidence_rate.R</code> into <code>incidence_rate.R</code> to match the documentation grouping name.</li>
-<li>Extracted <code>control_incidence_rate</code> into a separated file as it was exported and documented separately.</li>
-<li>Added <code>@md</code> and removed <code>@order</code> from <code>incidence_rate.R</code>. The presented order is automatically the final order in the documentation. There is no specific need to add this tag. Modified examples accordingly.</li>
-<li>Fixed warnings occurring in example tests</li>
-<li>Removed <code>tern:::</code> prefix and added <code>dontrun</code> to internal function examples.</li>
-<li>Enhanced <code>s_coxph_pairwise</code> with generating log-rank p value by original log-rank test, instead of Cox Proportional-Hazards Model.</li>
-<li>Fixed bug in <code>s_ancova</code>, avoiding error when the first level of the arm factor is not the control arm.</li>
+<h4 id="bug-fixes-0-7-9">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-7-9"></a></h4>
+<ul><li>Identified bug in <code>prop_diff</code> functions. Coding of responses have been corrected (TRUE is a success).</li>
+<li>Fixed error coming from comparing factors vector to characters vector.</li>
+<li>Fixed empty vector test for <code>cut_quantile_bins</code>.</li>
+<li>Fixed bug related to error flag for empty strings coming from <code>rtables</code> split functions. Creation of <code>replace_emptys_with_na</code> to replace empty strings with custom strings across data.frame (this can be merged with <code>df_explicit_na</code>).</li>
+<li>Fixed warnings occurring in example tests.</li>
+<li>Fixed internal function examples errors by removing <code>tern:::</code> prefix and added <code>dontrun</code> to internal function examples.</li>
+<li>Fixed bug in <code>s_ancova</code> causing an error when the first level of the arm factor is not the control arm.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="documentation-and-namespace-polishing-0-7-8-9024">Documentation and NAMESPACE polishing<a class="anchor" aria-label="anchor" href="#documentation-and-namespace-polishing-0-7-8-9024"></a></h4>
-<ul><li>Added stable badge for:
+<h4 id="documentation-and-namespace-polishing-0-7-9">Documentation and NAMESPACE Polishing<a class="anchor" aria-label="anchor" href="#documentation-and-namespace-polishing-0-7-9"></a></h4>
+<ul><li>Added stable badges for:
 <ul><li>
 <code>count_abnormal_by_marked</code> (reference to <code>abnormal_by_marked</code>), <code>count_abnormal_lab_worsen_by_baseline</code> and <code>h_adlb_worsen</code> (reference to <code>abnormal_by_worst_grade_worsen_from_baseline</code>), <code>count_abnormal_by_worst_grade</code> (reference to <code>abnormal_by_worst_grade</code>), <code>to_string_matrix</code>, <code>tidy.summary.coxph</code>, <code>tidy.step</code>, <code>surv_timepoint</code>, (reference to <code>survival_timepoint</code>), <code>surv_time</code> (reference to <code>survival_time</code>), <code>coxph_pairwise</code> (reference to <code>survival_coxph_pairwise</code>), <code>extract_survival_subgroups</code> and <code>tabulate_survival_subgroups</code> (reference to <code>survival_duration_subgroups</code>), <code>extract_survival_biomarkers</code> and <code>tabulate_survival_biomarkers</code> (reference to <code>survival_biomarkers_subgroups</code>), <code>control_summarize_vars</code>, <code>s_summary</code> and <code>a_summary</code> (reference to <code>summarize_variables</code>) and kept the S3 method tree.</li>
 <li>
 <code>summarize_patients_exposure_in_cols</code>, <code>summarize_num_patients</code> with <code>s_num_patients</code>, <code>s_num_patients_content</code>, <code>summarize_num_patients</code>.</li>
 <li>
-<code>count_cumulative</code>, <code>count_missed_doses</code>, <code>count_patients_events_in_cols</code>, <code>summarize_colvars</code>, <code>summarize_change</code>, <code>summarize_ancova</code>,<code>as.rtable</code>, <code>color_palette</code>, <code>add_footnotes</code> (note, this function is defined in two different files: footnotes and g_forest).</li>
+<code>count_cumulative</code>, <code>count_missed_doses</code>, <code>count_patients_events_in_cols</code>, <code>summarize_colvars</code>, <code>summarize_change</code>, <code>summarize_ancova</code>,<code>as.rtable</code>, <code>color_palette</code>, <code>add_footnotes</code>.</li>
 <li>(statistical function controls) <code>control_coxreg</code>, <code>control_coxph</code>, <code>control_incidence_rate</code>, <code>control_lineplot_vars</code>, <code>control_surv_time</code>, <code>control_surv_timepoint</code>, <code>control_logisitic</code>, <code>control_step</code>.</li>
 <li>
-<code>stat_mean_ci</code>, <code>stat_median_ci</code>, <code>split_cols_by_groups</code>, <code>explicit_na</code>, <code>sas_na</code>, <code>extract_rsp_subgroups</code>, <code>tabulate_rsp_subgroups</code>, <code>extract_rsp_biomarkers</code>, <code>tabulate_rsp_biomarkers</code>, <code>keep_rows</code>, <code>keep_content_rows</code>, <code>has_count_in_any_col</code>, <code>has_fraction_in_cols</code>, <code>has_fraction_in_any_col</code>, <code>has_fractions_difference</code>, <code>test_proportion_diff</code>, <code>pairwise</code>, <code>logistic_regression</code>, <code>estimate_incidence_rate</code>, <code>control_incidence_rate</code> (another file), reference to <code>incidence_rate</code>, <code>cut_quantile_bins</code>, <code>d_pkparam</code> (note: d function but required by tern_ex file), <code>estimate_multinomial_rsp</code>, <code>decorate_grob_set</code>, <code>extreme_format</code>, <code>fit_rsp_step</code>, <code>fit_survival_step</code>, <code>footnotes</code>, <code>footnotes-set</code> (note: this function is defined twice in the footnotes file), <code>format_count_fraction</code>, <code>format_fraction_threshold</code>, <code>formatting_functions</code>, <code>format_fraction</code>, <code>combination_function</code> (S4 method), <code>compare_variables</code> (S3 method), <code>h_stack_by_baskets</code>, <code>h_pkparam_sort</code>, <code>h_adsl_adlb_merge_using_worst_flag</code>, <code>kaplan_meier</code>.</li>
+<code>stat_mean_ci</code>, <code>stat_median_ci</code>, <code>split_cols_by_groups</code>, <code>explicit_na</code>, <code>sas_na</code>, <code>extract_rsp_subgroups</code>, <code>tabulate_rsp_subgroups</code>, <code>extract_rsp_biomarkers</code>, <code>tabulate_rsp_biomarkers</code>, <code>keep_rows</code>, <code>keep_content_rows</code>, <code>has_count_in_any_col</code>, <code>has_fraction_in_cols</code>, <code>has_fraction_in_any_col</code>, <code>has_fractions_difference</code>, <code>test_proportion_diff</code>, <code>pairwise</code>, <code>logistic_regression</code>, <code>estimate_incidence_rate</code>, <code>control_incidence_rate</code> (reference to <code>incidence_rate</code>), <code>cut_quantile_bins</code>, <code>d_pkparam</code>, <code>estimate_multinomial_rsp</code>, <code>decorate_grob_set</code>, <code>extreme_format</code>, <code>fit_rsp_step</code>, <code>fit_survival_step</code>, <code>footnotes</code>, <code>footnotes-set</code>, <code>format_count_fraction</code>, <code>format_fraction_threshold</code>, <code>formatting_functions</code>, <code>format_fraction</code>, <code>combination_function</code> (S4 method), <code>compare_variables</code> (S3 method), <code>h_stack_by_baskets</code>, <code>h_pkparam_sort</code>, <code>h_adsl_adlb_merge_using_worst_flag</code>, <code>kaplan_meier</code>.</li>
 </ul></li>
-<li>Internal keywords added, export removed, <code>_pkgdown.yml</code> polished and <code>tern:::</code> for tests, examples, and vignettes when present for the following functions:
+<li>Internal keywords added, export removed, <code>_pkgdown.yml</code> updated, and <code>tern:::</code> added for tests/examples/vignettes where present for the following functions:
 <ul><li>(chain functions, reference to <code>abnormal_by_marked</code>) <code>s_count_abnormal_by_marked</code>, <code>a_count_abnormal_by_marked</code>.</li>
 <li>(chain functions, reference to <code>abnormal_by_worst_grade_worsen_from_baseline</code>) <code>a_count_abnormal_lab_worsen_by_baseline</code>, <code>h_worsen_counter</code> (same file), <code>s_count_abnormal_lab_worsen_by_baseline</code>.</li>
 <li>(chain functions, reference to <code>abnormal_by_worst_grade</code>) <code>s_count_abnormal_by_worst_grade</code>, <code>a_count_abnormal_by_worst_grade</code>.</li>
@@ -154,18 +129,26 @@
 <li>(reference to <code>h_step</code>) <code>h_step_window</code>, <code>h_step_trt_effect</code>, <code>h_step_survival_formula</code>, <code>h_step_survival_est</code>, <code>h_step_rsp_formula</code>, <code>h_step_rsp_est</code>.</li>
 <li>(reference to <code>h_response_biomarkers_subgroups</code>) <code>h_rsp_to_logistic_variables</code>, <code>h_logistic_mult_cont_df</code>, <code>h_tab_rsp_one_biomarker</code>.</li>
 <li>
-<code>summary_labels</code>, <code>summary_formats</code>, <code>s_count_patients_sum_exposure</code>, <code>a_change_from_baseline</code> <code>s_change_from_baseline</code>, <code>a_ancova</code>, <code>s_ancova</code>, <code>h_ancova</code>, <code>arrange_grobs</code>, <code>as_factor_keep_attributes</code>, <code>combine_levels</code>, <code>split_text_grob</code>, <code>groups_list_to_df</code>, <code>s_cox_multivariate</code>, <code>h_row_counts</code>, <code>h_row_fractions</code>, <code>h_col_counts</code>, <code>is_leaf_table</code>, <code>h_content_first_row</code>, <code>a_response_subgroups</code>, <code>range_noinf</code>, <code>has_count_in_cols</code>, <code>has_counts_difference</code>, <code>prop_chisq</code>, <code>prop_cmh</code>, <code>prop_schouten</code>, <code>prop_fisher</code>, <code>s_test_proportion_diff</code>, <code>a_test_proportion_diff</code>,<code>h_split_param</code>, <code>fct_collapse_only</code>, <code>fct_discard</code>, <code>fct_explicit_na_if</code>.</li>
+<code>summary_labels</code>, <code>summary_formats</code>, <code>s_count_patients_sum_exposure</code>, <code>a_change_from_baseline</code> <code>s_change_from_baseline</code>, <code>a_ancova</code>, <code>s_ancova</code>, <code>h_ancova</code>, <code>arrange_grobs</code>, <code>as_factor_keep_attributes</code>, <code>combine_levels</code>, <code>split_text_grob</code>, <code>groups_list_to_df</code>, <code>s_cox_multivariate</code>, <code>h_row_counts</code>, <code>h_row_fractions</code>, <code>h_col_counts</code>, <code>is_leaf_table</code>, <code>h_content_first_row</code>, <code>a_response_subgroups</code>, <code>range_noinf</code>, <code>has_count_in_cols</code>, <code>has_counts_difference</code>, <code>prop_chisq</code>, <code>prop_cmh</code>, <code>prop_schouten</code>, <code>prop_fisher</code>, <code>s_test_proportion_diff</code>, <code>a_test_proportion_diff</code>,<code>h_split_param</code>, <code>fct_discard</code>, <code>fct_explicit_na_if</code>.</li>
 </ul></li>
-<li>Deprecated badge added to <code>g_mmrm</code>
-</li>
-<li>Removed <code>tern:::</code> prefix from internal function uses in tests</li>
+<li>Added deprecated badge to <code>g_mmrm</code>.</li>
+<li>Removed <code>tern:::</code> prefix from internal function uses in tests.</li>
+<li>Reverted <code>fct_collapse_only</code>, <code>month2day</code>, and <code>day2month</code> to export.</li>
+<li>Reverted all <code>d_</code> and <code>h_</code> functions to export, allowing users to utilize their flexibility.</li>
+<li>Renamed <code>rtables.R</code> as file name is confusing due to the package dependence.</li>
+<li>Renamed files to reflect main documented function and fixed <code>R</code> files starting with the word test not complying with the standard.</li>
+<li>Extracted <code>cox_regression_inter</code> into a separate file from <code>cox_regression</code>.</li>
+<li>Renamed <code>estimate_incidence_rate.R</code> to <code>incidence_rate.R</code> to match the documentation grouping name.</li>
+<li>Extracted <code>control_incidence_rate</code> into a separate file as it was exported and documented separately.</li>
+<li>Added <code>@md</code> and removed <code>@order</code> from <code>incidence_rate.R</code>. Modified examples accordingly.</li>
+<li>Removed hyperlink from <code>prop_schouten</code> function documentation.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-7-8-9024">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-8-9024"></a></h4>
+<h4 id="miscellaneous-0-7-9">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-9"></a></h4>
 <ul><li>Deprecated the <code>color_palette</code> function with <code><a href="https://rdrr.io/pkg/nestcolor/man/color_palette.html" class="external-link">nestcolor::color_palette</a></code> and removed <code>color_palette_core</code>.</li>
 <li>Deprecated <code><a href="../reference/individual_patient_plot.html">h_set_nest_theme()</a></code> in favor of <code><a href="https://rdrr.io/pkg/nestcolor/man/theme_nest.html" class="external-link">nestcolor::theme_nest()</a></code>.</li>
 <li>Removed deprecated <code>mmrm</code> functions: <code>fit_mmrm</code>, <code>g_mmrm_diagnostic</code>, <code>g_mmrm_lsmeans</code>, <code>as.rtable.mmrm</code>, <code>h_mmrm_fixed</code>, <code>h_mmrm_cov</code>, <code>h_mmrm_diagnostic</code>, <code>tidy.mmrm</code>, <code>s_mmrm_lsmeans</code>, <code>s_mmrm_lsmeans_single</code>, <code>summarize_lsmeans</code>.</li>
-<li>Changed function names <code>arm</code> to <code>study_arm</code> and <code>extract</code> to <code>extract_by_name</code>.</li>
+<li>Renamed functions <code>arm</code> to <code>study_arm</code> and <code>extract</code> to <code>extract_by_name</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -183,7 +166,7 @@
 <li>Internal keywords added, export removed, <code>_pkgdown.yml</code> polished and <code>tern:::</code> for tests, examples, and vignettes when present for the following functions:
 <ul><li>(helper functions) <code>h_format_row</code>, <code>h_map_for_count_abnormal</code>
 </li>
-<li>(utils functions) <code>make_names</code>, <code>month2day</code>, <code>day2month</code> <code>empty_vector_if_na</code>, <code>combine_vectors</code>, <code>aesi_label</code>, <code>n_available</code>, <code>format_xx</code>, <code>arm</code>.</li>
+<li>(utils functions) <code>make_names</code>, <code>month2day</code>, <code>day2month</code> <code>empty_vector_if_na</code>, <code>aesi_label</code>, <code>n_available</code>, <code>format_xx</code>, <code>arm</code>.</li>
 <li>
 <code>count_values_funs</code>, <code>prop_difference</code>, <code>combine_counts</code>.</li>
 <li>(chain functions) <code>s_count_abnormal</code>, <code>a_count_abnormal</code>.</li>
