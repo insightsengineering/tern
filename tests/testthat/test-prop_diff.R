@@ -8,7 +8,7 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
   # according to SAS.
   expected <- list(
     diff = 0.25,
-    diff_ci = c(-0.9195, 1)
+    diff_ci = c(-0.9195, 1.0000)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
 
@@ -45,13 +45,65 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
-  result <- testthat::expect_warning(
-    prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.6)
-  )
+  result <- prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.6)
+
   # according to SAS.
   expected <- list(
     diff = 0,
     diff_ci = c(-0.3616, 0.3616)
+  )
+  testthat::expect_equal(result, expected, tol = 0.0001)
+})
+
+testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: with correction)", {
+
+  # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
+  rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
+  grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+
+  result <- prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = TRUE)
+
+  expected <- list(
+    diff = 0.25,
+    diff_ci = c(-0.8069, 1.0000)
+  )
+  testthat::expect_equal(result, expected, tol = 0.0001)
+
+  # Edge case: Same proportion of response in A and B.
+  rsp <- c(TRUE, FALSE, TRUE, FALSE)
+  grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
+  result <- prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.6, correct = TRUE)
+
+  expected <- list(
+    diff = 0,
+    diff_ci = c(-0.9208, 0.9208)
+  )
+  testthat::expect_equal(result, expected, tol = 0.0001)
+})
+
+testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: without correction)", {
+
+  # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
+  rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
+  grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+
+  result <- suppressWarnings(
+    prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = FALSE)
+  )
+  expected <- list(
+    diff = 0.25,
+    diff_ci = c(-0.4319, 0.9319)
+  )
+  testthat::expect_equal(result, expected, tol = 0.0001)
+
+  # Edge case: Same proportion of response in A and B.
+  rsp <- c(TRUE, FALSE, TRUE, FALSE)
+  grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
+  result <- prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.6, correct = FALSE)
+
+  expected <- list(
+    diff = 0,
+    diff_ci = c(-0.4208, 0.4208)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
 })

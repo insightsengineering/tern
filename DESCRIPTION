@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.7.8.9025
-Date: 2022-06-09
+Version: 0.7.9
+Date: 2022-08-16
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -39,7 +39,7 @@ Imports:
     lifecycle,
     magrittr,
     methods,
-    nestcolor,
+    nestcolor (>= 0.0.1),
     rlang,
     scales,
     stats,
@@ -51,8 +51,8 @@ Suggests:
     knitr,
     lattice,
     rmarkdown,
-    scda (>= 0.1.3),
-    scda.2022 (>= 0.1.1),
+    scda (>= 0.1.4),
+    scda.2022 (>= 0.1.2),
     stringr,
     testthat (>= 2.0)
 VignetteBuilder:
@@ -96,6 +96,7 @@ Collate:
     'd_pkparam.R'
     'decorate_grob.R'
     'deprec-nest_colors.R'
+    'desctools_binom_diff.R'
     'df_explicit_na.R'
     'estimate_multinomial_rsp.R'
     'estimate_proportion.R'

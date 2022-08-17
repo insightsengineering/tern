@@ -10,18 +10,21 @@
 #' @param quantile_type (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 #'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
+#' @param test_mean (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return A list of components with the same names as the arguments.
 #' @export
 #'
 control_summarize_vars <- function(conf_level = 0.95,
                                    quantiles = c(0.25, 0.75),
-                                   quantile_type = 2) {
+                                   quantile_type = 2,
+                                   test_mean = 0) {
   checkmate::assert_vector(quantiles, len = 2)
   checkmate::assert_int(quantile_type, lower = 1, upper = 9)
+  checkmate::assert_numeric(test_mean)
   nullo <- lapply(quantiles, assert_proportion_value)
   assert_proportion_value(conf_level)
-  list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
+  list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
 
 #' Format Function for Descriptive Statistics
@@ -51,9 +54,11 @@ summary_formats <- function(type = "numeric") {
       sd = "xx.x",
       se = "xx.x",
       mean_sd = "xx.x (xx.x)",
+      mean_se = "xx.x (xx.x)",
       mean_ci = "(xx.xx, xx.xx)",
       mean_sei = "(xx.xx, xx.xx)",
       mean_sdi = "(xx.xx, xx.xx)",
+      mean_pval = "xx.xx",
       median = "xx.x",
       mad = "xx.x",
       median_ci = "(xx.xx, xx.xx)",
@@ -83,6 +88,7 @@ summary_labels <- function() {
     sd = "SD",
     se = "SE",
     mean_sd = "Mean (SD)",
+    mean_se = "Mean (SE)",
     median = "Median",
     mad = "Median Absolute Deviation",
     iqr = "IQR",
@@ -142,6 +148,7 @@ s_summary <- function(x,
 #' * `quantiles`: numeric vector of length two to specify the quantiles.
 #' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 #'   See more about `type` in [stats::quantile()].
+#' * `test_mean`: (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.
@@ -150,9 +157,11 @@ s_summary <- function(x,
 #' - `sd`: the [stats::sd()] of `x`.
 #' - `se`: the standard error of `x` mean, i.e.: (`sd()/sqrt(length())]`).
 #' - `mean_sd`: the [mean()] and [stats::sd()] of `x`.
+#' - `mean_se`: the [mean()] of `x` and its standard error (see above).
 #' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
 #' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]/[sqrt()]).
 #' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]).
+#' - `mean_pval`: the two-sided p-value of the mean of `x` (from [stat_mean_pval()]).
 #' - `median`: the [stats::median()] of `x`.
 #' - `mad`:
 #' the median absolute deviation of `x`, i.e.: ([stats::median()] of `xc`, where `xc` = `x` - [stats::median()]).
@@ -232,6 +241,8 @@ s_summary.numeric <- function(x, # nolint
 
   y$mean_sd <- c(y$mean, "sd" = stats::sd(x, na.rm = FALSE))
 
+  y$mean_se <- c(y$mean, y$se)
+
   mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
   y$mean_ci <- formatters::with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
 
@@ -242,6 +253,9 @@ s_summary.numeric <- function(x, # nolint
   mean_sdi <- y$mean[[1]] + c(-1, 1) * stats::sd(x, na.rm = FALSE)
   names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
   y$mean_sdi <- formatters::with_label(mean_sdi, "Mean -/+ 1xSD")
+
+  mean_pval <- stat_mean_pval(x, test_mean = control$test_mean, na.rm = FALSE, n_min = 2)
+  y$mean_pval <- formatters::with_label(mean_pval, paste("Mean", f_pval(control$test_mean)))
 
   y$median <- c("median" = stats::median(x, na.rm = FALSE))
 

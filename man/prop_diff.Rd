@@ -14,7 +14,7 @@
 \usage{
 d_proportion_diff(conf_level, method, long = FALSE)
 
-prop_diff_wald(rsp, grp, conf_level, correct)
+prop_diff_wald(rsp, grp, conf_level = 0.95, correct = FALSE)
 
 prop_diff_ha(rsp, grp, conf_level)
 
@@ -153,7 +153,7 @@ should be accounted for.
 set.seed(2)
 rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 grp <- factor(c(rep("A", 10), rep("B", 10)))
-prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.90, correct = FALSE)
+prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.95, correct = FALSE)
 
 # Anderson-Hauck confidence interval
 ## "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
