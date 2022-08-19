@@ -52,7 +52,7 @@ testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
           c(2L, 2L, 2L, 1L),
           .Label = c("C.1.1.1.3/B.2.2.3.1 AESI(BROAD)", "D.2.1.5.3/A.1.1.1.1 AESI", "SMQ02NAM"),
           class = "factor",
-          label = structure("Standardized MedDRA Query", .Names = "")
+          label = c(SMQ = "Standardized MedDRA Query")
         )
       ),
       row.names = c(NA, -4L),

@@ -37,6 +37,7 @@
 * Renamed `test-assertthat.R` to `test-utils_checkmate.R`.
 
 ### Bug Fixes
+* Fixed error in tests coming from changes in `formatters::var_labels()`.
 * Identified bug in `prop_diff` functions. Coding of responses have been corrected (TRUE is a success).
 * Fixed error coming from comparing factors vector to characters vector.
 * Fixed empty vector test for `cut_quantile_bins`.
