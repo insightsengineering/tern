@@ -97,7 +97,7 @@ h_stack_by_baskets <- function(df,
     }
   }
 
-  var_labels <- c(formatters::var_labels(df[, keys]), smq_varlabel)
+  var_labels <- c(formatters::var_labels(df[, keys]), "SMQ" = smq_varlabel)
 
   # convert `na_level` records from baskets to NA for the later loop and from wide to long steps
   df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_level] <- NA
