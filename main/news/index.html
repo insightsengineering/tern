@@ -33,14 +33,6 @@
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
-<a class="dropdown-item" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -97,7 +89,8 @@
 </ul></div>
 <div class="section level4">
 <h4 id="bug-fixes-0-7-9">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-7-9"></a></h4>
-<ul><li>Identified bug in <code>prop_diff</code> functions. Coding of responses have been corrected (TRUE is a success).</li>
+<ul><li>Fixed error in tests coming from changes in <code><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">formatters::var_labels()</a></code>.</li>
+<li>Identified bug in <code>prop_diff</code> functions. Coding of responses have been corrected (TRUE is a success).</li>
 <li>Fixed error coming from comparing factors vector to characters vector.</li>
 <li>Fixed empty vector test for <code>cut_quantile_bins</code>.</li>
 <li>Fixed bug related to error flag for empty strings coming from <code>rtables</code> split functions. Creation of <code>replace_emptys_with_na</code> to replace empty strings with custom strings across data.frame (this can be merged with <code>df_explicit_na</code>).</li>
