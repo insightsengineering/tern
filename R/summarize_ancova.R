@@ -56,7 +56,7 @@ h_ancova <- function(.var,
 
   if (is.null(interaction_item)) {
     specs <- arm
-  } else{
+  } else {
     specs <- c(arm, interaction_item)
   }
 
@@ -149,16 +149,15 @@ s_ancova <- function(df,
 
   # Get the index of the ref arm
   if (interaction_y != FALSE) {
-    y <- unlist(df[(df[[interaction_item]] == interaction_y),.var])
+    y <- unlist(df[(df[[interaction_item]] == interaction_y), .var])
     # convert characters selected in interaction_y into the numeric order
     interaction_y <- which(sum_fit_level[[interaction_item]] == interaction_y)
-    sum_fit_level <- sum_fit_level[interaction_y,]
+    sum_fit_level <- sum_fit_level[interaction_y, ]
     # if interaction is called, reset the index
     ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
     ref_key <- tail(ref_key, n = 1)
-    ref_key <- (interaction_y - 1)*length(unique(.df_row[[arm]])) + ref_key
-
-  }else{
+    ref_key <- (interaction_y - 1) * length(unique(.df_row[[arm]])) + ref_key
+  } else {
     y <- df[[.var]]
     # Get the index of the ref arm when interaction is not called
     ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
@@ -192,7 +191,7 @@ s_ancova <- function(df,
 
     sum_contrasts_level <- sum_contrasts[grepl(sum_level, sum_contrasts$contrast), ]
     if (interaction_y != FALSE) {
-      sum_contrasts_level <- sum_contrasts_level[interaction_y,]
+      sum_contrasts_level <- sum_contrasts_level[interaction_y, ]
     }
 
     list(
@@ -274,8 +273,9 @@ a_ancova <- make_afun(
 #' adsl <- synthetic_cdisc_data("latest")$adsl
 #' adqs <- synthetic_cdisc_data("latest")$adqs
 #' adqs_single <- adqs %>%
-#'   filter(AVISIT %in% c('WEEK 1 DAY 8', 'WEEK 2 DAY 15', 'WEEK 5 DAY 36')) %>% droplevels() %>%
-#'   filter(PARAM == 'BFI All Questions') %>%
+#'   filter(AVISIT %in% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 5 DAY 36")) %>%
+#'   droplevels() %>%
+#'   filter(PARAM == "BFI All Questions") %>%
 #'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
 #'
 #' basic_table() %>%
@@ -284,30 +284,29 @@ a_ancova <- make_afun(
 #'   split_rows_by("STRATA1", split_fun = drop_split_levels) %>%
 #'   summarize_ancova(
 #'     vars = "CHG",
-#'     variables = list(arm = "ARMCD", covariates = c("BASE","AVISIT","AVISIT*ARMCD")),
+#'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
 #'     conf_level = 0.95,
 #'     var_labels = "WEEK 1 DAY 8",
-#'     interaction_y = 'WEEK 1 DAY 8',
-#'     interaction_item = 'AVISIT'
+#'     interaction_y = "WEEK 1 DAY 8",
+#'     interaction_item = "AVISIT"
 #'   ) %>%
 #'   summarize_ancova(
 #'     vars = "CHG",
-#'     variables = list(arm = "ARMCD", covariates = c("BASE","AVISIT","AVISIT*ARMCD")),
+#'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
 #'     conf_level = 0.95,
 #'     var_labels = "WEEK 2 DAY 15",
-#'     interaction_y = 'WEEK 2 DAY 15',
-#'     interaction_item = 'AVISIT'
+#'     interaction_y = "WEEK 2 DAY 15",
+#'     interaction_item = "AVISIT"
 #'   ) %>%
 #'   summarize_ancova(
 #'     vars = "CHG",
-#'     variables = list(arm = "ARMCD", covariates = c("BASE","AVISIT","AVISIT*ARMCD")),
+#'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
 #'     conf_level = 0.95,
 #'     var_labels = "WEEK 5 DAY 36",
-#'     interaction_y = 'WEEK 5 DAY 36',
-#'     interaction_item = 'AVISIT'
+#'     interaction_y = "WEEK 5 DAY 36",
+#'     interaction_item = "AVISIT"
 #'   ) %>%
 #'   build_table(adqs_single, alt_counts_df = adsl)
-
 #'
 #' \dontrun{
 #' basic_table() %>%
