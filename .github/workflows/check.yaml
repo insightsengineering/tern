@@ -10,11 +10,9 @@ on:
       - ready_for_review
     branches:
       - main
-      - pre-release
   push:
     branches:
       - main
-      - pre-release
   workflow_dispatch:
 
 jobs:
@@ -23,12 +21,13 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/audit.yaml@main
   r-cmd:
     name: R CMD Check 🧬
-    uses: insightsengineering/r.pkg.template/.github/workflows/build-check-install.yaml@main
+    uses: insightsengineering/r.pkg.template/.github/workflows/build-check-install.yaml@remove_Remotes_before_r_check
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
     with:
       additional-r-cmd-check-params: --as-cran
   coverage:
+    if: github.event_name == 'pull_request'
     name: Coverage 📔 
     uses: insightsengineering/r.pkg.template/.github/workflows/test-coverage.yaml@main
     secrets:
