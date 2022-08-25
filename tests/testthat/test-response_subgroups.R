@@ -401,4 +401,3 @@ testthat::test_that("d_rsp_subgroups_colvars functions as expected with valid in
 
   testthat::expect_equal(result, expected)
 })
-
