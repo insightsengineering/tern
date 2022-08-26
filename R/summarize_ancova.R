@@ -97,8 +97,8 @@ h_ancova <- function(.var,
 #' library(scda)
 #' library(dplyr)
 #'
-#' adsl <- synthetic_cdisc_data("latest")$adsl
-#' adqs <- synthetic_cdisc_data("latest")$adqs
+#' adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+#' adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
 #'
 #' adqs_single <- adqs %>%
 #'   filter(
@@ -118,7 +118,7 @@ h_ancova <- function(.var,
 #'
 #' # Internal function - s_ancova
 #' \dontrun{
-#' s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level, interaction_y = FALSE, interaction_item)
+#' s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level, interaction_y = FALSE, interaction_item = NULL)
 #' }
 #'
 #' @keywords internal
@@ -240,8 +240,8 @@ a_ancova <- make_afun(
 #' library(rtables)
 #' library(dplyr)
 #'
-#' adsl <- synthetic_cdisc_data("latest")$adsl
-#' adqs <- synthetic_cdisc_data("latest")$adqs
+#' adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+#' adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
 #' adqs_single <- adqs %>%
 #'   filter(
 #'     AVISIT == "WEEK 1 DAY 8", # single time point
@@ -270,8 +270,8 @@ a_ancova <- make_afun(
 #'   build_table(adqs_single, alt_counts_df = adsl)
 #'
 #' # Another example: count the interaction between rows and columns into consideration
-#' adsl <- synthetic_cdisc_data("latest")$adsl
-#' adqs <- synthetic_cdisc_data("latest")$adqs
+#' adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+#' adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
 #' adqs_single <- adqs %>%
 #'   filter(AVISIT %in% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 5 DAY 36")) %>%
 #'   droplevels() %>%
@@ -287,6 +287,7 @@ a_ancova <- make_afun(
 #'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
 #'     conf_level = 0.95,
 #'     var_labels = "WEEK 1 DAY 8",
+#'     table_names = "WEEK 1 DAY 8",
 #'     interaction_y = "WEEK 1 DAY 8",
 #'     interaction_item = "AVISIT"
 #'   ) %>%
@@ -295,6 +296,7 @@ a_ancova <- make_afun(
 #'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
 #'     conf_level = 0.95,
 #'     var_labels = "WEEK 2 DAY 15",
+#'     table_names = "WEEK 2 DAY 15",
 #'     interaction_y = "WEEK 2 DAY 15",
 #'     interaction_item = "AVISIT"
 #'   ) %>%
@@ -303,6 +305,7 @@ a_ancova <- make_afun(
 #'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
 #'     conf_level = 0.95,
 #'     var_labels = "WEEK 5 DAY 36",
+#'     table_names = "WEEK 5 DAY 36",
 #'     interaction_y = "WEEK 5 DAY 36",
 #'     interaction_item = "AVISIT"
 #'   ) %>%
