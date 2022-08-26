@@ -320,7 +320,7 @@ s_cox_univariate <- function(formula,
     lrt <- Map(
       f = function(without_interaction,
                    with_interaction) {
-        stats::anova(without_interaction$mod, with_interaction$mod)[2, "P(>|Chi|)"]
+        stats::anova(without_interaction$mod, with_interaction$mod)[2, "Pr(>|Chi|)"]
       },
       without_interaction = fit[2:(length(covariates) + 1)],
       with_interaction = fit[-(1:(length(covariates) + 1))] # nolint
