@@ -143,8 +143,8 @@ h_ancova(
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("latest")$adsl
-adqs <- synthetic_cdisc_data("latest")$adqs
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
 
 adqs_single <- adqs \%>\%
   filter(
@@ -164,7 +164,7 @@ conf_level <- 0.95
 
 # Internal function - s_ancova
 \dontrun{
-s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level, interaction_y = FALSE, interaction_item)
+s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level, interaction_y = FALSE, interaction_item = NULL)
 }
 
 # Internal function - a_ancova
@@ -177,8 +177,8 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("latest")$adsl
-adqs <- synthetic_cdisc_data("latest")$adqs
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
 adqs_single <- adqs \%>\%
   filter(
     AVISIT == "WEEK 1 DAY 8", # single time point
@@ -207,11 +207,12 @@ basic_table() \%>\%
   build_table(adqs_single, alt_counts_df = adsl)
 
 # Another example: count the interaction between rows and columns into consideration
-adsl <- synthetic_cdisc_data("latest")$adsl
-adqs <- synthetic_cdisc_data("latest")$adqs
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
 adqs_single <- adqs \%>\%
-  filter(AVISIT \%in\% c('WEEK 1 DAY 8', 'WEEK 2 DAY 15', 'WEEK 5 DAY 36')) \%>\% droplevels() \%>\%
-  filter(PARAM == 'BFI All Questions') \%>\%
+  filter(AVISIT \%in\% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 5 DAY 36")) \%>\%
+  droplevels() \%>\%
+  filter(PARAM == "BFI All Questions") \%>\%
   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
 
 basic_table() \%>\%
@@ -220,27 +221,30 @@ basic_table() \%>\%
   split_rows_by("STRATA1", split_fun = drop_split_levels) \%>\%
   summarize_ancova(
     vars = "CHG",
-    variables = list(arm = "ARMCD", covariates = c("BASE","AVISIT","AVISIT*ARMCD")),
+    variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
     conf_level = 0.95,
     var_labels = "WEEK 1 DAY 8",
-    interaction_y = 'WEEK 1 DAY 8',
-    interaction_item = 'AVISIT'
+    table_names = "WEEK 1 DAY 8",
+    interaction_y = "WEEK 1 DAY 8",
+    interaction_item = "AVISIT"
   ) \%>\%
   summarize_ancova(
     vars = "CHG",
-    variables = list(arm = "ARMCD", covariates = c("BASE","AVISIT","AVISIT*ARMCD")),
+    variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
     conf_level = 0.95,
     var_labels = "WEEK 2 DAY 15",
-    interaction_y = 'WEEK 2 DAY 15',
-    interaction_item = 'AVISIT'
+    table_names = "WEEK 2 DAY 15",
+    interaction_y = "WEEK 2 DAY 15",
+    interaction_item = "AVISIT"
   ) \%>\%
   summarize_ancova(
     vars = "CHG",
-    variables = list(arm = "ARMCD", covariates = c("BASE","AVISIT","AVISIT*ARMCD")),
+    variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
     conf_level = 0.95,
     var_labels = "WEEK 5 DAY 36",
-    interaction_y = 'WEEK 5 DAY 36',
-    interaction_item = 'AVISIT'
+    table_names = "WEEK 5 DAY 36",
+    interaction_y = "WEEK 5 DAY 36",
+    interaction_item = "AVISIT"
   ) \%>\%
   build_table(adqs_single, alt_counts_df = adsl)
 
