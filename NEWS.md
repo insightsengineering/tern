@@ -14,7 +14,7 @@
   and related functions.
 
 ### Migration from `assertthat` to `checkmate`
-* Substituted all `assertthat` calls with `checkmate`.
+* Substituted all `assertthat` calls with `checkmate`. 
 * Implemented `checkmate::assert_vector()`, `checkmate::assert_set_equal()`, and 
   `checkmate::assert_int()` to validate vector type, length, and input.
 * Made `assert_df_with_factors` and `assert_proportion_value` internal functions.
