@@ -1,4 +1,4 @@
-# tern 0.7.9.9000
+# tern 0.7.9.9001
 
 ### Enhancements 
 * Added `DescTools` `BinomDiffCI` function within `tern`.
@@ -14,7 +14,7 @@
   and related functions.
 
 ### Migration from `assertthat` to `checkmate`
-* Substituted all `assertthat` calls with `checkmate`.
+* Substituted all `assertthat` calls with `checkmate`. 
 * Implemented `checkmate::assert_vector()`, `checkmate::assert_set_equal()`, and 
   `checkmate::assert_int()` to validate vector type, length, and input.
 * Made `assert_df_with_factors` and `assert_proportion_value` internal functions.
@@ -37,6 +37,8 @@
 * Renamed `test-assertthat.R` to `test-utils_checkmate.R`.
 
 ### Bug Fixes
+* Fixed bugs from tests that rely on `stats::ancova`. They are probably due to an external update.
+* Fixed tests to respect the new standard print for `NA`.
 * Fixed error in tests coming from changes in `formatters::var_labels()`.
 * Identified bug in `prop_diff` functions. Coding of responses have been corrected (TRUE is a success).
 * Fixed error coming from comparing factors vector to characters vector.

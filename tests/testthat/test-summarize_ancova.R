@@ -17,6 +17,7 @@ testthat::test_that("h_ancova works with healthy input", {
       lower.CL = c(5.488497, 5.585349, 5.112255),
       upper.CL = c(6.821149, 5.849469, 5.700498)
     ),
+    class = c("summary_emm", "data.frame"),
     estName = "emmean",
     clNames = c("lower.CL", "upper.CL"),
     pri.vars = "Species",
