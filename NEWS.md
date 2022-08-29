@@ -12,8 +12,8 @@
 * Added `stat_mean_pval` function to calculate the p-value of the mean as a new summary statistic.
 * New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
   and related functions.
-* Added parameters `interaction_y' and `interaction_item` in function `h_ancova`, `s_ancova`, and 
-  `summarize_ancova` to make calculation about interaction available.
+* Added parameters `interaction_y' and `interaction_item` in ANCOVA related functions to make the 
+  calculation about interaction available.
 
 ### Migration from `assertthat` to `checkmate`
 * Substituted all `assertthat` calls with `checkmate`. 
