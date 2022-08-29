@@ -171,7 +171,10 @@ to print out information about factor casting.}
 
 \item{var_labels}{character for label.}
 
-\item{nested}{boolean. Should this layout instruction be applied within the existing layout structure \emph{if possible} (\code{TRUE}, the default) or as a new top-level element (`FALSE). Ignored if it would nest a split underneath analyses, which is not allowed.}
+\item{nested}{boolean. Should this layout instruction be applied within the
+existing layout structure \emph{if possible} (\code{TRUE}, the default) or as a
+new top-level element (`FALSE). Ignored if it would nest a split underneath
+analyses, which is not allowed.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
