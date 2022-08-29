@@ -51,6 +51,7 @@
 * Fixed warnings occurring in example tests.
 * Fixed internal function examples errors by removing `tern:::` prefix and added `dontrun` to internal function examples.
 * Fixed bug in `s_ancova` causing an error when the first level of the arm factor is not the control arm. 
+* Fixed bug in `s_abnormal_by_worst_grade` when only one `PARAM` level exists.
 
 ### Documentation and NAMESPACE Polishing
 * Added stable badges for:
