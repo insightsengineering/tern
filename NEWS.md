@@ -12,6 +12,8 @@
 * Added `stat_mean_pval` function to calculate the p-value of the mean as a new summary statistic.
 * New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
   and related functions.
+* Added parameters `interaction_y' and `interaction_item` in ANCOVA related functions to make the 
+  calculation about interaction available.
 
 ### Migration from `assertthat` to `checkmate`
 * Substituted all `assertthat` calls with `checkmate`. 
@@ -48,7 +50,7 @@
   custom strings across data.frame (this can be merged with `df_explicit_na`).
 * Fixed warnings occurring in example tests.
 * Fixed internal function examples errors by removing `tern:::` prefix and added `dontrun` to internal function examples.
-* Fixed bug in `s_ancova` causing an error when the first level of the arm factor is not the control arm.
+* Fixed bug in `s_ancova` causing an error when the first level of the arm factor is not the control arm. 
 
 ### Documentation and NAMESPACE Polishing
 * Added stable badges for:

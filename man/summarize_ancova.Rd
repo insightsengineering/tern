@@ -7,11 +7,31 @@
 \alias{a_ancova}
 \title{Summary for analysis of covariance (ANCOVA).}
 \usage{
-h_ancova(.var, .df_row, variables)
+h_ancova(.var, .df_row, variables, interaction_item = NULL)
 
-s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col, conf_level)
+s_ancova(
+  df,
+  .var,
+  .df_row,
+  variables,
+  .ref_group,
+  .in_ref_col,
+  conf_level,
+  interaction_y = FALSE,
+  interaction_item = NULL
+)
 
-a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col, conf_level)
+a_ancova(
+  df,
+  .var,
+  .df_row,
+  variables,
+  .ref_group,
+  .in_ref_col,
+  conf_level,
+  interaction_y = FALSE,
+  interaction_item = NULL
+)
 
 summarize_ancova(
   lyt,
@@ -23,7 +43,9 @@ summarize_ancova(
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = NULL,
+  interaction_y = FALSE,
+  interaction_item = NULL
 )
 }
 \arguments{
@@ -43,6 +65,9 @@ reference group.
 \code{"X1"}), and/or interaction terms indicated by \code{"X1 * X2"}.
 }}
 
+\item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
+with arm. if the interaction is not needed, the default option is NULL}
+
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
 \item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
@@ -50,6 +75,10 @@ reference group.
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{interaction_y}{(\code{character})\cr a selected item inside of the interaction_item column
+which will be used to select the specific ANCOVA results. if the interaction is not
+needed, the default option is FALSE}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -114,8 +143,8 @@ h_ancova(
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("latest")$adsl
-adqs <- synthetic_cdisc_data("latest")$adqs
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
 
 adqs_single <- adqs \%>\%
   filter(
@@ -135,12 +164,12 @@ conf_level <- 0.95
 
 # Internal function - s_ancova
 \dontrun{
-s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level, interaction_y = FALSE, interaction_item = NULL)
 }
 
 # Internal function - a_ancova
 \dontrun{
-a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, interaction_y = FALSE, interaction_item = NULL, conf_level)
 }
 
 
@@ -148,8 +177,8 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("latest")$adsl
-adqs <- synthetic_cdisc_data("latest")$adqs
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
 adqs_single <- adqs \%>\%
   filter(
     AVISIT == "WEEK 1 DAY 8", # single time point
@@ -176,6 +205,49 @@ basic_table() \%>\%
     conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)"
   ) \%>\%
   build_table(adqs_single, alt_counts_df = adsl)
+
+# Another example: count the interaction between rows and columns into consideration
+adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
+adqs_single <- adqs \%>\%
+  filter(AVISIT \%in\% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 5 DAY 36")) \%>\%
+  droplevels() \%>\%
+  filter(PARAM == "BFI All Questions") \%>\%
+  mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
+
+basic_table() \%>\%
+  split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
+  add_colcounts() \%>\%
+  split_rows_by("STRATA1", split_fun = drop_split_levels) \%>\%
+  summarize_ancova(
+    vars = "CHG",
+    variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
+    conf_level = 0.95,
+    var_labels = "WEEK 1 DAY 8",
+    table_names = "WEEK 1 DAY 8",
+    interaction_y = "WEEK 1 DAY 8",
+    interaction_item = "AVISIT"
+  ) \%>\%
+  summarize_ancova(
+    vars = "CHG",
+    variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
+    conf_level = 0.95,
+    var_labels = "WEEK 2 DAY 15",
+    table_names = "WEEK 2 DAY 15",
+    interaction_y = "WEEK 2 DAY 15",
+    interaction_item = "AVISIT"
+  ) \%>\%
+  summarize_ancova(
+    vars = "CHG",
+    variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
+    conf_level = 0.95,
+    var_labels = "WEEK 5 DAY 36",
+    table_names = "WEEK 5 DAY 36",
+    interaction_y = "WEEK 5 DAY 36",
+    interaction_item = "AVISIT"
+  ) \%>\%
+  build_table(adqs_single, alt_counts_df = adsl)
+
 \dontrun{
 basic_table() \%>\%
   split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
