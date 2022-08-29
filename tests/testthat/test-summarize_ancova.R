@@ -125,12 +125,13 @@ testthat::test_that("summarize_ancova works with healthy inputs", {
 
 
 testthat::test_that("summarize_ancova works with interaction", {
-  iris_new <- iris %>% mutate(p_group = case_when(
-    substr(Petal.Width, 3, 3) < 3 ~ 'A',
-    substr(Petal.Width, 3, 3) < 5 & substr(Petal.Width, 3, 3) > 2 ~ 'B',
-    TRUE ~ 'C'
-  )) %>%
-    mutate(p_group=as.factor(p_group))
+  iris_new <- iris %>%
+    mutate(p_group = case_when(
+      substr(Petal.Width, 3, 3) < 3 ~ "A",
+      substr(Petal.Width, 3, 3) < 5 & substr(Petal.Width, 3, 3) > 2 ~ "B",
+      TRUE ~ "C"
+    )) %>%
+    mutate(p_group = as.factor(p_group))
 
   result <- basic_table() %>%
     split_cols_by("Species", ref_group = "setosa") %>%
@@ -142,7 +143,8 @@ testthat::test_that("summarize_ancova works with interaction", {
       var_labels = "Petal_B",
       table_names = "Petal_B",
       interaction_y = "B",
-      interaction_item = "p_group") %>%
+      interaction_item = "p_group"
+    ) %>%
     build_table(iris_new)
   result_matrix <- to_string_matrix(result)
 
@@ -150,20 +152,20 @@ testthat::test_that("summarize_ancova works with interaction", {
   emmeans_fit <- emmeans::emmeans(lm_fit, specs = c("Species", "p_group"), data = iris_new)
   emmean <- emmeans_fit %>%
     as.data.frame() %>%
-    filter(p_group == 'B') %>%
+    filter(p_group == "B") %>%
     select(emmean) %>%
     unlist() %>%
     round(., 2)
-  testthat::expect_equal(as.numeric(emmean), as.numeric(result_matrix[5,2:4]), tolerance = 0.0000001)
+  testthat::expect_equal(as.numeric(emmean), as.numeric(result_matrix[5, 2:4]), tolerance = 0.0000001)
 
   emmeans_contrasts <- emmeans::contrast(emmeans_fit, method = "trt.vs.ctrl", ref = 4)
   sum_contrasts <- summary(emmeans_contrasts, infer = TRUE, adjust = "none") %>%
     as.data.frame() %>%
-    filter(contrast %in% c('versicolor B - setosa B', 'virginica B - setosa B')) %>%
+    filter(contrast %in% c("versicolor B - setosa B", "virginica B - setosa B")) %>%
     select(estimate, lower.CL, upper.CL) %>%
-    round(.,2)
-  ci_a <- paste0('(', as.numeric(sum_contrasts[1,2]), ', ',as.numeric(sum_contrasts[1,3]), ')')
-  ci_b <- paste0('(', as.numeric(sum_contrasts[2,2]), ', ',as.numeric(sum_contrasts[2,3]), ')')
-  testthat::expect_identical(result_matrix[7,3], ci_a)
-  testthat::expect_identical(result_matrix[7,4], ci_b)
+    round(., 2)
+  ci_a <- paste0("(", as.numeric(sum_contrasts[1, 2]), ", ", as.numeric(sum_contrasts[1, 3]), ")")
+  ci_b <- paste0("(", as.numeric(sum_contrasts[2, 2]), ", ", as.numeric(sum_contrasts[2, 3]), ")")
+  testthat::expect_identical(result_matrix[7, 3], ci_a)
+  testthat::expect_identical(result_matrix[7, 4], ci_b)
 })
