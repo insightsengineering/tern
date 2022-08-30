@@ -47,3 +47,10 @@ See package vignettes `browseVignettes(package = "tern")` for usage of this pack
 ## Acknowledgment
 
 This package is a result of a joint efforts by many developers and stakeholders. We would like to thank everyone who contributed so far!
+
+[![Stargazers repo roster for @insightsengineering/tern](https://reporoster.com/stars/insightsengineering/tern)](https://github.com/insightsengineering/tern/stargazers)
+[![Forkers repo roster for @insightsengineering/tern](https://reporoster.com/forks/insightsengineering/tern)](https://github.com/insightsengineering/tern/network/members)
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/insightsengineering/tern.svg)](https://starchart.cc/insightsengineering/tern)
