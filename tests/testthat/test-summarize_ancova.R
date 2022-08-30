@@ -8,6 +8,10 @@ testthat::test_that("h_ancova works with healthy input", {
   ) %>%
     as.data.frame()
 
+  # Fixing class differences between versions
+  exp_class <- "data.frame"
+  if (inherits(result, "summary_emm")) exp_class <- c("summary_emm", exp_class)
+
   expected <- structure(
     data.frame(
       Species = as.factor(c("setosa", "versicolor", "virginica")),
@@ -17,7 +21,7 @@ testthat::test_that("h_ancova works with healthy input", {
       lower.CL = c(5.488497, 5.585349, 5.112255),
       upper.CL = c(6.821149, 5.849469, 5.700498)
     ),
-    class = c("summary_emm", "data.frame"),
+    class = exp_class,
     estName = "emmean",
     clNames = c("lower.CL", "upper.CL"),
     pri.vars = "Species",
@@ -121,4 +125,51 @@ testthat::test_that("summarize_ancova works with healthy inputs", {
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
+})
+
+
+testthat::test_that("summarize_ancova works with interaction", {
+  iris_new <- iris %>%
+    mutate(p_group = case_when(
+      substr(Petal.Width, 3, 3) < 3 ~ "A",
+      substr(Petal.Width, 3, 3) < 5 & substr(Petal.Width, 3, 3) > 2 ~ "B",
+      TRUE ~ "C"
+    )) %>%
+    mutate(p_group = as.factor(p_group))
+
+  result <- basic_table() %>%
+    split_cols_by("Species", ref_group = "setosa") %>%
+    add_colcounts() %>%
+    summarize_ancova(
+      vars = "Petal.Length",
+      variables = list(arm = "Species", covariates = c("Sepal.Width", "p_group", "Species*p_group")),
+      conf_level = 0.95,
+      var_labels = "Petal_B",
+      table_names = "Petal_B",
+      interaction_y = "B",
+      interaction_item = "p_group"
+    ) %>%
+    build_table(iris_new)
+  result_matrix <- to_string_matrix(result)
+
+  lm_fit <- stats::lm(formula = "Petal.Length ~ Sepal.Width + p_group + Species*p_group + Species", data = iris_new)
+  emmeans_fit <- emmeans::emmeans(lm_fit, specs = c("Species", "p_group"), data = iris_new)
+  emmean <- emmeans_fit %>%
+    as.data.frame() %>%
+    filter(p_group == "B") %>%
+    select(emmean) %>%
+    unlist() %>%
+    round(., 2)
+  testthat::expect_equal(as.numeric(emmean), as.numeric(result_matrix[5, 2:4]), tolerance = 0.0000001)
+
+  emmeans_contrasts <- emmeans::contrast(emmeans_fit, method = "trt.vs.ctrl", ref = 4)
+  sum_contrasts <- summary(emmeans_contrasts, infer = TRUE, adjust = "none") %>%
+    as.data.frame() %>%
+    filter(contrast %in% c("versicolor B - setosa B", "virginica B - setosa B")) %>%
+    select(estimate, lower.CL, upper.CL) %>%
+    round(., 2)
+  ci_a <- paste0("(", as.numeric(sum_contrasts[1, 2]), ", ", as.numeric(sum_contrasts[1, 3]), ")")
+  ci_b <- paste0("(", as.numeric(sum_contrasts[2, 2]), ", ", as.numeric(sum_contrasts[2, 3]), ")")
+  testthat::expect_identical(result_matrix[7, 3], ci_a)
+  testthat::expect_identical(result_matrix[7, 4], ci_b)
 })

@@ -1,4 +1,4 @@
-# tern 0.7.9.9001
+# tern 0.7.9.9004
 
 ### Enhancements 
 * Added `DescTools` `BinomDiffCI` function within `tern`.
@@ -12,6 +12,8 @@
 * Added `stat_mean_pval` function to calculate the p-value of the mean as a new summary statistic.
 * New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
   and related functions.
+* Added parameters `interaction_y' and `interaction_item` in ANCOVA related functions to make the 
+  calculation about interaction available.
 
 ### Migration from `assertthat` to `checkmate`
 * Substituted all `assertthat` calls with `checkmate`. 
@@ -37,7 +39,8 @@
 * Renamed `test-assertthat.R` to `test-utils_checkmate.R`.
 
 ### Bug Fixes
-* Fixed bugs from tests that rely on `stats::ancova`. They are probably due to an external update.
+* Fixed bugs from tests that rely on `stats::ancova`. Adding more general solutions. They 
+  are probably due to an external update.
 * Fixed tests to respect the new standard print for `NA`.
 * Fixed error in tests coming from changes in `formatters::var_labels()`.
 * Identified bug in `prop_diff` functions. Coding of responses have been corrected (TRUE is a success).
@@ -48,7 +51,8 @@
   custom strings across data.frame (this can be merged with `df_explicit_na`).
 * Fixed warnings occurring in example tests.
 * Fixed internal function examples errors by removing `tern:::` prefix and added `dontrun` to internal function examples.
-* Fixed bug in `s_ancova` causing an error when the first level of the arm factor is not the control arm.
+* Fixed bug in `s_ancova` causing an error when the first level of the arm factor is not the control arm. 
+* Fixed bug in `s_abnormal_by_worst_grade` when only one `PARAM` level exists.
 
 ### Documentation and NAMESPACE Polishing
 * Added stable badges for:
