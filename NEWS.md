@@ -39,7 +39,8 @@
 * Renamed `test-assertthat.R` to `test-utils_checkmate.R`.
 
 ### Bug Fixes
-* Fixed bugs from tests that rely on `stats::ancova`. They are probably due to an external update.
+* Fixed bugs from tests that rely on `stats::ancova`. Adding more general solutions. They 
+  are probably due to an external update.
 * Fixed tests to respect the new standard print for `NA`.
 * Fixed error in tests coming from changes in `formatters::var_labels()`.
 * Identified bug in `prop_diff` functions. Coding of responses have been corrected (TRUE is a success).

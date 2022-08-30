@@ -8,6 +8,10 @@ testthat::test_that("h_ancova works with healthy input", {
   ) %>%
     as.data.frame()
 
+  # Fixing class differences between versions
+  exp_class <- "data.frame"
+  if (inherits(result, "summary_emm")) exp_class <- c("summary_emm", exp_class)
+
   expected <- structure(
     data.frame(
       Species = as.factor(c("setosa", "versicolor", "virginica")),
@@ -17,7 +21,7 @@ testthat::test_that("h_ancova works with healthy input", {
       lower.CL = c(5.488497, 5.585349, 5.112255),
       upper.CL = c(6.821149, 5.849469, 5.700498)
     ),
-    class = c("summary_emm", "data.frame"),
+    class = exp_class,
     estName = "emmean",
     clNames = c("lower.CL", "upper.CL"),
     pri.vars = "Species",
