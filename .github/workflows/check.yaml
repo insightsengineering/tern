@@ -72,5 +72,3 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/style.yaml@main
     with:
       auto-update: true
-
-
