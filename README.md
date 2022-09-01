@@ -60,4 +60,3 @@ This package is a result of a joint efforts by many developers and stakeholders.
 [![Stargazers repo roster for @insightsengineering/tern](https://reporoster.com/stars/insightsengineering/tern)](https://github.com/insightsengineering/tern/stargazers)
 
 [![Forkers repo roster for @insightsengineering/tern](https://reporoster.com/forks/insightsengineering/tern)](https://github.com/insightsengineering/tern/network/members)
-
