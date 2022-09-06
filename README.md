@@ -48,7 +48,6 @@ See package vignettes `browseVignettes(package = "tern")` for usage of this pack
 
 This package is a result of a joint efforts by many developers and stakeholders. We would like to thank everyone who contributed so far!
 
-
 ## Stargazers and Forkers
 
 ### Stargazers over time
