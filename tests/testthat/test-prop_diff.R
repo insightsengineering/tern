@@ -177,14 +177,14 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
 
 
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
-  # "Mid" case: 3/4 respond in group A, 1/2 respond in group C.
+  # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   dta <- data.frame(
     rsp = c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE),
-    grp = factor(c("A", "C", "A", "C", "A", "A"), levels = c("C", "A"))
+    grp = factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
   )
 
   l <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "C") %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
     estimate_proportion_diff(
       vars = "rsp",
       conf_level = 0.90,
@@ -204,6 +204,7 @@ testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
 })
 
 testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtables`", {
+  set.seed(1)
   nex <- 100 # Number of test rows
   dta <- data.frame(
     "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
@@ -227,7 +228,7 @@ testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtab
   expected <- structure(
     c(
       "", "Difference in Response rate (%)", "90% CI (CMH, without correction)",
-      "B", "", "", "A", "-1.2124", "(-17.2666, 14.8417)"
+      "B", "", "", "A", "-4.2133", "(-20.0215, 11.5950)"
     ),
     .Dim = c(3L, 3L)
   )

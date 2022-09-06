@@ -25,7 +25,7 @@ testthat::test_that("s_length_proportion works as expected with healthy input", 
   x <- rep("A", 10)
   n_col <- 20
   result <- s_length_proportion(x = x, .N_col = n_col, method = "jeffreys", conf_level = 0.8)
-  expected <- s_proportion(x = rep(c(TRUE, FALSE), c(10, 10)), method = "jeffreys", conf_level = 0.8)
+  expected <- s_proportion(df = rep(c(TRUE, FALSE), c(10, 10)), method = "jeffreys", conf_level = 0.8)
   testthat::expect_identical(result, expected)
 })
 
