@@ -33,7 +33,7 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 
 
 # help function for prop_strat_wilson
-strata_normal_quantile <- function(vars, weights, conf_level){
+strata_normal_quantile <- function(vars, weights, conf_level) {
   summands <- weights^2 * vars
   # Stratified quantile
   sqrt(sum(summands)) / sum(sqrt(summands)) * qnorm((1 + conf_level) / 2)
@@ -73,7 +73,7 @@ strata_normal_quantile <- function(vars, weights, conf_level){
 #'
 #' prop_strat_wilson(
 #'   rsp = rsp, strata = strata,
-#'   weights = rep(1/n_ws, n_ws), # Not automatic setting of weights
+#'   weights = rep(1 / n_ws, n_ws), # Not automatic setting of weights
 #'   conf_level = 0.90
 #' )
 #'
@@ -91,7 +91,7 @@ prop_strat_wilson <- function(rsp, strata, weights, conf_level = 0.95, max_nit =
   # Checking the weights
   do_iter <- FALSE
   if (missing(weights)) {
-    weights <- rep(1/n_ws, n_ws) # Initialization for iterative procedure
+    weights <- rep(1 / n_ws, n_ws) # Initialization for iterative procedure
     do_iter <- TRUE
     max_it <- max_nit # Max number iterations
     it <- 1
@@ -111,7 +111,7 @@ prop_strat_wilson <- function(rsp, strata, weights, conf_level = 0.95, max_nit =
   if (do_iter) {
     ws_old <- weights
     while (it < max_it) {
-      ws_new_t <- (1 + strata_qnorm^2/ns)^2 / (vars + strata_qnorm^2 / (4 * ns^2))
+      ws_new_t <- (1 + strata_qnorm^2 / ns)^2 / (vars + strata_qnorm^2 / (4 * ns^2))
       ws_new <- ws_new_t / sum(ws_new_t)
       strata_qnorm <- strata_normal_quantile(vars, ws_new, conf_level)
       if (sum(abs(ws_new - ws_old)) < 0.001) break

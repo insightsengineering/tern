@@ -40,9 +40,9 @@ testthat::test_that("prop_strat_wilson returns right result", {
 
   # Test without estimating weights (all equal here)
   expected <- c(lower = 0.4402518, upper = 0.6006098)
-  result <-   prop_strat_wilson(
+  result <- prop_strat_wilson(
     rsp = rsp, strata = strata,
-    weights = rep(1/n_ws, n_ws), # Not automatic setting of weights
+    weights = rep(1 / n_ws, n_ws), # Not automatic setting of weights
     conf_level = 0.90
   )
 
