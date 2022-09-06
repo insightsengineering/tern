@@ -242,4 +242,28 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
 
   testthat::expect_equal(result, expected)
 
+  # Changing other variables (weights and max_nt)
+  n_ws <- length(unique(anl$SEX)) * length(unique(anl$REGION1))
+  result <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    add_colcounts() %>%
+    add_overall_col(label = "All") %>%
+    estimate_proportion(
+      vars = "DTHFL",
+      conf_level = 0.95,
+      method = "strat_wilson",
+      variables = list(strata = c("SEX", "REGION1"), weights = rep(1/n_ws, n_ws), max_nit = 1),
+      .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
+    ) %>%
+    build_table(anl)
+
+  result <- get_formatted_cells(result)
+
+  expected <- rbind(
+    c("32.00 (23.88%)", "25.00 (18.66%)", "21.00 (15.91%)", "78.00 (19.50%)"),
+    c("(13.3442, 37.8055)", "(12.0757, 38.7593)", "(9.1163, 32.7794)", "(13.7473, 27.0375)")
+  )
+
+  testthat::expect_equal(result, expected)
+
 })
