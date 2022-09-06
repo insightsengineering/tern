@@ -364,7 +364,7 @@ s_proportion_diff <- function(df,
     if (!is.null(variables$strata)) {
       strata_colnames <- variables$strata
       checkmate::assert_character(strata_colnames, null.ok = FALSE)
-      strata_vars <- stats::setNames(as.list(strata_colnames), strata)
+      strata_vars <- stats::setNames(as.list(strata_colnames), strata_colnames)
 
       # Checks if strata variables are in a well formatted data frame
       assert_df_with_variables(df, strata_vars)
