@@ -3,16 +3,26 @@
 \name{estimate_proportions}
 \alias{estimate_proportions}
 \alias{prop_wilson}
+\alias{prop_strat_wilson}
 \alias{prop_clopper_pearson}
 \alias{prop_wald}
 \alias{prop_agresti_coull}
 \alias{prop_jeffreys}
 \alias{s_proportion}
-\alias{estimate_proportion}
 \alias{a_proportion}
+\alias{estimate_proportion}
 \title{Estimation of Proportions}
 \usage{
 prop_wilson(rsp, conf_level, correct = FALSE)
+
+prop_strat_wilson(
+  rsp,
+  strata,
+  weights,
+  conf_level = 0.95,
+  max_nit = 10,
+  correct = FALSE
+)
 
 prop_clopper_pearson(rsp, conf_level)
 
@@ -23,6 +33,14 @@ prop_agresti_coull(rsp, conf_level)
 prop_jeffreys(rsp, conf_level)
 
 s_proportion(
+  x,
+  conf_level = 0.95,
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
+    "jeffreys"),
+  long = FALSE
+)
+
+a_proportion(
   x,
   conf_level = 0.95,
   method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
@@ -41,14 +59,6 @@ estimate_proportion(
   .labels = NULL,
   .indent_mods = NULL
 )
-
-a_proportion(
-  x,
-  conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
-    "jeffreys"),
-  long = FALSE
-)
 }
 \arguments{
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
@@ -56,6 +66,16 @@ a_proportion(
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{correct}{(\code{flag})\cr apply continuity correction.}
+
+\item{strata}{(\code{factor})\cr
+with one level per stratum and same length as \code{rsp}.}
+
+\item{weights}{weights for each level of the strata. If missing, they are
+estimated using the iterative algorithm proposed in \link{Yan and Su (2010)}
+that minimizes the weighted squared length of the confidence interval.}
+
+\item{max_nit}{maximum number of iterations for the iterative procedure used
+to find estimates of optimal weights.}
 
 \item{x}{(\code{logical})\cr whether each subject is a responder or not.
 \code{TRUE} represents a successful outcome.}
@@ -96,6 +116,9 @@ Estimate the proportion of responders within a studied population.
 \item \code{prop_wilson()}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 Also referred to as Wilson score interval.
 
+\item \code{prop_strat_wilson()}: Calculates the stratified Wilson confidence
+interval for unequal proportions as described in \link{Yan and Su (2010)}.
+
 \item \code{prop_clopper_pearson()}: the Clopper-Pearson interval calls
 \code{\link[stats:binom.test]{stats::binom.test()}}. Also referred to as the \code{exact} method.
 
@@ -115,10 +138,10 @@ proportion.
 \item \code{s_proportion()}: statistics function estimating a
 proportion along with its confidence interval.
 
-\item \code{estimate_proportion()}: used in a \code{rtables} pipeline.
-
 \item \code{a_proportion()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
+\item \code{estimate_proportion()}: used in a \code{rtables} pipeline.
 
 }}
 \examples{
@@ -128,6 +151,21 @@ rsp <- c(
 )
 prop_wilson(rsp, conf_level = 0.9)
 
+# Stratified Wilson confidence interval with unequal probabilities
+
+set.seed(1)
+rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+strata_data <- data.frame(
+  "f1" = sample(c("a", "b"), 100, TRUE),
+  "f2" = sample(c("x", "y", "z"), 100, TRUE),
+  stringsAsFactors = TRUE
+)
+
+prop_strat_wilson(
+  rsp = rsp, strata = interaction(strata_data),
+  conf_level = 0.90
+)
+
 prop_clopper_pearson(rsp, conf_level = .95)
 
 prop_wald(rsp, conf_level = 0.95)
@@ -136,7 +174,11 @@ prop_wald(rsp, conf_level = 0.95, correct = TRUE)
 prop_agresti_coull(rsp, conf_level = 0.95)
 
 prop_jeffreys(rsp, conf_level = 0.95)
+
 s_proportion(c(1, 0, 1, 0))
+
+a_proportion(c(1, 0, 1, 0))
+
 dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
   ARM     = rep(LETTERS[1:3], each = 4),
@@ -147,5 +189,5 @@ basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   estimate_proportion(vars = "AVAL") \%>\%
   build_table(df = dta_test)
-a_proportion(c(1, 0, 1, 0))
+
 }

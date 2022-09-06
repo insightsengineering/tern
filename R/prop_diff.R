@@ -82,7 +82,8 @@ d_proportion_diff <- function(conf_level,
 #'   interval.
 #'
 #' @param correct `logical`\cr
-#'   include the continuity correction.
+#'   include the continuity correction. For further information, see for example
+#'   [stats::prop.test()].
 #'
 #' @examples
 #' # Wald confidence interval
@@ -297,7 +298,6 @@ prop_diff_cmh <- function(rsp,
     diff_ci = diff_ci
   )
 }
-
 
 #' @describeIn prop_diff Statistics function estimating the difference
 #'   in terms of responder proportion.

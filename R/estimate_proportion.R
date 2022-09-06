@@ -5,21 +5,21 @@
 #' Estimate the proportion of responders within a studied population.
 #'
 #' @name estimate_proportions
-#' @order 1
 #'
 NULL
 
 
 #' @describeIn estimate_proportions the Wilson interval calls [stats::prop.test()].
 #'  Also referred to as Wilson score interval.
-#' @export
-#' @order 2
+#'
 #' @examples
 #' rsp <- c(
 #'   TRUE, TRUE, TRUE, TRUE, TRUE,
 #'   FALSE, FALSE, FALSE, FALSE, FALSE
 #' )
 #' prop_wilson(rsp, conf_level = 0.9)
+#'
+#' @export
 prop_wilson <- function(rsp, conf_level, correct = FALSE) {
   y <- stats::prop.test(
     sum(rsp),
@@ -32,14 +32,134 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 }
 
 
+# help function for prop_strat_wilson
+strata_normal_quantile <- function(vars, weights, conf_level){
+  summands <- weights^2 * vars
+  # Stratified quantile
+  sqrt(sum(summands)) / sum(sqrt(summands)) * qnorm((1 + conf_level) / 2)
+}
+
+#' @describeIn estimate_proportions Calculates the stratified Wilson confidence
+#'   interval for unequal proportions as described in [Yan and Su (2010)].
+#'
+#' @param strata (`factor`)\cr
+#'   with one level per stratum and same length as `rsp`.
+#' @param weights weights for each level of the strata. If missing, they are
+#'   estimated using the iterative algorithm proposed in [Yan and Su (2010)]
+#'   that minimizes the weighted squared length of the confidence interval.
+#' @param max_nit maximum number of iterations for the iterative procedure used
+#'   to find estimates of optimal weights.
+#' @param correct `logical`\cr
+#'   include the continuity correction. For further information, see for example
+#'   [stats::prop.test()].
+#'
+#' @examples
+#' # Stratified Wilson confidence interval with unequal probabilities
+#'
+#' set.seed(1)
+#' rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+#' strata_data <- data.frame(
+#'   "f1" = sample(c("a", "b"), 100, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), 100, TRUE),
+#'   stringsAsFactors = TRUE
+#' )
+#' strata <- interaction(strata_data)
+#' n_ws <- ncol(table(rsp, strata)) # Number of weights
+#'
+#' prop_strat_wilson(
+#'   rsp = rsp, strata = strata,
+#'   conf_level = 0.90
+#' )
+#'
+#' prop_strat_wilson(
+#'   rsp = rsp, strata = strata,
+#'   weights = rep(1/n_ws, n_ws), # Not automatic setting of weights
+#'   conf_level = 0.90
+#' )
+#'
+#' @export
+prop_strat_wilson <- function(rsp, strata, weights, conf_level = 0.95, max_nit = 10, correct = FALSE) {
+
+  # Checking the inputs
+  checkmate::assert_logical(rsp, any.missing = FALSE)
+  checkmate::assert_factor(strata, len = length(rsp))
+  tern:::assert_proportion_value(conf_level)
+
+  tbl <- table(rsp, strata)
+  n_ws <- ncol(tbl) # Number of centers
+
+  # Checking the weights
+  do_iter <- FALSE
+  if (missing(weights)) {
+    weights <- rep(1/n_ws, n_ws) # Initialization for iterative procedure
+    do_iter <- TRUE
+    max_it <- max_nit # Max number iterations
+    it <- 1
+  }
+  checkmate::assert_numeric(weights, lower = 0, upper = 1, any.missing = FALSE, len = ncol(tbl))
+  checkmate::assert_int(sum(weights), lower = 1, upper = 1)
+
+  xs <- tbl["TRUE", ]
+  ns <- colSums(tbl)
+  ests <- xs / ns
+  vars <- ests * (1 - ests) / ns
+
+  # Estimating quantile for normal distribution large number limit approximation
+  strata_qnorm <- strata_normal_quantile(vars, weights, conf_level)
+
+  # Iterative setting of weights if they were not set externally
+  if (do_iter) {
+    ws_old <- weights
+    while (it < max_it) {
+      ws_new_t <- (1 + strata_qnorm^2/ns)^2 / (vars + strata_qnorm^2 / (4 * ns^2))
+      ws_new <- ws_new_t / sum(ws_new_t)
+      strata_qnorm <- strata_normal_quantile(vars, ws_new, conf_level)
+      if (sum(abs(ws_new - ws_old)) < 0.001) break
+      ws_old <- ws_new
+    }
+  }
+
+  strata_conf_level <- 2 * pnorm(strata_qnorm) - 1
+
+  ci_by_strata <- Map(
+    function(x, n) {
+      # Classical Wilson's confidence interval
+      stats::prop.test(x, n, correct = correct, conf.level = strata_conf_level)$conf.int
+    },
+    x = xs,
+    n = ns
+  )
+  lower_by_strata <- sapply(ci_by_strata, "[", 1L)
+  upper_by_strata <- sapply(ci_by_strata, "[", 2L)
+
+  lower <- sum(weights * lower_by_strata)
+  upper <- sum(weights * upper_by_strata)
+
+  # Return values
+  if (do_iter) {
+    list(
+      conf.int = c(
+        lower = lower,
+        upper = upper
+      ),
+      weights = ws_new
+    )
+  } else {
+    c(
+      lower = lower,
+      upper = upper
+    )
+  }
+}
+
 #' @describeIn estimate_proportions the Clopper-Pearson interval calls
 #'   [stats::binom.test()]. Also referred to as the `exact` method.
 #' @inheritParams argument_convention
-#' @export
-#' @order 2
-#' @examples
 #'
+#' @examples
 #' prop_clopper_pearson(rsp, conf_level = .95)
+#'
+#' @export
 prop_clopper_pearson <- function(rsp,
                                  conf_level) {
   y <- stats::binom.test(
@@ -55,12 +175,12 @@ prop_clopper_pearson <- function(rsp,
 #'   normal approximation.
 #' @inheritParams argument_convention
 #' @param correct (`flag`)\cr apply continuity correction.
-#' @order 2
-#' @export
-#' @examples
 #'
+#' @examples
 #' prop_wald(rsp, conf_level = 0.95)
 #' prop_wald(rsp, conf_level = 0.95, correct = TRUE)
+#'
+#' @export
 prop_wald <- function(rsp, conf_level, correct = FALSE) {
   n <- length(rsp)
   p_hat <- mean(rsp)
@@ -81,11 +201,11 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
 #'   two successes and two failures to the data, and then using the Wald
 #'   formula to construct a CI.
 #' @inheritParams argument_convention
-#' @export
-#' @order 2
-#' @examples
 #'
+#' @examples
 #' prop_agresti_coull(rsp, conf_level = 0.95)
+#'
+#' @export
 prop_agresti_coull <- function(rsp, conf_level) {
   n <- length(rsp)
   x_sum <- sum(rsp)
@@ -110,11 +230,11 @@ prop_agresti_coull <- function(rsp, conf_level) {
 #'   interval based on the non-informative Jeffreys prior for a binomial
 #'   proportion.
 #' @inheritParams argument_convention
-#' @order 2
-#' @export
-#' @examples
 #'
+#' @examples
 #' prop_jeffreys(rsp, conf_level = 0.95)
+#'
+#' @export
 prop_jeffreys <- function(rsp,
                           conf_level) {
   n <- length(rsp)
@@ -137,6 +257,9 @@ prop_jeffreys <- function(rsp,
 }
 
 
+#' @describeIn estimate_proportions statistics function estimating a
+#'   proportion along with its confidence interval.
+#'
 #' @inheritParams argument_convention
 #' @param x (`logical`)\cr whether each subject is a responder or not.
 #' `TRUE` represents a successful outcome.
@@ -146,13 +269,10 @@ prop_jeffreys <- function(rsp,
 #'   `agresti-coull` or `jeffreys`.
 #' @param long (`flag`)\cr a long description is required.
 #'
-#' @describeIn estimate_proportions statistics function estimating a
-#'   proportion along with its confidence interval.
-#'
-#' @export
-#' @order 3
 #' @examples
 #' s_proportion(c(1, 0, 1, 0))
+#'
+#' @export
 s_proportion <- function(x,
                          conf_level = 0.95,
                          method = c(
@@ -164,7 +284,7 @@ s_proportion <- function(x,
 
   method <- match.arg(method)
   checkmate::assert_flag(long)
-  checkmate::assert_number(conf_level, lower = 0, upper = 1)
+  assert_proportion_value(conf_level)
 
   rsp <- x
   n <- sum(rsp)
@@ -190,20 +310,19 @@ s_proportion <- function(x,
 
 #' @describeIn estimate_proportions Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
 #' a_proportion(c(1, 0, 1, 0))
+#'
+#' @export
 a_proportion <- make_afun(
   s_proportion,
   .formats = c(n_prop = "xx (xx.x%)", prop_ci = "(xx.x, xx.x)")
 )
 
+#' @describeIn estimate_proportions used in a `rtables` pipeline.
 #' @inheritParams rtables::analyze
 #' @param ... other arguments are ultimately conveyed to [s_proportion()].
-#' @export
-#' @describeIn estimate_proportions used in a `rtables` pipeline.
-#' @order 4
 #'
 #' @examples
 #' dta_test <- data.frame(
@@ -216,6 +335,8 @@ a_proportion <- make_afun(
 #'   split_cols_by("ARM") %>%
 #'   estimate_proportion(vars = "AVAL") %>%
 #'   build_table(df = dta_test)
+#'
+#' @export
 estimate_proportion <- function(lyt,
                                 vars,
                                 ...,
@@ -245,17 +366,18 @@ estimate_proportion <- function(lyt,
 
 #' Description of the Proportion Summary
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is a helper function that describes the analysis in [s_proportion()].
 #'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_proportion
 #' @param long (`flag`)\cr Whether a long or a short (default) description is required.
 #'
 #' @return String describing the analysis.
-#' @export
 #'
+#' @export
 d_proportion <- function(conf_level,
                          method,
                          long = FALSE) {

@@ -71,7 +71,8 @@ vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}
 
 \item{correct}{\code{logical}\cr
-include the continuity correction.}
+include the continuity correction. For further information, see for example
+\code{\link[stats:prop.test]{stats::prop.test()}}.}
 
 \item{strata}{(\code{factor})\cr
 with one level per stratum and same length as \code{rsp}.}

@@ -11,6 +11,44 @@ testthat::test_that("prop_wilson returns right result", {
   testthat::expect_equal(expected, result, tolerance = 1e-5)
 })
 
+testthat::test_that("prop_strat_wilson returns right result", {
+
+  # Testing data set
+  rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 100, TRUE),
+    "f2" = sample(c("x", "y", "z"), 100, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+  table_strata <- table(rsp, strata)
+  n_ws <- ncol(table_strata) # Number of weights
+
+
+  expected <- list(
+    conf.int = c(lower = 0.4403587, upper = 0.6005081),
+    weights = c(0.1266197, 0.2071382, 0.2223792, 0.1606782, 0.1730650, 0.1101197)
+  )
+  names(expected$weights) <- colnames(table_strata)
+
+  result <- prop_strat_wilson(
+    rsp = rsp, strata = strata,
+    conf_level = 0.90
+  )
+
+  testthat::expect_equal(expected, result, tolerance = 1e-5)
+
+  # Test without estimating weights (all equal here)
+  expected <- c(lower = 0.4402518, upper = 0.6006098)
+  result <-   prop_strat_wilson(
+    rsp = rsp, strata = strata,
+    weights = rep(1/n_ws, n_ws), # Not automatic setting of weights
+    conf_level = 0.90
+  )
+
+  testthat::expect_equal(expected, result, tolerance = 1e-5)
+})
+
 testthat::test_that("prop_clopper_pearson returns right result", {
   rsp <- c(
     TRUE, TRUE, TRUE, TRUE, TRUE,
