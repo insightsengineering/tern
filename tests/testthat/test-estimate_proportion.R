@@ -12,6 +12,7 @@ testthat::test_that("prop_wilson returns right result", {
 })
 
 testthat::test_that("prop_strat_wilson returns right result", {
+  set.seed(1)
 
   # Testing data set
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
@@ -24,10 +25,9 @@ testthat::test_that("prop_strat_wilson returns right result", {
   table_strata <- table(rsp, strata)
   n_ws <- ncol(table_strata) # Number of weights
 
-
   expected <- list(
-    conf.int = c(lower = 0.4403587, upper = 0.6005081),
-    weights = c(0.1266197, 0.2071382, 0.2223792, 0.1606782, 0.1730650, 0.1101197)
+    conf.int = c(lower = 0.4073299, upper = 0.5647475),
+    weights = c(0.2074199, 0.1776464, 0.1915610, 0.1604678, 0.1351096, 0.1277952)
   )
   names(expected$weights) <- colnames(table_strata)
 
@@ -39,7 +39,7 @@ testthat::test_that("prop_strat_wilson returns right result", {
   testthat::expect_equal(expected, result, tolerance = 1e-5)
 
   # Test without estimating weights (all equal here)
-  expected <- c(lower = 0.4402518, upper = 0.6006098)
+  expected <- list(conf.int = c(lower = 0.4190436, upper = 0.5789733))
   result <- prop_strat_wilson(
     rsp = rsp, strata = strata,
     weights = rep(1 / n_ws, n_ws), # Not automatic setting of weights
@@ -112,7 +112,7 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
   # "Mid" case.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   result <- s_proportion(
-    x = rsp,
+    df = rsp,
     conf_level = 0.9,
     method = "jeffreys"
   )
@@ -129,7 +129,7 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
   # Corner case: Only responders.
   rsp <- c(TRUE, TRUE, TRUE, TRUE)
   result <- s_proportion(
-    x = rsp,
+    df = rsp,
     conf_level = 0.95,
     method = "jeffreys"
   )
@@ -137,7 +137,7 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
   expected <- list(
     n_prop = c(4, 1),
     prop_ci = formatters::with_label(
-      x = c(55.5237, 100),
+      c(55.5237, 100),
       label = "95% CI for Response Rates (Jeffreys)"
     )
   )
@@ -149,7 +149,7 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
   # "Mid" case.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   result <- s_proportion(
-    x = rsp,
+    df = rsp,
     conf_level = 0.9,
     method = "agresti-coull"
   )
@@ -166,7 +166,7 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
   # Edge case: Only responders.
   rsp <- c(TRUE, TRUE, TRUE, TRUE)
   result <- s_proportion(
-    x = rsp,
+    df = rsp,
     conf_level = 0.95,
     method = "agresti-coull"
   )
@@ -174,10 +174,72 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
   expected <- list(
     n_prop = c(4, 1),
     prop_ci = formatters::with_label(
-      x = c(45.4050, 100),
+      c(45.4050, 100),
       label = "95% CI for Response Rates (Agresti-Coull)"
     )
   )
   # Small additional difference acknowledged here.
   testthat::expect_equal(result, expected, tol = 0.00011, check.attributes = FALSE)
+})
+
+testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
+
+  # Data loading and processing
+  adrs <- scda::synthetic_cdisc_data("rcd_2022_06_27")$adrs
+  anl <- adrs %>%
+    dplyr::filter(PARAMCD == "BESRSPI") %>%
+    dplyr::mutate(is_rsp = AVALC %in% c("CR", "PR"))
+
+  result <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    add_colcounts() %>%
+    add_overall_col(label = "All") %>%
+    estimate_proportion(
+      vars = "is_rsp",
+      conf_level = 0.95,
+      method = "wilson",
+      .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
+    ) %>%
+    build_table(anl)
+  result <- get_formatted_cells(result)
+  expected <- rbind(
+    c("133.00 (99.25%)", "127.00 (94.78%)", "131.00 (99.24%)", "391.00 (97.75%)"),
+    c("(95.8940, 99.8681)", "(89.6097, 97.4468)", "(95.8337, 99.8661)", "(95.7797, 98.8118)")
+  )
+
+  testthat::expect_equal(result, expected, tol = 0.0001)
+
+})
+
+testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `rtables`", {
+  set.seed(1)
+
+  # Data loading and processing
+  adrs <- scda::synthetic_cdisc_data("rcd_2022_06_27")$adrs
+  anl <- adrs %>%
+    dplyr::filter(PARAMCD == "BESRSPI") %>%
+    dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
+
+  result <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    add_colcounts() %>%
+    add_overall_col(label = "All") %>%
+    estimate_proportion(
+      vars = "DTHFL",
+      conf_level = 0.95,
+      method = "strat_wilson",
+      variables = list(strata = c("SEX", "REGION1")),
+      .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
+    ) %>%
+    build_table(anl)
+
+  result <- get_formatted_cells(result)
+
+  expected <- rbind(
+    c("32.00 (23.88%)", "25.00 (18.66%)", "21.00 (15.91%)", "78.00 (19.50%)"),
+    c("(13.8757, 28.6814)", "(9.5263, 25.5939)", "(6.3043, 19.3884)", "(14.4206, 22.2236)")
+  )
+
+  testthat::expect_equal(result, expected)
+
 })
