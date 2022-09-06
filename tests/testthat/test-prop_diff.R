@@ -135,6 +135,10 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
     diff_ci = c(-0.285363076, 0.009989872)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_warning(prop_diff_cmh(
+    rsp = rsp[1:4], grp = grp[1:4], strata = interaction(strata_data[1:4,]),
+    conf_level = 0.90
+  ))
 })
 
 testthat::test_that("prop_diff_cmh works correctly when some strata don't have both groups", {
@@ -173,14 +177,14 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
 
 
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
-  # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
+  # "Mid" case: 3/4 respond in group A, 1/2 respond in group C.
   dta <- data.frame(
     rsp = c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE),
-    grp = factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+    grp = factor(c("A", "C", "A", "C", "A", "A"), levels = c("C", "A"))
   )
 
   l <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+    split_cols_by(var = "grp", ref_group = "C") %>%
     estimate_proportion_diff(
       vars = "rsp",
       conf_level = 0.90,
@@ -197,4 +201,35 @@ testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
   )
 
   testthat::expect_identical(to_string_matrix(result), expected)
+})
+
+testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtables`", {
+  nex <- 100 # Number of test rows
+  dta <- data.frame(
+    "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+    "grp" = sample(c("A", "B"), nex, TRUE),
+    "f1" = sample(c("a1", "a2"), nex, TRUE),
+    "f2" = sample(c("x", "y", "z"), nex, TRUE),
+    stringsAsFactors = TRUE
+  )
+  l <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
+    estimate_proportion_diff(
+      vars = "rsp",
+      variables = list(strata = c("f1", "f2")),
+      conf_level = 0.90,
+      .formats = c("xx.xxxx", "(xx.xxxx, xx.xxxx)"),
+      method = "cmh"
+    )
+
+  result <- build_table(l, df = dta)
+  result <- to_string_matrix(result)
+  expected <- structure(
+    c(
+      "", "Difference in Response rate (%)", "90% CI (CMH, without correction)",
+      "B", "", "", "A", "-1.2124", "(-17.2666, 14.8417)"
+    ),
+    .Dim = c(3L, 3L)
+  )
+  testthat::expect_identical(result, expected)
 })
