@@ -136,7 +136,7 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
   testthat::expect_warning(prop_diff_cmh(
-    rsp = rsp[1:4], grp = grp[1:4], strata = interaction(strata_data[1:4,]),
+    rsp = rsp[1:4], grp = grp[1:4], strata = interaction(strata_data[1:4, ]),
     conf_level = 0.90
   ))
 })

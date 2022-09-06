@@ -153,8 +153,8 @@ prop_strat_wilson <- function(rsp, strata, weights = NULL, conf_level = 0.95, ma
   } else {
     list(
       conf.int = c(
-      lower = lower,
-      upper = upper
+        lower = lower,
+        upper = upper
       )
     )
   }
@@ -311,7 +311,6 @@ s_proportion <- function(df,
                          ),
                          variables = list(strata = NULL, weights = NULL, max_nit = 10),
                          long = FALSE) {
-
   method <- match.arg(method)
   checkmate::assert_flag(long)
   assert_proportion_value(conf_level)
@@ -330,8 +329,7 @@ s_proportion <- function(df,
     # Pushing down checks to prop_strat_wilson
     weights <- variables$weights
     max_nit <- variables$max_nit
-
-  } else if (checkmate::test_subset(method, c("strat_wilson", "strat_wilsonc"))){
+  } else if (checkmate::test_subset(method, c("strat_wilson", "strat_wilsonc"))) {
     stop("To use stratified methods you need to specify the strata variables.")
   }
   if (missing(.var)) {
@@ -347,11 +345,13 @@ s_proportion <- function(df,
     "wilson" = prop_wilson(rsp, conf_level),
     "wilsonc" = prop_wilson(rsp, conf_level, correct = TRUE),
     "strat_wilson" = prop_strat_wilson(rsp, strata, weights,
-                                       conf_level, max_nit,
-                                       correct = FALSE)$conf.int,
+      conf_level, max_nit,
+      correct = FALSE
+    )$conf.int,
     "strat_wilsonc" = prop_strat_wilson(rsp, strata, weights,
-                                        conf_level, max_nit,
-                                        correct = TRUE)$conf.int,
+      conf_level, max_nit,
+      correct = TRUE
+    )$conf.int,
     "wald" = prop_wald(rsp, conf_level),
     "waldcc" = prop_wald(rsp, conf_level, correct = TRUE),
     "agresti-coull" = prop_agresti_coull(rsp, conf_level),

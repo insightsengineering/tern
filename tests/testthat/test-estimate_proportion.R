@@ -208,7 +208,6 @@ testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
   )
 
   testthat::expect_equal(result, expected, tol = 0.0001)
-
 })
 
 testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `rtables`", {
@@ -252,7 +251,7 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
       vars = "DTHFL",
       conf_level = 0.95,
       method = "strat_wilson",
-      variables = list(strata = c("SEX", "REGION1"), weights = rep(1/n_ws, n_ws), max_nit = 1),
+      variables = list(strata = c("SEX", "REGION1"), weights = rep(1 / n_ws, n_ws), max_nit = 1),
       .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
     ) %>%
     build_table(anl)
@@ -265,5 +264,4 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
   )
 
   testthat::expect_equal(result, expected)
-
 })

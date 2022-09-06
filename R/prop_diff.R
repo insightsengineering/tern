@@ -371,8 +371,10 @@ s_proportion_diff <- function(df,
       assert_df_with_variables(.ref_group, strata_vars)
 
       # Merging interaction strata for reference group rows data and remaining
-      strata <- c(interaction(.ref_group[strata_colnames]),
-                  interaction(df[strata_colnames]))
+      strata <- c(
+        interaction(.ref_group[strata_colnames]),
+        interaction(df[strata_colnames])
+      )
       strata <- as.factor(strata)
     }
 
