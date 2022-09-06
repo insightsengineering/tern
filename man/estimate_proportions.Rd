@@ -18,9 +18,9 @@ prop_wilson(rsp, conf_level, correct = FALSE)
 prop_strat_wilson(
   rsp,
   strata,
-  weights,
+  weights = NULL,
   conf_level = 0.95,
-  max_nit = 10,
+  max_nit = NULL,
   correct = FALSE
 )
 
@@ -33,18 +33,22 @@ prop_agresti_coull(rsp, conf_level)
 prop_jeffreys(rsp, conf_level)
 
 s_proportion(
-  x,
+  df,
+  .var,
   conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
-    "jeffreys"),
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
+    "strat_wilsonc", "agresti-coull", "jeffreys"),
+  variables = list(strata = NULL, weights = NULL, max_nit = 10),
   long = FALSE
 )
 
 a_proportion(
-  x,
+  df,
+  .var,
   conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
-    "jeffreys"),
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
+    "strat_wilsonc", "agresti-coull", "jeffreys"),
+  variables = list(strata = NULL, weights = NULL, max_nit = 10),
   long = FALSE
 )
 
@@ -77,13 +81,17 @@ that minimizes the weighted squared length of the confidence interval.}
 \item{max_nit}{maximum number of iterations for the iterative procedure used
 to find estimates of optimal weights.}
 
-\item{x}{(\code{logical})\cr whether each subject is a responder or not.
-\code{TRUE} represents a successful outcome.}
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{method}{(\code{string}) \cr
 the method used to construct the confidence interval for proportion of
 successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, \code{wilson},
-\code{agresti-coull} or \code{jeffreys}.}
+\code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{long}{(\code{flag})\cr a long description is required.}
 
@@ -105,6 +113,9 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+
+\item{x}{(\code{logical})\cr whether each subject is a responder or not.
+\code{TRUE} represents a successful outcome.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -183,9 +194,27 @@ prop_agresti_coull(rsp, conf_level = 0.95)
 
 prop_jeffreys(rsp, conf_level = 0.95)
 
+
+# Case with only vector of logical
 s_proportion(c(1, 0, 1, 0))
 
-a_proportion(c(1, 0, 1, 0))
+# Example for Stratified Wilson CI
+nex <- 100 # Number of example rows
+dta <- data.frame(
+  "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+  "grp" = sample(c("A", "B"), nex, TRUE),
+  "f1" = sample(c("a1", "a2"), nex, TRUE),
+  "f2" = sample(c("x", "y", "z"), nex, TRUE),
+  stringsAsFactors = TRUE
+)
+
+s_proportion(
+  df = dta,
+  .var = "rsp",
+  variables = list(strata = c("f1", "f2")),
+  conf_level = 0.90,
+  method = "strat_wilson"
+)
 
 dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),

@@ -198,9 +198,13 @@ prop_diff_cmh(
 # Summary
 
 ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
+nex <- 100 # Number of example rows
 dta <- data.frame(
-  rsp = c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE),
-  grp = factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+  "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+  "grp" = sample(c("A", "B"), nex, TRUE),
+  "f1" = sample(c("a1", "a2"), nex, TRUE),
+  "f2" = sample(c("x", "y", "z"), nex, TRUE),
+  stringsAsFactors = TRUE
 )
 
 s_proportion_diff(
@@ -210,6 +214,17 @@ s_proportion_diff(
   .in_ref_col = FALSE,
   conf_level = 0.90,
   method = "ha"
+)
+
+# CMH example with strata
+s_proportion_diff(
+  df = subset(dta, grp == "A"),
+  .var = "rsp",
+  .ref_group = subset(dta, grp == "B"),
+  .in_ref_col = FALSE,
+  variables = list(strata = c("f1", "f2")),
+  conf_level = 0.90,
+  method = "cmh"
 )
 
 a_proportion_diff(

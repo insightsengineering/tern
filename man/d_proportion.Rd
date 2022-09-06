@@ -12,7 +12,7 @@ d_proportion(conf_level, method, long = FALSE)
 \item{method}{(\code{string}) \cr
 the method used to construct the confidence interval for proportion of
 successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, \code{wilson},
-\code{agresti-coull} or \code{jeffreys}.}
+\code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
 
 \item{long}{(\code{flag})\cr Whether a long or a short (default) description is required.}
 }
