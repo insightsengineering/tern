@@ -160,9 +160,17 @@ strata_data <- data.frame(
   "f2" = sample(c("x", "y", "z"), 100, TRUE),
   stringsAsFactors = TRUE
 )
+strata <- interaction(strata_data)
+n_ws <- ncol(table(rsp, strata)) # Number of weights
 
 prop_strat_wilson(
-  rsp = rsp, strata = interaction(strata_data),
+  rsp = rsp, strata = strata,
+  conf_level = 0.90
+)
+
+prop_strat_wilson(
+  rsp = rsp, strata = strata,
+  weights = rep(1 / n_ws, n_ws), # Not automatic setting of weights
   conf_level = 0.90
 )
 

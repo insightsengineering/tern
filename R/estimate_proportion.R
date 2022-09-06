@@ -292,12 +292,12 @@ s_proportion <- function(x,
 
   prop_ci <- switch(method,
     "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
-    wilson = prop_wilson(rsp, conf_level),
-    wilsonc = prop_wilson(rsp, conf_level, correct = TRUE),
-    wald = prop_wald(rsp, conf_level),
-    waldcc = prop_wald(rsp, conf_level, correct = TRUE),
+    "wilson" = prop_wilson(rsp, conf_level),
+    "wilsonc" = prop_wilson(rsp, conf_level, correct = TRUE),
+    "wald" = prop_wald(rsp, conf_level),
+    "waldcc" = prop_wald(rsp, conf_level, correct = TRUE),
     "agresti-coull" = prop_agresti_coull(rsp, conf_level),
-    jeffreys = prop_jeffreys(rsp, conf_level)
+    "jeffreys" = prop_jeffreys(rsp, conf_level)
   )
 
   list(
