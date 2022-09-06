@@ -308,9 +308,13 @@ prop_diff_cmh <- function(rsp,
 #' # Summary
 #'
 #' ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
+#' nex <- 100 # Number of example rows
 #' dta <- data.frame(
-#'   rsp = c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE),
-#'   grp = factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+#'   "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+#'   "grp" = sample(c("A", "B"), nex, TRUE),
+#'   "f1" = sample(c("a1", "a2"), nex, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), nex, TRUE),
+#'   stringsAsFactors = TRUE
 #' )
 #'
 #' s_proportion_diff(
@@ -320,6 +324,17 @@ prop_diff_cmh <- function(rsp,
 #'   .in_ref_col = FALSE,
 #'   conf_level = 0.90,
 #'   method = "ha"
+#' )
+#'
+#' # CMH example with strata
+#' s_proportion_diff(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE,
+#'   variables = list(strata = c("f1", "f2")),
+#'   conf_level = 0.90,
+#'   method = "cmh"
 #' )
 #'
 #' @export
@@ -335,7 +350,7 @@ s_proportion_diff <- function(df,
                               )) {
   method <- match.arg(method)
   y <- list(diff = "", diff_ci = "")
-
+  browser()
   if (!.in_ref_col) {
     rsp <- c(.ref_group[[.var]], df[[.var]])
     grp <- factor(
@@ -347,12 +362,18 @@ s_proportion_diff <- function(df,
     )
 
     if (!is.null(variables$strata)) {
-      strata <- variables$strata
-      checkmate::assert_false(is.null(strata))
-      strata_vars <- stats::setNames(as.list(strata), strata)
+      strata_colnames <- variables$strata
+      checkmate::assert_character(strata_colnames, null.ok = FALSE)
+      strata_vars <- stats::setNames(as.list(strata_colnames), strata)
+
+      # Checks if strata variables are in a well formatted data frame
       assert_df_with_variables(df, strata_vars)
       assert_df_with_variables(.ref_group, strata_vars)
-      strata <- factor(c(interaction(.ref_group[strata]), interaction(df[strata])))
+
+      # Merging interaction strata for reference group rows data and remaining
+      strata <- c(interaction(.ref_group[strata_colnames]),
+                  interaction(df[strata_colnames]))
+      strata <- as.factor(strata)
     }
 
     y <- switch(method,
