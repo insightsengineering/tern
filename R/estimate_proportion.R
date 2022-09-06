@@ -78,7 +78,7 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #' )
 #'
 #' @export
-prop_strat_wilson <- function(rsp, strata, weights, conf_level = 0.95, max_nit = 10, correct = FALSE) {
+prop_strat_wilson <- function(rsp, strata, weights = NULL, conf_level = 0.95, max_nit = NULL, correct = FALSE) {
 
   # Checking the inputs
   checkmate::assert_logical(rsp, any.missing = FALSE)
@@ -88,16 +88,20 @@ prop_strat_wilson <- function(rsp, strata, weights, conf_level = 0.95, max_nit =
   tbl <- table(rsp, strata)
   n_ws <- ncol(tbl) # Number of centers
 
-  # Checking the weights
+  # Checking the weights and maximum number of iterations
   do_iter <- FALSE
-  if (missing(weights)) {
+  if (is.null(weights)) {
     weights <- rep(1 / n_ws, n_ws) # Initialization for iterative procedure
     do_iter <- TRUE
-    max_it <- max_nit # Max number iterations
+
+    # Iteration parameters
+    if (is.null(max_nit)) max_nit <- 10
+    checkmate::assert_int(max_nit, na.ok = FALSE, null.ok = FALSE, lower = 1)
     it <- 1
   }
   checkmate::assert_numeric(weights, lower = 0, upper = 1, any.missing = FALSE, len = ncol(tbl))
   checkmate::assert_int(sum(weights), lower = 1, upper = 1)
+
 
   xs <- tbl["TRUE", ]
   ns <- colSums(tbl)
@@ -110,21 +114,23 @@ prop_strat_wilson <- function(rsp, strata, weights, conf_level = 0.95, max_nit =
   # Iterative setting of weights if they were not set externally
   if (do_iter) {
     ws_old <- weights
-    while (it < max_it) {
+    while (it < max_nit) {
       ws_new_t <- (1 + strata_qnorm^2 / ns)^2 / (vars + strata_qnorm^2 / (4 * ns^2))
       ws_new <- ws_new_t / sum(ws_new_t)
       strata_qnorm <- strata_normal_quantile(vars, ws_new, conf_level)
       if (sum(abs(ws_new - ws_old)) < 0.001) break
       ws_old <- ws_new
     }
+  } else {
+    ws_new <- weights
   }
 
   strata_conf_level <- 2 * pnorm(strata_qnorm) - 1
 
   ci_by_strata <- Map(
     function(x, n) {
-      # Classical Wilson's confidence interval
-      stats::prop.test(x, n, correct = correct, conf.level = strata_conf_level)$conf.int
+      # Classic Wilson's confidence interval
+      suppressWarnings(stats::prop.test(x, n, correct = correct, conf.level = strata_conf_level)$conf.int)
     },
     x = xs,
     n = ns
@@ -132,8 +138,8 @@ prop_strat_wilson <- function(rsp, strata, weights, conf_level = 0.95, max_nit =
   lower_by_strata <- sapply(ci_by_strata, "[", 1L)
   upper_by_strata <- sapply(ci_by_strata, "[", 2L)
 
-  lower <- sum(weights * lower_by_strata)
-  upper <- sum(weights * upper_by_strata)
+  lower <- sum(ws_new * lower_by_strata)
+  upper <- sum(ws_new * upper_by_strata)
 
   # Return values
   if (do_iter) {
@@ -145,9 +151,11 @@ prop_strat_wilson <- function(rsp, strata, weights, conf_level = 0.95, max_nit =
       weights = ws_new
     )
   } else {
-    c(
+    list(
+      conf.int = c(
       lower = lower,
       upper = upper
+      )
     )
   }
 }
@@ -266,27 +274,71 @@ prop_jeffreys <- function(rsp,
 #' @param method (`string`) \cr
 #'   the method used to construct the confidence interval for proportion of
 #'   successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`, `wilson`,
-#'   `agresti-coull` or `jeffreys`.
+#'   `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
 #' @param long (`flag`)\cr a long description is required.
 #'
 #' @examples
+#'
+#' # Case with only vector of logical
 #' s_proportion(c(1, 0, 1, 0))
 #'
+#' # Example for Stratified Wilson CI
+#' nex <- 100 # Number of example rows
+#' dta <- data.frame(
+#'   "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+#'   "grp" = sample(c("A", "B"), nex, TRUE),
+#'   "f1" = sample(c("a1", "a2"), nex, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), nex, TRUE),
+#'   stringsAsFactors = TRUE
+#' )
+#'
+#' s_proportion(
+#'   df = dta,
+#'   .var = "rsp",
+#'   variables = list(strata = c("f1", "f2")),
+#'   conf_level = 0.90,
+#'   method = "strat_wilson"
+#' )
+#'
 #' @export
-s_proportion <- function(x,
+s_proportion <- function(df,
+                         .var,
                          conf_level = 0.95,
                          method = c(
                            "waldcc", "wald", "clopper-pearson",
-                           "wilson", "wilsonc", "agresti-coull", "jeffreys"
+                           "wilson", "wilsonc", "strat_wilson", "strat_wilsonc",
+                           "agresti-coull", "jeffreys"
                          ),
+                         variables = list(strata = NULL, weights = NULL, max_nit = 10),
                          long = FALSE) {
-  x <- as.logical(x)
 
   method <- match.arg(method)
   checkmate::assert_flag(long)
   assert_proportion_value(conf_level)
 
-  rsp <- x
+  if (!is.null(variables$strata)) {
+    # Checks for strata
+    if (missing(df)) stop("When doing stratified analysis a data.frame with specific columns is needed.")
+    strata_colnames <- variables$strata
+    checkmate::assert_character(strata_colnames, null.ok = FALSE)
+    strata_vars <- stats::setNames(as.list(strata_colnames), strata_colnames)
+    assert_df_with_variables(df, strata_vars)
+
+    strata <- interaction(df[strata_colnames])
+    strata <- as.factor(strata)
+
+    # Pushing down checks to prop_strat_wilson
+    weights <- variables$weights
+    max_nit <- variables$max_nit
+
+  } else if (checkmate::test_subset(method, c("strat_wilson", "strat_wilsonc"))){
+    stop("To use stratified methods you need to specify the strata variables.")
+  }
+  if (missing(.var)) {
+    rsp <- as.logical(df)
+  } else {
+    rsp <- as.logical(df[[.var]])
+  }
   n <- sum(rsp)
   p_hat <- mean(rsp)
 
@@ -294,6 +346,12 @@ s_proportion <- function(x,
     "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
     "wilson" = prop_wilson(rsp, conf_level),
     "wilsonc" = prop_wilson(rsp, conf_level, correct = TRUE),
+    "strat_wilson" = prop_strat_wilson(rsp, strata, weights,
+                                       conf_level, max_nit,
+                                       correct = FALSE)$conf.int,
+    "strat_wilsonc" = prop_strat_wilson(rsp, strata, weights,
+                                        conf_level, max_nit,
+                                        correct = TRUE)$conf.int,
     "wald" = prop_wald(rsp, conf_level),
     "waldcc" = prop_wald(rsp, conf_level, correct = TRUE),
     "agresti-coull" = prop_agresti_coull(rsp, conf_level),
@@ -310,9 +368,6 @@ s_proportion <- function(x,
 
 #' @describeIn estimate_proportions Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#'
-#' @examples
-#' a_proportion(c(1, 0, 1, 0))
 #'
 #' @export
 a_proportion <- make_afun(
@@ -390,7 +445,9 @@ d_proportion <- function(conf_level,
     "waldcc" = "Wald, with correction",
     "wald" = "Wald, without correction",
     "wilson" = "Wilson, without correction",
+    "strat_wilson" = "Stratified Wilson, without correction",
     "wilsonc" = "Wilson, with correction",
+    "strat_wilsonc" = "Stratified Wilson, with correction",
     "agresti-coull" = "Agresti-Coull",
     "jeffreys" = "Jeffreys",
     stop(paste(method, "does not have a description"))

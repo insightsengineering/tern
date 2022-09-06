@@ -350,7 +350,7 @@ s_proportion_diff <- function(df,
                               )) {
   method <- match.arg(method)
   y <- list(diff = "", diff_ci = "")
-  browser()
+
   if (!.in_ref_col) {
     rsp <- c(.ref_group[[.var]], df[[.var]])
     grp <- factor(
