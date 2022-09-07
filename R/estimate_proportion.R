@@ -83,7 +83,7 @@ prop_strat_wilson <- function(rsp, strata, weights = NULL, conf_level = 0.95, ma
   # Checking the inputs
   checkmate::assert_logical(rsp, any.missing = FALSE)
   checkmate::assert_factor(strata, len = length(rsp))
-  tern:::assert_proportion_value(conf_level)
+  assert_proportion_value(conf_level)
 
   tbl <- table(rsp, strata)
   n_ws <- ncol(tbl) # Number of centers
