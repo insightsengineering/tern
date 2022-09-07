@@ -29,6 +29,7 @@ testthat::test_that("strata_normal_quantile works with general factor table", {
 
   testthat::expect_equal(result, 1.133272, tol = 0.000001)
 })
+
 testthat::test_that("update_weights_strat_wilson works with general inputs", {
   set.seed(1)
 
@@ -44,6 +45,39 @@ testthat::test_that("update_weights_strat_wilson works with general inputs", {
   )
 
   testthat::expect_equal(result[1:2], expected, tol = 0.000001)
+})
+
+testthat::test_that("update_weights_strat_wilson convergence test", {
+  set.seed(1)
+
+  # Important parameters
+  n_to_test <- 1000 # Number of entries
+  n_ltrs <- 15 # Number of centers/strata = n_ltrs * 3 (i.e. x, y, z)
+
+  # Table creation
+  strata_data <- data.frame(
+    "rsp" = sample(c(TRUE, FALSE), n_to_test, TRUE),
+    "f1" = sample(letters[1:n_ltrs], n_to_test, TRUE),
+    "f2" = sample(c("x", "y", "z"), n_to_test, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data[2:3])
+  tbl_strata <- table(strata_data[[1]], strata)
+  n_strata <- ncol(tbl_strata) # Number of weights or centers
+
+  # Defining inputs
+  xs <- tbl_strata["TRUE", ]
+  ns <- colSums(tbl_strata)
+  ests <- xs / ns
+  vs <- ests * (1 - ests) / ns
+  ws <- rep(1 / length(vs), length(vs))
+  cl <- 0.95 # Confidence level
+  ni <- 1000 # Maximum number of allowed iterations
+  tol <- 0.0001 # Tolerance for convergence
+  sq <- strata_normal_quantile(vs, ws, cl) # Initial quantiles
+
+  result <- tern:::update_weights_strat_wilson(vs, sq, ws, ns, ni, cl, tol)
+  testthat::expect_equal(result$n_it, 2)
 })
 
 testthat::test_that("prop_strat_wilson returns right result", {
