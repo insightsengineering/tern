@@ -40,9 +40,11 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #'
 #' @inheritParams prop_strat_wilson
 #'
+#' @seealso [prop_strat_wilson()]
+#'
 #' @examples
 #' \dontrun{
-#'      strata_data <- table(data.frame(
+#'     strata_data <- table(data.frame(
 #'        "f1" = sample(c(TRUE, FALSE), 100, TRUE),
 #'        "f2" = sample(c("x", "y", "z"), 100, TRUE),
 #'        stringsAsFactors = TRUE
@@ -51,7 +53,7 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #'     ests <- strata_data["TRUE", ] / ns
 #'     vars <- ests * (1 - ests) / ns
 #'     weights <- rep(1 / length(ns), length(ns))
-#'     tern:::strata_normal_quantile(vars, weights, 0.95)
+#'     strata_normal_quantile(vars, weights, 0.95)
 #' }
 #'
 #' @keywords internal
@@ -61,6 +63,66 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
   sqrt(sum(summands)) / sum(sqrt(summands)) * qnorm((1 + conf_level) / 2)
 }
 
+#' Helper function for the estimation of weights for `prop_strat_wilson`
+#'
+#' @description
+#'   This function wraps the iteration procedure that allows you to estimate
+#'   the weights for each proportional strata. This assumes to minimize the
+#'   weighted squared length of the confidence interval. See [prop_strat_wilson()]
+#'   for references and details.
+#'
+#' @inheritParams prop_strat_wilson
+#' @param vars (`vector` of `numeric`) \cr
+#'   normalized proportions for each strata.
+#' @param strata_qnorm (`numeric`) \cr
+#'   initial estimation with identical weights of the quantiles.
+#' @param ws_old (`vector` of `numeric`) \cr
+#'   initial weights used to calculate `strata_qnorm`. This can be optimized in
+#'   the future if we need to estimate better initial weights.
+#' @param max_nit (`integer`) \cr
+#'   maximum number of iterations to be tried. Convergence is always checked.
+#' @param tol (`numeric`) \cr
+#'   tolerance threshold for convergence.
+#'
+#' @seealso [prop_strat_wilson()]
+#'
+#' @examples
+#' \dontrun{
+#'     vs <- c(0.011, 0.013, 0.012, 0.014, 0.017, 0.018)
+#'     sq <- 0.674
+#'     ws <- rep(1 / length(vs), length(vs))
+#'     ns <- c(22, 18, 17, 17, 14, 12)
+#'
+#'     update_weights_strat_wilson(vs, sq, ws, ns, 100, 0.95, 0.001)
+#' }
+#'
+#' @keywords internal
+update_weights_strat_wilson <- function(vars,
+                                        strata_qnorm,
+                                        ws_old,
+                                        n_per_strata,
+                                        max_nit = 50,
+                                        conf_level = 0.95,
+                                        tol = 0.001){
+  it <- 1
+  diff_v <- NULL
+  while (it <= max_nit) {
+    ws_new_t <- (1 + strata_qnorm^2 / n_per_strata)^2
+    ws_new_b <- (vars + strata_qnorm^2 / (4 * n_per_strata^2))
+    ws_new <- ws_new_t / ws_new_b
+    ws_new <- ws_new / sum(ws_new)
+    strata_qnorm <- strata_normal_quantile(vars, ws_new, conf_level)
+    diff_v <- c(diff_v, sum(abs(ws_new - ws_old)))
+    if (diff_v[length(diff_v)] < tol) break
+    ws_old <- ws_new
+    it <- it + 1
+  }
+  return(list(
+    "n_it" = it,
+    "weights" = ws_new,
+    "diff_v" = diff_v
+  ))
+}
 #' @describeIn estimate_proportions Calculates the stratified Wilson confidence
 #'   interval for unequal proportions as described in (Yan and Su 2010).
 #'
@@ -130,7 +192,6 @@ prop_strat_wilson <- function(rsp,
     # Iteration parameters
     if (is.null(max_nit)) max_nit <- 10
     checkmate::assert_int(max_nit, na.ok = FALSE, null.ok = FALSE, lower = 1)
-    it <- 1
   }
   checkmate::assert_numeric(weights, lower = 0, upper = 1, any.missing = FALSE, len = ncol(tbl))
   checkmate::assert_int(sum(weights), lower = 1, upper = 1)
@@ -146,14 +207,7 @@ prop_strat_wilson <- function(rsp,
 
   # Iterative setting of weights if they were not set externally
   if (do_iter) {
-    ws_old <- weights
-    while (it < max_nit) {
-      ws_new_t <- (1 + strata_qnorm^2 / ns)^2 / (vars + strata_qnorm^2 / (4 * ns^2))
-      ws_new <- ws_new_t / sum(ws_new_t)
-      strata_qnorm <- strata_normal_quantile(vars, ws_new, conf_level)
-      if (sum(abs(ws_new - ws_old)) < 0.001) break
-      ws_old <- ws_new
-    }
+    ws_new <- update_weights_strat_wilson(vars, strata_qnorm, weights, ns, max_nit, conf_level)$weights
   } else {
     ws_new <- weights
   }

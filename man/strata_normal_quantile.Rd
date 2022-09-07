@@ -23,7 +23,7 @@ proportions for each strata are unequal.
 }
 \examples{
 \dontrun{
-     strata_data <- table(data.frame(
+    strata_data <- table(data.frame(
        "f1" = sample(c(TRUE, FALSE), 100, TRUE),
        "f2" = sample(c("x", "y", "z"), 100, TRUE),
        stringsAsFactors = TRUE
@@ -32,8 +32,11 @@ proportions for each strata are unequal.
     ests <- strata_data["TRUE", ] / ns
     vars <- ests * (1 - ests) / ns
     weights <- rep(1 / length(ns), length(ns))
-    tern:::strata_normal_quantile(vars, weights, 0.95)
+    strata_normal_quantile(vars, weights, 0.95)
 }
 
+}
+\seealso{
+\code{\link[=prop_strat_wilson]{prop_strat_wilson()}}
 }
 \keyword{internal}

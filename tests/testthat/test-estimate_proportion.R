@@ -29,6 +29,22 @@ testthat::test_that("strata_normal_quantile works with general factor table", {
 
   testthat::expect_equal(result, 1.133272, tol = 0.000001)
 })
+testthat::test_that("update_weights_strat_wilson works with general inputs", {
+  set.seed(1)
+
+  vs <- c(0.011, 0.013, 0.012, 0.014, 0.017, 0.018)
+  sq <- 0.674
+  ws <- rep(1 / length(vs), length(vs))
+  ns <- c(22, 18, 17, 17, 14, 12)
+
+  result <- update_weights_strat_wilson(vs, sq, ws, ns, 100, 0.95, 0.001)
+  expected <- list(
+    "n_it" = 3,
+    "weights" = c(0.2067191, 0.1757727, 0.1896962, 0.1636346, 0.1357615, 0.1284160)
+  )
+
+  testthat::expect_equal(result[1:2], expected, tol = 0.000001)
+})
 
 testthat::test_that("prop_strat_wilson returns right result", {
   set.seed(1)
