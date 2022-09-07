@@ -124,13 +124,13 @@ update_weights_strat_wilson <- function(vars,
   ))
 }
 #' @describeIn estimate_proportions Calculates the stratified Wilson confidence
-#'   interval for unequal proportions as described in (Yan and Su 2010).
+#'   interval for unequal proportions as described in (`Yan` and `Su` 2010).
 #'
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
 #' @param weights (`vector` of `numeric`) \cr
 #'   weights for each level of the strata. If missing, they are
-#'   estimated using the iterative algorithm proposed in (Yan and Su 2010)
+#'   estimated using the iterative algorithm proposed in (`Yan` and `Su` 2010)
 #'   that minimizes the weighted squared length of the confidence interval.
 #' @param max_nit (`integer`) \cr
 #'   maximum number of iterations for the iterative procedure used
