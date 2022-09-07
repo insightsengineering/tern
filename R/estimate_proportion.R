@@ -60,7 +60,7 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 strata_normal_quantile <- function(vars, weights, conf_level) {
   summands <- weights^2 * vars
   # Stratified quantile
-  sqrt(sum(summands)) / sum(sqrt(summands)) * qnorm((1 + conf_level) / 2)
+  sqrt(sum(summands)) / sum(sqrt(summands)) * stats::qnorm((1 + conf_level) / 2)
 }
 
 #' Helper function for the estimation of weights for `prop_strat_wilson`
