@@ -56,6 +56,21 @@ testthat::test_that("prop_strat_wilson returns right result", {
   )
 
   testthat::expect_equal(expected, result, tolerance = 1e-5)
+})
+
+testthat::test_that("prop_strat_wilson returns right result with inserted weights", {
+  set.seed(1)
+
+  # Testing data set
+  rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 100, TRUE),
+    "f2" = sample(c("x", "y", "z"), 100, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+  table_strata <- table(rsp, strata)
+  n_ws <- ncol(table_strata) # Number of weights
 
   # Test without estimating weights (all equal here)
   expected <- list(conf.int = c(lower = 0.4190436, upper = 0.5789733))
@@ -259,6 +274,16 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
   )
 
   testthat::expect_equal(result, expected)
+})
+
+testthat::test_that("`estimate_proportion` and strat_wilson with equal weights and specific number of interactions is compatible with `rtables`", {
+  set.seed(1)
+
+  # Data loading and processing
+  adrs <- scda::synthetic_cdisc_data("rcd_2022_06_27")$adrs
+  anl <- adrs %>%
+    dplyr::filter(PARAMCD == "BESRSPI") %>%
+    dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
 
   # Changing other variables (weights and max_nt)
   n_ws <- length(unique(anl$SEX)) * length(unique(anl$REGION1))

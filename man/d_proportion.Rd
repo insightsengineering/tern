@@ -14,7 +14,8 @@ the method used to construct the confidence interval for proportion of
 successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, \code{wilson},
 \code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
 
-\item{long}{(\code{flag})\cr Whether a long or a short (default) description is required.}
+\item{long}{(\code{flag})\cr
+whether a long or a short (default) description is required.}
 }
 \value{
 String describing the analysis.

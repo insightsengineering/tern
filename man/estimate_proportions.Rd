@@ -74,14 +74,19 @@ estimate_proportion(
 \item{strata}{(\code{factor})\cr
 with one level per stratum and same length as \code{rsp}.}
 
-\item{weights}{weights for each level of the strata. If missing, they are
-estimated using the iterative algorithm proposed in \link{Yan and Su (2010)}
+\item{weights}{(\code{vector} of \code{numeric}) \cr
+weights for each level of the strata. If missing, they are
+estimated using the iterative algorithm proposed in (Yan and Su 2010)
 that minimizes the weighted squared length of the confidence interval.}
 
-\item{max_nit}{maximum number of iterations for the iterative procedure used
+\item{max_nit}{(\code{integer}) \cr
+maximum number of iterations for the iterative procedure used
 to find estimates of optimal weights.}
 
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{logical} vector or \code{data.frame})\cr
+if only logical indicates whether each subject is a responder or not.
+\code{TRUE} represents a successful outcome. If a \code{data.frame} is provided,
+also the \code{strata} parameters in \code{variables} must be provided.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
@@ -113,9 +118,6 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
-\item{x}{(\code{logical})\cr whether each subject is a responder or not.
-\code{TRUE} represents a successful outcome.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -128,7 +130,7 @@ Estimate the proportion of responders within a studied population.
 Also referred to as Wilson score interval.
 
 \item \code{prop_strat_wilson()}: Calculates the stratified Wilson confidence
-interval for unequal proportions as described in \link{Yan and Su (2010)}.
+interval for unequal proportions as described in (Yan and Su 2010).
 
 \item \code{prop_clopper_pearson()}: the Clopper-Pearson interval calls
 \code{\link[stats:binom.test]{stats::binom.test()}}. Also referred to as the \code{exact} method.
@@ -172,7 +174,7 @@ strata_data <- data.frame(
   stringsAsFactors = TRUE
 )
 strata <- interaction(strata_data)
-n_ws <- ncol(table(rsp, strata)) # Number of weights
+n_strata <- ncol(table(rsp, strata)) # Number of weights or centers
 
 prop_strat_wilson(
   rsp = rsp, strata = strata,
@@ -181,10 +183,9 @@ prop_strat_wilson(
 
 prop_strat_wilson(
   rsp = rsp, strata = strata,
-  weights = rep(1 / n_ws, n_ws), # Not automatic setting of weights
+  weights = rep(1 / n_strata, n_strata), # Not automatic setting of weights
   conf_level = 0.90
 )
-
 prop_clopper_pearson(rsp, conf_level = .95)
 
 prop_wald(rsp, conf_level = 0.95)
@@ -227,4 +228,9 @@ basic_table() \%>\%
   estimate_proportion(vars = "AVAL") \%>\%
   build_table(df = dta_test)
 
+}
+\references{
+\itemize{
+\item Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.
+}
 }

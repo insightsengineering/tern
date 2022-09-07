@@ -106,7 +106,12 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #' }
 #'
 #' @export
-prop_strat_wilson <- function(rsp, strata, weights = NULL, conf_level = 0.95, max_nit = NULL, correct = FALSE) {
+prop_strat_wilson <- function(rsp,
+                              strata,
+                              weights = NULL,
+                              conf_level = 0.95,
+                              max_nit = NULL,
+                              correct = FALSE) {
 
   # Checking the inputs
   checkmate::assert_logical(rsp, any.missing = FALSE)
@@ -114,7 +119,7 @@ prop_strat_wilson <- function(rsp, strata, weights = NULL, conf_level = 0.95, ma
   assert_proportion_value(conf_level)
 
   tbl <- table(rsp, strata)
-  n_strata <- ncol(tbl) # Number of centers or weights
+  n_strata <- ncol(tbl) # Number of centers and weights
 
   # Checking the weights and maximum number of iterations.
   do_iter <- FALSE
@@ -292,17 +297,19 @@ prop_jeffreys <- function(rsp,
   c(l_ci, u_ci)
 }
 
-
 #' @describeIn estimate_proportions statistics function estimating a
 #'   proportion along with its confidence interval.
 #'
+#' @param df (`logical` vector or `data.frame`)\cr
+#'   if only logical indicates whether each subject is a responder or not.
+#'   `TRUE` represents a successful outcome. If a `data.frame` is provided,
+#'   also the `strata` parameters in `variables` must be provided.
 #' @inheritParams argument_convention
-#' @param x (`logical`)\cr whether each subject is a responder or not.
-#' `TRUE` represents a successful outcome.
 #' @param method (`string`) \cr
 #'   the method used to construct the confidence interval for proportion of
 #'   successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`, `wilson`,
 #'   `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
+#' @inheritParams rtables::
 #' @param long (`flag`)\cr a long description is required.
 #'
 #' @examples
@@ -456,7 +463,8 @@ estimate_proportion <- function(lyt,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_proportion
-#' @param long (`flag`)\cr Whether a long or a short (default) description is required.
+#' @param long (`flag`)\cr
+#'   whether a long or a short (default) description is required.
 #'
 #' @return String describing the analysis.
 #'
