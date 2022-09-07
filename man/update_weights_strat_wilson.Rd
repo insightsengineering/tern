@@ -41,12 +41,12 @@ for references and details.
 }
 \examples{
 \dontrun{
-    vs <- c(0.011, 0.013, 0.012, 0.014, 0.017, 0.018)
-    sq <- 0.674
-    ws <- rep(1 / length(vs), length(vs))
-    ns <- c(22, 18, 17, 17, 14, 12)
+vs <- c(0.011, 0.013, 0.012, 0.014, 0.017, 0.018)
+sq <- 0.674
+ws <- rep(1 / length(vs), length(vs))
+ns <- c(22, 18, 17, 17, 14, 12)
 
-    update_weights_strat_wilson(vs, sq, ws, ns, 100, 0.95, 0.001)
+update_weights_strat_wilson(vs, sq, ws, ns, 100, 0.95, 0.001)
 }
 
 }
