@@ -49,7 +49,7 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #'   that minimizes the weighted squared length of the confidence interval.
 #' @param max_nit maximum number of iterations for the iterative procedure used
 #'   to find estimates of optimal weights.
-#' @param correct `logical`\cr
+#' @param correct (`flag`)\cr
 #'   include the continuity correction. For further information, see for example
 #'   [stats::prop.test()].
 #'
