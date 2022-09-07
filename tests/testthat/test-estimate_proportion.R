@@ -94,18 +94,18 @@ testthat::test_that("prop_strat_wilson returns right result", {
   table_strata <- table(rsp, strata)
   n_ws <- ncol(table_strata) # Number of weights
 
-  expected <- list(
-    conf.int = c(lower = 0.4073299, upper = 0.5647475),
-    weights = c(0.2074199, 0.1776464, 0.1915610, 0.1604678, 0.1351096, 0.1277952)
-  )
-  names(expected$weights) <- colnames(table_strata)
-
   result <- prop_strat_wilson(
     rsp = rsp, strata = strata,
     conf_level = 0.90
   )
 
-  testthat::expect_equal(expected, result, tolerance = 1e-5)
+  expected <- list(
+    conf.int = c(lower = 0.4072891, upper = 0.5647887),
+    weights = c(0.2074199, 0.1776464, 0.1915610, 0.1604678, 0.1351096, 0.1277952)
+  )
+  names(expected$weights) <- colnames(table_strata)
+
+  testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
 testthat::test_that("prop_strat_wilson returns right result with inserted weights", {
@@ -320,7 +320,7 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
 
   expected <- rbind(
     c("32.00 (23.88%)", "25.00 (18.66%)", "21.00 (15.91%)", "78.00 (19.50%)"),
-    c("(13.8757, 28.6814)", "(9.5263, 25.5939)", "(6.3043, 19.3884)", "(14.4206, 22.2236)")
+    c("(13.9582, 28.4252)", "(9.5470, 25.5093)", "(6.5132, 18.4061)", "(14.5760, 21.9151)")
   )
 
   testthat::expect_equal(result, expected)
