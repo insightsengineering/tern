@@ -31,8 +31,30 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
   as.numeric(y$conf.int)
 }
 
-
-# help function for prop_strat_wilson
+#' Helper function for the estimation of stratified quantiles
+#'
+#' @description
+#'   This function wraps the estimation of stratified percentiles when we assume
+#'   the approximation for large numbers. This is necessary only in the case
+#'   proportions for each strata are unequal.
+#'
+#' @inheritParams prop_strat_wilson
+#'
+#' @examples
+#' \dontrun{
+#'      strata_data <- table(data.frame(
+#'        "f1" = sample(c(TRUE, FALSE), 100, TRUE),
+#'        "f2" = sample(c("x", "y", "z"), 100, TRUE),
+#'        stringsAsFactors = TRUE
+#'     ))
+#'     ns <- colSums(strata_data)
+#'     ests <- strata_data["TRUE", ] / ns
+#'     vars <- ests * (1 - ests) / ns
+#'     weights <- rep(1 / length(ns), length(ns))
+#'     tern:::strata_normal_quantile(vars, weights, 0.95)
+#' }
+#'
+#' @keywords internal
 strata_normal_quantile <- function(vars, weights, conf_level) {
   summands <- weights^2 * vars
   # Stratified quantile
@@ -40,14 +62,16 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 }
 
 #' @describeIn estimate_proportions Calculates the stratified Wilson confidence
-#'   interval for unequal proportions as described in [Yan and Su (2010)].
+#'   interval for unequal proportions as described in (Yan and Su 2010).
 #'
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
-#' @param weights weights for each level of the strata. If missing, they are
-#'   estimated using the iterative algorithm proposed in [Yan and Su (2010)]
+#' @param weights (`vector` of `numeric`) \cr
+#'   weights for each level of the strata. If missing, they are
+#'   estimated using the iterative algorithm proposed in (Yan and Su 2010)
 #'   that minimizes the weighted squared length of the confidence interval.
-#' @param max_nit maximum number of iterations for the iterative procedure used
+#' @param max_nit (`integer`) \cr
+#'   maximum number of iterations for the iterative procedure used
 #'   to find estimates of optimal weights.
 #' @param correct (`flag`)\cr
 #'   include the continuity correction. For further information, see for example
@@ -64,7 +88,7 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #'   stringsAsFactors = TRUE
 #' )
 #' strata <- interaction(strata_data)
-#' n_ws <- ncol(table(rsp, strata)) # Number of weights
+#' n_strata <- ncol(table(rsp, strata)) # Number of weights or centers
 #'
 #' prop_strat_wilson(
 #'   rsp = rsp, strata = strata,
@@ -73,9 +97,13 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #'
 #' prop_strat_wilson(
 #'   rsp = rsp, strata = strata,
-#'   weights = rep(1 / n_ws, n_ws), # Not automatic setting of weights
+#'   weights = rep(1 / n_strata, n_strata), # Not automatic setting of weights
 #'   conf_level = 0.90
 #' )
+#' @references
+#' \itemize{
+#'   \item Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.
+#' }
 #'
 #' @export
 prop_strat_wilson <- function(rsp, strata, weights = NULL, conf_level = 0.95, max_nit = NULL, correct = FALSE) {
@@ -86,12 +114,12 @@ prop_strat_wilson <- function(rsp, strata, weights = NULL, conf_level = 0.95, ma
   assert_proportion_value(conf_level)
 
   tbl <- table(rsp, strata)
-  n_ws <- ncol(tbl) # Number of centers
+  n_strata <- ncol(tbl) # Number of centers or weights
 
   # Checking the weights and maximum number of iterations.
   do_iter <- FALSE
   if (is.null(weights)) {
-    weights <- rep(1 / n_ws, n_ws) # Initialization for iterative procedure
+    weights <- rep(1 / n_strata, n_strata) # Initialization for iterative procedure
     do_iter <- TRUE
 
     # Iteration parameters

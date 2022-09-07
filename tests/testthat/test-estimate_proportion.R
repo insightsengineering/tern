@@ -11,6 +11,25 @@ testthat::test_that("prop_wilson returns right result", {
   testthat::expect_equal(expected, result, tolerance = 1e-5)
 })
 
+testthat::test_that("strata_normal_quantile works with general factor table", {
+  set.seed(1)
+
+  strata_data <- table(data.frame(
+    "f1" = sample(c(TRUE, FALSE), 100, TRUE),
+    "f2" = sample(c("x", "y", "z"), 100, TRUE),
+    stringsAsFactors = TRUE
+  ))
+
+  ns <- colSums(strata_data)
+  ests <- strata_data["TRUE", ] / ns
+  vars <- ests * (1 - ests) / ns
+  weights <- rep(1 / length(ns), length(ns))
+
+  result <- strata_normal_quantile(vars, weights, 0.95)
+
+  testthat::expect_equal(result, 1.133272, tol = 0.000001)
+})
+
 testthat::test_that("prop_strat_wilson returns right result", {
   set.seed(1)
 
