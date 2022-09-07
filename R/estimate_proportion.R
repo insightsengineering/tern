@@ -88,7 +88,7 @@ prop_strat_wilson <- function(rsp, strata, weights = NULL, conf_level = 0.95, ma
   tbl <- table(rsp, strata)
   n_ws <- ncol(tbl) # Number of centers
 
-  # Checking the weights and maximum number of iterations
+  # Checking the weights and maximum number of iterations.
   do_iter <- FALSE
   if (is.null(weights)) {
     weights <- rep(1 / n_ws, n_ws) # Initialization for iterative procedure
