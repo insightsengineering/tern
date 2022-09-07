@@ -44,16 +44,16 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #'
 #' @examples
 #' \dontrun{
-#'     strata_data <- table(data.frame(
-#'        "f1" = sample(c(TRUE, FALSE), 100, TRUE),
-#'        "f2" = sample(c("x", "y", "z"), 100, TRUE),
-#'        stringsAsFactors = TRUE
-#'     ))
-#'     ns <- colSums(strata_data)
-#'     ests <- strata_data["TRUE", ] / ns
-#'     vars <- ests * (1 - ests) / ns
-#'     weights <- rep(1 / length(ns), length(ns))
-#'     strata_normal_quantile(vars, weights, 0.95)
+#' strata_data <- table(data.frame(
+#'   "f1" = sample(c(TRUE, FALSE), 100, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), 100, TRUE),
+#'   stringsAsFactors = TRUE
+#' ))
+#' ns <- colSums(strata_data)
+#' ests <- strata_data["TRUE", ] / ns
+#' vars <- ests * (1 - ests) / ns
+#' weights <- rep(1 / length(ns), length(ns))
+#' strata_normal_quantile(vars, weights, 0.95)
 #' }
 #'
 #' @keywords internal
@@ -88,12 +88,12 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #'
 #' @examples
 #' \dontrun{
-#'     vs <- c(0.011, 0.013, 0.012, 0.014, 0.017, 0.018)
-#'     sq <- 0.674
-#'     ws <- rep(1 / length(vs), length(vs))
-#'     ns <- c(22, 18, 17, 17, 14, 12)
+#' vs <- c(0.011, 0.013, 0.012, 0.014, 0.017, 0.018)
+#' sq <- 0.674
+#' ws <- rep(1 / length(vs), length(vs))
+#' ns <- c(22, 18, 17, 17, 14, 12)
 #'
-#'     update_weights_strat_wilson(vs, sq, ws, ns, 100, 0.95, 0.001)
+#' update_weights_strat_wilson(vs, sq, ws, ns, 100, 0.95, 0.001)
 #' }
 #'
 #' @keywords internal
@@ -103,7 +103,7 @@ update_weights_strat_wilson <- function(vars,
                                         n_per_strata,
                                         max_nit = 50,
                                         conf_level = 0.95,
-                                        tol = 0.001){
+                                        tol = 0.001) {
   it <- 1
   diff_v <- NULL
   while (it <= max_nit) {
