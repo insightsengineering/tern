@@ -326,7 +326,8 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
   testthat::expect_equal(result, expected)
 })
 
-testthat::test_that("`estimate_proportion` and strat_wilson with equal weights and specific number of interactions is compatible with `rtables`", {
+testthat::test_that("`estimate_proportion` and strat_wilson with equal weights
+                    and specific number of interactions is compatible with `rtables`", {
   set.seed(1)
 
   # Data loading and processing
