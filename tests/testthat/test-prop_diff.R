@@ -132,8 +132,13 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
       Treatment = c(0.2890735, 0.5017768)
     ),
     diff = -0.1376866,
-    diff_ci = c(-0.285363076, 0.009989872)
+    diff_ci = c(-0.285363076, 0.009989872),
+    weights = c(0.1148388, 0.2131696, 0.1148388, 0.2131696, 0.1767914, 0.1671918),
+    n1 = c(4, 11, 8, 11, 13, 11),
+    n2 = c(8, 9, 4, 9, 6, 6)
   )
+
+  names(expected$weights) <- names(expected$n1) <- names(expected$n2) <- levels(interaction(strata_data))
   testthat::expect_equal(result, expected, tol = 0.0001)
   testthat::expect_warning(prop_diff_cmh(
     rsp = rsp[1:4], grp = grp[1:4], strata = interaction(strata_data[1:4, ]),
@@ -170,8 +175,13 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
       Treatment = c(0.2836122, 0.5125378)
     ),
     diff = -0.171767,
-    diff_ci = c(-0.32786094, -0.01567301)
+    diff_ci = c(-0.32786094, -0.01567301),
+    weights = c(0.2408257, 0.1297378, 0.2408257, 0.1997279, 0.1888829),
+    n1 = c(11, 8, 11, 13, 11),
+    n2 = c(9, 4, 9, 6, 6)
   )
+  names(expected$weights) <- names(expected$n1) <- names(expected$n2) <- levels(interaction(strata_data))[-1]
+
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 

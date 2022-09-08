@@ -215,7 +215,7 @@ prop_strat_wilson <- function(rsp,
     ws_new <- weights
   }
 
-  strata_conf_level <- 2 * pnorm(strata_qnorm) - 1
+  strata_conf_level <- 2 * stats::pnorm(strata_qnorm) - 1
 
   ci_by_strata <- Map(
     function(x, n) {
