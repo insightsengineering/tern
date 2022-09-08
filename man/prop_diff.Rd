@@ -7,6 +7,7 @@
 \alias{prop_diff_ha}
 \alias{prop_diff_nc}
 \alias{prop_diff_cmh}
+\alias{prop_diff_strat_nc}
 \alias{s_proportion_diff}
 \alias{a_proportion_diff}
 \alias{estimate_proportion_diff}
@@ -22,14 +23,24 @@ prop_diff_nc(rsp, grp, conf_level, correct = FALSE)
 
 prop_diff_cmh(rsp, grp, strata, conf_level = 0.95)
 
+prop_diff_strat_nc(
+  rsp,
+  grp,
+  strata,
+  weights_method = c("cmh", "wilson_h")[1],
+  conf_level = 0.95,
+  correct = FALSE
+)
+
 s_proportion_diff(
   df,
   .var,
   .ref_group,
   .in_ref_col,
-  variables = list(strata = NULL),
+  variables = list(strata = NULL, weights_method = "cmh"),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc")
+  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
+    "strat_newcombecc")
 )
 
 a_proportion_diff(
@@ -37,9 +48,10 @@ a_proportion_diff(
   .var,
   .ref_group,
   .in_ref_col,
-  variables = list(strata = NULL),
+  variables = list(strata = NULL, weights_method = "cmh"),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc")
+  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
+    "strat_newcombecc")
 )
 
 estimate_proportion_diff(
@@ -76,6 +88,9 @@ include the continuity correction. For further information, see for example
 
 \item{strata}{(\code{factor})\cr
 with one level per stratum and same length as \code{rsp}.}
+
+\item{weights_method}{(\code{string}) \cr
+it can be one of \code{c("cmh", "heuristic")} and directs the way weights are estimated.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
@@ -136,6 +151,13 @@ experimental treatment group and the control treatment group, adjusted
 for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
 weights. For the CMH chi-squared test, use \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
 
+\item \code{prop_diff_strat_nc()}: Calculates the stratified Newcombe confidence interval
+and difference in response rates between the experimental treatment group
+and the control treatment group, adjusted for stratification factors. This
+implementation follows closely the one proposed by \code{Yan} and \code{Su} (2010).
+Weights can be estimated from the heuristic proposed in
+\code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from CMH-derived weights (see \code{\link[=prop_diff_cmh]{prop_diff_cmh()}}).
+
 \item \code{s_proportion_diff()}: Statistics function estimating the difference
 in terms of responder proportion.
 
@@ -195,6 +217,29 @@ prop_diff_cmh(
   conf_level = 0.90
 )
 
+# Stratified Newcombe confidence interval
+
+set.seed(2)
+data_set <- data.frame(
+  "rsp" = sample(c(TRUE, FALSE), 100, TRUE),
+  "f1" = sample(c("a", "b"), 100, TRUE),
+  "f2" = sample(c("x", "y", "z"), 100, TRUE),
+  "grp" = sample(c("Placebo", "Treatment"), 100, TRUE),
+  stringsAsFactors = TRUE
+)
+
+prop_diff_strat_nc(
+  rsp = data_set$rsp, grp = data_set$grp, strata = interaction(data_set[2:3]),
+  weights_method = "cmh",
+  conf_level = 0.90
+)
+
+prop_diff_strat_nc(
+  rsp = data_set$rsp, grp = data_set$grp, strata = interaction(data_set[2:3]),
+  weights_method = "wilson_h",
+  conf_level = 0.90
+)
+
 # Summary
 
 ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
@@ -246,4 +291,9 @@ l <- basic_table() \%>\%
 
 build_table(l, df = dta)
 
+}
+\references{
+\itemize{
+\item \verb{Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.}
+}
 }

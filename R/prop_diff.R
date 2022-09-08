@@ -243,9 +243,9 @@ prop_diff_cmh <- function(rsp,
                           grp,
                           strata,
                           conf_level = 0.95) {
-  grp <- tern:::as_factor_keep_attributes(grp)
-  strata <- tern:::as_factor_keep_attributes(strata)
-  tern:::check_diff_prop_ci(
+  grp <- as_factor_keep_attributes(grp)
+  strata <- as_factor_keep_attributes(strata)
+  check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = conf_level, strata = strata
   )
 
@@ -302,6 +302,127 @@ prop_diff_cmh <- function(rsp,
   )
 }
 
+#' @describeIn prop_diff Calculates the stratified Newcombe confidence interval
+#'   and difference in response rates between the experimental treatment group
+#'   and the control treatment group, adjusted for stratification factors. This
+#'   implementation follows closely the one proposed by `Yan` and `Su` (2010).
+#'   Weights can be estimated from the heuristic proposed in
+#'   [prop_strat_wilson()] or from CMH-derived weights (see [prop_diff_cmh()]).
+#'
+#' @param strata (`factor`)\cr
+#'   with one level per stratum and same length as `rsp`.
+#' @param weights_method (`string`) \cr
+#'   it can be one of `c("cmh", "heuristic")` and directs the way weights are estimated.
+#'
+#' @examples
+#' # Stratified Newcombe confidence interval
+#'
+#' set.seed(2)
+#' data_set <- data.frame(
+#'   "rsp" = sample(c(TRUE, FALSE), 100, TRUE),
+#'   "f1" = sample(c("a", "b"), 100, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), 100, TRUE),
+#'   "grp" = sample(c("Placebo", "Treatment"), 100, TRUE),
+#'   stringsAsFactors = TRUE
+#' )
+#'
+#' prop_diff_strat_nc(
+#'   rsp = data_set$rsp, grp = data_set$grp, strata = interaction(data_set[2:3]),
+#'   weights_method = "cmh",
+#'   conf_level = 0.90
+#' )
+#'
+#' prop_diff_strat_nc(
+#'   rsp = data_set$rsp, grp = data_set$grp, strata = interaction(data_set[2:3]),
+#'   weights_method = "wilson_h",
+#'   conf_level = 0.90
+#' )
+#'
+#' @references
+#' \itemize{
+#'   \item `Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.`
+#' }
+#'
+#' @export
+prop_diff_strat_nc <- function(rsp,
+                               grp,
+                               strata,
+                               weights_method = c("cmh", "wilson_h")[1],
+                               conf_level = 0.95,
+                               correct = FALSE) {
+
+  # Checks
+  checkmate::assert_choice(weights_method, choices = c("cmh", "wilson_h"))
+  grp <- as_factor_keep_attributes(grp)
+  strata <- as_factor_keep_attributes(strata)
+  check_diff_prop_ci(
+    rsp = rsp, grp = grp, conf_level = conf_level, strata = strata
+  )
+  checkmate::assert_number(conf_level, lower = 0, upper = 1)
+  checkmate::assert_flag(correct)
+  if (any(tapply(rsp, strata, length) < 5)) {
+    warning("Less than 5 observations in some strata.")
+  }
+
+  # Splitting
+  rsp_by_grp <- split(rsp, f = grp)
+  strata_by_grp <- split(strata, f = grp)
+
+  # Finding the weights
+  if (identical(weights_method, "cmh")) {
+    weights <- prop_diff_cmh(rsp = rsp, grp = grp, strata = strata)$weights
+  } else if (identical(weights_method, "wilson_h")) {
+    weights <- prop_strat_wilson(rsp, strata, conf_level = conf_level, correct = correct)$weights
+  }
+
+  # Calculating L and U per group
+  strat_wilson_by_grp <- Map(
+    prop_strat_wilson,
+    rsp = rsp_by_grp,
+    strata = strata_by_grp,
+    weights = list(weights, weights),
+    conf_level = conf_level,
+    correct = correct
+  )
+
+  ci_ref <- strat_wilson_by_grp[[1]]
+  ci_trt <- strat_wilson_by_grp[[2]]
+  l1 <- array(ci_ref$conf.int[1]) # array() loses the names
+  u1 <- array(ci_ref$conf.int[2])
+  l2 <- array(ci_trt$conf.int[1])
+  u2 <- array(ci_trt$conf.int[2])
+
+  # Estimating the diff and n1, n2 (it allows different weights to be used)
+  t_tbl <- table(
+    factor(rsp, levels = c("FALSE", "TRUE")),
+    grp,
+    strata
+  )
+  n1 <- colSums(t_tbl[1:2, 1, ])
+  n2 <- colSums(t_tbl[1:2, 2, ])
+  use_stratum <- (n1 > 0) & (n2 > 0)
+  n1 <- n1[use_stratum]
+  n2 <- n2[use_stratum]
+  p1 <- t_tbl[2, 1, use_stratum] / n1
+  p2 <- t_tbl[2, 2, use_stratum] / n2
+  est1 <- sum(weights * p1)
+  est2 <- sum(weights * p2)
+  diff_est <- est2 - est1
+
+  # Calculating the final L and U
+  lambda1 <- sum(weights^2 / n1)
+  lambda2 <- sum(weights^2 / n2)
+  z <- stats::qnorm((1 + conf_level) / 2)
+
+  lower <- diff_est - z * sqrt(lambda2 * l2 * (1 - l2) + lambda1 * u1 * (1 - u1))
+  upper <- diff_est + z * sqrt(lambda1 * l1 * (1 - l1) + lambda2 * u2 * (1 - u2))
+
+  list(
+    "diff" = diff_est,
+    "diff_ci" = c("lower" = lower, "upper" = upper)
+  )
+}
+
 #' @describeIn prop_diff Statistics function estimating the difference
 #'   in terms of responder proportion.
 #' @param method (`string`)\cr
@@ -345,11 +466,12 @@ s_proportion_diff <- function(df,
                               .var,
                               .ref_group,
                               .in_ref_col,
-                              variables = list(strata = NULL),
+                              variables = list(strata = NULL, weights_method = "cmh"),
                               conf_level = 0.95,
                               method = c(
                                 "waldcc", "wald", "cmh",
-                                "ha", "newcombe", "newcombecc"
+                                "ha", "newcombe", "newcombecc",
+                                "strat_newcombe", "strat_newcombecc"
                               )) {
   method <- match.arg(method)
   y <- list(diff = "", diff_ci = "")

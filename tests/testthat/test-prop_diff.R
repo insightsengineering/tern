@@ -175,6 +175,58 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
+testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcombe) with cmh weights", {
+  set.seed(1)
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  ) # response to the treatment
+  grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A")) # treatment group
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 80, TRUE),
+    "f2" = sample(c("x", "y", "z"), 80, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+
+  results <- prop_diff_strat_nc(
+    rsp = rsp,
+    grp = grp,
+    strata = strata,
+    conf_level = 0.95
+  )
+
+  # Values externally checked
+  expect_equal(results$diff, 0.2539, tol = 1e-4)
+  expect_equal(array(results$diff_ci), array(c(0.0347, 0.4454)), tol = 1e-4)
+})
+
+testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcombe) with wilson_h weights", {
+  set.seed(1)
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  ) # response to the treatment
+  grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A")) # treatment group
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 80, TRUE),
+    "f2" = sample(c("x", "y", "z"), 80, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+
+  results <- prop_diff_strat_nc(
+    rsp = rsp,
+    grp = grp,
+    strata = strata,
+    weights_method = "wilson_h",
+    conf_level = 0.95
+  )
+
+  # Values externally checked
+  expect_equal(results$diff, 0.2587, tol = 1e-4)
+  expect_equal(array(results$diff_ci), array(c(0.0391, 0.4501)), tol = 1e-4)
+})
 
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
