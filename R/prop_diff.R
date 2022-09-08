@@ -243,9 +243,9 @@ prop_diff_cmh <- function(rsp,
                           grp,
                           strata,
                           conf_level = 0.95) {
-  grp <- as_factor_keep_attributes(grp)
-  strata <- as_factor_keep_attributes(strata)
-  check_diff_prop_ci(
+  grp <- tern:::as_factor_keep_attributes(grp)
+  strata <- tern:::as_factor_keep_attributes(strata)
+  tern:::check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = conf_level, strata = strata
   )
 
@@ -267,19 +267,19 @@ prop_diff_cmh <- function(rsp,
   p1 <- t_tbl[2, 1, ] / n1
   p2 <- t_tbl[2, 2, ] / n2
   # CMH weights
-  wt <- (n1 * n2 / (n1 + n2)) / sum(n1 * n2 / (n1 + n2))
-  use_stratum <- wt > 0
-  wt <- wt[use_stratum]
-  p1 <- p1[use_stratum]
-  p2 <- p2[use_stratum]
+  use_stratum <- (n1 > 0) & (n2 > 0)
   n1 <- n1[use_stratum]
   n2 <- n2[use_stratum]
-  est1 <- sum(wt * p1)
-  est2 <- sum(wt * p2)
+  p1 <- p1[use_stratum]
+  p2 <- p2[use_stratum]
+  wt <- (n1 * n2 / (n1 + n2))
+  wt_normalized <- wt / sum(wt)
+  est1 <- sum(wt_normalized * p1)
+  est2 <- sum(wt_normalized * p2)
   estimate <- c(est1, est2)
   names(estimate) <- levels(grp)
-  se1 <- sqrt(sum(wt^2 * p1 * (1 - p1) / n1))
-  se2 <- sqrt(sum(wt^2 * p2 * (1 - p2) / n2))
+  se1 <- sqrt(sum(wt_normalized^2 * p1 * (1 - p1) / n1))
+  se2 <- sqrt(sum(wt_normalized^2 * p2 * (1 - p2) / n2))
   z <- stats::qnorm((1 + conf_level) / 2)
   err1 <- z * se1
   err2 <- z * se2
@@ -288,14 +288,17 @@ prop_diff_cmh <- function(rsp,
   estimate_ci <- list(ci1, ci2)
   names(estimate_ci) <- levels(grp)
   diff_est <- est2 - est1
-  se_diff <- sqrt(sum(((p1 * (1 - p1) / n1) + (p2 * (1 - p2) / n2)) * wt^2))
+  se_diff <- sqrt(sum(((p1 * (1 - p1) / n1) + (p2 * (1 - p2) / n2)) * wt_normalized^2))
   diff_ci <- c(diff_est - z * se_diff, diff_est + z * se_diff)
 
   list(
     prop = estimate,
     prop_ci = estimate_ci,
     diff = diff_est,
-    diff_ci = diff_ci
+    diff_ci = diff_ci,
+    weights = wt_normalized,
+    n1 = n1,
+    n2 = n2
   )
 }
 
