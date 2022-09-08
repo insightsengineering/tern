@@ -196,7 +196,7 @@ testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcom
     conf_level = 0.95
   )
 
-  # Values externally checked
+  # Values externally validated
   expect_equal(results$diff, 0.2539, tol = 1e-4)
   expect_equal(array(results$diff_ci), array(c(0.0347, 0.4454)), tol = 1e-4)
 })
@@ -223,7 +223,7 @@ testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcom
     conf_level = 0.95
   )
 
-  # Values externally checked
+  # Values internally checked (no reference yet)
   expect_equal(results$diff, 0.2587, tol = 1e-4)
   expect_equal(array(results$diff_ci), array(c(0.0391, 0.4501)), tol = 1e-4)
 })
@@ -284,5 +284,43 @@ testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtab
     ),
     .Dim = c(3L, 3L)
   )
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("`estimate_proportion_diff` and strat_newcombe is compatible with `rtables`", {
+  set.seed(1)
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  ) # response to the treatment
+  grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A")) # treatment group
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 80, TRUE),
+    "f2" = sample(c("x", "y", "z"), 80, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+  dta <- cbind(rsp, grp, strata_data)
+  l <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
+    estimate_proportion_diff(
+      vars = "rsp",
+      variables = list(strata = c("f1", "f2")),
+      conf_level = 0.95,
+      .formats = c("xx.xx", "(xx.xx, xx.xx)"),
+      method = "strat_newcombe"
+    )
+  result <- build_table(l, df = dta)
+  result <- to_string_matrix(result)
+  expected <- structure(
+    c(
+      "", "Difference in Response rate (%)",
+      "95% CI (Stratified Newcombe, without correction)",
+      "B", "", "", "A", "25.39", "(3.47, 44.54)"
+    ),
+    .Dim = c(3L, 3L)
+  )
+
+  # Values externally validated
   testthat::expect_identical(result, expected)
 })

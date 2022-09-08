@@ -76,7 +76,7 @@ testthat::test_that("update_weights_strat_wilson convergence test", {
   tol <- 0.0001 # Tolerance for convergence
   sq <- strata_normal_quantile(vs, ws, cl) # Initial quantiles
 
-  result <- tern:::update_weights_strat_wilson(vs, sq, ws, ns, ni, cl, tol)
+  result <- update_weights_strat_wilson(vs, sq, ws, ns, ni, cl, tol)
   testthat::expect_equal(result$n_it, 2)
 })
 

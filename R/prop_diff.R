@@ -70,6 +70,8 @@ d_proportion_diff <- function(conf_level,
     "ha" = "Anderson-Hauck",
     "newcombe" = "Newcombe, without correction",
     "newcombecc" = "Newcombe, with correction",
+    "strat_newcombe" = "Stratified Newcombe, without correction",
+    "strat_newcombecc" = "Stratified Newcombe, with correction",
     stop(paste(method, "does not have a description"))
   )
   paste0(label, " (", method_part, ")")
@@ -503,13 +505,34 @@ s_proportion_diff <- function(df,
       strata <- as.factor(strata)
     }
 
+    # Defining the std way to calculate weights for strat_newcombe
+    if (!is.null(variables$weights_method)) {
+      weights_method <- variables$weights_method
+    } else {
+      weights_method <- "cmh"
+    }
+
     y <- switch(method,
-      wald = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
-      waldcc = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
-      ha = prop_diff_ha(rsp, grp, conf_level),
-      newcombe = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
-      newcombecc = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
-      cmh = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
+      "wald" = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
+      "waldcc" = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
+      "ha" = prop_diff_ha(rsp, grp, conf_level),
+      "newcombe" = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
+      "newcombecc" = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
+      "strat_newcombe" = prop_diff_strat_nc(rsp,
+        grp,
+        strata,
+        weights_method,
+        conf_level,
+        correct = FALSE
+      ),
+      "strat_newcombecc" = prop_diff_strat_nc(rsp,
+        grp,
+        strata,
+        weights_method,
+        conf_level,
+        correct = TRUE
+      ),
+      "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
     )
 
     y$diff <- y$diff * 100
