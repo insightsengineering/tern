@@ -164,7 +164,7 @@ update_weights_strat_wilson <- function(vars,
 #' )
 #' @references
 #' \itemize{
-#'   \item Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.
+#'   \item `Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.`
 #' }
 #'
 #' @export
@@ -199,6 +199,9 @@ prop_strat_wilson <- function(rsp,
 
   xs <- tbl["TRUE", ]
   ns <- colSums(tbl)
+  use_stratum <- (ns > 0)
+  ns <- ns[use_stratum]
+  xs <- xs[use_stratum]
   ests <- xs / ns
   vars <- ests * (1 - ests) / ns
 

@@ -11,7 +11,7 @@ strata_normal_quantile(vars, weights, conf_level)
 
 \item{weights}{(\code{vector} of \code{numeric}) \cr
 weights for each level of the strata. If missing, they are
-estimated using the iterative algorithm proposed in (Yan and Su 2010)
+estimated using the iterative algorithm proposed in (\code{Yan} and \code{Su} 2010)
 that minimizes the weighted squared length of the confidence interval.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
@@ -23,16 +23,16 @@ proportions for each strata are unequal.
 }
 \examples{
 \dontrun{
-    strata_data <- table(data.frame(
-       "f1" = sample(c(TRUE, FALSE), 100, TRUE),
-       "f2" = sample(c("x", "y", "z"), 100, TRUE),
-       stringsAsFactors = TRUE
-    ))
-    ns <- colSums(strata_data)
-    ests <- strata_data["TRUE", ] / ns
-    vars <- ests * (1 - ests) / ns
-    weights <- rep(1 / length(ns), length(ns))
-    strata_normal_quantile(vars, weights, 0.95)
+strata_data <- table(data.frame(
+  "f1" = sample(c(TRUE, FALSE), 100, TRUE),
+  "f2" = sample(c("x", "y", "z"), 100, TRUE),
+  stringsAsFactors = TRUE
+))
+ns <- colSums(strata_data)
+ests <- strata_data["TRUE", ] / ns
+vars <- ests * (1 - ests) / ns
+weights <- rep(1 / length(ns), length(ns))
+strata_normal_quantile(vars, weights, 0.95)
 }
 
 }
