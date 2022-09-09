@@ -80,7 +80,8 @@ testthat::test_that("update_weights_strat_wilson convergence test", {
   testthat::expect_equal(result$n_it, 2)
   warning_message <- "The heuristic to find weights did not converge with max_iterations = 2"
   testthat::expect_warning(tern:::update_weights_strat_wilson(vs, sq, ws, ns, 2, cl, 0.000000001),
-                           regexp = warning_message)
+    regexp = warning_message
+  )
 })
 
 testthat::test_that("prop_strat_wilson returns right result", {
