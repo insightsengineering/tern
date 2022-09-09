@@ -377,7 +377,7 @@ prop_diff_strat_nc <- function(rsp,
     weights <- prop_strat_wilson(rsp, strata, conf_level = conf_level, correct = correct)$weights
   }
 
-  # Calculating L and U per group
+  # Calculating lower (`l`) and upper (`u`) confidence bounds per group.
   strat_wilson_by_grp <- Map(
     prop_strat_wilson,
     rsp = rsp_by_grp,
