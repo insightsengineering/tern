@@ -11,7 +11,7 @@ strata_normal_quantile(vars, weights, conf_level)
 
 \item{weights}{(\code{numeric}) \cr
 weights for each level of the strata. If missing, they are
-estimated using the iterative algorithm proposed in (\code{Yan} and \code{Su} 2010)
+estimated using the iterative algorithm proposed in Yan and Su (2010)
 that minimizes the weighted squared length of the confidence interval.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
