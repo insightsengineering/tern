@@ -411,7 +411,6 @@ prop_diff_strat_nc <- function(rsp,
   est2 <- sum(weights * p2)
   diff_est <- est2 - est1
 
-  # Calculating the final L and U
   lambda1 <- sum(weights^2 / n1)
   lambda2 <- sum(weights^2 / n2)
   z <- stats::qnorm((1 + conf_level) / 2)
