@@ -174,7 +174,7 @@ strata_data <- data.frame(
   stringsAsFactors = TRUE
 )
 strata <- interaction(strata_data)
-n_strata <- ncol(table(rsp, strata)) # Number of weights or centers
+n_strata <- ncol(table(rsp, strata)) # Number of strata
 
 prop_strat_wilson(
   rsp = rsp, strata = strata,
