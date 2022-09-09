@@ -28,23 +28,8 @@
 #' @name individual_patient_plot
 #'
 #' @description `r lifecycle::badge("stable")`
-
-NULL
-
-
-#' @describeIn individual_patient_plot sets a `ggplot` graphical theme to control outlook of plot.
-#' @export
 #'
-h_set_nest_theme <- function(font_size) {
-  lifecycle::deprecate_soft(
-    what = "h_set_nest_theme()",
-    details = "h_set_nest_theme() will be removed in a future release.",
-    with = "nestcolor::theme_nest()",
-    when = "0.7.9"
-  )
-  nestcolor::theme_nest(font_size = font_size)
-}
-
+NULL
 
 #' @describeIn individual_patient_plot helper function that generates a simple line
 #' plot displaying parameter trends over time.
