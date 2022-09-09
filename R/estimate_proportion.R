@@ -174,7 +174,6 @@ prop_strat_wilson <- function(rsp,
                               conf_level = 0.95,
                               max_nit = NULL,
                               correct = FALSE) {
-
   checkmate::assert_logical(rsp, any.missing = FALSE)
   checkmate::assert_factor(strata, len = length(rsp))
   assert_proportion_value(conf_level)
