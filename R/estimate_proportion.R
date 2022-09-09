@@ -111,14 +111,14 @@ update_weights_strat_wilson <- function(vars,
 
   while (it < max_iterations) {
     it <- it + 1
-    ws_new_t <- (1 + strata_qnorm^2 / n_per_strata)^2
-    ws_new_b <- (vars + strata_qnorm^2 / (4 * n_per_strata^2))
-    ws_new <- ws_new_t / ws_new_b
-    ws_new <- ws_new / sum(ws_new)
-    strata_qnorm <- strata_normal_quantile(vars, ws_new, conf_level)
-    diff_v <- c(diff_v, sum(abs(ws_new - initial_weights)))
+    weights_new_t <- (1 + strata_qnorm^2 / n_per_strata)^2
+    weights_new_b <- (vars + strata_qnorm^2 / (4 * n_per_strata^2))
+    weights_new <- weights_new_t / weights_new_b
+    weights_new <- weights_new / sum(weights_new)
+    strata_qnorm <- strata_normal_quantile(vars, weights_new, conf_level)
+    diff_v <- c(diff_v, sum(abs(weights_new - initial_weights)))
     if (diff_v[length(diff_v)] < tol) break
-    initial_weights <- ws_new
+    initial_weights <- weights_new
   }
 
   if (it == max_iterations) {
@@ -127,7 +127,7 @@ update_weights_strat_wilson <- function(vars,
 
   list(
     "n_it" = it,
-    "weights" = ws_new,
+    "weights" = weights_new,
     "diff_v" = diff_v
   )
 }
@@ -188,7 +188,7 @@ prop_strat_wilson <- function(rsp,
   assert_proportion_value(conf_level)
 
   tbl <- table(rsp, strata)
-  n_strata <- ncol(tbl) # Number of centers and weights
+  n_strata <- ncol(tbl)
 
   # Checking the weights and maximum number of iterations.
   do_iter <- FALSE
@@ -212,14 +212,13 @@ prop_strat_wilson <- function(rsp,
   ests <- xs / ns
   vars <- ests * (1 - ests) / ns
 
-  # Estimating quantile for normal distribution large number limit approximation
   strata_qnorm <- strata_normal_quantile(vars, weights, conf_level)
 
   # Iterative setting of weights if they were not set externally
-  if (do_iter) {
-    ws_new <- update_weights_strat_wilson(vars, strata_qnorm, weights, ns, max_iterations, conf_level)$weights
+  weights_new <- if (do_iter) {
+    update_weights_strat_wilson(vars, strata_qnorm, weights, ns, max_iterations, conf_level)$weights
   } else {
-    ws_new <- weights
+    weights
   }
 
   strata_conf_level <- 2 * stats::pnorm(strata_qnorm) - 1
@@ -235,8 +234,8 @@ prop_strat_wilson <- function(rsp,
   lower_by_strata <- sapply(ci_by_strata, "[", 1L)
   upper_by_strata <- sapply(ci_by_strata, "[", 2L)
 
-  lower <- sum(ws_new * lower_by_strata)
-  upper <- sum(ws_new * upper_by_strata)
+  lower <- sum(weights_new * lower_by_strata)
+  upper <- sum(weights_new * upper_by_strata)
 
   # Return values
   if (do_iter) {
@@ -245,7 +244,7 @@ prop_strat_wilson <- function(rsp,
         lower = lower,
         upper = upper
       ),
-      weights = ws_new
+      weights = weights_new
     )
   } else {
     list(
