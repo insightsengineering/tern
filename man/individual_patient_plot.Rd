@@ -75,8 +75,6 @@ plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}
 
 \item{max_obs_per_plot}{(\code{count})\cr Number of observations to be plotted on one
 plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
-
-\item{font_size}{(\code{number})\cr text font size.}
 }
 \value{
 a \code{ggplot} object or a list of \code{ggplot} objects.

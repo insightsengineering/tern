@@ -21,7 +21,6 @@
 #' plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
 #' @param max_obs_per_plot (`count`)\cr Number of observations to be plotted on one
 #' plot. Ignored when `plotting_choices` is not "separate_by_obs".
-#' @param font_size (`number`)\cr text font size.
 #' @param caption (`character` scalar) \cr optional caption below the plot.
 #' @param col (`character`)\cr lines colors.
 #'
