@@ -53,7 +53,7 @@ h_proportion_df <- function(rsp, arm) {
   lst_rsp <- split(rsp, arm)
   lst_results <- Map(function(x, arm) {
     if (length(x) > 0) {
-      s_prop <- s_proportion(x)
+      s_prop <- s_proportion(df = x)
       data.frame(
         arm = arm,
         n = length(x),

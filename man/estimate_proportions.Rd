@@ -3,16 +3,26 @@
 \name{estimate_proportions}
 \alias{estimate_proportions}
 \alias{prop_wilson}
+\alias{prop_strat_wilson}
 \alias{prop_clopper_pearson}
 \alias{prop_wald}
 \alias{prop_agresti_coull}
 \alias{prop_jeffreys}
 \alias{s_proportion}
-\alias{estimate_proportion}
 \alias{a_proportion}
+\alias{estimate_proportion}
 \title{Estimation of Proportions}
 \usage{
 prop_wilson(rsp, conf_level, correct = FALSE)
+
+prop_strat_wilson(
+  rsp,
+  strata,
+  weights = NULL,
+  conf_level = 0.95,
+  max_iterations = NULL,
+  correct = FALSE
+)
 
 prop_clopper_pearson(rsp, conf_level)
 
@@ -23,10 +33,22 @@ prop_agresti_coull(rsp, conf_level)
 prop_jeffreys(rsp, conf_level)
 
 s_proportion(
-  x,
+  df,
+  .var,
   conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
-    "jeffreys"),
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
+    "strat_wilsonc", "agresti-coull", "jeffreys"),
+  variables = list(strata = NULL, weights = NULL, max_iterations = 10),
+  long = FALSE
+)
+
+a_proportion(
+  df,
+  .var,
+  conf_level = 0.95,
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
+    "strat_wilsonc", "agresti-coull", "jeffreys"),
+  variables = list(strata = NULL, weights = NULL, max_iterations = 10),
   long = FALSE
 )
 
@@ -41,14 +63,6 @@ estimate_proportion(
   .labels = NULL,
   .indent_mods = NULL
 )
-
-a_proportion(
-  x,
-  conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "agresti-coull",
-    "jeffreys"),
-  long = FALSE
-)
 }
 \arguments{
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
@@ -57,13 +71,32 @@ a_proportion(
 
 \item{correct}{(\code{flag})\cr apply continuity correction.}
 
-\item{x}{(\code{logical})\cr whether each subject is a responder or not.
-\code{TRUE} represents a successful outcome.}
+\item{strata}{(\code{factor})\cr
+with one level per stratum and same length as \code{rsp}.}
+
+\item{weights}{(\code{numeric}) \cr
+weights for each level of the strata. If missing, they are
+estimated using the iterative algorithm proposed in Yan and Su (2010)
+that minimizes the weighted squared length of the confidence interval.}
+
+\item{max_iterations}{(\code{count}) \cr
+maximum number of iterations for the iterative procedure used
+to find estimates of optimal weights.}
+
+\item{df}{(\code{logical} or \code{data.frame})\cr
+if only logical indicates whether each subject is a responder or not.
+\code{TRUE} represents a successful outcome. If a \code{data.frame} is provided,
+also the \code{strata} parameters in \code{variables} must be provided.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{method}{(\code{string}) \cr
 the method used to construct the confidence interval for proportion of
 successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, \code{wilson},
-\code{agresti-coull} or \code{jeffreys}.}
+\code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{long}{(\code{flag})\cr a long description is required.}
 
@@ -96,6 +129,9 @@ Estimate the proportion of responders within a studied population.
 \item \code{prop_wilson()}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 Also referred to as Wilson score interval.
 
+\item \code{prop_strat_wilson()}: Calculates the stratified Wilson confidence
+interval for unequal proportions as described in Yan and Su (2010).
+
 \item \code{prop_clopper_pearson()}: the Clopper-Pearson interval calls
 \code{\link[stats:binom.test]{stats::binom.test()}}. Also referred to as the \code{exact} method.
 
@@ -115,10 +151,10 @@ proportion.
 \item \code{s_proportion()}: statistics function estimating a
 proportion along with its confidence interval.
 
-\item \code{estimate_proportion()}: used in a \code{rtables} pipeline.
-
 \item \code{a_proportion()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
+\item \code{estimate_proportion()}: used in a \code{rtables} pipeline.
 
 }}
 \examples{
@@ -128,6 +164,28 @@ rsp <- c(
 )
 prop_wilson(rsp, conf_level = 0.9)
 
+# Stratified Wilson confidence interval with unequal probabilities
+
+set.seed(1)
+rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+strata_data <- data.frame(
+  "f1" = sample(c("a", "b"), 100, TRUE),
+  "f2" = sample(c("x", "y", "z"), 100, TRUE),
+  stringsAsFactors = TRUE
+)
+strata <- interaction(strata_data)
+n_strata <- ncol(table(rsp, strata)) # Number of strata
+
+prop_strat_wilson(
+  rsp = rsp, strata = strata,
+  conf_level = 0.90
+)
+
+prop_strat_wilson(
+  rsp = rsp, strata = strata,
+  weights = rep(1 / n_strata, n_strata), # Not automatic setting of weights
+  conf_level = 0.90
+)
 prop_clopper_pearson(rsp, conf_level = .95)
 
 prop_wald(rsp, conf_level = 0.95)
@@ -136,7 +194,29 @@ prop_wald(rsp, conf_level = 0.95, correct = TRUE)
 prop_agresti_coull(rsp, conf_level = 0.95)
 
 prop_jeffreys(rsp, conf_level = 0.95)
+
+
+# Case with only vector of logical
 s_proportion(c(1, 0, 1, 0))
+
+# Example for Stratified Wilson CI
+nex <- 100 # Number of example rows
+dta <- data.frame(
+  "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+  "grp" = sample(c("A", "B"), nex, TRUE),
+  "f1" = sample(c("a1", "a2"), nex, TRUE),
+  "f2" = sample(c("x", "y", "z"), nex, TRUE),
+  stringsAsFactors = TRUE
+)
+
+s_proportion(
+  df = dta,
+  .var = "rsp",
+  variables = list(strata = c("f1", "f2")),
+  conf_level = 0.90,
+  method = "strat_wilson"
+)
+
 dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
   ARM     = rep(LETTERS[1:3], each = 4),
@@ -147,5 +227,10 @@ basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   estimate_proportion(vars = "AVAL") \%>\%
   build_table(df = dta_test)
-a_proportion(c(1, 0, 1, 0))
+
+}
+\references{
+\itemize{
+\item \verb{Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.}
+}
 }

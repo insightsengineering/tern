@@ -19,7 +19,8 @@ with one level per stratum and same length as \code{rsp}.}
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{correct}{\code{logical}\cr
-include the continuity correction.}
+include the continuity correction. For further information, see for example
+\code{\link[stats:prop.test]{stats::prop.test()}}.}
 }
 \description{
 Verifies that and/or convert arguments into valid values to be used in the
