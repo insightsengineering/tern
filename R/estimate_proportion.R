@@ -372,7 +372,7 @@ prop_jeffreys <- function(rsp,
 #'
 #' @examples
 #'
-#' # Case with only vector of logical
+#' # Case with only logical vector.
 #' s_proportion(c(1, 0, 1, 0))
 #'
 #' # Example for Stratified Wilson CI

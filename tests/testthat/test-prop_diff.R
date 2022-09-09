@@ -208,7 +208,7 @@ testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcom
 
   # Values externally validated
   expect_equal(results$diff, 0.2539, tol = 1e-4)
-  expect_equal(array(results$diff_ci), array(c(0.0347, 0.4454)), tol = 1e-4)
+  expect_equal(as.numeric(results$diff_ci), c(0.0347, 0.4454), tol = 1e-4)
 })
 
 testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcombe) with wilson_h weights", {
@@ -235,7 +235,7 @@ testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcom
 
   # Values internally checked (no reference yet)
   expect_equal(results$diff, 0.2587, tol = 1e-4)
-  expect_equal(array(results$diff_ci), array(c(0.0391, 0.4501)), tol = 1e-4)
+  expect_equal(as.numeric(results$diff_ci), c(0.0391, 0.4501), tol = 1e-4)
 })
 
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {

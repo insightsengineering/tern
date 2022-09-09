@@ -366,15 +366,14 @@ prop_diff_strat_nc <- function(rsp,
     warning("Less than 5 observations in some strata.")
   }
 
-  # Splitting
   rsp_by_grp <- split(rsp, f = grp)
   strata_by_grp <- split(strata, f = grp)
 
   # Finding the weights
-  if (identical(weights_method, "cmh")) {
-    weights <- prop_diff_cmh(rsp = rsp, grp = grp, strata = strata)$weights
+  weights <- if (identical(weights_method, "cmh")) {
+    prop_diff_cmh(rsp = rsp, grp = grp, strata = strata)$weights
   } else if (identical(weights_method, "wilson_h")) {
-    weights <- prop_strat_wilson(rsp, strata, conf_level = conf_level, correct = correct)$weights
+    prop_strat_wilson(rsp, strata, conf_level = conf_level, correct = correct)$weights
   }
 
   # Calculating lower (`l`) and upper (`u`) confidence bounds per group.
@@ -389,34 +388,34 @@ prop_diff_strat_nc <- function(rsp,
 
   ci_ref <- strat_wilson_by_grp[[1]]
   ci_trt <- strat_wilson_by_grp[[2]]
-  l1 <- array(ci_ref$conf.int[1]) # array() loses the names
-  u1 <- array(ci_ref$conf.int[2])
-  l2 <- array(ci_trt$conf.int[1])
-  u2 <- array(ci_trt$conf.int[2])
+  l_ref <- as.numeric(ci_ref$conf.int[1])
+  u_ref <- as.numeric(ci_ref$conf.int[2])
+  l_trt <- as.numeric(ci_trt$conf.int[1])
+  u_trt <- as.numeric(ci_trt$conf.int[2])
 
-  # Estimating the diff and n1, n2 (it allows different weights to be used)
+  # Estimating the diff and n_ref, n2 (it allows different weights to be used)
   t_tbl <- table(
     factor(rsp, levels = c("FALSE", "TRUE")),
     grp,
     strata
   )
-  n1 <- colSums(t_tbl[1:2, 1, ])
-  n2 <- colSums(t_tbl[1:2, 2, ])
-  use_stratum <- (n1 > 0) & (n2 > 0)
-  n1 <- n1[use_stratum]
-  n2 <- n2[use_stratum]
-  p1 <- t_tbl[2, 1, use_stratum] / n1
-  p2 <- t_tbl[2, 2, use_stratum] / n2
-  est1 <- sum(weights * p1)
-  est2 <- sum(weights * p2)
+  n_ref <- colSums(t_tbl[1:2, 1, ])
+  n_trt <- colSums(t_tbl[1:2, 2, ])
+  use_stratum <- (n_ref > 0) & (n_trt > 0)
+  n_ref <- n_ref[use_stratum]
+  n_trt <- n_trt[use_stratum]
+  p_ref <- t_tbl[2, 1, use_stratum] / n_ref
+  p_trt <- t_tbl[2, 2, use_stratum] / n_trt
+  est1 <- sum(weights * p_ref)
+  est2 <- sum(weights * p_trt)
   diff_est <- est2 - est1
 
-  lambda1 <- sum(weights^2 / n1)
-  lambda2 <- sum(weights^2 / n2)
+  lambda1 <- sum(weights^2 / n_ref)
+  lambda2 <- sum(weights^2 / n_trt)
   z <- stats::qnorm((1 + conf_level) / 2)
 
-  lower <- diff_est - z * sqrt(lambda2 * l2 * (1 - l2) + lambda1 * u1 * (1 - u1))
-  upper <- diff_est + z * sqrt(lambda1 * l1 * (1 - l1) + lambda2 * u2 * (1 - u2))
+  lower <- diff_est - z * sqrt(lambda2 * l_trt * (1 - l_trt) + lambda1 * u_ref * (1 - u_ref))
+  upper <- diff_est + z * sqrt(lambda1 * l_ref * (1 - l_ref) + lambda2 * u_trt * (1 - u_trt))
 
   list(
     "diff" = diff_est,
