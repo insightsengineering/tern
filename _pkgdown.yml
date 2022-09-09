@@ -48,7 +48,6 @@ reference:
       - s_count_patients_with_flags
       - s_count_values
       - s_coxreg
-      - s_cox_univariate
       - s_length_proportion
       - s_num_patients
       - s_num_patients_content
@@ -338,6 +337,3 @@ reference:
   - title: Deprecated Functions
     desc: These functions already are or will eventually be removed.
     contents:
-      - color_palette
-      - h_set_nest_theme
-      - s_cox_univariate
