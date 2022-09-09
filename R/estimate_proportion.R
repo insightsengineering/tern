@@ -117,11 +117,11 @@ update_weights_strat_wilson <- function(vars,
     ws_old <- ws_new
     it <- it + 1
   }
-  return(list(
+  list(
     "n_it" = it,
     "weights" = ws_new,
     "diff_v" = diff_v
-  ))
+  )
 }
 #' @describeIn estimate_proportions Calculates the stratified Wilson confidence
 #'   interval for unequal proportions as described in (`Yan` and `Su` 2010).
