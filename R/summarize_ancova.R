@@ -118,7 +118,10 @@ h_ancova <- function(.var,
 #'
 #' # Internal function - s_ancova
 #' \dontrun{
-#' s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level, interaction_y = FALSE, interaction_item = NULL)
+#' s_ancova(
+#'   df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE,
+#'   conf_level, interaction_y = FALSE, interaction_item = NULL
+#' )
 #' }
 #'
 #' @keywords internal
@@ -213,7 +216,10 @@ s_ancova <- function(df,
 #' @examples
 #' # Internal function - a_ancova
 #' \dontrun{
-#' a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, interaction_y = FALSE, interaction_item = NULL, conf_level)
+#' a_ancova(
+#'   df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE,
+#'   interaction_y = FALSE, interaction_item = NULL, conf_level
+#' )
 #' }
 #'
 #' @keywords internal
@@ -240,8 +246,10 @@ a_ancova <- make_afun(
 #' library(rtables)
 #' library(dplyr)
 #'
-#' adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-#' adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
+#' cached_data <- synthetic_cdisc_data("rcd_2022_02_28")
+#'
+#' adsl <- cached_data$adsl
+#' adqs <- cached_data$adqs
 #' adqs_single <- adqs %>%
 #'   filter(
 #'     AVISIT == "WEEK 1 DAY 8", # single time point
@@ -270,8 +278,9 @@ a_ancova <- make_afun(
 #'   build_table(adqs_single, alt_counts_df = adsl)
 #'
 #' # Another example: count the interaction between rows and columns into consideration
-#' adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-#' adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
+#'
+#' adsl <- cached_data$adsl
+#' adqs <- cached_data$adqs
 #' adqs_single <- adqs %>%
 #'   filter(AVISIT %in% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 5 DAY 36")) %>%
 #'   droplevels() %>%
