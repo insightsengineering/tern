@@ -4,6 +4,8 @@
 #'
 #' Estimate the proportion of responders within a studied population.
 #'
+#' @inheritParams argument_convention
+#'
 #' @name estimate_proportions
 #'
 NULL
@@ -72,16 +74,16 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #'   for references and details.
 #'
 #' @inheritParams prop_strat_wilson
-#' @param vars (`vector` of `numeric`) \cr
+#' @param vars (`numeric`) \cr
 #'   normalized proportions for each strata.
 #' @param strata_qnorm (`numeric`) \cr
 #'   initial estimation with identical weights of the quantiles.
-#' @param ws_old (`vector` of `numeric`) \cr
+#' @param initial_weights (`numeric`) \cr
 #'   initial weights used to calculate `strata_qnorm`. This can be optimized in
 #'   the future if we need to estimate better initial weights.
-#' @param max_nit (`integer`) \cr
+#' @param max_iterations (`count`) \cr
 #'   maximum number of iterations to be tried. Convergence is always checked.
-#' @param tol (`numeric`) \cr
+#' @param tol (`number`) \cr
 #'   tolerance threshold for convergence.
 #'
 #' @seealso [prop_strat_wilson()]
@@ -99,24 +101,30 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #' @keywords internal
 update_weights_strat_wilson <- function(vars,
                                         strata_qnorm,
-                                        ws_old,
+                                        initial_weights,
                                         n_per_strata,
-                                        max_nit = 50,
+                                        max_iterations = 50,
                                         conf_level = 0.95,
                                         tol = 0.001) {
-  it <- 1
+  it <- 0
   diff_v <- NULL
-  while (it <= max_nit) {
+
+  while (it < max_iterations) {
+    it <- it + 1
     ws_new_t <- (1 + strata_qnorm^2 / n_per_strata)^2
     ws_new_b <- (vars + strata_qnorm^2 / (4 * n_per_strata^2))
     ws_new <- ws_new_t / ws_new_b
     ws_new <- ws_new / sum(ws_new)
     strata_qnorm <- strata_normal_quantile(vars, ws_new, conf_level)
-    diff_v <- c(diff_v, sum(abs(ws_new - ws_old)))
+    diff_v <- c(diff_v, sum(abs(ws_new - initial_weights)))
     if (diff_v[length(diff_v)] < tol) break
-    ws_old <- ws_new
-    it <- it + 1
+    initial_weights <- ws_new
   }
+
+  if (it == max_iterations) {
+    warning("The heuristic to find weights did not converge with max_iterations = ", max_iterations)
+  }
+
   list(
     "n_it" = it,
     "weights" = ws_new,
@@ -128,11 +136,11 @@ update_weights_strat_wilson <- function(vars,
 #'
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
-#' @param weights (`vector` of `numeric`) \cr
+#' @param weights (`numeric`) \cr
 #'   weights for each level of the strata. If missing, they are
 #'   estimated using the iterative algorithm proposed in (`Yan` and `Su` 2010)
 #'   that minimizes the weighted squared length of the confidence interval.
-#' @param max_nit (`integer`) \cr
+#' @param max_iterations (`count`) \cr
 #'   maximum number of iterations for the iterative procedure used
 #'   to find estimates of optimal weights.
 #' @param correct (`flag`)\cr
@@ -172,7 +180,7 @@ prop_strat_wilson <- function(rsp,
                               strata,
                               weights = NULL,
                               conf_level = 0.95,
-                              max_nit = NULL,
+                              max_iterations = NULL,
                               correct = FALSE) {
   checkmate::assert_logical(rsp, any.missing = FALSE)
   checkmate::assert_factor(strata, len = length(rsp))
@@ -188,8 +196,8 @@ prop_strat_wilson <- function(rsp,
     do_iter <- TRUE
 
     # Iteration parameters
-    if (is.null(max_nit)) max_nit <- 10
-    checkmate::assert_int(max_nit, na.ok = FALSE, null.ok = FALSE, lower = 1)
+    if (is.null(max_iterations)) max_iterations <- 10
+    checkmate::assert_int(max_iterations, na.ok = FALSE, null.ok = FALSE, lower = 1)
   }
   checkmate::assert_numeric(weights, lower = 0, upper = 1, any.missing = FALSE, len = ncol(tbl))
   checkmate::assert_int(sum(weights), lower = 1, upper = 1)
@@ -208,7 +216,7 @@ prop_strat_wilson <- function(rsp,
 
   # Iterative setting of weights if they were not set externally
   if (do_iter) {
-    ws_new <- update_weights_strat_wilson(vars, strata_qnorm, weights, ns, max_nit, conf_level)$weights
+    ws_new <- update_weights_strat_wilson(vars, strata_qnorm, weights, ns, max_iterations, conf_level)$weights
   } else {
     ws_new <- weights
   }
@@ -250,7 +258,6 @@ prop_strat_wilson <- function(rsp,
 
 #' @describeIn estimate_proportions the Clopper-Pearson interval calls
 #'   [stats::binom.test()]. Also referred to as the `exact` method.
-#' @inheritParams argument_convention
 #'
 #' @examples
 #' prop_clopper_pearson(rsp, conf_level = .95)
@@ -269,7 +276,6 @@ prop_clopper_pearson <- function(rsp,
 #' @describeIn estimate_proportions the Wald interval follows the usual
 #'   textbook definition for a single proportion confidence interval using the
 #'   normal approximation.
-#' @inheritParams argument_convention
 #' @param correct (`flag`)\cr apply continuity correction.
 #'
 #' @examples
@@ -296,7 +302,6 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
 #'   Alan Agresti and Brent Coull and can be understood (for 95% CI) as adding
 #'   two successes and two failures to the data, and then using the Wald
 #'   formula to construct a CI.
-#' @inheritParams argument_convention
 #'
 #' @examples
 #' prop_agresti_coull(rsp, conf_level = 0.95)
@@ -325,7 +330,6 @@ prop_agresti_coull <- function(rsp, conf_level) {
 #' @describeIn estimate_proportions the Jeffreys interval is an equal-tailed
 #'   interval based on the non-informative Jeffreys prior for a binomial
 #'   proportion.
-#' @inheritParams argument_convention
 #'
 #' @examples
 #' prop_jeffreys(rsp, conf_level = 0.95)
@@ -355,16 +359,15 @@ prop_jeffreys <- function(rsp,
 #' @describeIn estimate_proportions statistics function estimating a
 #'   proportion along with its confidence interval.
 #'
-#' @param df (`logical` vector or `data.frame`)\cr
+#' @param df (`logical` or `data.frame`)\cr
 #'   if only logical indicates whether each subject is a responder or not.
 #'   `TRUE` represents a successful outcome. If a `data.frame` is provided,
 #'   also the `strata` parameters in `variables` must be provided.
-#' @inheritParams argument_convention
+#'
 #' @param method (`string`) \cr
 #'   the method used to construct the confidence interval for proportion of
 #'   successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`, `wilson`,
 #'   `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
-#' @inheritParams rtables::
 #' @param long (`flag`)\cr a long description is required.
 #'
 #' @examples
@@ -399,7 +402,7 @@ s_proportion <- function(df,
                            "wilson", "wilsonc", "strat_wilson", "strat_wilsonc",
                            "agresti-coull", "jeffreys"
                          ),
-                         variables = list(strata = NULL, weights = NULL, max_nit = 10),
+                         variables = list(strata = NULL, weights = NULL, max_iterations = 10),
                          long = FALSE) {
   method <- match.arg(method)
   checkmate::assert_flag(long)
@@ -418,7 +421,7 @@ s_proportion <- function(df,
 
     # Pushing down checks to prop_strat_wilson
     weights <- variables$weights
-    max_nit <- variables$max_nit
+    max_iterations <- variables$max_iterations
   } else if (checkmate::test_subset(method, c("strat_wilson", "strat_wilsonc"))) {
     stop("To use stratified methods you need to specify the strata variables.")
   }
@@ -435,11 +438,11 @@ s_proportion <- function(df,
     "wilson" = prop_wilson(rsp, conf_level),
     "wilsonc" = prop_wilson(rsp, conf_level, correct = TRUE),
     "strat_wilson" = prop_strat_wilson(rsp, strata, weights,
-      conf_level, max_nit,
+      conf_level, max_iterations,
       correct = FALSE
     )$conf.int,
     "strat_wilsonc" = prop_strat_wilson(rsp, strata, weights,
-      conf_level, max_nit,
+      conf_level, max_iterations,
       correct = TRUE
     )$conf.int,
     "wald" = prop_wald(rsp, conf_level),
@@ -515,8 +518,6 @@ estimate_proportion <- function(lyt,
 #'
 #' This is a helper function that describes the analysis in [s_proportion()].
 #'
-#'
-#' @inheritParams argument_convention
 #' @inheritParams s_proportion
 #' @param long (`flag`)\cr
 #'   whether a long or a short (default) description is required.

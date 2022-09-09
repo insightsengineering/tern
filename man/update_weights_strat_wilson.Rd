@@ -7,30 +7,30 @@
 update_weights_strat_wilson(
   vars,
   strata_qnorm,
-  ws_old,
+  initial_weights,
   n_per_strata,
-  max_nit = 50,
+  max_iterations = 50,
   conf_level = 0.95,
   tol = 0.001
 )
 }
 \arguments{
-\item{vars}{(\code{vector} of \code{numeric}) \cr
+\item{vars}{(\code{numeric}) \cr
 normalized proportions for each strata.}
 
 \item{strata_qnorm}{(\code{numeric}) \cr
 initial estimation with identical weights of the quantiles.}
 
-\item{ws_old}{(\code{vector} of \code{numeric}) \cr
+\item{initial_weights}{(\code{numeric}) \cr
 initial weights used to calculate \code{strata_qnorm}. This can be optimized in
 the future if we need to estimate better initial weights.}
 
-\item{max_nit}{(\code{integer}) \cr
+\item{max_iterations}{(\code{count}) \cr
 maximum number of iterations to be tried. Convergence is always checked.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{tol}{(\code{numeric}) \cr
+\item{tol}{(\code{number}) \cr
 tolerance threshold for convergence.}
 }
 \description{

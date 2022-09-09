@@ -20,7 +20,7 @@ prop_strat_wilson(
   strata,
   weights = NULL,
   conf_level = 0.95,
-  max_nit = NULL,
+  max_iterations = NULL,
   correct = FALSE
 )
 
@@ -38,7 +38,7 @@ s_proportion(
   conf_level = 0.95,
   method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
     "strat_wilsonc", "agresti-coull", "jeffreys"),
-  variables = list(strata = NULL, weights = NULL, max_nit = 10),
+  variables = list(strata = NULL, weights = NULL, max_iterations = 10),
   long = FALSE
 )
 
@@ -48,7 +48,7 @@ a_proportion(
   conf_level = 0.95,
   method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
     "strat_wilsonc", "agresti-coull", "jeffreys"),
-  variables = list(strata = NULL, weights = NULL, max_nit = 10),
+  variables = list(strata = NULL, weights = NULL, max_iterations = 10),
   long = FALSE
 )
 
@@ -74,16 +74,16 @@ estimate_proportion(
 \item{strata}{(\code{factor})\cr
 with one level per stratum and same length as \code{rsp}.}
 
-\item{weights}{(\code{vector} of \code{numeric}) \cr
+\item{weights}{(\code{numeric}) \cr
 weights for each level of the strata. If missing, they are
 estimated using the iterative algorithm proposed in (\code{Yan} and \code{Su} 2010)
 that minimizes the weighted squared length of the confidence interval.}
 
-\item{max_nit}{(\code{integer}) \cr
+\item{max_iterations}{(\code{count}) \cr
 maximum number of iterations for the iterative procedure used
 to find estimates of optimal weights.}
 
-\item{df}{(\code{logical} vector or \code{data.frame})\cr
+\item{df}{(\code{logical} or \code{data.frame})\cr
 if only logical indicates whether each subject is a responder or not.
 \code{TRUE} represents a successful outcome. If a \code{data.frame} is provided,
 also the \code{strata} parameters in \code{variables} must be provided.}
