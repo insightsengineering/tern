@@ -179,4 +179,4 @@ The [`teal` package](https://insightsengineering.github.io/teal/) is a shiny-bas
 
 In summary, `tern` contains many additional functions for creating tables, listing and graphs used in clinical trials and other statistical analyses. The design of the package gives users a lot of flexibility to meet the analysis needs in a regulatory or exploratory reporting context.
 
-**For more information please explore [the tern website](https://insightsengineering.github.io/tern).**
+**For more information please explore [the tern website](https://insightsengineering.github.io/tern/).**
