@@ -181,9 +181,10 @@ prop_strat_wilson(
   conf_level = 0.90
 )
 
+# Not automatic setting of weights
 prop_strat_wilson(
   rsp = rsp, strata = strata,
-  weights = rep(1 / n_strata, n_strata), # Not automatic setting of weights
+  weights = rep(1 / n_strata, n_strata),
   conf_level = 0.90
 )
 prop_clopper_pearson(rsp, conf_level = .95)
@@ -196,7 +197,7 @@ prop_agresti_coull(rsp, conf_level = 0.95)
 prop_jeffreys(rsp, conf_level = 0.95)
 
 
-# Case with only vector of logical
+# Case with only logical vector.
 s_proportion(c(1, 0, 1, 0))
 
 # Example for Stratified Wilson CI
