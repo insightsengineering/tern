@@ -119,7 +119,8 @@ h_ancova <- function(.var,
 #' # Internal function - s_ancova
 #' \dontrun{
 #' s_ancova(
-#'   df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE,
+#'   df, .var, .df_row, variables, .ref_group,
+#'   .in_ref_col = FALSE,
 #'   conf_level, interaction_y = FALSE, interaction_item = NULL
 #' )
 #' }
@@ -217,7 +218,8 @@ s_ancova <- function(df,
 #' # Internal function - a_ancova
 #' \dontrun{
 #' a_ancova(
-#'   df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE,
+#'   df, .var, .df_row, variables, .ref_group,
+#'   .in_ref_col = FALSE,
 #'   interaction_y = FALSE, interaction_item = NULL, conf_level
 #' )
 #' }
