@@ -103,7 +103,7 @@ testthat::test_that("prop_strat_wilson returns right result", {
   )
 
   expected <- list(
-    conf.int = c(lower = 0.4072891, upper = 0.5647887),
+    conf_int = c(lower = 0.4072891, upper = 0.5647887),
     weights = c(0.2074199, 0.1776464, 0.1915610, 0.1604678, 0.1351096, 0.1277952)
   )
   names(expected$weights) <- colnames(table_strata)
@@ -126,7 +126,7 @@ testthat::test_that("prop_strat_wilson returns right result with inserted weight
   n_ws <- ncol(table_strata) # Number of weights
 
   # Test without estimating weights (all equal here)
-  expected <- list(conf.int = c(lower = 0.4190436, upper = 0.5789733))
+  expected <- list(conf_int = c(lower = 0.4190436, upper = 0.5789733))
   result <- prop_strat_wilson(
     rsp = rsp, strata = strata,
     weights = rep(1 / n_ws, n_ws), # Not automatic setting of weights

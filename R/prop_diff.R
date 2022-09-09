@@ -388,10 +388,10 @@ prop_diff_strat_nc <- function(rsp,
 
   ci_ref <- strat_wilson_by_grp[[1]]
   ci_trt <- strat_wilson_by_grp[[2]]
-  l_ref <- as.numeric(ci_ref$conf.int[1])
-  u_ref <- as.numeric(ci_ref$conf.int[2])
-  l_trt <- as.numeric(ci_trt$conf.int[1])
-  u_trt <- as.numeric(ci_trt$conf.int[2])
+  l_ref <- as.numeric(ci_ref$conf_int[1])
+  u_ref <- as.numeric(ci_ref$conf_int[2])
+  l_trt <- as.numeric(ci_trt$conf_int[1])
+  u_trt <- as.numeric(ci_trt$conf_int[2])
 
   # Estimating the diff and n_ref, n2 (it allows different weights to be used)
   t_tbl <- table(

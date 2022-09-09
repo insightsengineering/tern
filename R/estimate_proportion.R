@@ -240,7 +240,7 @@ prop_strat_wilson <- function(rsp,
   # Return values
   if (do_iter) {
     list(
-      conf.int = c(
+      conf_int = c(
         lower = lower,
         upper = upper
       ),
@@ -248,7 +248,7 @@ prop_strat_wilson <- function(rsp,
     )
   } else {
     list(
-      conf.int = c(
+      conf_int = c(
         lower = lower,
         upper = upper
       )
@@ -440,11 +440,11 @@ s_proportion <- function(df,
     "strat_wilson" = prop_strat_wilson(rsp, strata, weights,
       conf_level, max_iterations,
       correct = FALSE
-    )$conf.int,
+    )$conf_int,
     "strat_wilsonc" = prop_strat_wilson(rsp, strata, weights,
       conf_level, max_iterations,
       correct = TRUE
-    )$conf.int,
+    )$conf_int,
     "wald" = prop_wald(rsp, conf_level),
     "waldcc" = prop_wald(rsp, conf_level, correct = TRUE),
     "agresti-coull" = prop_agresti_coull(rsp, conf_level),
