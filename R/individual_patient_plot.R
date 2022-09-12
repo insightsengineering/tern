@@ -21,30 +21,14 @@
 #' plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
 #' @param max_obs_per_plot (`count`)\cr Number of observations to be plotted on one
 #' plot. Ignored when `plotting_choices` is not "separate_by_obs".
-#' @param font_size (`number`)\cr text font size.
 #' @param caption (`character` scalar) \cr optional caption below the plot.
 #' @param col (`character`)\cr lines colors.
 #'
 #' @name individual_patient_plot
 #'
 #' @description `r lifecycle::badge("stable")`
-
-NULL
-
-
-#' @describeIn individual_patient_plot sets a `ggplot` graphical theme to control outlook of plot.
-#' @export
 #'
-h_set_nest_theme <- function(font_size) {
-  lifecycle::deprecate_soft(
-    what = "h_set_nest_theme()",
-    details = "h_set_nest_theme() will be removed in a future release.",
-    with = "nestcolor::theme_nest()",
-    when = "0.7.9"
-  )
-  nestcolor::theme_nest(font_size = font_size)
-}
-
+NULL
 
 #' @describeIn individual_patient_plot helper function that generates a simple line
 #' plot displaying parameter trends over time.
