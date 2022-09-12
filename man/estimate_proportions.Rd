@@ -205,7 +205,8 @@ prop_jeffreys(rsp, conf_level = 0.95)
 
 
 # Case with only logical vector.
-s_proportion(c(1, 0, 1, 0))
+rsp_v <- c(1, 0, 1, 0, 1, 1, 0, 0)
+s_proportion(rsp_v)
 
 # Example for Stratified Wilson CI
 nex <- 100 # Number of example rows
