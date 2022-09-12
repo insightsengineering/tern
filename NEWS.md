@@ -1,4 +1,4 @@
-# tern 0.7.9.9005
+# tern 0.7.9.9006
 
 ### Enhancements 
 * Added `DescTools` `BinomDiffCI` function within `tern`.
@@ -139,6 +139,7 @@
 * Removed deprecated `mmrm` functions: `fit_mmrm`, `g_mmrm_diagnostic`, `g_mmrm_lsmeans`, `as.rtable.mmrm`, `h_mmrm_fixed`,
   `h_mmrm_cov`, `h_mmrm_diagnostic`, `tidy.mmrm`, `s_mmrm_lsmeans`, `s_mmrm_lsmeans_single`, `summarize_lsmeans`.
 * Renamed functions `arm` to `study_arm` and `extract` to `extract_by_name`.
+* Removed deprecated functions: `color_palette`, `h_set_nest_theme`, `s_cox_univariate`.
 
 # tern 0.7.8
 
