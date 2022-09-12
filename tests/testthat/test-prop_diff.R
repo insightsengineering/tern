@@ -132,9 +132,18 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
       Treatment = c(0.2890735, 0.5017768)
     ),
     diff = -0.1376866,
-    diff_ci = c(-0.285363076, 0.009989872)
+    diff_ci = c(-0.285363076, 0.009989872),
+    weights = c(0.1148388, 0.2131696, 0.1148388, 0.2131696, 0.1767914, 0.1671918),
+    n1 = c(4, 11, 8, 11, 13, 11),
+    n2 = c(8, 9, 4, 9, 6, 6)
   )
+
+  names(expected$weights) <- names(expected$n1) <- names(expected$n2) <- levels(interaction(strata_data))
   testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_warning(prop_diff_cmh(
+    rsp = rsp[1:4], grp = grp[1:4], strata = interaction(strata_data[1:4, ]),
+    conf_level = 0.90
+  ))
 })
 
 testthat::test_that("prop_diff_cmh works correctly when some strata don't have both groups", {
@@ -166,11 +175,68 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
       Treatment = c(0.2836122, 0.5125378)
     ),
     diff = -0.171767,
-    diff_ci = c(-0.32786094, -0.01567301)
+    diff_ci = c(-0.32786094, -0.01567301),
+    weights = c(0.2408257, 0.1297378, 0.2408257, 0.1997279, 0.1888829),
+    n1 = c(11, 8, 11, 13, 11),
+    n2 = c(9, 4, 9, 6, 6)
   )
+  names(expected$weights) <- names(expected$n1) <- names(expected$n2) <- levels(interaction(strata_data))[-1]
+
   testthat::expect_equal(result, expected, tol = 0.000001)
 })
 
+testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcombe) with cmh weights", {
+  set.seed(1)
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  ) # response to the treatment
+  grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A")) # treatment group
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 80, TRUE),
+    "f2" = sample(c("x", "y", "z"), 80, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+
+  results <- prop_diff_strat_nc(
+    rsp = rsp,
+    grp = grp,
+    strata = strata,
+    conf_level = 0.95
+  )
+
+  # Values externally validated
+  expect_equal(results$diff, 0.2539, tol = 1e-4)
+  expect_equal(as.numeric(results$diff_ci), c(0.0347, 0.4454), tol = 1e-4)
+})
+
+testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcombe) with wilson_h weights", {
+  set.seed(1)
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  ) # response to the treatment
+  grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A")) # treatment group
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 80, TRUE),
+    "f2" = sample(c("x", "y", "z"), 80, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+
+  results <- prop_diff_strat_nc(
+    rsp = rsp,
+    grp = grp,
+    strata = strata,
+    weights_method = "wilson_h",
+    conf_level = 0.95
+  )
+
+  # Values internally checked (no reference yet)
+  expect_equal(results$diff, 0.2587, tol = 1e-4)
+  expect_equal(as.numeric(results$diff_ci), c(0.0391, 0.4501), tol = 1e-4)
+})
 
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
@@ -197,4 +263,74 @@ testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
   )
 
   testthat::expect_identical(to_string_matrix(result), expected)
+})
+
+testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtables`", {
+  set.seed(1)
+  nex <- 100 # Number of test rows
+  dta <- data.frame(
+    "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+    "grp" = sample(c("A", "B"), nex, TRUE),
+    "f1" = sample(c("a1", "a2"), nex, TRUE),
+    "f2" = sample(c("x", "y", "z"), nex, TRUE),
+    stringsAsFactors = TRUE
+  )
+  l <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
+    estimate_proportion_diff(
+      vars = "rsp",
+      variables = list(strata = c("f1", "f2")),
+      conf_level = 0.90,
+      .formats = c("xx.xxxx", "(xx.xxxx, xx.xxxx)"),
+      method = "cmh"
+    )
+
+  result <- build_table(l, df = dta)
+  result <- to_string_matrix(result)
+  expected <- structure(
+    c(
+      "", "Difference in Response rate (%)", "90% CI (CMH, without correction)",
+      "B", "", "", "A", "-4.2133", "(-20.0215, 11.5950)"
+    ),
+    .Dim = c(3L, 3L)
+  )
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("`estimate_proportion_diff` and strat_newcombe is compatible with `rtables`", {
+  set.seed(1)
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  ) # response to the treatment
+  grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A")) # treatment group
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 80, TRUE),
+    "f2" = sample(c("x", "y", "z"), 80, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+  dta <- cbind(rsp, grp, strata_data)
+  l <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
+    estimate_proportion_diff(
+      vars = "rsp",
+      variables = list(strata = c("f1", "f2")),
+      conf_level = 0.95,
+      .formats = c("xx.xx", "(xx.xx, xx.xx)"),
+      method = "strat_newcombe"
+    )
+  result <- build_table(l, df = dta)
+  result <- to_string_matrix(result)
+  expected <- structure(
+    c(
+      "", "Difference in Response rate (%)",
+      "95% CI (Stratified Newcombe, without correction)",
+      "B", "", "", "A", "25.39", "(3.47, 44.54)"
+    ),
+    .Dim = c(3L, 3L)
+  )
+
+  # Values externally validated
+  testthat::expect_identical(result, expected)
 })
