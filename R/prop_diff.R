@@ -353,7 +353,6 @@ prop_diff_strat_nc <- function(rsp,
                                weights_method = c("cmh", "wilson_h"),
                                conf_level = 0.95,
                                correct = FALSE) {
-
   weights_method <- match.arg(weights_method)
   grp <- as_factor_keep_attributes(grp)
   strata <- as_factor_keep_attributes(strata)
