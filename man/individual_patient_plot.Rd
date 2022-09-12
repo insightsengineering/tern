@@ -2,13 +2,10 @@
 % Please edit documentation in R/individual_patient_plot.R
 \name{individual_patient_plot}
 \alias{individual_patient_plot}
-\alias{h_set_nest_theme}
 \alias{h_g_ipp}
 \alias{g_ipp}
 \title{Individual Patient Plots}
 \usage{
-h_set_nest_theme(font_size)
-
 h_g_ipp(
   df,
   xvar,
@@ -44,8 +41,6 @@ g_ipp(
 )
 }
 \arguments{
-\item{font_size}{(\code{number})\cr text font size.}
-
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
 \item{xvar}{(\code{string})\cr time point variable to be plotted on x-axis.}
@@ -93,8 +88,6 @@ Patients' individual baseline values can be added to the plot(s) as reference.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_set_nest_theme()}: sets a \code{ggplot} graphical theme to control outlook of plot.
-
 \item \code{h_g_ipp()}: helper function that generates a simple line
 plot displaying parameter trends over time.
 

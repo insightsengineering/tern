@@ -144,8 +144,9 @@ Line plot with the optional table
 \examples{
 library(nestcolor)
 
-adsl <- scda::synthetic_cdisc_data("latest")$adsl
-adlb <- scda::synthetic_cdisc_data("latest")$adlb
+cached_data <- scda::synthetic_cdisc_data("latest")
+adsl <- cached_data$adsl
+adlb <- cached_data$adlb
 adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 adlb$AVISIT <- droplevels(adlb$AVISIT)
 adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))

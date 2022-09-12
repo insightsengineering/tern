@@ -79,7 +79,7 @@ s_length_proportion <- function(x,
   n_true <- length(x)
   n_false <- .N_col - n_true
   x_logical <- rep(c(TRUE, FALSE), c(n_true, n_false))
-  s_proportion(x = x_logical, ...)
+  s_proportion(df = x_logical, ...)
 }
 
 #' @describeIn estimate_multinomial_rsp Formatted Analysis function which can be further customized by calling
