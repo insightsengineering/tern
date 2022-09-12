@@ -463,6 +463,9 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/stat_median_ci.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/strata_normal_quantile.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/study_arm.html</loc>
   </url>
   <url>
@@ -524,5 +527,8 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/unlist_and_blank_na.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/update_weights_strat_wilson.html</loc>
   </url>
 </urlset>

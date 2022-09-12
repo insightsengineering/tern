@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.9.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.9.9006</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,14 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -78,6 +70,15 @@
 <span></span>
 <span><span class="fu">prop_diff_cmh</span><span class="op">(</span><span class="va">rsp</span>, <span class="va">grp</span>, <span class="va">strata</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">prop_diff_strat_nc</span><span class="op">(</span></span>
+<span>  <span class="va">rsp</span>,</span>
+<span>  <span class="va">grp</span>,</span>
+<span>  <span class="va">strata</span>,</span>
+<span>  weights_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cmh"</span>, <span class="st">"wilson_h"</span><span class="op">)</span>,</span>
+<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  correct <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">s_proportion_diff</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
@@ -85,7 +86,9 @@
 <span>  <span class="va">.in_ref_col</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
 <span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"cmh"</span>, <span class="st">"ha"</span>, <span class="st">"newcombe"</span>, <span class="st">"newcombecc"</span><span class="op">)</span></span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"cmh"</span>, <span class="st">"ha"</span>, <span class="st">"newcombe"</span>, <span class="st">"newcombecc"</span>, <span class="st">"strat_newcombe"</span>,</span>
+<span>    <span class="st">"strat_newcombecc"</span><span class="op">)</span>,</span>
+<span>  weights_method <span class="op">=</span> <span class="st">"cmh"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">a_proportion_diff</span><span class="op">(</span></span>
@@ -95,7 +98,9 @@
 <span>  <span class="va">.in_ref_col</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
 <span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"cmh"</span>, <span class="st">"ha"</span>, <span class="st">"newcombe"</span>, <span class="st">"newcombecc"</span><span class="op">)</span></span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"cmh"</span>, <span class="st">"ha"</span>, <span class="st">"newcombe"</span>, <span class="st">"newcombecc"</span>, <span class="st">"strat_newcombe"</span>,</span>
+<span>    <span class="st">"strat_newcombecc"</span><span class="op">)</span>,</span>
+<span>  weights_method <span class="op">=</span> <span class="st">"cmh"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">estimate_proportion_diff</span><span class="op">(</span></span>
@@ -140,12 +145,19 @@ vector assigning observations to one out of two groups
 
 <dt>correct</dt>
 <dd><p><code>logical</code><br>
-include the continuity correction.</p></dd>
+include the continuity correction. For further information, see for example
+<code><a href="https://rdrr.io/r/stats/prop.test.html" class="external-link">stats::prop.test()</a></code>.</p></dd>
 
 
 <dt>strata</dt>
 <dd><p>(<code>factor</code>)<br>
 with one level per stratum and same length as <code>rsp</code>.</p></dd>
+
+
+<dt>weights_method</dt>
+<dd><p>(<code>string</code>) <br>
+it can be one of <code>c("cmh", "heuristic")</code> and directs the way weights are
+estimated.</p></dd>
 
 
 <dt>df</dt>
@@ -233,6 +245,12 @@ This is defined as the difference in response rates between the
 experimental treatment group and the control treatment group, adjusted
 for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
 weights. For the CMH chi-squared test, use <code><a href="https://rdrr.io/r/stats/mantelhaen.test.html" class="external-link">stats::mantelhaen.test()</a></code>.</p></li>
+<li><p><code>prop_diff_strat_nc()</code>: Calculates the stratified Newcombe confidence interval
+and difference in response rates between the experimental treatment group
+and the control treatment group, adjusted for stratification factors. This
+implementation follows closely the one proposed by Yan and Su (2010).
+Weights can be estimated from the heuristic proposed in
+<code><a href="estimate_proportions.html">prop_strat_wilson()</a></code> or from CMH-derived weights (see <code>prop_diff_cmh()</code>).</p></li>
 <li><p><code>s_proportion_diff()</code>: Statistics function estimating the difference
 in terms of responder proportion.</p></li>
 <li><p><code>a_proportion_diff()</code>: Formatted Analysis function which can be further customized by calling
@@ -242,6 +260,11 @@ pipelines. The analysis is applied to a <code>dataframe</code> and return the
 estimations, in <code>rcells</code>. The ellipsis (<code>...</code>) conveys arguments to
 <code>s_proportion_diff()</code>, for instance <code>na.rm = FALSE</code> if missing data
 should be accounted for.</p></li>
+</ul></div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    
+<ul><li><p><code>Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.</code></p></li>
 </ul></div>
 
     <div class="section level2">
@@ -336,13 +359,66 @@ should be accounted for.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $diff_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.285363076  0.009989872</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $weights</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       a.x       b.x       a.y       b.y       a.z       b.z </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.1148388 0.2131696 0.1148388 0.2131696 0.1767914 0.1671918 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a.x b.x a.y b.y a.z b.z </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4  11   8  11  13  11 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a.x b.x a.y b.y a.z b.z </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8   9   4   9   6   6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stratified Newcombe confidence interval</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"rsp"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"f1"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"f2"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"grp"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"Treatment"</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">prop_diff_strat_nc</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  rsp <span class="op">=</span> <span class="va">data_set</span><span class="op">$</span><span class="va">rsp</span>, grp <span class="op">=</span> <span class="va">data_set</span><span class="op">$</span><span class="va">grp</span>, strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">data_set</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  weights_method <span class="op">=</span> <span class="st">"cmh"</span>,</span></span>
+<span class="r-in"><span>  conf_level <span class="op">=</span> <span class="fl">0.90</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $diff</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.05777672</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $diff_ci</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      lower      upper </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.2236537  0.1119331 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">prop_diff_strat_nc</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  rsp <span class="op">=</span> <span class="va">data_set</span><span class="op">$</span><span class="va">rsp</span>, grp <span class="op">=</span> <span class="va">data_set</span><span class="op">$</span><span class="va">grp</span>, strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">data_set</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  weights_method <span class="op">=</span> <span class="st">"wilson_h"</span>,</span></span>
+<span class="r-in"><span>  conf_level <span class="op">=</span> <span class="fl">0.90</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $diff</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.07771884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $diff_ci</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      lower      upper </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.2540844  0.1027720 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Summary</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.</span></span></span>
+<span class="r-in"><span><span class="va">nex</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co"># Number of example rows</span></span></span>
 <span class="r-in"><span><span class="va">dta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  rsp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  grp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"A"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"A"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"rsp"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="va">nex</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"grp"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, <span class="va">nex</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"f1"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a1"</span>, <span class="st">"a2"</span><span class="op">)</span>, <span class="va">nex</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"f2"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>, <span class="va">nex</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">s_proportion_diff</span><span class="op">(</span></span></span>
@@ -354,14 +430,35 @@ should be accounted for.</p></li>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"ha"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1204336</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Difference in Response rate (%)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $diff_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -91.95011 100.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -17.82763  17.58677</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "90% CI (Anderson-Hauck)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># CMH example with strata</span></span></span>
+<span class="r-in"><span><span class="fu">s_proportion_diff</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dta</span>, <span class="va">grp</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"rsp"</span>,</span></span>
+<span class="r-in"><span>  .ref_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dta</span>, <span class="va">grp</span> <span class="op">==</span> <span class="st">"B"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"f1"</span>, <span class="st">"f2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  conf_level <span class="op">=</span> <span class="fl">0.90</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"cmh"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $diff</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1045856</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Difference in Response rate (%)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $diff_ci</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -15.98426  15.77509</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "90% CI (CMH, without correction)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">a_proportion_diff</span><span class="op">(</span></span></span>
@@ -375,8 +472,8 @@ should be accounted for.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod                       row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     diff           25.0          0 Difference in Response rate (%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  diff_ci (-92.0, 100.0)          1         90% CI (Anderson-Hauck)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     diff           -0.1          0 Difference in Response rate (%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  diff_ci  (-17.8, 17.6)          1         90% CI (Anderson-Hauck)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"grp"</span>, ref_group <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -387,10 +484,10 @@ should be accounted for.</p></li>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   B         A       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Difference in Response rate (%)            25.0     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   90% CI (Anderson-Hauck)             (-92.0, 100.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                   B         A      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Difference in Response rate (%)           -0.1     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   90% CI (Anderson-Hauck)             (-17.8, 17.6)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
