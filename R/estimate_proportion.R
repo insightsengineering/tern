@@ -136,8 +136,8 @@ update_weights_strat_wilson <- function(vars,
 #'
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
-#' @param weights (`numeric`) \cr
-#'   weights for each level of the strata. If missing, they are
+#' @param weights (`numeric` or `NULL`) \cr
+#'   weights for each level of the strata. If `NULL`, they are
 #'   estimated using the iterative algorithm proposed in Yan and Su (2010)
 #'   that minimizes the weighted squared length of the confidence interval.
 #' @param max_iterations (`count`) \cr
@@ -360,20 +360,24 @@ prop_jeffreys <- function(rsp,
 #'   proportion along with its confidence interval.
 #'
 #' @param df (`logical` or `data.frame`)\cr
-#'   if only logical indicates whether each subject is a responder or not.
-#'   `TRUE` represents a successful outcome. If a `data.frame` is provided,
-#'   also the `strata` parameters in `variables` must be provided.
-#'
+#'   if only a logical vector is used, it indicates whether each subject is a
+#'   responder or not. `TRUE` represents a successful outcome. If a `data.frame`
+#'   is provided, also the `strata` variable names must be provided in
+#'   `variables` as a list element with the strata strings. In the case of
+#'   `data.frame`, the logical vector of responses must be indicated as a
+#'   variable name in `.var`.
 #' @param method (`string`) \cr
 #'   the method used to construct the confidence interval for proportion of
 #'   successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`, `wilson`,
 #'   `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
+#' @inheritParams prop_strat_wilson
 #' @param long (`flag`)\cr a long description is required.
 #'
 #' @examples
 #'
 #' # Case with only logical vector.
-#' s_proportion(c(1, 0, 1, 0))
+#' rsp_v <- c(1, 0, 1, 0, 1, 1, 0, 0)
+#' s_proportion(rsp_v)
 #'
 #' # Example for Stratified Wilson CI
 #' nex <- 100 # Number of example rows
@@ -402,7 +406,9 @@ s_proportion <- function(df,
                            "wilson", "wilsonc", "strat_wilson", "strat_wilsonc",
                            "agresti-coull", "jeffreys"
                          ),
-                         variables = list(strata = NULL, weights = NULL, max_iterations = 10),
+                         weights = NULL,
+                         max_iterations = 50,
+                         variables = list(strata = NULL),
                          long = FALSE) {
   method <- match.arg(method)
   checkmate::assert_flag(long)
@@ -420,8 +426,6 @@ s_proportion <- function(df,
     strata <- as.factor(strata)
 
     # Pushing down checks to prop_strat_wilson
-    weights <- variables$weights
-    max_iterations <- variables$max_iterations
   } else if (checkmate::test_subset(method, c("strat_wilson", "strat_wilsonc"))) {
     stop("To use stratified methods you need to specify the strata variables.")
   }
@@ -437,12 +441,18 @@ s_proportion <- function(df,
     "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
     "wilson" = prop_wilson(rsp, conf_level),
     "wilsonc" = prop_wilson(rsp, conf_level, correct = TRUE),
-    "strat_wilson" = prop_strat_wilson(rsp, strata, weights,
-      conf_level, max_iterations,
+    "strat_wilson" = prop_strat_wilson(rsp,
+      strata,
+      weights,
+      conf_level,
+      max_iterations,
       correct = FALSE
     )$conf_int,
-    "strat_wilsonc" = prop_strat_wilson(rsp, strata, weights,
-      conf_level, max_iterations,
+    "strat_wilsonc" = prop_strat_wilson(rsp,
+      strata,
+      weights,
+      conf_level,
+      max_iterations,
       correct = TRUE
     )$conf_int,
     "wald" = prop_wald(rsp, conf_level),

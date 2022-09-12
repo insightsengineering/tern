@@ -38,7 +38,9 @@ s_proportion(
   conf_level = 0.95,
   method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
     "strat_wilsonc", "agresti-coull", "jeffreys"),
-  variables = list(strata = NULL, weights = NULL, max_iterations = 10),
+  weights = NULL,
+  max_iterations = 50,
+  variables = list(strata = NULL),
   long = FALSE
 )
 
@@ -48,7 +50,9 @@ a_proportion(
   conf_level = 0.95,
   method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
     "strat_wilsonc", "agresti-coull", "jeffreys"),
-  variables = list(strata = NULL, weights = NULL, max_iterations = 10),
+  weights = NULL,
+  max_iterations = 50,
+  variables = list(strata = NULL),
   long = FALSE
 )
 
@@ -74,8 +78,8 @@ estimate_proportion(
 \item{strata}{(\code{factor})\cr
 with one level per stratum and same length as \code{rsp}.}
 
-\item{weights}{(\code{numeric}) \cr
-weights for each level of the strata. If missing, they are
+\item{weights}{(\code{numeric} or \code{NULL}) \cr
+weights for each level of the strata. If \code{NULL}, they are
 estimated using the iterative algorithm proposed in Yan and Su (2010)
 that minimizes the weighted squared length of the confidence interval.}
 
@@ -84,9 +88,12 @@ maximum number of iterations for the iterative procedure used
 to find estimates of optimal weights.}
 
 \item{df}{(\code{logical} or \code{data.frame})\cr
-if only logical indicates whether each subject is a responder or not.
-\code{TRUE} represents a successful outcome. If a \code{data.frame} is provided,
-also the \code{strata} parameters in \code{variables} must be provided.}
+if only a logical vector is used, it indicates whether each subject is a
+responder or not. \code{TRUE} represents a successful outcome. If a \code{data.frame}
+is provided, also the \code{strata} variable names must be provided in
+\code{variables} as a list element with the strata strings. In the case of
+\code{data.frame}, the logical vector of responses must be indicated as a
+variable name in \code{.var}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}

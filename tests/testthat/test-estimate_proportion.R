@@ -350,7 +350,9 @@ testthat::test_that("`estimate_proportion` and strat_wilson with equal weights
       vars = "DTHFL",
       conf_level = 0.95,
       method = "strat_wilson",
-      variables = list(strata = c("SEX", "REGION1"), weights = rep(1 / n_ws, n_ws), max_nit = 1),
+      variables = list(strata = c("SEX", "REGION1")),
+      weights = rep(1 / n_ws, n_ws),
+      max_iterations = 1,
       .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
     ) %>%
     build_table(anl)

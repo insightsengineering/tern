@@ -314,7 +314,8 @@ prop_diff_cmh <- function(rsp,
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
 #' @param weights_method (`string`) \cr
-#'   it can be one of `c("cmh", "heuristic")` and directs the way weights are estimated.
+#'   it can be one of `c("cmh", "heuristic")` and directs the way weights are
+#'   estimated.
 #'
 #' @examples
 #' # Stratified Newcombe confidence interval
@@ -349,12 +350,11 @@ prop_diff_cmh <- function(rsp,
 prop_diff_strat_nc <- function(rsp,
                                grp,
                                strata,
-                               weights_method = c("cmh", "wilson_h")[1],
+                               weights_method = c("cmh", "wilson_h"),
                                conf_level = 0.95,
                                correct = FALSE) {
 
-  # Checks
-  checkmate::assert_choice(weights_method, choices = c("cmh", "wilson_h"))
+  weights_method <- match.arg(weights_method)
   grp <- as_factor_keep_attributes(grp)
   strata <- as_factor_keep_attributes(strata)
   check_diff_prop_ci(
@@ -427,6 +427,7 @@ prop_diff_strat_nc <- function(rsp,
 #'   in terms of responder proportion.
 #' @param method (`string`)\cr
 #'   the method used for the confidence interval estimation.
+#' @inheritParams prop_diff_strat_nc
 #'
 #' @examples
 #' # Summary
@@ -466,13 +467,14 @@ s_proportion_diff <- function(df,
                               .var,
                               .ref_group,
                               .in_ref_col,
-                              variables = list(strata = NULL, weights_method = "cmh"),
+                              variables = list(strata = NULL),
                               conf_level = 0.95,
                               method = c(
                                 "waldcc", "wald", "cmh",
                                 "ha", "newcombe", "newcombecc",
                                 "strat_newcombe", "strat_newcombecc"
-                              )) {
+                              ),
+                              weights_method = "cmh") {
   method <- match.arg(method)
   y <- list(diff = "", diff_ci = "")
 

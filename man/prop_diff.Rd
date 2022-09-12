@@ -27,7 +27,7 @@ prop_diff_strat_nc(
   rsp,
   grp,
   strata,
-  weights_method = c("cmh", "wilson_h")[1],
+  weights_method = c("cmh", "wilson_h"),
   conf_level = 0.95,
   correct = FALSE
 )
@@ -37,10 +37,11 @@ s_proportion_diff(
   .var,
   .ref_group,
   .in_ref_col,
-  variables = list(strata = NULL, weights_method = "cmh"),
+  variables = list(strata = NULL),
   conf_level = 0.95,
   method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc")
+    "strat_newcombecc"),
+  weights_method = "cmh"
 )
 
 a_proportion_diff(
@@ -48,10 +49,11 @@ a_proportion_diff(
   .var,
   .ref_group,
   .in_ref_col,
-  variables = list(strata = NULL, weights_method = "cmh"),
+  variables = list(strata = NULL),
   conf_level = 0.95,
   method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc")
+    "strat_newcombecc"),
+  weights_method = "cmh"
 )
 
 estimate_proportion_diff(
@@ -90,7 +92,8 @@ include the continuity correction. For further information, see for example
 with one level per stratum and same length as \code{rsp}.}
 
 \item{weights_method}{(\code{string}) \cr
-it can be one of \code{c("cmh", "heuristic")} and directs the way weights are estimated.}
+it can be one of \code{c("cmh", "heuristic")} and directs the way weights are
+estimated.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
