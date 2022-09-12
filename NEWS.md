@@ -1,4 +1,4 @@
-# tern 0.7.9.9004
+# tern 0.7.9.9005
 
 ### Enhancements 
 * Added `DescTools` `BinomDiffCI` function within `tern`.
