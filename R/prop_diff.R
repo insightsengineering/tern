@@ -392,7 +392,7 @@ prop_diff_strat_nc <- function(rsp,
   l_trt <- as.numeric(ci_trt$conf_int[1])
   u_trt <- as.numeric(ci_trt$conf_int[2])
 
-  # Estimating the diff and n_ref, n2 (it allows different weights to be used)
+  # Estimating the diff and n_ref, n_trt (it allows different weights to be used)
   t_tbl <- table(
     factor(rsp, levels = c("FALSE", "TRUE")),
     grp,
