@@ -84,7 +84,7 @@ testthat::test_that("update_weights_strat_wilson convergence test", {
   )
 })
 
-testthat::test_that("prop_strat_wilson returns right result", {
+testthat::test_that("prop_strat_wilson returns right results", {
   set.seed(1)
 
   # Testing data set
