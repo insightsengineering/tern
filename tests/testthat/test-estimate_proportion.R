@@ -74,12 +74,12 @@ testthat::test_that("update_weights_strat_wilson convergence test", {
   cl <- 0.95 # Confidence level
   ni <- 1000 # Maximum number of allowed iterations
   tol <- 0.0001 # Tolerance for convergence
-  sq <- tern:::strata_normal_quantile(vs, ws, cl) # Initial quantiles
+  sq <- strata_normal_quantile(vs, ws, cl) # Initial quantiles
 
-  result <- tern:::update_weights_strat_wilson(vs, sq, ws, ns, ni, cl, tol)
+  result <- update_weights_strat_wilson(vs, sq, ws, ns, ni, cl, tol)
   testthat::expect_equal(result$n_it, 2)
   warning_message <- "The heuristic to find weights did not converge with max_iterations = 2"
-  testthat::expect_warning(tern:::update_weights_strat_wilson(vs, sq, ws, ns, 2, cl, 0.000000001),
+  testthat::expect_warning(update_weights_strat_wilson(vs, sq, ws, ns, 2, cl, 0.000000001),
     regexp = warning_message
   )
 })
