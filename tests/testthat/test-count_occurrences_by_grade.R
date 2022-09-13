@@ -1,6 +1,4 @@
-
-raw_data <- local({
-  df <- data.frame(
+raw_data <- data.frame(
     USUBJID = as.character(c(1:6, 1)),
     USUBJID2 = as.character(c(1:6, 1) * 10),
     AETOXGR = factor(c(1, 2, 3, 1, 1, 2, 3), levels = c(1:5)),
@@ -13,9 +11,6 @@ raw_data <- local({
     BMRKR = factor(rep(c("HIGH", "LOW"), 4)[-1], levels = c("LOW", "HIGH")),
     stringsAsFactors = FALSE
   )
-
-  df
-})
 
 testthat::test_that("h_append_grade_groups works with valid input", {
   result <- h_append_grade_groups(
