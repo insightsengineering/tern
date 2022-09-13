@@ -1,5 +1,4 @@
-library(scda)
-
+# Local data pre-processing
 preprocess_adrs <- function(adrs, n_records = 20) {
   adrs_labels <- formatters::var_labels(adrs)
   adrs <- adrs %>%
@@ -17,12 +16,11 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
-adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
 
-adrs_100 <- adrs %>%
+adrs_100 <- adrs_raw %>%
   preprocess_adrs(n_records = 100)
 
-adrs_200 <- adrs %>%
+adrs_200 <- adrs_raw %>%
   preprocess_adrs(n_records = 200)
 
 testthat::test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {

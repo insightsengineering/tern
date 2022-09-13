@@ -1,5 +1,3 @@
-library(dplyr)
-
 testthat::test_that("h_ancova works with healthy input", {
   result <- h_ancova(
     .var = "Sepal.Length",

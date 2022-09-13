@@ -1,7 +1,5 @@
 # Test all variants of AET02 SMQ
 
-library(scda)
-
 stack_adae_by_smq <- function(adae, smq) {
   l_df <- lapply(smq, function(ae_grp) {
     keep <- !(is.na(adae[[ae_grp]]))
@@ -13,8 +11,8 @@ stack_adae_by_smq <- function(adae, smq) {
   do.call(rbind, l_df)
 }
 
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
+adsl <- adsl_raw
+adae <- adsl_raw
 
 testthat::test_that("AET02SMQ variant 1 is produced correctly", {
   adae <- stack_adae_by_smq(adae, c("SMQ01NAM"))

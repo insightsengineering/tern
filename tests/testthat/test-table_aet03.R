@@ -1,7 +1,5 @@
-library(scda)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
+adsl <- adsl_raw
+adae <- adae_raw
 
 testthat::test_that("AET03 variant 1 is produced correctly", {
   adae$AEDECOD <- as.character(adae$AEDECOD) # nolint
