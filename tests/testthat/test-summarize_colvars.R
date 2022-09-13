@@ -1,18 +1,18 @@
 dta_local <- data.frame(
-    ARM = rep(c("A", "B"), 9),
-    USUBJID = rep(1:6, each = 3),
-    AVISIT = rep(paste0("V", 1:3), 6),
-    AVAL = c(9:1, rep(NA, 9))
+  ARM = rep(c("A", "B"), 9),
+  USUBJID = rep(1:6, each = 3),
+  AVISIT = rep(paste0("V", 1:3), 6),
+  AVAL = c(9:1, rep(NA, 9))
+) %>%
+  dplyr::mutate(
+    ABLFLL = AVISIT == "V1"
   ) %>%
-    dplyr::mutate(
-      ABLFLL = AVISIT == "V1"
-    ) %>%
-    dplyr::group_by(USUBJID) %>%
-    dplyr::mutate(
-      BLVAL = AVAL[ABLFLL],
-      CHG = AVAL - BLVAL
-    ) %>%
-    dplyr::ungroup()
+  dplyr::group_by(USUBJID) %>%
+  dplyr::mutate(
+    BLVAL = AVAL[ABLFLL],
+    CHG = AVAL - BLVAL
+  ) %>%
+  dplyr::ungroup()
 
 testthat::test_that("summarize_colvars works as expected without column split and default behavior", {
   dta <- dta_local

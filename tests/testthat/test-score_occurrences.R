@@ -76,7 +76,6 @@ full_table_with_empty <- local({
 })
 
 testthat::test_that("score_occurrences functions as expected", {
-
   sorted_table <- full_table %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -105,7 +104,6 @@ testthat::test_that("score_occurrences functions as expected", {
 })
 
 testthat::test_that("score_occurrences functions as expected with empty analysis rows", {
-
   sorted_table <- full_table_with_empty %>%
     sort_at_path(
       path = c("AEBODSYS", "*", "AEDECOD"),
@@ -136,7 +134,6 @@ testthat::test_that("score_occurrences functions as expected with empty analysis
 })
 
 testthat::test_that("score_occurrences_cols functions as expected", {
-
   score_col_c <- score_occurrences_cols(col_names = "C")
   testthat::expect_is(score_col_c, "function")
 

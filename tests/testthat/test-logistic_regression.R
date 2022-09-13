@@ -4,12 +4,12 @@ adrs_local <- adrs_raw %>%
   reapply_varlabels(formatters::var_labels(adrs_raw))
 
 adrs_example <- adrs_local %>%
-    dplyr::filter(
-      PARAMCD == "BESRSPI",
-      RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
-    ) %>%
-    dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
-    reapply_varlabels(formatters::var_labels(adrs_local))
+  dplyr::filter(
+    PARAMCD == "BESRSPI",
+    RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
+  ) %>%
+  dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
+  reapply_varlabels(formatters::var_labels(adrs_local))
 
 # fit_logistic ----
 

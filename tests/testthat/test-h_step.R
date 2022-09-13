@@ -12,11 +12,11 @@ raw_data <- data.frame(
 )
 
 adrs_local <- adrs_raw %>%
-    dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
-    dplyr::mutate(
-      RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
-      ARMBIN = droplevels(ARMCD)
-    )
+  dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+  dplyr::mutate(
+    RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+    ARMBIN = droplevels(ARMCD)
+  )
 
 # h_step_window ----
 

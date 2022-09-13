@@ -1,18 +1,18 @@
 set.seed(1)
 anl_local <- data.frame(
-    USUBJID = c(paste("id", seq(1, 12), sep = "")),
-    ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
-    SEX = c(rep("Female", 6), rep("Male", 6)),
-    AVAL = as.numeric(sample(seq(1, 5), 12, replace = TRUE)),
-    stringsAsFactors = TRUE
-  )
+  USUBJID = c(paste("id", seq(1, 12), sep = "")),
+  ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
+  SEX = c(rep("Female", 6), rep("Male", 6)),
+  AVAL = as.numeric(sample(seq(1, 5), 12, replace = TRUE)),
+  stringsAsFactors = TRUE
+)
 
 adsl_local <- data.frame(
-    USUBJID = c(paste("id", seq(1, 12), sep = "")),
-    ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
-    SEX = c(rep("Female", 6), rep("Male", 6)),
-    stringsAsFactors = TRUE
-  )
+  USUBJID = c(paste("id", seq(1, 12), sep = "")),
+  ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
+  SEX = c(rep("Female", 6), rep("Male", 6)),
+  stringsAsFactors = TRUE
+)
 
 testthat::test_that("s_count_patients_sum_exposure works as expected", {
   df <- anl_local
