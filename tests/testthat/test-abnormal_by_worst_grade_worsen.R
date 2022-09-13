@@ -1,5 +1,5 @@
 # Data pre-processing
-adlb_local <- local(adlb_raw %>%
+adlb_local <- adlb_raw %>%
   dplyr::mutate(
     GRADDR = dplyr::case_when(
       PARAMCD == "ALT" ~ "B",
@@ -7,7 +7,7 @@ adlb_local <- local(adlb_raw %>%
       PARAMCD == "IGA" ~ "H"
     )
   ) %>%
-  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != ""))
+  dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   set.seed(42)

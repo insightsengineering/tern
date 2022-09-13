@@ -1,5 +1,3 @@
-library(dplyr)
-
 testthat::test_that("s_count_patients_with_event handles NA", {
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002"),
@@ -237,11 +235,9 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
 })
 
 testthat::test_that("count_patients_with_flags works with label row specified", {
-  adsl <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adsl
-  adae <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adae
 
   # Create custom flags:
-  adae <- adae %>%
+  adae_local <- adae_raw %>%
     dplyr::mutate(
       SER = AESER == "Y",
       REL = AEREL == "Y",
@@ -251,7 +247,7 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
   columns <- c("SER", "REL", "CTC35", "CTC45")
   labels <- c("Serious AE", "Related AE", "Grade 3-5 AE", "Grade 4/5 AE")
   for (i in seq_along(columns)) {
-    attr(adae[[columns[i]]], "label") <- labels[i]
+    attr(adae_local[[columns[i]]], "label") <- labels[i]
   }
   aesi_vars <- c("SER", "REL", "CTC35", "CTC45")
 
@@ -261,19 +257,19 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
     add_colcounts() %>%
     count_patients_with_event(
       vars = "USUBJID",
-      filters = c("STUDYID" = as.character(unique(adae$STUDYID))),
+      filters = c("STUDYID" = as.character(unique(adae_local$STUDYID))),
       denom = "N_col",
       .labels = c(count_fraction = "Total number of patients with at least one adverse event")
     ) %>%
     count_patients_with_flags(
       "USUBJID",
-      flag_variables = formatters::var_labels(adae[, aesi_vars]),
+      flag_variables = formatters::var_labels(adae_local[, aesi_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
       show_labels = "visible"
     )
 
-  result <- build_table(lyt, df = adae, alt_counts_df = adsl)
+  result <- build_table(lyt, df = adae_local, alt_counts_df = adsl_raw)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- t(structure(

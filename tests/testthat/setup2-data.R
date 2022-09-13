@@ -1,4 +1,35 @@
+
 test_data <- synthetic_cdisc_data("rcd_2022_02_28")
 
 adlb_raw <- test_data$adlb
 adsl_raw <- test_data$adsl
+adae_raw <- test_data$adae
+
+# Bladder data from survival (previously function `get_bladder`)
+dta_bladder_raw <- local({
+  # Setting general random for data generation
+  set.seed(1, kind = "Mersenne-Twister")
+  dta_bladder <- with(
+    data = survival::bladder %>%
+      filter(enum < 5),
+    data.frame(
+      time = stop,
+      status = event,
+      arm = paste("ARM:", as.factor(rx)),
+      armcd = as.factor(rx),
+      covar1 = as.factor(enum),
+      covar2 = factor(
+        sample(as.factor(enum)),
+        levels = 1:4, labels = c("F", "F", "M", "M")
+      )
+    )
+  )
+  attr(dta_bladder$armcd, "label") <- "ARM"
+  attr(dta_bladder$covar1, "label") <- "A Covariate Label"
+  attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
+  dta_bladder$age <- sample(
+    20:60,
+    size = nrow(dta_bladder), replace = TRUE
+  )
+  dta_bladder
+})
