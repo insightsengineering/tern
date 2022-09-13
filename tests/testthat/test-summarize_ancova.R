@@ -133,7 +133,7 @@ testthat::test_that("summarize_ancova works with interaction", {
       substr(Petal.Width, 3, 3) < 5 & substr(Petal.Width, 3, 3) > 2 ~ "B",
       TRUE ~ "C"
     )) %>%
-    mutate(p_group = as.factor(p_group))
+    dplyr::mutate(p_group = as.factor(p_group))
 
   result <- basic_table() %>%
     split_cols_by("Species", ref_group = "setosa") %>%

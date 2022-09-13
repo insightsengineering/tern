@@ -2,11 +2,9 @@
 # to variant 1, needing only the data frame to be pre-processed
 # and the baseline variable to be changed from SEX.
 
-library(magrittr)
-
-adsl <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adae
-adsub <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adsub
+adsl <- adsl_raw
+adae <- adae_raw
+adsub <- adsub_raw
 adsub_bmi <- adsub %>%
   dplyr::filter(PARAMCD == "BBMISI") %>%
   dplyr::select(STUDYID, USUBJID, AVALCAT1) %>%

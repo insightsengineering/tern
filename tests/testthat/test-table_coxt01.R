@@ -1,12 +1,6 @@
-
-# Preparation of the test case.
-
 # nolint start
-library(tern)
-library(scda)
-library(broom)
 
-ADTTE <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
+ADTTE <- adtte_raw
 saved_labels <- formatters::var_labels(ADTTE)
 
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
