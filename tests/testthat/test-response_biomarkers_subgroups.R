@@ -1,7 +1,4 @@
-library(scda)
-library(dplyr)
-library(survival)
-
+# Local data pre-processing
 preprocess_adrs <- function(adrs) {
 
   # Save variable labels before data processing steps.
@@ -18,13 +15,13 @@ preprocess_adrs <- function(adrs) {
   )
 }
 
-adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
+adrs_local <- adrs_raw %>%
+  preprocess_adrs()
 
 # extract_rsp_biomarkers ----
 
 testthat::test_that("extract_rsp_biomarkers functions as expected with valid input and default arguments", {
-  adrs_f <- adrs %>%
-    preprocess_adrs()
+  adrs_f <- adrs_local
 
   result <- testthat::expect_silent(extract_rsp_biomarkers(
     variables = list(
@@ -116,8 +113,7 @@ testthat::test_that("extract_rsp_biomarkers functions as expected with valid inp
 })
 
 testthat::test_that("extract_rsp_biomarkers works as expected with other custom options", {
-  adrs_f <- adrs %>%
-    preprocess_adrs()
+  adrs_f <- adrs_local
 
   result <- testthat::expect_silent(extract_rsp_biomarkers(
     variables = list(
@@ -166,8 +162,7 @@ testthat::test_that("extract_rsp_biomarkers works as expected with other custom 
 # tabulate_rsp_biomarkers ----
 
 testthat::test_that("tabulate_rsp_biomarkers works as expected with valid input", {
-  adrs_f <- adrs %>%
-    preprocess_adrs()
+  adrs_f <- adrs_local
 
   df <- extract_rsp_biomarkers(
     variables = list(
@@ -217,8 +212,7 @@ testthat::test_that("tabulate_rsp_biomarkers works as expected with valid input"
 })
 
 testthat::test_that("tabulate_rsp_biomarkers functions as expected with NULL subgroups", {
-  adrs_f <- adrs %>%
-    preprocess_adrs()
+  adrs_f <- adrs_local
 
   df <- testthat::expect_silent(extract_rsp_biomarkers(
     variables = list(
