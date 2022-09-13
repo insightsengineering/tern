@@ -1,8 +1,5 @@
 # Preparation of the test case.
-library(dplyr)
-library(scda)
-
-adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
+adrs <- adrs_raw
 
 # Select a response parameter endpoint.
 adrs <- adrs %>% dplyr::filter(PARAMCD == "INVET")

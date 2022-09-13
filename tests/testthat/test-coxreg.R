@@ -121,7 +121,6 @@ testthat::test_that("h_coxreg_univar_formulas creates formulas with multiple str
 # h_coxreg_multivar_extract ----
 
 testthat::test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate names overlap", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_simple <- raw_data
   mod <- survival::coxph(survival::Surv(time, status) ~ age + stage, data = dta_simple)
@@ -144,7 +143,6 @@ testthat::test_that("h_coxreg_multivar_extract extracts correct coxph results wh
 })
 
 testthat::test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate is a factor", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_simple <- raw_data
   mod <- survival::coxph(survival::Surv(time, status) ~ age + stage, data = dta_simple)
@@ -365,7 +363,7 @@ testthat::test_that("h_coxreg_univar_extract extracts coxph results", {
 # muffled_car_anova ----
 
 testthat::test_that("muffled_car_anova muffles notes about dropped strata term", {
-  bladder1 <- bladder[bladder$enum < 5, ]
+  bladder1 <- survival::bladder[survival::bladder$enum < 5, ]
   mod <- survival::coxph(
     survival::Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
     bladder1
@@ -375,7 +373,7 @@ testthat::test_that("muffled_car_anova muffles notes about dropped strata term",
 })
 
 testthat::test_that("muffled_car_anova gives a hint in the error message when an error occurs", {
-  bladder2 <- bladder[1:20, ]
+  bladder2 <- survival::bladder[1:20, ]
   mod <- survival::coxph(
     survival::Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
     bladder2
@@ -538,7 +536,6 @@ testthat::test_that("h_coxreg_inter_effect.numerics works with _:_ in effect lev
 
 testthat::test_that("h_coxreg_inter_estimations' results identical to soon deprecated estimate_coef", {
   # Testing dataset [survival::bladder].
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- dta_bladder_raw
 
@@ -627,7 +624,6 @@ testthat::test_that("fit_coxreg_multivar works correctly also without treatment 
 # tidy.coxreg.multivar ----
 
 testthat::test_that("tidy.coxreg.multivar method tidies up the multi-variable Cox regression model", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- dta_bladder_raw
 
@@ -729,7 +725,6 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
 })
 
 testthat::test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtables", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- dta_bladder_raw
   conf_level <- 0.90
@@ -762,7 +757,6 @@ testthat::test_that("summarize_coxreg adds the multi-variable Cox regression lay
 })
 
 testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- dta_bladder_raw
   conf_level <- 0.90

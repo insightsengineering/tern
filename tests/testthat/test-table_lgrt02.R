@@ -1,10 +1,6 @@
 # Tests variants of LGRT02.
-
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
+adsl <- adsl_raw
+adrs <- adrs_raw
 
 adsl_cached <- adsl %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%

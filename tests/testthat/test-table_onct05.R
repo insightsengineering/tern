@@ -1,6 +1,3 @@
-library(scda)
-library(dplyr)
-
 preprocess_adrs <- function(adrs, n_records = 20) {
   adrs_labels <- formatters::var_labels(adrs)
   adrs <- adrs %>%
@@ -18,7 +15,7 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
-adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
+adrs <- adrs_raw
 
 testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced correctly", {
   adrs <- adrs %>%

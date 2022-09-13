@@ -1,7 +1,7 @@
 # Local data pre-processing
 test_fit <- local({
   dta <- adtte_raw[adtte_raw$PARAMCD == "OS", ]
-  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
+  survival::survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
 })
 
 # h_data_plot ----
@@ -22,7 +22,7 @@ testthat::test_that("h_data_plot respects the ordering of the arm variable facto
   data <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
-    survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+    survival::survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
   result <- h_data_plot(data)
   testthat::expect_is(result, "tbl_df")
   testthat::expect_is(result$strata, "factor")
