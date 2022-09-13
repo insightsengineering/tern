@@ -1,6 +1,3 @@
-library(scda)
-library(dplyr)
-
 preprocess_adtte <- function(adtte) {
 
   # Save variable labels before data processing steps.
@@ -25,11 +22,11 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, AVAL = adtte_labels["AVAL"])
 }
 
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
+adtte_local <- adtte_raw %>%
+  preprocess_adtte()
 
 testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is produced correctly", {
-  anl1 <- adtte %>%
-    preprocess_adtte()
+  anl1 <- adtte_local
 
   df <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -71,8 +68,7 @@ testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Durat
 })
 
 testthat::test_that("FSTG02 table variant 2 (specifying class variables and options for the treatment variable)", {
-  anl2 <- adtte %>%
-    preprocess_adtte() %>%
+  anl2 <- adtte_local %>%
     dplyr::mutate(
       # Recode levels of arm.
       ARM = forcats::fct_recode(
@@ -126,8 +122,7 @@ testthat::test_that("FSTG02 table variant 2 (specifying class variables and opti
 })
 
 testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the alpha level)", {
-  anl3 <- adtte %>%
-    preprocess_adtte()
+  anl3 <- adtte_local
 
   df <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -164,8 +159,7 @@ testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the 
 })
 
 testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
-  anl4 <- adtte %>%
-    preprocess_adtte()
+  anl4 <- adtte_local
 
   df <- extract_survival_subgroups(
     variables = list(

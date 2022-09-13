@@ -1,5 +1,4 @@
 # Tests all variants of DST01.
-library(rtables)
 get_adsl0 <- function() {
   # This specific ADSL is currently not part of RCD.
   set.seed(1, kind = "Mersenne-Twister")

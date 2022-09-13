@@ -1,12 +1,7 @@
 # Tests DMT01
 
-library(scda)
-library(dplyr)
-library(rtables)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-advs <- synthetic_cdisc_data("rcd_2022_02_28")$advs
-
+adsl <- adsl_raw
+advs <- advs_raw
 
 testthat::test_that("DMT01 default and alternative variants are produced correctly", {
 

@@ -1,8 +1,5 @@
 # Tests all ENT variants.
-
-library(scda)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adsl <- adsl_raw
 
 testthat::test_that("ENT01_IT is produced correctly", {
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint

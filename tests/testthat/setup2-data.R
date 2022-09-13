@@ -10,6 +10,9 @@ adpp_raw <- test_data$adpp
 adsub_raw <- test_data$adsub
 adqs_raw <- test_data$adqs
 adcm_raw <- test_data$adcm
+advs_raw <- test_data$advs
+adeg_raw <- test_data$adeg
+adex_raw <- test_data$adex
 adrs_raw <- test_data_recent$adrs
 adtte_raw <- test_data_recent$adtte
 
