@@ -1,26 +1,29 @@
-# Modify ANRIND and create AVALCAT1/PARCAT2
-# PARCAT2 is just used for filtering, but in order to be the
-# filtering as realistic as possible, will create the variable.
-qntls <- adlb_raw %>%
-  dplyr::group_by(.data$PARAMCD) %>%
-  dplyr::summarise(
-    q1 = stats::quantile(.data$AVAL, probs = c(0.1)),
-    q2 = stats::quantile(.data$AVAL, probs = c(0.9))
-  )
-
-adlb_local <- adlb_raw %>%
-  dplyr::left_join(qntls, by = "PARAMCD") %>%
-  dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
-  dplyr::mutate(
-    ANRIND = factor(
-      dplyr::case_when(
-        .data$ANRIND == "LOW" & .data$AVAL <= .data$q1 ~ "LOW LOW",
-        .data$ANRIND == "HIGH" & .data$AVAL >= .data$q2 ~ "HIGH HIGH",
-        TRUE ~ as.character(ANRIND)
-      ),
-      levels = c("", "HIGH", "HIGH HIGH", "LOW", "LOW LOW", "NORMAL")
+# Local data pre-processing
+adlb_local <- local({
+  # Modify ANRIND and create AVALCAT1/PARCAT2
+  # PARCAT2 is just used for filtering, but in order to be the
+  # filtering as realistic as possible, will create the variable.
+  qntls <- adlb_raw %>%
+    dplyr::group_by(.data$PARAMCD) %>%
+    dplyr::summarise(
+      q1 = stats::quantile(.data$AVAL, probs = c(0.1)),
+      q2 = stats::quantile(.data$AVAL, probs = c(0.9))
     )
-  )
+
+  adlb_raw %>%
+    dplyr::left_join(qntls, by = "PARAMCD") %>%
+    dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
+    dplyr::mutate(
+      ANRIND = factor(
+        dplyr::case_when(
+          .data$ANRIND == "LOW" & .data$AVAL <= .data$q1 ~ "LOW LOW",
+          .data$ANRIND == "HIGH" & .data$AVAL >= .data$q2 ~ "HIGH HIGH",
+          TRUE ~ as.character(ANRIND)
+        ),
+        levels = c("", "HIGH", "HIGH HIGH", "LOW", "LOW LOW", "NORMAL")
+      )
+    )
+})
 
 testthat::test_that("s_count_abnormal_by_marked works as expected", {
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
