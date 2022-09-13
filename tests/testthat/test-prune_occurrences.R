@@ -5,7 +5,7 @@ tab <- basic_table() %>%
   split_rows_by("STRATA1") %>%
   summarize_row_groups() %>%
   summarize_vars("COUNTRY", .stats = "count_fraction") %>%
-  build_table(adsl_dm)
+  build_table(DM)
 
 testthat::test_that("keep_rows works in a special case identical to standard pruning", {
   row_condition <- !CombinationFunction(all_zero_or_na)

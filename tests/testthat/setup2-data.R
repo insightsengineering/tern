@@ -9,10 +9,10 @@ adpp_raw <- test_data$adpp
 adrs_raw <- test_data_recent$adrs
 adtte_raw <- test_data_recent$adtte
 
-# Data as DM from `formatters`
+# Data as DM from `formatters` ## to discuss
 adsl_dm <- adsl_raw %>%
-  select(c("AGE", "SEX", "RACE", "COUNTRY", "ARM", "BMRKR1", "STRATA1")) %>%
-  mutate(ID = paste0("S", seq_len(nrow(adsl_raw))))
+  dplyr::select(c("AGE", "SEX", "RACE", "COUNTRY", "ARM", "BMRKR1", "STRATA1")) %>%
+  dplyr::mutate(ID = paste0("S", seq_len(nrow(adsl_raw))))
 adsl_dm <- var_relabel(adsl_dm, ID = "subject id")
 
 # Bladder data from survival (previously function `get_bladder`)
