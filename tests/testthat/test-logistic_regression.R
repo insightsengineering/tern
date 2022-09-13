@@ -1,26 +1,15 @@
-library(scda)
-library(rtables)
-library(dplyr)
-
-adsl_cached <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adsl_cached <- adsl_cached %>%
+# Local data pre-processing
+adrs_local <- adrs_raw %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(formatters::var_labels(adsl_cached))
+  reapply_varlabels(formatters::var_labels(adrs_raw))
 
-adrs_cached <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
-adrs_cached <- adrs_cached %>%
-  dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(formatters::var_labels(adrs_cached))
-
-adrs_example <- local({
-  adrs_cached %>%
+adrs_example <- adrs_local %>%
     dplyr::filter(
       PARAMCD == "BESRSPI",
       RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
     ) %>%
     dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
-    reapply_varlabels(formatters::var_labels(adrs_cached))
-})
+    reapply_varlabels(formatters::var_labels(adrs_local))
 
 # fit_logistic ----
 

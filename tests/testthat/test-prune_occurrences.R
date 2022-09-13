@@ -1,10 +1,16 @@
+# Data as DM from `formatters`
+adsl_local <- adsl_raw %>%
+  select(c("AGE", "SEX", "RACE", "COUNTRY", "ARM", "BMRKR1", "STRATA1")) %>%
+  mutate(ID = paste0("S", seq_len(nrow(adsl_raw))))
+adsl_local <- var_relabel(adsl_local, ID = "subject id")
+
 tab <- basic_table() %>%
   split_cols_by("ARM") %>%
   split_rows_by("RACE") %>%
   split_rows_by("STRATA1") %>%
   summarize_row_groups() %>%
   summarize_vars("COUNTRY", .stats = "count_fraction") %>%
-  build_table(DM)
+  build_table(adsl_local)
 
 testthat::test_that("keep_rows works in a special case identical to standard pruning", {
   row_condition <- !CombinationFunction(all_zero_or_na)

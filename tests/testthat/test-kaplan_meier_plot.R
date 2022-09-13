@@ -1,11 +1,6 @@
-library(scda)
-library(dplyr)
-library(survival)
-
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte # nolintr
-
+# Local data pre-processing
 test_fit <- local({
-  dta <- adtte[adtte$PARAMCD == "OS", ]
+  dta <- adtte_raw[adtte_raw$PARAMCD == "OS", ]
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
 })
 
@@ -24,7 +19,7 @@ testthat::test_that("h_data_plot works as expected", {
 })
 
 testthat::test_that("h_data_plot respects the ordering of the arm variable factor levels", {
-  data <- adtte %>%
+  data <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
     survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
@@ -106,7 +101,7 @@ testthat::test_that("h_tbl_median_surv estimates median survival time with CI", 
 })
 
 testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
-  df <- adtte %>%
+  df <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
