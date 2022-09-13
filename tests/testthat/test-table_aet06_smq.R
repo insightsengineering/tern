@@ -1,10 +1,6 @@
 # Test variants for AET06_SMQ.
-
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
+adsl <- adsl_raw
+adae <- adae_raw
 
 testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
   adsl_labels <- formatters::var_labels(adsl)

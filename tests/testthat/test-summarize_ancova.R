@@ -128,7 +128,7 @@ testthat::test_that("summarize_ancova works with healthy inputs", {
 
 testthat::test_that("summarize_ancova works with interaction", {
   iris_new <- iris %>%
-    mutate(p_group = case_when(
+    dplyr::mutate(p_group = case_when(
       substr(Petal.Width, 3, 3) < 3 ~ "A",
       substr(Petal.Width, 3, 3) < 5 & substr(Petal.Width, 3, 3) > 2 ~ "B",
       TRUE ~ "C"

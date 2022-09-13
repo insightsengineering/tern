@@ -1,5 +1,4 @@
 # Test all variants of AET02 SMQ
-
 stack_adae_by_smq <- function(adae, smq) {
   l_df <- lapply(smq, function(ae_grp) {
     keep <- !(is.na(adae[[ae_grp]]))
@@ -12,7 +11,7 @@ stack_adae_by_smq <- function(adae, smq) {
 }
 
 adsl <- adsl_raw
-adae <- adsl_raw
+adae <- adae_raw
 
 testthat::test_that("AET02SMQ variant 1 is produced correctly", {
   adae <- stack_adae_by_smq(adae, c("SMQ01NAM"))

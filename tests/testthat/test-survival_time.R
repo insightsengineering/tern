@@ -1,5 +1,5 @@
 testthat::test_that("s_surv_time works with default arguments", {
-  adtte_f <- adttw_raw %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),
@@ -23,7 +23,7 @@ testthat::test_that("s_surv_time works with default arguments", {
 })
 
 testthat::test_that("s_surv_time works with customized arguments", {
-  adtte_f <- adttw_raw %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),
@@ -50,7 +50,7 @@ testthat::test_that("s_surv_time works with customized arguments", {
 })
 
 testthat::test_that("surv_time works with default arguments", {
-  adtte_f <- adttw_raw %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),
@@ -85,7 +85,7 @@ testthat::test_that("surv_time works with default arguments", {
 
 
 testthat::test_that("surv_time works with customized arguments", {
-  adtte_f <- adttw_raw %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),

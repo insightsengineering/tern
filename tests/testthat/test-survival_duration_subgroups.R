@@ -355,7 +355,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with NULL
 testthat::test_that("tabulate_survival_subgroups functions as expected with extreme values in subgroups", {
   adtte <- adtte_local %>%
     dplyr::slice(1:30) %>%
-    reapply_varlabels(formatters::var_labels(adtte))
+    reapply_varlabels(formatters::var_labels(adtte_local))
 
   df <- testthat::expect_warning(extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "REGION1"),
