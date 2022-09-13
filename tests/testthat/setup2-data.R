@@ -1,17 +1,19 @@
 
-test_data <- synthetic_cdisc_data("rcd_2022_02_28")
+test_data <- scda::synthetic_cdisc_data("rcd_2022_02_28")
+test_data_recent <- scda::synthetic_cdisc_data("rcd_2022_06_27")
 
 adlb_raw <- test_data$adlb
 adsl_raw <- test_data$adsl
 adae_raw <- test_data$adae
+adrs_raw <- test_data_recent$adrs
+adtte_raw <- test_data_recent$adtte
 
 # Bladder data from survival (previously function `get_bladder`)
 dta_bladder_raw <- local({
   # Setting general random for data generation
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- with(
-    data = survival::bladder %>%
-      filter(enum < 5),
+    data = survival::bladder[survival::bladder$enum < 5, ],
     data.frame(
       time = stop,
       status = event,

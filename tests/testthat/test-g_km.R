@@ -1,10 +1,5 @@
-library(scda)
-library(dplyr)
-
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
-
 testthat::test_that("g_km default plot works", {
-  df <- adtte %>%
+  df <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
@@ -21,7 +16,7 @@ testthat::test_that("g_km default plot works", {
 })
 
 testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
-  df <- adtte %>%
+  df <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
@@ -38,7 +33,7 @@ testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
 })
 
 testthat::test_that("g_km plot with < = > in group labels works", {
-  df <- ex_adtte %>%
+  df <- adtte_raw %>%
     df_explicit_na() %>%
     dplyr::filter(PARAMCD == "OS", ARM == "A: Drug X", BEP01FL == "Y") %>%
     dplyr::mutate(

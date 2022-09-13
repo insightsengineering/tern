@@ -1,4 +1,5 @@
-raw_data <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adtte %>%
+# Local data pre-processing
+adtte_local <- adtte_raw %>%
   dplyr::filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X")
@@ -11,11 +12,11 @@ raw_data <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adtte %>%
 columns <- c("ARM", "is_event")
 labels <- c("Treatment Arm", "Event Flag")
 for (i in seq_along(columns)) {
-  attr(raw_data[[columns[i]]], "label") <- labels[i]
+  attr(adtte_local[[columns[i]]], "label") <- labels[i]
 }
 
 testthat::test_that("fit_survival_step works as expected with default options", {
-  data <- raw_data
+  data <- adtte_local
   variables <- list(
     arm = "ARM",
     biomarker = "BMRKR1",
@@ -40,7 +41,7 @@ testthat::test_that("fit_survival_step works as expected with default options", 
 })
 
 testthat::test_that("fit_survival_step works as expected with global model fit", {
-  data <- raw_data
+  data <- adtte_local
   variables <- list(
     arm = "ARM",
     biomarker = "BMRKR1",
