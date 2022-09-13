@@ -1,4 +1,4 @@
-# Local data
+# Local data pre-processing
 adlb_local <- local({
   # Data set is modified in order to have some parameters with grades only in one direction
   # and simulate the real data.

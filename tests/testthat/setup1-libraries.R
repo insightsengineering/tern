@@ -1,8 +1,2 @@
-# Libraries for tests (x are imports, xx are depends)
+# Extra libraries (suggested) for tests
 library(scda)
-library(dplyr) # x
-library(rtables) # xx
-library(magrittr) # x
-library(broom) # x
-library(forcats) # x
-library(survival) # x
