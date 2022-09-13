@@ -1,5 +1,4 @@
-library(scda)
-
+# Local data pre-processing
 preprocess_adtte <- function(adtte) {
 
   # Save variable labels before data processing steps.
@@ -21,14 +20,11 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
-
-adtte_preprop <- adtte %>%
+adtte_local <- adtte_raw %>%
   preprocess_adtte()
 
-
 testthat::test_that("h_survtime_df functions as expected with valid input and default arguments", {
-  adtte <- adtte_preprop
+  adtte <- adtte_local
 
   result <- h_survtime_df(
     tte = adtte$AVAL,
@@ -48,7 +44,7 @@ testthat::test_that("h_survtime_df functions as expected with valid input and de
 })
 
 testthat::test_that("h_survtime_df functions as expected when median is NA", {
-  adtte <- adtte_preprop
+  adtte <- adtte_local
 
   # Edge case: median cannot be estimated.
   df_na <- data.frame(
@@ -75,7 +71,7 @@ testthat::test_that("h_survtime_df functions as expected when median is NA", {
 })
 
 testthat::test_that("h_survtime_df functions as expected when 0 records in one group", {
-  adtte <- adtte_preprop
+  adtte <- adtte_local
 
   # Edge case: 0 records in one group.
   df_na <- data.frame(
@@ -203,7 +199,7 @@ testthat::test_that("h_split_by_subgroups works as expected with groups_lists", 
 })
 
 testthat::test_that("h_survtime_subgroups_df functions as expected with valid input and default arguments", {
-  adtte <- adtte_preprop
+  adtte <- adtte_local
 
 
   result <- h_survtime_subgroups_df(
@@ -231,8 +227,7 @@ testthat::test_that("h_survtime_subgroups_df functions as expected with valid in
 })
 
 testthat::test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- h_survtime_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
@@ -255,8 +250,7 @@ testthat::test_that("h_survtime_subgroups_df functions as expected when subgroup
 })
 
 testthat::test_that("h_survtime_subgroups_df works as expected with groups_lists", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- h_survtime_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -277,8 +271,7 @@ testthat::test_that("h_survtime_subgroups_df works as expected with groups_lists
 })
 
 testthat::test_that("h_coxph_df functions as expected with valid input and default arguments", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- h_coxph_df(
     tte = adtte$AVAL,
@@ -303,8 +296,7 @@ testthat::test_that("h_coxph_df functions as expected with valid input and defau
 })
 
 testthat::test_that("h_coxph_df functions as expected with one stratification factor", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   # Test with one stratification factor.
   result <- h_coxph_df(
@@ -331,8 +323,7 @@ testthat::test_that("h_coxph_df functions as expected with one stratification fa
 })
 
 testthat::test_that("h_coxph_df functions as expected with multiple stratification factors", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- h_coxph_df(
     tte = adtte$AVAL,
@@ -358,8 +349,7 @@ testthat::test_that("h_coxph_df functions as expected with multiple stratificati
 })
 
 testthat::test_that("h_coxph_df functions as expected when 0 records in one group", {
-  adtte <- adtte %>%
-    preprocess_adtte() %>%
+  adtte <- adtte_local %>%
     dplyr::filter(ARM == "A: Drug X")
 
   result <- h_coxph_df(
@@ -385,8 +375,7 @@ testthat::test_that("h_coxph_df functions as expected when 0 records in one grou
 })
 
 testthat::test_that("h_coxph_subgroups_df functions as expected with valid input and default arguments", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -503,8 +492,7 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with valid input
 })
 
 testthat::test_that("h_coxph_subgroups_df functions as expected with stratification factors", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "SEX", strat = "STRATA1"),
@@ -540,8 +528,7 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with stratificat
 })
 
 testthat::test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
@@ -572,7 +559,7 @@ testthat::test_that("h_coxph_subgroups_df functions as expected when subgroups i
 })
 
 testthat::test_that("h_coxph_subgroups_df works as expected with groups_lists", {
-  adtte <- adtte_preprop
+  adtte <- adtte_local
 
   result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),

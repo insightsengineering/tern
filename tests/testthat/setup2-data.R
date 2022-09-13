@@ -1,10 +1,11 @@
-
+# Data loading for tests
 test_data <- scda::synthetic_cdisc_data("rcd_2022_02_28")
 test_data_recent <- scda::synthetic_cdisc_data("rcd_2022_06_27")
 
 adlb_raw <- test_data$adlb
 adsl_raw <- test_data$adsl
 adae_raw <- test_data$adae
+adpp_raw <- test_data$adpp
 adrs_raw <- test_data_recent$adrs
 adtte_raw <- test_data_recent$adtte
 
