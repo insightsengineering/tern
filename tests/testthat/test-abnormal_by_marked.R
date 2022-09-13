@@ -1,23 +1,17 @@
-library(scda)
-library(rtables)
-library(dplyr)
-
-adlb_raw <- local({
-  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb # nolintr
+# Local data pre-processing
+adlb_local <- local({
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
-  qntls <- adlb %>%
+  qntls <- adlb_raw %>%
     dplyr::group_by(.data$PARAMCD) %>%
     dplyr::summarise(
       q1 = stats::quantile(.data$AVAL, probs = c(0.1)),
       q2 = stats::quantile(.data$AVAL, probs = c(0.9))
     )
 
-  adlb <- adlb %>%
-    dplyr::left_join(qntls, by = "PARAMCD")
-
-  adlb_f <- adlb %>%
+  adlb_raw %>%
+    dplyr::left_join(qntls, by = "PARAMCD") %>%
     dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
     dplyr::mutate(
       ANRIND = factor(
@@ -29,17 +23,14 @@ adlb_raw <- local({
         levels = c("", "HIGH", "HIGH HIGH", "LOW", "LOW LOW", "NORMAL")
       )
     )
-  adlb_f
 })
 
-
 testthat::test_that("s_count_abnormal_by_marked works as expected", {
-  adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>%
+  adlb_local <- adlb_local %>%
     dplyr::mutate(
       AVALCAT1 = factor(
         dplyr::case_when(
@@ -58,7 +49,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     ) %>%
     dplyr::select(-.data$q1, -.data$q2)
   # Preprocessing steps
-  adlb_f <- adlb %>%
+  adlb_f <- adlb_local %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
     dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
@@ -95,12 +86,11 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
 
 
 testthat::test_that("s_count_abnormal_by_marked works as expected", {
-  adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>%
+  adlb_local <- adlb_local %>%
     dplyr::mutate(
       AVALCAT1 = factor(
         dplyr::case_when(
@@ -119,7 +109,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     ) %>%
     dplyr::select(-.data$q1, -.data$q2)
   # Preprocessing steps
-  adlb_f <- adlb %>%
+  adlb_f <- adlb_local %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
     dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
@@ -157,12 +147,11 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
 
 testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
           two direction values", {
-  adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>%
+  adlb_local <- adlb_local %>%
     dplyr::mutate(
       AVALCAT1 = factor(
         dplyr::case_when(
@@ -181,7 +170,7 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
     ) %>%
     dplyr::select(-.data$q1, -.data$q2)
   # Preprocessing steps
-  adlb_f <- adlb %>%
+  adlb_f <- adlb_local %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
     dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
@@ -211,13 +200,11 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
 
 
 testthat::test_that("count_abnormal_by_marked works as expected", {
-  adlb <- adlb_raw
-
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
   set.seed(1, kind = "Mersenne-Twister")
 
-  adlb <- adlb %>%
+  adlb_local <- adlb_local %>%
     dplyr::mutate(
       AVALCAT1 = factor(
         dplyr::case_when(
@@ -236,7 +223,7 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
     ) %>%
     dplyr::select(-.data$q1, -.data$q2)
   # Preprocessing steps
-  adlb_f <- adlb %>%
+  adlb_f <- adlb_local %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
     dplyr::mutate(abn_dir = factor(dplyr::case_when(
       ANRIND == "LOW LOW" ~ "Low",
