@@ -1,10 +1,6 @@
 # Tests all variants of LBT06.
-
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
+adsl <- adsl_raw
+adlb <- adlb_raw
 
 testthat::test_that("LBT06 default variant is produced correctly", {
   adlb <- adlb %>%

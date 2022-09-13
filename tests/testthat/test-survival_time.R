@@ -1,10 +1,5 @@
-library(scda)
-library(dplyr)
-
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
-
 testthat::test_that("s_surv_time works with default arguments", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),
@@ -28,7 +23,7 @@ testthat::test_that("s_surv_time works with default arguments", {
 })
 
 testthat::test_that("s_surv_time works with customized arguments", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),
@@ -55,7 +50,7 @@ testthat::test_that("s_surv_time works with customized arguments", {
 })
 
 testthat::test_that("surv_time works with default arguments", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),
@@ -90,7 +85,7 @@ testthat::test_that("surv_time works with default arguments", {
 
 
 testthat::test_that("surv_time works with customized arguments", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),

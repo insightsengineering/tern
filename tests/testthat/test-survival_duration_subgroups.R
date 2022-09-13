@@ -1,6 +1,3 @@
-library(scda)
-library(dplyr)
-
 preprocess_adtte <- function(adtte) {
 
   # Save variable labels before data processing steps.
@@ -23,11 +20,11 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
+adtte_local <- adtte_raw %>%
+  preprocess_adtte()
 
 testthat::test_that("extract_survival_subgroups functions as expected with valid input and default arguments", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -192,8 +189,7 @@ testthat::test_that("extract_survival_subgroups functions as expected with valid
 })
 
 testthat::test_that("extract_survival_subgroups works as expected with groups_lists", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -221,8 +217,7 @@ testthat::test_that("extract_survival_subgroups works as expected with groups_li
 })
 
 testthat::test_that("extract_survival_subgroups functions as expected with NULL subgroups", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   result <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
@@ -299,8 +294,7 @@ testthat::test_that("a_survival_subgroups functions as expected with valid input
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected with valid input", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   df <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -332,8 +326,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with vali
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected with NULL subgroups", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   df <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
@@ -360,10 +353,9 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with NULL
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected with extreme values in subgroups", {
-  adtte <- adtte %>%
-    preprocess_adtte() %>%
+  adtte <- adtte_local %>%
     dplyr::slice(1:30) %>%
-    reapply_varlabels(formatters::var_labels(adtte))
+    reapply_varlabels(formatters::var_labels(adtte_local))
 
   df <- testthat::expect_warning(extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "REGION1"),
@@ -394,8 +386,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with extr
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected when one arm has 0 records", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   df <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "RACE"),
@@ -436,8 +427,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected when one 
 })
 
 testthat::test_that("tabulate_survival_subgroups works correctly with both `n_tot` and `n_tot_events` in `vars`", {
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_local
 
   df <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "RACE"),

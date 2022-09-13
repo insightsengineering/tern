@@ -1,11 +1,6 @@
 # Test the single variant for LBT01.
-
-library(scda)
-library(rtables)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
+adsl <- adsl_raw
+adlb <- adlb_raw
 
 testthat::test_that("LBT01 default variant is produced correctly", {
   adlb_f <- adlb %>%

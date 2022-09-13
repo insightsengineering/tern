@@ -1,19 +1,3 @@
-library(scda)
-library(dplyr)
-
-preprocess_adae <- function(adae) {
-  adae %>%
-    dplyr::group_by(ACTARM, USUBJID, AEBODSYS, AEDECOD) %>%
-    dplyr::summarize(
-      MAXAETOXGR = max(as.numeric(AETOXGR))
-    ) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(
-      MAXAETOXGR = factor(MAXAETOXGR),
-      AEDECOD = droplevels(AEDECOD)
-    )
-}
-
 full_table_aet04_pi <- function(adsl, adae_max) {
   grade_groups <- list(
     "Any Grade (%)" = c("1", "2", "3", "4", "5"),
@@ -49,12 +33,19 @@ criteria_fun <- function(tr) {
   inherits(tr, "ContentRow")
 }
 
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
+adsl <- adsl_raw
+adae_max <- adae_raw %>%
+  dplyr::group_by(ACTARM, USUBJID, AEBODSYS, AEDECOD) %>%
+  dplyr::summarize(
+    MAXAETOXGR = max(as.numeric(AETOXGR))
+  ) %>%
+  dplyr::ungroup() %>%
+  dplyr::mutate(
+    MAXAETOXGR = factor(MAXAETOXGR),
+    AEDECOD = droplevels(AEDECOD)
+  )
 
 testthat::test_that("AET04_PI full table is produced correctly", {
-  adae_max <- adae %>%
-    preprocess_adae()
   result <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
       path = c("AEBODSYS"),
@@ -111,8 +102,6 @@ testthat::test_that("AET04_PI full table is produced correctly", {
 })
 
 testthat::test_that("AET04_PI variant 1 is produced correctly", {
-  adae_max <- adae %>%
-    preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
       path = c("AEBODSYS"),
@@ -161,8 +150,6 @@ testthat::test_that("AET04_PI variant 1 is produced correctly", {
 })
 
 testthat::test_that("AET04_PI variant 2 is produced correctly", {
-  adae_max <- adae %>%
-    preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
       path = c("AEBODSYS"),
@@ -200,8 +187,6 @@ testthat::test_that("AET04_PI variant 2 is produced correctly", {
 })
 
 testthat::test_that("AET04_PI variant 3 is produced correctly", {
-  adae_max <- adae %>%
-    preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
       path = c("AEBODSYS"),
@@ -243,8 +228,6 @@ testthat::test_that("AET04_PI variant 3 is produced correctly", {
 })
 
 testthat::test_that("AET04_PI variant 4 is produced correctly", {
-  adae_max <- adae %>%
-    preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
       path = c("AEBODSYS"),
@@ -281,8 +264,6 @@ testthat::test_that("AET04_PI variant 4 is produced correctly", {
 })
 
 testthat::test_that("AET04_PI variant 5 is produced correctly", {
-  adae_max <- adae %>%
-    preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
       path = c("AEBODSYS"),
@@ -328,9 +309,6 @@ testthat::test_that("AET04_PI variant 5 is produced correctly", {
 })
 
 testthat::test_that("AET04_PI variant 6 is produced correctly", {
-  adae_max <- adae %>%
-    preprocess_adae()
-
   grade_groups <- list(
     "Any Grade (%)" = c("1", "2", "3", "4", "5"),
     "Grade 1-2 (%)" = c("1", "2"),
@@ -403,9 +381,6 @@ testthat::test_that("AET04_PI variant 6 is produced correctly", {
 })
 
 testthat::test_that("AET04_PI variant 7 is produced correctly", {
-  adae_max <- adae %>%
-    preprocess_adae()
-
   grade_groups <- list(
     "Any Grade (%)" = c("1", "2", "3", "4", "5"),
     "Grade 3-4 (%)" = c("3", "4"),
@@ -478,9 +453,6 @@ testthat::test_that("AET04_PI variant 7 is produced correctly", {
 })
 
 testthat::test_that("AET04_PI variant 8 is produced correctly", {
-  adae_max <- adae %>%
-    preprocess_adae()
-
   grade_groups <- list(
     "Any Grade (%)" = c("1", "2", "3", "4", "5"),
     "Grade 3-4 (%)" = c("3", "4"),

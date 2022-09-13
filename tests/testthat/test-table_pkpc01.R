@@ -1,7 +1,5 @@
 # Preparation of the test case.
-library(scda)
-library(dplyr)
-adpc <- synthetic_cdisc_data("rcd_2022_02_28")$adpc
+adpc <- adpc_raw
 
 testthat::test_that("PKCT01 is produced correctly", {
   l <- basic_table() %>%

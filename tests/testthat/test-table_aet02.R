@@ -1,10 +1,7 @@
 # Test all variants of AET02
 
-library(scda)
-library(magrittr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
+adsl <- adsl_raw
+adae <- adae_raw
 
 testthat::test_that("AET02 variant 1 is produced correctly", {
   lyt <- basic_table() %>%

@@ -1,5 +1,4 @@
-library(scda)
-
+# Raw data and local data pre-processing
 raw_data <- data.frame(
   time = c(5, 5, 10, 10, 5, 5, 5, 10, 10, 5),
   status = c(0, 0, 1, 0, 1, 0, 1, 1, 1, 0),
@@ -12,15 +11,12 @@ raw_data <- data.frame(
   rsp = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)
 )
 
-
-get_adrs <- function() {
-  synthetic_cdisc_data("rcd_2022_02_28")$adrs %>%
+adrs_local <- adrs_raw %>%
     dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
     dplyr::mutate(
       RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
       ARMBIN = droplevels(ARMCD)
     )
-}
 
 # h_step_window ----
 
@@ -160,7 +156,7 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
 })
 
 testthat::test_that("h_step_trt_effect works for logistic regression models with interaction", {
-  dta <- get_adrs()
+  dta <- adrs_local
   mod <- stats::glm(formula = RSP ~ ARMBIN * AGE + RACE, data = dta, family = stats::binomial())
   vars <- list(
     arm = "ARMBIN",
@@ -189,7 +185,7 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
 })
 
 testthat::test_that("h_step_trt_effect works for conditional logistic regression without interaction", {
-  dta <- get_adrs()
+  dta <- adrs_local
   dta <- dta[sample(nrow(dta)), ]
   mod <- survival::clogit(formula = RSP ~ ARMBIN + strata(STRATA1), data = dta)
   vars <- list(
@@ -207,7 +203,7 @@ testthat::test_that("h_step_trt_effect works for conditional logistic regression
 })
 
 testthat::test_that("h_step_trt_effect works for conditional logistic regression with interaction", {
-  dta <- get_adrs()
+  dta <- adrs_local
   dta <- dta[sample(nrow(dta)), ]
   mod <- survival::clogit(formula = RSP ~ ARMBIN * AGE + strata(STRATA1), data = dta)
   vars <- list(

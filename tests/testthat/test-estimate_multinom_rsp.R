@@ -1,4 +1,3 @@
-
 testthat::test_that("d_onco_rsp_label provide right response labels", {
   rsp <- c("CR", "NE", "PR")
   result <- d_onco_rsp_label(rsp)

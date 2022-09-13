@@ -1,23 +1,17 @@
-library(scda)
-library(rtables)
-library(dplyr)
-library(forcats)
-
-adlb_raw <- local({
-  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb # nolintr
-
+# Local data pre-processing
+adlb_local <- local({
   # Data set is modified in order to have some parameters with grades only in one direction
   # and simulate the real data.
-  adlb$ATOXGR[adlb$PARAMCD == "ALT" & adlb$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
-  adlb$ANRIND[adlb$PARAMCD == "ALT" & adlb$ANRIND == "HIGH"] <- "LOW"
-  adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
+  adlb_raw$ATOXGR[adlb_raw$PARAMCD == "ALT" & adlb_raw$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
+  adlb_raw$ANRIND[adlb_raw$PARAMCD == "ALT" & adlb_raw$ANRIND == "HIGH"] <- "LOW"
+  adlb_raw$WGRHIFL[adlb_raw$PARAMCD == "ALT"] <- ""
 
-  adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
-  adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
-  adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
+  adlb_raw$ATOXGR[adlb_raw$PARAMCD == "IGA" & adlb_raw$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
+  adlb_raw$ANRIND[adlb_raw$PARAMCD == "IGA" & adlb_raw$ANRIND == "LOW"] <- "HIGH"
+  adlb_raw$WGRLOFL[adlb_raw$PARAMCD == "IGA"] <- ""
 
   # Here starts the real preprocessing.
-  adlb_f <- adlb %>%
+  adlb_raw %>%
     dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
     dplyr::mutate(
       GRADE_DIR = factor(
@@ -41,13 +35,10 @@ adlb_raw <- local({
     ) %>%
     dplyr::filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
     droplevels()
-  adlb_f
 })
 
 testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
-  adlb <- adlb_raw
-
-  adlb_alt <- adlb %>%
+  adlb_alt <- adlb_local %>%
     dplyr::filter(PARAMCD == "ALT") %>%
     droplevels()
   full_parent_df <- list(adlb_alt, "not_needed")
@@ -60,7 +51,7 @@ testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
   )
 
   result <- s_count_abnormal_by_worst_grade(
-    df = adlb %>% dplyr::filter(
+    df = adlb_local %>% dplyr::filter(
       ARMCD == "ARM A" & PARAMCD == "ALT" & GRADE_DIR == "LOW"
     ) %>%
       droplevels(),
@@ -80,15 +71,14 @@ testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
 })
 
 testthat::test_that("count_abnormal_by_worst_grade works as expected", {
-  adlb <- adlb_raw
-  adlb_f <- adlb %>%
+  adlb_f <- adlb_local %>%
     dplyr::filter(
       PARAMCD == "IGA"
     ) %>%
     droplevels()
 
   map <- unique(
-    adlb[adlb$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]
+    adlb_local[adlb_local$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]
   ) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
@@ -151,8 +141,7 @@ testthat::test_that(
   and variables$grade_dir are taking variable names not used
   for splitting the layout in rows.",
   code = {
-    adlb <- adlb_raw
-    adlb_f <- adlb %>%
+    adlb_f <- adlb_local %>%
       dplyr::filter(
         PARAMCD == "IGA"
       ) %>%

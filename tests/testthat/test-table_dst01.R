@@ -1,22 +1,19 @@
 # Tests all variants of DST01.
-library(rtables)
-library(dplyr)
-
 get_adsl0 <- function() {
   # This specific ADSL is currently not part of RCD.
   set.seed(1, kind = "Mersenne-Twister")
 
   # nolint start
-  adsl0 <- ex_adsl %>%
+  adsl0 <- adsl_raw %>%
     dplyr::mutate(
       COMPSTUD = sample(
         c("Y", "N"),
-        size = nrow(ex_adsl),
+        size = nrow(adsl_raw),
         replace = TRUE
       ) %>% as.factor(),
       STUDONS = sample(
         c("Alive: On Treatment", "Alive: In Follow-up", NA),
-        size = nrow(ex_adsl),
+        size = nrow(adsl_raw),
         replace = TRUE
       ) %>% as.factor(),
       STDDRS = sample(
@@ -25,14 +22,14 @@ get_adsl0 <- function() {
           "Protocol Violation", "Withdrawal By Subject",
           "Other"
         ),
-        size = nrow(ex_adsl),
+        size = nrow(adsl_raw),
         replace = TRUE
       ) %>% as.factor(),
       GOTTRT = ifelse(!is.na(ACTARMCD), "Y", "N") %>%
         as.factor(),
       DISTRTFL = sample(
         c("Y", "N"),
-        size = nrow(ex_adsl),
+        size = nrow(adsl_raw),
         replace = TRUE
       ) %>% as.factor(),
       TRTDRS = sample(
@@ -41,7 +38,7 @@ get_adsl0 <- function() {
           "PHYSICIAN DECISION", "LACK OF EFFICACY",
           "OTHER"
         ),
-        size = nrow(ex_adsl),
+        size = nrow(adsl_raw),
         replace = TRUE
       ) %>% as.factor(),
       STUDONS = dplyr::case_when(COMPSTUD == "N" ~ STUDONS),

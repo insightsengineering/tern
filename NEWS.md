@@ -1,6 +1,7 @@
 # tern 0.7.9.9007
 
 ### Enhancements 
+* Redesign of data handling in tests by removing repetitive data loads and library calls.
 * Added `DescTools` `BinomDiffCI` function within `tern`.
 * Exported `draw_grob` function.
 * Added new parameter to `summarize_logistic` to specify which pivoted value should be removed during analysis.

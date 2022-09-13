@@ -1,10 +1,6 @@
 # Tests the single variant for LBT02.
-
-library(scda)
-library(magrittr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
+adsl <- adsl_raw
+adlb <- adlb_raw
 
 testthat::test_that("LBT02 default variant is produced correctly", {
   adlb <- subset(adlb, AVISIT != "SCREENING" & PARAMCD == "ALT")

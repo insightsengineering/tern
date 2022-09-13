@@ -1,11 +1,7 @@
 # Test the single variant for VST01
 
-library(scda)
-library(rtables)
-library(dplyr)
-
 gen_advs <- function() {
-  advs <- synthetic_cdisc_data("rcd_2022_02_28")$advs # nolintr
+  advs <- advs_raw # nolintr
   advs_label <- formatters::var_labels(advs)
 
   advs <- advs %>%
