@@ -89,7 +89,7 @@ testthat::test_that("compare_vars works with default settings in rtables layout 
   lyt <- basic_table() %>%
     split_cols_by("ARMCD", ref_group = "ARM B") %>%
     compare_vars(c("AGE", "SEX"))
-  result <- build_table(lyt, ex_adsl)
+  result <- build_table(lyt, adsl_raw)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
@@ -115,7 +115,7 @@ testthat::test_that("compare_vars works with custom settings", {
       .formats = c(mean_sd = "xx.x, xx.x", count_fraction = "xx.xx (xx.xx%)"),
       .labels = c(mean_sd = "Mean, SD")
     )
-  result <- build_table(lyt, df = ex_adsl)
+  result <- build_table(lyt, df = adsl_raw)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
