@@ -39,7 +39,6 @@ Imports:
     lifecycle,
     magrittr,
     methods,
-    nestcolor (>= 0.0.1),
     rlang,
     scales,
     stats,
@@ -50,6 +49,7 @@ Imports:
 Suggests:
     knitr,
     lattice,
+    nestcolor (>= 0.0.1),
     rmarkdown,
     scda (>= 0.1.4),
     scda.2022 (>= 0.1.2),
