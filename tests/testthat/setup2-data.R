@@ -1,25 +1,26 @@
 # Data loading for tests
-test_data <- scda::synthetic_cdisc_data("rcd_2022_02_28")
-test_data_recent <- scda::synthetic_cdisc_data("rcd_2022_06_27")
+test_data_2022_02 <- scda::synthetic_cdisc_data("rcd_2022_02_28")
+test_data_2022_06 <- scda::synthetic_cdisc_data("rcd_2022_06_27")
 
-adlb_raw <- test_data$adlb
-adsl_raw <- test_data$adsl
-adae_raw <- test_data$adae
-adaette_raw <- test_data$adaette
-adpp_raw <- test_data$adpp
-adpc_raw <- test_data$adpc
-adsub_raw <- test_data$adsub
-adqs_raw <- test_data$adqs
-adcm_raw <- test_data$adcm
-advs_raw <- test_data$advs
-adeg_raw <- test_data$adeg
-adex_raw <- test_data$adex
-adlb_raw <- test_data$adlb
-admh_raw <- test_data$admh
-adrs_raw <- test_data_recent$adrs
-adtte_raw <- test_data_recent$adtte
+adlb_raw <- test_data_2022_02$adlb
+adsl_raw <- test_data_2022_02$adsl
+adae_raw <- test_data_2022_02$adae
+adaette_raw <- test_data_2022_02$adaette
+adpp_raw <- test_data_2022_02$adpp
+adpc_raw <- test_data_2022_02$adpc
+adsub_raw <- test_data_2022_02$adsub
+adqs_raw <- test_data_2022_02$adqs
+adcm_raw <- test_data_2022_02$adcm
+advs_raw <- test_data_2022_02$advs
+adeg_raw <- test_data_2022_02$adeg
+adex_raw <- test_data_2022_02$adex
+adlb_raw <- test_data_2022_02$adlb
+admh_raw <- test_data_2022_02$admh
 
-# Data as DM from `formatters` ## to discuss
+adrs_raw <- test_data_2022_06$adrs
+adtte_raw <- test_data_2022_06$adtte
+
+# Data as DM from `formatters`
 adsl_dm <- adsl_raw %>%
   dplyr::select(c("AGE", "SEX", "RACE", "COUNTRY", "ARM", "BMRKR1", "STRATA1")) %>%
   dplyr::mutate(ID = paste0("S", seq_len(nrow(adsl_raw))))
