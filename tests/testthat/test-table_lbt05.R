@@ -1,7 +1,7 @@
 adsl <- adsl_raw
 
 get_adlb <- function() {
-  adlb <- adlb_raw # nolintr
+  adlb <- adlb_raw # nolint
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
