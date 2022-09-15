@@ -1,4 +1,4 @@
-# tern 0.7.9.9008
+# tern 0.7.9.9009
 
 ### Enhancements 
 * Redesign of data handling in tests by removing repetitive data loads and library calls.
