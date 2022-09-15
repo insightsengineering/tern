@@ -1,6 +1,4 @@
-library(scda)
-library(dplyr)
-
+# Local data pre-processing
 preprocess_adtte <- function(adtte) {
 
   # Save variable labels before data processing steps.
@@ -20,7 +18,8 @@ preprocess_adtte <- function(adtte) {
   )
 }
 
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
+adtte_local <- adtte_raw %>%
+  preprocess_adtte()
 
 # h_surv_to_coxreg_variables ----
 
@@ -47,8 +46,7 @@ testthat::test_that("h_surv_to_coxreg_variables works as expected", {
 # h_coxreg_mult_cont_df ----
 
 testthat::test_that("h_coxreg_mult_cont_df works as expected", {
-  adtte_f <- adtte %>%
-    preprocess_adtte()
+  adtte_f <- adtte_local
 
   result <- testthat::expect_silent(h_coxreg_mult_cont_df(
     variables = list(
@@ -77,8 +75,7 @@ testthat::test_that("h_coxreg_mult_cont_df works as expected", {
 })
 
 testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {
-  adtte_f <- adtte %>%
-    preprocess_adtte()
+  adtte_f <- adtte_local
 
   result <- testthat::expect_silent(h_coxreg_mult_cont_df(
     variables = list(

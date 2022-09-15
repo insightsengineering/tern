@@ -1,11 +1,6 @@
 # Test the single variant for EGT01.
-
-library(scda)
-library(rtables)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adeg <- synthetic_cdisc_data("rcd_2022_02_28")$adeg
+adsl <- adsl_raw
+adeg <- adeg_raw
 
 testthat::test_that("EGT01 default variant is produced correctly", {
   adeg_f <- adeg %>%

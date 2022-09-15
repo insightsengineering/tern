@@ -1,9 +1,4 @@
 # Test all variants of AET09 SMQ, adverse events related to stuy drug by standardized MEDDRA query
-
-library(dplyr)
-library(tern)
-library(scda)
-
 stack_adae_by_smq <- function(adae, smq) {
   l_df <- lapply(smq, function(ae_grp) {
     keep <- !(is.na(adae[[ae_grp]]))
@@ -15,8 +10,8 @@ stack_adae_by_smq <- function(adae, smq) {
   do.call(rbind, l_df)
 }
 
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
+adsl <- adsl_raw
+adae <- adae_raw
 
 testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correctly", {
   adsl_labels <- formatters::var_labels(adsl)

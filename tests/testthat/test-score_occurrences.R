@@ -1,6 +1,5 @@
-library(dplyr)
-
-get_df_ae <- function() {
+# Local data pre-processing
+dfae_local <- local({
   set.seed(1)
   dfsl <- data.frame(
     USUBJID = as.character(c(1, 2, 3, 4, 5)),
@@ -20,9 +19,9 @@ get_df_ae <- function() {
     dfae,
     dfsl = dfsl
   )
-}
+})
 
-get_full_table <- function() {
+full_table <- local({
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
@@ -45,13 +44,13 @@ get_full_table <- function() {
     ) %>%
     count_occurrences(vars = "AEDECOD")
 
-  dfae <- get_df_ae() # nolint
+  dfae <- dfae_local # nolint
   build_table(lyt, dfae, alt_counts_df = attr(dfae, "dfsl")) %>%
     prune_table()
-}
+})
 
-get_full_table_with_empty <- function() {
-  dfae <- get_df_ae() %>%
+full_table_with_empty <- local({
+  dfae <- dfae_local %>%
     df_explicit_na()
   # add empty level for class
   levels(dfae$AEBODSYS) <- c(levels(dfae$AEBODSYS), "EMPTY_LEVEL")
@@ -74,11 +73,9 @@ get_full_table_with_empty <- function() {
     count_occurrences(vars = "AEDECOD", drop = FALSE)
 
   build_table(lyt, dfae, alt_counts_df = attr(dfae, "dfsl"))
-}
+})
 
 testthat::test_that("score_occurrences functions as expected", {
-  full_table <- get_full_table()
-
   sorted_table <- full_table %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -107,9 +104,7 @@ testthat::test_that("score_occurrences functions as expected", {
 })
 
 testthat::test_that("score_occurrences functions as expected with empty analysis rows", {
-  full_table <- get_full_table_with_empty()
-
-  sorted_table <- full_table %>%
+  sorted_table <- full_table_with_empty %>%
     sort_at_path(
       path = c("AEBODSYS", "*", "AEDECOD"),
       scorefun = score_occurrences,
@@ -139,8 +134,6 @@ testthat::test_that("score_occurrences functions as expected with empty analysis
 })
 
 testthat::test_that("score_occurrences_cols functions as expected", {
-  full_table <- get_full_table()
-
   score_col_c <- score_occurrences_cols(col_names = "C")
   testthat::expect_is(score_col_c, "function")
 
@@ -169,9 +162,9 @@ testthat::test_that("score_occurrences_cols functions as expected", {
 })
 
 testthat::test_that("score_occurrences_subtable functions as expected", {
-  dfae <- get_df_ae()
+  dfae <- dfae_local
 
-  full_table <- basic_table() %>%
+  full_table_dfae <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
     split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE) %>%
@@ -179,10 +172,10 @@ testthat::test_that("score_occurrences_subtable functions as expected", {
     build_table(dfae, alt_counts_df = attr(dfae, "dfsl")) %>%
     prune_table()
 
-  score_subtable_all <- score_occurrences_subtable(col_names = names(full_table))
+  score_subtable_all <- score_occurrences_subtable(col_names = names(full_table_dfae))
   testthat::expect_is(score_subtable_all, "function")
 
-  sorted_table <- full_table %>%
+  sorted_table <- full_table_dfae %>%
     sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 
   result <- to_string_matrix(sorted_table)
@@ -202,12 +195,11 @@ testthat::test_that("score_occurrences_subtable functions as expected", {
 })
 
 testthat::test_that("score_occurrences_cont_cols functions as expected", {
-  set.seed(12)
-  dfae <- get_df_ae()
+  dfae <- dfae_local
   dfae <- dfae %>%
     dplyr::mutate(USUBJID = factor(sample(1:10, size = nrow(dfae), replace = TRUE)))
 
-  full_table <- basic_table() %>%
+  full_table_dfae <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_rows_by("AESUPSYS", child_labels = "visible") %>%
     summarize_num_patients("USUBJID") %>%
@@ -216,7 +208,7 @@ testthat::test_that("score_occurrences_cont_cols functions as expected", {
   score_cont_cols <- score_occurrences_cont_cols(col_names = c("A", "B"))
   testthat::expect_is(score_cont_cols, "function")
 
-  sorted_table <- full_table %>%
+  sorted_table <- full_table_dfae %>%
     sort_at_path(path = c("AESUPSYS"), scorefun = score_cont_cols, decreasing = TRUE)
 
   result <- to_string_matrix(sorted_table)

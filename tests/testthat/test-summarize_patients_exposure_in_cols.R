@@ -1,26 +1,22 @@
-get_anl <- function() {
-  set.seed(1)
-  df <- data.frame(
-    USUBJID = c(paste("id", seq(1, 12), sep = "")),
-    ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
-    SEX = c(rep("Female", 6), rep("Male", 6)),
-    AVAL = as.numeric(sample(seq(1, 5), 12, replace = TRUE)),
-    stringsAsFactors = TRUE
-  )
-}
+set.seed(1)
+anl_local <- data.frame(
+  USUBJID = c(paste("id", seq(1, 12), sep = "")),
+  ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
+  SEX = c(rep("Female", 6), rep("Male", 6)),
+  AVAL = as.numeric(sample(seq(1, 5), 12, replace = TRUE)),
+  stringsAsFactors = TRUE
+)
 
-get_adsl <- function() {
-  adsl <- data.frame(
-    USUBJID = c(paste("id", seq(1, 12), sep = "")),
-    ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
-    SEX = c(rep("Female", 6), rep("Male", 6)),
-    stringsAsFactors = TRUE
-  )
-}
+adsl_local <- data.frame(
+  USUBJID = c(paste("id", seq(1, 12), sep = "")),
+  ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
+  SEX = c(rep("Female", 6), rep("Male", 6)),
+  stringsAsFactors = TRUE
+)
 
 testthat::test_that("s_count_patients_sum_exposure works as expected", {
-  df <- get_anl()
-  adsl <- get_adsl()
+  df <- anl_local
+  adsl <- adsl_local
   result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl)) # nolintr
   expected <- list(
     n_patients = formatters::with_label(c(12, 1), "Total patients numbers/person time"),
@@ -31,8 +27,8 @@ testthat::test_that("s_count_patients_sum_exposure works as expected", {
 
 
 testthat::test_that("summarize_patients_exposure_in_cols works well with default arguments", {
-  df <- get_anl()
-  adsl <- get_adsl()
+  df <- anl_local
+  adsl <- adsl_local
 
   result <- basic_table() %>%
     split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
@@ -57,8 +53,8 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with default
 })
 
 testthat::test_that("summarize_patients_exposure_in_cols works well with custom arguments", {
-  df <- get_anl()
-  adsl <- get_adsl()
+  df <- anl_local
+  adsl <- adsl_local
 
   result <- basic_table() %>%
     split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
@@ -92,8 +88,8 @@ testthat::test_that(
   "summarize_patients_exposure_in_cols returns the correct column label when there is no variable split
           and when just one statistics is shown",
   code = {
-    df <- get_anl()
-    adsl <- get_adsl()
+    df <- anl_local
+    adsl <- adsl_local
 
     table <- basic_table() %>%
       summarize_patients_exposure_in_cols(

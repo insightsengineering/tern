@@ -1,11 +1,6 @@
 # Tests variant 1 for EGT03.
-
-library(rtables)
-library(tern)
-library(scda)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adeg <- synthetic_cdisc_data("rcd_2022_02_28")$adeg
+adsl <- adsl_raw
+adeg <- adeg_raw
 
 testthat::test_that("EGT03 variant 1 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")

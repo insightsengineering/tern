@@ -1,24 +1,21 @@
-get_dta <- function() {
-  library(dplyr)
-  data.frame(
-    ARM = rep(c("A", "B"), 9),
-    USUBJID = rep(1:6, each = 3),
-    AVISIT = rep(paste0("V", 1:3), 6),
-    AVAL = c(9:1, rep(NA, 9))
+dta_local <- data.frame(
+  ARM = rep(c("A", "B"), 9),
+  USUBJID = rep(1:6, each = 3),
+  AVISIT = rep(paste0("V", 1:3), 6),
+  AVAL = c(9:1, rep(NA, 9))
+) %>%
+  dplyr::mutate(
+    ABLFLL = AVISIT == "V1"
   ) %>%
-    dplyr::mutate(
-      ABLFLL = AVISIT == "V1"
-    ) %>%
-    dplyr::group_by(USUBJID) %>%
-    dplyr::mutate(
-      BLVAL = AVAL[ABLFLL],
-      CHG = AVAL - BLVAL
-    ) %>%
-    dplyr::ungroup()
-}
+  dplyr::group_by(USUBJID) %>%
+  dplyr::mutate(
+    BLVAL = AVAL[ABLFLL],
+    CHG = AVAL - BLVAL
+  ) %>%
+  dplyr::ungroup()
 
 testthat::test_that("summarize_colvars works as expected without column split and default behavior", {
-  dta <- get_dta()
+  dta <- dta_local
 
   l <- basic_table() %>%
     split_rows_by("AVISIT") %>%
@@ -42,7 +39,7 @@ testthat::test_that("summarize_colvars works as expected without column split an
 })
 
 testthat::test_that("summarize_colvars works as expected with column split", {
-  dta <- get_dta()
+  dta <- dta_local
 
   l <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -72,7 +69,7 @@ testthat::test_that("summarize_colvars works as expected with column split", {
 
 
 testthat::test_that("summarize_colvars works when selecting statistics and custom formatting", {
-  dta <- get_dta()
+  dta <- dta_local
 
   l <- basic_table() %>%
     split_cols_by("ARM") %>%

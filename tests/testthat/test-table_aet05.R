@@ -1,11 +1,6 @@
 # Test variants for AET05.
-
-library(scda)
-library(dplyr)
-library(rtables)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adaette <- synthetic_cdisc_data("rcd_2022_02_28")$adaette
+adsl <- adsl_raw
+adaette <- adaette_raw
 
 testthat::test_that("AET05 variant 1 is produced correctly", {
   anl <- adaette %>%

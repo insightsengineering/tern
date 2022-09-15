@@ -1,4 +1,3 @@
-library(dplyr)
 df <- data.frame(
   USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
   AVISIT = c(

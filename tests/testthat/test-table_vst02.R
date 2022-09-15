@@ -1,10 +1,6 @@
 # Test the single variant for VST02
-
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-advs <- synthetic_cdisc_data("rcd_2022_02_28")$advs
+adsl <- adsl_raw
+advs <- advs_raw
 
 testthat::test_that("1. Vital Sign Abnormalities (Regardless of Abnormality at Baseline, VST02_1)", {
 

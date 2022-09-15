@@ -1,8 +1,5 @@
-# Preparation of the test case.
-library(rtables)
-
 # Data generation
-adpp <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adpp
+adpp <- adpp_raw
 adpp_plasma <- adpp %>% dplyr::filter(PPSPEC == "Plasma", AVISIT == "CYCLE 1 DAY 1")
 adpp_urine <- adpp %>% dplyr::filter(PPSPEC == "Urine", AVISIT == "CYCLE 1 DAY 1")
 adpp_norm_dose <- adpp %>% dplyr::filter(

@@ -1,4 +1,4 @@
-# [`get_simple`]: simple fabricated dataset for test scennarios.
+# [`get_simple`]: simple fabricated data set for test scenarios.
 raw_data <- data.frame(
   time = c(5, 5, 10, 10, 5, 5, 10, 10),
   status = c(0, 0, 1, 0, 0, 1, 1, 1),
@@ -9,34 +9,6 @@ raw_data <- data.frame(
     levels = c("1", "2")
   )
 )
-
-# [`get_bladder`]: survival dataset derived for test scenarios.
-get_bladder <- function() {
-  library(survival)
-  set.seed(1, kind = "Mersenne-Twister")
-  dta_bladder <- with(
-    data = bladder[bladder$enum < 5, ],
-    data.frame(
-      time = stop,
-      status = event,
-      arm = paste("ARM:", as.factor(rx)),
-      armcd = as.factor(rx),
-      covar1 = as.factor(enum),
-      covar2 = factor(
-        sample(as.factor(enum)),
-        levels = 1:4, labels = c("F", "F", "M", "M")
-      )
-    )
-  )
-  attr(dta_bladder$armcd, "label") <- "ARM"
-  attr(dta_bladder$covar1, "label") <- "A Covariate Label"
-  attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
-  dta_bladder$age <- sample( # nolint
-    20:60,
-    size = nrow(dta_bladder), replace = TRUE
-  )
-  dta_bladder
-}
 
 # h_coxreg_univar_formulas ----
 
@@ -149,7 +121,6 @@ testthat::test_that("h_coxreg_univar_formulas creates formulas with multiple str
 # h_coxreg_multivar_extract ----
 
 testthat::test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate names overlap", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_simple <- raw_data
   mod <- survival::coxph(survival::Surv(time, status) ~ age + stage, data = dta_simple)
@@ -172,7 +143,6 @@ testthat::test_that("h_coxreg_multivar_extract extracts correct coxph results wh
 })
 
 testthat::test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate is a factor", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
   dta_simple <- raw_data
   mod <- survival::coxph(survival::Surv(time, status) ~ age + stage, data = dta_simple)
@@ -273,7 +243,7 @@ testthat::test_that("control_coxreg returns a standard list of parameters", {
 # fit_coxreg_univar ----
 
 testthat::test_that("fit_coxreg_univar returns model results as expected", {
-  data <- get_bladder()
+  data <- dta_bladder_raw
   control <- control_coxreg(conf_level = 0.91)
   variables <- list(
     time = "time", event = "status", arm = "armcd",
@@ -304,7 +274,7 @@ testthat::test_that("fit_coxreg_univar returns model results as expected", {
 })
 
 testthat::test_that("fit_coxreg_univar runs with non-represented level of a factor", {
-  data <- get_bladder() %>%
+  data <- dta_bladder_raw %>%
     dplyr::filter(covar1 %in% 1:3)
 
   variables <- list(
@@ -316,7 +286,7 @@ testthat::test_that("fit_coxreg_univar runs with non-represented level of a fact
 })
 
 testthat::test_that("fit_coxreg_univar is stopped when there are not 2 arms", {
-  data <- get_bladder() %>%
+  data <- dta_bladder_raw %>%
     dplyr::filter(covar1 %in% 1:3)
 
   variables <- list(
@@ -327,7 +297,7 @@ testthat::test_that("fit_coxreg_univar is stopped when there are not 2 arms", {
 })
 
 testthat::test_that("fit_coxreg_univar is stopped when likelihood method is used together with strata", {
-  data <- get_bladder()
+  data <- dta_bladder_raw
 
   variables <- list(
     time = "time", event = "status", arm = "armcd", covariates = "age", strata = "covar1"
@@ -341,7 +311,7 @@ testthat::test_that("fit_coxreg_univar is stopped when likelihood method is used
 })
 
 testthat::test_that("fit_coxreg_univar works without treatment arm", {
-  data <- get_bladder()
+  data <- dta_bladder_raw
 
   variables <- list(
     time = "time", event = "status", covariates = "age", strata = "covar1"
@@ -393,7 +363,7 @@ testthat::test_that("h_coxreg_univar_extract extracts coxph results", {
 # muffled_car_anova ----
 
 testthat::test_that("muffled_car_anova muffles notes about dropped strata term", {
-  bladder1 <- bladder[bladder$enum < 5, ]
+  bladder1 <- survival::bladder[survival::bladder$enum < 5, ]
   mod <- survival::coxph(
     survival::Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
     bladder1
@@ -403,7 +373,7 @@ testthat::test_that("muffled_car_anova muffles notes about dropped strata term",
 })
 
 testthat::test_that("muffled_car_anova gives a hint in the error message when an error occurs", {
-  bladder2 <- bladder[1:20, ]
+  bladder2 <- survival::bladder[1:20, ]
   mod <- survival::coxph(
     survival::Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
     bladder2
@@ -422,7 +392,7 @@ testthat::test_that("tidy.coxreg.univar method tidies up the univariate Cox regr
       time = "time", event = "status", arm = "armcd",
       covariates = c("covar1", "covar2")
     ),
-    data = get_bladder()
+    data = dta_bladder_raw
   )
   result <- broom::tidy(univar_model)
 
@@ -456,7 +426,7 @@ testthat::test_that("tidy.coxreg.univar method works with only numeric covariate
       time = "time", event = "status", arm = "armcd",
       covariates = "age", strata = c("covar1", "covar2")
     ),
-    data = get_bladder()
+    data = dta_bladder_raw
   )
   result <- broom::tidy(univar_model)
 
@@ -489,7 +459,7 @@ testthat::test_that("tidy.coxreg.univar method works without treatment arm", {
       time = "time", event = "status",
       covariates = c("age", "covar1"), strata = "covar2"
     ),
-    data = get_bladder()
+    data = dta_bladder_raw
   )
   result <- testthat::expect_silent(broom::tidy(univar_model))
   testthat::expect_identical(result$term, c("age", "covar1", rep("A Covariate Label", 3)))
@@ -498,17 +468,17 @@ testthat::test_that("tidy.coxreg.univar method works without treatment arm", {
 # h_coxreg_extract_interaction ----
 
 testthat::test_that("h_coxreg_extract_interaction works with factor as covariate", {
-  mod <- survival::coxph(survival::Surv(time, status) ~ armcd * covar1, data = get_bladder())
+  mod <- survival::coxph(survival::Surv(time, status) ~ armcd * covar1, data = dta_bladder_raw)
   testthat::expect_silent(
     h_coxreg_extract_interaction(
-      effect = "armcd", covar = "covar1", mod = mod, data = get_bladder(),
+      effect = "armcd", covar = "covar1", mod = mod, data = dta_bladder_raw,
       control = control_coxreg()
     )
   )
   testthat::expect_silent(
     h_coxreg_inter_effect(
-      x = get_bladder()[["covar1"]],
-      effect = "armcd", covar = "covar1", mod = mod, data = get_bladder(),
+      x = dta_bladder_raw[["covar1"]],
+      effect = "armcd", covar = "covar1", mod = mod, data = dta_bladder_raw,
       control = control_coxreg()
     )
   )
@@ -517,45 +487,45 @@ testthat::test_that("h_coxreg_extract_interaction works with factor as covariate
 # h_coxreg_inter_effect ----
 
 testthat::test_that("h_coxreg_inter_effect works with numerics as covariate", {
-  mod1 <- survival::coxph(survival::Surv(time, status) ~ armcd * age, data = get_bladder())
+  mod1 <- survival::coxph(survival::Surv(time, status) ~ armcd * age, data = dta_bladder_raw)
   testthat::expect_silent(
     h_coxreg_extract_interaction(
       effect = "armcd", covar = "age", mod = mod1, control = control_coxreg(),
-      at = list(), data = get_bladder()
+      at = list(), data = dta_bladder_raw
     )
   )
   testthat::expect_silent(
     h_coxreg_inter_effect(
-      x = get_bladder()[["age"]],
+      x = dta_bladder_raw[["age"]],
       effect = "armcd", covar = "age", mod = mod1, control = control_coxreg(),
-      at = list(), data = get_bladder()
+      at = list(), data = dta_bladder_raw
     )
   )
 
-  mod2 <- survival::coxph(survival::Surv(time, status) ~ armcd * age + strata(covar1), data = get_bladder())
+  mod2 <- survival::coxph(survival::Surv(time, status) ~ armcd * age + strata(covar1), data = dta_bladder_raw)
   testthat::expect_silent(
     h_coxreg_inter_effect(
-      x = get_bladder()[["age"]],
-      effect = "armcd", covar = "age", mod = mod2, data = get_bladder(),
+      x = dta_bladder_raw[["age"]],
+      effect = "armcd", covar = "age", mod = mod2, data = dta_bladder_raw,
       at = list(), control = control_coxreg()
     )
   )
 })
 
 testthat::test_that("h_coxreg_inter_effect.numerics works with _:_ in effect levels", {
-  mod <- survival::coxph(survival::Surv(time, status) ~ armcd * age, data = get_bladder())
+  mod <- survival::coxph(survival::Surv(time, status) ~ armcd * age, data = dta_bladder_raw)
   expected <- testthat::expect_silent(
     h_coxreg_extract_interaction(
       effect = "armcd", covar = "age", mod = mod, control = control_coxreg(),
-      at = list(), data = get_bladder()
+      at = list(), data = dta_bladder_raw
     )
   )
 
-  mod <- survival::coxph(survival::Surv(time, status) ~ arm * age, data = get_bladder())
+  mod <- survival::coxph(survival::Surv(time, status) ~ arm * age, data = dta_bladder_raw)
   result <- testthat::expect_silent(
     h_coxreg_extract_interaction(
       effect = "arm", covar = "age", mod = mod, control = control_coxreg(),
-      at = list(), data = get_bladder()
+      at = list(), data = dta_bladder_raw
     )
   )
   # The first column in the effect (arm/armcd) and expected to vary.
@@ -566,9 +536,8 @@ testthat::test_that("h_coxreg_inter_effect.numerics works with _:_ in effect lev
 
 testthat::test_that("h_coxreg_inter_estimations' results identical to soon deprecated estimate_coef", {
   # Testing dataset [survival::bladder].
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
-  dta_bladder <- get_bladder()
+  dta_bladder <- dta_bladder_raw
 
   mod <- survival::coxph(survival::Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 
@@ -595,7 +564,7 @@ testthat::test_that("h_coxreg_inter_estimations' results identical to soon depre
 # fit_coxreg_multivar ----
 
 testthat::test_that("fit_coxreg_multivar returns model results as expected", {
-  data <- get_bladder()
+  data <- dta_bladder_raw
   control <- control_coxreg(conf_level = 0.91)
   variables <- list(
     time = "time", event = "status", arm = "armcd",
@@ -622,7 +591,7 @@ testthat::test_that("fit_coxreg_multivar returns model results as expected", {
 })
 
 testthat::test_that("fit_coxreg_multivar is stopped when likelihood method is used together with strata", {
-  data <- get_bladder()
+  data <- dta_bladder_raw
 
   variables <- list(
     time = "time", event = "status", arm = "armcd", covariates = "age", strata = "covar1"
@@ -637,7 +606,7 @@ testthat::test_that("fit_coxreg_multivar is stopped when likelihood method is us
 
 
 testthat::test_that("fit_coxreg_multivar works correctly also without treatment arm", {
-  data <- get_bladder()
+  data <- dta_bladder_raw
   control <- control_coxreg(conf_level = 0.9)
   variables <- list(
     time = "time", event = "status",
@@ -655,9 +624,8 @@ testthat::test_that("fit_coxreg_multivar works correctly also without treatment 
 # tidy.coxreg.multivar ----
 
 testthat::test_that("tidy.coxreg.multivar method tidies up the multi-variable Cox regression model", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
-  dta_bladder <- get_bladder()
+  dta_bladder <- dta_bladder_raw
 
   multivar_model <- fit_coxreg_multivar(
     variables = list(
@@ -713,7 +681,7 @@ testthat::test_that("s_coxreg converts tabulated results in a list", {
       time = "time", event = "status", arm = "armcd",
       covariates = c("covar1", "covar2")
     ),
-    data = get_bladder()
+    data = dta_bladder_raw
   )
   df <- broom::tidy(univar_model)
   result <- s_coxreg(df = df, .var = "hr")
@@ -734,7 +702,7 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
       time = "time", event = "status", arm = "armcd",
       covariates = c("covar1", "covar2")
     ),
-    data = get_bladder(),
+    data = dta_bladder_raw,
     control = control_coxreg(ties = "breslow", conf_level = conf_level)
   )
   df <- broom::tidy(univar_model)
@@ -757,9 +725,8 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
 })
 
 testthat::test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtables", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
-  dta_bladder <- get_bladder()
+  dta_bladder <- dta_bladder_raw
   conf_level <- 0.90
 
   multivar_model <- fit_coxreg_multivar(
@@ -790,9 +757,8 @@ testthat::test_that("summarize_coxreg adds the multi-variable Cox regression lay
 })
 
 testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {
-  library(survival)
   set.seed(1, kind = "Mersenne-Twister")
-  dta_bladder <- get_bladder()
+  dta_bladder <- dta_bladder_raw
   conf_level <- 0.90
 
   univar_covs_model <- fit_coxreg_univar(

@@ -1,6 +1,3 @@
-library(scda)
-library(dplyr)
-
 preprocess_adtte <- function(adtte) {
 
   # Save variable labels before data processing steps.
@@ -20,13 +17,13 @@ preprocess_adtte <- function(adtte) {
   )
 }
 
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
+adtte_local <- adtte_raw %>%
+  preprocess_adtte()
 
 # extract_survival_biomarkers ----
 
 testthat::test_that("extract_survival_biomarkers functions as expected with valid input and default arguments", {
-  adtte_f <- adtte %>%
-    preprocess_adtte()
+  adtte_f <- adtte_local
 
   result <- extract_survival_biomarkers(
     variables = list(
@@ -116,8 +113,7 @@ testthat::test_that("extract_survival_biomarkers functions as expected with vali
 })
 
 testthat::test_that("extract_survival_biomarkers works as expected with groups_lists", {
-  adtte_f <- adtte %>%
-    preprocess_adtte()
+  adtte_f <- adtte_local
 
   result <- extract_survival_biomarkers(
     variables = list(
@@ -155,8 +151,7 @@ testthat::test_that("extract_survival_biomarkers works as expected with groups_l
 # tabulate_survival_biomarkers ----
 
 testthat::test_that("tabulate_survival_biomarkers works as expected with valid input", {
-  adtte_f <- adtte %>%
-    preprocess_adtte()
+  adtte_f <- adtte_local
 
   df <- extract_survival_biomarkers(
     variables = list(
@@ -207,8 +202,7 @@ testthat::test_that("tabulate_survival_biomarkers works as expected with valid i
 })
 
 testthat::test_that("tabulate_survival_biomarkers functions as expected with NULL subgroups", {
-  adtte_f <- adtte %>%
-    preprocess_adtte()
+  adtte_f <- adtte_local
 
   df <- testthat::expect_silent(extract_survival_biomarkers(
     variables = list(

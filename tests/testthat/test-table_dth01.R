@@ -1,9 +1,6 @@
 # Test variants of DTH01
 
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adsl <- adsl_raw
 
 testthat::test_that("DTH01 variant 1 is produced correctly", {
   adsl <- adsl %>%

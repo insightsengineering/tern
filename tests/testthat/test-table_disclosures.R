@@ -1,13 +1,9 @@
-library(scda)
-library(dplyr)
+adae <- adae_raw
 
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
-
-get_adsl <- function() {
-  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl # nolintr
+adsl_local <- local({
   set.seed(1)
   # nolint start
-  adsl_f <- adsl %>%
+  adsl_f <- adsl_raw %>%
     dplyr::filter(SAFFL == "Y") %>% # Safety Evaluable Population
     dplyr::mutate(
       STSTFL = dplyr::case_when(
@@ -41,7 +37,7 @@ get_adsl <- function() {
   # nolint end
   adsl_f <- df_explicit_na(adsl_f)
   adsl_f
-}
+})
 
 get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   n_per_arm <- adsl %>%
@@ -74,9 +70,8 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   anl
 }
 
-
 testthat::test_that("Patient Disposition table is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -131,7 +126,7 @@ testthat::test_that("Patient Disposition table is produced correctly", {
 })
 
 testthat::test_that("Demographic table is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
   vars <- c("AGE", "AGEGRP", "SEX", "RACE", "ETHNIC")
   var_labels <- c(
     "Age (yr)",
@@ -179,7 +174,7 @@ testthat::test_that("Demographic table is produced correctly", {
 })
 
 testthat::test_that("Enrollment by Country Table is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
@@ -208,7 +203,7 @@ testthat::test_that("Enrollment by Country Table is produced correctly", {
 })
 
 testthat::test_that("Death table is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -276,7 +271,7 @@ testthat::test_that("Table of Serious Adverse Events is produced correctly (for 
 })
 
 testthat::test_that("Table of Non-Serious Adverse Events is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
   adae_nonser <- adae %>% dplyr::filter(AESER != "Y", SAFFL == "Y")
   adae_trim <- get_adae_trimmed(adsl, adae_nonser, cutoff_rate = 0.05)
 

@@ -1,8 +1,5 @@
 # Tests the variants for TTET01.
 
-library(scda)
-library(dplyr)
-
 preproc_adtte <- function(adtte) {
   anl <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -19,12 +16,11 @@ preproc_adtte <- function(adtte) {
       ),
       EVNTDESC = factor(EVNTDESC)
     )
-
   anl
 }
 
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
+adsl <- adsl_raw
+adtte <- adtte_raw
 
 testthat::test_that("TTET01 default variant is produced correctly", {
   adtte <- adtte %>%

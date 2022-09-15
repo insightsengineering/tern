@@ -1,6 +1,4 @@
-library(scda)
-library(dplyr)
-
+# Local data pre-processing
 preprocess_adrs <- function(adrs) {
 
   # Save variable labels before data processing steps.
@@ -17,7 +15,8 @@ preprocess_adrs <- function(adrs) {
   )
 }
 
-adrs <- synthetic_cdisc_data("rcd_2022_02_28")$adrs
+adrs_local <- adrs_raw %>%
+  preprocess_adrs()
 
 # h_rsp_to_logistic_variables ----
 
@@ -42,8 +41,7 @@ testthat::test_that("h_rsp_to_logistic_variables works as expected", {
 # h_logistic_mult_cont_df ----
 
 testthat::test_that("h_logistic_mult_cont_df works as expected", {
-  adrs_f <- adrs %>%
-    preprocess_adrs()
+  adrs_f <- adrs_local
 
   result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
@@ -71,8 +69,7 @@ testthat::test_that("h_logistic_mult_cont_df works as expected", {
 })
 
 testthat::test_that("h_logistic_mult_cont_df returns missing values if data is empty (0 rows)", {
-  adrs_f <- adrs %>%
-    preprocess_adrs()
+  adrs_f <- adrs_local
 
   result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
@@ -100,8 +97,7 @@ testthat::test_that("h_logistic_mult_cont_df returns missing values if data is e
 })
 
 testthat::test_that("h_logistic_mult_cont_df also works with response not being called rsp", {
-  adrs_f <- adrs %>%
-    preprocess_adrs() %>%
+  adrs_f <- adrs_local %>%
     dplyr::rename(RESP = rsp)
 
   result <- testthat::expect_silent(h_logistic_mult_cont_df(

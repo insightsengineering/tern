@@ -1,5 +1,3 @@
-library(dplyr)
-
 testthat::test_that("control_summarize_vars works with customized parameters", {
   result <- control_summarize_vars(
     conf_level = 0.9,

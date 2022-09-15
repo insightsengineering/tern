@@ -1,10 +1,5 @@
-library(scda)
-library(rtables)
-library(dplyr)
-
-adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adlb <- adlb %>%
+# Data pre-processing
+adlb_local <- adlb_raw %>%
   dplyr::mutate(
     GRADDR = dplyr::case_when(
       PARAMCD == "ALT" ~ "B",
@@ -74,7 +69,7 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
 })
 
 testthat::test_that("h_adlb_worsen stacks data correctly", {
-  adlb_f <- adlb %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
+  adlb_f <- adlb_local %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
 
   result <- h_adlb_worsen(
     adlb_f,
@@ -253,7 +248,7 @@ testthat::test_that("s_count_abnormal_lab_worsen_by_baseline", {
 
 testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
   df <- h_adlb_worsen(
-    adlb,
+    adlb_local,
     worst_flag_low = c("WGRLOFL" = "Y"),
     worst_flag_high = c("WGRHIFL" = "Y"),
     direction_var = "GRADDR"
@@ -272,7 +267,7 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
         direction_var = "GRADDR"
       )
     ) %>%
-    build_table(df = df, alt_counts_df = adsl)
+    build_table(df = df, alt_counts_df = adsl_raw)
 
   result_matrix <- to_string_matrix(result)
 
@@ -305,9 +300,7 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
 })
 
 testthat::test_that("h_adlb_worsen all high", {
-  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
-  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-  adlb <- adlb %>%
+  adlb_local <- adlb_raw %>%
     dplyr::mutate(
       GRADDR = dplyr::case_when(
         PARAMCD == "ALT" ~ "H",
@@ -318,14 +311,14 @@ testthat::test_that("h_adlb_worsen all high", {
     dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
-    adlb,
+    adlb_local,
     worst_flag_high = c("WGRHIFL" = "Y"),
     direction_var = "GRADDR"
   )
   result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD, result$PCHG), ]
 
 
-  expected <- adlb[adlb$WGRHIFL == "Y", ]
+  expected <- adlb_local[adlb_local$WGRHIFL == "Y", ]
   expected$GRADDR <- "High" # nolint
   expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD, expected$PCHG), ]
 
@@ -337,8 +330,7 @@ testthat::test_that("h_adlb_worsen all high", {
 
 testthat::test_that("h_adlb_worsen all low", {
   adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
-  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-  adlb <- adlb %>%
+  adlb_local <- adlb_raw %>%
     dplyr::mutate(
       GRADDR = dplyr::case_when(
         PARAMCD == "ALT" ~ "L",
@@ -349,14 +341,14 @@ testthat::test_that("h_adlb_worsen all low", {
     dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
-    adlb,
+    adlb_local,
     worst_flag_low = c("WGRLOFL" = "Y"),
     direction_var = "GRADDR"
   )
   result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD, result$PCHG), ]
 
 
-  expected <- adlb[adlb$WGRLOFL == "Y", ]
+  expected <- adlb_local[adlb_local$WGRLOFL == "Y", ]
   expected$GRADDR <- "Low" # nolint
   expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD, expected$PCHG), ]
 
