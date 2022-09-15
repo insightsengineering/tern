@@ -1,17 +1,19 @@
 # Local data pre-processing
+adlb_tmp <- adlb_raw
+
 adlb_local <- local({
   # Data set is modified in order to have some parameters with grades only in one direction
   # and simulate the real data.
-  adlb_raw$ATOXGR[adlb_raw$PARAMCD == "ALT" & adlb_raw$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
-  adlb_raw$ANRIND[adlb_raw$PARAMCD == "ALT" & adlb_raw$ANRIND == "HIGH"] <- "LOW"
-  adlb_raw$WGRHIFL[adlb_raw$PARAMCD == "ALT"] <- ""
+  adlb_tmp$ATOXGR[adlb_tmp$PARAMCD == "ALT" & adlb_tmp$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
+  adlb_tmp$ANRIND[adlb_tmp$PARAMCD == "ALT" & adlb_tmp$ANRIND == "HIGH"] <- "LOW"
+  adlb_tmp$WGRHIFL[adlb_tmp$PARAMCD == "ALT"] <- ""
 
-  adlb_raw$ATOXGR[adlb_raw$PARAMCD == "IGA" & adlb_raw$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
-  adlb_raw$ANRIND[adlb_raw$PARAMCD == "IGA" & adlb_raw$ANRIND == "LOW"] <- "HIGH"
-  adlb_raw$WGRLOFL[adlb_raw$PARAMCD == "IGA"] <- ""
+  adlb_tmp$ATOXGR[adlb_tmp$PARAMCD == "IGA" & adlb_tmp$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
+  adlb_tmp$ANRIND[adlb_tmp$PARAMCD == "IGA" & adlb_tmp$ANRIND == "LOW"] <- "HIGH"
+  adlb_tmp$WGRLOFL[adlb_tmp$PARAMCD == "IGA"] <- ""
 
   # Here starts the real preprocessing.
-  adlb_raw %>%
+  adlb_tmp %>%
     dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
     dplyr::mutate(
       GRADE_DIR = factor(
