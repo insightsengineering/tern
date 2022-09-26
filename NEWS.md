@@ -13,7 +13,7 @@
 * Added `stat_mean_pval` function to calculate the p-value of the mean as a new summary statistic.
 * New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
   and related functions.
-* Added parameters `interaction_y' and `interaction_item` in ANCOVA related functions to make the 
+* Added parameters `interaction_y` and `interaction_item` in ANCOVA related functions to make the 
   calculation about interaction available.
 
 ### Migration from `assertthat` to `checkmate`
@@ -141,6 +141,7 @@
   `h_mmrm_cov`, `h_mmrm_diagnostic`, `tidy.mmrm`, `s_mmrm_lsmeans`, `s_mmrm_lsmeans_single`, `summarize_lsmeans`.
 * Renamed functions `arm` to `study_arm` and `extract` to `extract_by_name`.
 * Removed deprecated functions: `color_palette`, `h_set_nest_theme`, `s_cox_univariate`.
+* Added tests against SAS output for `prop_strat_wilson` and `prop_diff_strat_nc`.
 
 # tern 0.7.8
 

@@ -185,6 +185,29 @@ testthat::test_that("prop_jeffreys returns right result", {
   testthat::expect_equal(expected, result, tolerance = 1e-4)
 })
 
+testthat::test_that("prop_strat_wilson output matches equivalent SAS function output", {
+  set.seed(1)
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  )
+  grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A"))
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 80, TRUE),
+    "f2" = sample(c("x", "y", "z"), 80, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+  weights <- 1:6 / sum(1:6)
+
+  wilson <- prop_strat_wilson(rsp, strata, weights)
+  result <- wilson$conf_int
+
+  expected <- c(lower = 0.4867, upper = 0.7186)
+
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
+})
+
 testthat::test_that("s_proportion returns right result", {
   result <- s_proportion(c(1, 0, 1, 0))
   expected <- list(
