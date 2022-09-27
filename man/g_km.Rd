@@ -20,6 +20,7 @@ g_km(
   yval = c("Survival", "Failure"),
   ylab = paste(yval, "Probability"),
   title = NULL,
+  footnotes = NULL,
   draw = TRUE,
   newpage = TRUE,
   gp = NULL,
@@ -88,6 +89,8 @@ an optimal tick position on the x axis.}
 \item{ylab}{(\code{string})\cr label of y-axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
+
+\item{footnotes}{(\code{string})\cr footnotes for plot.}
 
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
