@@ -238,6 +238,29 @@ testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcom
   expect_equal(as.numeric(results$diff_ci), c(0.0391, 0.4501), tol = 1e-4)
 })
 
+testthat::test_that("prop_diff_strat_nc output matches equivalent SAS function output", {
+  set.seed(1)
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 40, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 40, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  )
+  grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A"))
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 80, TRUE),
+    "f2" = sample(c("x", "y", "z"), 80, TRUE),
+    stringsAsFactors = TRUE
+  )
+  strata <- interaction(strata_data)
+  weights <- 1:6 / sum(1:6)
+
+  nc <- prop_diff_strat_nc(rsp = rsp, grp = grp, strata = strata, conf_level = 0.95)
+  result <- c(value = nc$diff, nc$diff_ci)
+
+  expected <- c(value = 0.2539, lower = 0.0347, upper = 0.4454)
+
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
+})
+
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   dta <- data.frame(
