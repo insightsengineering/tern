@@ -877,7 +877,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
         widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
         heights = grid::unit(
           c(
-            1,
+            2,
             1,
             grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
             grid::convertX(g_el$guide$heights, "pt"),
@@ -900,7 +900,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
         widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
         heights = grid::unit(
           c(
-            1,
+            2,
             1,
             grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
             grid::convertX(g_el$guide$heights, "pt"),
