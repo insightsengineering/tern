@@ -846,8 +846,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
           )[no_at_risk_tbl]
         )
       )
-    }
-    else {
+    } else {
       grid::grid.layout(
         nrow = ifelse(annot_at_risk, 6, 4), ncol = 2,
         widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),

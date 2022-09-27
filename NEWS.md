@@ -15,6 +15,7 @@
   and related functions.
 * Added parameters `interaction_y` and `interaction_item` in ANCOVA related functions to make the 
   calculation about interaction available.
+* Added new parameter `footnotes` to add footnotes to `g_km`.
 
 ### Migration from `assertthat` to `checkmate`
 * Substituted all `assertthat` calls with `checkmate`. 
