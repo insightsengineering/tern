@@ -35,7 +35,8 @@ gg <- h_ggkm(
   yval = "Survival",
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-  title = "tt"
+  title = "tt",
+  footnotes = "ff"
 )
 
 g_el <- h_decompose_gg(gg)
