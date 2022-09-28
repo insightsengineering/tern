@@ -369,7 +369,10 @@ g_km <- function(df,
         # Footnotes.
         if (foot_row == 1) {
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 6 + ttl_row, layout.pos.col = 2),
+            vp = grid::viewport(
+              layout.pos.row = ifelse(annot_at_risk, 6 + ttl_row, 4 + ttl_row),
+              layout.pos.col = 2
+            ),
             children = grid::gList(grid::textGrob(label = footnotes, x = grid::unit(0, "npc"), hjust = 0))
           )
         }
@@ -800,127 +803,56 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
     )
   )
 
-  no_at_risk_tbl <- ifelse(
-    annot_at_risk,
-    rep(TRUE, 5),
-    c(rep(TRUE, 3), rep(FALSE, 2))
-  )
+  ttl_row <- as.numeric(!is.null(title))
+  foot_row <- as.numeric(!is.null(footnotes))
+  no_tbl_ind <- c()
+  ht_x <- c()
+  ht_units <- c()
 
-  no_at_risk_tbl_title <- ifelse(
-    annot_at_risk,
-    rep(TRUE, 6),
-    c(rep(TRUE, 4), rep(FALSE, 2))
-  )
-
-  no_at_risk_tbl_footnotes <- ifelse(
-    annot_at_risk,
-    rep(TRUE, 6),
-    c(rep(TRUE, 3), rep(FALSE, 2), TRUE)
-  )
-
-  no_at_risk_tbl_title_footnotes <- ifelse(
-    annot_at_risk,
-    rep(TRUE, 7),
-    c(rep(TRUE, 4), rep(FALSE, 2), TRUE)
-  )
-
-  if (is.null(title)) {
-    if (is.null(footnotes)) {
-      grid::grid.layout(
-        nrow = ifelse(annot_at_risk, 5, 3), ncol = 2,
-        widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
-        heights = grid::unit(
-          c(
-            1,
-            grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-            grid::convertX(g_el$guide$heights, "pt"),
-            nlines + 1,
-            grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
-          )[no_at_risk_tbl],
-          c(
-            "null",
-            "pt",
-            "pt",
-            "lines",
-            "pt"
-          )[no_at_risk_tbl]
-        )
-      )
-    } else {
-      grid::grid.layout(
-        nrow = ifelse(annot_at_risk, 6, 4), ncol = 2,
-        widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
-        heights = grid::unit(
-          c(
-            1,
-            grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-            grid::convertX(g_el$guide$heights, "pt"),
-            nlines + 1,
-            grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-            1
-          )[no_at_risk_tbl_footnotes],
-          c(
-            "null",
-            "pt",
-            "pt",
-            "lines",
-            "pt",
-            "lines"
-          )[no_at_risk_tbl_footnotes]
-        )
-      )
-    }
-  } else {
-    if (is.null(footnotes)) {
-      grid::grid.layout(
-        nrow = ifelse(annot_at_risk, 6, 4), ncol = 2,
-        widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
-        heights = grid::unit(
-          c(
-            2,
-            1,
-            grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-            grid::convertX(g_el$guide$heights, "pt"),
-            nlines + 1,
-            grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
-          )[no_at_risk_tbl_title],
-          c(
-            "lines",
-            "null",
-            "pt",
-            "pt",
-            "lines",
-            "pt"
-          )[no_at_risk_tbl_title]
-        )
-      )
-    } else {
-      grid::grid.layout(
-        nrow = ifelse(annot_at_risk, 7, 5), ncol = 2,
-        widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
-        heights = grid::unit(
-          c(
-            2,
-            1,
-            grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-            grid::convertX(g_el$guide$heights, "pt"),
-            nlines + 1,
-            grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-            1
-          )[no_at_risk_tbl_title_footnotes],
-          c(
-            "lines",
-            "null",
-            "pt",
-            "pt",
-            "lines",
-            "pt",
-            "lines"
-          )[no_at_risk_tbl_title_footnotes]
-        )
-      )
-    }
+  if (ttl_row == 1) {
+    no_tbl_ind <- c(no_tbl_ind, TRUE)
+    ht_x <- c(ht_x, 2)
+    ht_units <- c(ht_units, "lines")
   }
+
+  no_tbl_ind <- c(no_tbl_ind, rep(TRUE, 3), rep(FALSE, 2))
+  ht_x <- c(
+    ht_x,
+    1,
+    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
+    grid::convertX(g_el$guide$heights, "pt"),
+    nlines + 1,
+    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
+  )
+  ht_units <- c(
+    ht_units,
+    "null",
+    "pt",
+    "pt",
+    "lines",
+    "pt"
+  )
+
+  if (foot_row == 1) {
+    no_tbl_ind <- c(no_tbl_ind, TRUE)
+    ht_x <- c(ht_x, 1)
+    ht_units <- c(ht_units, "lines")
+  }
+
+  no_at_risk_tbl <- if (annot_at_risk) {
+    rep(TRUE, 5 + ttl_row + foot_row)
+  } else {
+    no_tbl_ind
+  }
+
+  grid::grid.layout(
+    nrow = sum(no_at_risk_tbl), ncol = 2,
+    widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
+    heights = grid::unit(
+      x = ht_x[no_at_risk_tbl],
+      units = ht_units[no_at_risk_tbl]
+    )
+  )
 }
 
 #' Helper: Patient-at-Risk Grobs
