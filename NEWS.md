@@ -1,6 +1,7 @@
 # tern 0.7.9.9011
 
 ### Enhancements 
+* Introducing again `Rdpack` for references.
 * Redesign of data handling in tests by removing repetitive data loads and library calls.
 * Added `DescTools` `BinomDiffCI` function within `tern`.
 * Exported `draw_grob` function.

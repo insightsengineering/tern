@@ -39,6 +39,7 @@ Imports:
     lifecycle,
     magrittr,
     methods,
+    Rdpack,
     rlang,
     scales,
     stats,
@@ -58,7 +59,8 @@ Suggests:
 VignetteBuilder:
     knitr
 RdMacros:
-    lifecycle
+    lifecycle,
+    Rdpack
 Remotes:
     insightsengineering/scda.2022@*release,
     insightsengineering/scda@*release

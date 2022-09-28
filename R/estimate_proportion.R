@@ -132,14 +132,16 @@ update_weights_strat_wilson <- function(vars,
   )
 }
 #' @describeIn estimate_proportions Calculates the stratified Wilson confidence
-#'   interval for unequal proportions as described in Yan and Su (2010).
+#'   interval for unequal proportions as described in
+#'   \insertCite{Yan2010-jt;textual}{tern}
 #'
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
 #' @param weights (`numeric` or `NULL`) \cr
 #'   weights for each level of the strata. If `NULL`, they are
-#'   estimated using the iterative algorithm proposed in Yan and Su (2010)
-#'   that minimizes the weighted squared length of the confidence interval.
+#'   estimated using the iterative algorithm proposed in
+#'   \insertCite{Yan2010-jt;textual}{tern} that minimizes the weighted squared
+#'   length of the confidence interval.
 #' @param max_iterations (`count`) \cr
 #'   maximum number of iterations for the iterative procedure used
 #'   to find estimates of optimal weights.
@@ -172,9 +174,9 @@ update_weights_strat_wilson <- function(vars,
 #'   conf_level = 0.90
 #' )
 #' @references
-#' \itemize{
-#'   \item `Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.`
-#' }
+#' - \insertRef{Yan2010-jt}{tern}
+#'
+#' @importFrom Rdpack reprompt
 #'
 #' @export
 prop_strat_wilson <- function(rsp,
