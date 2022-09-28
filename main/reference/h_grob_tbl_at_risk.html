@@ -14,7 +14,7 @@ the second to the number of patient at risk."><!-- mathjax --><script src="https
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.9.9010</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.9.9011</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,14 +37,6 @@ the second to the number of patient at risk."><!-- mathjax --><script src="https
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -115,7 +107,7 @@ ensure the at risk table aligns with the KM graph).</p></dd>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">data_plot</span>,</span></span>
 <span class="r-in"><span>  censor_show <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  xticks <span class="op">=</span> <span class="va">xticks</span>, xlab <span class="op">=</span> <span class="st">"Days"</span>, ylab <span class="op">=</span> <span class="st">"Survival Probability"</span>,</span></span>
-<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"tt"</span>, yval <span class="op">=</span> <span class="st">"Survival"</span></span></span>
+<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"tt"</span>, footnotes <span class="op">=</span> <span class="st">"ff"</span>, yval <span class="op">=</span> <span class="st">"Survival"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The annotation table reports the patient at risk for a given strata and</span></span></span>
@@ -139,7 +131,7 @@ ensure the at risk table aligns with the KM graph).</p></dd>
 <span class="r-in"><span><span class="co"># For the representation, the layout is estimated for which the decomposition</span></span></span>
 <span class="r-in"><span><span class="co"># of the graphic element is necessary.</span></span></span>
 <span class="r-in"><span><span class="va">g_el</span> <span class="op">&lt;-</span> <span class="fu"><a href="h_decompose_gg.html">h_decompose_gg</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="h_km_layout.html">h_km_layout</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data_plot</span>, g_el <span class="op">=</span> <span class="va">g_el</span>, title <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="h_km_layout.html">h_km_layout</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data_plot</span>, g_el <span class="op">=</span> <span class="va">g_el</span>, title <span class="op">=</span> <span class="st">"t"</span>, footnotes <span class="op">=</span> <span class="st">"f"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>layout <span class="op">=</span> <span class="va">lyt</span>, height <span class="op">=</span> <span class="fl">.95</span>, width <span class="op">=</span> <span class="fl">.95</span><span class="op">)</span><span class="op">)</span></span></span>
