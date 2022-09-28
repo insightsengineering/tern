@@ -7,7 +7,7 @@
 #' @param width max with of string, by default the width of the current viewport
 #' @param gp graphical parameters for text
 #'
-#' @return e vector with the new strings
+#' @return e vector with the new strings.
 #'
 #' @author Adrian Waddell
 #'
