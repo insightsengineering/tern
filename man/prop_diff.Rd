@@ -157,9 +157,10 @@ weights. For the CMH chi-squared test, use \code{\link[stats:mantelhaen.test]{st
 \item \code{prop_diff_strat_nc()}: Calculates the stratified Newcombe confidence interval
 and difference in response rates between the experimental treatment group
 and the control treatment group, adjusted for stratification factors. This
-implementation follows closely the one proposed by Yan and Su (2010).
-Weights can be estimated from the heuristic proposed in
-\code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from CMH-derived weights (see \code{\link[=prop_diff_cmh]{prop_diff_cmh()}}).
+implementation follows closely the one proposed by
+\insertCite{Yan2010-jt;textual}{tern}. Weights can be estimated from the
+heuristic proposed in \code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from CMH-derived weights
+(see \code{\link[=prop_diff_cmh]{prop_diff_cmh()}}).
 
 \item \code{s_proportion_diff()}: Statistics function estimating the difference
 in terms of responder proportion.
@@ -297,6 +298,6 @@ build_table(l, df = dta)
 }
 \references{
 \itemize{
-\item \verb{Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.}
+\item \insertRef{Yan2010-jt}{tern}
 }
 }

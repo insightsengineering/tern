@@ -307,9 +307,10 @@ prop_diff_cmh <- function(rsp,
 #' @describeIn prop_diff Calculates the stratified Newcombe confidence interval
 #'   and difference in response rates between the experimental treatment group
 #'   and the control treatment group, adjusted for stratification factors. This
-#'   implementation follows closely the one proposed by Yan and Su (2010).
-#'   Weights can be estimated from the heuristic proposed in
-#'   [prop_strat_wilson()] or from CMH-derived weights (see [prop_diff_cmh()]).
+#'   implementation follows closely the one proposed by
+#'   \insertCite{Yan2010-jt;textual}{tern}. Weights can be estimated from the
+#'   heuristic proposed in [prop_strat_wilson()] or from CMH-derived weights
+#'   (see [prop_diff_cmh()]).
 #'
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
@@ -342,9 +343,9 @@ prop_diff_cmh <- function(rsp,
 #' )
 #'
 #' @references
-#' \itemize{
-#'   \item `Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.`
-#' }
+#' - \insertRef{Yan2010-jt}{tern}
+#'
+#' @importFrom Rdpack reprompt
 #'
 #' @export
 prop_diff_strat_nc <- function(rsp,

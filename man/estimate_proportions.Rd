@@ -80,8 +80,9 @@ with one level per stratum and same length as \code{rsp}.}
 
 \item{weights}{(\code{numeric} or \code{NULL}) \cr
 weights for each level of the strata. If \code{NULL}, they are
-estimated using the iterative algorithm proposed in Yan and Su (2010)
-that minimizes the weighted squared length of the confidence interval.}
+estimated using the iterative algorithm proposed in
+\insertCite{Yan2010-jt;textual}{tern} that minimizes the weighted squared
+length of the confidence interval.}
 
 \item{max_iterations}{(\code{count}) \cr
 maximum number of iterations for the iterative procedure used
@@ -137,7 +138,8 @@ Estimate the proportion of responders within a studied population.
 Also referred to as Wilson score interval.
 
 \item \code{prop_strat_wilson()}: Calculates the stratified Wilson confidence
-interval for unequal proportions as described in Yan and Su (2010).
+interval for unequal proportions as described in
+\insertCite{Yan2010-jt;textual}{tern}
 
 \item \code{prop_clopper_pearson()}: the Clopper-Pearson interval calls
 \code{\link[stats:binom.test]{stats::binom.test()}}. Also referred to as the \code{exact} method.
@@ -240,6 +242,6 @@ basic_table() \%>\%
 }
 \references{
 \itemize{
-\item \verb{Yan, Xin, and Xiao Gang Su. 2010. “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.” Statistics in Biopharmaceutical Research 2 (3): 329–35.}
+\item \insertRef{Yan2010-jt}{tern}
 }
 }
