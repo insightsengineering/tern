@@ -375,6 +375,7 @@ prop_diff_strat_nc <- function(rsp,
   } else if (identical(weights_method, "wilson_h")) {
     prop_strat_wilson(rsp, strata, conf_level = conf_level, correct = correct)$weights
   }
+  weights[levels(strata)[!levels(strata) %in% names(weights)]] <- 0
 
   # Calculating lower (`l`) and upper (`u`) confidence bounds per group.
   strat_wilson_by_grp <- Map(
