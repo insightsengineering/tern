@@ -18,6 +18,9 @@ upstream_repos:
     repo: Roche/rtables
     host: https://github.com
 downstream_repos:
+  insightsengineering/tern.gee:
+    repo: insightsengineering/tern.gee
+    host: https://github.com
   insightsengineering/tern.mmrm:
     repo: insightsengineering/tern.mmrm
     host: https://github.com
