@@ -1,7 +1,7 @@
 # tern 0.7.9.9013
 
 ### New Features
-* Added stratified Newcombe and Wilson statistics to `estimate_proportion` and
+* Added stratified Newcombe and stratified Wilson statistics to `estimate_proportion` and
   `estimate_proportion_diff` with relative tests.
 * Added `stat_mean_pval`, a new summary statistic to calculate the p-value of 
   the mean.
@@ -14,7 +14,7 @@
   library calls.
 * Added `DescTools::BinomDiffCI` function within `tern`.
 * Added new parameter to `summarize_logistic` to specify which pivoted value 
-  should be removed during analysis.
+  to use during analysis.
 * Updated `s_coxph_pairwise` to generate log-rank p-value using original 
   log-rank test instead of Cox Proportional-Hazards Model.
 * Implemented `nestcolor` in all examples by adapting `g_km`, `g_ipp`, 
@@ -25,7 +25,7 @@
 
 ### Migration from `assertthat` to `checkmate`
 * Implemented `checkmate::assert_vector`, `checkmate::assert_set_equal`, and 
-  `checkmate::assert_int` to validate vector type, length, and values.
+  `checkmate::assert_int` to check vector type, length, and values.
 * Replaced with standard assertions from `checkmate` the following functions:
   `all_elements_in_ref`, `is_df_with_nlevels_factor`, `is_df_with_no_na_level`, 
   `is_proportion_vector`, `is_quantiles_vector`, `is_character_or_factor`, 
@@ -103,7 +103,7 @@
   functions)
 * Fixed bug in `s_ancova` causing an error when the first level of the arm 
   factor is not the control arm. 
-* Fixed bug in `s_abnormal_by_worst_grade` when only one `PARAM` level exists.
+* Fixed bug in `s_abnormal_by_worst_grade` when there is one `PARAM` level.
 
 ### Miscellaneous
 * Added deprecated badge to `g_mmrm`.
@@ -122,7 +122,7 @@
 * Renamed `rtables.R` to `utils_rtables.R`.
 * Extracted `cox_regression_inter` into a separate file from `cox_regression`.
 * Renamed `estimate_incidence_rate.R` to `incidence_rate.R` to match the documentation grouping name.
-* Extracted `control_incidence_rate` into a separate file as it was exported and documented separately.
+* Extracted `control_incidence_rate` into a separate file because it produces a separate documentation file.
 * Added `@md` and removed `@order` from `incidence_rate.R`. Modified examples accordingly.
 * Removed hyperlink from `prop_schouten` function documentation.
 * Exported `draw_grob` function.
