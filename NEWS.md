@@ -1,61 +1,43 @@
 # tern 0.7.9.9013
 
-### Enhancements 
-* Introducing again `Rdpack` for references.
-* Redesign of data handling in tests by removing repetitive data loads and library calls.
-* Added `DescTools` `BinomDiffCI` function within `tern`.
-* Exported `draw_grob` function.
-* Added new parameter to `summarize_logistic` to specify which pivoted value should be removed during analysis.
-* Updated `s_coxph_pairwise` to generate log-rank p-value using original log-rank test instead 
-  of Cox Proportional-Hazards Model.
-* Added more verbose warnings from `as_factor_keep_attributes` for better `test_examples()` readability.
-* Implemented `nestcolor` in all examples, with slight refactoring to `g_km`, `g_ipp`, 
-  `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
-* Added `stat_mean_pval` function to calculate the p-value of the mean as a new summary statistic.
-* New statistic `mean_se` (mean with standard error) for `summarize_variables()` 
+### New Features
+* Added stratified Newcombe and Wilson statistics to `estimate_proportion` and
+  `estimate_proportion_diff` with relative tests.
+* Added `stat_mean_pval`, a new summary statistic to calculate the p-value of 
+  the mean.
+* Added statistic `mean_se` (mean with standard error) for `summarize_variables` 
   and related functions.
-* Added parameters `interaction_y` and `interaction_item` in ANCOVA related functions to make the 
-  calculation about interaction available.
+* Introduced again `Rdpack` for references.
+
+### Enhancements 
+* Redesign of data handling in tests by removing repetitive data loads and 
+  library calls.
+* Added `DescTools::BinomDiffCI` function within `tern`.
+* Added new parameter to `summarize_logistic` to specify which pivoted value 
+  should be removed during analysis.
+* Updated `s_coxph_pairwise` to generate log-rank p-value using original 
+  log-rank test instead of Cox Proportional-Hazards Model.
+* Implemented `nestcolor` in all examples by adapting `g_km`, `g_ipp`, 
+  `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
+* Added parameters `interaction_y` and `interaction_item` in ANCOVA to make the 
+  interaction calculations available.
 * Added new parameter `footnotes` to add footnotes to `g_km`.
 
 ### Migration from `assertthat` to `checkmate`
-* Substituted all `assertthat` calls with `checkmate`. 
-* Implemented `checkmate::assert_vector()`, `checkmate::assert_set_equal()`, and 
-  `checkmate::assert_int()` to validate vector type, length, and input.
+* Implemented `checkmate::assert_vector`, `checkmate::assert_set_equal`, and 
+  `checkmate::assert_int` to validate vector type, length, and values.
+* Replaced with standard assertions from `checkmate` the following functions:
+  `all_elements_in_ref`, `is_df_with_nlevels_factor`, `is_df_with_no_na_level`, 
+  `is_proportion_vector`, `is_quantiles_vector`, `is_character_or_factor`, 
+  `is_nonnegative_count`, `is_valid_character`, `assert_character_or_factor`, 
+  `assert_equal_length` and `has_tabletree_colnames`.
+* Modified `is_proportion`, `is_equal_length`, `is_df_with_no_na_level`, 
+  `is_df_with_nlevels_factor`, `is_variables`, `is_df_with_variables`, 
+  `is_df_with_factors`, `is_valid_factor` to use assertion logic.
+* Added more verbose warnings from `as_factor_keep_attributes`.
 * Made `assert_df_with_factors` and `assert_proportion_value` internal functions.
-* Removed assertion functions `all_elements_in_ref`, `is_df_with_nlevels_factor`, 
-  `is_df_with_no_na_level`, `is_proportion`, `is_proportion_vector`, `is_quantiles_vector`, 
-  `is_valid_character`,
-  `assert_character_or_factor`, `assert_equal_length` and `has_tabletree_colnames`.
-* Renamed `is_proportion` to `assert_proportion_value`.
-* Renamed `is_equal_length` to `assert_equal_length`.
-* Refactored `assert_df_with_variables` to replace `is_df_with_no_na_level`.
-* Refactored `assert_df_with_factors` to replace `is_df_with_nlevels_factor`.
-* Replaced usage of `is_quantiles_vector` and `all_elements_in_ref` with `checkmate::subset()`.
-* Replaced `is_character_or_factor` with `checkmate::assert_multi_class()`.
-* Replaced `is_nonnegative_count` with `checkmate::assert_count()`.
-* Replaced `is_variables` with `assert_list_of_variables`.
-* Replaced `is_df_with_variables` with `assert_df_with_variables`.
-* Replaced `is_df_with_factors` with `assert_df_with_factors`.
-* Replaced `is_valid_factor` with `assert_valid_factor`.
-* Renamed `assertthat.R` to `utils_checkmate.R`.
-* Renamed `test-assertthat.R` to `test-utils_checkmate.R`.
-
-### Bug Fixes
-* Fixed bugs from tests that rely on `stats::ancova`. Adding more general solutions. They 
-  are probably due to an external update.
-* Fixed tests to respect the new standard print for `NA`.
-* Fixed error in tests coming from changes in `formatters::var_labels()`.
-* Identified bug in `prop_diff` functions. Coding of responses have been corrected (TRUE is a success).
-* Fixed error coming from comparing factors vector to characters vector.
-* Fixed empty vector test for `cut_quantile_bins`.
-* Fixed bug related to error flag for empty strings coming from `rtables` split
-  functions. Creation of `replace_emptys_with_na` to replace empty strings with
-  custom strings across data.frame (this can be merged with `df_explicit_na`).
-* Fixed warnings occurring in example tests.
-* Fixed internal function examples errors by removing `tern:::` prefix and added `dontrun` to internal function examples.
-* Fixed bug in `s_ancova` causing an error when the first level of the arm factor is not the control arm. 
-* Fixed bug in `s_abnormal_by_worst_grade` when only one `PARAM` level exists.
+* Renamed `assertthat.R` and `test-assertthat.R` to `utils_checkmate.R` and 
+  `test-utils_checkmate.R`.
 
 ### Documentation and NAMESPACE Polishing
 * Added stable badges for:
@@ -80,19 +62,18 @@
    `has_fraction_in_cols`, `has_fraction_in_any_col`, `has_fractions_difference`,
    `test_proportion_diff`, `pairwise`, `logistic_regression`,
    `estimate_incidence_rate`, `control_incidence_rate` (reference to
-   `incidence_rate`), `cut_quantile_bins`, `d_pkparam`,
+   `incidence_rate`), `cut_quantile_bins`,
    `estimate_multinomial_rsp`, `decorate_grob_set`, `extreme_format`, `fit_rsp_step`,
    `fit_survival_step`, `footnotes`, `footnotes-set`,
    `format_count_fraction`, `format_fraction_threshold`, `formatting_functions`,
-   `format_fraction`, `combination_function` (S4 method), `compare_variables` (S3 method),
-   `h_stack_by_baskets`, `h_pkparam_sort`, `h_adsl_adlb_merge_using_worst_flag`, `kaplan_meier`.
+   `format_fraction`, `combination_function` (S4 method), `compare_variables` (S3 method), 
+   `kaplan_meier`.
 * Internal keywords added, export removed, `_pkgdown.yml` updated, and `tern:::` added for
    tests/examples/vignettes where present for the following functions:
    - (chain functions, reference to `abnormal_by_marked`) `s_count_abnormal_by_marked`,
    `a_count_abnormal_by_marked`.
    - (chain functions, reference to `abnormal_by_worst_grade_worsen_from_baseline`)
-   `a_count_abnormal_lab_worsen_by_baseline`, `h_worsen_counter` (same file),
-   `s_count_abnormal_lab_worsen_by_baseline`.
+   `a_count_abnormal_lab_worsen_by_baseline`, `s_count_abnormal_lab_worsen_by_baseline`.
    - (chain functions, reference to `abnormal_by_worst_grade`) `s_count_abnormal_by_worst_grade`,
    `a_count_abnormal_by_worst_grade`.
    - (chain functions, reference to `survival_timepoint`) `s_surv_timepoint`, `s_surv_timepoint_diff`,
@@ -100,50 +81,51 @@
    - (chain functions, reference to `survival_time`) `s_surv_time`, `a_surv_time`.
    - (chain functions, reference to `survival_coxph_pairwise`) `s_coxph_pairwise`, `a_coxph_pairwise`.
    - (chain functions, reference to `survival_duration_subgroups`) `a_survival_subgroups`.
-   - (chain functions, reference to `count_cumulative`) `h_count_cumulative`,
-   `d_count_cumulative`, `s_count_cumulative`, `a_count_cumulative`.
-   - (chain functions, reference to `count_missed_doses`) `s_count_nonmissing`, `d_count_missed_doses`, `s_count_missed_doses`, `a_count_missed_doses`.
+   - (chain functions, reference to `count_cumulative`) `s_count_cumulative`, `a_count_cumulative`.
+   - (chain functions, reference to `count_missed_doses`) `s_count_nonmissing`, `s_count_missed_doses`, `a_count_missed_doses`.
    - (chain functions, reference to `count_patients_events_in_cols`) `s_count_patients_and_multiple_events`, `summarize_patients_events_in_cols`.
-   - (chain functions, reference to `incidence_rate`) `h_incidence_rate_normal`,
-   `h_incidence_rate_normal_log`, `h_incidence_rate_exact`, `h_incidence_rate_byar`,
-   `h_incidence_rate`, `s_incidence_rate`, `a_incidence_rate`.
+   - (chain functions, reference to `incidence_rate`) `s_incidence_rate`, `a_incidence_rate`.
    - (cox regression helper) `cox_regression_inter`, `decorate_grob_factory`, `draw_grob`, `estimate_coef`.
-   - (reference to `h_survival_duration_subgroups`) `h_survtime_df`, `h_survtime_subgroups_df`, `h_coxph_df`, `h_coxph_subgroups_df`
-   - (reference to `h_survival_biomarkers_subgroups`) `h_surv_to_coxreg_variables`,
-   `h_coxreg_mult_cont_df`, `h_tab_surv_one_biomarker`.
-   - (reference to `h_step`) `h_step_window`, `h_step_trt_effect`, `h_step_survival_formula`,
-   `h_step_survival_est`, `h_step_rsp_formula`, `h_step_rsp_est`.
-   - (reference to `h_response_biomarkers_subgroups`) `h_rsp_to_logistic_variables`,
-   `h_logistic_mult_cont_df`, `h_tab_rsp_one_biomarker`.
    - `summary_labels`, `summary_formats`, `s_count_patients_sum_exposure`,
-   `a_change_from_baseline` `s_change_from_baseline`, `a_ancova`, `s_ancova`, `h_ancova`,
-   `arrange_grobs`, `as_factor_keep_attributes`, `combine_levels`, `split_text_grob`,
-   `groups_list_to_df`, `s_cox_multivariate`, `h_row_counts`, `h_row_fractions`, `h_col_counts`, `is_leaf_table`,
-   `h_content_first_row`, `a_response_subgroups`, `range_noinf`, `has_count_in_cols`,
+   `a_change_from_baseline` `s_change_from_baseline`, `a_ancova`, `s_ancova`, `arrange_grobs`, `as_factor_keep_attributes`, `combine_levels`, `split_text_grob`,
+   `groups_list_to_df`, `s_cox_multivariate`, `is_leaf_table`, `a_response_subgroups`, `range_noinf`, `has_count_in_cols`,
    `has_counts_difference`, `prop_chisq`, `prop_cmh`, `prop_schouten`, `prop_fisher`,
-   `s_test_proportion_diff`, `a_test_proportion_diff`,`h_split_param`,
-   `fct_discard`, `fct_explicit_na_if`.
+   `s_test_proportion_diff`, `a_test_proportion_diff`, `fct_discard`, `fct_explicit_na_if`.
+
+### Bug Fixes
+* Fixed retrieval method of `stats::ancova` output due to version inconsistency.
+* Fixed tests to respect the new standard print for `NA` coming from `rtables`.
+* Fixed error in tests coming from changes in `formatters::var_labels`.
+* Fixed `prop_diff` functions to respect success responses (`TRUE` values).
+* Fixed error coming from comparing factors vector to characters vector.
+* Fixed empty vector exception for `cut_quantile_bins`.
+* Fixed exception error when empty strings are present in pivoted columns (`rtables` split
+  functions)
+* Fixed bug in `s_ancova` causing an error when the first level of the arm 
+  factor is not the control arm. 
+* Fixed bug in `s_abnormal_by_worst_grade` when only one `PARAM` level exists.
+
+### Miscellaneous
 * Added deprecated badge to `g_mmrm`.
-* Removed `tern:::` prefix from internal function uses in tests.
-* Reverted `fct_collapse_only`, `month2day`, and `day2month` to export.
-* Reverted all `d_` and `h_` functions to export, allowing users to utilize their flexibility.
-* Renamed `rtables.R` as file name is confusing due to the package dependence.
-* Renamed files to reflect main documented function and fixed `R` files starting with the word test
-  not complying with the standard.
+* Removed internal function calls in examples (`tern:::`) and added `dontrun` 
+  to internal function examples.
+* Removed warnings and messages to console occurring in examples and tests.
+* Deprecated functions `color_palette` and `h_set_nest_theme` in favor of 
+  `nestcolor::color_palette` and `nestcolor::theme_nest`, respectively.
+* Removed deprecated functions: `color_palette`, `color_palette_core`, 
+  `h_set_nest_theme`, `s_cox_univariate`.
+* Removed deprecated `mmrm` functions: `fit_mmrm`, `g_mmrm_diagnostic`, 
+  `g_mmrm_lsmeans`, `as.rtable.mmrm`, `h_mmrm_fixed`, `h_mmrm_cov`, 
+  `h_mmrm_diagnostic`, `tidy.mmrm`, `s_mmrm_lsmeans`, `s_mmrm_lsmeans_single`, 
+  `summarize_lsmeans`.
+* Renamed functions `arm` to `study_arm` and `extract` to `extract_by_name`.
+* Renamed `rtables.R` to `utils_rtables.R`.
 * Extracted `cox_regression_inter` into a separate file from `cox_regression`.
 * Renamed `estimate_incidence_rate.R` to `incidence_rate.R` to match the documentation grouping name.
 * Extracted `control_incidence_rate` into a separate file as it was exported and documented separately.
 * Added `@md` and removed `@order` from `incidence_rate.R`. Modified examples accordingly.
 * Removed hyperlink from `prop_schouten` function documentation.
-
-### Miscellaneous
-* Deprecated the `color_palette` function with `nestcolor::color_palette` and removed `color_palette_core`.
-* Deprecated `h_set_nest_theme()` in favor of `nestcolor::theme_nest()`.
-* Removed deprecated `mmrm` functions: `fit_mmrm`, `g_mmrm_diagnostic`, `g_mmrm_lsmeans`, `as.rtable.mmrm`, `h_mmrm_fixed`,
-  `h_mmrm_cov`, `h_mmrm_diagnostic`, `tidy.mmrm`, `s_mmrm_lsmeans`, `s_mmrm_lsmeans_single`, `summarize_lsmeans`.
-* Renamed functions `arm` to `study_arm` and `extract` to `extract_by_name`.
-* Removed deprecated functions: `color_palette`, `h_set_nest_theme`, `s_cox_univariate`.
-* Added tests against SAS output for `prop_strat_wilson` and `prop_diff_strat_nc`.
+* Exported `draw_grob` function.
 
 # tern 0.7.8
 
