@@ -47,7 +47,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
   # Preprocessing steps
   adlb_f <- adlb_local %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
@@ -107,7 +107,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
   # Preprocessing steps
   adlb_f <- adlb_local %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
@@ -168,7 +168,7 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
   # Preprocessing steps
   adlb_f <- adlb_local %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
@@ -221,7 +221,7 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
   # Preprocessing steps
   adlb_f <- adlb_local %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
