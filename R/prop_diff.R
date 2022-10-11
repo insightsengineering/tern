@@ -109,7 +109,7 @@ prop_diff_wald <- function(rsp,
     rsp = rsp, grp = grp, conf_level = conf_level, correct = correct
   )
   diff_ci <- if (all(rsp == rsp[1])) {
-    c(NA, NA)
+    data.frame(est = NA, lwr.ci = NA, upr.ci = NA)
   } else {
     # check if binary response is coded as logical
     checkmate::assert_logical(rsp, any.missing = FALSE)
