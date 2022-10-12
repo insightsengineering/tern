@@ -105,6 +105,7 @@
   factor is not the control arm. 
 * Fixed bug in `s_abnormal_by_worst_grade` when there is one `PARAM` level.
 * Fixed bug in `prop_diff_wald` when selecting all responders, updated tests accordingly.
+* Fixed bug in `h_ancova` that caused an error when deselecting all covariates.
 
 ### Miscellaneous
 * Added deprecated badge to `g_mmrm`.
