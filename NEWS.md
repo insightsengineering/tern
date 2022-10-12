@@ -209,11 +209,11 @@
 * Added five statistics to `s_summary.numeric` to use in `s_summary_numeric_in_cols`.
 
 ### Enhancements
-* Enhanced functions `tabulate_survival_subgroups` and `tabulate_rsp_subgroups` (`Survival Duration` and `Best Overall Response` analyses) to calculate `N`-s based on the records considered to create the model.
+* Enhanced functions `tabulate_survival_subgroups` and `tabulate_rsp_subgroups` (Survival Duration and Best Response analyses) to calculate `N`-s based on the records considered to create the model.
 * Enhanced the function `estimate_proportion` and related functions to be able to apply a continuity correction in the Wilson method.
 * Refactored `count_abnormal_by_marked` and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show the desired levels in the table. This is a breaking change.
 * Refactored `count_abnormal_by_worst_grade` and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show the desired levels in the table. This is a breaking change.
-* Refactored `count_abnormal` function and related statistics and formatting functions to use a more efficient layout with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. Also updated `abnormal` argument to be able to consider more than one level for each direction. This is a breaking change.
+* Refactored `count_abnormal` function and related statistics and formatting functions to use a more efficient layout with `trim_levels_to_map` split function under `split_rows_by` to show the desired levels in the table. Also updated `abnormal` argument to be able to consider more than one level for each direction. This is a breaking change.
 * Enhanced the function `estimate_incidence_rate` and related functions to consider the week as time unit for data input.
 
 ### Bug fixes
@@ -225,14 +225,14 @@
 # tern 0.7.5
 
 ### New features
-* Added functions to estimate continuous biomarker effects across subgroups for survival and binary response endpoints, which is used to produce corresponding forest plots, see `survival_biomarkers_subgroups` and `response_biomarkers_subgroups`.
+* Added functions to estimate continuous biomarker effects across subgroups for survival and binary response endpoints, used to produce corresponding forest plots, see `survival_biomarkers_subgroups` and `response_biomarkers_subgroups`.
 * Added `g_lineplot` plot function, including new `h_format_row` helper function and `control_lineplot_vars` function. Removed `g_summary_by`.
 * Added new safety helper function `h_stack_by_baskets` to stack events in `SMQ` and/or `CQ` basket flag in `ADAE` data set.
 
 ### Enhancements
 * Added a couple of new statistics to `s_summary.numeric`. Added `names` attribute to each element of the final list returned by the `s_summary.numeric` function. Added `summary_formats` and `summary_labels` helper functions.
 * Added option to also convert logical variables to factor variables in `df_explicit_na`.
-* Refactored `h_append_grade_groups` to improve its flexibility, robustness and clearness, and to make sure the result is ordering according to the order of `grade_groups`. Also, added `remove_single` argument which controls whether the elements of one-element grade groups are kept in the output or removed.
+* Refactored `h_append_grade_groups` to improve its flexibility, robustness and clearness, and to make sure the result is ordering according to the order of `grade_groups`. Also, added `remove_single` argument which controls whether the elements of one-element grade groups are in the output or removed.
 * Added `var_labels` and `show_labels` arguments to `count_occurrences` and `count_patients_with_flags` to allow for creation of a title row.
 * Added `na_level` argument to `count_abnormal_by_baseline`.
 * Updated `h_append_grade_groups` to no longer fill-in empty grade groups with zeros.
@@ -287,7 +287,7 @@
   * `range_noinf` is a kind of a wrapper function of `base::range`. It returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data.
 
 ### Enhancements
-* Cox regression via `fit_coxreg_univar` and `fit_coxreg_multivar` is now also possible without treatment arm. In the univariate case this means that separate univariate models for the provided covariates are fitted and tabulation of corresponding effect estimates can later occur.
+* Cox regression via `fit_coxreg_univar` and `fit_coxreg_multivar` is now also possible without treatment arm. In the univariate case this means that separate univariate models for the provided covariates are fit and tabulation of corresponding effect estimates can later occur.
 * Added `fraction` in result returned by `s_count_occurrences`. It contains a list of numerators and denominators with one element per occurrence.
 * Updated `sum_num_patients` and `count_occurrences` for the result `unique` and `count_fraction` to return (0, 0) when input is empty.
 * Added a new argument `groups_lists` to `extract_survival_subgroups`, `extract_rsp_subgroups` and associated helper functions which allows to group factor levels of subgroup variables into manually defined groups, enhancing the flexibility of the resulting forest graphs.
@@ -299,7 +299,7 @@
   * Updated default position of hazard ratio table to stay on the left bottom corner but above x-axis.
   * Use arm value as strata name in when treatment arm variable has a single level.
 * Updated `s_surv_time` function to use a newly created function `range_noinf` instead of `base::range`.
-* New argument `no_fillin_visits` added to `h_adsl_adlb_merge_using_worst_flag` to specify excluded visits from the post-baseline worst toxicity grade output. Improved `h_adsl_adlb_merge_using_worst_flag` to include variables shared between `adsl` and `adlb`, along with `PARAM`, `PARAMCD`, `ATOXGR`, `BTOXGR` and optionally `AVISIT`, `AVISITN` when `by_visit = TRUE`. Output previously contained `USUBJID`, `ARMCD`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.
+* New argument `no_fillin_visits` added to `h_adsl_adlb_merge_using_worst_flag` to specify excluded visits from the post-baseline worst toxicity grade output. Improved `h_adsl_adlb_merge_using_worst_flag` to include variables shared between `adsl` and `adlb`, along with `PARAM`, `PARAMCD`, `ATOXGR`, `BTOXGR` and optionally `AVISIT`, `AVISITN` when `by_visit = TRUE`. Prior output contained `USUBJID`, `ARMCD`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.
 
 ### Bug Fixes
 * Fix bug in `s_surv_timepoint` for cases when there are zero patients at risk.
@@ -316,10 +316,10 @@
 
 # tern 0.7.1
 * New argument `position_surv_med` added to `g_km` to move position of the annotation table with median survival times.
-* Fixed bug in `g_km` related to the arguments `pch` and `size`. Previously, these arguments were ignored and not passed on to helper function `h_ggkm`.
+* Fixed bug in `g_km` related to the ignored arguments `pch` and `size` which were not passed on to helper function `h_ggkm`.
 * Updated `xticks` and `max_time` arguments in `g_km` for greater functionality. `max_time` added as an argument in `h_xticks` to allow this.
 * Fixed bug in `prop_diff_cmh` that led to `NaN` weighted proportion difference estimates and missing confidence intervals. Before this change, when including no patients from one treatment arm for at least one stratum the estimation did not lead to numeric results.
-* Fixed bug in `prop_cmh` which previously gave an error in case of at least one stratum containing less than two observations.
+* Fixed bug in `prop_cmh` giving an error in case of at least one stratum containing less than two observations.
 * New argument `n_events` added to `estimate_incidence_rate`.
 * New argument `denom` added to `count_occurrences`.
 * New arguments `yval` and `ci_ribbon` added to `g_km`.
@@ -383,7 +383,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Add compound table for binary endpoint: `t_binary_endpoint` and elementary functions: `t_el_proportion`, `t_el_proportion_diff` and `t_el_test_proportion_diff`. The supporting summary functions added are: `s_proportion`, `s_adj_proportion_diff`, `s_proportion_diff` and `s_test_proportion_diff`.
 * Added new tern function `t_events_patyear` to create event table adjusted person-years.
 * Added new tern function `t_abnormality` and the elementary table function `t_el_abnormality`.
-* Removed `grade_levels` argument from `t_events_term_grade_id` functions. If requiring a different ordering of the rows, this is done through post-processing by reordering the leaves of the table tree. Creating a helper function will occur at a later time.
+* Removed `grade_levels` argument from `t_events_term_grade_id` functions. Post-processing by reordering the leaves of the table tree creates a different ordering of rows if required. Creating a helper function will occur at a later time.
 * Added `prune_zero_rows` argument to `t_events_per_term_grade_id` and `t_max_grade_per_id` to not show rows of all zeros as they can clutter the visualization in the Shiny app and make it slower.
 * Fixed position of (N=xx) in `t_summary_by` output when summarizing numeric columns in parallel with `compare_in_header`.
 * Rename t_coxph to t_coxph_pairwise to reflect the model process, add details in documentation.
