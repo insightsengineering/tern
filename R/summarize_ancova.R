@@ -41,7 +41,7 @@ h_ancova <- function(.var,
 
   arm <- variables$arm
   covariates <- variables$covariates
-  if (!is.null(covariates) & length(covariates) > 0) {
+  if (!is.null(covariates) && length(covariates) > 0) {
     # Get all covariate variable names in the model.
     var_list <- get_covariates(covariates)
     assert_df_with_variables(.df_row, var_list)
