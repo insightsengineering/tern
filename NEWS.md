@@ -104,7 +104,7 @@
 * Fixed bug in `s_ancova` causing an error when the first level of the arm 
   factor is not the control arm. 
 * Fixed bug in `s_abnormal_by_worst_grade` when there is one `PARAM` level.
-* Fixed bug in `prop_diff_wald` when all responders are selected.
+* Fixed bug in `prop_diff_wald` when selecting all responders, updated tests accordingly.
 
 ### Miscellaneous
 * Added deprecated badge to `g_mmrm`.
