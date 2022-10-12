@@ -1,4 +1,4 @@
-# tern 0.7.9.9016
+# tern 0.7.9.9017
 
 ### New Features
 * Added stratified Newcombe and stratified Wilson statistics to `estimate_proportion` and
