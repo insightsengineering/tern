@@ -287,7 +287,7 @@
   * `range_noinf` is a kind of a wrapper function of `base::range`. It returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data.
 
 ### Enhancements
-* Cox regression via `fit_coxreg_univar` and `fit_coxreg_multivar` is now also possible without treatment arm. In the univariate case this means that separate univariate models for the provided covariates are fit and tabulation of corresponding effect estimates can later occur.
+* Cox regression via `fit_coxreg_univar` and `fit_coxreg_multivar` is now also possible without treatment arm. In the univariate case this means that it fits separate univariate models for the provided covariates and tabulation of corresponding effect estimates can later occur.
 * Added `fraction` in result returned by `s_count_occurrences`. It contains a list of numerators and denominators with one element per occurrence.
 * Updated `sum_num_patients` and `count_occurrences` for the result `unique` and `count_fraction` to return (0, 0) when input is empty.
 * Added a new argument `groups_lists` to `extract_survival_subgroups`, `extract_rsp_subgroups` and associated helper functions which allows to group factor levels of subgroup variables into manually defined groups, enhancing the flexibility of the resulting forest graphs.
