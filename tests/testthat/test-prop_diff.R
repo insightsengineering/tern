@@ -79,6 +79,19 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
     diff_ci = c(-0.9208, 0.9208)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
+
+  # Edge case: All respond in all groups.
+  rsp <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
+  grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+
+  result <- suppressWarnings(
+    prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = TRUE)
+  )
+  expected <- list(
+    diff = 0,
+    diff_ci = c(-0.375, 0.375)
+  )
+  testthat::expect_equal(result, expected, tol = 0.0001)
 })
 
 testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: without correction)", {
@@ -106,8 +119,20 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
     diff_ci = c(-0.4208, 0.4208)
   )
   testthat::expect_equal(result, expected, tol = 0.0001)
-})
 
+  # Edge case: All respond in all groups.
+  rsp <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
+  grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+
+  result <- suppressWarnings(
+    prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = FALSE)
+  )
+  expected <- list(
+    diff = 0,
+    diff_ci = c(0, 0)
+  )
+  testthat::expect_equal(result, expected, tol = 0.0001)
+})
 
 testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
   set.seed(2, kind = "Mersenne-Twister")
