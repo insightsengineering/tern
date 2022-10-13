@@ -25,18 +25,19 @@ NULL
 #' * `event_free_rate` : event free rate (%).
 #' * `rate_se` : standard error of event free rate.
 #' * `rate_ci` : confidence interval for event free rate.
+#'
 #' @examples
 #' library(scda)
 #' library(dplyr)
 #'
-#' ADTTE <- synthetic_cdisc_data("latest")$adtte
-#' ADTTE_f <- ADTTE %>%
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte_f <- adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(
 #'     AVAL = day2month(AVAL),
 #'     is_event = CNSR == 0
 #'   )
-#' df <- ADTTE_f %>%
+#' df <- adtte_f %>%
 #'   filter(ARMCD == "ARM A")
 #'
 #' # Internal function - s_surv_timepoint

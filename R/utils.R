@@ -291,7 +291,7 @@ extract_by_name <- function(x, names) {
 #'
 #' @examples
 #' library(scda)
-#' adae <- synthetic_cdisc_data("latest")$adae
+#' adae <- synthetic_cdisc_dataset("latest", "adae")
 #'
 #' # Standardized query label includes scope.
 #' aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)

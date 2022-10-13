@@ -19,12 +19,12 @@ NULL
 #' See [s_summary.numeric()] to be aware of all available statistics.
 #'
 #' @export
-#' @examples
 #'
+#' @examples
 #' library(scda)
 #' library(dplyr)
-#' ADPP <- scda::synthetic_cdisc_data("latest")$adpp %>% h_pkparam_sort()
-#' summary_in_cols(ADPP$AGE, custom_label = "stats")
+#' adpp <- synthetic_cdisc_dataset("latest", "adpp") %>% h_pkparam_sort()
+#' summary_in_cols(adpp$AGE, custom_label = "stats")
 summary_in_cols.numeric <- function(x,
                                     labelstr = "",
                                     custom_label = NULL,

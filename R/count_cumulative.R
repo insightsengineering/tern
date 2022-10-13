@@ -137,7 +137,8 @@ a_count_cumulative <- make_afun(
 #' @export
 #' @examples
 #' library(scda)
-#' ADSL <- synthetic_cdisc_data("latest")$adsl
+#' ADSL <- synthetic_cdisc_dataset("latest", "adsl")
+#'
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
@@ -146,6 +147,7 @@ a_count_cumulative <- make_afun(
 #'     thresholds = c(40, 60)
 #'   ) %>%
 #'   build_table(ADSL)
+#'
 count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,

@@ -18,15 +18,15 @@
 #'   so no test is performed.
 #' @name response_subgroups
 #' @order 1
-#' @examples
 #'
+#' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
 #' library(rtables)
 #'
-#' adrs <- synthetic_cdisc_data("latest")$adrs
+#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%

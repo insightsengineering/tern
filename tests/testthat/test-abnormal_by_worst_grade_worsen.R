@@ -329,7 +329,6 @@ testthat::test_that("h_adlb_worsen all high", {
 })
 
 testthat::test_that("h_adlb_worsen all low", {
-  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
   adlb_local <- adlb_raw %>%
     dplyr::mutate(
       GRADDR = dplyr::case_when(

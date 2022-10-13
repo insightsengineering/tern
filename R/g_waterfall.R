@@ -40,11 +40,11 @@
 #' library(scda)
 #' library(dplyr)
 #'
-#' ADSL <- synthetic_cdisc_data("latest")$adsl
+#' ADSL <- synthetic_cdisc_dataset("latest", "adsl")
 #' ADSL_f <- ADSL %>%
 #'   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 #'
-#' ADRS <- synthetic_cdisc_data("latest")$adrs
+#' ADRS <- synthetic_cdisc_dataset("latest", "adrs")
 #' ADRS_f <- ADRS %>%
 #'   filter(PARAMCD == "OVRINV") %>%
 #'   mutate(pchg = rnorm(n(), 10, 50))
