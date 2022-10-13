@@ -20,7 +20,7 @@ A \code{string} with the standard label for the AE basket.
 }
 \examples{
 library(scda)
-adae <- synthetic_cdisc_data("latest")$adae
+adae <- synthetic_cdisc_dataset("latest", "adae")
 
 # Standardized query label includes scope.
 aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)

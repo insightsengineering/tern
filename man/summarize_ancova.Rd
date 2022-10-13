@@ -143,8 +143,8 @@ h_ancova(
 library(scda)
 library(dplyr)
 
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
+adsl <- synthetic_cdisc_dataset("latest", "adsl")
+adqs <- synthetic_cdisc_dataset("latest", "adqs")
 
 adqs_single <- adqs \%>\%
   filter(
@@ -180,15 +180,12 @@ a_ancova(
 )
 }
 
-
 library(scda)
 library(rtables)
 library(dplyr)
 
-cached_data <- synthetic_cdisc_data("rcd_2022_02_28")
-
-adsl <- cached_data$adsl
-adqs <- cached_data$adqs
+adsl <- synthetic_cdisc_dataset("latest", "adsl")
+adqs <- synthetic_cdisc_dataset("latest", "adqs")
 adqs_single <- adqs \%>\%
   filter(
     AVISIT == "WEEK 1 DAY 8", # single time point

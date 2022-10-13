@@ -36,13 +36,12 @@ where \code{degree} is specified by \code{control_step()}.
 Note that for the default degree 0 the \code{biomarker} variable is not included in the model.
 }
 \examples{
-
 # Testing dataset with just two treatment arms.
 library(scda)
 library(dplyr)
 library(rtables)
 
-adtte <- synthetic_cdisc_data("latest")$adtte
+adtte <- synthetic_cdisc_dataset("latest", "adtte")
 
 adtte_f <- adtte \%>\%
   filter(

@@ -115,13 +115,13 @@ to the input layout. Note that additional formatting arguments can be used here.
 library(scda)
 library(dplyr)
 
-ADTTE <- synthetic_cdisc_data("latest")$adtte
-ADTTE_f <- ADTTE \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte")
+adtte_f <- adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
-df <- ADTTE_f \%>\%
+df <- adtte_f \%>\%
   filter(ARMCD == "ARM A")
-df_ref_group <- ADTTE_f \%>\%
+df_ref_group <- adtte_f \%>\%
   filter(ARMCD == "ARM B")
 
 # Internal function - s_coxph_pairwise

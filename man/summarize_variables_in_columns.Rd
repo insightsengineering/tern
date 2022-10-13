@@ -101,11 +101,10 @@ function which can be used for creating summary tables in columns, primarily use
 
 }}
 \examples{
-
 library(scda)
 library(dplyr)
-ADPP <- scda::synthetic_cdisc_data("latest")$adpp \%>\% h_pkparam_sort()
-summary_in_cols(ADPP$AGE, custom_label = "stats")
+adpp <- synthetic_cdisc_dataset("latest", "adpp") \%>\% h_pkparam_sort()
+summary_in_cols(adpp$AGE, custom_label = "stats")
 
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%

@@ -138,11 +138,10 @@ function arguments and additional format arguments (see below).
 
 }}
 \examples{
-
 library(scda)
 library(dplyr)
-adlb <- synthetic_cdisc_data("latest")$adlb
-adsl <- synthetic_cdisc_data("latest")$adsl
+adsl <- synthetic_cdisc_dataset("latest", "adsl")
+adlb <- synthetic_cdisc_dataset("latest", "adlb")
 
 # The direction variable, GRADDR, is based on metadata
 adlb <- adlb \%>\%

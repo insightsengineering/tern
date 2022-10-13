@@ -232,7 +232,7 @@ library(scda)
 library(dplyr)
 library(rtables)
 
-adrs <- synthetic_cdisc_data("latest")$adrs
+adrs <- synthetic_cdisc_dataset("latest", "adrs")
 adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) \%>\%

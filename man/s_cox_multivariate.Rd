@@ -47,7 +47,7 @@ but is out of scope as defined by the  Global Data Standards Repository
 library(scda)
 library(dplyr)
 
-ADTTE <- synthetic_cdisc_data("latest")$adtte
+ADTTE <- synthetic_cdisc_dataset("latest", "adtte")
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- filter(
   ADTTE_f,

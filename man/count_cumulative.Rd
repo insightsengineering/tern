@@ -145,7 +145,8 @@ afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 }
 
 library(scda)
-ADSL <- synthetic_cdisc_data("latest")$adsl
+ADSL <- synthetic_cdisc_dataset("latest", "adsl")
+
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
@@ -154,5 +155,6 @@ basic_table() \%>\%
     thresholds = c(40, 60)
   ) \%>\%
   build_table(ADSL)
+
 }
 \keyword{internal}

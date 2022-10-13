@@ -156,7 +156,7 @@ library(survival)
 library(grid)
 library(nestcolor)
 
-df <- synthetic_cdisc_data("latest")$adtte \%>\%
+df <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
