@@ -119,7 +119,7 @@ a_surv_timepoint <- make_afun(
 #' * `ztest_pval` : p-value to test the difference is 0.
 #'
 #' @examples
-#' df_ref_group <- ADTTE_f %>%
+#' df_ref_group <- adtte_f %>%
 #'   filter(ARMCD == "ARM B")
 #'
 #' # Internal function - s_surv_timepoint_diff
@@ -228,7 +228,7 @@ a_surv_timepoint_diff <- make_afun(
 #'     is_event = "is_event",
 #'     time_point = 7
 #'   ) %>%
-#'   build_table(df = ADTTE_f)
+#'   build_table(df = adtte_f)
 #'
 #' # Difference in survival at given time points.
 #' basic_table() %>%
@@ -242,7 +242,7 @@ a_surv_timepoint_diff <- make_afun(
 #'     method = "surv_diff",
 #'     .indent_mods = c("rate_diff" = 0L, "rate_diff_ci" = 2L, "ztest_pval" = 2L)
 #'   ) %>%
-#'   build_table(df = ADTTE_f)
+#'   build_table(df = adtte_f)
 #'
 #' # Survival and difference in survival at given time points.
 #' basic_table() %>%
@@ -255,7 +255,7 @@ a_surv_timepoint_diff <- make_afun(
 #'     time_point = 9,
 #'     method = "both"
 #'   ) %>%
-#'   build_table(df = ADTTE_f)
+#'   build_table(df = adtte_f)
 surv_timepoint <- function(lyt,
                            vars,
                            ...,

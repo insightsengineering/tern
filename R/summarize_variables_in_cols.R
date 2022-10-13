@@ -43,7 +43,6 @@ summary_in_cols.numeric <- function(x,
   lapply(results, formatters::with_label, row_label)
 }
 
-
 #' @describeIn summarize_variables_in_columns a wrapper of
 #' [s_summary.factor()] function that produces a named list of statistics to include as columns.
 #'
@@ -72,7 +71,6 @@ summary_in_cols.factor <- function(x,
 
   lapply(results, formatters::with_label, row_label)
 }
-
 
 #' @describeIn summarize_variables_in_columns a wrapper of [s_summary.character()]
 #'  function that produces a named list of statistics to include as columns.
@@ -145,7 +143,6 @@ summary_in_cols <- function(x,
   UseMethod("summary_in_cols", x)
 }
 
-
 #' @describeIn summarize_variables_in_columns Layout creating
 #' function which can be used for creating summary tables in columns, primarily used for PK data sets.
 #'
@@ -157,12 +154,11 @@ summary_in_cols <- function(x,
 #'
 #' @export
 #' @examples
-#'
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
 #'   summarize_vars_in_cols(var = "AGE", col_split = TRUE)
-#' result <- build_table(lyt = lyt, df = ADPP)
+#' result <- build_table(lyt = lyt, df = adpp)
 #' result
 #'
 #' # By selecting just some statistics and ad-hoc labels
@@ -183,7 +179,7 @@ summary_in_cols <- function(x,
 #'     ),
 #'     col_split = TRUE
 #'   )
-#' result <- build_table(lyt = lyt, df = ADPP)
+#' result <- build_table(lyt = lyt, df = adpp)
 #' result
 #'
 #' lyt <- basic_table() %>%
@@ -192,7 +188,7 @@ summary_in_cols <- function(x,
 #'     col_split = TRUE,
 #'     custom_label = "some custom label"
 #'   )
-#' result <- build_table(lyt, df = ADPP)
+#' result <- build_table(lyt, df = adpp)
 #' result
 #'
 #' # PKPT03
@@ -214,7 +210,7 @@ summary_in_cols <- function(x,
 #'       max = "Maximum"
 #'     )
 #'   )
-#' result <- build_table(lyt, df = ADPP)
+#' result <- build_table(lyt, df = adpp)
 #' result
 summarize_vars_in_cols <- function(lyt,
                                    var,

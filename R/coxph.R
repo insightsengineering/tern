@@ -95,14 +95,14 @@ rht <- function(x) {
 #' ADSL <- ADSL %>%
 #'   filter(SEX %in% c("F", "M"))
 #'
-#' ADTTE <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "PFS")
-#' ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
-#' ADTTE$SEX <- droplevels(ADTTE$SEX)
+#' adtte$ARMCD <- droplevels(adtte$ARMCD)
+#' adtte$SEX <- droplevels(adtte$SEX)
 #'
 #' mod <- coxph(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
-#'   data = ADTTE
+#'   data = adtte
 #' )
 #'
 #' mmat <- stats::model.matrix(mod)[1, ]
@@ -363,21 +363,21 @@ check_increments <- function(increments, covariates) {
 #' library(scda)
 #' library(dplyr)
 #'
-#' ADTTE <- synthetic_cdisc_dataset("latest", "adtte")
-#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
-#' ADTTE_f <- filter(
-#'   ADTTE_f,
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte_f <- subset(adtte, PARAMCD == "OS") # _f: filtered
+#' adtte_f <- filter(
+#'   adtte_f,
 #'   PARAMCD == "OS" &
 #'     SEX %in% c("F", "M") &
 #'     RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
 #' )
-#' ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
-#' ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)
+#' adtte_f$SEX <- droplevels(adtte_f$SEX)
+#' adtte_f$RACE <- droplevels(adtte_f$RACE)
 #'
 #' # Internal function - s_cox_multivariate
 #' \dontrun{
 #' s_cox_multivariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = adtte_f
 #' )
 #' }
 #'

@@ -120,6 +120,6 @@ basic_table() \%>\%
     is_event = "is_event",
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 }
 \keyword{internal}

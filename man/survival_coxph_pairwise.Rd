@@ -142,7 +142,7 @@ basic_table() \%>\%
     is_event = "is_event",
     var_labels = "Unstratified Analysis"
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 
 basic_table() \%>\%
   split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%
@@ -154,6 +154,6 @@ basic_table() \%>\%
     strat = "SEX",
     control = control_coxph(pval_method = "wald")
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 }
 \keyword{internal}

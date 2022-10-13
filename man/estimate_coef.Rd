@@ -67,14 +67,14 @@ ADSL <- synthetic_cdisc_dataset("latest", "adsl")
 ADSL <- ADSL \%>\%
   filter(SEX \%in\% c("F", "M"))
 
-ADTTE <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "PFS")
-ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
-ADTTE$SEX <- droplevels(ADTTE$SEX)
+adtte$ARMCD <- droplevels(adtte$ARMCD)
+adtte$SEX <- droplevels(adtte$SEX)
 
 mod <- coxph(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
-  data = ADTTE
+  data = adtte
 )
 
 mmat <- stats::model.matrix(mod)[1, ]
