@@ -15,7 +15,7 @@ l <- basic_table() %>%
   split_cols_by(
     var = "ARMCD",
     split_fun = trim_levels_in_group("ARMCD"),
-    # label_pos = "topleft",
+    # label_pos = "topleft", # nolint
     split_label = "Treatment Arm"
   ) %>%
   split_rows_by(
