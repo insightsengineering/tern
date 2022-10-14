@@ -46,13 +46,13 @@ h_count_cumulative <- function(x,
   checkmate::assert_flag(na.rm)
 
   is_keep <- if (na.rm) !is.na(x) else rep(TRUE, length(x))
-  count <- if (lower_tail & include_eq) {
+  count <- if (lower_tail && include_eq) {
     length(x[is_keep & x <= threshold])
-  } else if (lower_tail & !include_eq) {
+  } else if (lower_tail && !include_eq) {
     length(x[is_keep & x < threshold])
-  } else if (!lower_tail & include_eq) {
+  } else if (!lower_tail && include_eq) {
     length(x[is_keep & x >= threshold])
-  } else if (!lower_tail & !include_eq) {
+  } else if (!lower_tail && !include_eq) {
     length(x[is_keep & x > threshold])
   }
 

@@ -394,7 +394,7 @@ g_km <- function(df,
     )
   }
 
-  if (newpage & draw) grid::grid.newpage()
+  if (newpage && draw) grid::grid.newpage()
   if (draw) grid::grid.draw(result)
   invisible(result)
 }

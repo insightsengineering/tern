@@ -11,7 +11,8 @@
 #' @param control (`list`) \cr parameters for comparison details, specified by using \cr
 #'    the helper function [control_coxph()]. Some possible parameter options are: \cr
 #' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
-#'   Default method is "log-rank" which comes from [survival::survdiff()], can also be set to "wald" or "likelihood" that comes from [survival::coxph()].
+#'   Default method is "log-rank" which comes from [survival::survdiff()], can also be set to "wald" or "likelihood"
+#'   that comes from [survival::coxph()].
 #' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
 #'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.

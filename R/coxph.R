@@ -299,7 +299,7 @@ check_formula <- function(formula) {
 
 
 check_covariate_formulas <- function(covariates) {
-  if (!all(vapply(X = covariates, FUN = inherits, what = "formula", FUN.VALUE = TRUE)) | is.null(covariates)) {
+  if (!all(vapply(X = covariates, FUN = inherits, what = "formula", FUN.VALUE = TRUE)) || is.null(covariates)) {
     stop("Check `covariates`, it should be a list of right-hand-term formulas, e.g. list(Age = ~AGE).")
   }
 

@@ -306,12 +306,12 @@ aesi_label <- function(aesi, scope = NULL) {
   aesi <- sas_na(aesi)
   aesi <- unique(aesi)[!is.na(unique(aesi))]
 
-  lbl <- if (length(aesi) == 1 & !is.null(scope)) {
+  lbl <- if (length(aesi) == 1 && !is.null(scope)) {
     scope <- sas_na(scope)
     scope <- unique(scope)[!is.na(unique(scope))]
     checkmate::assert_string(scope)
     paste0(aesi, " (", scope, ")")
-  } else if (length(aesi) == 1 & is.null(scope)) {
+  } else if (length(aesi) == 1 && is.null(scope)) {
     aesi
   } else {
     aesi_label
