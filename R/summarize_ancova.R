@@ -92,13 +92,12 @@ h_ancova <- function(.var,
 #'   comparison to the reference group.
 #'   - `pval`: p-value (not adjusted for multiple comparisons).
 #'
-#'
 #' @examples
 #' library(scda)
 #' library(dplyr)
 #'
-#' adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-#' adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
+#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
+#' adqs <- synthetic_cdisc_dataset("latest", "adqs")
 #'
 #' adqs_single <- adqs %>%
 #'   filter(
@@ -242,16 +241,15 @@ a_ancova <- make_afun(
 #'   summary tables for analysis of covariance (ANCOVA).
 #' @inheritParams argument_convention
 #' @export
-#' @examples
 #'
+#' @examples
 #' library(scda)
 #' library(rtables)
 #' library(dplyr)
 #'
-#' cached_data <- synthetic_cdisc_data("rcd_2022_02_28")
+#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
+#' adqs <- synthetic_cdisc_dataset("latest", "adqs")
 #'
-#' adsl <- cached_data$adsl
-#' adqs <- cached_data$adqs
 #' adqs_single <- adqs %>%
 #'   filter(
 #'     AVISIT == "WEEK 1 DAY 8", # single time point
@@ -281,8 +279,6 @@ a_ancova <- make_afun(
 #'
 #' # Another example: count the interaction between rows and columns into consideration
 #'
-#' adsl <- cached_data$adsl
-#' adqs <- cached_data$adqs
 #' adqs_single <- adqs %>%
 #'   filter(AVISIT %in% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 5 DAY 36")) %>%
 #'   droplevels() %>%

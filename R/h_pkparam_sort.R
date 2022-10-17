@@ -11,7 +11,7 @@
 #' library(scda)
 #' library(dplyr)
 #'
-#' adpp <- synthetic_cdisc_data("latest")$adpp
+#' adpp <- synthetic_cdisc_dataset("latest", "adpp")
 #' adpp <- adpp %>% mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
 #'
 #' pk_ordered_data <- h_pkparam_sort(adpp)

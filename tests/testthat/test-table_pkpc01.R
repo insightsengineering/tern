@@ -15,16 +15,19 @@ testthat::test_that("PKCT01 is produced correctly", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "A: Drug X", "Plasma Drug X", "Plasma Drug Y", "C: Combination", "Plasma Drug X",
-      "Plasma Drug Y", "n", "", "1474", "0", "", "1452", "1452", "Mean", "", "6.5", "NA", "",
-      "6.5", "13.1", "SD", "", "6.7", "NA", "", "6.7", "13.5", "SE", "", "0.2", "NA", "",
-      "0.2", "0.4", "CV (%)", "", "102.4", "NA", "", "103.3", "103.3", "CV % Geometric Mean",
-      "", "NA", "NA", "", "NA", "NA"
+      "", "A: Drug X", "Plasma Drug X", "Plasma Drug Y", "Urine Drug X", "Urine Drug Y",
+      "C: Combination", "Plasma Drug X", "Plasma Drug Y", "Urine Drug X", "Urine Drug Y",
+      "n", "", "1474", "0", "804", "804", "", "1452", "1452", "792", "792",
+      "Mean", "", "6.5", "NA", "0.9", "0.9", "", "6.5", "13.1", "0.8", "0.8",
+      "SD", "", "6.7", "NA", "1.8", "1.8", "", "6.7", "13.5", "1.8", "1.8",
+      "SE", "", "0.2", "NA", "0.1", "0.1", "", "0.2", "0.4", "0.1", "0.1",
+      "CV (%)", "", "102.4", "NA", "210.7", "210.7", "", "103.3", "103.3", "212.4", "212.4",
+      "CV % Geometric Mean", "", "NA", "NA", "NA", "NA", "", "NA", "NA", "NA", "NA"
     ),
-    .Dim = c(7L, 7L)
+    .Dim = c(11L, 7L)
   )
-  testthat::expect_identical(result_matrix, expected_matrix)
 
+  testthat::expect_identical(result_matrix, expected_matrix)
 
   l2 <- basic_table() %>%
     split_rows_by(
@@ -43,11 +46,12 @@ testthat::test_that("PKCT01 is produced correctly", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "A: Drug X", "Plasma Drug X", "Plasma Drug Y",
-      "C: Combination", "Plasma Drug X", "Plasma Drug Y",
-      "n_blq", "", "402", "0", "", "396", "396"
+      "", "A: Drug X", "Plasma Drug X", "Plasma Drug Y", "Urine Drug X", "Urine Drug Y",
+      "C: Combination", "Plasma Drug X", "Plasma Drug Y", "Urine Drug X", "Urine Drug Y",
+      "n_blq", "", "402", "0", "402", "402", "", "396", "396", "396", "396"
     ),
-    .Dim = c(7L, 2L)
+    .Dim = c(11L, 2L)
   )
+
   testthat::expect_identical(result_matrix, expected_matrix)
 })

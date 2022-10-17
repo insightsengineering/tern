@@ -58,7 +58,8 @@ by a statistics function.}
 the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
 \itemize{
 \item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank" which comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood" that comes from \code{\link[survival:coxph]{survival::coxph()}}.
+Default method is "log-rank" which comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood"
+that comes from \code{\link[survival:coxph]{survival::coxph()}}.
 \item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
 can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
@@ -115,13 +116,13 @@ to the input layout. Note that additional formatting arguments can be used here.
 library(scda)
 library(dplyr)
 
-ADTTE <- synthetic_cdisc_data("latest")$adtte
-ADTTE_f <- ADTTE \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte")
+adtte_f <- adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
-df <- ADTTE_f \%>\%
+df <- adtte_f \%>\%
   filter(ARMCD == "ARM A")
-df_ref_group <- ADTTE_f \%>\%
+df_ref_group <- adtte_f \%>\%
   filter(ARMCD == "ARM B")
 
 # Internal function - s_coxph_pairwise
@@ -142,7 +143,7 @@ basic_table() \%>\%
     is_event = "is_event",
     var_labels = "Unstratified Analysis"
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 
 basic_table() \%>\%
   split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%
@@ -154,6 +155,6 @@ basic_table() \%>\%
     strat = "SEX",
     control = control_coxph(pval_method = "wald")
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 }
 \keyword{internal}

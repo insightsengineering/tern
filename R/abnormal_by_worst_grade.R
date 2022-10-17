@@ -36,8 +36,7 @@ NULL
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#'
-#' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adlb <- synthetic_cdisc_dataset("latest", "adlb")
 #'
 #' # Data is modified in order to have some parameters with grades only in one direction
 #' # and simulate the real data.

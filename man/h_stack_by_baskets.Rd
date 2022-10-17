@@ -43,7 +43,7 @@ belonging to any of the selected baskets.
 \examples{
 library(scda)
 
-adae <- synthetic_cdisc_data("latest")$adae[1:20, ] \%>\% df_explicit_na()
+adae <- synthetic_cdisc_dataset("latest", "adae")[1:20, ] \%>\% df_explicit_na()
 h_stack_by_baskets(df = adae)
 
 aag <- data.frame(

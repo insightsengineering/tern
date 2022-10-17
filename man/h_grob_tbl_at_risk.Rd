@@ -29,7 +29,7 @@ library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
+fit_km <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 

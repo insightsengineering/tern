@@ -53,11 +53,10 @@ specified columns. Note that this is extending \code{\link[rtables:score_funs]{r
 
 }}
 \examples{
-
 library(scda)
 library(rtables)
-adsl <- synthetic_cdisc_data("latest")$adsl
-adae <- synthetic_cdisc_data("latest")$adae
+adsl <- synthetic_cdisc_dataset("latest", "adsl")
+adae <- synthetic_cdisc_dataset("latest", "adae")
 
 lyt <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
