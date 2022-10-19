@@ -5,7 +5,7 @@
 * Updated all tests to use `rcd_2022_06_27` version of cached data.
 
 ### Bug Fixes
-* Fixed bug causing incorrect ordering of grade levels when missing grades are present in `s_count_occurrences_by_grade`.
+* Fixed bug causing incorrect ordering of numeric grade levels when missing grades are present in `s_count_occurrences_by_grade`.
 
 # tern 0.7.10
 
