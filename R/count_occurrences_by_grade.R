@@ -157,8 +157,12 @@ s_count_occurrences_by_grade <- function(df,
     if (!is.ordered(grade)) {
       grade_lbl <- obj_label(grade)
       lvls <- levels(grade)
-      lvls[!grepl("^\\d+$", lvls)] <- min(as.numeric(lvls[grepl("^\\d+$", lvls)])) - 1
-      lvl_ord <- levels(grade)[order(as.numeric(lvls))]
+      if (sum(grepl("^\\d+$", lvls)) %in% c(0, length(lvls))) {
+        lvl_ord <- lvls
+      } else {
+        lvls[!grepl("^\\d+$", lvls)] <- min(as.numeric(lvls[grepl("^\\d+$", lvls)])) - 1
+        lvl_ord <- levels(grade)[order(as.numeric(lvls))]
+      }
       grade <- formatters::with_label(factor(grade, levels = lvl_ord, ordered = TRUE), grade_lbl)
     }
 
