@@ -48,14 +48,14 @@ testthat::test_that("EGT04 default variant is produced correctly", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "A: Drug X (N=133)", "Normal", "Abnormal", "Missing",
-      "B: Placebo (N=134)", "Normal", "Abnormal", "Missing", "C: Combination (N=130)",
-      "Normal", "Abnormal", "Missing", "Normal", "", "24 (18%)", "6 (4.5%)",
-      "0", "", "14 (10.4%)", "4 (3%)", "1 (0.7%)", "", "23 (17.7%)",
-      "14 (10.8%)", "1 (0.8%)", "Abnormal", "", "76 (57.1%)", "24 (18%)",
-      "1 (0.8%)", "", "88 (65.7%)", "24 (17.9%)", "1 (0.7%)", "", "66 (50.8%)",
-      "25 (19.2%)", "0", "Missing", "", "1 (0.8%)", "0",
-      "1 (0.8%)", "", "2 (1.5%)", "0", "0", "", "1 (0.8%)",
+      "", "A: Drug X (N=134)", "Normal", "Abnormal", "Missing",
+      "B: Placebo (N=134)", "Normal", "Abnormal", "Missing", "C: Combination (N=132)",
+      "Normal", "Abnormal", "Missing", "Normal", "", "20 (14.9%)", "11 (8.2%)",
+      "0", "", "18 (13.4%)", "3 (2.2%)", "0", "", "26 (19.7%)",
+      "6 (4.5%)", "1 (0.8%)", "Abnormal", "", "81 (60.4%)", "19 (14.2%)",
+      "1 (0.7%)", "", "81 (60.4%)", "28 (20.9%)", "2 (1.5%)", "", "69 (52.3%)",
+      "29 (22%)", "0", "Missing", "", "1 (0.7%)", "0",
+      "1 (0.7%)", "", "2 (1.5%)", "0", "0", "", "1 (0.8%)",
       "0", "0"
     ),
     .Dim = c(13L, 4L)

@@ -92,14 +92,14 @@ to the input layout. Note that additional formatting arguments can be used here.
 library(scda)
 library(dplyr)
 
-ADTTE <- synthetic_cdisc_data("latest")$adtte
-ADTTE_f <- ADTTE \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte")
+adtte_f <- adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
-df <- ADTTE_f \%>\% filter(ARMCD == "ARM A")
+df <- adtte_f \%>\% filter(ARMCD == "ARM A")
 
 # Internal function - s_surv_time
 \dontrun{
@@ -120,6 +120,6 @@ basic_table() \%>\%
     is_event = "is_event",
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 }
 \keyword{internal}

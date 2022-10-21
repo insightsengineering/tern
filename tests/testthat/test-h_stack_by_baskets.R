@@ -26,7 +26,7 @@ testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
           label = c(USUBJID = "Unique Subject Identifier")
         ),
         ASTDTM = structure(
-          c(1621814400, 1638230400, 1650499200, 1605312000),
+          c(1634947200, 1659484800, 1677888000, 1631404800),
           tzone = "",
           label = c(ASTDTM = "Analysis Start Datetime"),
           class = c("POSIXct", "POSIXt")

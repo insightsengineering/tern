@@ -107,17 +107,12 @@ testthat::test_that("MHT01 variant 2 is produced accurately", {
 
   expected_matrix <- structure(c(
     "", "", "Total number of patients with at least one event",
-    "Total number of events", "cl B", "Total number of patients with at least one event",
-    "Total number of events", "trm B_1/3", "trm B_3/3", "cl D", "Total number of patients with at least one event",
-    "Total number of events", "trm D_1/3", "trm D_2/3", "A: Drug X",
-    "(N=134)", "2 (1.5%)", "3", "", "2 (1.5%)", "2", "1 (0.7%)",
-    "1 (0.7%)", "", "1 (0.7%)", "1", "0", "1 (0.7%)", "B: Placebo",
-    "(N=134)", "0", "0", "", "0", "0", "0", "0",
-    "", "0", "0", "0", "0", "C: Combination", "(N=132)",
-    "2 (1.5%)", "2", "", "0", "0", "0", "0", "", "2 (1.5%)",
-    "2", "1 (0.8%)", "1 (0.8%)"
+    "Total number of events", "cl D", "Total number of patients with at least one event",
+    "Total number of events", "trm D_2/3", "A: Drug X", "(N=134)", "0", "0", "", "0", "0", "0",
+    "B: Placebo", "(N=134)", "0", "0", "", "0", "0", "0",
+    "C: Combination", "(N=132)", "1 (0.8%)", "1", "", "1 (0.8%)", "1", "1 (0.8%)"
   ),
-  .Dim = c(14L, 4L)
+  .Dim = c(8L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)

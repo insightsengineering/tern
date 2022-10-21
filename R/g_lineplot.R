@@ -79,11 +79,11 @@
 #' @export
 #'
 #' @examples
+#' library(scda)
 #' library(nestcolor)
 #'
-#' cached_data <- scda::synthetic_cdisc_data("latest")
-#' adsl <- cached_data$adsl
-#' adlb <- cached_data$adlb
+#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
+#' adlb <- synthetic_cdisc_dataset("latest", "adlb")
 #' adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 #' adlb$AVISIT <- droplevels(adlb$AVISIT)
 #' adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))

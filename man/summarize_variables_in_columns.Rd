@@ -101,17 +101,15 @@ function which can be used for creating summary tables in columns, primarily use
 
 }}
 \examples{
-
 library(scda)
 library(dplyr)
-ADPP <- scda::synthetic_cdisc_data("latest")$adpp \%>\% h_pkparam_sort()
-summary_in_cols(ADPP$AGE, custom_label = "stats")
-
+adpp <- synthetic_cdisc_dataset("latest", "adpp") \%>\% h_pkparam_sort()
+summary_in_cols(adpp$AGE, custom_label = "stats")
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
   split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
   summarize_vars_in_cols(var = "AGE", col_split = TRUE)
-result <- build_table(lyt = lyt, df = ADPP)
+result <- build_table(lyt = lyt, df = adpp)
 result
 
 # By selecting just some statistics and ad-hoc labels
@@ -132,7 +130,7 @@ lyt <- basic_table() \%>\%
     ),
     col_split = TRUE
   )
-result <- build_table(lyt = lyt, df = ADPP)
+result <- build_table(lyt = lyt, df = adpp)
 result
 
 lyt <- basic_table() \%>\%
@@ -141,7 +139,7 @@ lyt <- basic_table() \%>\%
     col_split = TRUE,
     custom_label = "some custom label"
   )
-result <- build_table(lyt, df = ADPP)
+result <- build_table(lyt, df = adpp)
 result
 
 # PKPT03
@@ -163,7 +161,7 @@ lyt <- basic_table() \%>\%
       max = "Maximum"
     )
   )
-result <- build_table(lyt, df = ADPP)
+result <- build_table(lyt, df = adpp)
 result
 }
 \seealso{

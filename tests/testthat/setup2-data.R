@@ -1,24 +1,19 @@
 # Data loading for tests
-test_data_2022_02 <- scda::synthetic_cdisc_data("rcd_2022_02_28")
-test_data_2022_06 <- scda::synthetic_cdisc_data("rcd_2022_06_27")
-
-adlb_raw <- test_data_2022_02$adlb
-adsl_raw <- test_data_2022_02$adsl
-adae_raw <- test_data_2022_02$adae
-adaette_raw <- test_data_2022_02$adaette
-adpp_raw <- test_data_2022_02$adpp
-adpc_raw <- test_data_2022_02$adpc
-adsub_raw <- test_data_2022_02$adsub
-adqs_raw <- test_data_2022_02$adqs
-adcm_raw <- test_data_2022_02$adcm
-advs_raw <- test_data_2022_02$advs
-adeg_raw <- test_data_2022_02$adeg
-adex_raw <- test_data_2022_02$adex
-adlb_raw <- test_data_2022_02$adlb
-admh_raw <- test_data_2022_02$admh
-
-adrs_raw <- test_data_2022_06$adrs
-adtte_raw <- test_data_2022_06$adtte
+adsl_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adsl")
+adae_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adae")
+adaette_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adaette")
+adpp_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adpp")
+adpc_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adpc")
+adsub_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adsub")
+adqs_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adqs")
+adcm_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adcm")
+advs_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "advs")
+adeg_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adeg")
+adex_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adex")
+adlb_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adlb")
+admh_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "admh")
+adrs_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adrs")
+adtte_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adtte")
 
 # Data as DM from `formatters`
 adsl_dm <- adsl_raw %>%

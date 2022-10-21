@@ -26,13 +26,12 @@
 #'   customization options.
 #' @export
 #' @examples
-#'
 #' # Testing dataset with just two treatment arms.
 #' library(survival)
 #' library(dplyr)
 #' library(scda)
 #'
-#' adrs <- synthetic_cdisc_data("latest")$adrs
+#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
 #' adrs_f <- adrs %>%
 #'   filter(
 #'     PARAMCD == "BESRSPI",

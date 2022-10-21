@@ -38,7 +38,7 @@ Create an \code{rtable} of pairwise stratified or unstratified CoxPH analysis re
 library(scda)
 library(dplyr)
 
-adtte <- synthetic_cdisc_data("latest")$adtte \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 

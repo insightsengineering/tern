@@ -54,7 +54,7 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
 
   # Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   # just the `Any Abnormality` row is shown when there is no marked abonormality.
@@ -151,7 +151,7 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
 
   # Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   # just the `Any Abnormality` row is shown when there is no marked abonormality.
@@ -239,7 +239,7 @@ testthat::test_that("LBT05 variant 4 is produced correctly", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
 
   # Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   # ALT rows are removed

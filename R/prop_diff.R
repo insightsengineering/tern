@@ -108,22 +108,20 @@ prop_diff_wald <- function(rsp,
   check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = conf_level, correct = correct
   )
-  diff_ci <- if (all(rsp == rsp[1])) {
-    c(NA, NA)
-  } else {
-    # check if binary response is coded as logical
-    checkmate::assert_logical(rsp, any.missing = FALSE)
-    checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
 
-    tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-    # x1 and n1 are non-reference groups.
-    desctools_binom(
-      x1 = tbl[2], n1 = sum(tbl[2], tbl[4]),
-      x2 = tbl[1], n2 = sum(tbl[1], tbl[3]),
-      conf.level = conf_level,
-      method = mthd
-    )
-  }
+  # check if binary response is coded as logical
+  checkmate::assert_logical(rsp, any.missing = FALSE)
+  checkmate::assert_factor(grp, len = length(rsp), any.missing = FALSE, n.levels = 2)
+
+  tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
+  # x1 and n1 are non-reference groups.
+  diff_ci <- desctools_binom(
+    x1 = tbl[2], n1 = sum(tbl[2], tbl[4]),
+    x2 = tbl[1], n2 = sum(tbl[1], tbl[3]),
+    conf.level = conf_level,
+    method = mthd
+  )
+
   list(
     "diff" = unname(diff_ci[, "est"]),
     "diff_ci" = unname(diff_ci[, c("lwr.ci", "upr.ci")])

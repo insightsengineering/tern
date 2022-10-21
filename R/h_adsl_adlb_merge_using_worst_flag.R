@@ -28,8 +28,8 @@
 #'
 #' @examples
 #' library(scda)
-#' adlb <- synthetic_cdisc_data("latest")$adlb
-#' adsl <- synthetic_cdisc_data("latest")$adsl
+#' adlb <- synthetic_cdisc_dataset("latest", "adlb")
+#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
 #'
 #' # `h_adsl_adlb_merge_using_worst_flag`
 #' adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl, adlb, worst_flag = c("WGRHIFL" = "Y"))
@@ -100,7 +100,7 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, # nolint
     adlb_out <- adlb_out %>%
       dplyr::left_join(adlb_btoxgr, by = c("USUBJID", "PARAMCD")) %>%
       dplyr::mutate(BTOXGR = .data$BTOXGR_MAP) %>%
-      dplyr::select(-.data$BTOXGR_MAP)
+      dplyr::select(-"BTOXGR_MAP")
 
     adlb_var_labels <- c(
       formatters::var_labels(adlb[by_variables_from_adlb]),
