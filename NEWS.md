@@ -1,6 +1,7 @@
 # tern 0.7.10.9002
 
 ### Enhancements
+* Added `summarize_glm_count` function to tern.
 * Replaced `synthetic_cdisc_data` with refactored `synthetic_cdisc_dataset` function to speed up dataset loading in tests/examples.
 * Updated all tests to use `rcd_2022_06_27` version of cached data.
 
