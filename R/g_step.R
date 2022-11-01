@@ -108,12 +108,11 @@ g_step <- function(df,
     )
   }
   p <- p + ggplot2::geom_line(
-    ggplot2::aes_string(y = "y"),
-    color = est$col,
+    ggplot2::aes_string(y = "y", color = "est$col"),
     linetype = est$lty
   )
 
-  p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate)
+  p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate, color = "Legend")
   if (use_percentile) {
     p <- p + ggplot2::scale_x_continuous(labels = scales::percent)
   }
