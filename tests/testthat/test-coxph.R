@@ -31,7 +31,7 @@ testthat::test_that("estimate_coef works correctly", {
 testthat::test_that("try_car_anova works correctly", {
   mod <- coxph(
     formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
-    data = ovarian
+    data = survival::ovarian
   )
   result <- try_car_anova(mod = mod, test.statistic = "Wald")
   result_aov <- c(result$aov$Df, result$aov$Chisq, result$aov$`Pr(>Chisq)`)

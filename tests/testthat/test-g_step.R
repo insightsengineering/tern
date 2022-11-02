@@ -11,9 +11,9 @@ step_matrix <- fit_survival_step(
   data = dat,
   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
 )
+step_data <- broom::tidy(step_matrix)
 
 testthat::test_that("g_step works with default settings", {
-  step_data <- broom::tidy(step_matrix)
   testthat::expect_silent(g_step(step_data))
 })
 

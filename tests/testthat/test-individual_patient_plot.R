@@ -1,8 +1,8 @@
-testthat::test_that("h_g_ipp works correctly", {
-  adlb <- adlb_raw %>%
-    filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
-    slice(1:36)
+adlb <- adlb_raw %>%
+  filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
+  slice(1:36)
 
+testthat::test_that("h_g_ipp works correctly", {
   testthat::expect_silent(h_g_ipp(
     df = adlb,
     xvar = "AVISIT",
@@ -15,11 +15,7 @@ testthat::test_that("h_g_ipp works correctly", {
   ))
 })
 
-testthat::test_that("h_g_ipp works with", {
-  adlb <- adlb_raw %>%
-    filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
-    slice(1:36)
-
+testthat::test_that("h_g_ipp works with default color palette", {
   testthat::expect_silent(h_g_ipp(
     df = adlb,
     xvar = "AVISIT",
@@ -55,7 +51,6 @@ testthat::test_that("g_ipp default plot works with plotting_choices = split_by_m
     plotting_choices = "split_by_max_obs",
     max_obs_per_plot = 5
   ))
-
   testthat::expect_equal(length(result), 2)
 })
 
@@ -71,6 +66,5 @@ testthat::test_that("g_ipp default plot works with plotting_choices = separate_b
     plotting_choices = "separate_by_obs",
     max_obs_per_plot = 5
   ))
-
   testthat::expect_equal(length(result), 8)
 })
