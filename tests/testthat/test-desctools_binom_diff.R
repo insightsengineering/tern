@@ -17,7 +17,7 @@ testthat::test_that("desctools_binomci produces correct output with default sett
   rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 
   result <- desctools_binomci(x = sum(rsp), n = 20)
-  expected <- c(est = 0.5, lwr.ci = 0.3274038, upr.ci = 0.6725962)
+  expected <- c(est = 0.5, lwr.ci = 0.299298, upr.ci = 0.700702)
   testthat::expect_equal(result[1, ], expected, tolerance = 1e-4)
 })
 
