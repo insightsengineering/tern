@@ -1,5 +1,4 @@
 testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", {
-
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
@@ -27,7 +26,6 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
 
 
 testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
-
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
@@ -56,7 +54,6 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
 })
 
 testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: with correction)", {
-
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
@@ -95,7 +92,6 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
 })
 
 testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: without correction)", {
-
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
@@ -381,4 +377,55 @@ testthat::test_that("`estimate_proportion_diff` and strat_newcombe is compatible
 
   # Values externally validated
   testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("s_proportion_diff works with no strata", {
+  nex <- 100
+  set.seed(2)
+  dta <- data.frame(
+    "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+    "grp" = sample(c("A", "B"), nex, TRUE),
+    "f1" = sample(c("a1", "a2"), nex, TRUE),
+    "f2" = sample(c("x", "y", "z"), nex, TRUE),
+    stringsAsFactors = TRUE
+  )
+  result <- s_proportion_diff(
+    df = subset(dta, grp == "A"),
+    .var = "rsp",
+    .ref_group = subset(dta, grp == "B"),
+    .in_ref_col = FALSE,
+    conf_level = 0.90,
+    method = "ha"
+  )
+  expected <- list(
+    diff = formatters::with_label(14.69622, "Difference in Response rate (%)"),
+    diff_ci = formatters::with_label(c(-3.118966, 32.511412), "90% CI (Anderson-Hauck)")
+  )
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
+})
+
+testthat::test_that("s_proportion_diff works with strata", {
+  nex <- 100
+  set.seed(2)
+  dta <- data.frame(
+    "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+    "grp" = sample(c("A", "B"), nex, TRUE),
+    "f1" = sample(c("a1", "a2"), nex, TRUE),
+    "f2" = sample(c("x", "y", "z"), nex, TRUE),
+    stringsAsFactors = TRUE
+  )
+  result <- s_proportion_diff(
+    df = subset(dta, grp == "A"),
+    .var = "rsp",
+    .ref_group = subset(dta, grp == "B"),
+    .in_ref_col = FALSE,
+    variables = list(strata = c("f1", "f2")),
+    conf_level = 0.90,
+    method = "cmh"
+  )
+  expected <- list(
+    diff = formatters::with_label(13.76866, "Difference in Response rate (%)"),
+    diff_ci = formatters::with_label(c(-0.9989872, 28.5363076), "90% CI (CMH, without correction)")
+  )
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })

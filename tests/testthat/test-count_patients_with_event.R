@@ -124,6 +124,42 @@ testthat::test_that("count_patients_with_event works as expected for different c
   testthat::expect_identical(result, expected)
 })
 
+testthat::test_that("s_count_patients_with_flags handles NA", {
+  test_data <- data.frame(
+    SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002"),
+    TRTEMFL = c(TRUE, FALSE, FALSE, NA, FALSE, TRUE),
+    stringsAsFactors = FALSE
+  )
+  result <- s_count_patients_with_flags(
+    test_data,
+    .var = "SUBJID",
+    flag_variables = "TRTEMFL"
+  )
+  expected <- list(
+    n = list(TRTEMFL = 2L), count = list(TRTEMFL = 2L), count_fraction = list(TRTEMFL = c(2.0, 1.0)), n_blq = list(0L)
+  )
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("s_count_patients_with_flags handles multiple columns", {
+  test_data <- data.frame(
+    SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
+    TRTEMFL = c(TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE),
+    AEOUTFL = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE),
+    stringsAsFactors = FALSE
+  )
+  result <- s_count_patients_with_flags(
+    test_data,
+    .var = "SUBJID",
+    flag_variables = c("TRTEMFL", "AEOUTFL")
+  )
+  expected <- list(
+    n = list(TRTEMFL = 3L, AEOUTFL = 3L), count = list(TRTEMFL = 3L, AEOUTFL = 1L),
+    count_fraction = list(TRTEMFL = c(3.0, 1.0), AEOUTFL = c(1.0, 0.33333)), n_blq = list(TRTEMFL = 0L, AEOUTFL = 0L)
+  )
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
+})
+
 testthat::test_that("count_patients_with_flags works as expected", {
   test_data <- tibble::tibble(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
@@ -235,7 +271,6 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
 })
 
 testthat::test_that("count_patients_with_flags works with label row specified", {
-
   # Create custom flags:
   adae_local <- adae_raw %>%
     dplyr::mutate(

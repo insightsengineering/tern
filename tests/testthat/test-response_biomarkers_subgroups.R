@@ -1,6 +1,5 @@
 # Local data pre-processing
 preprocess_adrs <- function(adrs) {
-
   # Save variable labels before data processing steps.
   adrs_labels <- formatters::var_labels(adrs)
 

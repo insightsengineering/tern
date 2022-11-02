@@ -57,7 +57,6 @@ l <- basic_table() %>%
 
 # PKPT03
 testthat::test_that("PKPT03 Drug X is produced correctly", {
-
   # Plasma Drug x
   adpp0 <- adpp_plasma %>%
     dplyr::filter(PPCAT == "Plasma Drug X") %>%
