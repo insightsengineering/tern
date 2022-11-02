@@ -1,3 +1,9 @@
+testthat::test_that("pairwise works correctly", {
+  result <- testthat::expect_warning(lm(SEX ~ pairwise(ARM), data = adsl_raw))
+  expected <- c("(Intercept)" = 1.41045, "pairwise(ARM)B: Placebo" = -0.02239, "pairwise(ARM)C: Combination" = 0.05925)
+  testthat::expect_equal(result$coefficients, expected, tolerance = 1e-4)
+})
+
 testthat::test_that("estimate_coef works correctly", {
   adtte <- adtte_raw %>%
     filter(PARAMCD == "PFS") %>%
@@ -40,7 +46,7 @@ testthat::test_that("try_car_anova works correctly", {
   testthat::expect_identical(result$warn_text, NULL)
 })
 
-testthat::test_that("s_cox_multivariate works correctly", {
+testthat::test_that("s_cox_multivariate works correctly with character input", {
   adtte_f <- adtte_raw %>%
     subset(PARAMCD == "OS") %>%
     filter(
@@ -50,7 +56,8 @@ testthat::test_that("s_cox_multivariate works correctly", {
     ) %>%
     mutate(
       SEX = droplevels(SEX),
-      RACE = droplevels(RACE)
+      RACE = droplevels(RACE),
+      ARMCD = as.character(ARMCD)
     )
 
   result <- s_cox_multivariate(
