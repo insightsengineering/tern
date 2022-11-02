@@ -1,5 +1,4 @@
 testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", {
-
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
@@ -27,7 +26,6 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
 
 
 testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
-
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
@@ -56,7 +54,6 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
 })
 
 testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: with correction)", {
-
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
@@ -95,7 +92,6 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
 })
 
 testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: without correction)", {
-
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))

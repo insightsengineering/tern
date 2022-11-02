@@ -3,7 +3,6 @@ adsl <- adsl_raw
 adeg <- adeg_raw
 
 testthat::test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
-
   # Note: We exclude "SCREENING" and "BASELINE" visits here
   # so to keep only post-baseline for analysis.
   adeg <- adeg %>%

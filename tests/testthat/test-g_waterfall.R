@@ -9,16 +9,16 @@ testthat::test_that("g_waterfall default plot works", {
 })
 
 testthat::test_that("g_waterfall plot with labels and colors works", {
-  ADRS <- adrs_raw
-  ADRS_f <- head(dplyr::filter(ADRS, PARAMCD == "OVRINV"), 30)
-  ADRS_f$pchg <- rnorm(30, 10, 50)
-  ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID), ]
+  adrs <- adrs_raw
+  adrs_f <- head(dplyr::filter(adrs, PARAMCD == "OVRINV"), 30)
+  adrs_f$pchg <- rnorm(30, 10, 50)
+  adrs_f <- adrs_f[!duplicated(adrs_f$USUBJID), ]
 
   result <- testthat::expect_silent(
     g_waterfall(
-      height = ADRS_f$pchg,
-      id = paste("asdfdsfdsfsd", ADRS_f$USUBJID),
-      col_var = ADRS_f$SEX,
+      height = adrs_f$pchg,
+      id = paste("asdfdsfdsfsd", adrs_f$USUBJID),
+      col_var = adrs_f$SEX,
       xlab = "ID",
       ylab = "Percentage Change",
       title = "Waterfall plot"

@@ -18,7 +18,8 @@ testthat::test_that("estimate_coef works correctly", {
     coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
   )
   expected_armcd <- matrix(
-    c(0, 0, 1, 1, 1), nrow = 1,
+    c(0, 0, 1, 1, 1),
+    nrow = 1,
     dimnames = list("ARMCD/SEXM", c("coef", "se(coef)", "hr", "lcl", "ucl"))
   )
   expected_details <- "Estimations of ARMCD hazard ratio given the level of SEX compared to ARMCD level ARM A."
@@ -40,7 +41,8 @@ testthat::test_that("try_car_anova works correctly", {
 })
 
 testthat::test_that("s_cox_multivariate works correctly", {
-  adtte_f <- adtte_raw %>% subset(PARAMCD == "OS") %>%
+  adtte_f <- adtte_raw %>%
+    subset(PARAMCD == "OS") %>%
     filter(
       PARAMCD == "OS" &
         SEX %in% c("F", "M") &
@@ -56,8 +58,10 @@ testthat::test_that("s_cox_multivariate works correctly", {
   )
   expected_aov <- matrix(
     c(2, 2, 1, 4, 2, 2, 1.5484, 0.4485, 0.0668, 3.3770, 0.2824, 0.6636, 0.4611, 0.7991, 0.7961, 0.4968, 0.8683, 0.7176),
-    dimnames = list(c("ARMCD", "RACE", "AGE", "ARMCD:RACE", "ARMCD:AGE", "RACE:AGE"),
-                    c("Df", "Chisq", "Pr(>Chisq)")),
+    dimnames = list(
+      c("ARMCD", "RACE", "AGE", "ARMCD:RACE", "ARMCD:AGE", "RACE:AGE"),
+      c("Df", "Chisq", "Pr(>Chisq)")
+    ),
     ncol = 3
   )
   testthat::expect_equal(as.matrix(result$aov), expected_aov, tolerance = 1e-3)

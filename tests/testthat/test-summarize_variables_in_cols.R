@@ -37,11 +37,13 @@ testthat::test_that("summarize_vars_in_cols works correctly", {
 
   result <- build_table(lyt = lyt, df = adpp)
   result_matrix <- matrix_form(result)
-  expected <- matrix(c(
-    "ARM", "  SEX", "A: Drug X", "F", "M", "B: Placebo", "F", "M", "C: Combination", "F", "M", "", "n", "", "5214",
-    "3630", "", "0", "0", "", "9240", "8184", "", "Mean", "", "32.8", "35.2", "", "NA", "NA", "", "35.2", "35.7",
-    "", "SE", "", "0.1", "0.1", "", "NA", "NA", "", "0.1", "0.1"
-  ),
-  ncol = 4)
+  expected <- matrix(
+    c(
+      "ARM", "  SEX", "A: Drug X", "F", "M", "B: Placebo", "F", "M", "C: Combination", "F", "M", "", "n", "", "5214",
+      "3630", "", "0", "0", "", "9240", "8184", "", "Mean", "", "32.8", "35.2", "", "NA", "NA", "", "35.2", "35.7",
+      "", "SE", "", "0.1", "0.1", "", "NA", "NA", "", "0.1", "0.1"
+    ),
+    ncol = 4
+  )
   testthat::expect_identical(result_matrix$strings, expected)
 })

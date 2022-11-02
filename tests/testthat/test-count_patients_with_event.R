@@ -271,7 +271,6 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
 })
 
 testthat::test_that("count_patients_with_flags works with label row specified", {
-
   # Create custom flags:
   adae_local <- adae_raw %>%
     dplyr::mutate(
