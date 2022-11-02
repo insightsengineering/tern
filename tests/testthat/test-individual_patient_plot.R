@@ -1,5 +1,3 @@
-library(dplyr)
-
 testthat::test_that("h_g_ipp works correctly", {
   adlb <- adlb_raw %>%
     filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%

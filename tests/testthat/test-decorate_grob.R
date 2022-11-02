@@ -1,5 +1,3 @@
-library(grid)
-
 testthat::test_that("decorate_grob returns no warnings when creating an empty plot", {
   titles <- "Edgar Anderson's Iris Data"
   footnotes <- "The species are Iris setosa, versicolor, and virginica."
