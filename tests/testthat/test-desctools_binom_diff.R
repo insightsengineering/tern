@@ -3,8 +3,8 @@ rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 grp <- factor(c(rep("A", 10), rep("B", 10)))
 tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
 
-methods = c("ac", "wald", "waldcc", "score", "scorecc", "mn", "mee", "blj", "ha", "hal", "jp")
-methodsci = c(
+methods <- c("ac", "wald", "waldcc", "score", "scorecc", "mn", "mee", "blj", "ha", "hal", "jp")
+methodsci <- c(
   "wilson", "wald", "waldcc", "agresti-coull", "jeffreys", "modified wilson", "wilsoncc", "modified jeffreys",
   "clopper-pearson", "arcsine", "logit", "witting", "pratt", "midp", "lik", "blaker"
 )
@@ -62,7 +62,9 @@ testthat::test_that("desctools_binomci produces correct output with custom setti
 testthat::test_that("desctools_binomci produces correct output for all methods", {
   result <- sapply(
     methodsci,
-    function(x) {desctools_binomci(x = sum(rsp), n = 20, conf.level = 0.90, method = x)}
+    function(x) {
+      desctools_binomci(x = sum(rsp), n = 20, conf.level = 0.90, method = x)
+    }
   )
   expected <- matrix(c(
     c(0.5, 0.3274038, 0.6725962), c(0.5, 0.3160998, 0.6839002),
