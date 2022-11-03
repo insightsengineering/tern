@@ -63,6 +63,12 @@ testthat::test_that("h_xticks works with xticks numeric", {
   testthat::expect_identical(result, expected)
 })
 
+testthat::test_that("h_xticks returns error when xticks non-numeric", {
+  testthat::expect_error(
+    h_data_plot(test_fit) %>% h_xticks(xticks = TRUE)
+  )
+})
+
 testthat::test_that("h_xticks works with max_time only", {
   expected <- c(0, 1000, 2000, 3000)
   result <- h_data_plot(test_fit, max_time = 3000) %>%
@@ -136,4 +142,63 @@ testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
     class = "data.frame"
   )
   testthat::expect_identical(result2, expected2)
+})
+
+testthat::test_that("h_grob_coxph returns error when only one arm", {
+  df <- adtte_raw %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  testthat::expect_silent(
+    h_grob_coxph(df = df, variables = variables)
+  )
+})
+
+testthat::test_that("g_km works with default settings", {
+  df <- adtte_raw %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  testthat::expect_silent(
+    g_km(df = df, variables = variables)
+  )
+})
+
+testthat::test_that("g_km works with title/footnotes and annotation", {
+  df <- adtte_raw %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  testthat::expect_silent(
+    g_km(
+      df = df,
+      variables = variables,
+      title = "KM Plot",
+      footnotes = "footnotes",
+      annot_coxph = TRUE
+    )
+  )
+})
+
+testthat::test_that("g_km works with custom settings", {
+  df <- adtte_raw %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  testthat::expect_silent(
+    g_km(
+      df = df,
+      variables = variables,
+      yval = "Failure",
+      annot_at_risk = FALSE,
+      annot_surv_med = FALSE,
+      lty = 1,
+      xticks = 500,
+      max_time = NULL
+    )
+  )
 })

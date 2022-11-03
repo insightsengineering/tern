@@ -49,7 +49,6 @@ testthat::test_that("format_fraction_threshold works with easy inputs", {
 })
 
 testthat::test_that("h_get_format_threshold works with easy inputs", {
-
   # Test default.
   result <- h_get_format_threshold()
   expected <- list(
