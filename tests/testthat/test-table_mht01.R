@@ -38,29 +38,30 @@ testthat::test_that("MHT01 variant 1 is produced accurately", {
   result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- structure(c(
-    "", "", "Total number of patients with at least one event",
-    "Total number of events", "cl A", "Total number of patients with at least one event",
-    "Total number of events", "trm A_1/2", "trm A_2/2", "cl B", "Total number of patients with at least one event",
-    "Total number of events", "trm B_1/3", "trm B_2/3", "trm B_3/3",
-    "cl C", "Total number of patients with at least one event", "Total number of events",
-    "trm C_1/2", "trm C_2/2", "cl D", "Total number of patients with at least one event",
-    "Total number of events", "trm D_1/3", "trm D_2/3", "trm D_3/3",
-    "A: Drug X", "(N=134)", "122 (91%)", "609", "", "78 (58.2%)",
-    "132", "50 (37.3%)", "48 (35.8%)", "", "96 (71.6%)", "185", "47 (35.1%)",
-    "49 (36.6%)", "48 (35.8%)", "", "67 (50%)", "103", "43 (32.1%)",
-    "35 (26.1%)", "", "96 (71.6%)", "189", "50 (37.3%)", "48 (35.8%)",
-    "47 (35.1%)", "B: Placebo", "(N=134)", "123 (91.8%)", "622",
-    "", "75 (56%)", "130", "45 (33.6%)", "48 (35.8%)", "", "89 (66.4%)",
-    "198", "49 (36.6%)", "44 (32.8%)", "54 (40.3%)", "", "75 (56%)",
-    "116", "46 (34.3%)", "48 (35.8%)", "", "90 (67.2%)", "178", "42 (31.3%)",
-    "42 (31.3%)", "58 (43.3%)", "C: Combination", "(N=132)", "120 (90.9%)",
-    "703", "", "89 (67.4%)", "160", "63 (47.7%)", "50 (37.9%)", "",
-    "97 (73.5%)", "205", "43 (32.6%)", "52 (39.4%)", "51 (38.6%)",
-    "", "79 (59.8%)", "129", "43 (32.6%)", "55 (41.7%)", "", "98 (74.2%)",
-    "209", "51 (38.6%)", "50 (37.9%)", "57 (43.2%)"
-  ),
-  .Dim = c(26L, 4L)
+  expected_matrix <- structure(
+    c(
+      "", "", "Total number of patients with at least one event",
+      "Total number of events", "cl A", "Total number of patients with at least one event",
+      "Total number of events", "trm A_1/2", "trm A_2/2", "cl B", "Total number of patients with at least one event",
+      "Total number of events", "trm B_1/3", "trm B_2/3", "trm B_3/3",
+      "cl C", "Total number of patients with at least one event", "Total number of events",
+      "trm C_1/2", "trm C_2/2", "cl D", "Total number of patients with at least one event",
+      "Total number of events", "trm D_1/3", "trm D_2/3", "trm D_3/3",
+      "A: Drug X", "(N=134)", "122 (91%)", "609", "", "78 (58.2%)",
+      "132", "50 (37.3%)", "48 (35.8%)", "", "96 (71.6%)", "185", "47 (35.1%)",
+      "49 (36.6%)", "48 (35.8%)", "", "67 (50%)", "103", "43 (32.1%)",
+      "35 (26.1%)", "", "96 (71.6%)", "189", "50 (37.3%)", "48 (35.8%)",
+      "47 (35.1%)", "B: Placebo", "(N=134)", "123 (91.8%)", "622",
+      "", "75 (56%)", "130", "45 (33.6%)", "48 (35.8%)", "", "89 (66.4%)",
+      "198", "49 (36.6%)", "44 (32.8%)", "54 (40.3%)", "", "75 (56%)",
+      "116", "46 (34.3%)", "48 (35.8%)", "", "90 (67.2%)", "178", "42 (31.3%)",
+      "42 (31.3%)", "58 (43.3%)", "C: Combination", "(N=132)", "120 (90.9%)",
+      "703", "", "89 (67.4%)", "160", "63 (47.7%)", "50 (37.9%)", "",
+      "97 (73.5%)", "205", "43 (32.6%)", "52 (39.4%)", "51 (38.6%)",
+      "", "79 (59.8%)", "129", "43 (32.6%)", "55 (41.7%)", "", "98 (74.2%)",
+      "209", "51 (38.6%)", "50 (37.9%)", "57 (43.2%)"
+    ),
+    .Dim = c(26L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
@@ -105,14 +106,15 @@ testthat::test_that("MHT01 variant 2 is produced accurately", {
   result <- build_table(lyt, admh_f_prior, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- structure(c(
-    "", "", "Total number of patients with at least one event",
-    "Total number of events", "cl D", "Total number of patients with at least one event",
-    "Total number of events", "trm D_2/3", "A: Drug X", "(N=134)", "0", "0", "", "0", "0", "0",
-    "B: Placebo", "(N=134)", "0", "0", "", "0", "0", "0",
-    "C: Combination", "(N=132)", "1 (0.8%)", "1", "", "1 (0.8%)", "1", "1 (0.8%)"
-  ),
-  .Dim = c(8L, 4L)
+  expected_matrix <- structure(
+    c(
+      "", "", "Total number of patients with at least one event",
+      "Total number of events", "cl D", "Total number of patients with at least one event",
+      "Total number of events", "trm D_2/3", "A: Drug X", "(N=134)", "0", "0", "", "0", "0", "0",
+      "B: Placebo", "(N=134)", "0", "0", "", "0", "0", "0",
+      "C: Combination", "(N=132)", "1 (0.8%)", "1", "", "1 (0.8%)", "1", "1 (0.8%)"
+    ),
+    .Dim = c(8L, 4L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)

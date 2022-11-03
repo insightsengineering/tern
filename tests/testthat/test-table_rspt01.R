@@ -318,7 +318,6 @@ testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition 
 
 
 testthat::test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
-
   # Define study-specific response category "No Progression".
   adrs <- adrs %>%
     dplyr::mutate(

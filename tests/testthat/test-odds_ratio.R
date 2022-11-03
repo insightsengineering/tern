@@ -93,6 +93,28 @@ testthat::test_that("s_odds_ratio estimates right OR and CI (stratified analysis
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
+testthat::test_that("s_odds_ratio returns error for incorrect groups", {
+  set.seed(2)
+  data <- data.frame(
+    rsp = sample(c(TRUE, FALSE), 100, TRUE),
+    grp = factor(rep(c("A", "B", "C", "D"), each = 25), levels = c("A", "B", "C", "D")),
+    strata = factor(sample(c("A", "B"), 100, TRUE))
+  )
+  groups <- list(
+    "Arms A+B" = c("A", "B")
+  )
+
+  result <- testthat::expect_error(s_odds_ratio(
+    df = subset(data, grp == "A"),
+    .var = "rsp",
+    .ref_group = subset(data, grp == "B"),
+    .in_ref_col = FALSE,
+    .df_row = data,
+    variables = list(arm = "grp", strata = "strata"),
+    groups_list = groups
+  ))
+})
+
 testthat::test_that("estimate_odds_ratio estimates right OR and CI (unstratified analysis)", {
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),

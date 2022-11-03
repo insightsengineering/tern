@@ -88,6 +88,39 @@ testthat::test_that("s_ancova fails wrong inputs", {
   )
 })
 
+testthat::test_that("s_ancova works with interaction and .in_ref_col = TRUE", {
+  iris_new <- iris %>%
+    dplyr::mutate(p_group = dplyr::case_when(
+      substr(Petal.Width, 3, 3) < 3 ~ "A",
+      substr(Petal.Width, 3, 3) < 5 & substr(Petal.Width, 3, 3) > 2 ~ "B",
+      TRUE ~ "C"
+    )) %>%
+    mutate(p_group = as.factor(p_group))
+  df_col <- iris_new %>% dplyr::filter(Species == "versicolor")
+  df_ref <- iris_new %>% dplyr::filter(Species == "setosa")
+
+  result <- s_ancova(
+    df_col,
+    .var = "Petal.Length",
+    variables = list(arm = "Species", covariates = c("Sepal.Width", "p_group", "Species*p_group")),
+    .in_ref_col = TRUE,
+    .df_row = iris_new,
+    .ref_group = df_ref,
+    conf_level = 0.95,
+    interaction_y = "B",
+    interaction_item = "p_group"
+  )
+  expected <- list(
+    n = 20L,
+    lsmean = formatters::with_label(4.362642, "Adjusted Mean"),
+    lsmean_diff = formatters::with_label(character(0), "Difference in Adjusted Means"),
+    lsmean_diff_ci = formatters::with_label(character(0), "95% CI"),
+    pval = formatters::with_label(character(0), "p-value")
+  )
+
+  testthat::expect_equal(result, expected, tolerance = 0.0000001)
+})
+
 testthat::test_that("summarize_ancova works with healthy inputs", {
   result <- basic_table() %>%
     split_cols_by("Species", ref_group = "setosa") %>%

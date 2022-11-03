@@ -1,6 +1,5 @@
 testthat::test_that("stat_mean_ci works for series without NAs
                     (including extreme case n = 1 and various n_min values)", {
-
   # n = 1, na.rm = TRUE, n_min = 2
   result <- stat_mean_ci(x = 1, gg_helper = FALSE)
   result_gg <- stat_mean_ci(x = 1)
@@ -22,7 +21,6 @@ testthat::test_that("stat_mean_ci works for series without NAs
 
 testthat::test_that("stat_mean_ci works for series with NAs
                     (including extreme case n = 1 and various n_min values)", {
-
   # n = 0, na.rm = TRUE, n_min = 2
   result <- stat_mean_ci(x = rep(NA, 10), gg_helper = FALSE)
   result_gg <- stat_mean_ci(x = rep(NA, 10))
@@ -80,7 +78,6 @@ testthat::test_that("stat_mean_ci works for series with NAs
 
 testthat::test_that("stat_mean_pval works for series without NAs
                     (including extreme case n = 1 and various n_min values)", {
-
   # n = 1, na.rm = TRUE, n_min = 2
   result <- stat_mean_pval(x = 1)
   expected <- c(p_value = NA_real_)
@@ -99,7 +96,6 @@ testthat::test_that("stat_mean_pval works for series without NAs
 
 testthat::test_that("stat_mean_pval works for series with NAs
                     (including extreme case n = 1 and various n_min values)", {
-
   # n = 0, na.rm = TRUE, n_min = 2
   result <- stat_mean_pval(x = rep(NA, 10))
   expected <- c(p_value = NA_real_)
@@ -147,7 +143,6 @@ testthat::test_that("stat_mean_pval works for series with NAs
 })
 
 testthat::test_that("stat_mean_pval returns the correct p-value", {
-
   # n = 5, na.rm = TRUE, test_mean = 0
   x <- 1:5
   result <- stat_mean_pval(x)
@@ -162,7 +157,6 @@ testthat::test_that("stat_mean_pval returns the correct p-value", {
 })
 
 testthat::test_that("stat_median_ci works for series without NAs (including extreme case n = 1)", {
-
   # n = 1, na.rm = TRUE
   result <- stat_median_ci(x = 1, gg_helper = FALSE)
   result_gg <- stat_median_ci(x = 1)
@@ -182,7 +176,6 @@ testthat::test_that("stat_median_ci works for series without NAs (including extr
 })
 
 testthat::test_that("stat_median_ci works for series with NAs (including extreme case n = 1)", {
-
   # n = 0, na.rm = TRUE
   result <- stat_median_ci(x = rep(NA_real_, 10), gg_helper = FALSE)
   result_gg <- stat_median_ci(x = rep(NA_real_, 10))

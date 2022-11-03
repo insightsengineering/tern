@@ -1,8 +1,9 @@
-# tern 0.7.10.9002
+# tern 0.7.10.9003
 
 ### Enhancements
 * Replaced `synthetic_cdisc_data` with refactored `synthetic_cdisc_dataset` function to speed up dataset loading in tests/examples.
 * Updated all tests to use `rcd_2022_06_27` version of cached data.
+* Added more tests to increase code coverage.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing grades are present in `s_count_occurrences_by_grade`.
