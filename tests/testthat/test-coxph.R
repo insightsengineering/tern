@@ -4,6 +4,19 @@ testthat::test_that("pairwise works correctly", {
   testthat::expect_equal(result$coefficients, expected, tolerance = 1e-4)
 })
 
+testthat::test_that("univariate works correctly", {
+  result <- testthat::expect_silent(univariate(c("SEX", "AGE", "RACE")))
+  expected <- c("SEX", "AGE", "RACE")
+  attr(expected, "varname") <- "c(\"SEX\", \"AGE\", \"RACE\")"
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("rht works correctly", {
+  result <- testthat::expect_silent(rht(as.formula("y ~ m * x + b")))
+  expected <- c("+", "m * x", "b")
+  testthat::expect_identical(result, expected)
+})
+
 testthat::test_that("estimate_coef works correctly", {
   adtte <- adtte_raw %>%
     filter(PARAMCD == "PFS") %>%
@@ -44,6 +57,32 @@ testthat::test_that("try_car_anova works correctly", {
 
   testthat::expect_equal(result_aov, c(1, 0.7521, 0.3858), tolerance = 1e-3)
   testthat::expect_identical(result$warn_text, NULL)
+})
+
+testthat::test_that("check_formula returns correct error", {
+  testthat::expect_error(check_formula("y ~ m * x + b"))
+})
+
+testthat::test_that("check_covariate_formulas works correctly", {
+  testthat::expect_error(check_covariate_formulas(NULL))
+})
+
+testthat::test_that("name_covariate_names works correctly", {
+  result <- name_covariate_names(c(
+    A = formula("y ~ A"),
+    B = formula("y ~ B"),
+    C = formula("y ~ C")
+  ))
+  expected <- list(A = formula("y ~ A"), B = formula("y ~ B"), C = formula("y ~ C"))
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("check_increments gives correct warning", {
+  testthat::expect_warning(check_increments(c(A = "A", B = "B", D = "C"), c(
+    A = formula("y ~ A"),
+    B = formula("y ~ B"),
+    C = formula("y ~ C")
+  )))
 })
 
 testthat::test_that("s_cox_multivariate works correctly with character input", {

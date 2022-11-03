@@ -91,3 +91,28 @@ testthat::test_that("fit_rsp_step works as expected with strata", {
     )
   )
 })
+
+testthat::test_that("fit_rsp_step works as expected with null bandwidth", {
+  data <- adrs_local
+  variables <- list(
+    arm = "ARM",
+    biomarker = "BMRKR1",
+    covariates = "AGE",
+    response = "RSP"
+  )
+  result <- testthat::expect_silent(fit_rsp_step(
+    variables = variables,
+    data = data,
+    control = c(control_logistic(), control_step(bandwidth = NULL))
+  ))
+  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_identical(ncol(result), 11L)
+  testthat::expect_identical(
+    colnames(result),
+    c(
+      "Percentile Center", "Percentile Lower", "Percentile Upper",
+      "Interval Center", "Interval Lower", "Interval Upper", "n",
+      "logor", "se", "ci_lower", "ci_upper"
+    )
+  )
+})
