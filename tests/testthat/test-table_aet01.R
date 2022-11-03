@@ -2,7 +2,6 @@ adsl <- adsl_raw
 adae <- adae_raw
 
 testthat::test_that("Safety Summary Variant 1 works as expected", {
-
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
     dplyr::mutate(
@@ -122,7 +121,6 @@ testthat::test_that("Safety Summary Variant 1 works as expected", {
 })
 
 testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
-
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
     dplyr::mutate(
@@ -273,7 +271,6 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
 })
 
 testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
-
   # Add flags (TRUE/FALSE) for select AEs of interest -- custom groups.
   adae <- adae %>%
     dplyr::mutate(

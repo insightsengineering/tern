@@ -1,11 +1,10 @@
 # Tests all ENT variants.
 adsl <- adsl_raw
+adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
+adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
+adsl <- adsl[order(adsl$REGION1, adsl$COUNTRY, adsl$INVID), ]
 
 testthat::test_that("ENT01_IT is produced correctly", {
-  adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
-  adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
-  adsl <- adsl[order(adsl$REGION1, adsl$COUNTRY, adsl$INVID), ]
-
   l <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
@@ -155,10 +154,6 @@ testthat::test_that("ENT01_IT is produced correctly", {
 })
 
 testthat::test_that("ENT01a_IT is produced correctly", {
-  adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
-  adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
-  adsl <- adsl[order(adsl$REGION1, adsl$COUNTRY, adsl$INVID), ]
-
   l <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
@@ -298,10 +293,6 @@ testthat::test_that("ENT01a_IT is produced correctly", {
 })
 
 testthat::test_that("ENT02_IT is produced correctly", {
-  adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
-  adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
-  adsl <- adsl[order(adsl$REGION1, adsl$COUNTRY, adsl$INVID), ]
-
   adsl$INVID_INVNAM <- paste(adsl$INVID, adsl$INVNAM, sep = " / ") # nolint
 
   l <- basic_table() %>%
@@ -608,10 +599,6 @@ testthat::test_that("ENT02_IT is produced correctly", {
 })
 
 testthat::test_that("ENT02a_IT is produced correctly", {
-  adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
-  adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
-  adsl <- adsl[order(adsl$REGION1, adsl$COUNTRY, adsl$INVID), ]
-
   adsl$INVID_INVNAM <- paste(adsl$INVID, adsl$INVNAM, sep = " / ") # nolint
 
   l <- basic_table() %>%

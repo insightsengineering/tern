@@ -63,12 +63,13 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
   # Preprocessing steps
   adlb <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(dplyr::case_when(
-      ANRIND == "LOW LOW" ~ "Low",
-      ANRIND == "HIGH HIGH" ~ "High",
-      TRUE ~ ""
-    ),
-    levels = c("Low", "High")
+    dplyr::mutate(abn_dir = factor(
+      dplyr::case_when(
+        ANRIND == "LOW LOW" ~ "Low",
+        ANRIND == "HIGH HIGH" ~ "High",
+        TRUE ~ ""
+      ),
+      levels = c("Low", "High")
     ))
 
   map <- unique(
@@ -160,12 +161,13 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
   # Preprocessing steps
   adlb <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(dplyr::case_when(
-      ANRIND == "LOW LOW" ~ "Low",
-      ANRIND == "HIGH HIGH" ~ "High",
-      TRUE ~ ""
-    ),
-    levels = c("Low", "High")
+    dplyr::mutate(abn_dir = factor(
+      dplyr::case_when(
+        ANRIND == "LOW LOW" ~ "Low",
+        ANRIND == "HIGH HIGH" ~ "High",
+        TRUE ~ ""
+      ),
+      levels = c("Low", "High")
     ))
 
   map <- unique(
@@ -248,12 +250,13 @@ testthat::test_that("LBT05 variant 4 is produced correctly", {
   # Preprocessing steps
   adlb <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(dplyr::case_when(
-      ANRIND == "LOW LOW" ~ "Low",
-      ANRIND == "HIGH HIGH" ~ "High",
-      TRUE ~ ""
-    ),
-    levels = c("Low", "High")
+    dplyr::mutate(abn_dir = factor(
+      dplyr::case_when(
+        ANRIND == "LOW LOW" ~ "Low",
+        ANRIND == "HIGH HIGH" ~ "High",
+        TRUE ~ ""
+      ),
+      levels = c("Low", "High")
     ))
 
 

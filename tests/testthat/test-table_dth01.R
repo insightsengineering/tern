@@ -12,7 +12,7 @@ testthat::test_that("DTH01 variant 1 is produced correctly", {
     count_values(
       "DTHFL",
       values = "Y",
-      .labels =  c(count_fraction = "Total number of deaths"),
+      .labels = c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
     ) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
@@ -45,7 +45,7 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
     count_values(
       "DTHFL",
       values = "Y",
-      .labels =  c(count_fraction = "Total number of deaths"),
+      .labels = c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
     ) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
@@ -135,7 +135,7 @@ testthat::test_that("DTH01 variant 3 is produced correctly", {
     count_values(
       "DTHFL",
       values = "Y",
-      .labels =  c(count_fraction = "Total number of deaths"),
+      .labels = c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
     ) %>%
     summarize_vars(
@@ -222,7 +222,7 @@ testthat::test_that("DTH01 variant 4 is produced correctly", {
     count_values(
       "DTHFL",
       values = "Y",
-      .labels =  c(count_fraction = "Total number of deaths"),
+      .labels = c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
     ) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death"))

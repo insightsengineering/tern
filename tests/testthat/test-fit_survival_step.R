@@ -72,3 +72,29 @@ testthat::test_that("fit_survival_step works as expected with global model fit",
     )
   )
 })
+
+testthat::test_that("fit_survival_step works as expected with null bandwidth", {
+  data <- adtte_local
+  variables <- list(
+    arm = "ARM",
+    biomarker = "BMRKR1",
+    covariates = c("AGE", "BMRKR2"),
+    event = "is_event",
+    time = "AVAL"
+  )
+  result <- testthat::expect_silent(fit_survival_step(
+    variables = variables,
+    data = data,
+    control = c(control_logistic(), control_step(bandwidth = NULL))
+  ))
+  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_identical(ncol(result), 12L)
+  testthat::expect_identical(
+    colnames(result),
+    c(
+      "Percentile Center", "Percentile Lower", "Percentile Upper",
+      "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
+      "loghr", "se", "ci_lower", "ci_upper"
+    )
+  )
+})

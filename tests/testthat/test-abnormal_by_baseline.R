@@ -110,13 +110,14 @@ testthat::test_that("count_abnormal_by_baseline works with default arguments", {
     count_abnormal_by_baseline(var = "ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) %>%
     build_table(df)
   result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(c(
-    "", "Low", "Not low baseline status", "Low baseline status",
-    "Total", "High", "Not high baseline status", "High baseline status",
-    "Total", "all obs", "", "1/3 (33.3%)", "0/1", "1/4 (25%)",
-    "", "1/2 (50%)", "1/2 (50%)", "2/4 (50%)"
-  ),
-  .Dim = c(9L, 2L)
+  expected_matrix <- structure(
+    c(
+      "", "Low", "Not low baseline status", "Low baseline status",
+      "Total", "High", "Not high baseline status", "High baseline status",
+      "Total", "all obs", "", "1/3 (33.3%)", "0/1", "1/4 (25%)",
+      "", "1/2 (50%)", "1/2 (50%)", "2/4 (50%)"
+    ),
+    .Dim = c(9L, 2L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
