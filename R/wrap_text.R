@@ -1,6 +1,7 @@
 #' Split String
 #'
-#' Return split text that fits onto page width.
+#' @description `r lifecycle::badge("deprecated")`
+#'   Return split text that fits onto page width.
 #'
 #' @param txt string (or vector of strings) to be split in multiple lines, not that
 #' \code{\\n} is also split into to lines
@@ -27,6 +28,7 @@ wrap_text <- function(txt, # nolint
                       width = grid::convertWidth(grid::unit(1, "npc"), "inch", TRUE),
                       gp = grid::gpar(),
                       collapse = NULL) {
+  warning("This is a deprecated function as there is a current implementation in rtables, not based on grid::")
   if (grid::is.unit(width)) {
     width <- grid::convertWidth(width, "inch", TRUE)
   }

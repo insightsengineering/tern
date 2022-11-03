@@ -3,6 +3,7 @@
 ### Enhancements
 * Replaced `synthetic_cdisc_data` with refactored `synthetic_cdisc_dataset` function to speed up dataset loading in tests/examples.
 * Updated all tests to use `rcd_2022_06_27` version of cached data.
+* Deprecated badge and warning for `wrap_txt` and its file.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing grades are present in `s_count_occurrences_by_grade`.
