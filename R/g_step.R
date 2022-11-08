@@ -115,7 +115,6 @@ g_step <- function(df,
   p <- p +
     ggplot2::geom_line(
       ggplot2::aes_string(y = "y", color = "legend_names[1]"),
-      # color = est$col,
       linetype = est$lty
     ) +
     scale_colour_manual(
