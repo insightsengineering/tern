@@ -8,7 +8,7 @@
 g_step(
   df,
   use_percentile = "Percentile Center" \%in\% names(df),
-  est = list(col = "black", lty = 1),
+  est = list(col = "blue", lty = 1),
   ci_ribbon = list(fill = getOption("ggplot2.discrete.colour")[1], alpha = 0.5),
   col = getOption("ggplot2.discrete.colour")
 )
