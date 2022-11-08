@@ -14,7 +14,8 @@ step_matrix <- fit_survival_step(
 step_data <- broom::tidy(step_matrix)
 
 testthat::test_that("g_step works with default settings", {
-  testthat::expect_silent(g_step(step_data))
+  testthat::expect_silent(gg <- g_step(step_data))
+  testthat::expect_true(ggplot2::is.ggplot(gg))
 })
 
 testthat::test_that("g_step works with custom settings", {
