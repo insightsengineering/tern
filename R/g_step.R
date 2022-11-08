@@ -105,12 +105,15 @@ g_step <- function(df,
       ci_ribbon$fill <- "lightblue"
     }
     p <- p + ggplot2::geom_ribbon(
-      ggplot2::aes_string(ymin = "ci_lower", ymax = "ci_upper",
-                          fill = "legend_names[2]"),
+      ggplot2::aes_string(
+        ymin = "ci_lower", ymax = "ci_upper",
+        fill = "legend_names[2]"
+      ),
       alpha = ci_ribbon$alpha
     ) +
       scale_fill_manual(
-        name = "", values = c("CI 95%" = ci_ribbon$fill))
+        name = "", values = c("CI 95%" = ci_ribbon$fill)
+      )
   }
   p <- p +
     ggplot2::geom_line(
@@ -118,7 +121,8 @@ g_step <- function(df,
       linetype = est$lty
     ) +
     scale_colour_manual(
-      name = "", values = c("Estimate" = "blue"))
+      name = "", values = c("Estimate" = "blue")
+    )
 
   p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate)
   if (use_percentile) {
