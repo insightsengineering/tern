@@ -3,6 +3,7 @@
 [![Check 🛠](https://github.com/insightsengineering/tern/actions/workflows/check.yaml/badge.svg)](https://github.com/insightsengineering/tern/actions/workflows/check.yaml)
 [![Docs 📚](https://github.com/insightsengineering/tern/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/tern/)
 [![Release 🎈](https://github.com/insightsengineering/tern/actions/workflows/release.yaml/badge.svg)](https://github.com/insightsengineering/tern/releases)
+[![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/coverage.xml)
 
 The `tern` R package contains analysis functions to create tables and graphs used for clinical trial reporting.
 
