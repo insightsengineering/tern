@@ -91,6 +91,7 @@ g_step <- function(df,
   attrs <- attributes(df)
   df$y <- df[[attrs$estimate]]
 
+  # Set legend names. To be modified also at call level
   legend_names <- c("Estimate", "CI 95%")
 
   p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "x", y = "y"))
