@@ -5,6 +5,7 @@
 * Updated all tests to use `rcd_2022_06_27` version of cached data.
 * Added more tests to increase code coverage.
 * Deprecated badge and warning for `wrap_txt` and its file.
+* Added legend to `g_step`.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing grades are present in `s_count_occurrences_by_grade`.
