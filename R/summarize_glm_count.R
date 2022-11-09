@@ -172,9 +172,9 @@ h_glm_count <- function(.var,
                         distribution,
                         weights) {
   switch(distribution,
-         poisson = h_glm_poisson(.var, .df_row, variables, weights),
-         quasipoisson = h_glm_quasipoisson(.var, .df_row, variables, weights)
-         # negbin = h_glm_negbin(.var, .df_row, variables, weights)
+    poisson = h_glm_poisson(.var, .df_row, variables, weights),
+    quasipoisson = h_glm_quasipoisson(.var, .df_row, variables, weights)
+    # negbin = h_glm_negbin(.var, .df_row, variables, weights)
   )
 }
 
@@ -275,7 +275,7 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 #'   distribution = "quasipoisson",
 #'   rate_mean_method = "ppmeans"
 #' )
-#'}
+#' }
 #'
 #' @keywords internal
 s_glm_count <- function(df,
