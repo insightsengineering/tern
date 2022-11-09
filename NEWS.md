@@ -1,4 +1,4 @@
-# tern 0.7.10.9006
+# tern 0.7.10.9007
 
 ### Enhancements
 * Replaced `synthetic_cdisc_data` with refactored `synthetic_cdisc_dataset` function to speed up dataset loading in tests/examples.
