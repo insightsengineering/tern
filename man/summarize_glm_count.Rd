@@ -136,25 +136,25 @@ This can be used to analyze count and/or frequency data using a linear model.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_glm_poisson}: Helper function to return results of a poisson model.
+\item \code{h_glm_poisson()}: Helper function to return results of a poisson model.
 
-\item \code{h_glm_quasipoisson}: Helper function to return results of a poisson model.
+\item \code{h_glm_quasipoisson()}: Helper function to return results of a poisson model.
 
-\item \code{h_glm_count}: Helper function to return the results of the
+\item \code{h_glm_count()}: Helper function to return the results of the
 selected model (poisson, quasipossion, negative binomial).
 
-\item \code{h_ppmeans}: Helper function to return the estimated means.
+\item \code{h_ppmeans()}: Helper function to return the estimated means.
 
-\item \code{s_glm_count}: Statistics function that produces a named list of results
+\item \code{s_glm_count()}: Statistics function that produces a named list of results
 of the investigated poisson model.
 
-\item \code{a_glm_count}: Formatted Analysis function which can be further customized by calling
+\item \code{a_glm_count()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{summarize_glm_count}: Layout creating function which can be be used for creating
+\item \code{summarize_glm_count()}: Layout creating function which can be be used for creating
 summary tables for analysis of count data using generalized linear models (poisson, quasipoisson).
-}}
 
+}}
 \examples{
 
 library(scda)
