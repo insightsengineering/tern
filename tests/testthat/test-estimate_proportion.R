@@ -218,7 +218,6 @@ testthat::test_that("s_proportion returns right result", {
 })
 
 testthat::test_that("`s_proportion` works with Jeffreys CI", {
-
   # "Mid" case.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   result <- s_proportion(
@@ -255,7 +254,6 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
 })
 
 testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
-
   # "Mid" case.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
   result <- s_proportion(
@@ -293,7 +291,6 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
 })
 
 testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
-
   # Data loading and processing
   anl <- adrs_raw %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%

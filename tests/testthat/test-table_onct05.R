@@ -120,7 +120,6 @@ testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha 
 })
 
 testthat::test_that("ONCT05 variant 4 (setting values indicating response) is produced correctly", {
-
   # Define new criteria for responder.
   adrs <- adrs %>%
     preprocess_adrs(n_records = 200) %>%

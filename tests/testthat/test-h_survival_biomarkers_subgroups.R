@@ -1,6 +1,5 @@
 # Local data pre-processing
 preprocess_adtte <- function(adtte) {
-
   # Save variable labels before data processing steps.
   adtte_labels <- formatters::var_labels(adtte)
 
