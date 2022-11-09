@@ -9,6 +9,7 @@ CMH
 Clopper
 Coull
 CoxPH
+Forkers
 Github
 Haenszel
 Hauck
@@ -28,7 +29,6 @@ TLG
 TLGs
 Wojciak
 Wojciech
-Yan
 Yuyao
 agresti
 arcsine
@@ -54,13 +54,16 @@ nd
 onlinelibrary
 paramcd
 pearson
+poisson
 pratt
 pre
+quasipoisson
+quasipossion
+repo
 responder
 responders
 roche
 songy
-Su
 subtable
 subtables
 surv
@@ -73,5 +76,3 @@ wilson
 wilsoncc
 wojciak
 wojciech
-repo
-Forkers

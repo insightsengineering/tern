@@ -37,7 +37,7 @@ testthat::test_that("h_glm_poisson emmeans-fit works with healthy input", {
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
-  result <- tern::h_glm_count(
+  result <- h_glm_count(
     .var = "AVAL",
     .df_row = anl,
     variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = NULL),
@@ -349,6 +349,11 @@ testthat::test_that("s_glm_count fails wrong inputs", {
 })
 
 testthat::test_that("summarize_glm_count works with healthy inputs", {
+  library(scda)
+  library(dplyr)
+  anl <- synthetic_cdisc_dataset("latest", "adtte") %>%
+    filter(PARAMCD == "TNE")
+  anl$AVAL_f <- as.factor(anl$AVAL)
   result <- basic_table() %>%
     split_cols_by("ARM", ref_group = "B: Placebo") %>%
     add_colcounts() %>%
