@@ -68,7 +68,7 @@ Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.1.9000
 Collate:
     'formats.R'
     'abnormal.R'
@@ -136,6 +136,7 @@ Collate:
     'summarize_ancova.R'
     'summarize_change.R'
     'summarize_colvars.R'
+    'summarize_glm_count.R'
     'summarize_num_patients.R'
     'summarize_patients_exposure_in_cols.R'
     'summarize_variables_in_cols.R'
