@@ -20,6 +20,7 @@ g_km(
   yval = c("Survival", "Failure"),
   ylab = paste(yval, "Probability"),
   title = NULL,
+  footnotes = NULL,
   draw = TRUE,
   newpage = TRUE,
   gp = NULL,
@@ -27,7 +28,7 @@ g_km(
   name = NULL,
   font_size = 12,
   ci_ribbon = FALSE,
-  ggtheme = NULL,
+  ggtheme = nestcolor::theme_nest(),
   annot_at_risk = TRUE,
   annot_surv_med = TRUE,
   annot_coxph = FALSE,
@@ -48,7 +49,7 @@ g_km(
 }}
 
 \item{control_surv}{a (\code{list}) of parameters for comparison details, specified by using \cr
-the helper function \link{control_surv_timepoint}. Some possible parameter options are: \cr
+the helper function \code{\link{control_surv_timepoint}}. Some possible parameter options are: \cr
 \itemize{
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
 \item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
@@ -88,6 +89,8 @@ an optimal tick position on the x axis.}
 \item{ylab}{(\code{string})\cr label of y-axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
+
+\item{footnotes}{(\code{string})\cr footnotes for plot.}
 
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
@@ -138,6 +141,8 @@ estimating median survival time per group}
 a \code{grob} of class \code{gTree}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 From a survival model, a graphic is rendered along with tabulated annotation
 including the number of patient at risk at given time and the median survival
 per group.
@@ -149,8 +154,9 @@ library(dplyr)
 library(ggplot2)
 library(survival)
 library(grid)
+library(nestcolor)
 
-df <- synthetic_cdisc_data("latest")$adtte \%>\%
+df <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")

@@ -1,8 +1,7 @@
-library(scda)
-library(dplyr)
+adsl <- adsl_raw
 
 get_adlb <- function() {
-  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolintr
+  adlb <- adlb_raw # nolint
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
@@ -33,7 +32,6 @@ get_adlb <- function() {
 
 testthat::test_that("LBT05 variant 1 is produced correctly", {
   adlb <- get_adlb()
-  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -56,7 +54,7 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
 
   # Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   # just the `Any Abnormality` row is shown when there is no marked abonormality.
@@ -65,12 +63,13 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
   # Preprocessing steps
   adlb <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(dplyr::case_when(
-      ANRIND == "LOW LOW" ~ "Low",
-      ANRIND == "HIGH HIGH" ~ "High",
-      TRUE ~ ""
-    ),
-    levels = c("Low", "High")
+    dplyr::mutate(abn_dir = factor(
+      dplyr::case_when(
+        ANRIND == "LOW LOW" ~ "Low",
+        ANRIND == "HIGH HIGH" ~ "High",
+        TRUE ~ ""
+      ),
+      levels = c("Low", "High")
     ))
 
   map <- unique(
@@ -131,7 +130,6 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
 
 testthat::test_that("LBT05 variant 2 is produced correctly", {
   adlb <- get_adlb()
-  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -154,7 +152,7 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
 
   # Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   # just the `Any Abnormality` row is shown when there is no marked abonormality.
@@ -163,12 +161,13 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
   # Preprocessing steps
   adlb <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(dplyr::case_when(
-      ANRIND == "LOW LOW" ~ "Low",
-      ANRIND == "HIGH HIGH" ~ "High",
-      TRUE ~ ""
-    ),
-    levels = c("Low", "High")
+    dplyr::mutate(abn_dir = factor(
+      dplyr::case_when(
+        ANRIND == "LOW LOW" ~ "Low",
+        ANRIND == "HIGH HIGH" ~ "High",
+        TRUE ~ ""
+      ),
+      levels = c("Low", "High")
     ))
 
   map <- unique(
@@ -220,7 +219,6 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
 
 testthat::test_that("LBT05 variant 4 is produced correctly", {
   adlb <- get_adlb()
-  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -243,7 +241,7 @@ testthat::test_that("LBT05 variant 4 is produced correctly", {
       ),
       PARCAT2 = factor("LS")
     ) %>%
-    dplyr::select(-.data$q1, -.data$q2)
+    dplyr::select(-"q1", -"q2")
 
   # Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   # ALT rows are removed
@@ -252,12 +250,13 @@ testthat::test_that("LBT05 variant 4 is produced correctly", {
   # Preprocessing steps
   adlb <- adlb %>%
     dplyr::filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
-    dplyr::mutate(abn_dir = factor(dplyr::case_when(
-      ANRIND == "LOW LOW" ~ "Low",
-      ANRIND == "HIGH HIGH" ~ "High",
-      TRUE ~ ""
-    ),
-    levels = c("Low", "High")
+    dplyr::mutate(abn_dir = factor(
+      dplyr::case_when(
+        ANRIND == "LOW LOW" ~ "Low",
+        ANRIND == "HIGH HIGH" ~ "High",
+        TRUE ~ ""
+      ),
+      levels = c("Low", "High")
     ))
 
 

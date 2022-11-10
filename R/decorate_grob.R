@@ -1,5 +1,7 @@
 #' Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This function is useful to label grid grobs (also \code{ggplot2}, and \code{lattice} plots)
 #' with title, footnote, and page numbers.
 #'
@@ -236,19 +238,28 @@ decorate_grob <- function(grob,
   )
 }
 
-
 #' @importFrom grid validDetails
 #' @export
 validDetails.decoratedGrob <- function(x) { # nolint
-  stopifnot(
-    grid::is.grob(x$grob) || is.null(x$grob),
-    is.character(x$titles),
-    is.character(x$footnotes),
-    is.character(x$page) || length(x$page) != 1,
-    grid::is.unit(x$outer_margins) || length(x$outer_margins) == 4,
-    grid::is.unit(x$margins) || length(x$margins) == 4,
-    grid::is.unit(x$padding) || length(x$padding) == 4
-  )
+
+  checkmate::assert_character(x$titles)
+  checkmate::assert_character(x$footnotes)
+
+  if (!is.null(x$grob)) {
+    checkmate::assert_true(grid::is.grob(x$grob))
+  }
+  if (length(x$page) == 1) {
+    checkmate::assert_character(x$page)
+  }
+  if (!grid::is.unit(x$outer_margins)) {
+    checkmate::assert_vector(x$outer_margins, len = 4)
+  }
+  if (!grid::is.unit(x$margins)) {
+    checkmate::assert_vector(x$margins, len = 4)
+  }
+  if (!grid::is.unit(x$padding)) {
+    checkmate::assert_vector(x$padding, len = 4)
+  }
 
   x
 }
@@ -264,7 +275,6 @@ widthDetails.decoratedGrob <- function(x) { # nolint
 heightDetails.decoratedGrob <- function(x) { # nolint
   grid::unit(1, "null")
 }
-
 
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
@@ -306,9 +316,9 @@ split_string <- function(text, width) {
 #' @details
 #' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 #'
-#' @export
-#'
 #' @examples
+#' # Internal function - split_text_grob
+#' \dontrun{
 #' sg <- split_text_grob(text = paste(
 #'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
 #'   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
@@ -342,6 +352,9 @@ split_string <- function(text, width) {
 #'   c("Hello, this is a test", "and yet another test"),
 #'   just = c("left", "top"), x = 0, y = 1
 #' ))
+#' }
+#'
+#' @keywords internal
 split_text_grob <- function(text,
                             x = grid::unit(0.5, "npc"),
                             y = grid::unit(0.5, "npc"),
@@ -360,7 +373,8 @@ split_text_grob <- function(text,
     y <- grid::unit(y, default.units)
   }
 
-  stopifnot(grid::is.unit(width) && length(width) == 1)
+  checkmate::assert_true(grid::is.unit(width))
+  checkmate::assert_vector(width, len = 1)
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
   if (!inherits(width, "unit.arithmetic") &&
@@ -388,11 +402,9 @@ split_text_grob <- function(text,
 #' @importFrom grid validDetails
 #' @export
 validDetails.dynamicSplitText <- function(x) { # nolint
-  stopifnot(
-    is.character(x$text),
-    grid::is.unit(x$width) && length(x$width) == 1
-  )
-
+  checkmate::assert_character(x$text)
+  checkmate::assert_true(grid::is.unit(x$width))
+  checkmate::assert_vector(x$width, len = 1)
   x
 }
 
@@ -439,11 +451,13 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #'
 #' @return closure that increments the page number
 #'
-#' @export
+#' @keywords internal
 #'
 #' @template author_waddella
 #'
 #' @examples
+#' # Internal function - decorate_grob_factory
+#' \dontrun{
 #' pf <- decorate_grob_factory(
 #'   titles = "This is a test\nHello World",
 #'   footnotes = "Here belong the footnotess",
@@ -454,6 +468,7 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' draw_grob(pf(NULL))
 #' draw_grob(pf(NULL))
 #' draw_grob(pf(NULL))
+#' }
 decorate_grob_factory <- function(npages, ...) {
   current_page <- 0
   function(grob) {
@@ -465,15 +480,14 @@ decorate_grob_factory <- function(npages, ...) {
   }
 }
 
-
 #' Decorate Set of `grobs` and Add Page Numbering
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Note that this uses the `decorate_grob_factory` function.
 #'
 #' @param grobs a list of grid grobs
 #' @param ... arguments passed on to \code{\link{decorate_grob}}
-#'
-#' @export
 #'
 #' @template author_waddella
 #'
@@ -491,9 +505,12 @@ decorate_grob_factory <- function(npages, ...) {
 #' })
 #' lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
 #' library(grid)
+#'
 #' draw_grob(lg[[1]])
 #' draw_grob(lg[[2]])
 #' draw_grob(lg[[6]])
+#'
+#' @export
 decorate_grob_set <- function(grobs, ...) {
   n <- length(grobs)
   lgf <- decorate_grob_factory(npages = n, ...)

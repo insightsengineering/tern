@@ -43,7 +43,7 @@ count_abnormal_by_baseline(
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{na_level}{(\code{string}) \cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
@@ -52,8 +52,6 @@ by a statistics function.}
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -72,7 +70,7 @@ to avoid warnings from \code{rtables}.}
 \code{\link[=a_count_abnormal_by_baseline]{a_count_abnormal_by_baseline()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
-Patient Counts with Abnormal Range Values by Baseline Status
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
 Note that \code{df} should be filtered to include only post-baseline records.
@@ -101,23 +99,24 @@ patients in the numerator and denominator as follows:
 }
 \section{Functions}{
 \itemize{
-\item \code{d_count_abnormal_by_baseline}: Description Function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
+\item \code{d_count_abnormal_by_baseline()}: Description Function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
 
-\item \code{s_count_abnormal_by_baseline}: For a single \code{abnormal} level, produce a statistic \code{fraction} which is
+\item \code{s_count_abnormal_by_baseline()}: For a single \code{abnormal} level, produce a statistic \code{fraction} which is
 a named list with 3 elements: \code{not_abnormal}, \code{abnormal} and \code{total}.
 Each element contains a vector with \code{num} and \code{denom} counts of patients.
 Please note that if the baseline variable or analysis variable contains \code{NA}, it is expected that \code{NA} has been
 conveyed to \code{na_level} appropriately beforehand with \code{df_explicit_na()} or \code{explicit_na()}.
 
-\item \code{a_count_abnormal_by_baseline}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_abnormal_by_baseline()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_abnormal_by_baseline}: Layout creating function which can be used for creating tables, which can take
+\item \code{count_abnormal_by_baseline()}: Layout creating function which can be used for creating tables, which can take
 statistics function arguments and additional format arguments (see below).
-}}
 
+}}
 \examples{
 d_count_abnormal_by_baseline("LOW")
+
 df <- data.frame(
   USUBJID = as.character(c(1:6)),
   ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
@@ -125,12 +124,20 @@ df <- data.frame(
 )
 df <- df_explicit_na(df)
 
+# Internal function - s_count_abnormal_by_baseline
+\dontrun{
 # Just for one abnormal level.
 s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
+}
+
+# Internal function - a_count_abnormal_by_baseline
+\dontrun{
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
-# so that the rtables formatting function `format_fraction()` can be applied correctly.
+# so that the `rtables` formatting function `format_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 afun(df, .var = "ANRIND", abnormal = "LOW")
+}
+
 
 # Layout creating function.
 basic_table() \%>\%
@@ -153,4 +160,6 @@ basic_table() \%>\%
     .indent_mods = c(fraction = 2L)
   ) \%>\%
   build_table(df2)
+
 }
+\keyword{internal}

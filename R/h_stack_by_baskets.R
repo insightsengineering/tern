@@ -1,7 +1,9 @@
-#' Helper Function to create a new `SMQ` variable in ADAE by stacking
+#' Helper Function to create a new `SMQ` variable in `ADAE` by stacking
 #' `SMQ` and/or `CQ` records.
 #'
-#' Helper Function to create a new `SMQ` variable in ADAE that
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper Function to create a new `SMQ` variable in `ADAE` that
 #' consists of all adverse events belonging to selected
 #' Standardized/Customized queries.
 #' The new dataset will only contain records of the adverse events
@@ -12,18 +14,17 @@
 #' @param smq_varlabel (`string`)\cr a label for the new variable created.
 #' @param keys (`character`)\cr names of the key variables to be returned
 #' along with the new variable created.
-#' @param aag_summary (`data frame`)\cr containing the SMQ baskets
-#' and the levels of interest for the final SMQ variable. This is useful when
+#' @param aag_summary (`data frame`)\cr containing the `SMQ` baskets
+#' and the levels of interest for the final `SMQ` variable. This is useful when
 #' there are some levels of interest that are not observed in the `df` dataset.
 #' The two columns of this dataset should be named `basket` and `basket_name`.
 #'
 #' @export
 #'
 #' @examples
-#'
 #' library(scda)
 #'
-#' adae <- synthetic_cdisc_data("latest")$adae[1:20, ] %>% df_explicit_na()
+#' adae <- synthetic_cdisc_dataset("latest", "adae")[1:20, ] %>% df_explicit_na()
 #' h_stack_by_baskets(df = adae)
 #'
 #' aag <- data.frame(
@@ -74,25 +75,20 @@ h_stack_by_baskets <- function(df,
   smq_sc <- gsub(pattern = "NAM", replacement = "SC", x = smq_nam, fixed = TRUE)
   smq <- stats::setNames(smq_sc, smq_nam)
 
-  assertthat::assert_that(
-    is.character(baskets),
-    assertthat::is.string(smq_varlabel),
-    is.data.frame(df),
-    all(startsWith(baskets, "SMQ") | startsWith(baskets, "CQ")),
-    all(endsWith(baskets, "NAM")),
-    all(baskets %in% names(df)),
-    all(keys %in% names(df)),
-    all(smq_sc %in% names(df)),
-    assertthat::is.string(na_level),
-    sum(baskets %in% names(df)) > 0
-  )
+  checkmate::assert_character(baskets)
+  checkmate::assert_string(smq_varlabel)
+  checkmate::assert_data_frame(df)
+  checkmate::assert_true(all(startsWith(baskets, "SMQ") | startsWith(baskets, "CQ")))
+  checkmate::assert_true(all(endsWith(baskets, "NAM")))
+  checkmate::assert_subset(baskets, names(df))
+  checkmate::assert_subset(keys, names(df))
+  checkmate::assert_subset(smq_sc, names(df))
+  checkmate::assert_string(na_level)
 
   if (!is.null(aag_summary)) {
-    assertthat::assert_that(
-      is_df_with_variables(
-        df = aag_summary,
-        variables = list(val = c("basket", "basket_name"))
-      )
+    assert_df_with_variables(
+      df = aag_summary,
+      variables = list(val = c("basket", "basket_name"))
     )
     # Warning in case there is no match between `aag_summary$basket` and `baskets` argument.
     # Honestly, I think those should completely match. Target baskets should be the same.
@@ -101,7 +97,7 @@ h_stack_by_baskets <- function(df,
     }
   }
 
-  var_labels <- c(formatters::var_labels(df[, keys]), smq_varlabel)
+  var_labels <- c(formatters::var_labels(df[, keys]), "SMQ" = smq_varlabel)
 
   # convert `na_level` records from baskets to NA for the later loop and from wide to long steps
   df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_level] <- NA

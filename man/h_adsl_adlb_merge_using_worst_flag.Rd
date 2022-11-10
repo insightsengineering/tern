@@ -13,9 +13,9 @@ h_adsl_adlb_merge_using_worst_flag(
 )
 }
 \arguments{
-\item{adsl}{(\verb{data frame}) ADSL dataframe}
+\item{adsl}{(\verb{data frame}) \code{ADSL} dataframe}
 
-\item{adlb}{(\verb{data frame}) ADLB dataframe}
+\item{adlb}{(\verb{data frame}) \code{ADLB} dataframe}
 
 \item{worst_flag}{(named \code{vector})
 Worst post-baseline lab flag variable}
@@ -33,7 +33,9 @@ Visits that are not considered for post-baseline worst toxicity grade. Defaults 
 \code{no_fillin_visits = c("SCREENING", "BASELINE")}.
 }
 \description{
-Helper function that merges ADSL and ADLB datasets so that missing lab test records are inserted in the
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Helper function that merges \code{ADSL} and \code{ADLB} datasets so that missing lab test records are inserted in the
 output dataset.
 }
 \details{
@@ -46,8 +48,8 @@ In the result data missing records will be created for the following situations:
 }
 \examples{
 library(scda)
-adlb <- synthetic_cdisc_data("latest")$adlb
-adsl <- synthetic_cdisc_data("latest")$adsl
+adlb <- synthetic_cdisc_dataset("latest", "adlb")
+adsl <- synthetic_cdisc_dataset("latest", "adsl")
 
 # `h_adsl_adlb_merge_using_worst_flag`
 adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl, adlb, worst_flag = c("WGRHIFL" = "Y"))

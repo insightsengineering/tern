@@ -31,6 +31,8 @@ values inside non-\code{omit_columns} columns.}
 The data frame with the desired changes made.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is a helper function to encode missing entries across groups of categorical
 variables in a data frame.
 }
@@ -60,7 +62,10 @@ df_explicit_na(my_data)
 df_explicit_na(my_data, logical_as_factor = TRUE)
 # Encode missing values in a subset of columns.
 df_explicit_na(my_data, omit_columns = c("x", "y"))
+
 }
 \seealso{
 \code{\link[=sas_na]{sas_na()}} and \code{\link[=explicit_na]{explicit_na()}} for other missing data helper functions.
+
+\code{\link[=replace_emptys_with_na]{replace_emptys_with_na()}}
 }

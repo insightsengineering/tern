@@ -1,4 +1,5 @@
-raw_data <- scda::synthetic_cdisc_data("rcd_2021_05_05")$adtte %>%
+# Local data pre-processing
+adtte_local <- adtte_raw %>%
   dplyr::filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X")
@@ -11,11 +12,11 @@ raw_data <- scda::synthetic_cdisc_data("rcd_2021_05_05")$adtte %>%
 columns <- c("ARM", "is_event")
 labels <- c("Treatment Arm", "Event Flag")
 for (i in seq_along(columns)) {
-  attr(raw_data[[columns[i]]], "label") <- labels[i]
+  attr(adtte_local[[columns[i]]], "label") <- labels[i]
 }
 
 testthat::test_that("fit_survival_step works as expected with default options", {
-  data <- raw_data
+  data <- adtte_local
   variables <- list(
     arm = "ARM",
     biomarker = "BMRKR1",
@@ -40,7 +41,7 @@ testthat::test_that("fit_survival_step works as expected with default options", 
 })
 
 testthat::test_that("fit_survival_step works as expected with global model fit", {
-  data <- raw_data
+  data <- adtte_local
   variables <- list(
     arm = "ARM",
     biomarker = "BMRKR1",
@@ -66,6 +67,32 @@ testthat::test_that("fit_survival_step works as expected with global model fit",
   testthat::expect_identical(
     colnames(result),
     c(
+      "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
+      "loghr", "se", "ci_lower", "ci_upper"
+    )
+  )
+})
+
+testthat::test_that("fit_survival_step works as expected with null bandwidth", {
+  data <- adtte_local
+  variables <- list(
+    arm = "ARM",
+    biomarker = "BMRKR1",
+    covariates = c("AGE", "BMRKR2"),
+    event = "is_event",
+    time = "AVAL"
+  )
+  result <- testthat::expect_silent(fit_survival_step(
+    variables = variables,
+    data = data,
+    control = c(control_logistic(), control_step(bandwidth = NULL))
+  ))
+  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_identical(ncol(result), 12L)
+  testthat::expect_identical(
+    colnames(result),
+    c(
+      "Percentile Center", "Percentile Lower", "Percentile Upper",
       "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
       "loghr", "se", "ci_lower", "ci_upper"
     )

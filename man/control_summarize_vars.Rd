@@ -7,7 +7,8 @@
 control_summarize_vars(
   conf_level = 0.95,
   quantiles = c(0.25, 0.75),
-  quantile_type = 2
+  quantile_type = 2,
+  test_mean = 0
 )
 }
 \arguments{
@@ -18,11 +19,15 @@ control_summarize_vars(
 \item{quantile_type}{(\code{numeric}) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 Default is set to \code{2} as this matches the default quantile algorithm in SAS \verb{proc univariate} set by \code{QNTLDEF=5}.
 This differs from R's default. See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.}
+
+\item{test_mean}{(\code{numeric}) \cr to test against the mean under the null hypothesis when calculating p-value.}
 }
 \value{
 A list of components with the same names as the arguments.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
 details for \link{s_summary}.
 }

@@ -7,7 +7,8 @@
 g_waterfall(
   height,
   id,
-  col = NULL,
+  col_var = NULL,
+  col = getOption("ggplot2.discrete.colour"),
   xlab = NULL,
   ylab = NULL,
   col_legend_title = NULL,
@@ -21,8 +22,10 @@ Contains values to be plotted as the waterfall bars}
 \item{id}{(vector)\cr
 Contains of IDs used as the x-axis label for the waterfall bars}
 
-\item{col}{(vector)\cr
-Categorical variable for bar coloring}
+\item{col_var}{(\code{factor}, \code{character} or \code{NULL})\cr
+Categorical variable for bar coloring. \code{NULL} by default.}
+
+\item{col}{(\code{character})\cr colors.}
 
 \item{xlab}{(\code{character} value)\cr
 x label. Default is \code{ID}.}
@@ -36,27 +39,36 @@ Text to be displayed as legend title.}
 \item{title}{(\code{character} value)\cr
 Text to be displayed as plot title.}
 }
+\value{
+(\code{ggplot} object)\cr
+Waterfall plot
+}
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
 markup.
 }
 \examples{
+library(nestcolor)
+
 g_waterfall(height = c(3, 5, -1), id = letters[1:3])
 
 g_waterfall(
   height = c(3, 5, -1),
   id = letters[1:3],
-  col = letters[1:3]
+  col_var = letters[1:3]
 )
 
 library(scda)
 library(dplyr)
 
-ADSL <- synthetic_cdisc_data("latest")$adsl
+ADSL <- synthetic_cdisc_dataset("latest", "adsl")
 ADSL_f <- ADSL \%>\%
   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 
-ADRS <- synthetic_cdisc_data("latest")$adrs
+ADRS <- synthetic_cdisc_dataset("latest", "adrs")
 ADRS_f <- ADRS \%>\%
   filter(PARAMCD == "OVRINV") \%>\%
   mutate(pchg = rnorm(n(), 10, 50))
@@ -68,19 +80,13 @@ head(ADRS_f)
 g_waterfall(
   height = ADRS_f$pchg,
   id = ADRS_f$USUBJID,
-  col = ADRS_f$AVALC
-)
-
-g_waterfall(
-  height = ADRS_f$pchg,
-  id = ADRS_f$USUBJID,
-  col = ADRS_f$AVALC
+  col_var = ADRS_f$AVALC
 )
 
 g_waterfall(
   height = ADRS_f$pchg,
   id = paste("asdfdsfdsfsd", ADRS_f$USUBJID),
-  col = ADRS_f$SEX
+  col_var = ADRS_f$SEX
 )
 
 g_waterfall(
@@ -92,5 +98,5 @@ g_waterfall(
 )
 }
 \author{
-Yuyao Song (songy24) \email{yuyao.song@roche.com}
+Yuyao Song (songy) \email{yuyao.song@roche.com}
 }

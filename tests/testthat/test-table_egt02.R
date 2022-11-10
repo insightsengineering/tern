@@ -1,13 +1,8 @@
 # Tests the variants for EGT02.
-
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
+adsl <- adsl_raw
+adeg <- adeg_raw
 
 testthat::test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
-
   # Note: We exclude "SCREENING" and "BASELINE" visits here
   # so to keep only post-baseline for analysis.
   adeg <- adeg %>%

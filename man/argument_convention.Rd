@@ -55,8 +55,6 @@ Note that in that case the remaining occurrence levels in the table are sorted a
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{na_rm}{(\code{flag})\cr (deprecated) whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
 
 \item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.

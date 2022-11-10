@@ -34,6 +34,6 @@ Sets a list of parameters for Cox regression fit. Used internally,
 see \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.
 }
 \examples{
-
 control_coxreg()
+
 }

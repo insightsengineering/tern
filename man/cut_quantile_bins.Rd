@@ -7,7 +7,7 @@
 cut_quantile_bins(
   x,
   probs = c(0.25, 0.5, 0.75),
-  labels = bins_percent_labels(probs),
+  labels = NULL,
   type = 7,
   ordered = TRUE
 )
@@ -32,6 +32,8 @@ probabilities in \code{probs}, then this must be \code{n + 1} long.}
 The factor variable with the appropriately labeled bins as levels.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This cuts a numeric vector into sample quantile bins. Note that the intervals are closed on
 the right side. That is, the first bin is the interval \verb{[-Inf, q1]} where \code{q1} is
 the first quantile, the second bin is then \verb{(q1, q2]}, etc., and the last bin

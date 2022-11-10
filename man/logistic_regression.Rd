@@ -23,8 +23,8 @@
 \usage{
 fit_logistic(
   data,
-  variables = list(response = "Response", arm = "ARMCD", covariates = NULL, interaction
-    = NULL, strata = NULL),
+  variables = list(response = "Response", arm = "ARMCD", covariates = NULL, interaction =
+    NULL, strata = NULL),
   response_definition = "response"
 )
 
@@ -79,7 +79,7 @@ logistic_regression_cols(lyt, conf_level = 0.95)
 
 logistic_summary_by_flag(flag_var)
 
-summarize_logistic(lyt, conf_level)
+summarize_logistic(lyt, conf_level, drop_and_remove_str = "")
 }
 \arguments{
 \item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
@@ -129,8 +129,12 @@ helper function).}
 
 \item{flag_var}{(\code{string})\cr variable name identifying which row should be used in this
 content function.}
+
+\item{drop_and_remove_str}{string to be dropped and removed}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Logistic regression for binary outcome with categorical/continuous covariates in model statement.
 For each covariate category (if categorical) or specified values (if continuous), present degrees of freedom,
 regression parameter estimate and standard error (SE) relative to reference group or category.
@@ -149,60 +153,60 @@ survival package (< 3.2-13) is used.
 }
 \section{Functions}{
 \itemize{
-\item \code{fit_logistic}: Fit a (conditional) logistic regression model.
+\item \code{fit_logistic()}: Fit a (conditional) logistic regression model.
 
-\item \code{h_get_interaction_vars}: Helper function to extract interaction variable names from a fitted
+\item \code{h_get_interaction_vars()}: Helper function to extract interaction variable names from a fitted
 model assuming only one interaction term.
 
-\item \code{h_interaction_coef_name}: Helper function to get the right coefficient name from the
+\item \code{h_interaction_coef_name()}: Helper function to get the right coefficient name from the
 interaction variable names and the given levels. The main value here is that the order
 of first and second variable is checked in the \code{interaction_vars} input.
 
-\item \code{h_or_cat_interaction}: Helper function to calculate the odds ratio estimates
+\item \code{h_or_cat_interaction()}: Helper function to calculate the odds ratio estimates
 for the case when both the odds ratio and the interaction variable are categorical.
 
-\item \code{h_or_cont_interaction}: Helper function to calculate the odds ratio estimates
+\item \code{h_or_cont_interaction()}: Helper function to calculate the odds ratio estimates
 for the case when either the odds ratio or the interaction variable is continuous.
 
-\item \code{h_or_interaction}: Helper function to calculate the odds ratio estimates
+\item \code{h_or_interaction()}: Helper function to calculate the odds ratio estimates
 in case of an interaction. This is a wrapper for \code{\link[=h_or_cont_interaction]{h_or_cont_interaction()}} and
 \code{\link[=h_or_cat_interaction]{h_or_cat_interaction()}}.
 
-\item \code{h_simple_term_labels}: Helper function to construct term labels from simple terms and the table
+\item \code{h_simple_term_labels()}: Helper function to construct term labels from simple terms and the table
 of numbers of patients.
 
-\item \code{h_interaction_term_labels}: Helper function to construct term labels from interaction terms and the table
+\item \code{h_interaction_term_labels()}: Helper function to construct term labels from interaction terms and the table
 of numbers of patients.
 
-\item \code{h_glm_simple_term_extract}: Helper function to tabulate the main effect
+\item \code{h_glm_simple_term_extract()}: Helper function to tabulate the main effect
 results of a (conditional) logistic regression model.
 
-\item \code{h_glm_interaction_extract}: Helper function to tabulate the interaction term
+\item \code{h_glm_interaction_extract()}: Helper function to tabulate the interaction term
 results of a logistic regression model.
 
-\item \code{h_glm_inter_term_extract}: Helper function to tabulate the interaction
+\item \code{h_glm_inter_term_extract()}: Helper function to tabulate the interaction
 results of a logistic regression model. This basically is a wrapper for
 \code{\link[=h_or_interaction]{h_or_interaction()}} and \code{\link[=h_glm_simple_term_extract]{h_glm_simple_term_extract()}} which puts the results
 in the right data frame format.
 
-\item \code{h_logistic_simple_terms}: Helper function to tabulate the results including
+\item \code{h_logistic_simple_terms()}: Helper function to tabulate the results including
 odds ratios and confidence intervals of simple terms.
 
-\item \code{h_logistic_inter_terms}: Helper function to tabulate the results including
+\item \code{h_logistic_inter_terms()}: Helper function to tabulate the results including
 odds ratios and confidence intervals of interaction terms.
 
-\item \code{tidy.glm}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a data frame from an
+\item \code{tidy(glm)}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a data frame from an
 \code{glm} object with \code{binomial} family.
 
-\item \code{logistic_regression_cols}: Layout creating function for a multi-variable column layout summarizing
+\item \code{logistic_regression_cols()}: Layout creating function for a multi-variable column layout summarizing
 logistic regression results.
 
-\item \code{logistic_summary_by_flag}: Constructor for content functions to be used to summarize
+\item \code{logistic_summary_by_flag()}: Constructor for content functions to be used to summarize
 logistic regression results.
 
-\item \code{summarize_logistic}: Layout creating function which summarizes a logistic variable regression.
+\item \code{summarize_logistic()}: Layout creating function which summarizes a logistic variable regression.
+
 }}
-
 \note{
 We don't provide a function for the case when both variables are continuous because
 this does not arise in this table, as the treatment arm variable will always be involved
@@ -228,7 +232,7 @@ library(scda)
 library(dplyr)
 library(rtables)
 
-adrs <- synthetic_cdisc_data("latest")$adrs
+adrs <- synthetic_cdisc_dataset("latest", "adrs")
 adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) \%>\%
@@ -257,20 +261,39 @@ mod2 <- fit_logistic(
 )
 h_glm_simple_term_extract("AGE", mod1)
 h_glm_simple_term_extract("ARMCD", mod1)
+
 h_glm_interaction_extract("ARMCD:AGE", mod2)
+
 h_glm_inter_term_extract("AGE", "ARMCD", mod2)
+
 h_logistic_simple_terms("AGE", mod1)
 h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
+
 library(broom)
 df <- tidy(mod1, conf_level = 0.99)
 df2 <- tidy(mod2, conf_level = 0.99)
+
+# Internal function - replace_emptys_with_na
+\dontrun{
+# flagging empty strings with "_"
+df <- replace_emptys_with_na(df, rep_str = "_")
+df2 <- replace_emptys_with_na(df2, rep_str = "_")
+
 result1 <- basic_table() \%>\%
-  summarize_logistic(conf_level = 0.95) \%>\%
+  summarize_logistic(
+    conf_level = 0.95,
+    drop_and_remove_str = "_"
+  ) \%>\%
   build_table(df = df)
 result1
 
 result2 <- basic_table() \%>\%
-  summarize_logistic(conf_level = 0.95) \%>\%
+  summarize_logistic(
+    conf_level = 0.95,
+    drop_and_remove_str = "_"
+  ) \%>\%
   build_table(df = df2)
 result2
+}
+
 }

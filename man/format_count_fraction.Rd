@@ -9,12 +9,14 @@ format_count_fraction(x, ...)
 \arguments{
 \item{x}{(\code{integer})\cr vector of length 2, count and fraction.}
 
-\item{...}{required for rtables interface.}
+\item{...}{required for \code{rtables} interface.}
 }
 \value{
 a string in the format \verb{count (fraction \%)}. If \code{count} is 0 the format is \code{0}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Formats a count together with fraction with special consideration when count is \code{0}.
 }
 \examples{

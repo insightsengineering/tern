@@ -10,6 +10,7 @@ h_decompose_gg(gg)
 \item{gg}{(\code{ggplot})\cr a graphic to decompose.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 The elements composing the \code{ggplot} are extracted and organized in a
 list containing:
 the panel (\code{panel}),
@@ -24,7 +25,7 @@ library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
+fit_km <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
@@ -34,7 +35,8 @@ gg <- h_ggkm(
   yval = "Survival",
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-  title = "tt"
+  title = "tt",
+  footnotes = "ff"
 )
 
 g_el <- h_decompose_gg(gg)
@@ -48,4 +50,3 @@ grid::grid.draw(with(g_el, cbind(ylab, yaxis)))
 }
 
 }
-\keyword{internal}

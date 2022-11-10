@@ -1,10 +1,5 @@
-library(scda)
-library(dplyr)
-
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
-
 testthat::test_that("s_coxph_pairwise works with default arguments and no stratification factors", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
@@ -30,7 +25,7 @@ testthat::test_that("s_coxph_pairwise works with default arguments and no strati
 })
 
 testthat::test_that("s_coxph_pairwise works with customized arguments and no stratification factors", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
@@ -57,7 +52,7 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and no str
 })
 
 testthat::test_that("s_coxph_pairwise works with default arguments and stratification factors", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
@@ -83,7 +78,7 @@ testthat::test_that("s_coxph_pairwise works with default arguments and stratific
 })
 
 testthat::test_that("s_coxph_pairwise works with customized arguments and stratification factors", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
@@ -111,7 +106,7 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and strati
 
 
 testthat::test_that("coxph_pairwise works with default arguments and no stratification factors", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
@@ -142,7 +137,7 @@ testthat::test_that("coxph_pairwise works with default arguments and no stratifi
 })
 
 testthat::test_that("coxph_pairwise works with customized arguments and no stratification factors", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
@@ -175,7 +170,7 @@ testthat::test_that("coxph_pairwise works with customized arguments and no strat
 
 
 testthat::test_that("coxph_pairwise works with default arguments and stratification factors", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
@@ -207,7 +202,7 @@ testthat::test_that("coxph_pairwise works with default arguments and stratificat
 })
 
 testthat::test_that("coxph_pairwise works with customized arguments and stratification factors", {
-  adtte_f <- adtte %>%
+  adtte_f <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
@@ -238,4 +233,43 @@ testthat::test_that("coxph_pairwise works with customized arguments and stratifi
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
+})
+
+
+testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by survival::survdiff()", {
+  x1 <- runif(1, 200, 400) %>% floor()
+  adtte_f <- adtte_raw %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(is_event = CNSR == 0)
+  adtte_f <- adtte_f[1:x1, ]
+  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+
+  result <- s_coxph_pairwise(
+    df = df,
+    .ref_group = df_ref,
+    .in_ref_col = FALSE,
+    .var = "AVAL",
+    is_event = "is_event",
+    strat = NULL
+  )
+
+  data <- rbind(df_ref, df)
+  group <- factor(rep(c("ref", "x"), c(nrow(df_ref), nrow(df))), levels = c("ref", "x"))
+  .in_ref_col <- FALSE
+  .var <- "AVAL"
+  is_event <- "is_event"
+  assert_df_with_variables(df, list(tte = .var, is_event = is_event))
+  df_cox <- data.frame(
+    tte = data[[.var]],
+    is_event = data[[is_event]],
+    arm = group
+  )
+  orginal_survdiff <- survival::survdiff(
+    survival::Surv(tte, is_event) ~ arm,
+    data = df_cox
+  )
+  log_rank_pvalue <- 1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
+
+  testthat::expect_equal(as.numeric(result$pvalue), log_rank_pvalue, tolerance = 0.000001)
 })

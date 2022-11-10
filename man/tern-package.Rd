@@ -17,28 +17,23 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: NEST \email{basel.nestcicd@roche.com}
+\strong{Maintainer}: Joe Zhu \email{joe.zhu@roche.com}
 
 Authors:
 \itemize{
-  \item Saibah Chohan \email{saibah.chohan@roche.com}
-  \item Francois Collin \email{francois.collin@contractors.roche.com}
-  \item Nick Paszty \email{paszty.nicholas@gene.com}
-  \item Ting Qi \email{qit3@gene.com}
-  \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
+  \item Daniel Sabanés Bové \email{daniel.sabanes_bove@roche.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
-  \item Adrian Waddell \email{adrian.waddell@roche.com}
   \item Heng Wang \email{wang.heng@gene.com}
-  \item Godwin Yung \email{yungg@gene.com}
-  \item Carreras Maximo \email{maximo.carreras@roche.com}
-  \item Zhao Rui \email{zhaor8@gene.com}
-  \item Wojciech Wojciak \email{wojciech.wojciak@contractors.roche.com}
+  \item Francois Collin
+  \item Adrian Waddell \email{adrian.waddell@gene.com}
+  \item Pawel Rucki \email{pawel.rucki@roche.com}
+  \item Chendi Liao \email{chendi.liao@roche.com}
+  \item Jennifer Li \email{li.jing@gene.com}
 }
 
 Other contributors:
 \itemize{
-  \item Roche [copyright holder, funder]
-  \item Audrey Boruvka \email{audrey.boruvka@roche.com} [contributor]
+  \item F. Hoffmann-La Roche AG [copyright holder, funder]
 }
 
 }

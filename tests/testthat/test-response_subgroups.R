@@ -1,5 +1,4 @@
-library(scda)
-
+# Local data pre-processing
 preprocess_adrs <- function(adrs, n_records = 20) {
   adrs_labels <- formatters::var_labels(adrs)
   adrs <- adrs %>%
@@ -17,12 +16,11 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
-adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
-adrs_100 <- adrs %>%
+adrs_100 <- adrs_raw %>%
   preprocess_adrs(n_records = 100)
 
-adrs_200 <- adrs %>%
+adrs_200 <- adrs_raw %>%
   preprocess_adrs(n_records = 200)
 
 testthat::test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {
@@ -366,10 +364,10 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected when 0 obs in 
       "n", "100", "", "50", "23", "19", "7", "1", "B: Placebo", "Response (%)",
       "71.0%", "", "66.0%", "65.2%", "78.9%", "100.0%", "100.0%", "A: Drug X",
       "n", "100", "", "56", "26", "15", "3", "0", "A: Drug X", "Response (%)",
-      "90.0%", "", "87.5%", "92.3%", "100.0%", "66.7%", "NA%", " ", "Odds Ratio",
+      "90.0%", "", "87.5%", "92.3%", "100.0%", "66.7%", "NA", " ", "Odds Ratio",
       "3.68", "", "3.61", "6.40", ">999.99", "<0.01", "NA", " ", "95% CI",
       "(1.68, 8.04)", "", "(1.35, 9.65)", "(1.19, 34.29)", "(0.00, >999.99)",
-      "(0.00, >999.99)", "(NA, NA)", " ", "p-value (Chi-Squared Test)",
+      "(0.00, >999.99)", "NA", " ", "p-value (Chi-Squared Test)",
       "0.0007", "", "0.0083", "0.0189", "0.0585", "0.1074", "NA"
     ),
     .Dim = c(9L, 9L)

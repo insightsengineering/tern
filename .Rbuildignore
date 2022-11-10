@@ -1,3 +1,7 @@
+^renv$
+^renv\.lock$
+CODE_OF_CONDUCT.md
+SECURITY.md
 design/*
 ^\.CI-FORCE-RELEASE-VERSION$
 ^.*\.Rproj$
@@ -5,6 +9,7 @@ design/*
 ^_pkgdown\.yml$
 ^docs$
 ^\.github$
+^\.git$
 README.*
 man-roxygen/*
 TODO\.md
@@ -15,3 +20,4 @@ TODO\.md
 ^staged_dependencies\.yaml$
 ^LICENSE\.md$
 ^\.gitlab-ci\.yml$
+^man-roxygen$

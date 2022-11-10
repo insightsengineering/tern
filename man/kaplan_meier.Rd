@@ -15,7 +15,7 @@
 }}
 
 \item{control_surv}{a (\code{list}) of parameters for comparison details, specified by using \cr
-the helper function \link{control_surv_timepoint}. Some possible parameter options are: \cr
+the helper function \code{\link{control_surv_timepoint}}. Some possible parameter options are: \cr
 \itemize{
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
 \item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
@@ -40,6 +40,8 @@ an optimal tick position on the x axis.}
 \item{ylab}{(\code{string})\cr label of y-axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
+
+\item{footnotes}{(\code{string})\cr footnotes for plot.}
 
 \item{col}{(\code{character})\cr lines colors. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
@@ -90,5 +92,5 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 estimating median survival time per group}
 }
 \description{
-Kaplan-Meier Plot
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }

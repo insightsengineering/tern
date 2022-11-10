@@ -101,26 +101,27 @@ contains a vector for the count and fraction.
 \code{\link[=a_count_cumulative]{a_count_cumulative()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 Summarize cumulative counts of a (\code{numeric}) vector that is less than, less or equal to,
 greater than, or greater or equal to user-specific thresholds.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_count_cumulative}: Helper function to calculate count and fraction of
+\item \code{h_count_cumulative()}: Helper function to calculate count and fraction of
 \code{x} values in the lower or upper tail given a threshold.
 
-\item \code{s_count_cumulative}: Statistics function that produces a named lists given a
+\item \code{s_count_cumulative()}: Statistics function that produces a named lists given a
 (\code{numeric}) vector of thresholds.
 
-\item \code{a_count_cumulative}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_cumulative()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_cumulative}: Layout creating function which can be be used for creating
+\item \code{count_cumulative()}: Layout creating function which can be be used for creating
 summary tables for cumulative counts of a variable. The ellipsis (\code{...}) conveys
 arguments to \code{s_count_cumulative()}, for instance \code{lower_tail = FALSE} if upper tail
 should be accounted for.
-}}
 
+}}
 \examples{
 set.seed(1, kind = "Mersenne-Twister")
 x <- c(sample(1:10, 10), NA)
@@ -129,14 +130,23 @@ h_count_cumulative(x, 5, .N_col = .N_col)
 h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+# Internal function - s_count_cumulative
+\dontrun{
 s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
+}
+
+# Internal function - a_count_cumulative
+\dontrun{
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-# so that the rtables formatting function `format_count_fraction()` can be applied correctly.
+# so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_cumulative, .ungroup_stats = "count_fraction")
 afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
+}
+
 library(scda)
-ADSL <- synthetic_cdisc_data("latest")$adsl
+ADSL <- synthetic_cdisc_dataset("latest", "adsl")
+
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
@@ -145,4 +155,6 @@ basic_table() \%>\%
     thresholds = c(40, 60)
   ) \%>\%
   build_table(ADSL)
+
 }
+\keyword{internal}

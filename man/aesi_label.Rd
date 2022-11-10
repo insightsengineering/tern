@@ -7,24 +7,25 @@
 aesi_label(aesi, scope = NULL)
 }
 \arguments{
-\item{aesi}{(\code{character})\cr with standardized MedDRA query name (e.g. SMQzzNAM) or customized query
-name (e.g. CQzzNAM).}
+\item{aesi}{(\code{character})\cr with standardized MedDRA query name (e.g. \code{SMQzzNAM}) or customized query
+name (e.g. \code{CQzzNAM}).}
 
-\item{scope}{(\code{character})\cr with scope of query (e.g. SMQzzSC).}
+\item{scope}{(\code{character})\cr with scope of query (e.g. \code{SMQzzSC}).}
 }
 \value{
 A \code{string} with the standard label for the AE basket.
 }
 \description{
-Labels for Adverse Event Baskets
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
 library(scda)
-adae <- synthetic_cdisc_data("latest")$adae
+adae <- synthetic_cdisc_dataset("latest", "adae")
 
 # Standardized query label includes scope.
 aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
 
 # Customized query label.
 aesi_label(adae$CQ01NAM)
+
 }

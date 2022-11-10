@@ -3,6 +3,8 @@
 #' Create a forest plot from any [rtables::rtable()] object that has a
 #' column with a single value and a column with 2 values.
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams argument_convention
 #' @param tbl (`rtable`)
 #' @param col_x (`integer`)\cr column index with estimator. By default tries to get this from
@@ -30,7 +32,8 @@
 #'  sample size used to calculate the estimator. If `NULL`, the same symbol
 #'  size is used for all subgroups. By default tries to get this from
 #'  `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
-#'
+#' @param col (`character`)\cr color(s).
+#' @return (`gtree`) object containing the forest plot and table
 #' @export
 #'
 #' @examples
@@ -39,11 +42,11 @@
 #' library(dplyr)
 #' library(forcats)
 #' library(rtables)
+#' library(nestcolor)
 #'
-#' adrs <- synthetic_cdisc_data("latest")$adrs
-#'
+#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
 #' n_records <- 20
-#' adrs_labels <- formatters::var_labels(adrs)
+#' adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
 #' adrs <- adrs %>%
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
@@ -55,25 +58,23 @@
 #'     rsp = AVALC == "CR"
 #'   )
 #' formatters::var_labels(adrs) <- c(adrs_labels, "Response")
-#'
 #' df <- extract_rsp_subgroups(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
 #'   data = adrs
 #' )
-#'
 #' # Full commonly used response table.
+#'
 #' tbl <- basic_table() %>%
 #'   tabulate_rsp_subgroups(df)
-#'
 #' p <- g_forest(tbl)
 #'
 #' draw_grob(p)
 #'
 #' # Odds ratio only table.
+#'
 #' tbl_or <- basic_table() %>%
 #'   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 #' tbl_or
-#'
 #' p <- g_forest(
 #'   tbl_or,
 #'   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
@@ -82,12 +83,9 @@
 #' draw_grob(p)
 #'
 #' # Survival forest plot example.
-#'
-#' adtte <- synthetic_cdisc_data("latest")$adtte
-#'
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- formatters::var_labels(adtte)
-#'
+#' adtte_labels <- formatters::var_labels(adtte, fill = TRUE)
 #' adtte_f <- adtte %>%
 #'   filter(
 #'     PARAMCD == "OS",
@@ -101,15 +99,13 @@
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
 #'   )
-#'
-#' labels <- c(
+#' labels <- list(
 #'   "ARM" = adtte_labels["ARM"],
 #'   "SEX" = adtte_labels["SEX"],
 #'   "AVALU" = adtte_labels["AVALU"],
 #'   "is_event" = "Event Flag"
 #' )
-#' formatters::var_labels(adtte_f)[names(labels)] <- labels
-#'
+#' formatters::var_labels(adtte_f)[names(labels)] <- as.character(labels)
 #' df <- extract_survival_subgroups(
 #'   variables = list(
 #'     tte = "AVAL",
@@ -118,21 +114,15 @@
 #'   ),
 #'   data = adtte_f
 #' )
-#'
 #' table_hr <- basic_table() %>%
 #'   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
-#'
 #' g_forest(table_hr)
-#'
-#'
-#' # Works with any rtable.
-#'
+#' # Works with any `rtable`.
 #' tbl <- rtable(
 #'   header = c("E", "CI", "N"),
 #'   rrow("", 1, c(.8, 1.2), 200),
 #'   rrow("", 1.2, c(1.1, 1.4), 50)
 #' )
-#'
 #' g_forest(
 #'   tbl = tbl,
 #'   col_x = 1,
@@ -141,7 +131,6 @@
 #'   x_at = c(0.5, 1, 2),
 #'   col_symbol_size = 3
 #' )
-#'
 #' tbl <- rtable(
 #'   header = rheader(
 #'     rrow("", rcell("A", colspan = 2)),
@@ -150,7 +139,6 @@
 #'   rrow("row 1", 1, c(.8, 1.2)),
 #'   rrow("row 2", 1.2, c(1.1, 1.4))
 #' )
-#'
 #' g_forest(
 #'   tbl = tbl,
 #'   col_x = 1,
@@ -173,20 +161,26 @@ g_forest <- function(tbl, # nolint
                      width_columns = NULL,
                      width_forest = grid::unit(1, "null"),
                      col_symbol_size = attr(tbl, "col_symbol_size"),
+                     col = getOption("ggplot2.discrete.colour")[1],
                      draw = TRUE,
                      newpage = TRUE) {
-  stopifnot(inherits(tbl, "VTableTree"))
+  checkmate::assert_class(tbl, "VTableTree")
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
+  if (is.null(col)) {
+    col <- "blue"
+  }
 
-  assertthat::assert_that(!is.null(col_x), msg = "Please specify `col_x` manually.")
-  assertthat::assert_that(!is.null(col_ci), msg = "Please specify `col_ci` manually.")
-  stopifnot(
-    col_x > 0 && col_x <= nc,
-    col_ci > 0 && col_ci <= nc,
-    is.null(col_symbol_size) || col_symbol_size > 0 && col_symbol_size <= nc
-  )
+  checkmate::assert_number(col_x, lower = 0, upper = nc, null.ok = FALSE)
+  checkmate::assert_number(col_ci, lower = 0, upper = nc, null.ok = FALSE)
+  checkmate::assert_number(col_symbol_size, lower = 0, upper = nc, null.ok = TRUE)
+  checkmate::assert_true(col_x > 0)
+  checkmate::assert_true(col_ci > 0)
+  checkmate::assert_character(col)
+  if (!is.null(col_symbol_size)) {
+    checkmate::assert_true(col_symbol_size > 0)
+  }
 
   x_e <- vapply(seq_len(nr), function(i) {
     xi <- as.vector(tbl[i, col_x, drop = TRUE])
@@ -249,6 +243,7 @@ g_forest <- function(tbl, # nolint
     width_columns,
     width_forest,
     symbol_size = symbol_size,
+    col = col,
     vp = grid::plotViewport(margins = rep(1, 4))
   )
 
@@ -299,13 +294,16 @@ g_forest <- function(tbl, # nolint
 #' # default radius is 1/3.5 lines
 #' symbol_scale <- c(1, 1.25, 1.5)
 #'
-#' p <- tern:::forest_grob(tbl, x, lower, upper,
+#' # Internal function - forest_grob
+#' \dontrun{
+#' p <- forest_grob(tbl, x, lower, upper,
 #'   vline = 1, forest_header = c("A", "B"),
 #'   x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
 #'   vp = grid::plotViewport(margins = c(1, 1, 1, 1))
 #' )
 #'
 #' draw_grob(p)
+#' }
 forest_grob <- function(tbl,
                         x,
                         lower,
@@ -319,29 +317,31 @@ forest_grob <- function(tbl,
                         width_columns = NULL,
                         width_forest = grid::unit(1, "null"),
                         symbol_size = NULL,
+                        col = "blue",
                         name = NULL,
                         gp = NULL,
                         vp = NULL) {
-  stopifnot(
-    !is.null(vline) || is.null(forest_header),
-    is.null(forest_header) || length(forest_header) == 2,
-    is.null(vline) || length(vline) == 1
-  )
-
   nr <- nrow(tbl)
-  stopifnot(
-    length(x) == nr,
-    length(lower) == nr,
-    length(upper) == nr,
-    is.null(symbol_size) || length(symbol_size) == nr
-  )
+  if (is.null(vline)) {
+    checkmate::assert_true(is.null(forest_header))
+  } else {
+    checkmate::assert_number(vline)
+    checkmate::assert_character(forest_header, len = 2, null.ok = TRUE)
+  }
+
+  checkmate::assert_numeric(x, len = nr)
+  checkmate::assert_numeric(lower, len = nr)
+  checkmate::assert_numeric(upper, len = nr)
+  checkmate::assert_numeric(symbol_size, len = nr, null.ok = TRUE)
+  checkmate::assert_character(col)
 
   if (is.null(symbol_size)) {
     symbol_size <- rep(1, nr)
   }
 
   if (is.null(xlim)) {
-    xlim <- grDevices::extendrange(c(x, lower, upper))
+    r <- range(c(x, lower, upper), na.rm = TRUE)
+    xlim <- r + c(-0.05, 0.05) * diff(r)
   }
 
   if (logx) {
@@ -368,7 +368,7 @@ forest_grob <- function(tbl,
   # Get table content as matrix form.
   mf <- matrix_form(tbl)
 
-  # Use rtables indent_string eventually.
+  # Use `rtables` indent_string eventually.
   mf$strings[, 1] <- paste0(
     strrep("    ", c(rep(0, attr(mf, "nrow_header")), mf$row_info$indent)),
     mf$strings[, 1]
@@ -378,7 +378,7 @@ forest_grob <- function(tbl,
 
   if (any(mf$display[, 1] == FALSE)) stop("row names need to be always displayed")
 
-  # Preprocess the data to be used in lapply and cell_in_rows.
+  # Pre-process the data to be used in lapply and cell_in_rows.
   to_args_for_cell_in_rows_fun <- function(part = c("body", "header"),
                                            underline_colspan = FALSE) {
     part <- match.arg(part)
@@ -474,7 +474,7 @@ forest_grob <- function(tbl,
         children = do.call(
           grid::gList,
           Map(
-            function(xi, li, ui, row_index, size_i) {
+            function(xi, li, ui, row_index, size_i, col) {
               forest_dot_line(
                 xi,
                 li,
@@ -482,6 +482,7 @@ forest_grob <- function(tbl,
                 row_index,
                 xlim,
                 symbol_size = size_i,
+                col = col,
                 datavp = data_forest_vp
               )
             },
@@ -490,6 +491,7 @@ forest_grob <- function(tbl,
             upper,
             seq_along(x),
             symbol_size,
+            col,
             USE.NAMES = FALSE
           )
         ),
@@ -508,12 +510,9 @@ cell_in_rows <- function(row_name,
                          cell_spans,
                          row_index,
                          underline_colspan = FALSE) {
-  stopifnot(
-    length(cells) == length(cell_spans)
-  )
   checkmate::assert_string(row_name)
   checkmate::assert_character(cells, min.len = 1, any.missing = FALSE)
-  checkmate::assert_numeric(cell_spans, min.len = 1, any.missing = FALSE)
+  checkmate::assert_numeric(cell_spans, len = length(cells), any.missing = FALSE)
   checkmate::assert_number(row_index)
   checkmate::assert_flag(underline_colspan)
 
@@ -601,6 +600,7 @@ forest_dot_line <- function(x, # nolint
                             row_index,
                             xlim,
                             symbol_size = 1,
+                            col = "blue",
                             datavp) {
   ci <- c(lower, upper)
   if (any(!is.na(c(x, ci)))) {
@@ -658,7 +658,7 @@ forest_dot_line <- function(x, # nolint
             )
           ),
           vp = datavp,
-          gp = grid::gpar(col = "blue", fill = "blue")
+          gp = grid::gpar(col = col, fill = col)
         )
       ),
       vp = grid::vpPath(paste0("forest-", row_index))
@@ -669,8 +669,6 @@ forest_dot_line <- function(x, # nolint
 }
 
 #' Create a Viewport Tree for the Forest Plot
-#'
-#' @noRd
 #'
 #' @examples
 #' library(grid)
@@ -685,10 +683,15 @@ forest_dot_line <- function(x, # nolint
 #'   rrow("row 3", 1.2, 0.8, 1.2)
 #' )
 #'
-#' v <- tern:::forest_viewport(tbl)
+#' # Internal function - forest_viewport
+#' \dontrun{
+#' v <- forest_viewport(tbl)
 #'
 #' grid::grid.newpage()
 #' showViewport(v)
+#' }
+#'
+#' @keywords internal
 forest_viewport <- function(tbl,
                             width_row_names = NULL,
                             width_columns = NULL,
@@ -696,12 +699,14 @@ forest_viewport <- function(tbl,
                             gap_column = grid::unit(1, "lines"),
                             gap_header = grid::unit(1, "lines"),
                             mat_form = NULL) {
-  stopifnot(
-    inherits(tbl, "VTableTree"),
-    is.null(width_row_names) || grid::is.unit(width_row_names),
-    is.null(width_columns) || grid::is.unit(width_columns),
-    grid::is.unit(width_forest)
-  )
+  checkmate::assert_class(tbl, "VTableTree")
+  checkmate::assert_true(grid::is.unit(width_forest))
+  if (!is.null(width_row_names)) {
+    checkmate::assert_true(grid::is.unit(width_row_names))
+  }
+  if (!is.null(width_columns)) {
+    checkmate::assert_true(grid::is.unit(width_columns))
+  }
 
   if (is.null(mat_form)) mat_form <- matrix_form(tbl)
 
@@ -827,57 +832,4 @@ vp_forest_table_part <- function(nrow,
 #'
 grid.forest <- function(...) { # nolint
   grid::grid.draw(forest_grob(...)) # nolint
-}
-
-## To be deprecated ----
-
-#' Assign value to attribute footnote of object x
-#'
-#' @param x an object
-#' @param value character vector
-#'
-#' @export
-#'
-#' @examples
-#' x <- table(iris$Species)
-#' footnotes(x) <- "Species are equally distributed"
-#' attributes(x)
-`footnotes<-` <- function(x, value = NULL) { # nolint
-  attr(x, "footnote") <- value
-  x
-}
-
-
-#' Retrieve value from attribute footnote of object x
-#'
-#' @param x an object
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' x <- table(iris$Species)
-#' footnotes(x) <- "Species are equally distributed"
-#' footnotes(x)
-#' }
-footnotes <- function(x) {
-  attr(x, "footnote")
-}
-
-#' Add more footnotes
-#'
-#' @param x an object
-#' @param value character vector
-#'
-#' @export
-#'
-#' @examples
-#' x <- table(iris$Species)
-#' footnotes(x) <- "Species are equally distributed"
-#' footnotes(x)
-#' add_footnotes(x) <- "Add more footnotes"
-#' footnotes(x)
-`add_footnotes<-` <- function(x, value) { # nolint
-  footnotes(x) <- c(footnotes(x), value)
-  x
 }

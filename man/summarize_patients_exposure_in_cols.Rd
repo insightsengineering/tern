@@ -27,7 +27,7 @@ summarize_patients_exposure_in_cols(
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{id}{(\code{string}) \cr subject variable name.}
@@ -42,8 +42,6 @@ by a statistics function.}
 be used as label.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -64,18 +62,20 @@ Set to \code{FALSE} when the required column split has been done already earlier
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Counting the number of patients and summing analysis value (i.e exposure values) across all patients
 when a column table layout is required.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_patients_sum_exposure}: Statistics function which counts numbers
+\item \code{s_count_patients_sum_exposure()}: Statistics function which counts numbers
 of patients and the sum of exposure across all patients.
 
-\item \code{summarize_patients_exposure_in_cols}: Layout creating function which adds the count
+\item \code{summarize_patients_exposure_in_cols()}: Layout creating function which adds the count
 statistics of patients and the sum of analysis value in the column layout as content rows.
-}}
 
+}}
 \examples{
 set.seed(1)
 df <- data.frame(
@@ -92,12 +92,16 @@ adsl <- data.frame(
   stringsAsFactors = TRUE
 )
 
+# Internal function - s_count_patients_sum_exposure
+\dontrun{
 s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
 s_count_patients_sum_exposure(
   df = df,
   .N_col = nrow(adsl),
   custom_label = "some user's custom label"
 )
+}
+
 
 lyt <- basic_table() \%>\%
   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
@@ -128,3 +132,4 @@ lyt4 <- basic_table() \%>\%
 result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 result4
 }
+\keyword{internal}

@@ -12,10 +12,10 @@ control_coxph(
 }
 \arguments{
 \item{pval_method}{(\code{string}) \cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank", can also be set to "wald" or "likelihood".}
+Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"likelihood"}.}
 
-\item{ties}{(\code{string}) \cr specifying the method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". see more in \code{\link[survival:coxph]{survival::coxph()}}}
+\item{ties}{(\code{string}) \cr specifying the method for tie handling. Default is \code{"efron"},
+can also be set to \code{"breslow"} or \code{"exact"}. see more in \code{\link[survival:coxph]{survival::coxph()}}}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
@@ -23,6 +23,8 @@ can also be set to "breslow" or "exact". see more in \code{\link[survival:coxph]
 A list of components with the same names as the arguments
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is an auxiliary function for controlling arguments for \code{CoxPH} model, typically used internally to specify
 details of \code{CoxPH} model for \link{s_coxph_pairwise}. \code{conf_level} refers to Hazard Ratio estimation.
 }

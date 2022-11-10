@@ -28,18 +28,21 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 }}
 }
 \description{
-Create an rtable of pairwise stratified or unstratified CoxPH analysis results.
+#' @description \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
+Create an \code{rtable} of pairwise stratified or unstratified CoxPH analysis results.
 }
 \examples{
 \dontrun{
 library(scda)
 library(dplyr)
 
-adtte <- synthetic_cdisc_data("latest")$adtte \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 
-tern:::h_tbl_coxph_pairwise(
+h_tbl_coxph_pairwise(
   df = adtte,
   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
   control_coxph_pw = control_coxph(conf_level = 0.9)
@@ -47,4 +50,3 @@ tern:::h_tbl_coxph_pairwise(
 }
 
 }
-\keyword{internal}

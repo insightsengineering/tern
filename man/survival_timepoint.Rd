@@ -71,7 +71,7 @@ by a statistics function.}
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
 \item{control}{a (\code{list}) of parameters for comparison details, specified by using \cr
-the helper function \link{control_surv_timepoint}. Some possible parameter options are: \cr
+the helper function \code{\link{control_surv_timepoint}}. Some possible parameter options are: \cr
 \itemize{
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
 \item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
@@ -89,7 +89,7 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the o
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the rtables to
+\item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the \code{rtables} to
 avoid warnings from duplicate table names.}
 
 \item{var_labels}{character for label.}
@@ -124,43 +124,55 @@ The statistics are:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Summarize patient's survival rate and difference of survival rates between groups at a time point.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_surv_timepoint}: Statistics Function which analyzes survival rate.
+\item \code{s_surv_timepoint()}: Statistics Function which analyzes survival rate.
 
-\item \code{a_surv_timepoint}: Formatted Analysis function which can be further customized by calling
+\item \code{a_surv_timepoint()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{s_surv_timepoint_diff}: Statistics Function which analyzes difference between two survival rates.
+\item \code{s_surv_timepoint_diff()}: Statistics Function which analyzes difference between two survival rates.
 
-\item \code{a_surv_timepoint_diff}: Formatted Analysis function which can be further customized by calling
+\item \code{a_surv_timepoint_diff()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{surv_timepoint}: Analyze Function which adds the survival rate analysis to the input layout.
+\item \code{surv_timepoint()}: Analyze Function which adds the survival rate analysis to the input layout.
 Note that additional formatting arguments can be used here.
-}}
 
+}}
 \examples{
 library(scda)
 library(dplyr)
 
-ADTTE <- synthetic_cdisc_data("latest")$adtte
-ADTTE_f <- ADTTE \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte")
+adtte_f <- adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
-df <- ADTTE_f \%>\%
+df <- adtte_f \%>\%
   filter(ARMCD == "ARM A")
 
+# Internal function - s_surv_timepoint
+\dontrun{
 s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
+}
+
+# Internal function - a_surv_timepoint
+\dontrun{
 a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-df_ref_group <- ADTTE_f \%>\%
+}
+
+df_ref_group <- adtte_f \%>\%
   filter(ARMCD == "ARM B")
 
+# Internal function - s_surv_timepoint_diff
+\dontrun{
 s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 s_surv_timepoint_diff(
   df,
@@ -170,6 +182,10 @@ s_surv_timepoint_diff(
   time_point = 7,
   is_event = "is_event"
 )
+}
+
+# Internal function - a_surv_timepoint_diff
+\dontrun{
 a_surv_timepoint_diff(
   df,
   df_ref_group,
@@ -178,6 +194,8 @@ a_surv_timepoint_diff(
   time_point = 7,
   is_event = "is_event"
 )
+}
+
 
 # Survival at given time points.
 basic_table() \%>\%
@@ -189,7 +207,7 @@ basic_table() \%>\%
     is_event = "is_event",
     time_point = 7
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 
 # Difference in survival at given time points.
 basic_table() \%>\%
@@ -203,7 +221,7 @@ basic_table() \%>\%
     method = "surv_diff",
     .indent_mods = c("rate_diff" = 0L, "rate_diff_ci" = 2L, "ztest_pval" = 2L)
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 
 # Survival and difference in survival at given time points.
 basic_table() \%>\%
@@ -216,5 +234,6 @@ basic_table() \%>\%
     time_point = 9,
     method = "both"
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 }
+\keyword{internal}

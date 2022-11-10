@@ -4,7 +4,7 @@
 \alias{h_km_layout}
 \title{Helper: KM Layout}
 \usage{
-h_km_layout(data, g_el, title, annot_at_risk = TRUE)
+h_km_layout(data, g_el, title, footnotes, annot_at_risk = TRUE)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
@@ -13,11 +13,15 @@ h_km_layout(data, g_el, title, annot_at_risk = TRUE)
 
 \item{title}{(\code{string})\cr title for plot.}
 
+\item{footnotes}{(\code{string})\cr footnotes for plot.}
+
 \item{annot_at_risk}{(\code{flag})\cr compute and add the annotation table
 reporting the number of patient at risk matching the main grid of the
 Kaplan-Meier curve.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
 }
 \details{
@@ -25,11 +29,11 @@ The layout corresponds to a grid of two columns and five rows of unequal
 dimensions. Most of the dimension are fixed, only the curve is flexible and
 will accommodate with the remaining free space.
 \itemize{
-\item The left column gets the annotation of the ggplot (y-axis) and the
+\item The left column gets the annotation of the \code{ggplot} (y-axis) and the
 names of the strata for the patient at risk tabulation.
 The main constraint is about the width of the columns which must allow the
 writing of the strata name.
-\item The right column receive the ggplot, the legend, the x-axis and the
+\item The right column receive the \code{ggplot}, the legend, the x-axis and the
 patient at risk table.
 }
 }
@@ -39,7 +43,7 @@ library(scda)
 library(dplyr)
 library(survival)
 
-fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
+fit_km <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
@@ -48,12 +52,11 @@ gg <- h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-  title = "tt", yval = "Survival"
+  title = "tt", footnotes = "ff", yval = "Survival"
 )
 g_el <- h_decompose_gg(gg)
-lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
+lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t", footnotes = "f")
 grid.show.layout(lyt)
 }
 
 }
-\keyword{internal}

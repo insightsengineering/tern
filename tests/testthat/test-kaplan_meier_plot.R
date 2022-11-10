@@ -1,12 +1,7 @@
-library(scda)
-library(dplyr)
-library(survival)
-
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte # nolintr
-
+# Local data pre-processing
 test_fit <- local({
-  dta <- adtte[adtte$PARAMCD == "OS", ]
-  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
+  dta <- adtte_raw[adtte_raw$PARAMCD == "OS", ]
+  survival::survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
 })
 
 # h_data_plot ----
@@ -24,10 +19,10 @@ testthat::test_that("h_data_plot works as expected", {
 })
 
 testthat::test_that("h_data_plot respects the ordering of the arm variable factor levels", {
-  data <- adtte %>%
+  data <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
-    survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+    survival::survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
   result <- h_data_plot(data)
   testthat::expect_is(result, "tbl_df")
   testthat::expect_is(result$strata, "factor")
@@ -68,6 +63,12 @@ testthat::test_that("h_xticks works with xticks numeric", {
   testthat::expect_identical(result, expected)
 })
 
+testthat::test_that("h_xticks returns error when xticks non-numeric", {
+  testthat::expect_error(
+    h_data_plot(test_fit) %>% h_xticks(xticks = TRUE)
+  )
+})
+
 testthat::test_that("h_xticks works with max_time only", {
   expected <- c(0, 1000, 2000, 3000)
   result <- h_data_plot(test_fit, max_time = 3000) %>%
@@ -106,7 +107,7 @@ testthat::test_that("h_tbl_median_surv estimates median survival time with CI", 
 })
 
 testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
-  df <- adtte %>%
+  df <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
@@ -141,4 +142,63 @@ testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
     class = "data.frame"
   )
   testthat::expect_identical(result2, expected2)
+})
+
+testthat::test_that("h_grob_coxph returns error when only one arm", {
+  df <- adtte_raw %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  testthat::expect_silent(
+    h_grob_coxph(df = df, variables = variables)
+  )
+})
+
+testthat::test_that("g_km works with default settings", {
+  df <- adtte_raw %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  testthat::expect_silent(
+    g_km(df = df, variables = variables)
+  )
+})
+
+testthat::test_that("g_km works with title/footnotes and annotation", {
+  df <- adtte_raw %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  testthat::expect_silent(
+    g_km(
+      df = df,
+      variables = variables,
+      title = "KM Plot",
+      footnotes = "footnotes",
+      annot_coxph = TRUE
+    )
+  )
+})
+
+testthat::test_that("g_km works with custom settings", {
+  df <- adtte_raw %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  testthat::expect_silent(
+    g_km(
+      df = df,
+      variables = variables,
+      yval = "Failure",
+      annot_at_risk = FALSE,
+      annot_surv_med = FALSE,
+      lty = 1,
+      xticks = 500,
+      max_time = NULL
+    )
+  )
 })

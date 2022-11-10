@@ -8,6 +8,7 @@
 #' Therefore the corresponding layout needs to use `split_fun = drop_split_levels` in the `split_rows_by`
 #' calls. Use `drop = FALSE` if you would like to show all occurrences.
 #'
+#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #'
 #' @name count_occurrences
@@ -51,26 +52,23 @@ s_count_occurrences <- function(df,
                                 drop = TRUE,
                                 .var = "MHDECOD",
                                 id = "USUBJID") {
-  assertthat::assert_that(
-    is_df_with_variables(df, list(range = .var, id = id)),
-    is_nonnegative_count(.N_col),
-    assertthat::is.flag(drop),
-    is_character_or_factor(df[[.var]]),
-    is_character_or_factor(df[[id]])
-  )
+  checkmate::assert_flag(drop)
+  assert_df_with_variables(df, list(range = .var, id = id))
+  checkmate::assert_count(.N_col)
+  checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(df[[id]], classes = c("factor", "character"))
   denom <- match.arg(denom)
 
   occurrences <- if (drop) {
     # Note that we don't try to preserve original level order here since a) that would required
     # more time to look up in large original levels and b) that would fail for character input variable.
     occurrence_levels <- sort(unique(.df_row[[.var]]))
-    assertthat::assert_that(
-      length(occurrence_levels) > 0,
-      msg = paste(
+    if (length(occurrence_levels) == 0) {
+      stop(
         "no empty `.df_row` input allowed when `drop = TRUE`,",
-        "please use `split_fun = drop_split_levels` in the rtables `split_rows_by` calls"
+        " please use `split_fun = drop_split_levels` in the `rtables` `split_rows_by` calls"
       )
-    )
+    }
     factor(df[[.var]], levels = occurrence_levels)
   } else {
     df[[.var]]
@@ -108,7 +106,7 @@ s_count_occurrences <- function(df,
 #' @export
 #'
 #' @examples
-#' #  We need to ungroup `count_fraction` first so that the rtables formatting
+#' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction", "fraction"))
 #' afun(
@@ -123,7 +121,7 @@ a_count_occurrences <- make_afun(
   .formats = c(count = "xx", count_fraction = format_count_fraction, fraction = format_fraction)
 )
 
-#' @describeIn count_occurrences Analyze Function that counts occurrences as part of rtables layouts.
+#' @describeIn count_occurrences Analyze Function that counts occurrences as part of `rtables` layouts.
 #'
 #' @export
 #'
@@ -151,7 +149,7 @@ a_count_occurrences <- make_afun(
 #'   add_colcounts() %>%
 #'   count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 #'
-#' # Apply table layout to data and produce rtable object
+#' # Apply table layout to data and produce `rtable` object
 #' lyt %>%
 #'   build_table(df, alt_counts_df = df_adsl) %>%
 #'   prune_table()

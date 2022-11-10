@@ -61,6 +61,8 @@ Dynamically wrap text.
 This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 }
 \examples{
+# Internal function - split_text_grob
+\dontrun{
 sg <- split_text_grob(text = paste(
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
@@ -95,3 +97,6 @@ grid.draw(split_text_grob(
   just = c("left", "top"), x = 0, y = 1
 ))
 }
+
+}
+\keyword{internal}

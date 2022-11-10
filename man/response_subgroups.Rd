@@ -60,6 +60,8 @@ created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Tabulate statistics such as response rate and odds ratio for population subgroups.
 }
 \details{
@@ -68,28 +70,27 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_rsp_subgroups}: prepares response rates and odds ratios for
+\item \code{extract_rsp_subgroups()}: prepares response rates and odds ratios for
 population subgroups in data frames. Simple wrapper for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and
 \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}. Result is a list of two data frames:
 \code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data}, passed as a
 named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}. \code{groups_lists}
 optionally specifies groupings for \code{subgroups} variables.
 
-\item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
+\item \code{a_response_subgroups()}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
 Returns is a list of Formatted Analysis functions with one element per statistic.
 
-\item \code{tabulate_rsp_subgroups}: table creating function.
+\item \code{tabulate_rsp_subgroups()}: table creating function.
+
 }}
-
 \examples{
-
 # Testing dataset.
 library(scda)
 library(dplyr)
 library(forcats)
 library(rtables)
 
-adrs <- synthetic_cdisc_data("latest")$adrs
+adrs <- synthetic_cdisc_dataset("latest", "adrs")
 adrs_labels <- formatters::var_labels(adrs)
 
 adrs_f <- adrs \%>\%
@@ -102,7 +103,6 @@ adrs_f <- adrs \%>\%
     rsp = AVALC == "CR"
   )
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
-
 # Unstratified analysis.
 df <- extract_rsp_subgroups(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -130,7 +130,11 @@ df_grouped <- extract_rsp_subgroups(
   )
 )
 df_grouped
+# Internal function - a_response_subgroups
+\dontrun{
 a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
+}
+
 
 ## Table with default columns.
 basic_table() \%>\%
@@ -143,3 +147,4 @@ basic_table() \%>\%
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
   )
 }
+\keyword{internal}

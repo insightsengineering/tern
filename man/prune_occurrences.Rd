@@ -38,7 +38,7 @@ first content rows of leaf tables and flags whether these leaf tables should be 
 \item{atleast}{(\code{count} or \code{proportion})\cr threshold which should be met in order to
 keep the row.}
 
-\item{...}{arguments for row or column access, see \link{rtables_access}: either
+\item{...}{arguments for row or column access, see \code{\link{rtables_access}}: either
 \code{col_names} (\code{character}) including the names of the columns which should be used,
 or alternatively \code{col_indices} (\code{integer}) giving the indices directly instead.}
 }
@@ -68,6 +68,8 @@ specified column, and computes the difference of the minimum and maximum.
 specified column, and computes the difference of the minimum and maximum.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Family of constructor and condition functions to flexibly prune occurrence tables.
 The condition functions always return whether the row result is higher than the threshold.
 Since they are of class \code{\link[=CombinationFunction]{CombinationFunction()}} they can be logically combined with other condition
@@ -75,35 +77,35 @@ functions.
 }
 \section{Functions}{
 \itemize{
-\item \code{keep_rows}: constructor for creating pruning functions based on
+\item \code{keep_rows()}: constructor for creating pruning functions based on
 a row condition function. This removes all analysis rows (\code{TableRow}) that should be
 pruned, i.e., don't fulfill the row condition. It removes the sub tree if there are no
 children left.
 
-\item \code{keep_content_rows}: constructor for creating pruning functions based on
+\item \code{keep_content_rows()}: constructor for creating pruning functions based on
 a condition for the (first) content row in leaf tables. This removes all leaf tables where
 the first content row does not fulfill the condition. It does not check individual rows.
 It then proceeds recursively by removing the sub tree if there are no children left.
 
-\item \code{has_count_in_cols}: constructor for creating condition functions on total counts in
+\item \code{has_count_in_cols()}: constructor for creating condition functions on total counts in
 the specified columns.
 
-\item \code{has_count_in_any_col}: constructor for creating condition functions on any of the counts in
+\item \code{has_count_in_any_col()}: constructor for creating condition functions on any of the counts in
 the specified columns satisfying a threshold.
 
-\item \code{has_fraction_in_cols}: constructor for creating condition functions on total fraction in
+\item \code{has_fraction_in_cols()}: constructor for creating condition functions on total fraction in
 the specified columns.
 
-\item \code{has_fraction_in_any_col}: constructor for creating condition functions on any fraction in
+\item \code{has_fraction_in_any_col()}: constructor for creating condition functions on any fraction in
 the specified columns.
 
-\item \code{has_fractions_difference}: constructor for creating condition function that checks the difference
+\item \code{has_fractions_difference()}: constructor for creating condition function that checks the difference
 between the fractions reported in each specified column.
 
-\item \code{has_counts_difference}: constructor for creating condition function that checks the difference
+\item \code{has_counts_difference()}: constructor for creating condition function that checks the difference
 between the counts reported in each specified column.
-}}
 
+}}
 \note{
 Since most table specifications are worded positively, we name our constructor and condition
 functions positively, too. However, note that the result of \code{\link[=keep_rows]{keep_rows()}} says what
@@ -125,16 +127,19 @@ tab <- basic_table() \%>\%
 is_non_empty <- !CombinationFunction(all_zero_or_na)
 prune_table(tab, keep_rows(is_non_empty))
 }
-\dontrun{
 # `keep_content_rows`
+# Internal function - has_count_in_cols
+\dontrun{
 more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
 prune_table(tab, keep_content_rows(more_than_twenty))
 }
+
+# Internal function - has_count_in_cols
 \dontrun{
-# `has_count_in_cols`
 more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one))
 }
+
 \dontrun{
 # `has_count_in_any_col`
 any_more_than_one <- has_count_in_any_col(atleast = 1L, col_names = names(tab))
@@ -155,9 +160,11 @@ prune_table(tab, keep_rows(more_than_five_percent))
 more_than_five_percent_diff <- has_fractions_difference(atleast = 0.05, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_five_percent_diff))
 }
+# Internal function - has_counts_difference
 \dontrun{
-# `has_counts_difference`
 more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one_diff))
 }
+
 }
+\keyword{internal}

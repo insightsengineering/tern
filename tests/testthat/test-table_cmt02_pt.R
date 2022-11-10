@@ -1,10 +1,7 @@
 # Test single variant for CMT02_PT
 
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-adcm <- synthetic_cdisc_data("rcd_2021_05_05")$adcm
+adsl <- adsl_raw
+adcm <- adcm_raw
 
 testthat::test_that("CMT02_PT default variant is produced correctly", {
   adcm <- adcm %>%

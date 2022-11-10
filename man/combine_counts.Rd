@@ -22,6 +22,9 @@ library(rtables)
 
 ref <- c("A: Drug X", "B: Placebo")
 groups <- combine_groups(fct = DM$ARM, ref = ref)
+
+# Internal function - combine_counts
+\dontrun{
 col_counts <- combine_counts(
   fct = DM$ARM,
   groups_list = groups
@@ -46,6 +49,9 @@ basic_table() \%>\%
   summarize_vars("AGE") \%>\%
   build_table(DM, col_counts = col_counts)
 }
+
+}
 \seealso{
 combine_groups
 }
+\keyword{internal}

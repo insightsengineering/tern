@@ -63,27 +63,30 @@ library(dplyr)
 library(scda)
 library(survival)
 
-ADSL <- synthetic_cdisc_data("latest")$adsl
+ADSL <- synthetic_cdisc_dataset("latest", "adsl")
 ADSL <- ADSL \%>\%
   filter(SEX \%in\% c("F", "M"))
-\dontrun{
-ADTTE <- synthetic_cdisc_data("latest")$adtte \%>\%
+
+adtte <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "PFS")
-ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
-ADTTE$SEX <- droplevels(ADTTE$SEX)
+adtte$ARMCD <- droplevels(adtte$ARMCD)
+adtte$SEX <- droplevels(adtte$SEX)
 
 mod <- coxph(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
-  data = ADTTE
+  data = adtte
 )
 
 mmat <- stats::model.matrix(mod)[1, ]
 mmat[!mmat == 0] <- 0
 
+# Internal function - estimate_coef
+\dontrun{
 estimate_coef(
-  variable = "ARMCD", given = "SEX",
-  coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), data = ADTTE, conf_level = .95
+  variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
+  coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
 )
 }
 
 }
+\keyword{internal}

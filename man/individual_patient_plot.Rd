@@ -2,13 +2,10 @@
 % Please edit documentation in R/individual_patient_plot.R
 \name{individual_patient_plot}
 \alias{individual_patient_plot}
-\alias{h_set_nest_theme}
 \alias{h_g_ipp}
 \alias{g_ipp}
 \title{Individual Patient Plots}
 \usage{
-h_set_nest_theme(font_size)
-
 h_g_ipp(
   df,
   xvar,
@@ -18,9 +15,11 @@ h_g_ipp(
   id_var,
   title = "Individual Patient Plots",
   subtitle = "",
+  caption = NULL,
   add_baseline_hline = FALSE,
   yvar_baseline = "BASE",
-  ggtheme = h_set_nest_theme(10)
+  ggtheme = nestcolor::theme_nest(),
+  col = NULL
 )
 
 g_ipp(
@@ -32,19 +31,19 @@ g_ipp(
   id_var = "USUBJID",
   title = "Individual Patient Plots",
   subtitle = "",
+  caption = NULL,
   add_baseline_hline = FALSE,
   yvar_baseline = "BASE",
-  ggtheme = h_set_nest_theme(10),
+  ggtheme = nestcolor::theme_nest(),
   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
-  max_obs_per_plot = 4
+  max_obs_per_plot = 4,
+  col = NULL
 )
 }
 \arguments{
-\item{font_size}{(\code{number})\cr text font size.}
-
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{xvar}{(\code{string})\cr timepoint variable to be plotted on x-axis.}
+\item{xvar}{(\code{string})\cr time point variable to be plotted on x-axis.}
 
 \item{yvar}{(\code{string})\cr continuous analysis variable to be plotted on y-axis.}
 
@@ -58,6 +57,8 @@ g_ipp(
 
 \item{subtitle}{(\code{string})\cr subtitle for plot.}
 
+\item{caption}{(\code{character} scalar) \cr optional caption below the plot.}
+
 \item{add_baseline_hline}{(\code{flag})\cr adds horizontal line at baseline y-value on
 plot when TRUE.}
 
@@ -65,7 +66,9 @@ plot when TRUE.}
 Ignored when \code{add_baseline_hline} is FALSE.}
 
 \item{ggtheme}{(\code{theme})\cr optional graphical theme function as provided
-by ggplot2 to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
+by \code{ggplot2} to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
+
+\item{col}{(\code{character})\cr lines colors.}
 
 \item{plotting_choices}{(\code{character})\cr specifies options for displaying
 plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}
@@ -74,31 +77,32 @@ plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}
 plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
 }
 \value{
-a ggplot object or a list of ggplots.
+a \code{ggplot} object or a list of \code{ggplot} objects.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Line plot(s) displaying trend in patients' parameter values over time is rendered.
 Patients' individual baseline values can be added to the plot(s) as reference.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_set_nest_theme}: sets a ggplot graphical theme to control outlook of plot.
-
-\item \code{h_g_ipp}: helper function that generates a simple line
+\item \code{h_g_ipp()}: helper function that generates a simple line
 plot displaying parameter trends over time.
 
-\item \code{g_ipp}: depending on user preference, renders a single
+\item \code{g_ipp()}: depending on user preference, renders a single
 graphic or compiles a list of graphics that show trends in individual's parameter
 values over time.
+
 }}
-
 \examples{
-
 library(scda)
 library(dplyr)
+library(nestcolor)
 
 # Select a small sample of data to plot.
-adlb <- synthetic_cdisc_data("latest")$adlb \%>\%
+adlb <- synthetic_cdisc_dataset("latest", "adlb") \%>\%
   filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
   slice(1:36)
 

@@ -65,18 +65,20 @@ i.e. events, fulfilling the filter condition.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Counting the number of unique patients and the total number of all and specific events
 when a column table layout is required.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_patients_and_multiple_events}: Statistics function which counts numbers of patients and multiple events
+\item \code{s_count_patients_and_multiple_events()}: Statistics function which counts numbers of patients and multiple events
 defined by filters.
 
-\item \code{summarize_patients_events_in_cols}: Layout creating function which adds the count
+\item \code{summarize_patients_events_in_cols()}: Layout creating function which adds the count
 statistics of patients and events in the column layout as content rows.
-}}
 
+}}
 \examples{
 
 # `s_count_patients_and_multiple_events()`
@@ -89,6 +91,9 @@ df <- data.frame(
   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 )
+
+# Internal function - s_count_patients_and_multiple_events
+\dontrun{
 s_count_patients_and_multiple_events(
   df = df,
   id = "USUBJID",
@@ -97,6 +102,8 @@ s_count_patients_and_multiple_events(
     fatal = c(AESDTH = "Y")
   )
 )
+}
+
 
 # `summarize_patients_events_in_cols()`
 basic_table() \%>\%
@@ -110,3 +117,4 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df)
 }
+\keyword{internal}

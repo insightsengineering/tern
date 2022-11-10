@@ -4,6 +4,7 @@
 #'
 #' @name count_patients_with_event
 #'
+#' @description `r lifecycle::badge("stable")`
 NULL
 
 #' @describeIn count_patients_with_event Statistics Function that returns the number and the fraction
@@ -25,12 +26,10 @@ NULL
 #' @export
 #'
 #' @examples
-#'
-#'
 #' library(dplyr)
 #' library(scda)
-#' adae <- synthetic_cdisc_data("latest")$adae
-#' adsl <- synthetic_cdisc_data("latest")$adsl
+#' adae <- synthetic_cdisc_dataset("latest", "adae")
+#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
 #'
 #' # `s_count_patients_with_event()`
 #'
@@ -60,7 +59,7 @@ s_count_patients_with_event <- function(df,
   col_names <- names(filters)
   filter_values <- filters
 
-  assertthat::assert_that(all(col_names %in% colnames(df)))
+  checkmate::assert_subset(col_names, colnames(df))
 
   temp <- Map(
     function(x, y) which(df[[x]] == y),
@@ -208,7 +207,7 @@ s_count_patients_with_flags <- function(df,
   flag_names <- unname(flag_variables)
   flag_variables <- names(flag_variables)
 
-  assertthat::assert_that(all(flag_variables %in% colnames(df)))
+  checkmate::assert_subset(flag_variables, colnames(df))
   temp <- sapply(flag_variables, function(x) {
     tmp <- Map(function(y) which(df[[y]]), x)
     position_satisfy_flags <- Reduce(intersect, tmp)
@@ -235,7 +234,7 @@ s_count_patients_with_flags <- function(df,
 #' @export
 #'
 #' @examples
-#' #  We need to ungroup `count_fraction` first so that the rtables formatting
+#' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
 #'
 #' # `a_count_patients_with_flags()`

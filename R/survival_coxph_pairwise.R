@@ -1,5 +1,7 @@
 #' Pairwise CoxPH model
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
 #'
 #' @md
@@ -9,18 +11,18 @@
 #' @param control (`list`) \cr parameters for comparison details, specified by using \cr
 #'    the helper function [control_coxph()]. Some possible parameter options are: \cr
 #' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
-#'   Default method is "log-rank", can also be set to "wald" or "likelihood".
+#'   Default method is "log-rank" which comes from [survival::survdiff()], can also be set to "wald" or "likelihood"
+#'   that comes from [survival::coxph()].
 #' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
 #'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
 #'
+#' @importFrom stats pchisq
 #' @name survival_coxph_pairwise
 #'
 NULL
 
 #' @describeIn survival_coxph_pairwise Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
-#'
-#' @export
 #'
 #' @return The statistics are:
 #' * `pvalue` : p-value to test HR = 1.
@@ -33,16 +35,21 @@ NULL
 #' library(scda)
 #' library(dplyr)
 #'
-#' ADTTE <- synthetic_cdisc_data("latest")$adtte
-#' ADTTE_f <- ADTTE %>%
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte_f <- adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
-#' df <- ADTTE_f %>%
+#' df <- adtte_f %>%
 #'   filter(ARMCD == "ARM A")
-#' df_ref_group <- ADTTE_f %>%
+#' df_ref_group <- adtte_f %>%
 #'   filter(ARMCD == "ARM B")
 #'
+#' # Internal function - s_coxph_pairwise
+#' \dontrun{
 #' s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+#' }
+#'
+#' @keywords internal
 s_coxph_pairwise <- function(df,
                              .ref_group,
                              .in_ref_col,
@@ -50,12 +57,10 @@ s_coxph_pairwise <- function(df,
                              is_event,
                              strat = NULL,
                              control = control_coxph()) {
-  assertthat::assert_that(
-    is_df_with_variables(df, list(tte = .var, is_event = is_event)),
-    assertthat::is.string(.var),
-    is.numeric(df[[.var]]),
-    is.logical(df[[is_event]])
-  )
+  checkmate::assert_string(.var)
+  checkmate::assert_numeric(df[[.var]])
+  checkmate::assert_logical(df[[is_event]])
+  assert_df_with_variables(df, list(tte = .var, is_event = is_event))
   pval_method <- control$pval_method
   ties <- control$ties
   conf_level <- control$conf_level
@@ -97,9 +102,15 @@ s_coxph_pairwise <- function(df,
     ties = ties
   )
   sum_cox <- summary(cox_fit, conf.int = conf_level, extend = TRUE)
+  orginal_survdiff <- survival::survdiff(
+    formula_cox,
+    data = df_cox
+  )
+  log_rank_pvalue <- 1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
+
   pval <- switch(pval_method,
     "wald" = sum_cox$waldtest["pvalue"],
-    "log-rank" = sum_cox$sctest["pvalue"], # Score (logrank) test,
+    "log-rank" = log_rank_pvalue, # pvalue from original log-rank test survival::survdiff()
     "likelihood" = sum_cox$logtest["pvalue"]
   )
   list(
@@ -113,10 +124,14 @@ s_coxph_pairwise <- function(df,
 
 #' @describeIn survival_coxph_pairwise Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
 #'
 #' @examples
+#' # Internal function - a_coxph_pairwise
+#' \dontrun{
 #' a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+#' }
+#'
+#' @keywords internal
 a_coxph_pairwise <- make_afun(
   s_coxph_pairwise,
   .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L, n_tot = 0L, n_tot_events = 0L),
@@ -133,8 +148,8 @@ a_coxph_pairwise <- make_afun(
 #' @describeIn survival_coxph_pairwise Analyze Function which adds the pairwise coxph analysis
 #'   to the input layout. Note that additional formatting arguments can be used here.
 #' @export
-#' @examples
 #'
+#' @examples
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%
@@ -143,7 +158,7 @@ a_coxph_pairwise <- make_afun(
 #'     is_event = "is_event",
 #'     var_labels = "Unstratified Analysis"
 #'   ) %>%
-#'   build_table(df = ADTTE_f)
+#'   build_table(df = adtte_f)
 #'
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
@@ -155,7 +170,7 @@ a_coxph_pairwise <- make_afun(
 #'     strat = "SEX",
 #'     control = control_coxph(pval_method = "wald")
 #'   ) %>%
-#'   build_table(df = ADTTE_f)
+#'   build_table(df = adtte_f)
 coxph_pairwise <- function(lyt,
                            vars,
                            ...,
