@@ -157,12 +157,6 @@ summary tables for analysis of count data using generalized linear models (poiss
 }}
 \examples{
 
-library(scda)
-library(dplyr)
-anl <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
-  filter(PARAMCD == "TNE")
-anl$AVAL_f <- as.factor(anl$AVAL)
-
 # Internal function - h_glm_poisson
 \dontrun{
 h_glm_poisson(
