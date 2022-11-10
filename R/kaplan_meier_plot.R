@@ -681,7 +681,7 @@ h_ggkm <- function(data,
   gg + ggplot2::theme(
     legend.position = "bottom",
     legend.title = ggplot2::element_blank(),
-    panel.grid.major.x = ggplot2::element_line(linewidth = 2)
+    panel.grid.major.x = ggplot2::element_line(size = 2)
   )
 }
 
