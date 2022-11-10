@@ -1,8 +1,5 @@
-library(scda)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
-
+adsl <- adsl_raw
+adae <- adae_raw
 
 testthat::test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
   adae_r <- adae[adae$AEREL == "Y", ]

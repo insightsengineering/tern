@@ -20,7 +20,8 @@ NULL
 #'   reference group.
 #'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
-#'
+#' @param interaction_item (`character`)\cr name of the variable that should have interactions
+#'   with arm. if the interaction is not needed, the default option is NULL
 #' @examples
 #' h_ancova(
 #'   .var = "Sepal.Length",
@@ -31,7 +32,8 @@ NULL
 #' @export
 h_ancova <- function(.var,
                      .df_row,
-                     variables) {
+                     variables,
+                     interaction_item = NULL) {
   checkmate::assert_string(.var)
   checkmate::assert_list(variables)
   checkmate::assert_subset(names(variables), c("arm", "covariates"))
@@ -39,7 +41,7 @@ h_ancova <- function(.var,
 
   arm <- variables$arm
   covariates <- variables$covariates
-  if (!is.null(covariates)) {
+  if (!is.null(covariates) && length(covariates) > 0) {
     # Get all covariate variable names in the model.
     var_list <- get_covariates(covariates)
     assert_df_with_variables(.df_row, var_list)
@@ -52,6 +54,12 @@ h_ancova <- function(.var,
     formula <- stats::as.formula(paste0(.var, " ~ ", arm))
   }
 
+  if (is.null(interaction_item)) {
+    specs <- arm
+  } else {
+    specs <- c(arm, interaction_item)
+  }
+
   lm_fit <- stats::lm(
     formula = formula,
     data = .df_row
@@ -59,7 +67,7 @@ h_ancova <- function(.var,
   emmeans_fit <- emmeans::emmeans(
     lm_fit,
     # Specify here the group variable over which EMM are desired.
-    specs = arm,
+    specs = specs,
     # Pass the data again so that the factor levels of the arm variable can be inferred.
     data = .df_row
   )
@@ -71,6 +79,10 @@ h_ancova <- function(.var,
 #'   of the investigated linear model.
 #' @inheritParams argument_convention
 #' @inheritParams h_ancova
+#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column
+#'   which will be used to select the specific ANCOVA results. if the interaction is not
+#'   needed, the default option is FALSE
+#'
 #' @return A named list of 5 statistics:
 #'   - `n`: count of complete sample size for the group.
 #'   - `lsmean`: estimated marginal means in the group.
@@ -80,13 +92,12 @@ h_ancova <- function(.var,
 #'   comparison to the reference group.
 #'   - `pval`: p-value (not adjusted for multiple comparisons).
 #'
-#'
 #' @examples
 #' library(scda)
 #' library(dplyr)
 #'
-#' adsl <- synthetic_cdisc_data("latest")$adsl
-#' adqs <- synthetic_cdisc_data("latest")$adqs
+#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
+#' adqs <- synthetic_cdisc_dataset("latest", "adqs")
 #'
 #' adqs_single <- adqs %>%
 #'   filter(
@@ -106,7 +117,11 @@ h_ancova <- function(.var,
 #'
 #' # Internal function - s_ancova
 #' \dontrun{
-#' s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#' s_ancova(
+#'   df, .var, .df_row, variables, .ref_group,
+#'   .in_ref_col = FALSE,
+#'   conf_level, interaction_y = FALSE, interaction_item = NULL
+#' )
 #' }
 #'
 #' @keywords internal
@@ -116,8 +131,10 @@ s_ancova <- function(df,
                      variables,
                      .ref_group,
                      .in_ref_col,
-                     conf_level) {
-  emmeans_fit <- h_ancova(.var = .var, variables = variables, .df_row = .df_row)
+                     conf_level,
+                     interaction_y = FALSE,
+                     interaction_item = NULL) {
+  emmeans_fit <- h_ancova(.var = .var, variables = variables, .df_row = .df_row, interaction_item = interaction_item)
 
   sum_fit <- summary(
     emmeans_fit,
@@ -126,13 +143,29 @@ s_ancova <- function(df,
 
   arm <- variables$arm
 
-  y <- df[[.var]]
   sum_level <- as.character(unique(df[[arm]]))
 
   # Ensure that there is only one element in sum_level.
   checkmate::assert_scalar(sum_level)
 
   sum_fit_level <- sum_fit[sum_fit[[arm]] == sum_level, ]
+
+  # Get the index of the ref arm
+  if (interaction_y != FALSE) {
+    y <- unlist(df[(df[[interaction_item]] == interaction_y), .var])
+    # convert characters selected in interaction_y into the numeric order
+    interaction_y <- which(sum_fit_level[[interaction_item]] == interaction_y)
+    sum_fit_level <- sum_fit_level[interaction_y, ]
+    # if interaction is called, reset the index
+    ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
+    ref_key <- tail(ref_key, n = 1)
+    ref_key <- (interaction_y - 1) * length(unique(.df_row[[arm]])) + ref_key
+  } else {
+    y <- df[[.var]]
+    # Get the index of the ref arm when interaction is not called
+    ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
+    ref_key <- tail(ref_key, n = 1)
+  }
 
   if (.in_ref_col) {
     list(
@@ -148,8 +181,8 @@ s_ancova <- function(df,
       emmeans_fit,
       # Compare all arms versus the control arm.
       method = "trt.vs.ctrl",
-      # Take the first level of the arm factor as the control arm.
-      ref = 1
+      # Take the arm factor from .ref_group as the control arm.
+      ref = ref_key
     )
     sum_contrasts <- summary(
       emmeans_contrasts,
@@ -160,6 +193,9 @@ s_ancova <- function(df,
     )
 
     sum_contrasts_level <- sum_contrasts[grepl(sum_level, sum_contrasts$contrast), ]
+    if (interaction_y != FALSE) {
+      sum_contrasts_level <- sum_contrasts_level[interaction_y, ]
+    }
 
     list(
       n = length(y[!is.na(y)]),
@@ -180,7 +216,11 @@ s_ancova <- function(df,
 #' @examples
 #' # Internal function - a_ancova
 #' \dontrun{
-#' a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#' a_ancova(
+#'   df, .var, .df_row, variables, .ref_group,
+#'   .in_ref_col = FALSE,
+#'   interaction_y = FALSE, interaction_item = NULL, conf_level
+#' )
 #' }
 #'
 #' @keywords internal
@@ -201,14 +241,15 @@ a_ancova <- make_afun(
 #'   summary tables for analysis of covariance (ANCOVA).
 #' @inheritParams argument_convention
 #' @export
-#' @examples
 #'
+#' @examples
 #' library(scda)
 #' library(rtables)
 #' library(dplyr)
 #'
-#' adsl <- synthetic_cdisc_data("latest")$adsl
-#' adqs <- synthetic_cdisc_data("latest")$adqs
+#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
+#' adqs <- synthetic_cdisc_dataset("latest", "adqs")
+#'
 #' adqs_single <- adqs %>%
 #'   filter(
 #'     AVISIT == "WEEK 1 DAY 8", # single time point
@@ -235,6 +276,48 @@ a_ancova <- make_afun(
 #'     conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)"
 #'   ) %>%
 #'   build_table(adqs_single, alt_counts_df = adsl)
+#'
+#' # Another example: count the interaction between rows and columns into consideration
+#'
+#' adqs_single <- adqs %>%
+#'   filter(AVISIT %in% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 5 DAY 36")) %>%
+#'   droplevels() %>%
+#'   filter(PARAM == "BFI All Questions") %>%
+#'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
+#'
+#' basic_table() %>%
+#'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
+#'   add_colcounts() %>%
+#'   split_rows_by("STRATA1", split_fun = drop_split_levels) %>%
+#'   summarize_ancova(
+#'     vars = "CHG",
+#'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
+#'     conf_level = 0.95,
+#'     var_labels = "WEEK 1 DAY 8",
+#'     table_names = "WEEK 1 DAY 8",
+#'     interaction_y = "WEEK 1 DAY 8",
+#'     interaction_item = "AVISIT"
+#'   ) %>%
+#'   summarize_ancova(
+#'     vars = "CHG",
+#'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
+#'     conf_level = 0.95,
+#'     var_labels = "WEEK 2 DAY 15",
+#'     table_names = "WEEK 2 DAY 15",
+#'     interaction_y = "WEEK 2 DAY 15",
+#'     interaction_item = "AVISIT"
+#'   ) %>%
+#'   summarize_ancova(
+#'     vars = "CHG",
+#'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
+#'     conf_level = 0.95,
+#'     var_labels = "WEEK 5 DAY 36",
+#'     table_names = "WEEK 5 DAY 36",
+#'     interaction_y = "WEEK 5 DAY 36",
+#'     interaction_item = "AVISIT"
+#'   ) %>%
+#'   build_table(adqs_single, alt_counts_df = adsl)
+#'
 #' \dontrun{
 #' basic_table() %>%
 #'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
@@ -255,9 +338,13 @@ summarize_ancova <- function(lyt,
                              .stats = NULL,
                              .formats = NULL,
                              .labels = NULL,
-                             .indent_mods = NULL) {
+                             .indent_mods = NULL,
+                             interaction_y = FALSE,
+                             interaction_item = NULL) {
   afun <- make_afun(
     a_ancova,
+    interaction_y = interaction_y,
+    interaction_item = interaction_item,
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,

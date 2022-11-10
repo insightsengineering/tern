@@ -55,6 +55,19 @@ f_conf_level <- function(conf_level) {
   paste0(conf_level * 100, "% CI")
 }
 
+#' Utility function to create label for p-value
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
+#' @return a `string`
+#'
+#' @export
+f_pval <- function(test_mean) {
+  checkmate::assert_numeric(test_mean, len = 1)
+  paste0("p-value (H0: mean = ", test_mean, ")")
+}
+
 #' Utility function to return a named list of covariate names.
 #'
 #' @param covariates (`character`)\cr a vector that can contain single variable names (such as
@@ -222,12 +235,9 @@ empty_vector_if_na <- function(x) {
 #' @return A `list` where each element combines corresponding elements of `x` and `y`.
 #'
 #' @examples
-#' # Internal function - combine_vectors
-#' \dontrun{
 #' combine_vectors(1:3, 4:6)
-#' }
 #'
-#' @keywords internal
+#' @export
 combine_vectors <- function(x, y) {
   checkmate::assert_vector(x)
   checkmate::assert_vector(y, len = length(x))
@@ -254,7 +264,7 @@ combine_vectors <- function(x, y) {
 #' @return Either `NULL` or the extracted elements from `x`.
 #'
 #' @keywords internal
-extract <- function(x, names) {
+extract_by_name <- function(x, names) {
   if (is.null(x)) {
     return(NULL)
   }
@@ -281,7 +291,7 @@ extract <- function(x, names) {
 #'
 #' @examples
 #' library(scda)
-#' adae <- synthetic_cdisc_data("latest")$adae
+#' adae <- synthetic_cdisc_dataset("latest", "adae")
 #'
 #' # Standardized query label includes scope.
 #' aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
@@ -296,12 +306,12 @@ aesi_label <- function(aesi, scope = NULL) {
   aesi <- sas_na(aesi)
   aesi <- unique(aesi)[!is.na(unique(aesi))]
 
-  lbl <- if (length(aesi) == 1 & !is.null(scope)) {
+  lbl <- if (length(aesi) == 1 && !is.null(scope)) {
     scope <- sas_na(scope)
     scope <- unique(scope)[!is.na(unique(scope))]
     checkmate::assert_string(scope)
     paste0(aesi, " (", scope, ")")
-  } else if (length(aesi) == 1 & is.null(scope)) {
+  } else if (length(aesi) == 1 && is.null(scope)) {
     aesi
   } else {
     aesi_label
@@ -310,17 +320,17 @@ aesi_label <- function(aesi, scope = NULL) {
   lbl
 }
 
-#' Indicate Arm Variable in Formula
+#' Indicate Study Arm Variable in Formula
 #'
 #' @description
 #'
-#' We use `arm` to indicate the study arm variable in `tern` formulas.
+#' We use `study_arm` to indicate the study arm variable in `tern` formulas.
 #'
 #' @param x arm information
 #'
 #' @keywords internal
 #'
-arm <- function(x) {
+study_arm <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }
 

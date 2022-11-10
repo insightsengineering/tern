@@ -92,8 +92,9 @@ a_count_missed_doses <- make_afun(
 #' @examples
 #' library(dplyr)
 #' library(scda)
-#' adex <- synthetic_cdisc_data("latest")$adex
-#' adsl <- synthetic_cdisc_data("latest")$adsl
+#' adex <- synthetic_cdisc_dataset("latest", "adex")
+#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
+#'
 #' anl <- adex %>%
 #'   distinct(STUDYID, USUBJID, ARM) %>%
 #'   mutate(

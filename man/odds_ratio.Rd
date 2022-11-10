@@ -106,25 +106,25 @@ possible.
 }
 \section{Functions}{
 \itemize{
-\item \code{or_glm}: estimates the odds ratio based on \code{\link[stats:glm]{stats::glm()}}. Note that there must be
+\item \code{or_glm()}: estimates the odds ratio based on \code{\link[stats:glm]{stats::glm()}}. Note that there must be
 exactly 2 groups in \code{data} as specified by the \code{grp} variable.
 
-\item \code{or_clogit}: estimates the odds ratio based on \code{\link[survival:clogit]{survival::clogit()}}. This is done for
+\item \code{or_clogit()}: estimates the odds ratio based on \code{\link[survival:clogit]{survival::clogit()}}. This is done for
 the whole data set including all groups, since the results are not the same as when doing
 pairwise comparisons between the groups.
 
-\item \code{s_odds_ratio}: Statistics function which estimates the odds ratio
+\item \code{s_odds_ratio()}: Statistics function which estimates the odds ratio
 between a treatment and a control. Note that a \code{variables} list with \code{arm} and \code{strata} names
 needs to be passed if a stratified analysis is required.
 
-\item \code{a_odds_ratio}: Formatted Analysis function which can be further customized by calling
+\item \code{a_odds_ratio()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{estimate_odds_ratio}: Layout creating function which can be used for creating
+\item \code{estimate_odds_ratio()}: Layout creating function which can be used for creating
 tables, which can take statistics function arguments and additional format
 arguments (see below).
-}}
 
+}}
 \examples{
 
 # Data with 2 groups.

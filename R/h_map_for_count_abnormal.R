@@ -19,7 +19,7 @@
 #'
 #' @examples
 #' library(scda)
-#' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adlb <- synthetic_cdisc_dataset("latest", "adlb")
 #' adlb <- df_explicit_na(adlb)
 #'
 #' h_map_for_count_abnormal(

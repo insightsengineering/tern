@@ -77,7 +77,7 @@
 #' g_step(step_data)
 g_step <- function(df,
                    use_percentile = "Percentile Center" %in% names(df),
-                   est = list(col = "black", lty = 1),
+                   est = list(col = "blue", lty = 1),
                    ci_ribbon = list(fill = getOption("ggplot2.discrete.colour")[1], alpha = 0.5),
                    col = getOption("ggplot2.discrete.colour")) {
   checkmate::assert_tibble(df)
@@ -90,7 +90,11 @@ g_step <- function(df,
   df$x <- df[[x_var]]
   attrs <- attributes(df)
   df$y <- df[[attrs$estimate]]
-  p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "x"))
+
+  # Set legend names. To be modified also at call level
+  legend_names <- c("Estimate", "CI 95%")
+
+  p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "x", y = "y"))
 
   if (!is.null(col)) {
     p <- p +
@@ -102,16 +106,24 @@ g_step <- function(df,
       ci_ribbon$fill <- "lightblue"
     }
     p <- p + ggplot2::geom_ribbon(
-      ggplot2::aes_string(ymin = "ci_lower", ymax = "ci_upper"),
-      fill = ci_ribbon$fill,
+      ggplot2::aes_string(
+        ymin = "ci_lower", ymax = "ci_upper",
+        fill = "legend_names[2]"
+      ),
       alpha = ci_ribbon$alpha
-    )
+    ) +
+      scale_fill_manual(
+        name = "", values = c("CI 95%" = ci_ribbon$fill)
+      )
   }
-  p <- p + ggplot2::geom_line(
-    ggplot2::aes_string(y = "y"),
-    color = est$col,
-    linetype = est$lty
-  )
+  p <- p +
+    ggplot2::geom_line(
+      ggplot2::aes_string(y = "y", color = "legend_names[1]"),
+      linetype = est$lty
+    ) +
+    scale_colour_manual(
+      name = "", values = c("Estimate" = "blue")
+    )
 
   p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate)
   if (use_percentile) {

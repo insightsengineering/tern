@@ -36,8 +36,7 @@ NULL
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#'
-#' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adlb <- synthetic_cdisc_dataset("latest", "adlb")
 #'
 #' # Data is modified in order to have some parameters with grades only in one direction
 #' # and simulate the real data.
@@ -120,12 +119,12 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 
   for (lvl in x_lvls) {
     if (lvl != "Any") {
-      num <- sum(df[[.var]] == lvl)
-      fraction <- ifelse(denom == 0, 0, num / denom)
+      df_lvl <- df[df[[.var]] == lvl, ]
     } else {
-      num <- sum(df[[.var]] != 0)
-      fraction <- ifelse(denom == 0, 0, num / denom)
+      df_lvl <- df[df[[.var]] != 0, ]
     }
+    num <- nrow(unique(df_lvl[, c("USUBJID")]))
+    fraction <- ifelse(denom == 0, 0, num / denom)
     result[[lvl]] <- formatters::with_label(c(count = num, fraction = fraction), lvl)
   }
 

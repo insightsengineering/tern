@@ -32,7 +32,7 @@ library(scda)
 library(dplyr)
 library(survival)
 
-data <- synthetic_cdisc_data("latest")$adtte \%>\%
+data <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_data_plot()

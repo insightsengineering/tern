@@ -1,10 +1,6 @@
 # Tests all variants of EXT01
-
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adex <- synthetic_cdisc_data("rcd_2022_02_28")$adex
+adsl <- adsl_raw
+adex <- adex_raw
 
 testthat::test_that("EXT01 default variant with numeric parameters is produced correctly", {
   adex <- adex %>%

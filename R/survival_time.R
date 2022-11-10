@@ -28,18 +28,19 @@ NULL
 #' * `range_censor` : survival time range for censored observations.
 #' * `range_event` : survival time range for observations with events.
 #' * `range` : survival time range for all observations.
+#'
 #' @examples
 #' library(scda)
 #' library(dplyr)
 #'
-#' ADTTE <- synthetic_cdisc_data("latest")$adtte
-#' ADTTE_f <- ADTTE %>%
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte_f <- adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(
 #'     AVAL = day2month(AVAL),
 #'     is_event = CNSR == 0
 #'   )
-#' df <- ADTTE_f %>% filter(ARMCD == "ARM A")
+#' df <- adtte_f %>% filter(ARMCD == "ARM A")
 #'
 #' # Internal function - s_surv_time
 #' \dontrun{
@@ -130,7 +131,7 @@ a_surv_time <- make_afun(
 #'     is_event = "is_event",
 #'     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
 #'   ) %>%
-#'   build_table(df = ADTTE_f)
+#'   build_table(df = adtte_f)
 surv_time <- function(lyt,
                       vars,
                       ...,

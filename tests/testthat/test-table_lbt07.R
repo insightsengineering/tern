@@ -1,14 +1,9 @@
 # Tests LBT07.
+adsl <- adsl_raw
+adlb <- adlb_raw
 
-library(scda)
-library(dplyr)
-library(forcats)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb
-
-adlb_raw <- local({
-  adlb <- synthetic_cdisc_data("rcd_2022_02_28")$adlb # nolintr
+adlb_local <- local({
+  adlb <- adlb_raw # nolintr
 
   # Data set is modified in order to have some parameters with grades only in one direction
   # and simulate the real data.
@@ -49,7 +44,7 @@ adlb_raw <- local({
 })
 
 testthat::test_that("LBT07 is produced correctly", {
-  adlb_f <- adlb_raw
+  adlb_f <- adlb_local
   map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
     lapply(as.character) %>%
     as.data.frame() %>%

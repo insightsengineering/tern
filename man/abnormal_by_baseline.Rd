@@ -99,21 +99,21 @@ patients in the numerator and denominator as follows:
 }
 \section{Functions}{
 \itemize{
-\item \code{d_count_abnormal_by_baseline}: Description Function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
+\item \code{d_count_abnormal_by_baseline()}: Description Function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
 
-\item \code{s_count_abnormal_by_baseline}: For a single \code{abnormal} level, produce a statistic \code{fraction} which is
+\item \code{s_count_abnormal_by_baseline()}: For a single \code{abnormal} level, produce a statistic \code{fraction} which is
 a named list with 3 elements: \code{not_abnormal}, \code{abnormal} and \code{total}.
 Each element contains a vector with \code{num} and \code{denom} counts of patients.
 Please note that if the baseline variable or analysis variable contains \code{NA}, it is expected that \code{NA} has been
 conveyed to \code{na_level} appropriately beforehand with \code{df_explicit_na()} or \code{explicit_na()}.
 
-\item \code{a_count_abnormal_by_baseline}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_abnormal_by_baseline()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_abnormal_by_baseline}: Layout creating function which can be used for creating tables, which can take
+\item \code{count_abnormal_by_baseline()}: Layout creating function which can be used for creating tables, which can take
 statistics function arguments and additional format arguments (see below).
-}}
 
+}}
 \examples{
 d_count_abnormal_by_baseline("LOW")
 

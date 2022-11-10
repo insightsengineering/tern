@@ -29,7 +29,7 @@ library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
+fit_km <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 
@@ -41,7 +41,7 @@ gg <- h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-  title = "tt", yval = "Survival"
+  title = "tt", footnotes = "ff", yval = "Survival"
 )
 
 # The annotation table reports the patient at risk for a given strata and
@@ -65,7 +65,7 @@ tbl <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xt
 # For the representation, the layout is estimated for which the decomposition
 # of the graphic element is necessary.
 g_el <- h_decompose_gg(gg)
-lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
+lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t", footnotes = "f")
 
 grid::grid.newpage()
 pushViewport(viewport(layout = lyt, height = .95, width = .95))

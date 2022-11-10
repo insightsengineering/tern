@@ -3,9 +3,21 @@ testthat::test_that("f_conf_level works for proportion", {
   expected <- "95% CI"
   testthat::expect_identical(result, expected)
 })
+
 testthat::test_that("f_conf_level fails for non-proportion input", {
   testthat::expect_error(f_conf_level(1.1))
   testthat::expect_error(f_conf_level(-1))
+})
+
+testthat::test_that("f_pval works for numeric input", {
+  result <- f_pval(0.05)
+  expected <- "p-value (H0: mean = 0.05)"
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("f_pval fails for non-numeric input", {
+  testthat::expect_error(f_pval("a"))
+  testthat::expect_error(f_pval(NULL))
 })
 
 testthat::test_that("make_names works as expected", {
@@ -47,12 +59,12 @@ testthat::test_that("empty_vector_if_na works correctly", {
   testthat::expect_equal(result, expected)
 })
 
-testthat::test_that("extract works for NULL input", {
-  testthat::expect_identical(extract(NULL, "bla"), NULL)
+testthat::test_that("extract_by_name works for NULL input", {
+  testthat::expect_identical(extract_by_name(NULL, "bla"), NULL)
 })
 
-testthat::test_that("extract works for non-NULL input", {
-  result <- extract(
+testthat::test_that("extract_by_name works for non-NULL input", {
+  result <- extract_by_name(
     x = c(a = "xx", b = function(x) paste(x, "bla")),
     c("b", "c")
   )
@@ -60,8 +72,8 @@ testthat::test_that("extract works for non-NULL input", {
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("extract returns NULL when there is no overlap", {
-  result <- extract(
+testthat::test_that("extract_by_name returns NULL when there is no overlap", {
+  result <- extract_by_name(
     x = c(a = "xx", b = "xx.xx"),
     c("d", "c")
   )

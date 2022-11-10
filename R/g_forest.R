@@ -43,7 +43,8 @@
 #' library(forcats)
 #' library(rtables)
 #' library(nestcolor)
-#' adrs <- synthetic_cdisc_data("latest")$adrs
+#'
+#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
 #' n_records <- 20
 #' adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
 #' adrs <- adrs %>%
@@ -82,7 +83,7 @@
 #' draw_grob(p)
 #'
 #' # Survival forest plot example.
-#' adtte <- synthetic_cdisc_data("latest")$adtte
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte, fill = TRUE)
 #' adtte_f <- adtte %>%
@@ -831,69 +832,4 @@ vp_forest_table_part <- function(nrow,
 #'
 grid.forest <- function(...) { # nolint
   grid::grid.draw(forest_grob(...)) # nolint
-}
-
-## To be deprecated ----
-
-#' Assign value to attribute footnote of object x
-#'
-#' @description `r lifecycle::badge("deprecated")`
-#'
-#' This function is deprecated here. Please look at R/footnotes for the correct function.
-#'
-#' @param x an object
-#' @param value character vector
-#'
-#' @export
-#'
-#' @examples
-#' x <- table(iris$Species)
-#' footnotes(x) <- "Species are equally distributed"
-#' attributes(x)
-`footnotes<-` <- function(x, value = NULL) { # nolint
-  attr(x, "footnote") <- value
-  x
-}
-
-
-#' Retrieve value from attribute footnote of object x
-#'
-#' @description `r lifecycle::badge("deprecated")`
-#'
-#' This function is deprecated here. Please look at R/footnotes for the correct function.
-#'
-#' @param x an object
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' x <- table(iris$Species)
-#' footnotes(x) <- "Species are equally distributed"
-#' footnotes(x)
-#' }
-footnotes <- function(x) {
-  attr(x, "footnote")
-}
-
-#' Add more footnotes
-#'
-#' @description `r lifecycle::badge("deprecated")`
-#'
-#' This function is deprecated here. Please look at R/footnotes for the correct function.
-#'
-#' @param x an object
-#' @param value character vector
-#'
-#' @export
-#'
-#' @examples
-#' x <- table(iris$Species)
-#' footnotes(x) <- "Species are equally distributed"
-#' footnotes(x)
-#' add_footnotes(x) <- "Add more footnotes"
-#' footnotes(x)
-`add_footnotes<-` <- function(x, value) { # nolint
-  footnotes(x) <- c(footnotes(x), value)
-  x
 }

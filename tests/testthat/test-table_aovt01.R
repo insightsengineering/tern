@@ -1,10 +1,7 @@
 # Tests all variants of AOVT01
 
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adqs <- synthetic_cdisc_data("rcd_2022_02_28")$adqs
+adsl <- adsl_raw
+adqs <- adqs_raw
 
 testthat::test_that("AOVT01 variant with single endpoint is produced correctly", {
   adqs_single <- adqs %>%

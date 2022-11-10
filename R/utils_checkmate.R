@@ -130,8 +130,8 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
 assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_variables)
 
 check_valid_factor <- function(x,
-                               min.levels = 1,
-                               max.levels = NULL,
+                               min.levels = 1, # nolint
+                               max.levels = NULL, # nolint
                                null.ok = TRUE, # nolint
                                any.missing = TRUE, # nolint
                                n.levels = NULL, # nolint
@@ -184,8 +184,8 @@ assert_valid_factor <- checkmate::makeAssertionFunction(check_valid_factor)
 
 check_df_with_factors <- function(df,
                                   variables,
-                                  min.levels = 1,
-                                  max.levels = NULL,
+                                  min.levels = 1, # nolint
+                                  max.levels = NULL, # nolint
                                   any.missing = TRUE, # nolint
                                   na_level = NULL) {
   res <- check_df_with_variables(df, variables, na_level)

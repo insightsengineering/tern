@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.7.8.9021
-Date: 2022-06-09
+Version: 0.7.10.9007
+Date: 2022-11-09
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -39,7 +39,7 @@ Imports:
     lifecycle,
     magrittr,
     methods,
-    nestcolor,
+    Rdpack,
     rlang,
     scales,
     stats,
@@ -50,24 +50,25 @@ Imports:
 Suggests:
     knitr,
     lattice,
+    nestcolor (>= 0.1.0),
     rmarkdown,
-    scda (>= 0.1.3),
-    scda.2022 (>= 0.1.1),
+    scda (>= 0.1.5),
+    scda.2022 (>= 0.1.3),
     stringr,
     testthat (>= 2.0)
 VignetteBuilder:
     knitr
 RdMacros:
-    lifecycle
+    lifecycle,
+    Rdpack
 Remotes:
     insightsengineering/scda.2022@*release,
     insightsengineering/scda@*release
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
-LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Collate:
     'formats.R'
     'abnormal.R'
@@ -95,7 +96,7 @@ Collate:
     'coxph.R'
     'd_pkparam.R'
     'decorate_grob.R'
-    'deprec-nest_colors.R'
+    'desctools_binom_diff.R'
     'df_explicit_na.R'
     'estimate_multinomial_rsp.R'
     'estimate_proportion.R'

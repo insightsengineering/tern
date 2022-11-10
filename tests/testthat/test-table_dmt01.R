@@ -1,15 +1,9 @@
 # Tests DMT01
 
-library(scda)
-library(dplyr)
-library(rtables)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-advs <- synthetic_cdisc_data("rcd_2022_02_28")$advs
-
+adsl <- adsl_raw
+advs <- advs_raw
 
 testthat::test_that("DMT01 default and alternative variants are produced correctly", {
-
   # Change description in variable SEX.
   adsl <- adsl %>%
     dplyr::mutate(SEX = factor(dplyr::case_when(
@@ -20,12 +14,13 @@ testthat::test_that("DMT01 default and alternative variants are produced correct
     )))
 
   adsl <- adsl %>%
-    dplyr::mutate(AGEGRP = factor(dplyr::case_when(
-      dplyr::between(AGE, 18, 40) ~ "18-40",
-      dplyr::between(AGE, 41, 64) ~ "41-64",
-      AGE > 64 ~ ">=65"
-    ),
-    levels = c("18-40", "41-64", ">=65")
+    dplyr::mutate(AGEGRP = factor(
+      dplyr::case_when(
+        dplyr::between(AGE, 18, 40) ~ "18-40",
+        dplyr::between(AGE, 41, 64) ~ "41-64",
+        AGE > 64 ~ ">=65"
+      ),
+      levels = c("18-40", "41-64", ">=65")
     ))
 
 

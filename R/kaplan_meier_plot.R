@@ -25,6 +25,7 @@
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
 #' @param title (`string`)\cr title for plot.
+#' @param footnotes (`string`)\cr footnotes for plot.
 #' @param col (`character`)\cr lines colors. Length of a vector should be equal
 #'   to number of strata from [survival::survfit()].
 #' @param lty (`numeric`)\cr line type. Length of a vector should be equal
@@ -86,7 +87,7 @@ NULL
 #' library(grid)
 #' library(nestcolor)
 #'
-#' df <- synthetic_cdisc_data("latest")$adtte %>%
+#' df <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
@@ -178,6 +179,7 @@ g_km <- function(df,
                  yval = c("Survival", "Failure"),
                  ylab = paste(yval, "Probability"),
                  title = NULL,
+                 footnotes = NULL,
                  draw = TRUE,
                  newpage = TRUE,
                  gp = NULL,
@@ -195,6 +197,7 @@ g_km <- function(df,
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_string(title, null.ok = TRUE)
+  checkmate::assert_string(footnotes, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
 
   tte <- variables$tte
@@ -235,6 +238,7 @@ g_km <- function(df,
     yval = yval,
     ylab = ylab,
     title = title,
+    footnotes = footnotes,
     max_time = max_time,
     lwd = lwd,
     lty = lty,
@@ -272,13 +276,14 @@ g_km <- function(df,
   }
 
   if (annot_at_risk || annot_surv_med || annot_coxph) {
-    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, annot_at_risk = annot_at_risk) # nolint
+    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, footnotes = footnotes, annot_at_risk = annot_at_risk) # nolint
     ttl_row <- as.numeric(!is.null(title))
+    foot_row <- as.numeric(!is.null(footnotes))
     km_grob <- grid::gTree(
       vp = grid::viewport(layout = lyt, height = .95, width = .95),
       children = grid::gList(
         # Title.
-        if (!is.null(ttl_row)) {
+        if (ttl_row == 1) {
           grid::gTree(
             vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
             children = grid::gList(grid::textGrob(label = title, x = grid::unit(0, "npc"), hjust = 0))
@@ -359,6 +364,17 @@ g_km <- function(df,
             vp = grid::viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
             children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
           )
+        },
+
+        # Footnotes.
+        if (foot_row == 1) {
+          grid::gTree(
+            vp = grid::viewport(
+              layout.pos.row = ifelse(annot_at_risk, 6 + ttl_row, 4 + ttl_row),
+              layout.pos.col = 2
+            ),
+            children = grid::gList(grid::textGrob(label = footnotes, x = grid::unit(0, "npc"), hjust = 0))
+          )
         }
       )
     )
@@ -378,7 +394,7 @@ g_km <- function(df,
     )
   }
 
-  if (newpage & draw) grid::grid.newpage()
+  if (newpage && draw) grid::grid.newpage()
   if (draw) grid::grid.draw(result)
   invisible(result)
 }
@@ -410,13 +426,13 @@ g_km <- function(df,
 #' library(survival)
 #'
 #' # Test with multiple arms
-#' synthetic_cdisc_data("latest")$adtte %>%
+#' synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
 #'
 #' # Test with single arm
-#' synthetic_cdisc_data("latest")$adtte %>%
+#' synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot(armval = "ARM B")
@@ -483,7 +499,7 @@ h_data_plot <- function(fit_km,
 #' library(dplyr)
 #' library(survival)
 #'
-#' data <- synthetic_cdisc_data("latest")$adtte %>%
+#' data <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
@@ -537,7 +553,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' library(dplyr)
 #' library(survival)
 #'
-#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
+#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -563,6 +579,7 @@ h_ggkm <- function(data,
                    xlab,
                    ylab,
                    title,
+                   footnotes = NULL,
                    max_time = NULL,
                    lwd = 1,
                    lty = NULL,
@@ -614,7 +631,7 @@ h_ggkm <- function(data,
 
   gg <- gg +
     ggplot2::coord_cartesian(ylim = c(0, 1)) +
-    ggplot2::labs(x = xlab, y = ylab, title = title)
+    ggplot2::labs(x = xlab, y = ylab, title = title, caption = footnotes)
 
   if (!is.null(col)) {
     gg <- gg +
@@ -687,7 +704,7 @@ h_ggkm <- function(data,
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
+#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -697,7 +714,8 @@ h_ggkm <- function(data,
 #'   yval = "Survival",
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-#'   title = "tt"
+#'   title = "tt",
+#'   footnotes = "ff"
 #' )
 #'
 #' g_el <- h_decompose_gg(gg)
@@ -755,7 +773,7 @@ h_decompose_gg <- function(gg) {
 #' library(dplyr)
 #' library(survival)
 #'
-#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
+#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -764,14 +782,14 @@ h_decompose_gg <- function(gg) {
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-#'   title = "tt", yval = "Survival"
+#'   title = "tt", footnotes = "ff", yval = "Survival"
 #' )
 #' g_el <- h_decompose_gg(gg)
-#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
+#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t", footnotes = "f")
 #' grid.show.layout(lyt)
 #' }
 #'
-h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
+h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -785,63 +803,56 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
     )
   )
 
-  no_at_risk_tbl <- ifelse(
-    annot_at_risk,
-    rep(TRUE, 5),
-    c(rep(TRUE, 3), rep(FALSE, 2))
-  )
+  ttl_row <- as.numeric(!is.null(title))
+  foot_row <- as.numeric(!is.null(footnotes))
+  no_tbl_ind <- c()
+  ht_x <- c()
+  ht_units <- c()
 
-  no_at_risk_tbl_title <- ifelse(
-    annot_at_risk,
-    rep(TRUE, 6),
-    c(rep(TRUE, 4), rep(FALSE, 2))
-  )
-
-  if (is.null(title)) {
-    grid::grid.layout(
-      nrow = ifelse(annot_at_risk, 5, 3), ncol = 2,
-      widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
-      heights = grid::unit(
-        c(
-          1,
-          grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-          grid::convertX(g_el$guide$heights, "pt"),
-          nlines + 1,
-          grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
-        )[no_at_risk_tbl],
-        c(
-          "null",
-          "pt",
-          "pt",
-          "lines",
-          "pt"
-        )[no_at_risk_tbl]
-      )
-    )
-  } else {
-    grid::grid.layout(
-      nrow = ifelse(annot_at_risk, 6, 4), ncol = 2,
-      widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
-      heights = grid::unit(
-        c(
-          1,
-          1,
-          grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-          grid::convertX(g_el$guide$heights, "pt"),
-          nlines + 1,
-          grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
-        )[no_at_risk_tbl_title],
-        c(
-          "lines",
-          "null",
-          "pt",
-          "pt",
-          "lines",
-          "pt"
-        )[no_at_risk_tbl_title]
-      )
-    )
+  if (ttl_row == 1) {
+    no_tbl_ind <- c(no_tbl_ind, TRUE)
+    ht_x <- c(ht_x, 2)
+    ht_units <- c(ht_units, "lines")
   }
+
+  no_tbl_ind <- c(no_tbl_ind, rep(TRUE, 3), rep(FALSE, 2))
+  ht_x <- c(
+    ht_x,
+    1,
+    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
+    grid::convertX(g_el$guide$heights, "pt"),
+    nlines + 1,
+    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
+  )
+  ht_units <- c(
+    ht_units,
+    "null",
+    "pt",
+    "pt",
+    "lines",
+    "pt"
+  )
+
+  if (foot_row == 1) {
+    no_tbl_ind <- c(no_tbl_ind, TRUE)
+    ht_x <- c(ht_x, 1)
+    ht_units <- c(ht_units, "lines")
+  }
+
+  no_at_risk_tbl <- if (annot_at_risk) {
+    rep(TRUE, 5 + ttl_row + foot_row)
+  } else {
+    no_tbl_ind
+  }
+
+  grid::grid.layout(
+    nrow = sum(no_at_risk_tbl), ncol = 2,
+    widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
+    heights = grid::unit(
+      x = ht_x[no_at_risk_tbl],
+      units = ht_units[no_at_risk_tbl]
+    )
+  )
 }
 
 #' Helper: Patient-at-Risk Grobs
@@ -865,7 +876,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
+#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #'
@@ -877,7 +888,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-#'   title = "tt", yval = "Survival"
+#'   title = "tt", footnotes = "ff", yval = "Survival"
 #' )
 #'
 #' # The annotation table reports the patient at risk for a given strata and
@@ -901,7 +912,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
 #' # For the representation, the layout is estimated for which the decomposition
 #' # of the graphic element is necessary.
 #' g_el <- h_decompose_gg(gg)
-#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
+#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t", footnotes = "f")
 #'
 #' grid::grid.newpage()
 #' pushViewport(viewport(layout = lyt, height = .95, width = .95))
@@ -1003,7 +1014,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' library(dplyr)
 #' library(survival)
 #'
-#' adtte <- synthetic_cdisc_data("latest")$adtte %>%
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS")
 #'
 #' fit <- survfit(
@@ -1058,7 +1069,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #'
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-#' synthetic_cdisc_data("latest")$adtte %>%
+#' synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_grob_median_surv() %>%
@@ -1107,7 +1118,7 @@ h_grob_median_surv <- function(fit_km,
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
+#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -1116,7 +1127,7 @@ h_grob_median_surv <- function(fit_km,
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-#'   title = "title", yval = "Survival"
+#'   title = "title", footnotes = "footnotes", yval = "Survival"
 #' )
 #'
 #' g_el <- h_decompose_gg(gg)
@@ -1154,7 +1165,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' library(scda)
 #' library(dplyr)
 #'
-#' adtte <- synthetic_cdisc_data("latest")$adtte %>%
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #'
@@ -1220,7 +1231,7 @@ h_tbl_coxph_pairwise <- function(df,
 #'
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-#' data <- synthetic_cdisc_data("latest")$adtte %>%
+#' data <- synthetic_cdisc_dataset("latest", "adtte") %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' tbl_grob <- h_grob_coxph(

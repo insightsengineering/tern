@@ -1,5 +1,3 @@
-library(dplyr)
-
 testthat::test_that("h_count_cumulative works with healthy input and default arguments", {
   set.seed(1, kind = "Mersenne-Twister")
   x <- c(sample(1:10, 10), NA)

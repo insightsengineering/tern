@@ -11,11 +11,13 @@
 #' @param control (`list`) \cr parameters for comparison details, specified by using \cr
 #'    the helper function [control_coxph()]. Some possible parameter options are: \cr
 #' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
-#'   Default method is "log-rank" which comes from [survival::survdiff()], can also be set to "wald" or "likelihood" that comes from [survival::coxph()].
+#'   Default method is "log-rank" which comes from [survival::survdiff()], can also be set to "wald" or "likelihood"
+#'   that comes from [survival::coxph()].
 #' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
 #'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
 #'
+#' @importFrom stats pchisq
 #' @name survival_coxph_pairwise
 #'
 NULL
@@ -33,13 +35,13 @@ NULL
 #' library(scda)
 #' library(dplyr)
 #'
-#' ADTTE <- synthetic_cdisc_data("latest")$adtte
-#' ADTTE_f <- ADTTE %>%
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte_f <- adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
-#' df <- ADTTE_f %>%
+#' df <- adtte_f %>%
 #'   filter(ARMCD == "ARM A")
-#' df_ref_group <- ADTTE_f %>%
+#' df_ref_group <- adtte_f %>%
 #'   filter(ARMCD == "ARM B")
 #'
 #' # Internal function - s_coxph_pairwise
@@ -156,7 +158,7 @@ a_coxph_pairwise <- make_afun(
 #'     is_event = "is_event",
 #'     var_labels = "Unstratified Analysis"
 #'   ) %>%
-#'   build_table(df = ADTTE_f)
+#'   build_table(df = adtte_f)
 #'
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
@@ -168,7 +170,7 @@ a_coxph_pairwise <- make_afun(
 #'     strat = "SEX",
 #'     control = control_coxph(pval_method = "wald")
 #'   ) %>%
-#'   build_table(df = ADTTE_f)
+#'   build_table(df = adtte_f)
 coxph_pairwise <- function(lyt,
                            vars,
                            ...,

@@ -1,8 +1,5 @@
-# Preparation of the test case.
-library(rtables)
-
 # Data generation
-adpp <- scda::synthetic_cdisc_data("rcd_2022_02_28")$adpp
+adpp <- adpp_raw
 adpp_plasma <- adpp %>% dplyr::filter(PPSPEC == "Plasma", AVISIT == "CYCLE 1 DAY 1")
 adpp_urine <- adpp %>% dplyr::filter(PPSPEC == "Urine", AVISIT == "CYCLE 1 DAY 1")
 adpp_norm_dose <- adpp %>% dplyr::filter(
@@ -60,7 +57,6 @@ l <- basic_table() %>%
 
 # PKPT03
 testthat::test_that("PKPT03 Drug X is produced correctly", {
-
   # Plasma Drug x
   adpp0 <- adpp_plasma %>%
     dplyr::filter(PPCAT == "Plasma Drug X") %>%
@@ -70,22 +66,21 @@ testthat::test_that("PKPT03 Drug X is produced correctly", {
   main_title(result) <- paste("Summary of", unique(adpp0$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp0$PPCAT), "\nVisit:", unique(adpp0$AVISIT))
 
-
   result_matrix <- to_string_matrix(result)
   expected_matrix <- c(
     "Treatment Arm", "", "", "", "", "", "", "", "", "",
     "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean",
     "Median", "Minimum", "Maximum", "ARM A", "", "", "", "", "", "", "", "", "",
-    "AUCinf obs (day*ug/mL)", "134", "2.042e+02", "3.925e+01", "19.2", "2.002e+02", "20.6",
-    "2.072e+02", "1.095e+02", "3.017e+02", "CL obs (ml/day/kg)", "134", "5.025e+00",
-    "9.394e-01", "18.7", "4.934e+00", "19.8", "5.082e+00", "3.144e+00", "7.218e+00",
-    "Cmax (ug/mL)", "134", "2.975e+01", "5.758e+00", "19.4", "2.918e+01", "20.1",
-    "2.941e+01", "1.561e+01", "4.600e+01", "ARM C", "", "", "", "", "", "", "", "", "",
-    "AUCinf obs (day*ug/mL)", "132", "1.999e+02", "4.169e+01", "20.9", "1.950e+02",
-    "23.6", "2.050e+02", "7.412e+01", "2.778e+02", "CL obs (ml/day/kg)", "132",
-    "5.221e+00", "1.015e+00", "19.4", "5.118e+00", "20.6", "5.202e+00", "2.513e+00",
-    "7.912e+00", "Cmax (ug/mL)", "132", "2.948e+01", "6.405e+00", "21.7", "2.868e+01",
-    "25.1", "3.014e+01", "9.297e+00", "4.324e+01"
+    "AUCinf obs (day*ug/mL)", "134", "2.028e+02", "3.766e+01", "18.6", "1.994e+02", "18.7",
+    "1.971e+02", "1.253e+02", "3.110e+02", "CL obs (ml/day/kg)", "134", "5.043e+00",
+    "1.041e+00", "20.6", "4.929e+00", "22.4", "5.078e+00", "2.255e+00", "7.395e+00",
+    "Cmax (ug/mL)", "134", "3.025e+01", "6.239e+00", "20.6", "2.961e+01", "21.0",
+    "2.986e+01", "1.753e+01", "4.871e+01", "ARM C", "", "", "", "", "", "", "", "", "",
+    "AUCinf obs (day*ug/mL)", "132", "1.955e+02", "3.785e+01", "19.4", "1.917e+02",
+    "20.1", "1.962e+02", "1.030e+02", "3.145e+02", "CL obs (ml/day/kg)", "132",
+    "5.009e+00", "9.846e-01", "19.7", "4.907e+00", "21.1", "4.969e+00", "2.102e+00",
+    "7.489e+00", "Cmax (ug/mL)", "132", "3.004e+01", "5.457e+00", "18.2", "2.954e+01",
+    "18.9", "2.977e+01", "1.585e+01", "4.757e+01"
   )
   expected_matrix <- matrix(expected_matrix, nrow = 10, ncol = 10, byrow = TRUE)
 
@@ -106,15 +101,14 @@ testthat::test_that("PKPT03 Drug Y is produced correctly", {
     "Treatment Arm", "", "", "", "", "", "", "", "", "",
     "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean",
     "Median", "Minimum", "Maximum", "ARM C", "", "", "", "", "", "", "", "", "", "AUCinf obs (day*ug/mL)",
-    "132", "1.953e+02", "3.828e+01", "19.6", "1.916e+02", "20.0", "1.960e+02", "1.110e+02",
-    "3.182e+02", "CL obs (ml/day/kg)", "132", "4.968e+00", "9.921e-01", "20.0", "4.864e+00",
-    "21.3", "4.970e+00", "2.261e+00", "7.958e+00", "Cmax (ug/mL)", "132", "2.945e+01",
-    "5.762e+00", "19.6", "2.888e+01", "20.3", "2.872e+01", "1.455e+01", "4.856e+01"
+    "132", "1.986e+02", "3.792e+01", "19.1", "1.952e+02", "18.9", "1.953e+02", "1.264e+02",
+    "3.183e+02", "CL obs (ml/day/kg)", "132", "4.955e+00", "8.951e-01", "18.1", "4.873e+00",
+    "18.7", "4.936e+00", "2.987e+00", "7.211e+00", "Cmax (ug/mL)", "132", "2.990e+01",
+    "5.550e+00", "18.6", "2.935e+01", "20.1", "2.969e+01", "1.406e+01", "4.345e+01"
   )
   expected_matrix <- matrix(expected_matrix, nrow = 6, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })
-
 
 # PKPT05 Drug X
 testthat::test_that("PKPT05 Drug X is produced correctly", {
@@ -130,21 +124,18 @@ testthat::test_that("PKPT05 Drug X is produced correctly", {
 
   expected_matrix <- c(
     "Treatment Arm", "", "", "", "", "", "", "", "", "",
-    "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean",
-    "Median", "Minimum", "Maximum", "ARM A", "", "", "", "", "", "", "", "", "",
-    "Ae (mg)", "268", "1.539e+00", "2.988e-01", "19.4", "1.508e+00", "20.8",
-    "1.518e+00", "6.223e-01", "2.328e+00", "CLR (L/hr)", "134", "5.010e-02",
-    "1.026e-02", "20.5", "4.897e-02", "22.3", "4.935e-02", "2.370e-02",
-    "7.332e-02", "Fe (%)", "268", "1.591e+01", "2.990e+00", "18.8", "1.562e+01",
-    "19.8", "1.592e+01", "7.714e+00", "2.379e+01", "RENALCLD (L/hr/mg)", "134",
-    "5.009e-03", "1.009e-03", "20.1", "4.905e-03", "21.1", "4.909e-03",
-    "2.426e-03", "7.670e-03", "ARM C", "", "", "", "", "", "", "", "", "",
-    "Ae (mg)", "264", "1.593e+00", "3.043e-01", "19.1", "1.563e+00", "19.8",
-    "1.575e+00", "8.536e-01", "2.419e+00", "CLR (L/hr)", "132", "4.959e-02",
-    "1.031e-02", "20.8", "4.854e-02", "21.0", "4.906e-02", "3.149e-02", "8.150e-02",
-    "Fe (%)", "264", "1.562e+01", "2.909e+00", "18.6", "1.534e+01", "19.6", "1.557e+01",
-    "7.197e+00", "2.294e+01", "RENALCLD (L/hr/mg)", "132", "4.963e-03", "1.006e-03",
-    "20.3", "4.859e-03", "21.2", "4.980e-03", "2.344e-03", "7.306e-03"
+    "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean", "Median",
+    "Minimum", "Maximum", "ARM A", "", "", "", "", "", "", "", "", "",
+    "Ae (mg)", "268", "1.551e+00", "3.385e-01", "21.8", "1.513e+00", "23.0", "1.547e+00", "7.021e-01", "2.464e+00",
+    "CLR (L/hr)", "134", "4.918e-02", "9.611e-03", "19.5", "4.818e-02", "21.0", "4.909e-02", "2.488e-02", "7.511e-02",
+    "Fe (%)", "268", "1.571e+01", "3.348e+00", "21.3", "1.534e+01", "22.2", "1.577e+01", "8.147e+00", "2.452e+01",
+    "RENALCLD (L/hr/mg)", "134", "4.873e-03", "9.654e-04", "19.8", "4.772e-03", "21.2", "4.967e-03",
+    "2.385e-03", "7.258e-03", "ARM C", "", "", "", "", "", "", "", "", "",
+    "Ae (mg)", "264", "1.535e+00", "2.978e-01", "19.4", "1.505e+00", "20.3", "1.547e+00", "8.502e-01", "2.208e+00",
+    "CLR (L/hr)", "132", "5.024e-02", "1.050e-02", "20.9", "4.913e-02", "21.9", "4.984e-02", "2.505e-02", "8.560e-02",
+    "Fe (%)", "264", "1.609e+01", "3.103e+00", "19.3", "1.578e+01", "20.2", "1.604e+01", "8.503e+00", "2.443e+01",
+    "RENALCLD (L/hr/mg)", "132", "5.110e-03", "9.339e-04", "18.3", "5.019e-03", "19.7", "5.151e-03", "2.356e-03",
+    "7.407e-03"
   )
 
   expected_matrix <- matrix(expected_matrix, nrow = 12, ncol = 10, byrow = TRUE)
@@ -169,18 +160,16 @@ testthat::test_that("PKPT05 Drug Y is produced correctly", {
     "  PK Parameter", "n", "Mean", "SD", "CV (%)",
     "Geometric Mean", "CV % Geometric Mean", "Median",
     "Minimum", "Maximum", "ARM C", "", "", "", "", "", "", "", "", "",
-    "Ae (mg)", "264", "1.587e+00", "2.881e-01", "18.2", "1.559e+00",
-    "19.4", "1.593e+00", "7.698e-01", "2.152e+00", "CLR (L/hr)", "132",
-    "5.056e-02", "1.011e-02", "20.0", "4.950e-02", "21.4", "5.101e-02",
-    "2.226e-02", "7.606e-02", "Fe (%)", "264", "1.552e+01", "2.932e+00", "18.9",
-    "1.524e+01", "19.7", "1.550e+01", "8.133e+00", "2.639e+01", "RENALCLD (L/hr/mg)",
-    "132", "5.124e-03", "9.578e-04", "18.7", "5.029e-03", "20.0", "5.175e-03", "2.676e-03", "7.541e-03" # nolint
+    "Ae (mg)", "264", "1.598e+00", "3.154e-01", "19.7", "1.565e+00", "21.4", "1.603e+00", "8.574e-01", "2.257e+00",
+    "CLR (L/hr)", "132", "4.966e-02", "1.009e-02", "20.3", "4.857e-02", "22.0", "4.912e-02", "1.839e-02", "7.761e-02",
+    "Fe (%)", "264", "1.583e+01", "3.077e+00", "19.4", "1.552e+01", "20.2", "1.570e+01", "8.311e+00", "2.378e+01",
+    "RENALCLD (L/hr/mg)", "132", "5.093e-03", "1.032e-03", "20.3", "4.985e-03", "21.4", "5.017e-03", "2.356e-03",
+    "7.939e-03"
   )
 
   expected_matrix <- matrix(expected_matrix, nrow = 7, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })
-
 
 # PKPT07 Drug X
 testthat::test_that("PKPT07 Drug X is produced correctly", {
@@ -199,16 +188,14 @@ testthat::test_that("PKPT07 Drug X is produced correctly", {
     "Treatment Arm", "", "", "", "", "", "", "", "", "",
     "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean",
     "Median", "Minimum", "Maximum", "ARM A", "", "", "", "", "", "", "", "", "",
-    "RENALCLD (L/hr/mg)", "134", "5.009e-03", "1.009e-03", "20.1", "4.905e-03", "21.1",
-    "4.909e-03", "2.426e-03", "7.670e-03", "ARM C", "", "", "", "", "", "", "", "", "",
-    "RENALCLD (L/hr/mg)", "132", "4.963e-03", "1.006e-03", "20.3", "4.859e-03",
-    "21.2", "4.980e-03", "2.344e-03", "7.306e-03"
+    "RENALCLD (L/hr/mg)", "134", "4.873e-03", "9.654e-04", "19.8", "4.772e-03", "21.2", "4.967e-03", "2.385e-03",
+    "7.258e-03", "ARM C", "", "", "", "", "", "", "", "", "", "RENALCLD (L/hr/mg)", "132", "5.110e-03", "9.339e-04",
+    "18.3", "5.019e-03", "19.7", "5.151e-03", "2.356e-03", "7.407e-03"
   )
 
   expected_matrix <- matrix(expected_matrix, nrow = 6, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })
-
 
 # PKPT07 Drug Y
 testthat::test_that("PKPT07 Drug Y is produced correctly", {
@@ -227,8 +214,8 @@ testthat::test_that("PKPT07 Drug Y is produced correctly", {
     "Treatment Arm", "", "", "", "", "", "", "", "", "",
     "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean",
     "CV % Geometric Mean", "Median", "Minimum", "Maximum", "ARM C",
-    "", "", "", "", "", "", "", "", "", "RENALCLD (L/hr/mg)", "132", "5.124e-03",
-    "9.578e-04", "18.7", "5.029e-03", "20.0", "5.175e-03", "2.676e-03", "7.541e-03"
+    "", "", "", "", "", "", "", "", "", "RENALCLD (L/hr/mg)", "132", "5.093e-03",
+    "1.032e-03", "20.3", "4.985e-03", "21.4", "5.017e-03", "2.356e-03", "7.939e-03"
   )
 
   expected_matrix <- matrix(expected_matrix, nrow = 4, ncol = 10, byrow = TRUE)

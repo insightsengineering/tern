@@ -88,17 +88,17 @@ and \verb{Last or replicated} criteria, then the patient will be counted only un
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_by_marked}: Statistics function which returns
+\item \code{s_count_abnormal_by_marked()}: Statistics function which returns
 the counts and fractions of patients with \verb{Single, not last}, \verb{Last or replicated} and \code{Any}
 marked laboratory abnormalities for a single \code{abnormal} level.
 
-\item \code{a_count_abnormal_by_marked}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_abnormal_by_marked()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_abnormal_by_marked}: Layout creating function which can be used for creating tables,
+\item \code{count_abnormal_by_marked()}: Layout creating function which can be used for creating tables,
 which can take statistics function arguments and additional format arguments (see below).
-}}
 
+}}
 \examples{
 library(dplyr)
 

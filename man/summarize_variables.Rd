@@ -151,6 +151,7 @@ the helper function \code{\link[=control_summarize_vars]{control_summarize_vars(
 \item \code{quantiles}: numeric vector of length two to specify the quantiles.
 \item \code{quantile_type} (\code{numeric}) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
+\item \code{test_mean}: (\code{numeric}) \cr to test against the mean under the null hypothesis when calculating p-value.
 }}
 
 \item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
@@ -170,7 +171,10 @@ to print out information about factor casting.}
 
 \item{var_labels}{character for label.}
 
-\item{nested}{boolean. Should this layout instruction be applied within the existing layout structure \emph{if possible} (\code{TRUE}, the default) or as a new top-level element (`FALSE). Ignored if it would nest a split underneath analyses, which is not allowed.}
+\item{nested}{boolean. Should this layout instruction be applied within the
+existing layout structure \emph{if possible} (\code{TRUE}, the default) or as a
+new top-level element (`FALSE). Ignored if it would nest a split underneath
+analyses, which is not allowed.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
@@ -186,9 +190,11 @@ If \code{x} is of class \code{numeric}, returns a list with named items: \cr
 \item \code{sd}: the \code{\link[stats:sd]{stats::sd()}} of \code{x}.
 \item \code{se}: the standard error of \code{x} mean, i.e.: (\verb{sd()/sqrt(length())]}).
 \item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[stats:sd]{stats::sd()}} of \code{x}.
+\item \code{mean_se}: the \code{\link[=mean]{mean()}} of \code{x} and its standard error (see above).
 \item \code{mean_ci}: the CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
 \item \code{mean_sei}: the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}/\code{\link[=sqrt]{sqrt()}}).
 \item \code{mean_sdi}: the SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}).
+\item \code{mean_pval}: the two-sided p-value of the mean of \code{x} (from \code{\link[=stat_mean_pval]{stat_mean_pval()}}).
 \item \code{median}: the \code{\link[stats:median]{stats::median()}} of \code{x}.
 \item \code{mad}:
 the median absolute deviation of \code{x}, i.e.: (\code{\link[stats:median]{stats::median()}} of \code{xc}, where \code{xc} = \code{x} - \code{\link[stats:median]{stats::median()}}).
@@ -231,51 +237,51 @@ with the new Analyze Function \code{\link[=summarize_vars]{summarize_vars()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_summary}: \code{s_summary} is a S3 generic function to produce
+\item \code{s_summary()}: \code{s_summary} is a S3 generic function to produce
 an object description.
 
-\item \code{s_summary.numeric}: Method for numeric class. Note that,
+\item \code{s_summary(numeric)}: Method for numeric class. Note that,
 if \code{x} is an empty vector, \code{NA} is returned. This is the expected
 feature so as to return \code{rcell} content in \code{rtables} when the
 intersection of a column and a row delimits an empty data selection.
 Also, when the \code{mean} function is applied to an empty vector, \code{NA} will
 be returned instead of \code{NaN}, the latter being standard behavior in R.
 
-\item \code{s_summary.factor}: Method for factor class. Note that,
+\item \code{s_summary(factor)}: Method for factor class. Note that,
 if \code{x} is an empty factor, then still a list is returned for \code{counts} with one element
 per factor level. If there are no levels in \code{x}, the function fails. If \code{x} contains \code{NA},
 it is expected that \code{NA} have been conveyed to \code{na_level} appropriately beforehand with
 \code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
 
-\item \code{s_summary.character}: Method for character class. This makes an automatic
+\item \code{s_summary(character)}: Method for character class. This makes an automatic
 conversion to factor (with a warning) and then forwards to the method for factors.
 
-\item \code{s_summary.logical}: Method for logical class.
+\item \code{s_summary(logical)}: Method for logical class.
 
-\item \code{a_summary}: S3 generic Formatted Analysis function to produce
+\item \code{a_summary()}: S3 generic Formatted Analysis function to produce
 an object description. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{a_summary.numeric}: Formatted Analysis function method for \code{numeric}.
+\item \code{a_summary(numeric)}: Formatted Analysis function method for \code{numeric}.
 
-\item \code{a_summary.factor}: Method for \code{factor}.
+\item \code{a_summary(factor)}: Method for \code{factor}.
 
-\item \code{a_summary.character}: Formatted Analysis function method for \code{character}.
+\item \code{a_summary(character)}: Formatted Analysis function method for \code{character}.
 
-\item \code{a_summary.logical}: Formatted Analysis function method for \code{logical}.
+\item \code{a_summary(logical)}: Formatted Analysis function method for \code{logical}.
 
-\item \code{create_afun_summary}: Constructor function which creates a combined Formatted
+\item \code{create_afun_summary()}: Constructor function which creates a combined Formatted
 Analysis function for use in layout creating functions \code{\link[=summarize_vars]{summarize_vars()}} and
 \code{\link[=summarize_colvars]{summarize_colvars()}}.
 
-\item \code{summarize_vars}: Analyze Function to add a descriptive analyze
+\item \code{summarize_vars()}: Analyze Function to add a descriptive analyze
 layer to \code{rtables} pipelines. The analysis is applied to a vector and
 return the summary, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
 \code{\link[=s_summary]{s_summary()}}, for instance \code{na.rm = FALSE} if missing data should be
 accounted for. When factor variables contains \code{NA}, it is expected that \code{NA}
 have been conveyed to \code{na_level} appropriately beforehand with
 \code{\link[=df_explicit_na]{df_explicit_na()}}.
-}}
 
+}}
 \note{
 Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.

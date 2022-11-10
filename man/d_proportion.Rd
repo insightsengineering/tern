@@ -12,16 +12,16 @@ d_proportion(conf_level, method, long = FALSE)
 \item{method}{(\code{string}) \cr
 the method used to construct the confidence interval for proportion of
 successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, \code{wilson},
-\code{agresti-coull} or \code{jeffreys}.}
+\code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
 
-\item{long}{(\code{flag})\cr Whether a long or a short (default) description is required.}
+\item{long}{(\code{flag})\cr
+whether a long or a short (default) description is required.}
 }
 \value{
 String describing the analysis.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 This is a helper function that describes the analysis in \code{\link[=s_proportion]{s_proportion()}}.
 }

@@ -1,13 +1,9 @@
-library(scda)
-library(dplyr)
+adae <- adae_raw
 
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
-
-get_adsl <- function() {
-  adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl # nolintr
+adsl_local <- local({
   set.seed(1)
   # nolint start
-  adsl_f <- adsl %>%
+  adsl_f <- adsl_raw %>%
     dplyr::filter(SAFFL == "Y") %>% # Safety Evaluable Population
     dplyr::mutate(
       STSTFL = dplyr::case_when(
@@ -41,7 +37,7 @@ get_adsl <- function() {
   # nolint end
   adsl_f <- df_explicit_na(adsl_f)
   adsl_f
-}
+})
 
 get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   n_per_arm <- adsl %>%
@@ -74,9 +70,8 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   anl
 }
 
-
 testthat::test_that("Patient Disposition table is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -114,16 +109,16 @@ testthat::test_that("Patient Disposition table is produced correctly", {
       "", "", "Started Study", "Completed Study", "Discontinued Study",
       "ADVERSE EVENT", "DEATH", "LACK OF EFFICACY", "PHYSICIAN DECISION",
       "PROTOCOL VIOLATION", "WITHDRAWAL BY PARENT/GUARDIAN", "WITHDRAWAL BY SUBJECT",
-      "A: Drug X", "(N=134)", "134 (100.00%)", "69 (51.49%)", "38 (28.36%)",
-      "6 (4.48%)", "22 (16.42%)", "2 (1.49%)", "0 (0.00%)", "4 (2.99%)",
-      "2 (1.49%)", "2 (1.49%)", "B: Placebo", "(N=134)", "134 (100.00%)",
-      "69 (51.49%)", "43 (32.09%)", "1 (0.75%)", "26 (19.40%)", "1 (0.75%)",
-      "1 (0.75%)", "7 (5.22%)", "5 (3.73%)", "2 (1.49%)", "C: Combination",
-      "(N=132)", "132 (100.00%)", "72 (54.55%)", "39 (29.55%)", "2 (1.52%)",
-      "19 (14.39%)", "2 (1.52%)", "7 (5.30%)", "6 (4.55%)", "3 (2.27%)",
-      "0 (0.00%)", "All Patients", "(N=400)", "400 (100.00%)", "210 (52.50%)",
-      "120 (30.00%)", "9 (2.25%)", "67 (16.75%)", "5 (1.25%)", "8 (2.00%)",
-      "17 (4.25%)", "10 (2.50%)", "4 (1.00%)"
+      "A: Drug X", "(N=134)", "134 (100.00%)", "68 (50.75%)", "42 (31.34%)",
+      "3 (2.24%)", "25 (18.66%)", "2 (1.49%)", "2 (1.49%)", "5 (3.73%)",
+      "4 (2.99%)", "1 (0.75%)", "B: Placebo", "(N=134)", "134 (100.00%)",
+      "66 (49.25%)", "40 (29.85%)", "6 (4.48%)", "23 (17.16%)", "2 (1.49%)",
+      "3 (2.24%)", "3 (2.24%)", "2 (1.49%)", "1 (0.75%)", "C: Combination",
+      "(N=132)", "132 (100.00%)", "73 (55.30%)", "38 (28.79%)", "5 (3.79%)",
+      "22 (16.67%)", "3 (2.27%)", "2 (1.52%)", "4 (3.03%)", "1 (0.76%)",
+      "1 (0.76%)", "All Patients", "(N=400)", "400 (100.00%)", "207 (51.75%)",
+      "120 (30.00%)", "14 (3.50%)", "70 (17.50%)", "7 (1.75%)", "7 (1.75%)",
+      "12 (3.00%)", "7 (1.75%)", "3 (0.75%)"
     ),
     .Dim = c(12L, 5L)
   )
@@ -131,7 +126,7 @@ testthat::test_that("Patient Disposition table is produced correctly", {
 })
 
 testthat::test_that("Demographic table is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
   vars <- c("AGE", "AGEGRP", "SEX", "RACE", "ETHNIC")
   var_labels <- c(
     "Age (yr)",
@@ -179,7 +174,7 @@ testthat::test_that("Demographic table is produced correctly", {
 })
 
 testthat::test_that("Enrollment by Country Table is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
@@ -208,7 +203,7 @@ testthat::test_that("Enrollment by Country Table is produced correctly", {
 })
 
 testthat::test_that("Death table is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -276,7 +271,7 @@ testthat::test_that("Table of Serious Adverse Events is produced correctly (for 
 })
 
 testthat::test_that("Table of Non-Serious Adverse Events is produced correctly", {
-  adsl <- get_adsl()
+  adsl <- adsl_local
   adae_nonser <- adae %>% dplyr::filter(AESER != "Y", SAFFL == "Y")
   adae_trim <- get_adae_trimmed(adsl, adae_nonser, cutoff_rate = 0.05)
 

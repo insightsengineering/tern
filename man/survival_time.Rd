@@ -78,28 +78,28 @@ survival time range of censored/event patients.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_surv_time}: Statistics Function which analyzes survival times.
+\item \code{s_surv_time()}: Statistics Function which analyzes survival times.
 \code{range_censor} and \code{range_event}.
 
-\item \code{a_surv_time}: Formatted Analysis function which can be further customized by calling
+\item \code{a_surv_time()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{surv_time}: Analyze Function which adds the survival times analysis
+\item \code{surv_time()}: Analyze Function which adds the survival times analysis
 to the input layout. Note that additional formatting arguments can be used here.
-}}
 
+}}
 \examples{
 library(scda)
 library(dplyr)
 
-ADTTE <- synthetic_cdisc_data("latest")$adtte
-ADTTE_f <- ADTTE \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte")
+adtte_f <- adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
-df <- ADTTE_f \%>\% filter(ARMCD == "ARM A")
+df <- adtte_f \%>\% filter(ARMCD == "ARM A")
 
 # Internal function - s_surv_time
 \dontrun{
@@ -120,6 +120,6 @@ basic_table() \%>\%
     is_event = "is_event",
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
   ) \%>\%
-  build_table(df = ADTTE_f)
+  build_table(df = adtte_f)
 }
 \keyword{internal}

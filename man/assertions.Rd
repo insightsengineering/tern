@@ -96,23 +96,23 @@ Additional assertion functions which can be used together with the \code{checkma
 }
 \section{Functions}{
 \itemize{
-\item \code{assert_list_of_variables}: Check whether \code{x} is a valid list of variable names.
+\item \code{assert_list_of_variables()}: Check whether \code{x} is a valid list of variable names.
 \code{NULL} elements of the list \code{x} are dropped out with \code{Filter(Negate(is.null), x)}.
 
-\item \code{assert_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
+\item \code{assert_df_with_variables()}: Check whether \code{df} is a data frame with the analysis \code{variables}.
 Please notice how this produces an error when not all variables are present in the
 data.frame while the opposite is not required.
 
-\item \code{assert_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty
+\item \code{assert_valid_factor()}: Check whether \code{x} is a valid factor (has levels and no empty
 string levels). Note that \code{NULL} and \code{NA} elements are allowed.
 
-\item \code{assert_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
+\item \code{assert_df_with_factors()}: Check whether \code{df} is a data frame where the analysis \code{variables}
 are all factors. Note that the creation of \code{NA} by direct call of \code{factor()} will
 trim \code{NA} levels out of the vector list itself.
 
-\item \code{assert_proportion_value}: Check whether \code{x} is a proportion: number between 0 and 1.
-}}
+\item \code{assert_proportion_value()}: Check whether \code{x} is a proportion: number between 0 and 1.
 
+}}
 \examples{
 # Check whether `x` is a valid list of variable names.
 

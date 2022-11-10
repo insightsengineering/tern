@@ -142,10 +142,11 @@ controls the font size of values in the table.}
 Line plot with the optional table
 }
 \examples{
+library(scda)
 library(nestcolor)
 
-adsl <- scda::synthetic_cdisc_data("latest")$adsl
-adlb <- scda::synthetic_cdisc_data("latest")$adlb
+adsl <- synthetic_cdisc_dataset("latest", "adsl")
+adlb <- synthetic_cdisc_dataset("latest", "adlb")
 adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 adlb$AVISIT <- droplevels(adlb$AVISIT)
 adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))

@@ -3,6 +3,7 @@
 [![Check 🛠](https://github.com/insightsengineering/tern/actions/workflows/check.yaml/badge.svg)](https://github.com/insightsengineering/tern/actions/workflows/check.yaml)
 [![Docs 📚](https://github.com/insightsengineering/tern/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/tern/)
 [![Release 🎈](https://github.com/insightsengineering/tern/actions/workflows/release.yaml/badge.svg)](https://github.com/insightsengineering/tern/releases)
+[![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/coverage.xml)
 
 The `tern` R package contains analysis functions to create tables and graphs used for clinical trial reporting.
 
@@ -47,3 +48,15 @@ See package vignettes `browseVignettes(package = "tern")` for usage of this pack
 ## Acknowledgment
 
 This package is a result of a joint efforts by many developers and stakeholders. We would like to thank everyone who contributed so far!
+
+## Stargazers and Forkers
+
+### Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/insightsengineering/tern.svg)](https://starchart.cc/insightsengineering/tern)
+
+### Stargazers
+
+[![Stargazers repo roster for @insightsengineering/tern](https://reporoster.com/stars/insightsengineering/tern)](https://github.com/insightsengineering/tern/stargazers)
+
+[![Forkers repo roster for @insightsengineering/tern](https://reporoster.com/forks/insightsengineering/tern)](https://github.com/insightsengineering/tern/network/members)

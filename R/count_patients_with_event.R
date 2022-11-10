@@ -26,12 +26,10 @@ NULL
 #' @export
 #'
 #' @examples
-#'
-#'
 #' library(dplyr)
 #' library(scda)
-#' adae <- synthetic_cdisc_data("latest")$adae
-#' adsl <- synthetic_cdisc_data("latest")$adsl
+#' adae <- synthetic_cdisc_dataset("latest", "adae")
+#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
 #'
 #' # `s_count_patients_with_event()`
 #'

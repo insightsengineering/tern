@@ -21,13 +21,12 @@
 #' @seealso [control_step()] and [control_coxph()] for the available customization options.
 #' @export
 #' @examples
-#'
 #' # Testing dataset with just two treatment arms.
 #' library(scda)
 #' library(dplyr)
 #' library(rtables)
 #'
-#' adtte <- synthetic_cdisc_data("latest")$adtte
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
 #'
 #' adtte_f <- adtte %>%
 #'   filter(

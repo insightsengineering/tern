@@ -1,6 +1,3 @@
-library(scda)
-library(dplyr)
-
 # 1. Preprocess ADAE so that deaths do not occur in arm "A: Drug X".
 # 2. Concatenate AEBODSYS and AEDECOD per GDSR output standard AET07.
 preprocess_adae <- function(adae) {
@@ -21,8 +18,8 @@ preprocess_adae <- function(adae) {
     dplyr::filter(AESDTH == "Y")
 }
 
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
+adsl <- adsl_raw
+adae <- adae_raw
 
 testthat::test_that("AET07 variant 1 is produced correctly", {
   adae <- adae %>%

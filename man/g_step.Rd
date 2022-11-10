@@ -8,7 +8,7 @@
 g_step(
   df,
   use_percentile = "Percentile Center" \%in\% names(df),
-  est = list(col = "black", lty = 1),
+  est = list(col = "blue", lty = 1),
   ci_ribbon = list(fill = getOption("ggplot2.discrete.colour")[1], alpha = 0.5),
   col = getOption("ggplot2.discrete.colour")
 )
@@ -44,13 +44,13 @@ respectively. Additional attributes carry meta data also used for plotting.
 Based on the STEP results, creates a \code{ggplot} graph showing the estimated HR or OR
 along the continuous biomarker value subgroups.
 }
-\section{Methods (by generic)}{
+\section{Functions}{
 \itemize{
-\item \code{tidy}: Custom Tidy Method for STEP Results
+\item \code{tidy(step)}: Custom Tidy Method for STEP Results
 
 Tidy the STEP results into a \code{tibble} to format them ready for plotting.
-}}
 
+}}
 \examples{
 library(nestcolor)
 library(survival)

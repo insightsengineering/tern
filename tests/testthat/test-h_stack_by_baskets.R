@@ -1,7 +1,8 @@
-library(scda)
+# Local data pre-processing
+adae_local <- adae_raw[1:20, ] %>% df_explicit_na()
+
 testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
-  adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
-  result <- h_stack_by_baskets(df = adae)
+  result <- h_stack_by_baskets(df = adae_local)
 
   expected <-
     structure(
@@ -25,7 +26,7 @@ testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
           label = c(USUBJID = "Unique Subject Identifier")
         ),
         ASTDTM = structure(
-          c(1621814400, 1638230400, 1650499200, 1605312000),
+          c(1634947200, 1659484800, 1677888000, 1631404800),
           tzone = "",
           label = c(ASTDTM = "Analysis Start Datetime"),
           class = c("POSIXct", "POSIXt")
@@ -52,7 +53,7 @@ testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
           c(2L, 2L, 2L, 1L),
           .Label = c("C.1.1.1.3/B.2.2.3.1 AESI(BROAD)", "D.2.1.5.3/A.1.1.1.1 AESI", "SMQ02NAM"),
           class = "factor",
-          label = structure("Standardized MedDRA Query", .Names = "")
+          label = c(SMQ = "Standardized MedDRA Query")
         )
       ),
       row.names = c(NA, -4L),
@@ -65,11 +66,9 @@ testthat::test_that(
   "h_stack_by_baskets fails when selecting Standardized/Customized query names
   that do not start with 'SMQ' or 'CQ' ",
   code = {
-    adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
-
     testthat::expect_error(
       h_stack_by_baskets(
-        df = adae,
+        df = adae_local,
         baskets = c("NOT_SMQ01NAM")
       )
     )
@@ -80,11 +79,9 @@ testthat::test_that(
   "h_stack_by_baskets fails when selecting Standardized/Customized
   query names that do not end with 'NAM' ",
   code = {
-    adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
-
     testthat::expect_error(
       h_stack_by_baskets(
-        df = adae,
+        df = adae_local,
         baskets = c("SMQ01NAM_NOT")
       )
     )
@@ -95,7 +92,7 @@ testthat::test_that(
   "h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no
   adverse events falling within any of the baskets selected",
   code = {
-    adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
+    adae <- adae_local
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
 
     adae[, baskets] <- "<Missing>"
@@ -130,8 +127,7 @@ testthat::test_that(
   "The levels of the SMQ column does also
   include the options from aag_summary not observed in ADAE",
   code = {
-    adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae[1:20, ] %>% df_explicit_na()
-    baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
+    baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae_local), value = TRUE)
 
     aag_summary <- data.frame(
       basket = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),
@@ -141,7 +137,7 @@ testthat::test_that(
       )
     )
 
-    result <- h_stack_by_baskets(df = adae, aag_summary = aag_summary)
+    result <- h_stack_by_baskets(df = adae_local, aag_summary = aag_summary)
 
     result_levels <- levels(result$SMQ)
     expected_levels <- c(

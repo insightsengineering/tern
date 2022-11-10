@@ -1,9 +1,6 @@
 # Test variants of DTH01
 
-library(scda)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
+adsl <- adsl_raw
 
 testthat::test_that("DTH01 variant 1 is produced correctly", {
   adsl <- adsl %>%
@@ -15,7 +12,7 @@ testthat::test_that("DTH01 variant 1 is produced correctly", {
     count_values(
       "DTHFL",
       values = "Y",
-      .labels =  c(count_fraction = "Total number of deaths"),
+      .labels = c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
     ) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
@@ -26,12 +23,12 @@ testthat::test_that("DTH01 variant 1 is produced correctly", {
     c(
       "", "", "Total number of deaths", "Primary cause of death",
       "n", "ADVERSE EVENT", "OTHER", "PROGRESSIVE DISEASE", "A: Drug X",
-      "(N=134)", "22 (16.4%)", "", "22", "6 (27.3%)", "9 (40.9%)",
-      "7 (31.8%)", "B: Placebo", "(N=134)", "26 (19.4%)", "", "26",
-      "12 (46.2%)", "5 (19.2%)", "9 (34.6%)", "C: Combination", "(N=132)",
-      "19 (14.4%)", "", "19", "7 (36.8%)", "4 (21.1%)", "8 (42.1%)",
-      "All Patients", "(N=400)", "67 (16.8%)", "", "67", "25 (37.3%)",
-      "18 (26.9%)", "24 (35.8%)"
+      "(N=134)", "25 (18.7%)", "", "25", "9 (36%)", "8 (32%)",
+      "8 (32%)", "B: Placebo", "(N=134)", "23 (17.2%)", "", "23",
+      "7 (30.4%)", "10 (43.5%)", "6 (26.1%)", "C: Combination", "(N=132)",
+      "22 (16.7%)", "", "22", "10 (45.5%)", "6 (27.3%)", "6 (27.3%)",
+      "All Patients", "(N=400)", "70 (17.5%)", "", "70", "26 (37.1%)",
+      "24 (34.3%)", "20 (28.6%)"
     ),
     .Dim = c(8L, 5L)
   )
@@ -48,7 +45,7 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
     count_values(
       "DTHFL",
       values = "Y",
-      .labels =  c(count_fraction = "Total number of deaths"),
+      .labels = c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
     ) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
@@ -97,30 +94,28 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
   expected <- structure(
     c(
       "", "", "Total number of deaths", "Primary cause of death",
-      "n", "ADVERSE EVENT", "OTHER", "PROGRESSIVE DISEASE", "LOST TO FOLLOW UP",
-      "MISSING", "SUICIDE", "UNKNOWN", "Days from last drug administration",
+      "n", "ADVERSE EVENT", "OTHER", "PROGRESSIVE DISEASE", "LOST TO FOLLOW UP", "MISSING",
+      "Post-study reporting of death", "SUICIDE", "UNKNOWN", "Days from last drug administration",
       "n", "<=30", ">30", "Primary cause by days from last study drug administration",
       "<=30", "n", "ADVERSE EVENT", "OTHER", "PROGRESSIVE DISEASE",
       ">30", "n", "ADVERSE EVENT", "OTHER", "PROGRESSIVE DISEASE",
-      "A: Drug X", "(N=134)", "22 (16.4%)", "", "22", "6 (27.3%)",
-      "9 (40.9%)", "7 (31.8%)", "2 (22.2%)", "4 (44.4%)", "2 (22.2%)",
-      "1 (11.1%)", "", "22", "12 (54.5%)", "10 (45.5%)", "", "", "12",
-      "3 (25%)", "6 (50%)", "3 (25%)", "", "10", "3 (30%)", "3 (30%)",
-      "4 (40%)", "B: Placebo", "(N=134)", "26 (19.4%)", "", "26", "12 (46.2%)",
-      "5 (19.2%)", "9 (34.6%)", "2 (40%)", "1 (20%)", "1 (20%)", "1 (20%)",
-      "", "26", "16 (61.5%)", "10 (38.5%)", "", "", "16", "9 (56.2%)",
-      "3 (18.8%)", "4 (25%)", "", "10", "3 (30%)", "2 (20%)", "5 (50%)",
-      "C: Combination", "(N=132)", "19 (14.4%)", "", "19", "7 (36.8%)",
-      "4 (21.1%)", "8 (42.1%)", "1 (25%)", "2 (50%)", "1 (25%)", "0",
-      "", "19", "10 (52.6%)", "9 (47.4%)", "", "", "10", "4 (40%)",
-      "3 (30%)", "3 (30%)", "", "9", "3 (33.3%)", "1 (11.1%)", "5 (55.6%)",
-      "All Patients", "(N=400)", "67 (16.8%)", "", "67", "25 (37.3%)",
-      "18 (26.9%)", "24 (35.8%)", "5 (27.8%)", "7 (38.9%)", "4 (22.2%)",
-      "2 (11.1%)", "", "67", "38 (56.7%)", "29 (43.3%)", "", "", "38",
-      "16 (42.1%)", "12 (31.6%)", "10 (26.3%)", "", "29", "9 (31%)",
-      "6 (20.7%)", "14 (48.3%)"
+      "A: Drug X", "(N=134)", "25 (18.7%)", "", "25", "9 (36%)",
+      "8 (32%)", "8 (32%)", "2 (25%)", "2 (25%)", "1 (12.5%)",
+      "2 (25%)", "1 (12.5%)", "", "25", "14 (56%)", "11 (44%)", "", "", "14",
+      "4 (28.6%)", "4 (28.6%)", "6 (42.9%)", "", "11", "5 (45.5%)", "4 (36.4%)",
+      "2 (18.2%)", "B: Placebo", "(N=134)", "23 (17.2%)", "", "23", "7 (30.4%)",
+      "10 (43.5%)", "6 (26.1%)", "2 (20%)", "3 (30%)", "2 (20%)", "2 (20%)", "1 (10%)",
+      "", "23", "11 (47.8%)", "12 (52.2%)", "", "", "11", "2 (18.2%)",
+      "6 (54.5%)", "3 (27.3%)", "", "12", "5 (41.7%)", "4 (33.3%)", "3 (25%)",
+      "C: Combination", "(N=132)", "22 (16.7%)", "", "22", "10 (45.5%)",
+      "6 (27.3%)", "6 (27.3%)", "2 (33.3%)", "2 (33.3%)", "1 (16.7%)", "1 (16.7%)", "0",
+      "", "22", "14 (63.6%)", "8 (36.4%)", "", "", "14", "6 (42.9%)", "4 (28.6%)", "4 (28.6%)", "", "8",
+      "4 (50%)", "2 (25%)", "2 (25%)", "All Patients", "(N=400)", "70 (17.5%)", "", "70", "26 (37.1%)",
+      "24 (34.3%)", "20 (28.6%)", "6 (25%)", "7 (29.2%)", "4 (16.7%)", "5 (20.8%)",
+      "2 (8.3%)", "", "70", "39 (55.7%)", "31 (44.3%)", "", "", "39",
+      "12 (30.8%)", "14 (35.9%)", "13 (33.3%)", "", "31", "14 (45.2%)", "10 (32.3%)", "7 (22.6%)"
     ),
-    .Dim = c(27L, 5L)
+    .Dim = c(28L, 5L)
   )
   testthat::expect_identical(result, expected)
 })
@@ -140,7 +135,7 @@ testthat::test_that("DTH01 variant 3 is produced correctly", {
     count_values(
       "DTHFL",
       values = "Y",
-      .labels =  c(count_fraction = "Total number of deaths"),
+      .labels = c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
     ) %>%
     summarize_vars(
@@ -185,14 +180,14 @@ testthat::test_that("DTH01 variant 3 is produced correctly", {
     c(
       "", "", "Total number of deaths", "Primary cause of death",
       "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "Post study reporting of deaths",
-      "All other causes", "A: Drug X", "(N=134)", "22 (16.4%)", "",
-      "22", "6 (27.3%)", "7 (31.8%)", "9 (40.9%)", "2 (22.2%)", "7 (77.8%)",
-      "B: Placebo", "(N=134)", "26 (19.4%)", "", "26", "12 (46.2%)",
-      "9 (34.6%)", "5 (19.2%)", "1 (20.0%)", "4 (80.0%)", "C: Combination",
-      "(N=132)", "19 (14.4%)", "", "19", "7 (36.8%)", "8 (42.1%)",
-      "4 (21.1%)", "1 (25.0%)", "3 (75.0%)", "All Patients", "(N=400)",
-      "67 (16.8%)", "", "67", "25 (37.3%)", "24 (35.8%)", "18 (26.9%)",
-      "4 (22.2%)", "14 (77.8%)"
+      "All other causes", "A: Drug X", "(N=134)", "25 (18.7%)", "",
+      "25", "9 (36%)", "8 (32%)", "8 (32%)", "1 (12.5%)", "7 (87.5%)",
+      "B: Placebo", "(N=134)", "23 (17.2%)", "", "23", "7 (30.4%)",
+      "6 (26.1%)", "10 (43.5%)", "2 (20.0%)", "8 (80.0%)", "C: Combination",
+      "(N=132)", "22 (16.7%)", "", "22", "10 (45.5%)", "6 (27.3%)",
+      "6 (27.3%)", "1 (16.7%)", "5 (83.3%)", "All Patients", "(N=400)",
+      "70 (17.5%)", "", "70", "26 (37.1%)", "20 (28.6%)", "24 (34.3%)",
+      "4 (16.7%)", "20 (83.3%)"
     ),
     .Dim = c(10L, 5L)
   )
@@ -227,7 +222,7 @@ testthat::test_that("DTH01 variant 4 is produced correctly", {
     count_values(
       "DTHFL",
       values = "Y",
-      .labels =  c(count_fraction = "Total number of deaths"),
+      .labels = c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
     ) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death"))
@@ -280,16 +275,16 @@ testthat::test_that("DTH01 variant 4 is produced correctly", {
       "", "", "Total number of deaths", "Primary cause of death",
       "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "Post study reporting of deaths",
       "All other causes", "LOST TO FOLLOW UP", "SUICIDE", "UNKNOWN",
-      "MISSING", "A: Drug X", "(N=134)", "22 (16.4%)", "", "22", "6 (27.3%)",
-      "7 (31.8%)", "9 (40.9%)", "2 (22.2%)", "7 (77.8%)", "2 (22.2%)",
-      "2 (22.2%)", "1 (11.1%)", "4 (44.4%)", "B: Placebo", "(N=134)",
-      "26 (19.4%)", "", "26", "12 (46.2%)", "9 (34.6%)", "5 (19.2%)",
-      "1 (20.0%)", "4 (80.0%)", "2 (40%)", "1 (20%)", "1 (20%)", "1 (20%)",
-      "C: Combination", "(N=132)", "19 (14.4%)", "", "19", "7 (36.8%)",
-      "8 (42.1%)", "4 (21.1%)", "1 (25.0%)", "3 (75.0%)", "1 (25%)", "1 (25%)",
-      "0", "2 (50%)", "All Patients", "(N=400)", "67 (16.8%)", "",
-      "67", "25 (37.3%)", "24 (35.8%)", "18 (26.9%)", "4 (22.2%)",
-      "14 (77.8%)", "5 (27.8%)", "4 (22.2%)", "2 (11.1%)", "7 (38.9%)"
+      "MISSING", "A: Drug X", "(N=134)", "25 (18.7%)", "", "25", "9 (36%)",
+      "8 (32%)", "8 (32%)", "1 (12.5%)", "7 (87.5%)", "2 (28.6%)",
+      "2 (28.6%)", "1 (14.3%)", "2 (28.6%)", "B: Placebo", "(N=134)",
+      "23 (17.2%)", "", "23", "7 (30.4%)", "6 (26.1%)", "10 (43.5%)",
+      "2 (20.0%)", "8 (80.0%)", "2 (25%)", "2 (25%)", "1 (12.5%)", "3 (37.5%)",
+      "C: Combination", "(N=132)", "22 (16.7%)", "", "22", "10 (45.5%)",
+      "6 (27.3%)", "6 (27.3%)", "1 (16.7%)", "5 (83.3%)", "2 (40%)", "1 (20%)",
+      "0", "2 (40%)", "All Patients", "(N=400)", "70 (17.5%)", "",
+      "70", "26 (37.1%)", "20 (28.6%)", "24 (34.3%)", "4 (16.7%)",
+      "20 (83.3%)", "6 (30%)", "5 (25%)", "2 (10%)", "7 (35%)"
     ),
     .Dim = c(14L, 5L)
   )

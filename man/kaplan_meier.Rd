@@ -41,6 +41,8 @@ an optimal tick position on the x axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
 
+\item{footnotes}{(\code{string})\cr footnotes for plot.}
+
 \item{col}{(\code{character})\cr lines colors. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 

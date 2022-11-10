@@ -1,5 +1,3 @@
-library(scda)
-
 preproc_adae <- function(adae) {
   anl <- adae %>%
     dplyr::mutate(
@@ -94,19 +92,17 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   anl
 }
 
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adae <- synthetic_cdisc_data("rcd_2022_02_28")$adae
+adsl <- adsl_raw
+adae <- preproc_adae(adae_raw)
+
+gr_grp <- list(
+  "- Any Grade -" = c("1", "2", "3", "4", "5"),
+  "Grade 1-2" = c("1", "2"),
+  "Grade 3-4" = c("3", "4"),
+  "Grade 5" = "5"
+)
 
 testthat::test_that("AET04 variant 1 is produced correctly", {
-  adae <- preproc_adae(adae)
-
-  gr_grp <- list(
-    "- Any Grade -" = c("1", "2", "3", "4", "5"),
-    "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4"),
-    "Grade 5" = "5"
-  )
-
   lyt <- basic_table() %>%
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
@@ -218,15 +214,7 @@ testthat::test_that("AET04 variant 1 is produced correctly", {
 
 testthat::test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)", {
   adae <- adae %>%
-    preproc_adae() %>%
     dplyr::filter(ACTARM == "A: Drug X")
-
-  gr_grp <- list(
-    "- Any Grade -" = c("1", "2", "3", "4", "5"),
-    "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4"),
-    "Grade 5" = "5"
-  )
 
   lyt <- basic_table() %>%
     split_cols_by("ACTARM") %>%
@@ -324,15 +312,6 @@ testthat::test_that("AET04 variant 2 is produced correctly (Fill in of Treatment
 })
 
 testthat::test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
-  adae <- preproc_adae(adae)
-
-  gr_grp <- list(
-    "- Any Grade -" = c("1", "2", "3", "4", "5"),
-    "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4"),
-    "Grade 5" = "5"
-  )
-
   lyt <- basic_table() %>%
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
@@ -468,8 +447,6 @@ testthat::test_that("AET04 variant 3 is produced correctly (Fill in of Grades)",
 })
 
 testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1&2, grades 3&4&5)", {
-  adae <- preproc_adae(adae)
-
   gr_grp <- list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
@@ -592,16 +569,8 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
 
 testthat::test_that("AET04 variant 6 is produced correctly (with an
                     Incidence Rate of at Least 5%, totals restricted)", {
-  adae <- preproc_adae(adae)
   adae <- get_adae_trimmed(adsl, adae, cutoff_rate = 0.4) %>%
     dplyr::mutate(AETOXGR = droplevels(AETOXGR))
-
-  gr_grp <- list(
-    "- Any Grade -" = c("1", "2", "3", "4", "5"),
-    "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4"),
-    "Grade 5" = "5"
-  )
 
   lyt <- basic_table() %>%
     split_cols_by("ACTARM") %>%
@@ -689,8 +658,6 @@ testthat::test_that("AET04 variant 6 is produced correctly (with an
 
 # NOTE: STREAM logic will only trim at term level
 testthat::test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at Least X Patients)", {
-  adae <- preproc_adae(adae)
-
   raw_result <- raw_table(adae, adsl)
 
   cutoff <- 58L
@@ -728,8 +695,6 @@ testthat::test_that("AET04 variant 8 is produced correctly (with an Incidence Ra
 
 # NOTE: STREAM logic will only tream at term level
 testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence Rate of at Least X%)", {
-  adae <- preproc_adae(adae)
-
   raw_result <- raw_table(adae, adsl)
 
   cutoff <- 0.1
@@ -776,8 +741,6 @@ testthat::test_that(
   "AET04 variant 11 is produced correctly
   (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)",
   code = {
-    adae <- preproc_adae(adae)
-
     raw_result <- raw_table(adae, adsl)
 
     cutoff <- 0.4

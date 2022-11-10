@@ -36,13 +36,12 @@ where \code{degree} is specified by \code{control_step()}.
 Note that for the default degree 0 the \code{biomarker} variable is not included in the model.
 }
 \examples{
-
 # Testing dataset with just two treatment arms.
 library(survival)
 library(dplyr)
 library(scda)
 
-adrs <- synthetic_cdisc_data("latest")$adrs
+adrs <- synthetic_cdisc_dataset("latest", "adrs")
 adrs_f <- adrs \%>\%
   filter(
     PARAMCD == "BESRSPI",

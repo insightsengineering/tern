@@ -20,6 +20,7 @@ g_km(
   yval = c("Survival", "Failure"),
   ylab = paste(yval, "Probability"),
   title = NULL,
+  footnotes = NULL,
   draw = TRUE,
   newpage = TRUE,
   gp = NULL,
@@ -89,6 +90,8 @@ an optimal tick position on the x axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
 
+\item{footnotes}{(\code{string})\cr footnotes for plot.}
+
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
 \item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
@@ -153,7 +156,7 @@ library(survival)
 library(grid)
 library(nestcolor)
 
-df <- synthetic_cdisc_data("latest")$adtte \%>\%
+df <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")

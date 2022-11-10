@@ -1,8 +1,5 @@
 # Test variants of DORT01
 
-library(scda)
-library(dplyr)
-
 preproc_adtte <- function(adtte) {
   anl <- adtte %>%
     dplyr::filter(PARAMCD == "CRSD" & BMEASIFL == "Y") %>%
@@ -23,12 +20,12 @@ preproc_adtte <- function(adtte) {
   anl
 }
 
-adsl <- synthetic_cdisc_data("rcd_2022_02_28")$adsl
-adtte <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
+adsl <- adsl_raw
+adtte_local <- adtte_raw %>%
+  preproc_adtte()
 
 testthat::test_that("DORT01 variant 1 is produced correctly", {
-  adtte <- adtte %>%
-    preproc_adtte()
+  adtte <- adtte_local
 
   result <- basic_table() %>%
     split_cols_by(var = "ARM", ref_group = "A: Drug X") %>%
@@ -103,8 +100,7 @@ testthat::test_that("DORT01 variant 1 is produced correctly", {
 })
 
 testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
-  adtte <- adtte %>%
-    preproc_adtte()
+  adtte <- adtte_local
 
   result <- basic_table() %>%
     split_cols_by(var = "ARM", ref_group = "A: Drug X") %>%
@@ -180,8 +176,7 @@ testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly"
 })
 
 testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced correctly", {
-  adtte <- adtte %>%
-    preproc_adtte()
+  adtte <- adtte_local
 
   result <- basic_table() %>%
     split_cols_by(var = "ARM", ref_group = "A: Drug X") %>%
@@ -257,8 +252,7 @@ testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is pr
 })
 
 testthat::test_that("DORT01 variant 4 (modifying time point for the “xx duration”) is produced correctly", {
-  adtte <- adtte %>%
-    preproc_adtte()
+  adtte <- adtte_local
 
   result <- basic_table() %>%
     split_cols_by(var = "ARM", ref_group = "A: Drug X") %>%

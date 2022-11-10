@@ -1,18 +1,12 @@
-
-# Preparation of the test case.
-
 # nolint start
-library(tern)
-library(scda)
-library(broom)
 
-ADTTE <- synthetic_cdisc_data("rcd_2022_02_28")$adtte
-saved_labels <- formatters::var_labels(ADTTE)
+adtte <- adtte_raw
+saved_labels <- formatters::var_labels(adtte)
 
-ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
-ADTTE_f <- within(
+adtte_f <- subset(adtte, PARAMCD == "OS") # _f: filtered
+adtte_f <- within(
   data = subset(
-    ADTTE_f,
+    adtte_f,
     PARAMCD == "OS" &
       ARMCD %in% c("ARM A", "ARM B") &
       SEX %in% c("F", "M") &
@@ -25,8 +19,8 @@ ADTTE_f <- within(
     RACE <- droplevels(RACE)
   }
 )
-formatters::var_labels(ADTTE_f) <- saved_labels
-ADTTE_f$event <- 1 - ADTTE_f$CNSR
+formatters::var_labels(adtte_f) <- saved_labels
+adtte_f$event <- 1 - adtte_f$CNSR
 # nolint end
 
 testthat::test_that("1. Cox Regression", {
@@ -35,7 +29,7 @@ testthat::test_that("1. Cox Regression", {
       time = "AVAL", event = "event", arm = "ARMCD",
       covariates = c("SEX", "RACE", "AGE")
     ),
-    data = ADTTE_f
+    data = adtte_f
   )
   df <- broom::tidy(mod1)
   result <- basic_table() %>%
@@ -65,7 +59,7 @@ testthat::test_that("2. Cox Regression (with Interaction Term)", {
       time = "AVAL", event = "event", arm = "ARMCD",
       covariates = c("SEX", "RACE", "AGE")
     ),
-    data = ADTTE_f,
+    data = adtte_f,
     control = control_coxreg(interaction = TRUE)
   )
   df <- broom::tidy(mod2)
@@ -101,7 +95,7 @@ testthat::test_that("3. Cox Regression (specifying covariates)", {
       time = "AVAL", event = "event", arm = "ARMCD",
       covariates = c("SEX", "RACE", "AGE")
     ),
-    data = ADTTE_f,
+    data = adtte_f,
     control = control_coxreg(interaction = TRUE),
     at = list(AGE = c(30, 40, 50))
   )
@@ -142,7 +136,7 @@ testthat::test_that("4. Cox Regression (setting strata, ties, and alpha level)",
       time = "AVAL", event = "event", arm = "ARMCD",
       covariates = c("SEX", "RACE", "AGE")
     ),
-    data = ADTTE_f,
+    data = adtte_f,
     control = control_coxreg(
       interaction = TRUE,
       conf_level = conf_level,

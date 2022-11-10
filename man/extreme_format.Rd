@@ -34,18 +34,18 @@ If it is zero, then returns "0.00".
 }
 \section{Functions}{
 \itemize{
-\item \code{h_get_format_threshold}: Internal helper function to calculate the threshold and create formatted strings
+\item \code{h_get_format_threshold()}: Internal helper function to calculate the threshold and create formatted strings
 used in Formatting Functions. Returns a list with elements \code{threshold} and \code{format_string}.
 
-\item \code{h_format_threshold}: Internal helper function to apply a threshold format to a value.
+\item \code{h_format_threshold()}: Internal helper function to apply a threshold format to a value.
 Creates a formatted string to be used in Formatting Functions.
 
-\item \code{format_extreme_values}: Create Formatting Function for a single extreme value.
+\item \code{format_extreme_values()}: Create Formatting Function for a single extreme value.
 
-\item \code{format_extreme_values_ci}: Create Formatting Function for extreme values part of a confidence interval. Values
+\item \code{format_extreme_values_ci()}: Create Formatting Function for extreme values part of a confidence interval. Values
 are formatted as e.g. "(xx.xx, xx.xx)" if if the number of \code{digits} is 2.
-}}
 
+}}
 \examples{
 
 h_get_format_threshold(2L)

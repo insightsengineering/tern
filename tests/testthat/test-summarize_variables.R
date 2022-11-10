@@ -1,5 +1,3 @@
-library(dplyr)
-
 testthat::test_that("control_summarize_vars works with customized parameters", {
   result <- control_summarize_vars(
     conf_level = 0.9,
@@ -8,7 +6,8 @@ testthat::test_that("control_summarize_vars works with customized parameters", {
   expected <- list(
     conf_level = 0.9,
     quantiles = c(0.1, 0.9),
-    quantile_type = 2
+    quantile_type = 2,
+    test_mean = 0
   )
   testthat::expect_identical(result, expected)
 })
@@ -29,9 +28,11 @@ testthat::test_that("s_summary return NA for x length 0L", {
     sd = c(sd = NA_real_),
     se = c(se = NA_real_),
     mean_sd = c(mean = NA_real_, sd = NA_real_),
+    mean_se = c(mean = NA_real_, se = NA_real_),
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = NA_real_), "Mean p-value (H0: mean = 0)"),
     median = c(median = NA_real_),
     mad = c(mad = NA_real_),
     median_ci = formatters::with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
@@ -60,9 +61,11 @@ testthat::test_that("s_summary handles NA", {
     sd = c(sd = NA_real_),
     se = c(se = NA_real_),
     mean_sd = c(mean = 1, sd = NA_real_),
+    mean_se = c(mean = 1, se = NA_real_),
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = NA_real_), "Mean p-value (H0: mean = 0)"),
     median = c(median = 1),
     mad = c(mad = 0),
     median_ci = formatters::with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
@@ -87,9 +90,11 @@ testthat::test_that("s_summary handles NA", {
     sd = c(sd = NA_real_),
     se = c(se = NA_real_),
     mean_sd = c(mean = NA_real_, sd = NA_real_),
+    mean_se = c(mean = NA_real_, se = NA_real_),
     mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = NA_real_), "Mean p-value (H0: mean = 0)"),
     median = c(median = NA_real_),
     mad = c(mad = NA_real_),
     median_ci = formatters::with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
@@ -116,9 +121,11 @@ testthat::test_that("s_summary returns right results for n = 2", {
     sd = c(sd = 0.7071068),
     se = c(se = 0.5),
     mean_sd = c(mean = 1.5, sd = 0.7071068),
+    mean_se = c(mean = 1.5, se = 0.5),
     mean_ci = formatters::with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = 1, mean_sei_upr = 2), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = 0.7928932, mean_sdi_upr = 2.2071068), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = 0.2048328), "Mean p-value (H0: mean = 0)"),
     median = c(median = 1.5),
     mad = c(mad = 0),
     median_ci = formatters::with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
@@ -148,9 +155,11 @@ testthat::test_that("s_summary returns right results for n = 8", {
     sd = c(sd = 3.207135),
     se = c(se = 1.133893),
     mean_sd = c(mean = 6, sd = 3.207135),
+    mean_se = c(mean = 6, se = 1.133893),
     mean_ci = formatters::with_label(c(mean_ci_lwr = 3.318768, mean_ci_upr = 8.681232), "Mean 95% CI"),
     mean_sei = formatters::with_label(c(mean_sei_lwr = 4.866107, mean_sei_upr = 7.133893), "Mean -/+ 1xSE"),
     mean_sdi = formatters::with_label(c(mean_sdi_lwr = 2.792865, mean_sdi_upr = 9.207135), "Mean -/+ 1xSD"),
+    mean_pval = formatters::with_label(c(p_value = 0.001133783), "Mean p-value (H0: mean = 0)"),
     median = c(median = 6.5),
     mad = c(mad = 0),
     median_ci = formatters::with_label(c(median_ci_lwr = 1, median_ci_upr = 10), "Median 95% CI"),
@@ -396,12 +405,12 @@ testthat::test_that("create_afun_summary creates an `afun` that works", {
       "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "5.0 - 8.0", "(-12.56, 25.56)",
       "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "4.0 - 7.0", "(-13.56, 24.56)",
       "", "2", "2 (100%)", "0", "0", "B", "", "", "1", "3", "3.0 - 3.0",
-      "(NA, NA)", "", "2", "0", "2 (100%)", "0", "", "", "1", "2",
-      "2.0 - 2.0", "(NA, NA)", "", "2", "0", "2 (100%)", "0", "", "", "1",
-      "1", "1.0 - 1.0", "(NA, NA)", "", "2", "0", "2 (100%)", "0", "C",
-      "", "", "0", "NA", "NA - NA", "(NA, NA)", "", "2", "0", "0",
-      "2 (100%)", "", "", "0", "NA", "NA - NA", "(NA, NA)", "", "2",
-      "0", "0", "2 (100%)", "", "", "0", "NA", "NA - NA", "(NA, NA)",
+      "NA", "", "2", "0", "2 (100%)", "0", "", "", "1", "2",
+      "2.0 - 2.0", "NA", "", "2", "0", "2 (100%)", "0", "", "", "1",
+      "1", "1.0 - 1.0", "NA", "", "2", "0", "2 (100%)", "0", "C",
+      "", "", "0", "NA", "NA", "NA", "", "2", "0", "0",
+      "2 (100%)", "", "", "0", "NA", "NA", "NA", "", "2",
+      "0", "0", "2 (100%)", "", "", "0", "NA", "NA", "NA",
       "", "2", "0", "0", "2 (100%)"
     ),
     .Dim = c(34L, 4L)
@@ -434,16 +443,16 @@ testthat::test_that("`summarize_vars` works with healthy input, and control func
     summarize_vars(
       vars = "AVAL",
       control = control_summarize_vars(quantiles = c(0.1, 0.9), conf_level = 0.9),
-      .stats = c("n", "mean_sd", "mean_ci", "quantiles")
+      .stats = c("n", "mean_sd", "mean_se", "mean_ci", "quantiles")
     )
   result <- build_table(l, df = dta_test)
 
   expected <- structure(
     c(
-      "", "n", "Mean (SD)", "Mean 90% CI", "10% and 90%-ile", "all obs",
-      "9", "5.0 (2.7)", "(3.30, 6.70)", "1.0 - 9.0"
+      "", "n", "Mean (SD)", "Mean (SE)", "Mean 90% CI", "10% and 90%-ile", "all obs",
+      "9", "5.0 (2.7)", "5.0 (0.9)", "(3.30, 6.70)", "1.0 - 9.0"
     ),
-    .Dim = c(5L, 2L)
+    .Dim = c(6L, 2L)
   )
 
   testthat::expect_identical(to_string_matrix(result), expected)
@@ -459,7 +468,7 @@ testthat::test_that("`summarize_vars` works with healthy input, alternative `na.
   expected <- structure(
     c(
       "", "n", "Mean (SD)", "Median", "Min - Max", "all obs",
-      "6", "NA (NA)", "NA", "NA - NA"
+      "6", "NA", "NA", "NA"
     ),
     .Dim = c(5L, 2L)
   )
@@ -621,7 +630,7 @@ testthat::test_that("`summarize_vars` works with empty named numeric variables",
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "n", "Mean (SD)", "Median", "Min - Max", "a", "0", "NA (NA)", "NA", "NA - NA",
+      "", "n", "Mean (SD)", "Median", "Min - Max", "a", "0", "NA", "NA", "NA",
       "b", "2", "3.5 (0.7)", "3.5", "3.0 - 4.0", "c", "2", "5.5 (0.7)", "5.5", "5.0 - 6.0"
     ),
     .Dim = c(5:4)

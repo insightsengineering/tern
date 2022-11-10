@@ -24,7 +24,7 @@ library(scda)
 library(dplyr)
 library(survival)
 
-adtte <- synthetic_cdisc_data("latest")$adtte \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS")
 
 fit <- survfit(

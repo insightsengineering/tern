@@ -12,6 +12,7 @@ h_ggkm(
   xlab,
   ylab,
   title,
+  footnotes = NULL,
   max_time = NULL,
   lwd = 1,
   lty = NULL,
@@ -41,6 +42,8 @@ an optimal tick position on the x axis.}
 \item{ylab}{(\code{string})\cr label of y-axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
+
+\item{footnotes}{(\code{string})\cr footnotes for plot.}
 
 \item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
 Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
@@ -76,7 +79,7 @@ library(scda)
 library(dplyr)
 library(survival)
 
-fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
+fit_km <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
