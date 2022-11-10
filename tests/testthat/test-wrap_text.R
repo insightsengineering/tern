@@ -1,8 +1,7 @@
 testthat::test_that("wrap_text works with default settings", {
+  rlang::local_options(lifecycle_verbosity = "quiet")
   text <- "This is a test with many words and more"
-  result <- testthat::expect_warning(
-    wrap_text(txt = text, width = grid::unit(4, "cm"), collapse = "\n")
-  )
+  result <- wrap_text(txt = text, width = grid::unit(4, "cm"), collapse = "\n")
   expected <- "This is a test with\nmany words and\nmore"
   testthat::expect_identical(result, expected)
 })
