@@ -141,7 +141,7 @@ This can be used to analyze count and/or frequency data using a linear model.
 \item \code{h_glm_quasipoisson()}: Helper function to return results of a poisson model.
 
 \item \code{h_glm_count()}: Helper function to return the results of the
-selected model (poisson, quasipossion, negative binomial).
+selected model (poisson, quasipoisson, negative binomial).
 
 \item \code{h_ppmeans()}: Helper function to return the estimated means.
 

@@ -136,7 +136,7 @@ h_glm_quasipoisson <- function(.var,
 }
 
 #' @describeIn summarize_glm_count Helper function to return the results of the
-#' selected model (poisson, quasipossion, negative binomial).
+#' selected model (poisson, quasipoisson, negative binomial).
 #' @inheritParams argument_convention
 #' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
