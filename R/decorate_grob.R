@@ -99,7 +99,8 @@
 #' ## with \code{ggplot2}
 #' library(ggplot2)
 #'
-#' p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
+#' p_gg <- ggplot2::ggplot(iris, aes(Sepal.Length, Sepal.Width, col = Species)) +
+#'   ggplot2::geom_point()
 #' p_gg
 #' p <- ggplotGrob(p_gg)
 #' grid.newpage()
@@ -493,14 +494,32 @@ decorate_grob_factory <- function(npages, ...) {
 #'
 #' @examples
 #' library(ggplot2)
-#' g <- with(iris, {
+#' g <- with(data = iris, {
 #'   list(
-#'     ggplotGrob(qplot(Sepal.Length, Sepal.Width, col = Species)),
-#'     ggplotGrob(qplot(Sepal.Length, Petal.Length, col = Species)),
-#'     ggplotGrob(qplot(Sepal.Length, Petal.Width, col = Species)),
-#'     ggplotGrob(qplot(Sepal.Width, Petal.Length, col = Species)),
-#'     ggplotGrob(qplot(Sepal.Width, Petal.Width, col = Species)),
-#'     ggplotGrob(qplot(Petal.Length, Petal.Width, col = Species))
+#'     ggplot2::ggplotGrob(
+#'       ggplot2::ggplot(mapping = aes(Sepal.Length, Sepal.Width, col = Species)) +
+#'         ggplot2::geom_point()
+#'     ),
+#'     ggplot2::ggplotGrob(
+#'       ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Length, col = Species)) +
+#'         ggplot2::geom_point()
+#'     ),
+#'     ggplot2::ggplotGrob(
+#'       ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Width, col = Species)) +
+#'         ggplot2::geom_point()
+#'     ),
+#'     ggplot2::ggplotGrob(
+#'       ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Length, col = Species)) +
+#'         ggplot2::geom_point()
+#'     ),
+#'     ggplot2::ggplotGrob(
+#'       ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Width, col = Species)) +
+#'         ggplot2::geom_point()
+#'     ),
+#'     ggplot2::ggplotGrob(
+#'       ggplot2::ggplot(mapping = aes(Petal.Length, Petal.Width, col = Species)) +
+#'         ggplot2::geom_point()
+#'     )
 #'   )
 #' })
 #' lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")

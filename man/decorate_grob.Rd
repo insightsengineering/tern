@@ -139,7 +139,8 @@ grid.draw(
 ## with \code{ggplot2}
 library(ggplot2)
 
-p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
+p_gg <- ggplot2::ggplot(iris, aes(Sepal.Length, Sepal.Width, col = Species)) +
+  ggplot2::geom_point()
 p_gg
 p <- ggplotGrob(p_gg)
 grid.newpage()

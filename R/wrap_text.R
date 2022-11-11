@@ -28,7 +28,9 @@ wrap_text <- function(txt, # nolint
                       width = grid::convertWidth(grid::unit(1, "npc"), "inch", TRUE),
                       gp = grid::gpar(),
                       collapse = NULL) {
-  warning("This is a deprecated function as there is a current implementation in rtables, not based on grid::")
+  dep_msg <- "Please use current implementation in rtables, not based on grid::"
+  lifecycle::deprecate_warn("0.7.10", "wrap_test()", details = dep_msg)
+
   if (grid::is.unit(width)) {
     width <- grid::convertWidth(width, "inch", TRUE)
   }
