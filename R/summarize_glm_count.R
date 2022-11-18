@@ -165,7 +165,7 @@ h_glm_count <- function(.var,
                         variables,
                         distribution,
                         weights) {
-  if (distribution =="negbin"){
+  if (distribution == "negbin") {
     stop("negative binomial distribution is not currently available.")
   }
   switch(distribution,
