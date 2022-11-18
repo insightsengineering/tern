@@ -165,6 +165,9 @@ h_glm_count <- function(.var,
                         variables,
                         distribution,
                         weights) {
+  if (distribution =="negbin"){
+    stop("negative binomial distribution is not currently available.")
+  }
   switch(distribution,
     poisson = h_glm_poisson(.var, .df_row, variables, weights),
     quasipoisson = h_glm_quasipoisson(.var, .df_row, variables, weights),
