@@ -51,3 +51,6 @@ downstream_repos:
   insightsengineering/chevron:
     repo: insightsengineering/chevron
     host: https://github.com
+  insightsengineering/citril:
+    repo: insightsengineering/citril
+    host: https://github.com
