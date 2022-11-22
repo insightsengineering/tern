@@ -56,7 +56,9 @@ testthat::test_that("try_car_anova works correctly", {
   result_aov <- c(result$aov$Df, result$aov$Chisq, result$aov$`Pr(>Chisq)`)
 
   testthat::expect_equal(result_aov,
-                         c(1, 1, 0.9678, 0.3970, 0.3252, 0.5286), tolerance = 1e-3)
+    c(1, 1, 0.9678, 0.3970, 0.3252, 0.5286),
+    tolerance = 1e-3
+  )
   testthat::expect_identical(result$warn_text, NULL)
 })
 
