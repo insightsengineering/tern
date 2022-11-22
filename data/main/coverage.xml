@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.960605715586929" branch-rate="0" lines-covered="8437" lines-valid="8783" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2022-11-22 11:56:06">
+<coverage line-rate="0.960605715586929" branch-rate="0" lines-covered="8437" lines-valid="8783" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2022-11-22 17:09:49">
   <sources/>
   <packages>
     <package name="tern" line-rate="0.960605715586929" branch-rate="0" complexity="0">
