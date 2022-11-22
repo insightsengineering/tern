@@ -356,6 +356,20 @@ testthat::test_that("s_glm_count fails wrong inputs", {
   )
 })
 
+testthat::test_that("glm_count fails when negative binomial distribution is selected.", {
+  testthat::expect_error(
+    df = anl %>%
+      filter(ARMCD == "ARM B"),
+    .df_row = anl,
+    .var = "AVAL",
+    .in_ref_col = FALSE,
+    variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
+    conf_level = 0.95,
+    distribution = "negbin",
+    rate_mean_method = "ppmeans"
+  )
+})
+
 testthat::test_that("summarize_glm_count works with healthy inputs", {
   anl <- adtte_raw %>%
     filter(PARAMCD == "TNE")
