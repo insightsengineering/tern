@@ -113,4 +113,3 @@ testthat::test_that("s_cox_multivariate works correctly with character input", {
   )
   testthat::expect_equal(as.matrix(result$aov), expected_aov, tolerance = 1e-3)
 })
-
