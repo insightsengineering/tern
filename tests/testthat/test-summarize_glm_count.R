@@ -56,9 +56,17 @@ testthat::test_that("h_glm_poisson emmeans-fit works with healthy input", {
   testthat::expect_equal(mat1$rate, expected$rate, tolerance = 0.0000001)
   testthat::expect_equal(mat1$std.error, expected$std.error, tolerance = 0.0000001)
   testthat::expect_equal(mat1$df, expected$df, tolerance = 0.0000001)
-  testthat::expect_equal(mat1$null, expected$null, tolerance = 0.0000001)
-  testthat::expect_equal(mat1$statistic, expected$statistic, tolerance = 0.0000001)
   testthat::expect_equal(mat1$p.value, expected$p.value, tolerance = 0.0000001)
+
+  # Checking with older version of groom::tidy for emmGrid objects
+  if ("null" %in% colnames(mat1)) {
+    testthat::expect_equal(mat1$null, expected$null, tolerance = 0.0000001)
+  }
+  if ("statistic" %in% colnames(mat1)) {
+    testthat::expect_equal(mat1$statistic, expected$statistic, tolerance = 0.0000001)
+  } else {
+    testthat::expect_equal(mat1$z.ratio, expected$statistic, tolerance = 0.0000001)
+  }
 })
 
 testthat::test_that("h_glm_poisson fails wrong inputs", {
@@ -151,11 +159,19 @@ testthat::test_that("h_glm_quasipoisson emmeans-fit works with healthy input", {
 
   testthat::expect_equal(mat1$ARMCD, expected$ARMCD, tolerance = 0.0000001)
   testthat::expect_equal(mat1$rate, expected$rate, tolerance = 0.0000001)
-  testthat::expect_equal(mat1$std.error, expected$std.error, tolerance = 0.1)
+  testthat::expect_equal(mat1$std.error, expected$std.error, tolerance = 0.000001)
   testthat::expect_equal(mat1$df, expected$df, tolerance = 0.0000001)
-  testthat::expect_equal(mat1$null, expected$null, tolerance = 0.0000001)
-  testthat::expect_equal(mat1$statistic, expected$statistic, tolerance = 0.0000001)
   testthat::expect_equal(mat1$p.value, expected$p.value, tolerance = 0.0000001)
+
+  # Checking with older version of groom::tidy for emmGrid objects
+  if ("null" %in% colnames(mat1)) {
+    testthat::expect_equal(mat1$null, expected$null, tolerance = 0.0000001)
+  }
+  if ("statistic" %in% colnames(mat1)) {
+    testthat::expect_equal(mat1$statistic, expected$statistic, tolerance = 0.0000001)
+  } else {
+    testthat::expect_equal(mat1$z.ratio, expected$statistic, tolerance = 0.0000001)
+  }
 })
 
 testthat::test_that("h_glm_quasipoisson fails wrong inputs", {
@@ -236,9 +252,17 @@ testthat::test_that("h_glm_count emmeans-fit works with healthy input", {
   testthat::expect_equal(mat1$rate, expected$rate, tolerance = 0.0000001)
   testthat::expect_equal(mat1$std.error, expected$std.error, tolerance = 0.0000001)
   testthat::expect_equal(mat1$df, expected$df, tolerance = 0.0000001)
-  testthat::expect_equal(mat1$null, expected$null, tolerance = 0.0000001)
-  testthat::expect_equal(mat1$statistic, expected$statistic, tolerance = 0.0000001)
   testthat::expect_equal(mat1$p.value, expected$p.value, tolerance = 0.0000001)
+
+  # Checking with older version of groom::tidy for emmGrid objects
+  if ("null" %in% colnames(mat1)) {
+    testthat::expect_equal(mat1$null, expected$null, tolerance = 0.0000001)
+  }
+  if ("statistic" %in% colnames(mat1)) {
+    testthat::expect_equal(mat1$statistic, expected$statistic, tolerance = 0.0000001)
+  } else {
+    testthat::expect_equal(mat1$z.ratio, expected$statistic, tolerance = 0.0000001)
+  }
 })
 
 testthat::test_that("h_glm_count fails wrong inputs", {

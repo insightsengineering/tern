@@ -24,8 +24,8 @@ testthat::test_that("estimate_coef works correctly", {
       ARMCD = droplevels(ARMCD),
       SEX = droplevels(SEX)
     )
-  mod <- coxph(
-    formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
+  mod <- survival::coxph(
+    formula = survival::Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
     data = adtte
   )
 
@@ -48,14 +48,15 @@ testthat::test_that("estimate_coef works correctly", {
 })
 
 testthat::test_that("try_car_anova works correctly", {
-  mod <- coxph(
-    formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
+  mod <- survival::coxph(
+    formula = survival::Surv(time = futime, event = fustat) ~ factor(rx) + survival::strata(ecog.ps),
     data = survival::ovarian
   )
   result <- try_car_anova(mod = mod, test.statistic = "Wald")
   result_aov <- c(result$aov$Df, result$aov$Chisq, result$aov$`Pr(>Chisq)`)
 
-  testthat::expect_equal(result_aov, c(1, 0.7521, 0.3858), tolerance = 1e-3)
+  testthat::expect_equal(result_aov,
+                         c(1, 1, 0.9678, 0.3970, 0.3252, 0.5286), tolerance = 1e-3)
   testthat::expect_identical(result$warn_text, NULL)
 })
 
@@ -100,7 +101,7 @@ testthat::test_that("s_cox_multivariate works correctly with character input", {
     )
 
   result <- s_cox_multivariate(
-    formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = adtte_f
+    formula = survival::Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = adtte_f
   )
   expected_aov <- matrix(
     c(2, 2, 1, 4, 2, 2, 1.5484, 0.4485, 0.0668, 3.3770, 0.2824, 0.6636, 0.4611, 0.7991, 0.7961, 0.4968, 0.8683, 0.7176),
