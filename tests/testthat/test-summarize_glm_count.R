@@ -342,6 +342,37 @@ testthat::test_that("s_glm_count works with healthy input", {
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
+testthat::test_that("s_glm_count works with no reference group selected.", {
+  anl <- adtte_raw %>%
+    filter(PARAMCD == "TNE")
+  anl$AVAL_f <- as.factor(anl$AVAL)
+
+  result <- s_glm_count(
+    df = anl %>%
+      filter(ARMCD == "ARM B"),
+    .df_row = anl,
+    .var = "AVAL",
+    .in_ref_col = FALSE,
+    .ref_group = anl %>%
+      filter(ARMCD == "ARM B"),
+    variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
+    conf_level = 0.95,
+    distribution = "quasipoisson",
+    rate_mean_method = "ppmeans"
+  )
+
+  expected <- list(
+    n = 134L,
+    rate = formatters::with_label(9.662708, "Adjusted Rate"),
+    rate_ci = formatters::with_label(c(6.593273, 14.161091), "95% CI"),
+    rate_ratio = formatters::with_label(c(1.0423208, 0.9013203), "Adjusted Rate Ratio"),
+    rate_ratio_ci = formatters::with_label(c(0.6120999, 0.5219551, 1.7749272, 1.5564142), "95% CI"),
+    pval = formatters::with_label(c(0.8786994, 0.7093289), "p-value")
+  )
+
+  testthat::expect_equal(result, expected, tolerance = 0.0000001)
+})
+
 testthat::test_that("s_glm_count fails wrong inputs", {
   testthat::expect_error(
     df = anl %>%
@@ -355,6 +386,8 @@ testthat::test_that("s_glm_count fails wrong inputs", {
     rate_mean_method = "ppmeans"
   )
 })
+
+
 
 testthat::test_that("glm_count fails when negative binomial distribution is selected.", {
   testthat::expect_error(
