@@ -236,7 +236,6 @@ summarize_vars_in_cols <- function(lyt,
                                    .indent_mods = NULL,
                                    col_split = TRUE,
                                    na_str = NULL) {
-
   checkmate::assert_string(na_str, null.ok = TRUE)
 
   format_candidates <- .formats
