@@ -61,6 +61,8 @@ by a statistics function.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
 \item{col_split}{(\code{flag})\cr whether the columns should be split.}
+
+\item{na_str}{(\code{string})\cr used to replace all \code{NA} with custom \code{string}.}
 }
 \value{
 A named list of all statistics returned by \code{\link[=s_summary.numeric]{s_summary.numeric()}}.

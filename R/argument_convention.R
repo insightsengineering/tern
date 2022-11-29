@@ -39,6 +39,7 @@
 #' @param lyt (`layout`)\cr input layout where analyses will be added to.
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
 #' @param na_level (`string`)\cr used to replace all `NA` or empty values in factors.
+#' @param na_str (`string`)\cr used to replace all `NA` with custom `string`.
 #' @param newpage (`flag`)\cr whether the plot should be drawn on a new page.
 #'   Only considered if `draw = TRUE` is used.
 #' @param prune_zero_rows (`flag`)\cr whether to prune all zero rows.
