@@ -1,26 +1,36 @@
 #' Split String
 #'
-#' Return splitted text that fits onto page width.
+#' @description `r lifecycle::badge("deprecated")`
+#'   Return split text that fits onto page width.
 #'
-#' @param txt string (or vector of strins) to be split in multiple lines, not that
+#' @param txt string (or vector of strings) to be split in multiple lines, not that
 #' \code{\\n} is also split into to lines
 #' @param width max with of string, by default the width of the current viewport
 #' @param gp graphical parameters for text
 #'
-#' @return e vector with the new strings
-#'
-#' @noRd
+#' @return e vector with the new strings.
 #'
 #' @author Adrian Waddell
 #'
 #' @examples
 #' text <- "This is a test with many words and more"
-#' teal.modules.clinical:::wrap_text(txt = text, width = grid::unit(4, "cm"), collapse = "\n")
-#' teal.modules.clinical:::wrap_text(txt = text, width = grid::unit(5, "cm"), collapse = "\n")
+#'
+#' # Internal function - wrap_text
+#' \dontrun{
+#' wrap_text(txt = text, width = grid::unit(4, "cm"), collapse = "\n")
+#' wrap_text(txt = text, width = grid::unit(5, "cm"), collapse = "\n")
+#' }
+#'
+#' @noRd
+#'
+#' @keywords internal
 wrap_text <- function(txt, # nolint
                       width = grid::convertWidth(grid::unit(1, "npc"), "inch", TRUE),
                       gp = grid::gpar(),
                       collapse = NULL) {
+  dep_msg <- "Please use current implementation in rtables, not based on grid::"
+  lifecycle::deprecate_warn("0.7.10", "wrap_test()", details = dep_msg)
+
   if (grid::is.unit(width)) {
     width <- grid::convertWidth(width, "inch", TRUE)
   }

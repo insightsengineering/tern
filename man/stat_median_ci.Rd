@@ -17,6 +17,8 @@ stat_median_ci(x, conf_level = 0.95, na.rm = TRUE, gg_helper = TRUE)
 for the use with \code{ggplot}.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Convenient function for calculating the median confidence interval.
 It can be used as a \code{ggplot} helper function for plotting.
 }

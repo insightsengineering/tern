@@ -2,6 +2,9 @@ current_repo:
   repo: insightsengineering/tern
   host: https://github.com
 upstream_repos:
+  insightsengineering/nestcolor:
+    repo: insightsengineering/nestcolor
+    host: https://github.com
   insightsengineering/scda:
     repo: insightsengineering/scda
     host: https://github.com
@@ -17,6 +20,9 @@ upstream_repos:
 downstream_repos:
   insightsengineering/tern.mmrm:
     repo: insightsengineering/tern.mmrm
+    host: https://github.com
+  insightsengineering/tern.gee:
+    repo: insightsengineering/tern.gee
     host: https://github.com
   insightsengineering/tern.rbmi:
     repo: insightsengineering/tern.rbmi
@@ -39,6 +45,12 @@ downstream_repos:
   insightsengineering/teal.modules.hermes:
     repo: insightsengineering/teal.modules.hermes
     host: https://github.com
+  insightsengineering/teal.modules.helios:
+    repo: insightsengineering/teal.modules.helios
+    host: https://github.com
   insightsengineering/chevron:
     repo: insightsengineering/chevron
+    host: https://github.com
+  insightsengineering/citril:
+    repo: insightsengineering/citril
     host: https://github.com

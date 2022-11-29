@@ -1,5 +1,7 @@
 #' Tabulate Biomarker Effects on Survival by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Tabulate the estimated effects of multiple continuous biomarker variables
 #' across population subgroups.
 #'
@@ -18,7 +20,7 @@
 #' library(forcats)
 #' library(rtables)
 #'
-#' adtte <- synthetic_cdisc_data("latest")$adtte
+#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
 #'
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte)
@@ -84,11 +86,10 @@ extract_survival_biomarkers <- function(variables,
                                         groups_lists = list(),
                                         control = control_coxreg(),
                                         label_all = "All Patients") {
-  assertthat::assert_that(
-    is.list(variables),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
-    assertthat::is.string(label_all)
-  )
+  checkmate::assert_list(variables)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
+  checkmate::assert_string(label_all)
+
   # Start with all patients.
   result_all <- h_coxreg_mult_cont_df(
     variables = variables,
@@ -147,6 +148,7 @@ extract_survival_biomarkers <- function(variables,
 #' @examples
 #'
 #' ## Table with default columns.
+#' # df <- <needs_to_be_inputted>
 #' tabulate_survival_biomarkers(df)
 #'
 #' ## Table with a manually chosen set of columns: leave out "pval", reorder.
@@ -163,12 +165,11 @@ extract_survival_biomarkers <- function(variables,
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {
-  assertthat::assert_that(
-    is.data.frame(df),
-    is.character(df$biomarker),
-    is.character(df$biomarker_label),
-    all(vars %in% c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"))
-  )
+  checkmate::assert_data_frame(df)
+  checkmate::assert_character(df$biomarker)
+  checkmate::assert_character(df$biomarker_label)
+  checkmate::assert_subset(vars, c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"))
+
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {
     tab_sub <- h_tab_surv_one_biomarker(
@@ -180,7 +181,7 @@ tabulate_survival_biomarkers <- function(df,
     label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]
     tab_sub
   })
-  result <- do.call(rbind_fix, tabs)
+  result <- do.call(rbind, tabs)
 
   n_tot_ids <- grep("^n_tot", vars)
   hr_id <- match("hr", vars)

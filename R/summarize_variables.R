@@ -1,5 +1,7 @@
 #' Control Function for Descriptive Statistics
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
 #' details for [s_summary].
 #'
@@ -8,24 +10,26 @@
 #' @param quantile_type (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 #'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
+#' @param test_mean (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return A list of components with the same names as the arguments.
 #' @export
 #'
 control_summarize_vars <- function(conf_level = 0.95,
                                    quantiles = c(0.25, 0.75),
-                                   quantile_type = 2) {
-  assertthat::assert_that(
-    all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
-    identical(length(quantiles), 2L),
-    is_proportion(conf_level),
-    is_nonnegative_count(quantile_type),
-    quantile_type <= 9
-  )
-  list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
+                                   quantile_type = 2,
+                                   test_mean = 0) {
+  checkmate::assert_vector(quantiles, len = 2)
+  checkmate::assert_int(quantile_type, lower = 1, upper = 9)
+  checkmate::assert_numeric(test_mean)
+  nullo <- lapply(quantiles, assert_proportion_value)
+  assert_proportion_value(conf_level)
+  list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
 
 #' Format Function for Descriptive Statistics
+#'
+#' @description
 #'
 #' Returns format patterns for descriptive statistics.
 #' The format is understood by the `rtables`.
@@ -33,8 +37,7 @@ control_summarize_vars <- function(conf_level = 0.95,
 #' @param type (`string`)\cr choice of a summary data type.
 #' Only `counts` and `numeric` types are currently supported.
 #'
-#' @export
-#'
+#' @keywords internal
 summary_formats <- function(type = "numeric") {
   if (type == "counts") {
     c(
@@ -51,9 +54,11 @@ summary_formats <- function(type = "numeric") {
       sd = "xx.x",
       se = "xx.x",
       mean_sd = "xx.x (xx.x)",
+      mean_se = "xx.x (xx.x)",
       mean_ci = "(xx.xx, xx.xx)",
       mean_sei = "(xx.xx, xx.xx)",
       mean_sdi = "(xx.xx, xx.xx)",
+      mean_pval = "xx.xx",
       median = "xx.x",
       mad = "xx.x",
       median_ci = "(xx.xx, xx.xx)",
@@ -71,10 +76,11 @@ summary_formats <- function(type = "numeric") {
 
 #' Label Function for Descriptive Statistics
 #'
+#' @description
+#'
 #' Returns labels of descriptive statistics for numeric variables.
 #'
-#' @export
-#'
+#' @keywords internal
 summary_labels <- function() {
   c(
     mean = "Mean",
@@ -82,6 +88,7 @@ summary_labels <- function() {
     sd = "SD",
     se = "SE",
     mean_sd = "Mean (SD)",
+    mean_se = "Mean (SE)",
     median = "Median",
     mad = "Median Absolute Deviation",
     iqr = "IQR",
@@ -97,6 +104,8 @@ summary_labels <- function() {
 
 #' Summarize Variables
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' We use the new S3 generic function [s_summary()] to implement summaries for
 #' different `x` objects. This is used as Statistics Function in combination
 #' with the new Analyze Function [summarize_vars()].
@@ -107,12 +116,6 @@ summary_labels <- function() {
 NULL
 
 #' @inheritParams argument_convention
-#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
-#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
-#' * `quantiles`: numeric vector of length two to specify the quantiles.
-#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   See more about `type` in [stats::quantile()].
 #'
 #' @describeIn summarize_variables `s_summary` is a S3 generic function to produce
 #'   an object description.
@@ -127,11 +130,8 @@ s_summary <- function(x,
                       .N_col, # nolint
                       na_level,
                       .var,
-                      control,
                       ...) {
-  assertthat::assert_that(
-    assertthat::is.flag(na.rm)
-  )
+  checkmate::assert_flag(na.rm)
   UseMethod("s_summary", x)
 }
 
@@ -142,6 +142,14 @@ s_summary <- function(x,
 #'   Also, when the `mean` function is applied to an empty vector, `NA` will
 #'   be returned instead of `NaN`, the latter being standard behavior in R.
 #'
+#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
+#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
+#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
+#' * `quantiles`: numeric vector of length two to specify the quantiles.
+#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
+#'   See more about `type` in [stats::quantile()].
+#' * `test_mean`: (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
+#'
 #' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.
 #' - `sum`: the [sum()] of `x`.
@@ -149,9 +157,11 @@ s_summary <- function(x,
 #' - `sd`: the [stats::sd()] of `x`.
 #' - `se`: the standard error of `x` mean, i.e.: (`sd()/sqrt(length())]`).
 #' - `mean_sd`: the [mean()] and [stats::sd()] of `x`.
+#' - `mean_se`: the [mean()] of `x` and its standard error (see above).
 #' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
 #' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]/[sqrt()]).
 #' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]).
+#' - `mean_pval`: the two-sided p-value of the mean of `x` (from [stat_mean_pval()]).
 #' - `median`: the [stats::median()] of `x`.
 #' - `mad`:
 #' the median absolute deviation of `x`, i.e.: ([stats::median()] of `xc`, where `xc` = `x` - [stats::median()]).
@@ -211,7 +221,7 @@ s_summary.numeric <- function(x, # nolint
                               .var,
                               control = control_summarize_vars(),
                               ...) {
-  assertthat::assert_that(is.numeric(x))
+  checkmate::assert_numeric(x)
 
   if (na.rm) {
     x <- x[!is.na(x)]
@@ -231,6 +241,8 @@ s_summary.numeric <- function(x, # nolint
 
   y$mean_sd <- c(y$mean, "sd" = stats::sd(x, na.rm = FALSE))
 
+  y$mean_se <- c(y$mean, y$se)
+
   mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
   y$mean_ci <- formatters::with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
 
@@ -241,6 +253,9 @@ s_summary.numeric <- function(x, # nolint
   mean_sdi <- y$mean[[1]] + c(-1, 1) * stats::sd(x, na.rm = FALSE)
   names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
   y$mean_sdi <- formatters::with_label(mean_sdi, "Mean -/+ 1xSD")
+
+  mean_pval <- stat_mean_pval(x, test_mean = control$test_mean, na.rm = FALSE, n_min = 2)
+  y$mean_pval <- formatters::with_label(mean_pval, paste("Mean", f_pval(control$test_mean)))
 
   y$median <- c("median" = stats::median(x, na.rm = FALSE))
 
@@ -328,10 +343,7 @@ s_summary.factor <- function(x,
                              .N_col, # nolint
                              na_level = "<Missing>",
                              ...) {
-  assertthat::assert_that(
-    is_valid_factor(x),
-    is_factor_no_na(x)
-  )
+  assert_valid_factor(x, any.missing = FALSE)
   denom <- match.arg(denom)
 
   if (na.rm) x <- fct_discard(x, na_level)
@@ -360,6 +372,8 @@ s_summary.factor <- function(x,
 
 #' @describeIn summarize_variables Method for character class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
+#' @param verbose defaults to `TRUE`. It prints out warnings and messages. It is mainly used
+#'   to print out information about factor casting.
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
@@ -373,8 +387,8 @@ s_summary.factor <- function(x,
 #' # `s_summary.character`
 #'
 #' ## Basic usage:
-#' s_summary(c("a", "a", "b", "c", "a"), .var = "x")
-#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
                                 denom = c("n", "N_row", "N_col"),
@@ -382,8 +396,9 @@ s_summary.character <- function(x,
                                 .N_col, # nolint
                                 na_level = "<Missing>",
                                 .var,
+                                verbose = TRUE,
                                 ...) {
-  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level)
+  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level, verbose = verbose)
   s_summary(
     x = y,
     na.rm = na.rm,
@@ -505,7 +520,7 @@ a_summary.factor <- make_afun(
 #'   getS3method("a_summary", "character"),
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
-#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
+#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 a_summary.character <- make_afun(
   s_summary.character,
   .formats = .a_summary_counts_formats
@@ -577,9 +592,9 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
     afun.numeric <- make_afun( # nolint
       a_summary.numeric,
       .stats = numeric_stats,
-      .formats = extract(.formats, numeric_stats),
-      .labels = extract(.labels, numeric_stats),
-      .indent_mods = extract(.indent_mods, numeric_stats)
+      .formats = extract_by_name(.formats, numeric_stats),
+      .labels = extract_by_name(.labels, numeric_stats),
+      .indent_mods = extract_by_name(.indent_mods, numeric_stats)
     )
 
     factor_stats <- afun_selected_stats(.stats, c("n", "count", "count_fraction"))
@@ -587,27 +602,27 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
     afun.factor <- make_afun( # nolint
       a_summary.factor,
       .stats = factor_stats,
-      .formats = extract(.formats, factor_stats),
-      .labels = extract(.labels, factor_stats),
-      .indent_mods = extract(.indent_mods, factor_stats),
+      .formats = extract_by_name(.formats, factor_stats),
+      .labels = extract_by_name(.labels, factor_stats),
+      .indent_mods = extract_by_name(.indent_mods, factor_stats),
       .ungroup_stats = ungroup_stats
     )
 
     afun.character <- make_afun( # nolint
       a_summary.character,
       .stats = factor_stats,
-      .formats = extract(.formats, factor_stats),
-      .labels = extract(.labels, factor_stats),
-      .indent_mods = extract(.indent_mods, factor_stats),
+      .formats = extract_by_name(.formats, factor_stats),
+      .labels = extract_by_name(.labels, factor_stats),
+      .indent_mods = extract_by_name(.indent_mods, factor_stats),
       .ungroup_stats = ungroup_stats
     )
 
     afun.logical <- make_afun( # nolint
       a_summary.logical,
       .stats = factor_stats,
-      .formats = extract(.formats, factor_stats),
-      .labels = extract(.labels, factor_stats),
-      .indent_mods = extract(.indent_mods, factor_stats)
+      .formats = extract_by_name(.formats, factor_stats),
+      .labels = extract_by_name(.labels, factor_stats),
+      .indent_mods = extract_by_name(.indent_mods, factor_stats)
     )
 
     afun(
@@ -639,6 +654,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' # `summarize_vars()` in `rtables` pipelines
 #'
 #' ## Default output within a `rtables` pipeline.
+#' # dta_test <- <needs_to_be_inputted_to_work>
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%

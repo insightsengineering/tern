@@ -1,5 +1,7 @@
 #' Additional Formatting Functions
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This summarizes the additional Formatting Functions to work with `rtables`.
 #'
 #' @family formatting functions
@@ -7,6 +9,8 @@
 NULL
 
 #' Formatting Fraction and Percentage
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a fraction together with ratio in percent.
 #'
@@ -23,11 +27,9 @@ NULL
 format_fraction <- function(x, ...) {
   attr(x, "label") <- NULL
 
-  assertthat::assert_that(
-    is.vector(x),
-    is_nonnegative_count(x["num"]),
-    is_nonnegative_count(x["denom"])
-  )
+  checkmate::assert_vector(x)
+  checkmate::assert_count(x["num"])
+  checkmate::assert_count(x["denom"])
 
   result <- if (x["num"] == 0) {
     paste0(x["num"], "/", x["denom"])
@@ -42,6 +44,8 @@ format_fraction <- function(x, ...) {
 }
 
 #' Formatting Count and Fraction
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a count together with fraction with special consideration when count is `0`.
 #'
@@ -62,11 +66,9 @@ format_count_fraction <- function(x, ...) {
     return("NA")
   }
 
-  assertthat::assert_that(
-    is.vector(x),
-    rlang::is_integerish(x[1]),
-    is_proportion(x[2], include_boundaries = TRUE)
-  )
+  checkmate::assert_vector(x)
+  checkmate::assert_integerish(x[1])
+  assert_proportion_value(x[2], include_boundaries = TRUE)
 
   result <- if (x[1] == 0) {
     "0"
@@ -84,11 +86,12 @@ format_count_fraction <- function(x, ...) {
 #'
 #' @param str (`string`)\cr template.
 #'
-#' @export
 #' @return A `rtables` formatting function.
 #' @examples
 #' test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 #'
+#' # Internal function - format_xx
+#' \dontrun{
 #' z <- format_xx("xx (xx.x)")
 #' sapply(test, z)
 #'
@@ -97,6 +100,9 @@ format_count_fraction <- function(x, ...) {
 #'
 #' z <- format_xx("xx.x, incl. xx.x% NE")
 #' sapply(test, z)
+#' }
+#'
+#' @keywords internal
 format_xx <- function(str) {
 
   # Find position in the string.
@@ -126,6 +132,8 @@ format_xx <- function(str) {
 
 #' Formatting Fraction with Lower Threshold
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Formats a fraction when the second element of the input `x` is the fraction. It applies
 #' a lower threshold, below which it is just stated that the fraction is smaller than that.
 #'
@@ -144,12 +152,10 @@ format_xx <- function(str) {
 #' format_fun(x = c(2, 0.01))
 #' format_fun(x = c(0, 0))
 format_fraction_threshold <- function(threshold) {
-  assertthat::assert_that(
-    is_proportion(threshold)
-  )
+  assert_proportion_value(threshold)
   string_below_threshold <- paste0("<", round(threshold * 100))
   function(x, ...) {
-    assertthat::assert_that(is_proportion(x[2], include_boundaries = TRUE))
+    assert_proportion_value(x[2], include_boundaries = TRUE)
     ifelse(
       x[2] > 0.01,
       round(x[2] * 100),
@@ -164,6 +170,8 @@ format_fraction_threshold <- function(threshold) {
 
 
 #' Formatting Extreme Values
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' `Rtables` Formatting Functions that handle extreme values.
 #'
@@ -185,9 +193,7 @@ NULL
 #'
 #' h_get_format_threshold(2L)
 h_get_format_threshold <- function(digits = 2L) {
-  assertthat::assert_that(
-    is.integer(digits)
-  )
+  checkmate::assert_integer(digits)
 
   low_threshold <- 1 / (10 ^ digits) # styler: off
   high_threshold <- 1000 - (1 / (10 ^ digits)) # styler: off
@@ -203,6 +209,7 @@ h_get_format_threshold <- function(digits = 2L) {
 
 #' @describeIn extreme_format Internal helper function to apply a threshold format to a value.
 #'   Creates a formatted string to be used in Formatting Functions.
+#'
 #' @param x (`number`)\cr value to format.
 #' @export
 #' @examples
@@ -214,10 +221,7 @@ h_format_threshold <- function(x, digits = 2L) {
     return(x)
   }
 
-  assertthat::assert_that(
-    is.numeric(x),
-    x >= 0
-  )
+  checkmate::assert_numeric(x, lower = 0)
 
   l_fmt <- h_get_format_threshold(digits)
 
@@ -243,7 +247,7 @@ h_format_threshold <- function(x, digits = 2L) {
 #' format_fun(x = 0.009)
 format_extreme_values <- function(digits = 2L) {
   function(x, ...) {
-    assertthat::assert_that(length(x) == 1)
+    checkmate::assert_scalar(x, na.ok = TRUE)
 
     h_format_threshold(x = x, digits = digits)
   }
@@ -259,8 +263,7 @@ format_extreme_values <- function(digits = 2L) {
 #' format_fun(x = c(0, 0.009))
 format_extreme_values_ci <- function(digits = 2L) {
   function(x, ...) {
-    assertthat::assert_that(length(x) == 2)
-
+    checkmate::assert_vector(x, len = 2)
     l_result <- h_format_threshold(x = x[1], digits = digits)
     h_result <- h_format_threshold(x = x[2], digits = digits)
 

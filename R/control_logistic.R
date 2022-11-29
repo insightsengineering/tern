@@ -1,5 +1,7 @@
 #' Control Function for Logistic Regression Model Fitting
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is an auxiliary function for controlling arguments for logistic regression models.
 #' `conf_level` refers to the confidence level used for the Odds Ratio CIs.
 #'
@@ -22,11 +24,9 @@
 #' control_logistic(response_definition = "I(response %in% c('CR', 'PR'))")
 control_logistic <- function(response_definition = "response",
                              conf_level = 0.95) {
-  assertthat::assert_that(
-    assertthat::is.string(response_definition),
-    grepl("response", response_definition),
-    is_proportion(conf_level)
-  )
+  checkmate::assert_true(grepl("response", response_definition))
+  checkmate::assert_string(response_definition)
+  assert_proportion_value(conf_level)
   list(
     response_definition = response_definition,
     conf_level = conf_level

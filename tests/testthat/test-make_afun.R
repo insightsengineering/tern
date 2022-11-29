@@ -1,6 +1,6 @@
 testthat::test_that("make_afun works with healthy input statistics function taking `df`", {
   sfun <- function(df) {
-    assertthat::assert_that(is.data.frame(df))
+    checkmate::assert_data_frame(df)
     list(
       nrows = nrow(df),
       ncols = length(df)
@@ -59,7 +59,7 @@ testthat::test_that("make_afun works with healthy input statistics function taki
 
 testthat::test_that("make_afun processes additional rtables arguments correctly", {
   sfun <- function(df, .in_ref_col, .N_col) { # nolint
-    assertthat::assert_that(is.data.frame(df))
+    checkmate::assert_data_frame(df)
     list(
       nrows = nrow(df),
       ncols = length(df),

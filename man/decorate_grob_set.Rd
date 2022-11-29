@@ -12,25 +12,47 @@ decorate_grob_set(grobs, ...)
 \item{...}{arguments passed on to \code{\link{decorate_grob}}}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Note that this uses the \code{decorate_grob_factory} function.
 }
 \examples{
 library(ggplot2)
-g <- with(iris, {
+g <- with(data = iris, {
   list(
-    ggplotGrob(qplot(Sepal.Length, Sepal.Width, col = Species)),
-    ggplotGrob(qplot(Sepal.Length, Petal.Length, col = Species)),
-    ggplotGrob(qplot(Sepal.Length, Petal.Width, col = Species)),
-    ggplotGrob(qplot(Sepal.Width, Petal.Length, col = Species)),
-    ggplotGrob(qplot(Sepal.Width, Petal.Width, col = Species)),
-    ggplotGrob(qplot(Petal.Length, Petal.Width, col = Species))
+    ggplot2::ggplotGrob(
+      ggplot2::ggplot(mapping = aes(Sepal.Length, Sepal.Width, col = Species)) +
+        ggplot2::geom_point()
+    ),
+    ggplot2::ggplotGrob(
+      ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Length, col = Species)) +
+        ggplot2::geom_point()
+    ),
+    ggplot2::ggplotGrob(
+      ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Width, col = Species)) +
+        ggplot2::geom_point()
+    ),
+    ggplot2::ggplotGrob(
+      ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Length, col = Species)) +
+        ggplot2::geom_point()
+    ),
+    ggplot2::ggplotGrob(
+      ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Width, col = Species)) +
+        ggplot2::geom_point()
+    ),
+    ggplot2::ggplotGrob(
+      ggplot2::ggplot(mapping = aes(Petal.Length, Petal.Width, col = Species)) +
+        ggplot2::geom_point()
+    )
   )
 })
 lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
 library(grid)
+
 draw_grob(lg[[1]])
 draw_grob(lg[[2]])
 draw_grob(lg[[6]])
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

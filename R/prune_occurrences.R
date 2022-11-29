@@ -1,5 +1,7 @@
 #' Occurrence Table Pruning
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Family of constructor and condition functions to flexibly prune occurrence tables.
 #' The condition functions always return whether the row result is higher than the threshold.
 #' Since they are of class [CombinationFunction()] they can be logically combined with other condition
@@ -32,6 +34,7 @@ NULL
 #' @return [keep_rows()] returns a pruning function that can be used with [rtables::prune_table()]
 #'   on `[rtables::TableTree()]` objects.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `keep_rows`
@@ -39,7 +42,7 @@ NULL
 #' prune_table(tab, keep_rows(is_non_empty))
 #' }
 keep_rows <- function(row_condition) {
-  assertthat::assert_that(is.function(row_condition))
+  checkmate::assert_function(row_condition)
   function(table_tree) {
     if (inherits(table_tree, "TableRow")) {
       return(!row_condition(table_tree))
@@ -57,15 +60,18 @@ keep_rows <- function(row_condition) {
 #'   first content rows of leaf tables and flags whether these leaf tables should be kept in the pruned table.
 #' @return [keep_content_rows()] also returns a pruning function, the difference is that it
 #'   checks the condition on the first content row of leaf tables in the table.
-#' @export
+#'
 #' @examples
-#' \dontrun{
 #' # `keep_content_rows`
+#' # Internal function - has_count_in_cols
+#' \dontrun{
 #' more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
 #' prune_table(tab, keep_content_rows(more_than_twenty))
 #' }
+#'
+#' @export
 keep_content_rows <- function(content_row_condition) {
-  assertthat::assert_that(is.function(content_row_condition))
+  checkmate::assert_function(content_row_condition)
   function(table_tree) {
     if (is_leaf_table(table_tree)) {
       content_row <- h_content_first_row(table_tree)
@@ -88,17 +94,17 @@ keep_content_rows <- function(content_row_condition) {
 #'   or alternatively `col_indices` (`integer`) giving the indices directly instead.
 #' @return [has_count_in_cols()] returns a condition function that sums the counts in the specified
 #'   column.
-#' @export
+#'
 #' @examples
+#' # Internal function - has_count_in_cols
 #' \dontrun{
-#' # `has_count_in_cols`
 #' more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one))
 #' }
+#'
+#' @keywords internal
 has_count_in_cols <- function(atleast, ...) {
-  assertthat::assert_that(
-    assertthat::is.count(atleast)
-  )
+  checkmate::assert_count(atleast)
   CombinationFunction(function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
     total_count <- sum(row_counts)
@@ -113,6 +119,7 @@ has_count_in_cols <- function(atleast, ...) {
 #' @return [has_count_in_any_col()] returns a condition function that compares the counts in the
 #'   specified columns with the threshold.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_count_in_any_col`
@@ -120,9 +127,7 @@ has_count_in_cols <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(any_more_than_one))
 #' }
 has_count_in_any_col <- function(atleast, ...) {
-  assertthat::assert_that(
-    assertthat::is.count(atleast)
-  )
+  checkmate::assert_count(atleast)
   CombinationFunction(function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
     any(row_counts >= atleast)
@@ -134,6 +139,7 @@ has_count_in_any_col <- function(atleast, ...) {
 #' @return [has_fraction_in_cols()] returns a condition function that sums the counts in the
 #'   specified column, and computes the fraction by dividing by the total column counts.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_fraction_in_cols`
@@ -141,9 +147,7 @@ has_count_in_any_col <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_five_percent))
 #' }
 has_fraction_in_cols <- function(atleast, ...) {
-  assertthat::assert_that(
-    is_proportion(atleast, include_boundaries = TRUE)
-  )
+  assert_proportion_value(atleast, include_boundaries = TRUE)
   CombinationFunction(function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
     total_count <- sum(row_counts)
@@ -159,6 +163,7 @@ has_fraction_in_cols <- function(atleast, ...) {
 #' @return [has_fraction_in_cols()] returns a condition function that looks at the fractions
 #'  in the specified columns and checks whether any of them fulfill the threshold.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_fraction_in_any_col`
@@ -166,9 +171,7 @@ has_fraction_in_cols <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_five_percent))
 #' }
 has_fraction_in_any_col <- function(atleast, ...) {
-  assertthat::assert_that(
-    is_proportion(atleast, include_boundaries = TRUE)
-  )
+  assert_proportion_value(atleast, include_boundaries = TRUE)
   CombinationFunction(function(table_row) {
     row_fractions <- h_row_fractions(table_row, ...)
     any(row_fractions >= atleast)
@@ -180,6 +183,7 @@ has_fraction_in_any_col <- function(atleast, ...) {
 #' @return [has_fractions_difference()] returns a condition function that extracts the fractions of each
 #'   specified column, and computes the difference of the minimum and maximum.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # `has_fractions_difference`
@@ -187,9 +191,7 @@ has_fraction_in_any_col <- function(atleast, ...) {
 #' prune_table(tab, keep_rows(more_than_five_percent_diff))
 #' }
 has_fractions_difference <- function(atleast, ...) {
-  assertthat::assert_that(
-    is_proportion(atleast, include_boundaries = TRUE)
-  )
+  assert_proportion_value(atleast, include_boundaries = TRUE)
   CombinationFunction(function(table_row) {
     fractions <- h_row_fractions(table_row, ...)
     difference <- diff(range(fractions))
@@ -201,17 +203,17 @@ has_fractions_difference <- function(atleast, ...) {
 #'   between the counts reported in each specified column.
 #' @return [has_counts_difference()] returns a condition function that extracts the counts of each
 #'   specified column, and computes the difference of the minimum and maximum.
-#' @export
+#'
 #' @examples
+#' # Internal function - has_counts_difference
 #' \dontrun{
-#' # `has_counts_difference`
 #' more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one_diff))
 #' }
+#'
+#' @keywords internal
 has_counts_difference <- function(atleast, ...) {
-  assertthat::assert_that(
-    assertthat::is.count(atleast)
-  )
+  checkmate::assert_count(atleast)
   CombinationFunction(function(table_row) {
     counts <- h_row_counts(table_row, ...)
     difference <- diff(range(counts))

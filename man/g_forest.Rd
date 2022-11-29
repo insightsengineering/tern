@@ -17,6 +17,7 @@ g_forest(
   width_columns = NULL,
   width_forest = grid::unit(1, "null"),
   col_symbol_size = attr(tbl, "col_symbol_size"),
+  col = getOption("ggplot2.discrete.colour")[1],
   draw = TRUE,
   newpage = TRUE
 )
@@ -60,6 +61,8 @@ sample size used to calculate the estimator. If \code{NULL}, the same symbol
 size is used for all subgroups. By default tries to get this from
 \code{tbl} attribute \code{col_symbol_size}, otherwise needs to be manually specified.}
 
+\item{col}{(\code{character})\cr color(s).}
+
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
 \item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
@@ -69,6 +72,9 @@ Only considered if \code{draw = TRUE} is used.}
 (\code{gtree}) object containing the forest plot and table
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} object that has a
 column with a single value and a column with 2 values.
 }
@@ -78,7 +84,9 @@ library(scda)
 library(dplyr)
 library(forcats)
 library(rtables)
-adrs <- synthetic_cdisc_data("latest")$adrs
+library(nestcolor)
+
+adrs <- synthetic_cdisc_dataset("latest", "adrs")
 n_records <- 20
 adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
 adrs <- adrs \%>\%
@@ -97,11 +105,15 @@ df <- extract_rsp_subgroups(
   data = adrs
 )
 # Full commonly used response table.
+
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
 p <- g_forest(tbl)
+
 draw_grob(p)
+
 # Odds ratio only table.
+
 tbl_or <- basic_table() \%>\%
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 tbl_or
@@ -109,9 +121,11 @@ p <- g_forest(
   tbl_or,
   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 )
+
 draw_grob(p)
+
 # Survival forest plot example.
-adtte <- synthetic_cdisc_data("latest")$adtte
+adtte <- synthetic_cdisc_dataset("latest", "adtte")
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte, fill = TRUE)
 adtte_f <- adtte \%>\%

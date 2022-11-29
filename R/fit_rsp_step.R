@@ -1,5 +1,7 @@
 #' Subgroup Treatment Effect Pattern (STEP) Fit for Binary (Response) Outcome
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This fits the Subgroup Treatment Effect Pattern logistic regression models for a binary
 #' (response) outcome. The treatment arm variable must have exactly 2 levels,
 #' where the first one is taken as reference and the estimated odds ratios are
@@ -24,13 +26,12 @@
 #'   customization options.
 #' @export
 #' @examples
-#'
 #' # Testing dataset with just two treatment arms.
 #' library(survival)
 #' library(dplyr)
 #' library(scda)
 #'
-#' adrs <- synthetic_cdisc_data("latest")$adrs
+#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
 #' adrs_f <- adrs %>%
 #'   filter(
 #'     PARAMCD == "BESRSPI",
@@ -92,9 +93,7 @@
 fit_rsp_step <- function(variables,
                          data,
                          control = c(control_step(), control_logistic())) {
-  assertthat::assert_that(
-    is_df_with_variables(data, variables)
-  )
+  assert_df_with_variables(data, variables)
   checkmate::assert_list(control, names = "named")
   data <- data[!is.na(data[[variables$biomarker]]), ]
   window_sel <- h_step_window(x = data[[variables$biomarker]], control = control)

@@ -1,8 +1,5 @@
-library(scda)
-library(dplyr)
-
+# Local data pre-processing
 preprocess_adrs <- function(adrs) {
-
   # Save variable labels before data processing steps.
   adrs_labels <- formatters::var_labels(adrs)
 
@@ -17,7 +14,8 @@ preprocess_adrs <- function(adrs) {
   )
 }
 
-adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+adrs_local <- adrs_raw %>%
+  preprocess_adrs()
 
 # h_rsp_to_logistic_variables ----
 
@@ -42,8 +40,7 @@ testthat::test_that("h_rsp_to_logistic_variables works as expected", {
 # h_logistic_mult_cont_df ----
 
 testthat::test_that("h_logistic_mult_cont_df works as expected", {
-  adrs_f <- adrs %>%
-    preprocess_adrs()
+  adrs_f <- adrs_local
 
   result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
@@ -56,7 +53,7 @@ testthat::test_that("h_logistic_mult_cont_df works as expected", {
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(400L, 400L),
     n_rsp = c(336L, 336L),
     prop = c(0.84, 0.84),
@@ -71,8 +68,7 @@ testthat::test_that("h_logistic_mult_cont_df works as expected", {
 })
 
 testthat::test_that("h_logistic_mult_cont_df returns missing values if data is empty (0 rows)", {
-  adrs_f <- adrs %>%
-    preprocess_adrs()
+  adrs_f <- adrs_local
 
   result <- testthat::expect_silent(h_logistic_mult_cont_df(
     variables = list(
@@ -85,7 +81,7 @@ testthat::test_that("h_logistic_mult_cont_df returns missing values if data is e
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(0L, 0L),
     n_rsp = c(0L, 0L),
     prop = c(NA, NA),
@@ -100,8 +96,7 @@ testthat::test_that("h_logistic_mult_cont_df returns missing values if data is e
 })
 
 testthat::test_that("h_logistic_mult_cont_df also works with response not being called rsp", {
-  adrs_f <- adrs %>%
-    preprocess_adrs() %>%
+  adrs_f <- adrs_local %>%
     dplyr::rename(RESP = rsp)
 
   result <- testthat::expect_silent(h_logistic_mult_cont_df(
@@ -115,7 +110,7 @@ testthat::test_that("h_logistic_mult_cont_df also works with response not being 
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(400L, 400L),
     n_rsp = c(336L, 336L),
     prop = c(0.84, 0.84),

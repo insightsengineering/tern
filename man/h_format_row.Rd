@@ -27,7 +27,7 @@ then the label is automatically generated.}
 1-row \code{data.frame} object
 }
 \description{
-Helper function to get the right formatting in the optional table in g_lineplot.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
 
@@ -40,6 +40,7 @@ h_format_row(x, format, labels)
 attr(mean_ci, "label") <- "Mean 95\% CI"
 x <- list(mean = 50, mean_ci = mean_ci)
 h_format_row(x, format, labels)
+
 }
 \author{
 Wojciech Wojciak wojciech.wojciak@contractors.roche.com

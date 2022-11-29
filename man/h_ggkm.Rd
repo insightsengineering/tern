@@ -7,11 +7,12 @@
 h_ggkm(
   data,
   xticks = NULL,
-  yval,
+  yval = "Survival",
   censor_show,
   xlab,
   ylab,
   title,
+  footnotes = NULL,
   max_time = NULL,
   lwd = 1,
   lty = NULL,
@@ -19,7 +20,7 @@ h_ggkm(
   size = 2,
   col = NULL,
   ci_ribbon = FALSE,
-  ggtheme = NULL
+  ggtheme = nestcolor::theme_nest()
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ an optimal tick position on the x axis.}
 \item{ylab}{(\code{string})\cr label of y-axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
+
+\item{footnotes}{(\code{string})\cr footnotes for plot.}
 
 \item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
 Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
@@ -65,6 +68,8 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 control outlook of the Kaplan-Meier curve.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Draw the Kaplan-Meier plot using \code{ggplot2}.
 }
 \examples{
@@ -74,12 +79,12 @@ library(scda)
 library(dplyr)
 library(survival)
 
-fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
+fit_km <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-data_plot <- tern:::h_data_plot(fit_km = fit_km)
-xticks <- tern:::h_xticks(data = data_plot)
-gg <- tern:::h_ggkm(
+data_plot <- h_data_plot(fit_km = fit_km)
+xticks <- h_xticks(data = data_plot)
+gg <- h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks,
@@ -93,4 +98,3 @@ gg
 }
 
 }
-\keyword{internal}

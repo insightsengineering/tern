@@ -30,8 +30,9 @@ displaying unit.}
 \code{list} of variables to tabulate and their labels.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Internal function to check variables included in
 \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}} and create column labels.
 Note that at least one of \code{n_tot} and \code{n_tot_events} needs to be provided in \code{vars}.
 }
-\keyword{internal}

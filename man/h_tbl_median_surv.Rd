@@ -13,6 +13,8 @@ h_tbl_median_surv(fit_km, armval = "All")
 variable only has one level. Default is "All".}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Transform a survival fit to a table with groups in rows characterized
 by N, median and confidence interval.
 }
@@ -22,7 +24,7 @@ library(scda)
 library(dplyr)
 library(survival)
 
-adtte <- synthetic_cdisc_data("latest")$adtte \%>\%
+adtte <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS")
 
 fit <- survfit(
@@ -33,4 +35,3 @@ h_tbl_median_surv(fit_km = fit)
 }
 
 }
-\keyword{internal}

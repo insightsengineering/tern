@@ -7,7 +7,6 @@
 #'   levels that belong to it in the character vectors that are elements of the list.
 #'
 #' @return [tibble::tibble()] in the required format.
-#' @export
 #'
 #' @examples
 #' grade_groups <- list(
@@ -15,12 +14,15 @@
 #'   "Grade 3-4 (%)" = c("3", "4"),
 #'   "Grade 5 (%)" = "5"
 #' )
+#' # Internal function - groups_list_to_df
+#' \dontrun{
 #' groups_list_to_df(grade_groups)
+#' }
+#'
+#' @keywords internal
 groups_list_to_df <- function(groups_list) {
   checkmate::assert_list(groups_list, names = "named")
-  assertthat::assert_that(
-    all(sapply(groups_list, is.character))
-  )
+  lapply(groups_list, checkmate::assert_character)
   tibble::tibble(
     valname = make_names(names(groups_list)),
     label = names(groups_list),
@@ -32,6 +34,8 @@ groups_list_to_df <- function(groups_list) {
 
 #' Reference and Treatment Group Combination
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Facilitate the re-combination of groups divided as reference and
 #' treatment groups; it helps in arranging groups of
 #' columns in the `rtables` framework and teal modules.
@@ -42,10 +46,9 @@ groups_list_to_df <- function(groups_list) {
 #'
 #' @return a `list` with first item `ref` (reference) and second item `trt`
 #'   (treatment).
-#'
 #' @export
-#' @examples
 #'
+#' @examples
 #' library(rtables)
 #'
 #' groups <- combine_groups(
@@ -61,11 +64,9 @@ groups_list_to_df <- function(groups_list) {
 combine_groups <- function(fct,
                            ref = NULL,
                            collapse = "/") {
-  assertthat::assert_that(
-    (is.null(ref) || is_valid_character(ref)),
-    is_character_or_factor(fct),
-    assertthat::is.string(collapse)
-  )
+  checkmate::assert_string(collapse)
+  checkmate::assert_character(ref, min.chars = 1, any.missing = FALSE, null.ok = TRUE)
+  checkmate::assert_multi_class(fct, classes = c("factor", "character"))
 
   fct <- as_factor_keep_attributes(fct)
 
@@ -73,7 +74,7 @@ combine_groups <- function(fct,
   if (is.null(ref)) {
     ref <- group_levels[1]
   } else {
-    assertthat::assert_that(all_elements_in_ref(x = ref, ref = group_levels))
+    checkmate::assert_subset(ref, group_levels)
   }
 
   groups <- list(
@@ -84,6 +85,8 @@ combine_groups <- function(fct,
 }
 
 #' Split Columns by Groups of Levels
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
 #' @inheritParams groups_list_to_df
@@ -224,14 +227,15 @@ split_cols_by_groups <- function(lyt,
 #' @inheritParams combine_groups
 #' @inheritParams groups_list_to_df
 #'
-#' @export
-#'
 #' @examples
 #'
 #' library(rtables)
 #'
 #' ref <- c("A: Drug X", "B: Placebo")
 #' groups <- combine_groups(fct = DM$ARM, ref = ref)
+#'
+#' # Internal function - combine_counts
+#' \dontrun{
 #' col_counts <- combine_counts(
 #'   fct = DM$ARM,
 #'   groups_list = groups
@@ -255,8 +259,11 @@ split_cols_by_groups <- function(lyt,
 #'   add_colcounts() %>%
 #'   summarize_vars("AGE") %>%
 #'   build_table(DM, col_counts = col_counts)
+#' }
+#'
+#' @keywords internal
 combine_counts <- function(fct, groups_list = NULL) {
-  assertthat::assert_that(is_character_or_factor(fct))
+  checkmate::assert_multi_class(fct, classes = c("factor", "character"))
 
   fct <- as_factor_keep_attributes(fct)
 

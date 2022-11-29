@@ -1,5 +1,7 @@
 #' Confidence Interval for Mean
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Convenient function for calculating the mean confidence interval.
 #' It calculates the arithmetic as well as the geometric mean.
 #' It can be used as a `ggplot` helper function for plotting.
@@ -80,6 +82,8 @@ stat_mean_ci <- function(x,
 
 #' Confidence Interval for Median
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Convenient function for calculating the median confidence interval.
 #' It can be used as a `ggplot` helper function for plotting.
 #'
@@ -131,4 +135,44 @@ stat_median_ci <- function(x,
   attr(ci, "conf_level") <- empir_conf_level
 
   return(ci)
+}
+
+#' p-Value of the Mean
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Convenient function for calculating the two-sided p-value of the mean.
+#'
+#' @inheritParams argument_convention
+#' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
+#'     the p-value of the mean.
+#' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
+#'
+#' @examples
+#' stat_mean_pval(sample(10))
+#'
+#' stat_mean_pval(rnorm(10), test_mean = 0.5)
+#'
+#' @export
+stat_mean_pval <- function(x,
+                           na.rm = TRUE,
+                           n_min = 2,
+                           test_mean = 0) {
+  if (na.rm) {
+    x <- stats::na.omit(x)
+  }
+  n <- length(x)
+
+  x_mean <- mean(x)
+  x_sd <- stats::sd(x)
+
+  if (n < n_min) {
+    pv <- c(p_value = NA_real_)
+  } else {
+    x_se <- stats::sd(x) / sqrt(n)
+    ttest <- (x_mean - test_mean) / x_se
+    pv <- c(p_value = 2 * stats::pt(-abs(ttest), df = n - 1))
+  }
+
+  return(pv)
 }

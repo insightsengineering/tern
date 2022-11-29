@@ -1,17 +1,34 @@
+dat <- survival::lung
+dat$sex <- factor(dat$sex)
+vars <- list(
+  time = "time",
+  event = "status",
+  arm = "sex",
+  biomarker = "age"
+)
+step_matrix <- fit_survival_step(
+  variables = vars,
+  data = dat,
+  control = c(control_coxph(), control_step(num_points = 10, degree = 2))
+)
+step_data <- broom::tidy(step_matrix)
+
+testthat::test_that("g_step works with default settings", {
+  gg <- g_step(step_data)
+  testthat::expect_true(ggplot2::is.ggplot(gg))
+})
+
+testthat::test_that("g_step works with custom settings", {
+  gg <- g_step(
+    step_data,
+    use_percentile = FALSE,
+    est = list(col = "blue", lty = 1),
+    ci_ribbon = NULL
+  )
+  testthat::expect_true(ggplot2::is.ggplot(gg))
+})
+
 testthat::test_that("tidy.step works as expected for survival STEP results", {
-  dat <- survival::lung
-  dat$sex <- factor(dat$sex)
-  vars <- list(
-    time = "time",
-    event = "status",
-    arm = "sex",
-    biomarker = "age"
-  )
-  step_matrix <- fit_survival_step(
-    variables = vars,
-    data = dat,
-    control = c(control_coxph(), control_step(num_points = 10, degree = 2))
-  )
   result <- broom::tidy(step_matrix)
   testthat::expect_true(tibble::is_tibble(result))
   testthat::expect_named(

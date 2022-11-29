@@ -17,11 +17,13 @@ combine_levels(x, levels, new_level = paste(levels, collapse = "/"))
 a factor
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Combine specified old factor Levels in a single new level.
 }
 \examples{
 x <- factor(letters[1:5], levels = letters[5:1])
-tern:::combine_levels(x, levels = c("a", "b"))
+combine_levels(x, levels = c("a", "b"))
 
-tern:::combine_levels(x, c("e", "b"))
+combine_levels(x, c("e", "b"))
 }

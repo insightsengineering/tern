@@ -1,5 +1,7 @@
 #' Control Function for Subgroup Treatment Effect Pattern (STEP) Calculations
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This is an auxiliary function for controlling arguments for STEP calculations.
 #'
 #' @param biomarker (`numeric` or `NULL`)\cr optional provision of the numeric biomarker variable, which
@@ -20,9 +22,10 @@
 #'   is not included in the model fitted in each biomarker window.
 #' @param num_points (`count`)\cr the number of points at which the hazard ratios are estimated. The
 #'   smallest number is 2.
+#'
 #' @return A list of components with the same names as the arguments, except `biomarker` which is
 #'   just used to calculate the `bandwidth` in case that actual biomarker windows are requested.
-#' @export
+#'
 #' @examples
 #' # Provide biomarker values and request actual values to be used,
 #' # so that bandwidth is chosen from range.
@@ -33,19 +36,20 @@
 #'
 #' # Reduce number of points to be used.
 #' control_step(num_points = 10)
+#'
+#' @export
 control_step <- function(biomarker = NULL,
                          use_percentile = TRUE,
                          bandwidth,
                          degree = 0L,
                          num_points = 39L) {
-  assertthat::assert_that(
-    is.null(biomarker) || is.numeric(biomarker),
-    assertthat::is.flag(use_percentile),
-    is_nonnegative_count(degree),
-    assertthat::is.count(num_points) && num_points >= 2
-  )
+  checkmate::assert_numeric(biomarker, null.ok = TRUE)
+  checkmate::assert_flag(use_percentile)
+  checkmate::assert_int(num_points, lower = 2)
+  checkmate::assert_count(degree)
+
   if (missing(bandwidth)) {
-    # Infer bandwidth.
+    # Infer bandwidth
     bandwidth <- if (use_percentile) {
       0.25
     } else if (!is.null(biomarker)) {
@@ -54,12 +58,15 @@ control_step <- function(biomarker = NULL,
       NULL
     }
   } else {
-    # Check bandwidth.
-    assertthat::assert_that(
-      is.null(bandwidth) ||
-        (use_percentile && is_proportion(bandwidth)) ||
-        (!use_percentile && assertthat::is.scalar(bandwidth) && bandwidth > 0)
-    )
+    # Check bandwidth
+    if (!is.null(bandwidth)) {
+      if (use_percentile) {
+        assert_proportion_value(bandwidth)
+      } else {
+        checkmate::assert_scalar(bandwidth)
+        checkmate::assert_true(bandwidth > 0)
+      }
+    }
   }
   list(
     use_percentile = use_percentile,

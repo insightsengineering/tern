@@ -1,5 +1,7 @@
 #' Count patients with marked laboratory abnormalities
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Primary analysis variable `.var` indicates whether single, replicated
 #' or last marked laboratory abnormality was observed (factor).
 #' Additional analysis variables are `id` (character or factor) and `direction` indicating
@@ -27,10 +29,7 @@ NULL
 #' @return [s_count_abnormal_by_marked()] the single statistic `count_fraction`
 #' with `Single, not last`, `Last or replicated` and `Any` results.
 #'
-#' @export
-#'
 #' @examples
-#'
 #' library(dplyr)
 #'
 #' df <- data.frame(
@@ -68,29 +67,32 @@ NULL
 #'   full_parent_df = I(full_parent_df),
 #'   cur_col_subset = I(cur_col_subset)
 #' )
-#'
+#' # Internal function - s_count_abnormal_by_marked
+#' \dontrun{
 #' s_count_abnormal_by_marked(
 #'   df = df_crp %>% filter(abn_dir == "High"),
 #'   .spl_context = spl_context,
 #'   .var = "AVALCAT1",
 #'   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 #' )
+#' }
+#'
+#' @keywords internal
 s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1",
                                        .spl_context,
                                        category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
                                        variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")) {
-  assertthat::assert_that(
-    assertthat::is.string(.var),
-    is.list(variables),
-    is.list(category),
-    all(names(category) %in% c("single", "last_replicated")),
-    all(names(variables) %in% c("id", "param", "direction")),
-    is_df_with_variables(df, c(aval = .var, variables)),
-    is_character_or_factor(df[[.var]]),
-    is_character_or_factor(df[[variables$id]]),
-    length(unique(df[[variables$direction]])) <= 1L
-  )
+  checkmate::assert_string(.var)
+  checkmate::assert_list(variables)
+  checkmate::assert_list(category)
+  checkmate::assert_subset(names(category), c("single", "last_replicated"))
+  checkmate::assert_subset(names(variables), c("id", "param", "direction"))
+  checkmate::assert_vector(unique(df[[variables$direction]]), max.len = 1)
+
+  assert_df_with_variables(df, c(aval = .var, variables))
+  checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))
+  checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
 
 
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ] # nolint
@@ -131,9 +133,12 @@ s_count_abnormal_by_marked <- function(df,
 
 #' @describeIn abnormal_by_marked Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
 #' @return [a_count_abnormal_by_marked()] returns the corresponding list with formatted [rtables::CellValue()].
-#' @export
+#'
 #' @examples
+#' # Internal function - a_count_abnormal_by_marked
+#' \dontrun{
 #' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 #' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
@@ -142,6 +147,9 @@ s_count_abnormal_by_marked <- function(df,
 #'   .spl_context = spl_context,
 #'   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 #' )
+#' }
+#'
+#' @keywords internal
 a_count_abnormal_by_marked <- make_afun(
   s_count_abnormal_by_marked,
   .formats = c(count_fraction = format_count_fraction)
@@ -149,9 +157,8 @@ a_count_abnormal_by_marked <- make_afun(
 
 #' @describeIn abnormal_by_marked Layout creating function which can be used for creating tables,
 #' which can take statistics function arguments and additional format arguments (see below).
-#' @export
-#' @examples
 #'
+#' @examples
 #' map <- unique(
 #'   df[df$abn_dir %in% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
 #' ) %>%
@@ -201,6 +208,8 @@ a_count_abnormal_by_marked <- make_afun(
 #'     )
 #'   ) %>%
 #'   build_table(df = df)
+#'
+#' @export
 count_abnormal_by_marked <- function(lyt,
                                      var,
                                      ...,
@@ -208,9 +217,8 @@ count_abnormal_by_marked <- function(lyt,
                                      .formats = NULL,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
-  assertthat::assert_that(
-    assertthat::is.string(var)
-  )
+  checkmate::assert_string(var)
+
   afun <- make_afun(
     a_count_abnormal_by_marked,
     .stats = .stats,

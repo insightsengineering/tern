@@ -27,6 +27,8 @@ summarize_colvars(
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This Analyze Function uses the new S3 generic function \code{\link[=s_summary]{s_summary()}} to summarize
 different variables that are arranged in columns.
 Additional standard formatting arguments are available.

@@ -1,3 +1,4 @@
+# Pre-processing the table
 tab <- basic_table() %>%
   split_cols_by("ARM") %>%
   split_rows_by("RACE") %>%

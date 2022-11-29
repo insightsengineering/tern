@@ -52,6 +52,8 @@ to avoid warnings from \code{rtables}.}
 See \code{\link[=s_summary.numeric]{s_summary.numeric()}} for the return values.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 The primary analysis variable \code{.var} indicates the numerical change from baseline results,
 and additional required secondary analysis variables are \code{value} and \code{baseline_flag}.
 Depending on the baseline flag, either the absolute baseline values (at baseline)
@@ -59,17 +61,17 @@ or the change from baseline values (post-baseline) are then summarized.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_change_from_baseline}: Statistics Function that summarizes baseline or post-baseline visits.
+\item \code{s_change_from_baseline()}: Statistics Function that summarizes baseline or post-baseline visits.
 
-\item \code{a_change_from_baseline}: Formatted Analysis function which can be further customized by calling
+\item \code{a_change_from_baseline()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{summarize_change}: Analyze Function for change from baseline analysis.
+\item \code{summarize_change()}: Analyze Function for change from baseline analysis.
 To be used after a split on visits in the layout, such that each data
 subset only contains either baseline or post-baseline data. Allows additional
 formatting options.
-}}
 
+}}
 \note{
 The data in \code{df} must be either all be from baseline or post-baseline visits. Otherwise
 an error will be thrown.
@@ -80,16 +82,25 @@ df <- data.frame(
   is_bl = c(TRUE, TRUE, TRUE),
   val = c(4, 5, 6)
 )
+
+# Internal function - s_change_from_baseline
+\dontrun{
 s_change_from_baseline(
   df,
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")
 )
+}
+
+# Internal function - a_change_from_baseline
+\dontrun{
 a_change_from_baseline(
   df,
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")
 )
+}
+
 
 # `summarize_change()`
 
@@ -120,3 +131,4 @@ Viewer(results)
 }
 
 }
+\keyword{internal}

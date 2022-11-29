@@ -19,6 +19,8 @@ and not modified further.}
 A list of components with the same names as the arguments.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is an auxiliary function for controlling arguments for logistic regression models.
 \code{conf_level} refers to the confidence level used for the Odds Ratio CIs.
 }

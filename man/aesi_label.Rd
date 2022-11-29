@@ -16,15 +16,16 @@ name (e.g. \code{CQzzNAM}).}
 A \code{string} with the standard label for the AE basket.
 }
 \description{
-Labels for Adverse Event Baskets
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
 library(scda)
-adae <- synthetic_cdisc_data("latest")$adae
+adae <- synthetic_cdisc_dataset("latest", "adae")
 
 # Standardized query label includes scope.
 aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
 
 # Customized query label.
 aesi_label(adae$CQ01NAM)
+
 }

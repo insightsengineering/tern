@@ -1,5 +1,9 @@
 #' Sort `PK PARAM` variable
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @param pk_data (`data.frame`)\cr Pharmacokinetics dataframe
+#' @param key_var (`character`)\cr key variable used to merge pk_data and metadata created by `d_pkparam()`
 #' @return dataframe with `PK PARAM` variable ordered
 #' @export
 #'
@@ -7,11 +11,14 @@
 #' library(scda)
 #' library(dplyr)
 #'
-#' adpp <- synthetic_cdisc_data("latest")$adpp
+#' adpp <- synthetic_cdisc_dataset("latest", "adpp")
 #' adpp <- adpp %>% mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
 #'
 #' pk_ordered_data <- h_pkparam_sort(adpp)
-h_pkparam_sort <- function(pk_data) {
+h_pkparam_sort <- function(pk_data, key_var = "PARAMCD") {
+  assert_df_with_variables(pk_data, list(key_var = key_var))
+  pk_data$PARAMCD <- pk_data[[key_var]] # nolint
+
   ordered_pk_data <- d_pkparam()
 
   # Add the numeric values from ordered_pk_data to pk_data

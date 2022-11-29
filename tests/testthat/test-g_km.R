@@ -1,44 +1,39 @@
-library(scda)
-library(dplyr)
-
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
-
 testthat::test_that("g_km default plot works", {
-  df <- adtte %>%
+  df <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
-  result <- testthat::expect_silent(
-    g_km(
-      df = df,
-      variables = variables,
-      ci_ribbon = FALSE,
-      draw = FALSE
-    )
+  grob_tmp <- g_km(
+    df = df,
+    variables = variables,
+    ci_ribbon = FALSE,
+    draw = FALSE
   )
+
+  testthat::expect_true(grid::is.grob(grob_tmp))
 })
 
 testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
-  df <- adtte %>%
+  df <- adtte_raw %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
-  result <- testthat::expect_silent(
-    g_km(
-      df = df,
-      variables = variables,
-      ci_ribbon = TRUE,
-      draw = FALSE
-    )
+  grob_tmp <- g_km(
+    df = df,
+    variables = variables,
+    ci_ribbon = TRUE,
+    draw = FALSE
   )
+
+  testthat::expect_true(grid::is.grob(grob_tmp))
 })
 
 testthat::test_that("g_km plot with < = > in group labels works", {
-  df <- ex_adtte %>%
+  df <- adtte_raw %>%
     df_explicit_na() %>%
     dplyr::filter(PARAMCD == "OS", ARM == "A: Drug X", BEP01FL == "Y") %>%
     dplyr::mutate(
@@ -48,12 +43,12 @@ testthat::test_that("g_km plot with < = > in group labels works", {
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "group")
 
-  result <- testthat::expect_silent(
-    g_km(
-      df = df,
-      variables = variables,
-      annot_surv_med = FALSE,
-      draw = FALSE
-    )
+  grob_tmp <- g_km(
+    df = df,
+    variables = variables,
+    annot_surv_med = FALSE,
+    draw = FALSE
   )
+
+  testthat::expect_true(grid::is.grob(grob_tmp))
 })

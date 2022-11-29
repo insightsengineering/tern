@@ -34,7 +34,7 @@ count_abnormal_by_worst_grade(
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
@@ -43,8 +43,6 @@ that is passed by \code{rtables}.}
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -63,6 +61,8 @@ and "Any" results.
 \code{\link[=a_count_abnormal_by_worst_grade]{a_count_abnormal_by_worst_grade()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Primary analysis variable \code{.var} indicates the toxicity grade (factor), and additional
 analysis variables are \code{id} (character or factor), \code{param} (\code{factor}) and \code{grade_dir} (\code{factor}).
 The pre-processing steps are crucial when using this function.
@@ -87,23 +87,22 @@ the correct denominators when building the layout as it is used to define row sp
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_by_worst_grade}: Statistics function which counts patients with worst grade,
+\item \code{s_count_abnormal_by_worst_grade()}: Statistics function which counts patients with worst grade,
 consisting of counts and percentages of patients with worst grade
 \code{1} to \code{4}, and \code{Any} non-zero grade.
 
-\item \code{a_count_abnormal_by_worst_grade}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_abnormal_by_worst_grade()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_abnormal_by_worst_grade}: Layout creating function which can be used for creating tables,
+\item \code{count_abnormal_by_worst_grade()}: Layout creating function which can be used for creating tables,
 which can take statistics function arguments and additional format arguments (see below).
-}}
 
+}}
 \examples{
 library(scda)
 library(dplyr)
 library(forcats)
-
-adlb <- synthetic_cdisc_data("latest")$adlb
+adlb <- synthetic_cdisc_dataset("latest", "adlb")
 
 # Data is modified in order to have some parameters with grades only in one direction
 # and simulate the real data.
@@ -147,15 +146,22 @@ spl_context <- data.frame(
   cur_col_subset = I(cur_col_subset)
 )
 
+# Internal function - s_count_abnormal_by_worst_grade
+\dontrun{
 s_count_abnormal_by_worst_grade(
   df = adlb_f_alt,
   .spl_context = spl_context,
   .var = "GRADE_ANL"
 )
+}
+
+# Internal function - a_count_abnormal_by_worst_grade
+\dontrun{
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 afun(df = adlb_f_alt, .spl_context = spl_context)
+}
 
 # Map excludes records without abnormal grade since they should not be displayed
 # in the table.
@@ -173,4 +179,6 @@ basic_table() \%>\%
     variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
   ) \%>\%
   build_table(df = adlb_f)
+
 }
+\keyword{internal}

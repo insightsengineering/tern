@@ -84,28 +84,30 @@ to avoid warnings from \code{rtables}.}
 See \code{\link[=s_summary.logical]{s_summary.logical()}} for the returned statistics, as this is used inside.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 We can count the occurrence of specific values in a variable of interest.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_values}: Statistics Function which is a generic function to count values.
+\item \code{s_count_values()}: Statistics Function which is a generic function to count values.
 
-\item \code{s_count_values.character}: Method for \code{character} vectors \code{x}.
+\item \code{s_count_values(character)}: Method for \code{character} vectors \code{x}.
 
-\item \code{s_count_values.factor}: method for \code{factor} vectors \code{x}. This checks whether \code{values} are all
+\item \code{s_count_values(factor)}: method for \code{factor} vectors \code{x}. This checks whether \code{values} are all
 included in the levels of \code{x} and fails otherwise. It then proceeds by converting to \code{character}
 and calling \code{s_count_values.character}.
 
-\item \code{s_count_values.logical}: method for \code{logical} vectors \code{x}.
+\item \code{s_count_values(logical)}: method for \code{logical} vectors \code{x}.
 
-\item \code{count_values}: Analyze Function which adds the counting analysis to
+\item \code{count_values()}: Analyze Function which adds the counting analysis to
 the input layout. Note that additional formatting arguments can be used
 here.
 
-\item \code{a_count_values}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_values()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
-}}
 
+}}
 \note{
 Variable labels are shown when there is more than one element in \code{vars}, otherwise they
 are hidden.

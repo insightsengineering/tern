@@ -208,7 +208,7 @@ testthat::test_that("Check Errors", {
   testthat::expect_error(df_explicit_na(my_data, na_level = NA), "na_level")
   testthat::expect_error(df_explicit_na(my_data, char_as_factor = "TRUE"), "logical")
   testthat::expect_error(df_explicit_na(my_data, omit_columns = 1), "character")
-  testthat::expect_error(df_explicit_na(my_data, na_level = NULL), "character")
+  testthat::expect_error(df_explicit_na(my_data, na_level = NULL), "string")
   testthat::expect_error(df_explicit_na(c("A")), "data.frame")
 })
 

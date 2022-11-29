@@ -23,5 +23,10 @@ grade_groups <- list(
   "Grade 3-4 (\%)" = c("3", "4"),
   "Grade 5 (\%)" = "5"
 )
+# Internal function - groups_list_to_df
+\dontrun{
 groups_list_to_df(grade_groups)
 }
+
+}
+\keyword{internal}

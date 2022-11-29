@@ -19,7 +19,7 @@ g_lineplot(
   position = ggplot2::position_dodge(width = 0.4),
   legend_title = NULL,
   legend_position = "bottom",
-  ggtheme = NULL,
+  ggtheme = nestcolor::theme_nest(),
   y_lab = NULL,
   y_lab_add_paramcd = TRUE,
   y_lab_add_unit = TRUE,
@@ -28,10 +28,11 @@ g_lineplot(
   subtitle_add_paramcd = TRUE,
   subtitle_add_unit = TRUE,
   caption = NULL,
-  table_format = tern::summary_formats(),
-  table_labels = tern::summary_labels(),
+  table_format = summary_formats(),
+  table_labels = summary_labels(),
   table_font_size = 3,
-  newpage = TRUE
+  newpage = TRUE,
+  col = NULL
 )
 }
 \arguments{
@@ -129,16 +130,23 @@ Names of \code{table_labels} must match the names of statistics returned by \cod
 controls the font size of values in the table.}
 
 \item{newpage}{(\code{logical} scalar) \cr should plot be drawn on new page?}
+
+\item{col}{(\code{character})\cr colors.}
 }
 \value{
 \code{ggplot}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Line plot with the optional table
 }
 \examples{
-adsl <- scda::synthetic_cdisc_data("latest")$adsl
-adlb <- scda::synthetic_cdisc_data("latest")$adlb
+library(scda)
+library(nestcolor)
+
+adsl <- synthetic_cdisc_dataset("latest", "adsl")
+adlb <- synthetic_cdisc_dataset("latest", "adlb")
 adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 adlb$AVISIT <- droplevels(adlb$AVISIT)
 adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))

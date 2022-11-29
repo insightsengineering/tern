@@ -30,6 +30,8 @@ for the use with \code{ggplot}.}
 calculated}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Convenient function for calculating the mean confidence interval.
 It calculates the arithmetic as well as the geometric mean.
 It can be used as a \code{ggplot} helper function for plotting.

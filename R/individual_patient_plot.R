@@ -21,32 +21,14 @@
 #' plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
 #' @param max_obs_per_plot (`count`)\cr Number of observations to be plotted on one
 #' plot. Ignored when `plotting_choices` is not "separate_by_obs".
-#' @param font_size (`number`)\cr text font size.
 #' @param caption (`character` scalar) \cr optional caption below the plot.
+#' @param col (`character`)\cr lines colors.
 #'
 #' @name individual_patient_plot
-NULL
-
-
-#' @describeIn individual_patient_plot sets a `ggplot` graphical theme to control outlook of plot.
-#' @export
 #'
-h_set_nest_theme <- function(font_size) {
-  ggplot2::theme(
-    panel.grid.major = ggplot2::element_blank(),
-    panel.grid.minor = ggplot2::element_blank(),
-    panel.background = ggplot2::element_blank(),
-    panel.border = ggplot2::element_rect(colour = "grey", fill = NA, size = 1),
-    legend.position = "bottom",
-    legend.background = ggplot2::element_blank(),
-    legend.box.background = ggplot2::element_rect(colour = "grey", fill = NA, size = 1),
-    legend.direction = "horizontal",
-    legend.title = ggplot2::element_text(face = "bold"),
-    text = ggplot2::element_text(size = font_size),
-    plot.caption = ggplot2::element_text(hjust = 0)
-  )
-}
-
+#' @description `r lifecycle::badge("stable")`
+#'
+NULL
 
 #' @describeIn individual_patient_plot helper function that generates a simple line
 #' plot displaying parameter trends over time.
@@ -54,12 +36,12 @@ h_set_nest_theme <- function(font_size) {
 #' @inheritParams argument_convention
 #' @export
 #' @examples
-#'
 #' library(scda)
 #' library(dplyr)
+#' library(nestcolor)
 #'
 #' # Select a small sample of data to plot.
-#' adlb <- synthetic_cdisc_data("latest")$adlb %>%
+#' adlb <- synthetic_cdisc_dataset("latest", "adlb") %>%
 #'   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
 #'   slice(1:36)
 #'
@@ -84,20 +66,20 @@ h_g_ipp <- function(df,
                     caption = NULL,
                     add_baseline_hline = FALSE,
                     yvar_baseline = "BASE",
-                    ggtheme = h_set_nest_theme(10)) {
-  assertthat::assert_that(
-    is.data.frame(df),
-    assertthat::is.string(xvar),
-    assertthat::is.string(yvar),
-    assertthat::is.string(yvar_baseline),
-    assertthat::is.string(id_var),
-    all(c(xvar, yvar, yvar_baseline, id_var) %in% colnames(df)),
-    assertthat::is.string(xlab),
-    assertthat::is.string(ylab),
-    assertthat::is.string(title),
-    assertthat::is.string(subtitle),
-    is.logical(add_baseline_hline)
-  )
+                    ggtheme = nestcolor::theme_nest(),
+                    col = NULL) {
+  checkmate::assert_string(xvar)
+  checkmate::assert_string(yvar)
+  checkmate::assert_string(yvar_baseline)
+  checkmate::assert_string(id_var)
+  checkmate::assert_string(xlab)
+  checkmate::assert_string(ylab)
+  checkmate::assert_string(title)
+  checkmate::assert_string(subtitle)
+  checkmate::assert_subset(c(xvar, yvar, yvar_baseline, id_var), colnames(df))
+  checkmate::assert_data_frame(df)
+  checkmate::assert_flag(add_baseline_hline)
+  checkmate::assert_character(col, null.ok = TRUE)
 
   p <- ggplot2::ggplot(
     data = df,
@@ -145,6 +127,11 @@ h_g_ipp <- function(df,
         vjust = "right",
         size = 2
       )
+
+    if (!is.null(col)) {
+      p <- p +
+        ggplot2::scale_color_manual(values = col)
+    }
   }
   p
 }
@@ -183,13 +170,13 @@ g_ipp <- function(df,
                   caption = NULL,
                   add_baseline_hline = FALSE,
                   yvar_baseline = "BASE",
-                  ggtheme = h_set_nest_theme(10),
+                  ggtheme = nestcolor::theme_nest(),
                   plotting_choices = c("all_in_one", "split_by_max_obs", "separate_by_obs"),
-                  max_obs_per_plot = 4) {
-  assertthat::assert_that(
-    assertthat::is.count(max_obs_per_plot),
-    plotting_choices %in% c("all_in_one", "split_by_max_obs", "separate_by_obs")
-  )
+                  max_obs_per_plot = 4,
+                  col = NULL) {
+  checkmate::assert_count(max_obs_per_plot)
+  checkmate::assert_subset(plotting_choices, c("all_in_one", "split_by_max_obs", "separate_by_obs"))
+  checkmate::assert_character(col, null.ok = TRUE)
 
   plotting_choices <- match.arg(plotting_choices)
 
@@ -206,7 +193,8 @@ g_ipp <- function(df,
       caption = caption,
       add_baseline_hline = add_baseline_hline,
       yvar_baseline = yvar_baseline,
-      ggtheme = ggtheme
+      ggtheme = ggtheme,
+      col = col
     )
 
     return(p)
@@ -238,7 +226,8 @@ g_ipp <- function(df,
         caption = caption,
         add_baseline_hline = add_baseline_hline,
         yvar_baseline = yvar_baseline,
-        ggtheme = ggtheme
+        ggtheme = ggtheme,
+        col = col
       )
 
       plot_list[[i]] <- plots
@@ -261,7 +250,8 @@ g_ipp <- function(df,
           caption = caption,
           add_baseline_hline = add_baseline_hline,
           yvar_baseline = yvar_baseline,
-          ggtheme = ggtheme
+          ggtheme = ggtheme,
+          col = col
         )
       }
     )

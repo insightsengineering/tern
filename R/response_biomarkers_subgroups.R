@@ -1,5 +1,7 @@
 #' Tabulate Biomarker Effects on Binary Response by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Tabulate the estimated effects of multiple continuous biomarker variables
 #' on a binary response endpoint across population subgroups.
 #'
@@ -17,7 +19,7 @@
 #' library(forcats)
 #' library(rtables)
 #'
-#' adrs <- synthetic_cdisc_data("latest")$adrs
+#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%
@@ -40,6 +42,7 @@ NULL
 #'   `response_definition` control to convert that internally to a logical
 #'   variable reflecting binary response.
 #' @export
+#'
 #' @examples
 #' # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 #' # in logistic regression models with one covariate `RACE`. The subgroups
@@ -85,12 +88,11 @@ extract_rsp_biomarkers <- function(variables,
                                    groups_lists = list(),
                                    control = control_logistic(),
                                    label_all = "All Patients") {
-  assertthat::assert_that(
-    is.list(variables),
-    assertthat::is.string(variables$rsp),
-    is.character(variables$subgroups) || is.null(variables$subgroups),
-    assertthat::is.string(label_all)
-  )
+  assert_list_of_variables(variables)
+  checkmate::assert_string(variables$rsp)
+  checkmate::assert_character(variables$subgroups, null.ok = TRUE)
+  checkmate::assert_string(label_all)
+
   # Start with all patients.
   result_all <- h_logistic_mult_cont_df(
     variables = variables,
@@ -145,9 +147,10 @@ extract_rsp_biomarkers <- function(variables,
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
 #' @export
-#' @examples
 #'
+#' @examples
 #' ## Table with default columns.
+#' # df <- <need_data_input_to_work>
 #' tabulate_rsp_biomarkers(df)
 #'
 #' ## Table with a manually chosen set of columns: leave out "pval", reorder.
@@ -162,12 +165,11 @@ extract_rsp_biomarkers <- function(variables,
 #' }
 tabulate_rsp_biomarkers <- function(df,
                                     vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")) {
-  assertthat::assert_that(
-    is.data.frame(df),
-    is.character(df$biomarker),
-    is.character(df$biomarker_label),
-    all(vars %in% c("n_tot", "n_rsp", "prop", "or", "ci", "pval"))
-  )
+  checkmate::assert_data_frame(df)
+  checkmate::assert_character(df$biomarker)
+  checkmate::assert_character(df$biomarker_label)
+  checkmate::assert_subset(vars, c("n_tot", "n_rsp", "prop", "or", "ci", "pval"))
+
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {
     tab_sub <- h_tab_rsp_one_biomarker(
@@ -178,7 +180,7 @@ tabulate_rsp_biomarkers <- function(df,
     label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]
     tab_sub
   })
-  result <- do.call(rbind_fix, tabs)
+  result <- do.call(rbind, tabs)
 
   n_id <- grep("n_tot", vars)
   or_id <- match("or", vars)

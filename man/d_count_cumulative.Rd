@@ -18,6 +18,7 @@ count, default is \code{TRUE}.}
 a \code{string}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is a helper function that describes analysis in \code{s_count_cumulative}
 }
-\keyword{internal}

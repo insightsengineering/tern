@@ -1,8 +1,5 @@
 # Preparation of the test case.
-library(dplyr)
-library(scda)
-
-adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+adrs <- adrs_raw
 
 # Select a response parameter endpoint.
 adrs <- adrs %>% dplyr::filter(PARAMCD == "INVET")
@@ -321,7 +318,6 @@ testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition 
 
 
 testthat::test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
-
   # Define study-specific response category "No Progression".
   adrs <- adrs %>%
     dplyr::mutate(

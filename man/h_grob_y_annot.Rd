@@ -14,6 +14,8 @@ a \code{ggplot}.}
 a \code{ggplot}.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Build the y-axis annotation from a decomposed \code{ggplot}.
 }
 \examples{
@@ -23,7 +25,7 @@ library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
+fit_km <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
@@ -32,7 +34,7 @@ gg <- h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-  title = "title"
+  title = "title", footnotes = "footnotes", yval = "Survival"
 )
 
 g_el <- h_decompose_gg(gg)
@@ -45,4 +47,3 @@ grid.rect(gp = grid::gpar(lty = 1, col = "gray35", fill = NA))
 }
 
 }
-\keyword{internal}

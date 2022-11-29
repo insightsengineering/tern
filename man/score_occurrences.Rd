@@ -34,29 +34,29 @@ across all specified columns.
 \description{
 Functions to score occurrence table subtables and rows which can be used in the
 sorting of occurrence tables.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \section{Functions}{
 \itemize{
-\item \code{score_occurrences}: Scoring function which sums the counts across all columns.
+\item \code{score_occurrences()}: Scoring function which sums the counts across all columns.
 
-\item \code{score_occurrences_cols}: Scoring functions can be produced by this constructor to only include
+\item \code{score_occurrences_cols()}: Scoring functions can be produced by this constructor to only include
 specific columns in the scoring.
 
-\item \code{score_occurrences_subtable}: Scoring functions produced by this constructor can be used on
+\item \code{score_occurrences_subtable()}: Scoring functions produced by this constructor can be used on
 subtables: They sum up all specified column counts in the subtable. This is useful when
 there is no available content row summing up these counts.
 
-\item \code{score_occurrences_cont_cols}: Produce score function for sorting table by summing the first content row in
+\item \code{score_occurrences_cont_cols()}: Produce score function for sorting table by summing the first content row in
 specified columns. Note that this is extending \code{\link[rtables:score_funs]{rtables::cont_n_onecol()}} and \code{\link[rtables:score_funs]{rtables::cont_n_allcols()}}.
+
 }}
-
 \examples{
-
-library(assertthat)
 library(scda)
 library(rtables)
-adsl <- synthetic_cdisc_data("latest")$adsl
-adae <- synthetic_cdisc_data("latest")$adae
+adsl <- synthetic_cdisc_dataset("latest", "adsl")
+adae <- synthetic_cdisc_dataset("latest", "adae")
 
 lyt <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%

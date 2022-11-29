@@ -1,13 +1,8 @@
 # Test the single variant for EGT05_QTCAT
-
-library(scda)
-library(rtables)
-library(dplyr)
-
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adsl <- adsl_raw
 
 get_adeg <- function() {
-  adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg # nolintr
+  adeg <- adeg_raw
   adeg_labels <- formatters::var_labels(adeg)
 
   adeg_f <- adeg %>%

@@ -1,8 +1,5 @@
-library(scda)
-library(dplyr)
-
+# Local data pre-processing
 preprocess_adtte <- function(adtte) {
-
   # Save variable labels before data processing steps.
   adtte_labels <- formatters::var_labels(adtte)
 
@@ -20,7 +17,8 @@ preprocess_adtte <- function(adtte) {
   )
 }
 
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+adtte_local <- adtte_raw %>%
+  preprocess_adtte()
 
 # h_surv_to_coxreg_variables ----
 
@@ -47,8 +45,7 @@ testthat::test_that("h_surv_to_coxreg_variables works as expected", {
 # h_coxreg_mult_cont_df ----
 
 testthat::test_that("h_coxreg_mult_cont_df works as expected", {
-  adtte_f <- adtte %>%
-    preprocess_adtte()
+  adtte_f <- adtte_local
 
   result <- testthat::expect_silent(h_coxreg_mult_cont_df(
     variables = list(
@@ -62,7 +59,7 @@ testthat::test_that("h_coxreg_mult_cont_df works as expected", {
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(400L, 400L),
     n_tot_events = c(282, 282),
     median = c(680.959764183532, 680.959764183532),
@@ -77,8 +74,7 @@ testthat::test_that("h_coxreg_mult_cont_df works as expected", {
 })
 
 testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {
-  adtte_f <- adtte %>%
-    preprocess_adtte()
+  adtte_f <- adtte_local
 
   result <- testthat::expect_silent(h_coxreg_mult_cont_df(
     variables = list(
@@ -92,7 +88,7 @@ testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is emp
   ))
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
-    biomarker_label = c("Continous Level Biomarker 1", "Age"),
+    biomarker_label = c("Continuous Level Biomarker 1", "Age"),
     n_tot = c(0L, 0L),
     n_tot_events = c(0L, 0L),
     median = c(NA, NA),

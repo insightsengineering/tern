@@ -23,6 +23,8 @@ can also be set to \code{"breslow"} or \code{"exact"}. see more in \code{\link[s
 A list of components with the same names as the arguments
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is an auxiliary function for controlling arguments for \code{CoxPH} model, typically used internally to specify
 details of \code{CoxPH} model for \link{s_coxph_pairwise}. \code{conf_level} refers to Hazard Ratio estimation.
 }

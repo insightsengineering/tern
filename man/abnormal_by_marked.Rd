@@ -36,7 +36,7 @@ count_abnormal_by_marked(
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
@@ -48,8 +48,6 @@ and last or replicated.}
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -68,6 +66,8 @@ with \verb{Single, not last}, \verb{Last or replicated} and \code{Any} results.
 \code{\link[=a_count_abnormal_by_marked]{a_count_abnormal_by_marked()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Primary analysis variable \code{.var} indicates whether single, replicated
 or last marked laboratory abnormality was observed (factor).
 Additional analysis variables are \code{id} (character or factor) and \code{direction} indicating
@@ -88,19 +88,18 @@ and \verb{Last or replicated} criteria, then the patient will be counted only un
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_by_marked}: Statistics function which returns
+\item \code{s_count_abnormal_by_marked()}: Statistics function which returns
 the counts and fractions of patients with \verb{Single, not last}, \verb{Last or replicated} and \code{Any}
 marked laboratory abnormalities for a single \code{abnormal} level.
 
-\item \code{a_count_abnormal_by_marked}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_abnormal_by_marked()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_abnormal_by_marked}: Layout creating function which can be used for creating tables,
+\item \code{count_abnormal_by_marked()}: Layout creating function which can be used for creating tables,
 which can take statistics function arguments and additional format arguments (see below).
+
 }}
-
 \examples{
-
 library(dplyr)
 
 df <- data.frame(
@@ -138,13 +137,18 @@ spl_context <- data.frame(
   full_parent_df = I(full_parent_df),
   cur_col_subset = I(cur_col_subset)
 )
-
+# Internal function - s_count_abnormal_by_marked
+\dontrun{
 s_count_abnormal_by_marked(
   df = df_crp \%>\% filter(abn_dir == "High"),
   .spl_context = spl_context,
   .var = "AVALCAT1",
   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 )
+}
+
+# Internal function - a_count_abnormal_by_marked
+\dontrun{
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
@@ -153,6 +157,7 @@ afun(
   .spl_context = spl_context,
   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 )
+}
 
 map <- unique(
   df[df$abn_dir \%in\% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
@@ -203,4 +208,6 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df = df)
+
 }
+\keyword{internal}

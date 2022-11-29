@@ -1,5 +1,3 @@
-library(dplyr)
-
 testthat::test_that("s_count_abnormal works with healthy input and default arguments", {
   abn_levels <- c("LOW", "NORMAL", "HIGH")
 

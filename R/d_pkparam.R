@@ -1,4 +1,7 @@
 #' Generate PK reference dataset
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @return dataframe of PK parameters
 #' @export
 #'

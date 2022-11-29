@@ -6,6 +6,7 @@
 \alias{summary_in_cols.numeric}
 \alias{summary_in_cols.factor}
 \alias{summary_in_cols.character}
+\alias{summary_in_cols.logical}
 \alias{summarize_vars_in_cols}
 \title{Summary numeric variables in columns}
 \usage{
@@ -16,6 +17,8 @@ summary_in_cols(x, labelstr = "", custom_label = NULL)
 \method{summary_in_cols}{factor}(x, labelstr = "", custom_label = NULL, ...)
 
 \method{summary_in_cols}{character}(x, labelstr = "", custom_label = NULL, ...)
+
+\method{summary_in_cols}{logical}(x, labelstr = "", custom_label = NULL, ...)
 
 summarize_vars_in_cols(
   lyt,
@@ -43,7 +46,8 @@ empty then this will be used as the row label.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
+\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{var_type}{Variable type, "numeric" by default.}
 
@@ -66,48 +70,46 @@ See \code{\link[=s_summary.factor]{s_summary.factor()}} to be aware of all avail
 
 A named list of all statistics returned by \code{\link[=s_summary.character]{s_summary.character()}}.
 See \code{\link[=s_summary.character]{s_summary.character()}} to be aware of all available statistics.
+
+A named list of all statistics returned by \code{\link[=s_summary.logical]{s_summary.logical()}}.
+See \code{\link[=s_summary.logical]{s_summary.logical()}} to be aware of all available statistics.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 These functions can be used to produce summary tables for PK datasets.
 }
 \section{Functions}{
 \itemize{
-\item \code{summary_in_cols}: \code{summary_in_cols} is a S3 generic
+\item \code{summary_in_cols()}: \code{summary_in_cols} is a S3 generic
 function to produce an object description.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-\item \code{summary_in_cols.numeric}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}}
+\item \code{summary_in_cols(numeric)}: a wrapper of \code{\link[=s_summary.numeric]{s_summary.numeric()}}
 function that produces a named list of statistics to include as columns.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-\item \code{summary_in_cols.factor}: a wrapper of
+\item \code{summary_in_cols(factor)}: a wrapper of
 \code{\link[=s_summary.factor]{s_summary.factor()}} function that produces a named list of statistics to include as columns.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-\item \code{summary_in_cols.character}: a wrapper of \code{\link[=s_summary.character]{s_summary.character()}}
+\item \code{summary_in_cols(character)}: a wrapper of \code{\link[=s_summary.character]{s_summary.character()}}
 function that produces a named list of statistics to include as columns.
 
-\item \code{summarize_vars_in_cols}: Layout creating
+\item \code{summary_in_cols(logical)}: a wrapper of \code{\link[=s_summary.logical]{s_summary.logical()}}
+function that produces a named list of statistics to include as columns.
+
+\item \code{summarize_vars_in_cols()}: Layout creating
 function which can be used for creating summary tables in columns, primarily used for PK data sets.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }}
-
 \examples{
-
 library(scda)
 library(dplyr)
-ADPP <- scda::synthetic_cdisc_data("latest")$adpp \%>\% h_pkparam_sort()
-summary_in_cols(ADPP$AGE, custom_label = "stats")
-
+adpp <- synthetic_cdisc_dataset("latest", "adpp") \%>\% h_pkparam_sort()
+summary_in_cols(adpp$AGE, custom_label = "stats")
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
   split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
   summarize_vars_in_cols(var = "AGE", col_split = TRUE)
-result <- build_table(lyt = lyt, df = ADPP)
+result <- build_table(lyt = lyt, df = adpp)
 result
 
 # By selecting just some statistics and ad-hoc labels
@@ -128,7 +130,7 @@ lyt <- basic_table() \%>\%
     ),
     col_split = TRUE
   )
-result <- build_table(lyt = lyt, df = ADPP)
+result <- build_table(lyt = lyt, df = adpp)
 result
 
 lyt <- basic_table() \%>\%
@@ -137,7 +139,7 @@ lyt <- basic_table() \%>\%
     col_split = TRUE,
     custom_label = "some custom label"
   )
-result <- build_table(lyt, df = ADPP)
+result <- build_table(lyt, df = adpp)
 result
 
 # PKPT03
@@ -159,7 +161,7 @@ lyt <- basic_table() \%>\%
       max = "Maximum"
     )
   )
-result <- build_table(lyt, df = ADPP)
+result <- build_table(lyt, df = adpp)
 result
 }
 \seealso{

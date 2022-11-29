@@ -51,6 +51,8 @@ are required.}
 displaying unit.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Tabulate the estimated effects of multiple continuous biomarker variables
 across population subgroups.
 }
@@ -60,16 +62,16 @@ the required statistics. The tables are then typically used as input for forest 
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_survival_biomarkers}: prepares estimates for number of events, patients and median survival
+\item \code{extract_survival_biomarkers()}: prepares estimates for number of events, patients and median survival
 times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
 population subgroups in a single data frame.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
 \code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{subgroups} and \code{strat}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 
-\item \code{tabulate_survival_biomarkers}: table creating function.
-}}
+\item \code{tabulate_survival_biomarkers()}: table creating function.
 
+}}
 \note{
 In contrast to \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}} this tabulation function does
 not start from an input layout \code{lyt}. This is because internally the table is
@@ -82,7 +84,7 @@ library(dplyr)
 library(forcats)
 library(rtables)
 
-adtte <- synthetic_cdisc_data("latest")$adtte
+adtte <- synthetic_cdisc_dataset("latest", "adtte")
 
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte)
@@ -134,6 +136,7 @@ df_grouped <- extract_survival_biomarkers(
 df_grouped
 
 ## Table with default columns.
+# df <- <needs_to_be_inputted>
 tabulate_survival_biomarkers(df)
 
 ## Table with a manually chosen set of columns: leave out "pval", reorder.

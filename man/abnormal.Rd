@@ -37,7 +37,7 @@ count_abnormal(
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{abnormal}{(\verb{named list})\cr identifying the abnormal range level(s) in \code{var}. Default to
@@ -50,8 +50,6 @@ for example, \code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "
 from numerator and denominator.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -75,6 +73,8 @@ vector with \code{num} and \code{denom} counts of patients.
 \code{\link[=count_abnormal]{count_abnormal()}} can be used with multiple abnormal levels and modifies the layout.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Primary analysis variable \code{.var} indicates the abnormal range result (character or factor)
 and additional analysis variables are \code{id} (character or factor) and \code{baseline} (character or
 factor). For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
@@ -92,17 +92,17 @@ Note that \code{df} should be filtered to include only post-baseline records.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal}: Statistics function which counts patients with abnormal range values
+\item \code{s_count_abnormal()}: Statistics function which counts patients with abnormal range values
 for a single \code{abnormal} level.
 
-\item \code{a_count_abnormal}: Formatted Analysis function which can be further customized by calling
+\item \code{a_count_abnormal()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{count_abnormal}: Layout creating function which can be used for creating tables, which can take
+\item \code{count_abnormal()}: Layout creating function which can be used for creating tables, which can take
 statistics function arguments and additional format arguments (see below). Note that it only
 works with a single variable but multiple abnormal levels.
-}}
 
+}}
 \examples{
 library(dplyr)
 
@@ -118,6 +118,8 @@ df <- data.frame(
 df <- df \%>\%
   filter(ONTRTFL == "Y")
 
+# Internal function - s_count_abnormal
+\dontrun{
 # For abnormal level "HIGH" we get the following counts.
 s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
@@ -128,9 +130,15 @@ s_count_abnormal(
   abnormal = list(high = "HIGH", low = "LOW"),
   exclude_base_abn = TRUE
 )
+}
+
+# Internal function - a_count_abnormal
+\dontrun{
 # Use the Formatted Analysis function for `analyze()`.
 a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
 a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
+}
+
 # Layout creating function.
 basic_table() \%>\%
   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) \%>\%
@@ -157,3 +165,4 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df2)
 }
+\keyword{internal}

@@ -14,3 +14,4 @@ Only \code{counts} and \code{numeric} types are currently supported.}
 Returns format patterns for descriptive statistics.
 The format is understood by the \code{rtables}.
 }
+\keyword{internal}
