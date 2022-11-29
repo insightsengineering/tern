@@ -234,7 +234,11 @@ summarize_vars_in_cols <- function(lyt,
                                    ),
                                    .formats = NULL,
                                    .indent_mods = NULL,
-                                   col_split = TRUE) {
+                                   col_split = TRUE,
+                                   na_str = NULL) {
+
+  checkmate::assert_string(na_str, null.ok = TRUE)
+
   format_candidates <- .formats
   if (is.null(.formats)) {
     var_type <- ifelse(var_type == "numeric", var_type, "counts")
@@ -246,6 +250,7 @@ summarize_vars_in_cols <- function(lyt,
       make_afun(
         summary_in_cols,
         .stats = stat,
+        .format_na_strs = na_str,
         .formats = format_candidates[names(format_candidates) == stat]
       )
     },
@@ -261,7 +266,6 @@ summarize_vars_in_cols <- function(lyt,
       varlabels = .labels[.stats]
     )
   }
-
   summarize_row_groups(
     lyt = lyt,
     var = var,
