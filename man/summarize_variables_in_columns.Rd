@@ -30,7 +30,8 @@ summarize_vars_in_cols(
     "CV \% Geometric Mean"),
   .formats = NULL,
   .indent_mods = NULL,
-  col_split = TRUE
+  col_split = TRUE,
+  na_str = NULL
 )
 }
 \arguments{
