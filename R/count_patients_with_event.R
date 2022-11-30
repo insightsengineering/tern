@@ -140,7 +140,7 @@ count_patients_with_event <- function(lyt,
                                       ...,
                                       table_names = vars,
                                       .stats = "count_fraction",
-                                      .formats = NULL,
+                                      .formats = list(count_fraction = format_count_fraction),
                                       .labels = NULL,
                                       .indent_mods = NULL) {
   afun <- make_afun(
@@ -282,7 +282,7 @@ count_patients_with_flags <- function(lyt,
                                       ...,
                                       table_names = paste0("tbl_flags_", var),
                                       .stats = "count_fraction",
-                                      .formats = NULL,
+                                      .formats = list(count_fraction = format_count_fraction),
                                       .indent_mods = NULL) {
   afun <- make_afun(
     a_count_patients_with_flags,

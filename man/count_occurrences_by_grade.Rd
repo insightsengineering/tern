@@ -38,7 +38,7 @@ count_occurrences_by_grade(
   ...,
   table_names = var,
   .stats = NULL,
-  .formats = NULL,
+  .formats = list(count_fraction = format_count_fraction),
   .indent_mods = NULL,
   .labels = NULL
 )
