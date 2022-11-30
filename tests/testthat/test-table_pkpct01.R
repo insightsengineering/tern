@@ -58,7 +58,7 @@ testthat::test_that("PKCT01 is produced correctly", {
 
 testthat::test_that("Specific PKCT01 features are present", {
   # Helper function
-  threesigfmt <- function(x,...) {
+  threesigfmt <- function(x, ...) {
     as.character(signif(x, 3))
   }
 
@@ -96,9 +96,11 @@ testthat::test_that("Specific PKCT01 features are present", {
     summarize_vars_in_cols(
       var = "AVAL",
       col_split = TRUE,
-      .stats = c("n", "mean", "sd", "cv",
-                 "geom_mean", "geom_cv", #"geom_mean_ci",
-                 "median", "min", "max"),
+      .stats = c(
+        "n", "mean", "sd", "cv",
+        "geom_mean", "geom_cv", # "geom_mean_ci",
+        "median", "min", "max"
+      ),
       .formats = c(
         n = "xx.",
         mean = threesigfmt,
@@ -120,7 +122,8 @@ testthat::test_that("Specific PKCT01 features are present", {
         geom_cv = "CV % Geometric Mean",
         median = "Median",
         min = "Minimum",
-        max = "Maximum"),
+        max = "Maximum"
+      ),
       na_str = "NE"
     )
   result1 <- build_table(l1, df = adpc_1)
