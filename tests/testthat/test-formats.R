@@ -10,6 +10,24 @@ testthat::test_that("format_fraction works with 0 numerator input", {
   testthat::expect_identical(result, expected)
 })
 
+testthat::test_that("format_fraction_fixed_dp works with healthy inputs", {
+  result <- format_fraction_fixed_dp(c(num = 2, denom = 3))
+  expected <- "2/3 (66.7%)"
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("format_fraction_fixed_dp works with whole number percentages", {
+  result <- format_fraction_fixed_dp(c(num = 2, denom = 8))
+  expected <- "2/8 (25.0%)"
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("format_fraction_fixed_dp works with 0 numerator input", {
+  result <- format_fraction_fixed_dp(c(num = 0L, denom = 3L))
+  expected <- "0/3"
+  testthat::expect_identical(result, expected)
+})
+
 testthat::test_that("format_count_fraction works with healthy inputs", {
   result <- format_count_fraction(c(2, 0.6667))
   expected <- "2 (66.7%)"

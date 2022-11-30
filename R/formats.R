@@ -43,6 +43,41 @@ format_fraction <- function(x, ...) {
   return(result)
 }
 
+#' Formatting Fraction and Percentage with Fixed Single Decimal Place
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Formats a fraction together with ratio in percent with fixed single decimal place.
+#' Includes trailing zero in case of whole number percentages to always keep one decimal place.
+#'
+#' @param x (`integer`)\cr with elements `num` and `denom`.
+#' @param ... required for `rtables` interface.
+#' @return a string in the format `num / denom (ratio %)`. If `num` is 0 the format is `num / denom`.
+#'
+#' @family formatting functions
+#' @export
+#'
+#' @examples
+#' format_fraction_fixed_dp(x = c(num = 1L, denom = 2L))
+#' format_fraction_fixed_dp(x = c(num = 1L, denom = 4L))
+#' format_fraction_fixed_dp(x = c(num = 0L, denom = 3L))
+format_fraction_fixed_dp <- function(x, ...) {
+  attr(x, "label") <- NULL
+  checkmate::assert_vector(x)
+  checkmate::assert_count(x["num"])
+  checkmate::assert_count(x["denom"])
+
+  result <- if (x["num"] == 0) {
+    paste0(x["num"], "/", x["denom"])
+  } else {
+    paste0(
+      x["num"], "/", x["denom"],
+      " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"
+    )
+  }
+  return(result)
+}
+
 #' Formatting Count and Fraction
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -104,7 +139,6 @@ format_count_fraction <- function(x, ...) {
 #'
 #' @keywords internal
 format_xx <- function(str) {
-
   # Find position in the string.
   positions <- gregexpr(pattern = "x+\\.x+|x+", text = str, perl = TRUE)
   x_positions <- regmatches(x = str, m = positions)[[1]]
