@@ -57,6 +57,11 @@ testthat::test_that("PKCT01 is produced correctly", {
 })
 
 testthat::test_that("Specific PKCT01 features are present", {
+  # Helper function
+  threesigfmt <- function(x,...) {
+    as.character(signif(x, 3))
+  }
+
   # Setting up the data
   adpc_1 <- adpc %>%
     mutate(
@@ -91,17 +96,20 @@ testthat::test_that("Specific PKCT01 features are present", {
     summarize_vars_in_cols(
       var = "AVAL",
       col_split = TRUE,
-      .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
+      .stats = c("n", "mean", "sd", "cv",
+                 "geom_mean", "geom_cv", #"geom_mean_ci",
+                 "median", "min", "max"),
       .formats = c(
         n = "xx.",
-        mean = sprintf_format("%.3e"),
-        sd = sprintf_format("%.3e"),
+        mean = threesigfmt,
+        sd = threesigfmt,
+        # se = threesigfmt,
         cv = "xx.x",
-        median = sprintf_format("%.3e"),
-        geom_mean = sprintf_format("%.3e"),
+        median = threesigfmt,
+        geom_mean = threesigfmt,
         geom_cv = "xx.x",
-        min = sprintf_format("%.3e"),
-        max = sprintf_format("%.3e")
+        min = threesigfmt,
+        max = threesigfmt
       ),
       .labels = c(
         n = "n",
@@ -112,8 +120,7 @@ testthat::test_that("Specific PKCT01 features are present", {
         geom_cv = "CV % Geometric Mean",
         median = "Median",
         min = "Minimum",
-        max = "Maximum"
-      ),
+        max = "Maximum"),
       na_str = "NE"
     )
   result1 <- build_table(l1, df = adpc_1)
@@ -154,5 +161,7 @@ testthat::test_that("Specific PKCT01 features are present", {
   ) %>%
     unlist()
   names(mean_vals) <- NULL
-  # testthat::expect_equal(mean_vals, signif(mean_vals, 3))
+  tmp_result <- sapply(1:nrow(result), function(x) matrix_form(result[x, 3])$strings[2, 2])
+  tmp_result <- tmp_result[tmp_result != ""]
+  testthat::expect_equal(tmp_result, as.character(signif(mean_vals, 3)))
 })
