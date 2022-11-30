@@ -105,7 +105,6 @@ testthat::test_that("Specific PKCT01 features are present", {
         n = "xx.",
         mean = threesigfmt,
         sd = threesigfmt,
-        # se = threesigfmt,
         cv = "xx.x",
         median = threesigfmt,
         geom_mean = threesigfmt,
@@ -164,7 +163,7 @@ testthat::test_that("Specific PKCT01 features are present", {
   ) %>%
     unlist()
   names(mean_vals) <- NULL
-  tmp_result <- sapply(1:nrow(result), function(x) matrix_form(result[x, 3])$strings[2, 2])
+  tmp_result <- sapply(seq_len(nrow(result)), function(x) matrix_form(result[x, 3])$strings[2, 2])
   tmp_result <- tmp_result[tmp_result != ""]
   testthat::expect_equal(tmp_result, as.character(signif(mean_vals, 3)))
 })
