@@ -12,6 +12,7 @@ This summarizes the additional Formatting Functions to work with \code{rtables}.
 Other formatting functions: 
 \code{\link{extreme_format}},
 \code{\link{format_count_fraction}()},
+\code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},
 \code{\link{format_fraction}()}
 }

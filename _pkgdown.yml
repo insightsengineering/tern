@@ -257,6 +257,7 @@ reference:
       - format_extreme_values
       - format_extreme_values_ci
       - format_fraction
+      - format_fraction_fixed_dp
       - format_fraction_threshold
       - format_xx
 
