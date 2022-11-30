@@ -1,19 +1,19 @@
 # Data loading for tests
-adsl_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adsl")
-adae_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adae")
-adaette_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adaette")
-adpp_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adpp")
-adpc_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adpc")
-adsub_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adsub")
-adqs_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adqs")
-adcm_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adcm")
-advs_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "advs")
-adeg_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adeg")
-adex_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adex")
-adlb_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adlb")
-admh_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "admh")
-adrs_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adrs")
-adtte_raw <- synthetic_cdisc_dataset("rcd_2022_06_27", "adtte")
+adsl_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adsl")
+adae_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adae")
+adaette_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adaette")
+adpp_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adpp")
+adpc_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adpc")
+adsub_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adsub")
+adqs_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adqs")
+adcm_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adcm")
+advs_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "advs")
+adeg_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adeg")
+adex_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adex")
+adlb_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adlb")
+admh_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "admh")
+adrs_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adrs")
+adtte_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adtte")
 
 # Data as DM from `formatters`
 adsl_dm <- adsl_raw %>%
@@ -48,3 +48,4 @@ dta_bladder_raw <- local({
   )
   dta_bladder
 })
+
