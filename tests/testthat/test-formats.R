@@ -40,6 +40,24 @@ testthat::test_that("format_count_fraction works with count of 0", {
   testthat::expect_identical(result, expected)
 })
 
+testthat::test_that("format_count_fraction_fixed_dp works with healthy inputs", {
+  result <- format_count_fraction_fixed_dp(c(2, 0.5))
+  expected <- "2 (50.0%)"
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("format_count_fraction_fixed_dp works with healthy inputs", {
+  result <- format_count_fraction_fixed_dp(c(2, 0.6667))
+  expected <- "2 (66.7%)"
+  testthat::expect_identical(result, expected)
+})
+
+testthat::test_that("format_count_fraction_fixed_dp works with count of 0", {
+  result <- format_count_fraction_fixed_dp(c(0, 0))
+  expected <- "0"
+  testthat::expect_identical(result, expected)
+})
+
 testthat::test_that("format_fraction fails with bad inputs", {
   x <- list(
     c(num = c(1L, 2L, 3L), denom = 5L),

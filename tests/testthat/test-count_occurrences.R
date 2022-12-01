@@ -125,8 +125,8 @@ testthat::test_that("count_occurrences functions as expected with valid input an
   expected_matrix <- structure(
     c(
       "", "", "MH1", "MH2", "MH3", "MH4", "A", "(N=5)",
-      "3 (60%)", "1 (20%)", "1 (20%)", "0", "B", "(N=4)", "1 (25%)",
-      "2 (50%)", "1 (25%)", "1 (25%)"
+      "3 (60.0%)", "1 (20.0%)", "1 (20.0%)", "0", "B", "(N=4)", "1 (25.0%)",
+      "2 (50.0%)", "1 (25.0%)", "1 (25.0%)"
     ),
     .Dim = c(6L, 3L)
   )
