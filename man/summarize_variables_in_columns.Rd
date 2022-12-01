@@ -22,8 +22,7 @@ summary_in_cols(x, labelstr = "", custom_label = NULL)
 
 summarize_vars_in_cols(
   lyt,
-  var,
-  var_type = "numeric",
+  vars,
   ...,
   .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
   .labels = c(n = "n", mean = "Mean", sd = "SD", se = "SE", cv = "CV (\%)", geom_cv =
@@ -47,10 +46,7 @@ empty then this will be used as the row label.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{var_type}{Variable type, "numeric" by default.}
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -63,6 +59,8 @@ by a statistics function.}
 \item{col_split}{(\code{flag})\cr whether the columns should be split.}
 
 \item{na_str}{(\code{string})\cr used to replace all \code{NA} with custom \code{string}.}
+
+\item{var_type}{Variable type, "numeric" by default.}
 }
 \value{
 A named list of all statistics returned by \code{\link[=s_summary.numeric]{s_summary.numeric()}}.
@@ -111,7 +109,7 @@ summary_in_cols(adpp$AGE, custom_label = "stats")
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
   split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
-  summarize_vars_in_cols(var = "AGE", col_split = TRUE)
+  summarize_vars_in_cols(vars = "AGE", col_split = TRUE)
 result <- build_table(lyt = lyt, df = adpp)
 result
 

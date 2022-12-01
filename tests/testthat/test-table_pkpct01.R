@@ -148,6 +148,9 @@ testthat::test_that("Specific PKCT01 features are present", {
   main_title(result) <- "Summary of PK Concentrations by Nominal Time and Treatment: PK Evaluable\n Protocol: xxxxx"
   subtitles(result) <- paste("Analyte: ", unique(unique(adpc$PARAM)), "Treatment:", unique(unique(adpc$ACTARM)))
   main_footer(result) <- "NE: Not Estimable"
+  paginate_table(result, verbose = TRUE, lpp = 20)
+
+  table_structure(result)
 
   # Comparing
   string_res <- strsplit(toString(matrix_form(result, TRUE)), "\n")
