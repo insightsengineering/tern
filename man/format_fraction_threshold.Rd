@@ -30,6 +30,7 @@ format_fun(x = c(0, 0))
 \seealso{
 Other formatting functions: 
 \code{\link{extreme_format}},
+\code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction}()},
