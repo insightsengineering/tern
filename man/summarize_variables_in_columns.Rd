@@ -131,7 +131,6 @@ result
 lyt <- basic_table() \%>\%
   summarize_vars_in_cols(
     vars = "AGE",
-    col_split = TRUE,
     custom_label = "some custom label"
   )
 result <- build_table(lyt, df = adpp)
@@ -141,8 +140,7 @@ result
 lyt <- basic_table() \%>\%
   split_rows_by(var = "TLG_DISPLAY", split_label = "PK Parameter", label_pos = "topleft") \%>\%
   summarize_vars_in_cols(
-    var = "AVAL",
-    col_split = TRUE,
+    vars = "AVAL",
     .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
     .labels = c(
       n = "n",
