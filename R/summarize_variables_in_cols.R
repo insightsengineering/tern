@@ -234,9 +234,6 @@ summarize_vars_in_cols <- function(lyt,
 
   # Automatic assignment of formats
   if (is.null(.formats)) {
-    # Init
-    formats_v <- rep("", length(.stats))
-    names(formats_v) <- rep(" ", length(.stats))
     # General values
     sf_numeric <- summary_formats("numeric")
     sf_counts <- summary_formats("counts")[-1]
