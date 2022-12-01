@@ -182,7 +182,6 @@ summary_in_cols <- function(x,
 #' lyt <- basic_table() %>%
 #'   summarize_vars_in_cols(
 #'     vars = "AGE",
-#'     col_split = TRUE,
 #'     custom_label = "some custom label"
 #'   )
 #' result <- build_table(lyt, df = adpp)
@@ -192,8 +191,7 @@ summary_in_cols <- function(x,
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "TLG_DISPLAY", split_label = "PK Parameter", label_pos = "topleft") %>%
 #'   summarize_vars_in_cols(
-#'     var = "AVAL",
-#'     col_split = TRUE,
+#'     vars = "AVAL",
 #'     .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
 #'     .labels = c(
 #'       n = "n",
@@ -230,7 +228,6 @@ summarize_vars_in_cols <- function(lyt,
                                    ),
                                    .formats = NULL,
                                    .indent_mods = NULL,
-                                   col_split = TRUE,
                                    na_str = NULL) {
 
   checkmate::assert_string(na_str, null.ok = TRUE)
@@ -243,34 +240,22 @@ summarize_vars_in_cols <- function(lyt,
     # General values
     sf_numeric <- summary_formats("numeric")
     sf_counts <- summary_formats("counts")[-1]
-    is_num_format <- .stats %in% names(sf_numeric)
-    is_count_format <- .stats %in% names(sf_counts)
-    # Assignment
-    if (any(is_num_format)) {
-      formats_v[is_num_format] <- sf_numeric[names(sf_numeric) %in% .stats]
-      names(formats_v)[is_num_format] <- names(sf_numeric[names(sf_numeric) %in% .stats])
-    }
-    if (any(is_count_format)) {
-      formats_v[is_count_format] <- sf_counts[names(sf_counts) %in% .stats]
-      names(formats_v)[is_count_format] <- names(sf_counts[names(sf_counts) %in% .stats])
-    }
-    if (!all(is_num_format | is_count_format)) {
-      stop("Specified statistic has not a default format")
-    }
+    formats_v <- c(sf_numeric, sf_counts)
+  } else {
+    formats_v <- .formats
   }
 
   afun_list <- Map(
-    function(stat, ff) {
+    function(stat) {
       make_afun(
         summary_in_cols,
         .labels = " ",
         .stats = stat,
         .format_na_strs = na_str,
-        .formats = ff
+        .formats = formats_v[names(formats_v) == stat]
       )
     },
-    stat = .stats,
-    ff = formats_v
+    stat = .stats
   )
 
   # Check for vars in the case that one or more are used
