@@ -128,10 +128,10 @@ format_count_fraction <- function(x, ...) {
 #' @export
 #'
 #' @examples
-#' format_count_fraction_fixed_dp (x = c(2, 0.6667))
-#' format_count_fraction_fixed_dp (x = c(2, 0.5))
-#' format_count_fraction_fixed_dp (x = c(0, 0))
-format_count_fraction_fixed_dp  <- function(x, ...) {
+#' format_count_fraction_fixed_dp(x = c(2, 0.6667))
+#' format_count_fraction_fixed_dp(x = c(2, 0.5))
+#' format_count_fraction_fixed_dp(x = c(0, 0))
+format_count_fraction_fixed_dp <- function(x, ...) {
   attr(x, "label") <- NULL
 
   if (any(is.na(x))) {
