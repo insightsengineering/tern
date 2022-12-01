@@ -22,15 +22,14 @@ summary_in_cols(x, labelstr = "", custom_label = NULL)
 
 summarize_vars_in_cols(
   lyt,
-  var,
-  var_type = "numeric",
+  vars,
   ...,
   .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
   .labels = c(n = "n", mean = "Mean", sd = "SD", se = "SE", cv = "CV (\%)", geom_cv =
     "CV \% Geometric Mean"),
   .formats = NULL,
   .indent_mods = NULL,
-  col_split = TRUE
+  na_str = NULL
 )
 }
 \arguments{
@@ -46,10 +45,7 @@ empty then this will be used as the row label.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{var_type}{Variable type, "numeric" by default.}
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -59,7 +55,7 @@ by a statistics function.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{col_split}{(\code{flag})\cr whether the columns should be split.}
+\item{na_str}{(\code{string})\cr used to replace all \code{NA} with custom \code{string}.}
 }
 \value{
 A named list of all statistics returned by \code{\link[=s_summary.numeric]{s_summary.numeric()}}.
@@ -108,7 +104,7 @@ summary_in_cols(adpp$AGE, custom_label = "stats")
 lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
   split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
-  summarize_vars_in_cols(var = "AGE", col_split = TRUE)
+  summarize_vars_in_cols(vars = "AGE")
 result <- build_table(lyt = lyt, df = adpp)
 result
 
@@ -117,7 +113,7 @@ lyt <- basic_table() \%>\%
   split_rows_by(var = "ARM", label_pos = "topleft") \%>\%
   split_rows_by(var = "SEX", label_pos = "topleft") \%>\%
   summarize_vars_in_cols(
-    var = "AGE",
+    vars = "AGE",
     .stats = c("n", "cv", "geom_mean", "mean_ci", "median", "min", "max"),
     .labels = c(
       n = "myN",
@@ -127,15 +123,14 @@ lyt <- basic_table() \%>\%
       median = "Median",
       min = "Minimum",
       max = "Maximum"
-    ),
-    col_split = TRUE
+    )
   )
 result <- build_table(lyt = lyt, df = adpp)
 result
 
 lyt <- basic_table() \%>\%
   summarize_vars_in_cols(
-    var = "AGE",
+    vars = "AGE",
     col_split = TRUE,
     custom_label = "some custom label"
   )

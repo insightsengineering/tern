@@ -147,8 +147,6 @@ summary_in_cols <- function(x,
 #' function which can be used for creating summary tables in columns, primarily used for PK data sets.
 #'
 #' @inheritParams argument_convention
-#' @param col_split (`flag`)\cr whether the columns should be split.
-#' @param var_type Variable type, "numeric" by default.
 #'
 #' @seealso [summarize_vars].
 #'
@@ -157,7 +155,7 @@ summary_in_cols <- function(x,
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
-#'   summarize_vars_in_cols(var = "AGE", col_split = TRUE)
+#'   summarize_vars_in_cols(vars = "AGE")
 #' result <- build_table(lyt = lyt, df = adpp)
 #' result
 #'
@@ -166,7 +164,7 @@ summary_in_cols <- function(x,
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
 #'   summarize_vars_in_cols(
-#'     var = "AGE",
+#'     vars = "AGE",
 #'     .stats = c("n", "cv", "geom_mean", "mean_ci", "median", "min", "max"),
 #'     .labels = c(
 #'       n = "myN",
@@ -176,16 +174,14 @@ summary_in_cols <- function(x,
 #'       median = "Median",
 #'       min = "Minimum",
 #'       max = "Maximum"
-#'     ),
-#'     col_split = TRUE
+#'     )
 #'   )
 #' result <- build_table(lyt = lyt, df = adpp)
 #' result
 #'
 #' lyt <- basic_table() %>%
 #'   summarize_vars_in_cols(
-#'     var = "AGE",
-#'     col_split = TRUE,
+#'     vars = "AGE",
 #'     custom_label = "some custom label"
 #'   )
 #' result <- build_table(lyt, df = adpp)
@@ -195,8 +191,7 @@ summary_in_cols <- function(x,
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "TLG_DISPLAY", split_label = "PK Parameter", label_pos = "topleft") %>%
 #'   summarize_vars_in_cols(
-#'     var = "AVAL",
-#'     col_split = TRUE,
+#'     vars = "AVAL",
 #'     .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
 #'     .labels = c(
 #'       n = "n",
@@ -213,8 +208,7 @@ summary_in_cols <- function(x,
 #' result <- build_table(lyt, df = adpp)
 #' result
 summarize_vars_in_cols <- function(lyt,
-                                   var,
-                                   var_type = "numeric",
+                                   vars,
                                    ...,
                                    .stats = c(
                                      "n",
@@ -234,38 +228,48 @@ summarize_vars_in_cols <- function(lyt,
                                    ),
                                    .formats = NULL,
                                    .indent_mods = NULL,
-                                   col_split = TRUE) {
-  format_candidates <- .formats
+                                   na_str = NULL) {
+
+  checkmate::assert_string(na_str, null.ok = TRUE)
+
+  # Automatic assignment of formats
   if (is.null(.formats)) {
-    var_type <- ifelse(var_type == "numeric", var_type, "counts")
-    format_candidates <- summary_formats(var_type)
+    # General values
+    sf_numeric <- summary_formats("numeric")
+    sf_counts <- summary_formats("counts")[-1]
+    formats_v <- c(sf_numeric, sf_counts)
+  } else {
+    formats_v <- .formats
   }
 
   afun_list <- Map(
     function(stat) {
       make_afun(
         summary_in_cols,
+        .labels = " ",
         .stats = stat,
-        .formats = format_candidates[names(format_candidates) == stat]
+        .format_na_strs = na_str,
+        .formats = formats_v[names(formats_v) == stat]
       )
     },
     stat = .stats
   )
 
-  if (col_split) {
-    vars <- rep(var, length(.stats))
-
-    lyt <- split_cols_by_multivar(
-      lyt = lyt,
-      vars = vars,
-      varlabels = .labels[.stats]
-    )
+  # Check for vars in the case that one or more are used
+  if (length(vars) == 1) {
+    vars <- rep(vars, length(.stats))
+  } else if (length(vars) != length(.stats)) {
+    stop("Analyzed variables (vars) does not have the same ",
+         "number of elements of specified statistics (.stats).")
   }
 
-  summarize_row_groups(
+  lyt <- split_cols_by_multivar(
     lyt = lyt,
-    var = var,
-    cfun = afun_list,
-    extra_args = list(...)
+    vars = vars,
+    varlabels = .labels[.stats]
   )
+
+  analyze_colvars(lyt,
+                  afun = afun_list,
+                  extra_args = list(...))
 }
