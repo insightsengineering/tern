@@ -114,6 +114,43 @@ format_count_fraction <- function(x, ...) {
   return(result)
 }
 
+#' Formatting Count and Percentage with Fixed Single Decimal Place
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Formats a count together with fraction with special consideration when count is `0`.
+#'
+#' @param x (`integer`)\cr vector of length 2, count and fraction.
+#' @param ... required for `rtables` interface.
+#' @return a string in the format `count (fraction %)`. If `count` is 0 the format is `0`.
+#'
+#' @family formatting functions
+#' @export
+#'
+#' @examples
+#' format_count_fraction_fixed_dp (x = c(2, 0.6667))
+#' format_count_fraction_fixed_dp (x = c(2, 0.5))
+#' format_count_fraction_fixed_dp (x = c(0, 0))
+format_count_fraction_fixed_dp  <- function(x, ...) {
+  attr(x, "label") <- NULL
+
+  if (any(is.na(x))) {
+    return("NA")
+  }
+
+  checkmate::assert_vector(x)
+  checkmate::assert_integerish(x[1])
+  assert_proportion_value(x[2], include_boundaries = TRUE)
+
+  result <- if (x[1] == 0) {
+    "0"
+  } else {
+    sprintf("%d (%.1f%%)", x[1], x[2] * 100)
+  }
+
+  return(result)
+}
+
 #' Formatting: XX as Formatting Function
 #'
 #' Translate a string where x and dots are interpreted as number place

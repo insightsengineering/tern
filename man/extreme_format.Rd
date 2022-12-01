@@ -65,6 +65,7 @@ format_fun(x = c(0, 0.009))
 }
 \seealso{
 Other formatting functions: 
+\code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},

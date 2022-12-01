@@ -240,7 +240,7 @@ count_occurrences_by_grade <- function(lyt,
                                        ...,
                                        table_names = var,
                                        .stats = NULL,
-                                       .formats = list(count_fraction = format_count_fraction),
+                                       .formats = list(count_fraction = format_count_fraction_fixed_dp),
                                        .indent_mods = NULL,
                                        .labels = NULL) {
   afun <- make_afun(

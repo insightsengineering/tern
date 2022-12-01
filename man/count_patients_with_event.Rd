@@ -33,7 +33,7 @@ count_patients_with_event(
   ...,
   table_names = vars,
   .stats = "count_fraction",
-  .formats = list(count_fraction = format_count_fraction),
+  .formats = list(count_fraction = format_count_fraction_fixed_dp),
   .labels = NULL,
   .indent_mods = NULL
 )
@@ -64,7 +64,7 @@ count_patients_with_flags(
   ...,
   table_names = paste0("tbl_flags_", var),
   .stats = "count_fraction",
-  .formats = list(count_fraction = format_count_fraction),
+  .formats = list(count_fraction = format_count_fraction_fixed_dp),
   .indent_mods = NULL
 )
 }
