@@ -229,7 +229,6 @@ summarize_vars_in_cols <- function(lyt,
                                    .formats = NULL,
                                    .indent_mods = NULL,
                                    na_str = NULL) {
-
   checkmate::assert_string(na_str, null.ok = TRUE)
 
   # Automatic assignment of formats
@@ -259,8 +258,10 @@ summarize_vars_in_cols <- function(lyt,
   if (length(vars) == 1) {
     vars <- rep(vars, length(.stats))
   } else if (length(vars) != length(.stats)) {
-    stop("Analyzed variables (vars) does not have the same ",
-         "number of elements of specified statistics (.stats).")
+    stop(
+      "Analyzed variables (vars) does not have the same ",
+      "number of elements of specified statistics (.stats)."
+    )
   }
 
   lyt <- split_cols_by_multivar(
@@ -270,6 +271,7 @@ summarize_vars_in_cols <- function(lyt,
   )
 
   analyze_colvars(lyt,
-                  afun = afun_list,
-                  extra_args = list(...))
+    afun = afun_list,
+    extra_args = list(...)
+  )
 }
