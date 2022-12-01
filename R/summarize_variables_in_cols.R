@@ -213,8 +213,7 @@ summary_in_cols <- function(x,
 #' result <- build_table(lyt, df = adpp)
 #' result
 summarize_vars_in_cols <- function(lyt,
-                                   var,
-                                   var_type = "numeric",
+                                   vars,
                                    ...,
                                    .stats = c(
                                      "n",
@@ -236,39 +235,55 @@ summarize_vars_in_cols <- function(lyt,
                                    .indent_mods = NULL,
                                    col_split = TRUE,
                                    na_str = NULL) {
+
   checkmate::assert_string(na_str, null.ok = TRUE)
 
-  format_candidates <- .formats
+  # Automatic assignment of formats
   if (is.null(.formats)) {
-    var_type <- ifelse(var_type == "numeric", var_type, "counts")
-    format_candidates <- summary_formats(var_type)
+    # Init
+    formats_v <- rep("", length(.stats))
+    names(formats_v) <- rep(" ", length(.stats))
+    # General values
+    sf_numeric <- summary_formats("numeric")
+    sf_counts <- summary_formats("counts")[-1]
+    is_num_format <- .stats %in% names(sf_numeric)
+    is_count_format <- .stats %in% names(sf_counts)
+    # Assignment
+    if (any(is_num_format)) {
+      formats_v[is_num_format] <- sf_numeric[names(sf_numeric) %in% .stats]
+      names(formats_v)[is_num_format] <- names(sf_numeric[names(sf_numeric) %in% .stats])
+    }
+    if (any(is_count_format)) {
+      formats_v[is_count_format] <- sf_counts[names(sf_counts) %in% .stats]
+      names(formats_v)[is_count_format] <- names(sf_counts[names(sf_counts) %in% .stats])
+    }
+    if (!all(is_num_format | is_count_format)) {
+      stop("Specified statistic has not a default format")
+    }
   }
 
   afun_list <- Map(
-    function(stat) {
+    function(stat, ff) {
       make_afun(
         summary_in_cols,
+        .labels = " ",
         .stats = stat,
         .format_na_strs = na_str,
-        .formats = format_candidates[names(format_candidates) == stat]
+        .formats = ff
       )
     },
-    stat = .stats
+    stat = .stats,
+    ff = formats_v
   )
 
   if (col_split) {
-    vars <- rep(var, length(.stats))
-
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = vars,
       varlabels = .labels[.stats]
     )
   }
-  summarize_row_groups(
-    lyt = lyt,
-    var = var,
-    cfun = afun_list,
-    extra_args = list(...)
-  )
+  analyze_colvars(lyt,
+                  afun = afun_list,
+                  extra_args = list(...))
 }
