@@ -20,9 +20,9 @@ a string in the format \verb{count (fraction \%)}. If \code{count} is 0 the form
 Formats a count together with fraction with special consideration when count is \code{0}.
 }
 \examples{
-format_count_fraction_fixed_dp (x = c(2, 0.6667))
-format_count_fraction_fixed_dp (x = c(2, 0.5))
-format_count_fraction_fixed_dp (x = c(0, 0))
+format_count_fraction_fixed_dp(x = c(2, 0.6667))
+format_count_fraction_fixed_dp(x = c(2, 0.5))
+format_count_fraction_fixed_dp(x = c(0, 0))
 }
 \seealso{
 Other formatting functions: 
