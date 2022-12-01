@@ -146,7 +146,7 @@ format_count_fraction_fixed_dp <- function(x, ...) {
     "0"
   } else if (x[2] == 1) {
     sprintf("%d (100%%)", x[1])
-  }else {
+  } else {
     sprintf("%d (%.1f%%)", x[1], x[2] * 100)
   }
 
