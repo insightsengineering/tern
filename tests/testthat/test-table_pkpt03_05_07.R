@@ -118,7 +118,6 @@ testthat::test_that("PKPT03 Drug Y is produced correctly", {
     ),
     .Dim = c(9L, 10L)
   )
-  expected_matrix <- matrix(expected_matrix, nrow = 6, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
