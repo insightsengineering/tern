@@ -34,7 +34,7 @@ count_occurrences(
   ...,
   table_names = vars,
   .stats = "count_fraction",
-  .formats = NULL,
+  .formats = list(count_fraction = format_count_fraction_fixed_dp),
   .labels = NULL,
   .indent_mods = NULL
 )

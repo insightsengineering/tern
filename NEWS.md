@@ -1,4 +1,4 @@
-# tern 0.7.10.9014
+# tern 0.7.10.9015
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -7,7 +7,7 @@
 * Added more tests to increase code coverage.
 * Deprecated badge and warning for `wrap_txt` and its file.
 * Added legend to `g_step`.
-* Added fraction formatting function `format_fraction_fixed_dp` with fixed single decimal place in percentages.
+* Added formatting functions `format_fraction_fixed_dp` and `format_count_fraction_fixed_dp` with fixed single decimal place in percentages.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing grades are present in `s_count_occurrences_by_grade`.

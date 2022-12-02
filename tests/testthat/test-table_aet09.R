@@ -163,7 +163,7 @@ testthat::test_that("AET09 variant 1 is produced correctly, AE related to study 
       "",
       "132 (33%)",
       "182",
-      "132 (33%)"
+      "132 (33.0%)"
     ),
     .Dim = c(24L, 5L)
   )
