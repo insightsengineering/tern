@@ -99,8 +99,8 @@ summarize_vars_in_cols <- function(lyt,
                                    labelstr = " ",
                                    .formats = NULL,
                                    .indent_mods = NULL,
-                                   na_str = NULL) {
-  checkmate::assert_string(na_str, null.ok = TRUE)
+                                   na_level = NULL) {
+  checkmate::assert_string(na_level, null.ok = TRUE)
   checkmate::assert_string(labelstr)
 
   # Automatic assignment of formats
@@ -119,7 +119,7 @@ summarize_vars_in_cols <- function(lyt,
         s_summary,
         .labels = labelstr,
         .stats = stat,
-        .format_na_strs = na_str,
+        .format_na_strs = na_level,
         .formats = formats_v[names(formats_v) == stat]
       )
     },
