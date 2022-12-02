@@ -1,147 +1,13 @@
 #' Summary numeric variables in columns
 #'
-#' @description `r lifecycle::badge("experimental")`
+#' @description `r lifecycle::badge("stable")`
 #'
-#' These functions can be used to produce summary tables for PK datasets.
+#' This function can be used to produce summary tables for PK datasets where
+#' the relevant statistic is on the columns instead of on the rows.
 #'
 #' @name summarize_variables_in_columns
 #'
 NULL
-
-#' @describeIn summarize_variables_in_columns a wrapper of [s_summary.numeric()]
-#'  function that produces a named list of statistics to include as columns.
-#'
-#' @inheritParams argument_convention
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
-#'  empty then this will be used as the row label.
-#'
-#' @return A named list of all statistics returned by [s_summary.numeric()].
-#' See [s_summary.numeric()] to be aware of all available statistics.
-#'
-#' @export
-#'
-#' @examples
-#' library(scda)
-#' library(dplyr)
-#' adpp <- synthetic_cdisc_dataset("latest", "adpp") %>% h_pkparam_sort()
-#' summary_in_cols(adpp$AGE, custom_label = "stats")
-summary_in_cols.numeric <- function(x,
-                                    labelstr = "",
-                                    custom_label = NULL,
-                                    ...) {
-  row_label <- if (labelstr != "") {
-    labelstr
-  } else if (!is.null(custom_label)) {
-    custom_label
-  } else {
-    "Statistics"
-  }
-
-  # Calling s_summary.numeric
-  results <- s_summary.numeric(x)
-
-  lapply(results, formatters::with_label, row_label)
-}
-
-#' @describeIn summarize_variables_in_columns a wrapper of
-#' [s_summary.factor()] function that produces a named list of statistics to include as columns.
-#'
-#' @inheritParams argument_convention
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
-#'  empty then this will be used as the row label.
-#'
-#' @return A named list of all statistics returned by [s_summary.factor()].
-#' See [s_summary.factor()] to be aware of all available statistics.
-#'
-#' @export
-summary_in_cols.factor <- function(x,
-                                   labelstr = "",
-                                   custom_label = NULL,
-                                   ...) {
-  row_label <- if (labelstr != "") {
-    labelstr
-  } else if (!is.null(custom_label)) {
-    custom_label
-  } else {
-    "Statistics"
-  }
-
-  # Calling s_summary.factor
-  results <- s_summary.factor(x)
-
-  lapply(results, formatters::with_label, row_label)
-}
-
-#' @describeIn summarize_variables_in_columns a wrapper of [s_summary.character()]
-#'  function that produces a named list of statistics to include as columns.
-#'
-#' @inheritParams argument_convention
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
-#'  empty then this will be used as the row label.
-#'
-#' @return A named list of all statistics returned by [s_summary.character()].
-#' See [s_summary.character()] to be aware of all available statistics.
-#'
-#' @export
-summary_in_cols.character <- function(x,
-                                      labelstr = "",
-                                      custom_label = NULL,
-                                      ...) {
-  row_label <- if (labelstr != "") {
-    labelstr
-  } else if (!is.null(custom_label)) {
-    custom_label
-  } else {
-    "Statistics"
-  }
-
-  # Calling s_summary.character
-  results <- s_summary.factor(as.factor(x))
-
-  lapply(results, formatters::with_label, row_label)
-}
-
-#' @describeIn summarize_variables_in_columns a wrapper of [s_summary.logical()]
-#'  function that produces a named list of statistics to include as columns.
-#'
-#' @inheritParams argument_convention
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is
-#'  empty then this will be used as the row label.
-#'
-#' @return A named list of all statistics returned by [s_summary.logical()].
-#' See [s_summary.logical()] to be aware of all available statistics.
-#'
-#' @export
-summary_in_cols.logical <- function(x,
-                                    labelstr = "",
-                                    custom_label = NULL,
-                                    ...) {
-  row_label <- if (labelstr != "") {
-    labelstr
-  } else if (!is.null(custom_label)) {
-    custom_label
-  } else {
-    "Statistics"
-  }
-
-  # Calling s_summary.logical
-  results <- s_summary.logical(x)
-
-  lapply(results, formatters::with_label, row_label)
-}
-
-#' @inheritParams argument_convention
-#'
-#' @describeIn summarize_variables_in_columns `summary_in_cols` is a S3 generic
-#' function to produce an object description.
-#'
-#' @export
-#' @order 2
-summary_in_cols <- function(x,
-                            labelstr = "",
-                            custom_label = NULL) {
-  UseMethod("summary_in_cols", x)
-}
 
 #' @describeIn summarize_variables_in_columns Layout creating
 #' function which can be used for creating summary tables in columns, primarily used for PK data sets.
@@ -152,6 +18,10 @@ summary_in_cols <- function(x,
 #'
 #' @export
 #' @examples
+#' library(scda)
+#' library(dplyr)
+#' adpp <- synthetic_cdisc_dataset("latest", "adpp") %>% h_pkparam_sort()
+#'
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
@@ -182,7 +52,7 @@ summary_in_cols <- function(x,
 #' lyt <- basic_table() %>%
 #'   summarize_vars_in_cols(
 #'     vars = "AGE",
-#'     custom_label = "some custom label"
+#'     labelstr = "some custom label"
 #'   )
 #' result <- build_table(lyt, df = adpp)
 #' result
@@ -226,10 +96,12 @@ summarize_vars_in_cols <- function(lyt,
                                      cv = "CV (%)",
                                      geom_cv = "CV % Geometric Mean"
                                    ),
+                                   labelstr = " ",
                                    .formats = NULL,
                                    .indent_mods = NULL,
                                    na_str = NULL) {
   checkmate::assert_string(na_str, null.ok = TRUE)
+  checkmate::assert_string(labelstr)
 
   # Automatic assignment of formats
   if (is.null(.formats)) {
@@ -244,8 +116,8 @@ summarize_vars_in_cols <- function(lyt,
   afun_list <- Map(
     function(stat) {
       make_afun(
-        summary_in_cols,
-        .labels = " ",
+        s_summary,
+        .labels = labelstr,
         .stats = stat,
         .format_na_strs = na_str,
         .formats = formats_v[names(formats_v) == stat]

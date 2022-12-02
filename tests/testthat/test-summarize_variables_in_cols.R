@@ -3,8 +3,10 @@ adpp <- adpp_raw %>% h_pkparam_sort()
 testthat::test_that("summary_in_cols works with numeric input", {
   result <- summary_in_cols(adpp$AGE)
   expected_stats <- c(
-    "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei", "mean_sdi", "mean_pval", "median",
-    "mad", "median_ci", "quantiles", "iqr", "range", "min", "max", "cv", "geom_mean", "geom_mean_ci", "geom_cv"
+    "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci",
+    "mean_sei", "mean_sdi", "mean_pval", "median",
+    "mad", "median_ci", "quantiles", "iqr", "range", "min", "max",
+    "cv", "geom_mean", "geom_mean_ci", "geom_cv"
   )
   testthat::expect_identical(names(result), expected_stats)
 })
@@ -59,4 +61,15 @@ testthat::test_that("summarize_vars_in_cols throws error when vars and .stats le
     lyt %>%
       summarize_vars_in_cols(vars = c("AGE", "AGE"), .stats = c("n", "mean", "se"))
   )
+})
+testthat::test_that("custom labels can be set with labelstr", {
+  lbl <- "some custom label"
+  lyt <- basic_table() %>%
+    split_rows_by("SEX", child_labels = "hidden") %>%
+    summarize_vars_in_cols(
+      vars = "AGE",
+      labelstr = lbl
+    )
+  result <- build_table(lyt, df = adpp)
+  testthat::expect_equal(to_string_matrix(result)[, 1][-1], rep(lbl, 2))
 })
