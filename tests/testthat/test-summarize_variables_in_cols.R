@@ -37,7 +37,7 @@ testthat::test_that("summarize_vars_in_cols works correctly", {
 
   result <- build_table(lyt = lyt, df = adpp)
   result_matrix <- to_string_matrix(result)
-  expected <- matrix(
+  expected <- structure(
     c(
       "ARM", "  SEX", "A: Drug X", "F", " ", "M", " ", "B: Placebo", "F",
       " ", "M", " ", "C: Combination", "F", " ", "M", " ", "", "n", "", "",
@@ -46,7 +46,7 @@ testthat::test_that("summarize_vars_in_cols works correctly", {
       "35.2", "", "35.7", "", "SE", "", "", "0.1", "", "0.1", "", "", "NA",
       "", "NA", "", "", "0.1", "", "0.1"
     ),
-    ncol = 4
+    .Dim = c(17L, 4L)
   )
   testthat::expect_identical(result_matrix, expected)
 })
@@ -57,6 +57,6 @@ testthat::test_that("summarize_vars_in_cols throws error when vars and .stats le
     split_rows_by(var = "SEX", label_pos = "topleft")
   testthat::expect_error(
     lyt %>%
-    summarize_vars_in_cols(vars = c("AGE", "AGE"), .stats = c("n", "mean", "se"))
-    )
+      summarize_vars_in_cols(vars = c("AGE", "AGE"), .stats = c("n", "mean", "se"))
+  )
 })
