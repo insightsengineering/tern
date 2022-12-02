@@ -69,7 +69,7 @@ testthat::test_that("count_patients_with_event works as expected", {
     c(
       "", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=2)",
-      "1 (50%)", "0", "B", "(N=1)", "1 (100%)", "1 (100%)"
+      "1 (50.0%)", "0", "B", "(N=1)", "1 (100%)", "1 (100%)"
     ),
     .Dim = c(4L, 3L)
   )
@@ -117,7 +117,7 @@ testthat::test_that("count_patients_with_event works as expected for different c
     c(
       "", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=6)",
-      "1 (16.7%)", "0", "B", "(N=4)", "1 (25%)", "1 (25%)"
+      "1 (16.7%)", "0", "B", "(N=4)", "1 (25.0%)", "1 (25.0%)"
     ),
     .Dim = c(4L, 3L)
   )
@@ -204,7 +204,7 @@ testthat::test_that("count_patients_with_flags works as expected", {
     c(
       "", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=6)",
-      "1 (16.7%)", "0", "B", "(N=4)", "1 (25%)", "1 (25%)"
+      "1 (16.7%)", "0", "B", "(N=4)", "1 (25.0%)", "1 (25.0%)"
     ),
     .Dim = c(4L, 3L)
   )
@@ -262,8 +262,8 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
       "", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=6)", "1 (16.7%)",
-      "0", "1 (16.7%)", "0", "B", "(N=4)", "1 (25%)", "1 (25%)",
-      "1 (25%)", "1 (25%)"
+      "0", "1 (16.7%)", "0", "B", "(N=4)", "1 (25.0%)", "1 (25.0%)",
+      "1 (25.0%)", "1 (25.0%)"
     ),
     .Dim = c(6L, 3L)
   )
@@ -311,9 +311,9 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
     c(
       "", "A: Drug X", "B: Placebo", "C: Combination",
       "", "(N=134)", "(N=134)", "(N=132)",
-      "Total number of patients with at least one adverse event", "122 (91%)", "123 (91.8%)", "120 (90.9%)",
+      "Total number of patients with at least one adverse event", "122 (91.0%)", "123 (91.8%)", "120 (90.9%)",
       "Total number of patients with at least one", "", "", "",
-      "Serious AE", "104 (77.6%)", "101 (75.4%)", "99 (75%)",
+      "Serious AE", "104 (77.6%)", "101 (75.4%)", "99 (75.0%)",
       "Related AE", "105 (78.4%)", "108 (80.6%)", "109 (82.6%)",
       "Grade 3-5 AE", "109 (81.3%)", "104 (77.6%)", "109 (82.6%)",
       "Grade 4/5 AE", "91 (67.9%)", "90 (67.2%)", "93 (70.5%)"
