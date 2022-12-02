@@ -15,7 +15,7 @@ summarize_vars_in_cols(
   labelstr = " ",
   .formats = NULL,
   .indent_mods = NULL,
-  na_str = NULL
+  na_level = NULL
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ summarize_vars_in_cols(
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{na_str}{(\code{string})\cr used to replace all \code{NA} with custom \code{string}.}
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

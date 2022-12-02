@@ -107,7 +107,7 @@ can only be \code{n} (number of values in this row and column intersection).}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}

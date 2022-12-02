@@ -16,7 +16,7 @@
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
   grades are present in `s_count_occurrences_by_grade`.
-* Changed `summarize_variables_by_cols` to work with pagination machinery.
+* Changed `summarize_vars_in_cols` to work with pagination machinery.
 
 # tern 0.7.10
 
