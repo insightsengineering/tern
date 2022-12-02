@@ -14,7 +14,8 @@ testthat::test_that("PKCT01 is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "A: Drug X", "Plasma Drug X", " ", "Plasma Drug Y", " ",
+    c(
+      "", "A: Drug X", "Plasma Drug X", " ", "Plasma Drug Y", " ",
       "Urine Drug X", " ", "Urine Drug Y", " ", "C: Combination",
       "Plasma Drug X", " ", "Plasma Drug Y", " ", "Urine Drug X", " ",
       "Urine Drug Y", " ", "n", "", "", "1474", "", "0", "", "804", "",
