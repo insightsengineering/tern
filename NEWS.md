@@ -11,7 +11,7 @@
   `format_count_fraction_fixed_dp` with fixed single decimal place in percentages.
 * Removed `summary_in_cols` helper functions because redundant.
 * Added `na_level` and `labelstr` to `summarize_vars_in_cols`.
-* Added tests for complete ``pkct01` table.
+* Added tests for complete `pkct01` table.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
