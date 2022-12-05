@@ -171,7 +171,7 @@ h_glm_count <- function(.var,
   switch(distribution,
     poisson = h_glm_poisson(.var, .df_row, variables, weights),
     quasipoisson = h_glm_quasipoisson(.var, .df_row, variables, weights),
-    negbin = h_glm_negbin(.var, .df_row, variables, weights)
+    negbin = list() # h_glm_negbin(.var, .df_row, variables, weights) # nolint
   )
 }
 
