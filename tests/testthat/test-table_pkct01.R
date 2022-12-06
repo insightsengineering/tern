@@ -5,7 +5,10 @@ testthat::test_that("PKCT01 is produced correctly", {
   l <- basic_table() %>%
     split_rows_by(
       var = "ARM",
-      split_fun = keep_split_levels(c("A: Drug X", "C: Combination"))
+      split_fun = keep_split_levels(c(
+        "A: Drug X",
+        "C: Combination"
+      ))
     ) %>%
     split_rows_by(var = "PARAM") %>%
     summarize_vars_in_cols(vars = "AVAL")
