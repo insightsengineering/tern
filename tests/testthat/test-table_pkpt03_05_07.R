@@ -10,6 +10,11 @@ adpp_norm_dose <- adpp %>% dplyr::filter(
   )
 )
 
+# Helper function
+threesigfmt <- function(x, ...) {
+  as.character(signif(x, 3))
+}
+
 # Define template layout
 l <- basic_table() %>%
   split_rows_by(
@@ -24,8 +29,7 @@ l <- basic_table() %>%
     split_label = "PK Parameter"
   ) %>%
   summarize_vars_in_cols(
-    var = "AVAL",
-    col_split = TRUE,
+    vars = "AVAL",
     .stats = c(
       "n", "mean", "sd", "cv",
       "geom_mean", "geom_cv", "median",
@@ -44,14 +48,14 @@ l <- basic_table() %>%
     ),
     .formats = c(
       n = "xx.",
-      mean = sprintf_format("%.3e"),
-      sd = sprintf_format("%.3e"),
+      mean = threesigfmt,
+      sd = threesigfmt,
       cv = "xx.x",
-      median = sprintf_format("%.3e"),
-      geom_mean = sprintf_format("%.3e"),
+      median = threesigfmt,
+      geom_mean = threesigfmt,
       geom_cv = "xx.x",
-      min = sprintf_format("%.3e"),
-      max = sprintf_format("%.3e")
+      min = threesigfmt,
+      max = threesigfmt
     )
   )
 
@@ -67,23 +71,26 @@ testthat::test_that("PKPT03 Drug X is produced correctly", {
   subtitles(result) <- paste("Analyte:", unique(adpp0$PPCAT), "\nVisit:", unique(adpp0$AVISIT))
 
   result_matrix <- to_string_matrix(result)
-  expected_matrix <- c(
-    "Treatment Arm", "", "", "", "", "", "", "", "", "",
-    "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean",
-    "Median", "Minimum", "Maximum", "ARM A", "", "", "", "", "", "", "", "", "",
-    "AUCinf obs (day*ug/mL)", "134", "2.028e+02", "3.766e+01", "18.6", "1.994e+02", "18.7",
-    "1.971e+02", "1.253e+02", "3.110e+02", "CL obs (ml/day/kg)", "134", "5.043e+00",
-    "1.041e+00", "20.6", "4.929e+00", "22.4", "5.078e+00", "2.255e+00", "7.395e+00",
-    "Cmax (ug/mL)", "134", "3.025e+01", "6.239e+00", "20.6", "2.961e+01", "21.0",
-    "2.986e+01", "1.753e+01", "4.871e+01", "ARM C", "", "", "", "", "", "", "", "", "",
-    "AUCinf obs (day*ug/mL)", "132", "1.955e+02", "3.785e+01", "19.4", "1.917e+02",
-    "20.1", "1.962e+02", "1.030e+02", "3.145e+02", "CL obs (ml/day/kg)", "132",
-    "5.009e+00", "9.846e-01", "19.7", "4.907e+00", "21.1", "4.969e+00", "2.102e+00",
-    "7.489e+00", "Cmax (ug/mL)", "132", "3.004e+01", "5.457e+00", "18.2", "2.954e+01",
-    "18.9", "2.977e+01", "1.585e+01", "4.757e+01"
+  expected_matrix <- structure(
+    c(
+      "Treatment Arm", "  PK Parameter", "ARM A", "AUCinf obs (day*ug/mL)", " ",
+      "CL obs (ml/day/kg)", " ", "Cmax (ug/mL)", " ", "ARM C",
+      "AUCinf obs (day*ug/mL)", " ", "CL obs (ml/day/kg)", " ", "Cmax (ug/mL)",
+      " ", "", "n", "", "", "134", "", "134", "", "134", "", "", "132", "",
+      "132", "", "132", "", "Mean", "", "", "203", "", "5.04", "", "30.2", "",
+      "", "195", "", "5.01", "", "30", "", "SD", "", "", "37.7", "", "1.04", "",
+      "6.24", "", "", "37.8", "", "0.985", "", "5.46", "", "CV (%)", "", "",
+      "18.6", "", "20.6", "", "20.6", "", "", "19.4", "", "19.7", "", "18.2",
+      "", "Geometric Mean", "", "", "199", "", "4.93", "", "29.6", "", "",
+      "192", "", "4.91", "", "29.5", "", "CV % Geometric Mean", "", "", "18.7",
+      "", "22.4", "", "21.0", "", "", "20.1", "", "21.1", "", "18.9", "",
+      "Median", "", "", "197", "", "5.08", "", "29.9", "", "", "196", "",
+      "4.97", "", "29.8", "", "Minimum", "", "", "125", "", "2.25", "", "17.5",
+      "", "", "103", "", "2.1", "", "15.9", "", "Maximum", "", "", "311", "",
+      "7.39", "", "48.7", "", "", "315", "", "7.49", "", "47.6"
+    ),
+    .Dim = c(16L, 10L)
   )
-  expected_matrix <- matrix(expected_matrix, nrow = 10, ncol = 10, byrow = TRUE)
-
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
@@ -97,16 +104,20 @@ testthat::test_that("PKPT03 Drug Y is produced correctly", {
   main_title(result) <- paste("Summary of", unique(adpp1$PPSPEC), "PK Parameter by Treatment Arm, PK Population")
   subtitles(result) <- paste("Analyte:", unique(adpp1$PPCAT), "\nVisit:", unique(adpp1$AVISIT))
   result_matrix <- to_string_matrix(result)
-  expected_matrix <- c(
-    "Treatment Arm", "", "", "", "", "", "", "", "", "",
-    "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean",
-    "Median", "Minimum", "Maximum", "ARM C", "", "", "", "", "", "", "", "", "", "AUCinf obs (day*ug/mL)",
-    "132", "1.986e+02", "3.792e+01", "19.1", "1.952e+02", "18.9", "1.953e+02", "1.264e+02",
-    "3.183e+02", "CL obs (ml/day/kg)", "132", "4.955e+00", "8.951e-01", "18.1", "4.873e+00",
-    "18.7", "4.936e+00", "2.987e+00", "7.211e+00", "Cmax (ug/mL)", "132", "2.990e+01",
-    "5.550e+00", "18.6", "2.935e+01", "20.1", "2.969e+01", "1.406e+01", "4.345e+01"
+  expected_matrix <- structure(
+    c(
+      "Treatment Arm", "  PK Parameter", "ARM C", "AUCinf obs (day*ug/mL)", " ",
+      "CL obs (ml/day/kg)", " ", "Cmax (ug/mL)", " ", "", "n", "", "", "132", "",
+      "132", "", "132", "", "Mean", "", "", "199", "", "4.96", "", "29.9", "",
+      "SD", "", "", "37.9", "", "0.895", "", "5.55", "", "CV (%)", "", "",
+      "19.1", "", "18.1", "", "18.6", "", "Geometric Mean", "", "", "195", "",
+      "4.87", "", "29.4", "", "CV % Geometric Mean", "", "", "18.9", "", "18.7",
+      "", "20.1", "", "Median", "", "", "195", "", "4.94", "", "29.7", "",
+      "Minimum", "", "", "126", "", "2.99", "", "14.1", "", "Maximum", "", "",
+      "318", "", "7.21", "", "43.4"
+    ),
+    .Dim = c(9L, 10L)
   )
-  expected_matrix <- matrix(expected_matrix, nrow = 6, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
@@ -122,23 +133,31 @@ testthat::test_that("PKPT05 Drug X is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- c(
-    "Treatment Arm", "", "", "", "", "", "", "", "", "",
-    "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean", "Median",
-    "Minimum", "Maximum", "ARM A", "", "", "", "", "", "", "", "", "",
-    "Ae (mg)", "268", "1.551e+00", "3.385e-01", "21.8", "1.513e+00", "23.0", "1.547e+00", "7.021e-01", "2.464e+00",
-    "CLR (L/hr)", "134", "4.918e-02", "9.611e-03", "19.5", "4.818e-02", "21.0", "4.909e-02", "2.488e-02", "7.511e-02",
-    "Fe (%)", "268", "1.571e+01", "3.348e+00", "21.3", "1.534e+01", "22.2", "1.577e+01", "8.147e+00", "2.452e+01",
-    "RENALCLD (L/hr/mg)", "134", "4.873e-03", "9.654e-04", "19.8", "4.772e-03", "21.2", "4.967e-03",
-    "2.385e-03", "7.258e-03", "ARM C", "", "", "", "", "", "", "", "", "",
-    "Ae (mg)", "264", "1.535e+00", "2.978e-01", "19.4", "1.505e+00", "20.3", "1.547e+00", "8.502e-01", "2.208e+00",
-    "CLR (L/hr)", "132", "5.024e-02", "1.050e-02", "20.9", "4.913e-02", "21.9", "4.984e-02", "2.505e-02", "8.560e-02",
-    "Fe (%)", "264", "1.609e+01", "3.103e+00", "19.3", "1.578e+01", "20.2", "1.604e+01", "8.503e+00", "2.443e+01",
-    "RENALCLD (L/hr/mg)", "132", "5.110e-03", "9.339e-04", "18.3", "5.019e-03", "19.7", "5.151e-03", "2.356e-03",
-    "7.407e-03"
+  expected_matrix <- structure(
+    c(
+      "Treatment Arm", "  PK Parameter", "ARM A", "Ae (mg)", " ", "CLR (L/hr)",
+      " ", "Fe (%)", " ", "RENALCLD (L/hr/mg)", " ", "ARM C", "Ae (mg)", " ",
+      "CLR (L/hr)", " ", "Fe (%)", " ", "RENALCLD (L/hr/mg)", " ", "", "n", "",
+      "", "268", "", "134", "", "268", "", "134", "", "", "264", "", "132", "",
+      "264", "", "132", "", "Mean", "", "", "1.55", "", "0.0492", "", "15.7", "",
+      "0.00487", "", "", "1.54", "", "0.0502", "", "16.1", "", "0.00511", "",
+      "SD", "", "", "0.338", "", "0.00961", "", "3.35", "", "0.000965", "",
+      "", "0.298", "", "0.0105", "", "3.1", "", "0.000934", "", "CV (%)", "",
+      "", "21.8", "", "19.5", "", "21.3", "", "19.8", "", "", "19.4", "",
+      "20.9", "", "19.3", "", "18.3", "", "Geometric Mean", "", "", "1.51",
+      "", "0.0482", "", "15.3", "", "0.00477", "", "", "1.51", "", "0.0491",
+      "", "15.8", "", "0.00502", "", "CV % Geometric Mean", "", "", "23.0",
+      "", "21.0", "", "22.2", "", "21.2", "", "", "20.3", "", "21.9", "", "20.2",
+      "", "19.7", "", "Median", "", "", "1.55", "", "0.0491", "", "15.8", "",
+      "0.00497", "", "", "1.55", "", "0.0498", "", "16", "", "0.00515", "",
+      "Minimum", "", "", "0.702", "", "0.0249", "", "8.15", "", "0.00238", "",
+      "", "0.85", "", "0.0251", "", "8.5", "", "0.00236", "", "Maximum", "", "",
+      "2.46", "", "0.0751", "", "24.5", "", "0.00726", "", "", "2.21", "",
+      "0.0856", "", "24.4", "", "0.00741"
+    ),
+    .Dim = c(20L, 10L)
   )
 
-  expected_matrix <- matrix(expected_matrix, nrow = 12, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
@@ -155,19 +174,23 @@ testthat::test_that("PKPT05 Drug Y is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- c(
-    "Treatment Arm", "", "", "", "", "", "", "", "", "",
-    "  PK Parameter", "n", "Mean", "SD", "CV (%)",
-    "Geometric Mean", "CV % Geometric Mean", "Median",
-    "Minimum", "Maximum", "ARM C", "", "", "", "", "", "", "", "", "",
-    "Ae (mg)", "264", "1.598e+00", "3.154e-01", "19.7", "1.565e+00", "21.4", "1.603e+00", "8.574e-01", "2.257e+00",
-    "CLR (L/hr)", "132", "4.966e-02", "1.009e-02", "20.3", "4.857e-02", "22.0", "4.912e-02", "1.839e-02", "7.761e-02",
-    "Fe (%)", "264", "1.583e+01", "3.077e+00", "19.4", "1.552e+01", "20.2", "1.570e+01", "8.311e+00", "2.378e+01",
-    "RENALCLD (L/hr/mg)", "132", "5.093e-03", "1.032e-03", "20.3", "4.985e-03", "21.4", "5.017e-03", "2.356e-03",
-    "7.939e-03"
+  expected_matrix <- structure(
+    c(
+      "Treatment Arm", "  PK Parameter", "ARM C", "Ae (mg)", " ", "CLR (L/hr)",
+      " ", "Fe (%)", " ", "RENALCLD (L/hr/mg)", " ", "", "n", "", "", "264", "",
+      "132", "", "264", "", "132", "", "Mean", "", "", "1.6", "", "0.0497",
+      "", "15.8", "", "0.00509", "", "SD", "", "", "0.315", "", "0.0101", "",
+      "3.08", "", "0.00103", "", "CV (%)", "", "", "19.7", "", "20.3", "",
+      "19.4", "", "20.3", "", "Geometric Mean", "", "", "1.56", "", "0.0486",
+      "", "15.5", "", "0.00499", "", "CV % Geometric Mean", "", "", "21.4",
+      "", "22.0", "", "20.2", "", "21.4", "", "Median", "", "", "1.6", "",
+      "0.0491", "", "15.7", "", "0.00502", "", "Minimum", "", "", "0.857",
+      "", "0.0184", "", "8.31", "", "0.00236", "", "Maximum", "", "", "2.26",
+      "", "0.0776", "", "23.8", "", "0.00794"
+    ),
+    .Dim = c(11L, 10L)
   )
 
-  expected_matrix <- matrix(expected_matrix, nrow = 7, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
@@ -184,16 +207,20 @@ testthat::test_that("PKPT07 Drug X is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- c(
-    "Treatment Arm", "", "", "", "", "", "", "", "", "",
-    "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean", "CV % Geometric Mean",
-    "Median", "Minimum", "Maximum", "ARM A", "", "", "", "", "", "", "", "", "",
-    "RENALCLD (L/hr/mg)", "134", "4.873e-03", "9.654e-04", "19.8", "4.772e-03", "21.2", "4.967e-03", "2.385e-03",
-    "7.258e-03", "ARM C", "", "", "", "", "", "", "", "", "", "RENALCLD (L/hr/mg)", "132", "5.110e-03", "9.339e-04",
-    "18.3", "5.019e-03", "19.7", "5.151e-03", "2.356e-03", "7.407e-03"
+  expected_matrix <- structure(
+    c(
+      "Treatment Arm", "  PK Parameter", "ARM A", "RENALCLD (L/hr/mg)", " ",
+      "ARM C", "RENALCLD (L/hr/mg)", " ", "", "n", "", "", "134", "", "", "132",
+      "", "Mean", "", "", "0.00487", "", "", "0.00511", "", "SD", "", "",
+      "0.000965", "", "", "0.000934", "", "CV (%)", "", "", "19.8", "", "",
+      "18.3", "", "Geometric Mean", "", "", "0.00477", "", "", "0.00502", "",
+      "CV % Geometric Mean", "", "", "21.2", "", "", "19.7", "", "Median", "",
+      "", "0.00497", "", "", "0.00515", "", "Minimum", "", "", "0.00238", "",
+      "", "0.00236", "", "Maximum", "", "", "0.00726", "", "", "0.00741"
+    ),
+    .Dim = c(8L, 10L)
   )
 
-  expected_matrix <- matrix(expected_matrix, nrow = 6, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
@@ -210,14 +237,17 @@ testthat::test_that("PKPT07 Drug Y is produced correctly", {
 
   result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- c(
-    "Treatment Arm", "", "", "", "", "", "", "", "", "",
-    "  PK Parameter", "n", "Mean", "SD", "CV (%)", "Geometric Mean",
-    "CV % Geometric Mean", "Median", "Minimum", "Maximum", "ARM C",
-    "", "", "", "", "", "", "", "", "", "RENALCLD (L/hr/mg)", "132", "5.093e-03",
-    "1.032e-03", "20.3", "4.985e-03", "21.4", "5.017e-03", "2.356e-03", "7.939e-03"
+  expected_matrix <- structure(
+    c(
+      "Treatment Arm", "  PK Parameter", "ARM C", "RENALCLD (L/hr/mg)", " ",
+      "", "n", "", "", "132", "", "Mean", "", "", "0.00509", "", "SD", "", "",
+      "0.00103", "", "CV (%)", "", "", "20.3", "", "Geometric Mean", "", "",
+      "0.00499", "", "CV % Geometric Mean", "", "", "21.4", "", "Median", "",
+      "", "0.00502", "", "Minimum", "", "", "0.00236", "", "Maximum", "",
+      "", "0.00794"
+    ),
+    .Dim = c(5L, 10L)
   )
 
-  expected_matrix <- matrix(expected_matrix, nrow = 4, ncol = 10, byrow = TRUE)
   testthat::expect_identical(result_matrix, expected_matrix)
 })

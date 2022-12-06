@@ -2,15 +2,25 @@
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
-* Replaced `synthetic_cdisc_data` with refactored `synthetic_cdisc_dataset` function to speed up dataset loading in tests/examples.
+* Replaced `synthetic_cdisc_data` with refactored `synthetic_cdisc_dataset` function to speed up   dataset loading in tests/examples.
 * Updated all tests to use `rcd_2022_06_27` version of cached data.
 * Added more tests to increase code coverage.
 * Deprecated badge and warning for `wrap_txt` and its file.
 * Added legend to `g_step`.
-* Added formatting functions `format_fraction_fixed_dp` and `format_count_fraction_fixed_dp` with fixed single decimal place in percentages.
+* Added formatting functions `format_fraction_fixed_dp` and 
+  `format_count_fraction_fixed_dp` with fixed single decimal place in percentages.
+* Removed `summary_in_cols` helper functions because redundant.
+* Added `na_level` and `labelstr` to `summarize_vars_in_cols`.
+* Added tests for complete `pkct01` table.
 
 ### Bug Fixes
-* Fixed bug causing incorrect ordering of numeric grade levels when missing grades are present in `s_count_occurrences_by_grade`.
+* Fixed bug causing incorrect ordering of numeric grade levels when missing 
+  grades are present in `s_count_occurrences_by_grade`.
+* Changed `summarize_vars_in_cols` to work with pagination machinery.
+
+### Miscellaneous
+* Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
+  and `summarize_vars_in_cols.R`, respectively.
 
 # tern 0.7.10
 

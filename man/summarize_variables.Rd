@@ -137,7 +137,7 @@ this column across rows).}
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}

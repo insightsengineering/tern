@@ -29,7 +29,7 @@ records with all normal values will be excluded to avoid error in creating layou
 If method is \code{"range"}, the returned map will be based on the rule that at least one observation with low range > 0
 for low direction and at least one observation with high range is not missing for high direction.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -29,7 +29,7 @@ and the levels of interest for the final \code{SMQ} variable. This is useful whe
 there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
