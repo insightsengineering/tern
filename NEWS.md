@@ -18,6 +18,10 @@
   grades are present in `s_count_occurrences_by_grade`.
 * Changed `summarize_vars_in_cols` to work with pagination machinery.
 
+### Miscellaneous
+* Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
+  and `summarize_vars_in_cols.R`, respectively.
+
 # tern 0.7.10
 
 ### New Features

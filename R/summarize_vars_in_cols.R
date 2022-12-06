@@ -5,11 +5,11 @@
 #' This function can be used to produce summary tables for PK datasets where
 #' the relevant statistic is on the columns instead of on the rows.
 #'
-#' @name summarize_variables_in_columns
+#' @name summarize_vars_in_cols
 #'
 NULL
 
-#' @describeIn summarize_variables_in_columns Layout creating
+#' @describeIn summarize_vars_in_cols Layout creating
 #' function which can be used for creating summary tables in columns, primarily used for PK data sets.
 #'
 #' @inheritParams argument_convention
