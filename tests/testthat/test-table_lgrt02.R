@@ -38,10 +38,8 @@ testthat::test_that("LGRT02 without interaction term is produced correctly", {
     variables = list(response = "Response", arm = "ARMCD", covariates = c("SEX", "RACE", "AGE"))
   )
   conf_level <- 0.95
-  df <- broom::tidy(model, conf_level = conf_level)
-
-  # fix for update in Rtables tern#593
-  df <- replace_emptys_with_na(df, rep_str = "_")
+  df <- broom::tidy(model, conf_level = conf_level) %>%
+    df_explicit_na(na_level = "_")
 
   result <- basic_table() %>%
     summarize_logistic(
@@ -89,10 +87,8 @@ testthat::test_that("LGRT02 with categorical interaction is produced correctly",
     )
   )
   conf_level <- 0.95
-  df <- broom::tidy(model, conf_level = conf_level)
-
-  # fix for update in Rtables tern#593
-  df <- replace_emptys_with_na(df, rep_str = "_")
+  df <- broom::tidy(model, conf_level = conf_level) %>%
+    df_explicit_na(na_level = "_")
 
   result <- basic_table() %>%
     summarize_logistic(
@@ -142,10 +138,8 @@ testthat::test_that("LGRT02 with continuous interaction is produced correctly", 
     )
   )
   conf_level <- 0.95
-  df <- broom::tidy(model, conf_level = conf_level, at = c(18, 65))
-
-  # fix for update in Rtables tern#593
-  df <- replace_emptys_with_na(df, rep_str = "_")
+  df <- broom::tidy(model, conf_level = conf_level, at = c(18, 65)) %>%
+    df_explicit_na(na_level = "_")
 
   result <- basic_table() %>%
     summarize_logistic(
@@ -195,10 +189,8 @@ testthat::test_that("LGRT02 with setting values indicating an event and custom a
     response_definition = "1 - response"
   )
   conf_level <- 0.9
-  df <- broom::tidy(model, conf_level = conf_level)
-
-  # fix for update in Rtables tern#593
-  df <- replace_emptys_with_na(df, rep_str = "_")
+  df <- broom::tidy(model, conf_level = conf_level) %>%
+    df_explicit_na(na_level = "_")
 
   result <- basic_table() %>%
     summarize_logistic(

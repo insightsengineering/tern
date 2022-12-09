@@ -904,11 +904,10 @@ logistic_summary_by_flag <- function(flag_var) {
 #' @param drop_and_remove_str string to be dropped and removed
 #'
 #' @examples
-#' # Internal function - replace_emptys_with_na
 #' \dontrun{
 #' # flagging empty strings with "_"
-#' df <- replace_emptys_with_na(df, rep_str = "_")
-#' df2 <- replace_emptys_with_na(df2, rep_str = "_")
+#' df <- df_explicit_na(df, na_level = "_")
+#' df2 <- df_explicit_na(df2, na_level = "_")
 #'
 #' result1 <- basic_table() %>%
 #'   summarize_logistic(
