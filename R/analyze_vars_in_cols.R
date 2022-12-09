@@ -5,16 +5,17 @@
 #' This function can be used to produce summary tables for PK datasets where
 #' the relevant statistic is on the columns instead of on the rows.
 #'
-#' @name summarize_vars_in_cols
+#' @name analyze_vars_in_cols
 #'
 NULL
 
-#' @describeIn summarize_vars_in_cols Layout creating
+#' @describeIn analyze_vars_in_cols Layout creating
 #' function which can be used for creating summary tables in columns, primarily used for PK data sets.
 #'
 #' @inheritParams argument_convention
+#' @inheritParams rtables::analyze_colvars
 #'
-#' @seealso [summarize_vars].
+#' @seealso [summarize_vars], [rtables::analyze_colvars].
 #'
 #' @export
 #' @examples
@@ -25,7 +26,7 @@ NULL
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
-#'   summarize_vars_in_cols(vars = "AGE")
+#'   analyze_vars_in_cols(vars = "AGE")
 #' result <- build_table(lyt = lyt, df = adpp)
 #' result
 #'
@@ -33,7 +34,7 @@ NULL
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
-#'   summarize_vars_in_cols(
+#'   analyze_vars_in_cols(
 #'     vars = "AGE",
 #'     .stats = c("n", "cv", "geom_mean", "mean_ci", "median", "min", "max"),
 #'     .labels = c(
@@ -50,7 +51,7 @@ NULL
 #' result
 #'
 #' lyt <- basic_table() %>%
-#'   summarize_vars_in_cols(
+#'   analyze_vars_in_cols(
 #'     vars = "AGE",
 #'     labelstr = "some custom label"
 #'   )
@@ -60,7 +61,7 @@ NULL
 #' # PKPT03
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "TLG_DISPLAY", split_label = "PK Parameter", label_pos = "topleft") %>%
-#'   summarize_vars_in_cols(
+#'   analyze_vars_in_cols(
 #'     vars = "AVAL",
 #'     .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
 #'     .labels = c(
@@ -77,7 +78,7 @@ NULL
 #'   )
 #' result <- build_table(lyt, df = adpp)
 #' result
-summarize_vars_in_cols <- function(lyt,
+analyze_vars_in_cols <- function(lyt,
                                    vars,
                                    ...,
                                    .stats = c(
@@ -97,11 +98,12 @@ summarize_vars_in_cols <- function(lyt,
                                      geom_cv = "CV % Geometric Mean"
                                    ),
                                    labelstr = " ",
-                                   .formats = NULL,
-                                   .indent_mods = NULL,
-                                   na_level = NULL) {
+                                   nested = TRUE,
+                                   na_level = NULL,
+                                   .formats = NULL) {
   checkmate::assert_string(na_level, null.ok = TRUE)
   checkmate::assert_string(labelstr)
+  checkmate::assert_flag(nested)
 
   # Automatic assignment of formats
   if (is.null(.formats)) {
@@ -144,6 +146,7 @@ summarize_vars_in_cols <- function(lyt,
 
   analyze_colvars(lyt,
     afun = afun_list,
+    nested = nested,
     extra_args = list(...)
   )
 }
