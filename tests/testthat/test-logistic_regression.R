@@ -1022,17 +1022,15 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       interaction = "AGE"
     )
   )
-  df <- broom::tidy(mod1, conf_level = 0.99)
-
-  # fix for update in Rtables tern#593
-  df2 <- replace_emptys_with_na(df, rep_str = "_") # _ is the flag value
+  df <- broom::tidy(mod1, conf_level = 0.99) %>%
+    df_explicit_na(na_level = "_")
 
   result <- basic_table() %>%
     summarize_logistic(
       conf_level = 0.99,
       drop_and_remove_str = "_"
     ) %>%
-    build_table(df2)
+    build_table(df)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -1072,11 +1070,8 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       interaction = "SEX"
     )
   )
-
-  df <- broom::tidy(model, conf_level = 0.99)
-
-  # fix for update in Rtables tern#593
-  df <- replace_emptys_with_na(df, rep_str = "_")
+  df <- broom::tidy(model, conf_level = 0.99) %>%
+    df_explicit_na(na_level = "_")
 
   result <- basic_table() %>%
     summarize_logistic(
@@ -1119,10 +1114,8 @@ testthat::test_that("summarize_logistic works as expected for simple model witho
     adrs,
     variables = list(response = "Response", arm = "ARMCD", covariates = "AGE")
   )
-  df <- broom::tidy(mod1, conf_level = 0.99)
-
-  # fix for update in Rtables tern#593
-  df <- replace_emptys_with_na(df, rep_str = "_")
+  df <- broom::tidy(mod1, conf_level = 0.99) %>%
+    df_explicit_na(na_level = "_")
 
   result <- basic_table() %>%
     summarize_logistic(

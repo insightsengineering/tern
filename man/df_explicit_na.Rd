@@ -66,6 +66,4 @@ df_explicit_na(my_data, omit_columns = c("x", "y"))
 }
 \seealso{
 \code{\link[=sas_na]{sas_na()}} and \code{\link[=explicit_na]{explicit_na()}} for other missing data helper functions.
-
-\code{\link[=replace_emptys_with_na]{replace_emptys_with_na()}}
 }
