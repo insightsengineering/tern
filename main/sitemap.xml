@@ -64,6 +64,9 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/afun_selected_stats.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/analyze_vars_in_cols.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/append_varlabels.html</loc>
   </url>
   <url>
@@ -494,9 +497,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/summarize_variables.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/summarize_vars_in_cols.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/summary_formats.html</loc>
