@@ -79,28 +79,28 @@ NULL
 #' result <- build_table(lyt, df = adpp)
 #' result
 analyze_vars_in_cols <- function(lyt,
-                                   vars,
-                                   ...,
-                                   .stats = c(
-                                     "n",
-                                     "mean",
-                                     "sd",
-                                     "se",
-                                     "cv",
-                                     "geom_cv"
-                                   ),
-                                   .labels = c(
-                                     n = "n",
-                                     mean = "Mean",
-                                     sd = "SD",
-                                     se = "SE",
-                                     cv = "CV (%)",
-                                     geom_cv = "CV % Geometric Mean"
-                                   ),
-                                   labelstr = " ",
-                                   nested = TRUE,
-                                   na_level = NULL,
-                                   .formats = NULL) {
+                                 vars,
+                                 ...,
+                                 .stats = c(
+                                   "n",
+                                   "mean",
+                                   "sd",
+                                   "se",
+                                   "cv",
+                                   "geom_cv"
+                                 ),
+                                 .labels = c(
+                                   n = "n",
+                                   mean = "Mean",
+                                   sd = "SD",
+                                   se = "SE",
+                                   cv = "CV (%)",
+                                   geom_cv = "CV % Geometric Mean"
+                                 ),
+                                 labelstr = " ",
+                                 nested = TRUE,
+                                 na_level = NULL,
+                                 .formats = NULL) {
   checkmate::assert_string(na_level, null.ok = TRUE)
   checkmate::assert_string(labelstr)
   checkmate::assert_flag(nested)
