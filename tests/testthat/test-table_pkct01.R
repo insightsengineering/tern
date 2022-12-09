@@ -11,7 +11,7 @@ testthat::test_that("PKCT01 is produced correctly", {
       ))
     ) %>%
     split_rows_by(var = "PARAM") %>%
-    summarize_vars_in_cols(vars = "AVAL")
+    analyze_vars_in_cols(vars = "AVAL")
 
   result <- build_table(l, df = adpc)
 
@@ -43,7 +43,7 @@ testthat::test_that("PKCT01 is produced correctly", {
       split_fun = keep_split_levels(c("A: Drug X", "C: Combination"))
     ) %>%
     split_rows_by(var = "PARAM") %>%
-    summarize_vars_in_cols(
+    analyze_vars_in_cols(
       vars = "AVALC", var_type = "character", .stats = c("n_blq"),
       .labels = c(n_blq = "n_blq")
     )
@@ -102,7 +102,7 @@ testthat::test_that("Specific PKCT01 features are present", {
 
   # Column results for numeric values
   lyt <- l_rows %>%
-    summarize_vars_in_cols(
+    analyze_vars_in_cols(
       vars = c("AVAL", "AVALC", rep("AVAL", 8)),
       .stats = c(
         "n", "n_blq", "mean", "sd", "cv",

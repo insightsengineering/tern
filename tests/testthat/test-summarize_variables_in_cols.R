@@ -1,10 +1,10 @@
 adpp <- adpp_raw %>% h_pkparam_sort()
 
-testthat::test_that("summarize_vars_in_cols works correctly", {
+testthat::test_that("analyze_vars_in_cols works correctly", {
   lyt <- basic_table() %>%
     split_rows_by(var = "ARM", label_pos = "topleft") %>%
     split_rows_by(var = "SEX", label_pos = "topleft") %>%
-    summarize_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se"))
+    analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se"))
 
   result <- build_table(lyt = lyt, df = adpp)
   result_matrix <- to_string_matrix(result)
@@ -22,20 +22,20 @@ testthat::test_that("summarize_vars_in_cols works correctly", {
   testthat::expect_identical(result_matrix, expected)
 })
 
-testthat::test_that("summarize_vars_in_cols throws error when vars and .stats lengths differ in len", {
+testthat::test_that("analyze_vars_in_cols throws error when vars and .stats lengths differ in len", {
   lyt <- basic_table() %>%
     split_rows_by(var = "ARM", label_pos = "topleft") %>%
     split_rows_by(var = "SEX", label_pos = "topleft")
   testthat::expect_error(
     lyt %>%
-      summarize_vars_in_cols(vars = c("AGE", "AGE"), .stats = c("n", "mean", "se"))
+      analyze_vars_in_cols(vars = c("AGE", "AGE"), .stats = c("n", "mean", "se"))
   )
 })
 testthat::test_that("custom labels can be set with labelstr", {
   lbl <- "some custom label"
   lyt <- basic_table() %>%
     split_rows_by("SEX", child_labels = "hidden") %>%
-    summarize_vars_in_cols(
+    analyze_vars_in_cols(
       vars = "AGE",
       labelstr = lbl
     )
