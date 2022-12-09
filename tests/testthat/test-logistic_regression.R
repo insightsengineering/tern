@@ -1022,14 +1022,15 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       interaction = "AGE"
     )
   )
-  df <- broom::tidy(mod1, conf_level = 0.99)
+  df <- broom::tidy(mod1, conf_level = 0.99) %>%
+    df_explicit_na(na_level = "_")
 
   result <- basic_table() %>%
     summarize_logistic(
       conf_level = 0.99,
       drop_and_remove_str = "_"
     ) %>%
-    build_table(df2)
+    build_table(df)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
