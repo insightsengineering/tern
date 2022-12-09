@@ -1,4 +1,4 @@
-# tern 0.7.10.9017
+# tern 0.7.10.9018
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -21,6 +21,8 @@
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
   and `summarize_vars_in_cols.R`, respectively.
+* Renamed `summarize_vars_in_cols` into `analyze_vars_in_cols` to reflect the
+  appropriate `analyze` logic.
 
 # tern 0.7.10
 

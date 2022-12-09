@@ -28,7 +28,7 @@ l <- basic_table() %>%
     label_pos = "topleft",
     split_label = "PK Parameter"
   ) %>%
-  summarize_vars_in_cols(
+  analyze_vars_in_cols(
     vars = "AVAL",
     .stats = c(
       "n", "mean", "sd", "cv",
