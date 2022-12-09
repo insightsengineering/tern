@@ -930,7 +930,6 @@ logistic_summary_by_flag <- function(flag_var) {
 summarize_logistic <- function(lyt,
                                conf_level,
                                drop_and_remove_str = "") {
-
   # checks
   checkmate::assert_string(drop_and_remove_str)
 

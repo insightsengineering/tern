@@ -85,7 +85,6 @@ df_explicit_na <- function(data,
     }
 
     if (is.factor(xi) || is.character(xi)) {
-
       # Handle empty strings and NA values.
       xi <- explicit_na(sas_na(xi), label = na_level)
 
