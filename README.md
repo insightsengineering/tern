@@ -1,9 +1,23 @@
 # tern <a href='https://github.com/insightsengineering/tern'><img src="man/figures/tern.png" align="right" height="139" style="max-width: 100%;"/></a>
 
+<!-- start badges -->
 [![Check 🛠](https://github.com/insightsengineering/tern/actions/workflows/check.yaml/badge.svg)](https://github.com/insightsengineering/tern/actions/workflows/check.yaml)
 [![Docs 📚](https://github.com/insightsengineering/tern/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/tern/)
-[![Release 🎈](https://github.com/insightsengineering/tern/actions/workflows/release.yaml/badge.svg)](https://github.com/insightsengineering/tern/releases)
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/coverage.xml)
+
+![GitHub forks](https://img.shields.io/github/forks/insightsengineering/tern?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/tern?style=social)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/tern)
+![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/tern)
+![GitHub last commit](https://img.shields.io/github/last-commit/insightsengineering/tern)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/insightsengineering/tern)
+![GitHub repo size](https://img.shields.io/github/repo-size/insightsengineering/tern)
+![GitHub language count](https://img.shields.io/github/languages/count/insightsengineering/tern)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Current Version](https://img.shields.io/github/r-package/v/insightsengineering/tern/main?color=purple\&label=package%20version)](https://github.com/insightsengineering/tern/tree/main)
+[![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/tern?color=red\&label=open%20issues)](https://github.com/insightsengineering/tern/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+<!-- end badges -->
 
 The `tern` R package contains analysis functions to create tables and graphs used for clinical trial reporting.
 
