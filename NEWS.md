@@ -17,6 +17,7 @@
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
   grades are present in `s_count_occurrences_by_grade`.
 * Changed `summarize_vars_in_cols` to work with pagination machinery.
+* Fixed bug passing conf_level to `emmeans::contrast()` in `s_ancova` to make conf_level parameter works.
 
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
