@@ -203,4 +203,3 @@ testthat::test_that("summarize_ancova works with interaction", {
   testthat::expect_identical(result_matrix[7, 3], ci_a)
   testthat::expect_identical(result_matrix[7, 4], ci_b)
 })
-
