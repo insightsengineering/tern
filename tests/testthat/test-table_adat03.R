@@ -31,7 +31,8 @@ adat03_fmts <- c(
   count_fraction = format_count_fraction
 )
 
-afun_list <- lapply(1:9,
+afun_list <- lapply(
+  1:9,
   function(i) make_afun(s_summary, .stats = adat03_stats[i], .formats = adat03_fmts[i], .labels = "Overall")
 )
 
@@ -81,7 +82,7 @@ or Anti-Therapeutic Antibodies) ROXXXXXXX is also known as [drug]"
       "", "", "", "Maximum", "", "", "1.986e+01", "", "1.646e+01", "", "", "3.947e+01", "", "3.259e+01", "3.947e+01",
       "", "", "", "CV (%)", "", "", "89.4", "", "10.0", "", "", "84.3", "", "35.3", "77.7",
       "", "", "", "Geometric Mean", "", "", "NA", "", "1.338e+01", "", "", "NA", "", "1.891e+01", "NA",
-      "", "Samples with",  "Concentration", "≤ 15μg/mL {2}", "", "", "738 (78.7%)", "", "228 (85.1%)", "", "", "836 (52.8%)", "", "210 (39.8%)", "2012 (60.6%)"
+      "", "Samples with", "Concentration", "≤ 15μg/mL {2}", "", "", "738 (78.7%)", "", "228 (85.1%)", "", "", "836 (52.8%)", "", "210 (39.8%)", "2012 (60.6%)"
     ),
     .Dim = c(15L, 10L)
   )
