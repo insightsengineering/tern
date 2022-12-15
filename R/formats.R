@@ -161,6 +161,7 @@ format_count_fraction_fixed_dp <- function(x, ...) {
 #' @param str (`string`)\cr template.
 #'
 #' @return An `rtables` formatting function.
+#' @export
 #' @examples
 #' test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 #'
