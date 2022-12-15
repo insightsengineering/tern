@@ -23,6 +23,7 @@
   and `summarize_vars_in_cols.R`, respectively.
 * Renamed `summarize_vars_in_cols` into `analyze_vars_in_cols` to reflect the
   appropriate `analyze` logic.
+* Export function `format_xx`.
 
 # tern 0.7.10
 

@@ -10,7 +10,7 @@ format_xx(str)
 \item{str}{(\code{string})\cr template.}
 }
 \value{
-A \code{rtables} formatting function.
+An \code{rtables} formatting function.
 }
 \description{
 Translate a string where x and dots are interpreted as number place
@@ -19,8 +19,6 @@ holders, and others as formatting elements.
 \examples{
 test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 
-# Internal function - format_xx
-\dontrun{
 z <- format_xx("xx (xx.x)")
 sapply(test, z)
 
@@ -29,7 +27,5 @@ sapply(test, z)
 
 z <- format_xx("xx.x, incl. xx.x\% NE")
 sapply(test, z)
-}
 
 }
-\keyword{internal}
