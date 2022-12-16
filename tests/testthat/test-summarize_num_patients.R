@@ -305,9 +305,10 @@ testthat::test_that("analyze_num_patients works well for pagination", {
     split_cols_by("ARM") %>%
     analyze_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
     split_rows_by("AE",
-                  child_labels = "visible",
-                  nested = FALSE,
-                  split_fun = drop_split_levels) %>%
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
     count_occurrences(vars = "BY", .indent_mods = -1L) %>%
     build_table(df) %>%
