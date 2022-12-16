@@ -68,7 +68,7 @@ testthat::test_that("s_ancova works with healthy input", {
     n = 50L,
     lsmean = formatters::with_label(5.717409, "Adjusted Mean"),
     lsmean_diff = formatters::with_label(-0.4374138, "Difference in Adjusted Means"),
-    lsmean_diff_ci = formatters::with_label(c(-1.1865544, 0.3117267), "99% CI"),
+    lsmean_diff_ci = formatters::with_label(c(-1.4268150, 0.5519873), "99% CI"),
     pval = formatters::with_label(0.2503574, "p-value")
   )
 

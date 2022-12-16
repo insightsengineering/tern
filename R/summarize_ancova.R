@@ -182,7 +182,8 @@ s_ancova <- function(df,
       # Compare all arms versus the control arm.
       method = "trt.vs.ctrl",
       # Take the arm factor from .ref_group as the control arm.
-      ref = ref_key
+      ref = ref_key,
+      level = conf_level
     )
     sum_contrasts <- summary(
       emmeans_contrasts,
