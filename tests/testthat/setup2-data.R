@@ -1,5 +1,6 @@
 # Data loading for tests
 adsl_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adsl")
+adab_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adab")
 adae_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adae")
 adaette_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adaette")
 adpp_raw <- scda::synthetic_cdisc_dataset("rcd_2022_06_27", "adpp")

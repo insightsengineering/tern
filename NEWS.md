@@ -1,4 +1,4 @@
-# tern 0.7.10.9021
+# tern 0.7.10.9022
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -11,7 +11,7 @@
   `format_count_fraction_fixed_dp` with fixed single decimal place in percentages.
 * Removed `summary_in_cols` helper functions because redundant.
 * Added `na_level` and `labelstr` to `summarize_vars_in_cols`.
-* Added tests for complete `pkct01` table.
+* Added tests for `pkct01` and `adat03`.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
