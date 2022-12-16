@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9021</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9022</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,15 +33,6 @@
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -63,9 +54,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.7.10.9021" id="tern-07109021">tern 0.7.10.9021<a class="anchor" aria-label="anchor" href="#tern-07109021"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.7.10.9022" id="tern-07109022">tern 0.7.10.9022<a class="anchor" aria-label="anchor" href="#tern-07109022"></a></h2>
 <div class="section level4">
-<h4 id="enhancements-0-7-10-9021">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-10-9021"></a></h4>
+<h4 id="enhancements-0-7-10-9022">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-10-9022"></a></h4>
 <ul><li>Added <code>summarize_glm_count</code> function to tern.</li>
 <li>Replaced <code>synthetic_cdisc_data</code> with refactored <code>synthetic_cdisc_dataset</code> function to speed up dataset loading in tests/examples.</li>
 <li>Updated all tests to use <code>rcd_2022_06_27</code> version of cached data.</li>
@@ -78,15 +69,16 @@
 <li>Added tests for <code>pkct01</code> and <code>adat03</code>.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-0-7-10-9021">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-7-10-9021"></a></h4>
+<h4 id="bug-fixes-0-7-10-9022">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-7-10-9022"></a></h4>
 <ul><li>Fixed bug causing incorrect ordering of numeric grade levels when missing grades are present in <code>s_count_occurrences_by_grade</code>.</li>
 <li>Changed <code>summarize_vars_in_cols</code> to work with pagination machinery.</li>
 <li>Fixed bug passing <code>conf_level</code> to <code><a href="https://rdrr.io/pkg/emmeans/man/contrast.html" class="external-link">emmeans::contrast()</a></code> in <code>s_ancova</code> to make it works. Tests are also updated.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-7-10-9021">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-10-9021"></a></h4>
+<h4 id="miscellaneous-0-7-10-9022">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-7-10-9022"></a></h4>
 <ul><li>Renamed <code>test_pkc01.R</code> and <code>summarize_variables_in_cols.R</code> into <code>test_pkct01.R</code> and <code>summarize_vars_in_cols.R</code>, respectively.</li>
 <li>Renamed <code>summarize_vars_in_cols</code> into <code>analyze_vars_in_cols</code> to reflect the appropriate <code>analyze</code> logic.</li>
+<li>Export function <code>format_xx</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
