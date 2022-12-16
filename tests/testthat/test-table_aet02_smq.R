@@ -19,8 +19,8 @@ testthat::test_that("AET02SMQ variant 1 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event"
@@ -81,8 +81,8 @@ testthat::test_that("AET02SMQ variant 2 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event"

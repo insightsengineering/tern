@@ -4,6 +4,7 @@
 \alias{summarize_num_patients}
 \alias{s_num_patients}
 \alias{s_num_patients_content}
+\alias{analyze_num_patients}
 \title{Number of patients}
 \usage{
 s_num_patients(x, labelstr, .N_col, count_by = NULL)
@@ -23,6 +24,17 @@ summarize_num_patients(
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
+  ...
+)
+
+analyze_num_patients(
+  lyt,
+  vars,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  show_labels = c("default", "visible", "hidden"),
+  indent_mod = 0L,
   ...
 )
 }
@@ -54,6 +66,15 @@ by a statistics function.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{indent_mod}{(\code{count}) \cr it can be negative. Modifier for the default indent position for the
+structure created by this function(subtable, content table, or row) and
+all of that structure's children. Defaults to 0, which corresponds to the
+unmodified default behavior.}
 }
 \value{
 A list with:
@@ -67,6 +88,14 @@ A list with:
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Count the number of unique and non-unique patients in a column (variable).
+}
+\details{
+In general, functions that starts with \verb{analyze*} are expected to
+work like \code{\link[rtables:analyze]{rtables::analyze()}}, while functions that starts with \verb{summarize*}
+are based upon \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}. The latter provides a
+value for each dividing split in the row and column space, but, being it
+bound to the fundamental splits, it is repeated by design in every page
+when pagination is involved.
 }
 \section{Functions}{
 \itemize{
@@ -82,6 +111,11 @@ and \code{labelstr} in \code{cfun} of \code{\link[=summarize_row_groups]{summari
 
 \item \code{summarize_num_patients()}: Layout creating function which adds content rows using the statistics
 function \code{\link[=s_num_patients_content]{s_num_patients_content()}} and desired format.
+
+\item \code{analyze_num_patients()}: Identically to \code{\link[=summarize_num_patients]{summarize_num_patients()}},
+This function creates a layout which adds content rows using the statistics
+function \code{\link[=s_num_patients_content]{s_num_patients_content()}} and desired format. Differently from its
+counterpart, this function does not impose the produced rows to be repeated.
 
 }}
 \examples{
@@ -106,4 +140,16 @@ df_by_event <- data.frame(
 )
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
+df_tmp <- data.frame(
+  USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
+  ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
+  AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17)
+)
+tbl <- basic_table() \%>\%
+  split_cols_by("ARM") \%>\%
+  add_colcounts() \%>\%
+  analyze_num_patients("USUBJID", .stats = c("unique")) \%>\%
+  build_table(df_tmp)
+
+
 }
