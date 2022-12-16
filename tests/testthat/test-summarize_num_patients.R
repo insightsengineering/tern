@@ -331,16 +331,26 @@ testthat::test_that("analyze_num_patients works well for pagination", {
   expected_matrix <- structure(
     c(
       "", "", "Number of patients with at least one event", "Number of events",
-      "e 1.1", "Number of patients with at least one event", "Number of events",
-      "11", "17", "19", "15", "f 1.1", "Number of patients with at least one event",
-      "Number of events", "11", "10", "17", "A", "(N=5)", "3 (60%)", "4", "",
-      "2 (40%)", "2", "1 (20.0%)", "0", "0", "1 (20.0%)", "", "2 (40%)", "2",
-      "0", "1 (20.0%)", "1 (20.0%)", "B", "(N=4)", "3 (75%)", "4", "", "3 (75%)",
-      "3", "1 (25.0%)", "1 (25.0%)", "1 (25.0%)", "0", "", "1 (25%)", "1",
-      "1 (25.0%)", "0", "0"
+      "f 1.1", "Number of patients with at least one event", "Number of events",
+      "11", "19", "10", "15", "17", "e 1.1", "Number of patients with at least one event",
+      "Number of events", "17", "A", "(N=5)", "3 (60%)", "4", "", "3 (60%)",
+      "4", "1 (20.0%)", "0", "1 (20.0%)", "1 (20.0%)", "1 (20.0%)", "", "0", "0",
+      "0", "B", "(N=4)", "3 (75%)", "4", "", "2 (50%)", "3", "1 (25.0%)", "1 (25.0%)",
+      "0", "0", "0", "", "1 (25%)", "1", "1 (25.0%)"
     ),
-    .Dim = c(17L, 3L)
+    .Dim = c(16L, 3L)
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
+
+  # Pagination tests (no repetition of the first lines)
+  pag_result <- paginate_table(result, lpp = 10)
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[1]])[3:4, 1],
+    c(
+      "Number of patients with at least one event",
+      "Number of events"
+    )
+  )
+  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "e 1.1")
 })
