@@ -4,7 +4,6 @@ adsl <- adsl_raw
 adae <- adae_raw
 
 testthat::test_that("AET02 variant 1 is produced correctly", {
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -154,8 +153,10 @@ testthat::test_that("AET02 variant 1 is produced correctly", {
 
   # Testing pagination with not repeated Total number of patients
   pag_result <- paginate_table(result, lpp = 20)
-  testthat::expect_identical(to_string_matrix(pag_result[[1]])[3, 1],
-                             "Total number of patients with at least one adverse event")
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[1]])[3, 1],
+    "Total number of patients with at least one adverse event"
+  )
   testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "cl D.2")
 })
 
