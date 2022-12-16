@@ -114,8 +114,8 @@ testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug"
@@ -125,7 +125,6 @@ testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
       "SMQ",
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L,
       split_fun = drop_split_levels
     ) %>%
     summarize_num_patients(
