@@ -4,12 +4,13 @@ adsl <- adsl_raw
 adae <- adae_raw
 
 testthat::test_that("AET02 variant 1 is produced correctly", {
+
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
     add_overall_col(label = "All Patients") %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
@@ -20,7 +21,6 @@ testthat::test_that("AET02 variant 1 is produced correctly", {
       "AEBODSYS",
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L,
       split_fun = drop_split_levels
     ) %>%
     summarize_num_patients(
@@ -151,6 +151,12 @@ testthat::test_that("AET02 variant 1 is produced correctly", {
     .Dim = c(35L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
+
+  # Testing pagination with not repeated Total number of patients
+  pag_result <- paginate_table(result, lpp = 20)
+  testthat::expect_identical(to_string_matrix(pag_result[[1]])[3, 1],
+                             "Total number of patients with at least one adverse event")
+  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "cl D.2")
 })
 
 testthat::test_that("AET02 variant 2 is produced correctly", {
@@ -158,8 +164,8 @@ testthat::test_that("AET02 variant 2 is produced correctly", {
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
     add_overall_col(label = "All Patients") %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
@@ -384,8 +390,8 @@ testthat::test_that("AET02 variant 3 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
@@ -692,13 +698,15 @@ testthat::test_that("AET02 variant 4 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
-      )
+      ),
+      show_labels = "hidden",
+      indent_mod = -1L
     ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
@@ -751,8 +759,8 @@ testthat::test_that("AET02 variant 5 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
@@ -763,7 +771,8 @@ testthat::test_that("AET02 variant 5 is produced correctly", {
       "AEBODSYS",
       child_labels = "visible",
       nested = FALSE,
-      split_fun = drop_split_levels
+      split_fun = drop_split_levels,
+      indent_mod = 1L
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
