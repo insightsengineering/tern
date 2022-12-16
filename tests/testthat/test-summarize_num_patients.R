@@ -289,3 +289,58 @@ testthat::test_that("summarize_num_patients with count_by different
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
+
+testthat::test_that("analyze_num_patients works well for pagination", {
+  df <- data.frame(
+    USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
+    ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
+    BY = as.character(c(10, 15, 11, 17, 8, 11, 11, 19, 17)),
+    AE = paste0(sample(letters[5:6], 9, TRUE), " 1.1")
+  )
+
+  # Check a standard
+  result <- basic_table(show_colcounts = TRUE) %>%
+    # add_overall_col(label = "A+B") %>% # why this does not work
+    split_cols_by("ARM") %>%
+    analyze_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
+    split_rows_by("AE",
+                  child_labels = "visible",
+                  nested = FALSE,
+                  split_fun = drop_split_levels) %>%
+    summarize_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
+    count_occurrences(vars = "BY", .indent_mods = -1L) %>%
+    build_table(df) %>%
+    prune_table()
+
+  # Helper function # TO MODIFY the original
+  my_score_occurencies <- function(col_indices = NULL) {
+    function(tt) {
+      if (is.null(col_indices)) col_indices <- seq_len(ncol(tt))
+      row_counts <- h_row_counts(tt, col_indices = col_indices)
+      sum(row_counts)
+    }
+  }
+
+  # Sorting
+  result <- result %>%
+    sort_at_path(path = "AE", cont_n_onecol(2)) %>%
+    sort_at_path(path = c("AE", "*", "BY"), my_score_occurencies(2))
+
+  # Final result
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "Number of patients with at least one event", "Number of events",
+      "e 1.1", "Number of patients with at least one event", "Number of events",
+      "11", "17", "19", "15", "f 1.1", "Number of patients with at least one event",
+      "Number of events", "11", "10", "17", "A", "(N=5)", "3 (60%)", "4", "",
+      "2 (40%)", "2", "1 (20.0%)", "0", "0", "1 (20.0%)", "", "2 (40%)", "2",
+      "0", "1 (20.0%)", "1 (20.0%)", "B", "(N=4)", "3 (75%)", "4", "", "3 (75%)",
+      "3", "1 (25.0%)", "1 (25.0%)", "1 (25.0%)", "0", "", "1 (25%)", "1",
+      "1 (25.0%)", "0", "0"
+    ),
+    .Dim = c(17L, 3L)
+  )
+
+  testthat::expect_identical(result_matrix, expected_matrix)
+})
