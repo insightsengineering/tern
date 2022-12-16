@@ -17,7 +17,7 @@ testthat::test_that("AET03 variant 1 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
-    summarize_occurrences_by_grade(
+    summarize_occurrences_by_grade( # to fix
       var = "ASEV",
       grade_groups = gr_grp
     ) %>%
