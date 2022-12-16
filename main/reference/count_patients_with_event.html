@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9019</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9020</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,15 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -233,14 +224,14 @@ of unique identifiers with a particular type of event, e.g. the number and the f
 had treatment-emergent adverse events. Note that the user can define a new data column containing
 the event of interest.</p></li>
 <li><p><code>a_count_patients_with_event()</code>: Formatted Analysis function which can be further
-customized by calling <code><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+customized by calling <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 <li><p><code>count_patients_with_event()</code>: Analyze Function which adds the count statistics
 to the input layout. Note that additional formatting arguments can be used here.</p></li>
 <li><p><code>s_count_patients_with_flags()</code>: Statistics function that returns the number and the fraction
 of unique identifiers with each particular flag. Returns a list of totals, counts, counts and
 fractions with one element per flag.</p></li>
 <li><p><code>a_count_patients_with_flags()</code>: Formatted Analysis function which can be further customized by calling
-<code><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+<code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 <li><p><code>count_patients_with_flags()</code>: Analyze Function which is a modified version of <code>count_patients_with_event()</code>.
 Adds the count statistics to the input layout for multiple flag variables at once.</p></li>
 </ul></div>
@@ -325,9 +316,9 @@ Adds the count statistics to the input layout for multiple flag variables at onc
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `count_patients_with_event()`</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="count_values_funs.html">count_values</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"STUDYID"</span>,</span></span>
 <span class="r-in"><span>    values <span class="op">=</span> <span class="st">"AB12345"</span>,</span></span>
@@ -353,7 +344,7 @@ Adds the count statistics to the input layout for multiple flag variables at onc
 <span class="r-in"><span>    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>count_fraction <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    table_names <span class="op">=</span> <span class="st">"tbl_rel_fatal"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, <span class="va">adae</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, <span class="va">adae</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                            A: Drug X    B: Placebo   C: Combination</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                             (N=134)      (N=134)        (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————————</span>
@@ -448,7 +439,7 @@ Adds the count statistics to the input layout for multiple flag variables at onc
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `a_count_patients_with_flags()`</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span><span class="va">a_count_patients_with_flags</span>,</span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span><span class="va">a_count_patients_with_flags</span>,</span></span>
 <span class="r-in"><span>  .stats <span class="op">=</span> <span class="st">"count_fraction"</span>,</span></span>
 <span class="r-in"><span>  .ungroup_stats <span class="op">=</span> <span class="st">"count_fraction"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -469,15 +460,15 @@ Adds the count statistics to the input layout for multiple flag variables at onc
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `count_patients_with_flags()`</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">lyt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">lyt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">count_patients_with_flags</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"SUBJID"</span>,</span></span>
 <span class="r-in"><span>    flag_variables <span class="op">=</span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adae</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fl1"</span>, <span class="st">"fl2"</span>, <span class="st">"fl3"</span>, <span class="st">"fl4"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    denom <span class="op">=</span> <span class="st">"N_col"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt2</span>, <span class="va">adae</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt2</span>, <span class="va">adae</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                             A: Drug X    B: Placebo    C: Combination</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                              (N=134)       (N=134)        (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————</span>
