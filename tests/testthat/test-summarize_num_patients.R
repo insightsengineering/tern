@@ -291,6 +291,7 @@ testthat::test_that("summarize_num_patients with count_by different
 })
 
 testthat::test_that("analyze_num_patients works well for pagination", {
+  set.seed(1)
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
     ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
@@ -331,12 +332,12 @@ testthat::test_that("analyze_num_patients works well for pagination", {
   expected_matrix <- structure(
     c(
       "", "", "Number of patients with at least one event", "Number of events",
-      "f 1.1", "Number of patients with at least one event", "Number of events",
-      "11", "19", "10", "15", "17", "e 1.1", "Number of patients with at least one event",
-      "Number of events", "17", "A", "(N=5)", "3 (60%)", "4", "", "3 (60%)",
-      "4", "1 (20.0%)", "0", "1 (20.0%)", "1 (20.0%)", "1 (20.0%)", "", "0", "0",
-      "0", "B", "(N=4)", "3 (75%)", "4", "", "2 (50%)", "3", "1 (25.0%)", "1 (25.0%)",
-      "0", "0", "0", "", "1 (25%)", "1", "1 (25.0%)"
+      "e 1.1", "Number of patients with at least one event", "Number of events",
+      "11", "19", "10", "17", "f 1.1", "Number of patients with at least one event",
+      "Number of events", "17", "15", "A", "(N=5)", "3 (60%)", "4", "", "2 (40%)",
+      "3", "1 (20.0%)", "0", "1 (20.0%)", "1 (20.0%)", "", "1 (20%)", "1", "0",
+      "1 (20.0%)", "B", "(N=4)", "3 (75%)", "4", "", "2 (50%)", "3", "1 (25.0%)",
+      "1 (25.0%)", "0", "0", "", "1 (25%)", "1", "1 (25.0%)", "0"
     ),
     .Dim = c(16L, 3L)
   )
