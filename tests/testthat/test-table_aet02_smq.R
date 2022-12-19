@@ -30,7 +30,6 @@ testthat::test_that("AET02SMQ variant 1 is produced correctly", {
       "AE_GRP",
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L,
       split_fun = drop_split_levels
     ) %>%
     summarize_num_patients(
@@ -92,7 +91,6 @@ testthat::test_that("AET02SMQ variant 2 is produced correctly", {
       "AE_GRP",
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L,
       split_fun = drop_split_levels
     ) %>%
     summarize_num_patients(

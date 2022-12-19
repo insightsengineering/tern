@@ -177,7 +177,6 @@ testthat::test_that("AET02 variant 2 is produced correctly", {
       "AEBODSYS",
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L,
       split_fun = drop_split_levels
     ) %>%
     summarize_num_patients(
@@ -772,8 +771,7 @@ testthat::test_that("AET02 variant 5 is produced correctly", {
       "AEBODSYS",
       child_labels = "visible",
       nested = FALSE,
-      split_fun = drop_split_levels,
-      indent_mod = 1L
+      split_fun = drop_split_levels
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
