@@ -215,7 +215,6 @@ testthat::test_that("AET09 variant 2 is produced correctly, AE related to study 
     ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
-
   result <- build_table(lyt, adae_r, alt_counts_df = adsl) %>%
     prune_table()
 
@@ -223,8 +222,6 @@ testthat::test_that("AET09 variant 2 is produced correctly, AE related to study 
     sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences)
-
-
 
   result_matrix <- to_string_matrix(result)
 
