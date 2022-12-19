@@ -1,4 +1,4 @@
-# tern 0.7.10.9020
+# tern 0.7.10.9023
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -11,18 +11,20 @@
   `format_count_fraction_fixed_dp` with fixed single decimal place in percentages.
 * Removed `summary_in_cols` helper functions because redundant.
 * Added `na_level` and `labelstr` to `summarize_vars_in_cols`.
-* Added tests for complete `pkct01` table.
+* Added tests for `pkct01` and `adat03`.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
   grades are present in `s_count_occurrences_by_grade`.
 * Changed `summarize_vars_in_cols` to work with pagination machinery.
+* Fixed bug passing `conf_level` to `emmeans::contrast()` in `s_ancova` to make it works. Tests are also updated. 
 
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
   and `summarize_vars_in_cols.R`, respectively.
 * Renamed `summarize_vars_in_cols` into `analyze_vars_in_cols` to reflect the
   appropriate `analyze` logic.
+* Export function `format_xx`.
 
 # tern 0.7.10
 

@@ -168,7 +168,6 @@ summarize_num_patients <- function(lyt,
 #'   analyze_num_patients("USUBJID", .stats = c("unique")) %>%
 #'   build_table(df_tmp)
 #'
-#'
 #' @export
 analyze_num_patients <- function(lyt,
                                  vars,

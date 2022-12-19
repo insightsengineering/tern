@@ -160,12 +160,11 @@ format_count_fraction_fixed_dp <- function(x, ...) {
 #'
 #' @param str (`string`)\cr template.
 #'
-#' @return A `rtables` formatting function.
+#' @return An `rtables` formatting function.
+#' @export
 #' @examples
 #' test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 #'
-#' # Internal function - format_xx
-#' \dontrun{
 #' z <- format_xx("xx (xx.x)")
 #' sapply(test, z)
 #'
@@ -174,9 +173,7 @@ format_count_fraction_fixed_dp <- function(x, ...) {
 #'
 #' z <- format_xx("xx.x, incl. xx.x% NE")
 #' sapply(test, z)
-#' }
 #'
-#' @keywords internal
 format_xx <- function(str) {
   # Find position in the string.
   positions <- gregexpr(pattern = "x+\\.x+|x+", text = str, perl = TRUE)
