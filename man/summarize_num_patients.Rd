@@ -151,5 +151,4 @@ tbl <- basic_table() \%>\%
   analyze_num_patients("USUBJID", .stats = c("unique")) \%>\%
   build_table(df_tmp)
 
-
 }
