@@ -68,6 +68,52 @@ testthat::test_that("to_string_matrix works correctly", {
     "    mean                      39.75       44.67          36.75     "
   )
   testthat::expect_identical(result, expected)
+
+  # Testing print_txt_to_copy with original table
+  print_result <- capture.output(
+    nowhere <- to_string_matrix(tbl, with_spaces = FALSE, print_txt_to_copy = TRUE)
+  )
+  print_expected <- c(
+    'c(',
+    '  "", "A: Drug X", "B: Placebo", "C: Combination",',
+    '  "ASIAN", "", "", "",',
+    '  "A", "", "", "",',
+    '  "mean", "32.19", "33.90", "36.81",', '  "B", "", "", "",', '  "mean", "34.12", "31.62", "34.73",', '  "C", "", "", "",', '  "mean", "36.21", "33.00", "32.39",', '  "BLACK OR AFRICAN AMERICAN", "", "", "",', '  "A", "", "", "",', '  "mean", "31.50", "28.57", "33.62",', '  "B", "", "", "",', '  "mean", "35.60", "30.83", "33.67",', '  "C", "", "", "",', '  "mean", "35.50", "34.18", "35.00",', '  "WHITE", "", "", "",', '  "A", "", "", "",', '  "mean", "37.67", "31.33", "33.17",', '  "B", "", "", "",', '  "mean", "39.86", "39.00", "34.75",', '  "C", "", "", "",', '  "mean", "39.75", "44.67", "36.75"', ')'
+  )
+  testthat::expect_identical(print_result, print_expected)
+
+  # Testing print_txt_to_copy with spaces
+  print_result <- capture.output(
+    nowhere <- to_string_matrix(tbl, with_spaces = TRUE, print_txt_to_copy = TRUE)
+  )
+  print_expected <- c(
+    'c(',
+    '  "                            A: Drug X   B: Placebo   C: Combination",',
+    '  "———————————————————————————————————————————————————————————————————",',
+    '  "ASIAN                                                              ",',
+    '  "  A                                                                ",',
+    '  "    mean                      32.19       33.90          36.81     ",',
+    '  "  B                                                                ",',
+    '  "    mean                      34.12       31.62          34.73     ",',
+    '  "  C                                                                ",',
+    '  "    mean                      36.21       33.00          32.39     ",',
+    '  "BLACK OR AFRICAN AMERICAN                                          ",',
+    '  "  A                                                                ",',
+    '  "    mean                      31.50       28.57          33.62     ",',
+    '  "  B                                                                ",',
+    '  "    mean                      35.60       30.83          33.67     ",',
+    '  "  C                                                                ",',
+    '  "    mean                      35.50       34.18          35.00     ",',
+    '  "WHITE                                                              ",',
+    '  "  A                                                                ",',
+    '  "    mean                      37.67       31.33          33.17     ",',
+    '  "  B                                                                ",',
+    '  "    mean                      39.86       39.00          34.75     ",',
+    '  "  C                                                                ",',
+    '  "    mean                      39.75       44.67          36.75     "',
+    ')'
+  )
+  testthat::expect_identical(print_result, print_expected)
 })
 
 testthat::test_that("unlist_and_blank_na works as expected if not all missing", {
