@@ -7,7 +7,7 @@ testthat::test_that("CMT01 default variant (Concomitant medications) is produced
   result <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
@@ -17,7 +17,8 @@ testthat::test_that("CMT01 default variant (Concomitant medications) is produced
     ) %>%
     split_rows_by("CMCLAS",
       split_fun = drop_split_levels, child_labels = "visible",
-      nested = FALSE
+      nested = FALSE,
+      indent_mod = 1L
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
@@ -70,7 +71,7 @@ testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly",
   result <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
@@ -80,7 +81,8 @@ testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly",
     ) %>%
     split_rows_by("CMCLAS",
       split_fun = drop_split_levels, child_labels = "visible",
-      nested = FALSE
+      nested = FALSE,
+      indent_mod = 1L
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
@@ -127,7 +129,7 @@ testthat::test_that("CMT01 variant 3 (Concomitant medications) is produced corre
   result <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
@@ -137,7 +139,8 @@ testthat::test_that("CMT01 variant 3 (Concomitant medications) is produced corre
     ) %>%
     split_rows_by("CMCLAS",
       split_fun = drop_split_levels, child_labels = "visible",
-      nested = FALSE
+      nested = FALSE,
+      indent_mod = 1L
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
@@ -183,12 +186,15 @@ testthat::test_that("CMT01 variant 4 (Concomitant medications) is produced corre
   result <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
     ) %>%
-    split_rows_by("CMCLAS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
+    split_rows_by("CMCLAS", split_fun = drop_split_levels,
+                  child_labels = "visible",
+                  indent_mod = 1L,
+                  nested = FALSE) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),

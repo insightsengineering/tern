@@ -34,6 +34,10 @@
 #'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
 #' @param id (`string`) \cr subject variable name.
 #' @param is_event (`logical`)\cr `TRUE` if event, `FALSE` if time to event is censored.
+#' @param indent_mod (`count`) \cr it can be negative. Modifier for the default indent position for the
+#'   structure created by this function(subtable, content table, or row) and
+#'   all of that structure's children. Defaults to 0, which corresponds to the
+#'   unmodified default behavior.
 #' @param labelstr (`character`)\cr label of the level of the parent split currently being summarized
 #'   (must be present as second argument in Content Row Functions).
 #' @param lyt (`layout`)\cr input layout where analyses will be added to.

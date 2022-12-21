@@ -16,7 +16,7 @@ testthat::test_that("MHT01 variant 1 is produced accurately", {
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
@@ -26,7 +26,6 @@ testthat::test_that("MHT01 variant 1 is produced accurately", {
       split_fun = drop_split_levels,
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
@@ -84,7 +83,7 @@ testthat::test_that("MHT01 variant 2 is produced accurately", {
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
@@ -94,7 +93,6 @@ testthat::test_that("MHT01 variant 2 is produced accurately", {
       split_fun = drop_split_levels,
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
@@ -134,7 +132,7 @@ testthat::test_that("MHT01 variant 3 is produced accurately", {
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = "unique",
       .labels = c(unique = "Total number of patients with at least one event")
@@ -144,7 +142,6 @@ testthat::test_that("MHT01 variant 3 is produced accurately", {
       split_fun = drop_split_levels,
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
@@ -201,7 +198,7 @@ testthat::test_that("MHT01 variant 5 is produced accurately", {
     split_cols_by("ARM") %>%
     add_overall_col("All Patients") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(unique = "Total number of patients with at least one event")
@@ -210,8 +207,7 @@ testthat::test_that("MHT01 variant 5 is produced accurately", {
       var = "MHBODSYS",
       split_fun = drop_split_levels,
       child_labels = "visible",
-      nested = FALSE,
-      indent_mod = -1L
+      nested = FALSE
     ) %>%
     summarize_num_patients(
       var = "USUBJID",

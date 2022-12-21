@@ -143,3 +143,53 @@ summarize_num_patients <- function(lyt,
     extra_args = list(...)
   )
 }
+
+#' @describeIn summarize_num_patients Identically to [summarize_num_patients()],
+#'   This function creates a layout which adds content rows using the statistics
+#'   function [s_num_patients_content()] and desired format. Differently from its
+#'   counterpart, this function does not impose the produced rows to be repeated.
+#'
+#' @details In general, functions that starts with `analyze*` are expected to
+#'   work like [rtables::analyze()], while functions that starts with `summarize*`
+#'   are based upon [rtables::summarize_row_groups()]. The latter provides a
+#'   value for each dividing split in the row and column space, but, being it
+#'   bound to the fundamental splits, it is repeated by design in every page
+#'   when pagination is involved.
+#'
+#' @examples
+#' df_tmp <- data.frame(
+#'   USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
+#'   ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
+#'   AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17)
+#' )
+#' tbl <- basic_table() %>%
+#'   split_cols_by("ARM") %>%
+#'   add_colcounts() %>%
+#'   analyze_num_patients("USUBJID", .stats = c("unique")) %>%
+#'   build_table(df_tmp)
+#'
+#' @export
+analyze_num_patients <- function(lyt,
+                                 vars,
+                                 .stats = NULL,
+                                 .formats = NULL,
+                                 .labels = NULL,
+                                 show_labels = c("default", "visible", "hidden"),
+                                 indent_mod = 0L,
+                                 ...) {
+  afun <- make_afun(
+    c_num_patients,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels
+  )
+
+  analyze(
+    afun = afun,
+    lyt = lyt,
+    vars = vars,
+    extra_args = list(...),
+    show_labels = show_labels,
+    indent_mod = indent_mod
+  )
+}
