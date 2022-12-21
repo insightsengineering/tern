@@ -74,7 +74,7 @@ testthat::test_that("to_string_matrix works correctly", {
     nowhere <- to_string_matrix(tbl, with_spaces = FALSE, print_txt_to_copy = TRUE)
   )
   print_expected <- c(
-    'c(',
+    "c(",
     '  "", "A: Drug X", "B: Placebo", "C: Combination",',
     '  "ASIAN", "", "", "",',
     '  "A", "", "", "",',
@@ -97,7 +97,7 @@ testthat::test_that("to_string_matrix works correctly", {
     '  "mean", "39.86", "39.00", "34.75",',
     '  "C", "", "", "",',
     '  "mean", "39.75", "44.67", "36.75"',
-    ')'
+    ")"
   )
   testthat::expect_identical(print_result, print_expected)
 
@@ -106,7 +106,7 @@ testthat::test_that("to_string_matrix works correctly", {
     nowhere <- to_string_matrix(tbl, with_spaces = TRUE, print_txt_to_copy = TRUE)
   )
   print_expected <- c(
-    'c(',
+    "c(",
     '  "                            A: Drug X   B: Placebo   C: Combination",',
     '  "———————————————————————————————————————————————————————————————————",',
     '  "ASIAN                                                              ",',
@@ -130,7 +130,7 @@ testthat::test_that("to_string_matrix works correctly", {
     '  "    mean                      39.86       39.00          34.75     ",',
     '  "  C                                                                ",',
     '  "    mean                      39.75       44.67          36.75     "',
-    ')'
+    ")"
   )
   testthat::expect_identical(print_result, print_expected)
 })
