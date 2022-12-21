@@ -138,7 +138,8 @@ testthat::test_that("CMT01 variant 3 (Concomitant medications) is produced corre
       )
     ) %>%
     split_rows_by("CMCLAS",
-      split_fun = drop_split_levels, child_labels = "visible",
+      split_fun = drop_split_levels,
+      child_labels = "visible",
       nested = FALSE,
       indent_mod = 1L
     ) %>%
