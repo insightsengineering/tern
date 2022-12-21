@@ -28,10 +28,12 @@ testthat::test_that("AET07 variant 1 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by("ACTARM", split_fun = drop_split_levels) %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = "unique",
-      .labels = c(unique = "Total number of deaths")
+      .labels = c(unique = "Total number of deaths"),
+      indent_mod = -1L,
+      show_labels = "hidden"
     ) %>%
     count_occurrences(
       vars = "SOC_PT",
@@ -67,10 +69,12 @@ testthat::test_that("AET07 variant 2 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = "unique",
-      .labels = c(unique = "Total number of deaths")
+      .labels = c(unique = "Total number of deaths"),
+      indent_mod = -1L,
+      show_labels = "hidden"
     ) %>%
     count_occurrences(
       vars = "SOC_PT",

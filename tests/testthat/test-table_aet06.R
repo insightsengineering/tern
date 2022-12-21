@@ -50,7 +50,7 @@ testthat::test_that("AET06 variant 1 is produced correctly", {
     split_cols_by("ARM") %>%
     split_cols_by("SEX") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
@@ -62,7 +62,8 @@ testthat::test_that("AET06 variant 1 is produced correctly", {
       "AEBODSYS",
       child_labels = "visible",
       nested = FALSE,
-      split_fun = drop_split_levels
+      split_fun = drop_split_levels,
+      indent_mod = 1L
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
@@ -135,7 +136,7 @@ testthat::test_that("AET06 variant 3 is produced correctly", {
     split_cols_by("ARM") %>%
     split_cols_by("AVALCAT1") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
@@ -147,7 +148,6 @@ testthat::test_that("AET06 variant 3 is produced correctly", {
       "AEBODSYS",
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L,
       split_fun = drop_split_levels,
       label_pos = "topleft",
       split_label = obj_label(adae$AEBODSYS)
@@ -250,7 +250,7 @@ testthat::test_that("AET06 variant 5 is produced correctly", {
     split_cols_by("ARM") %>%
     split_cols_by("SEX") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
@@ -258,7 +258,7 @@ testthat::test_that("AET06 variant 5 is produced correctly", {
         nonunique = "Overall total number of events"
       )
     ) %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
