@@ -191,10 +191,12 @@ testthat::test_that("CMT01 variant 4 (Concomitant medications) is produced corre
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
     ) %>%
-    split_rows_by("CMCLAS", split_fun = drop_split_levels,
-                  child_labels = "visible",
-                  indent_mod = 1L,
-                  nested = FALSE) %>%
+    split_rows_by("CMCLAS",
+      split_fun = drop_split_levels,
+      child_labels = "visible",
+      indent_mod = 1L,
+      nested = FALSE
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
