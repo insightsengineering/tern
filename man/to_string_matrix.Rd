@@ -4,10 +4,12 @@
 \alias{to_string_matrix}
 \title{Convert Table into Matrix of Strings}
 \usage{
-to_string_matrix(x)
+to_string_matrix(x, with_spaces = FALSE, print_txt_to_copy = FALSE)
 }
 \arguments{
-\item{x}{the table}
+\item{x}{\code{rtables} table.}
+
+\item{print_txt_to_copy}{}
 }
 \value{
 A matrix of strings
@@ -15,5 +17,8 @@ A matrix of strings
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper function to use mostly within tests.
+Helper function to use mostly within tests. \code{with_spaces}parameter allows
+to test not only for content but also indentation and table structure.
+\code{print_txt_to_copy} instead facilitate the testing development by returning a well
+formatted text that needs only to be copied and pasted in the expected output.
 }

@@ -289,3 +289,70 @@ testthat::test_that("summarize_num_patients with count_by different
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
+
+testthat::test_that("analyze_num_patients works well for pagination", {
+  set.seed(1)
+  df <- data.frame(
+    USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
+    ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
+    BY = as.character(c(10, 15, 11, 17, 8, 11, 11, 19, 17)),
+    AE = paste0(sample(letters[5:6], 9, TRUE), " 1.1")
+  )
+
+  # Check a standard
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM") %>%
+    analyze_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
+    split_rows_by("AE",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
+    summarize_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
+    count_occurrences(vars = "BY", .indent_mods = -1L) %>%
+    add_overall_col(label = "A+B") %>%
+    build_table(df) %>%
+    prune_table()
+
+  # Helper function # TO MODIFY the original
+  my_score_occurencies <- function(col_indices = NULL) {
+    function(tt) {
+      if (is.null(col_indices)) col_indices <- seq_len(ncol(tt))
+      row_counts <- h_row_counts(tt, col_indices = col_indices)
+      sum(row_counts)
+    }
+  }
+
+  # Sorting
+  result <- result %>%
+    sort_at_path(path = "AE", cont_n_onecol(2)) %>%
+    sort_at_path(path = c("AE", "*", "BY"), my_score_occurencies(2))
+
+  # Final result
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "Number of patients with at least one event", "Number of events",
+      "e 1.1", "Number of patients with at least one event", "Number of events",
+      "11", "19", "10", "17", "f 1.1", "Number of patients with at least one event",
+      "Number of events", "17", "15", "A", "(N=5)", "3 (60%)", "4", "", "2 (40%)",
+      "3", "1 (20.0%)", "0", "1 (20.0%)", "1 (20.0%)", "", "1 (20%)", "1", "0",
+      "1 (20.0%)", "B", "(N=4)", "3 (75%)", "4", "", "2 (50%)", "3", "1 (25.0%)",
+      "1 (25.0%)", "0", "0", "", "1 (25%)", "1", "1 (25.0%)", "0"
+    ),
+    .Dim = c(16L, 3L)
+  )
+
+  testthat::expect_identical(result_matrix, expected_matrix)
+
+  # Pagination tests (no repetition of the first lines)
+  pag_result <- paginate_table(result, lpp = 10)
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[1]])[3:4, 1],
+    c(
+      "Number of patients with at least one event",
+      "Number of events"
+    )
+  )
+  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "e 1.1")
+})

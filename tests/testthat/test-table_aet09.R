@@ -8,8 +8,8 @@ testthat::test_that("AET09 variant 1 is produced correctly, AE related to study 
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
     add_overall_col(label = "All Patients") %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug",
@@ -176,8 +176,8 @@ testthat::test_that("AET09 variant 2 is produced correctly, AE related to study 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
-      var = "USUBJID",
+    analyze_num_patients(
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event related to study drug",
@@ -215,7 +215,6 @@ testthat::test_that("AET09 variant 2 is produced correctly, AE related to study 
     ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
-
   result <- build_table(lyt, adae_r, alt_counts_df = adsl) %>%
     prune_table()
 
@@ -223,8 +222,6 @@ testthat::test_that("AET09 variant 2 is produced correctly, AE related to study 
     sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences)
-
-
 
   result_matrix <- to_string_matrix(result)
 

@@ -77,6 +77,7 @@ reference:
     desc: Analyze Functions are used in combination with the rtables layout
           functions, in the pipeline which creates the table.
     contents:
+      - analyze_num_patients
       - compare_vars
       - count_abnormal
       - count_abnormal_by_baseline
