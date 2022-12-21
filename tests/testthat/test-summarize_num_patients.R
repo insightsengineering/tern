@@ -301,7 +301,6 @@ testthat::test_that("analyze_num_patients works well for pagination", {
 
   # Check a standard
   result <- basic_table(show_colcounts = TRUE) %>%
-    # add_overall_col(label = "A+B") %>% # why this does not work
     split_cols_by("ARM") %>%
     analyze_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
     split_rows_by("AE",
@@ -311,6 +310,7 @@ testthat::test_that("analyze_num_patients works well for pagination", {
     ) %>%
     summarize_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
     count_occurrences(vars = "BY", .indent_mods = -1L) %>%
+    add_overall_col(label = "A+B") %>%
     build_table(df) %>%
     prune_table()
 

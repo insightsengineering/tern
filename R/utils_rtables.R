@@ -2,15 +2,40 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper function to use mostly within tests.
+#' Helper function to use mostly within tests. `with_spaces`parameter allows
+#' to test not only for content but also indentation and table structure.
+#' `print_txt_to_copy` instead facilitate the testing development by returning a well
+#' formatted text that needs only to be copied and pasted in the expected output.
 #'
-#' @param x the table
+#' @param x `rtables` table.
+#' @param with_spaces
+#' @param print_txt_to_copy
 #'
 #' @return A matrix of strings
 #'
 #' @export
-to_string_matrix <- function(x) {
-  matrix_form(x)$string
+to_string_matrix <- function(x, with_spaces = FALSE, print_txt_to_copy = FALSE) {
+  checkmate::assert_flag(with_spaces)
+  checkmate::assert_flag(print_txt_to_copy)
+
+  # Producing the matrix to test
+  if (with_spaces) {
+    out <- strsplit(toString(matrix_form(x, TRUE)), "\\n")[[1]]
+  } else {
+    out <- matrix_form(x)$string
+  }
+
+  # Printing to console formatted output that needs to be copied in "expected"
+  if (print_txt_to_copy) {
+    out_tmp <- out
+    if (!with_spaces) {
+      out_tmp <- apply(out, 1, paste0, collapse = '", "')
+    }
+    cat(paste0('c(\n  "', paste0(out_tmp, collapse = '",\n  "'), '"\n)'))
+  }
+
+  # Return values
+  return(out)
 }
 
 #' Blank for Missing Input
