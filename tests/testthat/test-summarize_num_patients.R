@@ -314,7 +314,7 @@ testthat::test_that("analyze_num_patients works well for pagination", {
     build_table(df) %>%
     prune_table()
 
-  # Helper function # TO MODIFY the original
+  # Helper function
   my_score_occurencies <- function(col_indices = NULL) {
     function(tt) {
       if (is.null(col_indices)) col_indices <- seq_len(ncol(tt))
