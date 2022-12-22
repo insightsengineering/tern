@@ -329,18 +329,25 @@ testthat::test_that("analyze_num_patients works well for pagination", {
     sort_at_path(path = c("AE", "*", "BY"), my_score_occurencies(2))
 
   # Final result
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "Number of patients with at least one event", "Number of events",
-      "e 1.1", "Number of patients with at least one event", "Number of events",
-      "11", "19", "10", "17", "f 1.1", "Number of patients with at least one event",
-      "Number of events", "17", "15", "A", "(N=5)", "3 (60%)", "4", "", "2 (40%)",
-      "3", "1 (20.0%)", "0", "1 (20.0%)", "1 (20.0%)", "", "1 (20%)", "1", "0",
-      "1 (20.0%)", "B", "(N=4)", "3 (75%)", "4", "", "2 (50%)", "3", "1 (25.0%)",
-      "1 (25.0%)", "0", "0", "", "1 (25%)", "1", "1 (25.0%)", "0"
-    ),
-    .Dim = c(16L, 3L)
+  result_matrix <- to_string_matrix(result, with_spaces = TRUE)
+  expected_matrix <- c(
+    "                                                   A           B          A+B   ",
+    "                                                 (N=5)       (N=4)       (N=9)  ",
+    "————————————————————————————————————————————————————————————————————————————————",
+    "Number of patients with at least one event      3 (60%)     3 (75%)    6 (66.7%)",
+    "Number of events                                   4           4           8    ",
+    "e 1.1                                                                           ",
+    "  Number of patients with at least one event    2 (40%)     2 (50%)    4 (44.4%)",
+    "  Number of events                                 3           3           6    ",
+    "  11                                           1 (20.0%)   1 (25.0%)   2 (22.2%)",
+    "  19                                               0       1 (25.0%)   1 (11.1%)",
+    "  10                                           1 (20.0%)       0       1 (11.1%)",
+    "  17                                           1 (20.0%)       0       1 (11.1%)",
+    "f 1.1                                                                           ",
+    "  Number of patients with at least one event    1 (20%)     1 (25%)    2 (22.2%)",
+    "  Number of events                                 1           1           2    ",
+    "  17                                               0       1 (25.0%)   1 (11.1%)",
+    "  15                                           1 (20.0%)       0       1 (11.1%)"
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
