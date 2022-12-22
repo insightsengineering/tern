@@ -68,8 +68,6 @@ testthat::test_that("to_string_matrix works correctly", {
     "    mean                      39.75       44.67          36.75     "
   )
   testthat::expect_identical(result, expected)
-  ?checkmate::expect_snapshot()
-
 
   # Testing print_txt_to_copy with original table
   print_result <- capture.output(
