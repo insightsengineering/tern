@@ -8,8 +8,10 @@
 #' formatted text that needs only to be copied and pasted in the expected output.
 #'
 #' @param x `rtables` table.
-#' @param with_spaces
-#' @param print_txt_to_copy
+#' @param with_spaces Should the tested table keep the indentation and other relevant
+#'   spaces?
+#' @param print_txt_to_copy Utility to have a way to copy the input table directly
+#'   into the expected variable instead of copying it too manually.
 #'
 #' @return A matrix of strings
 #'
