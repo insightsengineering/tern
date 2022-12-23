@@ -315,7 +315,7 @@ testthat::test_that("analyze_num_patients works well for pagination", {
     prune_table()
 
   # Helper function
-  my_score_occurencies <- function(col_indices = NULL) {
+  my_score_occurrences <- function(col_indices = NULL) {
     function(tt) {
       if (is.null(col_indices)) col_indices <- seq_len(ncol(tt))
       row_counts <- h_row_counts(tt, col_indices = col_indices)
@@ -326,7 +326,7 @@ testthat::test_that("analyze_num_patients works well for pagination", {
   # Sorting
   result <- result %>%
     sort_at_path(path = "AE", cont_n_onecol(2)) %>%
-    sort_at_path(path = c("AE", "*", "BY"), my_score_occurencies(2))
+    sort_at_path(path = c("AE", "*", "BY"), my_score_occurrences(2))
 
   # Final result
   result_matrix <- to_string_matrix(result, with_spaces = TRUE)

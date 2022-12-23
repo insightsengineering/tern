@@ -12,8 +12,6 @@ NULL
 #' @inheritParams rtables_access
 #' @return [score_occurrences()] returns the sum of counts across all columns of a table row.
 #'
-#' @export
-#'
 #' @examples
 #' library(scda)
 #' library(rtables)
@@ -39,13 +37,15 @@ NULL
 #'   ) %>%
 #'   count_occurrences(vars = "AEDECOD")
 #'
-#' rtable_object <- build_table(lyt, adae, alt_counts_df = adsl) %>%
+#' tbl <- build_table(lyt, adae, alt_counts_df = adsl) %>%
 #'   prune_table()
 #'
-#' rtable_object_sorted <- rtable_object %>%
+#' tbl_sorted <- tbl %>%
 #'   sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 #'
-#' rtable_object_sorted
+#' tbl_sorted
+#'
+#' @export
 score_occurrences <- function(table_row) {
   row_counts <- h_row_counts(table_row, col_indices = seq_len(ncol(table_row)))
   sum(row_counts)

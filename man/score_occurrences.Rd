@@ -77,13 +77,14 @@ lyt <- basic_table() \%>\%
   ) \%>\%
   count_occurrences(vars = "AEDECOD")
 
-rtable_object <- build_table(lyt, adae, alt_counts_df = adsl) \%>\%
+tbl <- build_table(lyt, adae, alt_counts_df = adsl) \%>\%
   prune_table()
 
-rtable_object_sorted <- rtable_object \%>\%
+tbl_sorted <- tbl \%>\%
   sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
-rtable_object_sorted
+tbl_sorted
+
 score_cols_a_and_b <- score_occurrences_cols(col_names = c("A: Drug X", "B: Placebo"))
 
 # Note that this here just sorts the AEDECOD inside the AEBODSYS. The AEBODSYS are not sorted.
