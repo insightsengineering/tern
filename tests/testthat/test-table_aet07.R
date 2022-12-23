@@ -29,7 +29,7 @@ testthat::test_that("AET07 variant 1 is produced correctly", {
     split_cols_by("ACTARM", split_fun = drop_split_levels) %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = "unique",
       .labels = c(unique = "Total number of deaths"),
       indent_mod = -1L,
@@ -70,7 +70,7 @@ testthat::test_that("AET07 variant 2 is produced correctly", {
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = "unique",
       .labels = c(unique = "Total number of deaths"),
       indent_mod = -1L,

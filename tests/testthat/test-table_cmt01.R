@@ -8,7 +8,7 @@ testthat::test_that("CMT01 default variant (Concomitant medications) is produced
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one treatment",
@@ -72,7 +72,7 @@ testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly",
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one treatment",
@@ -130,7 +130,7 @@ testthat::test_that("CMT01 variant 3 (Concomitant medications) is produced corre
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one treatment",
@@ -188,7 +188,7 @@ testthat::test_that("CMT01 variant 4 (Concomitant medications) is produced corre
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
     ) %>%

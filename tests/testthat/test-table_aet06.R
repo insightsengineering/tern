@@ -51,7 +51,7 @@ testthat::test_that("AET06 variant 1 is produced correctly", {
     split_cols_by("SEX") %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
@@ -137,7 +137,7 @@ testthat::test_that("AET06 variant 3 is produced correctly", {
     split_cols_by("AVALCAT1") %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
@@ -251,7 +251,7 @@ testthat::test_that("AET06 variant 5 is produced correctly", {
     split_cols_by("SEX") %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
