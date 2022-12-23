@@ -23,8 +23,8 @@ NULL
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
-#'   summarize_num_patients(
-#'     var = "USUBJID",
+#'   analyze_num_patients(
+#'     vars = "USUBJID",
 #'     .stats = c("unique"),
 #'     .labels = c("Total number of patients with at least one event")
 #'   ) %>%

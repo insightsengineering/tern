@@ -2,7 +2,8 @@
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
-* Replaced `synthetic_cdisc_data` with refactored `synthetic_cdisc_dataset` function to speed up   dataset loading in tests/examples.
+* Replaced `synthetic_cdisc_data` with re-factored `synthetic_cdisc_dataset` 
+  function to speed up data set loading in tests/examples.
 * Updated all tests to use `rcd_2022_06_27` version of cached data.
 * Added more tests to increase code coverage.
 * Deprecated badge and warning for `wrap_txt` and its file.
@@ -12,12 +13,19 @@
 * Removed `summary_in_cols` helper functions because redundant.
 * Added `na_level` and `labelstr` to `summarize_vars_in_cols`.
 * Added tests for `pkct01` and `adat03`.
+* Added `analyze_num_patients` to have total summary at the beginning that does not
+  repeat when paginating.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
   grades are present in `s_count_occurrences_by_grade`.
 * Changed `summarize_vars_in_cols` to work with pagination machinery.
-* Fixed bug passing `conf_level` to `emmeans::contrast()` in `s_ancova` to make it works. Tests are also updated. 
+* Fixed bug passing `conf_level` to `emmeans::contrast()` in `s_ancova` to make 
+  it works. Tests are also updated. 
+* Fixed table tests (`aet02`, `aet02_smq`, `aet_03`, `aet_06_smq`, `aet_09`, 
+  `aet_09_smq`, `mth01`, `cmt01`, `aet07`, `aet06`) that used 
+  `summarize_num_patients` to generate an initial summary. This was repeated 
+  when paginating, while we needed it not to repeat.
 
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`

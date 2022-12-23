@@ -48,6 +48,11 @@ Note that in that case the remaining occurrence levels in the table are sorted a
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
+\item{indent_mod}{(\code{count}) \cr it can be negative. Modifier for the default indent position for the
+structure created by this function(subtable, content table, or row) and
+all of that structure's children. Defaults to 0, which corresponds to the
+unmodified default behavior.}
+
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
 

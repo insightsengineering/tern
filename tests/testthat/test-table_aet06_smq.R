@@ -46,7 +46,7 @@ testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
     split_cols_by("ARM") %>%
     split_cols_by("SEX") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique"),
       .labels = c(unique = "Total number of patients with at least one adverse event")
@@ -55,7 +55,6 @@ testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
       "SMQ",
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L,
       split_fun = drop_split_levels
     ) %>%
     summarize_num_patients(
@@ -178,7 +177,7 @@ testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
     split_cols_by("ARM") %>%
     split_cols_by("AGE65") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique"),
       .labels = c(unique = "Total number of patients with at least one adverse event")
@@ -187,7 +186,6 @@ testthat::test_that("AET06_SMQ variant 2 is produced correctly", {
       "SMQ",
       child_labels = "visible",
       nested = FALSE,
-      indent_mod = -1L,
       split_fun = drop_split_levels
     ) %>%
     summarize_num_patients(
