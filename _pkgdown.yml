@@ -245,6 +245,7 @@ reference:
       - h_col_indices
       - h_content_first_row
       - h_row_counts
+      - h_row_first_values
       - h_row_fractions
       - is_leaf_table
       - split_cols_by_groups

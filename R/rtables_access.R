@@ -11,8 +11,8 @@
 #' @name rtables_access
 NULL
 
-#' @describeIn rtables_access helper function to extract values from specified columns
-#'   in a `TableRow`. Defaults to all columns.
+#' @describeIn rtables_access helper function to extract the first values from each content
+#'   cell and from specified columns in a `TableRow`. Defaults to all columns.
 #'
 #' @param table_row (`TableRow`)\cr an analysis row in a occurrence table.
 #' @param col_names (`character`)\cr the names of the columns to extract from.
@@ -29,21 +29,13 @@ NULL
 #'   build_table(adsl) %>%
 #'   prune_table()
 #' tree_row_elem <- tree_children(tbl[2,])[[1]]
-#' h_row_values(tree_row_elem)
+#' h_row_fist_values(tree_row_elem)
 #' @export
-h_row_values <- function(table_row,
+h_row_fist_values <- function(table_row,
                          col_names = NULL,
                          col_indices = NULL) {
-  if (!is.null(col_names)) {
-    if (!is.null(col_indices)) {
-      stop("Inserted both col_names and col_indices when selecting row values. ",
-           "Please choose one.")
-    }
-    col_indices <- h_col_indices(table_row, col_names)
-  }
-  if (is.null(col_indices)) {
-    col_indices <- seq_len(ncol(table_row))
-  }
+
+  col_indices <- check_names_indices(table, col_names, col_indices)
   checkmate::assert_integer(col_indices) # integerish
   checkmate::assert_subset(col_indices, seq_len(ncol(table_row)))
 
@@ -58,14 +50,20 @@ h_row_values <- function(table_row,
   }, FUN.VALUE = numeric(1))
   counts
 }
-#' @describeIn Helper function that extracts row values and checks if they are
+#' @describeIn rtables_access Helper function that extracts row values and checks if they are
 #'  convertible to integers (`integerish` values).
+#'
+#' @examples
+#' \donotrun{
+#' h_row_counts(tree_row_elem) # Fails because there are no integers
+#' }
 #'
 #' @export
 h_row_counts <- function(table_row,
                          col_names = NULL,
                          col_indices = NULL) {
-  counts <- h_row_values(table_row, col_names, col_indices)
+  col_indices <- check_names_indices(table, col_names, col_indices)
+  counts <- h_row_fist_values(table_row, col_names, col_indices)
   checkmate::assert_integerish(counts)
   counts
 }
@@ -76,7 +74,8 @@ h_row_counts <- function(table_row,
 #' @export
 h_row_fractions <- function(table_row,
                             col_names = NULL,
-                            col_indices = h_col_indices(table_row, col_names)) {
+                            col_indices = NULL) {
+  col_indices <- check_names_indices(table, col_names, col_indices)
   row_vals <- row_values(table_row)[col_indices]
   fractions <- sapply(row_vals, "[", 2L)
   checkmate::assert_numeric(fractions, lower = 0, upper = 1)
@@ -90,9 +89,18 @@ h_row_fractions <- function(table_row,
 #' @export
 h_col_counts <- function(table,
                          col_names = NULL,
-                         col_indices = h_col_indices(table, col_names)) {
+                         col_indices = NULL) {
+  col_indices <- check_names_indices(table, col_names, col_indices)
   counts <- col_counts(table)[col_indices]
   stats::setNames(counts, col_names)
+}
+
+#' @describeIn rtables_access Helper function to get first row of content table of current table.
+#'
+#' @export
+h_content_first_row <- function(table) {
+  ct <- content_table(table)
+  tree_children(ct)[[1]]
 }
 
 #' @describeIn rtables_access Helper function which says whether current table is a leaf in the tree.
@@ -104,10 +112,22 @@ is_leaf_table <- function(table) {
   identical(child_classes, "ElementaryTable")
 }
 
-#' @describeIn rtables_access Helper function to get first row of content table of current table.
+#' @describeIn rtables_access Helper function that tests standard inputs for column indices.
 #'
-#' @export
-h_content_first_row <- function(table) {
-  ct <- content_table(table)
-  tree_children(ct)[[1]]
+#' @keywords internal
+check_names_indices <- function(table_row,
+                                col_names = NULL,
+                                col_indices = NULL) {
+  if (!is.null(col_names)) {
+    if (!is.null(col_indices)) {
+      stop("Inserted both col_names and col_indices when selecting row values. ",
+           "Please choose one.")
+    }
+    col_indices <- h_col_indices(table_row, col_names)
+  }
+  if (is.null(col_indices)) {
+    col_indices <- seq_len(ncol(table_row))
+  }
+
+  return(col_indices)
 }

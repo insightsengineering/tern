@@ -2,34 +2,28 @@
 % Please edit documentation in R/rtables_access.R
 \name{rtables_access}
 \alias{rtables_access}
+\alias{h_row_fist_values}
 \alias{h_row_counts}
 \alias{h_row_fractions}
 \alias{h_col_counts}
-\alias{is_leaf_table}
 \alias{h_content_first_row}
+\alias{is_leaf_table}
+\alias{check_names_indices}
 \title{\code{rtables} Access Helper Functions}
 \usage{
-h_row_counts(
-  table_row,
-  col_names = NULL,
-  col_indices = h_col_indices(table_row, col_names)
-)
+h_row_fist_values(table_row, col_names = NULL, col_indices = NULL)
 
-h_row_fractions(
-  table_row,
-  col_names = NULL,
-  col_indices = h_col_indices(table_row, col_names)
-)
+h_row_counts(table_row, col_names = NULL, col_indices = NULL)
 
-h_col_counts(
-  table,
-  col_names = NULL,
-  col_indices = h_col_indices(table, col_names)
-)
+h_row_fractions(table_row, col_names = NULL, col_indices = NULL)
+
+h_col_counts(table, col_names = NULL, col_indices = NULL)
+
+h_content_first_row(table)
 
 is_leaf_table(table)
 
-h_content_first_row(table)
+check_names_indices(table_row, col_names = NULL, col_indices = NULL)
 }
 \arguments{
 \item{table_row}{(\code{TableRow})\cr an analysis row in a occurrence table.}
@@ -51,8 +45,11 @@ as having a count as the first element and a fraction as the second element in e
 }
 \section{Functions}{
 \itemize{
-\item \code{h_row_counts()}: helper function to extract counts from specified columns
-in a \code{TableRow}.
+\item \code{h_row_fist_values()}: helper function to extract the first values from each content
+cell and from specified columns in a \code{TableRow}. Defaults to all columns.
+
+\item \code{h_row_counts()}: Helper function that extracts row values and checks if they are
+convertible to integers (\code{integerish} values).
 
 \item \code{h_row_fractions()}: helper function to extract fractions from specified columns
 in a \code{TableRow}.
@@ -60,11 +57,24 @@ in a \code{TableRow}.
 \item \code{h_col_counts()}: Helper function to extract column counts from specified columns
 in a table.
 
-\item \code{is_leaf_table()}: Helper function which says whether current table is a leaf in the tree.
-
 \item \code{h_content_first_row()}: Helper function to get first row of content table of current table.
 
+\item \code{is_leaf_table()}: Helper function which says whether current table is a leaf in the tree.
+
+\item \code{check_names_indices()}: Helper function that tests standard inputs for column indices.
+
 }}
+\examples{
+adsl <- scda::synthetic_cdisc_dataset("rcd_2022_10_13", "adsl")
+tbl <- basic_table() \%>\%
+  split_cols_by("ARM") \%>\%
+  split_rows_by("RACE") \%>\%
+  analyze("AGE") \%>\%
+  build_table(adsl) \%>\%
+  prune_table()
+tree_row_elem <- tree_children(tbl[2,])[[1]]
+h_row_fist_values(tree_row_elem)
+}
 \seealso{
 \verb{[prune_occurrences]} for usage of these functions.
 }

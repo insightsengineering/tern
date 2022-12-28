@@ -7,7 +7,7 @@
 \alias{score_occurrences_cont_cols}
 \title{Occurrence Table Sorting}
 \usage{
-score_occurrences(table_row)
+score_occurrences(col_indices = NULL)
 
 score_occurrences_cols(...)
 
@@ -16,7 +16,9 @@ score_occurrences_subtable(...)
 score_occurrences_cont_cols(...)
 }
 \arguments{
-\item{table_row}{(\code{TableRow})\cr an analysis row in a occurrence table.}
+\item{col_indices}{(\code{integer})\cr the indices of the columns to extract from. If \code{col_names} are provided,
+then these are inferred from the names of \code{table_row}. (Note that this currently only works well with a single
+column split.)}
 
 \item{...}{arguments for row or column access, see \code{\link{rtables_access}}: either
 \code{col_names} (\code{character}) including the names of the columns which should be used,
