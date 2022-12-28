@@ -46,9 +46,11 @@ NULL
 #' tbl_sorted
 #'
 #' @export
-score_occurrences <- function(table_row) {
-  row_counts <- h_row_counts(table_row, col_indices = seq_len(ncol(table_row)))
-  sum(row_counts)
+score_occurrences <- function(col_indices = NULL) {
+  function(tt) {
+    row_counts <- h_row_counts(tt, col_indices = col_indices)
+    sum(row_counts)
+  }
 }
 
 #' @describeIn score_occurrences Scoring functions can be produced by this constructor to only include

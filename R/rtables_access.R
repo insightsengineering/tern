@@ -11,8 +11,8 @@
 #' @name rtables_access
 NULL
 
-#' @describeIn rtables_access helper function to extract counts from specified columns
-#'   in a `TableRow`.
+#' @describeIn rtables_access helper function to extract values from specified columns
+#'   in a `TableRow`. Defaults to all columns.
 #'
 #' @param table_row (`TableRow`)\cr an analysis row in a occurrence table.
 #' @param col_names (`character`)\cr the names of the columns to extract from.
@@ -20,10 +20,34 @@ NULL
 #'   then these are inferred from the names of `table_row`. (Note that this currently only works well with a single
 #'   column split.)
 #'
+#' @examples
+#' adsl <- scda::synthetic_cdisc_dataset("rcd_2022_10_13", "adsl")
+#' tbl <- basic_table() %>%
+#'   split_cols_by("ARM") %>%
+#'   split_rows_by("RACE") %>%
+#'   analyze("AGE") %>%
+#'   build_table(adsl) %>%
+#'   prune_table()
+#' tree_row_elem <- tree_children(tbl[2,])[[1]]
+#' h_row_values(tree_row_elem)
 #' @export
-h_row_counts <- function(table_row,
+h_row_values <- function(table_row,
                          col_names = NULL,
-                         col_indices = h_col_indices(table_row, col_names)) {
+                         col_indices = NULL) {
+  if (!is.null(col_names)) {
+    if (!is.null(col_indices)) {
+      stop("Inserted both col_names and col_indices when selecting row values. ",
+           "Please choose one.")
+    }
+    col_indices <- h_col_indices(table_row, col_names)
+  }
+  if (is.null(col_indices)) {
+    col_indices <- seq_len(ncol(table_row))
+  }
+  checkmate::assert_integer(col_indices) # integerish
+  checkmate::assert_subset(col_indices, seq_len(ncol(table_row)))
+
+  # Main values are extracted
   row_vals <- row_values(table_row)[col_indices]
   counts <- vapply(row_vals, function(rv) {
     if (is.null(rv)) {
@@ -32,6 +56,16 @@ h_row_counts <- function(table_row,
       rv[1L]
     }
   }, FUN.VALUE = numeric(1))
+  counts
+}
+#' @describeIn Helper function that extracts row values and checks if they are
+#'  convertible to integers (`integerish` values).
+#'
+#' @export
+h_row_counts <- function(table_row,
+                         col_names = NULL,
+                         col_indices = NULL) {
+  counts <- h_row_values(table_row, col_names, col_indices)
   checkmate::assert_integerish(counts)
   counts
 }
