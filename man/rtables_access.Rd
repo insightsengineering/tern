@@ -74,6 +74,10 @@ tbl <- basic_table() \%>\%
   prune_table()
 tree_row_elem <- tree_children(tbl[2,])[[1]]
 h_row_fist_values(tree_row_elem)
+\donotrun{
+h_row_counts(tree_row_elem) # Fails because there are no integers
+}
+
 }
 \seealso{
 \verb{[prune_occurrences]} for usage of these functions.
