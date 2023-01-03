@@ -7,7 +7,7 @@
 \alias{score_occurrences_cont_cols}
 \title{Occurrence Table Sorting}
 \usage{
-score_occurrences(col_indices = NULL)
+score_occurrences(table_row)
 
 score_occurrences_cols(...)
 
@@ -16,9 +16,7 @@ score_occurrences_subtable(...)
 score_occurrences_cont_cols(...)
 }
 \arguments{
-\item{col_indices}{(\code{integer})\cr the indices of the columns to extract from. If \code{col_names} are provided,
-then these are inferred from the names of \code{table_row}. (Note that this currently only works well with a single
-column split.)}
+\item{table_row}{(\code{TableRow})\cr an analysis row in a occurrence table.}
 
 \item{...}{arguments for row or column access, see \code{\link{rtables_access}}: either
 \code{col_names} (\code{character}) including the names of the columns which should be used,
@@ -45,7 +43,7 @@ sorting of occurrence tables.
 columns. It will fail if anything else but counts are used.
 
 \item \code{score_occurrences_cols()}: Scoring functions can be produced by this constructor to only include
-specific columns in the scoring.
+specific columns in the scoring. See \code{\link[=h_row_counts]{h_row_counts()}} for further information.
 
 \item \code{score_occurrences_subtable()}: Scoring functions produced by this constructor can be used on
 subtables: They sum up all specified column counts in the subtable. This is useful when
@@ -96,6 +94,7 @@ rtable_object_sorted <- rtable_object \%>\%
   sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_cols_a_and_b)
 
 rtable_object_sorted
+
 score_subtable_all <- score_occurrences_subtable(col_names = names(rtable_object))
 
 # Note that this code just sorts the AEBODSYS, not the AEDECOD within AEBODSYS. That
@@ -107,4 +106,6 @@ rtable_object_sorted
 }
 \seealso{
 \code{\link[=h_row_first_values]{h_row_first_values()}}
+
+\code{\link[=h_row_counts]{h_row_counts()}}
 }
