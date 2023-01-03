@@ -69,14 +69,29 @@ adsl <- scda::synthetic_cdisc_dataset("rcd_2022_10_13", "adsl")
 tbl <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   split_rows_by("RACE") \%>\%
-  analyze("AGE") \%>\%
+  analyze("AGE", function(x) {
+    list(
+      "mean (sd)" = rcell(c(mean(x), sd(x)), format = "xx.x (xx.x)"),
+      "n" = length(x),
+      "frac" = rcell(c(mean(x), mean(x) + 1), format = "xx. / xx.")
+    )
+  }) \%>\%
   build_table(adsl) \%>\%
   prune_table()
-tree_row_elem <- tree_children(tbl[2,])[[1]]
-h_row_fist_values(tree_row_elem)
+tree_row_elem <- collect_leaves(tbl[2, ])[[1]]
+max(h_row_fist_values(tree_row_elem))
+
+# Row counts (integer values)
 \donotrun{
 h_row_counts(tree_row_elem) # Fails because there are no integers
 }
+# Using values with integers
+tree_row_elem <- collect_leaves(tbl[3, ])[[1]]
+h_row_counts(tree_row_elem)
+
+# Row fractions
+tree_row_elem <- collect_leaves(tbl[4, ])[[1]]
+h_row_fractions(tree_row_elem)
 
 }
 \seealso{

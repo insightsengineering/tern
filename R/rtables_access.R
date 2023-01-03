@@ -25,44 +25,56 @@ NULL
 #' tbl <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   split_rows_by("RACE") %>%
-#'   analyze("AGE") %>%
+#'   analyze("AGE", function(x) {
+#'     list(
+#'       "mean (sd)" = rcell(c(mean(x), sd(x)), format = "xx.x (xx.x)"),
+#'       "n" = length(x),
+#'       "frac" = rcell(c(mean(x), mean(x) + 1), format = "xx. / xx.")
+#'     )
+#'   }) %>%
 #'   build_table(adsl) %>%
 #'   prune_table()
-#' tree_row_elem <- tree_children(tbl[2,])[[1]]
-#' h_row_fist_values(tree_row_elem)
+#' tree_row_elem <- collect_leaves(tbl[2, ])[[1]]
+#' max(h_row_fist_values(tree_row_elem))
+#'
 #' @export
 h_row_fist_values <- function(table_row,
                          col_names = NULL,
                          col_indices = NULL) {
 
-  col_indices <- check_names_indices(table, col_names, col_indices)
+  col_indices <- check_names_indices(table_row, col_names, col_indices)
   checkmate::assert_integer(col_indices) # integerish
   checkmate::assert_subset(col_indices, seq_len(ncol(table_row)))
 
   # Main values are extracted
   row_vals <- row_values(table_row)[col_indices]
-  counts <- vapply(row_vals, function(rv) {
+
+  # Main return
+  vapply(row_vals, function(rv) {
     if (is.null(rv)) {
       NA_real_
     } else {
       rv[1L]
     }
   }, FUN.VALUE = numeric(1))
-  counts
 }
+
 #' @describeIn rtables_access Helper function that extracts row values and checks if they are
 #'  convertible to integers (`integerish` values).
 #'
 #' @examples
+#' # Row counts (integer values)
 #' \donotrun{
 #' h_row_counts(tree_row_elem) # Fails because there are no integers
 #' }
+#' # Using values with integers
+#' tree_row_elem <- collect_leaves(tbl[3, ])[[1]]
+#' h_row_counts(tree_row_elem)
 #'
 #' @export
 h_row_counts <- function(table_row,
                          col_names = NULL,
                          col_indices = NULL) {
-  col_indices <- check_names_indices(table, col_names, col_indices)
   counts <- h_row_fist_values(table_row, col_names, col_indices)
   checkmate::assert_integerish(counts)
   counts
@@ -71,11 +83,16 @@ h_row_counts <- function(table_row,
 #' @describeIn rtables_access helper function to extract fractions from specified columns
 #'   in a `TableRow`.
 #'
+#' @examples
+#' # Row fractions
+#' tree_row_elem <- collect_leaves(tbl[4, ])[[1]]
+#' h_row_fractions(tree_row_elem)
+#'
 #' @export
 h_row_fractions <- function(table_row,
                             col_names = NULL,
                             col_indices = NULL) {
-  col_indices <- check_names_indices(table, col_names, col_indices)
+  col_indices <- check_names_indices(table_row, col_names, col_indices)
   row_vals <- row_values(table_row)[col_indices]
   fractions <- sapply(row_vals, "[", 2L)
   checkmate::assert_numeric(fractions, lower = 0, upper = 1)
@@ -126,7 +143,8 @@ check_names_indices <- function(table_row,
     col_indices <- h_col_indices(table_row, col_names)
   }
   if (is.null(col_indices)) {
-    col_indices <- seq_len(ncol(table_row))
+    ll <- ifelse(is.null(ncol(table_row)), length(table_row), ncol(table_row))
+    col_indices <- seq_len(ll)
   }
 
   return(col_indices)

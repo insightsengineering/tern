@@ -8,10 +8,11 @@
 NULL
 
 #' @description `r lifecycle::badge("stable")`
-#' @describeIn score_occurrences Scoring function which sums the counts across all columns.
+#' @describeIn score_occurrences Scoring function which sums the counts across all
+#'   columns. It will fail if anything else but counts are used.
 #' @inheritParams rtables_access
 #' @return [score_occurrences()] returns the sum of counts across all columns of a table row.
-#'
+#' @seealso [h_row_first_values()]
 #' @examples
 #' library(scda)
 #' library(rtables)

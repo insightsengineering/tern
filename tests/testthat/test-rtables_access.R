@@ -21,7 +21,7 @@ testthat::test_that("h_row_counts works as expected", {
     )
   )
   table_row <- collect_leaves(sub_tab)[[1]]
-  result <- h_row_counts(table_row, c("B: Placebo", "C: Combination"))
+  result <- h_row_counts(table_row, col_names = c("B: Placebo", "C: Combination"))
   expected <- c("B: Placebo" = 4, "C: Combination" = 1)
   testthat::expect_identical(result, expected)
 })
@@ -42,7 +42,7 @@ testthat::test_that("h_row_counts returns NA with empty analysis row", {
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("h_row_fractions works as expected", {
+testthat::test_that("h_row_fractions works as expected", { # it does not check for h_row_fractions
   tab <- tbl_example
   sub_tab <- tab[5, ]
   testthat::expect_identical(

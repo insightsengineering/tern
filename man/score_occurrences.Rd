@@ -41,7 +41,8 @@ sorting of occurrence tables.
 }
 \section{Functions}{
 \itemize{
-\item \code{score_occurrences()}: Scoring function which sums the counts across all columns.
+\item \code{score_occurrences()}: Scoring function which sums the counts across all
+columns. It will fail if anything else but counts are used.
 
 \item \code{score_occurrences_cols()}: Scoring functions can be produced by this constructor to only include
 specific columns in the scoring.
@@ -103,4 +104,7 @@ rtable_object_sorted <- rtable_object \%>\%
   sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 
 rtable_object_sorted
+}
+\seealso{
+\code{\link[=h_row_first_values]{h_row_first_values()}}
 }
