@@ -11,8 +11,11 @@ NULL
 #' @describeIn score_occurrences Scoring function which sums the counts across all
 #'   columns. It will fail if anything else but counts are used.
 #' @inheritParams rtables_access
+#'
 #' @return [score_occurrences()] returns the sum of counts across all columns of a table row.
+#'
 #' @seealso [h_row_first_values()]
+#'
 #' @examples
 #' library(scda)
 #' library(rtables)
@@ -47,20 +50,19 @@ NULL
 #' tbl_sorted
 #'
 #' @export
-score_occurrences <- function(col_indices = NULL) {
-  function(tt) {
-    row_counts <- h_row_counts(tt, col_indices = col_indices)
-    sum(row_counts)
-  }
+score_occurrences <- function(table_row) {
+  row_counts <- h_row_counts(tt, col_indices = col_indices)
+  sum(row_counts)
 }
 
 #' @describeIn score_occurrences Scoring functions can be produced by this constructor to only include
-#'   specific columns in the scoring.
+#'   specific columns in the scoring. See [h_row_counts()] for further information.
 #' @inheritParams has_count_in_cols
+#'
 #' @return [score_occurrences_cols()] returns a function that sums counts across all specified columns
 #'   of a table row.
 #'
-#' @export
+#' @seealso [h_row_counts()]
 #'
 #' @examples
 #' score_cols_a_and_b <- score_occurrences_cols(col_names = c("A: Drug X", "B: Placebo"))
@@ -71,6 +73,8 @@ score_occurrences <- function(col_indices = NULL) {
 #'   sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_cols_a_and_b)
 #'
 #' rtable_object_sorted
+#'
+#' @export
 score_occurrences_cols <- function(...) {
   function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
