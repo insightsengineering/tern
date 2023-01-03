@@ -53,9 +53,9 @@ testthat::test_that("h_row_fractions works as expected", { # it does not check f
     )
   )
   table_row <- collect_leaves(sub_tab)[[1]]
-  result <- h_row_counts(table_row, c("B: Placebo", "C: Combination"))
-  expected <- c("B: Placebo" = 4L, "C: Combination" = 1L)
-  testthat::expect_equal(result, expected)
+  result <- h_row_fractions(table_row, c("B: Placebo", "C: Combination"))
+  expected <- c("B: Placebo" = 0.2000, "C: Combination" = 0.03226)
+  testthat::expect_equal(result, expected, tolerance = 0.001)
 })
 
 testthat::test_that("h_col_counts works as expected", {
