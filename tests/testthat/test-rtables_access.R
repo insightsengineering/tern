@@ -42,7 +42,7 @@ testthat::test_that("h_row_counts returns NA with empty analysis row", {
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("h_row_fractions works as expected", { # it does not check for h_row_fractions
+testthat::test_that("h_row_fractions works as expected", {
   tab <- tbl_example
   sub_tab <- tab[5, ]
   testthat::expect_identical(
