@@ -25,7 +25,7 @@ full_table <- local({
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
-    summarize_num_patients(
+    analyze_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
@@ -33,7 +33,12 @@ full_table <- local({
         nonunique = "Total number of events"
       )
     ) %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE) %>%
+    split_rows_by(
+      var = "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = 1L
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -77,8 +82,11 @@ full_table_with_empty <- local({
 
 testthat::test_that("score_occurrences functions as expected", {
   sorted_table <- full_table %>%
-    sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
-
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences
+    )
+debugonce(score_occurrences)
   result <- to_string_matrix(sorted_table)
 
   expected <- rbind(

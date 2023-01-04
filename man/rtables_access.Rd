@@ -83,7 +83,7 @@ tree_row_elem <- collect_leaves(tbl[2, ])[[1]]
 max(h_row_fist_values(tree_row_elem))
 
 # Row counts (integer values)
-\donotrun{
+\dontrun{
 h_row_counts(tree_row_elem) # Fails because there are no integers
 }
 # Using values with integers

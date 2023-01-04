@@ -51,7 +51,7 @@ NULL
 #'
 #' @export
 score_occurrences <- function(table_row) {
-  row_counts <- h_row_counts(table_row, col_indices = col_indices)
+  row_counts <- h_row_counts(table_row)
   sum(row_counts)
 }
 

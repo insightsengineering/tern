@@ -65,7 +65,7 @@ h_row_fist_values <- function(table_row,
 #'
 #' @examples
 #' # Row counts (integer values)
-#' \donotrun{
+#' \dontrun{
 #' h_row_counts(tree_row_elem) # Fails because there are no integers
 #' }
 #' # Using values with integers
