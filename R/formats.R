@@ -263,7 +263,7 @@ NULL
 #'
 #' h_get_format_threshold(2L)
 h_get_format_threshold <- function(digits = 2L) {
-  checkmate::assert_integer(digits)
+  checkmate::assert_integerish(digits)
 
   low_threshold <- 1 / (10 ^ digits) # styler: off
   high_threshold <- 1000 - (1 / (10 ^ digits)) # styler: off

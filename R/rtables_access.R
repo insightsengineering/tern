@@ -44,7 +44,7 @@ h_row_fist_values <- function(table_row,
                          col_indices = NULL) {
 
   col_indices <- check_names_indices(table_row, col_names, col_indices)
-  checkmate::assert_integer(col_indices) # integerish
+  checkmate::assert_integerish(col_indices) # integerish
   checkmate::assert_subset(col_indices, seq_len(ncol(table_row)))
 
   # Main values are extracted

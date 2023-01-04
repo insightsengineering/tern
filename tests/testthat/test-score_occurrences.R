@@ -86,7 +86,6 @@ testthat::test_that("score_occurrences functions as expected", {
       path = c("AEBODSYS", "*", "AEDECOD"),
       scorefun = score_occurrences
     )
-debugonce(score_occurrences)
   result <- to_string_matrix(sorted_table)
 
   expected <- rbind(
