@@ -16,8 +16,9 @@ NULL
 #'
 #' @param table_row (`TableRow`)\cr an analysis row in a occurrence table.
 #' @param col_names (`character`)\cr the names of the columns to extract from.
-#' @param col_indices (`integer`)\cr the indices of the columns to extract from. If `col_names` are provided,
-#'   then these are inferred from the names of `table_row`. (Note that this currently only works well with a single
+#' @param col_indices (`integer`)\cr the indices of the columns to extract from.
+#'   If `col_names` are provided, then these are inferred from the names of
+#'   `table_row`. (Note that this currently only works well with a single
 #'   column split.)
 #'
 #' @examples

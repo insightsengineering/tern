@@ -30,8 +30,9 @@ check_names_indices(table_row, col_names = NULL, col_indices = NULL)
 
 \item{col_names}{(\code{character})\cr the names of the columns to extract from.}
 
-\item{col_indices}{(\code{integer})\cr the indices of the columns to extract from. If \code{col_names} are provided,
-then these are inferred from the names of \code{table_row}. (Note that this currently only works well with a single
+\item{col_indices}{(\code{integer})\cr the indices of the columns to extract from.
+If \code{col_names} are provided, then these are inferred from the names of
+\code{table_row}. (Note that this currently only works well with a single
 column split.)}
 
 \item{table}{(\code{VTableNodeInfo})\cr an occurrence table or row.}
