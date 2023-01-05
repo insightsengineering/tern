@@ -94,7 +94,7 @@ g_step <- function(df,
   # Set legend names. To be modified also at call level
   legend_names <- c("Estimate", "CI 95%")
 
-  p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "x", y = "y"))
+  p <- ggplot2::ggplot(df, ggplot2::aes(x = .data[["x"]], y = .data[["y"]]))
 
   if (!is.null(col)) {
     p <- p +
@@ -106,9 +106,9 @@ g_step <- function(df,
       ci_ribbon$fill <- "lightblue"
     }
     p <- p + ggplot2::geom_ribbon(
-      ggplot2::aes_string(
-        ymin = "ci_lower", ymax = "ci_upper",
-        fill = "legend_names[2]"
+      ggplot2::aes(
+        ymin = .data[["ci_lower"]], ymax = .data[["ci_upper"]],
+        fill = .data[["legend_names[2]"]]
       ),
       alpha = ci_ribbon$alpha
     ) +
@@ -118,7 +118,7 @@ g_step <- function(df,
   }
   p <- p +
     ggplot2::geom_line(
-      ggplot2::aes_string(y = "y", color = "legend_names[1]"),
+      ggplot2::aes(y = .data[["y"]], color = .data[["legend_names[1]"]]),
       linetype = est$lty
     ) +
     scale_colour_manual(

@@ -26,6 +26,7 @@
   `aet_09_smq`, `mth01`, `cmt01`, `aet07`, `aet06`) that used 
   `summarize_num_patients` to generate an initial summary. This was repeated 
   when paginating, while we needed it not to repeat.
+* Removed deprecated `ggplot2` functions/arguments to resolve all warnings.
 
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
