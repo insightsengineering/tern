@@ -287,7 +287,8 @@ g_lineplot <- function(df, # nolint
   p <- ggplot2::ggplot(
     data = df_stats,
     mapping = ggplot2::aes(
-      x = .data[[x]], y = .data[[mid]], color = .data[[strata_N]], shape = .data[[strata_N]], lty = .data[[strata_N]], group = .data[[strata_N]]
+      x = .data[[x]], y = .data[[mid]], color = .data[[strata_N]], shape = .data[[strata_N]],
+      lty = .data[[strata_N]], group = .data[[strata_N]]
     )
   )
 
@@ -386,7 +387,10 @@ g_lineplot <- function(df, # nolint
         names_ptypes = list(stat = factor(levels = stats_lev))
       )
 
-    tbl <- ggplot2::ggplot(df_stats_table, ggplot2::aes(x = .data[[x]], y = .data[["stat"]], label = .data[["value"]])) +
+    tbl <- ggplot2::ggplot(
+      df_stats_table,
+      ggplot2::aes(x = .data[[x]], y = .data[["stat"]], label = .data[["value"]])
+    ) +
       ggplot2::geom_text(size = table_font_size) +
       ggplot2::theme_bw() +
       ggplot2::theme(
@@ -450,7 +454,6 @@ g_lineplot <- function(df, # nolint
 #'
 #' @export
 h_format_row <- function(x, format, labels = NULL) {
-
   # cell: one row, one column data.frame
   format_cell <- function(x, format, label = NULL) {
     fc <- format_rcell(x = x, format = format)
