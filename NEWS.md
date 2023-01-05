@@ -24,8 +24,8 @@
   it works. Tests are also updated. 
 * Fixed table tests (`aet02`, `aet02_smq`, `aet_03`, `aet_06_smq`, `aet_09`, 
   `aet_09_smq`, `mth01`, `cmt01`, `aet07`, `aet06`) that used 
-  `summarize_num_patients` to generate an initial summary. This was repeated 
-  when paginating, while we needed it not to repeat.
+  `summarize_num_patients` to generate an initial summary so there is no repetition
+  when paginating.
 * Removed deprecated `ggplot2` functions/arguments to resolve all warnings.
 
 ### Miscellaneous

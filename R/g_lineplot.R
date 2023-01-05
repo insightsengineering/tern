@@ -287,8 +287,11 @@ g_lineplot <- function(df, # nolint
   p <- ggplot2::ggplot(
     data = df_stats,
     mapping = ggplot2::aes(
-      x = .data[[x]], y = .data[[mid]], color = .data[[strata_N]], shape = .data[[strata_N]],
-      lty = .data[[strata_N]], group = .data[[strata_N]]
+      x = .data[[x]], y = .data[[mid]],
+      color = if (is.null(strata_N)) NULL else .data[[strata_N]],
+      shape = if (is.null(strata_N)) NULL else .data[[strata_N]],
+      lty = if (is.null(strata_N)) NULL else .data[[strata_N]],
+      group = if (is.null(strata_N)) NULL else .data[[strata_N]]
     )
   )
 
