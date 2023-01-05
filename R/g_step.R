@@ -108,7 +108,7 @@ g_step <- function(df,
     p <- p + ggplot2::geom_ribbon(
       ggplot2::aes(
         ymin = .data[["ci_lower"]], ymax = .data[["ci_upper"]],
-        fill = .data[["legend_names[2]"]]
+        fill = legend_names[2]
       ),
       alpha = ci_ribbon$alpha
     ) +
@@ -118,7 +118,7 @@ g_step <- function(df,
   }
   p <- p +
     ggplot2::geom_line(
-      ggplot2::aes(y = .data[["y"]], color = .data[["legend_names[1]"]]),
+      ggplot2::aes(y = .data[["y"]], color = legend_names[1]),
       linetype = est$lty
     ) +
     scale_colour_manual(
