@@ -2,7 +2,7 @@
 % Please edit documentation in R/rtables_access.R
 \name{rtables_access}
 \alias{rtables_access}
-\alias{h_row_fist_values}
+\alias{h_row_first_values}
 \alias{h_row_counts}
 \alias{h_row_fractions}
 \alias{h_col_counts}
@@ -11,7 +11,7 @@
 \alias{check_names_indices}
 \title{\code{rtables} Access Helper Functions}
 \usage{
-h_row_fist_values(table_row, col_names = NULL, col_indices = NULL)
+h_row_first_values(table_row, col_names = NULL, col_indices = NULL)
 
 h_row_counts(table_row, col_names = NULL, col_indices = NULL)
 
@@ -46,14 +46,15 @@ as having a count as the first element and a fraction as the second element in e
 }
 \section{Functions}{
 \itemize{
-\item \code{h_row_fist_values()}: helper function to extract the first values from each content
+\item \code{h_row_first_values()}: helper function to extract the first values from each content
 cell and from specified columns in a \code{TableRow}. Defaults to all columns.
 
 \item \code{h_row_counts()}: Helper function that extracts row values and checks if they are
 convertible to integers (\code{integerish} values).
 
 \item \code{h_row_fractions()}: helper function to extract fractions from specified columns
-in a \code{TableRow}.
+in a \code{TableRow}. More specifically it extracts the second values from each
+content cell and checks it is a fraction.
 
 \item \code{h_col_counts()}: Helper function to extract column counts from specified columns
 in a table.
@@ -62,7 +63,7 @@ in a table.
 
 \item \code{is_leaf_table()}: Helper function which says whether current table is a leaf in the tree.
 
-\item \code{check_names_indices()}: Helper function that tests standard inputs for column indices.
+\item \code{check_names_indices()}: Internal helper function that tests standard inputs for column indices.
 
 }}
 \examples{
@@ -74,13 +75,14 @@ tbl <- basic_table() \%>\%
     list(
       "mean (sd)" = rcell(c(mean(x), sd(x)), format = "xx.x (xx.x)"),
       "n" = length(x),
-      "frac" = rcell(c(mean(x), mean(x) + 1), format = "xx. / xx.")
+      "frac" = rcell(c(0.1, 0.1), format = "xx (xx)")
     )
   }) \%>\%
   build_table(adsl) \%>\%
   prune_table()
 tree_row_elem <- collect_leaves(tbl[2, ])[[1]]
-max(h_row_fist_values(tree_row_elem))
+result <- max(h_row_first_values(tree_row_elem))
+# result
 
 # Row counts (integer values)
 \dontrun{
@@ -88,7 +90,8 @@ h_row_counts(tree_row_elem) # Fails because there are no integers
 }
 # Using values with integers
 tree_row_elem <- collect_leaves(tbl[3, ])[[1]]
-h_row_counts(tree_row_elem)
+result <- h_row_counts(tree_row_elem)
+#result
 
 # Row fractions
 tree_row_elem <- collect_leaves(tbl[4, ])[[1]]

@@ -30,13 +30,14 @@ NULL
 #'     list(
 #'       "mean (sd)" = rcell(c(mean(x), sd(x)), format = "xx.x (xx.x)"),
 #'       "n" = length(x),
-#'       "frac" = rcell(c(mean(x), mean(x) + 1), format = "xx. / xx.")
+#'       "frac" = rcell(c(0.1, 0.1), format = "xx (xx)")
 #'     )
 #'   }) %>%
 #'   build_table(adsl) %>%
 #'   prune_table()
 #' tree_row_elem <- collect_leaves(tbl[2, ])[[1]]
-#' max(h_row_first_values(tree_row_elem))
+#' result <- max(h_row_first_values(tree_row_elem))
+#' # result
 #'
 #' @export
 h_row_first_values <- function(table_row,
@@ -70,7 +71,8 @@ h_row_first_values <- function(table_row,
 #' }
 #' # Using values with integers
 #' tree_row_elem <- collect_leaves(tbl[3, ])[[1]]
-#' h_row_counts(tree_row_elem)
+#' result <- h_row_counts(tree_row_elem)
+#' #result
 #'
 #' @export
 h_row_counts <- function(table_row,
@@ -82,7 +84,8 @@ h_row_counts <- function(table_row,
 }
 
 #' @describeIn rtables_access helper function to extract fractions from specified columns
-#'   in a `TableRow`.
+#'   in a `TableRow`. More specifically it extracts the second values from each
+#'   content cell and checks it is a fraction.
 #'
 #' @examples
 #' # Row fractions
