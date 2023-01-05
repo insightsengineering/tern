@@ -36,15 +36,15 @@ NULL
 #'   build_table(adsl) %>%
 #'   prune_table()
 #' tree_row_elem <- collect_leaves(tbl[2, ])[[1]]
-#' max(h_row_fist_values(tree_row_elem))
+#' max(h_row_first_values(tree_row_elem))
 #'
 #' @export
-h_row_fist_values <- function(table_row,
+h_row_first_values <- function(table_row,
                          col_names = NULL,
                          col_indices = NULL) {
 
   col_indices <- check_names_indices(table_row, col_names, col_indices)
-  checkmate::assert_integerish(col_indices) # integerish
+  checkmate::assert_integerish(col_indices)
   checkmate::assert_subset(col_indices, seq_len(ncol(table_row)))
 
   # Main values are extracted
@@ -76,7 +76,7 @@ h_row_fist_values <- function(table_row,
 h_row_counts <- function(table_row,
                          col_names = NULL,
                          col_indices = NULL) {
-  counts <- h_row_fist_values(table_row, col_names, col_indices)
+  counts <- h_row_first_values(table_row, col_names, col_indices)
   checkmate::assert_integerish(counts)
   counts
 }
@@ -130,7 +130,7 @@ is_leaf_table <- function(table) {
   identical(child_classes, "ElementaryTable")
 }
 
-#' @describeIn rtables_access Helper function that tests standard inputs for column indices.
+#' @describeIn rtables_access Internal helper function that tests standard inputs for column indices.
 #'
 #' @keywords internal
 check_names_indices <- function(table_row,

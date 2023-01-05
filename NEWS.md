@@ -15,7 +15,7 @@
 * Added tests for `pkct01` and `adat03`.
 * Added `analyze_num_patients` to have total summary at the beginning that does not
   repeat when paginating.
-* Added `h_row_fist_values` function as a more general helper function to retrieve
+* Added `h_row_first_values` function as a more general helper function to retrieve
   first values from specific rows.
 
 ### Bug Fixes

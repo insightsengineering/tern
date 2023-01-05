@@ -9,7 +9,7 @@ tbl_with_empty <- rtable(
   header = c("A: Drug X", "B: Placebo", "C: Combination"),
   rrow("empty_row", NULL, NULL, NULL)
 )
-testthat::test_that("h_row_fist_values works as expected", {
+testthat::test_that("h_row_first_values works as expected", {
   sub_tab <- tbl_example[5, ]
 
   # Selected table is correct
@@ -26,22 +26,22 @@ testthat::test_that("h_row_fist_values works as expected", {
   table_row <- collect_leaves(sub_tab)[[1]]
 
   # Extract all first values
-  result <- h_row_fist_values(table_row)
+  result <- h_row_first_values(table_row)
   expected <- c("A: Drug X" = 1, "B: Placebo" = 4, "C: Combination" = 1)
   testthat::expect_identical(result, expected)
 
   # Extract first values by specific column names
-  result <- h_row_fist_values(table_row, col_names = c("B: Placebo", "C: Combination"))
+  result <- h_row_first_values(table_row, col_names = c("B: Placebo", "C: Combination"))
   expected <- c("B: Placebo" = 4, "C: Combination" = 1)
   testthat::expect_identical(result, expected)
 
   # Extract first values by specific column indices
-  result <- h_row_fist_values(table_row, col_indices = c(1L, 3L))
+  result <- h_row_first_values(table_row, col_indices = c(1L, 3L))
   expected <- c("A: Drug X" = 1, "C: Combination" = 1)
   testthat::expect_identical(result, expected)
 
   # Error if both are used
-  testthat::expect_error(h_row_fist_values(table_row, col_indices = c(1L, 3L), col_names = c("B: Placebo")))
+  testthat::expect_error(h_row_first_values(table_row, col_indices = c(1L, 3L), col_names = c("B: Placebo")))
 })
 
 testthat::test_that("h_row_counts works as expected", {
