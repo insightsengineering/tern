@@ -1,4 +1,4 @@
-# tern 0.7.10.9024
+# tern 0.7.10.9025
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
