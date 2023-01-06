@@ -26,14 +26,14 @@
   `aet_09_smq`, `mth01`, `cmt01`, `aet07`, `aet06`) that used 
   `summarize_num_patients` to generate an initial summary so there is no repetition
   when paginating.
-* Removed deprecated `ggplot2` functions/arguments to resolve all warnings.
+* Removed deprecated `ggplot2` functions/arguments to resolve warnings.
 
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
   and `summarize_vars_in_cols.R`, respectively.
 * Renamed `summarize_vars_in_cols` into `analyze_vars_in_cols` to reflect the
   appropriate `analyze` logic.
-* Export function `format_xx`.
+* Exported function `format_xx`.
 
 # tern 0.7.10
 
