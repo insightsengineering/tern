@@ -601,13 +601,13 @@ h_ggkm <- function(data,
   gg <- {
     ggplot2::ggplot(
       data = data,
-      mapping = ggplot2::aes_string(
-        x = "time",
-        y = "estimate",
-        ymin = "conf.low",
-        ymax = "conf.high",
-        color = "strata",
-        fill = "strata"
+      mapping = ggplot2::aes(
+        x = .data[["time"]],
+        y = .data[["estimate"]],
+        ymin = .data[["conf.low"]],
+        ymax = .data[["conf.high"]],
+        color = .data[["strata"]],
+        fill = .data[["strata"]]
       )
     ) +
       ggplot2::geom_hline(yintercept = 0)
@@ -619,13 +619,13 @@ h_ggkm <- function(data,
 
   gg <- if (is.null(lty)) {
     gg +
-      ggplot2::geom_step(lwd = lwd)
+      ggplot2::geom_step(linewidth = lwd)
   } else if (checkmate::test_number(lty)) {
     gg +
-      ggplot2::geom_step(lwd = lwd, lty = lty)
+      ggplot2::geom_step(linewidth = lwd, lty = lty)
   } else if (is.numeric(lty)) {
     gg +
-      ggplot2::geom_step(mapping = ggplot2::aes_string(linetype = "strata"), lwd = lwd) +
+      ggplot2::geom_step(mapping = ggplot2::aes(linetype = .data[["strata"]]), linewidth = lwd) +
       ggplot2::scale_linetype_manual(values = lty)
   }
 
@@ -644,10 +644,10 @@ h_ggkm <- function(data,
 
     gg <- gg + ggplot2::geom_point(
       data = dt,
-      ggplot2::aes_string(
-        x = "time",
-        y = "censor",
-        shape = "censor_lbl"
+      ggplot2::aes(
+        x = .data[["time"]],
+        y = .data[["censor"]],
+        shape = .data[["censor_lbl"]]
       ),
       size = size,
       show.legend = TRUE,
@@ -681,7 +681,7 @@ h_ggkm <- function(data,
   gg + ggplot2::theme(
     legend.position = "bottom",
     legend.title = ggplot2::element_blank(),
-    panel.grid.major.x = ggplot2::element_line(size = 2)
+    panel.grid.major.x = ggplot2::element_line(linewidth = 2)
   )
 }
 

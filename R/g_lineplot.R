@@ -286,8 +286,12 @@ g_lineplot <- function(df, # nolint
   ############################### |
   p <- ggplot2::ggplot(
     data = df_stats,
-    mapping = ggplot2::aes_string(
-      x = x, y = mid, color = strata_N, shape = strata_N, lty = strata_N, group = strata_N
+    mapping = ggplot2::aes(
+      x = .data[[x]], y = .data[[mid]],
+      color = if (is.null(strata_N)) NULL else .data[[strata_N]],
+      shape = if (is.null(strata_N)) NULL else .data[[strata_N]],
+      lty = if (is.null(strata_N)) NULL else .data[[strata_N]],
+      group = if (is.null(strata_N)) NULL else .data[[strata_N]]
     )
   )
 
@@ -310,7 +314,7 @@ g_lineplot <- function(df, # nolint
   if (!is.null(interval)) {
     p <- p +
       ggplot2::geom_errorbar(
-        ggplot2::aes_string(ymin = whiskers[1], ymax = whiskers[max(1, length(whiskers))]),
+        ggplot2::aes(ymin = .data[[whiskers[1]]], ymax = .data[[whiskers[max(1, length(whiskers))]]]),
         width = 0.45,
         position = position
       )
@@ -320,7 +324,7 @@ g_lineplot <- function(df, # nolint
       p <- p +
         ggplot2::geom_linerange(
           data = df_stats[!is.na(df_stats[[whiskers]]), ], # as na.rm =TRUE does not suppress warnings
-          ggplot2::aes_string(ymin = mid, ymax = whiskers),
+          ggplot2::aes(ymin = .data[[mid]], ymax = .data[[whiskers]]),
           position = position,
           na.rm = TRUE,
           show.legend = FALSE
@@ -386,7 +390,10 @@ g_lineplot <- function(df, # nolint
         names_ptypes = list(stat = factor(levels = stats_lev))
       )
 
-    tbl <- ggplot2::ggplot(df_stats_table, ggplot2::aes_string(x = x, y = "stat", label = "value")) +
+    tbl <- ggplot2::ggplot(
+      df_stats_table,
+      ggplot2::aes(x = .data[[x]], y = .data[["stat"]], label = .data[["value"]])
+    ) +
       ggplot2::geom_text(size = table_font_size) +
       ggplot2::theme_bw() +
       ggplot2::theme(
@@ -450,7 +457,6 @@ g_lineplot <- function(df, # nolint
 #'
 #' @export
 h_format_row <- function(x, format, labels = NULL) {
-
   # cell: one row, one column data.frame
   format_cell <- function(x, format, label = NULL) {
     fc <- format_rcell(x = x, format = format)

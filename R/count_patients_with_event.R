@@ -93,7 +93,7 @@ s_count_patients_with_event <- function(df,
 #' )
 a_count_patients_with_event <- make_afun(
   s_count_patients_with_event,
-  .formats = c(count_fraction = format_count_fraction)
+  .formats = c(count_fraction = format_count_fraction_fixed_dp)
 )
 
 #' @describeIn count_patients_with_event Analyze Function which adds the count statistics
@@ -140,7 +140,7 @@ count_patients_with_event <- function(lyt,
                                       ...,
                                       table_names = vars,
                                       .stats = "count_fraction",
-                                      .formats = list(count_fraction = format_count_fraction_fixed_dp),
+                                      .formats = NULL,
                                       .labels = NULL,
                                       .indent_mods = NULL) {
   afun <- make_afun(
@@ -252,7 +252,7 @@ s_count_patients_with_flags <- function(df,
 #' )
 a_count_patients_with_flags <- make_afun(
   s_count_patients_with_flags,
-  .formats = c("count_fraction" = format_count_fraction)
+  .formats = c("count_fraction" = format_count_fraction_fixed_dp)
 )
 
 #' @describeIn count_patients_with_event Analyze Function which is a modified version of [count_patients_with_event()].
@@ -282,7 +282,7 @@ count_patients_with_flags <- function(lyt,
                                       ...,
                                       table_names = paste0("tbl_flags_", var),
                                       .stats = "count_fraction",
-                                      .formats = list(count_fraction = format_count_fraction_fixed_dp),
+                                      .formats = NULL,
                                       .indent_mods = NULL) {
   afun <- make_afun(
     a_count_patients_with_flags,

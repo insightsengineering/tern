@@ -83,14 +83,14 @@ h_g_ipp <- function(df,
 
   p <- ggplot2::ggplot(
     data = df,
-    mapping = ggplot2::aes_string(
-      x = xvar,
-      y = yvar,
-      group = id_var,
-      colour = id_var
+    mapping = ggplot2::aes(
+      x = .data[[xvar]],
+      y = .data[[yvar]],
+      group = .data[[id_var]],
+      colour = .data[[id_var]]
     )
   ) +
-    ggplot2::geom_line(size = 0.4) +
+    ggplot2::geom_line(linewidth = 0.4) +
     ggplot2::geom_point(size = 2) +
     ggplot2::labs(
       x = xlab,
@@ -108,20 +108,20 @@ h_g_ipp <- function(df,
     p <- p +
       ggplot2::geom_hline(
         data = baseline_df,
-        mapping = ggplot2::aes_string(
-          yintercept = yvar_baseline,
-          colour = id_var
+        mapping = ggplot2::aes(
+          yintercept = .data[[yvar_baseline]],
+          colour = .data[[id_var]]
         ),
         linetype = "dotdash",
-        size = 0.4
+        linewidth = 0.4
       ) +
       ggplot2::geom_text(
         data = baseline_df,
-        mapping = ggplot2::aes_string(
+        mapping = ggplot2::aes(
           x = 1,
-          y = yvar_baseline,
-          label = id_var,
-          colour = id_var
+          y = .data[[yvar_baseline]],
+          label = .data[[id_var]],
+          colour = .data[[id_var]]
         ),
         nudge_y = 0.025 * (max(df[, yvar], na.rm = TRUE) - min(df[, yvar], na.rm = TRUE)),
         vjust = "right",
