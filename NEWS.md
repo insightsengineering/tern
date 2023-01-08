@@ -15,6 +15,8 @@
 * Added tests for `pkct01` and `adat03`.
 * Added `analyze_num_patients` to have total summary at the beginning that does not
   repeat when paginating.
+* Added `h_row_first_values` function as a more general helper function to retrieve
+  first values from specific rows.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
@@ -27,6 +29,8 @@
   `summarize_num_patients` to generate an initial summary so there is no repetition
   when paginating.
 * Removed deprecated `ggplot2` functions/arguments to resolve warnings.
+* Fixed bugs in `rtables_access.R` that did not check for specific combination
+  (also the standard values, that where never used) of column indices and names.
 
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`

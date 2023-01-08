@@ -8,11 +8,13 @@
 NULL
 
 #' @description `r lifecycle::badge("stable")`
-#' @describeIn score_occurrences Scoring function which sums the counts across all columns.
+#' @describeIn score_occurrences Scoring function which sums the counts across all
+#'   columns. It will fail if anything else but counts are used.
 #' @inheritParams rtables_access
+#'
 #' @return [score_occurrences()] returns the sum of counts across all columns of a table row.
 #'
-#' @export
+#' @seealso [h_row_first_values()]
 #'
 #' @examples
 #' library(scda)
@@ -39,35 +41,40 @@ NULL
 #'   ) %>%
 #'   count_occurrences(vars = "AEDECOD")
 #'
-#' rtable_object <- build_table(lyt, adae, alt_counts_df = adsl) %>%
+#' tbl <- build_table(lyt, adae, alt_counts_df = adsl) %>%
 #'   prune_table()
 #'
-#' rtable_object_sorted <- rtable_object %>%
+#' tbl_sorted <- tbl %>%
 #'   sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 #'
-#' rtable_object_sorted
+#' tbl_sorted
+#'
+#' @export
 score_occurrences <- function(table_row) {
-  row_counts <- h_row_counts(table_row, col_indices = seq_len(ncol(table_row)))
+  row_counts <- h_row_counts(table_row)
   sum(row_counts)
 }
 
 #' @describeIn score_occurrences Scoring functions can be produced by this constructor to only include
-#'   specific columns in the scoring.
+#'   specific columns in the scoring. See [h_row_counts()] for further information.
 #' @inheritParams has_count_in_cols
+#'
 #' @return [score_occurrences_cols()] returns a function that sums counts across all specified columns
 #'   of a table row.
 #'
-#' @export
+#' @seealso [h_row_counts()]
 #'
 #' @examples
 #' score_cols_a_and_b <- score_occurrences_cols(col_names = c("A: Drug X", "B: Placebo"))
 #'
 #' # Note that this here just sorts the AEDECOD inside the AEBODSYS. The AEBODSYS are not sorted.
 #' # That would require a second pass of `sort_at_path`.
-#' rtable_object_sorted <- rtable_object %>%
+#' tbl_sorted <- tbl %>%
 #'   sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_cols_a_and_b)
 #'
-#' rtable_object_sorted
+#' tbl_sorted
+#'
+#' @export
 score_occurrences_cols <- function(...) {
   function(table_row) {
     row_counts <- h_row_counts(table_row, ...)
@@ -84,14 +91,14 @@ score_occurrences_cols <- function(...) {
 #' @export
 #'
 #' @examples
-#' score_subtable_all <- score_occurrences_subtable(col_names = names(rtable_object))
+#' score_subtable_all <- score_occurrences_subtable(col_names = names(tbl))
 #'
 #' # Note that this code just sorts the AEBODSYS, not the AEDECOD within AEBODSYS. That
 #' # would require a second pass of `sort_at_path`.
-#' rtable_object_sorted <- rtable_object %>%
+#' tbl_sorted <- tbl %>%
 #'   sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 #'
-#' rtable_object_sorted
+#' tbl_sorted
 score_occurrences_subtable <- function(...) {
   score_table_row <- score_occurrences_cols(...)
   function(table_tree) {
