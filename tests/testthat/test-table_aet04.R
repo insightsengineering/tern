@@ -1,106 +1,58 @@
-preproc_adae <- function(adae) {
-  anl <- adae %>%
-    dplyr::mutate(
-      AEDECOD = as.character(AEDECOD),
-      AEBODSYS = as.character(AEBODSYS),
-    )
-
-  anl
-}
-
-raw_table <- function(adae, adsl) {
-  gr_grp <- list(
-    "- Any Grade -" = c("1", "2", "3", "4", "5"),
-    "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4"),
-    "Grade 5" = "5"
-  )
-
-  lyt <- basic_table() %>%
-    split_cols_by("ACTARM") %>%
-    add_colcounts() %>%
-    count_occurrences_by_grade(
-      var = "AETOXGR",
-      grade_groups = gr_grp
-    ) %>%
-    split_rows_by("AEBODSYS",
-      split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE
-    ) %>%
-    summarize_occurrences_by_grade(
-      var = "AETOXGR",
-      grade_groups = gr_grp
-    ) %>%
-    split_rows_by("AEDECOD",
-      split_fun = trim_levels_in_group("AETOXGR"),
-      child_labels = "visible", nested = TRUE
-    ) %>%
-    summarize_num_patients(
-      var = "USUBJID",
-      .stats = "unique",
-      .labels = "- Any Grade -"
-    ) %>%
-    count_occurrences_by_grade(
-      var = "AETOXGR",
-      grade_groups = gr_grp[-1],
-      .indent_mods = -1L
-    )
-
-  lyt %>%
-    build_table(adae, alt_counts_df = adsl) %>%
-    sort_at_path(
-      path = "AEBODSYS",
-      scorefun = cont_n_allcols,
-      decreasing = TRUE
-    ) %>%
-    sort_at_path(
-      path = c("AEBODSYS", "*", "AEDECOD"),
-      scorefun = cont_n_allcols,
-      decreasing = TRUE
-    )
-}
-
-# Simple wrapper to return subset ADAE to a threshold of xx%.
-get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
-  n_per_arm <- adsl %>%
-    dplyr::count(ACTARM)
-
-  anl_terms <- adae %>%
-    dplyr::group_by(ACTARM, AEBODSYS, AEDECOD) %>%
-    dplyr::summarise(
-      unique_terms = dplyr::n_distinct(USUBJID)
-    ) %>%
-    dplyr::ungroup()
-
-  anl_terms <- dplyr::left_join(
-    anl_terms,
-    n_per_arm,
-    by = "ACTARM"
-  ) %>%
-    dplyr::mutate(
-      ae_rate = unique_terms / n
-    ) %>%
-    dplyr::filter(ae_rate >= cutoff_rate) %>%
-    dplyr::select(AEDECOD) %>%
-    unique()
-
-  anl <- dplyr::left_join(
-    anl_terms,
-    adae,
-    by = "AEDECOD"
-  )
-  anl
-}
-
+# Data pre-processing
 adsl <- adsl_raw
-adae <- preproc_adae(adae_raw)
-
+adae <- adae_raw %>%
+  dplyr::mutate(
+    AEDECOD = as.character(AEDECOD),
+    AEBODSYS = as.character(AEBODSYS),
+  )
 gr_grp <- list(
   "- Any Grade -" = c("1", "2", "3", "4", "5"),
   "Grade 1-2" = c("1", "2"),
   "Grade 3-4" = c("3", "4"),
   "Grade 5" = "5"
 )
+
+# Raw result for future pruning
+raw_result <- basic_table() %>%
+  split_cols_by("ACTARM") %>%
+  add_colcounts() %>%
+  count_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp
+  ) %>%
+  split_rows_by("AEBODSYS",
+                split_fun = trim_levels_in_group("AETOXGR"),
+                child_labels = "visible", nested = TRUE
+  ) %>%
+  summarize_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp
+  ) %>%
+  split_rows_by("AEDECOD",
+                split_fun = trim_levels_in_group("AETOXGR"),
+                child_labels = "visible", nested = TRUE
+  ) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = "unique",
+    .labels = "- Any Grade -"
+  ) %>%
+  count_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp[-1],
+    .indent_mods = -1L
+  ) %>%
+  build_table(adae, alt_counts_df = adsl) %>%
+  sort_at_path(
+    path = "AEBODSYS",
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  ) %>%
+  sort_at_path(
+    path = c("AEBODSYS", "*", "AEDECOD"),
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  )
 
 testthat::test_that("AET04 variant 1 is produced correctly", {
   lyt <- basic_table() %>%
@@ -689,6 +641,38 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
 
 testthat::test_that("AET04 variant 6 is produced correctly (with an
                     Incidence Rate of at Least 5%, totals restricted)", {
+  # Simple wrapper to return subset ADAE to a threshold of xx%.
+  get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
+    n_per_arm <- adsl %>%
+      dplyr::count(ACTARM)
+
+    anl_terms <- adae %>%
+      dplyr::group_by(ACTARM, AEBODSYS, AEDECOD) %>%
+      dplyr::summarise(
+        unique_terms = dplyr::n_distinct(USUBJID)
+      ) %>%
+      dplyr::ungroup()
+
+    anl_terms <- dplyr::left_join(
+      anl_terms,
+      n_per_arm,
+      by = "ACTARM"
+    ) %>%
+      dplyr::mutate(
+        ae_rate = unique_terms / n
+      ) %>%
+      dplyr::filter(ae_rate >= cutoff_rate) %>%
+      dplyr::select(AEDECOD) %>%
+      unique()
+
+    anl <- dplyr::left_join(
+      anl_terms,
+      adae,
+      by = "AEDECOD"
+    )
+    anl
+  }
+
   adae <- get_adae_trimmed(adsl, adae, cutoff_rate = 0.4) %>%
     dplyr::mutate(AETOXGR = droplevels(AETOXGR))
 
@@ -792,22 +776,22 @@ testthat::test_that("AET04 variant 6 is produced correctly (with an
 
 # This function is needed to check only the inner loops as the first piece should
 # not be checked and filtered out by prune_table.
-my_row_condition <- function(table_row) {
-  if (indent_mod(table_row) == 0) {
-    return(TRUE)
-  } else {
-    row_condition(table_row)
+my_row_condition <- function(row_fnc_condition) {
+  function(table_row) {
+    if (indent_mod(table_row) == 0) {
+      return(TRUE)
+    } else {
+      row_fnc_condition(table_row)
+    }
   }
 }
 
 # NOTE: STREAM logic will only trim at term level
 testthat::test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at Least X Patients)", {
-  raw_result <- raw_table(adae, adsl)
-
   cutoff <- 58L
   row_condition <- has_count_in_any_col(atleast = cutoff, col_names = levels(adsl$ACTARM))
 
-  result <- prune_table(raw_result, keep_rows(my_row_condition))
+  result <- prune_table(raw_result, keep_rows(my_row_condition(row_condition)))
 
   result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
@@ -851,12 +835,10 @@ testthat::test_that("AET04 variant 8 is produced correctly (with an Incidence Ra
 
 # NOTE: STREAM logic will only stream at term level
 testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence Rate of at Least X%)", {
-  raw_result <- raw_table(adae, adsl)
-
   cutoff <- 0.1
   row_condition <- has_fractions_difference(atleast = cutoff, col_names = names(raw_result))
 
-  result <- prune_table(raw_result, keep_rows(my_row_condition))
+  result <- prune_table(raw_result, keep_rows(my_row_condition(row_condition)))
 
   result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
@@ -908,14 +890,12 @@ testthat::test_that(
   "AET04 variant 11 is produced correctly
   (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)",
   {
-    raw_result <- raw_table(adae, adsl)
-
     cutoff <- 0.4
     row_condition <- has_fraction_in_any_col(atleast = cutoff, col_names = levels(adsl$ACTARM))
 
-    result <- prune_table(raw_result, keep_rows(my_row_condition))
+    result <- prune_table(raw_result, keep_rows(my_row_condition(row_condition)))
 
-    result_matrix <- to_string_matrix(result, with_spaces = TRUE, T)
+    result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
     expected_matrix <- c(
       "                       A: Drug X    B: Placebo    C: Combination",
