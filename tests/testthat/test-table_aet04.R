@@ -681,7 +681,7 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
   # Pagination works
   testthat::expect_silent(
     pag_result <- paginate_table(result, lpp = 15)
-    )
+  )
 })
 
 # No test done for variant 5 (Using Worst Grade Flags from ADAE) since it's similar to
@@ -793,7 +793,7 @@ testthat::test_that("AET04 variant 6 is produced correctly (with an
 # This function is needed to check only the inner loops as the first piece should
 # not be checked and filtered out by prune_table.
 my_row_condition <- function(table_row) {
-  if(indent_mod(table_row) == 0) {
+  if (indent_mod(table_row) == 0) {
     return(TRUE)
   } else {
     row_condition(table_row)
@@ -901,7 +901,8 @@ testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in
 
 testthat::test_that(
   "AET04 variant 11 is produced correctly
-  (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)", {
+  (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)",
+  {
     raw_result <- raw_table(adae, adsl)
 
     cutoff <- 0.4
@@ -965,4 +966,5 @@ testthat::test_that(
     testthat::expect_silent(
       pag_result <- paginate_table(result, lpp = 15)
     )
-})
+  }
+)
