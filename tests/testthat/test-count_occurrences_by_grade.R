@@ -425,9 +425,10 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
       grade_groups = grade_groups
     ) %>%
     split_rows_by("ARM",
-                  child_labels = "visible",
-                  nested = TRUE,
-                  indent_mod = 1L) %>%
+      child_labels = "visible",
+      nested = TRUE,
+      indent_mod = 1L
+    ) %>%
     count_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups
@@ -437,6 +438,6 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
   testthat::expect_identical(
     to_string_matrix(pag_result[[1]])[3:4, 1],
     c("-Any-", "Grade 1-2")
-    )
+  )
   testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "B")
 })
