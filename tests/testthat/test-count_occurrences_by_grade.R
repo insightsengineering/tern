@@ -410,7 +410,7 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
     USUBJID = 1:10,
     ARM_EMPTY = rep(c("A", "B"), each = 5)
   )
-  df <- rbind(df, df[4,])
+  df <- rbind(df, df[4, ])
   df$USUBJID[nrow(df)] <- max(as.numeric(df$USUBJID)) + 1
 
   # Define additional grade groupings
