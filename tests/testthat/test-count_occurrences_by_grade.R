@@ -403,3 +403,40 @@ testthat::test_that("count_occurrences_by_grade works with trim_levels_in_group 
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
+
+testthat::test_that("summarize_ and count_occurrences_by_grade works with pagination", {
+  df <- raw_data
+  df_adsl <- data.frame(
+    USUBJID = 1:10,
+    ARM_EMPTY = rep(c("A", "B"), each = 5)
+  )
+
+  # Define additional grade groupings
+  grade_groups <- list(
+    "-Any-" = c("1", "2", "3", "4", "5"),
+    "Grade 1-2" = c("1", "2"),
+    "Grade 3-5" = c("3", "4", "5")
+  )
+
+  result <- basic_table() %>%
+    add_colcounts() %>%
+    count_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = grade_groups
+    ) %>%
+    split_rows_by("ARM",
+                  child_labels = "visible",
+                  nested = TRUE,
+                  indent_mod = 1L) %>%
+    count_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = grade_groups
+    ) %>%
+    build_table(df, alt_counts_df = df_adsl)
+  pag_result <- paginate_table(result, lpp = 20)
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[1]])[3:4, 1],
+    c("-Any-", "Grade 1-2")
+    )
+  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "B")
+})
