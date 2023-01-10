@@ -17,13 +17,13 @@ testthat::test_that("AET03 variant 1 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
-    summarize_occurrences_by_grade( # to fix
+    count_occurrences_by_grade(
       var = "ASEV",
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEBODSYS",
       split_fun = trim_levels_in_group("ASEV"),
-      child_labels = "visible", nested = TRUE, indent_mod = -1L
+      child_labels = "visible", nested = TRUE
     ) %>%
     summarize_occurrences_by_grade(
       var = "ASEV",
@@ -116,4 +116,16 @@ testthat::test_that("AET03 variant 1 is produced correctly", {
   )
 
   testthat::expect_identical(result_matrix, expected_matrix)
+
+  # Pagination also works (and sorting)
+  pag_result <- paginate_table(result, lpp = 15)
+
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[3]])[3, 1],
+    "cl B.2"
+  )
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[1]])[3:4, 1],
+    c("- Any Intensity -", "MILD")
+  )
 })
