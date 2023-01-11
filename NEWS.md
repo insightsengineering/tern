@@ -12,7 +12,7 @@
   `format_count_fraction_fixed_dp` with fixed single decimal place in percentages.
 * Removed `summary_in_cols` helper functions because redundant.
 * Added `na_level` and `labelstr` to `summarize_vars_in_cols`.
-* Added tests for `pkct01` and `adat03`.
+* Added tests for `pkct01`, `adat03`, `pdt01`, and `pdt02`.
 * Added `analyze_num_patients` to have total summary at the beginning that does not
   repeat when paginating.
 * Added `h_row_first_values` function as a more general helper function to retrieve
