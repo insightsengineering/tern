@@ -452,9 +452,9 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
       scorefun = score_occurrences,
       decreasing = TRUE
     ) %>%
-    sort_at_path( # this does nothing -> ???
-      path = c("ARM", "*"),
-      scorefun = score_occurrences_from_path("-Any-"),
+    sort_at_path(
+      path = c("ARM"),
+      scorefun = score_occurrences_from_path(c("AETOXGR", "-Any-")),
       decreasing = TRUE
     )
 
@@ -464,5 +464,5 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
     to_string_matrix(pag_result[[1]])[3:4, 1],
     c("-Any-", "Grade 1-2")
   )
-  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "B") # should be A
+  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "A")
 })
