@@ -167,7 +167,7 @@ The percent value has 1 decimal place. If the numerator is 0, only the fraction 
 
 ```{r}
 # First we will see how the format_fraction_fixed_dp code works and displays the outputs
-format_fraction_fixed_dp <- function(x, ...) {
+format_fraction_fixed_dp_test <- function(x, ...) {
   attr(x, "label") <- NULL
   checkmate::assert_vector(x)
   checkmate::assert_count(x["num"])
@@ -200,7 +200,7 @@ basic_table() %>%
     abnormal = list(low = "LOW", high = "HIGH"),
     variables = list(id = "ID", baseline = "BL_RANGE"),
     exclude_base_abn = FALSE,
-    .formats = list(fraction = format_fraction_fixed_dp)
+    .formats = list(fraction = format_fraction_fixed_dp_test)
   ) %>%
   build_table(df2)
 ```
