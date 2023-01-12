@@ -118,7 +118,7 @@ s_count_occurrences <- function(df,
 #' )
 a_count_occurrences <- make_afun(
   s_count_occurrences,
-  .formats = c(count = "xx", count_fraction = format_count_fraction, fraction = format_fraction)
+  .formats = c(count = "xx", count_fraction = format_count_fraction_fixed_dp, fraction = format_fraction_fixed_dp)
 )
 
 #' @describeIn count_occurrences Analyze Function that counts occurrences as part of `rtables` layouts.
@@ -160,7 +160,7 @@ count_occurrences <- function(lyt,
                               ...,
                               table_names = vars,
                               .stats = "count_fraction",
-                              .formats = list(count_fraction = format_count_fraction_fixed_dp),
+                              .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {
   afun <- make_afun(

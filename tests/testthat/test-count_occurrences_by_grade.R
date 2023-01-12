@@ -353,9 +353,9 @@ testthat::test_that("summarize_occurrences_by_grade works with custom arguments 
     c(
       "", "", "A", "-Any-", "Grade 1-2", "1", "2", "Grade 3-5",
       "3", "4", "5", "B", "-Any-", "Grade 1-2", "1", "2", "Grade 3-5",
-      "3", "4", "5", "all obs", "(N=10)", "", "3 (30%)", "1 (10%)",
-      "0", "1 (10%)", "2 (20%)", "2 (20%)", "0", "0",
-      "", "3 (30%)", "3 (30%)", "2 (20%)", "1 (10%)", "0", "0",
+      "3", "4", "5", "all obs", "(N=10)", "", "3 (30.0%)", "1 (10.0%)",
+      "0", "1 (10.0%)", "2 (20.0%)", "2 (20.0%)", "0", "0",
+      "", "3 (30.0%)", "3 (30.0%)", "2 (20.0%)", "1 (10.0%)", "0", "0",
       "0", "0"
     ),
     .Dim = c(20L, 2L)
@@ -402,4 +402,67 @@ testthat::test_that("count_occurrences_by_grade works with trim_levels_in_group 
     .Dim = c(7L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
+})
+
+testthat::test_that("summarize_ and count_occurrences_by_grade works with pagination and sorting", {
+  df <- raw_data
+  df_adsl <- data.frame(
+    USUBJID = 1:10,
+    ARM_EMPTY = rep(c("A", "B"), each = 5)
+  )
+  df <- rbind(df, df[4, ])
+  df$USUBJID[nrow(df)] <- max(as.numeric(df$USUBJID)) + 1
+
+  # Define additional grade groupings
+  grade_groups <- list(
+    "-Any-" = c("1", "2", "3", "4", "5"),
+    "Grade 1-2" = c("1", "2"),
+    "Grade 3-5" = c("3", "4", "5")
+  )
+
+  score_occurrences_from_path <- function(path) {
+    function(table_row) {
+      value_at(table_row, path)[1]
+    }
+  }
+
+  result <- basic_table() %>%
+    add_colcounts() %>%
+    count_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = grade_groups
+    ) %>%
+    split_rows_by("ARM",
+      child_labels = "visible",
+      nested = TRUE,
+      indent_mod = 1L
+    ) %>%
+    count_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = grade_groups
+    ) %>%
+    build_table(df, alt_counts_df = df_adsl) %>%
+    sort_at_path(
+      path = c("AETOXGR"),
+      scorefun = score_occurrences,
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("ARM", "*", "AETOXGR"),
+      scorefun = score_occurrences,
+      decreasing = TRUE
+    ) %>%
+    sort_at_path( # this does nothing -> ???
+      path = c("ARM", "*"),
+      scorefun = score_occurrences_from_path("-Any-"),
+      decreasing = TRUE
+    )
+
+  pag_result <- paginate_table(result, lpp = 20)
+
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[1]])[3:4, 1],
+    c("-Any-", "Grade 1-2")
+  )
+  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "B") # should be A
 })

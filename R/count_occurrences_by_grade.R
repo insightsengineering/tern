@@ -198,7 +198,7 @@ s_count_occurrences_by_grade <- function(df,
 #' )
 a_count_occurrences_by_grade <- make_afun(
   s_count_occurrences_by_grade,
-  .formats = c("count_fraction" = format_count_fraction)
+  .formats = c("count_fraction" = format_count_fraction_fixed_dp)
 )
 
 
@@ -240,7 +240,7 @@ count_occurrences_by_grade <- function(lyt,
                                        ...,
                                        table_names = var,
                                        .stats = NULL,
-                                       .formats = list(count_fraction = format_count_fraction_fixed_dp),
+                                       .formats = NULL,
                                        .indent_mods = NULL,
                                        .labels = NULL) {
   afun <- make_afun(

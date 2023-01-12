@@ -1,4 +1,4 @@
-# tern 0.7.10.9024
+# tern 0.7.10.9028
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -12,9 +12,11 @@
   `format_count_fraction_fixed_dp` with fixed single decimal place in percentages.
 * Removed `summary_in_cols` helper functions because redundant.
 * Added `na_level` and `labelstr` to `summarize_vars_in_cols`.
-* Added tests for `pkct01` and `adat03`.
+* Added tests for `pkct01`, `adat03`, `pdt01`, and `pdt02`.
 * Added `analyze_num_patients` to have total summary at the beginning that does not
   repeat when paginating.
+* Added `h_row_first_values` function as a more general helper function to retrieve
+  first values from specific rows.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
@@ -24,15 +26,18 @@
   it works. Tests are also updated. 
 * Fixed table tests (`aet02`, `aet02_smq`, `aet_03`, `aet_06_smq`, `aet_09`, 
   `aet_09_smq`, `mth01`, `cmt01`, `aet07`, `aet06`) that used 
-  `summarize_num_patients` to generate an initial summary. This was repeated 
-  when paginating, while we needed it not to repeat.
+  `summarize_num_patients` to generate an initial summary so there is no repetition
+  when paginating.
+* Removed deprecated `ggplot2` functions/arguments to resolve warnings.
+* Fixed bugs in `rtables_access.R` that did not check for specific combination
+  (also the standard values, that where never used) of column indices and names.
 
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
   and `summarize_vars_in_cols.R`, respectively.
 * Renamed `summarize_vars_in_cols` into `analyze_vars_in_cols` to reflect the
   appropriate `analyze` logic.
-* Export function `format_xx`.
+* Exported function `format_xx`.
 
 # tern 0.7.10
 
