@@ -420,6 +420,7 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
     "Grade 3-5" = c("3", "4", "5")
   )
 
+  # Scoring function to extract specific values from path
   score_occurrences_from_path <- function(path) {
     function(table_row) {
       value_at(table_row, path)[1]
