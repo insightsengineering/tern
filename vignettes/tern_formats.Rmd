@@ -174,7 +174,7 @@ format_count_fraction_fixed_dp(x = c(2, 0.25))
 
 #### Value Thresholds
 
-Functions that set custom values according to a certain threshold include `format_extreme_values()`, `format_extreme_values_ci()`, and `format_fraction_threshold()`. The extreme value formatters work similarly to allow the user to specify the maximum number of digits to include, and very large or very small values are given a special string value. For example:
+Functions that set custom values according to a certain threshold include `format_extreme_values()`, `format_extreme_values_ci()`, and `format_fraction_threshold()`. The extreme value formats work similarly to allow the user to specify the maximum number of digits to include, and very large or very small values are given a special string value. For example:
 
 ```{r}
 extreme_format <- format_extreme_values(digits = 2)
