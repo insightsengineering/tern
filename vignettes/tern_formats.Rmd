@@ -228,7 +228,7 @@ df2 <- data.frame(
   BL_RANGE = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
   ONTRTFL = c("", "Y", "", "Y"),
   stringsAsFactors = FALSE
-) %>% 
+) %>%
   filter(ONTRTFL == "Y")
 
 basic_table() %>%
@@ -256,7 +256,7 @@ custom_format <- function(x, ...) {
   } else {
     paste0(
       x["num"], "/", x["denom"],
-      " (", sprintf("%.3f", round(x["num"] / x["denom"] * 100, 1)), "%)" # We include 3 decimal places by changing %.1f to %.3f
+      " (", sprintf("%.3f", round(x["num"] / x["denom"] * 100, 1)), "%)" # We include 3 decimal places with %.3f
     )
   }
   return(result)
