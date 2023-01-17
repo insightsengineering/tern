@@ -23,7 +23,8 @@ summarize_num_patients(
   var,
   .stats = NULL,
   .formats = NULL,
-  .labels = NULL,
+  .labels = c(unique = "Number of patients with at least one event", nonunique =
+    "Number of events"),
   ...
 )
 
@@ -32,7 +33,8 @@ analyze_num_patients(
   vars,
   .stats = NULL,
   .formats = NULL,
-  .labels = NULL,
+  .labels = c(unique = "Number of patients with at least one event", nonunique =
+    "Number of events"),
   show_labels = c("default", "visible", "hidden"),
   indent_mod = 0L,
   ...
@@ -150,5 +152,6 @@ tbl <- basic_table() \%>\%
   add_colcounts() \%>\%
   analyze_num_patients("USUBJID", .stats = c("unique")) \%>\%
   build_table(df_tmp)
+tbl
 
 }
