@@ -128,7 +128,7 @@ summarize_num_patients <- function(lyt,
                                    ),
                                    ...) {
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
-  if (length(.labels) > 1) .labels <- .labels[names(.labels) %in% .stats]
+  if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
 
   cfun <- make_afun(
     c_num_patients,
@@ -183,7 +183,7 @@ analyze_num_patients <- function(lyt,
                                  indent_mod = 0L,
                                  ...) {
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
-  if (length(.labels) > 1) .labels <- .labels[names(.labels) %in% .stats]
+  if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
 
   afun <- make_afun(
     c_num_patients,
