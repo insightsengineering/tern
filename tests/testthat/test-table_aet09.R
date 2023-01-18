@@ -161,7 +161,7 @@ testthat::test_that("AET09 variant 1 is produced correctly, AE related to study 
       "166",
       "138 (34.5%)",
       "",
-      "132 (33%)",
+      "132 (33.0%)",
       "182",
       "132 (33.0%)"
     ),

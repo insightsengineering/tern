@@ -44,10 +44,10 @@ testthat::test_that("CMT01 default variant (Concomitant medications) is produced
       "Total number of treatments", "medname B_1/4", "medname B_4/4", "medcl C",
       "Total number of patients with at least one treatment",
       "Total number of treatments", "medname C_2/2", "medname C_1/2",
-      "A: Drug X", "(N=134)", "117 (87.3%)", "832", "", "75 (56%)", "192",
+      "A: Drug X", "(N=134)", "117 (87.3%)", "832", "", "75 (56.0%)", "192",
       "53 (39.6%)", "45 (33.6%)", "", "83 (61.9%)", "291", "52 (38.8%)",
       "50 (37.3%)", "", "82 (61.2%)", "349", "52 (38.8%)", "51 (38.1%)",
-      "B: Placebo", "(N=134)", "116 (86.6%)", "857", "", "79 (59%)", "203",
+      "B: Placebo", "(N=134)", "116 (86.6%)", "857", "", "79 (59.0%)", "203",
       "50 (37.3%)", "54 (40.3%)", "", "74 (55.2%)", "301", "57 (42.5%)",
       "45 (33.6%)", "", "84 (62.7%)", "353", "58 (43.3%)", "50 (37.3%)",
       "C: Combination", "(N=132)", "116 (87.9%)", "925", "", "81 (61.4%)",
@@ -63,7 +63,6 @@ testthat::test_that("CMT01 default variant (Concomitant medications) is produced
 
   testthat::expect_identical(result_matrix, expected_matrix)
 })
-
 
 testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly", {
   adcm_p <- adcm %>% dplyr::filter(ATIREL == "PRIOR")
@@ -112,7 +111,7 @@ testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly",
       "49 (36.6%)", "", "80 (59.7%)", "284", "55 (41.0%)", "47 (35.1%)",
       "C: Combination", "(N=132)", "106 (80.3%)", "395", "", "69 (52.3%)",
       "99", "69 (52.3%)", "", "81 (61.4%)", "296", "56 (42.4%)", "52 (39.4%)",
-      "All Patients", "(N=400)", "290 (72.5%)", "1071", "", "172 (43%)", "240",
+      "All Patients", "(N=400)", "290 (72.5%)", "1071", "", "172 (43.0%)", "240",
       "172 (43.0%)", "", "237 (59.2%)", "831", "163 (40.8%)", "146 (36.5%)"
     ),
     .Dim = c(13L, 5L)
@@ -120,8 +119,6 @@ testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly",
 
   testthat::expect_identical(result_matrix, expected_matrix)
 })
-
-
 
 testthat::test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
   adcm_c <- adcm %>% dplyr::filter(ATIREL == "CONCOMITANT")
@@ -164,9 +161,9 @@ testthat::test_that("CMT01 variant 3 (Concomitant medications) is produced corre
       "medname B_4/4", "medcl C",
       "Total number of patients with at least one treatment", "medname C_2/2",
       "medname C_1/2", "A: Drug X", "(N=134)", "117 (87.3%)", "832", "",
-      "75 (56%)", "53 (39.6%)", "45 (33.6%)", "", "83 (61.9%)", "52 (38.8%)",
+      "75 (56.0%)", "53 (39.6%)", "45 (33.6%)", "", "83 (61.9%)", "52 (38.8%)",
       "50 (37.3%)", "", "82 (61.2%)", "52 (38.8%)", "51 (38.1%)", "B: Placebo",
-      "(N=134)", "116 (86.6%)", "857", "", "79 (59%)", "50 (37.3%)", "54 (40.3%)",
+      "(N=134)", "116 (86.6%)", "857", "", "79 (59.0%)", "50 (37.3%)", "54 (40.3%)",
       "", "74 (55.2%)", "57 (42.5%)", "45 (33.6%)", "", "84 (62.7%)", "58 (43.3%)",
       "50 (37.3%)", "C: Combination", "(N=132)", "116 (87.9%)", "925", "", "81 (61.4%)",
       "56 (42.4%)", "48 (36.4%)", "", "88 (66.7%)", "59 (44.7%)", "55 (41.7%)", "",
@@ -222,10 +219,10 @@ testthat::test_that("CMT01 variant 4 (Concomitant medications) is produced corre
       "Total number of treatments", "medname A_2/3", "medname A_3/3",
       "A: Drug X", "(N=134)", "117 (87.3%)", "832", "", "82 (61.2%)", "349",
       "52 (38.8%)", "51 (38.1%)", "", "83 (61.9%)", "291", "52 (38.8%)",
-      "50 (37.3%)", "", "75 (56%)", "192", "53 (39.6%)", "45 (33.6%)", "B: Placebo",
+      "50 (37.3%)", "", "75 (56.0%)", "192", "53 (39.6%)", "45 (33.6%)", "B: Placebo",
       "(N=134)", "116 (86.6%)", "857", "", "84 (62.7%)", "353", "58 (43.3%)",
       "50 (37.3%)", "", "74 (55.2%)", "301", "57 (42.5%)", "45 (33.6%)", "",
-      "79 (59%)", "203", "50 (37.3%)", "54 (40.3%)", "C: Combination", "(N=132)",
+      "79 (59.0%)", "203", "50 (37.3%)", "54 (40.3%)", "C: Combination", "(N=132)",
       "116 (87.9%)", "925", "", "89 (67.4%)", "390", "60 (45.5%)", "56 (42.4%)",
       "", "88 (66.7%)", "328", "59 (44.7%)", "55 (41.7%)", "", "81 (61.4%)",
       "207", "56 (42.4%)", "48 (36.4%)", "All Patients", "(N=400)", "349 (87.2%)",

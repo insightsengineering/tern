@@ -29,7 +29,7 @@ testthat::test_that("CMT02_PT default variant is produced correctly", {
       "", "", "Total number of patients with at least one event",
       "Total number of events", "medname A_1/3", "medname C_2/2", "medname B_1/4",
       "medname B_2/4", "medname A_2/3", "medname C_1/2", "medname B_4/4",
-      "medname A_3/3", "medname B_3/4", "A: Drug X", "(N=134)", "122 (91%)",
+      "medname A_3/3", "medname B_3/4", "A: Drug X", "(N=134)", "122 (91.0%)",
       "609", "54 (40.3%)", "52 (38.8%)", "52 (38.8%)", "52 (38.8%)",
       "53 (39.6%)", "51 (38.1%)", "50 (37.3%)", "45 (33.6%)", "47 (35.1%)",
       "B: Placebo", "(N=134)", "123 (91.8%)", "622", "49 (36.6%)",
