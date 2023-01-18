@@ -69,8 +69,8 @@ testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produ
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
-                    <with customized queries>) is produced correctly", {
+testthat::test_that("AET09 variant 2 (AEs related to study drug by SMQ
+                    with customized queries) is produced correctly", {
   adsl_labels <- formatters::var_labels(adsl)
   adae_labels <- formatters::var_labels(adae)
 

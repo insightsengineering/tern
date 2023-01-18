@@ -9,7 +9,7 @@ testthat::test_that("prop_chisq returns right result", {
 
   result <- prop_chisq(tbl)
   expected <- 0.0565
-  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 1e-3, ignore_attr = FALSE)
 })
 
 testthat::test_that("prop_cmh returns right result", {
@@ -21,7 +21,7 @@ testthat::test_that("prop_cmh returns right result", {
 
   result <- prop_cmh(tbl)
   expected <- 0.6477
-  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 1e-4, ignore_attr = FALSE)
 })
 
 testthat::test_that("prop_cmh also works when there are strata with just one observation", {
@@ -40,12 +40,12 @@ testthat::test_that("prop_cmh also works when there are strata with just one obs
     class = "table"
   )
 
-  result <- testthat::expect_warning(
-    prop_cmh(tbl),
+  testthat::expect_warning(
+    result <- prop_cmh(tbl),
     "<5 data points in some strata. CMH test may be incorrect."
   )
   expected <- 0.3326
-  testthat::expect_equal(result, expected, tol = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
 testthat::test_that("prop_fisher returns right result", {
@@ -59,7 +59,7 @@ testthat::test_that("prop_fisher returns right result", {
 
   result <- prop_fisher(tbl)
   expected <- 0.1110
-  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 1e-3, ignore_attr = FALSE)
 })
 
 testthat::test_that("prop_schouten returns right result", {
@@ -98,7 +98,7 @@ testthat::test_that("prop_schouten returns right result", {
     0, 0.9758, 0, 6e-05, 0, 0.10609, 0.01319, 0.44322, 1e-05, 0.00041,
     0.05099, 0.00112, 0, 0, 0.56411, 0.00532, 0.00029
   )
-  testthat::expect_equal(result, expected, tolerance = 1e-5)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
 testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {

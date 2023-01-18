@@ -33,9 +33,9 @@ testthat::test_that("DMT01 default and alternative variants are produced correct
   }
 
   adsl <- adsl %>%
-    dplyr::inner_join(get_param_advs("SBP", "Systolic Blood Pressure")) %>%
-    dplyr::inner_join(get_param_advs("DBP", "Diastolic Blood Pressure")) %>%
-    dplyr::inner_join(get_param_advs("WGT", "Weight"))
+    dplyr::inner_join(get_param_advs("SBP", "Systolic Blood Pressure"), by = "USUBJID") %>%
+    dplyr::inner_join(get_param_advs("DBP", "Diastolic Blood Pressure"), by = "USUBJID") %>%
+    dplyr::inner_join(get_param_advs("WGT", "Weight"), by = "USUBJID")
 
   vars <- c("AGE", "AGEGRP", "SEX", "RACE", "WGT", "SBP", "DBP")
   var_labels <- c(

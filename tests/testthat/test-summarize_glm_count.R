@@ -369,12 +369,11 @@ testthat::test_that("s_glm_count works with no reference group selected.", {
     rate_ratio_ci = formatters::with_label(c(0.6120999, 0.5219551, 1.7749272, 1.5564142), "95% CI"),
     pval = formatters::with_label(c(0.8786994, 0.7093289), "p-value")
   )
-
   testthat::expect_equal(result, expected, tolerance = 0.0000001)
 })
 
 testthat::test_that("s_glm_count fails wrong inputs", {
-  testthat::expect_error(
+  testthat::expect_error(s_glm_count(
     df = anl %>%
       filter(ARMCD == "ARM B"),
     .df_row = anl,
@@ -384,13 +383,11 @@ testthat::test_that("s_glm_count fails wrong inputs", {
     conf_level = 0.95,
     distribution = "quasipoisson",
     rate_mean_method = "ppmeans"
-  )
+  ))
 })
 
-
-
 testthat::test_that("glm_count fails when negative binomial distribution is selected.", {
-  testthat::expect_error(
+  testthat::expect_error(glm_count(
     df = anl %>%
       filter(ARMCD == "ARM B"),
     .df_row = anl,
@@ -400,7 +397,7 @@ testthat::test_that("glm_count fails when negative binomial distribution is sele
     conf_level = 0.95,
     distribution = "negbin",
     rate_mean_method = "ppmeans"
-  )
+  ))
 })
 
 testthat::test_that("summarize_glm_count works with healthy inputs", {

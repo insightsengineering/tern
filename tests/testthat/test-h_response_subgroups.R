@@ -97,7 +97,7 @@ testthat::test_that("h_proportion_subgroups_df functions as expected with valid 
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_proportion_subgroups_df functions as expected when subgroups is NULL.", {
@@ -120,7 +120,7 @@ testthat::test_that("h_proportion_subgroups_df functions as expected when subgro
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_proportion_subgroups_df works as expected with groups_lists", {
@@ -160,7 +160,7 @@ testthat::test_that("h_odds_ratio_df functions as expected with valid input and 
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_odds_ratio_df functions as expected with valid input and non-default arguments", {
@@ -185,7 +185,7 @@ testthat::test_that("h_odds_ratio_df functions as expected with valid input and 
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_odds_ratio_df functions as expected with strata", {
@@ -211,7 +211,7 @@ testthat::test_that("h_odds_ratio_df functions as expected with strata", {
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_odds_ratio_df functions when 0 obs in one arm", {
@@ -236,7 +236,7 @@ testthat::test_that("h_odds_ratio_df functions when 0 obs in one arm", {
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_odds_ratio_subgroups_df functions as expected with valid input and default arguments", {
@@ -261,7 +261,7 @@ testthat::test_that("h_odds_ratio_subgroups_df functions as expected with valid 
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_odds_ratio_subgroups_df functions as expected when subgroups is NULL.", {
@@ -286,7 +286,7 @@ testthat::test_that("h_odds_ratio_subgroups_df functions as expected when subgro
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_odds_ratio_subgroups_df functions as expected with strata", {
@@ -319,7 +319,7 @@ testthat::test_that("h_odds_ratio_subgroups_df functions as expected with strata
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_odds_ratio_subgroups_df works as expected with groups_lists", {

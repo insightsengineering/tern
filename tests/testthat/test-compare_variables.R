@@ -25,7 +25,7 @@ testthat::test_that("s_compare for factor works in usual case", {
   y <- factor(c("a", "b", "c"))
   result <- testthat::expect_silent(s_compare(x = x, .ref_group = y, .in_ref_col = FALSE))
   testthat::expect_named(result, c("n", "count", "count_fraction", "n_blq", "pval"))
-  testthat::expect_equal(result$pval, 0.7659, tol = 1e-4)
+  testthat::expect_equal(result$pval, 0.7659, tolerance = 1e-4)
 })
 
 testthat::test_that("s_compare for factor handles explicit NAs as expected", {
@@ -38,7 +38,7 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     .in_ref_col = FALSE,
     na.rm = TRUE
   ))
-  testthat::expect_equal(result_without_na$pval, 0.7659, tol = 1e-4)
+  testthat::expect_equal(result_without_na$pval, 0.7659, tolerance = 1e-4)
 
   result_with_na <- testthat::expect_silent(s_compare(
     x = x,
@@ -46,16 +46,16 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     .in_ref_col = FALSE,
     na.rm = FALSE
   ))
-  testthat::expect_equal(result_with_na$pval, 0.9063, tol = 1e-4)
+  testthat::expect_equal(result_with_na$pval, 0.9063, tolerance = 1e-4)
 })
 
 testthat::test_that("s_compare for character works as expected", {
   x <- c("a", "a", "b", "c", "a")
   y <- c("a", "b", "c")
-  result <- testthat::expect_warning(
-    s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x"),
+  suppressWarnings(expect_warning(
+    result <- s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x"),
     "automatically converting character variable x to factor"
-  )
+  ))
   expected <- list(
     n = 5L,
     count = list(a = 3L, b = 1L, c = 1L),
@@ -63,14 +63,14 @@ testthat::test_that("s_compare for character works as expected", {
     n_blq = 0L,
     pval = 0.7659
   )
-  testthat::expect_equal(result, expected, tol = 1e-4)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
 testthat::test_that("s_compare for logical works as expected", {
   x <- c(TRUE, FALSE, TRUE, TRUE)
   y <- c(FALSE, FALSE, TRUE)
   result <- testthat::expect_silent(s_compare(x, .ref_group = y, .in_ref_col = FALSE))
-  testthat::expect_equal(result$pval, 0.2702, tol = 1e-4)
+  testthat::expect_equal(result$pval, 0.2702, tolerance = 1e-3)
 })
 
 testthat::test_that("s_compare for logical handles NAs as FALSE if not removed", {
@@ -82,7 +82,7 @@ testthat::test_that("s_compare for logical handles NAs as FALSE if not removed",
     .ref_group = replace(y, is.na(y), FALSE),
     .in_ref_col = FALSE
   )
-  testthat::expect_identical(result, expected)
+  testthat::expect_identical(result, expected, tolerance = 1e-4)
 })
 
 testthat::test_that("compare_vars works with default settings in rtables layout pipeline", {

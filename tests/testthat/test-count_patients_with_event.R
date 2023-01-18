@@ -338,6 +338,6 @@ testthat::test_that("s_count_patients_with_event works with factor filters", {
     .var = "SUBJID",
     filters = c("AEOUT" = "FATAL")
   )
-  expected <- list(n = 3, count = 1, count_fraction = c(1.0000000, 0.3333333), n_blq = 0L)
+  expected <- list(n = 3, count = 1, count_fraction = c(1.0000000, 0.33333333), n_blq = 0L)
   testthat::expect_equal(result, expected, tolerance = 1e-7)
 })

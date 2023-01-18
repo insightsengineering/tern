@@ -66,7 +66,8 @@ testthat::test_that("fit_logistic works with different response definition", {
   )
   testthat::expect_equal(
     result_model$formula,
-    1 - Response ~ ARMCD
+    1 - Response ~ ARMCD,
+    ignore_attr = TRUE
   )
 })
 
@@ -94,7 +95,7 @@ testthat::test_that("fit_logistic works with a single stratification variable", 
 
   expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE + strata(STRATA1)
   result_formula <- result$formula
-  testthat::expect_equal(result_formula, expected_formula)
+  testthat::expect_equal(result_formula, expected_formula, ignore_attr = TRUE)
 })
 
 testthat::test_that("fit_logistic works with two stratification variables", {
@@ -122,9 +123,8 @@ testthat::test_that("fit_logistic works with two stratification variables", {
   expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE +
     strata(I(interaction(STRATA1, STRATA2)))
   result_formula <- result$formula
-  testthat::expect_equal(result_formula, expected_formula)
+  testthat::expect_equal(result_formula, expected_formula, ignore_attr = TRUE)
 })
-
 
 # h_get_interaction_vars ----
 
@@ -176,25 +176,26 @@ testthat::test_that("h_or_cat_interaction works as expected", {
     )
   )
   result_armcd <- h_or_cat_interaction("ARMCD", "RACE", model)
-  testthat::expect_is(result_armcd, "list")
+  testthat::expect_type(result_armcd, "list")
   testthat::expect_named(result_armcd, levels(data$ARMCD)[-1])
   for (res in result_armcd) {
-    testthat::expect_is(res, "list")
+    testthat::expect_type(res, "list")
     testthat::expect_named(res, levels(droplevels(data$RACE)))
   }
-  testthat::expect_equivalent(
+  testthat::expect_equal(
     result_armcd[["ARM B"]][["ASIAN"]],
     list(
       or = 0.1503174,
       ci = c(0.01669928, 1.35307118)
     ),
-    tol = 1e-4
+    tolerance = 1e-4,
+    ignore_attr = TRUE
   )
   result_race <- h_or_cat_interaction("RACE", "ARMCD", model)
-  testthat::expect_is(result_race, "list")
+  testthat::expect_type(result_race, "list")
   testthat::expect_named(result_race, levels(droplevels(data$RACE))[-1])
   for (res in result_race) {
-    testthat::expect_is(res, "list")
+    testthat::expect_type(res, "list")
     testthat::expect_named(res, levels(data$ARMCD))
   }
 })
@@ -213,34 +214,36 @@ testthat::test_that("h_or_cont_interaction works as expected with median increme
     )
   )
   result_armcd <- h_or_cont_interaction("ARMCD", "AGE", model)
-  testthat::expect_is(result_armcd, "list")
+  testthat::expect_type(result_armcd, "list")
   testthat::expect_named(result_armcd, levels(data$ARMCD)[-1])
   for (res in result_armcd) {
-    testthat::expect_is(res, "list")
+    testthat::expect_type(res, "list")
     testthat::expect_named(res, as.character(stats::median(data$AGE)))
   }
-  testthat::expect_equivalent(
+  testthat::expect_equal(
     result_armcd[["ARM B"]][["34"]],
     list(
       or = 9.284028e-05,
       ci = c(1.483171e-10, 5.811413e+01)
     ),
-    tol = 1e-4
+    tolerance = 1e-4,
+    ignore_attr = TRUE
   )
   result_age <- h_or_cont_interaction("AGE", "ARMCD", model)
-  testthat::expect_is(result_age, "list")
+  testthat::expect_type(result_age, "list")
   testthat::expect_named(result_age, levels(data$ARMCD))
   for (res in result_age) {
-    testthat::expect_is(res, "list")
+    testthat::expect_type(res, "list")
     testthat::expect_named(res, c("or", "ci"))
   }
-  testthat::expect_equivalent(
+  testthat::expect_equal(
     result_age[["ARM B"]],
     list(
       or = 1.028141,
       ci = c(0.9286094, 1.1383411)
     ),
-    tol = 1e-4
+    tolerance = 1e-4,
+    ignore_attr = TRUE
   )
 })
 
@@ -262,10 +265,10 @@ testthat::test_that("h_or_cont_interaction works as expected with custom increme
     at = c(25, 30, 40),
     conf_level = 0.8
   )
-  testthat::expect_is(result_armcd, "list")
+  testthat::expect_type(result_armcd, "list")
   testthat::expect_named(result_armcd, levels(data$ARMCD)[-1])
   for (res in result_armcd) {
-    testthat::expect_is(res, "list")
+    testthat::expect_type(res, "list")
     testthat::expect_named(res, as.character(c(25, 30, 40)))
   }
   # We are not allowed to specify increments when the interaction variable is a factor.
@@ -297,7 +300,7 @@ testthat::test_that("h_or_interaction works as expected", {
     at = c(20, 30),
     conf_level = 0.9
   )
-  testthat::expect_is(result_cont, "list")
+  testthat::expect_type(result_cont, "list")
   model_cat <- fit_logistic(
     data,
     variables = list(
@@ -312,7 +315,7 @@ testthat::test_that("h_or_interaction works as expected", {
     "RACE",
     model_cat
   )
-  testthat::expect_is(result_cat, "list")
+  testthat::expect_type(result_cat, "list")
 })
 
 # h_simple_term_labels ----
@@ -424,8 +427,8 @@ testthat::test_that("h_glm_simple_term_extract can extract continuous variable r
     )
   )
 
-  result <- testthat::expect_silent(h_glm_simple_term_extract("AGE", mod))
-  expected <- data.frame(
+  result <- testthat::expect_silent(unlist(h_glm_simple_term_extract("AGE", mod)))
+  expected <- c(
     variable = "AGE",
     variable_label = "AGE",
     term = "AGE",
@@ -434,15 +437,14 @@ testthat::test_that("h_glm_simple_term_extract can extract continuous variable r
     interaction_label = "",
     reference = "",
     reference_label = "",
-    estimate = list(0.01843522),
-    std_error = list(0.02429352),
-    df = list(1),
-    pvalue = list(0.4479403),
+    estimate = c(0.018435221512945),
+    std_error = c(0.0242935223263706),
+    df = c(1),
+    pvalue = c(0.447940270007941),
     is_variable_summary = FALSE,
-    is_term_summary = TRUE,
-    stringsAsFactors = FALSE
+    is_term_summary = TRUE
   )
-  testthat::expect_equivalent(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001, ignore_attr = TRUE)
 })
 
 # h_glm_interaction_extract ----
@@ -516,7 +518,7 @@ testthat::test_that("h_glm_interaction_extract works for continuous interaction"
     row.names = c(NA, -3L),
     class = "data.frame"
   )
-  testthat::expect_equivalent(result, expected)
+  testthat::expect_equal(result, expected, ignore_attr = TRUE)
 })
 
 # h_logistic_simple_terms ----
@@ -606,8 +608,8 @@ testthat::test_that("h_logistic_simple_terms can extract continuous variable res
       strata = "STRATA1"
     )
   )
-  result <- testthat::expect_silent(h_logistic_simple_terms("AGE", mod))
-  expected <- data.frame(
+  result <- testthat::expect_silent(unlist(h_logistic_simple_terms("AGE", mod)))
+  expected <- c(
     variable = "AGE",
     variable_label = "AGE",
     term = "AGE",
@@ -616,22 +618,20 @@ testthat::test_that("h_logistic_simple_terms can extract continuous variable res
     interaction_label = "",
     reference = "",
     reference_label = "",
-    estimate = list(0.01843522),
-    std_error = list(0.02429352),
-    df = list(1),
-    pvalue = list(0.4479403),
+    estimate = 0.018435221512945,
+    std_error = 0.0242935223263706,
+    df = 1,
+    pvalue = 0.447940270007941,
     is_variable_summary = FALSE,
     is_term_summary = TRUE,
-    odds_ratio = list(1.018606),
-    lcl = list(0.9712424),
-    ucl = list(1.06828),
-    stringsAsFactors = FALSE
+    odds_ratio = 1.01860619926387,
+    lcl = 0.971242395138309,
+    ucl = 1.06827975629198,
+    ci1 = 0.971242395138309,
+    ci2 = 1.06827975629198
   )
-  expected$ci <- list(c(
-    0.9712424,
-    1.0682798
-  ))
-  testthat::expect_equivalent(result, expected, tolerance = 0.000001)
+
+  testthat::expect_equal(result, expected, tolerance = 1e-4, ignore_attr = TRUE)
 })
 
 # h_glm_inter_term_extract ----
@@ -755,7 +755,7 @@ testthat::test_that("h_glm_inter_term_extract works as expected with categorical
     ),
     class = "data.frame"
   )
-  testthat::expect_equivalent(result, expected)
+  testthat::expect_equal(result, expected, ignore_attr = TRUE)
 })
 
 testthat::test_that("h_glm_inter_term_extract works as expected with continuous interaction", {
@@ -773,14 +773,14 @@ testthat::test_that("h_glm_inter_term_extract works as expected with continuous 
     model,
     conf_level = 0.9
   )
-  testthat::expect_is(result1, "data.frame")
+  testthat::expect_s3_class(result1, "data.frame")
   result2 <- h_glm_inter_term_extract(
     odds_ratio_var = "AGE",
     interaction_var = "ARMCD",
     model,
     conf_level = 0.9
   )
-  testthat::expect_is(result2, "data.frame")
+  testthat::expect_s3_class(result2, "data.frame")
 })
 
 testthat::test_that("h_logistic_inter_terms works as expected", {
@@ -799,7 +799,7 @@ testthat::test_that("h_logistic_inter_terms works as expected", {
     fit_glm = model_cat,
     conf_level = 0.8
   )
-  testthat::expect_is(result_cat, "data.frame")
+  testthat::expect_s3_class(result_cat, "data.frame")
   testthat::expect_identical(
     result_cat$variable,
     c(
@@ -832,7 +832,7 @@ testthat::test_that("h_logistic_inter_terms works as expected", {
     fit_glm = model_cont,
     conf_level = 0.8
   )
-  testthat::expect_is(result_cont, "data.frame")
+  testthat::expect_s3_class(result_cont, "data.frame")
   testthat::expect_identical(
     result_cont$term,
     c(
@@ -934,7 +934,7 @@ testthat::test_that("tidy.glm works as expected for interaction case", {
   result <- broom::tidy(mod1, conf_level = 0.99)
   result <- result[, c("variable", "term", "interaction", "reference", "estimate", "std_error")]
   row.names(result) <- seq(dim(result)[1])
-  testthat::expect_is(result, "data.frame")
+  testthat::expect_s3_class(result, "data.frame")
   expected <- data.frame(
     variable = factor(
       c(rep("SEX", 2), rep("ARMCD", 5), rep("AGE", 4), rep("ARMCD:AGE", 3)),
@@ -1006,7 +1006,7 @@ testthat::test_that("logistic_regression_cols works as expected", {
 
 testthat::test_that("logistic_summary_by_flag works", {
   layout_fun <- logistic_summary_by_flag("is_variable")
-  testthat::expect_is(layout_fun, "function")
+  testthat::expect_type(layout_fun, "closure")
   testthat::expect_silent(layout_fun(basic_table()))
 })
 

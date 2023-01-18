@@ -70,7 +70,7 @@ testthat::test_that("h_coxreg_mult_cont_df works as expected", {
     pval = c(0.483520242485134, 0.282314224545607),
     pval_label = c("p-value (Wald)", "p-value (Wald)")
   )
-  testthat::expect_equal(result, expected, tol = 1e-5)
+  testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
 testthat::test_that("h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {

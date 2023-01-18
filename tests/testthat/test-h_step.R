@@ -24,14 +24,14 @@ testthat::test_that("h_step_window works as expected for percentiles", {
   x <- -5:10
   control <- control_step(use_percentile = TRUE, num_points = 5L, bandwidth = 0.2)
   result <- testthat::expect_silent(h_step_window(x = x, control = control))
-  testthat::expect_is(result, "list")
+  testthat::expect_type(result, "list")
   testthat::expect_named(result, c("sel", "interval"))
   sel <- result$sel
-  testthat::expect_is(sel, "matrix")
+  testthat::expect_true(is.matrix(sel))
   testthat::expect_identical(dim(sel), c(length(x), control$num_points))
   testthat::expect_identical(mode(sel), "logical")
   interval <- result$interval
-  testthat::expect_is(interval, "matrix")
+  testthat::expect_true(is.matrix(interval))
   testthat::expect_identical(
     colnames(interval),
     c(
@@ -46,12 +46,12 @@ testthat::test_that("h_step_window works as expected for actual biomarker values
   x <- -5:10
   control <- control_step(use_percentile = FALSE, num_points = 5L, bandwidth = 3)
   result <- testthat::expect_silent(h_step_window(x = x, control = control))
-  testthat::expect_is(result, "list")
+  testthat::expect_type(result, "list")
   testthat::expect_named(result, c("sel", "interval"))
   sel <- result$sel
   testthat::expect_true(all(colSums(sel) %in% (control$bandwidth * 2 + c(0L, 1L))))
   interval <- result$interval
-  testthat::expect_is(interval, "matrix")
+  testthat::expect_true(is.matrix(interval))
   testthat::expect_identical(
     colnames(interval),
     c("Interval Center", "Interval Lower", "Interval Upper")
@@ -84,7 +84,7 @@ testthat::test_that("h_step_trt_effect works for Cox models without interaction"
     x = 100 # Note: this does not have any effect on results, because there is no interaction.
   )
   coef_sum <- summary(mod)$coefficients
-  testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
+  testthat::expect_equal(result, coef_sum["armcdB", c("coef", "se(coef)")], ignore_attr = TRUE)
 })
 
 testthat::test_that("h_step_trt_effect works for Cox models with interaction", {
@@ -102,7 +102,7 @@ testthat::test_that("h_step_trt_effect works for Cox models with interaction", {
     x = 0
   )
   coef_sum <- summary(mod)$coefficients
-  testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
+  testthat::expect_equal(result, coef_sum["armcdB", c("coef", "se(coef)")], ignore_attr = TRUE)
   # Then at age = 50. Compare point estimate with manual calculation.
   result <- h_step_trt_effect(
     data = dta_simple,
@@ -111,9 +111,9 @@ testthat::test_that("h_step_trt_effect works for Cox models with interaction", {
     x = 50
   )
   est_manual <- sum(stats::coef(mod)[c("armcdB", "age", "armcdB:age")] * (c(1, 50, 50) - c(0, 50, 0)))
-  testthat::expect_equivalent(result["est"], est_manual)
+  testthat::expect_equal(result["est"], est_manual, ignore_attr = TRUE)
   # Regression test for se.
-  testthat::expect_equivalent(result["se"], 1.322242, tol = 1e-5)
+  testthat::expect_equal(result["se"], 1.322242, tolerance = 1e-5, ignore_attr = TRUE)
 })
 
 testthat::test_that("h_step_trt_effect works for Cox models with strata", {
@@ -134,7 +134,7 @@ testthat::test_that("h_step_trt_effect works for Cox models with strata", {
     x = 0
   ))
   coef_sum <- summary(mod)$coefficients
-  testthat::expect_equivalent(result, coef_sum["armcdB", c("coef", "se(coef)")])
+  testthat::expect_equal(result, coef_sum["armcdB", c("coef", "se(coef)")], ignore_attr = TRUE)
 })
 
 testthat::test_that("h_step_trt_effect works for logistic regression models without interaction", {
@@ -152,7 +152,7 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
     x = 100 # Note: this does not have any effect on results, because there is no interaction.
   )
   coef_sum <- summary(mod)$coefficients
-  testthat::expect_equivalent(result, coef_sum["armcdB", c("Estimate", "Std. Error")])
+  testthat::expect_equal(result, coef_sum["armcdB", c("Estimate", "Std. Error")], ignore_attr = TRUE)
 })
 
 testthat::test_that("h_step_trt_effect works for logistic regression models with interaction", {
@@ -170,7 +170,7 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
     x = 0
   )
   coef_sum <- summary(mod)$coefficients
-  testthat::expect_equivalent(result, coef_sum["ARMBINARM B", c("Estimate", "Std. Error")])
+  testthat::expect_equal(result, coef_sum["ARMBINARM B", c("Estimate", "Std. Error")], ignore_attr = TRUE)
   # Then at age = 50. Compare point estimate with manual calculation.
   result <- h_step_trt_effect(
     data = dta,
@@ -179,9 +179,9 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
     x = 50
   )
   est_manual <- sum(stats::coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
-  testthat::expect_equivalent(result["est"], est_manual)
+  testthat::expect_equal(result["est"], est_manual, ignore_attr = TRUE)
   # Regression test for se.
-  testthat::expect_equivalent(result["se"], 0.2153840, tol = 1e-5)
+  testthat::expect_equal(result["se"], 0.2153840, tolerance = 1e-5, ignore_attr = TRUE)
 })
 
 testthat::test_that("h_step_trt_effect works for conditional logistic regression without interaction", {
@@ -199,7 +199,7 @@ testthat::test_that("h_step_trt_effect works for conditional logistic regression
     x = 0
   )
   coef_sum <- summary(mod)$coefficients
-  testthat::expect_equivalent(result, coef_sum["ARMBINARM B", c("coef", "se(coef)")])
+  testthat::expect_equal(result, coef_sum["ARMBINARM B", c("coef", "se(coef)")], ignore_attr = TRUE)
 })
 
 testthat::test_that("h_step_trt_effect works for conditional logistic regression with interaction", {
@@ -217,9 +217,9 @@ testthat::test_that("h_step_trt_effect works for conditional logistic regression
     x = 50
   )
   est_manual <- sum(stats::coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
-  testthat::expect_equivalent(result["est"], est_manual)
+  testthat::expect_equal(result["est"], est_manual, ignore_attr = TRUE)
   # Regression test for se.
-  testthat::expect_equivalent(result["se"], 0.2100507, tol = 1e-5)
+  testthat::expect_equal(result["se"], 0.2100507, tolerance = 1e-5, ignore_attr = TRUE)
 })
 
 # h_step_survival_formula ----
@@ -230,14 +230,16 @@ testthat::test_that("h_step_survival_formula works correctly without covariates 
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME"),
       control = control_step(degree = 3)
     ),
-    Surv(TIME, EV) ~ TRT * stats::poly(BM, degree = 3, raw = TRUE)
+    Surv(TIME, EV) ~ TRT * stats::poly(BM, degree = 3, raw = TRUE),
+    ignore_attr = TRUE
   )
   testthat::expect_equal(
     h_step_survival_formula(
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME"),
       control = control_step(degree = 0)
     ),
-    Surv(TIME, EV) ~ TRT
+    Surv(TIME, EV) ~ TRT,
+    ignore_attr = TRUE
   )
 })
 
@@ -247,7 +249,8 @@ testthat::test_that("h_step_survival_formula works correctly with covariates", {
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME", covariates = c("A", "B")),
       control = control_step(degree = 2)
     ),
-    Surv(TIME, EV) ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + A + B
+    Surv(TIME, EV) ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + A + B,
+    ignore_attr = TRUE
   )
 })
 
@@ -256,7 +259,8 @@ testthat::test_that("h_step_survival_formula works correctly with strata", {
     h_step_survival_formula(
       list(arm = "TRT", biomarker = "BM", event = "EV", time = "TIME", strata = c("A", "B")),
     ),
-    Surv(TIME, EV) ~ TRT + strata(A, B)
+    Surv(TIME, EV) ~ TRT + strata(A, B),
+    ignore_attr = TRUE
   )
 })
 
@@ -282,10 +286,10 @@ testthat::test_that("h_step_survival_est works as expected", {
     variables = vars,
     x = age_vals
   ))
-  testthat::expect_is(result, "matrix")
+  testthat::expect_true(is.matrix(result))
   testthat::expect_identical(dim(result), c(3L, 6L))
   testthat::expect_identical(colnames(result), c("n", "events", "loghr", "se", "ci_lower", "ci_upper"))
-  testthat::expect_equal(result[, "loghr"], c(1.075486, 1.082507, 1.089528), tol = 1e-6)
+  testthat::expect_equal(result[, "loghr"], c(1.075486, 1.082507, 1.089528), tolerance = 1e-6)
 })
 
 testthat::test_that("h_step_survival_est gives a readable warning when fitting warnings occur", {
@@ -322,13 +326,15 @@ testthat::test_that("h_step_rsp_formula works correctly without covariates", {
       list(arm = "TRT", biomarker = "BM", response = "RSP"),
       control = c(control_step(degree = 3), control_logistic())
     ),
-    RSP ~ TRT * stats::poly(BM, degree = 3, raw = TRUE)
+    RSP ~ TRT * stats::poly(BM, degree = 3, raw = TRUE),
+    ignore_attr = TRUE
   )
   testthat::expect_equal(
     h_step_rsp_formula(
       list(arm = "TRT", biomarker = "BM", response = "RSP")
     ),
-    RSP ~ TRT
+    RSP ~ TRT,
+    ignore_attr = TRUE
   )
 })
 
@@ -338,7 +344,8 @@ testthat::test_that("h_step_rsp_formula works correctly with covariates", {
       list(arm = "TRT", biomarker = "BM", response = "RSP", covariates = c("A", "B")),
       control = c(control_logistic(), control_step(degree = 2))
     ),
-    RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + A + B
+    RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + A + B,
+    ignore_attr = TRUE
   )
 })
 
@@ -351,7 +358,8 @@ testthat::test_that("h_step_rsp_formula works correctly with different response 
         control_step(degree = 1)
       )
     ),
-    I(AVAL == "CR") ~ TRT * stats::poly(BM, degree = 1, raw = TRUE)
+    I(AVAL == "CR") ~ TRT * stats::poly(BM, degree = 1, raw = TRUE),
+    ignore_attr = TRUE
   )
 })
 
@@ -361,14 +369,16 @@ testthat::test_that("h_step_rsp_formula works correctly with strata", {
       list(arm = "TRT", biomarker = "BM", response = "RSP", strata = c("A", "B")),
       control = c(control_logistic(), control_step(degree = 2))
     ),
-    RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + strata(I(interaction(A, B)))
+    RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + strata(I(interaction(A, B))),
+    ignore_attr = TRUE
   )
   testthat::expect_equal(
     h_step_rsp_formula(
       list(arm = "TRT", biomarker = "BM", response = "RSP", strata = "A"),
       control = c(control_logistic(), control_step(degree = 2))
     ),
-    RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + strata(A)
+    RSP ~ TRT * stats::poly(BM, degree = 2, raw = TRUE) + strata(A),
+    ignore_attr = TRUE
   )
 })
 
@@ -395,10 +405,10 @@ testthat::test_that("h_step_rsp_est works as expected without strata", {
     subset = subset,
     x = age_vals
   ))
-  testthat::expect_is(result, "matrix")
+  testthat::expect_true(is.matrix(result))
   testthat::expect_identical(dim(result), c(3L, 5L))
   testthat::expect_identical(colnames(result), c("n", "logor", "se", "ci_lower", "ci_upper"))
-  testthat::expect_equal(result[, "logor"], c(2.008012, 1.025773, 0.043535), tol = 1e-6)
+  testthat::expect_equal(result[, "logor"], c(2.008012, 1.025773, 0.043535), tolerance = 1e-6)
   testthat::expect_equal(result[, "n"], rep(sum(subset), 3L))
 })
 
@@ -424,10 +434,10 @@ testthat::test_that("h_step_rsp_est works as expected with strata", {
     subset = subset,
     x = age_vals
   ))
-  testthat::expect_is(result, "matrix")
+  testthat::expect_true(is.matrix(result))
   testthat::expect_identical(dim(result), c(3L, 5L))
   testthat::expect_identical(colnames(result), c("n", "logor", "se", "ci_lower", "ci_upper"))
-  testthat::expect_equal(result[, "logor"], c(1.134057, 0.511102, -0.111853), tol = 1e-6)
+  testthat::expect_equal(result[, "logor"], c(1.134057, 0.511102, -0.111853), tolerance = 1e-6)
   testthat::expect_equal(result[, "n"], rep(sum(subset), 3L))
 })
 

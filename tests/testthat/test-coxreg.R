@@ -270,7 +270,7 @@ testthat::test_that("fit_coxreg_univar returns model results as expected", {
     vars = variables,
     at = list()
   )
-  testthat::expect_equal(result$mod, expected$mod)
+  testthat::expect_equal(result$mod, expected$mod, ignore_attr = TRUE)
 })
 
 testthat::test_that("fit_coxreg_univar runs with non-represented level of a factor", {
@@ -529,7 +529,7 @@ testthat::test_that("h_coxreg_inter_effect.numerics works with _:_ in effect lev
     )
   )
   # The first column in the effect (arm/armcd) and expected to vary.
-  testthat::expect_equal(result[, -1], expected[, -1], check.attributes = FALSE)
+  testthat::expect_equal(result[, -1], expected[, -1], ignore_attr = TRUE)
 })
 
 # h_coxreg_inter_estimations ----
@@ -587,7 +587,7 @@ testthat::test_that("fit_coxreg_multivar returns model results as expected", {
     control = control,
     vars = variables
   )
-  testthat::expect_equal(result$mod, expected$mod)
+  testthat::expect_equal(result$mod, expected$mod, ignore_attr = TRUE)
 })
 
 testthat::test_that("fit_coxreg_multivar is stopped when likelihood method is used together with strata", {
@@ -604,7 +604,6 @@ testthat::test_that("fit_coxreg_multivar is stopped when likelihood method is us
   )
 })
 
-
 testthat::test_that("fit_coxreg_multivar works correctly also without treatment arm", {
   data <- dta_bladder_raw
   control <- control_coxreg(conf_level = 0.9)
@@ -617,8 +616,8 @@ testthat::test_that("fit_coxreg_multivar works correctly also without treatment 
     data = data,
     control = control
   ))
-  testthat::expect_is(result$mod, "coxph")
-  testthat::expect_equal(stats::formula(result$mod), survival::Surv(time, status) ~ 1 + covar1 + covar2)
+  testthat::expect_s3_class(result$mod, "coxph")
+  testthat::expect_equal(stats::formula(result$mod), survival::Surv(time, status) ~ 1 + covar1 + covar2, ignore_attr = TRUE)
 })
 
 # tidy.coxreg.multivar ----

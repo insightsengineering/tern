@@ -101,8 +101,6 @@ testthat::test_that("AET04 variant 1 is produced correctly", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  result_matrix <- to_string_matrix(result, with_spaces = TRUE)
-
   # Pagination also works (and sorting)
   testthat::expect_silent(
     pag_result <- paginate_table(result, lpp = 15)
@@ -167,8 +165,6 @@ testthat::test_that("AET04 variant 2 is produced correctly (Fill in of Treatment
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
-
-  result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
   # Pagination also works (and sorting)
   testthat::expect_silent(
@@ -295,8 +291,6 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  result_matrix <- to_string_matrix(result, with_spaces = TRUE)
-
   # Pagination works
   testthat::expect_silent(
     pag_result <- paginate_table(result, lpp = 15)
@@ -389,8 +383,6 @@ testthat::test_that("AET04 variant 6 is produced correctly (with an
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  result_matrix <- to_string_matrix(result, TRUE)
-
   # Pagination works
   testthat::expect_silent(
     pag_result <- paginate_table(result, lpp = 15)
@@ -423,8 +415,6 @@ testthat::test_that("AET04 variant 8 is produced correctly (with an Incidence Ra
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  result_matrix <- to_string_matrix(result, with_spaces = TRUE)
-
   # Pagination works
   testthat::expect_silent(
     pag_result <- paginate_table(result, lpp = 15)
@@ -440,8 +430,6 @@ testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
-
-  result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
   # Pagination works
   testthat::expect_silent(
@@ -465,8 +453,6 @@ testthat::test_that(
 
     res <- testthat::expect_silent(result)
     testthat::expect_snapshot(res)
-
-    result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
     # Pagination works
     testthat::expect_silent(

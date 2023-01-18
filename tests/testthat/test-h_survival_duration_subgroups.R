@@ -200,7 +200,6 @@ testthat::test_that("h_split_by_subgroups works as expected with groups_lists", 
 testthat::test_that("h_survtime_subgroups_df functions as expected with valid input and default arguments", {
   adtte <- adtte_local
 
-
   result <- h_survtime_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
     data = adtte
@@ -222,7 +221,7 @@ testthat::test_that("h_survtime_subgroups_df functions as expected with valid in
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.", {
@@ -245,7 +244,7 @@ testthat::test_that("h_survtime_subgroups_df functions as expected when subgroup
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_survtime_subgroups_df works as expected with groups_lists", {
@@ -291,7 +290,7 @@ testthat::test_that("h_coxph_df functions as expected with valid input and defau
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_coxph_df functions as expected with one stratification factor", {
@@ -318,7 +317,7 @@ testthat::test_that("h_coxph_df functions as expected with one stratification fa
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_coxph_df functions as expected with multiple stratification factors", {
@@ -344,7 +343,7 @@ testthat::test_that("h_coxph_df functions as expected with multiple stratificati
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_coxph_df functions as expected when 0 records in one group", {
@@ -370,7 +369,7 @@ testthat::test_that("h_coxph_df functions as expected when 0 records in one grou
     stringsAsFactors = FALSE
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_coxph_subgroups_df functions as expected with valid input and default arguments", {
@@ -451,14 +450,14 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with valid input
       class = "data.frame"
     )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 
   # Test edge case where HR is (0, Inf)
   adtte <- adtte %>%
     dplyr::filter(COUNTRY %in% c("CAN", "GBR")) %>%
     reapply_varlabels(formatters::var_labels(adtte))
 
-  result <- testthat::expect_warning(h_coxph_subgroups_df(
+  testthat::expect_warning(result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "COUNTRY"),
     data = adtte
   ))
@@ -487,7 +486,7 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with valid input
     class = "data.frame"
   )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_coxph_subgroups_df functions as expected with stratification factors", {
@@ -523,7 +522,7 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with stratificat
       class = "data.frame"
     )
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
@@ -554,7 +553,7 @@ testthat::test_that("h_coxph_subgroups_df functions as expected when subgroups i
       row.names = c(NA, -1L),
       class = "data.frame"
     )
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("h_coxph_subgroups_df works as expected with groups_lists", {

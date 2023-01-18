@@ -17,7 +17,7 @@ testthat::test_that("make_afun works with healthy input statistics function taki
     )
   )
 
-  testthat::expect_is(afun, "function")
+  testthat::expect_type(afun, "closure")
   testthat::expect_identical(
     names(formals(afun)),
     names(formals(sfun))
@@ -79,7 +79,7 @@ testthat::test_that("make_afun processes additional rtables arguments correctly"
   )
 
   # Make sure the function signature is correct.
-  testthat::expect_is(afun, "function")
+  testthat::expect_type(afun, "closure")
   testthat::expect_identical(
     names(formals(afun)),
     names(formals(sfun))
@@ -125,7 +125,7 @@ testthat::test_that("make_afun works with healthy input function taking `x`", {
   )
 
   # Make sure the function signature is correct.
-  testthat::expect_is(afun, "function")
+  testthat::expect_type(afun, "closure")
   testthat::expect_identical(
     names(formals(afun)),
     names(formals(sfun))
@@ -184,7 +184,7 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
   )
 
   # Make sure the function signature is correct.
-  testthat::expect_is(afun, "function")
+  testthat::expect_type(afun, "closure")
   testthat::expect_identical(
     names(formals(afun)),
     names(formals(sfun))

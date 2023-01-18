@@ -8,7 +8,7 @@ test_fit <- local({
 testthat::test_that("h_data_plot works as expected", {
   data <- test_fit
   result <- h_data_plot(data)
-  testthat::expect_is(result, "tbl_df")
+  testthat::expect_s3_class(result, "tbl_df")
   testthat::expect_identical(
     names(result),
     c(
@@ -24,8 +24,8 @@ testthat::test_that("h_data_plot respects the ordering of the arm variable facto
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
     survival::survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
   result <- h_data_plot(data)
-  testthat::expect_is(result, "tbl_df")
-  testthat::expect_is(result$strata, "factor")
+  testthat::expect_s3_class(result, "tbl_df")
+  testthat::expect_s3_class(result$strata, "factor")
   testthat::expect_identical(levels(result$strata), c("ARM B", "ARM C", "ARM A"))
 })
 

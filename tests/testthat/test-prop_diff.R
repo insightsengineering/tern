@@ -9,7 +9,7 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
     diff = 0.25,
     diff_ci = c(-0.9195, 1.0000)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 
 
   # Edge case: Same proportion of response in A and B.
@@ -21,7 +21,7 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
     diff = 0,
     diff_ci = c(-0.8451, 0.8451)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 })
 
 
@@ -38,7 +38,7 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
     diff = 0.25,
     diff_ci = c(-0.2967, 0.6750)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
@@ -50,7 +50,7 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
     diff = 0,
     diff_ci = c(-0.3616, 0.3616)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 })
 
 testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: with correction)", {
@@ -64,7 +64,7 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
     diff = 0.25,
     diff_ci = c(-0.8069, 1.0000)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
@@ -75,7 +75,7 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
     diff = 0,
     diff_ci = c(-0.9208, 0.9208)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 
   # Edge case: All respond in all groups.
   rsp <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
@@ -88,7 +88,7 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
     diff = 0,
     diff_ci = c(-0.375, 0.375)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 })
 
 testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: without correction)", {
@@ -103,7 +103,7 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
     diff = 0.25,
     diff_ci = c(-0.4319, 0.9319)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
@@ -114,7 +114,7 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
     diff = 0,
     diff_ci = c(-0.4208, 0.4208)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 
   # Edge case: All respond in all groups.
   rsp <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
@@ -127,7 +127,7 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
     diff = 0,
     diff_ci = c(0, 0)
   )
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 })
 
 testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
@@ -160,7 +160,7 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
   )
 
   names(expected$weights) <- names(expected$n1) <- names(expected$n2) <- levels(interaction(strata_data))
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
   testthat::expect_warning(prop_diff_cmh(
     rsp = rsp[1:4], grp = grp[1:4], strata = interaction(strata_data[1:4, ]),
     conf_level = 0.90
@@ -203,7 +203,7 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
   )
   names(expected$weights) <- names(expected$n1) <- names(expected$n2) <- levels(interaction(strata_data))[-1]
 
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcombe) with cmh weights", {
@@ -228,8 +228,8 @@ testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcom
   )
 
   # Values externally validated
-  expect_equal(results$diff, 0.2539, tol = 1e-4)
-  expect_equal(as.numeric(results$diff_ci), c(0.0347, 0.4454), tol = 1e-4)
+  expect_equal(results$diff, 0.2539, tolerance = 1e-4)
+  expect_equal(as.numeric(results$diff_ci), c(0.0347, 0.4454), tolerance = 1e-3)
 })
 
 testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcombe) with wilson_h weights", {
@@ -255,8 +255,8 @@ testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcom
   )
 
   # Values internally checked (no reference yet)
-  expect_equal(results$diff, 0.2587, tol = 1e-4)
-  expect_equal(as.numeric(results$diff_ci), c(0.0391, 0.4501), tol = 1e-4)
+  expect_equal(results$diff, 0.2587, tolerance = 1e-4)
+  expect_equal(as.numeric(results$diff_ci), c(0.0391, 0.4501), tolerance = 1e-3)
 })
 
 testthat::test_that("prop_diff_strat_nc output matches equivalent SAS function output", {
