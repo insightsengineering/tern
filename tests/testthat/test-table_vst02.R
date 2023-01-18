@@ -14,8 +14,8 @@ testthat::test_that("1. Vital Sign Abnormalities (Regardless of Abnormality at B
     count_abnormal("ANRIND", abnormal = list(Low = "LOW", High = "HIGH")) %>%
     build_table(df = advs_f, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("2. Vital Sign Abnormalities (Among Subject Without Abnormality at Baseline, VST02_2)", {
@@ -29,6 +29,6 @@ testthat::test_that("2. Vital Sign Abnormalities (Among Subject Without Abnormal
     count_abnormal("ANRIND", abnormal = list(Low = "LOW", High = "HIGH"), exclude_base_abn = TRUE) %>%
     build_table(df = advs_f, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

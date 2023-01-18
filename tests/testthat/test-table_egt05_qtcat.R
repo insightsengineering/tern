@@ -53,6 +53,6 @@ testthat::test_that("EGT05_QTCAT default variant is produced correctly", {
     build_table(df = adeg, alt_counts_df = adsl) %>%
     prune_table()
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

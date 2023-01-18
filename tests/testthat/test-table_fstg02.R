@@ -39,11 +39,11 @@ testthat::test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Durat
       time_unit = anl1$AVALU[1]
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Add plot.
-  expect_silent(g_forest(
+  testthat::expect_silent(g_forest(
     tbl = result,
     draw = FALSE
   ))
@@ -76,11 +76,11 @@ testthat::test_that("FSTG02 table variant 2 (specifying class variables and opti
       time_unit = anl2$AVALU[1]
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Add plot.
-  expect_silent(g_forest(
+  testthat::expect_silent(g_forest(
     tbl = result,
     draw = FALSE
   ))
@@ -101,11 +101,11 @@ testthat::test_that("FSTG02 table variant 3 (selecting columns and changing the 
       vars = c("n_tot", "hr", "ci")
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Add plot.
-  expect_silent(g_forest(
+  testthat::expect_silent(g_forest(
     tbl = result,
     draw = FALSE
   ))
@@ -131,11 +131,11 @@ testthat::test_that("FSTG02 table variant 4 (fixed symbol size) is produced corr
       time_unit = anl4$AVALU[1]
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Add plot.
-  expect_silent(g_forest(
+  testthat::expect_silent(g_forest(
     tbl = result,
     draw = FALSE
   ))

@@ -48,8 +48,8 @@ testthat::test_that("LGRT02 without interaction term is produced correctly", {
     ) %>%
     build_table(df = df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LGRT02 with categorical interaction is produced correctly", {
@@ -74,8 +74,8 @@ testthat::test_that("LGRT02 with categorical interaction is produced correctly",
     ) %>%
     build_table(df = df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LGRT02 with continuous interaction is produced correctly", {
@@ -100,8 +100,8 @@ testthat::test_that("LGRT02 with continuous interaction is produced correctly", 
     ) %>%
     build_table(df = df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LGRT02 with setting values indicating an event and custom alpha level is produced correctly", {
@@ -126,6 +126,6 @@ testthat::test_that("LGRT02 with setting values indicating an event and custom a
     ) %>%
     build_table(df = df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

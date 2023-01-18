@@ -34,6 +34,6 @@ testthat::test_that("LBT08 produce correctly", {
     ) %>%
     build_table(df = df, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

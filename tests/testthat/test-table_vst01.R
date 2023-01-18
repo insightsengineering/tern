@@ -62,6 +62,6 @@ testthat::test_that("VST01 default variant is produced correctly", {
     summarize_colvars(.labels = c(range = "Min - Max")) %>%
     build_table(df = advs, alt_counts_df = df_adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

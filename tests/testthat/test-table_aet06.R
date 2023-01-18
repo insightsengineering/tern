@@ -77,8 +77,8 @@ testthat::test_that("AET06 variant 1 is produced correctly", {
 
   result <- build_table(lyt, adae, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET06 variant 3 is produced correctly", {
@@ -129,8 +129,8 @@ testthat::test_that("AET06 variant 3 is produced correctly", {
       scorefun = score_occurrences
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET06 variant 5 is produced correctly", {
@@ -173,6 +173,6 @@ testthat::test_that("AET06 variant 5 is produced correctly", {
 
   result <- build_table(lyt, adae, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -48,8 +48,8 @@ testthat::test_that("AET02SMQ variant 1 is produced correctly", {
     sort_at_path(path = c("AE_GRP"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("AE_GRP", "*", "AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02SMQ variant 2 is produced correctly", {
@@ -87,6 +87,6 @@ testthat::test_that("AET02SMQ variant 2 is produced correctly", {
     sort_at_path(path = c("AE_GRP"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("AE_GRP", "*", "AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -47,6 +47,6 @@ testthat::test_that("EGT04 default variant is produced correctly", {
 
   result <- build_table(l, adeg_f)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

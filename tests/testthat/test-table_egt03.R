@@ -46,8 +46,8 @@ testthat::test_that("EGT03 variant 1 is produced correctly", {
 
   result <- build_table(lyt = lyt, df = adeg_f)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("EGT03 variant 2 is produced correctly", {
@@ -87,8 +87,8 @@ testthat::test_that("EGT03 variant 2 is produced correctly", {
 
   result <- build_table(lyt = lyt, df = adeg_f)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("EGT03 variant 3 is produced correctly", {
@@ -128,8 +128,8 @@ testthat::test_that("EGT03 variant 3 is produced correctly", {
 
   result <- build_table(lyt = lyt, df = adeg_f)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("EGT03 variant 4 is produced correctly", {
@@ -175,6 +175,6 @@ testthat::test_that("EGT03 variant 4 is produced correctly", {
 
   result <- build_table(lyt = lyt, df = adeg_f)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -104,8 +104,8 @@ testthat::test_that("Patient Disposition table is produced correctly", {
     ) %>%
     build_table(adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Demographic table is produced correctly", {
@@ -125,8 +125,8 @@ testthat::test_that("Demographic table is produced correctly", {
     build_table(adsl) %>%
     prune_table()
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Enrollment by Country Table is produced correctly", {
@@ -137,8 +137,8 @@ testthat::test_that("Enrollment by Country Table is produced correctly", {
     summarize_vars("COUNTRY", .formats = c(count_fraction = "xx (xx.xx%)")) %>%
     build_table(adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Death table is produced correctly", {
@@ -155,8 +155,8 @@ testthat::test_that("Death table is produced correctly", {
     ) %>%
     build_table(adae, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Table of Serious Adverse Events is produced correctly (for one specific treatment arm)", {
@@ -183,8 +183,8 @@ testthat::test_that("Table of Serious Adverse Events is produced correctly (for 
     ) %>%
     build_table(adae_serious_arm)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Table of Non-Serious Adverse Events is produced correctly", {
@@ -205,6 +205,6 @@ testthat::test_that("Table of Non-Serious Adverse Events is produced correctly",
     ) %>%
     build_table(adae_trim, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

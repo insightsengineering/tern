@@ -73,6 +73,6 @@ testthat::test_that("LBT07 is produced correctly", {
 
   result <- build_table(lyt, adlb_f, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

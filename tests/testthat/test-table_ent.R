@@ -20,8 +20,8 @@ testthat::test_that("ENT01_IT is produced correctly", {
   tbl <- build_table(l, adsl)
   result <- prune_table(tbl, all_zero_or_na, stop_depth = 4)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("ENT01a_IT is produced correctly", {
@@ -36,8 +36,8 @@ testthat::test_that("ENT01a_IT is produced correctly", {
 
   result <- build_table(l, adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("ENT02_IT is produced correctly", {
@@ -57,8 +57,8 @@ testthat::test_that("ENT02_IT is produced correctly", {
   tbl <- build_table(l, adsl)
   result <- prune_table(tbl, all_zero_or_na, stop_depth = 4)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("ENT02a_IT is produced correctly", {
@@ -75,6 +75,6 @@ testthat::test_that("ENT02a_IT is produced correctly", {
 
   result <- build_table(l, adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

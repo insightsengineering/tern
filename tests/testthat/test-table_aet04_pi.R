@@ -58,8 +58,8 @@ testthat::test_that("AET04_PI full table is produced correctly", {
       decreasing = TRUE
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET04_PI variant 1 is produced correctly", {
@@ -80,8 +80,8 @@ testthat::test_that("AET04_PI variant 1 is produced correctly", {
     trim_rows(criteria = criteria_fun) %>%
     prune_table(keep_rows(at_least_10percent_any))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET04_PI variant 2 is produced correctly", {
@@ -103,8 +103,8 @@ testthat::test_that("AET04_PI variant 2 is produced correctly", {
     trim_rows(criteria = criteria_fun) %>%
     prune_table(keep_rows(at_least_37percent_any_drugx))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET04_PI variant 3 is produced correctly", {
@@ -126,8 +126,8 @@ testthat::test_that("AET04_PI variant 3 is produced correctly", {
     trim_rows(criteria = criteria_fun) %>%
     prune_table(keep_rows(at_least_40percent_any))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET04_PI variant 4 is produced correctly", {
@@ -150,8 +150,8 @@ testthat::test_that("AET04_PI variant 4 is produced correctly", {
     trim_rows(criteria = criteria_fun) %>%
     prune_table(keep_rows(at_least_30percent_any & at_least_15percent_diff))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET04_PI variant 5 is produced correctly", {
@@ -174,8 +174,8 @@ testthat::test_that("AET04_PI variant 5 is produced correctly", {
     trim_rows(criteria = criteria_fun) %>%
     prune_table(keep_rows(at_least_40percent_any | at_least_20percent_g5))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET04_PI variant 6 is produced correctly", {
@@ -225,8 +225,8 @@ testthat::test_that("AET04_PI variant 6 is produced correctly", {
     trim_rows(criteria = criteria_fun) %>%
     prune_table(keep_rows(at_least_40percent_any))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET04_PI variant 7 is produced correctly", {
@@ -276,8 +276,8 @@ testthat::test_that("AET04_PI variant 7 is produced correctly", {
     trim_rows(criteria = criteria_fun) %>%
     prune_table(keep_rows(at_least_40percent_any))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET04_PI variant 8 is produced correctly", {
@@ -310,6 +310,6 @@ testthat::test_that("AET04_PI variant 8 is produced correctly", {
       decreasing = TRUE
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -74,8 +74,8 @@ testthat::test_that("DORT01 variant 1 is produced correctly", {
     ) %>%
     build_table(adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
@@ -130,8 +130,8 @@ testthat::test_that("DORT01 variant 2 (selecting sectons) is produced correctly"
     ) %>%
     build_table(adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced correctly", {
@@ -186,8 +186,8 @@ testthat::test_that("DORT01 variant 3 (modifying conftype and alpha level) is pr
     ) %>%
     build_table(adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("DORT01 variant 4 (modifying time point for the “xx duration”) is produced correctly", {
@@ -240,6 +240,6 @@ testthat::test_that("DORT01 variant 4 (modifying time point for the “xx durati
     ) %>%
     build_table(adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

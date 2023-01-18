@@ -16,8 +16,8 @@ testthat::test_that("PKCT01 is produced correctly", {
 
   result <- build_table(l, df = adpc)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   l2 <- basic_table() %>%
     split_rows_by(
@@ -33,8 +33,8 @@ testthat::test_that("PKCT01 is produced correctly", {
   adpc <- adpc %>% mutate(AVALC = as.factor(AVALC))
   result <- build_table(l2, df = adpc)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Specific PKCT01 features are present", {
@@ -136,6 +136,6 @@ testthat::test_that("Specific PKCT01 features are present", {
   testthat::expect_equal(length(pag_works), 11L)
 
   # Values are correct
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -47,8 +47,8 @@ testthat::test_that("AET07 variant 1 is produced correctly", {
       decreasing = TRUE
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET07 variant 2 is produced correctly", {
@@ -78,6 +78,6 @@ testthat::test_that("AET07 variant 2 is produced correctly", {
       decreasing = TRUE
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

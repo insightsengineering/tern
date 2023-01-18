@@ -29,8 +29,8 @@ testthat::test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is p
   result <- basic_table() %>%
     tabulate_rsp_subgroups(df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly", {
@@ -53,8 +53,8 @@ testthat::test_that("ONCT05 variant 2 (Specifying class variables) is produced c
   result <- basic_table() %>%
     tabulate_rsp_subgroups(df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is produced correctly", {
@@ -71,8 +71,8 @@ testthat::test_that("ONCT05 variant 3 (selecting columns and changing the alpha 
   result <- basic_table() %>%
     tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci", "pval"))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("ONCT05 variant 4 (setting values indicating response) is produced correctly", {
@@ -92,6 +92,6 @@ testthat::test_that("ONCT05 variant 4 (setting values indicating response) is pr
   result <- basic_table() %>%
     tabulate_rsp_subgroups(df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

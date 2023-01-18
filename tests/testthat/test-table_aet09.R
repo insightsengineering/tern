@@ -39,8 +39,8 @@ testthat::test_that("AET09 variant 1 is produced correctly, AE related to study 
     sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_onecol(4)) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET09 variant 2 is produced correctly, AE related to study drug (including high-level terms)", {
@@ -96,6 +96,6 @@ testthat::test_that("AET09 variant 2 is produced correctly, AE related to study 
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

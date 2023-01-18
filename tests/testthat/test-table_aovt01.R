@@ -29,8 +29,8 @@ testthat::test_that("AOVT01 variant with single endpoint is produced correctly",
     ) %>%
     build_table(adqs_single, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AOVT01 variant with multiple endpoints is produced correctly", {
@@ -48,6 +48,6 @@ testthat::test_that("AOVT01 variant with multiple endpoints is produced correctl
     ) %>%
     build_table(adqs_multi, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

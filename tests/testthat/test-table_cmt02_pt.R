@@ -22,6 +22,6 @@ testthat::test_that("CMT02_PT default variant is produced correctly", {
     build_table(adcm, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

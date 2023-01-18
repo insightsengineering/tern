@@ -40,8 +40,8 @@ testthat::test_that("COXT02 default variant 1 is produced correctly", {
     summarize_coxreg(multivar = TRUE, conf_level = .95) %>%
     build_table(df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("COXT02 variant 5 is produced correctly", {
@@ -63,6 +63,6 @@ testthat::test_that("COXT02 variant 5 is produced correctly", {
     summarize_coxreg(multivar = TRUE, conf_level = 0.9, vars = c("hr", "ci")) %>%
     build_table(df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

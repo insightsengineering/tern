@@ -65,8 +65,8 @@ testthat::test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produ
     sort_at_path(path = c("SMQ"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
@@ -123,6 +123,6 @@ testthat::test_that("AET09 variant 2 (AEs related to study srug by SMQ
     sort_at_path(path = c("SMQ"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

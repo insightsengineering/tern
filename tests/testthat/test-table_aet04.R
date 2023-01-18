@@ -98,8 +98,8 @@ testthat::test_that("AET04 variant 1 is produced correctly", {
       decreasing = TRUE
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
@@ -165,8 +165,8 @@ testthat::test_that("AET04 variant 2 is produced correctly (Fill in of Treatment
       decreasing = TRUE
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
@@ -224,8 +224,8 @@ testthat::test_that("AET04 variant 3 is produced correctly (Fill in of Grades)",
     ) %>%
     trim_rows()
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Pagination also works (and sorting)
   testthat::expect_silent(
@@ -292,8 +292,8 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
       decreasing = TRUE
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
@@ -386,8 +386,8 @@ testthat::test_that("AET04 variant 6 is produced correctly (with an
       decreasing = TRUE
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   result_matrix <- to_string_matrix(result, TRUE)
 
@@ -420,8 +420,8 @@ testthat::test_that("AET04 variant 8 is produced correctly (with an Incidence Ra
 
   result <- prune_table(raw_result, keep_rows(my_row_condition(row_condition)))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
@@ -438,8 +438,8 @@ testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in
 
   result <- prune_table(raw_result, keep_rows(my_row_condition(row_condition)))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 
@@ -463,8 +463,8 @@ testthat::test_that(
 
     result <- prune_table(raw_result, keep_rows(my_row_condition(row_condition)))
 
-    res <- expect_silent(result)
-    expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
     result_matrix <- to_string_matrix(result, with_spaces = TRUE)
 

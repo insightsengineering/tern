@@ -18,8 +18,8 @@ testthat::test_that("AET05 variant 1 is produced correctly", {
     ) %>%
     build_table(anl, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET05 variant 2 is produced correctly", {
@@ -38,6 +38,6 @@ testthat::test_that("AET05 variant 2 is produced correctly", {
     ) %>%
     build_table(anl, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

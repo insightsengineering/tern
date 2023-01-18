@@ -18,8 +18,8 @@ testthat::test_that("DTH01 variant 1 is produced correctly", {
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
     build_table(df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("DTH01 variant 2 is produced correctly", {
@@ -77,8 +77,8 @@ testthat::test_that("DTH01 variant 2 is produced correctly", {
   tbl2 <- rbind(tbl2, part3)
   result <- rbind(tbl2, part4)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("DTH01 variant 3 is produced correctly", {
@@ -136,8 +136,8 @@ testthat::test_that("DTH01 variant 3 is produced correctly", {
   col_info(part2) <- col_info(part1)
   result <- rbind(part1, part2)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("DTH01 variant 4 is produced correctly", {
@@ -213,6 +213,6 @@ testthat::test_that("DTH01 variant 4 is produced correctly", {
   col_info(part3) <- col_info(part2)
   result <- rbind(part1, part2, part3)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

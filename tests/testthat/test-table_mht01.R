@@ -37,8 +37,8 @@ testthat::test_that("MHT01 variant 1 is produced accurately", {
 
   result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("MHT01 variant 2 is produced accurately", {
@@ -78,8 +78,8 @@ testthat::test_that("MHT01 variant 2 is produced accurately", {
 
   result <- build_table(lyt, admh_f_prior, alt_counts_df = adsl_f)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("MHT01 variant 3 is produced accurately", {
@@ -116,8 +116,8 @@ testthat::test_that("MHT01 variant 3 is produced accurately", {
 
   result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # MHT01 variant 4 can not be produced by current rtables
@@ -159,6 +159,6 @@ testthat::test_that("MHT01 variant 5 is produced accurately", {
 
   result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

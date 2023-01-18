@@ -53,8 +53,8 @@ testthat::test_that("AET03 variant 1 is produced correctly", {
       decreasing = TRUE
     )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   result_matrix <- to_string_matrix(result)
 

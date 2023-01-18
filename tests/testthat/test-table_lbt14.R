@@ -44,8 +44,8 @@ testthat::test_that("LBT14 variant 1: HIGH works as expected", {
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT14 variant 2: LOW works as expected", {
@@ -91,8 +91,8 @@ testthat::test_that("LBT14 variant 2: LOW works as expected", {
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expected", {
@@ -137,8 +137,8 @@ testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expe
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-baseline, then force the missing baseline as 0 as expected", { # nolint
@@ -185,8 +185,8 @@ testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and 
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT14 variant 5: HIGH with fillings works as expected", {
@@ -232,6 +232,6 @@ testthat::test_that("LBT14 variant 5: HIGH with fillings works as expected", {
     count_occurrences("ATOXGR_GP", denom = "n", drop = FALSE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

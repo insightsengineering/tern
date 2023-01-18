@@ -104,8 +104,8 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
 
   result <- trim_rows(result, criteria = all_zero_or_na_not_any)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT05 variant 2 is produced correctly", {
@@ -172,8 +172,8 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
 
   result <- build_table(lyt, df = adlb, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT05 variant 4 is produced correctly", {
@@ -245,6 +245,6 @@ testthat::test_that("LBT05 variant 4 is produced correctly", {
   result <- build_table(lyt, df = adlb, alt_counts_df = adsl) %>%
     prune_table()
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

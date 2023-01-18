@@ -38,8 +38,8 @@ testthat::test_that("PKPT04 is produced correctly for Drug X", {
 
   result <- build_table(l, df = adpp0)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # PKPT04 Drug Y
@@ -51,6 +51,6 @@ testthat::test_that("PKPT04 is produced correctly for Drug Y", {
 
   result <- build_table(l, df = adpp1)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

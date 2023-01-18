@@ -54,8 +54,8 @@ testthat::test_that("EXT01 default variant with numeric parameters is produced c
     summarize_vars(vars = "AVAL") %>%
     build_table(adex, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("EXT01 variant: with both numeric and categorical parameters", {
@@ -143,8 +143,8 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
     ) %>%
     build_table(anl, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("EXT01 variant: with user specified categories for missed doses", {
@@ -237,6 +237,6 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
     ) %>%
     build_table(anl, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

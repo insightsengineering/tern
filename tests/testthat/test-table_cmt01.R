@@ -32,8 +32,8 @@ testthat::test_that("CMT01 default variant (Concomitant medications) is produced
     build_table(adcm_c, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly", {
@@ -67,8 +67,8 @@ testthat::test_that("CMT01 variant 1 (prior medications) is produced correctly",
     build_table(adcm_p, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
@@ -100,8 +100,8 @@ testthat::test_that("CMT01 variant 3 (Concomitant medications) is produced corre
     build_table(adcm_c, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("CMT01 variant 4 (Concomitant medications) is produced correctly", {
@@ -131,6 +131,6 @@ testthat::test_that("CMT01 variant 4 (Concomitant medications) is produced corre
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences, decreasing = TRUE) %>%
     sort_at_path(path = c("CMCLAS"), scorefun = cont_n_onecol(4), decreasing = TRUE)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

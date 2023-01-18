@@ -38,8 +38,8 @@ testthat::test_that("AET02 variant 1 is produced correctly", {
     sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_onecol(4)) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   result_matrix <- to_string_matrix(result)
 
@@ -93,8 +93,8 @@ testthat::test_that("AET02 variant 2 is produced correctly", {
     sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences) %>%
     sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_onecol(4))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 3 is produced correctly", {
@@ -147,8 +147,8 @@ testthat::test_that("AET02 variant 3 is produced correctly", {
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 4 is produced correctly", {
@@ -172,8 +172,8 @@ testthat::test_that("AET02 variant 4 is produced correctly", {
   result <- result %>%
     sort_at_path(path = c("AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 5 is produced correctly", {
@@ -212,8 +212,8 @@ testthat::test_that("AET02 variant 5 is produced correctly", {
     sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 6 is produced correctly", {
@@ -245,8 +245,8 @@ testthat::test_that("AET02 variant 6 is produced correctly", {
   row_condition <- has_fraction_in_any_col(atleast = 0.40, col_names = names(table(adsl$ARM)))
   result <- prune_table(result, keep_rows(row_condition))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 7 is produced correctly", {
@@ -292,8 +292,8 @@ testthat::test_that("AET02 variant 7 is produced correctly", {
   row_condition <- has_fraction_in_any_col(atleast = 0.40, col_names = names(table(adsl$ARM)))
   result <- prune_table(result, keep_rows(row_condition))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 8 is produced correctly", {
@@ -325,8 +325,8 @@ testthat::test_that("AET02 variant 8 is produced correctly", {
   row_condition <- has_fraction_in_any_col(atleast = 0.40, col_names = names(table(adsl$ARM)))
   result <- prune_table(result, keep_rows(row_condition))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 9 is produced correctly", {
@@ -358,8 +358,8 @@ testthat::test_that("AET02 variant 9 is produced correctly", {
   row_condition <- has_count_in_any_col(atleast = 52, col_names = names(table(adsl$ARM)))
   result <- prune_table(result, keep_rows(row_condition))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 10 is produced correctly", {
@@ -391,8 +391,8 @@ testthat::test_that("AET02 variant 10 is produced correctly", {
   row_condition <- has_fractions_difference(atleast = 0.05, col_names = names(table(adsl$ARM)))
   result <- prune_table(result, keep_rows(row_condition))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 11 is produced correctly", {
@@ -424,8 +424,8 @@ testthat::test_that("AET02 variant 11 is produced correctly", {
   row_condition <- has_fraction_in_cols(atleast = 0.40, col_names = c("B: Placebo"))
   result <- prune_table(result, keep_rows(row_condition))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET02 variant 12 is produced correctly", {
@@ -473,6 +473,6 @@ testthat::test_that("AET02 variant 12 is produced correctly", {
 
   result <- prune_table(result, keep_rows(row_condition))
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

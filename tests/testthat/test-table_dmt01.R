@@ -58,8 +58,8 @@ testthat::test_that("DMT01 default and alternative variants are produced correct
     ) %>%
     build_table(adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Alternative variant for DMT01 (Optional Subgrouping Analysis).
   result <- basic_table() %>%
@@ -70,6 +70,6 @@ testthat::test_that("DMT01 default and alternative variants are produced correct
     summarize_vars(vars = vars[1:3], var_labels = var_labels[1:3], nested = FALSE) %>%
     build_table(adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

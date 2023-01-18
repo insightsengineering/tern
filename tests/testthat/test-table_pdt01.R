@@ -34,6 +34,6 @@ testthat::test_that("PDT01 is produced correctly", {
     prune_table() %>%
     sort_at_path(path = c("DVDECOD", "*", "DVTERM"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

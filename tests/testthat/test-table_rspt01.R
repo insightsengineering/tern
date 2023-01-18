@@ -42,8 +42,8 @@ testthat::test_that("RSPT01: 1. Best Overall Response", {
 
   result <- build_table(l, adrs)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("RSPT01: 2. Best Overall Response (selecting sections to display)", {
@@ -69,8 +69,8 @@ testthat::test_that("RSPT01: 2. Best Overall Response (selecting sections to dis
 
   result <- build_table(l, adrs)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
@@ -112,8 +112,8 @@ testthat::test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
   result <- build_table(l, adrs)
   result <- result[-nrow(result), ]
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
@@ -162,8 +162,8 @@ testthat::test_that("RSPT01: 4. Best Overall Response (with stratified analysis)
 
   result <- build_table(l, adrs)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition of overall response)", {
@@ -194,8 +194,8 @@ testthat::test_that("RSPT01: 5. Best Overall Response (modifying the definition 
   adrs$is_rsp <- adrs$AVALC == "Complete Response (CR)"
   result <- build_table(l, adrs)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 
@@ -244,6 +244,6 @@ testthat::test_that("RSPT01: 6. Best Overall Response (define new sections to di
 
   result <- build_table(l, adrs)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

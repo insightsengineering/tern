@@ -24,8 +24,8 @@ testthat::test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
     count_abnormal("ANRIND", abnormal = list(Low = "LOW", High = "HIGH"), exclude_base_abn = FALSE) %>%
     build_table(df = adeg, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
@@ -47,6 +47,6 @@ testthat::test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline",
     count_abnormal("ANRIND", abnormal = list(Low = "LOW", High = "HIGH"), exclude_base_abn = TRUE) %>%
     build_table(df = adeg, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

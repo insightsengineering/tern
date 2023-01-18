@@ -39,8 +39,8 @@ testthat::test_that("1. Cox Regression", {
     summarize_coxreg(conf_level = .95) %>%
     build_table(df = df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("2. Cox Regression (with Interaction Term)", {
@@ -60,8 +60,8 @@ testthat::test_that("2. Cox Regression (with Interaction Term)", {
     summarize_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
     build_table(df = df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 
@@ -83,8 +83,8 @@ testthat::test_that("3. Cox Regression (specifying covariates)", {
     summarize_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
     build_table(df = df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 
@@ -111,6 +111,6 @@ testthat::test_that("4. Cox Regression (setting strata, ties, and alpha level)",
     summarize_coxreg(conf_level = conf_level, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
     build_table(df = df)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

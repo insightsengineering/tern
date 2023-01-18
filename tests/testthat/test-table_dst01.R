@@ -79,8 +79,8 @@ testthat::test_that("DST01 default variant is produced correctly", {
     summarize_vars("STDDRS", .stats = "count_fraction") %>%
     build_table(adsl0)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("DST01 variant with grouping of reasons is produced correctly", {
@@ -98,8 +98,8 @@ testthat::test_that("DST01 variant with grouping of reasons is produced correctl
     build_table(adsl0) %>%
     prune_table()
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("DST01 variant with adding other optional rows is produced correctly", {
@@ -115,6 +115,6 @@ testthat::test_that("DST01 variant with adding other optional rows is produced c
     summarize_vars("STDDRS", .stats = "count_fraction") %>%
     build_table(adsl0)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

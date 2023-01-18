@@ -20,6 +20,6 @@ testthat::test_that("LBT06 default variant is produced correctly", {
     ) %>%
     build_table(adlb, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

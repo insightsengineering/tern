@@ -67,6 +67,6 @@ testthat::test_that("ADAT03 is produced correctly", {
   fnotes_at_path(result, rowpath = NULL, colpath = c("multivars", "AVAL")) <- "footnote1" # nolint
   fnotes_at_path(result, rowpath = NULL, colpath = c("multivars", "AVAL_LT")) <- "footnote2" # nolint
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

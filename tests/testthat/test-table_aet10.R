@@ -19,6 +19,6 @@ testthat::test_that("AET10 default variant is produced correctly", {
 
   result <- sort_at_path(result2, path = c("AEDECOD"), scorefun = score_occurrences)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

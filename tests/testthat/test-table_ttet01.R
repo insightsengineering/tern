@@ -75,8 +75,8 @@ testthat::test_that("TTET01 default variant is produced correctly", {
 
   result <- build_table(l, df = adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("TTET01 variant 2: selecting sections to display", {
@@ -120,8 +120,8 @@ testthat::test_that("TTET01 variant 2: selecting sections to display", {
     )
   result <- build_table(l, df = adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("TTET01 variant 3: modifying analysis details like conftype, ties, alpha level", {
@@ -186,8 +186,8 @@ testthat::test_that("TTET01 variant 3: modifying analysis details like conftype,
     )
   result <- build_table(l, df = adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("TTET01 variant 4: with stratified analysis", {
@@ -247,8 +247,8 @@ testthat::test_that("TTET01 variant 4: with stratified analysis", {
     )
   result <- build_table(l, df = adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("TTET01 variant 5: modifying time point", {
@@ -302,8 +302,8 @@ testthat::test_that("TTET01 variant 5: modifying time point", {
     )
   result <- build_table(l, df = adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("TTET01 variant 6: requesting more than one p-value", {
@@ -375,6 +375,6 @@ testthat::test_that("TTET01 variant 6: requesting more than one p-value", {
     )
   result <- build_table(l, df = adtte, alt_counts_df = adsl)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

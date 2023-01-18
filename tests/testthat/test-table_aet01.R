@@ -90,8 +90,8 @@ testthat::test_that("Safety Summary Variant 1 works as expected", {
     result_adae[3:nrow(result_adae), ]
   )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
@@ -210,8 +210,8 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
     result_adae[3:nrow(result_adae), ]
   )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
@@ -302,8 +302,8 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
 
   result_matrix <- to_string_matrix(result)
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
@@ -415,6 +415,6 @@ testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Add
     result_adae[3:nrow(result_adae), ]
   )
 
-  res <- expect_silent(result)
-  expect_snapshot(res)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
