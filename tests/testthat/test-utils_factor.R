@@ -18,8 +18,8 @@ testthat::test_that("combine_vectors works correctly", {
 
 testthat::test_that("as_factor_keep_attributes works correctly for a character vector", {
   foo <- formatters::with_label(c("a", "b"), "alphabet")
-  result <- testthat::expect_warning(
-    as_factor_keep_attributes(foo, verbose = TRUE),
+  testthat::expect_warning(
+    result <- as_factor_keep_attributes(foo, verbose = TRUE),
     "automatically converting character variable foo to factor"
   )
   expected <- formatters::with_label(factor(c("a", "b")), "alphabet")
@@ -28,8 +28,8 @@ testthat::test_that("as_factor_keep_attributes works correctly for a character v
 
 testthat::test_that("as_factor_keep_attributes converts empty strings for a character vector", {
   foo <- formatters::with_label(c("a", "", "b"), "alphabet")
-  result <- testthat::expect_warning(
-    as_factor_keep_attributes(foo, na_level = "missing", verbose = TRUE),
+  testthat::expect_warning(
+    result <- as_factor_keep_attributes(foo, na_level = "missing", verbose = TRUE),
     "automatically converting character variable foo to factor"
   )
   expected <- formatters::with_label(factor(c("a", "missing", "b"), levels = c("a", "b", "missing")), "alphabet")
@@ -71,7 +71,7 @@ testthat::test_that("bins_percent_labels works as expected", {
 
 testthat::test_that("cut_quantile_bins works as expected with default settings", {
   result <- cut_quantile_bins(cars$speed)
-  testthat::expect_is(result, "ordered")
+  testthat::expect_s3_class(result, "ordered")
   testthat::expect_identical(levels(result), c("[0%,25%]", "(25%,50%]", "(50%,75%]", "(75%,100%]"))
   testthat::expect_identical(length(result), length(cars$speed))
   q1 <- stats::quantile(cars$speed, probs = 0.25)

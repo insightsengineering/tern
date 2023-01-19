@@ -98,7 +98,7 @@ testthat::test_that("s_incidence_rate works as expected with healthy input", {
     rate_ci = formatters::with_label(c(19.40154, 100.50487), "90% CI")
   )
 
-  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = TRUE)
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
 testthat::test_that("estimate_incidence_rate works as expected with healthy input", {

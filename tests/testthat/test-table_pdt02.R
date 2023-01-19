@@ -29,23 +29,6 @@ testthat::test_that("PDT02 is produced correctly", {
 
   result <- build_table(lyt, addv_pan, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- matrix(
-    c(
-      "Reason for Deviation", "A: Drug X", "B: Placebo", "C: Combination",
-      "  Protocol Deviation Term", "(N=134)", "(N=134)", "(N=132)",
-      "Total number of patients with at least one major protocol deviation related to epidemic/pandemic",
-      "9 (6.7%)", "2 (1.5%)", "5 (3.8%)",
-      "Total number of major protocol deviations related to epidemic/pandemic", "9", "2", "6",
-      "Site action due to epidemic/pandemic (n)", "9", "2", "5",
-      "Dose missed or significantly out of window", "2 (1.5%)", "0", "1 (0.8%)",
-      "Failure to sign updated ICF within two visits", "2 (1.5%)", "1 (0.7%)", "1 (0.8%)",
-      "Missed 2 or more efficacy assessments", "2 (1.5%)", "0", "1 (0.8%)",
-      "Significant deviation from planned dose", "3 (2.2%)", "1 (0.7%)", "2 (1.5%)"
-    ),
-    nrow = 9, ncol = 4,
-    byrow = TRUE
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

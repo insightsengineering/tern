@@ -116,14 +116,14 @@ g_step <- function(df,
         name = "", values = c("CI 95%" = ci_ribbon$fill)
       )
   }
-  p <- p +
+  suppressMessages(p <- p +
     ggplot2::geom_line(
       ggplot2::aes(y = .data[["y"]], color = legend_names[1]),
       linetype = est$lty
     ) +
     scale_colour_manual(
       name = "", values = c("Estimate" = "blue")
-    )
+    ))
 
   p <- p + ggplot2::labs(x = attrs$biomarker, y = attrs$estimate)
   if (use_percentile) {

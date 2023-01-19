@@ -46,7 +46,7 @@ testthat::test_that("s_summary return NA for x length 0L", {
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
     geom_cv = c(geom_cv = NA_real_)
   )
-  testthat::expect_equivalent(result, expected)
+  testthat::expect_equal(result, expected, ignore_attr = TRUE)
 })
 
 testthat::test_that("s_summary handles NA", {
@@ -79,7 +79,7 @@ testthat::test_that("s_summary handles NA", {
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
     geom_cv = c(geom_cv = NA_real_)
   )
-  testthat::expect_equivalent(result, expected)
+  testthat::expect_equal(result, expected, ignore_attr = TRUE)
 
   # With `na.rm = FALSE`.
   result <- s_summary(x, na.rm = FALSE)
@@ -108,7 +108,7 @@ testthat::test_that("s_summary handles NA", {
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
     geom_cv = c(geom_cv = NA_real_)
   )
-  testthat::expect_equivalent(result, expected)
+  testthat::expect_equal(result, expected, ignore_attr = TRUE)
 })
 
 testthat::test_that("s_summary returns right results for n = 2", {
@@ -142,7 +142,7 @@ testthat::test_that("s_summary returns right results for n = 2", {
     ),
     geom_cv = c(geom_cv = 52.10922)
   )
-  testthat::expect_equivalent(result, expected, tolerance = .00001)
+  testthat::expect_equal(result, expected, tolerance = .00001, ignore_attr = TRUE)
 })
 
 testthat::test_that("s_summary returns right results for n = 8", {
@@ -173,7 +173,7 @@ testthat::test_that("s_summary returns right results for n = 8", {
     geom_mean_ci = formatters::with_label(c(mean_ci_lwr = 2.456211, mean_ci_upr = 9.547283), "Geometric Mean 95% CI"),
     geom_cv = c(geom_cv = 96.61307)
   )
-  testthat::expect_equivalent(result, expected, tolerance = .00001)
+  testthat::expect_equal(result, expected, tolerance = .00001, ignore_attr = TRUE)
 })
 
 testthat::test_that("s_summary works with factors", {
@@ -295,7 +295,7 @@ testthat::test_that("s_summary works with factors and different denominator choi
 testthat::test_that("s_summary works with characters by converting to character", {
   x <- c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown")
 
-  result <- testthat::expect_warning(s_summary(x, denom = "N_row", .N_row = 20, .var = "SEX"))
+  testthat::expect_warning(result <- s_summary(x, denom = "N_row", .N_row = 20, .var = "SEX"))
   expected <- s_summary(factor(x), denom = "N_row", .N_row = 20)
 
   testthat::expect_identical(result, expected)
@@ -304,7 +304,7 @@ testthat::test_that("s_summary works with characters by converting to character"
 testthat::test_that("s_summary works with characters by converting to character and handling empty strings", {
   x <- c("Female", "Male", "Female", "Male", "Male", "", "Unknown", "Unknown", "Unknown", "Unknown")
 
-  result <- testthat::expect_warning(s_summary(x, .var = "foo", na.rm = FALSE, denom = "N_row", .N_row = 10))
+  testthat::expect_warning(result <- s_summary(x, .var = "foo", na.rm = FALSE, denom = "N_row", .N_row = 10))
   expected <- list(
     n = 10L,
     count = list(
@@ -327,7 +327,7 @@ testthat::test_that("s_summary works with characters by converting to character 
 
 testthat::test_that("s_summary does not work for length 0 character vectors", {
   x <- character()
-  testthat::expect_warning(testthat::expect_error(s_summary(x, denom = "n", .var = "foo")))
+  suppressWarnings(testthat::expect_error(s_summary(x, denom = "n", .var = "foo")))
 })
 
 testthat::test_that("s_summary works with logical vectors", {
@@ -571,7 +571,7 @@ testthat::test_that("`summarize_vars` works with character input and gives the s
 
   l <- basic_table() %>%
     summarize_vars(vars = "foo")
-  result <- testthat::expect_warning(build_table(l, dta))
+  testthat::expect_warning(result <- build_table(l, dta))
 
   dta_factor <- dta %>%
     dplyr::mutate(foo = factor(foo))
@@ -590,7 +590,7 @@ testthat::test_that("`summarize_vars` does not work with sparse character input 
   l <- basic_table() %>%
     split_cols_by("boo") %>%
     summarize_vars(vars = "foo")
-  testthat::expect_error(testthat::expect_warning(build_table(l, dta)))
+  suppressWarnings(testthat::expect_error(testthat::expect_warning(build_table(l, dta))))
 
   # But when converting to factor, it works because we keep the levels information across columns.
   dta_factor <- dta %>%

@@ -1,4 +1,5 @@
-# Tests all variants of LBT04.
+# Tests all variants of LBT04
+
 adsl <- adsl_raw
 adlb <- adlb_raw
 
@@ -20,21 +21,6 @@ testthat::test_that("LBT04 default variant is produced correctly", {
     ) %>%
     build_table(adlb, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "CHEMISTRY", "Alanine Aminotransferase Measurement",
-      "Low", "High", "C-Reactive Protein Measurement", "Low", "High",
-      "IMMUNOLOGY", "Immunoglobulin A Measurement", "Low", "High",
-      "A: Drug X", "(N=134)", "", "", "50/124 (40.3%)", "49/121 (40.5%)",
-      "", "55/122 (45.1%)", "55/115 (47.8%)", "", "", "51/120 (42.5%)",
-      "58/119 (48.7%)", "B: Placebo", "(N=134)", "", "", "46/122 (37.7%)",
-      "48/118 (40.7%)", "", "44/125 (35.2%)", "47/115 (40.9%)", "",
-      "", "61/119 (51.3%)", "54/123 (43.9%)", "C: Combination", "(N=132)",
-      "", "", "37/117 (31.6%)", "59/118 (50%)", "", "50/120 (41.7%)",
-      "44/114 (38.6%)", "", "", "50/120 (41.7%)", "45/119 (37.8%)"
-    ),
-    .Dim = c(13L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

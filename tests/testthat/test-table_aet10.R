@@ -3,7 +3,6 @@
 adsl <- adsl_raw
 adae <- adae_raw
 
-
 testthat::test_that("AET10 default variant is produced correctly", {
   result1 <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -18,21 +17,8 @@ testthat::test_that("AET10 default variant is produced correctly", {
     )
   )
 
-  result3 <- sort_at_path(result2, path = c("AEDECOD"), scorefun = score_occurrences)
+  result <- sort_at_path(result2, path = c("AEDECOD"), scorefun = score_occurrences)
 
-  result_matrix <- to_string_matrix(result3)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "dcd D.2.1.5.3", "dcd A.1.1.1.1", "dcd B.2.2.3.1",
-      "dcd C.2.1.2.1", "A: Drug X", "(N=134)", "47 (35.1%)", "50 (37.3%)",
-      "48 (35.8%)", "35 (26.1%)", "B: Placebo", "(N=134)", "58 (43.3%)",
-      "45 (33.6%)", "54 (40.3%)", "48 (35.8%)", "C: Combination", "(N=132)",
-      "57 (43.2%)", "63 (47.7%)", "51 (38.6%)", "55 (41.7%)", "All Patients",
-      "(N=400)", "162 (40.5%)", "158 (39.5%)", "153 (38.2%)", "138 (34.5%)"
-    ),
-    .Dim = 6:5
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

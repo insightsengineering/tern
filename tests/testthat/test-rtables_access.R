@@ -115,5 +115,5 @@ testthat::test_that("h_content_first_row works as expected", {
     summarize_row_groups() %>%
     build_table(DM)
   result <- h_content_first_row(simple_tab)
-  testthat::expect_is(result, "ContentRow")
+  testthat::expect_s4_class(result, "ContentRow")
 })

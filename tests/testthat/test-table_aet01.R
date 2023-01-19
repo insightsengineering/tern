@@ -90,34 +90,8 @@ testthat::test_that("Safety Summary Variant 1 works as expected", {
     result_adae[3:nrow(result_adae), ]
   )
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "Total number of patients with at least one adverse event",
-      "Total AEs", "Total number of deaths", "Total number of patients withdrawn from study due to an AE",
-      "Total number of patients with at least one", "AE with fatal outcome",
-      "Serious AE", "Serious AE leading to withdrawal from treatment",
-      "Serious AE leading to dose modification/interruption", "Related Serious AE",
-      "AE leading to withdrawal from treatment", "AE leading to dose modification/interruption",
-      "Related AE", "Related AE leading to withdrawal from treatment",
-      "Related AE leading to dose modification/interruption", "Grade 3-5 AE",
-      "A: Drug X", "(N=134)", "122 (91.0%)", "609", "25 (18.66%)",
-      "3 (2.24%)", "", "76 (56.7%)", "104 (77.6%)", "9 (6.7%)",
-      "22 (16.4%)", "76 (56.7%)", "27 (20.1%)", "66 (49.3%)", "105 (78.4%)",
-      "6 (4.5%)", "29 (21.6%)", "109 (81.3%)", "B: Placebo", "(N=134)",
-      "123 (91.8%)", "622", "23 (17.16%)", "6 (4.48%)", "", "70 (52.2%)",
-      "101 (75.4%)", "6 (4.5%)", "26 (19.4%)", "70 (52.2%)", "26 (19.4%)",
-      "76 (56.7%)", "108 (80.6%)", "12 (9.0%)", "38 (28.4%)", "104 (77.6%)",
-      "C: Combination", "(N=132)", "120 (90.9%)", "703", "22 (16.67%)",
-      "5 (3.79%)", "", "75 (56.8%)", "99 (75.0%)", "11 (8.3%)", "29 (22.0%)",
-      "75 (56.8%)", "30 (22.7%)", "74 (56.1%)", "109 (82.6%)",
-      "8 (6.1%)", "38 (28.8%)", "109 (82.6%)"
-    ),
-    .Dim = c(18L, 4L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
@@ -236,38 +210,8 @@ testthat::test_that("Safety Summary Variant 2 (with Medical Concepts Section) wo
     result_adae[3:nrow(result_adae), ]
   )
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "Total number of patients with at least one adverse event",
-      "Total AEs", "Total number of deaths", "Total number of patients withdrawn from study due to an AE",
-      "Total number of patients with at least one", "AE with fatal outcome",
-      "Serious AE", "Serious AE leading to withdrawal from treatment",
-      "Serious AE leading to dose modification/interruption", "Related Serious AE",
-      "AE leading to withdrawal from treatment", "AE leading to dose modification/interruption",
-      "Related AE", "Related AE leading to withdrawal from treatment",
-      "Related AE leading to dose modification/interruption", "Grade 3-5 AE",
-      "Total number of patients with at least one", "C.1.1.1.3/B.2.2.3.1 AESI (BROAD)",
-      "SMQ 02 Reference Name", "D.2.1.5.3/A.1.1.1.1 AESI", "A: Drug X",
-      "(N=134)", "122 (91.0%)", "609", "25 (18.66%)", "3 (2.24%)",
-      "", "76 (56.7%)", "104 (77.6%)", "9 (6.7%)", "22 (16.4%)",
-      "76 (56.7%)", "27 (20.1%)", "66 (49.3%)", "105 (78.4%)",
-      "6 (4.5%)", "29 (21.6%)", "109 (81.3%)", "", "72 (53.7%)",
-      "0", "74 (55.2%)", "B: Placebo", "(N=134)", "123 (91.8%)",
-      "622", "23 (17.16%)", "6 (4.48%)", "", "70 (52.2%)", "101 (75.4%)",
-      "6 (4.5%)", "26 (19.4%)", "70 (52.2%)", "26 (19.4%)", "76 (56.7%)",
-      "108 (80.6%)", "12 (9.0%)", "38 (28.4%)", "104 (77.6%)", "",
-      "79 (59.0%)", "0", "80 (59.7%)", "C: Combination", "(N=132)",
-      "120 (90.9%)", "703", "22 (16.67%)", "5 (3.79%)", "", "75 (56.8%)",
-      "99 (75.0%)", "11 (8.3%)", "29 (22.0%)", "75 (56.8%)", "30 (22.7%)",
-      "74 (56.1%)", "109 (82.6%)", "8 (6.1%)", "38 (28.8%)", "109 (82.6%)",
-      "", "75 (56.8%)", "0", "87 (65.9%)"
-    ),
-    .Dim = c(22L, 4L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
@@ -358,25 +302,8 @@ testthat::test_that("Safety Summary Variant 3 (with Modified Rows) works as expe
 
   result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- structure(
-    c(
-      "", "", "Total number of patients with at least one adverse event",
-      "Total AEs", "Total number of deaths", "Total number of patients withdrawn from study due to an AE",
-      "Total number of patients withdrawn informed consent", "Total number of patients with at least one",
-      "AE with fatal outcome", "Serious AE", "AE leading to withdrawal from treatment",
-      "Related AE", "Grade 3-5 AE", "Grade 4/5 AE", "A: Drug X", "(N=134)",
-      "122 (91.0%)", "609", "25 (18.66%)", "3 (2.24%)", "1 (0.75%)",
-      "", "76 (56.7%)", "104 (77.6%)", "27 (20.1%)", "105 (78.4%)",
-      "109 (81.3%)", "91 (67.9%)", "B: Placebo", "(N=134)", "123 (91.8%)",
-      "622", "23 (17.16%)", "6 (4.48%)", "1 (0.75%)", "", "70 (52.2%)",
-      "101 (75.4%)", "26 (19.4%)", "108 (80.6%)", "104 (77.6%)",
-      "90 (67.2%)", "C: Combination", "(N=132)", "120 (90.9%)", "703",
-      "22 (16.67%)", "5 (3.79%)", "1 (0.76%)", "", "75 (56.8%)", "99 (75.0%)",
-      "30 (22.7%)", "109 (82.6%)", "109 (82.6%)", "93 (70.5%)"
-    ),
-    .Dim = c(14L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
@@ -488,33 +415,6 @@ testthat::test_that("Safety Summary Variant 4 (with Rows Counting Events and Add
     result_adae[3:nrow(result_adae), ]
   )
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "Total number of patients with at least one adverse event",
-      "Total AEs", "Total number of deaths", "Total number of patients withdrawn from study due to an AE",
-      "Total number of patients with at least one", "AE with fatal outcome",
-      "Serious AE", "AE leading to withdrawal from treatment", "AE leading to dose modification/interruption",
-      "Related AE", "Grade 3-5 AE", "Total number of unique preferred terms which are",
-      "Serious AE", "AE leading to dose modification/interruption",
-      "Related AE", "Grade 3-5 AE", "Grade 4/5", "Total number of adverse events which are",
-      "Serious AE", "AE leading to dose modification/interruption",
-      "Related AE", "Grade 3-5 AE", "Grade 4/5", "A: Drug X", "(N=134)",
-      "122 (91.0%)", "609", "25 (18.66%)", "3 (2.24%)", "", "76 (56.7%)",
-      "104 (77.6%)", "27 (20.1%)", "66 (49.3%)", "105 (78.4%)",
-      "109 (81.3%)", "", "4", "8", "5", "5", "3", "", "249", "116",
-      "282", "303", "172", "B: Placebo", "(N=134)", "123 (91.8%)",
-      "622", "23 (17.16%)", "6 (4.48%)", "", "70 (52.2%)", "101 (75.4%)",
-      "26 (19.4%)", "76 (56.7%)", "108 (80.6%)", "104 (77.6%)",
-      "", "4", "8", "5", "5", "3", "", "255", "122", "299", "291",
-      "174", "C: Combination", "(N=132)", "120 (90.9%)", "703", "22 (16.67%)",
-      "5 (3.79%)", "", "75 (56.8%)", "99 (75.0%)", "30 (22.7%)", "74 (56.1%)",
-      "109 (82.6%)", "109 (82.6%)", "", "4", "8", "5", "5", "3",
-      "", "282", "137", "336", "327", "197"
-    ),
-    .Dim = c(25L, 4L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

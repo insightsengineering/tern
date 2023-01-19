@@ -26,7 +26,7 @@ testthat::test_that("strata_normal_quantile works with general factor table", {
 
   result <- strata_normal_quantile(vars, weights, 0.95)
 
-  testthat::expect_equal(result, 1.133272, tol = 0.000001)
+  testthat::expect_equal(result, 1.133272, tolerance = 0.000001)
 })
 
 testthat::test_that("update_weights_strat_wilson works with general inputs", {
@@ -43,7 +43,7 @@ testthat::test_that("update_weights_strat_wilson works with general inputs", {
     "weights" = c(0.2067191, 0.1757727, 0.1896962, 0.1636346, 0.1357615, 0.1284160)
   )
 
-  testthat::expect_equal(result[1:2], expected, tol = 0.000001)
+  testthat::expect_equal(result[1:2], expected, tolerance = 0.000001)
 })
 
 testthat::test_that("update_weights_strat_wilson convergence test", {
@@ -211,10 +211,10 @@ testthat::test_that("prop_strat_wilson output matches equivalent SAS function ou
 testthat::test_that("s_proportion returns right result", {
   result <- s_proportion(c(1, 0, 1, 0))
   expected <- list(
-    n_prop = c(2, .5),
-    prop_ci = c(0, 100)
+    n_prop = formatters::with_label(c(2, .5), "Responders"),
+    prop_ci = formatters::with_label(c(0, 100), "95% CI (Wald, with correction)")
   )
-  testthat::expect_equal(expected, result, tolerance = 1e-4, check.attributes = FALSE)
+  testthat::expect_equal(expected, result, tolerance = 1e-4, ignore_attr = FALSE)
 })
 
 testthat::test_that("`s_proportion` works with Jeffreys CI", {
@@ -227,13 +227,13 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
   )
   # according to SAS.
   expected <- list(
-    n_prop = c(4, 4 / 6),
+    n_prop = formatters::with_label(c(4, 4 / 6), "Responders"),
     prop_ci = formatters::with_label(
       c(34.0802, 89.5730),
-      label = "90% CI for Response Rates (Jeffreys)"
+      label = "90% CI (Jeffreys)"
     )
   )
-  testthat::expect_equal(result, expected, tol = 0.0001, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 0.0001, ignore_attr = FALSE)
 
   # Corner case: Only responders.
   rsp <- c(TRUE, TRUE, TRUE, TRUE)
@@ -244,13 +244,13 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
   )
   # according to SAS.
   expected <- list(
-    n_prop = c(4, 1),
+    n_prop = formatters::with_label(c(4, 1), "Responders"),
     prop_ci = formatters::with_label(
       c(55.5237, 100),
-      label = "95% CI for Response Rates (Jeffreys)"
+      label = "95% CI (Jeffreys)"
     )
   )
-  testthat::expect_equal(result, expected, tol = 0.0001, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 0.0001, ignore_attr = FALSE)
 })
 
 testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
@@ -263,13 +263,13 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
   )
   # according to SAS.
   expected <- list(
-    n_prop = c(4, 4 / 6),
+    n_prop = formatters::with_label(c(4, 4 / 6), "Responders"),
     prop_ci = formatters::with_label(
       c(34.3585, 88.6154),
-      label = "90% CI for Response Rates (Agresti-Coull)"
+      label = "90% CI (Agresti-Coull)"
     )
   )
-  testthat::expect_equal(result, expected, tol = 0.0001, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 0.0001, ignore_attr = FALSE)
 
   # Edge case: Only responders.
   rsp <- c(TRUE, TRUE, TRUE, TRUE)
@@ -280,14 +280,14 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
   )
   # according to SAS.
   expected <- list(
-    n_prop = c(4, 1),
+    n_prop = formatters::with_label(c(4, 1), "Responders"),
     prop_ci = formatters::with_label(
       c(45.4050, 100),
-      label = "95% CI for Response Rates (Agresti-Coull)"
+      label = "95% CI (Agresti-Coull)"
     )
   )
   # Small additional difference acknowledged here.
-  testthat::expect_equal(result, expected, tol = 0.00011, check.attributes = FALSE)
+  testthat::expect_equal(result, expected, tolerance = 0.00011, ignore_attr = FALSE)
 })
 
 testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
@@ -313,7 +313,7 @@ testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
     c("(95.8940, 99.8681)", "(89.6097, 97.4468)", "(95.8337, 99.8661)", "(95.7797, 98.8118)")
   )
 
-  testthat::expect_equal(result, expected, tol = 0.0001)
+  testthat::expect_equal(result, expected, tolerance = 0.0001)
 })
 
 testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `rtables`", {

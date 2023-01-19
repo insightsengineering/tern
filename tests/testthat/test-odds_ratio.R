@@ -20,7 +20,8 @@ testthat::test_that("or_glm estimates right OR and CI", {
     exp(stats::coef(model_fit)[-1])["grpb"],
     exp(stats::confint.default(model_fit, level = 0.95)["grpb", ])
   )
-  testthat::expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
+  names(expected) <- c("est", "lcl", "ucl")
+  testthat::expect_equal(result, expected, tolerance = 1e-4, ignore_attr = FALSE)
 })
 
 testthat::test_that("or_clogit estimates right OR and CI", {

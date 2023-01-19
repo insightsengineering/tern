@@ -1,4 +1,5 @@
-# Tests the single variant for EGT04.
+# Tests the single variant for EGT04
+
 adsl <- adsl_raw
 adeg <- adeg_raw
 
@@ -43,22 +44,9 @@ testthat::test_that("EGT04 default variant is produced correctly", {
       .stats = "count_fraction",
       na.rm = FALSE
     )
+
   result <- build_table(l, adeg_f)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "A: Drug X (N=134)", "Normal", "Abnormal", "Missing",
-      "B: Placebo (N=134)", "Normal", "Abnormal", "Missing", "C: Combination (N=132)",
-      "Normal", "Abnormal", "Missing", "Normal", "", "20 (14.9%)", "11 (8.2%)",
-      "0", "", "18 (13.4%)", "3 (2.2%)", "0", "", "26 (19.7%)",
-      "6 (4.5%)", "1 (0.8%)", "Abnormal", "", "81 (60.4%)", "19 (14.2%)",
-      "1 (0.7%)", "", "81 (60.4%)", "28 (20.9%)", "2 (1.5%)", "", "69 (52.3%)",
-      "29 (22%)", "0", "Missing", "", "1 (0.7%)", "0",
-      "1 (0.7%)", "", "2 (1.5%)", "0", "0", "", "1 (0.8%)",
-      "0", "0"
-    ),
-    .Dim = c(13L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

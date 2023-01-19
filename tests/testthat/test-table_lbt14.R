@@ -35,7 +35,6 @@ testthat::test_that("LBT14 variant 1: HIGH works as expected", {
       BTOXGR_GP = factor(BTOXGR_GP, levels = c("Not High", "1", "2", "3", "4", "Missing"))
     )
 
-
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
@@ -45,34 +44,8 @@ testthat::test_that("LBT14 variant 1: HIGH works as expected", {
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "ALT", "Not High (n)", "Not High", "1", "2", "3", "4",
-      "1 (n)", "Not High", "1", "2", "3", "4",
-      "2 (n)", "Not High", "1", "2",
-      "3 (n)", "Not High", "1", "2", "4",
-      "4 (n)", "Not High", "1", "3",
-      "ARM A", "(N=134)", "", "121", "72 (59.5%)", "16 (13.2%)", "13 (10.7%)", "9 (7.4%)", "11 (9.1%)",
-      "4", "1 (25.0%)", "1 (25.0%)", "1 (25.0%)", "0", "1 (25.0%)",
-      "4", "3 (75.0%)", "0", "1 (25.0%)",
-      "2", "2 (100%)", "0", "0", "0",
-      "3", "1 (33.3%)", "1 (33.3%)", "1 (33.3%)",
-      "ARM B", "(N=134)", "", "118", "70 (59.3%)", "13 (11.0%)", "12 (10.2%)", "14 (11.9%)", "9 (7.6%)",
-      "4", "1 (25.0%)", "0", "0", "1 (25.0%)", "2 (50.0%)",
-      "4", "3 (75.0%)", "1 (25.0%)", "0",
-      "5", "2 (40.0%)", "2 (40.0%)", "1 (20.0%)", "0",
-      "3", "2 (66.7%)", "0", "1 (33.3%)",
-      "ARM C", "(N=132)", "", "118", "59 (50.0%)", "17 (14.4%)", "18 (15.3%)", "12 (10.2%)", "12 (10.2%)",
-      "3", "2 (66.7%)", "0", "0", "1 (33.3%)", "0",
-      "4", "3 (75.0%)", "1 (25.0%)", "0",
-      "5", "4 (80.0%)", "0", "0", "1 (20.0%)",
-      "2", "2 (100%)", "0", "0"
-    ),
-    .Dim = c(28L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT14 variant 2: LOW works as expected", {
@@ -118,34 +91,8 @@ testthat::test_that("LBT14 variant 2: LOW works as expected", {
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "ALT", "Not Low (n)", "Not Low", "1", "2", "3", "4",
-      "1 (n)", "Not Low", "1", "2", "3", "4",
-      "2 (n)", "Not Low", "2", "3",
-      "3 (n)", "Not Low", "1",
-      "4 (n)", "Not Low", "3", "4",
-      "ARM A", "(N=134)", "", "124", "74 (59.7%)", "13 (10.5%)", "13 (10.5%)", "17 (13.7%)", "7 (5.6%)",
-      "3", "0", "1 (33.3%)", "0", "2 (66.7%)", "0",
-      "2", "2 (100%)", "0", "0",
-      "2", "2 (100%)", "0",
-      "3", "2 (66.7%)", "1 (33.3%)", "0",
-      "ARM B", "(N=134)", "", "122", "76 (62.3%)", "12 (9.8%)", "16 (13.1%)", "11 (9.0%)", "7 (5.7%)",
-      "6", "2 (33.3%)", "2 (33.3%)", "1 (16.7%)", "1 (16.7%)", "0",
-      "1", "0", "1 (100%)", "0",
-      "3", "2 (66.7%)", "1 (33.3%)",
-      "2", "1 (50.0%)", "0", "1 (50.0%)",
-      "ARM C", "(N=132)", "", "117", "80 (68.4%)", "9 (7.7%)", "11 (9.4%)", "9 (7.7%)", "8 (6.8%)",
-      "7", "5 (71.4%)", "0", "0", "0", "2 (28.6%)",
-      "4", "3 (75.0%)", "0", "1 (25.0%)",
-      "4", "3 (75.0%)", "1 (25.0%)",
-      "0", "0", "0", "0"
-    ),
-    .Dim = c(26L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expected", {
@@ -181,7 +128,6 @@ testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expe
     BTOXGR_GP = factor(BTOXGR_GP, levels = c("Not Low", "1", "2", "3", "4"))
   )
 
-
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
@@ -191,34 +137,8 @@ testthat::test_that("LBT14 variant 3: LOW without baseline missing works as expe
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "ALT", "Not Low (n)", "Not Low", "1", "2", "3", "4",
-      "1 (n)", "Not Low", "1", "2", "3", "4",
-      "2 (n)", "Not Low", "2", "3",
-      "3 (n)", "Not Low", "1",
-      "4 (n)", "Not Low", "3", "4",
-      "ARM A", "(N=134)", "", "124", "74 (59.7%)", "13 (10.5%)", "13 (10.5%)", "17 (13.7%)", "7 (5.6%)",
-      "3", "0", "1 (33.3%)", "0", "2 (66.7%)", "0",
-      "2", "2 (100%)", "0", "0",
-      "2", "2 (100%)", "0", "3",
-      "2 (66.7%)", "1 (33.3%)", "0",
-      "ARM B", "(N=134)", "", "122", "76 (62.3%)", "12 (9.8%)", "16 (13.1%)", "11 (9.0%)", "7 (5.7%)",
-      "6", "2 (33.3%)", "2 (33.3%)", "1 (16.7%)", "1 (16.7%)", "0",
-      "1", "0", "1 (100%)", "0",
-      "3", "2 (66.7%)", "1 (33.3%)",
-      "2", "1 (50.0%)", "0", "1 (50.0%)",
-      "ARM C", "(N=132)", "", "117", "80 (68.4%)", "9 (7.7%)", "11 (9.4%)", "9 (7.7%)", "8 (6.8%)",
-      "7", "5 (71.4%)", "0", "0", "0", "2 (28.6%)",
-      "4", "3 (75.0%)", "0", "1 (25.0%)",
-      "4", "3 (75.0%)", "1 (25.0%)",
-      "0", "0", "0", "0"
-    ),
-    .Dim = c(26L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-baseline, then force the missing baseline as 0 as expected", { # nolint
@@ -256,7 +176,6 @@ testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and 
       BTOXGR_GP = factor(BTOXGR_GP, levels = c("Not Low", "1", "2", "3", "4"))
     )
 
-
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
@@ -266,34 +185,8 @@ testthat::test_that("LBT14 variant 4: LOW and force 1 missing both baseline and 
     count_occurrences("ATOXGR_GP", denom = "n", drop = TRUE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "ALT", "Not Low (n)", "Not Low", "1", "2", "3", "4", "Missing",
-      "1 (n)", "Not Low", "1", "2", "3", "4",
-      "2 (n)", "Not Low", "2", "3",
-      "3 (n)", "Not Low", "1",
-      "4 (n)", "Not Low", "3", "4",
-      "ARM A", "(N=134)", "", "124", "74 (59.7%)", "13 (10.5%)", "13 (10.5%)", "16 (12.9%)", "7 (5.6%)", "1 (0.8%)",
-      "3", "0", "1 (33.3%)", "0", "2 (66.7%)", "0",
-      "2", "2 (100%)", "0", "0",
-      "2", "2 (100%)", "0",
-      "3", "2 (66.7%)", "1 (33.3%)", "0",
-      "ARM B", "(N=134)", "", "122", "76 (62.3%)", "12 (9.8%)", "16 (13.1%)", "11 (9.0%)", "7 (5.7%)", "0",
-      "6", "2 (33.3%)", "2 (33.3%)", "1 (16.7%)", "1 (16.7%)", "0",
-      "1", "0", "1 (100%)", "0",
-      "3", "2 (66.7%)", "1 (33.3%)",
-      "2", "1 (50.0%)", "0", "1 (50.0%)",
-      "ARM C", "(N=132)", "", "117", "80 (68.4%)", "9 (7.7%)", "11 (9.4%)", "9 (7.7%)", "8 (6.8%)", "0",
-      "7", "5 (71.4%)", "0", "0", "0", "2 (28.6%)",
-      "4", "3 (75.0%)", "0", "1 (25.0%)",
-      "4", "3 (75.0%)", "1 (25.0%)",
-      "0", "0", "0", "0"
-    ),
-    .Dim = c(27L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT14 variant 5: HIGH with fillings works as expected", {
@@ -330,7 +223,6 @@ testthat::test_that("LBT14 variant 5: HIGH with fillings works as expected", {
       BTOXGR_GP = factor(BTOXGR_GP, levels = c("Not High", "1", "2", "3", "4", "Missing"))
     )
 
-
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
@@ -340,36 +232,6 @@ testthat::test_that("LBT14 variant 5: HIGH with fillings works as expected", {
     count_occurrences("ATOXGR_GP", denom = "n", drop = FALSE) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "ALT", "Not High (n)", "Not High", "1", "2", "3", "4", "Missing",
-      "1 (n)", "Not High", "1", "2", "3", "4", "Missing",
-      "2 (n)", "Not High", "1", "2", "3", "4", "Missing",
-      "3 (n)", "Not High", "1", "2", "3", "4", "Missing",
-      "4 (n)", "Not High", "1", "2", "3", "4", "Missing",
-      "Missing (n)", "Not High", "1", "2", "3", "4", "Missing",
-      "ARM A", "(N=134)", "", "121", "72 (59.5%)", "16 (13.2%)", "13 (10.7%)", "9 (7.4%)", "11 (9.1%)", "0",
-      "4", "1 (25.0%)", "1 (25.0%)", "1 (25.0%)", "0", "1 (25.0%)", "0",
-      "4", "3 (75.0%)", "0", "1 (25.0%)", "0", "0", "0",
-      "2", "2 (100%)", "0", "0", "0", "0", "0",
-      "3", "1 (33.3%)", "1 (33.3%)", "0", "1 (33.3%)", "0", "0",
-      "0", "0", "0", "0", "0", "0", "0",
-      "ARM B", "(N=134)", "", "118", "70 (59.3%)", "13 (11.0%)", "12 (10.2%)", "14 (11.9%)", "9 (7.6%)", "0",
-      "4", "1 (25.0%)", "0", "0", "1 (25.0%)", "2 (50.0%)", "0",
-      "4", "3 (75.0%)", "1 (25.0%)", "0", "0", "0", "0",
-      "5", "2 (40.0%)", "2 (40.0%)", "1 (20.0%)", "0", "0", "0",
-      "3", "2 (66.7%)", "0", "0", "1 (33.3%)", "0", "0",
-      "0", "0", "0", "0", "0", "0", "0",
-      "ARM C", "(N=132)", "", "118", "59 (50.0%)", "17 (14.4%)", "18 (15.3%)", "12 (10.2%)", "12 (10.2%)", "0",
-      "3", "2 (66.7%)", "0", "0", "1 (33.3%)", "0", "0",
-      "4", "3 (75.0%)", "1 (25.0%)", "0", "0", "0", "0",
-      "5", "4 (80.0%)", "0", "0", "0", "1 (20.0%)", "0",
-      "2", "2 (100%)", "0", "0", "0", "0", "0",
-      "0", "0", "0", "0", "0", "0", "0"
-    ),
-    .Dim = c(45L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

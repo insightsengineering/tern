@@ -85,7 +85,7 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
     geom_cv = c(geom_cv = NA_real_)
   )
 
-  testthat::expect_equal(result, expected, tol = 1e-6)
+  testthat::expect_equal(result, expected, tolerance = 1e-6)
 })
 
 testthat::test_that("s_change_from_baseline handles baseline substitution", {

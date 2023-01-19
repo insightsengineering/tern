@@ -47,19 +47,8 @@ testthat::test_that("AET07 variant 1 is produced correctly", {
       decreasing = TRUE
     )
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "Total number of deaths", "cl D.1 / dcd D.1.1.1.1",
-      "cl B.1 / dcd B.1.1.1.1", "B: Placebo", "(N=134)", "70 (52.2%)",
-      "42 (31.3%)", "49 (36.6%)", "C: Combination", "(N=132)", "75 (56.8%)",
-      "51 (38.6%)", "43 (32.6%)"
-    ),
-    .Dim = c(5L, 3L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("AET07 variant 2 is produced correctly", {
@@ -89,17 +78,6 @@ testthat::test_that("AET07 variant 2 is produced correctly", {
       decreasing = TRUE
     )
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "Total number of deaths", "cl D.1 / dcd D.1.1.1.1",
-      "cl B.1 / dcd B.1.1.1.1", "A: Drug X", "(N=134)", "0", "0", "0",
-      "B: Placebo", "(N=134)", "70 (52.2%)", "42 (31.3%)", "49 (36.6%)",
-      "C: Combination", "(N=132)", "75 (56.8%)", "51 (38.6%)", "43 (32.6%)"
-    ),
-    .Dim = 5:4
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

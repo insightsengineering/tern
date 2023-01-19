@@ -16,7 +16,6 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
-
 adrs_100 <- adrs_raw %>%
   preprocess_adrs(n_records = 100)
 
@@ -57,8 +56,7 @@ testthat::test_that("extract_rsp_subgroups functions as expected with valid inpu
       stringsAsFactors = FALSE
     )
   )
-
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
@@ -95,8 +93,7 @@ testthat::test_that("extract_rsp_subgroups functions as expected with NULL subgr
       stringsAsFactors = FALSE
     )
   )
-
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("extract_rsp_subgroups works as expected with groups_lists", {
@@ -166,8 +163,7 @@ testthat::test_that("extract_rsp_subgroups functions as expected with strata", {
       stringsAsFactors = FALSE
     )
   )
-
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("a_response_subgroups functions as expected with valid input", {
@@ -231,7 +227,6 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
     ),
     .Dim = c(9L, 9L)
   )
-
   testthat::expect_equal(result_matrix, expected_matrix)
 })
 
@@ -341,12 +336,12 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with NULL subg
 testthat::test_that("tabulate_rsp_subgroups functions as expected when 0 obs in one arm", {
   adrs <- adrs_200
 
-  df <- testthat::expect_warning(extract_rsp_subgroups(
+  suppressWarnings(testthat::expect_warning(df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = "RACE"),
     data = adrs,
     method = "chisq",
     conf_level = 0.95
-  ))
+  )))
 
   result <- basic_table() %>%
     tabulate_rsp_subgroups(
@@ -396,6 +391,5 @@ testthat::test_that("d_rsp_subgroups_colvars functions as expected with valid in
       pval = "p-value (Chi-Squared Test)"
     )
   )
-
   testthat::expect_equal(result, expected)
 })

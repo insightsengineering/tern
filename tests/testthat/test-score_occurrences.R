@@ -142,7 +142,7 @@ testthat::test_that("score_occurrences functions as expected with empty analysis
 
 testthat::test_that("score_occurrences_cols functions as expected", {
   score_col_c <- score_occurrences_cols(col_names = "C")
-  testthat::expect_is(score_col_c, "function")
+  testthat::expect_type(score_col_c, "closure")
 
   sorted_table <- full_table %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_col_c)
@@ -180,7 +180,7 @@ testthat::test_that("score_occurrences_subtable functions as expected", {
     prune_table()
 
   score_subtable_all <- score_occurrences_subtable(col_names = names(full_table_dfae))
-  testthat::expect_is(score_subtable_all, "function")
+  testthat::expect_type(score_subtable_all, "closure")
 
   sorted_table <- full_table_dfae %>%
     sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
@@ -214,7 +214,7 @@ testthat::test_that("score_occurrences_cont_cols functions as expected", {
     build_table(df = dfae)
 
   score_cont_cols <- score_occurrences_cont_cols(col_names = c("A", "B"))
-  testthat::expect_is(score_cont_cols, "function")
+  testthat::expect_type(score_cont_cols, "closure")
 
   sorted_table <- full_table_dfae %>%
     sort_at_path(path = c("AESUPSYS"), scorefun = score_cont_cols, decreasing = TRUE)

@@ -1,4 +1,5 @@
-# Preparation of the test case.
+# Preparation of the test case
+
 adpc <- adpc_raw
 
 testthat::test_that("PKCT01 is produced correctly", {
@@ -15,27 +16,8 @@ testthat::test_that("PKCT01 is produced correctly", {
 
   result <- build_table(l, df = adpc)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "A: Drug X", "Plasma Drug X", " ", "Plasma Drug Y", " ",
-      "Urine Drug X", " ", "Urine Drug Y", " ", "C: Combination",
-      "Plasma Drug X", " ", "Plasma Drug Y", " ", "Urine Drug X", " ",
-      "Urine Drug Y", " ", "n", "", "", "1474", "", "0", "", "804", "",
-      "804", "", "", "1452", "", "1452", "", "792", "", "792", "Mean", "",
-      "", "6.5", "", "NA", "", "0.9", "", "0.9", "", "", "6.5", "", "13.1",
-      "", "0.8", "", "0.8", "SD", "", "", "6.7", "", "NA", "", "1.8", "",
-      "1.8", "", "", "6.7", "", "13.5", "", "1.8", "", "1.8", "SE", "", "",
-      "0.2", "", "NA", "", "0.1", "", "0.1", "", "", "0.2", "", "0.4", "",
-      "0.1", "", "0.1", "CV (%)", "", "", "102.4", "", "NA", "", "210.7",
-      "", "210.7", "", "", "103.3", "", "103.3", "", "212.4", "", "212.4",
-      "CV % Geometric Mean", "", "", "NA", "", "NA", "", "NA", "", "NA", "",
-      "", "NA", "", "NA", "", "NA", "", "NA"
-    ),
-    .Dim = c(19L, 7L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   l2 <- basic_table() %>%
     split_rows_by(
@@ -51,19 +33,8 @@ testthat::test_that("PKCT01 is produced correctly", {
   adpc <- adpc %>% mutate(AVALC = as.factor(AVALC))
   result <- build_table(l2, df = adpc)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "A: Drug X", "Plasma Drug X", " ", "Plasma Drug Y", " ",
-      "Urine Drug X", " ", "Urine Drug Y", " ", "C: Combination",
-      "Plasma Drug X", " ", "Plasma Drug Y", " ", "Urine Drug X",
-      " ", "Urine Drug Y", " ", "n_blq", "", "", "402", "", "0", "",
-      "402", "", "402", "", "", "396", "", "396", "", "396", "", "396"
-    ),
-    .Dim = c(19L, 2L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Specific PKCT01 features are present", {
@@ -165,39 +136,6 @@ testthat::test_that("Specific PKCT01 features are present", {
   testthat::expect_equal(length(pag_works), 11L)
 
   # Values are correct
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "Cohort/Treatment", "  Visit", "    Norminal Time from First Dose", "",
-      "", "A: Drug X", "Day 1", "0", " ", "0.5", " ", "1", " ", "1.5", " ",
-      "2", " ", "3", " ", "4", " ", "8", " ", "12", " ", "24", " ", "Day 2",
-      "48", " ", "", "", "", "", "n", "", "", "", "402", "", "134", "", "134",
-      "", "134", "", "134", "", "134", "", "402", "", "402", "", "402", "",
-      "402", "", "", "402", "", "", "Number", "of", "<LTR/BLQ>s", "", "", "",
-      "402", "", "0", "", "0", "", "0", "", "0", "", "0", "", "0", "", "0", "",
-      "0", "", "402", "", "", "402", "", "", "", "", "Mean", "", "", "", "0",
-      "", "12.6", "", "16.2", "", "15.6", "", "13.4", "", "8.47", "", "4.79",
-      "", "0.348", "", "0.0224", "", "0", "", "", "0", "", "", "", "", "SD",
-      "", "", "", "0", "", "1.51", "", "1.63", "", "1.46", "", "1.35", "",
-      "1.25", "", "1.01", "", "0.179", "", "0.0189", "", "0", "", "", "0",
-      "", "", "", "", "CV (%) Mean", "", "", "", "NE", "", "12.0", "",
-      "10.0", "", "9.3", "", "10.1", "", "14.7", "", "21.2", "", "51.6",
-      "", "84.4", "", "NE", "", "", "NE", "", "", "", "", "Geometric Mean",
-      "", "", "", "NE", "", "12.5", "", "16.1", "", "15.6", "", "13.4", "",
-      "8.38", "", "4.69", "", "0.303", "", "0.0156", "", "NE", "", "", "NE",
-      "", "", "", "", "CV % Geometric Mean", "", "", "", "NE", "", "12.2", "",
-      "10.1", "", "9.3", "", "10.0", "", "15.0", "", "21.9", "", "58.2", "",
-      "111.2", "", "NE", "", "", "NE", "", "", "", "", "Median", "", "", "",
-      "0", "", "12.6", "", "16.2", "", "15.5", "", "13.3", "", "8.4", "",
-      "4.79", "", "0.318", "", "0.017", "", "0", "", "", "0", "", "", "",
-      "", "Minimum", "", "", "", "0", "", "9.72", "", "12.6", "", "12.3",
-      "", "10.8", "", "5.88", "", "2.7", "", "0.076", "", "0.002", "", "0",
-      "", "", "0", "", "", "", "", "Maximum", "", "", "", "0", "", "15.6",
-      "", "19.9", "", "19", "", "16.5", "", "10.9", "", "7.09", "", "0.866",
-      "", "0.083", "", "0", "", "", "0"
-    ),
-    .Dim = c(30L, 11L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

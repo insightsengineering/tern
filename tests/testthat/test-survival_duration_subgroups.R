@@ -184,7 +184,7 @@ testthat::test_that("extract_survival_subgroups functions as expected with valid
       row.names = c(NA, -6L), class = "data.frame"
     )
   )
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("extract_survival_subgroups works as expected with groups_lists", {
@@ -263,7 +263,7 @@ testthat::test_that("extract_survival_subgroups functions as expected with NULL 
         class = "data.frame"
       )
     )
-  testthat::expect_equal(result, expected, tol = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 0.000001)
 })
 
 testthat::test_that("a_survival_subgroups functions as expected with valid input", {
@@ -356,10 +356,10 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with extr
     dplyr::slice(1:30) %>%
     reapply_varlabels(formatters::var_labels(adtte_local))
 
-  df <- testthat::expect_warning(extract_survival_subgroups(
+  suppressWarnings(testthat::expect_warning(df <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "REGION1"),
     data = adtte
-  ))
+  )))
 
   result <- basic_table() %>%
     tabulate_survival_subgroups(df, time_unit = adtte$AVALU[1])

@@ -84,14 +84,15 @@ testthat::test_that("count_abnormal_by_baseline throws warning with character va
   )
 
   # Check with LOW abnormality.
-  result <- testthat::expect_warning(
-    s_count_abnormal_by_baseline(
+  testthat::expect_warning(
+    result <- s_count_abnormal_by_baseline(
       df = df,
       .var = "myrange",
       abnormal = "LOW",
       variables = list(id = "myid", baseline = "mybase")
     )
   )
+
   expected <- list(fraction = list(
     "not_abnormal" = formatters::with_label(c(num = 2L, denom = 4L), "Not low baseline status"),
     "abnormal" = formatters::with_label(c(num = 0L, denom = 1L), "Low baseline status"),

@@ -10,7 +10,7 @@ tab <- basic_table() %>%
 testthat::test_that("keep_rows works in a special case identical to standard pruning", {
   row_condition <- !CombinationFunction(all_zero_or_na)
   pruning_fun <- keep_rows(row_condition)
-  testthat::expect_is(pruning_fun, "function")
+  testthat::expect_type(pruning_fun, "closure")
   result <- prune_table(tab, pruning_fun)
   expected <- prune_table(tab)
   testthat::expect_identical(result, expected)

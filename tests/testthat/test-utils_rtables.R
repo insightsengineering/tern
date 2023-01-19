@@ -151,7 +151,7 @@ testthat::test_that("unlist_and_blank_na works as expected if all missing", {
 
 testthat::test_that("cfun_by_flag works as expected", {
   result_fun <- cfun_by_flag(analysis_var = "aval", flag_var = "is_result", format = "xx.xxxx")
-  testthat::expect_is(result_fun, "function")
+  testthat::expect_type(result_fun, "closure")
   df <- data.frame(
     aval = c(1, 2, 3, 4, 5),
     arm = c("a", "a", "b", "b", "b"),

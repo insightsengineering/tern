@@ -23,7 +23,7 @@ testthat::test_that("fit_rsp_step works as expected with default options", {
     variables = variables,
     data = data
   ))
-  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_s3_class(result, c("matrix", "step"))
   testthat::expect_identical(ncol(result), 11L)
   testthat::expect_identical(
     colnames(result),
@@ -55,7 +55,7 @@ testthat::test_that("fit_rsp_step works as expected with global model fit", {
       )
     )
   ))
-  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_s3_class(result, c("matrix", "step"))
   testthat::expect_identical(ncol(result), 8L)
   testthat::expect_identical(
     colnames(result),
@@ -80,7 +80,7 @@ testthat::test_that("fit_rsp_step works as expected with strata", {
     data = data,
     control = c(control_logistic(), control_step(bandwidth = 0.6))
   ))
-  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_s3_class(result, c("matrix", "step"))
   testthat::expect_identical(ncol(result), 11L)
   testthat::expect_identical(
     colnames(result),
@@ -105,7 +105,7 @@ testthat::test_that("fit_rsp_step works as expected with null bandwidth", {
     data = data,
     control = c(control_logistic(), control_step(bandwidth = NULL))
   ))
-  testthat::expect_is(result, c("matrix", "step"))
+  testthat::expect_s3_class(result, c("matrix", "step"))
   testthat::expect_identical(ncol(result), 11L)
   testthat::expect_identical(
     colnames(result),

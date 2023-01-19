@@ -1,4 +1,5 @@
 # Tests all variants of EXT01
+
 adsl <- adsl_raw
 adex <- adex_raw
 
@@ -53,26 +54,8 @@ testthat::test_that("EXT01 default variant with numeric parameters is produced c
     summarize_vars(vars = "AVAL") %>%
     build_table(adex, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "Total dose administered", "n", "Mean (SD)", "Median", "Min - Max",
-      "Total number of doses administered", "n", "Mean (SD)", "Median", "Min - Max",
-      "Treatment duration (days)", "n", "Mean (SD)", "Median", "Min - Max",
-      "Total number of missed doses during study", "n", "Mean (SD)", "Median", "Min - Max",
-      "A: Drug X", "(N=134)", "", "75", "6675.2 (1110.9)", "6720.0", "4800.0 - 9360.0",
-      "", "75", "7.0 (0.0)", "7.0", "7.0 - 7.0", "", "75", "74.3 (41.6)", "77.0", "5.0 - 149.0",
-      "", "75", "10.5 (5.9)", "10.0", "0.0 - 20.0",
-      "B: Placebo", "(N=134)", "", "67", "6505.1 (1249.3)", "6480.0", "4080.0 - 9360.0",
-      "", "67", "7.0 (0.0)", "7.0", "7.0 - 7.0", "", "67", "79.0 (43.1)", "80.0", "2.0 - 150.0",
-      "", "67", "10.0 (6.1)", "11.0", "0.0 - 19.0",
-      "C: Combination", "(N=132)", "", "75", "6982.4 (1272.5)", "7200.0", "4320.0 - 9360.0",
-      "", "75", "7.0 (0.0)", "7.0", "7.0 - 7.0", "", "75", "74.2 (39.5)", "78.0", "1.0 - 147.0",
-      "", "75", "9.5 (5.5)", "9.0", "0.0 - 20.0"
-    ),
-    .Dim = c(22L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("EXT01 variant: with both numeric and categorical parameters", {
@@ -160,29 +143,8 @@ testthat::test_that("EXT01 variant: with both numeric and categorical parameters
     ) %>%
     build_table(anl, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "Treatment duration (days)", "n", "Mean (SD)", "Median", "Min - Max",
-      "Treatment duration (days)", "n", "0 - 30", "31 - 60", "61 - 90", ">= 91",
-      "Total dose administered", "n", "Mean (SD)", "Median", "Min - Max",
-      "Total number of doses administered", "n", "Mean (SD)", "Median", "Min - Max",
-      "A: Drug X", "(N=134)", "", "75", "74.3 (41.6)", "77.0", "5.0 - 149.0",
-      "", "75", "12 (16%)", "18 (24%)", "19 (25.3%)", "26 (34.7%)",
-      "", "75", "6675.2 (1110.9)", "6720.0", "4800.0 - 9360.0",
-      "", "75", "7.0 (0.0)", "7.0", "7.0 - 7.0",
-      "B: Placebo", "(N=134)", "", "67", "79.0 (43.1)", "80.0", "2.0 - 150.0",
-      "", "67", "12 (17.9%)", "12 (17.9%)", "15 (22.4%)", "28 (41.8%)",
-      "", "67", "6505.1 (1249.3)", "6480.0", "4080.0 - 9360.0",
-      "", "67", "7.0 (0.0)", "7.0", "7.0 - 7.0",
-      "C: Combination", "(N=132)", "", "75", "74.2 (39.5)", "78.0", "1.0 - 147.0",
-      "", "75", "15 (20%)", "14 (18.7%)", "18 (24%)", "28 (37.3%)",
-      "", "75", "6982.4 (1272.5)", "7200.0", "4320.0 - 9360.0",
-      "", "75", "7.0 (0.0)", "7.0", "7.0 - 7.0"
-    ),
-    .Dim = c(23L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("EXT01 variant: with user specified categories for missed doses", {
@@ -275,31 +237,6 @@ testthat::test_that("EXT01 variant: with user specified categories for missed do
     ) %>%
     build_table(anl, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "Treatment duration (days)", "n", "Mean (SD)",
-      "Median", "Min - Max", "Treatment duration (days)", "n", "0 - 30",
-      "31 - 60", "61 - 90", ">= 91", "Total dose administered", "n",
-      "Mean (SD)", "Median", "Min - Max", "Total number of doses administered",
-      "n", "Mean (SD)", "Median", "Min - Max", "Missed Doses", "n",
-      "At least 1 missed dose", "At least 5 missed doses", "At least 10 missed doses",
-      "At least 15 missed doses", "A: Drug X", "(N=134)", "", "75",
-      "74.3 (41.6)", "77.0", "5.0 - 149.0", "", "75", "12 (16%)", "18 (24%)",
-      "19 (25.3%)", "26 (34.7%)", "", "75", "6675.2 (1110.9)", "6720.0",
-      "4800.0 - 9360.0", "", "75", "7.0 (0.0)", "7.0", "7.0 - 7.0", "", "75", "74 (55.2%)",
-      "59 (44%)", "41 (30.6%)", "26 (19.4%)", "B: Placebo", "(N=134)",
-      "", "67", "79.0 (43.1)", "80.0", "2.0 - 150.0", "", "67", "12 (17.9%)",
-      "12 (17.9%)", "15 (22.4%)", "28 (41.8%)", "", "67", "6505.1 (1249.3)",
-      "6480.0", "4080.0 - 9360.0", "", "67", "7.0 (0.0)", "7.0", "7.0 - 7.0", "", "67",
-      "63 (47%)", "49 (36.6%)", "38 (28.4%)", "21 (15.7%)", "C: Combination",
-      "(N=132)", "", "75", "74.2 (39.5)", "78.0", "1.0 - 147.0", "", "75",
-      "15 (20%)", "14 (18.7%)", "18 (24%)", "28 (37.3%)", "", "75",
-      "6982.4 (1272.5)", "7200.0", "4320.0 - 9360.0", "", "75", "7.0 (0.0)",
-      "7.0", "7.0 - 7.0", "", "75", "73 (55.3%)", "59 (44.7%)", "37 (28%)",
-      "16 (12.1%)"
-    ),
-    .Dim = c(29L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

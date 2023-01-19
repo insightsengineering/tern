@@ -104,28 +104,8 @@ testthat::test_that("LBT05 variant 1 is produced correctly", {
 
   result <- trim_rows(result, criteria = all_zero_or_na_not_any)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "Laboratory Test", "  Direction of abnormality",
-      "ALT (n)", "Low", "Any Abnormality", "CRP (n)", "Low", "Single, not last",
-      "Last or replicated", "Any Abnormality", "High", "Single, not last",
-      "Last or replicated", "Any Abnormality", "IGA (n)", "Low", "Single, not last",
-      "Last or replicated", "Any Abnormality", "High", "Single, not last",
-      "Last or replicated", "Any Abnormality", "ARM A", "(N=134)",
-      "134", "", "0", "134", "", "2 (1.5%)", "10 (7.5%)", "12 (9%)",
-      "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "134", "", "2 (1.5%)",
-      "5 (3.7%)", "7 (5.2%)", "", "0", "4 (3%)", "4 (3%)", "ARM B",
-      "(N=134)", "134", "", "0", "134", "", "0", "7 (5.2%)", "7 (5.2%)",
-      "", "2 (1.5%)", "9 (6.7%)", "11 (8.2%)", "134", "", "1 (0.7%)",
-      "8 (6%)", "9 (6.7%)", "", "0", "9 (6.7%)", "9 (6.7%)", "ARM C",
-      "(N=132)", "132", "", "0", "132", "", "0", "7 (5.3%)", "7 (5.3%)",
-      "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)", "132", "", "1 (0.8%)",
-      "10 (7.6%)", "11 (8.3%)", "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"
-    ),
-    .Dim = c(23L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT05 variant 2 is produced correctly", {
@@ -191,30 +171,9 @@ testthat::test_that("LBT05 variant 2 is produced correctly", {
     )
 
   result <- build_table(lyt, df = adlb, alt_counts_df = adsl)
-  result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- structure(
-    c(
-      "Laboratory Test", "  Direction of abnormality",
-      "ALT (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
-      "CRP (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
-      "High", "Single, not last", "Last or replicated", "Any Abnormality",
-      "IGA (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
-      "High", "Single, not last", "Last or replicated", "Any Abnormality",
-      "ARM A", "(N=134)", "134", "", "0", "0", "0", "134", "", "2 (1.5%)",
-      "10 (7.5%)", "12 (9%)", "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)",
-      "134", "", "2 (1.5%)", "5 (3.7%)", "7 (5.2%)", "", "0", "4 (3%)",
-      "4 (3%)", "ARM B", "(N=134)", "134", "", "0", "0", "0", "134",
-      "", "0", "7 (5.2%)", "7 (5.2%)", "", "2 (1.5%)", "9 (6.7%)",
-      "11 (8.2%)", "134", "", "1 (0.7%)", "8 (6%)", "9 (6.7%)", "",
-      "0", "9 (6.7%)", "9 (6.7%)", "ARM C", "(N=132)", "132", "", "0",
-      "0", "0", "132", "", "0", "7 (5.3%)", "7 (5.3%)", "", "1 (0.8%)",
-      "12 (9.1%)", "13 (9.8%)", "132", "", "1 (0.8%)", "10 (7.6%)",
-      "11 (8.3%)", "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"
-    ),
-    .Dim = c(25L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("LBT05 variant 4 is produced correctly", {
@@ -259,7 +218,6 @@ testthat::test_that("LBT05 variant 4 is produced correctly", {
       levels = c("Low", "High")
     ))
 
-
   map <- unique(
     adlb[adlb$abn_dir %in% c("Low", "High") & adlb$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
   ) %>%
@@ -287,25 +245,6 @@ testthat::test_that("LBT05 variant 4 is produced correctly", {
   result <- build_table(lyt, df = adlb, alt_counts_df = adsl) %>%
     prune_table()
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "Laboratory Test", "  Direction of abnormality",
-      "CRP (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
-      "High", "Single, not last", "Last or replicated", "Any Abnormality",
-      "IGA (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
-      "High", "Single, not last", "Last or replicated", "Any Abnormality",
-      "ARM A", "(N=134)", "134", "", "2 (1.5%)", "10 (7.5%)", "12 (9%)",
-      "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "134", "", "2 (1.5%)",
-      "5 (3.7%)", "7 (5.2%)", "", "0", "4 (3%)", "4 (3%)", "ARM B",
-      "(N=134)", "134", "", "0", "7 (5.2%)", "7 (5.2%)", "", "2 (1.5%)",
-      "9 (6.7%)", "11 (8.2%)", "134", "", "1 (0.7%)", "8 (6%)", "9 (6.7%)",
-      "", "0", "9 (6.7%)", "9 (6.7%)", "ARM C", "(N=132)", "132", "",
-      "0", "7 (5.3%)", "7 (5.3%)", "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)",
-      "132", "", "1 (0.8%)", "10 (7.6%)", "11 (8.3%)", "", "1 (0.8%)",
-      "5 (3.8%)", "6 (4.5%)"
-    ),
-    .Dim = c(20L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -67,23 +67,6 @@ testthat::test_that("ADAT03 is produced correctly", {
   fnotes_at_path(result, rowpath = NULL, colpath = c("multivars", "AVAL")) <- "footnote1" # nolint
   fnotes_at_path(result, rowpath = NULL, colpath = c("multivars", "AVAL_LT")) <- "footnote2" # nolint
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "Treatment Group", "  Visit", "", "", "A: Drug X (N=1206)", "Day 1", " ", "Day 2", " ",
-      "C: Combination (N=2112)", "Day 1", " ", "Day 2", " ", "Overall",
-      "", "Total Number", "of Measurable", " Samples {1}", "", "", "938", "", "268", "", "", "1584", "", "528", "3318",
-      "", "", "", "Mean", "", "", "8.227e+00", "", "1.344e+01", "", "", "1.469e+01", "", "2.018e+01", "1.363e+01",
-      "", "", "", "SD", "", "", "7.351e+00", "", "1.351e+00", "", "", "1.237e+01", "", "7.129e+00", "1.059e+01",
-      "", "", "", "Median", "", "", "1.131e+01", "", "1.330e+01", "", "", "1.451e+01", "", "1.888e+01", "1.377e+01",
-      "", "", "", "Minimum", "", "", "0.000e+00", "", "1.075e+01", "", "", "0.000e+00", "", "1.073e+01", "0.000e+00",
-      "", "", "", "Maximum", "", "", "1.986e+01", "", "1.646e+01", "", "", "3.947e+01", "", "3.259e+01", "3.947e+01",
-      "", "", "", "CV (%)", "", "", "89.4", "", "10.0", "", "", "84.3", "", "35.3", "77.7",
-      "", "", "", "Geometric Mean", "", "", "NA", "", "1.338e+01", "", "", "NA", "", "1.891e+01", "NA",
-      "", "Samples with", "Concentration", "≤ 15μg/mL {2}", "", "", "738 (78.7%)", "", "228 (85.1%)", "", "",
-      "836 (52.8%)", "", "210 (39.8%)", "2012 (60.6%)"
-    ),
-    .Dim = c(15L, 10L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

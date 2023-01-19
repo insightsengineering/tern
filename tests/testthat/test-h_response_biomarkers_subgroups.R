@@ -64,7 +64,7 @@ testthat::test_that("h_logistic_mult_cont_df works as expected", {
     pval = c(0.195658638331358, 0.949797749266217),
     pval_label = c("p-value (Wald)", "p-value (Wald)")
   )
-  testthat::expect_equal(result, expected, tol = 1e-5)
+  testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
 testthat::test_that("h_logistic_mult_cont_df returns missing values if data is empty (0 rows)", {
@@ -121,7 +121,7 @@ testthat::test_that("h_logistic_mult_cont_df also works with response not being 
     pval = c(0.195658638331358, 0.949797749266217),
     pval_label = c("p-value (Wald)", "p-value (Wald)")
   )
-  testthat::expect_equal(result, expected, tol = 1e-5)
+  testthat::expect_equal(result, expected, tolerance = 1e-5)
 })
 
 # h_tab_rsp_one_biomarker ----

@@ -34,24 +34,14 @@ testthat::test_that("COXT02 default variant 1 is produced correctly", {
     data = adtte_f
   )
   df <- broom::tidy(multivar_model)
+
   result <- basic_table() %>%
     split_rows_by("term", child_labels = "hidden") %>%
     summarize_coxreg(multivar = TRUE, conf_level = .95) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- structure(
-    c(
-      "", "ARMCD (reference = ARM B)", "ARM A", "ARM C",
-      "Sex (reference = F)", "M", "Age", "Hazard Ratio", "", "0.72",
-      "1.93", "", "1.17", "1.01", "95% CI", "", "(0.52, 0.99)", "(1.44, 2.59)",
-      "", "(0.91, 1.51)", "(0.99, 1.02)", "p-value", "<0.0001", "0.0417",
-      "<0.0001", "", "0.2142", "0.4785"
-    ),
-    .Dim = c(7L, 4L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("COXT02 variant 5 is produced correctly", {
@@ -67,21 +57,12 @@ testthat::test_that("COXT02 variant 5 is produced correctly", {
     data = adtte_f
   )
   df <- broom::tidy(multivar_model)
+
   result <- basic_table() %>%
     split_rows_by("term", child_labels = "hidden") %>%
     summarize_coxreg(multivar = TRUE, conf_level = 0.9, vars = c("hr", "ci")) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- structure(
-    c(
-      "", "ARMCD (reference = ARM B)", "ARM A", "ARM C",
-      "Sex (reference = F)", "M", "Age", "Hazard Ratio", "", "0.72",
-      "1.96", "", "1.21", "1.01", "90% CI", "", "(0.55, 0.95)", "(1.52, 2.51)",
-      "", "(0.98, 1.49)", "(0.99, 1.02)"
-    ),
-    .Dim = c(7L, 3L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -23,7 +23,7 @@ testthat::test_that("groups_list_to_df works as expected", {
 # combine_groups ----
 
 testthat::test_that("combine_groups combines character vectors", {
-  result <- testthat::expect_warning(combine_groups(fct = c("A", "B", "C")))
+  testthat::expect_warning(result <- combine_groups(fct = c("A", "B", "C")))
   expected <- list(A = "A", `B/C` = c("B", "C"))
   testthat::expect_identical(result, expected)
 })
@@ -189,8 +189,8 @@ testthat::test_that("split_cols_by_groups manages combinations of columns with r
 # combine_counts ----
 testthat::test_that("combine_counts combines character vectors", {
   fct <- c("A", "A", "A", "B", "B", "C")
-  grp <- testthat::expect_warning(combine_groups(fct = fct))
-  result <- testthat::expect_warning(combine_counts(fct, grp))
+  testthat::expect_warning(grp <- combine_groups(fct = fct))
+  testthat::expect_warning(result <- combine_counts(fct, grp))
   expected <- c(A = 3, `B/C` = 3)
   testthat::expect_identical(result, expected)
 })
