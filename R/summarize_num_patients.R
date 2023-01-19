@@ -21,7 +21,6 @@ NULL
 #'   - `nonunique` : vector of count.
 #'   - `unique_count`: count.
 #'
-#'
 #' @export
 #'
 #' @examples
@@ -49,8 +48,8 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
   }
 
   out <- list(
-    unique = c(count1, ifelse(count1 == 0 && .N_col == 0, 0, count1 / .N_col)),
-    nonunique = count2,
+    unique = formatters::with_label(c(count1, ifelse(count1 == 0 && .N_col == 0, 0, count1 / .N_col)), labelstr),
+    nonunique = formatters::with_label(count2, labelstr),
     unique_count = formatters::with_label(count1, paste(labelstr, "(n)"))
   )
 
@@ -112,11 +111,7 @@ s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = N
 c_num_patients <- make_afun(
   s_num_patients_content,
   .stats = c("unique", "nonunique", "unique_count"),
-  .formats = c(unique = format_count_fraction, nonunique = "xx", unique_count = "xx"),
-  .labels = c(
-    unique = "Number of patients with at least one event",
-    nonunique = "Number of events"
-  )
+  .formats = c(unique = format_count_fraction_fixed_dp, nonunique = "xx", unique_count = "xx")
 )
 
 #' @describeIn summarize_num_patients Layout creating function which adds content rows using the statistics
@@ -127,8 +122,14 @@ summarize_num_patients <- function(lyt,
                                    var,
                                    .stats = NULL,
                                    .formats = NULL,
-                                   .labels = NULL,
+                                   .labels = c(
+                                     unique = "Number of patients with at least one event",
+                                     nonunique = "Number of events"
+                                   ),
                                    ...) {
+  if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
+  if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
+
   cfun <- make_afun(
     c_num_patients,
     .stats = .stats,
@@ -167,16 +168,23 @@ summarize_num_patients <- function(lyt,
 #'   add_colcounts() %>%
 #'   analyze_num_patients("USUBJID", .stats = c("unique")) %>%
 #'   build_table(df_tmp)
+#' tbl
 #'
 #' @export
 analyze_num_patients <- function(lyt,
                                  vars,
                                  .stats = NULL,
                                  .formats = NULL,
-                                 .labels = NULL,
+                                 .labels = c(
+                                   unique = "Number of patients with at least one event",
+                                   nonunique = "Number of events"
+                                 ),
                                  show_labels = c("default", "visible", "hidden"),
                                  indent_mod = 0L,
                                  ...) {
+  if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
+  if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
+
   afun <- make_afun(
     c_num_patients,
     .stats = .stats,

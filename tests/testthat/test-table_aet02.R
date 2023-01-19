@@ -41,8 +41,6 @@ testthat::test_that("AET02 variant 1 is produced correctly", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  result_matrix <- to_string_matrix(result)
-
   # Testing pagination with not repeated Total number of patients
   pag_result <- paginate_table(result, lpp = 20)
   testthat::expect_identical(

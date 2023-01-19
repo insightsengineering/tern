@@ -202,6 +202,7 @@ testthat::test_that("score_occurrences_subtable functions as expected", {
 })
 
 testthat::test_that("score_occurrences_cont_cols functions as expected", {
+  set.seed(1)
   dfae <- dfae_local
   dfae <- dfae %>%
     dplyr::mutate(USUBJID = factor(sample(1:10, size = nrow(dfae), replace = TRUE)))
@@ -224,9 +225,9 @@ testthat::test_that("score_occurrences_cont_cols functions as expected", {
     c(
       "", "AESS2", "Number of patients with at least one event",
       "Number of events", "AESS2 (n)", "AESS1", "Number of patients with at least one event",
-      "Number of events", "AESS1 (n)", "A", "", "6 (60%)", "8", "6",
-      "", "2 (20%)", "2", "2", "B", "", "2 (40%)", "2", "2", "", "3 (60%)",
-      "3", "3", "C", "", "4 (80%)", "5", "4", "", "0", "0", "0"
+      "Number of events", "AESS1 (n)", "A", "", "7 (70.0%)", "8", "7",
+      "", "2 (20.0%)", "2", "2", "B", "", "1 (20.0%)", "2", "1", "", "2 (40.0%)",
+      "3", "2", "C", "", "5 (100%)", "5", "5", "", "0", "0", "0"
     ),
     .Dim = c(9L, 4L)
   )

@@ -142,7 +142,7 @@ testthat::test_that("MHT01 variant 5 is produced accurately", {
     analyze_num_patients(
       vars = "USUBJID",
       .stats = c("unique", "nonunique"),
-      .labels = c(unique = "Total number of patients with at least one event")
+      .labels = c(unique = "Total number of patients with at least one event", nonunique = "Number of events")
     ) %>%
     split_rows_by(
       var = "MHBODSYS",
@@ -153,7 +153,7 @@ testthat::test_that("MHT01 variant 5 is produced accurately", {
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
-      .labels = c(unique = "Total number of patients with at least one event")
+      .labels = c(unique = "Total number of patients with at least one event", nonunique = "Number of events")
     ) %>%
     count_occurrences(vars = "MHDECOD", .indent_mods = -1L)
 

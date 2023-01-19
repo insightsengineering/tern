@@ -22,7 +22,6 @@ testthat::test_that("AET06_SMQ variant 1 is produced correctly", {
       )
     )
 
-
   adae_smq1 <- adae %>%
     dplyr::filter(!is.na(SMQ1)) %>%
     dplyr::rename(SMQ = SMQ1) %>%
