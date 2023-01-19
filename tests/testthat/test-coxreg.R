@@ -617,7 +617,9 @@ testthat::test_that("fit_coxreg_multivar works correctly also without treatment 
     control = control
   ))
   testthat::expect_s3_class(result$mod, "coxph")
-  testthat::expect_equal(stats::formula(result$mod), survival::Surv(time, status) ~ 1 + covar1 + covar2, ignore_attr = TRUE)
+  testthat::expect_equal(stats::formula(result$mod), survival::Surv(time, status) ~ 1 + covar1 + covar2,
+    ignore_attr = TRUE
+  )
 })
 
 # tidy.coxreg.multivar ----

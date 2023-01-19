@@ -17,6 +17,7 @@
   repeat when paginating.
 * Added `h_row_first_values` function as a more general helper function to retrieve
   first values from specific rows.
+* Replaced table template tests with snapshot testing.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
@@ -38,6 +39,7 @@
 * Renamed `summarize_vars_in_cols` into `analyze_vars_in_cols` to reflect the
   appropriate `analyze` logic.
 * Exported function `format_xx`.
+* Updated tests to use `testthat` 3rd edition.
 
 # tern 0.7.10
 
