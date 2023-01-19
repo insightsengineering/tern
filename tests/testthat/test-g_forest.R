@@ -6,10 +6,8 @@ adrs <- adrs %>%
   dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
   dplyr::slice(seq_len(n_records)) %>%
   droplevels() %>%
-  dplyr::mutate(
-    ARM = fct_relevel(ARM, "B: Placebo"),
-    rsp = AVALC == "CR"
-  )
+  dplyr::mutate(rsp = AVALC == "CR")
+
 formatters::var_labels(adrs) <- c(adrs_labels, "Response")
 df <- extract_rsp_subgroups(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),

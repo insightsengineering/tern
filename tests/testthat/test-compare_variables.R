@@ -52,7 +52,7 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
 testthat::test_that("s_compare for character works as expected", {
   x <- c("a", "a", "b", "c", "a")
   y <- c("a", "b", "c")
-  suppressWarnings(expect_warning(
+  suppressWarnings(testthat::expect_warning(
     result <- s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x"),
     "automatically converting character variable x to factor"
   ))

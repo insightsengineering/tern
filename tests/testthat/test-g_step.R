@@ -90,11 +90,11 @@ testthat::test_that("tidy.step gives expected warnings when there are NAs in y v
     control = control_summarize_vars(conf_level = 0.9),
     variables = list(biomarker = "bla")
   )
-  suppressWarnings(expect_warning(
+  suppressWarnings(testthat::expect_warning(
     broom::tidy(step_matrix),
     "Missing values in the point estimate or CI columns"
   ))
-  suppressWarnings(expect_warning(
+  suppressWarnings(testthat::expect_warning(
     broom::tidy(step_matrix),
     "Consider using larger `bandwidth`, less `num_points`"
   ))
@@ -107,11 +107,11 @@ testthat::test_that("tidy.step gives expected warnings when there are very large
     control = control_summarize_vars(conf_level = 0.9),
     variables = list(biomarker = "bla")
   )
-  suppressWarnings(expect_warning(
+  suppressWarnings(testthat::expect_warning(
     broom::tidy(step_matrix),
     "Very large absolute values in the point estimate or CI columns"
   ))
-  suppressWarnings(expect_warning(
+  suppressWarnings(testthat::expect_warning(
     broom::tidy(step_matrix),
     "Consider using larger `bandwidth`, less `num_points`"
   ))
