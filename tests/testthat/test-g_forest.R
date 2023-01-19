@@ -18,7 +18,7 @@ testthat::test_that("g_forest default plot works", {
   tbl <- basic_table() %>%
     tabulate_rsp_subgroups(df)
 
-  result <- testthat::expect_silent(
+  result <- testthat::expect_no_error(
     g_forest(
       tbl,
       draw = FALSE
@@ -36,7 +36,7 @@ testthat::test_that("g_forest works with custom arguments", {
     rrow("row 2", 1.2, c(1.1, 1.4))
   )
 
-  result <- testthat::expect_silent(
+  result <- testthat::expect_no_error(
     g_forest(
       tbl = tbl,
       col_x = 1,
