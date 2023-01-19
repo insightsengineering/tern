@@ -300,8 +300,8 @@ testthat::test_that("AET04 variant 4 is produced correctly (Collapsing of Grades
 # No test done for variant 5 (Using Worst Grade Flags from ADAE) since it's similar to
 # variant 1 (just pre-processing the data).
 
-testthat::test_that("AET04 variant 6 is produced correctly (with an
-                    Incidence Rate of at Least 5%, totals restricted)", {
+testthat::test_that(
+  "AET04 variant 6 is produced correctly (with an Incidence Rate of at Least 5%, totals restricted)", {
   # Simple wrapper to return subset ADAE to a threshold of xx%.
   get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
     n_per_arm <- adsl %>%
@@ -443,8 +443,7 @@ testthat::test_that("AET04 variant 9 is produced correctlyb(with a Difference in
 # there are no terms left.
 
 testthat::test_that(
-  "AET04 variant 11 is produced correctly
-  (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)",
+  "AET04 variant 11 is produced correctly (with Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)",
   {
     cutoff <- 0.4
     row_condition <- has_fraction_in_any_col(atleast = cutoff, col_names = levels(adsl$ACTARM))

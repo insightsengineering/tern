@@ -345,8 +345,7 @@
             Grade 3-5       43 (32.1%)    46 (34.3%)      43 (32.6%)  
             4               43 (32.1%)    46 (34.3%)      43 (32.6%)  
 
-# AET04 variant 6 is produced correctly (with an
-                    Incidence Rate of at Least 5%, totals restricted)
+# AET04 variant 6 is produced correctly (with an Incidence Rate of at Least 5%, totals restricted)
 
     Code
       res
@@ -459,8 +458,7 @@
             Grade 1-2       35 (26.1%)    48 (35.8%)      55 (41.7%)  
             2               35 (26.1%)    48 (35.8%)      55 (41.7%)  
 
-# AET04 variant 11 is produced correctly
-  (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)
+# AET04 variant 11 is produced correctly (with Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)
 
     Code
       res

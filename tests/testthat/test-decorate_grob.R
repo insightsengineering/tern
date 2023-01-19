@@ -44,9 +44,9 @@ testthat::test_that("decorate_grob returns no warnings when creating a non-empty
 testthat::test_that("split_string works with default settings", {
   result <- split_string(
     "The species are Iris setosa, versicolor, and virginica.",
-    width = grid::unit(3, "cm")
+    width = grid::unit(4, "cm")
   )
-  expected <- "The species\nare Iris setosa,\nversicolor, and\nvirginica."
+  expected <- "The species are Iris\nsetosa, versicolor,\nand virginica."
   testthat::expect_identical(result, expected)
 })
 

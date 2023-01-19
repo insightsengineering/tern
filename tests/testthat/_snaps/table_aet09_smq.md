@@ -14,8 +14,7 @@
         dcd B.1.1.1.1                                                                    47 (35.1%)   49 (36.6%)     43 (32.6%)  
         dcd C.1.1.1.3                                                                    43 (32.1%)   46 (34.3%)     43 (32.6%)  
 
-# AET09 variant 2 (AEs related to study drug by SMQ
-                    with customized queries) is produced correctly
+# AET09 variant 2 (AEs related to study drug by SMQ with customized queries) is produced correctly
 
     Code
       res
