@@ -2,11 +2,11 @@ adrs <- adrs_raw
 n_records <- 20
 adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
 adrs <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
-  filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-  slice(seq_len(n_records)) %>%
+  dplyr::filter(PARAMCD == "BESRSPI") %>%
+  dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
+  dplyr::slice(seq_len(n_records)) %>%
   droplevels() %>%
-  mutate(
+  dplyr::mutate(
     ARM = fct_relevel(ARM, "B: Placebo"),
     rsp = AVALC == "CR"
   )
