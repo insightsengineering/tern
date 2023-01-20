@@ -19,10 +19,10 @@ testthat::test_that("g_forest default plot works", {
     tabulate_rsp_subgroups(df)
 
   result <- testthat::expect_silent(
-    invisible(g_forest(
+    g_forest(
       tbl,
       draw = FALSE
-    ))
+    )
   )
 })
 
@@ -37,7 +37,7 @@ testthat::test_that("g_forest works with custom arguments", {
   )
 
   result <- testthat::expect_silent(
-    invisible(g_forest(
+    g_forest(
       tbl = tbl,
       col_x = 1,
       col_ci = 2,
@@ -46,6 +46,6 @@ testthat::test_that("g_forest works with custom arguments", {
       vline = 1,
       forest_header = c("Hello", "World"),
       draw = FALSE
-    ))
+    )
   )
 })

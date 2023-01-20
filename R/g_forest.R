@@ -211,7 +211,7 @@ g_forest <- function(tbl, # nolint
 
   symbol_size <- if (!is.null(col_symbol_size)) {
     tmp_symbol_size <- vapply(seq_len(nr), function(i) {
-      xi <- as.vector(tbl[i, col_symbol_size, drop = TRUE])
+      suppressWarnings(xi <- as.vector(tbl[i, col_symbol_size, drop = TRUE]))
 
       if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
         xi
