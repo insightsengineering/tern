@@ -8,15 +8,15 @@
                                                                     (N=134)         (N=134)        (N=134)        (N=134)         (N=134)        (N=134)        (N=132)         (N=132)        (N=132)  
       ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       cl A.1                                                                                                                                                                                            
-      Total number of patients with at least one adverse event    78 (58.2%)           0              0          75 (56%)            0              0         89 (67.4%)           0              0     
+      Total number of patients with at least one adverse event    78 (58.2%)           0              0         75 (56.0%)           0              0         89 (67.4%)           0              0     
         dcd A.1.1.1.1                                                 37               0              0             34               0              0             48               0              0     
         dcd A.1.1.1.2                                                 36               0              0             36               0              0             38               0              0     
       cl B.2                                                                                                                                                                                            
-      Total number of patients with at least one adverse event     79 (59%)       49 (36.6%)          0         74 (55.2%)      44 (32.8%)          0         85 (64.4%)      52 (39.4%)          0     
+      Total number of patients with at least one adverse event    79 (59.0%)      49 (36.6%)          0         74 (55.2%)      44 (32.8%)          0         85 (64.4%)      52 (39.4%)          0     
         dcd B.2.2.3.1                                                 36               0              0             40               0              0             39               0              0     
         dcd B.2.1.2.1                                                 37              37              0             33              33              0             39              39              0     
       cl D.1                                                                                                                                                                                            
-      Total number of patients with at least one adverse event     79 (59%)       48 (35.8%)     50 (37.3%)      67 (50%)       42 (31.3%)     42 (31.3%)     80 (60.6%)      50 (37.9%)     51 (38.6%) 
+      Total number of patients with at least one adverse event    79 (59.0%)      48 (35.8%)     50 (37.3%)     67 (50.0%)      42 (31.3%)     42 (31.3%)     80 (60.6%)      50 (37.9%)     51 (38.6%) 
         dcd D.1.1.1.1                                                 37               0             37             31               0             31             39               0             39     
         dcd D.1.1.4.2                                                 36              36              0             31              31              0             38              38              0     
       cl D.2                                                                                                                                                                                            
