@@ -194,7 +194,7 @@ g_forest <- function(tbl, # nolint
   }, numeric(1))
 
   x_ci <- lapply(seq_len(nr), function(i) {
-    xi <- as.vector(tbl[i, col_ci, drop = TRUE])
+    xi <- suppressWarnings(as.vector(tbl[i, col_ci, drop = TRUE])) # as above
 
     if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
       if (length(xi) != 2) {
