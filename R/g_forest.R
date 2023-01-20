@@ -183,7 +183,8 @@ g_forest <- function(tbl, # nolint
   }
 
   x_e <- vapply(seq_len(nr), function(i) {
-    xi <- as.vector(tbl[i, col_x, drop = TRUE])
+    # If a label row is selected NULL is returned with a warning (suppressed)
+    xi <- suppressWarnings(as.vector(tbl[i, col_x, drop = TRUE]))
 
     if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
       xi
