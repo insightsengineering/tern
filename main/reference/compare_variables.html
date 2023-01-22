@@ -16,7 +16,7 @@ with the new Analyze Function compare_vars()."><!-- mathjax --><script src="http
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9031</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9032</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,15 +40,6 @@ with the new Analyze Function compare_vars()."><!-- mathjax --><script src="http
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -344,64 +335,64 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     sum </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49.0163 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      sum </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52.11865 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.90163 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     mean </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.211865 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7618711 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.094585 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        se </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2409248 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.3461381 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      mean        sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.9016295 0.7618711 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     mean       sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.211865 1.094585 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      mean        se </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.9016295 0.2409248 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.2118648 0.3461381 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4.356620    5.446639 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.428846    5.994884 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean 95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sei</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sei_lwr mean_sei_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4.660705     5.142554 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4.865727     5.558003 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSE"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sdi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4.139758     5.663501 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4.11728      6.30645 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSD"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      p_value </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7.807606e-09 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.091428e-07 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean p-value (H0: mean = 0)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   median </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.978884 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.509456 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mad</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          mad </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.440892e-16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           mad </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -4.440892e-16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> median_ci_lwr median_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3.835472      5.547908 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4.451484      5.907643 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf_level")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9785156</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
@@ -409,46 +400,46 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quantiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> quantile_0.25 quantile_0.75 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4.686128      5.428369 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4.501042      5.812172 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "25% and 75%-ile"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iqr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       iqr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7422414 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     iqr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.31113 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $range</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      min      max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3.422694 5.841050 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.758354 6.753629 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $min</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      min </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3.422694 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.758354 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.84105 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      max </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6.753629 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15.54322 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21.00179 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4.842545 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5.084902 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4.291500    5.464346 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.256972    6.073855 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean 95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17.00836 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25.23151 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.17568e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.270219e-09</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## If one group has not more than 1 value, then p-value is not calculated.</span></span></span>
@@ -459,63 +450,63 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      sum </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58.94217 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51.76529 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.894217 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.176529 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.8366514 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.8464052 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        se </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2645724 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2676568 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      mean        sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.8942171 0.8366514 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.1765287 0.8464052 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      mean        se </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.8942171 0.2645724 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.1765287 0.2676568 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5.295713    6.492721 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.571047    5.782011 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean 95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sei</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sei_lwr mean_sei_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5.629645     6.158790 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4.908872     5.444186 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSE"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sdi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5.057566     6.730869 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4.330124     6.022934 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSD"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      p_value </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3.499486e-09 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.220333e-08 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean p-value (H0: mean = 0)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   median </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.705794 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.028827 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mad</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          mad </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.440892e-16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           mad </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -4.440892e-16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> median_ci_lwr median_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       5.33942       6.34139 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4.102326      6.183882 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf_level")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9785156</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
@@ -523,43 +514,43 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quantiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> quantile_0.25 quantile_0.75 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      5.364904      6.249921 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4.667597      5.696131 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "25% and 75%-ile"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iqr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       iqr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.8850163 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      iqr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.028534 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $range</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      min      max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.705174 7.851209 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.080327 6.590983 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $min</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      min </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.705174 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.080327 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $max</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7.851209 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6.590983 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14.19444 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16.35083 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5.844624 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5.114859 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5.306853    6.436891 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.551382    5.748097 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean 95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13.55468 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16.42539 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
@@ -975,28 +966,28 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        row_name                     formatted_cell indent_mod</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1             n                                 10          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           sum                               51.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           sum                               50.5          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3          mean                                5.1          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4            sd                                1.0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5            se                                0.3          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       mean_sd                          5.1 (1.0)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7       mean_se                          5.1 (0.3)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       mean_ci                       (4.42, 5.80)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      mean_sei                       (4.80, 5.41)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     mean_sdi                       (4.14, 6.07)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4            sd                                1.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5            se                                0.4          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       mean_sd                          5.1 (1.1)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       mean_se                          5.1 (0.4)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       mean_ci                       (4.24, 5.87)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      mean_sei                       (4.69, 5.41)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     mean_sdi                       (3.91, 6.19)          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11    mean_pval                               0.00          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12       median                                5.0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12       median                                4.9          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 13          mad                                0.0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    median_ci                       (3.92, 6.37)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    quantiles                          4.4 - 5.8          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16          iqr                                1.4          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17        range                          3.7 - 6.6          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18          min                                3.7          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19          max                                6.6          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20           cv                               18.9          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21    geom_mean                                5.0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 geom_mean_ci 4.37848519375209, 5.76227618816908          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23      geom_cv                               19.4          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    median_ci                       (3.81, 6.37)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    quantiles                          3.9 - 6.2          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16          iqr                                2.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17        range                          3.6 - 6.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18          min                                3.6          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19          max                                6.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20           cv                               22.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21    geom_mean                                4.9          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 geom_mean_ci 4.19107902682629, 5.81278456845539          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23      geom_cv                               23.2          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24         pval                            &lt;0.0001          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                            n</span>
