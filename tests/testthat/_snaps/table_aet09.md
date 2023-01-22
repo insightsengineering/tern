@@ -25,7 +25,7 @@
         Total number of events related to study drug                                         48            53              65             166     
         dcd C.2.1.2.1                                                                    35 (26.1%)    48 (35.8%)      55 (41.7%)     138 (34.5%) 
       cl C.1                                                                                                                                      
-        Total number of patients with at least one adverse event related to study drug   43 (32.1%)    46 (34.3%)      43 (32.6%)      132 (33%)  
+        Total number of patients with at least one adverse event related to study drug   43 (32.1%)    46 (34.3%)      43 (32.6%)     132 (33.0%) 
         Total number of events related to study drug                                         55            63              64             182     
         dcd C.1.1.1.3                                                                    43 (32.1%)    46 (34.3%)      43 (32.6%)     132 (33.0%) 
 

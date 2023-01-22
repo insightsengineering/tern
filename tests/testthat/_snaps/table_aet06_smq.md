@@ -7,7 +7,7 @@
                                                                        F            M            F            M            F            M     
                                                                      (N=79)       (N=55)       (N=82)       (N=52)       (N=70)       (N=62)  
       ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-      Total number of patients with at least one adverse event     72 (91.1%)   50 (90.9%)   74 (90.2%)   45 (86.5%)    63 (90%)    55 (88.7%)
+      Total number of patients with at least one adverse event     72 (91.1%)   50 (90.9%)   74 (90.2%)   45 (86.5%)   63 (90.0%)   55 (88.7%)
       SMQ 1 (broad)                                                                                                                           
         Total number of patients with at least one adverse event   69 (87.3%)   46 (83.6%)   70 (85.4%)   42 (80.8%)   62 (88.6%)   54 (87.1%)
         Total number of events                                        229          141          245          114          238          183    
@@ -18,7 +18,7 @@
           dcd B.1.1.1.1                                            28 (35.4%)   19 (34.5%)   33 (40.2%)   16 (30.8%)   24 (34.3%)   19 (30.6%)
           dcd C.1.1.1.3                                            30 (38.0%)   13 (23.6%)   36 (43.9%)   10 (19.2%)   27 (38.6%)   16 (25.8%)
       SMQ 1 (narrow)                                                                                                                          
-        Total number of patients with at least one adverse event    64 (81%)    36 (65.5%)   63 (76.8%)   36 (69.2%)   53 (75.7%)   54 (87.1%)
+        Total number of patients with at least one adverse event   64 (81.0%)   36 (65.5%)   63 (76.8%)   36 (69.2%)   53 (75.7%)   54 (87.1%)
         Total number of events                                        157          102          157           79          159          136    
           dcd A.1.1.1.1                                            34 (43.0%)   16 (29.1%)   31 (37.8%)   14 (26.9%)   33 (47.1%)   30 (48.4%)
           dcd A.1.1.1.2                                            32 (40.5%)   16 (29.1%)   33 (40.2%)   15 (28.8%)   24 (34.3%)   26 (41.9%)
@@ -41,7 +41,7 @@
                                                                    >= 65      < 65       >= 65      < 65        >= 65        < 65    
                                                                    (N=0)     (N=134)     (N=0)     (N=134)      (N=1)       (N=131)  
       ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-      Total number of patients with at least one adverse event       0      122 (91%)      0     119 (88.8%)   1 (100%)   117 (89.3%)
+      Total number of patients with at least one adverse event       0     122 (91.0%)     0     119 (88.8%)   1 (100%)   117 (89.3%)
       SMQ 1 (broad)                                                                                                                  
         Total number of patients with at least one adverse event     0     115 (85.8%)     0     112 (83.6%)   1 (100%)   115 (87.8%)
         Total number of events                                       0         370         0         359          2           419    

@@ -183,7 +183,8 @@ g_forest <- function(tbl, # nolint
   }
 
   x_e <- vapply(seq_len(nr), function(i) {
-    xi <- as.vector(tbl[i, col_x, drop = TRUE])
+    # If a label row is selected NULL is returned with a warning (suppressed)
+    xi <- suppressWarnings(as.vector(tbl[i, col_x, drop = TRUE]))
 
     if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
       xi
@@ -193,7 +194,7 @@ g_forest <- function(tbl, # nolint
   }, numeric(1))
 
   x_ci <- lapply(seq_len(nr), function(i) {
-    xi <- as.vector(tbl[i, col_ci, drop = TRUE])
+    xi <- suppressWarnings(as.vector(tbl[i, col_ci, drop = TRUE])) # as above
 
     if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
       if (length(xi) != 2) {
@@ -210,7 +211,7 @@ g_forest <- function(tbl, # nolint
 
   symbol_size <- if (!is.null(col_symbol_size)) {
     tmp_symbol_size <- vapply(seq_len(nr), function(i) {
-      xi <- as.vector(tbl[i, col_symbol_size, drop = TRUE])
+      suppressWarnings(xi <- as.vector(tbl[i, col_symbol_size, drop = TRUE]))
 
       if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
         xi
