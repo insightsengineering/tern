@@ -24,19 +24,20 @@ reference:
 
   - title: Analysis Functions
     desc: |
-    Analyze functions with their corresponding statistics functions and formatted analysis functions.
-    - **Statistics functions** (denoted by `s_` prefix) compute the numbers that are tabulated later.
-    In order to separate computation from formatting, they do not take care of `rcell`
-    type formatting themselves.
-    - **Formatted analysis functions** (denoted by `a_` prefix) have the same arguments as the corresponding
-    statistics functions, and can be further customized by calling `rtables::make_afun()` on them. They are used
-    as `afun` in `rtables::analyze()`.
-    - **Analyze functions** are used in combination with `rtables` layout functions in the pipeline which creates
-    the table.
+          Analyze functions with their corresponding statistics functions and formatted analysis functions.
+          - **Statistics functions** (denoted by `s_` prefix) compute the numbers that are tabulated later.
+            In order to separate computation from formatting, they do not take care of `rcell`
+            type formatting themselves.
+          - **Formatted analysis functions** (denoted by `a_` prefix) have the same arguments as the corresponding
+            statistics functions, and can be further customized by calling `rtables::make_afun()` on them. They are used
+            as `afun` in `rtables::analyze()`.
+          - **Analyze functions** are used in combination with `rtables` layout functions in the pipeline which creates
+            the table.
     contents:
       - compare_vars
       - starts_with("analyze_", internal = TRUE)
       - starts_with("count_", internal = TRUE)
+      - starts_with("create_", internal = TRUE)
       - starts_with("estimate_", internal = TRUE)
       - starts_with("summarize_", internal = TRUE)
       - starts_with("tabulate_", internal = TRUE)
@@ -142,5 +143,5 @@ reference:
 
   - title: Deprecated Functions
     desc: |
-    These functions already are or will eventually be removed.
-    **Currently no functions are deprecated**
+          These functions already are or will eventually be removed.
+          **Currently no functions are deprecated**

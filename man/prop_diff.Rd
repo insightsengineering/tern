@@ -2,7 +2,6 @@
 % Please edit documentation in R/prop_diff.R
 \name{prop_diff}
 \alias{prop_diff}
-\alias{d_proportion_diff}
 \alias{prop_diff_wald}
 \alias{prop_diff_ha}
 \alias{prop_diff_nc}
@@ -13,8 +12,6 @@
 \alias{estimate_proportion_diff}
 \title{Proportion Difference}
 \usage{
-d_proportion_diff(conf_level, method, long = FALSE)
-
 prop_diff_wald(rsp, grp, conf_level = 0.95, correct = FALSE)
 
 prop_diff_ha(rsp, grp, conf_level)
@@ -70,19 +67,13 @@ estimate_proportion_diff(
 )
 }
 \arguments{
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{method}{(\code{string})\cr
-the method used for the confidence interval estimation.}
-
-\item{long}{(\code{logical})\cr
-Whether a long or a short (default) description is required.}
-
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
 
 \item{grp}{(\code{factor})\cr
 vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{correct}{\code{logical}\cr
 include the continuity correction. For further information, see for example
@@ -106,6 +97,9 @@ by a statistics function.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
+\item{method}{(\code{string})\cr
+the method used for the confidence interval estimation.}
+
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -127,17 +121,11 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
-\value{
-String describing the analysis.
-}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \section{Functions}{
 \itemize{
-\item \code{d_proportion_diff()}: This is an auxiliary function that describes the analysis in
-\code{s_proportion_diff}.
-
 \item \code{prop_diff_wald()}: The Wald interval follows the usual textbook
 definition for a single proportion confidence interval using the normal
 approximation. It is possible to include a continuity correction for Wald's
@@ -300,4 +288,7 @@ build_table(l, df = dta)
 \itemize{
 \item \insertRef{Yan2010-jt}{tern}
 }
+}
+\seealso{
+d_proportion_diff
 }
