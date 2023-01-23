@@ -9,8 +9,11 @@
 #' @name abnormal_by_worst_grade_worsen
 NULL
 
-#' @describeIn abnormal_by_worst_grade_worsen Helper function
-#' to prepare a `df` for generate the patient count shift table
+#' Helper Function to Prepare ADLB with Worst Labs
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper function to prepare a `df` for generate the patient count shift table
 #'
 #' @param adlb (`data frame`) \cr `ADLB` dataframe
 #' @param worst_flag_low (named `vector`) \cr
@@ -147,17 +150,45 @@ h_adlb_worsen <- function(adlb,
   out
 }
 
-#' @describeIn abnormal_by_worst_grade_worsen Helper function to
-#' count the number of patients and the fraction of patients according to
+#' Helper Function to Analyze Patients for [s_count_abnormal_lab_worsen_by_baseline()]
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper function to count the number of patients and the fraction of patients according to
 #' highest post-baseline lab grade variable `.var`, baseline lab grade variable `baseline_var`,
 #' and the direction of interest specified in `direction_var`.
 #'
+#' @inheritParams argument_convention
+#' @inheritParams h_adlb_worsen
 #' @param baseline_var (`string`) \cr baseline lab grade variable
 #' @return [h_worsen_counter()] returns the counts and fraction of patients
 #' whose worst post-baseline lab grades are worse than their baseline grades, for
 #' post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
 #' @examples
+#' library(scda)
+#' library(dplyr)
+#' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adsl <- synthetic_cdisc_data("latest")$adsl
+#'
+#' # The direction variable, GRADDR, is based on metadata
+#' adlb <- adlb %>%
+#'   mutate(
+#'     GRADDR = case_when(
+#'       PARAMCD == "ALT" ~ "B",
+#'       PARAMCD == "CRP" ~ "L",
+#'       PARAMCD == "IGA" ~ "H"
+#'     )
+#'   ) %>%
+#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+#'
+#' df <- h_adlb_worsen(
+#'   adlb,
+#'   worst_flag_low = c("WGRLOFL" = "Y"),
+#'   worst_flag_high = c("WGRHIFL" = "Y"),
+#'   direction_var = "GRADDR"
+#' )
+#'
 #' # `h_worsen_counter`
 #' h_worsen_counter(
 #'   df %>% filter(PARAMCD == "CRP" & GRADDR == "Low"),
@@ -247,6 +278,29 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' @examples
 #' # Internal function - s_count_abnormal_lab_worsen_by_baseline
 #' \dontrun{
+#' library(scda)
+#' library(dplyr)
+#' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adsl <- synthetic_cdisc_data("latest")$adsl
+#'
+#' # The direction variable, GRADDR, is based on metadata
+#' adlb <- adlb %>%
+#'   mutate(
+#'     GRADDR = case_when(
+#'       PARAMCD == "ALT" ~ "B",
+#'       PARAMCD == "CRP" ~ "L",
+#'       PARAMCD == "IGA" ~ "H"
+#'     )
+#'   ) %>%
+#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+#'
+#' df <- h_adlb_worsen(
+#'   adlb,
+#'   worst_flag_low = c("WGRLOFL" = "Y"),
+#'   worst_flag_high = c("WGRHIFL" = "Y"),
+#'   direction_var = "GRADDR"
+#' )
+#'
 #' # Patients with worsening lab grade for CRP in the direction of low
 #' s_count_abnormal_lab_worsen_by_baseline(
 #'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),

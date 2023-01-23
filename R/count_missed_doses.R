@@ -25,7 +25,10 @@ s_count_nonmissing <- function(x) {
   list(n = n_available(x))
 }
 
-#' @describeIn count_missed_doses Description function that calculates labels for  [s_count_missed_doses()].
+#' Description Function that Calculates Labels for [s_count_missed_doses()].
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @inheritParams s_count_missed_doses
 #' @return [d_count_missed_doses()] returns a named `character` vector with the labels.
 #'

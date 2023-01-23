@@ -540,9 +540,12 @@ a_summary.logical <- make_afun(
   .formats = .a_summary_counts_formats
 )
 
-#' @describeIn summarize_variables Constructor function which creates a combined Formatted
-#'   Analysis function for use in layout creating functions [summarize_vars()] and
-#'   [summarize_colvars()].
+#' Constructor Function for [summarize_vars()] and [summarize_colvars()]
+#'
+#' @description Constructor function which creates a combined Formatted
+#' Analysis function for use in layout creating functions [summarize_vars()] and
+#' [summarize_colvars()].
+#'
 #' @note Since [a_summary()] is generic and we want customization of the formatting arguments
 #'   via [rtables::make_afun()], we need to create another temporary generic function, with
 #'   corresponding customized methods. Then in order for the methods to be found,

@@ -9,8 +9,9 @@
 #'
 NULL
 
-#' @describeIn estimate_multinomial_rsp
-#' Standard Oncology Response
+#' Description of Standard Oncology Response
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Describe the oncology response in a standard way.
 #'

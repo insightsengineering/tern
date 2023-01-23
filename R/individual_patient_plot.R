@@ -1,5 +1,7 @@
 #' Individual Patient Plots
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Line plot(s) displaying trend in patients' parameter values over time is rendered.
 #' Patients' individual baseline values can be added to the plot(s) as reference.
 #'
@@ -30,10 +32,14 @@
 #'
 NULL
 
-#' @describeIn individual_patient_plot helper function that generates a simple line
-#' plot displaying parameter trends over time.
+#' Helper Function To Create Simple Line Plot over Time
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Function that generates a simple line plot displaying parameter trends over time.
 #'
 #' @inheritParams argument_convention
+#' @inheritParams g_ipp
 #' @export
 #' @examples
 #' library(scda)
@@ -136,7 +142,7 @@ h_g_ipp <- function(df,
   p
 }
 
-#' Plotting function for Individual Patient Plot
+#' Plotting Function for Individual Patient Plot
 #'
 #' @describeIn individual_patient_plot depending on user preference, renders a single
 #' graphic or compiles a list of graphics that show trends in individual's parameter

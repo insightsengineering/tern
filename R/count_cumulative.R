@@ -8,8 +8,12 @@
 #'
 NULL
 
-#' @describeIn count_cumulative Helper function to calculate count and fraction of
-#'   `x` values in the lower or upper tail given a threshold.
+#' Helper Function for [s_count_cumulative()]
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper function to calculate count and fraction of
+#' `x` values in the lower or upper tail given a threshold.
 #'
 #' @inheritParams argument_convention
 #' @param threshold (`number`)\cr a cutoff value as threshold to count values of `x`.
@@ -21,6 +25,7 @@ NULL
 #'   - `count`: the count of values less than, less or equal to, greater than, or
 #'   greater or equal to a threshold of user specification.
 #'   - `fraction`: the fraction of the count.
+#' @seealso count_cumulative
 #'
 #' @export
 #'
@@ -87,6 +92,9 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 #' @examples
 #' # Internal function - s_count_cumulative
 #' \dontrun{
+#' set.seed(1, kind = "Mersenne-Twister")
+#' x <- c(sample(1:10, 10), NA)
+#' .N_col <- length(x)
 #' s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 #' s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 #' }

@@ -306,7 +306,13 @@ h_format_threshold <- function(x, digits = 2L) {
   unname(result)
 }
 
-#' @describeIn extreme_format Create Formatting Function for a single extreme value.
+#' Formatting a Single Extreme Value
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Create Formatting Function for a single extreme value.
+#'
+#' @inheritParams extreme_format
 #' @export
 #' @examples
 #'
@@ -323,8 +329,14 @@ format_extreme_values <- function(digits = 2L) {
   }
 }
 
-#' @describeIn extreme_format Create Formatting Function for extreme values part of a confidence interval. Values
-#'   are formatted as e.g. "(xx.xx, xx.xx)" if if the number of `digits` is 2.
+#' Formatting Extreme Values Part of a Confidence Interval
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Formatting Function for extreme values part of a confidence interval. Values
+#' are formatted as e.g. "(xx.xx, xx.xx)" if if the number of `digits` is 2.
+#'
+#' @inheritParams extreme_format
 #' @export
 #' @examples
 #'

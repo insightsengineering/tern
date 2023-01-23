@@ -6,6 +6,7 @@
 #' @param grp (`factor`)\cr
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
+#' @seealso d_proportion_diff
 #'
 #' @name prop_diff
 NULL
@@ -39,13 +40,16 @@ check_diff_prop_ci <- function(rsp,
 
 #' Description of Method Used for Proportion Comparison
 #'
-#' @describeIn prop_diff This is an auxiliary function that describes the analysis in
+#' @description `r lifecycle::badge("stable")`
+#'
+#' This is an auxiliary function that describes the analysis in
 #' `s_proportion_diff`.
 #'
 #' @inheritParams s_proportion_diff
 #' @param long (`logical`)\cr
 #'   Whether a long or a short (default) description is required.
 #' @return String describing the analysis.
+#' @seealso prop_diff
 #'
 #' @export
 d_proportion_diff <- function(conf_level,
