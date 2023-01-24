@@ -40,6 +40,7 @@
   appropriate `analyze` logic.
 * Exported function `format_xx`.
 * Updated tests to use `testthat` 3rd edition.
+* Created separate documentation files for functions in different sections of pkgdown reference.
 
 # tern 0.7.10
 
