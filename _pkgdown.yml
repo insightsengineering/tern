@@ -17,25 +17,29 @@ reference:
       - kaplan_meier
 
   - title: Control Functions
-    desc: These functions capture options in lists and take care of defaults (and checks where applicable). They avoid cluttering of
-          function signatures with long lists of single arguments.
+    desc: These functions capture options in lists and take care of defaults
+          (and checks where applicable). They avoid cluttering of function
+          signatures with long lists of single arguments.
     contents:
       - starts_with("control_")
 
   - title: Analysis Functions
     desc: |
-          Analyze functions with their corresponding statistics functions and formatted analysis functions.
+          Analyze functions with their corresponding statistics functions and
+          formatted analysis functions.
 
-          - **Statistics functions** (denoted by `s_` prefix) compute the numbers that are tabulated later.
-            In order to separate computation from formatting, they do not take care of `rcell`
-            type formatting themselves.
+          - **Statistics functions** (denoted by `s_` prefix) compute the
+            numbers that are tabulated later. In order to separate computation
+            from formatting, they do not take care of `rcell` type formatting
+            themselves.
 
-          - **Formatted analysis functions** (denoted by `a_` prefix) have the same arguments as the corresponding
-            statistics functions, and can be further customized by calling `rtables::make_afun()` on them. They are used
-            as `afun` in `rtables::analyze()`.
+          - **Formatted analysis functions** (denoted by `a_` prefix) have the
+            same arguments as the corresponding statistics functions, and can
+            be further customized by calling `rtables::make_afun()` on them.
+            They are used as `afun` in `rtables::analyze()`.
 
-          - **Analyze functions** are used in combination with `rtables` layout functions in the pipeline which creates
-            the table.
+          - **Analyze functions** are used in combination with `rtables`
+            layout functions in the pipeline which creates the table.
     contents:
       - starts_with("analyze_", internal = TRUE)
       - compare_vars
@@ -82,7 +86,8 @@ reference:
       - starts_with("g_")
 
   - title: rtables Helper Functions
-    desc: These functions help to work with the `rtables` package and may be moved there later.
+    desc: These functions help to work with the `rtables` package and may be
+          moved there later.
     contents:
       - add_rowcounts
       - append_varlabels
@@ -96,7 +101,8 @@ reference:
       - to_string_matrix
 
   - title: rtables Formatting Functions
-    desc: These functions provide customized formatting rules to work with the `rtables` package.
+    desc: These functions provide customized formatting rules to work with the
+          `rtables` package.
     contents:
       - starts_with("format_")
 

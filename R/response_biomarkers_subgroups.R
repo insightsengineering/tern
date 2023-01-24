@@ -192,10 +192,3 @@ extract_rsp_biomarkers <- function(variables,
     )
   }
 }
-
-#' @describeIn response_biomarkers_subgroups table creating function.
-
-#' @export
-#'
-#' @examples
-
