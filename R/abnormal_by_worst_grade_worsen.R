@@ -276,8 +276,6 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
 #' @examples
-#' # Internal function - s_count_abnormal_lab_worsen_by_baseline
-#' \dontrun{
 #' library(scda)
 #' library(dplyr)
 #' adlb <- synthetic_cdisc_data("latest")$adlb
@@ -300,7 +298,8 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #'   worst_flag_high = c("WGRHIFL" = "Y"),
 #'   direction_var = "GRADDR"
 #' )
-#'
+#' # Internal function - s_count_abnormal_lab_worsen_by_baseline
+#' \dontrun{
 #' # Patients with worsening lab grade for CRP in the direction of low
 #' s_count_abnormal_lab_worsen_by_baseline(
 #'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),

@@ -43,6 +43,19 @@ You can also specify a continuous variable in \code{rsp} and then use the
 variable reflecting binary response.
 }
 \examples{
+# Testing dataset.
+library(scda)
+library(dplyr)
+library(forcats)
+library(rtables)
+
+adrs <- synthetic_cdisc_dataset("latest", "adrs")
+adrs_labels <- formatters::var_labels(adrs)
+
+adrs_f <- adrs \%>\%
+  filter(PARAMCD == "BESRSPI") \%>\%
+  mutate(rsp = AVALC == "CR")
+
 # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 # in logistic regression models with one covariate `RACE`. The subgroups
 # are defined by the levels of `BMRKR2`.

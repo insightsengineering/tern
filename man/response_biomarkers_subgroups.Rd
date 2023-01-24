@@ -52,6 +52,7 @@ adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   mutate(rsp = AVALC == "CR")
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+\dontrun{
 ## Table with default columns.
 # df <- <need_data_input_to_work>
 tabulate_rsp_biomarkers(df)
@@ -63,7 +64,6 @@ tab <- tabulate_rsp_biomarkers(
 )
 
 ## Finally produce the forest plot.
-\dontrun{
 g_forest(tab, xlim = c(0.7, 1.4))
 }
 }

@@ -66,8 +66,8 @@ df <- tidy(mod1, conf_level = 0.99)
 df2 <- tidy(mod2, conf_level = 0.99)
 
 # flagging empty strings with "_"
-df <- tern:::replace_emptys_with_na(df, rep_str = "_")
-df2 <- tern:::replace_emptys_with_na(df2, rep_str = "_")
+df <- df_explicit_na(df, na_level = "_")
+df2 <- df_explicit_na(df2, na_level = "_")
 
 result1 <- basic_table() \%>\%
   summarize_logistic(
