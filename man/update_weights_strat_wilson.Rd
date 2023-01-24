@@ -28,8 +28,6 @@ the future if we need to estimate better initial weights.}
 \item{max_iterations}{(\code{count}) \cr
 maximum number of iterations to be tried. Convergence is always checked.}
 
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
 \item{tol}{(\code{number}) \cr
 tolerance threshold for convergence.}
 }

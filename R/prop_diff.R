@@ -11,6 +11,199 @@
 #' @name prop_diff
 NULL
 
+#' @describeIn prop_diff Statistics function estimating the difference
+#'   in terms of responder proportion.
+#' @param method (`string`)\cr
+#'   the method used for the confidence interval estimation.
+#' @inheritParams prop_diff_strat_nc
+#'
+#' @examples
+#' # Summary
+#'
+#' ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
+#' nex <- 100 # Number of example rows
+#' dta <- data.frame(
+#'   "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+#'   "grp" = sample(c("A", "B"), nex, TRUE),
+#'   "f1" = sample(c("a1", "a2"), nex, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), nex, TRUE),
+#'   stringsAsFactors = TRUE
+#' )
+#'
+#' s_proportion_diff(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE,
+#'   conf_level = 0.90,
+#'   method = "ha"
+#' )
+#'
+#' # CMH example with strata
+#' s_proportion_diff(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE,
+#'   variables = list(strata = c("f1", "f2")),
+#'   conf_level = 0.90,
+#'   method = "cmh"
+#' )
+#'
+#' @export
+s_proportion_diff <- function(df,
+                              .var,
+                              .ref_group,
+                              .in_ref_col,
+                              variables = list(strata = NULL),
+                              conf_level = 0.95,
+                              method = c(
+                                "waldcc", "wald", "cmh",
+                                "ha", "newcombe", "newcombecc",
+                                "strat_newcombe", "strat_newcombecc"
+                              ),
+                              weights_method = "cmh") {
+  method <- match.arg(method)
+  y <- list(diff = "", diff_ci = "")
+
+  if (!.in_ref_col) {
+    rsp <- c(.ref_group[[.var]], df[[.var]])
+    grp <- factor(
+      rep(
+        c("ref", "Not-ref"),
+        c(nrow(.ref_group), nrow(df))
+      ),
+      levels = c("ref", "Not-ref")
+    )
+
+    if (!is.null(variables$strata)) {
+      strata_colnames <- variables$strata
+      checkmate::assert_character(strata_colnames, null.ok = FALSE)
+      strata_vars <- stats::setNames(as.list(strata_colnames), strata_colnames)
+
+      assert_df_with_variables(df, strata_vars)
+      assert_df_with_variables(.ref_group, strata_vars)
+
+      # Merging interaction strata for reference group rows data and remaining
+      strata <- c(
+        interaction(.ref_group[strata_colnames]),
+        interaction(df[strata_colnames])
+      )
+      strata <- as.factor(strata)
+    }
+
+    # Defining the std way to calculate weights for strat_newcombe
+    if (!is.null(variables$weights_method)) {
+      weights_method <- variables$weights_method
+    } else {
+      weights_method <- "cmh"
+    }
+
+    y <- switch(method,
+                "wald" = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
+                "waldcc" = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
+                "ha" = prop_diff_ha(rsp, grp, conf_level),
+                "newcombe" = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
+                "newcombecc" = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
+                "strat_newcombe" = prop_diff_strat_nc(rsp,
+                                                      grp,
+                                                      strata,
+                                                      weights_method,
+                                                      conf_level,
+                                                      correct = FALSE
+                ),
+                "strat_newcombecc" = prop_diff_strat_nc(rsp,
+                                                        grp,
+                                                        strata,
+                                                        weights_method,
+                                                        conf_level,
+                                                        correct = TRUE
+                ),
+                "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
+    )
+
+    y$diff <- y$diff * 100
+    y$diff_ci <- y$diff_ci * 100
+  }
+
+  attr(y$diff, "label") <- "Difference in Response rate (%)"
+  attr(y$diff_ci, "label") <- d_proportion_diff(
+    conf_level, method,
+    long = FALSE
+  )
+
+  y
+}
+
+#' @describeIn prop_diff Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
+#' @examples
+#' a_proportion_diff(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE,
+#'   conf_level = 0.90,
+#'   method = "ha"
+#' )
+#'
+#' @export
+a_proportion_diff <- make_afun(
+  s_proportion_diff,
+  .formats =  c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
+  .indent_mods = c(diff = 0L, diff_ci = 1L)
+)
+
+#' @describeIn prop_diff Adds a descriptive analyze layer to `rtables`
+#'   pipelines. The analysis is applied to a `dataframe` and return the
+#'   estimations, in `rcells`. The ellipsis (`...`) conveys arguments to
+#'   `s_proportion_diff()`, for instance `na.rm = FALSE` if missing data
+#'   should be accounted for.
+#' @inheritParams rtables::analyze
+#' @param ... arguments passed to `s_proportion_diff()`.
+#'
+#' @examples
+#' l <- basic_table() %>%
+#'   split_cols_by(var = "grp", ref_group = "B") %>%
+#'   estimate_proportion_diff(
+#'     vars = "rsp",
+#'     conf_level = 0.90,
+#'     method = "ha"
+#'   )
+#'
+#' build_table(l, df = dta)
+#'
+#' @export
+estimate_proportion_diff <- function(lyt,
+                                     vars,
+                                     ...,
+                                     var_labels = vars,
+                                     show_labels = "hidden",
+                                     table_names = vars,
+                                     .stats = NULL,
+                                     .formats = NULL,
+                                     .labels = NULL,
+                                     .indent_mods = NULL) {
+  afun <- make_afun(
+    a_proportion_diff,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
+  )
+
+  analyze(
+    lyt,
+    vars,
+    afun = afun,
+    var_labels = var_labels,
+    extra_args = list(...),
+    show_labels = show_labels,
+    table_names = table_names
+  )
+}
+
 #' Check: Proportion Difference Arguments
 #'
 #' Verifies that and/or convert arguments into valid values to be used in the
@@ -36,7 +229,6 @@ check_diff_prop_ci <- function(rsp,
 
   invisible()
 }
-
 
 #' Description of Method Used for Proportion Comparison
 #'
@@ -81,8 +273,22 @@ d_proportion_diff <- function(conf_level,
   paste0(label, " (", method_part, ")")
 }
 
+#' Helper Functions to Calculate Proportion Difference
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' @inheritParams argument_convention
+#' @inheritParams prop_diff
+#' @param grp (`factor`)\cr
+#'   vector assigning observations to one out of two groups
+#'   (e.g. reference and treatment group).
+#'
+#' @seealso [prop_diff()] for implementation of these helper functions.
+#'
+#' @name h_prop_diff
+NULL
 
-#' @describeIn prop_diff The Wald interval follows the usual textbook
+#' @describeIn h_prop_diff The Wald interval follows the usual textbook
 #'   definition for a single proportion confidence interval using the normal
 #'   approximation. It is possible to include a continuity correction for Wald's
 #'   interval.
@@ -132,7 +338,7 @@ prop_diff_wald <- function(rsp,
   )
 }
 
-#' @describeIn prop_diff Anderson-Hauck confidence interval.
+#' @describeIn h_prop_diff Anderson-Hauck confidence interval.
 #'
 #' @examples
 #' # Anderson-Hauck confidence interval
@@ -170,7 +376,7 @@ prop_diff_ha <- function(rsp,
 
 
 
-#' @describeIn prop_diff Newcombe confidence interval. It is based on
+#' @describeIn h_prop_diff Newcombe confidence interval. It is based on
 #'   the Wilson score confidence interval for a single binomial proportion.
 #'
 #' @examples
@@ -215,7 +421,7 @@ prop_diff_nc <- function(rsp,
 }
 
 
-#' @describeIn prop_diff Calculates the weighted difference.
+#' @describeIn h_prop_diff Calculates the weighted difference.
 #'     This is defined as the difference in response rates between the
 #'     experimental treatment group and the control treatment group, adjusted
 #'     for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
@@ -306,7 +512,7 @@ prop_diff_cmh <- function(rsp,
   )
 }
 
-#' @describeIn prop_diff Calculates the stratified Newcombe confidence interval
+#' @describeIn h_prop_diff Calculates the stratified Newcombe confidence interval
 #'   and difference in response rates between the experimental treatment group
 #'   and the control treatment group, adjusted for stratification factors. This
 #'   implementation follows closely the one proposed by
@@ -423,198 +629,5 @@ prop_diff_strat_nc <- function(rsp,
   list(
     "diff" = diff_est,
     "diff_ci" = c("lower" = lower, "upper" = upper)
-  )
-}
-
-#' @describeIn prop_diff Statistics function estimating the difference
-#'   in terms of responder proportion.
-#' @param method (`string`)\cr
-#'   the method used for the confidence interval estimation.
-#' @inheritParams prop_diff_strat_nc
-#'
-#' @examples
-#' # Summary
-#'
-#' ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
-#' nex <- 100 # Number of example rows
-#' dta <- data.frame(
-#'   "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
-#'   "grp" = sample(c("A", "B"), nex, TRUE),
-#'   "f1" = sample(c("a1", "a2"), nex, TRUE),
-#'   "f2" = sample(c("x", "y", "z"), nex, TRUE),
-#'   stringsAsFactors = TRUE
-#' )
-#'
-#' s_proportion_diff(
-#'   df = subset(dta, grp == "A"),
-#'   .var = "rsp",
-#'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE,
-#'   conf_level = 0.90,
-#'   method = "ha"
-#' )
-#'
-#' # CMH example with strata
-#' s_proportion_diff(
-#'   df = subset(dta, grp == "A"),
-#'   .var = "rsp",
-#'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE,
-#'   variables = list(strata = c("f1", "f2")),
-#'   conf_level = 0.90,
-#'   method = "cmh"
-#' )
-#'
-#' @export
-s_proportion_diff <- function(df,
-                              .var,
-                              .ref_group,
-                              .in_ref_col,
-                              variables = list(strata = NULL),
-                              conf_level = 0.95,
-                              method = c(
-                                "waldcc", "wald", "cmh",
-                                "ha", "newcombe", "newcombecc",
-                                "strat_newcombe", "strat_newcombecc"
-                              ),
-                              weights_method = "cmh") {
-  method <- match.arg(method)
-  y <- list(diff = "", diff_ci = "")
-
-  if (!.in_ref_col) {
-    rsp <- c(.ref_group[[.var]], df[[.var]])
-    grp <- factor(
-      rep(
-        c("ref", "Not-ref"),
-        c(nrow(.ref_group), nrow(df))
-      ),
-      levels = c("ref", "Not-ref")
-    )
-
-    if (!is.null(variables$strata)) {
-      strata_colnames <- variables$strata
-      checkmate::assert_character(strata_colnames, null.ok = FALSE)
-      strata_vars <- stats::setNames(as.list(strata_colnames), strata_colnames)
-
-      assert_df_with_variables(df, strata_vars)
-      assert_df_with_variables(.ref_group, strata_vars)
-
-      # Merging interaction strata for reference group rows data and remaining
-      strata <- c(
-        interaction(.ref_group[strata_colnames]),
-        interaction(df[strata_colnames])
-      )
-      strata <- as.factor(strata)
-    }
-
-    # Defining the std way to calculate weights for strat_newcombe
-    if (!is.null(variables$weights_method)) {
-      weights_method <- variables$weights_method
-    } else {
-      weights_method <- "cmh"
-    }
-
-    y <- switch(method,
-      "wald" = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
-      "waldcc" = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
-      "ha" = prop_diff_ha(rsp, grp, conf_level),
-      "newcombe" = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
-      "newcombecc" = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
-      "strat_newcombe" = prop_diff_strat_nc(rsp,
-        grp,
-        strata,
-        weights_method,
-        conf_level,
-        correct = FALSE
-      ),
-      "strat_newcombecc" = prop_diff_strat_nc(rsp,
-        grp,
-        strata,
-        weights_method,
-        conf_level,
-        correct = TRUE
-      ),
-      "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
-    )
-
-    y$diff <- y$diff * 100
-    y$diff_ci <- y$diff_ci * 100
-  }
-
-  attr(y$diff, "label") <- "Difference in Response rate (%)"
-  attr(y$diff_ci, "label") <- d_proportion_diff(
-    conf_level, method,
-    long = FALSE
-  )
-
-  y
-}
-
-#' @describeIn prop_diff Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#'
-#' @examples
-#' a_proportion_diff(
-#'   df = subset(dta, grp == "A"),
-#'   .var = "rsp",
-#'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE,
-#'   conf_level = 0.90,
-#'   method = "ha"
-#' )
-#'
-#' @export
-a_proportion_diff <- make_afun(
-  s_proportion_diff,
-  .formats =  c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
-  .indent_mods = c(diff = 0L, diff_ci = 1L)
-)
-
-#' @describeIn prop_diff Adds a descriptive analyze layer to `rtables`
-#'   pipelines. The analysis is applied to a `dataframe` and return the
-#'   estimations, in `rcells`. The ellipsis (`...`) conveys arguments to
-#'   `s_proportion_diff()`, for instance `na.rm = FALSE` if missing data
-#'   should be accounted for.
-#' @inheritParams rtables::analyze
-#' @param ... arguments passed to `s_proportion_diff()`.
-#'
-#' @examples
-#' l <- basic_table() %>%
-#'   split_cols_by(var = "grp", ref_group = "B") %>%
-#'   estimate_proportion_diff(
-#'     vars = "rsp",
-#'     conf_level = 0.90,
-#'     method = "ha"
-#'   )
-#'
-#' build_table(l, df = dta)
-#'
-#' @export
-estimate_proportion_diff <- function(lyt,
-                                     vars,
-                                     ...,
-                                     var_labels = vars,
-                                     show_labels = "hidden",
-                                     table_names = vars,
-                                     .stats = NULL,
-                                     .formats = NULL,
-                                     .labels = NULL,
-                                     .indent_mods = NULL) {
-  afun <- make_afun(
-    a_proportion_diff,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
-  )
-
-  analyze(
-    lyt,
-    vars,
-    afun = afun,
-    var_labels = var_labels,
-    extra_args = list(...),
-    show_labels = show_labels,
-    table_names = table_names
   )
 }

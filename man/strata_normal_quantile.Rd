@@ -7,15 +7,11 @@
 strata_normal_quantile(vars, weights, conf_level)
 }
 \arguments{
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
 \item{weights}{(\code{numeric} or \code{NULL}) \cr
 weights for each level of the strata. If \code{NULL}, they are
 estimated using the iterative algorithm proposed in
 \insertCite{Yan2010-jt;textual}{tern} that minimizes the weighted squared
 length of the confidence interval.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \description{
 This function wraps the estimation of stratified percentiles when we assume

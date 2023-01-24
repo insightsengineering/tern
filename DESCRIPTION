@@ -111,6 +111,8 @@ Collate:
     'g_waterfall.R'
     'h_adsl_adlb_merge_using_worst_flag.R'
     'h_biomarkers_subgroups.R'
+    'h_cox_regression.R'
+    'h_logistic_regression.R'
     'h_map_for_count_abnormal.R'
     'h_pkparam_sort.R'
     'h_response_biomarkers_subgroups.R'
