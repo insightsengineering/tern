@@ -12,12 +12,13 @@
 #' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
 #'   list, which specifies the new group levels via the names and the
 #'   levels that belong to it in the character vectors that are elements of the list.
+#' @param label_all (`string`)\cr label for the total population analysis.
 #' @param method (`string`)\cr
 #'   specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL`
 #'   so no test is performed.
 #' @name response_subgroups
-#' @order 1
+#' @seealso [extract_rsp_subgroups()]
 #'
 #' @examples
 #' # Testing dataset.
@@ -39,15 +40,30 @@
 #'     rsp = AVALC == "CR"
 #'   )
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+#'
+#' # Unstratified analysis.
+#' df <- extract_rsp_subgroups(
+#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+#'   data = adrs_f
+#' )
+#' df
 NULL
 
-#' @describeIn response_subgroups prepares response rates and odds ratios for
-#'   population subgroups in data frames. Simple wrapper for [h_odds_ratio_subgroups_df()] and
-#'   [h_proportion_subgroups_df()]. Result is a list of two data frames:
-#'   `prop` and `or`. `variables` corresponds to the names of variables found in `data`, passed as a
-#'   named list and requires elements `rsp`, `arm` and optionally `subgroups` and `strat`. `groups_lists`
-#'   optionally specifies groupings for `subgroups` variables.
+#' Prepares Response Data for Population Subgroups in Data Frames
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Prepares response rates and odds ratios for population subgroups in data frames. Simple wrapper
+#' for [h_odds_ratio_subgroups_df()] and [h_proportion_subgroups_df()].
+#'   Result is a list of two data frames: `prop` and `or`.
+#'   `variables` corresponds to the names of variables found in `data`, passed as a named
+#'   list and requires elements `rsp`, `arm` and optionally `subgroups` and `strat`.
+#'   `groups_lists` optionally specifies groupings for `subgroups` variables.
+#'
+#' @inheritParams argument_convention
+#' @inheritParams response_subgroups
 #' @param label_all (`string`)\cr label for the total population analysis.
+#' @seealso [response_subgroups]
 #' @export
 #'
 #' @examples

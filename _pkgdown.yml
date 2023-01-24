@@ -61,6 +61,7 @@ reference:
       - -starts_with("h_grob_")
       - -starts_with("h_row_")
       - -h_xticks
+      - -prop_diff
 
   - title: Model-Specific Functions
     desc: These functions help with fitting or extracting results from specific
@@ -119,7 +120,6 @@ reference:
       - h_g_ipp
       - matches(".*grob.*")
       - h_xticks
-      - starts_with("stat_")
 
   - title: Data Helper Functions
     desc: These functions are used by other functions to derive data.
@@ -138,6 +138,7 @@ reference:
       - h_data_plot
       - month2day
       - sas_na
+      - starts_with("stat_")
       - to_n
 
   - title: Assertion Functions
@@ -146,7 +147,4 @@ reference:
       - assertions
 
   - title: Deprecated Functions
-    desc: |
-          These functions already are or will eventually be removed.
-
-          **Currently no functions are deprecated**
+    desc: No functions are currently deprecated within `tern`.
