@@ -159,5 +159,5 @@ l <- basic_table() \%>\%
 build_table(l, df = dta)
 }
 \seealso{
-h_odds_ratio
+\code{\link[=h_odds_ratio]{h_odds_ratio()}}
 }

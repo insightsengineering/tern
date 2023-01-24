@@ -15,7 +15,7 @@
 #'   available. Besides, when `rsp` contains only responders or non-responders,
 #'   then the result values will be `NA`, because no odds ratio estimation is
 #'   possible.
-#' @seealso h_odds_ratio
+#' @seealso [h_odds_ratio()]
 #'
 #' @name odds_ratio
 #' @md
@@ -208,7 +208,7 @@ estimate_odds_ratio <- function(lyt,
 #' Functions to calculate odds ratios in [estimate_odds_ratio()]
 #'
 #' @inheritParams odds_ratio
-#' @seealso odds_ratio
+#' @seealso [odds_ratio]
 #'
 #' @name h_odds_ratio
 NULL

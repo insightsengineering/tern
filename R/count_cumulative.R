@@ -25,7 +25,7 @@ NULL
 #'   - `count`: the count of values less than, less or equal to, greater than, or
 #'   greater or equal to a threshold of user specification.
 #'   - `fraction`: the fraction of the count.
-#' @seealso count_cumulative
+#' @seealso [count_cumulative]
 #'
 #' @export
 #'

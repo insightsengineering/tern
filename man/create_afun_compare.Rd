@@ -50,5 +50,5 @@ lyt <- basic_table() \%>\%
 build_table(lyt, df = ex_adsl)
 }
 \seealso{
-compare_variables
+\link{compare_variables}
 }

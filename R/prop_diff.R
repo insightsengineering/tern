@@ -6,7 +6,7 @@
 #' @param grp (`factor`)\cr
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
-#' @seealso d_proportion_diff
+#' @seealso [d_proportion_diff()]
 #'
 #' @name prop_diff
 NULL
@@ -49,7 +49,7 @@ check_diff_prop_ci <- function(rsp,
 #' @param long (`logical`)\cr
 #'   Whether a long or a short (default) description is required.
 #' @return String describing the analysis.
-#' @seealso prop_diff
+#' @seealso [prop_diff]
 #'
 #' @export
 d_proportion_diff <- function(conf_level,

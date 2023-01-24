@@ -52,6 +52,6 @@ basic_table() \%>\%
 
 }
 \seealso{
-combine_groups
+\link{combine_groups}
 }
 \keyword{internal}

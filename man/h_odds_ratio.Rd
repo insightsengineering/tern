@@ -56,5 +56,5 @@ or_clogit(data, conf_level = 0.95)
 
 }
 \seealso{
-odds_ratio
+\link{odds_ratio}
 }

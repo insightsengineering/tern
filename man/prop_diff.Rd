@@ -290,5 +290,5 @@ build_table(l, df = dta)
 }
 }
 \seealso{
-d_proportion_diff
+\code{\link[=d_proportion_diff]{d_proportion_diff()}}
 }

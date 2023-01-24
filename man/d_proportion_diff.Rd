@@ -25,5 +25,5 @@ This is an auxiliary function that describes the analysis in
 \code{s_proportion_diff}.
 }
 \seealso{
-prop_diff
+\link{prop_diff}
 }

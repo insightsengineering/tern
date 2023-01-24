@@ -223,7 +223,7 @@ split_cols_by_groups <- function(lyt,
 #' Simplifies the estimation of column counts, especially when group combination
 #' is required.
 #'
-#' @seealso combine_groups
+#' @seealso [combine_groups]
 #' @inheritParams combine_groups
 #' @inheritParams groups_list_to_df
 #'

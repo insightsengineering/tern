@@ -99,6 +99,6 @@ h_row_fractions(tree_row_elem)
 
 }
 \seealso{
-\verb{[prune_occurrences]} for usage of these functions.
+\link{prune_occurrences} for usage of these functions.
 }
 \keyword{internal}
