@@ -7,7 +7,7 @@
 \alias{analyze_num_patients}
 \title{Number of patients}
 \usage{
-s_num_patients(x, labelstr, .N_col, count_by = NULL)
+s_num_patients(x, labelstr, .N_col, count_by = NULL, unique_count_n = TRUE)
 
 s_num_patients_content(
   df,
@@ -15,7 +15,8 @@ s_num_patients_content(
   .N_col,
   .var,
   required = NULL,
-  count_by = NULL
+  count_by = NULL,
+  unique_count_n = TRUE
 )
 
 summarize_num_patients(
@@ -50,7 +51,9 @@ analyze_num_patients(
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
 \item{count_by}{(\code{character} or \code{factor}) \cr optional vector to be combined with \code{x} when counting
-\code{nonunqiue} records.}
+\code{nonunique} records.}
+
+\item{unique_count_n}{(\code{logical}) \cr should \code{"(n)"} suffix be added to \code{unique_count} labels. Defaults to \code{TRUE}.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
