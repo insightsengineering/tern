@@ -8,7 +8,8 @@
 #' @param x (`character` or `factor`) \cr vector of patient IDs.
 #' @param count_by (`character` or `factor`) \cr optional vector to be combined with `x` when counting
 #' `nonunique` records.
-#' @param unique_count_suffix (`logical`) \cr should `"(n)"` suffix be added to `unique_count` labels. Defaults to `TRUE`.
+#' @param unique_count_suffix (`logical`) \cr should `"(n)"` suffix be added to `unique_count` labels.
+#' Defaults to `TRUE`.
 #'
 #' @name summarize_num_patients
 NULL
@@ -97,8 +98,8 @@ s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = N
 
   x <- df[[.var]]
   y <- switch(as.numeric(!is.null(count_by)) + 1,
-              NULL,
-              df[[count_by]]
+    NULL,
+    df[[count_by]]
   )
 
   s_num_patients(

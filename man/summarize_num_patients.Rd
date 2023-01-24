@@ -59,7 +59,8 @@ analyze_num_patients(
 \item{count_by}{(\code{character} or \code{factor}) \cr optional vector to be combined with \code{x} when counting
 \code{nonunique} records.}
 
-\item{unique_count_suffix}{(\code{logical}) \cr should \code{"(n)"} suffix be added to \code{unique_count} labels. Defaults to \code{TRUE}.}
+\item{unique_count_suffix}{(\code{logical}) \cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
+Defaults to \code{TRUE}.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
