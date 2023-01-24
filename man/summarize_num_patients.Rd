@@ -7,7 +7,13 @@
 \alias{analyze_num_patients}
 \title{Number of patients}
 \usage{
-s_num_patients(x, labelstr, .N_col, count_by = NULL, unique_count_n = TRUE)
+s_num_patients(
+  x,
+  labelstr,
+  .N_col,
+  count_by = NULL,
+  unique_count_suffix = TRUE
+)
 
 s_num_patients_content(
   df,
@@ -16,7 +22,7 @@ s_num_patients_content(
   .var,
   required = NULL,
   count_by = NULL,
-  unique_count_n = TRUE
+  unique_count_suffix = TRUE
 )
 
 summarize_num_patients(
@@ -53,7 +59,7 @@ analyze_num_patients(
 \item{count_by}{(\code{character} or \code{factor}) \cr optional vector to be combined with \code{x} when counting
 \code{nonunique} records.}
 
-\item{unique_count_n}{(\code{logical}) \cr should \code{"(n)"} suffix be added to \code{unique_count} labels. Defaults to \code{TRUE}.}
+\item{unique_count_suffix}{(\code{logical}) \cr should \code{"(n)"} suffix be added to \code{unique_count} labels. Defaults to \code{TRUE}.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
