@@ -2,7 +2,7 @@
 % Please edit documentation in R/abnormal_by_baseline.R
 \name{d_count_abnormal_by_baseline}
 \alias{d_count_abnormal_by_baseline}
-\title{Description Function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.}
+\title{Description Function for \link{abnormal by baseline}}
 \usage{
 d_count_abnormal_by_baseline(abnormal)
 }
@@ -10,7 +10,9 @@ d_count_abnormal_by_baseline(abnormal)
 \item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
 }
 \description{
-Description Function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Description function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
 }
 \examples{
 d_count_abnormal_by_baseline("LOW")

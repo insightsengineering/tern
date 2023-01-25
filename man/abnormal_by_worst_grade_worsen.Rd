@@ -148,4 +148,7 @@ basic_table() \%>\%
   build_table(df = df, alt_counts_df = adsl)
 
 }
+\seealso{
+Relevant helper functions \code{\link[=h_adlb_worsen]{h_adlb_worsen()}} and \code{\link[=h_worsen_counter]{h_worsen_counter()}}.
+}
 \keyword{internal}

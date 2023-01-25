@@ -22,7 +22,6 @@
 #' }
 #'
 #' @noRd
-#'
 #' @keywords internal
 wrap_text <- function(txt, # nolint
                       width = grid::convertWidth(grid::unit(1, "npc"), "inch", TRUE),

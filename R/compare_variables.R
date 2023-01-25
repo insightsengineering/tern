@@ -9,6 +9,8 @@ NULL
 #' different `x` objects. This is used as Statistics Function in combination
 #' with the new Analyze Function [compare_vars()].
 #'
+#' @seealso Relevant constructor function [create_afun_compare()].
+#'
 #' @name compare_variables
 #'
 NULL

@@ -76,3 +76,6 @@ p <- h_g_ipp(
 )
 p
 }
+\seealso{
+\code{\link[=g_ipp]{g_ipp()}} which uses this function.
+}

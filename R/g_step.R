@@ -14,6 +14,7 @@
 #' @param col (`character`)\cr colors.
 #'
 #' @return The `ggplot2` object.
+#' @seealso Custom tidy method [tidy.step()].
 #' @export
 #'
 #' @examples

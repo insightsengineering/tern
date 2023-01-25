@@ -155,4 +155,7 @@ basic_table() \%>\%
   build_table(df2)
 
 }
+\seealso{
+\code{\link[=d_count_abnormal_by_baseline]{d_count_abnormal_by_baseline()}}
+}
 \keyword{internal}

@@ -89,4 +89,7 @@ estimate_coef(
 }
 
 }
+\seealso{
+\code{\link[=s_cox_multivariate]{s_cox_multivariate()}}.
+}
 \keyword{internal}

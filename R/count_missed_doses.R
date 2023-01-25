@@ -5,6 +5,8 @@
 #' These are specific functions to count patients with missed doses. The difference to [count_cumulative()] is
 #' mainly the special labels.
 #'
+#' @seealso Relevant descriptiion function [d_count_missed_doses()].
+#'
 #' @name count_missed_doses
 #'
 NULL
@@ -31,6 +33,7 @@ s_count_nonmissing <- function(x) {
 #'
 #' @inheritParams s_count_missed_doses
 #' @return [d_count_missed_doses()] returns a named `character` vector with the labels.
+#' @seealso [s_count_missed_doses()]
 #'
 #' @export
 d_count_missed_doses <- function(thresholds) {

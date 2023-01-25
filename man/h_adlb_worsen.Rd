@@ -68,3 +68,6 @@ df <- h_adlb_worsen(
 )
 
 }
+\seealso{
+\link{abnormal_by_worst_grade_worsen}
+}

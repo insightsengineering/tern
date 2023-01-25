@@ -26,9 +26,9 @@
 #' @param caption (`character` scalar) \cr optional caption below the plot.
 #' @param col (`character`)\cr lines colors.
 #'
-#' @name individual_patient_plot
+#' @seealso Relevant helper function [h_g_ipp()].
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @name individual_patient_plot
 #'
 NULL
 
@@ -40,6 +40,7 @@ NULL
 #'
 #' @inheritParams argument_convention
 #' @inheritParams g_ipp
+#' @seealso [g_ipp()] which uses this function.
 #' @export
 #' @examples
 #' library(scda)

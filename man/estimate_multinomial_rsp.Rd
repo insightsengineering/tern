@@ -104,3 +104,6 @@ html
 Viewer(html)
 }
 }
+\seealso{
+Relevant description function \code{\link[=d_onco_rsp_label]{d_onco_rsp_label()}}.
+}

@@ -17,7 +17,8 @@
 #'  `summarize_coxreg` are not yet accepted (`.stats`, `.indent_mod`, `.formats`,
 #'  `.labels`).
 #' @inheritParams argument_convention
-#' @seealso [h_cox_regression], [tidy_coxreg]
+#' @seealso [fit_coxreg] for relevant fitting functions, [h_cox_regression] for relevant
+#' helper functions, and [tidy_coxreg] for custom tidy methods.
 #'
 #' @name cox_regression
 #'
@@ -492,11 +493,10 @@ tidy.coxreg.multivar <- function(x, # nolint
 #'
 #' Fitting functions for univariate and multivariate Cox regression models.
 #'
-#' @seealso [h_cox_regression] for relevant helper functions.
+#' @seealso [h_cox_regression] for relevant helper functions, [cox_regression].
 #'
 #' @examples
 #' # Testing dataset [survival::bladder].
-#'
 #' library(survival)
 #' library(rtables)
 #' set.seed(1, kind = "Mersenne-Twister")

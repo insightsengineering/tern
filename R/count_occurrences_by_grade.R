@@ -6,11 +6,12 @@
 #' with occurrence data. Multiple occurrences within one individual are counted once at the
 #' greatest intensity/highest grade level.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
 #' @param remove_single (`logical`)\cr `TRUE` to not include the elements of one-element grade groups
 #' in the the output list; in this case only the grade groups names will be included in the output.
+#'
+#' @seealso Relevant helper function [h_append_grade_groups()].
 #'
 #' @name count_occurrences_by_grade
 #'

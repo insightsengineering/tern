@@ -71,3 +71,6 @@ h_worsen_counter(
 )
 
 }
+\seealso{
+\link{abnormal_by_worst_grade_worsen}
+}

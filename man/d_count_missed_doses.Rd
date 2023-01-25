@@ -15,3 +15,6 @@ d_count_missed_doses(thresholds)
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
+\seealso{
+\code{\link[=s_count_missed_doses]{s_count_missed_doses()}}
+}

@@ -15,7 +15,6 @@ d_onco_rsp_label(x)
 Describe the oncology response in a standard way.
 }
 \examples{
-
 d_onco_rsp_label(
   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "<Missing>", "NE/Missing")
 )
@@ -25,4 +24,7 @@ d_onco_rsp_label(
 d_onco_rsp_label(
   c("CR", "PR", "hello", "hi")
 )
+}
+\seealso{
+\code{\link[=estimate_multinomial_rsp]{estimate_multinomial_rsp()}}
 }

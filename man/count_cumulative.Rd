@@ -81,6 +81,7 @@ contains a vector for the count and fraction.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Summarize cumulative counts of a (\code{numeric}) vector that is less than, less or equal to,
 greater than, or greater or equal to user-specific thresholds.
 }
@@ -128,5 +129,8 @@ basic_table() \%>\%
   ) \%>\%
   build_table(ADSL)
 
+}
+\seealso{
+Relevant helper function \code{\link[=h_count_cumulative]{h_count_cumulative()}}, and descriptive function \code{\link[=d_count_cumulative]{d_count_cumulative()}}
 }
 \keyword{internal}

@@ -94,8 +94,6 @@ to avoid warnings from \code{rtables}.}
 Functions for analyzing frequencies and fractions of occurrences by grade for patients
 with occurrence data. Multiple occurrences within one individual are counted once at the
 greatest intensity/highest grade level.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \section{Functions}{
 \itemize{
@@ -192,4 +190,7 @@ basic_table() \%>\%
     grade_groups = grade_groups
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
+}
+\seealso{
+Relevant helper function \code{\link[=h_append_grade_groups]{h_append_grade_groups()}}.
 }

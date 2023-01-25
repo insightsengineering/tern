@@ -154,7 +154,6 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df)
-
 }
 \seealso{
 \code{\link[=control_incidence_rate]{control_incidence_rate()}}

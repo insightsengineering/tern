@@ -67,8 +67,6 @@ a \code{ggplot} object or a list of \code{ggplot} objects.
 
 Line plot(s) displaying trend in patients' parameter values over time is rendered.
 Patients' individual baseline values can be added to the plot(s) as reference.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \section{Functions}{
 \itemize{
@@ -99,4 +97,7 @@ plot_list <- g_ipp(
   max_obs_per_plot = 5
 )
 plot_list
+}
+\seealso{
+Relevant helper function \code{\link[=h_g_ipp]{h_g_ipp()}}.
 }

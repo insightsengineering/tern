@@ -324,5 +324,7 @@ lyt <- basic_table() \%>\%
 build_table(lyt, df = ex_adsl)
 }
 \seealso{
+Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}.
+
 \code{\link[=s_summary]{s_summary()}} which is used internally for the summary part per column.
 }

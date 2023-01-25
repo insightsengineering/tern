@@ -81,6 +81,7 @@ to avoid warnings from \code{rtables}.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Compares bivariate responses between two groups in terms of odds ratios
 along with a confidence interval.
 }
@@ -110,7 +111,6 @@ arguments (see below).
 
 }}
 \examples{
-
 set.seed(12)
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -143,7 +143,6 @@ a_odds_ratio(
   .in_ref_col = FALSE,
   .df_row = dta
 )
-
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
   grp = factor(rep(c("A", "B"), each = 50))
@@ -156,5 +155,5 @@ l <- basic_table() \%>\%
 build_table(l, df = dta)
 }
 \seealso{
-\code{\link[=h_odds_ratio]{h_odds_ratio()}}
+Relevant helper function \code{\link[=h_odds_ratio]{h_odds_ratio()}}.
 }

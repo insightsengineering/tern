@@ -150,8 +150,6 @@ a_incidence_rate <- make_afun(
 #'     )
 #'   ) %>%
 #'   build_table(df)
-#'
-#' @md
 estimate_incidence_rate <- function(lyt,
                                     vars,
                                     ...,

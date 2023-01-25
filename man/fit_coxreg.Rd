@@ -65,7 +65,6 @@ When using \code{fit_coxreg_univar} there should be two study arms.
 }
 \examples{
 # Testing dataset [survival::bladder].
-
 library(survival)
 library(rtables)
 set.seed(1, kind = "Mersenne-Twister")
@@ -154,5 +153,5 @@ multivar_covs_model <- fit_coxreg_multivar(
 )
 }
 \seealso{
-\link{h_cox_regression} for relevant helper functions.
+\link{h_cox_regression} for relevant helper functions, \link{cox_regression}.
 }

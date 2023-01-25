@@ -122,4 +122,7 @@ basic_table() \%>\%
   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") \%>\%
   build_table(anl, alt_counts_df = adsl)
 }
+\seealso{
+Relevant descriptiion function \code{\link[=d_count_missed_doses]{d_count_missed_doses()}}.
+}
 \keyword{internal}

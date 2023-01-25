@@ -1,8 +1,11 @@
 #' Cumulative Counts with Thresholds
 #'
 #' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
 #' greater than, or greater or equal to user-specific thresholds.
+#'
+#' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()]
 #'
 #' @name count_cumulative
 #'
@@ -69,11 +72,13 @@ h_count_cumulative <- function(x,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This is a helper function that describes analysis in `s_count_cumulative`
-#' @inheritParams h_count_cumulative
-#' @return a `string`
-#' @export
+#' This is a helper function that describes analysis in [s_count_cumulative()].
 #'
+#' @inheritParams h_count_cumulative
+#' @return a descriptive `string`.
+#' @seealso [s_count_cumulative()]
+#'
+#' @export
 d_count_cumulative <- function(threshold, lower_tail, include_eq) {
   checkmate::assert_numeric(threshold)
   lg <- if (lower_tail) "<" else ">"

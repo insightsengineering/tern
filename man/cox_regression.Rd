@@ -171,5 +171,6 @@ result_multivar_covs <- basic_table() \%>\%
 result_multivar_covs
 }
 \seealso{
-\link{h_cox_regression}, \link{tidy_coxreg}
+\link{fit_coxreg} for relevant fitting functions, \link{h_cox_regression} for relevant
+helper functions, and \link{tidy_coxreg} for custom tidy methods.
 }

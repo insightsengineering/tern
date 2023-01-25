@@ -4,7 +4,6 @@
 #'
 #' Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
 #'
-#' @md
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
 #' @param strat (`character` or `NULL`) variable names indicating stratification factors.
@@ -18,8 +17,8 @@
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
 #'
 #' @importFrom stats pchisq
-#' @name survival_coxph_pairwise
 #'
+#' @name survival_coxph_pairwise
 NULL
 
 #' @describeIn survival_coxph_pairwise Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.

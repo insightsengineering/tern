@@ -1,6 +1,7 @@
 #' Odds Ratio Estimation
 #'
 #' @description `r lifecycle::badge("stable")`
+#'
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'
@@ -13,11 +14,9 @@
 #'   available. Besides, when `rsp` contains only responders or non-responders,
 #'   then the result values will be `NA`, because no odds ratio estimation is
 #'   possible.
-#' @seealso [h_odds_ratio()]
+#' @seealso Relevant helper function [h_odds_ratio()].
 #'
 #' @name odds_ratio
-#' @md
-#'
 NULL
 
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
@@ -26,8 +25,8 @@ NULL
 #' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
 #' @export
-#' @examples
 #'
+#' @examples
 #' set.seed(12)
 #' dta <- data.frame(
 #'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -160,8 +159,8 @@ a_odds_ratio <- make_afun(
 #' @inheritParams argument_convention
 #' @param ... arguments passed to `s_odds_ratio()`.
 #' @export
-#' @examples
 #'
+#' @examples
 #' dta <- data.frame(
 #'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
 #'   grp = factor(rep(c("A", "B"), each = 50))
@@ -203,7 +202,7 @@ estimate_odds_ratio <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Functions to calculate odds ratios in [estimate_odds_ratio()]
+#' Functions to calculate odds ratios in [estimate_odds_ratio()].
 #'
 #' @inheritParams argument_convention
 #' @param data (`data frame`)\cr
@@ -230,7 +229,6 @@ NULL
 #'
 #' # Odds ratio based on glm.
 #' or_glm(data, conf_level = 0.95)
-#'
 or_glm <- function(data, conf_level) {
   checkmate::assert_logical(data$rsp)
   assert_proportion_value(conf_level)
@@ -274,7 +272,6 @@ or_glm <- function(data, conf_level) {
 #'
 #' # Odds ratio based on stratified estimation by conditional logistic regression.
 #' or_clogit(data, conf_level = 0.95)
-#'
 or_clogit <- function(data, conf_level) {
   checkmate::assert_logical(data$rsp)
   assert_proportion_value(conf_level)

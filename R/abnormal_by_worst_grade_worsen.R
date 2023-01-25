@@ -6,6 +6,8 @@
 #'
 #' @inheritParams argument_convention
 #'
+#' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()].
+#'
 #' @name abnormal_by_worst_grade_worsen
 NULL
 
@@ -34,6 +36,7 @@ NULL
 #' selected. For a lab that is needed for both low and high directions, the worst
 #' low records are selected for the low direction, and the worst high record are selected
 #' for the high direction.
+#' @seealso [abnormal_by_worst_grade_worsen]
 #'
 #' @examples
 #' library(scda)
@@ -164,6 +167,7 @@ h_adlb_worsen <- function(adlb,
 #' @return [h_worsen_counter()] returns the counts and fraction of patients
 #' whose worst post-baseline lab grades are worse than their baseline grades, for
 #' post-baseline worst grades "1", "2", "3", "4" and "Any".
+#' @seealso [abnormal_by_worst_grade_worsen]
 #'
 #' @examples
 #' library(scda)
