@@ -152,6 +152,14 @@ h_g_ipp <- function(df,
 #'
 #' @export
 #' @examples
+#' library(scda)
+#' library(dplyr)
+#' library(nestcolor)
+#'
+#' # Select a small sample of data to plot.
+#' adlb <- synthetic_cdisc_dataset("latest", "adlb") %>%
+#'   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
+#'   slice(1:36)
 #'
 #' plot_list <- g_ipp(
 #'   df = adlb,

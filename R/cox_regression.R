@@ -324,6 +324,45 @@ tidy.summary.coxph <- function(x, # nolint
 #'
 #' @examples
 #' library(broom)
+#' library(survival)
+#' set.seed(1, kind = "Mersenne-Twister")
+#' dta_bladder <- with(
+#'   data = bladder[bladder$enum < 5, ],
+#'   data.frame(
+#'     time = stop,
+#'     status = event,
+#'     armcd = as.factor(rx),
+#'     covar1 = as.factor(enum),
+#'     covar2 = factor(
+#'       sample(as.factor(enum)),
+#'       levels = 1:4, labels = c("F", "F", "M", "M")
+#'     )
+#'   )
+#' )
+#' labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+#' formatters::var_labels(dta_bladder)[names(labels)] <- labels
+#' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
+#'
+#' ## Cox regression: arm + 1 covariate.
+#' mod1 <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd",
+#'     covariates = "covar1"
+#'   ),
+#'   data = dta_bladder,
+#'   control = control_coxreg(conf_level = 0.91)
+#' )
+#'
+#' ## Cox regression: arm + 1 covariate + interaction, 2 candidate covariates.
+#' mod2 <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder,
+#'   control = control_coxreg(conf_level = 0.91, interaction = TRUE)
+#' )
+#'
 #' tidy(mod1)
 #' tidy(mod2)
 tidy.coxreg.univar <- function(x, # nolint
@@ -394,6 +433,31 @@ tidy.coxreg.univar <- function(x, # nolint
 #'
 #' @examples
 #' library(broom)
+#' library(survival)
+#' set.seed(1, kind = "Mersenne-Twister")
+#' dta_bladder <- with(
+#'   data = bladder[bladder$enum < 5, ],
+#'   data.frame(
+#'     time = stop,
+#'     status = event,
+#'     armcd = as.factor(rx),
+#'     covar1 = as.factor(enum),
+#'     covar2 = factor(
+#'       sample(as.factor(enum)),
+#'       levels = 1:4, labels = c("F", "F", "M", "M")
+#'     )
+#'   )
+#' )
+#' labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
+#' formatters::var_labels(dta_bladder)[names(labels)] <- labels
+#' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
+#' multivar_model <- fit_coxreg_multivar(
+#'   variables = list(
+#'     time = "time", event = "status", arm = "armcd",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder
+#' )
 #' broom::tidy(multivar_model)
 tidy.coxreg.multivar <- function(x, # nolint
                                  ...) {
