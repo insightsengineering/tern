@@ -19,6 +19,8 @@ editor_options:
 ## Setup
 
 ```{r setup, eval=FALSE}
+study_duration_secs <- 31556952 * 2
+
 sample_fct <- function(x, N, ...) { # nolint
   checkmate::assert_number(N)
   factor(sample(x, N, replace = TRUE, ...), levels = if (is.factor(x)) levels(x) else x)
@@ -70,7 +72,6 @@ rel_var <- function(df = NULL, var_name = NULL, var_values = NULL, related_var =
   }
 }
 
-
 visit_schedule <- function(visit_format = "WEEK",
                            n_assessments = 10L,
                            n_days = 5L) {
@@ -106,7 +107,7 @@ visit_schedule <- function(visit_format = "WEEK",
 ## ADSL
 
 ```{r adsl, eval=FALSE}
-create_adsl <- function(N = 100) { # nolint
+create_adsl <- function(N = 200) { # nolint
   set.seed(1)
   sys_dtm <- as.numeric(strptime("20/2/2019 11:16:16.683", "%d/%m/%Y %H:%M:%OS"))
   country_site_prob <- c(.5, .121, .077, .077, .075, .052, .046, .025, .014, .003)
@@ -127,6 +128,7 @@ create_adsl <- function(N = 100) { # nolint
       .data$ARMCD,
       "ARM A" = "A: Drug X", "ARM B" = "B: Placebo", "ARM C" = "C: Combination"
     ),
+    ACTARMCD = .data$ARMCD,
     ACTARM = .data$ARM,
     RACE = c(
       "ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE",
@@ -134,10 +136,14 @@ create_adsl <- function(N = 100) { # nolint
     ) %>%
       sample_fct(N, prob = c(.55, .23, .16, .05, .004, .003, .002, .002)),
     TRTSDTM = as.POSIXct(
-      sys_dtm + sample(seq(0, 31556952 * 2), size = N, replace = TRUE),
+      sys_dtm + sample(seq(0, study_duration_secs), size = N, replace = TRUE),
       origin = "1970-01-01"
     ),
-    TRTEDTM = as.POSIXct(as.numeric(.data$TRTSDTM) + 31556952 * 2, origin = "1970-01-01")
+    TRTEDTM = as.POSIXct(as.numeric(.data$TRTSDTM) + study_duration_secs, origin = "1970-01-01"),
+    STRATA1 = c("A", "B", "C") %>% sample_fct(N),
+    STRATA2 = c("S1", "S2") %>% sample_fct(N),
+    BMRKR1 = stats::rchisq(N, 6),
+    BMRKR2 = sample_fct(c("LOW", "MEDIUM", "HIGH"), N)
   )
 
   # associate sites with countries and regions
@@ -150,7 +156,9 @@ create_adsl <- function(N = 100) { # nolint
       COUNTRY %in% c("CAN", "USA") ~ "North America",
       COUNTRY %in% c("BRA") ~ "South America",
       TRUE ~ as.character(NA)
-    )) %>%
+    ),
+    SAFFL = factor("Y")
+    ) %>%
     dplyr::mutate(USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-"))
 
   save(ex_adsl, file = "data/ex_adsl.rda", compress = "xz")
@@ -224,7 +232,7 @@ create_adae <- function(adsl = ex_adsl,
     dplyr::mutate(trtsdt_int = as.numeric(as.Date(.data$TRTSDTM))) %>%
     dplyr::mutate(trtedt_int = dplyr::case_when(
       !is.na(.data$TRTEDTM) ~ as.numeric(as.Date(.data$TRTEDTM)),
-      is.na(.data$TRTEDTM) ~ floor(trtsdt_int + (31556952 * 2) / 86400)
+      is.na(.data$TRTEDTM) ~ floor(trtsdt_int + (study_duration_secs) / 86400)
     )) %>%
     dplyr::mutate(ASTDTM = as.POSIXct(
       (sample(.data$trtsdt_int:.data$trtedt_int, size = 1) * 86400),
@@ -286,9 +294,11 @@ create_adae <- function(adsl = ex_adsl,
 }
 ```
 
+## ADEX
+
 ## ADLB
 
-```{r adlb}
+```{r adlb, eval=FALSE}
 create_adlb <- function(adsl = ex_adsl,
                         max_n_lbs = 5L) {
   set.seed(1)
@@ -299,6 +309,7 @@ create_adlb <- function(adsl = ex_adsl,
     "Immunoglobulin A Measurement"
   )
   paramcd = c("ALT", "CRP", "IGA")
+  paramu = c("U/L", "mg/L", "g/L")
   aval_mean = c(20, 1, 2)
   visit_format = "WEEK"
   n_assessments = 5L
@@ -307,6 +318,7 @@ create_adlb <- function(adsl = ex_adsl,
   # validate and initialize related variables
   lbcat_init_list <- relvar_init(param, lbcat)
   param_init_list <- relvar_init(param, paramcd)
+  unit_init_list <- relvar_init(param, paramu)
 
   adlb <- expand.grid(
     STUDYID = unique(adsl$STUDYID),
@@ -336,6 +348,13 @@ create_adlb <- function(adsl = ex_adsl,
     df = adlb,
     var_name = "PARAMCD",
     var_values = param_init_list$relvar2,
+    related_var = "PARAM"
+  ))
+  
+  adlb$AVALU <- as.factor(rel_var(
+    df = adlb,
+    var_name = "AVALU",
+    var_values = unit_init_list$relvar2,
     related_var = "PARAM"
   ))
 
@@ -399,7 +418,10 @@ create_adlb <- function(adsl = ex_adsl,
         prob = c(0.30, 0.25, 0.20, 0.15, 0)
       ),
       .data$ANRIND == "NORMAL" ~ "0"
-    )))
+    ))) %>%
+    dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
+    dplyr::mutate(BTOXGR = .data$ATOXGR[.data$ABLFL == "Y"]) %>%
+    dplyr::ungroup()
 
   # High and low descriptions of the different PARAMCD values
   # This is currently hard coded as the GDSR does not have these descriptions yet
@@ -446,7 +468,7 @@ create_adlb <- function(adsl = ex_adsl,
     dplyr::mutate(trtsdt_int = as.numeric(as.Date(.data$TRTSDTM))) %>%
     dplyr::mutate(trtedt_int = dplyr::case_when(
       !is.na(TRTEDTM) ~ as.numeric(as.Date(.data$TRTEDTM)),
-      is.na(TRTEDTM) ~ floor(.data$trtsdt_int + 31556952 * 2 / 86400)
+      is.na(TRTEDTM) ~ floor(.data$trtsdt_int + study_duration_secs / 86400)
     )) %>%
     dplyr::mutate(ADTM = as.POSIXct(
       (sample(.data$trtsdt_int:.data$trtedt_int, size = 1) * 86400),
@@ -555,41 +577,131 @@ create_adlb <- function(adsl = ex_adsl,
 }
 ```
 
+## ADPP
 
+## ADRS
 
+## ADTTE
 
+```{r}
+create_adtte <- function(adsl = ex_adsl) {
+  set.seed(1)
 
+  lookup_tte <- tibble::tribble(
+      ~ARM, ~PARAMCD, ~PARAM, ~LAMBDA, ~CNSR_P,
+      "ARM A", "OS", "Overall Survival", log(2) / 610, 0.4,
+      "ARM B", "OS", "Overall Survival", log(2) / 490, 0.3,
+      "ARM C", "OS", "Overall Survival", log(2) / 365, 0.2,
+      "ARM A", "PFS", "Progression Free Survival", log(2) / 365, 0.4,
+      "ARM B", "PFS", "Progression Free Survival", log(2) / 305, 0.3,
+      "ARM C", "PFS", "Progression Free Survival", log(2) / 243, 0.2,
+      "ARM A", "EFS", "Event Free Survival", log(2) / 365, 0.4,
+      "ARM B", "EFS", "Event Free Survival", log(2) / 305, 0.3,
+      "ARM C", "EFS", "Event Free Survival", log(2) / 243, 0.2,
+      "ARM A", "CRSD", "Duration of Confirmed Response", log(2) / 305, 0.4,
+      "ARM B", "CRSD", "Duration of Confirmed Response", log(2) / 243, 0.3,
+      "ARM C", "CRSD", "Duration of Confirmed Response", log(2) / 182, 0.2
+  )
 
+  evntdescr_sel <- c(
+      "Death",
+      "Disease Progression",
+      "Last Tumor Assessment",
+      "Adverse Event",
+      "Last Date Known To Be Alive"
+  )
 
+  cnsdtdscr_sel <- c(
+      "Preferred Term",
+      "Clinical Cut Off",
+      "Completion or Discontinuation",
+      "End of AE Reporting Period"
+  )
 
+  adtte <- split(adsl, adsl$USUBJID) %>%
+    lapply(FUN = function(pinfo) {
+      lookup_tte %>%
+        dplyr::filter(.data$ARM == as.character(pinfo$ACTARMCD)) %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(
+          STUDYID = pinfo$STUDYID,
+          USUBJID = pinfo$USUBJID,
+          CNSR = sample(c(0, 1), 1, prob = c(1 - .data$CNSR_P, .data$CNSR_P)),
+          AVAL = stats::rexp(1, .data$LAMBDA),
+          AVALU = "DAYS"
+        ) %>%
+        dplyr::select(-"LAMBDA", -"CNSR_P")
+    }) %>%
+    Reduce(rbind, .)
+  
+  adtte <- var_relabel(
+    adtte,
+    STUDYID = "Study Identifier",
+    USUBJID = "Unique Subject Identifier"
+  )
 
+  # merge ADSL to be able to add TTE date and study day variables
+  adtte <- dplyr::inner_join(
+    adsl,
+    dplyr::select(adtte, -"ARM"),
+    by = c("STUDYID", "USUBJID")
+  ) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(trtsdt_int = as.numeric(as.Date(.data$TRTSDTM))) %>%
+    dplyr::mutate(trtedt_int = dplyr::case_when(
+      !is.na(TRTEDTM) ~ as.numeric(as.Date(TRTEDTM)),
+      is.na(TRTEDTM) ~ floor(trtsdt_int + (study_duration_secs) / 86400)
+    )) %>%
+    dplyr::mutate(ADTM = as.POSIXct(
+      (sample(.data$trtsdt_int:.data$trtedt_int, size = 1) * 86400),
+      origin = "1970-01-01"
+    )) %>%
+    dplyr::select(-"trtsdt_int", -"trtedt_int") %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(.data$STUDYID, .data$USUBJID, .data$ADTM)
 
+  adtte <- adtte %>%
+    dplyr::group_by(.data$USUBJID) %>%
+    dplyr::mutate(PARAM = as.factor(.data$PARAM)) %>%
+    dplyr::mutate(PARAMCD = as.factor(.data$PARAMCD)) %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(
+      .data$STUDYID,
+      .data$USUBJID,
+      .data$PARAMCD,
+      .data$ADTM
+    )
 
+  # adding adverse event counts and log follow-up time
+  ex_adtte <- dplyr::bind_rows(adtte, data.frame(adtte %>% dplyr::group_by(.data$USUBJID) %>%
+    dplyr::slice_head(n = 1) %>%
+    dplyr::mutate(
+      PARAMCD = "TNE",
+      PARAM = "Total Number of Exacerbations",
+      AVAL = stats::rpois(1, 3),
+      AVALU = "COUNT",
+      lgTMATRSK = log(stats::rexp(1, rate = 3)),
+      dplyr::across("ADTM", ~NA)
+    ))) %>%
+    dplyr::arrange(
+      .data$STUDYID,
+      .data$USUBJID,
+      .data$PARAMCD,
+      .data$ADTM
+    )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  save(ex_adtte, file = "data/ex_adtte.rda", compress = "xz")
+}
+```
 
 
 ## Create Data
 
 ```{r create data, eval=FALSE}
 create_adsl()
+load("./data/ex_adsl.rda")
+
 create_adae()
 create_adlb()
+create_adtte()
 ```
