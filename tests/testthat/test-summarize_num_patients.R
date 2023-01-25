@@ -20,6 +20,17 @@ testthat::test_that("s_num_patients works as expected with empty input", {
   testthat::expect_equal(result, expected, tolerance = 1e-4)
 })
 
+testthat::test_that("s_num_patients works as expected with unique_count_suffix = FALSE", {
+  x <- as.character(c(1, 2, 1, 4, NA))
+  result <- s_num_patients(x = x, labelstr = "", .N_col = 5, unique_count_suffix = FALSE)
+  expected <- list(
+    unique = formatters::with_label(c(3.0, 0.6), ""),
+    nonunique = formatters::with_label(4, ""),
+    unique_count = formatters::with_label(3, "")
+  )
+  testthat::expect_equal(result, expected, tolerance = 1e-4)
+})
+
 testthat::test_that("s_num_patients_content works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA)),

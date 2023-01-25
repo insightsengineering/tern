@@ -39,7 +39,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
   checkmate::assert_string(labelstr)
   checkmate::assert_count(.N_col)
   checkmate::assert_multi_class(x, classes = c("factor", "character"))
-  checkmate::assert_logical(unique_count_suffix)
+  checkmate::assert_flag(unique_count_suffix)
 
   count1 <- n_available(unique(x))
   count2 <- n_available(x)
@@ -53,7 +53,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
   out <- list(
     unique = formatters::with_label(c(count1, ifelse(count1 == 0 && .N_col == 0, 0, count1 / .N_col)), labelstr),
     nonunique = formatters::with_label(count2, labelstr),
-    unique_count = formatters::with_label(count1, if (!unique_count_suffix) labelstr else paste(labelstr, "(n)"))
+    unique_count = formatters::with_label(count1, ifelse(unique_count_suffix, paste(labelstr, "(n)"), labelstr))
   )
 
   out
