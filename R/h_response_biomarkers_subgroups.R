@@ -9,7 +9,7 @@
 #' @inheritParams extract_rsp_biomarkers
 #' @inheritParams argument_convention
 #' @name h_response_biomarkers_subgroups
-#' @order 1
+#'
 #' @examples
 #' # Testing dataset.
 #' library(scda)

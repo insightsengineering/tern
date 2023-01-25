@@ -111,8 +111,6 @@ summary_labels <- function() {
 #' with the new Analyze Function [summarize_vars()].
 #'
 #' @name summarize_variables
-#' @order 1
-#'
 NULL
 
 #' @inheritParams argument_convention
@@ -121,8 +119,6 @@ NULL
 #'   an object description.
 #'
 #' @export
-#' @order 2
-#'
 s_summary <- function(x,
                       na.rm = TRUE, # nolint
                       denom,
@@ -176,7 +172,6 @@ s_summary <- function(x,
 #' - `geom_cv`: the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x))^2) - 1)*100`).
 #'
 #' @method s_summary numeric
-#' @order 3
 #'
 #' @export
 #'
@@ -314,7 +309,6 @@ s_summary.numeric <- function(x, # nolint
 #'   - `count_fraction`: similar to `count` but also includes the proportion of cases for each level of the
 #'      factor `x` relative to the denominator, or `NA` if the denominator is zero.
 #' @method s_summary factor
-#' @order 4
 #'
 #' @export
 #'
@@ -379,7 +373,6 @@ s_summary.factor <- function(x,
 #'   It is therefore better to always pre-process the dataset such that factors are manually
 #'   created from character variables before passing the dataset to [rtables::build_table()].
 #' @method s_summary character
-#' @order 5
 #'
 #' @export
 #'
@@ -422,7 +415,6 @@ s_summary.character <- function(x,
 #'      or `NA` if the denominator is zero. Note that `NA`s in `x` are never counted or leading
 #'      to `NA` here.
 #' @method s_summary logical
-#' @order 6
 #'
 #' @export
 #'
@@ -465,10 +457,8 @@ s_summary.logical <- function(x,
 
 #' @describeIn summarize_variables S3 generic Formatted Analysis function to produce
 #'   an object description. It is used as `afun` in [rtables::analyze()].
-#' @order 7
 #'
 #' @export
-#'
 a_summary <- function(x,
                       ...,
                       .N_row, # nolint
@@ -481,8 +471,9 @@ a_summary <- function(x,
 .a_summary_numeric_labels <- summary_labels()
 
 #' @describeIn summarize_variables Formatted Analysis function method for `numeric`.
+#'
 #' @export
-#' @order 8
+#'
 #' @examples
 #' # `a_summary.numeric`
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
@@ -495,8 +486,9 @@ a_summary.numeric <- make_afun(
 .a_summary_counts_formats <- summary_formats(type = "counts")
 
 #' @describeIn summarize_variables Method for `factor`.
+#'
 #' @export
-#' @order 9
+#'
 #' @examples
 #' # `a_summary.factor`
 #' # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
@@ -512,8 +504,9 @@ a_summary.factor <- make_afun(
 )
 
 #' @describeIn summarize_variables Formatted Analysis function method for `character`.
+#'
 #' @export
-#' @order 10
+#'
 #' @examples
 #' # `a_summary.character`
 #' afun <- make_afun(
@@ -527,8 +520,9 @@ a_summary.character <- make_afun(
 )
 
 #' @describeIn summarize_variables Formatted Analysis function method for `logical`.
+#'
 #' @export
-#' @order 11
+#'
 #' @examples
 #' # `a_summary.logical`
 #' afun <- make_afun(
@@ -553,8 +547,9 @@ a_summary.logical <- make_afun(
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_summary()].
 #' @inheritParams argument_convention
-#' @order 12
+#'
 #' @export
+#'
 #' @examples
 #' # `create_afun_summary()` to create combined `afun`
 #'
@@ -649,10 +644,9 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' @inheritParams rtables::analyze
 #' @param ... arguments passed to `s_summary()`.
 #'
-#' @order 13
 #' @template formatting_arguments
-#'
 #' @export
+#'
 #' @examples
 #' ## Fabricated dataset.
 #' dta_test <- data.frame(
@@ -705,7 +699,6 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' \dontrun{
 #' Viewer(results)
 #' }
-#'
 summarize_vars <- function(lyt,
                            vars,
                            var_labels = vars,

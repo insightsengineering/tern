@@ -251,9 +251,8 @@ format_fraction_threshold <- function(threshold) {
 #'    If it is zero, then returns "0.00".
 #' @param digits (`integer`)\cr number of decimal places to display.
 #' @family formatting functions
-#' @name extreme_format
-#' @order 1
 #'
+#' @name extreme_format
 NULL
 
 #' @describeIn extreme_format Internal helper function to calculate the threshold and create formatted strings

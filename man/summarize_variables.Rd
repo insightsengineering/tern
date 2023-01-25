@@ -432,5 +432,4 @@ results <- build_table(l, df = dta_test)
 \dontrun{
 Viewer(results)
 }
-
 }

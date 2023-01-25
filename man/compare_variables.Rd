@@ -304,7 +304,6 @@ afun <- make_afun(
 x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
 y <- c(TRUE, FALSE)
 afun(x, .ref_group = y, .in_ref_col = FALSE)
-
 # `compare_vars()` in `rtables` pipelines
 
 ## Default output within a `rtables` pipeline.

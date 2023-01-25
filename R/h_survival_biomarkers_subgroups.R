@@ -9,7 +9,6 @@
 #' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_multivar
 #' @name h_survival_biomarkers_subgroups
-#' @order 1
 #'
 #' @examples
 #' # Testing dataset.
