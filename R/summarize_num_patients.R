@@ -7,7 +7,9 @@
 #' @inheritParams argument_convention
 #' @param x (`character` or `factor`) \cr vector of patient IDs.
 #' @param count_by (`character` or `factor`) \cr optional vector to be combined with `x` when counting
-#' `nonunqiue` records.
+#' `nonunique` records.
+#' @param unique_count_suffix (`logical`) \cr should `"(n)"` suffix be added to `unique_count` labels.
+#' Defaults to `TRUE`.
 #'
 #' @name summarize_num_patients
 NULL
@@ -32,11 +34,12 @@ NULL
 #'   .N_col = 6L,
 #'   count_by = as.character(c(1, 1, 2, 1, 1, 1))
 #' )
-s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
+s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_suffix = TRUE) { # nolint
 
   checkmate::assert_string(labelstr)
   checkmate::assert_count(.N_col)
   checkmate::assert_multi_class(x, classes = c("factor", "character"))
+  checkmate::assert_flag(unique_count_suffix)
 
   count1 <- n_available(unique(x))
   count2 <- n_available(x)
@@ -50,7 +53,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
   out <- list(
     unique = formatters::with_label(c(count1, ifelse(count1 == 0 && .N_col == 0, 0, count1 / .N_col)), labelstr),
     nonunique = formatters::with_label(count2, labelstr),
-    unique_count = formatters::with_label(count1, paste(labelstr, "(n)"))
+    unique_count = formatters::with_label(count1, ifelse(unique_count_suffix, paste(labelstr, "(n)"), labelstr))
   )
 
   out
@@ -79,7 +82,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL) { # nolint
 #' )
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
-s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = NULL, count_by = NULL) { # nolint
+s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = NULL, count_by = NULL, unique_count_suffix = TRUE) { # nolint
 
   checkmate::assert_string(.var)
   checkmate::assert_data_frame(df)
@@ -104,7 +107,8 @@ s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = N
     x = x,
     labelstr = labelstr,
     .N_col = .N_col,
-    count_by = y
+    count_by = y,
+    unique_count_suffix = unique_count_suffix
   )
 }
 
