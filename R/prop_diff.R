@@ -3,9 +3,7 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
-#' @param grp (`factor`)\cr
-#'   vector assigning observations to one out of two groups
-#'   (e.g. reference and treatment group).
+#'
 #' @seealso [d_proportion_diff()]
 #'
 #' @name prop_diff

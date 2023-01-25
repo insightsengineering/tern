@@ -333,6 +333,7 @@ tabulate_rsp_subgroups <- function(lyt,
 #' Internal function to check variables included in
 #' [tabulate_rsp_subgroups] and create column labels.
 #'
+#' @inheritParams argument_convention
 #' @inheritParams tabulate_rsp_subgroups
 #'
 #' @return `list` of variables to tabulate and their labels.

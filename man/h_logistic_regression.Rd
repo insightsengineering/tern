@@ -78,6 +78,8 @@ the interaction level.}
 
 \item{interaction_var}{(\code{string})\cr the interaction variable.}
 
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
 \item{at}{(\code{NULL} or \code{numeric})\cr optional values for the interaction variable. Otherwise
 the median is used.}
 
@@ -94,6 +96,8 @@ number of patients. In that case they can only be scalar (strings).}
 
 \item{x}{(\code{string} or \code{character})\cr a variable or interaction term in \code{fit_glm} (depending on the
 helper function).}
+
+\item{...}{additional arguments for the lower level functions.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -11,6 +11,15 @@ create_afun_compare(
   .indent_mods = NULL
 )
 }
+\arguments{
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Constructor function which creates a combined Formatted
 Analysis function for use in layout creating functions \code{\link[=compare_vars]{compare_vars()}}.

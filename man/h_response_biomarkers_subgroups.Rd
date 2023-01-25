@@ -20,6 +20,9 @@ h_tab_rsp_one_biomarker(df, vars)
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
+\item{control}{(named \code{list})\cr controls for the response definition and the
+confidence level produced by \code{\link[=control_logistic]{control_logistic()}}.}
+
 \item{df}{(\code{data.frame})\cr results for a single biomarker, as part of what is
 returned by \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}} (it needs a couple of columns which are
 added by that high-level function relative to what is returned by \code{\link[=h_logistic_mult_cont_df]{h_logistic_mult_cont_df()}},

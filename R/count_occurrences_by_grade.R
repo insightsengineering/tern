@@ -9,8 +9,6 @@
 #' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
-#' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level
-#'   and each entry represents a count.
 #' @param remove_single (`logical`)\cr `TRUE` to not include the elements of one-element grade groups
 #' in the the output list; in this case only the grade groups names will be included in the output.
 #'

@@ -552,6 +552,7 @@ a_summary.logical <- make_afun(
 #'   we need to wrap them in a combined `afun`. Since this is required by two layout creating
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_summary()].
+#' @inheritParams argument_convention
 #' @order 12
 #' @export
 #' @examples

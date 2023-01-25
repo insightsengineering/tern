@@ -75,6 +75,8 @@ NULL
 #'   groupings for `subgroups` variables.
 #' @export
 #' @seealso [survival_duration_subgroups]
+#' @inheritParams argument_convention
+#' @inheritParams survival_duration_subgroups
 #'
 #' @examples
 #' # Testing dataset.

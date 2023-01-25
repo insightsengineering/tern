@@ -30,6 +30,10 @@ prop_agresti_coull(rsp, conf_level)
 prop_jeffreys(rsp, conf_level)
 }
 \arguments{
+\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
 \item{correct}{(\code{flag})\cr apply continuity correction.}
 
 \item{strata}{(\code{factor})\cr

@@ -369,6 +369,7 @@ a_compare.logical <- make_afun(
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_compare()].
 #' @export
+#' @inheritParams argument_convention
 #' @seealso [compare_variables]
 #'
 #' @examples

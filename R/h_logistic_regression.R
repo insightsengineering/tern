@@ -4,6 +4,7 @@
 #'
 #' Helper functions used in calculations for logistic regression.
 #'
+#' @inheritParams argument_convention
 #' @param fit_glm (`glm`)\cr logistic regression model fitted by [stats::glm()] with "binomial" family.
 #'   Limited functionality is also available for conditional logistic regression models fitted by
 #'   [survival::clogit()], currently this is used only by [extract_rsp_biomarkers()].

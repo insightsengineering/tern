@@ -7,15 +7,9 @@
 d_rsp_subgroups_colvars(vars, conf_level = NULL, method = NULL)
 }
 \arguments{
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (total number of observations per group),
-\code{n_rsp} (number of responders per group),
-\code{prop} (proportion of responders),
-\code{n_tot} (total number of observations),
-\code{or} (odds ratio),
-\code{ci} (confidence interval of odds ratio) and
-\code{pval} (p value of the effect).
-Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{method}{(\code{string})\cr
 specifies the test used to calculate the p-value for the difference between

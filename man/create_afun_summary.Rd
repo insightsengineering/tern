@@ -6,6 +6,15 @@
 \usage{
 create_afun_summary(.stats, .formats, .labels, .indent_mods)
 }
+\arguments{
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+}
 \description{
 Constructor function which creates a combined Formatted
 Analysis function for use in layout creating functions \code{\link[=summarize_vars]{summarize_vars()}} and

@@ -78,9 +78,6 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
-\item{data}{(\verb{data frame})\cr
-with at least the variables \code{rsp}, \code{grp}, and in addition \code{strata} for \code{\link[=or_clogit]{or_clogit()}}.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

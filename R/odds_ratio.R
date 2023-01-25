@@ -4,8 +4,6 @@
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'
-#' @param data (`data frame`)\cr
-#'   with at least the variables `rsp`, `grp`, and in addition `strata` for [or_clogit()].
 #' @details This function uses either logistic regression for unstratified
 #'   analyses, or conditional logistic regression for stratified analyses.
 #'   The Wald confidence interval with the specified confidence level is
@@ -207,7 +205,10 @@ estimate_odds_ratio <- function(lyt,
 #'
 #' Functions to calculate odds ratios in [estimate_odds_ratio()]
 #'
-#' @inheritParams odds_ratio
+#' @inheritParams argument_convention
+#' @param data (`data frame`)\cr
+#'   with at least the variables `rsp`, `grp`, and in addition `strata` for [or_clogit()].
+#'
 #' @seealso [odds_ratio]
 #'
 #' @name h_odds_ratio
@@ -216,7 +217,6 @@ NULL
 #' @describeIn h_odds_ratio estimates the odds ratio based on [stats::glm()]. Note that there must be
 #'   exactly 2 groups in `data` as specified by the `grp` variable.
 #'
-#' @inheritParams argument_convention
 #' @export
 #'
 #' @examples
@@ -261,7 +261,6 @@ or_glm <- function(data, conf_level) {
 #'   the whole data set including all groups, since the results are not the same as when doing
 #'   pairwise comparisons between the groups.
 #'
-#' @inheritParams argument_convention
 #' @export
 #'
 #' @examples

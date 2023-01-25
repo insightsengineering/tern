@@ -182,6 +182,7 @@ estimate_proportion <- function(lyt,
 #'
 #' Functions to calculate different proportion confidence intervals for use in [estimate_proportion()].
 #'
+#' @inheritParams argument_convention
 #' @inheritParams estimate_proportions
 #' @seealso [estimate_proportions]
 #'
