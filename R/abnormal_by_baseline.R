@@ -18,16 +18,16 @@
 #' * `Total`
 #'   * `denom`: the number of patients with at least one valid measurement post-baseline
 #'   * `num`: the number of patients in `denom` who also have at least one abnormality post-baseline
-#' @seealso [d_count_abnormal_by_baseline()]
 #'
 #' @inheritParams argument_convention
 #' @param abnormal (`character`)\cr identifying the abnormal range level(s) in `.var`.
+#' @seealso Relevant description function [d_count_abnormal_by_baseline()].
 #'
 #' @name abnormal_by_baseline
 #' @include formats.R
 NULL
 
-#' Description Function for [abnormal by baseline]
+#' Description Function for [s_count_abnormal_by_baseline()]
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

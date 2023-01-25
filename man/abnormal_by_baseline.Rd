@@ -156,6 +156,6 @@ basic_table() \%>\%
 
 }
 \seealso{
-\code{\link[=d_count_abnormal_by_baseline]{d_count_abnormal_by_baseline()}}
+Relevant description function \code{\link[=d_count_abnormal_by_baseline]{d_count_abnormal_by_baseline()}}.
 }
 \keyword{internal}
