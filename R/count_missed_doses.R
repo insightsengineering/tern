@@ -5,7 +5,7 @@
 #' These are specific functions to count patients with missed doses. The difference to [count_cumulative()] is
 #' mainly the special labels.
 #'
-#' @seealso Relevant descriptiion function [d_count_missed_doses()].
+#' @seealso Relevant description function [d_count_missed_doses()].
 #'
 #' @name count_missed_doses
 #'
