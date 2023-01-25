@@ -24,6 +24,8 @@
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
 #' @name response_biomarkers_subgroups
+#' @export
+#'
 #' @examples
 #' # Testing dataset.
 #' library(scda)
