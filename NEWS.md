@@ -18,6 +18,7 @@
 * Added `h_row_first_values` function as a more general helper function to retrieve
   first values from specific rows.
 * Replaced table template tests with snapshot testing.
+* Added option to remove `"(n)"` suffix from `unique_count` labels for `s_num_patients`.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
