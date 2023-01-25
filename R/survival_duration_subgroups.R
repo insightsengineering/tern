@@ -77,6 +77,7 @@ NULL
 #' @seealso [survival_duration_subgroups]
 #' @inheritParams argument_convention
 #' @inheritParams survival_duration_subgroups
+#' @inheritParams survival_coxph_pairwise
 #'
 #' @examples
 #' # Testing dataset.
