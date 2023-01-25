@@ -4,14 +4,19 @@
 \name{ex_data}
 \alias{ex_data}
 \alias{ex_adsl}
+\alias{ex_adae}
 \title{Simulated CDISC Data for Examples}
 \format{
 rds (data.frame)
 
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 300 rows and 14 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 100 rows and 14 columns.
+
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 686 rows and 37 columns.
 }
 \usage{
 ex_adsl
+
+ex_adae
 }
 \description{
 Simulated CDISC Data for Examples
@@ -19,6 +24,8 @@ Simulated CDISC Data for Examples
 \section{Functions}{
 \itemize{
 \item \code{ex_adsl}: ADSL data
+
+\item \code{ex_adae}: ADAE data
 
 }}
 \keyword{datasets}

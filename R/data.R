@@ -8,3 +8,7 @@ NULL
 #' @describeIn ex_data ADSL data
 #'
 "ex_adsl"
+
+#' @describeIn ex_data ADAE data
+#'
+"ex_adae"
