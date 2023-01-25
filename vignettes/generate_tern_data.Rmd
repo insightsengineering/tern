@@ -1,0 +1,119 @@
+---
+title: "Data Generation"
+date: "`r Sys.Date()`"
+output:
+    rmarkdown::html_document:
+        theme: "spacelab"
+        highlight: "kate"
+        toc: true
+        toc_float: true
+vignette: >
+    %\VignetteIndexEntry{Data Generation}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+editor_options:
+    markdown: 
+        wrap: 72
+---
+
+## Setup
+
+```{r setup, eval = FALSE}
+sample_fct <- function(x, N, ...) { # nolint
+  checkmate::assert_number(N)
+  factor(sample(x, N, replace = TRUE, ...), levels = if (is.factor(x)) levels(x) else x)
+}
+```
+
+## ADSL
+
+```{r adsl, eval = FALSE}
+create_adsl <- function(N = 100) {
+  set.seed(1)
+  sys_dtm <- as.numeric(strptime("20/2/2019 11:16:16.683", "%d/%m/%Y %H:%M:%OS"))
+  country_site_prob <- c(.5, .121, .077, .077, .075, .052, .046, .025, .014, .003)
+
+  adsl <- tibble::tibble( # nolint
+    STUDYID = rep("AB12345", N),
+    COUNTRY = sample_fct(
+      c("CHN", "USA", "BRA", "PAK", "NGA", "RUS", "JPN", "GBR", "CAN", "CHE"),
+      N,
+      prob = country_site_prob
+    ),
+    SITEID = sample_fct(1:20, N, prob = rep(country_site_prob, times = 2)),
+    SUBJID = paste("id", seq_len(N), sep = "-"),
+    AGE = sapply(stats::rchisq(N, df = 5, ncp = 10), max, 0) + 20,
+    SEX = c("F", "M") %>% sample_fct(N, prob = c(.52, .48)),
+    ARMCD = c("ARM A", "ARM B", "ARM C") %>% sample_fct(N),
+    ARM = dplyr::recode(
+      .data$ARMCD,
+      "ARM A" = "A: Drug X", "ARM B" = "B: Placebo", "ARM C" = "C: Combination"
+    ),
+    ACTARM = .data$ARM,
+    RACE = c(
+      "ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE",
+      "MULTIPLE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER", "OTHER", "UNKNOWN"
+    ) %>%
+      sample_fct(N, prob = c(.55, .23, .16, .05, .004, .003, .002, .002)),
+    TRTSDTM = as.POSIXct(
+      sys_dtm + sample(seq(0, 31556952 * 2), size = N, replace = TRUE),
+      origin = "1970-01-01"
+    ),
+    TRTEDTM = as.POSIXct(as.numeric(.data$TRTSDTM) + 31556952 * 2, origin = "1970-01-01")
+  )
+
+  # associate sites with countries and regions
+  ex_adsl <- adsl %>% # nolint
+    dplyr::mutate(REGION1 = dplyr::case_when(
+      COUNTRY %in% c("NGA") ~ "Africa",
+      COUNTRY %in% c("CHN", "JPN", "PAK") ~ "Asia",
+      COUNTRY %in% c("RUS") ~ "Eurasia",
+      COUNTRY %in% c("GBR") ~ "Europe",
+      COUNTRY %in% c("CAN", "USA") ~ "North America",
+      COUNTRY %in% c("BRA") ~ "South America",
+      TRUE ~ as.character(NA)
+    )) %>%
+    dplyr::mutate(USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-"))
+
+  save(ex_adsl, file = "data/ex_adsl.rda", compress = "xz")
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Create Data
+
+```{r create data, eval=FALSE}
+create_adsl(N = 200)
+```

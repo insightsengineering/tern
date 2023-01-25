@@ -338,5 +338,10 @@ reference:
     contents:
       - assertions
 
+  - title: Data
+    desc: Data included in the package.
+    contents:
+      - ex_adsl
+
   - title: Deprecated Functions
     desc: These functions already are or will eventually be removed.
