@@ -11,7 +11,7 @@ rds (data.frame)
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 100 rows and 14 columns.
 
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 686 rows and 37 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 257 rows and 37 columns.
 }
 \usage{
 ex_adsl
