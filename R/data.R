@@ -12,3 +12,7 @@ NULL
 #' @describeIn ex_data ADAE data
 #'
 "ex_adae"
+
+#' @describeIn ex_data ADLB data
+#'
+"ex_adlb"

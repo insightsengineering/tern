@@ -341,8 +341,7 @@ reference:
   - title: Data
     desc: Data included in the package.
     contents:
-      - ex_adsl
-      - ex_adae
+      - starts_with("ex_")
 
   - title: Deprecated Functions
     desc: These functions already are or will eventually be removed.

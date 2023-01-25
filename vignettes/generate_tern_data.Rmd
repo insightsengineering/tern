@@ -23,17 +23,95 @@ sample_fct <- function(x, N, ...) { # nolint
   checkmate::assert_number(N)
   factor(sample(x, N, replace = TRUE, ...), levels = if (is.factor(x)) levels(x) else x)
 }
+
+retain <- function(df, value_var, event, outside = NA) {
+  indices <- c(1, which(event == TRUE), nrow(df) + 1)
+  values <- c(outside, value_var[event == TRUE])
+  rep(values, diff(indices))
+}
+
+relvar_init <- function(relvar1, relvar2) {
+  checkmate::assert_character(relvar1, min.len = 1, any.missing = FALSE)
+  checkmate::assert_character(relvar2, min.len = 1, any.missing = FALSE)
+
+  if (length(relvar1) != length(relvar2)) {
+    message(simpleError(
+      "The argument value length of relvar1 and relvar2 differ. They must contain the same number of elements."
+    ))
+    return(NA)
+  }
+  return(list("relvar1" = relvar1, "relvar2" = relvar2))
+}
+
+rel_var <- function(df = NULL, var_name = NULL, var_values = NULL, related_var = NULL) {
+  checkmate::assert_data_frame(df, null.ok = TRUE)
+  checkmate::assert_string(var_name, null.ok = TRUE)
+  checkmate::assert_character(var_values, null.ok = TRUE, min.len = 1, any.missing = FALSE)
+  checkmate::assert_string(related_var, null.ok = TRUE)
+
+  if (is.null(df)) {
+    message("Missing data frame argument value.")
+    return(NA)
+  } else {
+    n_relvar1 <- length(unique(df[, related_var, drop = TRUE]))
+    n_relvar2 <- length(var_values)
+    if (n_relvar1 != n_relvar2) {
+      message(paste("Unequal vector lengths for", related_var, "and", var_name))
+      return(NA)
+    } else {
+      relvar1 <- unique(df[, related_var, drop = TRUE])
+      relvar2_values <- rep(NA, nrow(df))
+      for (r in seq_len(length(relvar1))) {
+        matched <- which(df[, related_var, drop = TRUE] == relvar1[r])
+        relvar2_values[matched] <- var_values[r]
+      }
+      return(relvar2_values)
+    }
+  }
+}
+
+
+visit_schedule <- function(visit_format = "WEEK",
+                           n_assessments = 10L,
+                           n_days = 5L) {
+  checkmate::assert_string(visit_format)
+  checkmate::assert_integer(n_assessments, len = 1, any.missing = FALSE)
+  checkmate::assert_integer(n_days, len = 1, any.missing = FALSE)
+
+  # trap invalid assessment format
+  if (!(toupper(visit_format) %in% c("WEEK", "CYCLE"))) {
+    message("Visit format value must either be: WEEK or CYCLE")
+    return(NA)
+  }
+
+  if (toupper(visit_format) == "WEEK") {
+    # numeric vector of n assessments/cycles/days
+    assessments <- 1:n_assessments
+    # numeric vector for ordering including screening (-1) and baseline (0) place holders
+    assessments_ord <- -1:n_assessments
+    # character vector of nominal visit values
+    visit_values <- c("SCREENING", "BASELINE", paste(toupper(visit_format), assessments, "DAY", (assessments * 7) + 1))
+  } else if (toupper(visit_format) == "CYCLE") {
+    cycles <- sort(rep(1:n_assessments, times = 1, each = n_days))
+    days <- rep(seq(1:n_days), times = n_assessments, each = 1)
+    assessments_ord <- 0:(n_assessments * n_days)
+    visit_values <- c("SCREENING", paste(toupper(visit_format), cycles, "DAY", days))
+  }
+
+  # create and order factor variable to return from function
+  visit_values <- stats::reorder(factor(visit_values), assessments_ord)
+}
 ```
 
-## adsl
+## ADSL
 
-```{r adsl, eval = FALSE}
-create_adsl <- function(N = 100) {
+```{r adsl, eval=FALSE}
+create_adsl <- function(N = 100) { # nolint
   set.seed(1)
   sys_dtm <- as.numeric(strptime("20/2/2019 11:16:16.683", "%d/%m/%Y %H:%M:%OS"))
   country_site_prob <- c(.5, .121, .077, .077, .075, .052, .046, .025, .014, .003)
 
-  adsl <- tibble::tibble( # nolint
+  adsl <- tibble::tibble(
     STUDYID = rep("AB12345", N),
     COUNTRY = sample_fct(
       c("CHN", "USA", "BRA", "PAK", "NGA", "RUS", "JPN", "GBR", "CAN", "CHE"),
@@ -63,7 +141,7 @@ create_adsl <- function(N = 100) {
   )
 
   # associate sites with countries and regions
-  ex_adsl <- adsl %>% # nolint
+  ex_adsl <- adsl %>%
     dplyr::mutate(REGION1 = dplyr::case_when(
       COUNTRY %in% c("NGA") ~ "Africa",
       COUNTRY %in% c("CHN", "JPN", "PAK") ~ "Asia",
@@ -79,7 +157,7 @@ create_adsl <- function(N = 100) {
 }
 ```
 
-## adae
+## ADAE
 
 ```{r adae, eval=FALSE}
 create_adae <- function(adsl = ex_adsl,
@@ -112,7 +190,7 @@ create_adae <- function(adsl = ex_adsl,
       ), stringsAsFactors = FALSE
     )
 
-  adae <- Map( # nolint
+  adae <- Map(
     function(id, sid) {
       n_aes <- sample(c(0, seq_len(max_n_aes)), 1)
       i <- sample(seq_len(nrow(lookup_ae)), n_aes, TRUE)
@@ -134,14 +212,14 @@ create_adae <- function(adsl = ex_adsl,
       AETOXGR %in% c(4, 5) ~ "SEVERE"
     ))
 
-  adae <- var_relabel( # nolint
+  adae <- var_relabel(
     adae,
     STUDYID = "Study Identifier",
     USUBJID = "Unique Subject Identifier"
   )
 
   # merge adsl to be able to add AE date and study day variables
-  adae <- dplyr::inner_join(adsl, adae, by = c("STUDYID", "USUBJID")) %>% # nolint
+  adae <- dplyr::inner_join(adsl, adae, by = c("STUDYID", "USUBJID")) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(trtsdt_int = as.numeric(as.Date(.data$TRTSDTM))) %>%
     dplyr::mutate(trtedt_int = dplyr::case_when(
@@ -154,7 +232,7 @@ create_adae <- function(adsl = ex_adsl,
     )) %>%
     dplyr::arrange(.data$STUDYID, .data$USUBJID, .data$ASTDTM, .data$AETERM)
 
-  adae <- adae %>% # nolint
+  adae <- adae %>%
     dplyr::group_by(.data$USUBJID) %>%
     dplyr::mutate(AESEQ = seq_len(dplyr::n())) %>%
     dplyr::mutate(ASEQ = .data$AESEQ) %>%
@@ -175,7 +253,7 @@ create_adae <- function(adsl = ex_adsl,
     "RECOVERED/RESOLVED"
   )
 
-  adae <- adae %>% # nolint
+  adae <- adae %>%
     dplyr::mutate(AEOUT = factor(ifelse(
       .data$AETOXGR == "5",
       "FATAL",
@@ -183,31 +261,299 @@ create_adae <- function(adsl = ex_adsl,
     ))) %>%
     dplyr::mutate(TRTEMFL = ifelse(.data$ASTDTM >= .data$TRTSDTM, "Y", ""))
 
-  l_aag <- split(aag, interaction(aag$NAMVAR, aag$SRCVAR, aag$GRPTYPE, drop = TRUE)) # nolint
+  l_aag <- split(aag, interaction(aag$NAMVAR, aag$SRCVAR, aag$GRPTYPE, drop = TRUE))
 
   # Create aesi flags
-  l_aesi <- lapply(l_aag, function(d_adag, d_adae) { # nolint
+  l_aesi <- lapply(l_aag, function(d_adag, d_adae) {
 
-    names(d_adag)[names(d_adag) == "REFTERM"] <- d_adag$SRCVAR[1] # nolint
-    names(d_adag)[names(d_adag) == "REFNAME"] <- d_adag$NAMVAR[1] # nolint
+    names(d_adag)[names(d_adag) == "REFTERM"] <- d_adag$SRCVAR[1]
+    names(d_adag)[names(d_adag) == "REFNAME"] <- d_adag$NAMVAR[1]
 
-    if (d_adag$GRPTYPE[1] == "CUSTOM") { # nolint
-      d_adag <- d_adag[-which(names(d_adag) == "SCOPE")] # nolint
-    } else if (d_adag$GRPTYPE[1] == "SMQ") { # nolint
-      names(d_adag)[names(d_adag) == "SCOPE"] <- paste0(substr(d_adag$NAMVAR[1], 1, 5), "SC") # nolint
+    if (d_adag$GRPTYPE[1] == "CUSTOM") {
+      d_adag <- d_adag[-which(names(d_adag) == "SCOPE")]
+    } else if (d_adag$GRPTYPE[1] == "SMQ") {
+      names(d_adag)[names(d_adag) == "SCOPE"] <- paste0(substr(d_adag$NAMVAR[1], 1, 5), "SC")
     }
 
-    d_adag <- d_adag[-which(names(d_adag) %in% c("NAMVAR", "SRCVAR", "GRPTYPE"))] # nolint
+    d_adag <- d_adag[-which(names(d_adag) %in% c("NAMVAR", "SRCVAR", "GRPTYPE"))]
     d_new <- dplyr::left_join(x = d_adae, y = d_adag, by = intersect(names(d_adae), names(d_adag)))
     d_new[, dplyr::setdiff(names(d_new), names(d_adae)), drop = FALSE]
   }, adae)
 
-  ex_adae <- dplyr::bind_cols(adae, l_aesi) # nolint
+  ex_adae <- dplyr::bind_cols(adae, l_aesi)
 
   save(ex_adae, file = "data/ex_adae.rda", compress = "xz")
 }
 ```
 
+## ADLB
+
+```{r adlb}
+create_adlb <- function(adsl = ex_adsl,
+                        max_n_lbs = 5L) {
+  set.seed(1)
+  lbcat = c("CHEMISTRY", "CHEMISTRY", "IMMUNOLOGY")
+  param = c(
+    "Alanine Aminotransferase Measurement",
+    "C-Reactive Protein Measurement",
+    "Immunoglobulin A Measurement"
+  )
+  paramcd = c("ALT", "CRP", "IGA")
+  aval_mean = c(20, 1, 2)
+  visit_format = "WEEK"
+  n_assessments = 5L
+  n_days = 5L
+
+  # validate and initialize related variables
+  lbcat_init_list <- relvar_init(param, lbcat)
+  param_init_list <- relvar_init(param, paramcd)
+
+  adlb <- expand.grid(
+    STUDYID = unique(adsl$STUDYID),
+    USUBJID = adsl$USUBJID,
+    PARAM = as.factor(param_init_list$relvar1),
+    AVISIT = visit_schedule(visit_format = visit_format, n_assessments = n_assessments, n_days = n_days),
+    stringsAsFactors = FALSE
+  )
+
+  # assign AVAL based on different test
+  adlb <- adlb %>%
+    dplyr::mutate(AVAL = stats::rnorm(nrow(adlb), mean = 1, sd = 0.2)) %>%
+    dplyr::left_join(data.frame(PARAM = param, ADJUST = aval_mean), by = "PARAM") %>%
+    dplyr::mutate(AVAL = .data$AVAL * .data$ADJUST) %>%
+    dplyr::select(-"ADJUST")
+
+  # assign related variable values: PARAMxLBCAT are related
+  adlb$LBCAT <- as.factor(rel_var(
+    df = adlb,
+    var_name = "LBCAT",
+    var_values = lbcat_init_list$relvar2,
+    related_var = "PARAM"
+  ))
+
+  # assign related variable values: PARAMxPARAMCD are related
+  adlb$PARAMCD <- as.factor(rel_var(
+    df = adlb,
+    var_name = "PARAMCD",
+    var_values = param_init_list$relvar2,
+    related_var = "PARAM"
+  ))
+
+  adlb <- adlb %>% dplyr::mutate(AVISITN = dplyr::case_when(
+    AVISIT == "SCREENING" ~ -1,
+    AVISIT == "BASELINE" ~ 0,
+    (grepl("^WEEK", AVISIT) | grepl("^CYCLE", AVISIT)) ~ as.numeric(AVISIT) - 2,
+    TRUE ~ NA_real_
+  ))
+
+  adlb <- adlb %>%
+    dplyr::mutate(AVISITN = dplyr::case_when(
+      AVISIT == "SCREENING" ~ -1,
+      AVISIT == "BASELINE" ~ 0,
+      (grepl("^WEEK", AVISIT) | grepl("^CYCLE", AVISIT)) ~ as.numeric(AVISIT) - 2,
+      TRUE ~ NA_real_
+    ))
+
+  # order to prepare for change from screening and baseline values
+  adlb <- adlb[order(adlb$STUDYID, adlb$USUBJID, adlb$PARAMCD, adlb$AVISITN), ]
+
+  adlb <- Reduce(rbind, lapply(split(adlb, adlb$USUBJID), function(x) { # nolint
+    x$STUDYID <- adsl$STUDYID[which(adsl$USUBJID == x$USUBJID[1])] # nolint
+    x$ABLFL2 <- ifelse(x$AVISIT == "SCREENING", "Y", "") # nolint
+    x$ABLFL <- ifelse(toupper(visit_format) == "WEEK" & x$AVISIT == "BASELINE", # nolint
+      "Y",
+      ifelse(toupper(visit_format) == "CYCLE" & x$AVISIT == "CYCLE 1 DAY 1", "Y", "")
+    )
+    x
+  }))
+
+  adlb$BASE <- ifelse(adlb$ABLFL2 != "Y", retain(adlb, adlb$AVAL, adlb$ABLFL == "Y"), NA)
+
+  ANRIND_choices <- c("HIGH", "LOW", "NORMAL")
+
+  adlb <- adlb %>%
+    dplyr::mutate(BASETYPE = "LAST") %>%
+    dplyr::mutate(ANRIND = sample_fct(ANRIND_choices, nrow(adlb), prob = c(0.1, 0.1, 0.8))) %>%
+    dplyr::mutate(ANRLO = dplyr::case_when(
+      .data$PARAMCD == "ALT" ~ 7,
+      .data$PARAMCD == "CRP" ~ 8,
+      .data$PARAMCD == "IGA" ~ 0.8
+    )) %>%
+    dplyr::mutate(ANRHI = dplyr::case_when(
+      .data$PARAMCD == "ALT" ~ 55,
+      .data$PARAMCD == "CRP" ~ 10,
+      .data$PARAMCD == "IGA" ~ 3
+    )) %>%
+    dplyr::mutate(DTYPE = NA) %>%
+    dplyr::mutate(ATOXGR = factor(dplyr::case_when(
+      .data$ANRIND == "LOW" ~ sample(
+        c("-1", "-2", "-3", "-4", "-5"),
+        nrow(adlb),
+        replace = TRUE,
+        prob = c(0.30, 0.25, 0.20, 0.15, 0)
+      ),
+      .data$ANRIND == "HIGH" ~ sample(
+        c("1", "2", "3", "4", "5"),
+        nrow(adlb),
+        replace = TRUE,
+        prob = c(0.30, 0.25, 0.20, 0.15, 0)
+      ),
+      .data$ANRIND == "NORMAL" ~ "0"
+    )))
+
+  # High and low descriptions of the different PARAMCD values
+  # This is currently hard coded as the GDSR does not have these descriptions yet
+  grade_lookup <- tibble::tribble(
+    ~PARAMCD, ~ATOXDSCL, ~ATOXDSCH,
+    "ALB", "Hypoalbuminemia", NA_character_,
+    "ALKPH", NA_character_, "Alkaline phosphatase increased",
+    "ALT", NA_character_, "Alanine aminotransferase increased",
+    "AST", NA_character_, "Aspartate aminotransferase increased",
+    "BILI", NA_character_, "Blood bilirubin increased",
+    "CA", "Hypocalcemia", "Hypercalcemia",
+    "CHOLES", NA_character_, "Cholesterol high",
+    "CK", NA_character_, "CPK increased",
+    "CREAT", NA_character_, "Creatinine increased",
+    "CRP", NA_character_, "C reactive protein increased",
+    "GGT", NA_character_, "GGT increased",
+    "GLUC", "Hypoglycemia", "Hyperglycemia",
+    "HGB", "Anemia", "Hemoglobin increased",
+    "IGA", NA_character_, "Immunoglobulin A increased",
+    "POTAS", "Hypokalemia", "Hyperkalemia",
+    "LYMPH", "CD4 lymphocytes decreased", NA_character_,
+    "PHOS", "Hypophosphatemia", NA_character_,
+    "PLAT", "Platelet count decreased", NA_character_,
+    "SODIUM", "Hyponatremia", "Hypernatremia",
+    "WBC", "White blood cell decreased", "Leukocytosis",
+  )
+
+  # merge grade_lookup onto adlb
+  adlb <- dplyr::left_join(adlb, grade_lookup, by = "PARAMCD")
+
+  adlb <- var_relabel(
+    adlb,
+    STUDYID = "Study Identifier",
+    USUBJID = "Unique Subject Identifier"
+  )
+
+  # merge adsl to be able to add LB date and study day variables
+  adlb <- dplyr::inner_join(
+    adsl,
+    adlb,
+    by = c("STUDYID", "USUBJID")
+  ) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(trtsdt_int = as.numeric(as.Date(.data$TRTSDTM))) %>%
+    dplyr::mutate(trtedt_int = dplyr::case_when(
+      !is.na(TRTEDTM) ~ as.numeric(as.Date(.data$TRTEDTM)),
+      is.na(TRTEDTM) ~ floor(.data$trtsdt_int + 31556952 * 2 / 86400)
+    )) %>%
+    dplyr::mutate(ADTM = as.POSIXct(
+      (sample(.data$trtsdt_int:.data$trtedt_int, size = 1) * 86400),
+      origin = "1970-01-01"
+    )) %>%
+    dplyr::select(-"trtsdt_int", -"trtedt_int") %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(.data$STUDYID, .data$USUBJID, .data$ADTM)
+
+  adlb <- adlb %>%
+    dplyr::mutate(ASPID = sample(seq_len(dplyr::n()))) %>%
+    dplyr::group_by(.data$USUBJID) %>%
+    dplyr::mutate(LBSEQ = seq_len(dplyr::n())) %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(
+      .data$STUDYID,
+      .data$USUBJID,
+      .data$PARAMCD,
+      .data$BASETYPE,
+      .data$AVISITN,
+      .data$DTYPE,
+      .data$ADTM,
+      .data$LBSEQ,
+      .data$ASPID
+    )
+
+  adlb <- adlb %>% dplyr::mutate(ONTRTFL = factor(dplyr::case_when(
+    is.na(.data$TRTSDTM) ~ "",
+    is.na(.data$ADTM) ~ "Y",
+    (.data$ADTM < .data$TRTSDTM) ~ "",
+    (.data$ADTM > .data$TRTEDTM) ~ "",
+    TRUE ~ "Y"
+  )))
+
+  flag_variables <- function(data,
+                             apply_grouping,
+                             apply_filter,
+                             apply_mutate) {
+    data_compare <- data %>%
+      dplyr::mutate(row_check = seq_len(nrow(data)))
+
+    data <- data_compare %>%
+      {
+        if (apply_grouping == TRUE) {
+          dplyr::group_by(., .data$USUBJID, .data$PARAMCD, .data$BASETYPE, .data$AVISIT)
+        } else {
+          dplyr::group_by(., .data$USUBJID, .data$PARAMCD, .data$BASETYPE)
+        }
+      } %>%
+      dplyr::arrange(.data$ADTM, .data$ASPID, .data$LBSEQ) %>%
+      {
+        if (apply_filter == TRUE) {
+          dplyr::filter(
+            .,
+            (.data$AVISIT != "BASELINE" & .data$AVISIT != "SCREENING") &
+              (.data$ONTRTFL == "Y" | .data$ADTM <= .data$TRTSDTM)
+          ) %>%
+            dplyr::filter(.data$ATOXGR == max(as.numeric(as.character(.data$ATOXGR))))
+        } else if (apply_filter == FALSE) {
+          dplyr::filter(
+            .,
+            (.data$AVISIT != "BASELINE" & .data$AVISIT != "SCREENING") &
+              (.data$ONTRTFL == "Y" | .data$ADTM <= .data$TRTSDTM)
+          ) %>%
+            dplyr::filter(.data$ATOXGR == min(as.numeric(as.character(.data$ATOXGR))))
+        } else {
+          dplyr::filter(
+            .,
+            .data$AVAL == min(.data$AVAL) &
+              (.data$AVISIT != "BASELINE" & .data$AVISIT != "SCREENING") &
+              (.data$ONTRTFL == "Y" | .data$ADTM <= .data$TRTSDTM)
+          )
+        }
+      } %>%
+      dplyr::slice(1) %>%
+      {
+        if (apply_mutate == TRUE) {
+          dplyr::mutate(., new_var = ifelse(is.na(.data$DTYPE), "Y", ""))
+        } else {
+          dplyr::mutate(., new_var = ifelse(is.na(.data$AVAL) == FALSE & is.na(.data$DTYPE), "Y", ""))
+        }
+      } %>%
+      dplyr::ungroup()
+
+    data_compare$new_var <- ifelse(data_compare$row_check %in% data$row_check, "Y", "")
+
+    data_compare <- data_compare[, -which(names(data_compare) %in% c("row_check"))]
+
+    return(data_compare)
+  }
+
+  adlb <- flag_variables(adlb, TRUE, "ELSE", FALSE) %>% dplyr::rename(WORS01FL = "new_var")
+  adlb <- flag_variables(adlb, FALSE, TRUE, TRUE) %>% dplyr::rename(WGRHIFL = "new_var")
+  adlb <- flag_variables(adlb, FALSE, FALSE, TRUE) %>% dplyr::rename(WGRLOFL = "new_var")
+  adlb <- flag_variables(adlb, TRUE, TRUE, TRUE) %>% dplyr::rename(WGRHIVFL = "new_var")
+  adlb <- flag_variables(adlb, TRUE, FALSE, TRUE) %>% dplyr::rename(WGRLOVFL = "new_var")
+
+  ex_adlb <- adlb %>% dplyr::mutate(ANL01FL = ifelse(
+    (.data$ABLFL == "Y" | (.data$WORS01FL == "Y" & is.na(.data$DTYPE))) &
+      (.data$AVISIT != "SCREENING"),
+    "Y",
+    ""
+  ))
+
+  save(ex_adlb, file = "data/ex_adlb.rda", compress = "xz")
+}
+```
 
 
 
@@ -245,4 +591,5 @@ create_adae <- function(adsl = ex_adsl,
 ```{r create data, eval=FALSE}
 create_adsl()
 create_adae()
+create_adlb()
 ```
