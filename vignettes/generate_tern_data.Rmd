@@ -140,6 +140,7 @@ create_adsl <- function(N = 200) { # nolint
       origin = "1970-01-01"
     ),
     TRTEDTM = as.POSIXct(as.numeric(.data$TRTSDTM) + study_duration_secs, origin = "1970-01-01"),
+    EOSDY = as.numeric(ceiling(difftime(.data$TRTEDTM, .data$TRTSDTM, units = "days"))),
     STRATA1 = c("A", "B", "C") %>% sample_fct(N),
     STRATA2 = c("S1", "S2") %>% sample_fct(N),
     BMRKR1 = stats::rchisq(N, 6),
@@ -581,9 +582,125 @@ create_adlb <- function(adsl = ex_adsl,
 
 ## ADRS
 
+```{r adrs}
+create_adrs <- function(adsl = ex_adsl) {
+  set.seed(1)
+
+  param_codes <- stats::setNames(1:5, c("CR", "PR", "SD", "PD", "NE"))
+
+  lookup_ars <- expand.grid(
+      ARM = c("A: Drug X", "B: Placebo", "C: Combination"),
+      AVALC = names(param_codes)
+    ) %>% dplyr::mutate(
+      AVAL = param_codes[.data$AVALC],
+      p_scr = c(rep(0, 3), rep(0, 3), c(1, 1, 1), c(0, 0, 0), c(0, 0, 0)),
+      p_bsl = c(rep(0, 3), rep(0, 3), c(1, 1, 1), c(0, 0, 0), c(0, 0, 0)),
+      p_cycle = c(c(.4, .3, .5), c(.35, .25, .25), c(.1, .2, .08), c(.14, 0.15, 0.15), c(.01, 0.1, 0.02)),
+      p_eoi = c(c(.4, .3, .5), c(.35, .25, .25), c(.1, .2, .08), c(.14, 0.15, 0.15), c(.01, 0.1, 0.02)),
+      p_fu = c(c(.3, .2, .4), c(.2, .1, .3), c(.2, .2, .2), c(.3, .5, 0.1), rep(0, 3))
+    )
+
+  adrs <- split(adsl, adsl$USUBJID) %>%
+    lapply(function(pinfo) {
+      probs <- dplyr::filter(lookup_ars, .data$ARM == as.character(pinfo$ACTARM))
+
+      # screening
+      rsp_screen <- sample(probs$AVALC, 1, prob = probs$p_scr) %>% as.character()
+
+      # baseline
+      rsp_bsl <- sample(probs$AVALC, 1, prob = probs$p_bsl) %>% as.character()
+
+      # cycle
+      rsp_c2d1 <- sample(probs$AVALC, 1, prob = probs$p_cycle) %>% as.character()
+      rsp_c4d1 <- sample(probs$AVALC, 1, prob = probs$p_cycle) %>% as.character()
+
+      # end of induction
+      rsp_eoi <- sample(probs$AVALC, 1, prob = probs$p_eoi) %>% as.character()
+
+      # follow up
+      rsp_fu <- sample(probs$AVALC, 1, prob = probs$p_fu) %>% as.character()
+
+      best_rsp <- min(param_codes[c(rsp_screen, rsp_bsl, rsp_eoi, rsp_fu, rsp_c2d1, rsp_c4d1)])
+      best_rsp_i <- which.min(param_codes[c(rsp_screen, rsp_bsl, rsp_eoi, rsp_fu, rsp_c2d1, rsp_c4d1)])
+
+      avisit <- c("SCREENING", "BASELINE", "CYCLE 2 DAY 1", "CYCLE 4 DAY 1", "END OF INDUCTION", "FOLLOW UP")
+      
+      # meaningful date information
+      trtsdt_int <- as.numeric(as.Date(pinfo$TRTSDTM))
+      trtedt_int <- ifelse(
+        !is.na(pinfo$TRTEDTM), as.numeric(as.Date(pinfo$TRTEDTM)),
+        floor(trtsdt_int + (pinfo$study_duration_secs) / 86400)
+      )
+      scr_date <- as.POSIXct(((trtsdt_int - 100) * 86400), origin = "1970-01-01")
+      bs_date <- pinfo$TRTSDTM
+      flu_date <- as.POSIXct((sample(trtsdt_int:trtedt_int, size = 1) * 86400), origin = "1970-01-01")
+      eoi_date <- as.POSIXct((sample(trtsdt_int:trtedt_int, size = 1) * 86400), origin = "1970-01-01")
+      c2d1_date <- as.POSIXct((sample(trtsdt_int:trtedt_int, size = 1) * 86400), origin = "1970-01-01")
+      c4d1_date <- min(c2d1_date + 60 * 86400, pinfo$TRTEDTM)
+
+      tibble::tibble(
+        STUDYID = pinfo$STUDYID,
+        USUBJID = pinfo$USUBJID,
+        PARAMCD = as.factor(c(rep("OVRINV", 6), "BESRSPI", "INVET")),
+        PARAM = as.factor(dplyr::recode(
+          .data$PARAMCD,
+          OVRINV = "Overall Response by Investigator - by visit",
+          OVRSPI = "Best Overall Response by Investigator (no confirmation required)",
+          BESRSPI = "Best Confirmed Overall Response by Investigator",
+          INVET = "Investigator End Of Induction Response"
+        )),
+        AVALC = c(
+          rsp_screen, rsp_bsl, rsp_c2d1, rsp_c4d1, rsp_eoi, rsp_fu,
+          names(param_codes)[best_rsp],
+          rsp_eoi
+        ),
+        AVAL = param_codes[.data$AVALC],
+        AVISIT = factor(c(avisit, avisit[best_rsp_i], avisit[5]), levels = avisit)
+      ) %>%
+        merge(
+          tibble::tibble(
+            AVISIT = avisit,
+            ADTM = c(scr_date, bs_date, c2d1_date, c4d1_date, eoi_date, flu_date),
+            AVISITN = c(-1, 0, 2, 4, 999, 999),
+            TRTSDTM = pinfo$TRTSDTM
+          ) %>%
+            dplyr::select(-"TRTSDTM"),
+          by = "AVISIT"
+        )
+    }) %>%
+    Reduce(rbind, .) %>%
+    dplyr::mutate(AVALC = factor(.data$AVALC, levels = names(param_codes)))
+
+  adrs <- var_relabel(
+    adrs,
+    STUDYID = "Study Identifier",
+    USUBJID = "Unique Subject Identifier"
+  )
+
+  # merge ADSL to be able to add RS date and study day variables
+  adrs <- dplyr::inner_join(
+    adsl,
+    adrs,
+    by = c("STUDYID", "USUBJID")
+  )
+
+  ex_adrs <- adrs %>%
+    dplyr::arrange(
+      .data$STUDYID,
+      .data$USUBJID,
+      .data$PARAMCD,
+      .data$AVISITN,
+      .data$ADTM
+    )
+
+  save(ex_adrs, file = "data/ex_adrs.rda", compress = "xz")
+}
+```
+
+
 ## ADTTE
 
-```{r}
+```{r adtte}
 create_adtte <- function(adsl = ex_adsl) {
   set.seed(1)
 
@@ -694,7 +811,6 @@ create_adtte <- function(adsl = ex_adsl) {
 }
 ```
 
-
 ## Create Data
 
 ```{r create data, eval=FALSE}
@@ -703,5 +819,6 @@ load("./data/ex_adsl.rda")
 
 create_adae()
 create_adlb()
+create_adrs()
 create_adtte()
 ```
