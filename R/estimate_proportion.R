@@ -481,6 +481,7 @@ d_proportion <- function(conf_level,
 #' the approximation for large numbers. This is necessary only in the case
 #' proportions for each strata are unequal.
 #'
+#' @inheritParams argument_convention
 #' @inheritParams prop_strat_wilson
 #'
 #' @seealso [prop_strat_wilson()]
@@ -520,6 +521,8 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #' @param initial_weights (`numeric`) \cr
 #'   initial weights used to calculate `strata_qnorm`. This can be optimized in
 #'   the future if we need to estimate better initial weights.
+#' @param n_per_strata (`numeric`) \cr
+#'   number of elements in each strata.
 #' @param max_iterations (`count`) \cr
 #'   maximum number of iterations to be tried. Convergence is always checked.
 #' @param tol (`number`) \cr

@@ -25,6 +25,9 @@ initial estimation with identical weights of the quantiles.}
 initial weights used to calculate \code{strata_qnorm}. This can be optimized in
 the future if we need to estimate better initial weights.}
 
+\item{n_per_strata}{(\code{numeric}) \cr
+number of elements in each strata.}
+
 \item{max_iterations}{(\code{count}) \cr
 maximum number of iterations to be tried. Convergence is always checked.}
 

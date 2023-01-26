@@ -7,6 +7,8 @@
 strata_normal_quantile(vars, weights, conf_level)
 }
 \arguments{
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
 \item{weights}{(\code{numeric} or \code{NULL}) \cr
 weights for each level of the strata. If \code{NULL}, they are
 estimated using the iterative algorithm proposed in
