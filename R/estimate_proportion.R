@@ -473,12 +473,13 @@ d_proportion <- function(conf_level,
   paste0(label, " (", method_part, ")")
 }
 
-#' Helper function for the estimation of stratified quantiles
+#' Helper Function for the Estimation of Stratified Quantiles
 #'
-#' @description
-#'   This function wraps the estimation of stratified percentiles when we assume
-#'   the approximation for large numbers. This is necessary only in the case
-#'   proportions for each strata are unequal.
+#' @description `r lifecycle::badge("stable")`
+#'
+#' This function wraps the estimation of stratified percentiles when we assume
+#' the approximation for large numbers. This is necessary only in the case
+#' proportions for each strata are unequal.
 #'
 #' @inheritParams prop_strat_wilson
 #'
@@ -503,13 +504,13 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
   sqrt(sum(summands)) / sum(sqrt(summands)) * stats::qnorm((1 + conf_level) / 2)
 }
 
-#' Helper function for the estimation of weights for `prop_strat_wilson`
+#' Helper Function for the Estimation of Weights for `prop_strat_wilson`
 #'
-#' @description
-#'   This function wraps the iteration procedure that allows you to estimate
-#'   the weights for each proportional strata. This assumes to minimize the
-#'   weighted squared length of the confidence interval. See [prop_strat_wilson()]
-#'   for references and details.
+#' @description `r lifecycle::badge("stable")`
+#'
+#' This function wraps the iteration procedure that allows you to estimate
+#' the weights for each proportional strata. This assumes to minimize the
+#' weighted squared length of the confidence interval.
 #'
 #' @inheritParams prop_strat_wilson
 #' @param vars (`numeric`) \cr
@@ -524,7 +525,7 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #' @param tol (`number`) \cr
 #'   tolerance threshold for convergence.
 #'
-#' @seealso [prop_strat_wilson()]
+#' @seealso For references and details see [prop_strat_wilson()].
 #'
 #' @examples
 #' vs <- c(0.011, 0.013, 0.012, 0.014, 0.017, 0.018)
