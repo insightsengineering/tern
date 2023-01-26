@@ -16,7 +16,7 @@ editor_options:
         wrap: 72
 ---
 
-# Getting Started
+## Getting Started
 
 The following script is used to create and save cached synthetic CDISC data to the `data/` directory to use in examples and tests in the `tern` package.
 
