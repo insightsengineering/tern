@@ -295,8 +295,6 @@ create_adae <- function(adsl = ex_adsl,
 }
 ```
 
-## ADEX
-
 ## ADLB
 
 ```{r adlb, eval=FALSE}
@@ -582,7 +580,7 @@ create_adlb <- function(adsl = ex_adsl,
 
 ## ADRS
 
-```{r adrs}
+```{r adrs, eval=FALSE}
 create_adrs <- function(adsl = ex_adsl) {
   set.seed(1)
 
@@ -697,10 +695,9 @@ create_adrs <- function(adsl = ex_adsl) {
 }
 ```
 
-
 ## ADTTE
 
-```{r adtte}
+```{r adtte, eval=FALSE}
 create_adtte <- function(adsl = ex_adsl) {
   set.seed(1)
 
