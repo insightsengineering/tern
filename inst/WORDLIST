@@ -1,3 +1,9 @@
+ADAE
+ADLB
+ADPP
+ADRS
+ADSL
+ADTTE
 AE
 ANCOVA
 Agresti
@@ -5,6 +11,7 @@ Anova
 Biomarker
 Bové
 Byar's
+CDISC
 CMH
 Clopper
 Coull
@@ -60,6 +67,7 @@ poisson
 pratt
 pre
 quasipoisson
+rds
 repo
 responder
 responders
