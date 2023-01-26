@@ -107,7 +107,7 @@ visit_schedule <- function(visit_format = "WEEK",
 ## ADSL
 
 ```{r adsl, eval=FALSE}
-create_adsl <- function(N = 200) { # nolint
+generate_adsl <- function(N = 200) { # nolint
   set.seed(1)
   sys_dtm <- as.numeric(strptime("20/2/2019 11:16:16.683", "%d/%m/%Y %H:%M:%OS"))
   country_site_prob <- c(.5, .121, .077, .077, .075, .052, .046, .025, .014, .003)
@@ -169,7 +169,7 @@ create_adsl <- function(N = 200) { # nolint
 ## ADAE
 
 ```{r adae, eval=FALSE}
-create_adae <- function(adsl = ex_adsl,
+generate_adae <- function(adsl = ex_adsl,
                         max_n_aes = 5) {
   set.seed(1)
   lookup_ae <- tibble::tribble(
@@ -298,7 +298,7 @@ create_adae <- function(adsl = ex_adsl,
 ## ADLB
 
 ```{r adlb, eval=FALSE}
-create_adlb <- function(adsl = ex_adsl,
+generate_adlb <- function(adsl = ex_adsl,
                         max_n_lbs = 5L) {
   set.seed(1)
   lbcat = c("CHEMISTRY", "CHEMISTRY", "IMMUNOLOGY")
@@ -578,12 +578,66 @@ create_adlb <- function(adsl = ex_adsl,
 
 ## ADPP
 
+```{r adpp, eval=FALSE}
+generate_adpp <- function(adsl = ex_adsl) {
+  set.seed(1)
+  paramcd = c(
+    "AUCIFO", "CMAX", "CLO", "RMAX", "TON",
+    "RENALCL", "RENALCLD", "RCAMINT", "RCPCINT"
+  )
+  param = c(
+    "AUC Infinity Obs", "Max Conc", "Total CL Obs", "Time of Maximum Response",
+    "Time to Onset", "Renal CL", "Renal CL Norm by Dose",
+    "Amt Rec from T1 to T2", "Pct Rec from T1 to T2"
+  )
+  paramu = c("day*ug/mL", "ug/mL", "ml/day/kg", "hr", "hr", "L/hr", "L/hr/mg", "mg", "%")
+  aval_mean = c(200, 30, 5, 10, 3, 0.05, 0.005, 1.5613, 15.65)
+
+  # validate and initialize related variables
+  param_init_list <- relvar_init(param, paramcd)
+  unit_init_list <- relvar_init(param, paramu)
+
+  adpp <- expand.grid(
+    STUDYID = unique(adsl$STUDYID),
+    USUBJID = adsl$USUBJID,
+    PARAM = as.factor(param_init_list$relvar1),
+    stringsAsFactors = FALSE
+  )
+  adpp <- adpp %>%
+    dplyr::mutate(AVAL = stats::rnorm(nrow(adpp), mean = 1, sd = 0.2)) %>%
+    dplyr::left_join(data.frame(PARAM = param, ADJUST = aval_mean), by = "PARAM") %>%
+    dplyr::mutate(AVAL = .data$AVAL * .data$ADJUST) %>%
+    dplyr::select(-"ADJUST")
+
+  # assign related variable values: PARAMxPARAMCD are related
+  adpp$PARAMCD <- as.factor(rel_var(
+    df = adpp,
+    var_name = "PARAMCD",
+    var_values = param_init_list$relvar2,
+    related_var = "PARAM"
+  ))
+
+  # assign related variable values: PARAMxPARAMU are related
+  adpp$AVALU <- as.factor(rel_var(
+    df = adpp,
+    var_name = "PARAMU",
+    var_values = unit_init_list$relvar2,
+    related_var = "PARAM"
+  ))
+
+  ex_adpp <- adsl %>%
+    dplyr::inner_join(adpp, by = c("STUDYID", "USUBJID")) %>%
+    dplyr::filter(.data$ACTARM != "B: Placebo", !(.data$ACTARM == "A: Drug X"))
+
+  save(ex_adpp, file = "data/ex_adpp.rda", compress = "xz")
+}
+```
+
 ## ADRS
 
 ```{r adrs, eval=FALSE}
-create_adrs <- function(adsl = ex_adsl) {
+generate_adrs <- function(adsl = ex_adsl) {
   set.seed(1)
-
   param_codes <- stats::setNames(1:5, c("CR", "PR", "SD", "PD", "NE"))
 
   lookup_ars <- expand.grid(
@@ -698,9 +752,8 @@ create_adrs <- function(adsl = ex_adsl) {
 ## ADTTE
 
 ```{r adtte, eval=FALSE}
-create_adtte <- function(adsl = ex_adsl) {
+generate_adtte <- function(adsl = ex_adsl) {
   set.seed(1)
-
   lookup_tte <- tibble::tribble(
       ~ARM, ~PARAMCD, ~PARAM, ~LAMBDA, ~CNSR_P,
       "ARM A", "OS", "Overall Survival", log(2) / 610, 0.4,
@@ -808,14 +861,17 @@ create_adtte <- function(adsl = ex_adsl) {
 }
 ```
 
-## Create Data
+## Generate Data
 
-```{r create data, eval=FALSE}
-create_adsl()
-load("./data/ex_adsl.rda")
+```{r generate data, eval=FALSE}
+# Generate & load ADSL
+generate_adsl()
+load("data/ex_adsl.rda")
 
-create_adae()
-create_adlb()
-create_adrs()
-create_adtte()
+# Generate other datasets
+generate_adae()
+generate_adlb()
+generate_adpp()
+generate_adrs()
+generate_adtte()
 ```

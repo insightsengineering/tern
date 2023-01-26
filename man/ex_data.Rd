@@ -6,6 +6,7 @@
 \alias{ex_adsl}
 \alias{ex_adae}
 \alias{ex_adlb}
+\alias{ex_adpp}
 \alias{ex_adrs}
 \alias{ex_adtte}
 \title{Simulated CDISC Data for Examples}
@@ -18,6 +19,8 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4200 rows and 50 columns.
 
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 522 rows and 25 columns.
+
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1600 rows and 28 columns.
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1000 rows and 28 columns.
@@ -28,6 +31,8 @@ ex_adsl
 ex_adae
 
 ex_adlb
+
+ex_adpp
 
 ex_adrs
 
@@ -43,6 +48,8 @@ Simulated CDISC Data for Examples
 \item \code{ex_adae}: ADAE data
 
 \item \code{ex_adlb}: ADLB data
+
+\item \code{ex_adpp}: ADPP data
 
 \item \code{ex_adrs}: ADRS data
 

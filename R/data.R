@@ -17,6 +17,10 @@ NULL
 #'
 "ex_adlb"
 
+#' @describeIn ex_data ADPP data
+#'
+"ex_adpp"
+
 #' @describeIn ex_data ADRS data
 #'
 "ex_adrs"
