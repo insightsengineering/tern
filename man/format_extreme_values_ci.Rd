@@ -16,8 +16,21 @@ Formatting Function for extreme values part of a confidence interval. Values
 are formatted as e.g. "(xx.xx, xx.xx)" if if the number of \code{digits} is 2.
 }
 \examples{
-
 format_fun <- format_extreme_values_ci(2L)
 format_fun(x = c(0.127, Inf))
 format_fun(x = c(0, 0.009))
+
 }
+\seealso{
+Other formatting functions: 
+\code{\link{extreme_format}},
+\code{\link{format_count_fraction_fixed_dp}()},
+\code{\link{format_count_fraction}()},
+\code{\link{format_extreme_values}()},
+\code{\link{format_fraction_fixed_dp}()},
+\code{\link{format_fraction_threshold}()},
+\code{\link{format_fraction}()},
+\code{\link{format_xx}()},
+\code{\link{formatting_functions}}
+}
+\concept{formatting functions}

@@ -21,7 +21,6 @@ the approximation for large numbers. This is necessary only in the case
 proportions for each strata are unequal.
 }
 \examples{
-\dontrun{
 strata_data <- table(data.frame(
   "f1" = sample(c(TRUE, FALSE), 100, TRUE),
   "f2" = sample(c("x", "y", "z"), 100, TRUE),
@@ -32,10 +31,8 @@ ests <- strata_data["TRUE", ] / ns
 vars <- ests * (1 - ests) / ns
 weights <- rep(1 / length(ns), length(ns))
 strata_normal_quantile(vars, weights, 0.95)
-}
 
 }
 \seealso{
 \code{\link[=prop_strat_wilson]{prop_strat_wilson()}}
 }
-\keyword{internal}
