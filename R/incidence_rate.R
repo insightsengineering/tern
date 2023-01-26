@@ -18,7 +18,7 @@
 #' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
 #' @param n_events (`integer`) \cr number of events observed.
 #'
-#' @seealso [control_incidence_rate()]
+#' @seealso [control_incidence_rate()] and helper functions [h_incident_rate].
 #'
 #' @name incidence_rate
 NULL
@@ -135,8 +135,6 @@ a_incidence_rate <- make_afun(
 #' @describeIn incidence_rate Layout creating function which adds analyze rows using the statistics
 #' function `s_incidence_rate` and desired format.
 #'
-#' @export
-#'
 #' @examples
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
@@ -150,6 +148,8 @@ a_incidence_rate <- make_afun(
 #'     )
 #'   ) %>%
 #'   build_table(df)
+#'
+#' @export
 estimate_incidence_rate <- function(lyt,
                                     vars,
                                     ...,
@@ -192,6 +192,8 @@ estimate_incidence_rate <- function(lyt,
 #' @param person_years (`numeric`) \cr total person-years at risk.
 #' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
 #' @param n_events (`integer`) \cr number of events observed.
+#'
+#' @seealso [incidence_rate]
 #'
 #' @name h_incidence_rate
 NULL
