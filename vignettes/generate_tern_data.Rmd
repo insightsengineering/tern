@@ -559,7 +559,8 @@ generate_adlb <- function(adsl = ex_adsl,
       (.data$AVISIT != "SCREENING"),
     "Y",
     ""
-  ))
+  ),
+  PARAM = as.factor(.data$PARAM))
 
   save(ex_adlb, file = "data/ex_adlb.rda", compress = "xz")
 }
