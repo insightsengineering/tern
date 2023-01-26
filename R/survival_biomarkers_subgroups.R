@@ -16,8 +16,6 @@
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
-#' library(forcats)
-#' library(rtables)
 #'
 #' adtte <- synthetic_cdisc_dataset("latest", "adtte")
 #'
@@ -73,8 +71,6 @@ NULL
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
-#' library(forcats)
-#' library(rtables)
 #'
 #' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
@@ -171,6 +167,7 @@ extract_survival_biomarkers <- function(variables,
 }
 
 #' @describeIn survival_biomarkers_subgroups table creating function.
+#'
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
 #'   [extract_survival_biomarkers()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
@@ -187,10 +184,9 @@ extract_survival_biomarkers <- function(variables,
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
 #' @export
-#' @examples
 #'
+#' @examples
 #' ## Table with default columns.
-#' # df <- <needs_to_be_inputted>
 #' tabulate_survival_biomarkers(df)
 #'
 #' ## Table with a manually chosen set of columns: leave out "pval", reorder.

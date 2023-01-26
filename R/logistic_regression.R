@@ -20,7 +20,6 @@
 #' @examples
 #' library(scda)
 #' library(dplyr)
-#' library(rtables)
 #' library(broom)
 #'
 #' adrs <- synthetic_cdisc_data("latest")$adrs
@@ -127,7 +126,6 @@ summarize_logistic <- function(lyt,
 #' @examples
 #' library(scda)
 #' library(dplyr)
-#' library(rtables)
 #'
 #' adrs <- synthetic_cdisc_dataset("latest", "adrs")
 #' adrs_f <- adrs %>%
@@ -221,13 +219,11 @@ fit_logistic <- function(data,
 #'   the median is used.
 #' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
 #' @method tidy glm
-#'
 #' @seealso [h_logistic_regression] for relevant helper functions.
 #'
 #' @examples
 #' library(scda)
 #' library(dplyr)
-#' library(rtables)
 #' library(broom)
 #'
 #' adrs <- synthetic_cdisc_data("latest")$adrs

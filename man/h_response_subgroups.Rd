@@ -85,7 +85,6 @@ and \code{strat}. \code{groups_lists} optionally specifies groupings for \code{s
 library(scda)
 library(dplyr)
 library(forcats)
-library(rtables)
 
 adrs <- synthetic_cdisc_dataset("latest", "adrs")
 adrs_labels <- formatters::var_labels(adrs)

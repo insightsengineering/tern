@@ -23,10 +23,9 @@
 #' @name cox_regression
 #'
 #' @examples
-#' # Testing dataset [survival::bladder].
-#'
 #' library(survival)
-#' library(rtables)
+#'
+#' # Testing dataset [survival::bladder].
 #' set.seed(1, kind = "Mersenne-Twister")
 #' dta_bladder <- with(
 #'   data = bladder[bladder$enum < 5, ],
@@ -273,7 +272,6 @@ NULL
 #' @examples
 #' library(survival)
 #' library(broom)
-#' library(rtables)
 #'
 #' set.seed(1, kind = "Mersenne-Twister")
 #'
@@ -324,26 +322,6 @@ tidy.summary.coxph <- function(x, # nolint
 #' @export
 #'
 #' @examples
-#' library(broom)
-#' library(survival)
-#' set.seed(1, kind = "Mersenne-Twister")
-#' dta_bladder <- with(
-#'   data = bladder[bladder$enum < 5, ],
-#'   data.frame(
-#'     time = stop,
-#'     status = event,
-#'     armcd = as.factor(rx),
-#'     covar1 = as.factor(enum),
-#'     covar2 = factor(
-#'       sample(as.factor(enum)),
-#'       levels = 1:4, labels = c("F", "F", "M", "M")
-#'     )
-#'   )
-#' )
-#' labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
-#' formatters::var_labels(dta_bladder)[names(labels)] <- labels
-#' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
-#'
 #' ## Cox regression: arm + 1 covariate.
 #' mod1 <- fit_coxreg_univar(
 #'   variables = list(
@@ -433,25 +411,6 @@ tidy.coxreg.univar <- function(x, # nolint
 #' @export
 #'
 #' @examples
-#' library(broom)
-#' library(survival)
-#' set.seed(1, kind = "Mersenne-Twister")
-#' dta_bladder <- with(
-#'   data = bladder[bladder$enum < 5, ],
-#'   data.frame(
-#'     time = stop,
-#'     status = event,
-#'     armcd = as.factor(rx),
-#'     covar1 = as.factor(enum),
-#'     covar2 = factor(
-#'       sample(as.factor(enum)),
-#'       levels = 1:4, labels = c("F", "F", "M", "M")
-#'     )
-#'   )
-#' )
-#' labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
-#' formatters::var_labels(dta_bladder)[names(labels)] <- labels
-#' dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 #' multivar_model <- fit_coxreg_multivar(
 #'   variables = list(
 #'     time = "time", event = "status", arm = "armcd",
@@ -496,10 +455,11 @@ tidy.coxreg.multivar <- function(x, # nolint
 #' @seealso [h_cox_regression] for relevant helper functions, [cox_regression].
 #'
 #' @examples
-#' # Testing dataset [survival::bladder].
 #' library(survival)
-#' library(rtables)
+#'
 #' set.seed(1, kind = "Mersenne-Twister")
+#'
+#' # Testing dataset [survival::bladder].
 #' dta_bladder <- with(
 #'   data = bladder[bladder$enum < 5, ],
 #'   data.frame(

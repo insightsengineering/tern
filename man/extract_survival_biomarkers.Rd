@@ -45,8 +45,6 @@ population subgroups in a single data frame.
 # Testing dataset.
 library(scda)
 library(dplyr)
-library(forcats)
-library(rtables)
 
 adtte <- synthetic_cdisc_data("latest")$adtte
 

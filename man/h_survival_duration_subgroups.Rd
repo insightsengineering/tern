@@ -91,7 +91,6 @@ groupings for \code{subgroups} variables.
 library(scda)
 library(dplyr)
 library(forcats)
-library(rtables)
 
 adtte <- synthetic_cdisc_dataset("latest", "adtte")
 

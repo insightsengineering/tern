@@ -72,7 +72,6 @@ the required statistics. Tables typically used as part of forest plot.
 library(scda)
 library(dplyr)
 library(forcats)
-library(rtables)
 
 adtte <- synthetic_cdisc_dataset("latest", "adtte")
 

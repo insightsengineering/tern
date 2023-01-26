@@ -18,7 +18,6 @@ NULL
 #'
 #' @examples
 #' library(scda)
-#' library(rtables)
 #' adsl <- synthetic_cdisc_dataset("latest", "adsl")
 #' adae <- synthetic_cdisc_dataset("latest", "adae")
 #'

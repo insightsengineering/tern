@@ -144,8 +144,6 @@ result <- h_coxreg_univar_extract(
 )
 result
 
-library(survival)
-
 mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
 result <- h_coxreg_multivar_extract(
   var = "var1", mod = mod, data = dta_simple

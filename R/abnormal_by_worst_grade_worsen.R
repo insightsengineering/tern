@@ -270,11 +270,11 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' @describeIn abnormal_by_worst_grade_worsen Statistics function which calculates the
 #' counts and fraction of patients whose worst post-baseline lab grades are worse than
 #' their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
+#'
 #' @param variables (named `list` of `string`) \cr list of additional analysis variables including:
 #' * `id` (`string`): \cr subject variable name
 #' * `baseline_var` (`string`): \cr name of the data column containing baseline toxicity variable
 #' * `direction_var` (`string`): See `direction_var` for more detail
-
 #' @return [s_count_abnormal_lab_worsen_by_baseline()] returns the
 #' counts and fraction of patients whose worst post-baseline lab grades are worse than
 #' their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".

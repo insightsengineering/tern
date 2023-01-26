@@ -52,8 +52,6 @@ created by combining multiple subtables.
 # Testing dataset.
 library(scda)
 library(dplyr)
-library(forcats)
-library(rtables)
 
 adtte <- synthetic_cdisc_dataset("latest", "adtte")
 
@@ -81,9 +79,7 @@ df <- extract_survival_biomarkers(
   data = adtte_f
 )
 df
-
 ## Table with default columns.
-# df <- <needs_to_be_inputted>
 tabulate_survival_biomarkers(df)
 
 ## Table with a manually chosen set of columns: leave out "pval", reorder.

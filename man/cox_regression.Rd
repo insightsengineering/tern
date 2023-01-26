@@ -69,10 +69,9 @@ The usual formatting arguments for the \emph{layout creating} function
 \code{.labels}).
 }
 \examples{
-# Testing dataset [survival::bladder].
-
 library(survival)
-library(rtables)
+
+# Testing dataset [survival::bladder].
 set.seed(1, kind = "Mersenne-Twister")
 dta_bladder <- with(
   data = bladder[bladder$enum < 5, ],

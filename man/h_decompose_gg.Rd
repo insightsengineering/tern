@@ -11,6 +11,7 @@ h_decompose_gg(gg)
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 The elements composing the \code{ggplot} are extracted and organized in a
 list containing:
 the panel (\code{panel}),

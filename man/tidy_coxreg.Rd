@@ -39,7 +39,6 @@ Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_m
 \examples{
 library(survival)
 library(broom)
-library(rtables)
 
 set.seed(1, kind = "Mersenne-Twister")
 
@@ -63,26 +62,6 @@ dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 formula <- "survival::Surv(time, status) ~ armcd + covar1"
 msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 tidy(msum)
-library(broom)
-library(survival)
-set.seed(1, kind = "Mersenne-Twister")
-dta_bladder <- with(
-  data = bladder[bladder$enum < 5, ],
-  data.frame(
-    time = stop,
-    status = event,
-    armcd = as.factor(rx),
-    covar1 = as.factor(enum),
-    covar2 = factor(
-      sample(as.factor(enum)),
-      levels = 1:4, labels = c("F", "F", "M", "M")
-    )
-  )
-)
-labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
-formatters::var_labels(dta_bladder)[names(labels)] <- labels
-dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
-
 ## Cox regression: arm + 1 covariate.
 mod1 <- fit_coxreg_univar(
   variables = list(
@@ -105,25 +84,6 @@ mod2 <- fit_coxreg_univar(
 
 tidy(mod1)
 tidy(mod2)
-library(broom)
-library(survival)
-set.seed(1, kind = "Mersenne-Twister")
-dta_bladder <- with(
-  data = bladder[bladder$enum < 5, ],
-  data.frame(
-    time = stop,
-    status = event,
-    armcd = as.factor(rx),
-    covar1 = as.factor(enum),
-    covar2 = factor(
-      sample(as.factor(enum)),
-      levels = 1:4, labels = c("F", "F", "M", "M")
-    )
-  )
-)
-labels <- c("armcd" = "ARM", "covar1" = "A Covariate Label", "covar2" = "Sex (F/M)")
-formatters::var_labels(dta_bladder)[names(labels)] <- labels
-dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 multivar_model <- fit_coxreg_multivar(
   variables = list(
     time = "time", event = "status", arm = "armcd",

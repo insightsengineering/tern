@@ -35,10 +35,10 @@
 #' @return a grid grob (\code{gTree})
 #'
 #' @export
-#'
 #' @template author_waddella
 #'
 #' @examples
+#' library(grid)
 #'
 #' titles <- c(
 #'   "Edgar Anderson's Iris Data",
@@ -57,11 +57,9 @@
 #'   )
 #' )
 #'
-#'
 #' ## empty plot
-#' library(grid)
-#'
 #' grid.newpage()
+#'
 #' grid.draw(
 #'   decorate_grob(
 #'     NULL,
@@ -128,7 +126,7 @@
 #'   )
 #' )
 #'
-#' # no borders
+#' # with \code{gridExtra} - no borders
 #' library(gridExtra)
 #' grid.newpage()
 #' grid.draw(
@@ -453,7 +451,6 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' @return closure that increments the page number
 #'
 #' @keywords internal
-#'
 #' @template author_waddella
 #'
 #' @examples
@@ -494,6 +491,7 @@ decorate_grob_factory <- function(npages, ...) {
 #'
 #' @examples
 #' library(ggplot2)
+#' library(grid)
 #' g <- with(data = iris, {
 #'   list(
 #'     ggplot2::ggplotGrob(
@@ -523,7 +521,6 @@ decorate_grob_factory <- function(npages, ...) {
 #'   )
 #' })
 #' lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
-#' library(grid)
 #'
 #' draw_grob(lg[[1]])
 #' draw_grob(lg[[2]])

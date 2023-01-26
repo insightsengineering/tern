@@ -64,10 +64,11 @@ given the inputs.
 When using \code{fit_coxreg_univar} there should be two study arms.
 }
 \examples{
-# Testing dataset [survival::bladder].
 library(survival)
-library(rtables)
+
 set.seed(1, kind = "Mersenne-Twister")
+
+# Testing dataset [survival::bladder].
 dta_bladder <- with(
   data = bladder[bladder$enum < 5, ],
   data.frame(

@@ -16,7 +16,6 @@
 #' @examples
 #' library(scda)
 #' library(dplyr)
-#' library(rtables)
 #' library(broom)
 #'
 #' adrs <- synthetic_cdisc_data("latest")$adrs

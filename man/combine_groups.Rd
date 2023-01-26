@@ -25,8 +25,6 @@ treatment groups; it helps in arranging groups of
 columns in the \code{rtables} framework and teal modules.
 }
 \examples{
-library(rtables)
-
 groups <- combine_groups(
   fct = DM$ARM,
   ref = c("B: Placebo")

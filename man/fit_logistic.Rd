@@ -47,7 +47,6 @@ with the treatment arm is included in the model.
 \examples{
 library(scda)
 library(dplyr)
-library(rtables)
 
 adrs <- synthetic_cdisc_dataset("latest", "adrs")
 adrs_f <- adrs \%>\%
