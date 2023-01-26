@@ -18,7 +18,7 @@
 #' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
 #' @param n_events (`integer`) \cr number of events observed.
 #'
-#' @seealso [control_incidence_rate()] and helper functions [h_incident_rate()].
+#' @seealso [control_incidence_rate()] and helper functions [h_incidence_rate].
 #'
 #' @name incidence_rate
 NULL
