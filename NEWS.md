@@ -19,6 +19,7 @@
   first values from specific rows.
 * Replaced table template tests with snapshot testing.
 * Added option to remove `"(n)"` suffix from `unique_count` labels for `s_num_patients`.
+* Updated `summarize_ancova` examples to use `iris` dataset in examples instead of `scda` data.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 

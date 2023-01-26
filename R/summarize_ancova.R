@@ -93,26 +93,13 @@ h_ancova <- function(.var,
 #'   - `pval`: p-value (not adjusted for multiple comparisons).
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #'
-#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
-#' adqs <- synthetic_cdisc_dataset("latest", "adqs")
-#'
-#' adqs_single <- adqs %>%
-#'   filter(
-#'     AVISIT == "WEEK 1 DAY 8", # single time point
-#'     PARAMCD == "FKSI-FWB" # single end point
-#'   ) %>%
-#'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
-#'
-#' df <- adqs_single %>%
-#'   filter(ARMCD == "ARM B")
-#' .var <- "CHG"
-#' .df_row <- adqs_single
-#' variables <- list(arm = "ARMCD", covariates = "SEX * AGE")
-#' .ref_group <- adqs_single %>%
-#'   filter(ARMCD == "ARM A")
+#' df <- iris %>% filter(Species == "virginica")
+#' .df_row <- iris
+#' .var <- "Petal.Length"
+#' variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
+#' .ref_group <- iris %>% filter(Species == "setosa")
 #' conf_level <- 0.95
 #'
 #' # Internal function - s_ancova
@@ -244,92 +231,25 @@ a_ancova <- make_afun(
 #' @export
 #'
 #' @examples
-#' library(scda)
-#' library(rtables)
 #' library(dplyr)
 #'
-#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
-#' adqs <- synthetic_cdisc_dataset("latest", "adqs")
-#'
-#' adqs_single <- adqs %>%
-#'   filter(
-#'     AVISIT == "WEEK 1 DAY 8", # single time point
-#'     PARAMCD == "FKSI-FWB" # single end point
-#'   ) %>%
-#'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
-#' adqs_multi <- adqs %>%
-#'   filter(AVISIT == "WEEK 1 DAY 8")
-#'
 #' basic_table() %>%
-#'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
+#'   split_cols_by("Species", ref_group = "setosa") %>%
 #'   add_colcounts() %>%
 #'   summarize_ancova(
-#'     vars = "CHG",
-#'     variables = list(arm = "ARMCD", covariates = NULL),
+#'     vars = "Petal.Length",
+#'     variables = list(arm = "Species", covariates = NULL),
 #'     table_names = "unadj",
 #'     conf_level = 0.95, var_labels = "Unadjusted comparison",
 #'     .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
 #'   ) %>%
 #'   summarize_ancova(
-#'     vars = "CHG",
-#'     variables = list(arm = "ARMCD", covariates = c("BASE", "STRATA1")),
+#'     vars = "Petal.Length",
+#'     variables = list(arm = "Species", covariates = c("Sepal.Length", "Sepal.Width")),
 #'     table_names = "adj",
-#'     conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)"
+#'     conf_level = 0.95, var_labels = "Adjusted comparison (covariates: Sepal.Length and Sepal.Width)"
 #'   ) %>%
-#'   build_table(adqs_single, alt_counts_df = adsl)
-#'
-#' # Another example: count the interaction between rows and columns into consideration
-#'
-#' adqs_single <- adqs %>%
-#'   filter(AVISIT %in% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 5 DAY 36")) %>%
-#'   droplevels() %>%
-#'   filter(PARAM == "BFI All Questions") %>%
-#'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
-#'
-#' basic_table() %>%
-#'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
-#'   add_colcounts() %>%
-#'   split_rows_by("STRATA1", split_fun = drop_split_levels) %>%
-#'   summarize_ancova(
-#'     vars = "CHG",
-#'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
-#'     conf_level = 0.95,
-#'     var_labels = "WEEK 1 DAY 8",
-#'     table_names = "WEEK 1 DAY 8",
-#'     interaction_y = "WEEK 1 DAY 8",
-#'     interaction_item = "AVISIT"
-#'   ) %>%
-#'   summarize_ancova(
-#'     vars = "CHG",
-#'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
-#'     conf_level = 0.95,
-#'     var_labels = "WEEK 2 DAY 15",
-#'     table_names = "WEEK 2 DAY 15",
-#'     interaction_y = "WEEK 2 DAY 15",
-#'     interaction_item = "AVISIT"
-#'   ) %>%
-#'   summarize_ancova(
-#'     vars = "CHG",
-#'     variables = list(arm = "ARMCD", covariates = c("BASE", "AVISIT", "AVISIT*ARMCD")),
-#'     conf_level = 0.95,
-#'     var_labels = "WEEK 5 DAY 36",
-#'     table_names = "WEEK 5 DAY 36",
-#'     interaction_y = "WEEK 5 DAY 36",
-#'     interaction_item = "AVISIT"
-#'   ) %>%
-#'   build_table(adqs_single, alt_counts_df = adsl)
-#'
-#' \dontrun{
-#' basic_table() %>%
-#'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
-#'   split_rows_by("PARAMCD") %>%
-#'   summarize_ancova(
-#'     vars = "CHG",
-#'     variables = list(arm = "ARMCD", covariates = c("BASE", "STRATA1")),
-#'     conf_level = 0.95, var_labels = "Adjusted mean"
-#'   ) %>%
-#'   build_table(adqs_multi, alt_counts_df = adsl)
-#' }
+#'   build_table(iris)
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,
