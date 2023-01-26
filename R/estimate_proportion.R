@@ -184,7 +184,8 @@ estimate_proportion <- function(lyt,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams estimate_proportions
-#' @seealso [estimate_proportions]
+#' @seealso [estimate_proportions], descriptive function [d_proportion()],
+#'  and helper functions [strata_normal_quantile()] and [update_weights_strat_wilson()].
 #'
 #' @name h_proportions
 NULL
@@ -484,7 +485,6 @@ d_proportion <- function(conf_level,
 #' @seealso [prop_strat_wilson()]
 #'
 #' @examples
-#' \dontrun{
 #' strata_data <- table(data.frame(
 #'   "f1" = sample(c(TRUE, FALSE), 100, TRUE),
 #'   "f2" = sample(c("x", "y", "z"), 100, TRUE),
@@ -495,9 +495,8 @@ d_proportion <- function(conf_level,
 #' vars <- ests * (1 - ests) / ns
 #' weights <- rep(1 / length(ns), length(ns))
 #' strata_normal_quantile(vars, weights, 0.95)
-#' }
 #'
-#' @keywords internal
+#' @export
 strata_normal_quantile <- function(vars, weights, conf_level) {
   summands <- weights^2 * vars
   # Stratified quantile
@@ -528,16 +527,14 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #' @seealso [prop_strat_wilson()]
 #'
 #' @examples
-#' \dontrun{
 #' vs <- c(0.011, 0.013, 0.012, 0.014, 0.017, 0.018)
 #' sq <- 0.674
 #' ws <- rep(1 / length(vs), length(vs))
 #' ns <- c(22, 18, 17, 17, 14, 12)
 #'
 #' update_weights_strat_wilson(vs, sq, ws, ns, 100, 0.95, 0.001)
-#' }
 #'
-#' @keywords internal
+#' @export
 update_weights_strat_wilson <- function(vars,
                                         strata_qnorm,
                                         initial_weights,

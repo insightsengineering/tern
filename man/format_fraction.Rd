@@ -22,14 +22,18 @@ Formats a fraction together with ratio in percent.
 \examples{
 format_fraction(x = c(num = 2L, denom = 3L))
 format_fraction(x = c(num = 0L, denom = 3L))
+
 }
 \seealso{
 Other formatting functions: 
 \code{\link{extreme_format}},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction}()},
+\code{\link{format_extreme_values_ci}()},
+\code{\link{format_extreme_values}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},
+\code{\link{format_xx}()},
 \code{\link{formatting_functions}}
 }
 \concept{formatting functions}

@@ -84,4 +84,7 @@ h_incidence_rate(
 }
 
 }
+\seealso{
+\link{incidence_rate}
+}
 \keyword{internal}

@@ -154,8 +154,9 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df)
+
 }
 \seealso{
-\code{\link[=control_incidence_rate]{control_incidence_rate()}}
+\code{\link[=control_incidence_rate]{control_incidence_rate()}} and helper functions \link{h_incident_rate}.
 }
 \keyword{internal}
