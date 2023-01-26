@@ -94,8 +94,8 @@ s_length_proportion(rep("CR", 10), .N_col = 100)
 s_length_proportion(factor(character(0)), .N_col = 100)
 a_length_proportion(rep("CR", 10), .N_col = 100)
 a_length_proportion(factor(character(0)), .N_col = 100)
-
 library(dplyr)
+
 # Use of the layout creating function.
 dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
@@ -107,7 +107,6 @@ dta_test <- data.frame(
     labels = c("Complete Response (CR)", "Partial Response (PR)")
   )
 )
-
 
 lyt <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%

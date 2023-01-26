@@ -33,10 +33,9 @@ NULL
 #'   and "Any" results.
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' adlb <- synthetic_cdisc_dataset("latest", "adlb")
+#' adlb <- ex_adlb
 #'
 #' # Data is modified in order to have some parameters with grades only in one direction
 #' # and simulate the real data.

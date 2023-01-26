@@ -18,9 +18,7 @@
 #' @export
 #'
 #' @examples
-#' library(scda)
-#' adlb <- synthetic_cdisc_dataset("latest", "adlb")
-#' adlb <- df_explicit_na(adlb)
+#' adlb <- df_explicit_na(ex_adlb)
 #'
 #' h_map_for_count_abnormal(
 #'   df = adlb,
@@ -29,7 +27,6 @@
 #'   method = "default",
 #'   na_level = "<Missing>"
 #' )
-#'
 #'
 #' df <- data.frame(
 #'   USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
@@ -62,7 +59,6 @@
 #'   method = "range",
 #'   na_level = "<Missing>"
 #' )
-#'
 h_map_for_count_abnormal <- function(df,
                                      variables = list(
                                        anl = "ANRIND",

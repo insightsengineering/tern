@@ -38,9 +38,7 @@ Helper Function to create a map dataframe from the input dataset, which can be u
 \code{trim_levels_to_map} split function. Based on different method, the map is constructed differently.
 }
 \examples{
-library(scda)
-adlb <- synthetic_cdisc_dataset("latest", "adlb")
-adlb <- df_explicit_na(adlb)
+adlb <- df_explicit_na(ex_adlb)
 
 h_map_for_count_abnormal(
   df = adlb,
@@ -49,7 +47,6 @@ h_map_for_count_abnormal(
   method = "default",
   na_level = "<Missing>"
 )
-
 
 df <- data.frame(
   USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
@@ -82,5 +79,4 @@ h_map_for_count_abnormal(
   method = "range",
   na_level = "<Missing>"
 )
-
 }

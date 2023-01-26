@@ -11,12 +11,11 @@
 #' @order 1
 #' @examples
 #' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
 #' library(rtables)
 #'
-#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
+#' adrs <- ex_adrs
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%

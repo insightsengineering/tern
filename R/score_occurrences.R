@@ -17,11 +17,6 @@ NULL
 #' @seealso [h_row_first_values()]
 #'
 #' @examples
-#' library(scda)
-#' library(rtables)
-#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
-#' adae <- synthetic_cdisc_dataset("latest", "adae")
-#'
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
@@ -41,7 +36,7 @@ NULL
 #'   ) %>%
 #'   count_occurrences(vars = "AEDECOD")
 #'
-#' tbl <- build_table(lyt, adae, alt_counts_df = adsl) %>%
+#' tbl <- build_table(lyt, ex_adae, alt_counts_df = ex_adsl) %>%
 #'   prune_table()
 #'
 #' tbl_sorted <- tbl %>%

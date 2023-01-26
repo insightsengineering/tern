@@ -149,17 +149,17 @@ per group.
 }
 \examples{
 \dontrun{
-library(scda)
 library(dplyr)
 library(ggplot2)
 library(survival)
 library(grid)
 library(nestcolor)
 
-df <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
+df <- ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
 # 1. Example - basic option
 
 res <- g_km(df = df, variables = variables)

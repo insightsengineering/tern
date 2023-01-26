@@ -28,11 +28,10 @@ and is required in the graphic and the patient-at-risk annotation table.
 }
 \examples{
 \dontrun{
-library(scda)
 library(dplyr)
 library(survival)
 
-data <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
+data <- ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_data_plot()

@@ -27,6 +27,7 @@
 #' @export
 #'
 #' @examples
+#' library(dplyr)
 #' library(nestcolor)
 #'
 #' g_waterfall(height = c(3, 5, -1), id = letters[1:3])
@@ -37,37 +38,32 @@
 #'   col_var = letters[1:3]
 #' )
 #'
-#' library(scda)
-#' library(dplyr)
-#'
-#' ADSL <- synthetic_cdisc_dataset("latest", "adsl")
-#' ADSL_f <- ADSL %>%
+#' adsl_f <- ex_adsl %>%
 #'   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 #'
-#' ADRS <- synthetic_cdisc_dataset("latest", "adrs")
-#' ADRS_f <- ADRS %>%
+#' adrs_f <- ex_adrs %>%
 #'   filter(PARAMCD == "OVRINV") %>%
 #'   mutate(pchg = rnorm(n(), 10, 50))
 #'
-#' ADRS_f <- head(ADRS_f, 30)
-#' ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID), ]
-#' head(ADRS_f)
+#' adrs_f <- head(adrs_f, 30)
+#' adrs_f <- adrs_f[!duplicated(adrs_f$USUBJID), ]
+#' head(adrs_f)
 #'
 #' g_waterfall(
-#'   height = ADRS_f$pchg,
-#'   id = ADRS_f$USUBJID,
-#'   col_var = ADRS_f$AVALC
+#'   height = adrs_f$pchg,
+#'   id = adrs_f$USUBJID,
+#'   col_var = adrs_f$AVALC
 #' )
 #'
 #' g_waterfall(
-#'   height = ADRS_f$pchg,
-#'   id = paste("asdfdsfdsfsd", ADRS_f$USUBJID),
-#'   col_var = ADRS_f$SEX
+#'   height = adrs_f$pchg,
+#'   id = paste("asdfdsfdsfsd", adrs_f$USUBJID),
+#'   col_var = adrs_f$SEX
 #' )
 #'
 #' g_waterfall(
-#'   height = ADRS_f$pchg,
-#'   id = paste("asdfdsfdsfsd", ADRS_f$USUBJID),
+#'   height = adrs_f$pchg,
+#'   id = paste("asdfdsfdsfsd", adrs_f$USUBJID),
 #'   xlab = "ID",
 #'   ylab = "Percentage Change",
 #'   title = "Waterfall plot"

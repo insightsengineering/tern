@@ -67,7 +67,6 @@ in a table.
 
 }}
 \examples{
-adsl <- scda::synthetic_cdisc_dataset("rcd_2022_10_13", "adsl")
 tbl <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   split_rows_by("RACE") \%>\%
@@ -78,11 +77,11 @@ tbl <- basic_table() \%>\%
       "frac" = rcell(c(0.1, 0.1), format = "xx (xx)")
     )
   }) \%>\%
-  build_table(adsl) \%>\%
+  build_table(ex_adsl) \%>\%
   prune_table()
 tree_row_elem <- collect_leaves(tbl[2, ])[[1]]
 result <- max(h_row_first_values(tree_row_elem))
-# result
+result
 
 # Row counts (integer values)
 \dontrun{

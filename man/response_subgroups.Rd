@@ -85,12 +85,10 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 }}
 \examples{
 # Testing dataset.
-library(scda)
 library(dplyr)
 library(forcats)
-library(rtables)
 
-adrs <- synthetic_cdisc_dataset("latest", "adrs")
+adrs <- ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
 adrs_f <- adrs \%>\%
@@ -134,7 +132,6 @@ df_grouped
 \dontrun{
 a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
 }
-
 
 ## Table with default columns.
 basic_table() \%>\%

@@ -47,17 +47,13 @@ In the result data missing records will be created for the following situations:
 }
 }
 \examples{
-library(scda)
-adlb <- synthetic_cdisc_dataset("latest", "adlb")
-adsl <- synthetic_cdisc_dataset("latest", "adsl")
-
 # `h_adsl_adlb_merge_using_worst_flag`
-adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl, adlb, worst_flag = c("WGRHIFL" = "Y"))
+adlb_out <- h_adsl_adlb_merge_using_worst_flag(ex_adsl, ex_adlb, worst_flag = c("WGRHIFL" = "Y"))
 
 # `h_adsl_adlb_merge_using_worst_flag` by visit example
 adlb_out_by_visit <- h_adsl_adlb_merge_using_worst_flag(
-  adsl,
-  adlb,
+  ex_adsl,
+  ex_adlb,
   worst_flag = c("WGRLOVFL" = "Y"),
   by_visit = TRUE
 )

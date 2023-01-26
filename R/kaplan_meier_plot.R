@@ -80,17 +80,17 @@ NULL
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(ggplot2)
 #' library(survival)
 #' library(grid)
 #' library(nestcolor)
 #'
-#' df <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' df <- ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+#'
 #' # 1. Example - basic option
 #'
 #' res <- g_km(df = df, variables = variables)
@@ -421,18 +421,17 @@ g_km <- function(df,
 #' variable only has one level. Default is "All".
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
 #' # Test with multiple arms
-#' synthetic_cdisc_dataset("latest", "adtte") %>%
+#' ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
 #'
 #' # Test with single arm
-#' synthetic_cdisc_dataset("latest", "adtte") %>%
+#' ex_adtte %>%
 #'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot(armval = "ARM B")
@@ -495,11 +494,10 @@ h_data_plot <- function(fit_km,
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
-#' data <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' data <- ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
@@ -548,12 +546,10 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' @inheritParams kaplan_meier
 #' @examples
 #' \dontrun{
-#'
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
-#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' fit_km <- ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -567,7 +563,6 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'   ylab = "Survival Probability",
 #'   title = "Survival"
 #' )
-#'
 #' gg
 #' }
 #'
@@ -699,12 +694,11 @@ h_ggkm <- function(data,
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' fit_km <- ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -769,11 +763,10 @@ h_decompose_gg <- function(gg) {
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
-#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' fit_km <- ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -871,12 +864,11 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' fit_km <- ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #'
@@ -1010,13 +1002,10 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte") %>%
-#'   filter(PARAMCD == "OS")
-#'
+#' adtte <- ex_adtte %>% filter(PARAMCD == "OS")
 #' fit <- survfit(
 #'   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
 #'   data = adtte
@@ -1062,14 +1051,13 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-#' synthetic_cdisc_dataset("latest", "adtte") %>%
+#' ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_grob_median_surv() %>%
@@ -1113,12 +1101,11 @@ h_grob_median_surv <- function(fit_km,
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' fit_km <- ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -1160,12 +1147,12 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
+#'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' adtte <- ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #'
@@ -1224,14 +1211,13 @@ h_tbl_coxph_pairwise <- function(df,
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-#' data <- synthetic_cdisc_dataset("latest", "adtte") %>%
+#' data <- ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' tbl_grob <- h_grob_coxph(

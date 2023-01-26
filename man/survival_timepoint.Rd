@@ -145,11 +145,9 @@ Note that additional formatting arguments can be used here.
 
 }}
 \examples{
-library(scda)
 library(dplyr)
 
-adtte <- synthetic_cdisc_dataset("latest", "adtte")
-adtte_f <- adtte \%>\%
+adtte_f <- ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(
     AVAL = day2month(AVAL),
@@ -195,7 +193,6 @@ a_surv_timepoint_diff(
   is_event = "is_event"
 )
 }
-
 
 # Survival at given time points.
 basic_table() \%>\%

@@ -8,12 +8,9 @@
 #' @export
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #'
-#' adpp <- synthetic_cdisc_dataset("latest", "adpp")
-#' adpp <- adpp %>% mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
-#'
+#' adpp <- ex_adpp %>% mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
 #' pk_ordered_data <- h_pkparam_sort(adpp)
 h_pkparam_sort <- function(pk_data, key_var = "PARAMCD") {
   assert_df_with_variables(pk_data, list(key_var = key_var))

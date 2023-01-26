@@ -60,15 +60,12 @@ as $1.96 * sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$ for a confidence leve
 }
 \examples{
 library(dplyr)
-library(scda)
 library(survival)
 
-ADSL <- synthetic_cdisc_dataset("latest", "adsl")
-ADSL <- ADSL \%>\%
+ADSL <- ex_adsl \%>\%
   filter(SEX \%in\% c("F", "M"))
 
-adtte <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
-  filter(PARAMCD == "PFS")
+adtte <- ex_adtte \%>\% filter(PARAMCD == "PFS")
 adtte$ARMCD <- droplevels(adtte$ARMCD)
 adtte$SEX <- droplevels(adtte$SEX)
 

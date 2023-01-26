@@ -37,13 +37,9 @@ Note that for the default degree 0 the \code{biomarker} variable is not included
 }
 \examples{
 # Testing dataset with just two treatment arms.
-library(scda)
 library(dplyr)
-library(rtables)
 
-adtte <- synthetic_cdisc_dataset("latest", "adtte")
-
-adtte_f <- adtte \%>\%
+adtte_f <- ex_adtte \%>\%
   filter(
     PARAMCD == "OS",
     ARM \%in\% c("B: Placebo", "A: Drug X")

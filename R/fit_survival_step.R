@@ -22,13 +22,9 @@
 #' @export
 #' @examples
 #' # Testing dataset with just two treatment arms.
-#' library(scda)
 #' library(dplyr)
-#' library(rtables)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
-#'
-#' adtte_f <- adtte %>%
+#' adtte_f <- ex_adtte %>%
 #'   filter(
 #'     PARAMCD == "OS",
 #'     ARM %in% c("B: Placebo", "A: Drug X")

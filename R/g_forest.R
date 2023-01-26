@@ -38,13 +38,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' library(rtables)
 #' library(nestcolor)
 #'
-#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
+#' adrs <- ex_adrs
 #' n_records <- 20
 #' adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
 #' adrs <- adrs %>%
@@ -83,7 +81,7 @@
 #' draw_grob(p)
 #'
 #' # Survival forest plot example.
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte <- ex_adtte
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte, fill = TRUE)
 #' adtte_f <- adtte %>%

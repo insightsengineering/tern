@@ -15,12 +15,10 @@
 #' @order 1
 #' @examples
 #' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' library(rtables)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte <- ex_adtte
 #'
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte)

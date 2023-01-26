@@ -83,12 +83,10 @@ and \code{strat}. \code{groups_lists} optionally specifies groupings for \code{s
 \examples{
 
 # Testing dataset.
-library(scda)
 library(dplyr)
 library(forcats)
-library(rtables)
 
-adrs <- synthetic_cdisc_dataset("latest", "adrs")
+adrs <- ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
 adrs_f <- adrs \%>\%
@@ -106,7 +104,6 @@ h_proportion_df(
   c(TRUE, FALSE, FALSE),
   arm = factor(c("A", "A", "B"), levels = c("A", "B"))
 )
-
 h_proportion_subgroups_df(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
   data = adrs_f
@@ -124,7 +121,6 @@ h_proportion_subgroups_df(
     )
   )
 )
-
 # Unstratatified analysis.
 h_odds_ratio_df(
   c(TRUE, FALSE, FALSE, TRUE),
@@ -141,7 +137,6 @@ h_odds_ratio_df(
   strata_data = adrs_f[, c("STRATA1", "STRATA2")],
   method = "cmh"
 )
-
 # Unstratified analysis.
 h_odds_ratio_subgroups_df(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),

@@ -16,12 +16,10 @@
 #'
 #' @examples
 #' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' library(rtables)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte <- ex_adtte
 #'
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte)
@@ -375,6 +373,8 @@ h_coxph_subgroups_df <- function(variables,
 
 #' Split Dataframe by Subgroups
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Split a dataframe into a non-nested list of subsets.
 #'
 #' @details Main functionality is to prepare data for use in forest plot layouts.
@@ -388,8 +388,6 @@ h_coxph_subgroups_df <- function(variables,
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
 #'
 #' @examples
-#' library(rtables)
-#'
 #' df <- data.frame(
 #'   x = c(1:5),
 #'   y = factor(c("A", "B", "A", "B", "A"), levels = c("A", "B", "C")),

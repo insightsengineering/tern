@@ -79,12 +79,10 @@
 #' @export
 #'
 #' @examples
-#' library(scda)
 #' library(nestcolor)
 #'
-#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
-#' adlb <- synthetic_cdisc_dataset("latest", "adlb")
-#' adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
+#' adsl <- ex_adsl
+#' adlb <- ex_adlb %>% dplyr::filter(ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 #' adlb$AVISIT <- droplevels(adlb$AVISIT)
 #' adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 #'

@@ -21,14 +21,14 @@ levels that belong to it in the character vectors that are elements of the list.
 A list with subset data (\code{df}) and metadata about the subset (\code{df_labels}).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Split a dataframe into a non-nested list of subsets.
 }
 \details{
 Main functionality is to prepare data for use in forest plot layouts.
 }
 \examples{
-library(rtables)
-
 df <- data.frame(
   x = c(1:5),
   y = factor(c("A", "B", "A", "B", "A"), levels = c("A", "B", "C")),

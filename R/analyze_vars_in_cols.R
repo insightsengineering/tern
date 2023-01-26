@@ -19,10 +19,9 @@ NULL
 #'
 #' @export
 #' @examples
-#' library(scda)
 #' library(dplyr)
-#' adpp <- synthetic_cdisc_dataset("latest", "adpp") %>% h_pkparam_sort()
 #'
+#' adpp <- ex_adpp %>% h_pkparam_sort()
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
 #'   split_rows_by(var = "SEX", label_pos = "topleft") %>%

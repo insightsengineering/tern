@@ -138,13 +138,10 @@ function arguments and additional format arguments (see below).
 
 }}
 \examples{
-library(scda)
 library(dplyr)
-adsl <- synthetic_cdisc_dataset("latest", "adsl")
-adlb <- synthetic_cdisc_dataset("latest", "adlb")
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- adlb \%>\%
+adlb <- ex_adlb \%>\%
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",
@@ -207,7 +204,7 @@ basic_table() \%>\%
     )
   ) \%>\%
   append_topleft("Direction of Abnormality") \%>\%
-  build_table(df = df, alt_counts_df = adsl)
+  build_table(df = df, alt_counts_df = ex_adsl)
 
 }
 \keyword{internal}

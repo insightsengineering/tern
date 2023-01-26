@@ -290,15 +290,13 @@ extract_by_name <- function(x, names) {
 #' @export
 #'
 #' @examples
-#' library(scda)
-#' adae <- synthetic_cdisc_dataset("latest", "adae")
+#' adae <- ex_adae
 #'
 #' # Standardized query label includes scope.
 #' aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
 #'
 #' # Customized query label.
 #' aesi_label(adae$CQ01NAM)
-#'
 aesi_label <- function(aesi, scope = NULL) {
   checkmate::assert_character(aesi)
   checkmate::assert_character(scope, null.ok = TRUE)

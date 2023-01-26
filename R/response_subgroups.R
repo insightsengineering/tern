@@ -21,12 +21,10 @@
 #'
 #' @examples
 #' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' library(rtables)
 #'
-#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
+#' adrs <- ex_adrs
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%
@@ -158,8 +156,8 @@ a_response_subgroups <- function(.formats = list(
 #'  `pval` (p value of the effect).
 #'  Note, the statistics `n_tot`, `or` and `ci` are required.
 #' @export
-#' @examples
 #'
+#' @examples
 #' ## Table with default columns.
 #' basic_table() %>%
 #'   tabulate_rsp_subgroups(df)
