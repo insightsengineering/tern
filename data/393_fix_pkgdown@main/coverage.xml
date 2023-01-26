@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.966247593158908" branch-rate="0" lines-covered="8531" lines-valid="8829" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-01-26 17:24:14">
+<coverage line-rate="0.966247593158908" branch-rate="0" lines-covered="8531" lines-valid="8829" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-01-26 17:45:31">
   <sources/>
   <packages>
     <package name="tern" line-rate="0.966247593158908" branch-rate="0" complexity="0">
@@ -6312,15 +6312,14 @@
             </method>
             <method name="strata_normal_quantile" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="501" hits="45" branch="false"/>
-                <line number="503" hits="45" branch="false"/>
+                <line number="502" hits="45" branch="false"/>
+                <line number="504" hits="45" branch="false"/>
               </lines>
             </method>
             <method name="update_weights_strat_wilson" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="545" hits="9" branch="false"/>
                 <line number="546" hits="9" branch="false"/>
-                <line number="548" hits="9" branch="false"/>
+                <line number="547" hits="9" branch="false"/>
                 <line number="549" hits="9" branch="false"/>
                 <line number="550" hits="9" branch="false"/>
                 <line number="551" hits="9" branch="false"/>
@@ -6328,16 +6327,17 @@
                 <line number="553" hits="9" branch="false"/>
                 <line number="554" hits="9" branch="false"/>
                 <line number="555" hits="9" branch="false"/>
-                <line number="556" hits="8" branch="false"/>
-                <line number="557" hits="9" branch="false"/>
+                <line number="556" hits="9" branch="false"/>
+                <line number="557" hits="8" branch="false"/>
                 <line number="558" hits="9" branch="false"/>
-                <line number="560" hits="9" branch="false"/>
-                <line number="561" hits="1" branch="false"/>
-                <line number="564" hits="9" branch="false"/>
+                <line number="559" hits="9" branch="false"/>
+                <line number="561" hits="9" branch="false"/>
+                <line number="562" hits="1" branch="false"/>
                 <line number="565" hits="9" branch="false"/>
                 <line number="566" hits="9" branch="false"/>
                 <line number="567" hits="9" branch="false"/>
                 <line number="568" hits="9" branch="false"/>
+                <line number="569" hits="9" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -6518,11 +6518,10 @@
             <line number="470" hits="281" branch="false"/>
             <line number="471" hits="281" branch="false"/>
             <line number="473" hits="281" branch="false"/>
-            <line number="501" hits="45" branch="false"/>
-            <line number="503" hits="45" branch="false"/>
-            <line number="545" hits="9" branch="false"/>
+            <line number="502" hits="45" branch="false"/>
+            <line number="504" hits="45" branch="false"/>
             <line number="546" hits="9" branch="false"/>
-            <line number="548" hits="9" branch="false"/>
+            <line number="547" hits="9" branch="false"/>
             <line number="549" hits="9" branch="false"/>
             <line number="550" hits="9" branch="false"/>
             <line number="551" hits="9" branch="false"/>
@@ -6530,16 +6529,17 @@
             <line number="553" hits="9" branch="false"/>
             <line number="554" hits="9" branch="false"/>
             <line number="555" hits="9" branch="false"/>
-            <line number="556" hits="8" branch="false"/>
-            <line number="557" hits="9" branch="false"/>
+            <line number="556" hits="9" branch="false"/>
+            <line number="557" hits="8" branch="false"/>
             <line number="558" hits="9" branch="false"/>
-            <line number="560" hits="9" branch="false"/>
-            <line number="561" hits="1" branch="false"/>
-            <line number="564" hits="9" branch="false"/>
+            <line number="559" hits="9" branch="false"/>
+            <line number="561" hits="9" branch="false"/>
+            <line number="562" hits="1" branch="false"/>
             <line number="565" hits="9" branch="false"/>
             <line number="566" hits="9" branch="false"/>
             <line number="567" hits="9" branch="false"/>
             <line number="568" hits="9" branch="false"/>
+            <line number="569" hits="9" branch="false"/>
           </lines>
         </class>
         <class name="fit_rsp_step.R" filename="R/fit_rsp_step.R" line-rate="1" branch-rate="0" complexity="0">
