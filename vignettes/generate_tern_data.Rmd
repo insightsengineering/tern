@@ -1,5 +1,5 @@
 ---
-title: "Data Generation"
+title: "Example Data Generation"
 date: "`r Sys.Date()`"
 output:
     rmarkdown::html_document:
@@ -8,7 +8,7 @@ output:
         toc: true
         toc_float: true
 vignette: >
-    %\VignetteIndexEntry{Data Generation}
+    %\VignetteIndexEntry{Example Data Generation}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 editor_options:
@@ -16,7 +16,7 @@ editor_options:
         wrap: 72
 ---
 
-## Setup
+## Setup & Helper Functions
 
 ```{r setup, eval=FALSE}
 study_duration_secs <- 31556952 * 2
@@ -33,9 +33,6 @@ retain <- function(df, value_var, event, outside = NA) {
 }
 
 relvar_init <- function(relvar1, relvar2) {
-  checkmate::assert_character(relvar1, min.len = 1, any.missing = FALSE)
-  checkmate::assert_character(relvar2, min.len = 1, any.missing = FALSE)
-
   if (length(relvar1) != length(relvar2)) {
     message(simpleError(
       "The argument value length of relvar1 and relvar2 differ. They must contain the same number of elements."
@@ -46,11 +43,6 @@ relvar_init <- function(relvar1, relvar2) {
 }
 
 rel_var <- function(df = NULL, var_name = NULL, var_values = NULL, related_var = NULL) {
-  checkmate::assert_data_frame(df, null.ok = TRUE)
-  checkmate::assert_string(var_name, null.ok = TRUE)
-  checkmate::assert_character(var_values, null.ok = TRUE, min.len = 1, any.missing = FALSE)
-  checkmate::assert_string(related_var, null.ok = TRUE)
-
   if (is.null(df)) {
     message("Missing data frame argument value.")
     return(NA)
@@ -75,22 +67,13 @@ rel_var <- function(df = NULL, var_name = NULL, var_values = NULL, related_var =
 visit_schedule <- function(visit_format = "WEEK",
                            n_assessments = 10L,
                            n_days = 5L) {
-  checkmate::assert_string(visit_format)
-  checkmate::assert_integer(n_assessments, len = 1, any.missing = FALSE)
-  checkmate::assert_integer(n_days, len = 1, any.missing = FALSE)
-
-  # trap invalid assessment format
   if (!(toupper(visit_format) %in% c("WEEK", "CYCLE"))) {
     message("Visit format value must either be: WEEK or CYCLE")
     return(NA)
   }
-
   if (toupper(visit_format) == "WEEK") {
-    # numeric vector of n assessments/cycles/days
     assessments <- 1:n_assessments
-    # numeric vector for ordering including screening (-1) and baseline (0) place holders
     assessments_ord <- -1:n_assessments
-    # character vector of nominal visit values
     visit_values <- c("SCREENING", "BASELINE", paste(toupper(visit_format), assessments, "DAY", (assessments * 7) + 1))
   } else if (toupper(visit_format) == "CYCLE") {
     cycles <- sort(rep(1:n_assessments, times = 1, each = n_days))
@@ -98,8 +81,6 @@ visit_schedule <- function(visit_format = "WEEK",
     assessments_ord <- 0:(n_assessments * n_days)
     visit_values <- c("SCREENING", paste(toupper(visit_format), cycles, "DAY", days))
   }
-
-  # create and order factor variable to return from function
   visit_values <- stats::reorder(factor(visit_values), assessments_ord)
 }
 ```
@@ -149,16 +130,17 @@ generate_adsl <- function(N = 200) { # nolint
 
   # associate sites with countries and regions
   ex_adsl <- adsl %>%
-    dplyr::mutate(REGION1 = dplyr::case_when(
-      COUNTRY %in% c("NGA") ~ "Africa",
-      COUNTRY %in% c("CHN", "JPN", "PAK") ~ "Asia",
-      COUNTRY %in% c("RUS") ~ "Eurasia",
-      COUNTRY %in% c("GBR") ~ "Europe",
-      COUNTRY %in% c("CAN", "USA") ~ "North America",
-      COUNTRY %in% c("BRA") ~ "South America",
-      TRUE ~ as.character(NA)
-    ),
-    SAFFL = factor("Y")
+    dplyr::mutate(
+      REGION1 = dplyr::case_when(
+        COUNTRY %in% c("NGA") ~ "Africa",
+        COUNTRY %in% c("CHN", "JPN", "PAK") ~ "Asia",
+        COUNTRY %in% c("RUS") ~ "Eurasia",
+        COUNTRY %in% c("GBR") ~ "Europe",
+        COUNTRY %in% c("CAN", "USA") ~ "North America",
+        COUNTRY %in% c("BRA") ~ "South America",
+        TRUE ~ as.character(NA)
+      ),
+      SAFFL = factor("Y")
     ) %>%
     dplyr::mutate(USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-"))
 
@@ -170,34 +152,35 @@ generate_adsl <- function(N = 200) { # nolint
 
 ```{r adae, eval=FALSE}
 generate_adae <- function(adsl = ex_adsl,
-                        max_n_aes = 5) {
+                          max_n_aes = 5) {
   set.seed(1)
   lookup_ae <- tibble::tribble(
-      ~AEBODSYS, ~AELLT, ~AEDECOD, ~AEHLT, ~AEHLGT, ~AETOXGR, ~AESOC, ~AESER, ~AEREL,
-      "cl A.1", "llt A.1.1.1.1", "dcd A.1.1.1.1", "hlt A.1.1.1", "hlgt A.1.1", "1", "cl A", "N", "N",
-      "cl A.1", "llt A.1.1.1.2", "dcd A.1.1.1.2", "hlt A.1.1.1", "hlgt A.1.1", "2", "cl A", "Y", "N",
-      "cl B.1", "llt B.1.1.1.1", "dcd B.1.1.1.1", "hlt B.1.1.1", "hlgt B.1.1", "5", "cl B", "Y", "Y",
-      "cl B.2", "llt B.2.1.2.1", "dcd B.2.1.2.1", "hlt B.2.1.2", "hlgt B.2.1", "3", "cl B", "N", "N",
-      "cl B.2", "llt B.2.2.3.1", "dcd B.2.2.3.1", "hlt B.2.2.3", "hlgt B.2.2", "1", "cl B", "Y", "N",
-      "cl C.1", "llt C.1.1.1.3", "dcd C.1.1.1.3", "hlt C.1.1.1", "hlgt C.1.1", "4", "cl C", "N", "Y",
-      "cl C.2", "llt C.2.1.2.1", "dcd C.2.1.2.1", "hlt C.2.1.2", "hlgt C.2.1", "2", "cl C", "N", "Y",
-      "cl D.1", "llt D.1.1.1.1", "dcd D.1.1.1.1", "hlt D.1.1.1", "hlgt D.1.1", "5", "cl D", "Y", "Y",
-      "cl D.1", "llt D.1.1.4.2", "dcd D.1.1.4.2", "hlt D.1.1.4", "hlgt D.1.1", "3", "cl D", "N", "N",
-      "cl D.2", "llt D.2.1.5.3", "dcd D.2.1.5.3", "hlt D.2.1.5", "hlgt D.2.1", "1", "cl D", "N", "Y")
+    ~AEBODSYS, ~AELLT, ~AEDECOD, ~AEHLT, ~AEHLGT, ~AETOXGR, ~AESOC, ~AESER, ~AEREL,
+    "cl A.1", "llt A.1.1.1.1", "dcd A.1.1.1.1", "hlt A.1.1.1", "hlgt A.1.1", "1", "cl A", "N", "N",
+    "cl A.1", "llt A.1.1.1.2", "dcd A.1.1.1.2", "hlt A.1.1.1", "hlgt A.1.1", "2", "cl A", "Y", "N",
+    "cl B.1", "llt B.1.1.1.1", "dcd B.1.1.1.1", "hlt B.1.1.1", "hlgt B.1.1", "5", "cl B", "Y", "Y",
+    "cl B.2", "llt B.2.1.2.1", "dcd B.2.1.2.1", "hlt B.2.1.2", "hlgt B.2.1", "3", "cl B", "N", "N",
+    "cl B.2", "llt B.2.2.3.1", "dcd B.2.2.3.1", "hlt B.2.2.3", "hlgt B.2.2", "1", "cl B", "Y", "N",
+    "cl C.1", "llt C.1.1.1.3", "dcd C.1.1.1.3", "hlt C.1.1.1", "hlgt C.1.1", "4", "cl C", "N", "Y",
+    "cl C.2", "llt C.2.1.2.1", "dcd C.2.1.2.1", "hlt C.2.1.2", "hlgt C.2.1", "2", "cl C", "N", "Y",
+    "cl D.1", "llt D.1.1.1.1", "dcd D.1.1.1.1", "hlt D.1.1.1", "hlgt D.1.1", "5", "cl D", "Y", "Y",
+    "cl D.1", "llt D.1.1.4.2", "dcd D.1.1.4.2", "hlt D.1.1.4", "hlgt D.1.1", "3", "cl D", "N", "N",
+    "cl D.2", "llt D.2.1.5.3", "dcd D.2.1.5.3", "hlt D.2.1.5", "hlgt D.2.1", "1", "cl D", "N", "Y"
+  )
 
   aag <- utils::read.table(
-      sep = ",", header = TRUE,
-      text = paste(
-        "NAMVAR,SRCVAR,GRPTYPE,REFNAME,REFTERM,SCOPE",
-        "CQ01NAM,AEDECOD,CUSTOM,D.2.1.5.3/A.1.1.1.1 aesi,dcd D.2.1.5.3,",
-        "CQ01NAM,AEDECOD,CUSTOM,D.2.1.5.3/A.1.1.1.1 aesi,dcd A.1.1.1.1,",
-        "SMQ01NAM,AEDECOD,SMQ,C.1.1.1.3/B.2.2.3.1 aesi,dcd C.1.1.1.3,BROAD",
-        "SMQ01NAM,AEDECOD,SMQ,C.1.1.1.3/B.2.2.3.1 aesi,dcd B.2.2.3.1,BROAD",
-        "SMQ02NAM,AEDECOD,SMQ,Y.9.9.9.9/Z.9.9.9.9 aesi,dcd Y.9.9.9.9,NARROW",
-        "SMQ02NAM,AEDECOD,SMQ,Y.9.9.9.9/Z.9.9.9.9 aesi,dcd Z.9.9.9.9,NARROW",
-        sep = "\n"
-      ), stringsAsFactors = FALSE
-    )
+    sep = ",", header = TRUE,
+    text = paste(
+      "NAMVAR,SRCVAR,GRPTYPE,REFNAME,REFTERM,SCOPE",
+      "CQ01NAM,AEDECOD,CUSTOM,D.2.1.5.3/A.1.1.1.1 aesi,dcd D.2.1.5.3,",
+      "CQ01NAM,AEDECOD,CUSTOM,D.2.1.5.3/A.1.1.1.1 aesi,dcd A.1.1.1.1,",
+      "SMQ01NAM,AEDECOD,SMQ,C.1.1.1.3/B.2.2.3.1 aesi,dcd C.1.1.1.3,BROAD",
+      "SMQ01NAM,AEDECOD,SMQ,C.1.1.1.3/B.2.2.3.1 aesi,dcd B.2.2.3.1,BROAD",
+      "SMQ02NAM,AEDECOD,SMQ,Y.9.9.9.9/Z.9.9.9.9 aesi,dcd Y.9.9.9.9,NARROW",
+      "SMQ02NAM,AEDECOD,SMQ,Y.9.9.9.9/Z.9.9.9.9 aesi,dcd Z.9.9.9.9,NARROW",
+      sep = "\n"
+    ), stringsAsFactors = FALSE
+  )
 
   adae <- Map(
     function(id, sid) {
@@ -274,7 +257,6 @@ generate_adae <- function(adsl = ex_adsl,
 
   # Create aesi flags
   l_aesi <- lapply(l_aag, function(d_adag, d_adae) {
-
     names(d_adag)[names(d_adag) == "REFTERM"] <- d_adag$SRCVAR[1]
     names(d_adag)[names(d_adag) == "REFNAME"] <- d_adag$NAMVAR[1]
 
@@ -299,20 +281,20 @@ generate_adae <- function(adsl = ex_adsl,
 
 ```{r adlb, eval=FALSE}
 generate_adlb <- function(adsl = ex_adsl,
-                        max_n_lbs = 5L) {
+                          max_n_lbs = 5L) {
   set.seed(1)
-  lbcat = c("CHEMISTRY", "CHEMISTRY", "IMMUNOLOGY")
-  param = c(
+  lbcat <- c("CHEMISTRY", "CHEMISTRY", "IMMUNOLOGY")
+  param <- c(
     "Alanine Aminotransferase Measurement",
     "C-Reactive Protein Measurement",
     "Immunoglobulin A Measurement"
   )
-  paramcd = c("ALT", "CRP", "IGA")
-  paramu = c("U/L", "mg/L", "g/L")
-  aval_mean = c(20, 1, 2)
-  visit_format = "WEEK"
-  n_assessments = 5L
-  n_days = 5L
+  paramcd <- c("ALT", "CRP", "IGA")
+  paramu <- c("U/L", "mg/L", "g/L")
+  aval_mean <- c(20, 1, 2)
+  visit_format <- "WEEK"
+  n_assessments <- 5L
+  n_days <- 5L
 
   # validate and initialize related variables
   lbcat_init_list <- relvar_init(param, lbcat)
@@ -349,7 +331,7 @@ generate_adlb <- function(adsl = ex_adsl,
     var_values = param_init_list$relvar2,
     related_var = "PARAM"
   ))
-  
+
   adlb$AVALU <- as.factor(rel_var(
     df = adlb,
     var_name = "AVALU",
@@ -375,10 +357,10 @@ generate_adlb <- function(adsl = ex_adsl,
   # order to prepare for change from screening and baseline values
   adlb <- adlb[order(adlb$STUDYID, adlb$USUBJID, adlb$PARAMCD, adlb$AVISITN), ]
 
-  adlb <- Reduce(rbind, lapply(split(adlb, adlb$USUBJID), function(x) { # nolint
-    x$STUDYID <- adsl$STUDYID[which(adsl$USUBJID == x$USUBJID[1])] # nolint
-    x$ABLFL2 <- ifelse(x$AVISIT == "SCREENING", "Y", "") # nolint
-    x$ABLFL <- ifelse(toupper(visit_format) == "WEEK" & x$AVISIT == "BASELINE", # nolint
+  adlb <- Reduce(rbind, lapply(split(adlb, adlb$USUBJID), function(x) {
+    x$STUDYID <- adsl$STUDYID[which(adsl$USUBJID == x$USUBJID[1])]
+    x$ABLFL2 <- ifelse(x$AVISIT == "SCREENING", "Y", "")
+    x$ABLFL <- ifelse(toupper(visit_format) == "WEEK" & x$AVISIT == "BASELINE",
       "Y",
       ifelse(toupper(visit_format) == "CYCLE" & x$AVISIT == "CYCLE 1 DAY 1", "Y", "")
     )
@@ -387,11 +369,11 @@ generate_adlb <- function(adsl = ex_adsl,
 
   adlb$BASE <- ifelse(adlb$ABLFL2 != "Y", retain(adlb, adlb$AVAL, adlb$ABLFL == "Y"), NA)
 
-  ANRIND_choices <- c("HIGH", "LOW", "NORMAL")
+  anrind_choices <- c("HIGH", "LOW", "NORMAL")
 
   adlb <- adlb %>%
     dplyr::mutate(BASETYPE = "LAST") %>%
-    dplyr::mutate(ANRIND = sample_fct(ANRIND_choices, nrow(adlb), prob = c(0.1, 0.1, 0.8))) %>%
+    dplyr::mutate(ANRIND = sample_fct(anrind_choices, nrow(adlb), prob = c(0.1, 0.1, 0.8))) %>%
     dplyr::mutate(ANRLO = dplyr::case_when(
       .data$PARAMCD == "ALT" ~ 7,
       .data$PARAMCD == "CRP" ~ 8,
@@ -581,17 +563,17 @@ generate_adlb <- function(adsl = ex_adsl,
 ```{r adpp, eval=FALSE}
 generate_adpp <- function(adsl = ex_adsl) {
   set.seed(1)
-  paramcd = c(
+  paramcd <- c(
     "AUCIFO", "CMAX", "CLO", "RMAX", "TON",
     "RENALCL", "RENALCLD", "RCAMINT", "RCPCINT"
   )
-  param = c(
+  param <- c(
     "AUC Infinity Obs", "Max Conc", "Total CL Obs", "Time of Maximum Response",
     "Time to Onset", "Renal CL", "Renal CL Norm by Dose",
     "Amt Rec from T1 to T2", "Pct Rec from T1 to T2"
   )
-  paramu = c("day*ug/mL", "ug/mL", "ml/day/kg", "hr", "hr", "L/hr", "L/hr/mg", "mg", "%")
-  aval_mean = c(200, 30, 5, 10, 3, 0.05, 0.005, 1.5613, 15.65)
+  paramu <- c("day*ug/mL", "ug/mL", "ml/day/kg", "hr", "hr", "L/hr", "L/hr/mg", "mg", "%")
+  aval_mean <- c(200, 30, 5, 10, 3, 0.05, 0.005, 1.5613, 15.65)
 
   # validate and initialize related variables
   param_init_list <- relvar_init(param, paramcd)
@@ -641,16 +623,16 @@ generate_adrs <- function(adsl = ex_adsl) {
   param_codes <- stats::setNames(1:5, c("CR", "PR", "SD", "PD", "NE"))
 
   lookup_ars <- expand.grid(
-      ARM = c("A: Drug X", "B: Placebo", "C: Combination"),
-      AVALC = names(param_codes)
-    ) %>% dplyr::mutate(
-      AVAL = param_codes[.data$AVALC],
-      p_scr = c(rep(0, 3), rep(0, 3), c(1, 1, 1), c(0, 0, 0), c(0, 0, 0)),
-      p_bsl = c(rep(0, 3), rep(0, 3), c(1, 1, 1), c(0, 0, 0), c(0, 0, 0)),
-      p_cycle = c(c(.4, .3, .5), c(.35, .25, .25), c(.1, .2, .08), c(.14, 0.15, 0.15), c(.01, 0.1, 0.02)),
-      p_eoi = c(c(.4, .3, .5), c(.35, .25, .25), c(.1, .2, .08), c(.14, 0.15, 0.15), c(.01, 0.1, 0.02)),
-      p_fu = c(c(.3, .2, .4), c(.2, .1, .3), c(.2, .2, .2), c(.3, .5, 0.1), rep(0, 3))
-    )
+    ARM = c("A: Drug X", "B: Placebo", "C: Combination"),
+    AVALC = names(param_codes)
+  ) %>% dplyr::mutate(
+    AVAL = param_codes[.data$AVALC],
+    p_scr = c(rep(0, 3), rep(0, 3), c(1, 1, 1), c(0, 0, 0), c(0, 0, 0)),
+    p_bsl = c(rep(0, 3), rep(0, 3), c(1, 1, 1), c(0, 0, 0), c(0, 0, 0)),
+    p_cycle = c(c(.4, .3, .5), c(.35, .25, .25), c(.1, .2, .08), c(.14, 0.15, 0.15), c(.01, 0.1, 0.02)),
+    p_eoi = c(c(.4, .3, .5), c(.35, .25, .25), c(.1, .2, .08), c(.14, 0.15, 0.15), c(.01, 0.1, 0.02)),
+    p_fu = c(c(.3, .2, .4), c(.2, .1, .3), c(.2, .2, .2), c(.3, .5, 0.1), rep(0, 3))
+  )
 
   adrs <- split(adsl, adsl$USUBJID) %>%
     lapply(function(pinfo) {
@@ -658,17 +640,13 @@ generate_adrs <- function(adsl = ex_adsl) {
 
       # screening
       rsp_screen <- sample(probs$AVALC, 1, prob = probs$p_scr) %>% as.character()
-
       # baseline
       rsp_bsl <- sample(probs$AVALC, 1, prob = probs$p_bsl) %>% as.character()
-
       # cycle
       rsp_c2d1 <- sample(probs$AVALC, 1, prob = probs$p_cycle) %>% as.character()
       rsp_c4d1 <- sample(probs$AVALC, 1, prob = probs$p_cycle) %>% as.character()
-
       # end of induction
       rsp_eoi <- sample(probs$AVALC, 1, prob = probs$p_eoi) %>% as.character()
-
       # follow up
       rsp_fu <- sample(probs$AVALC, 1, prob = probs$p_fu) %>% as.character()
 
@@ -676,7 +654,7 @@ generate_adrs <- function(adsl = ex_adsl) {
       best_rsp_i <- which.min(param_codes[c(rsp_screen, rsp_bsl, rsp_eoi, rsp_fu, rsp_c2d1, rsp_c4d1)])
 
       avisit <- c("SCREENING", "BASELINE", "CYCLE 2 DAY 1", "CYCLE 4 DAY 1", "END OF INDUCTION", "FOLLOW UP")
-      
+
       # meaningful date information
       trtsdt_int <- as.numeric(as.Date(pinfo$TRTSDTM))
       trtedt_int <- ifelse(
@@ -755,34 +733,34 @@ generate_adrs <- function(adsl = ex_adsl) {
 generate_adtte <- function(adsl = ex_adsl) {
   set.seed(1)
   lookup_tte <- tibble::tribble(
-      ~ARM, ~PARAMCD, ~PARAM, ~LAMBDA, ~CNSR_P,
-      "ARM A", "OS", "Overall Survival", log(2) / 610, 0.4,
-      "ARM B", "OS", "Overall Survival", log(2) / 490, 0.3,
-      "ARM C", "OS", "Overall Survival", log(2) / 365, 0.2,
-      "ARM A", "PFS", "Progression Free Survival", log(2) / 365, 0.4,
-      "ARM B", "PFS", "Progression Free Survival", log(2) / 305, 0.3,
-      "ARM C", "PFS", "Progression Free Survival", log(2) / 243, 0.2,
-      "ARM A", "EFS", "Event Free Survival", log(2) / 365, 0.4,
-      "ARM B", "EFS", "Event Free Survival", log(2) / 305, 0.3,
-      "ARM C", "EFS", "Event Free Survival", log(2) / 243, 0.2,
-      "ARM A", "CRSD", "Duration of Confirmed Response", log(2) / 305, 0.4,
-      "ARM B", "CRSD", "Duration of Confirmed Response", log(2) / 243, 0.3,
-      "ARM C", "CRSD", "Duration of Confirmed Response", log(2) / 182, 0.2
+    ~ARM, ~PARAMCD, ~PARAM, ~LAMBDA, ~CNSR_P,
+    "ARM A", "OS", "Overall Survival", log(2) / 610, 0.4,
+    "ARM B", "OS", "Overall Survival", log(2) / 490, 0.3,
+    "ARM C", "OS", "Overall Survival", log(2) / 365, 0.2,
+    "ARM A", "PFS", "Progression Free Survival", log(2) / 365, 0.4,
+    "ARM B", "PFS", "Progression Free Survival", log(2) / 305, 0.3,
+    "ARM C", "PFS", "Progression Free Survival", log(2) / 243, 0.2,
+    "ARM A", "EFS", "Event Free Survival", log(2) / 365, 0.4,
+    "ARM B", "EFS", "Event Free Survival", log(2) / 305, 0.3,
+    "ARM C", "EFS", "Event Free Survival", log(2) / 243, 0.2,
+    "ARM A", "CRSD", "Duration of Confirmed Response", log(2) / 305, 0.4,
+    "ARM B", "CRSD", "Duration of Confirmed Response", log(2) / 243, 0.3,
+    "ARM C", "CRSD", "Duration of Confirmed Response", log(2) / 182, 0.2
   )
 
   evntdescr_sel <- c(
-      "Death",
-      "Disease Progression",
-      "Last Tumor Assessment",
-      "Adverse Event",
-      "Last Date Known To Be Alive"
+    "Death",
+    "Disease Progression",
+    "Last Tumor Assessment",
+    "Adverse Event",
+    "Last Date Known To Be Alive"
   )
 
   cnsdtdscr_sel <- c(
-      "Preferred Term",
-      "Clinical Cut Off",
-      "Completion or Discontinuation",
-      "End of AE Reporting Period"
+    "Preferred Term",
+    "Clinical Cut Off",
+    "Completion or Discontinuation",
+    "End of AE Reporting Period"
   )
 
   adtte <- split(adsl, adsl$USUBJID) %>%
@@ -800,7 +778,7 @@ generate_adtte <- function(adsl = ex_adsl) {
         dplyr::select(-"LAMBDA", -"CNSR_P")
     }) %>%
     Reduce(rbind, .)
-  
+
   adtte <- var_relabel(
     adtte,
     STUDYID = "Study Identifier",
@@ -840,16 +818,20 @@ generate_adtte <- function(adsl = ex_adsl) {
     )
 
   # adding adverse event counts and log follow-up time
-  ex_adtte <- dplyr::bind_rows(adtte, data.frame(adtte %>% dplyr::group_by(.data$USUBJID) %>%
-    dplyr::slice_head(n = 1) %>%
-    dplyr::mutate(
-      PARAMCD = "TNE",
-      PARAM = "Total Number of Exacerbations",
-      AVAL = stats::rpois(1, 3),
-      AVALU = "COUNT",
-      lgTMATRSK = log(stats::rexp(1, rate = 3)),
-      dplyr::across("ADTM", ~NA)
-    ))) %>%
+  ex_adtte <- dplyr::bind_rows(
+    adtte,
+    data.frame(adtte %>%
+      dplyr::group_by(.data$USUBJID) %>%
+      dplyr::slice_head(n = 1) %>%
+      dplyr::mutate(
+        PARAMCD = "TNE",
+        PARAM = "Total Number of Exacerbations",
+        AVAL = stats::rpois(1, 3),
+        AVALU = "COUNT",
+        lgTMATRSK = log(stats::rexp(1, rate = 3)),
+        dplyr::across("ADTM", ~NA)
+      ))
+  ) %>%
     dplyr::arrange(
       .data$STUDYID,
       .data$USUBJID,
