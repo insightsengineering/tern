@@ -12,7 +12,7 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9033</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9034</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,15 +36,6 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -73,18 +64,9 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extract_rsp_subgroups</span><span class="op">(</span></span>
-<span>  <span class="va">variables</span>,</span>
-<span>  <span class="va">data</span>,</span>
-<span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  method <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  label_all <span class="op">=</span> <span class="st">"All Patients"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">a_response_subgroups</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">a_response_subgroups</span><span class="op">(</span></span>
 <span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"xx"</span>, n_rsp <span class="op">=</span> <span class="st">"xx"</span>, prop <span class="op">=</span> <span class="st">"xx.x%"</span>, n_tot <span class="op">=</span> <span class="st">"xx"</span>, or <span class="op">=</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="extreme_format.html">format_extreme_values</a></span><span class="op">(</span><span class="fl">2L</span><span class="op">)</span><span class="op">)</span>, ci <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="extreme_format.html">format_extreme_values_ci</a></span><span class="op">(</span><span class="fl">2L</span><span class="op">)</span><span class="op">)</span>, pval <span class="op">=</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="format_extreme_values.html">format_extreme_values</a></span><span class="op">(</span><span class="fl">2L</span><span class="op">)</span><span class="op">)</span>, ci <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="format_extreme_values_ci.html">format_extreme_values_ci</a></span><span class="op">(</span><span class="fl">2L</span><span class="op">)</span><span class="op">)</span>, pval <span class="op">=</span></span>
 <span>    <span class="st">"x.xxxx | (&lt;0.0001)"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -93,36 +75,7 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
-
-
-<dt>data</dt>
-<dd><p>(<code>data frame</code>)<br> the dataset containing the variables to summarize.</p></dd>
-
-
-<dt>groups_lists</dt>
-<dd><p>(named <code>list</code> of <code>list</code>)<br> optionally contains for each <code>subgroups</code> variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.</p></dd>
-
-
-<dt>conf_level</dt>
-<dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
-
-
-<dt>method</dt>
-<dd><p>(<code>string</code>)<br>
-specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see <code><a href="prop_diff_test.html">s_test_proportion_diff()</a></code>. Default is <code>NULL</code>
-so no test is performed.</p></dd>
-
-
-<dt>label_all</dt>
-<dd><p>(<code>string</code>)<br> label for the total population analysis.</p></dd>
-
-
-<dt>.formats</dt>
+    <dl><dt>.formats</dt>
 <dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
 
 
@@ -132,7 +85,7 @@ so no test is performed.</p></dd>
 
 <dt>df</dt>
 <dd><p>(<code>list</code>)<br> of data frames containing all analysis variables. List should be
-created using <code>extract_rsp_subgroups()</code>.</p></dd>
+created using <code><a href="extract_rsp_subgroups.html">extract_rsp_subgroups()</a></code>.</p></dd>
 
 
 <dt>vars</dt>
@@ -146,6 +99,27 @@ created using <code>extract_rsp_subgroups()</code>.</p></dd>
 <code>pval</code> (p value of the effect).
 Note, the statistics <code>n_tot</code>, <code>or</code> and <code>ci</code> are required.</p></dd>
 
+
+<dt>data</dt>
+<dd><p>(<code>data frame</code>)<br> the dataset containing the variables to summarize.</p></dd>
+
+
+<dt>groups_lists</dt>
+<dd><p>(named <code>list</code> of <code>list</code>)<br> optionally contains for each <code>subgroups</code> variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.</p></dd>
+
+
+<dt>label_all</dt>
+<dd><p>(<code>string</code>)<br> label for the total population analysis.</p></dd>
+
+
+<dt>method</dt>
+<dd><p>(<code>string</code>)<br>
+specifies the test used to calculate the p-value for the difference between
+two proportions. For options, see <code><a href="prop_diff_test.html">s_test_proportion_diff()</a></code>. Default is <code>NULL</code>
+so no test is performed.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -155,16 +129,14 @@ the required statistics. Tables typically used as part of forest plot.</p>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>extract_rsp_subgroups()</code>: prepares response rates and odds ratios for
-population subgroups in data frames. Simple wrapper for <code><a href="h_response_subgroups.html">h_odds_ratio_subgroups_df()</a></code> and
-<code><a href="h_response_subgroups.html">h_proportion_subgroups_df()</a></code>. Result is a list of two data frames:
-<code>prop</code> and <code>or</code>. <code>variables</code> corresponds to the names of variables found in <code>data</code>, passed as a
-named list and requires elements <code>rsp</code>, <code>arm</code> and optionally <code>subgroups</code> and <code>strat</code>. <code>groups_lists</code>
-optionally specifies groupings for <code>subgroups</code> variables.</p></li>
-<li><p><code>a_response_subgroups()</code>: Formatted Analysis function used to format the results of <code>extract_rsp_subgroups()</code>.
+<ul><li><p><code>a_response_subgroups()</code>: Formatted Analysis function used to format the results of <code><a href="extract_rsp_subgroups.html">extract_rsp_subgroups()</a></code>.
 Returns is a list of Formatted Analysis functions with one element per statistic.</p></li>
 <li><p><code>tabulate_rsp_subgroups()</code>: table creating function.</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="extract_rsp_subgroups.html">extract_rsp_subgroups()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -172,7 +144,6 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org/" class="external-link">forcats</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adrs"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">adrs_labels</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs</span><span class="op">)</span></span></span>
@@ -187,8 +158,9 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-in"><span>    rsp <span class="op">=</span> <span class="va">AVALC</span> <span class="op">==</span> <span class="st">"CR"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs_f</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">adrs_labels</span>, <span class="st">"Response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Unstratified analysis.</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">extract_rsp_subgroups</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_rsp_subgroups.html">extract_rsp_subgroups</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="st">"rsp"</span>, arm <span class="op">=</span> <span class="st">"ARM"</span>, subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -237,115 +209,6 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Stratified analysis.</span></span></span>
-<span class="r-in"><span><span class="va">df_strat</span> <span class="op">&lt;-</span> <span class="fu">extract_rsp_subgroups</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="st">"rsp"</span>, arm <span class="op">=</span> <span class="st">"ARM"</span>, subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span>, strat <span class="op">=</span> <span class="st">"STRATA1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df_strat</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $prop</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           arm   n n_rsp      prop     subgroup    var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 134    97 0.7238806 All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 134   119 0.8880597 All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo  82    57 0.6951220            F    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X  79    73 0.9240506            F    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo  52    40 0.7692308            M    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X  55    46 0.8363636            M    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo  45    38 0.8444444          LOW BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X  50    46 0.9200000          LOW BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo  56    38 0.6785714       MEDIUM BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X  37    31 0.8378378       MEDIUM BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo  33    21 0.6363636         HIGH BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X  47    42 0.8936170         HIGH BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                   All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                            Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                            Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                            Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                            Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $or</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot       or       lcl       ucl conf_level     subgroup    var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       268 3.036189 1.5749483  5.853173       0.95 All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       161 5.211620 2.0113615 13.503781       0.95            F    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       107 1.628393 0.6196333  4.279406       0.95            M    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        95 2.045340 0.5597227  7.474085       0.95          LOW BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        93 2.423656 0.8624779  6.810734       0.95       MEDIUM BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        80 4.540487 1.4443496 14.273571       0.95         HIGH BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                           Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Grouping of the BMRKR2 levels.</span></span></span>
-<span class="r-in"><span><span class="va">df_grouped</span> <span class="op">&lt;-</span> <span class="fu">extract_rsp_subgroups</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="st">"rsp"</span>, arm <span class="op">=</span> <span class="st">"ARM"</span>, subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
-<span class="r-in"><span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    BMRKR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="st">"low"</span> <span class="op">=</span> <span class="st">"LOW"</span>,</span></span>
-<span class="r-in"><span>      <span class="st">"low/medium"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      <span class="st">"low/medium/high"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df_grouped</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $prop</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           arm   n n_rsp      prop        subgroup    var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 134    97 0.7238806    All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 134   119 0.8880597    All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo  82    57 0.6951220               F    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X  79    73 0.9240506               F    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo  52    40 0.7692308               M    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X  55    46 0.8363636               M    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo  45    38 0.8444444             low BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X  50    46 0.9200000             low BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 101    76 0.7524752      low/medium BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X  87    77 0.8850575      low/medium BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 134    97 0.7238806 low/medium/high BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 134   119 0.8880597 low/medium/high BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                   All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                            Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                            Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                            Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                            Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $or</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot       or       lcl       ucl conf_level        subgroup    var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       268 3.026117 1.5685817  5.838002       0.95    All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       161 5.336257 2.0514242 13.880913       0.95               F    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       107 1.533333 0.5856092  4.014813       0.95               M    SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        95 2.118421 0.5765066  7.784313       0.95             low BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       188 2.532895 1.1393669  5.630807       0.95      low/medium BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       268 3.026117 1.5685817  5.838002       0.95 low/medium/high BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                           Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           Sex analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># Internal function - a_response_subgroups</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">a_response_subgroups</span><span class="op">(</span>.formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"n"</span> <span class="op">=</span> <span class="st">"xx"</span>, <span class="st">"prop"</span> <span class="op">=</span> <span class="st">"xx.xx%"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -353,7 +216,7 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Table with default columns.</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">tabulate_rsp_subgroups</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Baseline Risk Factors                         B: Placebo           A: Drug X                                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                 Total n    n    Response (%)    n    Response (%)   Odds Ratio      95% CI    </span>
@@ -368,7 +231,7 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-out co"><span class="r-pr">#&gt;</span>   HIGH                            80      33       63.6%       47       89.4%          4.80      (1.49, 15.42)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Table with selected columns.</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">tabulate_rsp_subgroups</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    df <span class="op">=</span> <span class="va">df</span>,</span></span>
 <span class="r-in"><span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot"</span>, <span class="st">"n"</span>, <span class="st">"n_rsp"</span>, <span class="st">"prop"</span>, <span class="st">"or"</span>, <span class="st">"ci"</span><span class="op">)</span></span></span>

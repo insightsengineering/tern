@@ -12,7 +12,7 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9033</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9034</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,15 +36,6 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -73,16 +64,7 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">h_adlb_worsen</span><span class="op">(</span></span>
-<span>  <span class="va">adlb</span>,</span>
-<span>  worst_flag_low <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  worst_flag_high <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">direction_var</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">h_worsen_counter</span><span class="op">(</span><span class="va">df</span>, <span class="va">id</span>, <span class="va">.var</span>, <span class="va">baseline_var</span>, <span class="va">direction_var</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">s_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_count_abnormal_lab_worsen_by_baseline</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>, direction_var <span class="op">=</span> <span class="st">"GRADDR"</span><span class="op">)</span></span>
@@ -108,44 +90,13 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>adlb</dt>
-<dd><p>(<code>data frame</code>) <br><code>ADLB</code> dataframe</p></dd>
-
-
-<dt>worst_flag_low</dt>
-<dd><p>(named <code>vector</code>) <br>
-Worst low post-baseline lab grade flag variable</p></dd>
-
-
-<dt>worst_flag_high</dt>
-<dd><p>(named <code>vector</code>) <br>
-Worst high post-baseline lab grade flag variable</p></dd>
-
-
-<dt>direction_var</dt>
-<dd><p>(<code>string</code>) <br>
-Direction variable specifying the direction of the shift table of interest.
-Only lab records flagged by <code>L</code>, <code>H</code> or <code>B</code> are included in the shift table.</p><ul><li><p><code>L</code>: low direction only</p></li>
-<li><p><code>H</code>: high direction only</p></li>
-<li><p><code>B</code>: both low and high directions</p></li>
-</ul></dd>
-
-
-<dt>df</dt>
+    <dl><dt>df</dt>
 <dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
-
-
-<dt>id</dt>
-<dd><p>(<code>string</code>) <br> subject variable name.</p></dd>
 
 
 <dt>.var, var</dt>
 <dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
 by a statistics function.</p></dd>
-
-
-<dt>baseline_var</dt>
-<dd><p>(<code>string</code>) <br> baseline lab grade variable</p></dd>
 
 
 <dt>variables</dt>
@@ -188,22 +139,6 @@ to avoid warnings from <code>rtables</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>h_adlb_worsen()</code> returns the <code>adlb</code></p>
-<p></p>
-<p><code>data frame</code> containing only the
-worst labs specified according to <code>worst_flag_low</code> or <code>worst_flag_high</code> for the
-direction specified according to <code>direction_var</code>. For instance, for a lab that is
-needed for the low direction only, only records flagged by <code>worst_flag_low</code> are
-selected. For a lab that is needed for both low and high directions, the worst
-low records are selected for the low direction, and the worst high record are selected
-for the high direction.</p>
-
-
-<p><code>h_worsen_counter()</code> returns the counts and fraction of patients
-whose worst post-baseline lab grades are worse than their baseline grades, for
-post-baseline worst grades "1", "2", "3", "4" and "Any".</p>
-
-
 <p><code>s_count_abnormal_lab_worsen_by_baseline()</code> returns the
 counts and fraction of patients whose worst post-baseline lab grades are worse than
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".</p>
@@ -215,13 +150,7 @@ the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>h_adlb_worsen()</code>: Helper function
-to prepare a <code>df</code> for generate the patient count shift table</p></li>
-<li><p><code>h_worsen_counter()</code>: Helper function to
-count the number of patients and the fraction of patients according to
-highest post-baseline lab grade variable <code>.var</code>, baseline lab grade variable <code>baseline_var</code>,
-and the direction of interest specified in <code>direction_var</code>.</p></li>
-<li><p><code>s_count_abnormal_lab_worsen_by_baseline()</code>: Statistics function which calculates the
+<ul><li><p><code>s_count_abnormal_lab_worsen_by_baseline()</code>: Statistics function which calculates the
 counts and fraction of patients whose worst post-baseline lab grades are worse than
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".</p></li>
 <li><p><code>a_count_abnormal_lab_worsen_by_baseline()</code>: Formatted Analysis function which can be further customized by
@@ -230,13 +159,17 @@ calling <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="ex
 creating function which can be used for creating tables, which can take statistics
 function arguments and additional format arguments (see below).</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Relevant helper functions <code><a href="h_adlb_worsen.html">h_adlb_worsen()</a></code> and <code><a href="h_worsen_counter.html">h_worsen_counter()</a></code>.</p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adsl"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adlb"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adlb</span></span></span>
+<span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The direction variable, GRADDR, is based on metadata</span></span></span>
 <span class="r-in"><span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="va">adlb</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -249,44 +182,12 @@ function arguments and additional format arguments (see below).</p></li>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">&amp;</span> <span class="va">ONTRTFL</span> <span class="op">==</span> <span class="st">"Y"</span> <span class="op">&amp;</span> <span class="va">GRADDR</span> <span class="op">!=</span> <span class="st">""</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">h_adlb_worsen</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="h_adlb_worsen.html">h_adlb_worsen</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">adlb</span>,</span></span>
 <span class="r-in"><span>  worst_flag_low <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WGRLOFL"</span> <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  worst_flag_high <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WGRHIFL"</span> <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `h_worsen_counter`</span></span></span>
-<span class="r-in"><span><span class="fu">h_worsen_counter</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CRP"</span> <span class="op">&amp;</span> <span class="va">GRADDR</span> <span class="op">==</span> <span class="st">"Low"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"ATOXGR"</span>,</span></span>
-<span class="r-in"><span>  baseline_var <span class="op">=</span> <span class="st">"BTOXGR"</span>,</span></span>
-<span class="r-in"><span>  direction_var <span class="op">=</span> <span class="st">"GRADDR"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`1`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    44   367 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`2`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    49   379 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`3`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    38   386 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`4`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    21   391 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$Any</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   152   391 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Internal function - s_count_abnormal_lab_worsen_by_baseline</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># Patients with worsening lab grade for CRP in the direction of low</span></span></span>

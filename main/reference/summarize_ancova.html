@@ -14,7 +14,7 @@ multiple timepoints within the same response variable .var."><!-- mathjax --><sc
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9033</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9034</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,15 +38,6 @@ multiple timepoints within the same response variable .var."><!-- mathjax --><sc
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -76,9 +67,7 @@ multiple timepoints within the same response variable <code>.var</code>.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">h_ancova</span><span class="op">(</span><span class="va">.var</span>, <span class="va">.df_row</span>, <span class="va">variables</span>, interaction_item <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">s_ancova</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_ancova</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
 <span>  <span class="va">.df_row</span>,</span>
@@ -120,33 +109,21 @@ multiple timepoints within the same response variable <code>.var</code>.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>.var</dt>
+    <dl><dt>df</dt>
+<dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+
+
+<dt>.var</dt>
 <dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
 by a statistics function.</p></dd>
 
 
 <dt>.df_row</dt>
-<dd><p>(<code>data frame</code>)<br> data set that includes all the variables that are called
-in <code>.var</code> and <code>variables</code>.</p></dd>
+<dd><p>(<code>data frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
 
 
 <dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>strings</code>)<br> list of additional analysis variables, with
-expected elements:</p><ul><li><p><code>arm</code>: (<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of <code>arm</code> variable is taken as the
-reference group.</p></li>
-<li><p><code>covariates</code>: (<code>character</code>)<br> a vector that can contain single variable names (such as
-<code>"X1"</code>), and/or interaction terms indicated by <code>"X1 * X2"</code>.</p></li>
-</ul></dd>
-
-
-<dt>interaction_item</dt>
-<dd><p>(<code>character</code>)<br> name of the variable that should have interactions
-with arm. if the interaction is not needed, the default option is NULL</p></dd>
-
-
-<dt>df</dt>
-<dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
 
 
 <dt>.ref_group</dt>
@@ -165,6 +142,11 @@ with arm. if the interaction is not needed, the default option is NULL</p></dd>
 <dd><p>(<code>character</code>)<br> a selected item inside of the interaction_item column
 which will be used to select the specific ANCOVA results. if the interaction is not
 needed, the default option is FALSE</p></dd>
+
+
+<dt>interaction_item</dt>
+<dd><p>(<code>character</code>)<br> name of the variable that should have interactions
+with arm. if the interaction is not needed, the default option is NULL</p></dd>
 
 
 <dt>lyt</dt>
@@ -223,8 +205,7 @@ comparison to the reference group.</p></li>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>h_ancova()</code>: Helper function to return results of a linear model.</p></li>
-<li><p><code>s_ancova()</code>: Statistics function that produces a named list of results
+<ul><li><p><code>s_ancova()</code>: Statistics function that produces a named list of results
 of the investigated linear model.</p></li>
 <li><p><code>a_ancova()</code>: Formatted Analysis function which can be further customized by calling
 <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
@@ -234,19 +215,7 @@ summary tables for analysis of covariance (ANCOVA).</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">h_ancova</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"Sepal.Length"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">iris</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"Species"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Petal.Length * Petal.Width"</span>, <span class="st">"Sepal.Width"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Species    emmean     SE  df lower.CL upper.CL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  setosa       6.15 0.3371 143     5.49     6.82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  versicolor   5.72 0.0668 143     5.59     5.85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  virginica    5.41 0.1488 143     5.11     5.70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Confidence level used: 0.95 </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adsl"</span><span class="op">)</span></span></span>
@@ -286,25 +255,9 @@ summary tables for analysis of covariance (ANCOVA).</p></li>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adsl"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">adqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adqs"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">adqs_single</span> <span class="op">&lt;-</span> <span class="va">adqs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="va">AVISIT</span> <span class="op">==</span> <span class="st">"WEEK 1 DAY 8"</span>, <span class="co"># single time point</span></span></span>
-<span class="r-in"><span>    <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"FKSI-FWB"</span> <span class="co"># single end point</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>CHG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">BMEASIFL</span> <span class="op">==</span> <span class="st">"Y"</span>, <span class="va">CHG</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="co"># only analyze evaluable population</span></span></span>
-<span class="r-in"><span><span class="va">adqs_multi</span> <span class="op">&lt;-</span> <span class="va">adqs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">AVISIT</span> <span class="op">==</span> <span class="st">"WEEK 1 DAY 8"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">add_colcounts</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_ancova</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"CHG"</span>,</span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARMCD"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span></span>
@@ -318,7 +271,7 @@ summary tables for analysis of covariance (ANCOVA).</p></li>
 <span class="r-in"><span>    table_names <span class="op">=</span> <span class="st">"adj"</span>,</span></span>
 <span class="r-in"><span>    conf_level <span class="op">=</span> <span class="fl">0.95</span>, var_labels <span class="op">=</span> <span class="st">"Adjusted comparison (covariates BASE and STRATA1)"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adqs_single</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">adqs_single</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                      ARM A        ARM B           ARM C    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                     (N=134)      (N=134)         (N=132)   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————</span>
@@ -343,10 +296,10 @@ summary tables for analysis of covariance (ANCOVA).</p></li>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAM</span> <span class="op">==</span> <span class="st">"BFI All Questions"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>CHG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">BMEASIFL</span> <span class="op">==</span> <span class="st">"Y"</span>, <span class="va">CHG</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="co"># only analyze evaluable population</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"STRATA1"</span>, split_fun <span class="op">=</span> <span class="va">drop_split_levels</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">add_colcounts</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"STRATA1"</span>, split_fun <span class="op">=</span> <span class="va">drop_split_levels</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_ancova</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"CHG"</span>,</span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARMCD"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BASE"</span>, <span class="st">"AVISIT"</span>, <span class="st">"AVISIT*ARMCD"</span><span class="op">)</span><span class="op">)</span>,</span></span>
@@ -374,7 +327,7 @@ summary tables for analysis of covariance (ANCOVA).</p></li>
 <span class="r-in"><span>    interaction_y <span class="op">=</span> <span class="st">"WEEK 5 DAY 36"</span>,</span></span>
 <span class="r-in"><span>    interaction_item <span class="op">=</span> <span class="st">"AVISIT"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adqs_single</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">adqs_single</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                     ARM A         ARM B             ARM C     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    (N=134)       (N=134)           (N=132)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————</span>
@@ -437,15 +390,15 @@ summary tables for analysis of covariance (ANCOVA).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       p-value                                    0.0990            0.1611     </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"PARAMCD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"PARAMCD"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_ancova</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"CHG"</span>,</span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARMCD"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BASE"</span>, <span class="st">"STRATA1"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    conf_level <span class="op">=</span> <span class="fl">0.95</span>, var_labels <span class="op">=</span> <span class="st">"Adjusted mean"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">adqs_multi</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">adqs_multi</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

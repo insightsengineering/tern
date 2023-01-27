@@ -14,7 +14,7 @@ along with a confidence interval."><!-- mathjax --><script src="https://cdnjs.cl
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9033</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9034</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,15 +38,6 @@ along with a confidence interval."><!-- mathjax --><script src="https://cdnjs.cl
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -69,18 +60,14 @@ along with a confidence interval."><!-- mathjax --><script src="https://cdnjs.cl
     </div>
 
     <div class="ref-description section level2">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a>
-Compares bivariate responses between two groups in terms of odds ratios
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
+<p>Compares bivariate responses between two groups in terms of odds ratios
 along with a confidence interval.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">or_glm</span><span class="op">(</span><span class="va">data</span>, <span class="va">conf_level</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">or_clogit</span><span class="op">(</span><span class="va">data</span>, <span class="va">conf_level</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">s_odds_ratio</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_odds_ratio</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
 <span>  <span class="va">.ref_group</span>,</span>
@@ -117,16 +104,7 @@ along with a confidence interval.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>data</dt>
-<dd><p>(<code>data frame</code>)<br>
-with at least the variables <code>rsp</code>, <code>grp</code>, and in addition <code>strata</code> for <code>or_clogit()</code>.</p></dd>
-
-
-<dt>conf_level</dt>
-<dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
-
-
-<dt>df</dt>
+    <dl><dt>df</dt>
 <dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
 
 
@@ -149,6 +127,10 @@ by a statistics function.</p></dd>
 
 <dt>variables</dt>
 <dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
+
+
+<dt>conf_level</dt>
+<dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
 
 
 <dt>groups_list</dt>
@@ -208,12 +190,7 @@ possible.</p>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>or_glm()</code>: estimates the odds ratio based on <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm()</a></code>. Note that there must be
-exactly 2 groups in <code>data</code> as specified by the <code>grp</code> variable.</p></li>
-<li><p><code>or_clogit()</code>: estimates the odds ratio based on <code><a href="https://rdrr.io/pkg/survival/man/clogit.html" class="external-link">survival::clogit()</a></code>. This is done for
-the whole data set including all groups, since the results are not the same as when doing
-pairwise comparisons between the groups.</p></li>
-<li><p><code>s_odds_ratio()</code>: Statistics function which estimates the odds ratio
+<ul><li><p><code>s_odds_ratio()</code>: Statistics function which estimates the odds ratio
 between a treatment and a control. Note that a <code>variables</code> list with <code>arm</code> and <code>strata</code> names
 needs to be passed if a stratified analysis is required.</p></li>
 <li><p><code>a_odds_ratio()</code>: Formatted Analysis function which can be further customized by calling
@@ -222,55 +199,14 @@ needs to be passed if a stratified analysis is required.</p></li>
 tables, which can take statistics function arguments and additional format
 arguments (see below).</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Relevant helper function <code><a href="h_odds_ratio.html">h_odds_ratio()</a></code>.</p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Data with 2 groups.</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  rsp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">as.logical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  grp <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>  strata <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Odds ratio based on glm.</span></span></span>
-<span class="r-in"><span><span class="fu">or_glm</span><span class="op">(</span><span class="va">data</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $or_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        est        lcl        ucl </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.33333333 0.01669735 6.65441589 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $n_tot</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> n_tot </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Data with 3 groups.</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  rsp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">as.logical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  grp <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>  strata <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Odds ratio based on stratified estimation by conditional logistic regression.</span></span></span>
-<span class="r-in"><span><span class="fu">or_clogit</span><span class="op">(</span><span class="va">data</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $or_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $or_ci$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        est        lcl        ucl </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.28814553 0.02981009 2.78522598 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $or_ci$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       est       lcl       ucl </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5367919 0.0673365 4.2791881 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $n_tot</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> n_tot </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    20 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  rsp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  grp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"A"</span><span class="op">)</span><span class="op">)</span>,</span></span>
@@ -331,17 +267,16 @@ arguments (see below).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name     formatted_cell indent_mod           row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    or_ci 0.85 (0.38 - 1.88)          1 Odds Ratio (95% CI)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    n_tot                100          0             Total n</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  rsp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  grp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"grp"</span>, ref_group <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"grp"</span>, ref_group <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">estimate_odds_ratio</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"rsp"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       B           A         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Odds Ratio (95% CI)       0.72 (0.33 - 1.60)</span>

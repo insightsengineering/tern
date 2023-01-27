@@ -16,7 +16,7 @@ of the covariate, in comparison to the treatment control."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9033</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9034</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,15 +40,6 @@ of the covariate, in comparison to the treatment control."><!-- mathjax --><scri
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -195,17 +186,17 @@ covariate</p></li>
 covariate.</p></li>
 <li><p><code>h_coxreg_extract_interaction()</code>: a higher level function that returns
 the test of the interaction test and the estimated values. If
-no interaction, <code><a href="cox_regression.html">h_coxreg_univar_extract()</a></code> is applied.</p></li>
+no interaction, <code><a href="h_cox_regression.html">h_coxreg_univar_extract()</a></code> is applied.</p></li>
 <li><p><code>h_coxreg_inter_estimations()</code>: hazard ratio estimation in interactions.</p></li>
 </ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Testing dataset [survival::bladder].</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span>, kind <span class="op">=</span> <span class="st">"Mersenne-Twister"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Testing dataset [survival::bladder].</span></span></span>
 <span class="r-in"><span><span class="va">dta_bladder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">bladder</span><span class="op">[</span><span class="va">bladder</span><span class="op">$</span><span class="va">enum</span> <span class="op">&lt;</span> <span class="fl">5</span>, <span class="op">]</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
@@ -232,8 +223,6 @@ no interaction, <code><a href="cox_regression.html">h_coxreg_univar_extract()</a
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="cox_regression_inter-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">armcd</span> <span class="op">*</span> <span class="va">covar1</span>, data <span class="op">=</span> <span class="va">dta_bladder</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">h_coxreg_extract_interaction</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  mod <span class="op">=</span> <span class="va">mod</span>, effect <span class="op">=</span> <span class="st">"armcd"</span>, covar <span class="op">=</span> <span class="st">"covar1"</span>, data <span class="op">=</span> <span class="va">dta_bladder</span>,</span></span>
@@ -251,9 +240,6 @@ no interaction, <code><a href="cox_regression.html">h_coxreg_univar_extract()</a
 <span class="r-out co"><span class="r-pr">#&gt;</span> armcd2/covar12 0.2716689 1.257692        NA         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> armcd2/covar13 0.2244668 1.351415        NA         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> armcd2/covar14 0.2315248 2.062715        NA         NA</span>
-<span class="r-in"><span><span class="co"># Testing dataset [survival::bladder].</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">armcd</span> <span class="op">*</span> <span class="va">covar1</span>, data <span class="op">=</span> <span class="va">dta_bladder</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">h_coxreg_inter_estimations</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  variable <span class="op">=</span> <span class="st">"armcd"</span>, given <span class="op">=</span> <span class="st">"covar1"</span>,</span></span>

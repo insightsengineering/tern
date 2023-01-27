@@ -12,7 +12,7 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9033</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9034</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,15 +36,6 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -73,26 +64,7 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prop_wilson</span><span class="op">(</span><span class="va">rsp</span>, <span class="va">conf_level</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">prop_strat_wilson</span><span class="op">(</span></span>
-<span>  <span class="va">rsp</span>,</span>
-<span>  <span class="va">strata</span>,</span>
-<span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  max_iterations <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  correct <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">prop_clopper_pearson</span><span class="op">(</span><span class="va">rsp</span>, <span class="va">conf_level</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">prop_wald</span><span class="op">(</span><span class="va">rsp</span>, <span class="va">conf_level</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">prop_agresti_coull</span><span class="op">(</span><span class="va">rsp</span>, <span class="va">conf_level</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">prop_jeffreys</span><span class="op">(</span><span class="va">rsp</span>, <span class="va">conf_level</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">s_proportion</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_proportion</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
 <span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
@@ -131,21 +103,30 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>rsp</dt>
-<dd><p>(<code>logical</code>)<br> whether each subject is a responder or not.</p></dd>
+    <dl><dt>df</dt>
+<dd><p>(<code>logical</code> or <code>data.frame</code>)<br>
+if only a logical vector is used, it indicates whether each subject is a
+responder or not. <code>TRUE</code> represents a successful outcome. If a <code>data.frame</code>
+is provided, also the <code>strata</code> variable names must be provided in
+<code>variables</code> as a list element with the strata strings. In the case of
+<code>data.frame</code>, the logical vector of responses must be indicated as a
+variable name in <code>.var</code>.</p></dd>
+
+
+<dt>.var</dt>
+<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
+by a statistics function.</p></dd>
 
 
 <dt>conf_level</dt>
 <dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
 
 
-<dt>correct</dt>
-<dd><p>(<code>flag</code>)<br> apply continuity correction.</p></dd>
-
-
-<dt>strata</dt>
-<dd><p>(<code>factor</code>)<br>
-with one level per stratum and same length as <code>rsp</code>.</p></dd>
+<dt>method</dt>
+<dd><p>(<code>string</code>) <br>
+the method used to construct the confidence interval for proportion of
+successful outcomes; one of <code>waldcc</code>, <code>wald</code>, <code>clopper-pearson</code>, <code>wilson</code>,
+<code>wilsonc</code>, <code>strat_wilson</code>, <code>strat_wilsonc</code>, <code>agresti-coull</code> or <code>jeffreys</code>.</p></dd>
 
 
 <dt>weights</dt>
@@ -161,28 +142,6 @@ length of the confidence interval.</p></dd>
 <dd><p>(<code>count</code>) <br>
 maximum number of iterations for the iterative procedure used
 to find estimates of optimal weights.</p></dd>
-
-
-<dt>df</dt>
-<dd><p>(<code>logical</code> or <code>data.frame</code>)<br>
-if only a logical vector is used, it indicates whether each subject is a
-responder or not. <code>TRUE</code> represents a successful outcome. If a <code>data.frame</code>
-is provided, also the <code>strata</code> variable names must be provided in
-<code>variables</code> as a list element with the strata strings. In the case of
-<code>data.frame</code>, the logical vector of responses must be indicated as a
-variable name in <code>.var</code>.</p></dd>
-
-
-<dt>.var</dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
-
-
-<dt>method</dt>
-<dd><p>(<code>string</code>) <br>
-the method used to construct the confidence interval for proportion of
-successful outcomes; one of <code>waldcc</code>, <code>wald</code>, <code>clopper-pearson</code>, <code>wilson</code>,
-<code>wilsonc</code>, <code>strat_wilson</code>, <code>strat_wilsonc</code>, <code>agresti-coull</code> or <code>jeffreys</code>.</p></dd>
 
 
 <dt>variables</dt>
@@ -233,96 +192,20 @@ to avoid warnings from <code>rtables</code>.</p></dd>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>prop_wilson()</code>: the Wilson interval calls <code><a href="https://rdrr.io/r/stats/prop.test.html" class="external-link">stats::prop.test()</a></code>.
-Also referred to as Wilson score interval.</p></li>
-<li><p><code>prop_strat_wilson()</code>: Calculates the stratified Wilson confidence
-interval for unequal proportions as described in
-Yan and Su (2010)</p></li>
-<li><p><code>prop_clopper_pearson()</code>: the Clopper-Pearson interval calls
-<code><a href="https://rdrr.io/r/stats/binom.test.html" class="external-link">stats::binom.test()</a></code>. Also referred to as the <code>exact</code> method.</p></li>
-<li><p><code>prop_wald()</code>: the Wald interval follows the usual
-textbook definition for a single proportion confidence interval using the
-normal approximation.</p></li>
-<li><p><code>prop_agresti_coull()</code>: the Agresti-Coull interval was created by
-Alan Agresti and Brent Coull and can be understood (for 95% CI) as adding
-two successes and two failures to the data, and then using the Wald
-formula to construct a CI.</p></li>
-<li><p><code>prop_jeffreys()</code>: the Jeffreys interval is an equal-tailed
-interval based on the non-informative Jeffreys prior for a binomial
-proportion.</p></li>
-<li><p><code>s_proportion()</code>: statistics function estimating a
+<ul><li><p><code>s_proportion()</code>: statistics function estimating a
 proportion along with its confidence interval.</p></li>
 <li><p><code>a_proportion()</code>: Formatted Analysis function which can be further customized by calling
 <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 <li><p><code>estimate_proportion()</code>: used in a <code>rtables</code> pipeline.</p></li>
 </ul></div>
     <div class="section level2">
-    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    
-<ul><li><p>Yan X, Su XG (2010).
-“Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.”
-<em>Stat. Biopharm. Res.</em>, <b>2</b>(3), 329--335.</p></li>
-</ul></div>
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><a href="h_proportions.html">h_proportions</a></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">rsp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">prop_wilson</span><span class="op">(</span><span class="va">rsp</span>, conf_level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2692718 0.7307282</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Stratified Wilson confidence interval with unequal probabilities</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">rsp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">strata_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="st">"f1"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"f2"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">strata_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">n_strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">rsp</span>, <span class="va">strata</span><span class="op">)</span><span class="op">)</span> <span class="co"># Number of strata</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">prop_strat_wilson</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  rsp <span class="op">=</span> <span class="va">rsp</span>, strata <span class="op">=</span> <span class="va">strata</span>,</span></span>
-<span class="r-in"><span>  conf_level <span class="op">=</span> <span class="fl">0.90</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $conf_int</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.4072891 0.5647887 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       a.x       b.x       a.y       b.y       a.z       b.z </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2074199 0.1776464 0.1915610 0.1604678 0.1351096 0.1277952 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Not automatic setting of weights</span></span></span>
-<span class="r-in"><span><span class="fu">prop_strat_wilson</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  rsp <span class="op">=</span> <span class="va">rsp</span>, strata <span class="op">=</span> <span class="va">strata</span>,</span></span>
-<span class="r-in"><span>  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n_strata</span>, <span class="va">n_strata</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  conf_level <span class="op">=</span> <span class="fl">0.90</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $conf_int</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.4190436 0.5789733 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">prop_clopper_pearson</span><span class="op">(</span><span class="va">rsp</span>, conf_level <span class="op">=</span> <span class="fl">.95</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3886442 0.5919637</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">prop_wald</span><span class="op">(</span><span class="va">rsp</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3920214 0.5879786</span>
-<span class="r-in"><span><span class="fu">prop_wald</span><span class="op">(</span><span class="va">rsp</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span>, correct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3870214 0.5929786</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">prop_agresti_coull</span><span class="op">(</span><span class="va">rsp</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3942193 0.5865206</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">prop_jeffreys</span><span class="op">(</span><span class="va">rsp</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3934779 0.5870917</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Case with only logical vector.</span></span></span>
 <span class="r-in"><span><span class="va">rsp_v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">s_proportion</span><span class="op">(</span><span class="va">rsp_v</span><span class="op">)</span></span></span>
@@ -355,13 +238,13 @@ proportion along with its confidence interval.</p></li>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"strat_wilson"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_prop</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 56.00  0.56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49.00  0.49</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Responders"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $prop_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49.71483 65.08445 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40.80675 56.65017 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "90% CI (Stratified Wilson, without correction)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -372,10 +255,10 @@ proportion along with its confidence interval.</p></li>
 <span class="r-in"><span>  AVAL    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">estimate_proportion</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span>df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                        A              B              C     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Responders                        4 (100.0%)      2 (50.0%)      0 (0.0%)  </span>

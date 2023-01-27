@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9033</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9034</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,15 +34,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -184,7 +175,6 @@ column with a single value and a column with 2 values.</p>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org/" class="external-link">forcats</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/insightsengineering/nestcolor/" class="external-link">nestcolor</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">adrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adrs"</span><span class="op">)</span></span></span>
@@ -201,13 +191,13 @@ column with a single value and a column with 2 values.</p>
 <span class="r-in"><span>    rsp <span class="op">=</span> <span class="va">AVALC</span> <span class="op">==</span> <span class="st">"CR"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adrs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">adrs_labels</span>, <span class="st">"Response"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="response_subgroups.html">extract_rsp_subgroups</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_rsp_subgroups.html">extract_rsp_subgroups</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="st">"rsp"</span>, arm <span class="op">=</span> <span class="st">"ARM"</span>, subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"STRATA2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Full commonly used response table.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="response_subgroups.html">tabulate_rsp_subgroups</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">g_forest</span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -215,7 +205,7 @@ column with a single value and a column with 2 values.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Odds ratio only table.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">tbl_or</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">tbl_or</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="response_subgroups.html">tabulate_rsp_subgroups</a></span><span class="op">(</span><span class="va">df</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot"</span>, <span class="st">"or"</span>, <span class="st">"ci"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tbl_or</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">g_forest</span><span class="op">(</span></span></span>
@@ -249,7 +239,7 @@ column with a single value and a column with 2 values.</p>
 <span class="r-in"><span>  <span class="st">"is_event"</span> <span class="op">=</span> <span class="st">"Event Flag"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte_f</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="survival_duration_subgroups.html">extract_survival_subgroups</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_survival_subgroups.html">extract_survival_subgroups</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
 <span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
@@ -257,14 +247,14 @@ column with a single value and a column with 2 values.</p>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">table_hr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">table_hr</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="survival_duration_subgroups.html">tabulate_survival_subgroups</a></span><span class="op">(</span><span class="va">df</span>, time_unit <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">AVALU</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">g_forest</span><span class="op">(</span><span class="va">table_hr</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Works with any `rtable`.</span></span></span>
-<span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rtable.html" class="external-link">rtable</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu">rtable</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  header <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E"</span>, <span class="st">"CI"</span>, <span class="st">"N"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rrow.html" class="external-link">rrow</a></span><span class="op">(</span><span class="st">""</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.8</span>, <span class="fl">1.2</span><span class="op">)</span>, <span class="fl">200</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rrow.html" class="external-link">rrow</a></span><span class="op">(</span><span class="st">""</span>, <span class="fl">1.2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">1.4</span><span class="op">)</span>, <span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">rrow</span><span class="op">(</span><span class="st">""</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.8</span>, <span class="fl">1.2</span><span class="op">)</span>, <span class="fl">200</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">rrow</span><span class="op">(</span><span class="st">""</span>, <span class="fl">1.2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">1.4</span><span class="op">)</span>, <span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">g_forest</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tbl <span class="op">=</span> <span class="va">tbl</span>,</span></span>
@@ -274,13 +264,13 @@ column with a single value and a column with 2 values.</p>
 <span class="r-in"><span>  x_at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  col_symbol_size <span class="op">=</span> <span class="fl">3</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rtable.html" class="external-link">rtable</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  header <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rheader.html" class="external-link">rheader</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rrow.html" class="external-link">rrow</a></span><span class="op">(</span><span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rcell.html" class="external-link">rcell</a></span><span class="op">(</span><span class="st">"A"</span>, colspan <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rrow.html" class="external-link">rrow</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"c1"</span>, <span class="st">"c2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu">rtable</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  header <span class="op">=</span> <span class="fu">rheader</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu">rrow</span><span class="op">(</span><span class="st">""</span>, <span class="fu">rcell</span><span class="op">(</span><span class="st">"A"</span>, colspan <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">rrow</span><span class="op">(</span><span class="st">""</span>, <span class="st">"c1"</span>, <span class="st">"c2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rrow.html" class="external-link">rrow</a></span><span class="op">(</span><span class="st">"row 1"</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.8</span>, <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/rrow.html" class="external-link">rrow</a></span><span class="op">(</span><span class="st">"row 2"</span>, <span class="fl">1.2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">1.4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">rrow</span><span class="op">(</span><span class="st">"row 1"</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.8</span>, <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">rrow</span><span class="op">(</span><span class="st">"row 2"</span>, <span class="fl">1.2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">1.4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">g_forest</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tbl <span class="op">=</span> <span class="va">tbl</span>,</span></span>

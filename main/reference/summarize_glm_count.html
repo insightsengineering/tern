@@ -14,7 +14,7 @@ This can be used to analyze count and/or frequency data using a linear model."><
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9033</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9034</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,15 +38,6 @@ This can be used to analyze count and/or frequency data using a linear model."><
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -76,15 +67,7 @@ This can be used to analyze count and/or frequency data using a linear model.</p
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">h_glm_poisson</span><span class="op">(</span><span class="va">.var</span>, <span class="va">.df_row</span>, <span class="va">variables</span>, <span class="va">weights</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">h_glm_quasipoisson</span><span class="op">(</span><span class="va">.var</span>, <span class="va">.df_row</span>, <span class="va">variables</span>, <span class="va">weights</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">h_glm_count</span><span class="op">(</span><span class="va">.var</span>, <span class="va">.df_row</span>, <span class="va">variables</span>, <span class="va">distribution</span>, <span class="va">weights</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">h_ppmeans</span><span class="op">(</span><span class="va">obj</span>, <span class="va">.df_row</span>, <span class="va">arm</span>, <span class="va">conf_level</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">s_glm_count</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_glm_count</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
 <span>  <span class="va">.df_row</span>,</span>
@@ -128,37 +111,21 @@ This can be used to analyze count and/or frequency data using a linear model.</p
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>.var</dt>
+    <dl><dt>df</dt>
+<dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+
+
+<dt>.var</dt>
 <dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
 by a statistics function.</p></dd>
 
 
 <dt>.df_row</dt>
-<dd><p>(<code>data frame</code>)<br> data set that includes all the variables that are called
-in <code>.var</code> and <code>variables</code>.</p></dd>
+<dd><p>(<code>data frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
 
 
 <dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>strings</code>)<br> list of additional analysis variables, with
-expected elements:</p><ul><li><p><code>arm</code>: (<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of <code>arm</code> variable is taken as the
-reference group.</p></li>
-<li><p><code>covariates</code>: (<code>character</code>)<br> a vector that can contain single variable names (such as
-<code>"X1"</code>), and/or interaction terms indicated by <code>"X1 * X2"</code>.</p></li>
-<li><p><code>offset</code>: (<code>numeric</code>)<br> a numeric vector or scalar adding an offset.</p></li>
-</ul></dd>
-
-
-<dt>obj</dt>
-<dd><p>(<code>glm.fit</code>) fitted model object used to derive the mean rate estimates in each treatment arm.</p></dd>
-
-
-<dt>conf_level</dt>
-<dd><p>(<code>numeric</code>) value used to derive the confidence interval for the rate.</p></dd>
-
-
-<dt>df</dt>
-<dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
 
 
 <dt>.ref_group</dt>
@@ -167,6 +134,10 @@ reference group.</p></li>
 
 <dt>.in_ref_col</dt>
 <dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
+
+
+<dt>conf_level</dt>
+<dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
 
 
 <dt>lyt</dt>
@@ -209,21 +180,6 @@ to avoid warnings from <code>rtables</code>.</p></dd>
 <dt>.indent_mods</dt>
 <dd><p>(named <code>integer</code>)<br> indent modifiers for the labels.</p></dd>
 
-
-<dt>`weights`(`character`)<br></dt>
-<dd><p>character vector specifying weights used in averaging predictions.</p></dd>
-
-
-<dt>`distribution`(`character`)<br></dt>
-<dd><p>a character value specifying the distribution
-used in the regression (poisson, quasipoisson).</p></dd>
-
-
-<dt>`arm`:</dt>
-<dd><p>(<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of <code>arm</code> variable is taken as the
-reference group.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -239,12 +195,7 @@ reference group.</p></dd>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>h_glm_poisson()</code>: Helper function to return results of a poisson model.</p></li>
-<li><p><code>h_glm_quasipoisson()</code>: Helper function to return results of a poisson model.</p></li>
-<li><p><code>h_glm_count()</code>: Helper function to return the results of the
-selected model (poisson, quasipoisson, negative binomial).</p></li>
-<li><p><code>h_ppmeans()</code>: Helper function to return the estimated means.</p></li>
-<li><p><code>s_glm_count()</code>: Statistics function that produces a named list of results
+<ul><li><p><code>s_glm_count()</code>: Statistics function that produces a named list of results
 of the investigated poisson model.</p></li>
 <li><p><code>a_glm_count()</code>: Formatted Analysis function which can be further customized by calling
 <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
@@ -255,55 +206,6 @@ summary tables for analysis of count data using generalized linear models (poiss
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - h_glm_poisson</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">h_glm_poisson</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARM"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - h_glm_quasipoisson</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">h_glm_quasipoisson</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARM"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"REGION1"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - h_glm_count</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">h_glm_count</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARMCD"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  distribution <span class="op">=</span> <span class="st">"poisson"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - h_ppmeans</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu">h_glm_count</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARMCD"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"REGION1"</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  distribution <span class="op">=</span> <span class="st">"quasipoisson"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">h_ppmeans</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  obj <span class="op">=</span> <span class="va">fits</span><span class="op">$</span><span class="va">glm_fit</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
-<span class="r-in"><span>  arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
-<span class="r-in"><span>  conf_level <span class="op">=</span> <span class="fl">0.95</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Internal function - s_change_from_baseline</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">s_glm_count</span><span class="op">(</span></span></span>
@@ -342,9 +244,9 @@ summary tables for analysis of count data using generalized linear models (poiss
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"TNE"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">anl</span><span class="op">$</span><span class="va">AVAL_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">anl</span><span class="op">$</span><span class="va">AVAL</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">add_colcounts</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="summarize_variables.html">summarize_vars</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"AVAL_f"</span>,</span></span>
 <span class="r-in"><span>    var_labels <span class="op">=</span> <span class="st">"Number of exacerbations per patient"</span>,</span></span>
@@ -377,7 +279,7 @@ summary tables for analysis of count data using generalized linear models (poiss
 <span class="r-in"><span>      rate_ratio_ci <span class="op">=</span> <span class="st">"Rate Ratio CI"</span>, pval <span class="op">=</span> <span class="st">"p value"</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">anl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">anl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                 B: Placebo           A: Drug X        C: Combination  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                   (N=134)             (N=134)             (N=132)     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————</span>

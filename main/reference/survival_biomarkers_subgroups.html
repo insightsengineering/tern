@@ -14,7 +14,7 @@ across population subgroups."><!-- mathjax --><script src="https://cdnjs.cloudfl
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9033</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9034</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,15 +38,6 @@ across population subgroups."><!-- mathjax --><script src="https://cdnjs.cloudfl
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -76,15 +67,7 @@ across population subgroups.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extract_survival_biomarkers</span><span class="op">(</span></span>
-<span>  <span class="va">variables</span>,</span>
-<span>  <span class="va">data</span>,</span>
-<span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  control <span class="op">=</span> <span class="fu"><a href="control_coxreg.html">control_coxreg</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  label_all <span class="op">=</span> <span class="st">"All Patients"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">tabulate_survival_biomarkers</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tabulate_survival_biomarkers</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot"</span>, <span class="st">"n_tot_events"</span>, <span class="st">"median"</span>, <span class="st">"hr"</span>, <span class="st">"ci"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span>
 <span>  time_unit <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -93,32 +76,9 @@ across population subgroups.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
-
-
-<dt>data</dt>
-<dd><p>(<code>data.frame</code>)<br> the dataset containing the variables to summarize.</p></dd>
-
-
-<dt>groups_lists</dt>
-<dd><p>(named <code>list</code> of <code>list</code>)<br> optionally contains for each <code>subgroups</code> variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.</p></dd>
-
-
-<dt>control</dt>
-<dd><p>(<code>list</code>)<br> a list of parameters as returned by the
-helper function <code><a href="control_coxreg.html">control_coxreg()</a></code>.</p></dd>
-
-
-<dt>label_all</dt>
-<dd><p>(<code>string</code>)<br> label for the total population analysis.</p></dd>
-
-
-<dt>df</dt>
+    <dl><dt>df</dt>
 <dd><p>(<code>data.frame</code>)<br> containing all analysis variables, as returned by
-<code>extract_survival_biomarkers()</code>.</p></dd>
+<code><a href="extract_survival_biomarkers.html">extract_survival_biomarkers()</a></code>.</p></dd>
 
 
 <dt>vars</dt>
@@ -146,13 +106,7 @@ the required statistics. The tables are then typically used as input for forest 
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>extract_survival_biomarkers()</code>: prepares estimates for number of events, patients and median survival
-times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
-population subgroups in a single data frame.
-<code>variables</code> corresponds to the names of variables found in <code>data</code>, passed as a named list and requires elements
-<code>tte</code>, <code>is_event</code>, <code>biomarkers</code> (vector of continuous biomarker variables) and optionally <code>subgroups</code> and <code>strat</code>.
-<code>groups_lists</code> optionally specifies groupings for <code>subgroups</code> variables.</p></li>
-<li><p><code>tabulate_survival_biomarkers()</code>: table creating function.</p></li>
+<ul><li><p><code>tabulate_survival_biomarkers()</code>: table creating function.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
@@ -162,8 +116,7 @@ created by combining multiple subtables.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="h_survival_biomarkers_subgroups.html">h_coxreg_mult_cont_df()</a></code> which is used internally.</p>
-<p><code><a href="h_survival_biomarkers_subgroups.html">h_tab_surv_one_biomarker()</a></code> which is used internally.</p></div>
+    <div class="dont-index"><p><code><a href="h_survival_biomarkers_subgroups.html">h_tab_surv_one_biomarker()</a></code> which is used internally, <code><a href="extract_survival_biomarkers.html">extract_survival_biomarkers()</a></code>.</p></div>
     </div>
 
     <div class="section level2">
@@ -171,8 +124,6 @@ created by combining multiple subtables.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Testing dataset.</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org/" class="external-link">forcats</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adtte"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -187,11 +138,8 @@ created by combining multiple subtables.</p>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVALU"</span> <span class="op">=</span> <span class="va">adtte_labels</span><span class="op">[[</span><span class="st">"AVALU"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"is_event"</span> <span class="op">=</span> <span class="st">"Event Flag"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte_f</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">labels</span></span></span>
-<span class="r-in"><span><span class="co"># Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,</span></span></span>
-<span class="r-in"><span><span class="co"># in multiple regression models containing one covariate `RACE`,</span></span></span>
-<span class="r-in"><span><span class="co"># as well as one stratification variable `STRATA1`. The subgroups</span></span></span>
-<span class="r-in"><span><span class="co"># are defined by the levels of `BMRKR2`.</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">extract_survival_biomarkers</span><span class="op">(</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_survival_biomarkers.html">extract_survival_biomarkers</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
 <span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
@@ -230,57 +178,7 @@ created by combining multiple subtables.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7 Categorical Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 Categorical Level Biomarker 2 analysis</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Here we group the levels of `BMRKR2` manually.</span></span></span>
-<span class="r-in"><span><span class="va">df_grouped</span> <span class="op">&lt;-</span> <span class="fu">extract_survival_biomarkers</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    tte <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>    is_event <span class="op">=</span> <span class="st">"is_event"</span>,</span></span>
-<span class="r-in"><span>    biomarkers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    strata <span class="op">=</span> <span class="st">"STRATA1"</span>,</span></span>
-<span class="r-in"><span>    covariates <span class="op">=</span> <span class="st">"SEX"</span>,</span></span>
-<span class="r-in"><span>    subgroups <span class="op">=</span> <span class="st">"BMRKR2"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span>,</span></span>
-<span class="r-in"><span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    BMRKR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="st">"low"</span> <span class="op">=</span> <span class="st">"LOW"</span>,</span></span>
-<span class="r-in"><span>      <span class="st">"low/medium"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      <span class="st">"low/medium/high"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df_grouped</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   biomarker              biomarker_label n_tot n_tot_events   median        hr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    BMRKR1 Continuous Level Biomarker 1   400          282 680.9598 0.9838045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       AGE                          Age   400          282 680.9598 1.0060610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    BMRKR1 Continuous Level Biomarker 1   135           95 647.7467 1.0155961</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       AGE                          Age   135           95 647.7467 1.0095516</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    BMRKR1 Continuous Level Biomarker 1   270          188 647.7467 0.9981993</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       AGE                          Age   270          188 647.7467 1.0131282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    BMRKR1 Continuous Level Biomarker 1   400          282 680.9598 0.9838045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       AGE                          Age   400          282 680.9598 1.0060610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         lcl      ucl conf_level      pval     pval_label        subgroup    var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.9500735 1.018733       0.95 0.3589900 p-value (Wald)    All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.9908739 1.021481       0.95 0.4361969 p-value (Wald)    All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9553432 1.079649       0.95 0.6199370 p-value (Wald)             low BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.9801032 1.039885       0.95 0.5291011 p-value (Wald)             low BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.9572619 1.040887       0.95 0.9327722 p-value (Wald)      low/medium BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.9927059 1.033971       0.95 0.2093518 p-value (Wald)      low/medium BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.9500735 1.018733       0.95 0.3589900 p-value (Wald) low/medium/high BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.9908739 1.021481       0.95 0.4361969 p-value (Wald) low/medium/high BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Categorical Level Biomarker 2 analysis</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Table with default columns.</span></span></span>
-<span class="r-in"><span><span class="co"># df &lt;- &lt;needs_to_be_inputted&gt;</span></span></span>
 <span class="r-in"><span><span class="fu">tabulate_survival_biomarkers</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   Total n   Total Events   Median   Hazard Ratio   95% Wald CI    p-value (Wald)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
