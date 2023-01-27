@@ -13,8 +13,6 @@
 #'  * a model including only levels C and B, the effect of C estimated in reference to B.
 #'
 #' @export
-#'
-#' @md
 pairwise <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }
@@ -37,8 +35,6 @@ pairwise <- function(x) {
 #' + `y ~ ARM + RACE`
 #'
 #' @export
-#'
-#' @md
 univariate <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }
@@ -49,7 +45,6 @@ rht <- function(x) {
   y <- as.character(rev(x)[[1]])
   return(y)
 }
-
 
 #' Hazard Ratio Estimation in Interactions
 #'
@@ -85,6 +80,7 @@ rht <- function(x) {
 #'   \item{hr}{Hazard ratio.}
 #'   \item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
 #' }
+#' @seealso [s_cox_multivariate()].
 #'
 #' @examples
 #' library(dplyr)
@@ -180,7 +176,6 @@ estimate_coef <- function(variable, given,
   return(y)
 }
 
-
 #' `tryCatch` around `car::Anova`
 #'
 #' Captures warnings when executing [car::Anova].
@@ -240,7 +235,7 @@ try_car_anova <- function(mod,
   return(y)
 }
 
-#' Fit the Cox regression model and Anova
+#' Fit the Cox Regression Model and Anova
 #'
 #' The functions allows to derive from the [survival::coxph()] results
 #' the effect p.values using [car::Anova()]. This last package introduces
@@ -248,10 +243,9 @@ try_car_anova <- function(mod,
 #'
 #' @inheritParams t_coxreg
 #' @noRd
-#' @md
 #'
 #' @return A list with items `mod` (results of [survival::coxph()]),
-#'   `msum` (result of `summary`) and `aov` (result of [car::Anova]).
+#' `msum` (result of `summary`) and `aov` (result of [car::Anova]).
 fit_n_aov <- function(formula,
                       data = data,
                       conf_level = conf_level,
@@ -284,7 +278,6 @@ fit_n_aov <- function(formula,
   return(y)
 }
 
-
 # argument_checks
 check_formula <- function(formula) {
   if (!(inherits(formula, "formula"))) {
@@ -293,7 +286,6 @@ check_formula <- function(formula) {
 
   invisible()
 }
-
 
 check_covariate_formulas <- function(covariates) {
   if (!all(vapply(X = covariates, FUN = inherits, what = "formula", FUN.VALUE = TRUE)) || is.null(covariates)) {
@@ -331,8 +323,7 @@ check_increments <- function(increments, covariates) {
   invisible()
 }
 
-
-#' Multivariate Cox Model - summarized results
+#' Multivariate Cox Model - Summarized Results
 #'
 #' Analyses based on multivariate Cox model are usually not performed for the Controlled Substance Reporting or
 #' regulatory documents but serve exploratory purposes only (e.g., for publication). In practice, the model usually
@@ -355,6 +346,7 @@ check_increments <- function(increments, covariates) {
 #' @details The output is limited to single effect terms. Work in ongoing for estimation of interaction terms
 #'     but is out of scope as defined by the  Global Data Standards Repository
 #'     (**`GDS_Standard_TLG_Specs_Tables_2.doc`**).
+#' @seealso [estimate_coef()].
 #'
 #' @examples
 #' library(dplyr)

@@ -9,6 +9,7 @@ ANCOVA
 Agresti
 Anova
 Biomarker
+Biomarkers
 Bové
 Byar's
 CDISC
@@ -63,6 +64,7 @@ nd
 onlinelibrary
 paramcd
 pearson
+pkgdown
 poisson
 pratt
 pre

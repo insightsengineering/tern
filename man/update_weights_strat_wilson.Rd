@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_proportion.R
 \name{update_weights_strat_wilson}
 \alias{update_weights_strat_wilson}
-\title{Helper function for the estimation of weights for \code{prop_strat_wilson}}
+\title{Helper Function for the Estimation of Weights for \code{prop_strat_wilson}}
 \usage{
 update_weights_strat_wilson(
   vars,
@@ -25,6 +25,9 @@ initial estimation with identical weights of the quantiles.}
 initial weights used to calculate \code{strata_qnorm}. This can be optimized in
 the future if we need to estimate better initial weights.}
 
+\item{n_per_strata}{(\code{numeric}) \cr
+number of elements in each strata.}
+
 \item{max_iterations}{(\code{count}) \cr
 maximum number of iterations to be tried. Convergence is always checked.}
 
@@ -34,23 +37,21 @@ maximum number of iterations to be tried. Convergence is always checked.}
 tolerance threshold for convergence.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This function wraps the iteration procedure that allows you to estimate
 the weights for each proportional strata. This assumes to minimize the
-weighted squared length of the confidence interval. See \code{\link[=prop_strat_wilson]{prop_strat_wilson()}}
-for references and details.
+weighted squared length of the confidence interval.
 }
 \examples{
-\dontrun{
 vs <- c(0.011, 0.013, 0.012, 0.014, 0.017, 0.018)
 sq <- 0.674
 ws <- rep(1 / length(vs), length(vs))
 ns <- c(22, 18, 17, 17, 14, 12)
 
 update_weights_strat_wilson(vs, sq, ws, ns, 100, 0.95, 0.001)
-}
 
 }
 \seealso{
-\code{\link[=prop_strat_wilson]{prop_strat_wilson()}}
+For references and details see \code{\link[=prop_strat_wilson]{prop_strat_wilson()}}.
 }
-\keyword{internal}

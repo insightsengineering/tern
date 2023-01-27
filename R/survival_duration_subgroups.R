@@ -17,10 +17,9 @@
 #' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips
 #'   displaying unit.
 #' @name survival_duration_subgroups
-#' @order 1
+#' @seealso [extract_survival_subgroups()]
 #'
 #' @examples
-#' # Testing dataset.
 #' library(dplyr)
 #' library(forcats)
 #'
@@ -49,16 +48,61 @@
 #'   "is_event" = "Event Flag"
 #' )
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
+#' df <- extract_survival_subgroups(
+#'   variables = list(
+#'     tte = "AVAL",
+#'     is_event = "is_event",
+#'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
+#'   ),
+#'   data = adtte_f
+#' )
+#' df
 NULL
 
-#' @describeIn survival_duration_subgroups prepares estimates of median survival times and treatment hazard ratios for
-#'   population subgroups in data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()].
+#' Prepares Survival Data for Population Subgroups in Data Frames
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Prepares estimates of median survival times and treatment hazard ratios for population subgroups in
+#' data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()].
 #'   Result is a list of two data frames: `survtime` and `hr`.
 #'   `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
 #'   `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`. `groups_lists` optionally specifies
 #'   groupings for `subgroups` variables.
 #' @export
+#' @seealso [survival_duration_subgroups]
+#' @inheritParams argument_convention
+#' @inheritParams survival_duration_subgroups
+#' @inheritParams survival_coxph_pairwise
+#'
 #' @examples
+#' library(dplyr)
+#' library(forcats)
+#'
+#' adtte <- ex_adtte
+#' adtte_labels <- formatters::var_labels(adtte)
+#'
+#' adtte_f <- adtte %>%
+#'   filter(
+#'     PARAMCD == "OS",
+#'     ARM %in% c("B: Placebo", "A: Drug X"),
+#'     SEX %in% c("M", "F")
+#'   ) %>%
+#'   mutate(
+#'     # Reorder levels of ARM to display reference arm before treatment arm.
+#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+#'     SEX = droplevels(SEX),
+#'     AVALU = as.character(AVALU),
+#'     is_event = CNSR == 0
+#'   )
+#' labels <- c(
+#'   "ARM" = adtte_labels[["ARM"]],
+#'   "SEX" = adtte_labels[["SEX"]],
+#'   "AVALU" = adtte_labels[["AVALU"]],
+#'   "is_event" = "Event Flag"
+#' )
+#' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
 #' df <- extract_survival_subgroups(
 #'   variables = list(

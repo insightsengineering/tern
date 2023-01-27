@@ -87,7 +87,6 @@ groupings for \code{subgroups} variables.
 
 }}
 \examples{
-# Testing dataset.
 library(dplyr)
 library(forcats)
 

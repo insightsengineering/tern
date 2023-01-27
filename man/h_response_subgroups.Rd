@@ -81,8 +81,6 @@ and \code{strat}. \code{groups_lists} optionally specifies groupings for \code{s
 
 }}
 \examples{
-
-# Testing dataset.
 library(dplyr)
 library(forcats)
 

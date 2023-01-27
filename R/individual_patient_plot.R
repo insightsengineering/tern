@@ -1,5 +1,7 @@
 #' Individual Patient Plots
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Line plot(s) displaying trend in patients' parameter values over time is rendered.
 #' Patients' individual baseline values can be added to the plot(s) as reference.
 #'
@@ -24,16 +26,20 @@
 #' @param caption (`character` scalar) \cr optional caption below the plot.
 #' @param col (`character`)\cr lines colors.
 #'
+#' @seealso Relevant helper function [h_g_ipp()].
+#'
 #' @name individual_patient_plot
+NULL
+
+#' Helper Function To Create Simple Line Plot over Time
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-NULL
-
-#' @describeIn individual_patient_plot helper function that generates a simple line
-#' plot displaying parameter trends over time.
+#' Function that generates a simple line plot displaying parameter trends over time.
 #'
 #' @inheritParams argument_convention
+#' @inheritParams g_ipp
+#' @seealso [g_ipp()] which uses this function.
 #' @export
 #' @examples
 #' library(dplyr)
@@ -135,7 +141,7 @@ h_g_ipp <- function(df,
   p
 }
 
-#' Plotting function for Individual Patient Plot
+#' Plotting Function for Individual Patient Plot
 #'
 #' @describeIn individual_patient_plot depending on user preference, renders a single
 #' graphic or compiles a list of graphics that show trends in individual's parameter
@@ -145,6 +151,13 @@ h_g_ipp <- function(df,
 #'
 #' @export
 #' @examples
+#' library(dplyr)
+#' library(nestcolor)
+#'
+#' # Select a small sample of data to plot.
+#' adlb <- ex_adlb %>%
+#'   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
+#'   slice(1:36)
 #'
 #' plot_list <- g_ipp(
 #'   df = adlb,

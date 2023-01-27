@@ -49,8 +49,6 @@ groups_list_to_df <- function(groups_list) {
 #' @export
 #'
 #' @examples
-#' library(rtables)
-#'
 #' groups <- combine_groups(
 #'   fct = DM$ARM,
 #'   ref = c("B: Placebo")
@@ -101,8 +99,6 @@ combine_groups <- function(fct,
 #' @export
 #'
 #' @examples
-#' library(rtables)
-#'
 #' # 1 - Basic use
 #'
 #' # Without group combination `split_cols_by_groups` is
@@ -223,14 +219,11 @@ split_cols_by_groups <- function(lyt,
 #' Simplifies the estimation of column counts, especially when group combination
 #' is required.
 #'
-#' @seealso combine_groups
+#' @seealso [combine_groups]
 #' @inheritParams combine_groups
 #' @inheritParams groups_list_to_df
 #'
 #' @examples
-#'
-#' library(rtables)
-#'
 #' ref <- c("A: Drug X", "B: Placebo")
 #' groups <- combine_groups(fct = DM$ARM, ref = ref)
 #'

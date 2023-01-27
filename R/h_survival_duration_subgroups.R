@@ -12,10 +12,8 @@
 #' @inheritParams survival_duration_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.
 #' @name h_survival_duration_subgroups
-#' @order 1
 #'
 #' @examples
-#' # Testing dataset.
 #' library(dplyr)
 #' library(forcats)
 #'

@@ -64,7 +64,6 @@ the results for a single biomarker.
 
 }}
 \examples{
-# Testing dataset.
 library(dplyr)
 library(forcats)
 

@@ -5,7 +5,6 @@
 #' Summarize median survival time and CIs, percentiles of survival times, \cr
 #' survival time range of censored/event patients.
 #'
-#' @md
 #' @inheritParams argument_convention
 #' @param control a (`list`) of parameters for comparison details, specified by using \cr
 #'    the helper function [control_surv_time]. Some possible parameter options are: \cr
@@ -15,7 +14,6 @@
 #' * `quantiles`: numeric vector of length two to specify the quantiles of survival time.
 #'
 #' @name survival_time
-#'
 NULL
 
 #' @describeIn survival_time Statistics Function which analyzes survival times.

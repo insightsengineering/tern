@@ -1,4 +1,4 @@
-# tern 0.7.10.9034
+# tern 0.7.10.9035
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -41,6 +41,8 @@
   appropriate `analyze` logic.
 * Exported function `format_xx`.
 * Updated tests to use `testthat` 3rd edition.
+* Created separate documentation files for functions in different sections of pkgdown reference.
+* Created separate `.R` files for logistic regression and cox regression helper functions.
 
 # tern 0.7.10
 

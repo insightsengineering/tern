@@ -28,8 +28,7 @@ stack_grobs(
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Stack grobs as a new grob with 1 column and multiple rows layout.
 }
 \examples{

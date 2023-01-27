@@ -61,10 +61,8 @@ the results for a single biomarker.
 
 }}
 \examples{
-# Testing dataset.
 library(dplyr)
 library(forcats)
-library(rtables)
 
 adrs <- ex_adrs
 adrs_labels <- formatters::var_labels(adrs)

@@ -2,22 +2,10 @@
 % Please edit documentation in R/summarize_glm_count.R
 \name{summarize_glm_count}
 \alias{summarize_glm_count}
-\alias{h_glm_poisson}
-\alias{h_glm_quasipoisson}
-\alias{h_glm_count}
-\alias{h_ppmeans}
 \alias{s_glm_count}
 \alias{a_glm_count}
 \title{Summary for Poisson Negative Binomial.}
 \usage{
-h_glm_poisson(.var, .df_row, variables, weights)
-
-h_glm_quasipoisson(.var, .df_row, variables, weights)
-
-h_glm_count(.var, .df_row, variables, distribution, weights)
-
-h_ppmeans(obj, .df_row, arm, conf_level)
-
 s_glm_count(
   df,
   .var,
@@ -60,32 +48,20 @@ summarize_glm_count(
 )
 }
 \arguments{
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\verb{data frame})\cr data set that includes all the variables that are called
-in \code{.var} and \code{variables}.}
+\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
-expected elements:
-\itemize{
-\item \code{arm}: (\code{string})\cr group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
-reference group.
-\item \code{covariates}: (\code{character})\cr a vector that can contain single variable names (such as
-\code{"X1"}), and/or interaction terms indicated by \code{"X1 * X2"}.
-\item \code{offset}: (\code{numeric})\cr a numeric vector or scalar adding an offset.
-}}
-
-\item{obj}{(\code{glm.fit}) fitted model object used to derive the mean rate estimates in each treatment arm.}
-
-\item{conf_level}{(\code{numeric}) value used to derive the confidence interval for the rate.}
-
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -107,15 +83,6 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
-\item{`weights`(`character`)\cr}{character vector specifying weights used in averaging predictions.}
-
-\item{`distribution`(`character`)\cr}{a character value specifying the distribution
-used in the regression (poisson, quasipoisson).}
-
-\item{`arm`:}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
-reference group.}
 }
 \value{
 A named list of 5 statistics:
@@ -136,15 +103,6 @@ This can be used to analyze count and/or frequency data using a linear model.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_glm_poisson()}: Helper function to return results of a poisson model.
-
-\item \code{h_glm_quasipoisson()}: Helper function to return results of a poisson model.
-
-\item \code{h_glm_count()}: Helper function to return the results of the
-selected model (poisson, quasipoisson, negative binomial).
-
-\item \code{h_ppmeans()}: Helper function to return the estimated means.
-
 \item \code{s_glm_count()}: Statistics function that produces a named list of results
 of the investigated poisson model.
 
@@ -156,55 +114,6 @@ summary tables for analysis of count data using generalized linear models (poiss
 
 }}
 \examples{
-
-# Internal function - h_glm_poisson
-\dontrun{
-h_glm_poisson(
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL)
-)
-}
-
-
-# Internal function - h_glm_quasipoisson
-\dontrun{
-h_glm_quasipoisson(
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
-)
-}
-
-
-# Internal function - h_glm_count
-\dontrun{
-h_glm_count(
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = NULL),
-  distribution = "poisson"
-)
-}
-
-
-# Internal function - h_ppmeans
-\dontrun{
-fits <- h_glm_count(
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-  distribution = "quasipoisson"
-)
-
-h_ppmeans(
-  obj = fits$glm_fit,
-  .df_row = anl,
-  arm = "ARM",
-  conf_level = 0.95
-)
-}
-
 
 # Internal function - s_change_from_baseline
 \dontrun{

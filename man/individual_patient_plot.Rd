@@ -2,26 +2,9 @@
 % Please edit documentation in R/individual_patient_plot.R
 \name{individual_patient_plot}
 \alias{individual_patient_plot}
-\alias{h_g_ipp}
 \alias{g_ipp}
 \title{Individual Patient Plots}
 \usage{
-h_g_ipp(
-  df,
-  xvar,
-  yvar,
-  xlab,
-  ylab,
-  id_var,
-  title = "Individual Patient Plots",
-  subtitle = "",
-  caption = NULL,
-  add_baseline_hline = FALSE,
-  yvar_baseline = "BASE",
-  ggtheme = nestcolor::theme_nest(),
-  col = NULL
-)
-
 g_ipp(
   df,
   xvar,
@@ -68,29 +51,25 @@ Ignored when \code{add_baseline_hline} is FALSE.}
 \item{ggtheme}{(\code{theme})\cr optional graphical theme function as provided
 by \code{ggplot2} to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
 
-\item{col}{(\code{character})\cr lines colors.}
-
 \item{plotting_choices}{(\code{character})\cr specifies options for displaying
 plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}
 
 \item{max_obs_per_plot}{(\code{count})\cr Number of observations to be plotted on one
 plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
+
+\item{col}{(\code{character})\cr lines colors.}
 }
 \value{
 a \code{ggplot} object or a list of \code{ggplot} objects.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Line plot(s) displaying trend in patients' parameter values over time is rendered.
 Patients' individual baseline values can be added to the plot(s) as reference.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_g_ipp()}: helper function that generates a simple line
-plot displaying parameter trends over time.
-
 \item \code{g_ipp()}: depending on user preference, renders a single
 graphic or compiles a list of graphics that show trends in individual's parameter
 values over time.
@@ -105,17 +84,6 @@ adlb <- ex_adlb \%>\%
   filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
   slice(1:36)
 
-p <- h_g_ipp(
-  df = adlb,
-  xvar = "AVISIT",
-  yvar = "AVAL",
-  xlab = "Visit",
-  id_var = "USUBJID",
-  ylab = "SGOT/ALT (U/L)",
-  add_baseline_hline = TRUE
-)
-p
-
 plot_list <- g_ipp(
   df = adlb,
   xvar = "AVISIT",
@@ -128,4 +96,7 @@ plot_list <- g_ipp(
   max_obs_per_plot = 5
 )
 plot_list
+}
+\seealso{
+Relevant helper function \code{\link[=h_g_ipp]{h_g_ipp()}}.
 }

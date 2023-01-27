@@ -1,15 +1,15 @@
 #' Stack Multiple Grobs
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Stack grobs as a new grob with 1 column and multiple rows layout.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @param ... grobs.
 #' @param grobs list of grobs.
 #' @param padding unit of length 1, space between each grob.
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #' @param name a character identifier for the grob.
 #' @param gp A \code{\link{gpar}} object.
-#'
 #' @export
 #'
 #' @examples
@@ -91,8 +91,6 @@ stack_grobs <- function(...,
 #' @param nrow number of rows in layout.
 #' @param padding_ht unit of length 1, vertical space between each grob.
 #' @param padding_wt unit of length 1, horizontal space between each grob.
-#'
-#'
 #'
 #' @examples
 #' library(grid)
@@ -228,7 +226,6 @@ arrange_grobs <- function(..., # nolint
 #' @param grob grid object
 #' @param newpage draw on a new page
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
-#'
 #' @export
 #'
 #' @examples

@@ -1,15 +1,22 @@
 #' Cumulative Counts with Thresholds
 #'
 #' @description `r lifecycle::badge("stable")`
+#'
 #' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
 #' greater than, or greater or equal to user-specific thresholds.
+#'
+#' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()]
 #'
 #' @name count_cumulative
 #'
 NULL
 
-#' @describeIn count_cumulative Helper function to calculate count and fraction of
-#'   `x` values in the lower or upper tail given a threshold.
+#' Helper Function for [s_count_cumulative()]
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper function to calculate count and fraction of
+#' `x` values in the lower or upper tail given a threshold.
 #'
 #' @inheritParams argument_convention
 #' @param threshold (`number`)\cr a cutoff value as threshold to count values of `x`.
@@ -21,6 +28,7 @@ NULL
 #'   - `count`: the count of values less than, less or equal to, greater than, or
 #'   greater or equal to a threshold of user specification.
 #'   - `fraction`: the fraction of the count.
+#' @seealso [count_cumulative]
 #'
 #' @export
 #'
@@ -64,11 +72,13 @@ h_count_cumulative <- function(x,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This is a helper function that describes analysis in `s_count_cumulative`
-#' @inheritParams h_count_cumulative
-#' @return a `string`
-#' @export
+#' This is a helper function that describes analysis in [s_count_cumulative()].
 #'
+#' @inheritParams h_count_cumulative
+#' @return a descriptive `string`.
+#' @seealso [s_count_cumulative()]
+#'
+#' @export
 d_count_cumulative <- function(threshold, lower_tail, include_eq) {
   checkmate::assert_numeric(threshold)
   lg <- if (lower_tail) "<" else ">"
@@ -87,6 +97,9 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 #' @examples
 #' # Internal function - s_count_cumulative
 #' \dontrun{
+#' set.seed(1, kind = "Mersenne-Twister")
+#' x <- c(sample(1:10, 10), NA)
+#' .N_col <- length(x)
 #' s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 #' s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 #' }

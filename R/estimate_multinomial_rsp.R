@@ -5,20 +5,23 @@
 #' Estimate the proportion along with confidence interval of a proportion
 #' regarding the level of a factor.
 #'
+#' @seealso Relevant description function [d_onco_rsp_label()].
+#'
 #' @name estimate_multinomial_rsp
 #'
 NULL
 
-#' @describeIn estimate_multinomial_rsp
-#' Standard Oncology Response
+#' Description of Standard Oncology Response
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Describe the oncology response in a standard way.
 #'
 #' @param x (`character`)\cr the standard oncology code to be described.
+#' @seealso [estimate_multinomial_rsp()]
 #' @export
 #'
 #' @examples
-#'
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "SD", "NON CR/PD", "PD", "NE", "Missing", "<Missing>", "NE/Missing")
 #' )
