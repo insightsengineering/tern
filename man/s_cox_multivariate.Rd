@@ -2,7 +2,7 @@
 % Please edit documentation in R/coxph.R
 \name{s_cox_multivariate}
 \alias{s_cox_multivariate}
-\title{Multivariate Cox Model - summarized results}
+\title{Multivariate Cox Model - Summarized Results}
 \usage{
 s_cox_multivariate(
   formula,
@@ -65,5 +65,8 @@ s_cox_multivariate(
 )
 }
 
+}
+\seealso{
+\code{\link[=estimate_coef]{estimate_coef()}}.
 }
 \keyword{internal}

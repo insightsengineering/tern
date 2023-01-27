@@ -12,7 +12,6 @@
 \alias{a_summary.factor}
 \alias{a_summary.character}
 \alias{a_summary.logical}
-\alias{create_afun_summary}
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
@@ -106,8 +105,6 @@ a_summary(x, ..., .N_row, .N_col, .var)
   ...
 )
 
-create_afun_summary(.stats, .formats, .labels, .indent_mods)
-
 summarize_vars(
   lyt,
   vars,
@@ -157,14 +154,6 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -180,6 +169,14 @@ analyses, which is not allowed.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 If \code{x} is of class \code{numeric}, returns a list with named items: \cr
@@ -269,10 +266,6 @@ an object description. It is used as \code{afun} in \code{\link[rtables:analyze]
 
 \item \code{a_summary(logical)}: Formatted Analysis function method for \code{logical}.
 
-\item \code{create_afun_summary()}: Constructor function which creates a combined Formatted
-Analysis function for use in layout creating functions \code{\link[=summarize_vars]{summarize_vars()}} and
-\code{\link[=summarize_colvars]{summarize_colvars()}}.
-
 \item \code{summarize_vars()}: Analyze Function to add a descriptive analyze
 layer to \code{rtables} pipelines. The analysis is applied to a vector and
 return the summary, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
@@ -287,13 +280,6 @@ Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
-
-Since \code{\link[=a_summary]{a_summary()}} is generic and we want customization of the formatting arguments
-via \code{\link[rtables:make_afun]{rtables::make_afun()}}, we need to create another temporary generic function, with
-corresponding customized methods. Then in order for the methods to be found,
-we need to wrap them in a combined \code{afun}. Since this is required by two layout creating
-functions (and possibly others in the future), we provide a constructor that does this:
-\code{\link[=create_afun_summary]{create_afun_summary()}}.
 }
 \section{Formatting arguments}{
 
@@ -395,14 +381,6 @@ afun <- make_afun(
   getS3method("a_summary", "logical")
 )
 afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
-# `create_afun_summary()` to create combined `afun`
-
-afun <- create_afun_summary(
-  .stats = NULL,
-  .formats = c(median = "xx."),
-  .labels = c(median = "My median"),
-  .indent_mods = c(median = 1L)
-)
 ## Fabricated dataset.
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
@@ -412,17 +390,8 @@ dta_test <- data.frame(
   AVAL    = c(9:1, rep(NA, 9))
 )
 
-l <- basic_table() \%>\%
-  split_cols_by(var = "ARM") \%>\%
-  split_rows_by(var = "AVISIT") \%>\%
-  analyze(vars = "AVAL", afun = afun)
-
-build_table(l, df = dta_test)
-
 # `summarize_vars()` in `rtables` pipelines
-
 ## Default output within a `rtables` pipeline.
-# dta_test <- <needs_to_be_inputted_to_work>
 l <- basic_table() \%>\%
   split_cols_by(var = "ARM") \%>\%
   split_rows_by(var = "AVISIT") \%>\%
@@ -463,5 +432,4 @@ results <- build_table(l, df = dta_test)
 \dontrun{
 Viewer(results)
 }
-
 }

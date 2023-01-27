@@ -22,14 +22,18 @@ Formats a count together with fraction with special consideration when count is 
 \examples{
 format_count_fraction(x = c(2, 0.6667))
 format_count_fraction(x = c(0, 0))
+
 }
 \seealso{
 Other formatting functions: 
 \code{\link{extreme_format}},
 \code{\link{format_count_fraction_fixed_dp}()},
+\code{\link{format_extreme_values_ci}()},
+\code{\link{format_extreme_values}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},
 \code{\link{format_fraction}()},
+\code{\link{format_xx}()},
 \code{\link{formatting_functions}}
 }
 \concept{formatting functions}

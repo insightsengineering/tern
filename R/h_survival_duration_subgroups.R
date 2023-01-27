@@ -12,14 +12,12 @@
 #' @inheritParams survival_duration_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.
 #' @name h_survival_duration_subgroups
-#' @order 1
 #'
 #' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' library(rtables)
 #'
 #' adtte <- synthetic_cdisc_dataset("latest", "adtte")
 #'
@@ -388,8 +386,6 @@ h_coxph_subgroups_df <- function(variables,
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
 #'
 #' @examples
-#' library(rtables)
-#'
 #' df <- data.frame(
 #'   x = c(1:5),
 #'   y = factor(c("A", "B", "A", "B", "A"), levels = c("A", "B", "C")),

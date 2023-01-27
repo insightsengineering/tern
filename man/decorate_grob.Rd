@@ -79,6 +79,7 @@ The layout can be illustrated as follows:
 }
 }
 \examples{
+library(grid)
 
 titles <- c(
   "Edgar Anderson's Iris Data",
@@ -97,11 +98,9 @@ footnotes <- c(
   )
 )
 
-
 ## empty plot
-library(grid)
-
 grid.newpage()
+
 grid.draw(
   decorate_grob(
     NULL,
@@ -168,7 +167,7 @@ grid.draw(
   )
 )
 
-# no borders
+# with \code{gridExtra} - no borders
 library(gridExtra)
 grid.newpage()
 grid.draw(

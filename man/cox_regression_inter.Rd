@@ -105,11 +105,11 @@ no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}
 
 }}
 \examples{
-# Testing dataset [survival::bladder].
 library(survival)
-library(rtables)
 
 set.seed(1, kind = "Mersenne-Twister")
+
+# Testing dataset [survival::bladder].
 dta_bladder <- with(
   data = bladder[bladder$enum < 5, ],
   data.frame(
@@ -135,16 +135,11 @@ plot(
   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 )
 
-library(survival)
-
 mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 h_coxreg_extract_interaction(
   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
   control = control_coxreg()
 )
-# Testing dataset [survival::bladder].
-library(survival)
-
 mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 result <- h_coxreg_inter_estimations(
   variable = "armcd", given = "covar1",

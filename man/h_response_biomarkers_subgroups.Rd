@@ -65,7 +65,6 @@ the results for a single biomarker.
 library(scda)
 library(dplyr)
 library(forcats)
-library(rtables)
 
 adrs <- synthetic_cdisc_dataset("latest", "adrs")
 adrs_labels <- formatters::var_labels(adrs)

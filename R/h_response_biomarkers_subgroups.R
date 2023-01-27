@@ -6,15 +6,15 @@
 #' when reading about the user-facing functions.
 #'
 #' @inheritParams response_biomarkers_subgroups
+#' @inheritParams extract_rsp_biomarkers
 #' @inheritParams argument_convention
 #' @name h_response_biomarkers_subgroups
-#' @order 1
+#'
 #' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' library(rtables)
 #'
 #' adrs <- synthetic_cdisc_dataset("latest", "adrs")
 #' adrs_labels <- formatters::var_labels(adrs)

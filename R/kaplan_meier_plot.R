@@ -685,9 +685,10 @@ h_ggkm <- function(data,
   )
 }
 
-
 #' `ggplot` Decomposition
+#'
 #' @description `r lifecycle::badge("stable")`
+#'
 #' The elements composing the `ggplot` are extracted and organized in a
 #' list containing:
 #' the panel (`panel`),
@@ -1155,11 +1156,13 @@ h_grob_y_annot <- function(ylab, yaxis) {
 
 #' Helper Function: Pairwise CoxPH table
 #'
-#' #' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' library(scda)
@@ -1175,8 +1178,6 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   control_coxph_pw = control_coxph(conf_level = 0.9)
 #' )
 #' }
-#'
-#' @export
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
                                  control_coxph_pw = control_coxph()) {
@@ -1210,6 +1211,7 @@ h_tbl_coxph_pairwise <- function(df,
   }, comp_group)
   do.call(rbind, results)
 }
+
 #' Helper Function: CoxPH Grob
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -1241,7 +1243,6 @@ h_tbl_coxph_pairwise <- function(df,
 #' )
 #' grid::grid.draw(tbl_grob)
 #' }
-#'
 h_grob_coxph <- function(...,
                          x = 0,
                          y = 0,

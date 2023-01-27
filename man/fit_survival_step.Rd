@@ -39,7 +39,6 @@ Note that for the default degree 0 the \code{biomarker} variable is not included
 # Testing dataset with just two treatment arms.
 library(scda)
 library(dplyr)
-library(rtables)
 
 adtte <- synthetic_cdisc_dataset("latest", "adtte")
 

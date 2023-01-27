@@ -2,20 +2,10 @@
 % Please edit documentation in R/count_cumulative.R
 \name{count_cumulative}
 \alias{count_cumulative}
-\alias{h_count_cumulative}
 \alias{s_count_cumulative}
 \alias{a_count_cumulative}
 \title{Cumulative Counts with Thresholds}
 \usage{
-h_count_cumulative(
-  x,
-  threshold,
-  lower_tail = TRUE,
-  include_eq = TRUE,
-  na.rm = TRUE,
-  .N_col
-)
-
 s_count_cumulative(
   x,
   thresholds,
@@ -50,18 +40,14 @@ count_cumulative(
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{threshold}{(\code{number})\cr a cutoff value as threshold to count values of \code{x}.}
+\item{thresholds}{(\code{numeric})\cr vector of cutoff value for the counts.}
 
 \item{lower_tail}{(\code{logical})\cr whether to count lower tail, default is \code{TRUE}.}
 
 \item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
 count, default is \code{TRUE}.}
 
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
 \item{.N_col}{(\code{count})\cr denominator for fraction calculation.}
-
-\item{thresholds}{(\code{numeric})\cr vector of cutoff value for the counts.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -85,13 +71,6 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-A named vector of 2:
-\itemize{
-\item \code{count}: the count of values less than, less or equal to, greater than, or
-greater or equal to a threshold of user specification.
-\item \code{fraction}: the fraction of the count.
-}
-
 A named list:
 \itemize{
 \item \code{count_fraction}: a list with each \code{thresholds} value as a component, each component
@@ -102,14 +81,12 @@ contains a vector for the count and fraction.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Summarize cumulative counts of a (\code{numeric}) vector that is less than, less or equal to,
 greater than, or greater or equal to user-specific thresholds.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_count_cumulative()}: Helper function to calculate count and fraction of
-\code{x} values in the lower or upper tail given a threshold.
-
 \item \code{s_count_cumulative()}: Statistics function that produces a named lists given a
 (\code{numeric}) vector of thresholds.
 
@@ -123,15 +100,11 @@ should be accounted for.
 
 }}
 \examples{
+# Internal function - s_count_cumulative
+\dontrun{
 set.seed(1, kind = "Mersenne-Twister")
 x <- c(sample(1:10, 10), NA)
 .N_col <- length(x)
-h_count_cumulative(x, 5, .N_col = .N_col)
-h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
-h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
-h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
-# Internal function - s_count_cumulative
-\dontrun{
 s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 }
@@ -156,5 +129,8 @@ basic_table() \%>\%
   ) \%>\%
   build_table(ADSL)
 
+}
+\seealso{
+Relevant helper function \code{\link[=h_count_cumulative]{h_count_cumulative()}}, and descriptive function \code{\link[=d_count_cumulative]{d_count_cumulative()}}
 }
 \keyword{internal}

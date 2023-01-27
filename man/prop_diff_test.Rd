@@ -2,23 +2,11 @@
 % Please edit documentation in R/prop_diff_test.R
 \name{prop_diff_test}
 \alias{prop_diff_test}
-\alias{prop_chisq}
-\alias{prop_schouten}
-\alias{prop_fisher}
-\alias{prop_cmh}
 \alias{s_test_proportion_diff}
 \alias{a_test_proportion_diff}
 \alias{test_proportion_diff}
 \title{Difference Test for Two Proportions}
 \usage{
-prop_chisq(tbl)
-
-prop_schouten(tbl)
-
-prop_fisher(tbl)
-
-prop_cmh(ary)
-
 s_test_proportion_diff(
   df,
   .var,
@@ -50,14 +38,6 @@ test_proportion_diff(
 )
 }
 \arguments{
-\item{tbl}{(\code{matrix})\cr
-with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in
-columns.}
-
-\item{ary}{(\code{array}, 3 dimensions)\cr
-with two groups in rows, the binary response (\code{TRUE}/\code{FALSE}) in
-columns, the strata in the third dimension.}
-
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -91,6 +71,10 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+
+\item{tbl}{(\code{matrix})\cr
+with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in
+columns.}
 }
 \value{
 Named \code{list} with a single item \code{pval} with an attribute \code{label}
@@ -105,20 +89,7 @@ proportions.
 }
 \section{Functions}{
 \itemize{
-\item \code{prop_chisq()}: performs Chi-Squared test.
-Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
-
-\item \code{prop_schouten()}: performs the Chi-Squared test with Schouten
-correction.
-
-\item \code{prop_fisher()}: performs the Fisher's exact test.
-Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
-
-\item \code{prop_cmh()}: performs stratified Cochran-Mantel-Haenszel test.
-Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations
-are automatically discarded.
-
-\item \code{s_test_proportion_diff()}: Statistics function which test the difference
+\item \code{s_test_proportion_diff()}: Statistics function which tests the difference
 between two proportions.
 
 \item \code{a_test_proportion_diff()}: Formatted Analysis function which can be further customized by calling
@@ -130,51 +101,6 @@ additional format arguments.
 
 }}
 \examples{
-# Non-stratified proportion difference test
-
-## Data
-A <- 20
-B <- 20
-set.seed(1)
-rsp <- c(
-  sample(c(TRUE, FALSE), size = A, prob = c(3 / 4, 1 / 4), replace = TRUE),
-  sample(c(TRUE, FALSE), size = A, prob = c(1 / 2, 1 / 2), replace = TRUE)
-)
-grp <- c(rep("A", A), rep("B", B))
-tbl <- table(grp, rsp)
-
-## Chi-Squared test
-# Internal function - prop_chisq
-\dontrun{
-prop_chisq(tbl)
-}
-
-## Chi-Squared test + Schouten correction.
-# Internal function - prop_schouten
-\dontrun{
-prop_schouten(tbl)
-}
-
-## Fisher's exact test
-# Internal function - prop_fisher
-\dontrun{
-prop_fisher(tbl)
-}
-
-# Stratified proportion difference test
-
-## Data
-rsp <- sample(c(TRUE, FALSE), 100, TRUE)
-grp <- factor(rep(c("A", "B"), each = 50))
-strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-tbl <- table(grp, rsp, strata)
-
-## Cochran-Mantel-Haenszel test
-# Internal function - prop_cmh
-\dontrun{
-prop_cmh(tbl)
-}
-
 
 # Statistics function
 dta <- data.frame(
@@ -218,7 +144,6 @@ l <- basic_table() \%>\%
 build_table(l, df = dta)
 }
 \seealso{
-For information on the Schouten correction (Schouten, 1980),
-visit https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305.
+\link{h_prop_diff_test}
 }
 \keyword{internal}

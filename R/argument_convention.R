@@ -9,7 +9,6 @@
 #' single reference point to import the `roxygen` argument description with:
 #' `@inheritParams argument_convention`
 #'
-#' @md
 #' @param ... additional arguments for the lower level functions.
 #' @param .df_row (`data frame`)\cr data frame across all of the columns for the given row split.
 #' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.

@@ -1,11 +1,10 @@
 #' Odds Ratio Estimation
 #'
 #' @description `r lifecycle::badge("stable")`
+#'
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'
-#' @param data (`data frame`)\cr
-#'   with at least the variables `rsp`, `grp`, and in addition `strata` for [or_clogit()].
 #' @details This function uses either logistic regression for unstratified
 #'   analyses, or conditional logistic regression for stratified analyses.
 #'   The Wald confidence interval with the specified confidence level is
@@ -15,101 +14,10 @@
 #'   available. Besides, when `rsp` contains only responders or non-responders,
 #'   then the result values will be `NA`, because no odds ratio estimation is
 #'   possible.
+#' @seealso Relevant helper function [h_odds_ratio()].
 #'
 #' @name odds_ratio
-#' @md
-#'
 NULL
-
-#' @describeIn odds_ratio estimates the odds ratio based on [stats::glm()]. Note that there must be
-#'   exactly 2 groups in `data` as specified by the `grp` variable.
-#'
-#' @inheritParams argument_convention
-#' @export
-#' @examples
-#'
-#' # Data with 2 groups.
-#' data <- data.frame(
-#'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1)),
-#'   grp = letters[c(1, 1, 1, 2, 2, 2, 1, 2)],
-#'   strata = letters[c(1, 2, 1, 2, 2, 2, 1, 2)],
-#'   stringsAsFactors = TRUE
-#' )
-#'
-#' # Odds ratio based on glm.
-#' or_glm(data, conf_level = 0.95)
-or_glm <- function(data, conf_level) {
-  checkmate::assert_logical(data$rsp)
-  assert_proportion_value(conf_level)
-  assert_df_with_variables(data, list(rsp = "rsp", grp = "grp"))
-  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
-
-  data$grp <- as_factor_keep_attributes(data$grp)
-  assert_df_with_factors(data, list(val = "grp"), min.levels = 2, max.levels = 2)
-  formula <- stats::as.formula("rsp ~ grp")
-  model_fit <- stats::glm(
-    formula = formula, data = data,
-    family = stats::binomial(link = "logit")
-  )
-
-  # Note that here we need to discard the intercept.
-  or <- exp(stats::coef(model_fit)[-1])
-  or_ci <- exp(
-    stats::confint.default(model_fit, level = conf_level)[-1, , drop = FALSE]
-  )
-
-  values <- stats::setNames(c(or, or_ci), c("est", "lcl", "ucl"))
-  n_tot <- stats::setNames(nrow(model_fit$model), "n_tot")
-
-  list(or_ci = values, n_tot = n_tot)
-}
-
-#' @describeIn odds_ratio estimates the odds ratio based on [survival::clogit()]. This is done for
-#'   the whole data set including all groups, since the results are not the same as when doing
-#'   pairwise comparisons between the groups.
-#'
-#' @inheritParams argument_convention
-#' @export
-#' @examples
-#'
-#' # Data with 3 groups.
-#' data <- data.frame(
-#'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-#'   grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
-#'   strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
-#'   stringsAsFactors = TRUE
-#' )
-#'
-#' # Odds ratio based on stratified estimation by conditional logistic regression.
-#' or_clogit(data, conf_level = 0.95)
-or_clogit <- function(data, conf_level) {
-  checkmate::assert_logical(data$rsp)
-  assert_proportion_value(conf_level)
-  assert_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata"))
-  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
-  checkmate::assert_multi_class(data$strata, classes = c("factor", "character"))
-
-  data$grp <- as_factor_keep_attributes(data$grp)
-  data$strata <- as_factor_keep_attributes(data$strata)
-
-  # Deviation from convention: `survival::strata` must be simply `strata`.
-  formula <- stats::as.formula("rsp ~ grp + strata(strata)")
-  model_fit <- clogit_with_tryCatch(formula = formula, data = data)
-
-  # Create a list with one set of OR estimates and CI per coefficient, i.e.
-  # comparison of one group vs. the reference group.
-  coef_est <- stats::coef(model_fit)
-  ci_est <- stats::confint(model_fit, level = conf_level)
-  or_ci <- list()
-  for (coef_name in names(coef_est)) {
-    grp_name <- gsub("^grp", "", x = coef_name)
-    or_ci[[grp_name]] <- stats::setNames(
-      object = exp(c(coef_est[coef_name], ci_est[coef_name, , drop = TRUE])),
-      nm = c("est", "lcl", "ucl")
-    )
-  }
-  list(or_ci = or_ci, n_tot = c(n_tot = model_fit$n))
-}
 
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
 #'   between a treatment and a control. Note that a `variables` list with `arm` and `strata` names
@@ -117,8 +25,8 @@ or_clogit <- function(data, conf_level) {
 #' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
 #' @export
-#' @examples
 #'
+#' @examples
 #' set.seed(12)
 #' dta <- data.frame(
 #'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -251,8 +159,8 @@ a_odds_ratio <- make_afun(
 #' @inheritParams argument_convention
 #' @param ... arguments passed to `s_odds_ratio()`.
 #' @export
-#' @examples
 #'
+#' @examples
 #' dta <- data.frame(
 #'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
 #'   grp = factor(rep(c("A", "B"), each = 50))
@@ -288,4 +196,107 @@ estimate_odds_ratio <- function(lyt,
     show_labels = show_labels,
     table_names = table_names
   )
+}
+
+#' Helper Functions for Odds Ratio Estimation
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Functions to calculate odds ratios in [estimate_odds_ratio()].
+#'
+#' @inheritParams argument_convention
+#' @param data (`data frame`)\cr
+#'   with at least the variables `rsp`, `grp`, and in addition `strata` for [or_clogit()].
+#'
+#' @seealso [odds_ratio]
+#'
+#' @name h_odds_ratio
+NULL
+
+#' @describeIn h_odds_ratio estimates the odds ratio based on [stats::glm()]. Note that there must be
+#'   exactly 2 groups in `data` as specified by the `grp` variable.
+#'
+#' @export
+#'
+#' @examples
+#' # Data with 2 groups.
+#' data <- data.frame(
+#'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1)),
+#'   grp = letters[c(1, 1, 1, 2, 2, 2, 1, 2)],
+#'   strata = letters[c(1, 2, 1, 2, 2, 2, 1, 2)],
+#'   stringsAsFactors = TRUE
+#' )
+#'
+#' # Odds ratio based on glm.
+#' or_glm(data, conf_level = 0.95)
+or_glm <- function(data, conf_level) {
+  checkmate::assert_logical(data$rsp)
+  assert_proportion_value(conf_level)
+  assert_df_with_variables(data, list(rsp = "rsp", grp = "grp"))
+  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
+
+  data$grp <- as_factor_keep_attributes(data$grp)
+  assert_df_with_factors(data, list(val = "grp"), min.levels = 2, max.levels = 2)
+  formula <- stats::as.formula("rsp ~ grp")
+  model_fit <- stats::glm(
+    formula = formula, data = data,
+    family = stats::binomial(link = "logit")
+  )
+
+  # Note that here we need to discard the intercept.
+  or <- exp(stats::coef(model_fit)[-1])
+  or_ci <- exp(
+    stats::confint.default(model_fit, level = conf_level)[-1, , drop = FALSE]
+  )
+
+  values <- stats::setNames(c(or, or_ci), c("est", "lcl", "ucl"))
+  n_tot <- stats::setNames(nrow(model_fit$model), "n_tot")
+
+  list(or_ci = values, n_tot = n_tot)
+}
+
+#' @describeIn h_odds_ratio estimates the odds ratio based on [survival::clogit()]. This is done for
+#'   the whole data set including all groups, since the results are not the same as when doing
+#'   pairwise comparisons between the groups.
+#'
+#' @export
+#'
+#' @examples
+#' # Data with 3 groups.
+#' data <- data.frame(
+#'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+#'   grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
+#'   strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
+#'   stringsAsFactors = TRUE
+#' )
+#'
+#' # Odds ratio based on stratified estimation by conditional logistic regression.
+#' or_clogit(data, conf_level = 0.95)
+or_clogit <- function(data, conf_level) {
+  checkmate::assert_logical(data$rsp)
+  assert_proportion_value(conf_level)
+  assert_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata"))
+  checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
+  checkmate::assert_multi_class(data$strata, classes = c("factor", "character"))
+
+  data$grp <- as_factor_keep_attributes(data$grp)
+  data$strata <- as_factor_keep_attributes(data$strata)
+
+  # Deviation from convention: `survival::strata` must be simply `strata`.
+  formula <- stats::as.formula("rsp ~ grp + strata(strata)")
+  model_fit <- clogit_with_tryCatch(formula = formula, data = data)
+
+  # Create a list with one set of OR estimates and CI per coefficient, i.e.
+  # comparison of one group vs. the reference group.
+  coef_est <- stats::coef(model_fit)
+  ci_est <- stats::confint(model_fit, level = conf_level)
+  or_ci <- list()
+  for (coef_name in names(coef_est)) {
+    grp_name <- gsub("^grp", "", x = coef_name)
+    or_ci[[grp_name]] <- stats::setNames(
+      object = exp(c(coef_est[coef_name], ci_est[coef_name, , drop = TRUE])),
+      nm = c("est", "lcl", "ucl")
+    )
+  }
+  list(or_ci = or_ci, n_tot = c(n_tot = model_fit$n))
 }

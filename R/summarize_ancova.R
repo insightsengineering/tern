@@ -8,7 +8,9 @@
 #' @name summarize_ancova
 NULL
 
-#' @describeIn summarize_ancova Helper function to return results of a linear model.
+#' Helper Function to Return Results of a Linear Model.
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
 #' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
@@ -231,8 +233,6 @@ a_ancova <- make_afun(
 #' @export
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' basic_table() %>%
 #'   split_cols_by("Species", ref_group = "setosa") %>%
 #'   add_colcounts() %>%
