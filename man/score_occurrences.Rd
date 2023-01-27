@@ -55,7 +55,6 @@ specified columns. Note that this is extending \code{\link[rtables:score_funs]{r
 }}
 \examples{
 library(scda)
-library(rtables)
 adsl <- synthetic_cdisc_dataset("latest", "adsl")
 adae <- synthetic_cdisc_dataset("latest", "adae")
 

@@ -81,12 +81,10 @@ and \code{strat}. \code{groups_lists} optionally specifies groupings for \code{s
 
 }}
 \examples{
-
 # Testing dataset.
 library(scda)
 library(dplyr)
 library(forcats)
-library(rtables)
 
 adrs <- synthetic_cdisc_dataset("latest", "adrs")
 adrs_labels <- formatters::var_labels(adrs)

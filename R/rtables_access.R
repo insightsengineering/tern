@@ -6,7 +6,7 @@
 #' Currently these work for occurrence tables, which are defined
 #' as having a count as the first element and a fraction as the second element in each cell.
 #'
-#' @seealso `[prune_occurrences]` for usage of these functions.
+#' @seealso [prune_occurrences] for usage of these functions.
 #'
 #' @name rtables_access
 NULL

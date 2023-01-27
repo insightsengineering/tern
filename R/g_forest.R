@@ -41,7 +41,6 @@
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' library(rtables)
 #' library(nestcolor)
 #'
 #' adrs <- synthetic_cdisc_dataset("latest", "adrs")
@@ -261,7 +260,6 @@ g_forest <- function(tbl, # nolint
 
   invisible(grob_forest)
 }
-
 
 #' Forest Plot Grob
 #'
@@ -593,8 +591,8 @@ cell_in_rows <- function(row_name,
 #' Graphic Object: Forest Dot Line
 #'
 #' Calculate the `grob` corresponding to the dot line within the forest plot.
-#' @noRd
 #'
+#' @noRd
 forest_dot_line <- function(x, # nolint
                             lower,
                             upper,
@@ -776,7 +774,6 @@ forest_viewport <- function(tbl,
 #' Prepares a viewport for the table included in the forest plot.
 #'
 #' @noRd
-#'
 vp_forest_table_part <- function(nrow,
                                  ncol,
                                  l_row,
@@ -830,7 +827,6 @@ vp_forest_table_part <- function(nrow,
 #' Renders the forest grob.
 #'
 #' @noRd
-#'
 grid.forest <- function(...) { # nolint
   grid::grid.draw(forest_grob(...)) # nolint
 }

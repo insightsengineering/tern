@@ -5,7 +5,6 @@
 #' We can count the occurrence of specific values in a variable of interest.
 #'
 #' @name count_values_funs
-#' @order 1
 #'
 NULL
 
@@ -16,7 +15,6 @@ NULL
 #' @return See [s_summary.logical()] for the returned statistics, as this is used inside.
 #'
 #' @export
-#' @order 2
 #'
 s_count_values <- function(x,
                            values,
@@ -31,7 +29,6 @@ s_count_values <- function(x,
 #' @method s_count_values character
 #'
 #' @export
-#' @order 3
 #'
 #' @examples
 #' # `s_count_values.character`
@@ -58,7 +55,6 @@ s_count_values.character <- function(x,
 #' @method s_count_values factor
 #'
 #' @export
-#' @order 4
 #'
 #' @examples
 #' # `s_count_values.factor`
@@ -73,7 +69,6 @@ s_count_values.factor <- function(x,
 #' @method s_count_values logical
 #'
 #' @export
-#' @order 5
 #'
 #' @examples
 #' # `s_count_values.logical`
@@ -105,7 +100,6 @@ a_count_values <- make_afun(
 #' are hidden.
 #'
 #' @export
-#' @order 6
 #'
 #' @examples
 #' # `count_values`

@@ -31,8 +31,6 @@ in order, for instance, to control formats (\code{format}), add a joint column
 for all groups (\code{incl_all}).
 }
 \examples{
-library(rtables)
-
 # 1 - Basic use
 
 # Without group combination `split_cols_by_groups` is

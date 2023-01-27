@@ -20,11 +20,11 @@
 #' @name cox_regression_inter
 #'
 #' @examples
-#' # Testing dataset [survival::bladder].
 #' library(survival)
-#' library(rtables)
 #'
 #' set.seed(1, kind = "Mersenne-Twister")
+#'
+#' # Testing dataset [survival::bladder].
 #' dta_bladder <- with(
 #'   data = bladder[bladder$enum < 5, ],
 #'   data.frame(
@@ -157,8 +157,6 @@ h_coxreg_inter_effect.factor <- function(x, # nolint
 #' @export
 #'
 #' @examples
-#' library(survival)
-#'
 #' mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 #' h_coxreg_extract_interaction(
 #'   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
@@ -244,9 +242,6 @@ h_coxreg_extract_interaction <- function(effect,
 #' @export
 #'
 #' @examples
-#' # Testing dataset [survival::bladder].
-#' library(survival)
-#'
 #' mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 #' result <- h_coxreg_inter_estimations(
 #'   variable = "armcd", given = "covar1",

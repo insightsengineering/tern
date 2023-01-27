@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_proportion.R
 \name{strata_normal_quantile}
 \alias{strata_normal_quantile}
-\title{Helper function for the estimation of stratified quantiles}
+\title{Helper Function for the Estimation of Stratified Quantiles}
 \usage{
 strata_normal_quantile(vars, weights, conf_level)
 }
@@ -18,12 +18,13 @@ length of the confidence interval.}
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This function wraps the estimation of stratified percentiles when we assume
 the approximation for large numbers. This is necessary only in the case
 proportions for each strata are unequal.
 }
 \examples{
-\dontrun{
 strata_data <- table(data.frame(
   "f1" = sample(c(TRUE, FALSE), 100, TRUE),
   "f2" = sample(c("x", "y", "z"), 100, TRUE),
@@ -34,10 +35,8 @@ ests <- strata_data["TRUE", ] / ns
 vars <- ests * (1 - ests) / ns
 weights <- rep(1 / length(ns), length(ns))
 strata_normal_quantile(vars, weights, 0.95)
-}
 
 }
 \seealso{
 \code{\link[=prop_strat_wilson]{prop_strat_wilson()}}
 }
-\keyword{internal}

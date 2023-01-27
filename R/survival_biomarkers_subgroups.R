@@ -12,13 +12,10 @@
 #' @inheritParams fit_coxreg_multivar
 #' @inheritParams survival_duration_subgroups
 #' @name survival_biomarkers_subgroups
-#' @order 1
 #' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
-#' library(forcats)
-#' library(rtables)
 #'
 #' adtte <- synthetic_cdisc_dataset("latest", "adtte")
 #'
@@ -33,21 +30,62 @@
 #'   )
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
+#' df <- extract_survival_biomarkers(
+#'   variables = list(
+#'     tte = "AVAL",
+#'     is_event = "is_event",
+#'     biomarkers = c("BMRKR1", "AGE"),
+#'     strata = "STRATA1",
+#'     covariates = "SEX",
+#'     subgroups = "BMRKR2"
+#'   ),
+#'   data = adtte_f
+#' )
+#' df
 NULL
 
-#' @describeIn survival_biomarkers_subgroups prepares estimates for number of events, patients and median survival
-#'   times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
-#'   population subgroups in a single data frame.
-#'   `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
-#'   `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
-#'   `groups_lists` optionally specifies groupings for `subgroups` variables.
-#' @seealso [h_coxreg_mult_cont_df()] which is used internally.
+#' Prepares Survival Data Estimates for Multiple Biomarkers in a Single Data Frame
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Prepares estimates for number of events, patients and median survival
+#' times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
+#' population subgroups in a single data frame.
+#' `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
+#' `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
+#' `groups_lists` optionally specifies groupings for `subgroups` variables.
+#'
+#' @inheritParams argument_convention
+#' @inheritParams fit_coxreg_multivar
+#' @inheritParams survival_duration_subgroups
+#'
+#' @seealso [h_coxreg_mult_cont_df()] which is used internally, [tabulate_survival_biomarkers()].
 #' @export
 #' @examples
 #' # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 #' # in multiple regression models containing one covariate `RACE`,
 #' # as well as one stratification variable `STRATA1`. The subgroups
 #' # are defined by the levels of `BMRKR2`.
+#'
+#' # Testing dataset.
+#' library(scda)
+#' library(dplyr)
+#'
+#' adtte <- synthetic_cdisc_data("latest")$adtte
+#'
+#' # Save variable labels before data processing steps.
+#' adtte_labels <- formatters::var_labels(adtte)
+#'
+#' adtte_f <- adtte %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(
+#'     AVALU = as.character(AVALU),
+#'     is_event = CNSR == 0
+#'   )
+#' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
+#' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
 #' df <- extract_survival_biomarkers(
 #'   variables = list(
 #'     tte = "AVAL",
@@ -129,6 +167,7 @@ extract_survival_biomarkers <- function(variables,
 }
 
 #' @describeIn survival_biomarkers_subgroups table creating function.
+#'
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
 #'   [extract_survival_biomarkers()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
@@ -140,15 +179,14 @@ extract_survival_biomarkers <- function(variables,
 #'  `pval` (p value of the effect).
 #'  Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
 #'  are required.
-#' @seealso [h_tab_surv_one_biomarker()] which is used internally.
+#' @seealso [h_tab_surv_one_biomarker()] which is used internally, [extract_survival_biomarkers()].
 #' @note In contrast to [tabulate_survival_subgroups()] this tabulation function does
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
 #' @export
-#' @examples
 #'
+#' @examples
 #' ## Table with default columns.
-#' # df <- <needs_to_be_inputted>
 #' tabulate_survival_biomarkers(df)
 #'
 #' ## Table with a manually chosen set of columns: leave out "pval", reorder.

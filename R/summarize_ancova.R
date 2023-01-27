@@ -8,7 +8,9 @@
 #' @name summarize_ancova
 NULL
 
-#' @describeIn summarize_ancova Helper function to return results of a linear model.
+#' Helper Function to Return Results of a Linear Model.
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
 #' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
@@ -244,22 +246,6 @@ a_ancova <- make_afun(
 #' @export
 #'
 #' @examples
-#' library(scda)
-#' library(rtables)
-#' library(dplyr)
-#'
-#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
-#' adqs <- synthetic_cdisc_dataset("latest", "adqs")
-#'
-#' adqs_single <- adqs %>%
-#'   filter(
-#'     AVISIT == "WEEK 1 DAY 8", # single time point
-#'     PARAMCD == "FKSI-FWB" # single end point
-#'   ) %>%
-#'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA)) # only analyze evaluable population
-#' adqs_multi <- adqs %>%
-#'   filter(AVISIT == "WEEK 1 DAY 8")
-#'
 #' basic_table() %>%
 #'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%

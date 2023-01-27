@@ -17,9 +17,6 @@ Simplifies the estimation of column counts, especially when group combination
 is required.
 }
 \examples{
-
-library(rtables)
-
 ref <- c("A: Drug X", "B: Placebo")
 groups <- combine_groups(fct = DM$ARM, ref = ref)
 
@@ -52,6 +49,6 @@ basic_table() \%>\%
 
 }
 \seealso{
-combine_groups
+\link{combine_groups}
 }
 \keyword{internal}

@@ -14,6 +14,7 @@
 #' @param col (`character`)\cr colors.
 #'
 #' @return The `ggplot2` object.
+#' @seealso Custom tidy method [tidy.step()].
 #' @export
 #'
 #' @examples
@@ -132,9 +133,11 @@ g_step <- function(df,
   p
 }
 
-#' @describeIn g_step Custom Tidy Method for STEP Results
+#' Custom Tidy Method for STEP Results
 #'
-#' Tidy the STEP results into a `tibble` to format them ready for plotting.
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Tidy the STEP results into a `tibble` format ready for plotting.
 #'
 #' @param x (`step` matrix)\cr results from [fit_survival_step()].
 #' @param ... not used here.

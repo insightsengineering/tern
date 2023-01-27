@@ -9,7 +9,19 @@
 #'
 NULL
 
-#' @describeIn summarize_glm_count Helper function to return results of a poisson model.
+#' Helper Functions for Poisson Models.
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Helper functions that can be used to return the results of various Poisson models.
+#'
+#' @seealso [summarize_glm_count]
+#'
+#' @name h_glm_count
+#'
+NULL
+
+#' @describeIn h_glm_count Helper function to return results of a poisson model.
 #' @inheritParams argument_convention
 #' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
@@ -75,9 +87,9 @@ h_glm_poisson <- function(.var,
   )
 }
 
-#' @describeIn summarize_glm_count Helper function to return results of a poisson model.
+#' @describeIn h_glm_count Helper function to return results of a quasipoisson model.
 #' @inheritParams argument_convention
-#' @inheritParams h_glm_poisson
+#' @inheritParams summarize_glm_count
 #'
 #' @examples
 #'
@@ -129,7 +141,7 @@ h_glm_quasipoisson <- function(.var,
   )
 }
 
-#' @describeIn summarize_glm_count Helper function to return the results of the
+#' @describeIn h_glm_count Helper function to return the results of the
 #' selected model (poisson, quasipoisson, negative binomial).
 #' @inheritParams argument_convention
 #' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
@@ -176,7 +188,7 @@ h_glm_count <- function(.var,
 }
 
 
-#' @describeIn summarize_glm_count Helper function to return the estimated means.
+#' @describeIn h_glm_count Helper function to return the estimated means.
 #' @inheritParams argument_convention
 #' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.

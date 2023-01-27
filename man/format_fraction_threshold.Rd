@@ -26,14 +26,18 @@ format_fun <- format_fraction_threshold(0.05)
 format_fun(x = c(20, 0.1))
 format_fun(x = c(2, 0.01))
 format_fun(x = c(0, 0))
+
 }
 \seealso{
 Other formatting functions: 
 \code{\link{extreme_format}},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction}()},
+\code{\link{format_extreme_values_ci}()},
+\code{\link{format_extreme_values}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction}()},
+\code{\link{format_xx}()},
 \code{\link{formatting_functions}}
 }
 \concept{formatting functions}

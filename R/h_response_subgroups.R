@@ -10,14 +10,12 @@
 #' @inheritParams response_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.
 #' @name h_response_subgroups
-#' @order 1
-#' @examples
 #'
+#' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' library(rtables)
 #'
 #' adrs <- synthetic_cdisc_dataset("latest", "adrs")
 #' adrs_labels <- formatters::var_labels(adrs)

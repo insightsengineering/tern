@@ -9,8 +9,9 @@ NULL
 #' different `x` objects. This is used as Statistics Function in combination
 #' with the new Analyze Function [compare_vars()].
 #'
+#' @seealso Relevant constructor function [create_afun_compare()].
+#'
 #' @name compare_variables
-#' @order 1
 #'
 NULL
 
@@ -21,7 +22,6 @@ NULL
 #' @seealso [s_summary()] which is used internally for the summary part per column.
 #'
 #' @export
-#' @order 2
 #'
 s_compare <- function(x,
                       .ref_group,
@@ -36,7 +36,6 @@ s_compare <- function(x,
 #' - all items from [s_summary.numeric()].
 #' - `pval`: the p-value.
 #' @method s_compare numeric
-#' @order 3
 #'
 #' @export
 #'
@@ -83,7 +82,6 @@ s_compare.numeric <- function(x,
 #'   - all items from [s_summary.factor()].
 #'   - `pval`: the p-value.
 #' @method s_compare factor
-#' @order 4
 #'
 #' @export
 #'
@@ -147,7 +145,6 @@ s_compare.factor <- function(x,
 #'   It is therefore better to always pre-process the dataset such that factors are manually
 #'   created from character variables before passing the dataset to [rtables::build_table()].
 #' @method s_compare character
-#' @order 5
 #'
 #' @examples
 #' # `s_compare.character`
@@ -198,7 +195,6 @@ s_compare.character <- function(x,
 #'   - all items from [s_summary.logical()].
 #'   - `pval`: the p-value.
 #' @method s_compare logical
-#' @order 6
 #'
 #' @export
 #'
@@ -254,8 +250,6 @@ s_compare.logical <- function(x,
 #'   an object description and comparison versus the reference column in the form
 #'   of p-values. It is used as `afun` in [rtables::analyze()].
 #'
-#' @order 7
-#'
 #' @export
 #'
 a_compare <- function(x,
@@ -268,7 +262,7 @@ a_compare <- function(x,
 
 #' @describeIn compare_variables Formatted Analysis function method for `numeric`.
 #' @export
-#' @order 8
+#'
 #' @examples
 #' # `a_compare.numeric`
 #' a_compare(
@@ -301,7 +295,7 @@ a_compare.numeric <- make_afun(
 
 #' @describeIn compare_variables Formatted Analysis function method for `factor`.
 #' @export
-#' @order 9
+#'
 #' @examples
 #' # `a_compare.factor`
 #' # We need to ungroup `count` and `count_fraction` first so that the `rtables` formatting
@@ -322,7 +316,7 @@ a_compare.factor <- make_afun(
 
 #' @describeIn compare_variables Formatted Analysis function method for `character`.
 #' @export
-#' @order 10
+#'
 #' @examples
 #' # `a_compare.character`
 #' afun <- make_afun(
@@ -341,7 +335,7 @@ a_compare.character <- make_afun(
 
 #' @describeIn compare_variables Formatted Analysis function method for `logical`.
 #' @export
-#' @order 11
+#'
 #' @examples
 #' # `a_compare.logical`
 #' afun <- make_afun(
@@ -357,16 +351,21 @@ a_compare.logical <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' @describeIn compare_variables Constructor function which creates a combined Formatted
-#'   Analysis function for use in layout creating functions [compare_vars()].
+#' Constructor Function for [compare_vars()]
+#'
+#' @description `r lifecycle::badge("stable")` Constructor function which creates a combined Formatted
+#' Analysis function for use in layout creating functions [compare_vars()].
+#'
 #' @note Since [a_compare()] is generic and we want customization of the formatting arguments
 #'   via [rtables::make_afun()], we need to create another temporary generic function, with
 #'   corresponding customized methods. Then in order for the methods to be found,
 #'   we need to wrap them in a combined `afun`. Since this is required by two layout creating
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_compare()].
-#' @order 12
 #' @export
+#' @inheritParams argument_convention
+#' @seealso [compare_variables]
+#'
 #' @examples
 #' # `create_afun_compare()` to create combined `afun`
 #'
@@ -472,12 +471,10 @@ create_afun_compare <- function(.stats = NULL,
 #' @inheritParams rtables::analyze
 #' @param ... arguments passed to `s_compare()`.
 #'
-#' @order 13
 #' @template formatting_arguments
-#'
 #' @export
-#' @examples
 #'
+#' @examples
 #' # `compare_vars()` in `rtables` pipelines
 #'
 #' ## Default output within a `rtables` pipeline.

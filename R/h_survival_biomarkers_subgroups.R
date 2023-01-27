@@ -9,14 +9,12 @@
 #' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_multivar
 #' @name h_survival_biomarkers_subgroups
-#' @order 1
 #'
 #' @examples
 #' # Testing dataset.
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
-#' library(rtables)
 #'
 #' adtte <- synthetic_cdisc_dataset("latest", "adtte")
 #'

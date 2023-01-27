@@ -18,6 +18,7 @@ Note that this uses the \code{decorate_grob_factory} function.
 }
 \examples{
 library(ggplot2)
+library(grid)
 g <- with(data = iris, {
   list(
     ggplot2::ggplotGrob(
@@ -47,7 +48,6 @@ g <- with(data = iris, {
   )
 })
 lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
-library(grid)
 
 draw_grob(lg[[1]])
 draw_grob(lg[[2]])

@@ -18,12 +18,12 @@ NULL
 #' @param ... required for `rtables` interface.
 #' @return a string in the format `num / denom (ratio %)`. If `num` is 0 the format is `num / denom`.
 #'
-#' @family formatting functions
-#' @export
-#'
 #' @examples
 #' format_fraction(x = c(num = 2L, denom = 3L))
 #' format_fraction(x = c(num = 0L, denom = 3L))
+#'
+#' @family formatting functions
+#' @export
 format_fraction <- function(x, ...) {
   attr(x, "label") <- NULL
 
@@ -54,13 +54,13 @@ format_fraction <- function(x, ...) {
 #' @param ... required for `rtables` interface.
 #' @return a string in the format `num / denom (ratio %)`. If `num` is 0 the format is `num / denom`.
 #'
-#' @family formatting functions
-#' @export
-#'
 #' @examples
 #' format_fraction_fixed_dp(x = c(num = 1L, denom = 2L))
 #' format_fraction_fixed_dp(x = c(num = 1L, denom = 4L))
 #' format_fraction_fixed_dp(x = c(num = 0L, denom = 3L))
+#'
+#' @family formatting functions
+#' @export
 format_fraction_fixed_dp <- function(x, ...) {
   attr(x, "label") <- NULL
   checkmate::assert_vector(x)
@@ -88,12 +88,12 @@ format_fraction_fixed_dp <- function(x, ...) {
 #' @param ... required for `rtables` interface.
 #' @return a string in the format `count (fraction %)`. If `count` is 0 the format is `0`.
 #'
-#' @family formatting functions
-#' @export
-#'
 #' @examples
 #' format_count_fraction(x = c(2, 0.6667))
 #' format_count_fraction(x = c(0, 0))
+#'
+#' @family formatting functions
+#' @export
 format_count_fraction <- function(x, ...) {
   attr(x, "label") <- NULL
 
@@ -124,13 +124,13 @@ format_count_fraction <- function(x, ...) {
 #' @param ... required for `rtables` interface.
 #' @return a string in the format `count (fraction %)`. If `count` is 0 the format is `0`.
 #'
-#' @family formatting functions
-#' @export
-#'
 #' @examples
 #' format_count_fraction_fixed_dp(x = c(2, 0.6667))
 #' format_count_fraction_fixed_dp(x = c(2, 0.5))
 #' format_count_fraction_fixed_dp(x = c(0, 0))
+#'
+#' @family formatting functions
+#' @export
 format_count_fraction_fixed_dp <- function(x, ...) {
   attr(x, "label") <- NULL
 
@@ -161,7 +161,7 @@ format_count_fraction_fixed_dp <- function(x, ...) {
 #' @param str (`string`)\cr template.
 #'
 #' @return An `rtables` formatting function.
-#' @export
+#'
 #' @examples
 #' test <- list(c(1.658, 0.5761), c(1e1, 785.6))
 #'
@@ -174,6 +174,8 @@ format_count_fraction_fixed_dp <- function(x, ...) {
 #' z <- format_xx("xx.x, incl. xx.x% NE")
 #' sapply(test, z)
 #'
+#' @family formatting functions
+#' @export
 format_xx <- function(str) {
   # Find position in the string.
   positions <- gregexpr(pattern = "x+\\.x+|x+", text = str, perl = TRUE)
@@ -213,14 +215,14 @@ format_xx <- function(str) {
 #'   then it is displayed in percentage. If it is positive but below the threshold, it returns
 #'   "<1" e.g. if the threshold is `0.01`. If it is zero, then just "0" is returned.
 #'
-#' @family formatting functions
-#' @export
-#'
 #' @examples
 #' format_fun <- format_fraction_threshold(0.05)
 #' format_fun(x = c(20, 0.1))
 #' format_fun(x = c(2, 0.01))
 #' format_fun(x = c(0, 0))
+#'
+#' @family formatting functions
+#' @export
 format_fraction_threshold <- function(threshold) {
   assert_proportion_value(threshold)
   string_below_threshold <- paste0("<", round(threshold * 100))
@@ -249,19 +251,20 @@ format_fraction_threshold <- function(threshold) {
 #'    below a threshold, it returns "<0.01" e.g. if the number of `digits` is 2. If the value is
 #'    above a threshold, it returns ">999.99" e.g. if the number of `digits` is 2.
 #'    If it is zero, then returns "0.00".
+#'
 #' @param digits (`integer`)\cr number of decimal places to display.
+#'
 #' @family formatting functions
 #' @name extreme_format
-#' @order 1
-#'
 NULL
 
 #' @describeIn extreme_format Internal helper function to calculate the threshold and create formatted strings
 #'  used in Formatting Functions. Returns a list with elements `threshold` and `format_string`.
-#' @export
-#' @examples
 #'
+#' @examples
 #' h_get_format_threshold(2L)
+#'
+#' @export
 h_get_format_threshold <- function(digits = 2L) {
   checkmate::assert_integerish(digits)
 
@@ -281,11 +284,12 @@ h_get_format_threshold <- function(digits = 2L) {
 #'   Creates a formatted string to be used in Formatting Functions.
 #'
 #' @param x (`number`)\cr value to format.
-#' @export
-#' @examples
 #'
+#' @examples
 #' h_format_threshold(0.001)
 #' h_format_threshold(1000)
+#'
+#' @export
 h_format_threshold <- function(x, digits = 2L) {
   if (is.na(x)) {
     return(x)
@@ -306,8 +310,13 @@ h_format_threshold <- function(x, digits = 2L) {
   unname(result)
 }
 
-#' @describeIn extreme_format Create Formatting Function for a single extreme value.
-#' @export
+#' Formatting a Single Extreme Value
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Create Formatting Function for a single extreme value.
+#'
+#' @inheritParams extreme_format
 #' @examples
 #'
 #' format_fun <- format_extreme_values(2L)
@@ -315,6 +324,9 @@ h_format_threshold <- function(x, digits = 2L) {
 #' format_fun(x = Inf)
 #' format_fun(x = 0)
 #' format_fun(x = 0.009)
+#'
+#' @family formatting functions
+#' @export
 format_extreme_values <- function(digits = 2L) {
   function(x, ...) {
     checkmate::assert_scalar(x, na.ok = TRUE)
@@ -323,14 +335,22 @@ format_extreme_values <- function(digits = 2L) {
   }
 }
 
-#' @describeIn extreme_format Create Formatting Function for extreme values part of a confidence interval. Values
-#'   are formatted as e.g. "(xx.xx, xx.xx)" if if the number of `digits` is 2.
-#' @export
-#' @examples
+#' Formatting Extreme Values Part of a Confidence Interval
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Formatting Function for extreme values part of a confidence interval. Values
+#' are formatted as e.g. "(xx.xx, xx.xx)" if if the number of `digits` is 2.
+#'
+#' @inheritParams extreme_format
+#'
+#' @examples
 #' format_fun <- format_extreme_values_ci(2L)
 #' format_fun(x = c(0.127, Inf))
 #' format_fun(x = c(0, 0.009))
+#'
+#' @family formatting functions
+#' @export
 format_extreme_values_ci <- function(digits = 2L) {
   function(x, ...) {
     checkmate::assert_vector(x, len = 2)

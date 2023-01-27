@@ -83,7 +83,6 @@ column with a single value and a column with 2 values.
 library(scda)
 library(dplyr)
 library(forcats)
-library(rtables)
 library(nestcolor)
 
 adrs <- synthetic_cdisc_dataset("latest", "adrs")
