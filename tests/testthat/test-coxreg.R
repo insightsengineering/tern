@@ -10,6 +10,26 @@ raw_data <- data.frame(
   )
 )
 
+# Bladder data from survival
+dta_bladder_raw <- local({
+  # Setting general random for data generation
+  set.seed(1, kind = "Mersenne-Twister")
+  dta_bladder <- with(
+    data = survival::bladder[survival::bladder$enum < 5, ],
+    data.frame(
+      time = stop,
+      status = event,
+      arm = paste("ARM:", as.factor(rx)),
+      armcd = formatters::with_label(as.factor(rx), "ARM"),
+      covar1 = formatters::with_label(as.factor(enum), "A Covariate Label"),
+      covar2 = formatters::with_label(
+        factor(sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")), "Sex (F/M)"),
+      age = sample(20:60, size = 340, replace = TRUE)
+    )
+  )
+  dta_bladder
+})
+
 # h_coxreg_univar_formulas ----
 
 testthat::test_that("h_coxreg_univar_formulas creates formulas with covariate", {
