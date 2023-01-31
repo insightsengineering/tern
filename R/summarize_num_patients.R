@@ -196,8 +196,21 @@ analyze_num_patients <- function(lyt,
     .labels = .labels
   )
 
+  afun_rd <- function(df, .var, .N_col, .df_row, .ref_group, .ref_full, .in_ref_col) {
+    browser()
+    if (nrow(df) == sum(.df_row$ARM %in% c(col_trt, col_placebo))) {
+      s_trt <- s_num_patients_content(df = df[df$ARM == col_trt, ], .var = .var,
+                                      .N_col = nrow(unique(df[df$ARM == col_trt, .var])))
+      s_placebo <- s_num_patients_content(df = df[df$ARM == col_placebo, ], .var = .var,
+                                          .N_col = nrow(unique(df[df$ARM == col_placebo, .var])))
+      risk_diff(s_trt = s_trt, s_placebo = s_placebo, flag_variables = flag_variables, .indent_mods = .indent_mods)
+    } else {
+      afun(df = df, .var = .var, .N_col = .N_col)
+    }
+  }
+
   analyze(
-    afun = afun,
+    afun = afun_rd,
     lyt = lyt,
     vars = vars,
     extra_args = list(...),
