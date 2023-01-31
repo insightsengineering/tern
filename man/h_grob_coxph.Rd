@@ -28,14 +28,13 @@ Grob of \code{rtable} output from \link{h_tbl_coxph_pairwise}
 }
 \examples{
 \dontrun{
-library(scda)
 library(dplyr)
 library(survival)
 library(grid)
 
 grid::grid.newpage()
 grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-data <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
+data <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 tbl_grob <- h_grob_coxph(

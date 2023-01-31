@@ -68,12 +68,10 @@ the required statistics. Tables typically used as part of forest plot.
 
 }}
 \examples{
-# Testing dataset.
-library(scda)
 library(dplyr)
 library(forcats)
 
-adtte <- synthetic_cdisc_dataset("latest", "adtte")
+adtte <- tern_ex_adtte
 
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte)

@@ -20,13 +20,10 @@ by N, median and confidence interval.
 }
 \examples{
 \dontrun{
-library(scda)
 library(dplyr)
 library(survival)
 
-adtte <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
-  filter(PARAMCD == "OS")
-
+adtte <- tern_ex_adtte \%>\% filter(PARAMCD == "OS")
 fit <- survfit(
   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
   data = adtte

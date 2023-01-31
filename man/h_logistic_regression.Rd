@@ -153,12 +153,10 @@ this does not arise in this table, as the treatment arm variable will always be 
 and categorical.
 }
 \examples{
-library(scda)
 library(dplyr)
 library(broom)
 
-adrs <- synthetic_cdisc_data("latest")$adrs
-adrs_f <- adrs \%>\%
+adrs_f <- tern_ex_adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) \%>\%
   mutate(
@@ -166,7 +164,7 @@ adrs_f <- adrs \%>\%
     RACE = factor(RACE),
     SEX = factor(SEX)
   )
-formatters::var_labels(adrs_f) <- c(formatters::var_labels(adrs), Response = "Response")
+formatters::var_labels(adrs_f) <- c(formatters::var_labels(tern_ex_adrs), Response = "Response")
 mod1 <- fit_logistic(
   data = adrs_f,
   variables = list(

@@ -18,11 +18,8 @@ dataframe with \verb{PK PARAM} variable ordered
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
-library(scda)
 library(dplyr)
 
-adpp <- synthetic_cdisc_dataset("latest", "adpp")
-adpp <- adpp \%>\% mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
-
+adpp <- tern_ex_adpp \%>\% mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
 pk_ordered_data <- h_pkparam_sort(adpp)
 }

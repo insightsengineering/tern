@@ -76,12 +76,11 @@ values over time.
 
 }}
 \examples{
-library(scda)
 library(dplyr)
 library(nestcolor)
 
 # Select a small sample of data to plot.
-adlb <- synthetic_cdisc_dataset("latest", "adlb") \%>\%
+adlb <- tern_ex_adlb \%>\%
   filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
   slice(1:36)
 

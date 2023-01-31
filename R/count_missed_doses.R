@@ -97,23 +97,21 @@ a_count_missed_doses <- make_afun(
 #' @export
 #' @examples
 #' library(dplyr)
-#' library(scda)
-#' adex <- synthetic_cdisc_dataset("latest", "adex")
-#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
 #'
-#' anl <- adex %>%
+#' anl <- tern_ex_adsl %>%
 #'   distinct(STUDYID, USUBJID, ARM) %>%
 #'   mutate(
 #'     PARAMCD = "TNDOSMIS",
 #'     PARAM = "Total number of missed doses during study",
-#'     AVAL = sample(0:20, size = nrow(adsl), replace = TRUE),
+#'     AVAL = sample(0:20, size = nrow(tern_ex_adsl), replace = TRUE),
 #'     AVALC = ""
 #'   )
+#'
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
 #'   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") %>%
-#'   build_table(anl, alt_counts_df = adsl)
+#'   build_table(anl, alt_counts_df = tern_ex_adsl)
 count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,

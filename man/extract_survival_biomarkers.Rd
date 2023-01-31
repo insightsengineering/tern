@@ -42,13 +42,9 @@ population subgroups in a single data frame.
 # as well as one stratification variable `STRATA1`. The subgroups
 # are defined by the levels of `BMRKR2`.
 
-# Testing dataset.
-library(scda)
 library(dplyr)
 
-adtte <- synthetic_cdisc_data("latest")$adtte
-
-# Save variable labels before data processing steps.
+adtte <- tern_ex_adtte
 adtte_labels <- formatters::var_labels(adtte)
 
 adtte_f <- adtte \%>\%

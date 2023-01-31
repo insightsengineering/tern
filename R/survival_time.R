@@ -28,11 +28,9 @@ NULL
 #' * `range` : survival time range for all observations.
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
-#' adtte_f <- adtte %>%
+#' adtte_f <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(
 #'     AVAL = day2month(AVAL),

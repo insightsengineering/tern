@@ -47,7 +47,7 @@ lyt <- basic_table() \%>\%
     afun = afun,
     show_labels = "visible"
   )
-build_table(lyt, df = ex_adsl)
+build_table(lyt, df = tern_ex_adsl)
 
 lyt <- basic_table() \%>\%
   split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
@@ -56,7 +56,7 @@ lyt <- basic_table() \%>\%
     afun = afun,
     show_labels = "visible"
   )
-build_table(lyt, df = ex_adsl)
+build_table(lyt, df = tern_ex_adsl)
 }
 \seealso{
 \link{compare_variables}

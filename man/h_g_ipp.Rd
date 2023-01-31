@@ -56,12 +56,11 @@ by \code{ggplot2} to control outlook of plot. Use \code{ggplot2::theme()} to twe
 Function that generates a simple line plot displaying parameter trends over time.
 }
 \examples{
-library(scda)
 library(dplyr)
 library(nestcolor)
 
 # Select a small sample of data to plot.
-adlb <- synthetic_cdisc_dataset("latest", "adlb") \%>\%
+adlb <- tern_ex_adlb \%>\%
   filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
   slice(1:36)
 

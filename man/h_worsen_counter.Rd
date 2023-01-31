@@ -38,13 +38,10 @@ highest post-baseline lab grade variable \code{.var}, baseline lab grade variabl
 and the direction of interest specified in \code{direction_var}.
 }
 \examples{
-library(scda)
 library(dplyr)
-adlb <- synthetic_cdisc_data("latest")$adlb
-adsl <- synthetic_cdisc_data("latest")$adsl
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- adlb \%>\%
+adlb <- tern_ex_adlb \%>\%
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",

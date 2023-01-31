@@ -35,18 +35,17 @@ and probability 1 so that downstream plot lines start at those coordinates,
 }
 \examples{
 \dontrun{
-library(scda)
 library(dplyr)
 library(survival)
 
 # Test with multiple arms
-synthetic_cdisc_dataset("latest", "adtte") \%>\%
+tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_data_plot()
 
 # Test with single arm
-synthetic_cdisc_dataset("latest", "adtte") \%>\%
+tern_ex_adtte \%>\%
   filter(PARAMCD == "OS", ARMCD == "ARM B") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_data_plot(armval = "ARM B")

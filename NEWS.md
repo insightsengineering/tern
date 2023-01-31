@@ -1,4 +1,4 @@
-# tern 0.7.10.9036
+# tern 0.7.10.9037
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -20,6 +20,9 @@
 * Replaced table template tests with snapshot testing.
 * Added option to remove `"(n)"` suffix from `unique_count` labels for `s_num_patients`.
 * Updated `summarize_ancova` examples to use `iris` dataset in examples instead of `scda` data.
+* Created vignette which saves cached synthetic CDISC dataset files to the `data/` folder.
+* Added cached synthetic datasets to `data/` folder to use in tests/examples instead of `scda` data.
+* Updated examples to use datasets from the `tern` package instead of `scda` datasets.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 

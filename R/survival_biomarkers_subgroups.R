@@ -13,11 +13,9 @@
 #' @inheritParams survival_duration_subgroups
 #' @name survival_biomarkers_subgroups
 #' @examples
-#' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte <- tern_ex_adtte
 #'
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte)
@@ -68,13 +66,9 @@ NULL
 #' # as well as one stratification variable `STRATA1`. The subgroups
 #' # are defined by the levels of `BMRKR2`.
 #'
-#' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #'
-#' adtte <- synthetic_cdisc_data("latest")$adtte
-#'
-#' # Save variable labels before data processing steps.
+#' adtte <- tern_ex_adtte
 #' adtte_labels <- formatters::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%

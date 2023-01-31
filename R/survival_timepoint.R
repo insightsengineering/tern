@@ -27,11 +27,9 @@ NULL
 #' * `rate_ci` : confidence interval for event free rate.
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
-#' adtte_f <- adtte %>%
+#' adtte_f <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(
 #'     AVAL = day2month(AVAL),
@@ -216,8 +214,8 @@ a_surv_timepoint_diff <- make_afun(
 #' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
 #' @export
-#' @examples
 #'
+#' @examples
 #' # Survival at given time points.
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%

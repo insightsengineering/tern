@@ -113,11 +113,9 @@ to the input layout. Note that additional formatting arguments can be used here.
 
 }}
 \examples{
-library(scda)
 library(dplyr)
 
-adtte <- synthetic_cdisc_dataset("latest", "adtte")
-adtte_f <- adtte \%>\%
+adtte_f <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 df <- adtte_f \%>\%

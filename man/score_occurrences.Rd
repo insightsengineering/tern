@@ -54,10 +54,6 @@ specified columns. Note that this is extending \code{\link[rtables:score_funs]{r
 
 }}
 \examples{
-library(scda)
-adsl <- synthetic_cdisc_dataset("latest", "adsl")
-adae <- synthetic_cdisc_dataset("latest", "adae")
-
 lyt <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
@@ -77,7 +73,7 @@ lyt <- basic_table() \%>\%
   ) \%>\%
   count_occurrences(vars = "AEDECOD")
 
-tbl <- build_table(lyt, adae, alt_counts_df = adsl) \%>\%
+tbl <- build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl) \%>\%
   prune_table()
 
 tbl_sorted <- tbl \%>\%

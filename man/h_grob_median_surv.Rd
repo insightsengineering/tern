@@ -32,14 +32,13 @@ rows characterized by N, median and 95\% confidence interval.
 }
 \examples{
 \dontrun{
-library(scda)
 library(dplyr)
 library(survival)
 library(grid)
 
 grid::grid.newpage()
 grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-synthetic_cdisc_dataset("latest", "adtte") \%>\%
+tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_grob_median_surv() \%>\%

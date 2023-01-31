@@ -45,14 +45,10 @@ Result is a list of two data frames: \code{survtime} and \code{hr}.
 groupings for \code{subgroups} variables.
 }
 \examples{
-# Testing dataset.
-library(scda)
 library(dplyr)
 library(forcats)
 
-adtte <- synthetic_cdisc_dataset("latest", "adtte")
-
-# Save variable labels before data processing steps.
+adtte <- tern_ex_adtte
 adtte_labels <- formatters::var_labels(adtte)
 
 adtte_f <- adtte \%>\%

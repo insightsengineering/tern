@@ -21,12 +21,11 @@ the legend (\code{guide}).
 }
 \examples{
 \dontrun{
-library(scda)
 library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
+fit_km <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)

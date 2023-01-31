@@ -146,11 +146,8 @@ a_glm_count(
 )
 }
 
-
-library(scda)
 library(dplyr)
-anl <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
-  filter(PARAMCD == "TNE")
+anl <- tern_ex_adtte \%>\% filter(PARAMCD == "TNE")
 anl$AVAL_f <- as.factor(anl$AVAL)
 
 lyt <- basic_table() \%>\%

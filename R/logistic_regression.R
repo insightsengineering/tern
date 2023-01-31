@@ -18,12 +18,10 @@
 #' @param drop_and_remove_str string to be dropped and removed
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #' library(broom)
 #'
-#' adrs <- synthetic_cdisc_data("latest")$adrs
-#' adrs_f <- adrs %>%
+#' adrs_f <- tern_ex_adrs %>%
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
 #'   mutate(
@@ -31,7 +29,7 @@
 #'     RACE = factor(RACE),
 #'     SEX = factor(SEX)
 #'   )
-#' formatters::var_labels(adrs_f) <- c(formatters::var_labels(adrs), Response = "Response")
+#' formatters::var_labels(adrs_f) <- c(formatters::var_labels(tern_ex_adrs), Response = "Response")
 #' mod1 <- fit_logistic(
 #'   data = adrs_f,
 #'   variables = list(
@@ -124,11 +122,9 @@ summarize_logistic <- function(lyt,
 #' @export
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #'
-#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
-#' adrs_f <- adrs %>%
+#' adrs_f <- tern_ex_adrs %>%
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
 #'   mutate(
@@ -136,7 +132,7 @@ summarize_logistic <- function(lyt,
 #'     RACE = factor(RACE),
 #'     SEX = factor(SEX)
 #'   )
-#' formatters::var_labels(adrs_f) <- c(formatters::var_labels(adrs), Response = "Response")
+#' formatters::var_labels(adrs_f) <- c(formatters::var_labels(tern_ex_adrs), Response = "Response")
 #' mod1 <- fit_logistic(
 #'   data = adrs_f,
 #'   variables = list(
@@ -222,12 +218,10 @@ fit_logistic <- function(data,
 #' @seealso [h_logistic_regression] for relevant helper functions.
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #' library(broom)
 #'
-#' adrs <- synthetic_cdisc_data("latest")$adrs
-#' adrs_f <- adrs %>%
+#' adrs_f <- tern_ex_adrs %>%
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
 #'   mutate(
@@ -235,7 +229,7 @@ fit_logistic <- function(data,
 #'     RACE = factor(RACE),
 #'     SEX = factor(SEX)
 #'   )
-#' formatters::var_labels(adrs_f) <- c(formatters::var_labels(adrs), Response = "Response")
+#' formatters::var_labels(adrs_f) <- c(formatters::var_labels(tern_ex_adrs), Response = "Response")
 #' mod1 <- fit_logistic(
 #'   data = adrs_f,
 #'   variables = list(
