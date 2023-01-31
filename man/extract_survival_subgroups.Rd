@@ -48,7 +48,7 @@ groupings for \code{subgroups} variables.
 library(dplyr)
 library(forcats)
 
-adtte <- ex_adtte
+adtte <- tern_ex_adtte
 adtte_labels <- formatters::var_labels(adtte)
 
 adtte_f <- adtte \%>\%

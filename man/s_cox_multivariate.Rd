@@ -46,7 +46,7 @@ but is out of scope as defined by the  Global Data Standards Repository
 \examples{
 library(dplyr)
 
-adtte <- ex_adtte
+adtte <- tern_ex_adtte
 adtte_f <- subset(adtte, PARAMCD == "OS") # _f: filtered
 adtte_f <- filter(
   adtte_f,

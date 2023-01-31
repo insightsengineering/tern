@@ -30,7 +30,7 @@
 #' library(dplyr)
 #' library(forcats)
 #'
-#' adrs <- ex_adrs
+#' adrs <- tern_ex_adrs
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%
@@ -108,7 +108,7 @@ tabulate_rsp_biomarkers <- function(df,
 #' library(dplyr)
 #' library(forcats)
 #'
-#' adrs <- ex_adrs
+#' adrs <- tern_ex_adrs
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%

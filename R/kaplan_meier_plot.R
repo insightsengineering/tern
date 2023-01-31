@@ -86,7 +86,7 @@ NULL
 #' library(grid)
 #' library(nestcolor)
 #'
-#' df <- ex_adtte %>%
+#' df <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
@@ -425,13 +425,13 @@ g_km <- function(df,
 #' library(survival)
 #'
 #' # Test with multiple arms
-#' ex_adtte %>%
+#' tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
 #'
 #' # Test with single arm
-#' ex_adtte %>%
+#' tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot(armval = "ARM B")
@@ -497,7 +497,7 @@ h_data_plot <- function(fit_km,
 #' library(dplyr)
 #' library(survival)
 #'
-#' data <- ex_adtte %>%
+#' data <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
@@ -549,7 +549,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' library(dplyr)
 #' library(survival)
 #'
-#' fit_km <- ex_adtte %>%
+#' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -699,7 +699,7 @@ h_ggkm <- function(data,
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- ex_adtte %>%
+#' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -767,7 +767,7 @@ h_decompose_gg <- function(gg) {
 #' library(dplyr)
 #' library(survival)
 #'
-#' fit_km <- ex_adtte %>%
+#' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -869,7 +869,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- ex_adtte %>%
+#' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #'
@@ -1006,7 +1006,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' library(dplyr)
 #' library(survival)
 #'
-#' adtte <- ex_adtte %>% filter(PARAMCD == "OS")
+#' adtte <- tern_ex_adtte %>% filter(PARAMCD == "OS")
 #' fit <- survfit(
 #'   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
 #'   data = adtte
@@ -1058,7 +1058,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #'
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-#' ex_adtte %>%
+#' tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_grob_median_surv() %>%
@@ -1106,7 +1106,7 @@ h_grob_median_surv <- function(fit_km,
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- ex_adtte %>%
+#' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -1154,7 +1154,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' \dontrun{
 #' library(dplyr)
 #'
-#' adtte <- ex_adtte %>%
+#' adtte <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #'
@@ -1218,7 +1218,7 @@ h_tbl_coxph_pairwise <- function(df,
 #'
 #' grid::grid.newpage()
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-#' data <- ex_adtte %>%
+#' data <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' tbl_grob <- h_grob_coxph(

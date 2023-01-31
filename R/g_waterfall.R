@@ -38,10 +38,10 @@
 #'   col_var = letters[1:3]
 #' )
 #'
-#' adsl_f <- ex_adsl %>%
+#' adsl_f <- tern_ex_adsl %>%
 #'   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 #'
-#' adrs_f <- ex_adrs %>%
+#' adrs_f <- tern_ex_adrs %>%
 #'   filter(PARAMCD == "OVRINV") %>%
 #'   mutate(pchg = rnorm(n(), 10, 50))
 #'

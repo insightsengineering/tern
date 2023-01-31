@@ -86,10 +86,10 @@ rht <- function(x) {
 #' library(dplyr)
 #' library(survival)
 #'
-#' ADSL <- ex_adsl %>%
+#' ADSL <- tern_ex_adsl %>%
 #'   filter(SEX %in% c("F", "M"))
 #'
-#' adtte <- ex_adtte %>% filter(PARAMCD == "PFS")
+#' adtte <- tern_ex_adtte %>% filter(PARAMCD == "PFS")
 #' adtte$ARMCD <- droplevels(adtte$ARMCD)
 #' adtte$SEX <- droplevels(adtte$SEX)
 #'
@@ -351,7 +351,7 @@ check_increments <- function(increments, covariates) {
 #' @examples
 #' library(dplyr)
 #'
-#' adtte <- ex_adtte
+#' adtte <- tern_ex_adtte
 #' adtte_f <- subset(adtte, PARAMCD == "OS") # _f: filtered
 #' adtte_f <- filter(
 #'   adtte_f,

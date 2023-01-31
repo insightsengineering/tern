@@ -124,7 +124,7 @@ basic_table() \%>\%
     vars = "AGE",
     thresholds = c(40, 60)
   ) \%>\%
-  build_table(ex_adsl)
+  build_table(tern_ex_adsl)
 
 }
 \seealso{

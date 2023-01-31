@@ -290,7 +290,7 @@ extract_by_name <- function(x, names) {
 #' @export
 #'
 #' @examples
-#' adae <- ex_adae
+#' adae <- tern_ex_adae
 #'
 #' # Standardized query label includes scope.
 #' aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)

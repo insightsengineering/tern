@@ -73,7 +73,7 @@ lyt <- basic_table() \%>\%
   ) \%>\%
   count_occurrences(vars = "AEDECOD")
 
-tbl <- build_table(lyt, ex_adae, alt_counts_df = ex_adsl) \%>\%
+tbl <- build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl) \%>\%
   prune_table()
 
 tbl_sorted <- tbl \%>\%

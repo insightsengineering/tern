@@ -7,24 +7,24 @@ NULL
 
 #' @describeIn ex_data ADSL data
 #'
-"ex_adsl"
+"tern_ex_adsl"
 
 #' @describeIn ex_data ADAE data
 #'
-"ex_adae"
+"tern_ex_adae"
 
 #' @describeIn ex_data ADLB data
 #'
-"ex_adlb"
+"tern_ex_adlb"
 
 #' @describeIn ex_data ADPP data
 #'
-"ex_adpp"
+"tern_ex_adpp"
 
 #' @describeIn ex_data ADRS data
 #'
-"ex_adrs"
+"tern_ex_adrs"
 
 #' @describeIn ex_data ADTTE data
 #'
-"ex_adtte"
+"tern_ex_adtte"

@@ -23,7 +23,7 @@ by N, median and confidence interval.
 library(dplyr)
 library(survival)
 
-adtte <- ex_adtte \%>\% filter(PARAMCD == "OS")
+adtte <- tern_ex_adtte \%>\% filter(PARAMCD == "OS")
 fit <- survfit(
   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
   data = adtte

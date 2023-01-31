@@ -3,12 +3,12 @@
 \docType{data}
 \name{ex_data}
 \alias{ex_data}
-\alias{ex_adsl}
-\alias{ex_adae}
-\alias{ex_adlb}
-\alias{ex_adpp}
-\alias{ex_adrs}
-\alias{ex_adtte}
+\alias{tern_ex_adsl}
+\alias{tern_ex_adae}
+\alias{tern_ex_adlb}
+\alias{tern_ex_adpp}
+\alias{tern_ex_adrs}
+\alias{tern_ex_adtte}
 \title{Simulated CDISC Data for Examples}
 \format{
 rds (data.frame)
@@ -26,34 +26,34 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1000 rows and 28 columns.
 }
 \usage{
-ex_adsl
+tern_ex_adsl
 
-ex_adae
+tern_ex_adae
 
-ex_adlb
+tern_ex_adlb
 
-ex_adpp
+tern_ex_adpp
 
-ex_adrs
+tern_ex_adrs
 
-ex_adtte
+tern_ex_adtte
 }
 \description{
 Simulated CDISC Data for Examples
 }
 \section{Functions}{
 \itemize{
-\item \code{ex_adsl}: ADSL data
+\item \code{tern_ex_adsl}: ADSL data
 
-\item \code{ex_adae}: ADAE data
+\item \code{tern_ex_adae}: ADAE data
 
-\item \code{ex_adlb}: ADLB data
+\item \code{tern_ex_adlb}: ADLB data
 
-\item \code{ex_adpp}: ADPP data
+\item \code{tern_ex_adpp}: ADPP data
 
-\item \code{ex_adrs}: ADRS data
+\item \code{tern_ex_adrs}: ADRS data
 
-\item \code{ex_adtte}: ADTTE data
+\item \code{tern_ex_adtte}: ADTTE data
 
 }}
 \keyword{datasets}

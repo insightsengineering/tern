@@ -18,7 +18,7 @@
 #' @export
 #'
 #' @examples
-#' adlb <- df_explicit_na(ex_adlb)
+#' adlb <- df_explicit_na(tern_ex_adlb)
 #'
 #' h_map_for_count_abnormal(
 #'   df = adlb,

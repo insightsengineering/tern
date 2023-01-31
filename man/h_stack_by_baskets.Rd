@@ -41,7 +41,7 @@ The new dataset will only contain records of the adverse events
 belonging to any of the selected baskets.
 }
 \examples{
-adae <- ex_adae[1:20, ] \%>\% df_explicit_na()
+adae <- tern_ex_adae[1:20, ] \%>\% df_explicit_na()
 h_stack_by_baskets(df = adae)
 
 aag <- data.frame(

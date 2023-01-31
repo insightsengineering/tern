@@ -15,7 +15,7 @@
 #' @examples
 #' library(dplyr)
 #'
-#' adtte <- ex_adtte
+#' adtte <- tern_ex_adtte
 #'
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte)
@@ -68,7 +68,7 @@ NULL
 #'
 #' library(dplyr)
 #'
-#' adtte <- ex_adtte
+#' adtte <- tern_ex_adtte
 #' adtte_labels <- formatters::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%

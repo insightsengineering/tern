@@ -42,7 +42,7 @@ created by combining multiple subtables.
 library(dplyr)
 library(forcats)
 
-adrs <- ex_adrs
+adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
 adrs_f <- adrs \%>\%

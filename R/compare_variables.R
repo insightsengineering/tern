@@ -381,7 +381,7 @@ a_compare.logical <- make_afun(
 #'     afun = afun,
 #'     show_labels = "visible"
 #'   )
-#' build_table(lyt, df = ex_adsl)
+#' build_table(lyt, df = tern_ex_adsl)
 #'
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
@@ -390,7 +390,7 @@ a_compare.logical <- make_afun(
 #'     afun = afun,
 #'     show_labels = "visible"
 #'   )
-#' build_table(lyt, df = ex_adsl)
+#' build_table(lyt, df = tern_ex_adsl)
 create_afun_compare <- function(.stats = NULL,
                                 .formats = NULL,
                                 .labels = NULL,
@@ -481,7 +481,7 @@ create_afun_compare <- function(.stats = NULL,
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARMCD", ref_group = "ARM B") %>%
 #'   compare_vars(c("AGE", "SEX"))
-#' build_table(lyt, ex_adsl)
+#' build_table(lyt, tern_ex_adsl)
 #'
 #' ## Select and format statistics output.
 #' lyt <- basic_table() %>%
@@ -492,7 +492,7 @@ create_afun_compare <- function(.stats = NULL,
 #'     .formats = c(mean_sd = "xx.x, xx.x"),
 #'     .labels = c(mean_sd = "Mean, SD")
 #'   )
-#' build_table(lyt, df = ex_adsl)
+#' build_table(lyt, df = tern_ex_adsl)
 compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,

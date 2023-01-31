@@ -24,7 +24,7 @@ with \code{binomial} family.
 library(dplyr)
 library(broom)
 
-adrs_f <- ex_adrs \%>\%
+adrs_f <- tern_ex_adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) \%>\%
   mutate(
@@ -32,7 +32,7 @@ adrs_f <- ex_adrs \%>\%
     RACE = factor(RACE),
     SEX = factor(SEX)
   )
-formatters::var_labels(adrs_f) <- c(formatters::var_labels(ex_adrs), Response = "Response")
+formatters::var_labels(adrs_f) <- c(formatters::var_labels(tern_ex_adrs), Response = "Response")
 mod1 <- fit_logistic(
   data = adrs_f,
   variables = list(

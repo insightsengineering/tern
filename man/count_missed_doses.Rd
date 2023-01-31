@@ -105,12 +105,12 @@ afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
 
 library(dplyr)
 
-anl <- ex_adsl \%>\%
+anl <- tern_ex_adsl \%>\%
   distinct(STUDYID, USUBJID, ARM) \%>\%
   mutate(
     PARAMCD = "TNDOSMIS",
     PARAM = "Total number of missed doses during study",
-    AVAL = sample(0:20, size = nrow(ex_adsl), replace = TRUE),
+    AVAL = sample(0:20, size = nrow(tern_ex_adsl), replace = TRUE),
     AVALC = ""
   )
 
@@ -118,7 +118,7 @@ basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") \%>\%
-  build_table(anl, alt_counts_df = ex_adsl)
+  build_table(anl, alt_counts_df = tern_ex_adsl)
 }
 \seealso{
 Relevant description function \code{\link[=d_count_missed_doses]{d_count_missed_doses()}}.

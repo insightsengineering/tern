@@ -155,7 +155,7 @@ library(survival)
 library(grid)
 library(nestcolor)
 
-df <- ex_adtte \%>\%
+df <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")

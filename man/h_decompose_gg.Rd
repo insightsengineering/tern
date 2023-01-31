@@ -25,7 +25,7 @@ library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- ex_adtte \%>\%
+fit_km <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)

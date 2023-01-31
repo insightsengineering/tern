@@ -115,7 +115,7 @@ to the input layout. Note that additional formatting arguments can be used here.
 \examples{
 library(dplyr)
 
-adtte_f <- ex_adtte \%>\%
+adtte_f <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 df <- adtte_f \%>\%

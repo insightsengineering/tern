@@ -41,7 +41,7 @@ and the direction of interest specified in \code{direction_var}.
 library(dplyr)
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- ex_adlb \%>\%
+adlb <- tern_ex_adlb \%>\%
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",

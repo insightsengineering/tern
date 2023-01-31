@@ -62,10 +62,10 @@ as $1.96 * sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$ for a confidence leve
 library(dplyr)
 library(survival)
 
-ADSL <- ex_adsl \%>\%
+ADSL <- tern_ex_adsl \%>\%
   filter(SEX \%in\% c("F", "M"))
 
-adtte <- ex_adtte \%>\% filter(PARAMCD == "PFS")
+adtte <- tern_ex_adtte \%>\% filter(PARAMCD == "PFS")
 adtte$ARMCD <- droplevels(adtte$ARMCD)
 adtte$SEX <- droplevels(adtte$SEX)
 

@@ -136,7 +136,7 @@ generate_adsl <- function(N = 200) { # nolint
   )
 
   # associate sites with countries and regions
-  ex_adsl <- adsl %>%
+  tern_ex_adsl <- adsl %>%
     dplyr::mutate(
       REGION1 = dplyr::case_when(
         COUNTRY %in% c("NGA") ~ "Africa",
@@ -151,14 +151,14 @@ generate_adsl <- function(N = 200) { # nolint
     ) %>%
     dplyr::mutate(USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-"))
 
-  save(ex_adsl, file = "data/ex_adsl.rda", compress = "xz")
+  save(tern_ex_adsl, file = "data/tern_ex_adsl.rda", compress = "xz")
 }
 ```
 
 ## ADAE
 
 ```{r adae, eval=FALSE}
-generate_adae <- function(adsl = ex_adsl,
+generate_adae <- function(adsl = tern_ex_adsl,
                           max_n_aes = 5) {
   set.seed(1)
   lookup_ae <- tibble::tribble(
@@ -278,16 +278,16 @@ generate_adae <- function(adsl = ex_adsl,
     d_new[, dplyr::setdiff(names(d_new), names(d_adae)), drop = FALSE]
   }, adae)
 
-  ex_adae <- dplyr::bind_cols(adae, l_aesi)
+  tern_ex_adae <- dplyr::bind_cols(adae, l_aesi)
 
-  save(ex_adae, file = "data/ex_adae.rda", compress = "xz")
+  save(tern_ex_adae, file = "data/tern_ex_adae.rda", compress = "xz")
 }
 ```
 
 ## ADLB
 
 ```{r adlb, eval=FALSE}
-generate_adlb <- function(adsl = ex_adsl,
+generate_adlb <- function(adsl = tern_ex_adsl,
                           max_n_lbs = 5L) {
   set.seed(1)
   lbcat <- c("CHEMISTRY", "CHEMISTRY", "IMMUNOLOGY")
@@ -554,7 +554,7 @@ generate_adlb <- function(adsl = ex_adsl,
   adlb <- flag_variables(adlb, TRUE, TRUE, TRUE) %>% dplyr::rename(WGRHIVFL = "new_var")
   adlb <- flag_variables(adlb, TRUE, FALSE, TRUE) %>% dplyr::rename(WGRLOVFL = "new_var")
 
-  ex_adlb <- adlb %>% dplyr::mutate(ANL01FL = ifelse(
+  tern_ex_adlb <- adlb %>% dplyr::mutate(ANL01FL = ifelse(
     (.data$ABLFL == "Y" | (.data$WORS01FL == "Y" & is.na(.data$DTYPE))) &
       (.data$AVISIT != "SCREENING"),
     "Y",
@@ -562,14 +562,14 @@ generate_adlb <- function(adsl = ex_adsl,
   ),
   PARAM = as.factor(.data$PARAM))
 
-  save(ex_adlb, file = "data/ex_adlb.rda", compress = "xz")
+  save(tern_ex_adlb, file = "data/tern_ex_adlb.rda", compress = "xz")
 }
 ```
 
 ## ADPP
 
 ```{r adpp, eval=FALSE}
-generate_adpp <- function(adsl = ex_adsl) {
+generate_adpp <- function(adsl = tern_ex_adsl) {
   set.seed(1)
   paramcd <- c(
     "AUCIFO", "CMAX", "CLO", "RMAX", "TON",
@@ -615,18 +615,18 @@ generate_adpp <- function(adsl = ex_adsl) {
     related_var = "PARAM"
   ))
 
-  ex_adpp <- adsl %>%
+  tern_ex_adpp <- adsl %>%
     dplyr::inner_join(adpp, by = c("STUDYID", "USUBJID")) %>%
     dplyr::filter(.data$ACTARM != "B: Placebo", !(.data$ACTARM == "A: Drug X"))
 
-  save(ex_adpp, file = "data/ex_adpp.rda", compress = "xz")
+  save(tern_ex_adpp, file = "data/tern_ex_adpp.rda", compress = "xz")
 }
 ```
 
 ## ADRS
 
 ```{r adrs, eval=FALSE}
-generate_adrs <- function(adsl = ex_adsl) {
+generate_adrs <- function(adsl = tern_ex_adsl) {
   set.seed(1)
   param_codes <- stats::setNames(1:5, c("CR", "PR", "SD", "PD", "NE"))
 
@@ -722,7 +722,7 @@ generate_adrs <- function(adsl = ex_adsl) {
     by = c("STUDYID", "USUBJID")
   )
 
-  ex_adrs <- adrs %>%
+  tern_ex_adrs <- adrs %>%
     dplyr::arrange(
       .data$STUDYID,
       .data$USUBJID,
@@ -731,14 +731,14 @@ generate_adrs <- function(adsl = ex_adsl) {
       .data$ADTM
     )
 
-  save(ex_adrs, file = "data/ex_adrs.rda", compress = "xz")
+  save(tern_ex_adrs, file = "data/tern_ex_adrs.rda", compress = "xz")
 }
 ```
 
 ## ADTTE
 
 ```{r adtte, eval=FALSE}
-generate_adtte <- function(adsl = ex_adsl) {
+generate_adtte <- function(adsl = tern_ex_adsl) {
   set.seed(1)
   lookup_tte <- tibble::tribble(
     ~ARM, ~PARAMCD, ~PARAM, ~LAMBDA, ~CNSR_P,
@@ -826,7 +826,7 @@ generate_adtte <- function(adsl = ex_adsl) {
     )
 
   # adding adverse event counts and log follow-up time
-  ex_adtte <- dplyr::bind_rows(
+  tern_ex_adtte <- dplyr::bind_rows(
     adtte,
     data.frame(adtte %>%
       dplyr::group_by(.data$USUBJID) %>%
@@ -847,7 +847,7 @@ generate_adtte <- function(adsl = ex_adsl) {
       .data$ADTM
     )
 
-  save(ex_adtte, file = "data/ex_adtte.rda", compress = "xz")
+  save(tern_ex_adtte, file = "data/tern_ex_adtte.rda", compress = "xz")
 }
 ```
 
@@ -856,7 +856,7 @@ generate_adtte <- function(adsl = ex_adsl) {
 ```{r generate data, eval=FALSE}
 # Generate & load ADSL
 generate_adsl()
-load("data/ex_adsl.rda")
+load("data/tern_ex_adsl.rda")
 
 # Generate other datasets
 generate_adae()

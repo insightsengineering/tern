@@ -40,7 +40,7 @@ Note that for the default degree 0 the \code{biomarker} variable is not included
 library(survival)
 library(dplyr)
 
-adrs_f <- ex_adrs \%>\%
+adrs_f <- tern_ex_adrs \%>\%
   filter(
     PARAMCD == "BESRSPI",
     ARM \%in\% c("B: Placebo", "A: Drug X")

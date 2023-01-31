@@ -51,7 +51,7 @@ created by combining multiple subtables.
 \examples{
 library(dplyr)
 
-adtte <- ex_adtte
+adtte <- tern_ex_adtte
 
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte)

@@ -156,17 +156,17 @@ library(dplyr)
 # `s_count_patients_with_event()`
 
 s_count_patients_with_event(
-  ex_adae,
+  tern_ex_adae,
   .var = "SUBJID",
   filters = c("TRTEMFL" = "Y")
 )
 s_count_patients_with_event(
-  ex_adae,
+  tern_ex_adae,
   .var = "SUBJID",
   filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
 )
 s_count_patients_with_event(
-  ex_adae,
+  tern_ex_adae,
   .var = "SUBJID",
   filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
   denom = "N_col",
@@ -175,7 +175,7 @@ s_count_patients_with_event(
 # `a_count_patients_with_event()`
 
 a_count_patients_with_event(
-  ex_adae,
+  tern_ex_adae,
   .var = "SUBJID",
   filters = c("TRTEMFL" = "Y"),
   .N_col = 100,
@@ -211,11 +211,11 @@ lyt <- basic_table() \%>\%
     .indent_mods = c(count_fraction = 2L),
     table_names = "tbl_rel_fatal"
   )
-build_table(lyt, ex_adae, alt_counts_df = ex_adsl)
+build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
 # `s_count_patients_with_flags()`
 
 # Add labelled flag variables to analysis dataset.
-adae <- ex_adae \%>\%
+adae <- tern_ex_adae \%>\%
   mutate(
     fl1 = TRUE,
     fl2 = TRTEMFL == "Y",
@@ -263,5 +263,5 @@ lyt2 <- basic_table() \%>\%
     flag_variables = formatters::var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
     denom = "N_col"
   )
-build_table(lyt2, adae, alt_counts_df = ex_adsl)
+build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
 }

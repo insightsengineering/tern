@@ -310,7 +310,7 @@ afun(x, .ref_group = y, .in_ref_col = FALSE)
 lyt <- basic_table() \%>\%
   split_cols_by("ARMCD", ref_group = "ARM B") \%>\%
   compare_vars(c("AGE", "SEX"))
-build_table(lyt, ex_adsl)
+build_table(lyt, tern_ex_adsl)
 
 ## Select and format statistics output.
 lyt <- basic_table() \%>\%
@@ -321,7 +321,7 @@ lyt <- basic_table() \%>\%
     .formats = c(mean_sd = "xx.x, xx.x"),
     .labels = c(mean_sd = "Mean, SD")
   )
-build_table(lyt, df = ex_adsl)
+build_table(lyt, df = tern_ex_adsl)
 }
 \seealso{
 Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}.

@@ -156,7 +156,7 @@ a_count_cumulative <- make_afun(
 #'     vars = "AGE",
 #'     thresholds = c(40, 60)
 #'   ) %>%
-#'   build_table(ex_adsl)
+#'   build_table(tern_ex_adsl)
 #'
 count_cumulative <- function(lyt,
                              vars,

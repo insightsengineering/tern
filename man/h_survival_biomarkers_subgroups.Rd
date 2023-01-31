@@ -67,7 +67,7 @@ the results for a single biomarker.
 library(dplyr)
 library(forcats)
 
-adtte <- ex_adtte
+adtte <- tern_ex_adtte
 
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte, fill = FALSE)

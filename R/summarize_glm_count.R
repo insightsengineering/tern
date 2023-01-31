@@ -423,7 +423,7 @@ a_glm_count <- make_afun(
 #' @export
 #' @examples
 #' library(dplyr)
-#' anl <- ex_adtte %>% filter(PARAMCD == "TNE")
+#' anl <- tern_ex_adtte %>% filter(PARAMCD == "TNE")
 #' anl$AVAL_f <- as.factor(anl$AVAL)
 #'
 #' lyt <- basic_table() %>%

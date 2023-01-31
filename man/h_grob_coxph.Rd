@@ -34,7 +34,7 @@ library(grid)
 
 grid::grid.newpage()
 grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-data <- ex_adtte \%>\%
+data <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 tbl_grob <- h_grob_coxph(

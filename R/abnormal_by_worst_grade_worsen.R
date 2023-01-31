@@ -42,7 +42,7 @@ NULL
 #' library(dplyr)
 #'
 #' # The direction variable, GRADDR, is based on metadata
-#' adlb <- ex_adlb %>%
+#' adlb <- tern_ex_adlb %>%
 #'   mutate(
 #'     GRADDR = case_when(
 #'       PARAMCD == "ALT" ~ "B",
@@ -170,7 +170,7 @@ h_adlb_worsen <- function(adlb,
 #' library(dplyr)
 #'
 #' # The direction variable, GRADDR, is based on metadata
-#' adlb <- ex_adlb %>%
+#' adlb <- tern_ex_adlb %>%
 #'   mutate(
 #'     GRADDR = case_when(
 #'       PARAMCD == "ALT" ~ "B",
@@ -277,7 +277,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' library(dplyr)
 #'
 #' # The direction variable, GRADDR, is based on metadata
-#' adlb <- ex_adlb %>%
+#' adlb <- tern_ex_adlb %>%
 #'   mutate(
 #'     GRADDR = case_when(
 #'       PARAMCD == "ALT" ~ "B",
@@ -369,7 +369,7 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
 #'     )
 #'   ) %>%
 #'   append_topleft("Direction of Abnormality") %>%
-#'   build_table(df = df, alt_counts_df = ex_adsl)
+#'   build_table(df = df, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
 count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint

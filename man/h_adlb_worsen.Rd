@@ -47,7 +47,7 @@ Helper function to prepare a \code{df} for generate the patient count shift tabl
 library(dplyr)
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- ex_adlb \%>\%
+adlb <- tern_ex_adlb \%>\%
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",

@@ -84,7 +84,7 @@ library(dplyr)
 library(forcats)
 library(nestcolor)
 
-adrs <- ex_adrs
+adrs <- tern_ex_adrs
 n_records <- 20
 adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
 adrs <- adrs \%>\%
@@ -123,7 +123,7 @@ p <- g_forest(
 draw_grob(p)
 
 # Survival forest plot example.
-adtte <- ex_adtte
+adtte <- tern_ex_adtte
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte, fill = TRUE)
 adtte_f <- adtte \%>\%

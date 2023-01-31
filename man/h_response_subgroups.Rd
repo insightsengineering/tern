@@ -84,7 +84,7 @@ and \code{strat}. \code{groups_lists} optionally specifies groupings for \code{s
 library(dplyr)
 library(forcats)
 
-adrs <- ex_adrs
+adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
 adrs_f <- adrs \%>\%

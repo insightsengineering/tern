@@ -90,7 +90,7 @@ groupings for \code{subgroups} variables.
 library(dplyr)
 library(forcats)
 
-adtte <- ex_adtte
+adtte <- tern_ex_adtte
 
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte)

@@ -38,7 +38,7 @@ Helper Function to create a map dataframe from the input dataset, which can be u
 \code{trim_levels_to_map} split function. Based on different method, the map is constructed differently.
 }
 \examples{
-adlb <- df_explicit_na(ex_adlb)
+adlb <- df_explicit_na(tern_ex_adlb)
 
 h_map_for_count_abnormal(
   df = adlb,

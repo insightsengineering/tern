@@ -29,7 +29,7 @@ NULL
 #' @examples
 #' library(dplyr)
 #'
-#' adtte_f <- ex_adtte %>%
+#' adtte_f <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(
 #'     AVAL = day2month(AVAL),

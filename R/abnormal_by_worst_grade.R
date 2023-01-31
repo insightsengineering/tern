@@ -35,7 +35,7 @@ NULL
 #' @examples
 #' library(dplyr)
 #' library(forcats)
-#' adlb <- ex_adlb
+#' adlb <- tern_ex_adlb
 #'
 #' # Data is modified in order to have some parameters with grades only in one direction
 #' # and simulate the real data.
