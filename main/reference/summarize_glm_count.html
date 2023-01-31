@@ -14,7 +14,7 @@ This can be used to analyze count and/or frequency data using a linear model."><
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9035</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9036</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,7 @@ This can be used to analyze count and/or frequency data using a linear model."><
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -38,15 +39,6 @@ This can be used to analyze count and/or frequency data using a linear model."><
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -246,11 +238,8 @@ summary tables for analysis of count data using generalized linear models (poiss
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">anl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adtte"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"TNE"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">anl</span> <span class="op">&lt;-</span> <span class="va">tern_ex_adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"TNE"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">anl</span><span class="op">$</span><span class="va">AVAL_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">anl</span><span class="op">$</span><span class="va">AVAL</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -290,26 +279,26 @@ summary tables for analysis of count data using generalized linear models (poiss
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">anl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                 B: Placebo           A: Drug X        C: Combination  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                   (N=134)             (N=134)             (N=132)     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                   (N=73)              (N=69)              (N=58)      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of exacerbations per patient                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0                                              6 (4.48%)           7 (5.22%)          12 (9.09%)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1                                             19 (14.18%)         24 (17.91%)         23 (17.42%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2                                             34 (25.37%)         20 (14.93%)         25 (18.94%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3                                             31 (23.13%)         36 (26.87%)         30 (22.73%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4                                             21 (15.67%)         20 (14.93%)         22 (16.67%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5                                             16 (11.94%)         16 (11.94%)          9 (6.82%)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   6                                              6 (4.48%)           6 (4.48%)           6 (4.55%)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   7                                              0 (0.00%)           5 (3.73%)           4 (3.03%)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   8                                              1 (0.75%)           0 (0.00%)           1 (0.76%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0                                             9 (12.33%)           3 (4.35%)           5 (8.62%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1                                             8 (10.96%)          12 (17.39%)         6 (10.34%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2                                             17 (23.29%)         12 (17.39%)         13 (22.41%)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3                                             12 (16.44%)         16 (23.19%)         12 (20.69%)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4                                              5 (6.85%)          10 (14.49%)         13 (22.41%)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5                                             16 (21.92%)         7 (10.14%)           1 (1.72%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6                                              1 (1.37%)           6 (8.70%)           5 (8.62%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7                                              5 (6.85%)           2 (2.90%)           3 (5.17%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   10                                             0 (0.00%)           1 (1.45%)           0 (0.00%)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Unadjusted exacerbation rate (per year)                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate                                            9.4721              10.0872             8.7228      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate                                            8.5503              8.7118              7.9632      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Adjusted (QP) exacerbation rate (per year)                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate                                            9.6627              10.0716             8.7092      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate CI                                    (6.5933, 14.1611)   (6.9632, 14.5676)   (5.9167, 12.8197)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate Ratio                                                          1.0423              0.9013      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate Ratio CI                                                  (0.6121, 1.7749)    (0.5220, 1.5564) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   p value                                                             0.8787              0.7093      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate                                            8.9083              8.9394              8.1176      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate CI                                    (4.7674, 16.6460)   (4.8154, 16.5952)   (4.0756, 16.1681)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate Ratio                                                          1.0035              0.9112      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate Ratio CI                                                  (0.4167, 2.4167)    (0.3553, 2.3370) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   p value                                                             0.9938              0.8466      </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

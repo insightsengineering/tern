@@ -12,7 +12,7 @@ Summarize patient's survival rate and difference of survival rates between group
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9035</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9036</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@ Summarize patient's survival rate and difference of survival rates between group
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -36,15 +37,6 @@ Summarize patient's survival rate and difference of survival rates between group
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -234,11 +226,9 @@ Note that additional formatting arguments can be used here.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adtte"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">tern_ex_adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    AVAL <span class="op">=</span> <span class="fu"><a href="day2month.html">day2month</a></span><span class="op">(</span><span class="va">AVAL</span><span class="op">)</span>,</span></span>
@@ -285,7 +275,6 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Survival at given time points.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -298,12 +287,12 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">adtte_f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    ARM A            ARM B            ARM C     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   (N=134)          (N=134)          (N=132)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                    (N=69)           (N=73)           (N=58)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7 Months                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Patients remaining at risk        103              102               83      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Event Free Rate (%)              83.83            82.73            66.98     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                       (77.49, 90.17)   (76.15, 89.30)   (58.79, 75.17)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Patients remaining at risk         56               55               43      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Event Free Rate (%)              82.43            77.87            80.27     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                       (73.40, 91.46)   (68.29, 87.44)   (69.81, 90.74)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Difference in survival at given time points.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -318,13 +307,13 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-in"><span>    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rate_diff"</span> <span class="op">=</span> <span class="fl">0L</span>, <span class="st">"rate_diff_ci"</span> <span class="op">=</span> <span class="fl">2L</span>, <span class="st">"ztest_pval"</span> <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">adtte_f</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                    ARM A        ARM B             ARM C     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   (N=134)      (N=134)           (N=132)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                   ARM A         ARM B             ARM C     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                   (N=69)       (N=73)            (N=58)     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9 Months                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Event Free Rate                 -4.34            -20.05     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       95% CI                                (-14.48, 5.79)   (-31.02, -9.09)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       p-value (Z-test)                          0.4012           0.0003     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Event Free Rate                 -2.98             -3.34     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       95% CI                               (-17.00, 11.05)   (-18.47, 11.79)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       p-value (Z-test)                         0.6775            0.6655     </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Survival and difference in survival at given time points.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -338,16 +327,16 @@ Note that additional formatting arguments can be used here.</p></li>
 <span class="r-in"><span>    method <span class="op">=</span> <span class="st">"both"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">adtte_f</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                     ARM A            ARM B             ARM C     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                    (N=134)          (N=134)           (N=132)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 Months                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Patients remaining at risk          97               93               73       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Event Free Rate (%)               80.52            76.18             60.47     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                        (73.66, 87.39)   (68.73, 83.64)   (51.92, 69.02) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Difference in Event Free Rate                        -4.34            -20.05     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95% CI                                           (-14.48, 5.79)   (-31.02, -9.09)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p-value (Z-test)                                     0.4012           0.0003     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                     ARM A             ARM B             ARM C     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                     (N=69)           (N=73)            (N=58)     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 Months                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Patients remaining at risk          53               53                40       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Event Free Rate (%)               78.01             75.04             74.67     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                        (68.18, 87.84)   (65.04, 85.04)    (63.18, 86.17) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Difference in Event Free Rate                         -2.98             -3.34     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95% CI                                           (-17.00, 11.05)   (-18.47, 11.79)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value (Z-test)                                     0.6775            0.6655     </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

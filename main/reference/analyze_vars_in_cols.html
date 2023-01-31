@@ -14,7 +14,7 @@ the relevant statistic is on the columns instead of on the rows."><!-- mathjax -
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9035</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9036</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,7 @@ the relevant statistic is on the columns instead of on the rows."><!-- mathjax -
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -38,15 +39,6 @@ the relevant statistic is on the columns instead of on the rows."><!-- mathjax -
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -145,34 +137,33 @@ function which can be used for creating summary tables in columns, primarily use
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">adpp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adpp"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="h_pkparam_sort.html">h_pkparam_sort</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adpp</span> <span class="op">&lt;-</span> <span class="va">tern_ex_adpp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="h_pkparam_sort.html">h_pkparam_sort</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"SEX"</span>, label_pos <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">analyze_vars_in_cols</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AGE"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">build_table</span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adpp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SEX             n     Mean   SD    SE    CV (%)   CV % Geometric Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A: Drug X                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  5214   32.8   6.0   0.1    18.5           18.7        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  3630   35.2   6.9   0.1    19.6           19.7        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> B: Placebo                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   0      NA    NA    NA      NA             NA         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   0      NA    NA    NA      NA             NA         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  9240   35.2   7.3   0.1    20.8           20.4        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  8184   35.7   8.1   0.1    22.7           21.9        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARM                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SEX             n    Mean   SD    SE    CV (%)   CV % Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A: Drug X                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   0     NA    NA    NA      NA             NA         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   0     NA    NA    NA      NA             NA         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> B: Placebo                                                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   0     NA    NA    NA      NA             NA         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   0     NA    NA    NA      NA             NA         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  288   36.0   6.3   0.4    17.6           18.0        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  234   36.3   8.5   0.6    23.4           23.5        </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># By selecting just some statistics and ad-hoc labels</span></span></span>
 <span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -193,24 +184,24 @@ function which can be used for creating summary tables in columns, primarily use
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">build_table</span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adpp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SEX            myN    myCV   myGeomMean    Mean (95%CI)    Median   Minimum   Maximum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A: Drug X                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  5214   18.5      32.2      (32.60, 32.92)    32.0     21.0      47.0  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  3630   19.6      34.6      (34.99, 35.44)    34.0     23.0      50.0  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> B: Placebo                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   0      NA        NA             NA           NA       NA        NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   0      NA        NA             NA           NA       NA        NA   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  9240   20.8      34.5      (35.05, 35.35)    35.0     21.0      64.0  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  8184   22.7      34.8      (35.52, 35.87)    35.0     20.0      69.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARM                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   SEX            myN   myCV   myGeomMean    Mean (95%CI)    Median   Minimum   Maximum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A: Drug X                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   0     NA        NA             NA           NA       NA        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   0     NA        NA             NA           NA       NA        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> B: Placebo                                                                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   0     NA        NA             NA           NA       NA        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   0     NA        NA             NA           NA       NA        NA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C: Combination                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  288   17.6      35.5      (35.29, 36.76)    36.8     25.4      49.6  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  234   23.4      35.3      (35.19, 37.37)    35.3     23.0      58.3  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">analyze_vars_in_cols</span><span class="op">(</span></span></span>
@@ -219,9 +210,9 @@ function which can be used for creating summary tables in columns, primarily use
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">build_table</span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adpp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       n     Mean   SD    SE    CV (%)   CV % Geometric Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> some custom label   26268   34.9   7.4   0.0    21.1           20.7        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      n    Mean   SD    SE    CV (%)   CV % Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> some custom label   522   36.1   7.4   0.3    20.4           20.6        </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># PKPT03</span></span></span>
 <span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -243,26 +234,26 @@ function which can be used for creating summary tables in columns, primarily use
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">build_table</span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">adpp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PK Parameter    n     Mean     SD    CV (%)   Geometric Mean   CV % Geometric Mean   Median   Minimum   Maximum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Cmax                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                2388   30.1    6.1     20.4         29.5               22.0            30.1     10.1      48.9  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AUCinf obs                                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                2388   199.3   39.8    19.9        195.1               21.3           198.6     71.5      323.5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CL obs                                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                2388    5.0    1.0     20.0         4.9                21.4            5.0       1.3       8.4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Ae                                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                4776    1.6    0.3     20.0         1.5                21.0            1.6       0.6       2.6  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fe                                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                4776   15.6    3.1     19.9         15.3               21.2            15.6      4.3      26.4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CLR                                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                2388    0.0    0.0     20.2         0.0                21.9            0.0       0.0       0.1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rmax                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                2388   10.0    2.0     19.5         9.8                20.7            10.0      3.2      17.3  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Tonset                                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                2388    3.0    0.6     19.8         2.9                21.2            3.0       1.1       5.0  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RENALCLD                                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                2388    0.0    0.0     19.6         0.0                21.3            0.0       0.0       0.0  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PK Parameter   n    Mean     SD    CV (%)   Geometric Mean   CV % Geometric Mean   Median   Minimum   Maximum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Cmax                                                                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                58   29.7    5.6     19.0         29.2               19.3            29.0     17.2      45.9  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AUCinf obs                                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                58   207.5   34.9    16.8        204.5               17.3           202.7     123.4     286.9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CL obs                                                                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                58    5.1    1.0     20.6         5.0                22.7            5.1       2.5       7.4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ae                                                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                58    1.5    0.3     21.3         1.5                24.1            1.5       0.6       2.2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Fe                                                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                58   15.7    3.6     22.7         15.3               24.0            15.8      9.0      22.6  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CLR                                                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                58    0.0    0.0     19.9         0.0                22.2            0.0       0.0       0.1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rmax                                                                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                58    9.6    2.0     21.1         9.4                21.6            9.3       5.5      14.4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tonset                                                                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                58    3.0    0.7     22.4         2.9                23.3            3.0       1.7       4.8  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RENALCLD                                                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                58    0.0    0.0     19.0         0.0                19.4            0.0       0.0       0.0  </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

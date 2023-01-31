@@ -22,7 +22,7 @@ groups_lists optionally specifies groupings for subgroups variables."><!-- mathj
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9035</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9036</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,7 @@ groups_lists optionally specifies groupings for subgroups variables."><!-- mathj
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -46,15 +47,6 @@ groups_lists optionally specifies groupings for subgroups variables."><!-- mathj
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -134,13 +126,9 @@ helper function <code><a href="control_coxreg.html">control_coxreg()</a></code>.
 <span class="r-in"><span><span class="co"># as well as one stratification variable `STRATA1`. The subgroups</span></span></span>
 <span class="r-in"><span><span class="co"># are defined by the levels of `BMRKR2`.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Testing dataset.</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Save variable labels before data processing steps.</span></span></span>
+<span class="r-in"><span><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="va">tern_ex_adtte</span></span></span>
 <span class="r-in"><span><span class="va">adtte_labels</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adtte</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -164,33 +152,33 @@ helper function <code><a href="control_coxreg.html">control_coxreg()</a></code>.
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   biomarker              biomarker_label n_tot n_tot_events   median        hr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    BMRKR1 Continuous Level Biomarker 1   400          282 680.9598 0.9838045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       AGE                          Age   400          282 680.9598 1.0060610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    BMRKR1 Continuous Level Biomarker 1   135           95 647.7467 1.0155961</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       AGE                          Age   135           95 647.7467 1.0095516</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    BMRKR1 Continuous Level Biomarker 1   135           93 646.4069 0.9800800</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       AGE                          Age   135           93 646.4069 1.0228066</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    BMRKR1 Continuous Level Biomarker 1   130           94 761.2290 0.9437920</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       AGE                          Age   130           94 761.2290 1.0035277</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         lcl      ucl conf_level       pval     pval_label     subgroup    var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.9500735 1.018733       0.95 0.35898997 p-value (Wald) All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.9908739 1.021481       0.95 0.43619694 p-value (Wald) All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9553432 1.079649       0.95 0.61993701 p-value (Wald)          LOW BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.9801032 1.039885       0.95 0.52910110 p-value (Wald)          LOW BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.9237871 1.039803       0.95 0.50496922 p-value (Wald)       MEDIUM BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.9940130 1.052434       0.95 0.12167059 p-value (Wald)       MEDIUM BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.8822742 1.009599       0.95 0.09253618 p-value (Wald)         HIGH BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.9776074 1.030135       0.95 0.79197278 p-value (Wald)         HIGH BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Categorical Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   biomarker biomarker_label n_tot n_tot_events   median        hr       lcl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    BMRKR1          BMRKR1   200          142 753.5176 0.9778269 0.9279033</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       AGE             AGE   200          142 753.5176 0.9902722 0.9655108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    BMRKR1          BMRKR1    70           52 691.8542 0.9135352 0.8296837</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       AGE             AGE    70           52 691.8542 0.9992661 0.9544867</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    BMRKR1          BMRKR1    68           48 654.1798 1.0085287 0.9195976</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       AGE             AGE    68           48 654.1798 0.9691179 0.9118318</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    BMRKR1          BMRKR1    62           42 835.0535 1.0102921 0.9038195</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       AGE             AGE    62           42 835.0535 0.9830767 0.9444710</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        ucl conf_level      pval     pval_label     subgroup    var    var_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.030437       0.95 0.4016894 p-value (Wald) All Patients    ALL All Patients</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.015669       0.95 0.4492774 p-value (Wald) All Patients    ALL All Patients</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.005861       0.95 0.0656222 p-value (Wald)          LOW BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.046146       0.95 0.9749606 p-value (Wald)          LOW BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.106060       0.95 0.8569068 p-value (Wald)       MEDIUM BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.030003       0.95 0.3129519 p-value (Wald)       MEDIUM BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 1.129308       0.95 0.8569876 p-value (Wald)         HIGH BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 1.023260       0.95 0.4037047 p-value (Wald)         HIGH BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 analysis</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Here we group the levels of `BMRKR2` manually.</span></span></span>
 <span class="r-in"><span><span class="va">df_grouped</span> <span class="op">&lt;-</span> <span class="fu">extract_survival_biomarkers</span><span class="op">(</span></span></span>
@@ -212,33 +200,33 @@ helper function <code><a href="control_coxreg.html">control_coxreg()</a></code>.
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df_grouped</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   biomarker              biomarker_label n_tot n_tot_events   median        hr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    BMRKR1 Continuous Level Biomarker 1   400          282 680.9598 0.9838045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       AGE                          Age   400          282 680.9598 1.0060610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    BMRKR1 Continuous Level Biomarker 1   135           95 647.7467 1.0155961</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       AGE                          Age   135           95 647.7467 1.0095516</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    BMRKR1 Continuous Level Biomarker 1   270          188 647.7467 0.9981993</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       AGE                          Age   270          188 647.7467 1.0131282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    BMRKR1 Continuous Level Biomarker 1   400          282 680.9598 0.9838045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       AGE                          Age   400          282 680.9598 1.0060610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         lcl      ucl conf_level      pval     pval_label        subgroup    var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.9500735 1.018733       0.95 0.3589900 p-value (Wald)    All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.9908739 1.021481       0.95 0.4361969 p-value (Wald)    All Patients    ALL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9553432 1.079649       0.95 0.6199370 p-value (Wald)             low BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.9801032 1.039885       0.95 0.5291011 p-value (Wald)             low BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.9572619 1.040887       0.95 0.9327722 p-value (Wald)      low/medium BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.9927059 1.033971       0.95 0.2093518 p-value (Wald)      low/medium BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.9500735 1.018733       0.95 0.3589900 p-value (Wald) low/medium/high BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.9908739 1.021481       0.95 0.4361969 p-value (Wald) low/medium/high BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 Categorical Level Biomarker 2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Categorical Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   biomarker biomarker_label n_tot n_tot_events   median        hr       lcl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    BMRKR1          BMRKR1   200          142 753.5176 0.9778269 0.9279033</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       AGE             AGE   200          142 753.5176 0.9902722 0.9655108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    BMRKR1          BMRKR1    70           52 691.8542 0.9135352 0.8296837</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       AGE             AGE    70           52 691.8542 0.9992661 0.9544867</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    BMRKR1          BMRKR1   138          100 658.9503 0.9615235 0.9022940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       AGE             AGE   138          100 658.9503 0.9932597 0.9590645</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    BMRKR1          BMRKR1   200          142 753.5176 0.9778269 0.9279033</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       AGE             AGE   200          142 753.5176 0.9902722 0.9655108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        ucl conf_level      pval     pval_label        subgroup    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.030437       0.95 0.4016894 p-value (Wald)    All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.015669       0.95 0.4492774 p-value (Wald)    All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.005861       0.95 0.0656222 p-value (Wald)             low BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.046146       0.95 0.9749606 p-value (Wald)             low BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.024641       0.95 0.2264495 p-value (Wald)      low/medium BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.028674       0.95 0.7051617 p-value (Wald)      low/medium BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 1.030437       0.95 0.4016894 p-value (Wald) low/medium/high BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 1.015669       0.95 0.4492774 p-value (Wald) low/medium/high BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       BMRKR2 analysis</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

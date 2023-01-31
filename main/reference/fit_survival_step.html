@@ -24,7 +24,7 @@ Note that for the default degree 0 the biomarker variable is not included in the
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9035</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9036</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@ Note that for the default degree 0 the biomarker variable is not included in the
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -48,15 +49,6 @@ Note that for the default degree 0 the biomarker variable is not included in the
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -128,12 +120,9 @@ second part of the columns contain the estimates for the treatment arm compariso
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Testing dataset with just two treatment arms.</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_dataset.html" class="external-link">synthetic_cdisc_dataset</a></span><span class="op">(</span><span class="st">"latest"</span>, <span class="st">"adtte"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">tern_ex_adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span>,</span></span>
 <span class="r-in"><span>    <span class="va">ARM</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span><span class="op">)</span></span></span>
@@ -163,26 +152,26 @@ second part of the columns contain the estimates for the treatment arm compariso
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39 12</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Percentile Center Percentile Lower Percentile Upper Interval Center</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]             0.025                0            0.275        1.240529</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]             0.050                0            0.300        1.628805</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]             0.075                0            0.325        1.818258</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]             0.100                0            0.350        2.003407</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]             0.125                0            0.375        2.300801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]             0.150                0            0.400        2.638651</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      Interval Lower Interval Upper   n events       loghr        se   ci_lower</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      0.4055982       3.504396  74     41 0.006507558 0.3163349 -0.6134975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]      0.4055982       3.686405  81     45 0.056543290 0.3031253 -0.5375715</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]      0.4055982       3.805456  87     50 0.118428018 0.2903633 -0.4506737</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]      0.4055982       3.925492  94     55 0.152132172 0.2808143 -0.3982538</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]      0.4055982       4.121412 101     59 0.099905333 0.2715645 -0.4323514</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]      0.4055982       4.284773 107     64 0.082851772 0.2574120 -0.4216664</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       ci_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.6265126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.6506581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.6875297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.7025181</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.6321620</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.5873699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]             0.025                0            0.275        1.472755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]             0.050                0            0.300        2.028546</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]             0.075                0            0.325        2.204086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]             0.100                0            0.350        2.799776</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]             0.125                0            0.375        2.969998</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]             0.150                0            0.400        3.149068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Interval Lower Interval Upper  n events      loghr        se  ci_lower</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      0.4459546       4.182444 39     31 -0.5819807 0.3736363 -1.314294</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]      0.4459546       4.349471 43     35 -0.6007806 0.3552435 -1.297045</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]      0.4459546       4.626913 46     38 -0.7277030 0.3503469 -1.414370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]      0.4459546       4.805767 50     40 -0.6937319 0.3376116 -1.355439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]      0.4459546       4.929816 53     42 -0.6699755 0.3282405 -1.313315</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]      0.4459546       5.020539 57     46 -0.6783805 0.3133884 -1.292611</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         ci_upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.15033293</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.09548382</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.04103578</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] -0.03202520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] -0.02663595</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] -0.06415045</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Specify different polynomial degree for the biomarker interaction to use more flexible local</span></span></span>
 <span class="r-in"><span><span class="co"># models. Or specify different Cox regression options.</span></span></span>

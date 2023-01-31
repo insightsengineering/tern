@@ -12,7 +12,7 @@ Analysis function for use in layout creating functions compare_vars()."><!-- mat
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9035</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9036</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@ Analysis function for use in layout creating functions compare_vars()."><!-- mat
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -36,15 +37,6 @@ Analysis function for use in layout creating functions compare_vars()."><!-- mat
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -129,13 +121,13 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-in"><span>    afun <span class="op">=</span> <span class="va">afun</span>,</span></span>
 <span class="r-in"><span>    show_labels <span class="op">=</span> <span class="st">"visible"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ex_adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">tern_ex_adsl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          ARM A        ARM B        ARM C   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AGE                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                       134          134          132    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)            33.8 (6.6)   35.4 (7.9)   35.4 (7.7)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (t-test)                  0.0616       0.0595  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                        69           73           58    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)            34.1 (6.8)   35.8 (7.1)   36.1 (7.4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (t-test)                  0.1446       0.1176  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -144,16 +136,14 @@ functions (and possibly others in the future), we provide a constructor that doe
 <span class="r-in"><span>    afun <span class="op">=</span> <span class="va">afun</span>,</span></span>
 <span class="r-in"><span>    show_labels <span class="op">=</span> <span class="st">"visible"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">ex_adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">tern_ex_adsl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    ARM A        ARM B        ARM C   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SEX                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                 134          134          132    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                               79 (59%)    77 (57.5%)    66 (50%) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                              51 (38.1%)    55 (41%)    60 (45.5%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   U                               3 (2.2%)     2 (1.5%)      4 (3%)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   UNDIFFERENTIATED                1 (0.7%)        0         2 (1.5%) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (chi-squared test)                  0.7110       0.5018  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                  69           73           58    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                              38 (55.1%)   40 (54.8%)   32 (55.2%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                              31 (44.9%)   33 (45.2%)   26 (44.8%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (chi-squared test)                  1.0000       1.0000  </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

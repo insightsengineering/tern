@@ -16,6 +16,9 @@
     <loc>https://insightsengineering.github.io/tern/main/SECURITY.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/main/articles/generate_tern_data.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/main/articles/index.html</loc>
   </url>
   <url>
@@ -245,6 +248,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/estimate_proportions.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/ex_data.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/explicit_na.html</loc>
