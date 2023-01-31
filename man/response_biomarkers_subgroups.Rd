@@ -39,12 +39,10 @@ not start from an input layout \code{lyt}. This is because internally the table 
 created by combining multiple subtables.
 }
 \examples{
-# Testing dataset.
-library(scda)
 library(dplyr)
 library(forcats)
 
-adrs <- synthetic_cdisc_dataset("latest", "adrs")
+adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
 adrs_f <- adrs \%>\%

@@ -74,12 +74,10 @@ Draw the Kaplan-Meier plot using \code{ggplot2}.
 }
 \examples{
 \dontrun{
-
-library(scda)
 library(dplyr)
 library(survival)
 
-fit_km <- synthetic_cdisc_dataset("latest", "adtte") \%>\%
+fit_km <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
@@ -93,7 +91,6 @@ gg <- h_ggkm(
   ylab = "Survival Probability",
   title = "Survival"
 )
-
 gg
 }
 

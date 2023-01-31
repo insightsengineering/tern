@@ -44,10 +44,9 @@ but is out of scope as defined by the  Global Data Standards Repository
 (\strong{\code{GDS_Standard_TLG_Specs_Tables_2.doc}}).
 }
 \examples{
-library(scda)
 library(dplyr)
 
-adtte <- synthetic_cdisc_dataset("latest", "adtte")
+adtte <- tern_ex_adtte
 adtte_f <- subset(adtte, PARAMCD == "OS") # _f: filtered
 adtte_f <- filter(
   adtte_f,

@@ -149,9 +149,6 @@ a_count_cumulative <- make_afun(
 #' @inheritParams argument_convention
 #' @export
 #' @examples
-#' library(scda)
-#' ADSL <- synthetic_cdisc_dataset("latest", "adsl")
-#'
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
@@ -159,7 +156,7 @@ a_count_cumulative <- make_afun(
 #'     vars = "AGE",
 #'     thresholds = c(40, 60)
 #'   ) %>%
-#'   build_table(ADSL)
+#'   build_table(tern_ex_adsl)
 #'
 count_cumulative <- function(lyt,
                              vars,

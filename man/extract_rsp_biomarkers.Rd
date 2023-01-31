@@ -43,12 +43,10 @@ You can also specify a continuous variable in \code{rsp} and then use the
 variable reflecting binary response.
 }
 \examples{
-# Testing dataset.
-library(scda)
 library(dplyr)
 library(forcats)
 
-adrs <- synthetic_cdisc_dataset("latest", "adrs")
+adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
 adrs_f <- adrs \%>\%

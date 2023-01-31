@@ -14,12 +14,10 @@
 #' @name h_logistic_regression
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #' library(broom)
 #'
-#' adrs <- synthetic_cdisc_data("latest")$adrs
-#' adrs_f <- adrs %>%
+#' adrs_f <- tern_ex_adrs %>%
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
 #'   mutate(
@@ -27,7 +25,7 @@
 #'     RACE = factor(RACE),
 #'     SEX = factor(SEX)
 #'   )
-#' formatters::var_labels(adrs_f) <- c(formatters::var_labels(adrs), Response = "Response")
+#' formatters::var_labels(adrs_f) <- c(formatters::var_labels(tern_ex_adrs), Response = "Response")
 #' mod1 <- fit_logistic(
 #'   data = adrs_f,
 #'   variables = list(
@@ -63,6 +61,7 @@ h_get_interaction_vars <- function(fit_glm) {
 #' @describeIn h_logistic_regression Helper function to get the right coefficient name from the
 #'   interaction variable names and the given levels. The main value here is that the order
 #'   of first and second variable is checked in the `interaction_vars` input.
+#'
 #' @param interaction_vars (`character` of length 2)\cr interaction variable names.
 #' @param first_var_with_level (`character` of length 2)\cr the first variable name with
 #'   the interaction level.
@@ -89,6 +88,7 @@ h_interaction_coef_name <- function(interaction_vars,
 
 #' @describeIn h_logistic_regression Helper function to calculate the odds ratio estimates
 #'   for the case when both the odds ratio and the interaction variable are categorical.
+#'
 #' @param odds_ratio_var (`string`)\cr the odds ratio variable.
 #' @param interaction_var (`string`)\cr the interaction variable.
 #'
@@ -141,6 +141,7 @@ h_or_cat_interaction <- function(odds_ratio_var,
 
 #' @describeIn h_logistic_regression Helper function to calculate the odds ratio estimates
 #'   for the case when either the odds ratio or the interaction variable is continuous.
+#'
 #' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise
 #'   the median is used.
 #' @note We don't provide a function for the case when both variables are continuous because
@@ -267,6 +268,7 @@ h_or_interaction <- function(odds_ratio_var,
 
 #' @describeIn h_logistic_regression Helper function to construct term labels from simple terms and the table
 #'   of numbers of patients.
+#'
 #' @param terms (`character`)\cr simple terms.
 #' @param table (`table`)\cr table containing numbers for terms.
 #'

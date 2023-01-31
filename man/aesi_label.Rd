@@ -19,13 +19,11 @@ A \code{string} with the standard label for the AE basket.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
-library(scda)
-adae <- synthetic_cdisc_dataset("latest", "adae")
+adae <- tern_ex_adae
 
 # Standardized query label includes scope.
 aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
 
 # Customized query label.
 aesi_label(adae$CQ01NAM)
-
 }

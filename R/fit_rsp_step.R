@@ -29,10 +29,8 @@
 #' # Testing dataset with just two treatment arms.
 #' library(survival)
 #' library(dplyr)
-#' library(scda)
 #'
-#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
-#' adrs_f <- adrs %>%
+#' adrs_f <- tern_ex_adrs %>%
 #'   filter(
 #'     PARAMCD == "BESRSPI",
 #'     ARM %in% c("B: Placebo", "A: Drug X")

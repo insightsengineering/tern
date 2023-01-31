@@ -154,5 +154,10 @@ reference:
     contents:
       - assertions
 
+  - title: Data
+    desc: Data included in the package.
+    contents:
+      - starts_with("ex_")
+
   - title: Deprecated Functions
     desc: No functions are currently deprecated within `tern`.

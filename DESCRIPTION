@@ -97,6 +97,7 @@ Collate:
     'cox_regression_inter.R'
     'coxph.R'
     'd_pkparam.R'
+    'data.R'
     'decorate_grob.R'
     'desctools_binom_diff.R'
     'df_explicit_na.R'
@@ -154,3 +155,4 @@ Collate:
     'utils_grid.R'
     'utils_rtables.R'
     'wrap_text.R'
+LazyData: true

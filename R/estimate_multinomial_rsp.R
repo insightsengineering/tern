@@ -108,8 +108,8 @@ a_length_proportion <- make_afun(
 #' @export
 #'
 #' @examples
-#'
 #' library(dplyr)
+#'
 #' # Use of the layout creating function.
 #' dta_test <- data.frame(
 #'   USUBJID = paste0("S", 1:12),
@@ -121,7 +121,6 @@ a_length_proportion <- make_afun(
 #'     labels = c("Complete Response (CR)", "Partial Response (PR)")
 #'   )
 #' )
-#'
 #'
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%

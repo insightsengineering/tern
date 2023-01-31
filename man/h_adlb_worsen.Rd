@@ -44,13 +44,10 @@ for the high direction.
 Helper function to prepare a \code{df} for generate the patient count shift table
 }
 \examples{
-library(scda)
 library(dplyr)
-adsl <- synthetic_cdisc_dataset("latest", "adsl")
-adlb <- synthetic_cdisc_dataset("latest", "adlb")
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- adlb \%>\%
+adlb <- tern_ex_adlb \%>\%
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",

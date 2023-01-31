@@ -99,10 +99,9 @@ which can take statistics function arguments and additional format arguments (se
 
 }}
 \examples{
-library(scda)
 library(dplyr)
 library(forcats)
-adlb <- synthetic_cdisc_dataset("latest", "adlb")
+adlb <- tern_ex_adlb
 
 # Data is modified in order to have some parameters with grades only in one direction
 # and simulate the real data.

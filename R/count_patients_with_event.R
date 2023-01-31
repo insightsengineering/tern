@@ -27,24 +27,21 @@ NULL
 #'
 #' @examples
 #' library(dplyr)
-#' library(scda)
-#' adae <- synthetic_cdisc_dataset("latest", "adae")
-#' adsl <- synthetic_cdisc_dataset("latest", "adsl")
 #'
 #' # `s_count_patients_with_event()`
 #'
 #' s_count_patients_with_event(
-#'   adae,
+#'   tern_ex_adae,
 #'   .var = "SUBJID",
 #'   filters = c("TRTEMFL" = "Y")
 #' )
 #' s_count_patients_with_event(
-#'   adae,
+#'   tern_ex_adae,
 #'   .var = "SUBJID",
 #'   filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
 #' )
 #' s_count_patients_with_event(
-#'   adae,
+#'   tern_ex_adae,
 #'   .var = "SUBJID",
 #'   filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
 #'   denom = "N_col",
@@ -84,8 +81,9 @@ s_count_patients_with_event <- function(df,
 #'
 #' @examples
 #' # `a_count_patients_with_event()`
+#'
 #' a_count_patients_with_event(
-#'   adae,
+#'   tern_ex_adae,
 #'   .var = "SUBJID",
 #'   filters = c("TRTEMFL" = "Y"),
 #'   .N_col = 100,
@@ -103,7 +101,6 @@ a_count_patients_with_event <- make_afun(
 #'
 #' @export
 #' @examples
-#'
 #' # `count_patients_with_event()`
 #'
 #' lyt <- basic_table() %>%
@@ -134,7 +131,7 @@ a_count_patients_with_event <- make_afun(
 #'     .indent_mods = c(count_fraction = 2L),
 #'     table_names = "tbl_rel_fatal"
 #'   )
-#' build_table(lyt, adae, alt_counts_df = adsl)
+#' build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
 count_patients_with_event <- function(lyt,
                                       vars,
                                       ...,
@@ -170,12 +167,12 @@ count_patients_with_event <- function(lyt,
 #'   variables from analysis dataset used for counting the number of unique identifiers.
 #' @inheritParams summarize_variables
 #' @export
-#' @examples
 #'
+#' @examples
 #' # `s_count_patients_with_flags()`
 #'
 #' # Add labelled flag variables to analysis dataset.
-#' adae <- adae %>%
+#' adae <- tern_ex_adae %>%
 #'   mutate(
 #'     fl1 = TRUE,
 #'     fl2 = TRTEMFL == "Y",
@@ -263,7 +260,6 @@ a_count_patients_with_flags <- make_afun(
 #' @export
 #'
 #' @examples
-#'
 #' # `count_patients_with_flags()`
 #'
 #' lyt2 <- basic_table() %>%
@@ -274,7 +270,7 @@ a_count_patients_with_flags <- make_afun(
 #'     flag_variables = formatters::var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
 #'     denom = "N_col"
 #'   )
-#' build_table(lyt2, adae, alt_counts_df = adsl)
+#' build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
 count_patients_with_flags <- function(lyt,
                                       var,
                                       var_labels = var,

@@ -12,12 +12,10 @@
 #' @name h_response_subgroups
 #'
 #' @examples
-#' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
 #'
-#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
+#' adrs <- tern_ex_adrs
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%
@@ -80,8 +78,8 @@ h_proportion_df <- function(rsp, arm) {
 #'    requires elements `rsp`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
 #' @export
-#' @examples
 #'
+#' @examples
 #' h_proportion_subgroups_df(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
 #'   data = adrs_f
@@ -144,8 +142,8 @@ h_proportion_subgroups_df <- function(variables,
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
 #'   required if stratified analysis is performed.
 #' @export
-#' @examples
 #'
+#' @examples
 #' # Unstratatified analysis.
 #' h_odds_ratio_df(
 #'   c(TRUE, FALSE, FALSE, TRUE),
@@ -268,8 +266,8 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #'   `data`, passed as a named list and requires elements `rsp`, `arm` and optionally `subgroups`
 #'   and `strat`. `groups_lists` optionally specifies groupings for `subgroups` variables.
 #' @export
-#' @examples
 #'
+#' @examples
 #' # Unstratified analysis.
 #' h_odds_ratio_subgroups_df(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),

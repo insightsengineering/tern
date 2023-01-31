@@ -14,12 +14,10 @@
 #' @name h_survival_duration_subgroups
 #'
 #' @examples
-#' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte <- tern_ex_adtte
 #'
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte)
@@ -372,6 +370,8 @@ h_coxph_subgroups_df <- function(variables,
 }
 
 #' Split Dataframe by Subgroups
+#'
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Split a dataframe into a non-nested list of subsets.
 #'

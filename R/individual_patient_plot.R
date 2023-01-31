@@ -29,7 +29,6 @@
 #' @seealso Relevant helper function [h_g_ipp()].
 #'
 #' @name individual_patient_plot
-#'
 NULL
 
 #' Helper Function To Create Simple Line Plot over Time
@@ -43,12 +42,11 @@ NULL
 #' @seealso [g_ipp()] which uses this function.
 #' @export
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #' library(nestcolor)
 #'
 #' # Select a small sample of data to plot.
-#' adlb <- synthetic_cdisc_dataset("latest", "adlb") %>%
+#' adlb <- tern_ex_adlb %>%
 #'   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
 #'   slice(1:36)
 #'
@@ -153,12 +151,11 @@ h_g_ipp <- function(df,
 #'
 #' @export
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #' library(nestcolor)
 #'
 #' # Select a small sample of data to plot.
-#' adlb <- synthetic_cdisc_dataset("latest", "adlb") %>%
+#' adlb <- tern_ex_adlb %>%
 #'   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
 #'   slice(1:36)
 #'

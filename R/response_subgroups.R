@@ -21,12 +21,10 @@
 #' @seealso [extract_rsp_subgroups()]
 #'
 #' @examples
-#' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
 #'
-#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
+#' adrs <- tern_ex_adrs
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%
@@ -66,12 +64,10 @@ NULL
 #' @export
 #'
 #' @examples
-#' # Testing dataset.
-#' library(scda)
 #' library(dplyr)
 #' library(forcats)
 #'
-#' adrs <- synthetic_cdisc_dataset("latest", "adrs")
+#' adrs <- tern_ex_adrs
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
 #' adrs_f <- adrs %>%
@@ -192,8 +188,8 @@ a_response_subgroups <- function(.formats = list(
 #'  `pval` (p value of the effect).
 #'  Note, the statistics `n_tot`, `or` and `ci` are required.
 #' @export
-#' @examples
 #'
+#' @examples
 #' ## Table with default columns.
 #' basic_table() %>%
 #'   tabulate_rsp_subgroups(df)

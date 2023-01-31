@@ -84,15 +84,12 @@ rht <- function(x) {
 #'
 #' @examples
 #' library(dplyr)
-#' library(scda)
 #' library(survival)
 #'
-#' ADSL <- synthetic_cdisc_dataset("latest", "adsl")
-#' ADSL <- ADSL %>%
+#' ADSL <- tern_ex_adsl %>%
 #'   filter(SEX %in% c("F", "M"))
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte") %>%
-#'   filter(PARAMCD == "PFS")
+#' adtte <- tern_ex_adtte %>% filter(PARAMCD == "PFS")
 #' adtte$ARMCD <- droplevels(adtte$ARMCD)
 #' adtte$SEX <- droplevels(adtte$SEX)
 #'
@@ -352,10 +349,9 @@ check_increments <- function(increments, covariates) {
 #' @seealso [estimate_coef()].
 #'
 #' @examples
-#' library(scda)
 #' library(dplyr)
 #'
-#' adtte <- synthetic_cdisc_dataset("latest", "adtte")
+#' adtte <- tern_ex_adtte
 #' adtte_f <- subset(adtte, PARAMCD == "OS") # _f: filtered
 #' adtte_f <- filter(
 #'   adtte_f,
