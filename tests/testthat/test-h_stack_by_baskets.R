@@ -1,5 +1,5 @@
 # Local data pre-processing
-adae_local <- adae_raw[1:20, ] %>% df_explicit_na()
+adae_local <- tern_ex_adae[1:20, ] %>% df_explicit_na()
 
 testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
   result <- h_stack_by_baskets(df = adae_local)

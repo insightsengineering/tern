@@ -3,14 +3,14 @@ adlb_local <- local({
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
-  qntls <- adlb_raw %>%
+  qntls <- tern_ex_adlb %>%
     dplyr::group_by(.data$PARAMCD) %>%
     dplyr::summarise(
       q1 = stats::quantile(.data$AVAL, probs = c(0.1)),
       q2 = stats::quantile(.data$AVAL, probs = c(0.9))
     )
 
-  adlb_raw %>%
+  tern_ex_adlb %>%
     dplyr::left_join(qntls, by = "PARAMCD") %>%
     dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
     dplyr::mutate(

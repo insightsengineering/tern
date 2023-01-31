@@ -1,5 +1,5 @@
 # Local data pre-processing
-adlb_tmp <- adlb_raw
+adlb_tmp <- tern_ex_adlb
 
 adlb_local <- local({
   # Data set is modified in order to have some parameters with grades only in one direction

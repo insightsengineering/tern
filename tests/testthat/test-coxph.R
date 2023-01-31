@@ -1,5 +1,5 @@
 testthat::test_that("pairwise works correctly", {
-  suppressWarnings(testthat::expect_warning(result <- lm(SEX ~ pairwise(ARM), data = adsl_raw)))
+  suppressWarnings(testthat::expect_warning(result <- lm(SEX ~ pairwise(ARM), data = tern_ex_adsl)))
   expected <- c(
     "(Intercept)" = 1.41045, "pairwise(ARM)B: Placebo" = -0.02239,
     "pairwise(ARM)C: Combination" = 0.05925
@@ -21,7 +21,7 @@ testthat::test_that("rht works correctly", {
 })
 
 testthat::test_that("estimate_coef works correctly", {
-  adtte <- adtte_raw %>%
+  adtte <- tern_ex_adtte %>%
     filter(PARAMCD == "PFS") %>%
     mutate(
       ARMCD = droplevels(ARMCD),
@@ -92,7 +92,7 @@ testthat::test_that("check_increments gives correct warning", {
 })
 
 testthat::test_that("s_cox_multivariate works correctly with character input", {
-  adtte_f <- adtte_raw %>%
+  adtte_f <- tern_ex_adtte %>%
     subset(PARAMCD == "OS") %>%
     filter(
       PARAMCD == "OS" &

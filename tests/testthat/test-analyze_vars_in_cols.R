@@ -1,4 +1,4 @@
-adpp <- adpp_raw %>% h_pkparam_sort()
+adpp <- tern_ex_adpp %>% h_pkparam_sort()
 
 testthat::test_that("analyze_vars_in_cols works correctly", {
   lyt <- basic_table() %>%

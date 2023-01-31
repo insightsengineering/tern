@@ -14,7 +14,7 @@ preprocess_adrs <- function(adrs) {
   )
 }
 
-adrs_local <- adrs_raw %>%
+adrs_local <- tern_ex_adrs %>%
   preprocess_adrs()
 
 # extract_rsp_biomarkers ----

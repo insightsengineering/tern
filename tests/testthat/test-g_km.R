@@ -1,5 +1,5 @@
 testthat::test_that("g_km default plot works", {
-  df <- adtte_raw %>%
+  df <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
@@ -16,7 +16,7 @@ testthat::test_that("g_km default plot works", {
 })
 
 testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
-  df <- adtte_raw %>%
+  df <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
@@ -33,7 +33,7 @@ testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
 })
 
 testthat::test_that("g_km plot with < = > in group labels works", {
-  df <- adtte_raw %>%
+  df <- tern_ex_adtte %>%
     df_explicit_na() %>%
     dplyr::filter(PARAMCD == "OS", ARM == "A: Drug X", BEP01FL == "Y") %>%
     dplyr::mutate(

@@ -1,6 +1,6 @@
 # Local data pre-processing
 test_fit <- local({
-  dta <- adtte_raw[adtte_raw$PARAMCD == "OS", ]
+  dta <- tern_ex_adtte[tern_ex_adtte$PARAMCD == "OS", ]
   survival::survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
 })
 
@@ -19,7 +19,7 @@ testthat::test_that("h_data_plot works as expected", {
 })
 
 testthat::test_that("h_data_plot respects the ordering of the arm variable factor levels", {
-  data <- adtte_raw %>%
+  data <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
     survival::survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
@@ -107,7 +107,7 @@ testthat::test_that("h_tbl_median_surv estimates median survival time with CI", 
 })
 
 testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
-  df <- adtte_raw %>%
+  df <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
@@ -145,7 +145,7 @@ testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
 })
 
 testthat::test_that("h_grob_coxph returns error when only one arm", {
-  df <- adtte_raw %>%
+  df <- tern_ex_adtte %>%
     filter(PARAMCD == "OS") %>%
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
@@ -156,7 +156,7 @@ testthat::test_that("h_grob_coxph returns error when only one arm", {
 })
 
 testthat::test_that("g_km works with default settings", {
-  df <- adtte_raw %>%
+  df <- tern_ex_adtte %>%
     filter(PARAMCD == "OS") %>%
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
@@ -167,7 +167,7 @@ testthat::test_that("g_km works with default settings", {
 })
 
 testthat::test_that("g_km works with title/footnotes and annotation", {
-  df <- adtte_raw %>%
+  df <- tern_ex_adtte %>%
     filter(PARAMCD == "OS") %>%
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
@@ -184,7 +184,7 @@ testthat::test_that("g_km works with title/footnotes and annotation", {
 })
 
 testthat::test_that("g_km works with custom settings", {
-  df <- adtte_raw %>%
+  df <- tern_ex_adtte %>%
     filter(PARAMCD == "OS") %>%
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")

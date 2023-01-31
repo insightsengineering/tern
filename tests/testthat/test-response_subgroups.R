@@ -16,10 +16,10 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
-adrs_100 <- adrs_raw %>%
+adrs_100 <- tern_ex_adrs %>%
   preprocess_adrs(n_records = 100)
 
-adrs_200 <- adrs_raw %>%
+adrs_200 <- tern_ex_adrs %>%
   preprocess_adrs(n_records = 200)
 
 testthat::test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {

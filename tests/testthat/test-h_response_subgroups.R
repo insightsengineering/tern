@@ -16,8 +16,8 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
-adrs_20 <- preprocess_adrs(adrs_raw, 20)
-adrs_100 <- preprocess_adrs(adrs_raw, 100)
+adrs_20 <- preprocess_adrs(tern_ex_adrs, 20)
+adrs_100 <- preprocess_adrs(tern_ex_adrs, 100)
 
 testthat::test_that("h_proportion_df functions as expected with valid input and default arguments", {
   rsp <- c(TRUE, FALSE, FALSE, TRUE, FALSE, FALSE)

@@ -1,7 +1,7 @@
 # Local data pre-processing
-adrs_local <- adrs_raw %>%
+adrs_local <- tern_ex_adrs %>%
   dplyr::filter(SEX %in% c("F", "M")) %>%
-  reapply_varlabels(formatters::var_labels(adrs_raw))
+  reapply_varlabels(formatters::var_labels(tern_ex_adrs))
 
 adrs_example <- adrs_local %>%
   dplyr::filter(

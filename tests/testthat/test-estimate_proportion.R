@@ -292,7 +292,7 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
 
 testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
   # Data loading and processing
-  anl <- adrs_raw %>%
+  anl <- tern_ex_adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
     dplyr::mutate(is_rsp = AVALC %in% c("CR", "PR"))
 
@@ -320,7 +320,7 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
   set.seed(1)
 
   # Data loading and processing
-  anl <- adrs_raw %>%
+  anl <- tern_ex_adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
     dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
 
@@ -352,7 +352,7 @@ testthat::test_that("`estimate_proportion` and strat_wilson with equal weights
   set.seed(1)
 
   # Data loading and processing
-  anl <- adrs_raw %>%
+  anl <- tern_ex_adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
     dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
 

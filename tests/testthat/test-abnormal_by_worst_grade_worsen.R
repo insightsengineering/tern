@@ -1,5 +1,5 @@
 # Data pre-processing
-adlb_local <- adlb_raw %>%
+adlb_local <- tern_ex_adlb %>%
   dplyr::mutate(
     GRADDR = dplyr::case_when(
       PARAMCD == "ALT" ~ "B",
@@ -267,7 +267,7 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
         direction_var = "GRADDR"
       )
     ) %>%
-    build_table(df = df, alt_counts_df = adsl_raw)
+    build_table(df = df, alt_counts_df = tern_ex_adsl)
 
   result_matrix <- to_string_matrix(result)
 
@@ -300,7 +300,7 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
 })
 
 testthat::test_that("h_adlb_worsen all high", {
-  adlb_local <- adlb_raw %>%
+  adlb_local <- tern_ex_adlb %>%
     dplyr::mutate(
       GRADDR = dplyr::case_when(
         PARAMCD == "ALT" ~ "H",
@@ -329,7 +329,7 @@ testthat::test_that("h_adlb_worsen all high", {
 })
 
 testthat::test_that("h_adlb_worsen all low", {
-  adlb_local <- adlb_raw %>%
+  adlb_local <- tern_ex_adlb %>%
     dplyr::mutate(
       GRADDR = dplyr::case_when(
         PARAMCD == "ALT" ~ "L",

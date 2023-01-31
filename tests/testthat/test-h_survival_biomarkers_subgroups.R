@@ -17,7 +17,7 @@ preprocess_adtte <- function(adtte) {
   )
 }
 
-adtte_local <- adtte_raw %>%
+adtte_local <- tern_ex_adtte %>%
   preprocess_adtte()
 
 # h_surv_to_coxreg_variables ----

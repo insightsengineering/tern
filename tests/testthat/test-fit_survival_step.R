@@ -1,5 +1,5 @@
 # Local data pre-processing
-adtte_local <- adtte_raw %>%
+adtte_local <- tern_ex_adtte %>%
   dplyr::filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X")

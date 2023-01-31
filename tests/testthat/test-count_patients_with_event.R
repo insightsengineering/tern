@@ -272,7 +272,7 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
 
 testthat::test_that("count_patients_with_flags works with label row specified", {
   # Create custom flags:
-  adae_local <- adae_raw %>%
+  adae_local <- tern_ex_adae %>%
     dplyr::mutate(
       SER = AESER == "Y",
       REL = AEREL == "Y",
@@ -304,7 +304,7 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
       show_labels = "visible"
     )
 
-  result <- build_table(lyt, df = adae_local, alt_counts_df = adsl_raw)
+  result <- build_table(lyt, df = adae_local, alt_counts_df = tern_ex_adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- t(structure(

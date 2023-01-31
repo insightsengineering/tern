@@ -19,7 +19,7 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
-adtte_local <- adtte_raw %>%
+adtte_local <- tern_ex_adtte %>%
   preprocess_adtte()
 
 testthat::test_that("extract_survival_subgroups functions as expected with valid input and default arguments", {

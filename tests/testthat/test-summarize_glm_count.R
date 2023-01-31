@@ -1,5 +1,5 @@
 testthat::test_that("h_glm_poisson glm-fit works with healthy input", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -29,7 +29,7 @@ testthat::test_that("h_glm_poisson glm-fit works with healthy input", {
 })
 
 testthat::test_that("h_glm_poisson emmeans-fit works with healthy input", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -88,7 +88,7 @@ testthat::test_that("h_glm_poisson fails wrong inputs", {
 })
 
 testthat::test_that("h_glm_quasipoisson glm-fit works with healthy input", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -134,7 +134,7 @@ testthat::test_that("h_glm_quasipoisson glm-fit works with healthy input", {
 })
 
 testthat::test_that("h_glm_quasipoisson emmeans-fit works with healthy input", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -193,7 +193,7 @@ testthat::test_that("h_glm_quasipoisson fails wrong inputs", {
 })
 
 testthat::test_that("h_glm_count glm-fit works with healthy input", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -224,7 +224,7 @@ testthat::test_that("h_glm_count glm-fit works with healthy input", {
 })
 
 testthat::test_that("h_glm_count emmeans-fit works with healthy input", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -284,7 +284,7 @@ testthat::test_that("h_glm_count fails wrong inputs", {
 })
 
 testthat::test_that("h_ppmeans works with healthy input", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -314,7 +314,7 @@ testthat::test_that("h_ppmeans works with healthy input", {
 })
 
 testthat::test_that("s_glm_count works with healthy input", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -343,7 +343,7 @@ testthat::test_that("s_glm_count works with healthy input", {
 })
 
 testthat::test_that("s_glm_count works with no reference group selected.", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -401,7 +401,7 @@ testthat::test_that("glm_count fails when negative binomial distribution is sele
 })
 
 testthat::test_that("summarize_glm_count works with healthy inputs", {
-  anl <- adtte_raw %>%
+  anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
   result <- basic_table() %>%

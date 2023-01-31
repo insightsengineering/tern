@@ -1,5 +1,5 @@
 # Local data pre-processing
-adrs_local <- adrs_raw %>%
+adrs_local <- tern_ex_adrs %>%
   dplyr::filter(
     PARAMCD == "BESRSPI",
     ARM %in% c("B: Placebo", "A: Drug X")
