@@ -36,14 +36,14 @@
     Code
       res
     Output
-      NULL
+      [1] 0.7659283
 
 ---
 
     Code
       res
     Output
-      NULL
+      [1] 0.9063036
 
 # s_compare for character works as expected
 

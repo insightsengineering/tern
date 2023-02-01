@@ -58,6 +58,7 @@ testthat::test_that("h_xticks works with xticks number", {
 })
 
 testthat::test_that("h_xticks works with xticks numeric", {
+  expected <- c(0, 365, 1000)
   result <- h_data_plot(test_fit) %>%
     h_xticks(xticks = expected)
 
@@ -78,6 +79,7 @@ testthat::test_that("h_xticks works with max_time only", {
   testthat::expect_snapshot(res)})
 
 testthat::test_that("h_xticks works with xticks numeric when max_time is not NULL", {
+  expected <- c(0, 365, 1000)
   result <- h_data_plot(test_fit, max_time = 1500) %>%
     h_xticks(xticks = expected, max_time = 1500)
 

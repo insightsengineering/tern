@@ -59,24 +59,6 @@
     Output
       NULL
 
-# name_covariate_names works correctly
-
-    Code
-      res
-    Output
-      $A
-      y ~ A
-      <environment: 0x000002392a683ac8>
-      
-      $B
-      y ~ B
-      <environment: 0x000002392a683ac8>
-      
-      $C
-      y ~ C
-      <environment: 0x000002392a683ac8>
-      
-
 # s_cox_multivariate works correctly with character input
 
     Code

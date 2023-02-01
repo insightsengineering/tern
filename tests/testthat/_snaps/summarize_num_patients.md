@@ -292,8 +292,7 @@
       ————————————————————
        (n)     3       3  
 
-# summarize_num_patients with count_by different
-                    combinations works as expected with healthy input
+# summarize_num_patients with count_by different combinations works as expected with healthy input
 
     Code
       res

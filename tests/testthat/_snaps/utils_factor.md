@@ -18,6 +18,14 @@
       [1] alphabet
       Levels: a b missing
 
+# as_factor_keep_attributes does not modify a factor at all
+
+    Code
+      res
+    Output
+      [1] 1 2
+      Levels: 1 2
+
 # bins_percent_labels works as expected
 
     Code

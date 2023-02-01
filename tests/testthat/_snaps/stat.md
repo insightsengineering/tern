@@ -1,5 +1,4 @@
-# stat_mean_ci works for series without NAs
-                    (including extreme case n = 1 and various n_min values)
+# stat_mean_ci works for series without NAs (including extreme case n = 1 and various n_min values)
 
     Code
       res
@@ -119,8 +118,7 @@
       mean_ci_lwr mean_ci_upr 
                NA          NA 
 
-# stat_mean_pval works for series without NAs
-                    (including extreme case n = 1 and various n_min values)
+# stat_mean_pval works for series without NAs (including extreme case n = 1 and various n_min values)
 
     Code
       res
@@ -144,8 +142,7 @@
       p_value 
            NA 
 
-# stat_mean_pval works for series with NAs
-                    (including extreme case n = 1 and various n_min values)
+# stat_mean_pval works for series with NAs (including extreme case n = 1 and various n_min values)
 
     Code
       res

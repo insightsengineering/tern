@@ -38,12 +38,26 @@
       [31] 3000 3100 3200 3300 3400 3500 3600 3700 3800 3900 4000 4100 4200 4300 4400
       [46] 4500 4600 4700
 
+# h_xticks works with xticks numeric
+
+    Code
+      res
+    Output
+      [1]    0  365 1000
+
 # h_xticks works with max_time only
 
     Code
       res
     Output
       [1]    0 1000 2000 3000
+
+# h_xticks works with xticks numeric when max_time is not NULL
+
+    Code
+      res
+    Output
+      [1]    0  365 1000
 
 # h_xticks works with xticks number when max_time is not NULL
 

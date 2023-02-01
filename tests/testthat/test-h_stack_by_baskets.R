@@ -9,8 +9,7 @@ testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
 })
 
 testthat::test_that(
-  "h_stack_by_baskets fails when selecting Standardized/Customized query names
-  that do not start with 'SMQ' or 'CQ' ",
+  "h_stack_by_baskets fails when selecting Standardized/Customized query names that do not start with 'SMQ' or 'CQ' ",
   code = {
     testthat::expect_error(
       h_stack_by_baskets(
@@ -22,8 +21,7 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "h_stack_by_baskets fails when selecting Standardized/Customized
-  query names that do not end with 'NAM' ",
+  "h_stack_by_baskets fails when selecting Standardized/Customized query names that do not end with 'NAM' ",
   code = {
     testthat::expect_error(
       h_stack_by_baskets(
@@ -35,8 +33,8 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no
-  adverse events falling within any of the baskets selected",
+  paste("h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no",
+  "adverse events falling within any of the baskets selected"),
   code = {
     adae <- adae_local
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
@@ -58,8 +56,7 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "The levels of the SMQ column does also
-  include the options from aag_summary not observed in ADAE",
+  "The levels of the SMQ column does also include the options from aag_summary not observed in ADAE",
   code = {
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae_local), value = TRUE)
 
@@ -70,7 +67,7 @@ testthat::test_that(
         "C.1.1.1.3/B.2.2.3.1 AESI(BROAD)", "level2_not_in_adae"
       )
     )
-    result <- h_stack_by_baskets(df = adae_local, aag_summary = aag_summary)
+    suppressWarnings(result <- h_stack_by_baskets(df = adae_local, aag_summary = aag_summary))
 
     res <- testthat::expect_silent(levels(result$SMQ))
     testthat::expect_snapshot(res)

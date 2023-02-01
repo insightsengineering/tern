@@ -75,9 +75,8 @@ testthat::test_that("extract_by_name works for non-NULL input", {
     x = c(a = "xx", b = function(x) paste(x, "bla")),
     c("b", "c")
   )
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  expected <- c(b = function(x) paste(x, "bla"))
+  testthat::expect_identical(result, expected)
 })
 
 testthat::test_that("extract_by_name returns NULL when there is no overlap", {
@@ -176,8 +175,7 @@ testthat::test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] and 
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] with
-                    [na.rm = TRUE, finite = FALSE (d)]", {
+testthat::test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = FALSE (d)]", {
   x <- 5:1
 
   result <- range_noinf(x, na.rm = TRUE)
@@ -198,8 +196,7 @@ testthat::test_that(
   }
 )
 
-testthat::test_that("range_noinf for INT [no zero-len data, no NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
   x <- 5:1
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -243,8 +240,7 @@ testthat::test_that(
   }
 )
 
-testthat::test_that("range_noinf for INT [no zero-len data, with NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("range_noinf for INT [no zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
   x <- c(NA, 5:1, NA)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -288,8 +284,7 @@ testthat::test_that(
   }
 )
 
-testthat::test_that("range_noinf for INT [with zero-len data, no NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("range_noinf for INT [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
   x <- vector(mode = "integer", length = 0)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -333,8 +328,7 @@ testthat::test_that(
   }
 )
 
-testthat::test_that("range_noinf for INT [with zero-len data, with NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("range_noinf for INT [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
   x <- rep(NA_integer_, 4)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -378,8 +372,7 @@ testthat::test_that(
   }
 )
 
-testthat::test_that("range_noinf for DOUBLE [no zero-len data, no NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
   x <- c(3.5, 1.5, 2.5)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -564,8 +557,7 @@ testthat::test_that(
   }
 )
 
-testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
   x <- vector(mode = "double", length = 0)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -576,8 +568,7 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, no Inf]
 
 # DOUBLE with zero-len data, no NAs, with Inf
 
-testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
-                    and with all default options", {
+testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] and with all default options", {
   x <- c(Inf, -Inf, Inf, -Inf)
 
   result <- range_noinf(x)
@@ -586,8 +577,8 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with In
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
-                    with [na.rm = TRUE, finite = FALSE (def)]", {
+testthat::test_that(
+  "range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
   x <- c(Inf, -Inf, Inf, -Inf)
 
   result <- range_noinf(x, na.rm = TRUE)
@@ -596,8 +587,8 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with In
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
-                    with [na.rm = FALSE (def), finite = TRUE]", {
+testthat::test_that(
+  "range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = FALSE (def), finite = TRUE]", {
   x <- c(Inf, -Inf, Inf, -Inf)
 
   result <- range_noinf(x, finite = TRUE)
@@ -606,8 +597,8 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with In
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
-                    with [na.rm = TRUE, finite = TRUE]", {
+testthat::test_that(
+  "range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = TRUE]", {
   x <- c(Inf, -Inf, Inf, -Inf)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
@@ -618,8 +609,7 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with In
 
 # DOUBLE with zero-len data, with NAs, no Inf
 
-testthat::test_that("range_noinf for DOUBLE [with zero-len data, with NAs, no Inf]
-                    and with default options", {
+testthat::test_that("range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] and with default options", {
   x <- rep(NA_real_, 4)
 
   result <- range_noinf(x)

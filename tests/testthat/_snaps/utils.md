@@ -55,16 +55,6 @@
     Output
       numeric(0)
 
-# extract_by_name works for non-NULL input
-
-    Code
-      res
-    Output
-      $b
-      function(x) paste(x, "bla")
-      <environment: 0x0000012a6922c800>
-      
-
 # extract_by_name returns NULL when there is no overlap
 
     Code
@@ -114,8 +104,7 @@
     Output
       [1] 1 5
 
-# range_noinf for INT [no zero-len data, no NAs, no Inf] with
-                    [na.rm = TRUE, finite = FALSE (d)]
+# range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = FALSE (d)]
 
     Code
       res
@@ -129,8 +118,7 @@
     Output
       [1] 1 5
 
-# range_noinf for INT [no zero-len data, no NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]
+# range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]
 
     Code
       res
@@ -158,8 +146,7 @@
     Output
       [1] 1 5
 
-# range_noinf for INT [no zero-len data, with NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]
+# range_noinf for INT [no zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]
 
     Code
       res
@@ -187,8 +174,7 @@
     Output
       [1] NA NA
 
-# range_noinf for INT [with zero-len data, no NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]
+# range_noinf for INT [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]
 
     Code
       res
@@ -216,8 +202,7 @@
     Output
       [1] NA NA
 
-# range_noinf for INT [with zero-len data, with NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]
+# range_noinf for INT [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]
 
     Code
       res
@@ -245,8 +230,7 @@
     Output
       [1] 1.5 3.5
 
-# range_noinf for DOUBLE [no zero-len data, no NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]
+# range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]
 
     Code
       res
@@ -351,48 +335,42 @@
     Output
       [1] NA NA
 
-# range_noinf for DOUBLE [with zero-len data, no NAs, no Inf]
-                    with [na.rm = TRUE, finite = TRUE]
+# range_noinf for DOUBLE [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]
 
     Code
       res
     Output
       [1] NA NA
 
-# range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
-                    and with all default options
+# range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] and with all default options
 
     Code
       res
     Output
       [1] -Inf  Inf
 
-# range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
-                    with [na.rm = TRUE, finite = FALSE (def)]
+# range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = FALSE (def)]
 
     Code
       res
     Output
       [1] -Inf  Inf
 
-# range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
-                    with [na.rm = FALSE (def), finite = TRUE]
+# range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = FALSE (def), finite = TRUE]
 
     Code
       res
     Output
       [1] NA NA
 
-# range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
-                    with [na.rm = TRUE, finite = TRUE]
+# range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = TRUE]
 
     Code
       res
     Output
       [1] NA NA
 
-# range_noinf for DOUBLE [with zero-len data, with NAs, no Inf]
-                    and with default options
+# range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] and with default options
 
     Code
       res

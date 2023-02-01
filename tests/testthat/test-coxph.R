@@ -76,8 +76,8 @@ testthat::test_that("name_covariate_names works correctly", {
     C = formula("y ~ C")
   ))
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  expected <- list(A = formula("y ~ A"), B = formula("y ~ B"), C = formula("y ~ C"))
+  testthat::expect_identical(result, expected)
 })
 
 testthat::test_that("check_increments gives correct warning", {

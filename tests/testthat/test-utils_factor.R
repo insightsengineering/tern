@@ -45,7 +45,7 @@ testthat::test_that("as_factor_keep_attributes shows correct name of vector in w
 })
 
 testthat::test_that("as_factor_keep_attributes does not modify a factor at all", {
-  result <- testthat::expect_silent(as_factor_keep_attributes(foo))
+  result <- testthat::expect_silent(as_factor_keep_attributes(factor(c(1, 2))))
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

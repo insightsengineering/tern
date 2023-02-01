@@ -241,7 +241,7 @@
       10 AB12345 BRA     BRA-1  id-23   41.3 F     ARM A A: Drug~ ARM A   A: Dr~ AMER~
       # ... with 588 more rows, 40 more variables: TRTSDTM <dttm>, TRTEDTM <dttm>,
       #   EOSDY <dbl>, STRATA1 <fct>, STRATA2 <fct>, BMRKR1 <dbl>, BMRKR2 <fct>,
-      #   REGION1 <chr>, SAFFL <fct>, USUBJID <chr>, PARAM <fct>, AVISIT <fct>,
+      #   REGION1 <fct>, SAFFL <fct>, USUBJID <chr>, PARAM <fct>, AVISIT <fct>,
       #   AVAL <dbl>, LBCAT <fct>, PARAMCD <chr>, AVALU <fct>, AVISITN <dbl>,
       #   ABLFL2 <chr>, ABLFL <chr>, BASE <dbl>, BASETYPE <chr>, ANRIND <fct>,
       #   ANRLO <dbl>, ANRHI <dbl>, DTYPE <lgl>, ATOXGR <fct>, BTOXGR <fct>,
@@ -267,7 +267,7 @@
       10 AB12345 BRA     BRA-1  id-23   41.3 F     ARM A A: Drug~ ARM A   A: Dr~ AMER~
       # ... with 589 more rows, 40 more variables: TRTSDTM <dttm>, TRTEDTM <dttm>,
       #   EOSDY <dbl>, STRATA1 <fct>, STRATA2 <fct>, BMRKR1 <dbl>, BMRKR2 <fct>,
-      #   REGION1 <chr>, SAFFL <fct>, USUBJID <chr>, PARAM <fct>, AVISIT <fct>,
+      #   REGION1 <fct>, SAFFL <fct>, USUBJID <chr>, PARAM <fct>, AVISIT <fct>,
       #   AVAL <dbl>, LBCAT <fct>, PARAMCD <chr>, AVALU <fct>, AVISITN <dbl>,
       #   ABLFL2 <chr>, ABLFL <chr>, BASE <dbl>, BASETYPE <chr>, ANRIND <fct>,
       #   ANRLO <dbl>, ANRHI <dbl>, DTYPE <lgl>, ATOXGR <fct>, BTOXGR <fct>,

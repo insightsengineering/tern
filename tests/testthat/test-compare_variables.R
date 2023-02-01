@@ -43,7 +43,7 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     na.rm = TRUE
   ))
 
-  res <- testthat::expect_silent(result$pval)
+  res <- testthat::expect_silent(result_without_na$pval)
   testthat::expect_snapshot(res)
 
   result_with_na <- testthat::expect_silent(s_compare(
@@ -53,7 +53,7 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     na.rm = FALSE
   ))
 
-  res <- testthat::expect_silent(result$pval)
+  res <- testthat::expect_silent(result_with_na$pval)
   testthat::expect_snapshot(res)
 })
 

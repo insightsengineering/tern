@@ -15,8 +15,7 @@
       7 AB12345 AB12345-BRA-11-id-8   2021-12-20 19:00:00 dcd C.1.1.1.3     3 C.1.1.1~
       8 AB12345 AB12345-BRA-12-id-120 2020-09-30 20:00:00 dcd C.1.1.1.3     3 C.1.1.1~
 
-# h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no
-  adverse events falling within any of the baskets selected
+# h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no adverse events falling within any of the baskets selected
 
     Code
       res
@@ -49,8 +48,7 @@
     Output
       [1] "CQ01NAM"  "SMQ01NAM" "SMQ02NAM"
 
-# The levels of the SMQ column does also
-  include the options from aag_summary not observed in ADAE
+# The levels of the SMQ column does also include the options from aag_summary not observed in ADAE
 
     Code
       res
