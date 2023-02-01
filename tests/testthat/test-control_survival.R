@@ -15,7 +15,6 @@ testthat::test_that("control_coxph fails wrong inputs", {
   testthat::expect_error(control_coxph(pval_method = "bres"))
 })
 
-
 testthat::test_that("control_surv_time works with customized parameters", {
   result <- control_surv_time(
     conf_level = 0.8, conf_type = "log-log", quantiles = c(0.3, 0.8)
@@ -33,7 +32,6 @@ testthat::test_that("control_surv_time fails wrong inputs", {
   testthat::expect_error(control_surv_time(quantiles = 0.8))
   testthat::expect_error(control_surv_time(conf_type = "none"))
 })
-
 
 testthat::test_that("control_surv_timepoint works with customized parameters", {
   result <- control_surv_timepoint(

@@ -12,10 +12,10 @@ testthat::test_that("analyze_vars_in_cols works correctly", {
     c(
       "ARM", "  SEX", "A: Drug X", "F", " ", "M", " ", "B: Placebo", "F",
       " ", "M", " ", "C: Combination", "F", " ", "M", " ", "", "n", "", "",
-      "5214", "", "3630", "", "", "0", "", "0", "", "", "9240", "", "8184",
-      "", "Mean", "", "", "32.8", "", "35.2", "", "", "NA", "", "NA", "", "",
-      "35.2", "", "35.7", "", "SE", "", "", "0.1", "", "0.1", "", "", "NA",
-      "", "NA", "", "", "0.1", "", "0.1"
+      "0", "", "0", "", "", "0", "", "0", "", "", "288", "", "234",
+      "", "Mean", "", "", "NA", "", "NA", "", "", "NA", "", "NA", "", "",
+      "36.0", "", "36.3", "", "SE", "", "", "NA", "", "NA", "", "", "NA",
+      "", "NA", "", "", "0.4", "", "0.6"
     ),
     .Dim = c(17L, 4L)
   )
@@ -31,6 +31,7 @@ testthat::test_that("analyze_vars_in_cols throws error when vars and .stats leng
       analyze_vars_in_cols(vars = c("AGE", "AGE"), .stats = c("n", "mean", "se"))
   )
 })
+
 testthat::test_that("custom labels can be set with labelstr", {
   lbl <- "some custom label"
   lyt <- basic_table() %>%

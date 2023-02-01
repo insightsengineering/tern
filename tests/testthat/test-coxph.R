@@ -1,8 +1,8 @@
 testthat::test_that("pairwise works correctly", {
   suppressWarnings(testthat::expect_warning(result <- lm(SEX ~ pairwise(ARM), data = tern_ex_adsl)))
   expected <- c(
-    "(Intercept)" = 1.41045, "pairwise(ARM)B: Placebo" = -0.02239,
-    "pairwise(ARM)C: Combination" = 0.05925
+    "(Intercept)" = 1.4492754, "pairwise(ARM)B: Placebo" = 0.0027794,
+    "pairwise(ARM)C: Combination" = -0.0009995
   )
   testthat::expect_equal(result$coefficients, expected, tolerance = 1e-4)
 })
@@ -109,7 +109,7 @@ testthat::test_that("s_cox_multivariate works correctly with character input", {
     formula = survival::Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = adtte_f
   )
   expected_aov <- matrix(
-    c(2, 2, 1, 4, 2, 2, 1.5484, 0.4485, 0.0668, 3.3770, 0.2824, 0.6636, 0.4611, 0.7991, 0.7961, 0.4968, 0.8683, 0.7176),
+    c(2, 2, 1, 4, 2, 2, 1.1569, 1.7917, 0.0108, 3.1853, 1.1363, 1.1686, 0.5608, 0.4083, 0.9174, 0.5273, 0.5666, 0.5576),
     dimnames = list(
       c("ARMCD", "RACE", "AGE", "ARMCD:RACE", "ARMCD:AGE", "RACE:AGE"),
       c("Df", "Chisq", "Pr(>Chisq)")

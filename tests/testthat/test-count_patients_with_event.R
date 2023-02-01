@@ -305,21 +305,21 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
     )
 
   result <- build_table(lyt, df = adae_local, alt_counts_df = tern_ex_adsl)
-
   result_matrix <- to_string_matrix(result)
-  expected_matrix <- t(structure(
+
+  expected_matrix <- matrix(
     c(
       "", "A: Drug X", "B: Placebo", "C: Combination",
-      "", "(N=134)", "(N=134)", "(N=132)",
-      "Total number of patients with at least one adverse event", "122 (91.0%)", "123 (91.8%)", "120 (90.9%)",
+      "", "(N=69)", "(N=73)", "(N=58)",
+      "Total number of patients with at least one adverse event", "59 (85.5%)", "57 (78.1%)", "48 (82.8%)",
       "Total number of patients with at least one", "", "", "",
-      "Serious AE", "104 (77.6%)", "101 (75.4%)", "99 (75.0%)",
-      "Related AE", "105 (78.4%)", "108 (80.6%)", "109 (82.6%)",
-      "Grade 3-5 AE", "109 (81.3%)", "104 (77.6%)", "109 (82.6%)",
-      "Grade 4/5 AE", "91 (67.9%)", "90 (67.2%)", "93 (70.5%)"
+      "Serious AE", "45 (65.2%)", "46 (63.0%)", "37 (63.8%)",
+      "Related AE", "49 (71.0%)", "48 (65.8%)", "40 (69.0%)",
+      "Grade 3-5 AE", "47 (68.1%)", "46 (63.0%)", "41 (70.7%)",
+      "Grade 4/5 AE", "34 (49.3%)", "38 (52.1%)", "32 (55.2%)"
     ),
-    .Dim = c(4L, 8L)
-  ))
+    nrow = 8, ncol = 4, byrow = TRUE
+  )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 

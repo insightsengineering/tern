@@ -309,8 +309,8 @@ testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
     build_table(anl)
   result <- get_formatted_cells(result)
   expected <- rbind(
-    c("133.00 (99.25%)", "127.00 (94.78%)", "131.00 (99.24%)", "391.00 (97.75%)"),
-    c("(95.8940, 99.8681)", "(89.6097, 97.4468)", "(95.8337, 99.8661)", "(95.7797, 98.8118)")
+    c("68.00 (98.55%)", "68.00 (93.15%)", "58.00 (100.00%)", "194.00 (97.00%)"),
+    c("(92.2369, 99.7437)", "(84.9479, 97.0391)", "(93.7882, 100.0000)", "(93.6106, 98.6180)")
   )
 
   testthat::expect_equal(result, expected, tolerance = 0.0001)
@@ -318,13 +318,12 @@ testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
 
 testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `rtables`", {
   set.seed(1)
-
   # Data loading and processing
   anl <- tern_ex_adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
-    dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
+    dplyr::mutate(DTHFL = sample(c(TRUE, FALSE), nrow(.), replace = TRUE)) # Death flag yes
 
-  result <- basic_table() %>%
+  suppressWarnings(result <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
     add_overall_col(label = "All") %>%
@@ -335,13 +334,13 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
       variables = list(strata = c("SEX", "REGION1")),
       .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
     ) %>%
-    build_table(anl)
+    build_table(anl))
 
   result <- get_formatted_cells(result)
 
   expected <- rbind(
-    c("25.00 (18.66%)", "23.00 (17.16%)", "22.00 (16.67%)", "70.00 (17.50%)"),
-    c("(10.7692, 23.5028)", "(8.5334, 24.7046)", "(9.6237, 23.1385)", "(12.8136, 19.6358)")
+    c("34.00 (49.28%)", "37.00 (50.68%)", "31.00 (53.45%)", "102.00 (51.00%)"),
+    c("(31.3440, 57.8601)", "(37.2217, 57.0976)", "(50.4554, 73.2439)", "(44.8722, 58.2826)")
   )
 
   testthat::expect_equal(result, expected)
