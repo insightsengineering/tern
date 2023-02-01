@@ -1,23 +1,22 @@
 testthat::test_that("pairwise works correctly", {
   suppressWarnings(testthat::expect_warning(result <- lm(SEX ~ pairwise(ARM), data = tern_ex_adsl)))
-  expected <- c(
-    "(Intercept)" = 1.4492754, "pairwise(ARM)B: Placebo" = 0.0027794,
-    "pairwise(ARM)C: Combination" = -0.0009995
-  )
-  testthat::expect_equal(result$coefficients, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("univariate works correctly", {
   result <- testthat::expect_silent(univariate(c("SEX", "AGE", "RACE")))
-  expected <- c("SEX", "AGE", "RACE")
-  attr(expected, "varname") <- "c(\"SEX\", \"AGE\", \"RACE\")"
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("rht works correctly", {
   result <- testthat::expect_silent(rht(as.formula("y ~ m * x + b")))
-  expected <- c("+", "m * x", "b")
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("estimate_coef works correctly", {
@@ -39,15 +38,12 @@ testthat::test_that("estimate_coef works correctly", {
     variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
     coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
   )
-  expected_armcd <- matrix(
-    c(0, 0, 1, 1, 1),
-    nrow = 1,
-    dimnames = list("ARMCD/SEXM", c("coef", "se(coef)", "hr", "lcl", "ucl"))
-  )
-  expected_details <- "Estimations of ARMCD hazard ratio given the level of SEX compared to ARMCD level ARM A."
 
-  testthat::expect_identical(result$ARMCD, expected_armcd)
-  testthat::expect_identical(attr(result, "details"), expected_details)
+  res <- testthat::expect_silent(result$ARMCD)
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(attr(result, "details"))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("try_car_anova works correctly", {
@@ -58,11 +54,11 @@ testthat::test_that("try_car_anova works correctly", {
   result <- try_car_anova(mod = mod, test.statistic = "Wald")
   result_aov <- c(result$aov$Df, result$aov$Chisq, result$aov$`Pr(>Chisq)`)
 
-  testthat::expect_equal(result_aov,
-    c(1, 1, 0.9678, 0.3970, 0.3252, 0.5286),
-    tolerance = 1e-3
-  )
-  testthat::expect_identical(result$warn_text, NULL)
+  res <- testthat::expect_silent(result_aov)
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(result$warn_text)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("check_formula returns correct error", {
@@ -79,8 +75,9 @@ testthat::test_that("name_covariate_names works correctly", {
     B = formula("y ~ B"),
     C = formula("y ~ C")
   ))
-  expected <- list(A = formula("y ~ A"), B = formula("y ~ B"), C = formula("y ~ C"))
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("check_increments gives correct warning", {
@@ -108,13 +105,7 @@ testthat::test_that("s_cox_multivariate works correctly with character input", {
   result <- s_cox_multivariate(
     formula = survival::Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = adtte_f
   )
-  expected_aov <- matrix(
-    c(2, 2, 1, 4, 2, 2, 1.1569, 1.7917, 0.0108, 3.1853, 1.1363, 1.1686, 0.5608, 0.4083, 0.9174, 0.5273, 0.5666, 0.5576),
-    dimnames = list(
-      c("ARMCD", "RACE", "AGE", "ARMCD:RACE", "ARMCD:AGE", "RACE:AGE"),
-      c("Df", "Chisq", "Pr(>Chisq)")
-    ),
-    ncol = 3
-  )
-  testthat::expect_equal(as.matrix(result$aov), expected_aov, tolerance = 1e-3)
+
+  res <- testthat::expect_silent(result$aov)
+  testthat::expect_snapshot(res)
 })

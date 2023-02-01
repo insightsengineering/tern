@@ -7,11 +7,9 @@ testthat::test_that("h_count_cumulative works with healthy input and default arg
     threshold = 5,
     .N_col = length(x)
   )
-  expected <- c(
-    count = 5,
-    fraction = 5 / 11
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_count_cumulative works with customized arguments", {
@@ -27,11 +25,9 @@ testthat::test_that("h_count_cumulative works with customized arguments", {
     na.rm = FALSE,
     .N_col = length(x)
   )
-  expected <- c(
-    count = 7,
-    fraction = 7 / 11
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_cumulative works with healthy input and default arguments", {
@@ -43,15 +39,9 @@ testthat::test_that("s_count_cumulative works with healthy input and default arg
     thresholds = c(4, 7),
     .N_col = length(x)
   )
-  expected <- list(
-    count_fraction = c(
-      list(`4` = c(count = 4, fraction = 4 / 11)),
-      list(`7` = c(count = 7, fraction = 7 / 11))
-    )
-  )
-  attr(expected$count_fraction$`4`, "label") <- "<= 4"
-  attr(expected$count_fraction$`7`, "label") <- "<= 7"
-  testthat::expect_equal(result, expected, tolerance = .00001)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_cumulative works with customized arguments", {
@@ -67,15 +57,9 @@ testthat::test_that("s_count_cumulative works with customized arguments", {
     na.rm = FALSE,
     .N_col = length(x)
   )
-  expected <- list(
-    count_fraction = c(
-      list(`4` = c(count = 7, fraction = 7 / 11)),
-      list(`7` = c(count = 5, fraction = 5 / 11))
-    )
-  )
-  attr(expected$count_fraction$`4`, "label") <- "> 4"
-  attr(expected$count_fraction$`7`, "label") <- "> 7"
-  testthat::expect_equal(result, expected, tolerance = .00001)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_cumulative works with default arguments", {
@@ -93,16 +77,8 @@ testthat::test_that("count_cumulative works with default arguments", {
     ) %>%
     build_table(df)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "a", "<= 3", "<= 7",
-      "A", "", "2 (40%)", "4 (80%)",
-      "B", "", "1 (16.7%)", "3 (50%)"
-    ),
-    .Dim = 4:3
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_cumulative works with customized arguments", {
@@ -122,14 +98,7 @@ testthat::test_that("count_cumulative works with customized arguments", {
       na.rm = FALSE
     ) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "a", "> 3", "> 7",
-      "A", "", "3 (60%)", "1 (20%)",
-      "B", "", "4 (66.7%)", "2 (33.3%)"
-    ),
-    .Dim = 4:3
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

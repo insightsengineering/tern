@@ -13,8 +13,8 @@ testthat::test_that("CombinationFunction custom constructor works", {
     x == 5
   }
   result <- CombinationFunction(fun)
-  expected <- methods::new("CombinationFunction", fun)
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("CombinationFunction `&` method works", {

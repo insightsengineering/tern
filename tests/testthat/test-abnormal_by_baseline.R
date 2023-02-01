@@ -12,13 +12,8 @@ testthat::test_that("s_count_abnormal_by_baseline works with healthy input and d
     .var = "ANRIND",
     abnormal = "LOW"
   )
-  expected <- list(fraction = list(
-    "not_abnormal" = formatters::with_label(c(num = 1L, denom = 3L), "Not low baseline status"),
-    "abnormal" = formatters::with_label(c(num = 0L, denom = 1L), "Low baseline status"),
-    "total" = formatters::with_label(c(num = 1L, denom = 4L), "Total")
-  ))
-
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Check with HIGH abnormality.
   result <- s_count_abnormal_by_baseline(
@@ -26,12 +21,8 @@ testthat::test_that("s_count_abnormal_by_baseline works with healthy input and d
     .var = "ANRIND",
     abnormal = "HIGH"
   )
-  expected <- list(fraction = list(
-    "not_abnormal" = formatters::with_label(c(num = 1L, denom = 3L), "Not high baseline status"),
-    "abnormal" = formatters::with_label(c(num = 1L, denom = 1L), "High baseline status"),
-    "total" = formatters::with_label(c(num = 2L, denom = 4L), "Total")
-  ))
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_abnormal_by_baseline also works with tibble and custom arguments", {
@@ -51,12 +42,8 @@ testthat::test_that("s_count_abnormal_by_baseline also works with tibble and cus
     abnormal = "LOW",
     variables = list(id = "myid", baseline = "mybase")
   )
-  expected <- list(fraction = list(
-    "not_abnormal" = formatters::with_label(c(num = 2L, denom = 5L), "Not low baseline status"),
-    "abnormal" = formatters::with_label(c(num = 0L, denom = 1L), "Low baseline status"),
-    "total" = formatters::with_label(c(num = 2L, denom = 6L), "Total")
-  ))
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Check with HIGH abnormality.
   result <- s_count_abnormal_by_baseline(
@@ -65,12 +52,8 @@ testthat::test_that("s_count_abnormal_by_baseline also works with tibble and cus
     abnormal = "HIGH",
     variables = list(id = "myid", baseline = "mybase")
   )
-  expected <- list(fraction = list(
-    "not_abnormal" = formatters::with_label(c(num = 1L, denom = 5L), "Not high baseline status"),
-    "abnormal" = formatters::with_label(c(num = 0L, denom = 1L), "High baseline status"),
-    "total" = formatters::with_label(c(num = 1L, denom = 6L), "Total")
-  ))
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_abnormal_by_baseline throws warning with character var", {
@@ -93,12 +76,8 @@ testthat::test_that("count_abnormal_by_baseline throws warning with character va
     )
   )
 
-  expected <- list(fraction = list(
-    "not_abnormal" = formatters::with_label(c(num = 2L, denom = 4L), "Not low baseline status"),
-    "abnormal" = formatters::with_label(c(num = 0L, denom = 1L), "Low baseline status"),
-    "total" = formatters::with_label(c(num = 2L, denom = 5L), "Total")
-  ))
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_abnormal_by_baseline works with default arguments", {
@@ -110,18 +89,9 @@ testthat::test_that("count_abnormal_by_baseline works with default arguments", {
   result <- basic_table() %>%
     count_abnormal_by_baseline(var = "ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Low", "Not low baseline status", "Low baseline status",
-      "Total", "High", "Not high baseline status", "High baseline status",
-      "Total", "all obs", "", "1/3 (33.3%)", "0/1", "1/4 (25%)",
-      "", "1/2 (50%)", "1/2 (50%)", "2/4 (50%)"
-    ),
-    .Dim = c(9L, 2L)
-  )
 
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_abnormal_by_baseline works with custom arguments", {
@@ -138,17 +108,9 @@ testthat::test_that("count_abnormal_by_baseline works with custom arguments", {
       .formats = c(fraction = "xx / xx")
     ) %>%
     build_table(df2)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Low", "Not low baseline status", "Low baseline status",
-      "Total", "High", "Not high baseline status", "High baseline status",
-      "Total", "all obs", "", "1 / 3", "0 / 1", "1 / 4", "", "1 / 2",
-      "1 / 2", "2 / 4"
-    ),
-    .Dim = c(9L, 2L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_abnormal_by_baseline gives error for NA input", {

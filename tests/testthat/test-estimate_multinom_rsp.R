@@ -1,23 +1,17 @@
 testthat::test_that("d_onco_rsp_label provide right response labels", {
   rsp <- c("CR", "NE", "PR")
   result <- d_onco_rsp_label(rsp)
-  expected <- factor(
-    c(CR = "Complete Response (CR)", NE = "Not Evaluable (NE)", PR = "Partial Response (PR)"),
-    levels = c("Complete Response (CR)", "Not Evaluable (NE)", "Partial Response (PR)")
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("d_onco_rsp_label describe label with x being a factor", {
   a <- factor(c("CR", "SD", "PR", "PD", "NE"))
   result <- d_onco_rsp_label(a)
-  expected <- factor(
-    c(
-      CR = "Complete Response (CR)", SD = "Stable Disease (SD)", PR = "Partial Response (PR)",
-      PD = "Progressive Disease (PD)", NE = "Not Evaluable (NE)"
-    )
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_length_proportion works as expected with healthy input", {
@@ -41,7 +35,6 @@ testthat::test_that("estimate_multinomial_response returns right result", {
     ARM = rep(LETTERS[1:3], each = 4),
     AVAL = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
   )
-
   dta_test$AVALC <- as.factor(c( # nolint
     "Complete Response (CR)", "Partial Response (PR)"
   )[dta_test$AVAL + 1])
@@ -50,18 +43,7 @@ testthat::test_that("estimate_multinomial_response returns right result", {
     split_cols_by(var = "ARM") %>%
     estimate_multinomial_response(var = "AVALC")
   result <- build_table(lyt = lyt, df = dta_test)
-  result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- structure(
-    c(
-      "", "Complete Response (CR)", "95% CI (Wald, with correction)",
-      "Partial Response (PR)", "95% CI (Wald, with correction)", "A",
-      "0 (0.0%)", "(0.00, 12.50)", "4 (100.0%)", "(87.50, 100.00)",
-      "B", "2 (50.0%)", "(0.00, 100.00)", "2 (50.0%)", "(0.00, 100.00)",
-      "C", "4 (100.0%)", "(87.50, 100.00)", "0 (0.0%)", "(0.00, 12.50)"
-    ),
-    .Dim = 5:4
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

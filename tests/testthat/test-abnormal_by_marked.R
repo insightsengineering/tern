@@ -76,12 +76,8 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
   )
 
-  expected <- list(count_fraction = list(
-    `Single, not last` = c(0, 0),
-    `Last or replicated` = c(5.00000000, 0.07246377),
-    `Any Abnormality` = c(5.00000000, 0.07246377)
-  ))
-  testthat::expect_equal(result, expected, tolerance = 1e-6)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_abnormal_by_marked works as expected", {
@@ -135,12 +131,8 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
   )
 
-  expected <- list(count_fraction = list(
-    `Single, not last` = c(0, 0),
-    `Last or replicated` = c(5.00000000, 0.07246377),
-    `Any Abnormality` = c(5.00000000, 0.07246377)
-  ))
-  testthat::expect_equal(result, expected, tolerance = 1e-6)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
@@ -257,19 +249,6 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
     ) %>%
     build_table(df = adlb_f)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "CRP (n)", "Low", "Single, not last", "Last or replicated",
-      "Any Abnormality", "High", "Single, not last", "Last or replicated",
-      "Any Abnormality", "ARM A", "69", "", "0", "5 (7.2%)",
-      "5 (7.2%)", "", "0", "5 (7.2%)", "5 (7.2%)", "ARM B",
-      "73", "", "1 (1.4%)", "2 (2.7%)", "3 (4.1%)", "", "0", "7 (9.6%)",
-      "7 (9.6%)", "ARM C", "58", "", "0", "5 (8.6%)", "5 (8.6%)",
-      "", "1 (1.7%)", "4 (6.9%)", "5 (8.6%)"
-    ),
-    .Dim = c(10L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

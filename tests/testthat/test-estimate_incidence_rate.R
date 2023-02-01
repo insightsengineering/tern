@@ -5,13 +5,9 @@ testthat::test_that("control_incidence_rate works with customized parameters", {
     time_unit_input = "month",
     time_unit_output = 100
   )
-  expected <- list(
-    conf_level = 0.9,
-    conf_type = "exact",
-    time_unit_input = "month",
-    time_unit_output = 100
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("control_incidence_rate fails with wrong input", {
@@ -23,38 +19,30 @@ testthat::test_that("control_incidence_rate fails with wrong input", {
 
 testthat::test_that("h_incidence_rate_normal works as expected with healthy input", {
   result <- h_incidence_rate_normal(200, 2, 0.1)
-  expected <- list(
-    rate = 0.01,
-    rate_ci = c(-0.001630872, 0.021630872)
-  )
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_incidence_rate_normal_log works as expected with healthy input", {
   result <- h_incidence_rate_normal_log(200, 2, 0.1)
-  expected <- list(
-    rate = 0.01,
-    rate_ci = c(0.003125199, 0.031997963)
-  )
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_incidence_rate_exact works as expected with healthy input", {
   result <- h_incidence_rate_exact(200, 2, 0.1)
-  expected <- list(
-    rate = 0.01,
-    rate_ci = c(0.001776808, 0.031478968)
-  )
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_incidence_rate_byar works as expected with healthy input", {
   result <- h_incidence_rate_byar(200, 2, 0.1)
-  expected <- list(
-    rate = 0.01,
-    rate_ci = c(0.002820411, 0.027609866)
-  )
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_incidence_rate works as expected with healthy input", {
@@ -63,11 +51,9 @@ testthat::test_that("h_incidence_rate works as expected with healthy input", {
     2,
     control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", time_unit_output = 100)
   )
-  expected <- list(
-    rate = 1,
-    rate_ci = c(0.3125199, 3.1997963)
-  )
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_incidence_rate works as expected with healthy input", {
@@ -91,14 +77,8 @@ testthat::test_that("s_incidence_rate works as expected with healthy input", {
     )
   )
 
-  expected <- list(
-    person_years = formatters::with_label(9.058333, "Total patient-years at risk"),
-    n_events = formatters::with_label(4, "Number of adverse events observed"),
-    rate = formatters::with_label(44.15823, "AE rate per 100 patient-years"),
-    rate_ci = formatters::with_label(c(19.40154, 100.50487), "90% CI")
-  )
-
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("estimate_incidence_rate works as expected with healthy input", {
@@ -126,16 +106,6 @@ testthat::test_that("estimate_incidence_rate works as expected with healthy inpu
     ) %>%
     build_table(df)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "Total patient-years at risk", "Number of adverse events observed",
-      "AE rate per 100 patient-years", "90% CI", "A", "(N=3)", "3.8",
-      "1", "26.20", "(5.06, 135.73)", "B", "(N=3)", "5.2", "3", "57.23",
-      "(22.14, 147.94)"
-    ),
-    .Dim = c(6L, 3L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -5,21 +5,10 @@ testthat::test_that("analyze_vars_in_cols works correctly", {
     split_rows_by(var = "ARM", label_pos = "topleft") %>%
     split_rows_by(var = "SEX", label_pos = "topleft") %>%
     analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se"))
-
   result <- build_table(lyt = lyt, df = adpp)
-  result_matrix <- to_string_matrix(result)
-  expected <- structure(
-    c(
-      "ARM", "  SEX", "A: Drug X", "F", " ", "M", " ", "B: Placebo", "F",
-      " ", "M", " ", "C: Combination", "F", " ", "M", " ", "", "n", "", "",
-      "0", "", "0", "", "", "0", "", "0", "", "", "288", "", "234",
-      "", "Mean", "", "", "NA", "", "NA", "", "", "NA", "", "NA", "", "",
-      "36.0", "", "36.3", "", "SE", "", "", "NA", "", "NA", "", "", "NA",
-      "", "NA", "", "", "0.4", "", "0.6"
-    ),
-    .Dim = c(17L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("analyze_vars_in_cols throws error when vars and .stats lengths differ in len", {
@@ -41,5 +30,7 @@ testthat::test_that("custom labels can be set with labelstr", {
       labelstr = lbl
     )
   result <- build_table(lyt, df = adpp)
-  testthat::expect_equal(to_string_matrix(result)[, 1][-1], rep(lbl, 2))
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

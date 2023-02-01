@@ -4,27 +4,10 @@ testthat::test_that("s_count_occurrences functions as expected with valid input 
     MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
   )
 
-
   result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df)
 
-  expected <- list(
-    count = list(
-      MH1 = 3L,
-      MH2 = 1L,
-      MH3 = 1L
-    ),
-    count_fraction = list(
-      MH1 = c(3L, 0.75),
-      MH2 = c(1L, 0.25),
-      MH3 = c(1L, 0.25)
-    ),
-    fraction = list(
-      MH1 = c("num" = 3L, "denom" = 4L),
-      MH2 = c("num" = 1L, "denom" = 4L),
-      MH3 = c("num" = 1L, "denom" = 4L)
-    )
-  )
-  testthat::expect_equal(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_occurrences drops non appearing levels by default", {
@@ -78,24 +61,8 @@ testthat::test_that("s_count_occurrences functions as expected when requesting d
 
   result <- s_count_occurrences(df = df, denom = "n", .N_col = 4L, .df_row = df)
 
-  expected <- list(
-    count = list(
-      MH1 = 3L,
-      MH2 = 1L,
-      MH3 = 1L
-    ),
-    count_fraction = list(
-      MH1 = c(3L, 1),
-      MH2 = c(1L, 1 / 3),
-      MH3 = c(1L, 1 / 3)
-    ),
-    fraction = list(
-      MH1 = c("num" = 3L, "denom" = 3),
-      MH2 = c("num" = 1L, "denom" = 3),
-      MH3 = c("num" = 1L, "denom" = 3)
-    )
-  )
-  testthat::expect_equal(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_occurrences functions as expected with valid input and default arguments", {
@@ -120,18 +87,8 @@ testthat::test_that("count_occurrences functions as expected with valid input an
   result <- rtable_object <- lyt %>%
     build_table(df, alt_counts_df = df_adsl)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "MH1", "MH2", "MH3", "MH4", "A", "(N=5)",
-      "3 (60.0%)", "1 (20.0%)", "1 (20.0%)", "0", "B", "(N=4)", "1 (25.0%)",
-      "2 (50.0%)", "1 (25.0%)", "1 (25.0%)"
-    ),
-    .Dim = c(6L, 3L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_occurrences functions as expected with label row specified", {
@@ -156,15 +113,6 @@ testthat::test_that("count_occurrences functions as expected with label row spec
   result <- rtable_object <- lyt %>%
     build_table(df, alt_counts_df = df_adsl)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "MH Term", "MH1", "MH2", "all obs",
-      "", "4 (44.4%)", "3 (33.3%)"
-    ),
-    .Dim = c(4L, 2L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

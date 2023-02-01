@@ -62,14 +62,8 @@ testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
     variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
   )
 
-  expected <- list(count_fraction = list(
-    `1` = formatters::with_label(c(count = 12, fraction = 0.173913), "1"),
-    `2` = formatters::with_label(c(count = 9, fraction = 0.1304348), "2"),
-    `3` = formatters::with_label(c(count = 6, fraction = 0.08695652), "3"),
-    `4` = formatters::with_label(c(count = 7, fraction = 0.1014493), "4"),
-    Any = formatters::with_label(c(count = 34, fraction = 0.4927536), "Any")
-  ))
-  testthat::expect_equal(result, expected, tolerance = 1e-6)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_abnormal_by_worst_grade works as expected", {
@@ -96,46 +90,8 @@ testthat::test_that("count_abnormal_by_worst_grade works as expected", {
     ) %>%
     build_table(df = adlb_f)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <-
-    structure(
-      c(
-        "",
-        "Immunoglobulin A Measurement",
-        "HIGH",
-        "1",
-        "2",
-        "3",
-        "4",
-        "Any",
-        "ARM A",
-        "",
-        "",
-        "7 (10.1%)",
-        "8 (11.6%)",
-        "7 (10.1%)",
-        "6 (8.7%)",
-        "28 (40.6%)",
-        "ARM B",
-        "",
-        "",
-        "7 (9.6%)",
-        "6 (8.2%)",
-        "5 (6.8%)",
-        "2 (2.7%)",
-        "20 (27.4%)",
-        "ARM C",
-        "",
-        "",
-        "6 (10.3%)",
-        "8 (13.8%)",
-        "9 (15.5%)",
-        "3 (5.2%)",
-        "26 (44.8%)"
-      ),
-      .Dim = c(8L, 4L)
-    )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
