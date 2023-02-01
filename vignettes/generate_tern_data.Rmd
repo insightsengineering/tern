@@ -138,6 +138,7 @@ generate_adsl <- function(N = 200) { # nolint
   # associate sites with countries and regions
   tern_ex_adsl <- adsl %>%
     dplyr::mutate(
+      SITEID = paste0(.data$COUNTRY, "-", .data$SITEID),
       REGION1 = dplyr::case_when(
         COUNTRY %in% c("NGA") ~ "Africa",
         COUNTRY %in% c("CHN", "JPN", "PAK") ~ "Asia",
