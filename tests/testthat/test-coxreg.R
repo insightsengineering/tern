@@ -292,7 +292,9 @@ testthat::test_that("fit_coxreg_univar works without treatment arm", {
   )
 
   result <- testthat::expect_silent(fit_coxreg_univar(variables = variables, data = data))
-  testthat::expect_named(result$mod, "age")
+
+  res <- testthat::expect_silent(names(result$mod))
+  testthat::expect_snapshot(res)
 })
 
 # tidy.summary.coxph ----

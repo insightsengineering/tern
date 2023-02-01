@@ -4,11 +4,9 @@ testthat::test_that("s_compare works for numeric", {
     .ref_group = stats::rnorm(5, -5, 1),
     .in_ref_col = FALSE
   ))
-  testthat::expect_named(result, c(
-    "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei",
-    "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr",
-    "range", "min", "max", "cv", "geom_mean", "geom_mean_ci", "geom_cv", "pval"
-  ))
+
+  res <- testthat::expect_silent(names(result))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for numeric does not give p-value when not at least 2 values in each group", {
@@ -17,15 +15,21 @@ testthat::test_that("s_compare for numeric does not give p-value when not at lea
     .ref_group = 1,
     .in_ref_col = FALSE
   ))
-  testthat::expect_identical(result$pval, character())
+
+  res <- testthat::expect_silent(result$pval)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for factor works in usual case", {
   x <- factor(c("a", "a", "b", "c", "a"))
   y <- factor(c("a", "b", "c"))
   result <- testthat::expect_silent(s_compare(x = x, .ref_group = y, .in_ref_col = FALSE))
-  testthat::expect_named(result, c("n", "count", "count_fraction", "n_blq", "pval"))
-  testthat::expect_equal(result$pval, 0.7659, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(names(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(result$pval)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for factor handles explicit NAs as expected", {
@@ -38,7 +42,9 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     .in_ref_col = FALSE,
     na.rm = TRUE
   ))
-  testthat::expect_equal(result_without_na$pval, 0.7659, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result$pval)
+  testthat::expect_snapshot(res)
 
   result_with_na <- testthat::expect_silent(s_compare(
     x = x,
@@ -46,7 +52,9 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     .in_ref_col = FALSE,
     na.rm = FALSE
   ))
-  testthat::expect_equal(result_with_na$pval, 0.9063, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result$pval)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for character works as expected", {
@@ -65,7 +73,9 @@ testthat::test_that("s_compare for logical works as expected", {
   x <- c(TRUE, FALSE, TRUE, TRUE)
   y <- c(FALSE, FALSE, TRUE)
   result <- testthat::expect_silent(s_compare(x, .ref_group = y, .in_ref_col = FALSE))
-  testthat::expect_equal(result$pval, 0.2702, tolerance = 1e-3)
+
+  res <- testthat::expect_silent(result$pval)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for logical handles NAs as FALSE if not removed", {

@@ -550,6 +550,13 @@
       attr(,"class")
       [1] "coxreg.univar"
 
+# fit_coxreg_univar works without treatment arm
+
+    Code
+      res
+    Output
+      [1] "age"
+
 # tidy.summary.coxph method tidies up the Cox regression model
 
     Code

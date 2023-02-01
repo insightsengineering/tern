@@ -35,7 +35,7 @@ testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
 testthat::test_that("g_km plot with < = > in group labels works", {
   df <- tern_ex_adtte %>%
     df_explicit_na() %>%
-    dplyr::filter(PARAMCD == "OS", ARM == "A: Drug X", BEP01FL == "Y") %>%
+    dplyr::filter(PARAMCD == "OS", ARM == "A: Drug X") %>%
     dplyr::mutate(
       is_event = CNSR == 0,
       group = as.factor(ifelse(AGE > 34, ">Median", "<=Median"))

@@ -1,6 +1,5 @@
 adsl <- tern_ex_adsl
-adlb <- tern_ex_adlb
-adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
+adlb <- tern_ex_adlb %>% dplyr::filter(ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 adlb$AVISIT <- droplevels(adlb$AVISIT)
 adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 

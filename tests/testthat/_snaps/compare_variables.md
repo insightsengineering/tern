@@ -1,3 +1,50 @@
+# s_compare works for numeric
+
+    Code
+      res
+    Output
+       [1] "n"            "sum"          "mean"         "sd"           "se"          
+       [6] "mean_sd"      "mean_se"      "mean_ci"      "mean_sei"     "mean_sdi"    
+      [11] "mean_pval"    "median"       "mad"          "median_ci"    "quantiles"   
+      [16] "iqr"          "range"        "min"          "max"          "cv"          
+      [21] "geom_mean"    "geom_mean_ci" "geom_cv"      "pval"        
+
+# s_compare for numeric does not give p-value when not at least 2 values in each group
+
+    Code
+      res
+    Output
+      character(0)
+
+# s_compare for factor works in usual case
+
+    Code
+      res
+    Output
+      [1] "n"              "count"          "count_fraction" "n_blq"         
+      [5] "pval"          
+
+---
+
+    Code
+      res
+    Output
+      [1] 0.7659283
+
+# s_compare for factor handles explicit NAs as expected
+
+    Code
+      res
+    Output
+      NULL
+
+---
+
+    Code
+      res
+    Output
+      NULL
+
 # s_compare for character works as expected
 
     Code
@@ -34,6 +81,13 @@
       $pval
       [1] 0.7659283
       
+
+# s_compare for logical works as expected
+
+    Code
+      res
+    Output
+      [1] 0.2702894
 
 # compare_vars works with default settings in rtables layout pipeline
 

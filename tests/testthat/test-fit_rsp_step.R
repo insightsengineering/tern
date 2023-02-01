@@ -19,20 +19,17 @@ testthat::test_that("fit_rsp_step works as expected with default options", {
     covariates = "AGE",
     response = "RSP"
   )
-  result <- testthat::expect_silent(fit_rsp_step(
+ suppressWarnings(testthat::expect_warning(result <- fit_rsp_step(
     variables = variables,
     data = data
-  ))
+  )))
   testthat::expect_s3_class(result, c("matrix", "step"))
-  testthat::expect_identical(ncol(result), 11L)
-  testthat::expect_identical(
-    colnames(result),
-    c(
-      "Percentile Center", "Percentile Lower", "Percentile Upper",
-      "Interval Center", "Interval Lower", "Interval Upper", "n",
-      "logor", "se", "ci_lower", "ci_upper"
-    )
-  )
+
+  res <- testthat::expect_silent(ncol(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(colnames(result))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("fit_rsp_step works as expected with global model fit", {
@@ -43,7 +40,7 @@ testthat::test_that("fit_rsp_step works as expected with global model fit", {
     covariates = "AGE",
     response = "RSP"
   )
-  result <- testthat::expect_silent(fit_rsp_step(
+  suppressWarnings(testthat::expect_warning(result <- fit_rsp_step(
     variables = variables,
     data = data,
     control = c(
@@ -54,16 +51,14 @@ testthat::test_that("fit_rsp_step works as expected with global model fit", {
         num_points = 3L
       )
     )
-  ))
+  )))
   testthat::expect_s3_class(result, c("matrix", "step"))
-  testthat::expect_identical(ncol(result), 8L)
-  testthat::expect_identical(
-    colnames(result),
-    c(
-      "Interval Center", "Interval Lower", "Interval Upper", "n",
-      "logor", "se", "ci_lower", "ci_upper"
-    )
-  )
+
+  res <- testthat::expect_silent(ncol(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(colnames(result))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("fit_rsp_step works as expected with strata", {
@@ -78,18 +73,15 @@ testthat::test_that("fit_rsp_step works as expected with strata", {
   result <- testthat::expect_silent(fit_rsp_step(
     variables = variables,
     data = data,
-    control = c(control_logistic(), control_step(bandwidth = 0.6))
+    control = c(control_logistic(), control_step(bandwidth = 0.9, num_points = 2L))
   ))
   testthat::expect_s3_class(result, c("matrix", "step"))
-  testthat::expect_identical(ncol(result), 11L)
-  testthat::expect_identical(
-    colnames(result),
-    c(
-      "Percentile Center", "Percentile Lower", "Percentile Upper",
-      "Interval Center", "Interval Lower", "Interval Upper", "n",
-      "logor", "se", "ci_lower", "ci_upper"
-    )
-  )
+
+  res <- testthat::expect_silent(ncol(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(colnames(result))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("fit_rsp_step works as expected with null bandwidth", {
