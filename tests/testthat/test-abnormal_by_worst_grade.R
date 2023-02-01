@@ -63,13 +63,13 @@ testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
   )
 
   expected <- list(count_fraction = list(
-    `1` = formatters::with_label(c(count = 14, fraction = 0.1044776), "1"),
-    `2` = formatters::with_label(c(count = 13, fraction = 0.09701493), "2"),
-    `3` = formatters::with_label(c(count = 20, fraction = 0.1492537), "3"),
-    `4` = formatters::with_label(c(count = 7, fraction = 0.05223881), "4"),
-    Any = formatters::with_label(c(count = 54, fraction = 0.4029851), "Any")
+    `1` = formatters::with_label(c(count = 12, fraction = 0.173913), "1"),
+    `2` = formatters::with_label(c(count = 9, fraction = 0.1304348), "2"),
+    `3` = formatters::with_label(c(count = 6, fraction = 0.08695652), "3"),
+    `4` = formatters::with_label(c(count = 7, fraction = 0.1014493), "4"),
+    Any = formatters::with_label(c(count = 34, fraction = 0.4927536), "Any")
   ))
-  testthat::expect_equal(result, expected, tolerance = 0.000001)
+  testthat::expect_equal(result, expected, tolerance = 1e-6)
 })
 
 testthat::test_that("count_abnormal_by_worst_grade works as expected", {
@@ -111,27 +111,27 @@ testthat::test_that("count_abnormal_by_worst_grade works as expected", {
         "ARM A",
         "",
         "",
-        "25 (18.7%)",
-        "14 (10.4%)",
-        "12 (9%)",
-        "11 (8.2%)",
-        "62 (46.3%)",
+        "7 (10.1%)",
+        "8 (11.6%)",
+        "7 (10.1%)",
+        "6 (8.7%)",
+        "28 (40.6%)",
         "ARM B",
         "",
         "",
-        "14 (10.4%)",
-        "20 (14.9%)",
-        "13 (9.7%)",
-        "13 (9.7%)",
-        "60 (44.8%)",
+        "7 (9.6%)",
+        "6 (8.2%)",
+        "5 (6.8%)",
+        "2 (2.7%)",
+        "20 (27.4%)",
         "ARM C",
         "",
         "",
-        "13 (9.8%)",
-        "16 (12.1%)",
-        "17 (12.9%)",
-        "4 (3%)",
-        "50 (37.9%)"
+        "6 (10.3%)",
+        "8 (13.8%)",
+        "9 (15.5%)",
+        "3 (5.2%)",
+        "26 (44.8%)"
       ),
       .Dim = c(8L, 4L)
     )

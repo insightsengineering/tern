@@ -41,7 +41,6 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
       )
     )
 
-
   result <- h_adlb_worsen(
     input_data,
     worst_flag_low = c("WGRLOFL" = "Y"),
@@ -50,7 +49,6 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   )
 
   result <- result[order(result$VALUES), ]
-
 
   p1 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "L")
   p2 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "H")
@@ -69,7 +67,7 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
 })
 
 testthat::test_that("h_adlb_worsen stacks data correctly", {
-  adlb_f <- adlb_local %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
+  adlb_f <- adlb_local %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-1-id-53", "AB12345-CHN-3-id-128"))
 
   result <- h_adlb_worsen(
     adlb_f,
@@ -83,17 +81,17 @@ testthat::test_that("h_adlb_worsen stacks data correctly", {
 
   expected_matrix <- structure(
     c(
-      rep(c("AB12345-CHN-15-id-262", "AB12345-CHN-3-id-128"), 4L),
-      rep(c("ARM C", "ARM A"), 4L),
+      rep(c("AB12345-CHN-1-id-53", "AB12345-CHN-3-id-128"), 4L),
+      rep(c("ARM B", "ARM B"), 4L),
       c(
-        "WEEK 4 DAY 29", "WEEK 3 DAY 22", "WEEK 5 DAY 36", "WEEK 3 DAY 22", "WEEK 3 DAY 22",
-        "WEEK 1 DAY 8", "WEEK 5 DAY 36", "WEEK 2 DAY 15"
+        "WEEK 5 DAY 36", "WEEK 5 DAY 36", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36",
+        "WEEK 2 DAY 15", "WEEK 5 DAY 36", "WEEK 5 DAY 36"
       ),
       c("IGA", "IGA", "ALT", "ALT", "CRP", "CRP", "ALT", "ALT"),
-      c("0", "0", "0", "2", "-2", "-1", "0", "-3"),
-      c("0", "3", "0", "0", "2", "0", "0", "0"),
-      c("Y", "Y", "Y", "", "Y", "Y", "Y", "Y"),
-      c("Y", "Y", "Y", "Y", "", "", "Y", ""),
+      c("0", "4", "4", "1", "0", "0", "-4", "-4"),
+      c("0", "0", "0", "0", "1", "0", "0", "0"),
+      c("", "", "", "", "Y", "Y", "Y", "Y"),
+      c("Y", "Y", "Y", "Y", "Y", "", "", ""),
       c("High", "High", "High", "High", "Low", "Low", "Low", "Low")
     ),
     .Dim = c(8L, 9L)
@@ -271,30 +269,39 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
 
   result_matrix <- to_string_matrix(result)
 
-  expected_matrix <- structure(
+  expected_matrix <- matrix(
     c(
-      "", "", "ALT", "High", "1", "2", "3", "4", "Any",
-      "Low", "1", "2", "3", "4", "Any", "CRP", "Low", "1", "2", "3",
-      "4", "Any", "IGA", "High", "1", "2", "3", "4", "Any", "ARM A",
-      "(N=134)", "", "", "16/121 (13.2%)", "14/125 (11.2%)", "9/129 (7%)",
-      "12/131 (9.2%)", "51/131 (38.9%)", "", "13/124 (10.5%)", "13/127 (10.2%)",
-      "19/129 (14.7%)", "7/131 (5.3%)", "52/131 (39.7%)", "", "", "14/122 (11.5%)",
-      "21/124 (16.9%)", "12/129 (9.3%)", "10/131 (7.6%)", "57/131 (43.5%)",
-      "", "", "24/118 (20.3%)", "13/120 (10.8%)", "11/124 (8.9%)",
-      "11/129 (8.5%)", "59/129 (45.7%)", "ARM B", "(N=134)", "", "",
-      "13/117 (11.1%)", "12/121 (9.9%)", "15/125 (12%)", "11/130 (8.5%)",
-      "51/130 (39.2%)", "", "12/121 (9.9%)", "17/127 (13.4%)", "12/128 (9.4%)",
-      "7/131 (5.3%)", "48/131 (36.6%)", "", "", "17/125 (13.6%)", "12/130 (9.2%)",
-      "9/131 (6.9%)", "7/133 (5.3%)", "45/133 (33.8%)", "", "", "12/120 (10%)",
-      "19/124 (15.3%)", "10/128 (7.8%)", "13/130 (10%)", "54/130 (41.5%)",
-      "ARM C", "(N=132)", "", "", "17/117 (14.5%)", "17/120 (14.2%)",
-      "13/124 (10.5%)", "13/129 (10.1%)", "60/129 (46.5%)", "", "9/117 (7.7%)",
-      "11/124 (8.9%)", "10/128 (7.8%)", "10/132 (7.6%)", "40/132 (30.3%)",
-      "", "", "13/120 (10.8%)", "16/125 (12.8%)", "17/126 (13.5%)", "4/127 (3.1%)",
-      "50/127 (39.4%)", "", "", "13/119 (10.9%)", "13/125 (10.4%)",
-      "17/128 (13.3%)", "4/130 (3.1%)", "47/130 (36.2%)"
+      "", "ARM A", "ARM B", "ARM C",
+      "", "(N=69)", "(N=73)", "(N=58)",
+      "IGA", "", "", "",
+      "High", "", "", "",
+      "1", "6/63 (9.5%)", "6/64 (9.4%)", "4/50 (8%)",
+      "2", "8/64 (12.5%)", "5/67 (7.5%)", "8/53 (15.1%)",
+      "3", "7/66 (10.6%)", "5/68 (7.4%)", "9/57 (15.8%)",
+      "4", "6/68 (8.8%)", "2/72 (2.8%)", "3/58 (5.2%)",
+      "Any", "27/68 (39.7%)", "18/72 (25%)", "24/58 (41.4%)",
+      "ALT", "", "", "",
+      "High", "", "", "",
+      "1", "7/62 (11.3%)", "6/62 (9.7%)", "2/48 (4.2%)",
+      "2", "12/62 (19.4%)", "4/67 (6%)", "11/50 (22%)",
+      "3", "4/64 (6.2%)", "11/71 (15.5%)", "7/56 (12.5%)",
+      "4", "1/66 (1.5%)", "8/71 (11.3%)", "4/57 (7%)",
+      "Any", "24/66 (36.4%)", "29/71 (40.8%)", "24/57 (42.1%)",
+      "Low", "", "", "",
+      "1", "12/67 (17.9%)", "4/66 (6.1%)", "7/52 (13.5%)",
+      "2", "9/68 (13.2%)", "12/69 (17.4%)", "6/55 (10.9%)",
+      "3", "6/69 (8.7%)", "4/71 (5.6%)", "5/56 (8.9%)",
+      "4", "7/69 (10.1%)", "7/73 (9.6%)", "6/58 (10.3%)",
+      "Any", "34/69 (49.3%)", "27/73 (37%)", "24/58 (41.4%)",
+      "CRP", "", "", "",
+      "Low", "", "", "",
+      "1", "11/66 (16.7%)", "10/67 (14.9%)", "4/47 (8.5%)",
+      "2", "8/66 (12.1%)", "1/70 (1.4%)", "6/50 (12%)",
+      "3", "4/68 (5.9%)", "9/70 (12.9%)", "5/53 (9.4%)",
+      "4", "7/69 (10.1%)", "6/72 (8.3%)", "4/55 (7.3%)",
+      "Any", "30/69 (43.5%)", "26/72 (36.1%)", "19/55 (34.5%)"
     ),
-    .Dim = c(29L, 4L)
+    nrow = 29, ncol = 4, byrow = TRUE
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -315,12 +322,11 @@ testthat::test_that("h_adlb_worsen all high", {
     worst_flag_high = c("WGRHIFL" = "Y"),
     direction_var = "GRADDR"
   )
-  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD, result$PCHG), ]
-
+  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD), ]
 
   expected <- adlb_local[adlb_local$WGRHIFL == "Y", ]
   expected$GRADDR <- "High" # nolint
-  expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD, expected$PCHG), ]
+  expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD), ]
 
   result_matrix <- matrix(c(as.matrix(result)), nrow(result), ncol(result))
   expected_matrix <- matrix(c(as.matrix(expected)), nrow(expected), ncol(expected))
@@ -344,12 +350,12 @@ testthat::test_that("h_adlb_worsen all low", {
     worst_flag_low = c("WGRLOFL" = "Y"),
     direction_var = "GRADDR"
   )
-  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD, result$PCHG), ]
+  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD), ]
 
 
   expected <- adlb_local[adlb_local$WGRLOFL == "Y", ]
   expected$GRADDR <- "Low" # nolint
-  expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD, expected$PCHG), ]
+  expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD), ]
 
   result_matrix <- matrix(c(as.matrix(result)), nrow(result), ncol(result))
   expected_matrix <- matrix(c(as.matrix(expected)), nrow(expected), ncol(expected))
