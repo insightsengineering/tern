@@ -1,7 +1,8 @@
 testthat::test_that("f_conf_level works for proportion", {
   result <- f_conf_level(0.95)
-  expected <- "95% CI"
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("f_conf_level fails for non-proportion input", {
@@ -11,8 +12,9 @@ testthat::test_that("f_conf_level fails for non-proportion input", {
 
 testthat::test_that("f_pval works for numeric input", {
   result <- f_pval(0.05)
-  expected <- "p-value (H0: mean = 0.05)"
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("f_pval fails for non-numeric input", {
@@ -23,14 +25,16 @@ testthat::test_that("f_pval fails for non-numeric input", {
 testthat::test_that("make_names works as expected", {
   nams <- c("Any Grade (%)", "Total AE numbers!", "No adverse events ...")
   result <- make_names(nams)
-  expected <- c("AnyGrade", "TotalAEnumbers", "Noadverseevents")
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("get_covariates works for a character vector", {
   result <- get_covariates(c("a * b", "c"))
-  expected <- list(a = "a", b = "b", c = "c")
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("get_covariates fails for non-character input", {
@@ -41,22 +45,25 @@ testthat::test_that("get_covariates fails for non-character input", {
 testthat::test_that("month2day works correctly", {
   x <- c(13.25, 8.15, 1, 2.834, NA)
   result <- month2day(x)
-  expected <- c(403.296875, 248.065625, 30.4375, 86.259875, NA)
-  testthat::expect_equal(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("day2month works correctly", {
   x <- c(403, 248, 30, 86, NA)
   result <- day2month(x)
-  expected <- c(13.2402464065708, 8.14784394250513, 0.985626283367556, 2.82546201232033, NA)
-  testthat::expect_equal(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("empty_vector_if_na works correctly", {
   x <- c(NA, NA, NA)
   result <- empty_vector_if_na(x)
-  expected <- numeric()
-  testthat::expect_equal(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("extract_by_name works for NULL input", {
@@ -68,8 +75,9 @@ testthat::test_that("extract_by_name works for non-NULL input", {
     x = c(a = "xx", b = function(x) paste(x, "bla")),
     c("b", "c")
   )
-  expected <- c(b = function(x) paste(x, "bla"))
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("extract_by_name returns NULL when there is no overlap", {
@@ -77,38 +85,40 @@ testthat::test_that("extract_by_name returns NULL when there is no overlap", {
     x = c(a = "xx", b = "xx.xx"),
     c("d", "c")
   )
-  expected <- NULL
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("aesi_label works as expected for SMQ", {
   smq01nam <- c("AESI 1", "", NA)
   smq01sc <- c("NARROW", "", NA)
-
   result <- aesi_label(smq01nam, smq01sc)
-  expected <- "AESI 1 (NARROW)"
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 }) # test with NA
 
 testthat::test_that("aesi_label works as expected for CQ", {
   aesi1 <- c("AESI CQ1", "", NA)
   result <- aesi_label(aesi1, scope = NULL)
-  expected <- "AESI CQ1"
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("aesi_label works as expected when input includes multiple values", {
   aesi1 <- c("AESI CQ1", "AESI CQ2")
   result <- aesi_label(aesi1, scope = NULL)
 
-  expected <- NULL
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   aesi2 <- formatters::with_label(c("AESI CQ1", "AESI CQ2"), label = "CQ: ABC")
   result <- aesi_label(aesi2, scope = NULL)
 
-  expected <- "CQ: ABC"
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("get_smooths dimensions without grouping", {
@@ -146,8 +156,9 @@ testthat::test_that("get_smooths relative intervals level", {
 testthat::test_that("n_available works as expected", {
   x <- c(1, 2, 3, NA)
   result <- n_available(x)
-  expected <- 3L
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 ##################
@@ -160,9 +171,9 @@ testthat::test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] and 
   x <- 5:1
 
   result <- range_noinf(x)
-  expected <- c(1L, 5L)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] with
@@ -170,9 +181,9 @@ testthat::test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] with
   x <- 5:1
 
   result <- range_noinf(x, na.rm = TRUE)
-  expected <- c(1L, 5L)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -181,9 +192,9 @@ testthat::test_that(
     x <- 5:1
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(1L, 5L)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -192,9 +203,9 @@ testthat::test_that("range_noinf for INT [no zero-len data, no NAs, no Inf]
   x <- 5:1
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(1L, 5L)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # INTEGER no zero-len data, with NAs, no Inf
@@ -203,9 +214,9 @@ testthat::test_that("range_noinf for INT [no zero-len data, with NAs, no Inf] an
   x <- c(NA, 5:1, NA)
 
   result <- range_noinf(x)
-  expected <- c(NA_integer_, NA_integer_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -214,9 +225,9 @@ testthat::test_that(
     x <- c(NA, 5:1, NA)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(1L, 5L)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -226,9 +237,9 @@ testthat::test_that(
     x <- c(NA, 5:1, NA)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(1L, 5L)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -237,9 +248,9 @@ testthat::test_that("range_noinf for INT [no zero-len data, with NAs, no Inf]
   x <- c(NA, 5:1, NA)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(1L, 5L)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # INTEGER  with zero-len data, no NAs, no Inf
@@ -248,9 +259,9 @@ testthat::test_that("range_noinf for INT [with zero-len data, no NAs, no Inf] an
   x <- vector(mode = "integer", length = 0)
 
   result <- range_noinf(x)
-  expected <- c(NA_integer_, NA_integer_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -259,9 +270,9 @@ testthat::test_that(
     x <- vector(mode = "integer", length = 0)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(NA_integer_, NA_integer_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -271,9 +282,9 @@ testthat::test_that(
     x <- vector(mode = "integer", length = 0)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(NA_integer_, NA_integer_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -282,9 +293,9 @@ testthat::test_that("range_noinf for INT [with zero-len data, no NAs, no Inf]
   x <- vector(mode = "integer", length = 0)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(NA_integer_, NA_integer_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # INTEGER with zero-len data, with NAs, no Inf
@@ -293,9 +304,9 @@ testthat::test_that("range_noinf for INT [with zero-len data, with NAs, no Inf] 
   x <- rep(NA_integer_, 4)
 
   result <- range_noinf(x)
-  expected <- c(NA_integer_, NA_integer_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -304,9 +315,9 @@ testthat::test_that(
     x <- rep(NA_integer_, 4)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(NA_integer_, NA_integer_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -316,9 +327,9 @@ testthat::test_that(
     x <- rep(NA_integer_, 4)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(NA_integer_, NA_integer_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -327,9 +338,9 @@ testthat::test_that("range_noinf for INT [with zero-len data, with NAs, no Inf]
   x <- rep(NA_integer_, 4)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(NA_integer_, NA_integer_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # DOUBLE no zero-len data, no NAs, no Inf
@@ -338,9 +349,9 @@ testthat::test_that("range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] a
   x <- c(3.5, 1.5, 2.5)
 
   result <- range_noinf(x)
-  expected <- c(1.5, 3.5)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -349,9 +360,9 @@ testthat::test_that(
     x <- c(3.5, 1.5, 2.5)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(1.5, 3.5)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -361,9 +372,9 @@ testthat::test_that(
     x <- c(3.5, 1.5, 2.5)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(1.5, 3.5)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -372,9 +383,9 @@ testthat::test_that("range_noinf for DOUBLE [no zero-len data, no NAs, no Inf]
   x <- c(3.5, 1.5, 2.5)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(1.5, 3.5)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # DOUBLE no zero-len data, no NAs, with Inf
@@ -383,9 +394,9 @@ testthat::test_that("range_noinf for DOUBLE [no zero-len data, no NAs, with Inf]
   x <- c(Inf, 3.5, 1.5, -Inf, 2.5)
 
   result <- range_noinf(x)
-  expected <- c(-Inf, Inf)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -394,9 +405,9 @@ testthat::test_that(
     x <- c(Inf, 3.5, 1.5, -Inf, 2.5)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(-Inf, Inf)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -406,9 +417,9 @@ testthat::test_that(
     x <- c(Inf, 3.5, 1.5, -Inf, 2.5)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(1.5, 3.5)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -418,9 +429,9 @@ testthat::test_that(
     x <- c(Inf, 3.5, 1.5, -Inf, 2.5)
 
     result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-    expected <- c(1.5, 3.5)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -430,9 +441,9 @@ testthat::test_that("range_noinf for DOUBLE [no zero-len data, with NAs, no Inf]
   x <- c(NA, 3.5, 1.5, 2.5, NA)
 
   result <- range_noinf(x)
-  expected <- c(NA_real_, NA_real_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -441,9 +452,9 @@ testthat::test_that(
     x <- c(NA, 3.5, 1.5, 2.5, NA)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(1.5, 3.5)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -453,9 +464,9 @@ testthat::test_that(
     x <- c(NA, 3.5, 1.5, 2.5, NA)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(1.5, 3.5)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -465,9 +476,9 @@ testthat::test_that(
     x <- c(NA, 3.5, 1.5, 2.5, NA)
 
     result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-    expected <- c(1.5, 3.5)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -488,9 +499,9 @@ testthat::test_that(
     x <- c(NA, 3.5, Inf, 1.5, -Inf, 2.5, NA)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(-Inf, Inf)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -500,9 +511,9 @@ testthat::test_that(
     x <- c(NA, 3.5, Inf, 1.5, -Inf, 2.5, NA)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(1.5, 3.5)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -512,9 +523,9 @@ testthat::test_that(
     x <- c(NA, 3.5, Inf, 1.5, -Inf, 2.5, NA)
 
     result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-    expected <- c(1.5, 3.5)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -524,9 +535,9 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, no Inf]
   x <- vector(mode = "double", length = 0)
 
   result <- range_noinf(x)
-  expected <- c(NA_real_, NA_real_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -535,9 +546,9 @@ testthat::test_that(
     x <- vector(mode = "double", length = 0)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(NA_real_, NA_real_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -547,9 +558,9 @@ testthat::test_that(
     x <- vector(mode = "double", length = 0)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(NA_real_, NA_real_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -558,9 +569,9 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, no Inf]
   x <- vector(mode = "double", length = 0)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(NA_real_, NA_real_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # DOUBLE with zero-len data, no NAs, with Inf
@@ -570,9 +581,9 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with In
   x <- c(Inf, -Inf, Inf, -Inf)
 
   result <- range_noinf(x)
-  expected <- c(-Inf, Inf)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
@@ -580,9 +591,9 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with In
   x <- c(Inf, -Inf, Inf, -Inf)
 
   result <- range_noinf(x, na.rm = TRUE)
-  expected <- c(-Inf, Inf)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
@@ -590,9 +601,9 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with In
   x <- c(Inf, -Inf, Inf, -Inf)
 
   result <- range_noinf(x, finite = TRUE)
-  expected <- c(NA_real_, NA_real_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf]
@@ -600,9 +611,9 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with In
   x <- c(Inf, -Inf, Inf, -Inf)
 
   result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-  expected <- c(NA_real_, NA_real_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # DOUBLE with zero-len data, with NAs, no Inf
@@ -612,9 +623,9 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, with NAs, no In
   x <- rep(NA_real_, 4)
 
   result <- range_noinf(x)
-  expected <- c(NA_real_, NA_real_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -623,9 +634,9 @@ testthat::test_that(
     x <- rep(NA_real_, 4)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(NA_real_, NA_real_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -635,9 +646,9 @@ testthat::test_that(
     x <- rep(NA_real_, 4)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(NA_real_, NA_real_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -647,9 +658,9 @@ testthat::test_that(
     x <- rep(NA_real_, 4)
 
     result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-    expected <- c(NA_real_, NA_real_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -659,9 +670,9 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, with NAs, with 
   x <- c(NA, Inf, -Inf, NA)
 
   result <- range_noinf(x)
-  expected <- c(NA_real_, NA_real_)
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
@@ -670,9 +681,9 @@ testthat::test_that(
     x <- c(NA, Inf, -Inf, NA)
 
     result <- range_noinf(x, na.rm = TRUE)
-    expected <- c(-Inf, Inf)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -682,9 +693,9 @@ testthat::test_that(
     x <- c(NA, Inf, -Inf, NA)
 
     result <- range_noinf(x, finite = TRUE)
-    expected <- c(NA_real_, NA_real_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -694,8 +705,8 @@ testthat::test_that(
     x <- c(NA, Inf, -Inf, NA)
 
     result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
-    expected <- c(NA_real_, NA_real_)
 
-    testthat::expect_identical(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
