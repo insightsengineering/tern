@@ -14,14 +14,8 @@ testthat::test_that("s_coxph_pairwise works with default arguments and no strati
     strat = NULL
   )
 
-  expected <- list(
-    pvalue = formatters::with_label(0.03340293, "p-value (log-rank)"),
-    hr = formatters::with_label(0.7173651, "Hazard Ratio"),
-    hr_ci = formatters::with_label(c(0.5275231, 0.9755262), "95% CI"),
-    n_tot = formatters::with_label(268L, "Total n"),
-    n_tot_events = formatters::with_label(166L, "Total events")
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.000001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_coxph_pairwise works with customized arguments and no stratification factors", {
@@ -41,14 +35,8 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and no str
     control = control_coxph(pval_method = "wald", ties = "breslow", conf_level = 0.9)
   )
 
-  expected <- list(
-    pvalue = formatters::with_label(0.03417907, "p-value (wald)"),
-    hr = formatters::with_label(0.7173651, "Hazard Ratio"),
-    hr_ci = formatters::with_label(c(0.5542485, 0.9284871), "90% CI"),
-    n_tot = formatters::with_label(268L, "Total n"),
-    n_tot_events = formatters::with_label(166L, "Total events")
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.000001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_coxph_pairwise works with default arguments and stratification factors", {
@@ -67,14 +55,8 @@ testthat::test_that("s_coxph_pairwise works with default arguments and stratific
     strat = c("SEX", "RACE")
   )
 
-  expected <- list(
-    pvalue = formatters::with_label(0.03398278, "p-value (log-rank)"),
-    hr = formatters::with_label(0.7057806, "Hazard Ratio"),
-    hr_ci = formatters::with_label(c(0.5106793, 0.9754189), "95% CI"),
-    n_tot = formatters::with_label(268L, "Total n"),
-    n_tot_events = formatters::with_label(166L, "Total events")
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.00001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_coxph_pairwise works with customized arguments and stratification factors", {
@@ -94,16 +76,9 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and strati
     control = control_coxph(pval_method = "wald", ties = "breslow", conf_level = 0.9)
   )
 
-  expected <- list(
-    pvalue = formatters::with_label(0.03479608, "p-value (wald)"),
-    hr = formatters::with_label(0.7057806, "Hazard Ratio"),
-    hr_ci = formatters::with_label(c(0.5379481, 0.9259745), "90% CI"),
-    n_tot = formatters::with_label(268L, "Total n"),
-    n_tot_events = formatters::with_label(166L, "Total events")
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.00001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
-
 
 testthat::test_that("coxph_pairwise works with default arguments and no stratification factors", {
   adtte_f <- tern_ex_adtte %>%
@@ -123,17 +98,8 @@ testthat::test_that("coxph_pairwise works with default arguments and no stratifi
     ) %>%
     build_table(df = adtte_f)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Unstratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B", "",
-      "0.0334", "1.39", "(1.03, 1.90)", "ARM C", "", "<0.0001",
-      "2.75", "(2.05, 3.70)"
-    ),
-    .Dim = 5:4
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("coxph_pairwise works with customized arguments and no stratification factors", {
@@ -155,19 +121,9 @@ testthat::test_that("coxph_pairwise works with customized arguments and no strat
     ) %>%
     build_table(df = adtte_f)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Unstratified Analysis", "p-value (likelihood)",
-      "Hazard Ratio", "99% CI", "ARM A", "", "", "", "", "ARM B", "",
-      "0.0341", "1.39", "(0.93, 2.09)", "ARM C", "", "<0.0001",
-      "2.75", "(1.87, 4.06)"
-    ),
-    .Dim = 5:4
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
-
 
 testthat::test_that("coxph_pairwise works with default arguments and stratification factors", {
   adtte_f <- tern_ex_adtte %>%
@@ -187,18 +143,8 @@ testthat::test_that("coxph_pairwise works with default arguments and stratificat
     ) %>%
     build_table(df = adtte_f)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Stratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B", "",
-      "0.0478", "1.36", "(1.00, 1.86)", "ARM C", "", "<0.0001",
-      "2.73", "(2.02, 3.69)"
-    ),
-    .Dim = 5:4
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("coxph_pairwise works with customized arguments and stratification factors", {
@@ -222,19 +168,9 @@ testthat::test_that("coxph_pairwise works with customized arguments and stratifi
     ) %>%
     build_table(df = adtte_f)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Stratified Analysis", "Hazard Ratio", "99% CI",
-      "ARM A", "", "", "", "ARM B", "", "1.417", "(0.926, 2.168)",
-      "ARM C", "", "2.775", "(1.827, 4.216)"
-    ),
-    .Dim = c(4L, 4L)
-  )
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
-
 
 testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by survival::survdiff()", {
   x1 <- runif(1, 200, 400) %>% floor()
@@ -271,5 +207,5 @@ testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by surv
   )
   log_rank_pvalue <- 1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
 
-  testthat::expect_equal(as.numeric(result$pvalue), log_rank_pvalue, tolerance = 0.000001)
+  testthat::expect_equal(as.numeric(result$pvalue), log_rank_pvalue, tolerance = 1e-6)
 })

@@ -11,36 +11,9 @@ testthat::test_that("s_change_from_baseline handles empty data (complete missing
     variables = list(value = "aval", baseline_flag = "ablfl"),
     na.rm = TRUE
   )
-  expected <- list(
-    n = c(n = 0L),
-    sum = c(sum = NA_real_),
-    mean = c(mean = NA_real_),
-    sd = c(sd = NA_real_),
-    se = c(se = NA_real_),
-    mean_sd = c(mean = NA_real_, sd = NA_real_),
-    mean_se = c(mean = NA_real_, se = NA_real_),
-    mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
-    mean_sei = formatters::with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
-    mean_sdi = formatters::with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
-    mean_pval = formatters::with_label(c(p_value = NA_real_), "Mean p-value (H0: mean = 0)"),
-    median = c(median = NA_real_),
-    mad = c(mad = NA_real_),
-    median_ci = formatters::with_label(
-      `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
-      "Median 95% CI"
-    ),
-    quantiles = formatters::with_label(c(quantile_0.25 = NA_real_, quantile_0.75 = NA_real_), "25% and 75%-ile"),
-    iqr = c(iqr = NA_real_),
-    range = c(min = NA_real_, max = NA_real_),
-    min = c(min = NA_real_),
-    max = c(max = NA_real_),
-    cv = c(cv = NA_real_),
-    geom_mean = c(geom_mean = NaN),
-    geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
-    geom_cv = c(geom_cv = NA_real_)
-  )
 
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_change_from_baseline handles NA in baseline values", {
@@ -56,36 +29,9 @@ testthat::test_that("s_change_from_baseline handles NA in baseline values", {
     variables = list(value = "aval", baseline_flag = "ablfl"),
     na.rm = TRUE
   )
-  expected <- list(
-    n = c(n = 3L),
-    sum = c(sum = 9),
-    mean = c(mean = 3),
-    sd = c(sd = 3),
-    se = c(se = 1.732051),
-    mean_sd = c(mean = 3, sd = 3),
-    mean_se = c(mean = 3, se = 1.732051),
-    mean_ci = formatters::with_label(c(mean_ci_lwr = -4.452413, mean_ci_upr = 10.452413), "Mean 95% CI"),
-    mean_sei = formatters::with_label(c(mean_sei_lwr = 1.267949, mean_sei_upr = 4.732051), "Mean -/+ 1xSE"),
-    mean_sdi = formatters::with_label(c(mean_sdi_lwr = 0, mean_sdi_upr = 6), "Mean -/+ 1xSD"),
-    mean_pval = formatters::with_label(c(p_value = 0.2254033), "Mean p-value (H0: mean = 0)"),
-    median = c(median = 3),
-    mad = c(mad = 0),
-    median_ci = formatters::with_label(
-      `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
-      "Median 95% CI"
-    ),
-    quantiles = formatters::with_label(c(quantile_0.25 = 0, quantile_0.75 = 6), "25% and 75%-ile"),
-    iqr = c(iqr = 6),
-    range = c(min = 0, max = 6),
-    min = c(min = 0),
-    max = c(max = 6),
-    cv = c(cv = 100),
-    geom_mean = c(geom_mean = NA_real_),
-    geom_mean_ci = formatters::with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Geometric Mean 95% CI"),
-    geom_cv = c(geom_cv = NA_real_)
-  )
 
-  testthat::expect_equal(result, expected, tolerance = 1e-6)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_change_from_baseline handles baseline substitution", {
@@ -102,74 +48,9 @@ testthat::test_that("s_change_from_baseline handles baseline substitution", {
       .var = "chg",
       variables = list(value = "aval", baseline_flag = "ablfl")
     )
-  expected <- list(
-    # Here we take the summary of the 2 change values.
-    `FALSE` = list(
-      n = c(n = 2L),
-      sum = c(sum = 3),
-      mean = c(mean = 1.5),
-      sd = c(sd = 0.7071068),
-      se = c(se = 0.5),
-      mean_sd = c(mean = 1.5, sd = 0.7071068),
-      mean_se = c(mean = 1.5, se = 0.5),
-      mean_ci = formatters::with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
-      mean_sei = formatters::with_label(c(mean_sei_lwr = 1, mean_sei_upr = 2), "Mean -/+ 1xSE"),
-      mean_sdi = formatters::with_label(c(mean_sdi_lwr = 0.7928932, mean_sdi_upr = 2.2071068), "Mean -/+ 1xSD"),
-      mean_pval = formatters::with_label(c(p_value = 0.2048328), "Mean p-value (H0: mean = 0)"),
-      median = c(median = 1.5),
-      mad = c(mad = 0),
-      median_ci = formatters::with_label(
-        `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
-        "Median 95% CI"
-      ),
-      quantiles = formatters::with_label(c(quantile_0.25 = 1, quantile_0.75 = 2), "25% and 75%-ile"),
-      iqr = c(iqr = 1),
-      range = c(min = 1, max = 2),
-      min = c(min = 1),
-      max = c(max = 2),
-      cv = c(cv = 47.14045),
-      geom_mean = c(geom_mean = 1.414214),
-      geom_mean_ci = formatters::with_label(
-        c(mean_ci_lwr = 0.01729978, mean_ci_upr = 115.60839614),
-        "Geometric Mean 95% CI"
-      ),
-      geom_cv = c(geom_cv = 52.10922)
-    ),
-    # Here we take the summary of the 2 baseline values.
-    `TRUE` = list(
-      n = c(n = 2L),
-      sum = c(sum = 5),
-      mean = c(mean = 2.5),
-      sd = c(sd = 2.12132),
-      se = c(se = 1.5),
-      mean_sd = c(mean = 2.5, sd = 2.12132),
-      mean_se = c(mean = 2.5, se = 1.5),
-      mean_ci = formatters::with_label(c(mean_ci_lwr = -16.55931, mean_ci_upr = 21.55931), "Mean 95% CI"),
-      mean_sei = formatters::with_label(c(mean_sei_lwr = 1, mean_sei_upr = 4), "Mean -/+ 1xSE"),
-      mean_sdi = formatters::with_label(c(mean_sdi_lwr = 0.3786797, mean_sdi_upr = 4.6213203), "Mean -/+ 1xSD"),
-      mean_pval = formatters::with_label(c(p_value = 0.3440417), "Mean p-value (H0: mean = 0)"),
-      median = c(median = 2.5),
-      mad = c(mad = 0),
-      median_ci = formatters::with_label(
-        `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
-        "Median 95% CI"
-      ),
-      quantiles = formatters::with_label(c(quantile_0.25 = 1, quantile_0.75 = 4), "25% and 75%-ile"),
-      iqr = c(iqr = 3),
-      range = c(min = 1, max = 4),
-      min = c(min = 1),
-      max = c(max = 4),
-      cv = c(cv = 84.85281),
-      geom_mean = c(geom_mean = 2),
-      geom_mean_ci = formatters::with_label(
-        c(mean_ci_lwr = 2.992824e-04, mean_ci_upr = 1.336530e+04),
-        "Geometric Mean 95% CI"
-      ),
-      geom_cv = c(geom_cv = 127.0458)
-    )
-  )
 
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("summarize_change works as expected", {
@@ -192,17 +73,7 @@ testthat::test_that("summarize_change works as expected", {
     split_rows_by("AVISIT") %>%
     summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
     build_table(dta_test)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "V1", "n", "Mean (SD)", "Median", "Min - Max",
-      "V2", "n", "Mean (SD)", "Median", "Min - Max", "V3", "n", "Mean (SD)",
-      "Median", "Min - Max", "all obs", "", "3", "6.00 (3.00)", "6.00", "3.00 - 9.00",
-      "", "3", "-1.00 (0.00)", "-1.00", "-1.00 - -1.00", "", "3", "-2.00 (0.00)", "-2.00",
-      "-2.00 - -2.00"
-    ),
-    .Dim = c(16L, 2L)
-  )
 
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
