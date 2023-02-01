@@ -139,7 +139,7 @@ generate_adsl <- function(N = 200) { # nolint
   tern_ex_adsl <- adsl %>%
     dplyr::mutate(
       SITEID = paste0(.data$COUNTRY, "-", .data$SITEID),
-      REGION1 = dplyr::case_when(
+      REGION1 = factor(dplyr::case_when(
         COUNTRY %in% c("NGA") ~ "Africa",
         COUNTRY %in% c("CHN", "JPN", "PAK") ~ "Asia",
         COUNTRY %in% c("RUS") ~ "Eurasia",
@@ -147,7 +147,7 @@ generate_adsl <- function(N = 200) { # nolint
         COUNTRY %in% c("CAN", "USA") ~ "North America",
         COUNTRY %in% c("BRA") ~ "South America",
         TRUE ~ as.character(NA)
-      ),
+      )),
       SAFFL = factor("Y")
     ) %>%
     dplyr::mutate(USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-"))
