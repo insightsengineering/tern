@@ -708,7 +708,10 @@ generate_adrs <- function(adsl = tern_ex_adsl) {
         )
     }) %>%
     Reduce(rbind, .) %>%
-    dplyr::mutate(AVALC = factor(.data$AVALC, levels = names(param_codes)))
+    dplyr::mutate(
+      AVALC = factor(.data$AVALC, levels = names(param_codes)),
+      DTHFL = factor(sample(c("Y", "N"), nrow(.), replace = TRUE, prob = c(1, 0.8)))
+    )
 
   adrs <- var_relabel(
     adrs,
