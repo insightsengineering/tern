@@ -276,7 +276,7 @@ count_patients_with_flags <- function(lyt,
                                       flag_variables,
                                       var_labels = var,
                                       show_labels = "hidden",
-                                      risk_diff_col = FALSE,
+                                      risk_diff = NULL,
                                       ...,
                                       table_names = paste0("tbl_flags_", var),
                                       .stats = "count_fraction",
@@ -291,19 +291,19 @@ count_patients_with_flags <- function(lyt,
     .ungroup_stats = .stats
   )
 
-  afun_rd <- function(df, .var, .N_col, .N_row, .df_row, .spl_context) {
-    browser()
-    N_col_trt <- nrow(unique(df[df$ARM == col_trt, .var]))
-    N_col_placebo <- nrow(unique(df[df$ARM == col_placebo, .var]))
-    if (.spl_context$cur_col_n == sum(.spl_context[[col_trt]][[1]], .spl_context[[col_placebo]][[1]])) {
-      s_trt <- s_count_patients_with_flags(df = df[df$ARM == col_trt, ], .var = .var,
-                                           flag_variables = flag_variables, .N_col = N_col_trt, denom = "N_col")
-      s_placebo <- s_count_patients_with_flags(df = df[df$ARM == col_placebo, ], .var = .var,
-                                               flag_variables = flag_variables, .N_col = N_col_placebo, denom = "N_col")
-      risk_diff(n_frac_trt = c(n = list(s_trt[c("n")]$n),
-                               frac = list(lapply(s_trt[c("count_fraction")]$count_fraction, `[`, 2))),
-                n_frac_placebo = c(n = list(s_placebo[c("n")]$n),
-                                   frac = list(lapply(s_placebo[c("count_fraction")]$count_fraction, `[`, 2))),
+  afun_risk_diff <- function(df, .var, .N_col, .N_row, .df_row, .spl_context) {
+    if (.spl_context$cur_col_n == sum(.spl_context[[risk_diff$arm_x]][[1]], .spl_context[[risk_diff$arm_y]][[1]])) {
+      # browser()
+      N_col_x <- nrow(unique(df[df$ARM == risk_diff$arm_x, .var]))
+      N_col_y <- nrow(unique(df[df$ARM == risk_diff$arm_y, .var]))
+      s_x <- s_count_patients_with_flags(df = df[df$ARM == risk_diff$arm_x, ], .var = .var,
+                                         flag_variables = flag_variables, .N_col = N_col_x, denom = "N_col")
+      s_y <- s_count_patients_with_flags(df = df[df$ARM == risk_diff$arm_y, ], .var = .var,
+                                         flag_variables = flag_variables, .N_col = N_col_y, denom = "N_col")
+      risk_diff(n_frac_x = c(n = list(s_x[c("n")]$n),
+                             frac = list(lapply(s_x[c("count_fraction")]$count_fraction, `[`, 2))),
+                n_frac_y = c(n = list(s_y[c("n")]$n),
+                             frac = list(lapply(s_y[c("count_fraction")]$count_fraction, `[`, 2))),
                 flag_variables = flag_variables, .indent_mods = .indent_mods)
     } else {
       afun(df = df, .var = .var, flag_variables = flag_variables, .N_col = .N_col, .N_row = .N_row, denom = "N_col")
@@ -315,7 +315,7 @@ count_patients_with_flags <- function(lyt,
     vars = var,
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = ifelse(risk_diff_col, afun_rd, afun),
+    afun = ifelse(is.null(risk_diff), afun, afun_risk_diff),
     table_names = table_names,
     extra_args = list(...)
   )
