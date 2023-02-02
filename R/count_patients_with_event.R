@@ -291,7 +291,7 @@ count_patients_with_flags <- function(lyt,
     .ungroup_stats = .stats
   )
 
-  afun_risk_diff <- function(df, .var, .N_col, .N_row, .df_row, .spl_context) {
+  afun_risk_diff <- function(df, .var, .N_col, .N_row, .spl_context) {
     if (.spl_context$cur_col_n == sum(.spl_context[[risk_diff$arm_x]][[1]], .spl_context[[risk_diff$arm_y]][[1]])) {
       # browser()
       N_col_x <- nrow(unique(df[df$ARM == risk_diff$arm_x, .var]))
