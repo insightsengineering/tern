@@ -30,14 +30,9 @@ testthat::test_that("make_afun works with healthy input statistics function taki
     ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
   )
   result <- afun(df)
-  expected <- in_rows(
-    .list = list(
-      nrows = rcell(4L, format = "xx.", label = "nrows"),
-      ncols = rcell(3L, format = "xx.xx", label = "ncols")
-    ),
-    .indent_mods = c(0, 2)
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Now call a second time to overwrite formatting.
   afun2 <- make_afun(
@@ -48,13 +43,9 @@ testthat::test_that("make_afun works with healthy input statistics function taki
     .indent_mods = c(ncols = 1)
   )
   result <- afun2(df)
-  expected <- in_rows(
-    .list = list(
-      ncols = rcell(3L, "xx", label = "number columns")
-    ),
-    .indent_mods = 1
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("make_afun processes additional rtables arguments correctly", {
@@ -92,17 +83,9 @@ testthat::test_that("make_afun processes additional rtables arguments correctly"
     ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
   )
   result <- afun(df, .in_ref_col = FALSE, .N_col = 3)
-  expected <- in_rows(
-    .list = list(
-      nrows = rcell(4L, "xx.", label = "nrows"),
-      ncols = rcell(3L, "xx.xx", label = "ncols"),
-      incol = rcell(FALSE, "xx", label = "incol"),
-      nincol = rcell(3, "xx", label = "nincol")
-    ),
-    .indent_mods = c(0, 2, 0, 0),
-    .aligns = "center"
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("make_afun works with healthy input function taking `x`", {
@@ -134,15 +117,9 @@ testthat::test_that("make_afun works with healthy input function taking `x`", {
   # Make sure function works with defaults.
   x <- c(1, 0, -1, 2, 5, 3, 2.5, 7.1)
   result <- afun(x)
-  expected <- in_rows(
-    .list = list(
-      n = rcell(8L, "xx.", label = "n"),
-      mean = rcell(2.45, "xx.xx", label = "mean"),
-      median = rcell(2.25, "xx", label = "median")
-    ),
-    .indent_mods = c(0, 2, 1)
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # And with custom overwrites.
   afun2 <- make_afun(
@@ -153,14 +130,9 @@ testthat::test_that("make_afun works with healthy input function taking `x`", {
     .labels = c(n = "Number of numbers")
   )
   result <- afun2(x)
-  expected <- in_rows(
-    .list = list(
-      n = rcell(8L, "xx.", label = "Number of numbers"),
-      median = rcell(2.25, "xx.xx", label = "median")
-    ),
-    .indent_mods = c(0, 3)
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("make_afun produces empty cells and keeps labels when applied to empty character", {
@@ -193,31 +165,15 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
   # Make sure function works when not `in_ref`.
   x <- c(1, 0, -1, 2, 5, 3, 2.5, 7.1)
   result <- afun(x)
-  expected <- in_rows(
-    .list = list(
-      n = rcell(formatters::with_label(8L, "Number of patients"), "xx.", label = "Number of patients"),
-      mean = rcell(formatters::with_label(2.45, "Mean"), "xx.xx", label = "Mean"),
-      median = rcell(formatters::with_label(2.25, "Median"), "xx", label = "Median")
-    ),
-    .indent_mods = c(0, 2, 1)
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # And now with `in_ref`.
   result <- afun(x, in_ref = TRUE)
-  expected <- in_rows(
-    .list = list(
-      n = rcell(
-        formatters::with_label(character(), "Number of patients"),
-        "xx.",
-        label = "Number of patients"
-      ),
-      mean = rcell(formatters::with_label(character(), "Mean"), "xx.xx", label = "Mean"),
-      median = rcell(formatters::with_label(character(), "Median"), "xx", label = "Median")
-    ),
-    .indent_mods = c(0, 2, 1)
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Use now in table.
   sfun <- function(x, .in_ref_col) {
@@ -230,15 +186,9 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
     split_cols_by("Species", ref_group = "setosa") %>%
     analyze("Sepal.Length", afun = afun) %>%
     build_table(iris)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Number of patients", "setosa", "", "versicolor",
-      "50", "virginica", "50"
-    ),
-    .Dim = c(2L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("make_afun by default removes results from `.in_ref_col`", {
@@ -259,15 +209,9 @@ testthat::test_that("make_afun by default removes results from `.in_ref_col`", {
     split_cols_by("Species", ref_group = "setosa") %>%
     analyze("Sepal.Length", afun = afun) %>%
     build_table(iris)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Label for Range", "setosa", "", "versicolor",
-      "4.9, 7", "virginica", "4.9, 7.9"
-    ),
-    .Dim = c(2L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("make_afun works with nested lists", {
@@ -289,16 +233,9 @@ testthat::test_that("make_afun works with nested lists", {
     .ungroup_stats = "letters"
   )
   result <- a_grp(iris, 40)
-  expected <- in_rows(
-    .list = list(
-      nrow_df = rcell(150L, format = "xx.", label = "row count"),
-      .N_col = rcell(40, format = "xx.", label = "count in column"),
-      a = rcell(1, label = "a"),
-      b = rcell(3, label = "b")
-    ),
-    .indent_mods = c(0, 0, 0, 0)
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("make_afun can subset on non-nested results when unnesting took place", {
@@ -324,11 +261,7 @@ testthat::test_that("make_afun can subset on non-nested results when unnesting t
     .formats = c(nrow_df = "xx.xx")
   )
   result <- afun2(iris, 40)
-  expected <- in_rows(
-    .list = list(
-      nrow_df = rcell(150L, format = "xx.xx", label = "nrow_df")
-    ),
-    .indent_mods = 0
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

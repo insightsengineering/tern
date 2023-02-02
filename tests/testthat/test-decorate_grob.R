@@ -46,8 +46,9 @@ testthat::test_that("split_string works with default settings", {
     "The species are Iris setosa, versicolor, and virginica.",
     width = grid::unit(4, "cm")
   )
-  expected <- "The species are Iris\nsetosa, versicolor,\nand virginica."
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("decorate_grob_factory returns page warning correctly", {

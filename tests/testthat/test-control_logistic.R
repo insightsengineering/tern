@@ -3,11 +3,9 @@ testthat::test_that("control_logistic works with customized parameters", {
     conf_level = 0.9,
     response_definition = "response == 'bla'"
   )
-  expected <- list(
-    response_definition = "response == 'bla'",
-    conf_level = 0.9
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("control_logistic fails wrong inputs", {

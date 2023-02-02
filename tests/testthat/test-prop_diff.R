@@ -5,25 +5,17 @@ testthat::test_that("`prop_diff_ha` (proportion difference by Anderson-Hauck)", 
 
   result <- prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
   # according to SAS.
-  expected <- list(
-    diff = 0.25,
-    diff_ci = c(-0.9195, 1.0000)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
-
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
   result <- prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
   # according to SAS.
-  expected <- list(
-    diff = 0,
-    diff_ci = c(-0.8451, 0.8451)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
-
 
 testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
@@ -34,23 +26,16 @@ testthat::test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
     prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
   )
   # according to SAS.
-  expected <- list(
-    diff = 0.25,
-    diff_ci = c(-0.2967, 0.6750)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
   result <- prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.6)
-
   # according to SAS.
-  expected <- list(
-    diff = 0,
-    diff_ci = c(-0.3616, 0.3616)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: with correction)", {
@@ -60,22 +45,16 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
 
   result <- prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = TRUE)
 
-  expected <- list(
-    diff = 0.25,
-    diff_ci = c(-0.8069, 1.0000)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
   result <- prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.6, correct = TRUE)
 
-  expected <- list(
-    diff = 0,
-    diff_ci = c(-0.9208, 0.9208)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Edge case: All respond in all groups.
   rsp <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
@@ -84,11 +63,9 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
   result <- suppressWarnings(
     prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = TRUE)
   )
-  expected <- list(
-    diff = 0,
-    diff_ci = c(-0.375, 0.375)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: without correction)", {
@@ -99,22 +76,17 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
   result <- suppressWarnings(
     prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = FALSE)
   )
-  expected <- list(
-    diff = 0.25,
-    diff_ci = c(-0.4319, 0.9319)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Edge case: Same proportion of response in A and B.
   rsp <- c(TRUE, FALSE, TRUE, FALSE)
   grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
   result <- prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.6, correct = FALSE)
 
-  expected <- list(
-    diff = 0,
-    diff_ci = c(-0.4208, 0.4208)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Edge case: All respond in all groups.
   rsp <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
@@ -123,11 +95,9 @@ testthat::test_that("`prop_diff_wald` (proportion difference by Wald's test: wit
   result <- suppressWarnings(
     prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.9, correct = FALSE)
   )
-  expected <- list(
-    diff = 0,
-    diff_ci = c(0, 0)
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
@@ -146,21 +116,8 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
     conf_level = 0.90
   )
 
-  expected <- list(
-    prop = c(Placebo = 0.5331117, Treatment = 0.3954251),
-    prop_ci = list(
-      Placebo = c(0.4306536, 0.6355698),
-      Treatment = c(0.2890735, 0.5017768)
-    ),
-    diff = -0.1376866,
-    diff_ci = c(-0.285363076, 0.009989872),
-    weights = c(0.1148388, 0.2131696, 0.1148388, 0.2131696, 0.1767914, 0.1671918),
-    n1 = c(4, 11, 8, 11, 13, 11),
-    n2 = c(8, 9, 4, 9, 6, 6)
-  )
-
-  names(expected$weights) <- names(expected$n1) <- names(expected$n2) <- levels(interaction(strata_data))
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
   testthat::expect_warning(prop_diff_cmh(
     rsp = rsp[1:4], grp = grp[1:4], strata = interaction(strata_data[1:4, ]),
     conf_level = 0.90
@@ -189,21 +146,8 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
   testthat::expect_false(is.na(result$diff))
   testthat::expect_false(any(is.na(result$diff_ci)))
 
-  expected <- list(
-    prop = c(Placebo = 0.569842, Treatment = 0.398075),
-    prop_ci = list(
-      Placebo = c(0.4637119, 0.6759721),
-      Treatment = c(0.2836122, 0.5125378)
-    ),
-    diff = -0.171767,
-    diff_ci = c(-0.32786094, -0.01567301),
-    weights = c(0.2408257, 0.1297378, 0.2408257, 0.1997279, 0.1888829),
-    n1 = c(11, 8, 11, 13, 11),
-    n2 = c(9, 4, 9, 6, 6)
-  )
-  names(expected$weights) <- names(expected$n1) <- names(expected$n2) <- levels(interaction(strata_data))[-1]
-
-  testthat::expect_equal(result, expected, tolerance = 0.000001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcombe) with cmh weights", {
@@ -277,9 +221,8 @@ testthat::test_that("prop_diff_strat_nc output matches equivalent SAS function o
   nc <- prop_diff_strat_nc(rsp = rsp, grp = grp, strata = strata, conf_level = 0.95)
   result <- c(value = nc$diff, nc$diff_ci)
 
-  expected <- c(value = 0.2539, lower = 0.0347, upper = 0.4454)
-
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
@@ -298,15 +241,9 @@ testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
     )
 
   result <- build_table(l, df = dta)
-  expected <- structure(
-    c(
-      "", "Difference in Response rate (%)", "90% CI (Anderson-Hauck)",
-      "B", "", "", "A", "25.0", "(-92.0, 100.0)"
-    ),
-    .Dim = c(3L, 3L)
-  )
 
-  testthat::expect_identical(to_string_matrix(result), expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtables`", {
@@ -330,15 +267,9 @@ testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtab
     )
 
   result <- build_table(l, df = dta)
-  result <- to_string_matrix(result)
-  expected <- structure(
-    c(
-      "", "Difference in Response rate (%)", "90% CI (CMH, without correction)",
-      "B", "", "", "A", "-4.2133", "(-20.0215, 11.5950)"
-    ),
-    .Dim = c(3L, 3L)
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`estimate_proportion_diff` and strat_newcombe is compatible with `rtables`", {
@@ -397,11 +328,9 @@ testthat::test_that("s_proportion_diff works with no strata", {
     conf_level = 0.90,
     method = "ha"
   )
-  expected <- list(
-    diff = formatters::with_label(14.69622, "Difference in Response rate (%)"),
-    diff_ci = formatters::with_label(c(-3.118966, 32.511412), "90% CI (Anderson-Hauck)")
-  )
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_proportion_diff works with strata", {
@@ -423,9 +352,7 @@ testthat::test_that("s_proportion_diff works with strata", {
     conf_level = 0.90,
     method = "cmh"
   )
-  expected <- list(
-    diff = formatters::with_label(13.76866, "Difference in Response rate (%)"),
-    diff_ci = formatters::with_label(c(-0.9989872, 28.5363076), "90% CI (CMH, without correction)")
-  )
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

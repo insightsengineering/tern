@@ -3,22 +3,25 @@ testthat::test_that("s_count_nonmissing works with numeric input", {
   x <- c(sample(1:10, 10), NA)
 
   result <- s_count_nonmissing(x = x)
-  expected <- list(n = 10)
-  testthat::expect_equal(result, expected, tolerance = .00001)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_nonmissing also works with character input", {
   x <- c("a", "b", NA, "c", "d")
 
   result <- s_count_nonmissing(x = x)
-  expected <- list(n = 4)
-  testthat::expect_equal(result, expected, tolerance = .00001)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("d_count_missed_doses works as expected", {
   result <- d_count_missed_doses(c(1, 5))
-  expected <- c("At least 1 missed dose", "At least 5 missed doses")
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_missed_doses works as expected", {
@@ -27,14 +30,9 @@ testthat::test_that("s_count_missed_doses works as expected", {
     thresholds = c(2, 5),
     .N_col = 10
   )
-  expected <- list(
-    n = 8L,
-    count_fraction = list(
-      "2" = formatters::with_label(c(count = 4, fraction = 0.4), label = "At least 2 missed doses"),
-      "5" = formatters::with_label(c(count = 0, fraction = 0), label = "At least 5 missed doses")
-    )
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_missed_doses works as expected", {
@@ -52,14 +50,7 @@ testthat::test_that("count_missed_doses works as expected", {
       var_labels = "Missed Doses"
     ) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Missed Doses", "n", "At least 3 missed doses", "At least 7 missed doses",
-      "A", "", "5", "3 (60%)", "2 (40%)",
-      "B", "", "5", "5 (83.3%)", "2 (33.3%)"
-    ),
-    .Dim = c(5L, 3L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

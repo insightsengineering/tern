@@ -1,4 +1,4 @@
-adrs <- adrs_raw
+adrs <- tern_ex_adrs
 n_records <- 20
 adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
 adrs <- adrs %>%

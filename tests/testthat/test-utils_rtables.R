@@ -9,144 +9,47 @@ testthat::test_that("to_string_matrix works correctly", {
 
   # Initial intended use (wrapper of matrix_form(x)$strings)
   result <- to_string_matrix(tbl, with_spaces = FALSE, print_txt_to_copy = FALSE)
-  expected <- matrix(
-    c(
-      "", "A: Drug X", "B: Placebo", "C: Combination",
-      "ASIAN", "", "", "",
-      "A", "", "", "",
-      "mean", "32.19", "33.90", "36.81",
-      "B", "", "", "",
-      "mean", "34.12", "31.62", "34.73",
-      "C", "", "", "",
-      "mean", "36.21", "33.00", "32.39",
-      "BLACK OR AFRICAN AMERICAN", "", "", "",
-      "A", "", "", "",
-      "mean", "31.50", "28.57", "33.62",
-      "B", "", "", "",
-      "mean", "35.60", "30.83", "33.67",
-      "C", "", "", "",
-      "mean", "35.50", "34.18", "35.00",
-      "WHITE", "", "", "",
-      "A", "", "", "",
-      "mean", "37.67", "31.33", "33.17",
-      "B", "", "", "",
-      "mean", "39.86", "39.00", "34.75",
-      "C", "", "", "",
-      "mean", "39.75", "44.67", "36.75"
-    ),
-    byrow = TRUE,
-    nrow = nrow(tbl) + 1,
-    ncol = ncol(tbl) + 1
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Testing with spaces (respecting indentation and alignments)
   result <- to_string_matrix(tbl, with_spaces = TRUE, print_txt_to_copy = FALSE)
-  expected <- c(
-    "                            A: Drug X   B: Placebo   C: Combination",
-    "———————————————————————————————————————————————————————————————————",
-    "ASIAN                                                              ",
-    "  A                                                                ",
-    "    mean                      32.19       33.90          36.81     ",
-    "  B                                                                ",
-    "    mean                      34.12       31.62          34.73     ",
-    "  C                                                                ",
-    "    mean                      36.21       33.00          32.39     ",
-    "BLACK OR AFRICAN AMERICAN                                          ",
-    "  A                                                                ",
-    "    mean                      31.50       28.57          33.62     ",
-    "  B                                                                ",
-    "    mean                      35.60       30.83          33.67     ",
-    "  C                                                                ",
-    "    mean                      35.50       34.18          35.00     ",
-    "WHITE                                                              ",
-    "  A                                                                ",
-    "    mean                      37.67       31.33          33.17     ",
-    "  B                                                                ",
-    "    mean                      39.86       39.00          34.75     ",
-    "  C                                                                ",
-    "    mean                      39.75       44.67          36.75     "
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Testing print_txt_to_copy with original table
   print_result <- capture.output(
     nowhere <- to_string_matrix(tbl, with_spaces = FALSE, print_txt_to_copy = TRUE)
   )
-  print_expected <- c(
-    "c(",
-    '  "", "A: Drug X", "B: Placebo", "C: Combination",',
-    '  "ASIAN", "", "", "",',
-    '  "A", "", "", "",',
-    '  "mean", "32.19", "33.90", "36.81",',
-    '  "B", "", "", "",',
-    '  "mean", "34.12", "31.62", "34.73",',
-    '  "C", "", "", "",',
-    '  "mean", "36.21", "33.00", "32.39",',
-    '  "BLACK OR AFRICAN AMERICAN", "", "", "",',
-    '  "A", "", "", "",',
-    '  "mean", "31.50", "28.57", "33.62",',
-    '  "B", "", "", "",',
-    '  "mean", "35.60", "30.83", "33.67",',
-    '  "C", "", "", "",',
-    '  "mean", "35.50", "34.18", "35.00",',
-    '  "WHITE", "", "", "",',
-    '  "A", "", "", "",',
-    '  "mean", "37.67", "31.33", "33.17",',
-    '  "B", "", "", "",',
-    '  "mean", "39.86", "39.00", "34.75",',
-    '  "C", "", "", "",',
-    '  "mean", "39.75", "44.67", "36.75"',
-    ")"
-  )
-  testthat::expect_identical(print_result, print_expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(print_result)
 
   # Testing print_txt_to_copy with spaces
   print_result <- capture.output(
     nowhere <- to_string_matrix(tbl, with_spaces = TRUE, print_txt_to_copy = TRUE)
   )
-  print_expected <- c(
-    "c(",
-    '  "                            A: Drug X   B: Placebo   C: Combination",',
-    '  "———————————————————————————————————————————————————————————————————",',
-    '  "ASIAN                                                              ",',
-    '  "  A                                                                ",',
-    '  "    mean                      32.19       33.90          36.81     ",',
-    '  "  B                                                                ",',
-    '  "    mean                      34.12       31.62          34.73     ",',
-    '  "  C                                                                ",',
-    '  "    mean                      36.21       33.00          32.39     ",',
-    '  "BLACK OR AFRICAN AMERICAN                                          ",',
-    '  "  A                                                                ",',
-    '  "    mean                      31.50       28.57          33.62     ",',
-    '  "  B                                                                ",',
-    '  "    mean                      35.60       30.83          33.67     ",',
-    '  "  C                                                                ",',
-    '  "    mean                      35.50       34.18          35.00     ",',
-    '  "WHITE                                                              ",',
-    '  "  A                                                                ",',
-    '  "    mean                      37.67       31.33          33.17     ",',
-    '  "  B                                                                ",',
-    '  "    mean                      39.86       39.00          34.75     ",',
-    '  "  C                                                                ",',
-    '  "    mean                      39.75       44.67          36.75     "',
-    ")"
-  )
-  testthat::expect_identical(print_result, print_expected)
+
+  res <- testthat::expect_silent(print_result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("unlist_and_blank_na works as expected if not all missing", {
   x <- list(1, 3, 5, NA)
   result <- unlist_and_blank_na(x)
-  expected <- c(1, 3, 5, NA)
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("unlist_and_blank_na works as expected if all missing", {
   x <- c(NA, NA)
   result <- unlist_and_blank_na(x)
-  expected <- character()
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("cfun_by_flag works as expected", {
@@ -158,39 +61,30 @@ testthat::test_that("cfun_by_flag works as expected", {
     is_result = c(TRUE, FALSE, FALSE, FALSE, FALSE)
   )
   result <- result_fun(df = df, labelstr = "bla")
-  expected <- CellValue(
-    1,
-    format = "xx.xxxx",
-    colspan = 1L,
-    indent_mod = 0L,
-    label = "bla"
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("labels_or_names works correctly", {
-  testthat::expect_identical(
-    labels_or_names(list(a = 5, b = formatters::with_label(3, "bla"))),
-    c(a = "a", b = "bla")
-  )
-  testthat::expect_identical(
-    labels_or_names(list(5, b = 3)),
-    c("", b = "b")
-  )
-  testthat::expect_identical(
-    labels_or_names(list(formatters::with_label(1, "bli"), b = 3)),
-    c("bli", b = "b")
-  )
-  testthat::expect_identical(
-    labels_or_names(list(1, 2)),
-    c("", "")
-  )
+  res <- testthat::expect_silent(labels_or_names(list(a = 5, b = formatters::with_label(3, "bla"))))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(labels_or_names(list(5, b = 3)))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(labels_or_names(list(formatters::with_label(1, "bli"), b = 3)))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(labels_or_names(list(1, 2)))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("c_label_n works as expected", {
   result <- c_label_n(data.frame(a = c(1, 2)), "female", .N_row = 4)
-  expected <- CellValue(val = NULL, label = "female (N=4)")
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("add_rowcounts works with one row split", {
@@ -198,12 +92,9 @@ testthat::test_that("add_rowcounts works with one row split", {
     split_rows_by("SEX", split_fun = drop_split_levels) %>%
     add_rowcounts() %>%
     build_table(DM)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c("", "F (N=187)", "M (N=169)", "all obs", "", ""),
-    .Dim = 3:2
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("add_rowcounts works with multiple column and row splits", {
@@ -216,57 +107,9 @@ testthat::test_that("add_rowcounts works with multiple column and row splits", {
     add_rowcounts() %>%
     analyze("AGE", afun = mean, format = "xx.xx") %>%
     build_table(DM)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "CHN (N=179)", "F (N=94)", "mean", "M (N=85)",
-      "mean", "USA (N=44)", "F (N=24)", "mean", "M (N=20)", "mean",
-      "BRA (N=29)", "F (N=15)", "mean", "M (N=14)", "mean", "PAK (N=28)",
-      "F (N=12)", "mean", "M (N=16)", "mean", "NGA (N=24)", "F (N=13)",
-      "mean", "M (N=11)", "mean", "RUS (N=20)", "F (N=10)", "mean",
-      "M (N=10)", "mean", "JPN (N=18)", "F (N=9)", "mean", "M (N=9)",
-      "mean", "GBR (N=7)", "F (N=6)", "mean", "M (N=1)", "mean", "CAN (N=7)",
-      "F (N=4)", "mean", "M (N=3)", "mean", "A: Drug X", "A", "", "",
-      "30.92", "", "36.29", "", "", "33.00", "", "35.00", "", "", "29.00", "",
-      "NA", "", "", "NA", "", "36.67", "", "", "26.50", "", "32.00",
-      "", "", "30.00", "", "27.00", "", "", "NA", "", "33.00", "", "", "NA",
-      "", "NA", "", "", "32.50", "", "NA", "A: Drug X", "B", "", "",
-      "36.91", "", "38.00", "", "", "43.00", "", "36.50", "", "", "28.75",
-      "", "31.00", "", "", "35.00", "", "37.00", "", "", "28.50", "", "37.00", "",
-      "", "36.50", "", "NA", "", "", "35.00", "", "NA", "", "", "32.00",
-      "", "NA", "", "", "43.00", "", "NA", "A: Drug X", "C", "", "",
-      "35.36", "", "39.46", "", "", "41.33", "", "35.50", "", "", "47.00",
-      "", "33.00", "", "", "NA", "", "33.00", "", "", "24.00", "", "42.50",
-      "", "", "32.75", "", "39.00", "", "", "NA", "", "26.50", "", "",
-      "NA", "", "NA", "", "", "NA", "", "NA", "B: Placebo", "A",
-      "", "", "34.33", "", "30.00", "", "", "27.50", "", "40.00", "", "",
-      "31.00", "", "32.33", "", "", "46.00", "", "28.00", "", "", "31.00", "",
-      "NA", "", "", "NA", "", "30.00", "", "", "NA", "", "29.50", "",
-      "", "29.00", "", "NA", "", "", "NA", "", "NA", "B: Placebo",
-      "B", "", "", "32.89", "", "32.00", "", "", "NA", "", "34.00", "",
-      "", "30.50", "", "31.67", "", "", "29.67", "", "NA", "", "",
-      "NA", "", "21.00", "", "", "NA", "", "36.50", "", "", "41.50", "",
-      "27.67", "", "", "NA", "", "NA", "", "", "30.00", "", "38.00", "B: Placebo",
-      "C", "", "", "39.75", "", "32.80", "", "", "32.25", "", "28.00",
-      "", "", "24.00", "", "35.00", "", "", "42.00", "", "32.00", "", "", "NA",
-      "", "37.00", "", "", "40.00", "", "28.00", "", "", "35.00", "", "NA", "",
-      "", "NA", "", "NA", "", "", "NA", "", "NA", "C: Combination",
-      "A", "", "", "35.33", "", "34.82", "", "", "34.20", "", "39.25",
-      "", "", "37.00", "", "NA", "", "", "44.00", "", "41.00", "", "", "32.00",
-      "", "35.00", "", "", "NA", "", "35.50", "", "", "43.00", "", "33.00",
-      "", "", "30.00", "", "NA", "", "", "NA", "", "29.50", "C: Combination",
-      "B", "", "", "33.40", "", "33.00", "", "", "37.00", "", "31.00", "", "",
-      "39.00", "", "48.00", "", "", "25.50", "", "38.50", "", "", "40.00", "",
-      "44.00", "", "", "36.50", "", "27.00", "", "", "40.00", "", "NA", "",
-      "", "NA", "", "30.00", "", "", "NA", "", "NA", "C: Combination",
-      "C", "", "", "34.75", "", "31.87", "", "", "36.00", "", "39.50",
-      "", "", "34.00", "", "31.67", "", "", "34.00", "", "36.33", "", "",
-      "30.50", "", "NA", "", "", "NA", "", "27.00", "", "", "32.50", "",
-      "NA", "", "", "NA", "", "NA", "", "", "NA", "", "NA"
-    ),
-    .Dim = c(47L, 10L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_col_indices works as expected", {
@@ -274,10 +117,10 @@ testthat::test_that("h_col_indices works as expected", {
     split_cols_by("ARM") %>%
     build_table(DM)
   result <- h_col_indices(tab, c("B: Placebo", "C: Combination"))
-  expected <- c(2L, 3L)
-  testthat::expect_identical(result, expected)
-})
 
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
 
 testthat::test_that("as.rtable.data.frame works correctly", {
   x <- data.frame(
@@ -286,17 +129,9 @@ testthat::test_that("as.rtable.data.frame works correctly", {
   )
   rownames(x) <- LETTERS[1:10]
   result <- as.rtable(x, format = "xx.x")
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "A", "B", "C", "D", "E", "F", "G", "H", "I",
-      "J", "a", "1.0", "2.0", "3.0", "4.0", "5.0", "6.0", "7.0", "8.0", "9.0", "10.0",
-      "b", "10.0", "11.1", "12.2", "13.3", "14.4", "15.6", "16.7", "17.8",
-      "18.9", "20.0"
-    ),
-    .Dim = c(11L, 3L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("as.rtable.data.frame fails when a column is not numeric", {
@@ -315,7 +150,9 @@ testthat::test_that("as.rtable.data.frame uses variable labels for column header
   formatters::var_labels(x) <- paste("label for", names(x))
   rownames(x) <- LETTERS[1:10]
   result <- as.rtable(x, format = "xx.x")
-  testthat::expect_identical(names(result), c("label for a", "label for b"))
+
+  res <- testthat::expect_silent(names(result))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_split_param divides param values", {
@@ -326,31 +163,29 @@ testthat::test_that("h_split_param divides param values", {
 
   .stats <- c("pt_at_risk", "rate_diff")
   result <- h_split_param(.stats, .stats, f = f)
-  expected <- list(
-    surv = "pt_at_risk",
-    surv_diff = "rate_diff"
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
   result <- h_split_param(.formats, names(.formats), f = f)
-  expected <- list(
-    surv = c("pt_at_risk" = "xx", "event_free_rate" = "xxx"),
-    surv_diff = NULL
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("afun_selected_stats works for NULL input", {
   result <- afun_selected_stats(NULL, "b")
-  expected <- "b"
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("afun_selected_stats works for character input", {
   result <- afun_selected_stats(c("a", "c"), c("b", "c"))
-  expected <- "c"
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("append_varlabels works as expected", {
@@ -362,19 +197,9 @@ testthat::test_that("append_varlabels works as expected", {
     analyze("AGE", afun = mean) %>%
     append_varlabels(DM, "AGE", indent = 1L)
   result <- build_table(lyt, DM)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "SEX", "  Age", "F", "mean", "M", "mean", "U", "mean",
-      "UNDIFFERENTIATED", "mean", "A: Drug X", "(N=121)", "", "33.7142857142857",
-      "", "36.5490196078431", "", "NA", "", "NA", "B: Placebo", "(N=106)",
-      "", "33.8392857142857", "", "32.1", "", "NA", "", "NA", "C: Combination",
-      "(N=129)", "", "34.8852459016393", "", "34.2794117647059", "",
-      "NA", "", "NA"
-    ),
-    .Dim = c(10L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("append_varlabels correctly concatenates multiple variable labels", {
@@ -384,17 +209,7 @@ testthat::test_that("append_varlabels correctly concatenates multiple variable l
     analyze("AGE", afun = mean) %>%
     append_varlabels(DM, c("SEX", "AGE"))
   result <- build_table(lyt, DM)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "SEX / Age", "F", "mean", "M", "mean", "U", "mean",
-      "UNDIFFERENTIATED", "mean", "A: Drug X", "", "33.7142857142857",
-      "", "36.5490196078431", "", "NA", "", "NA", "B: Placebo", "",
-      "33.8392857142857", "", "32.1", "", "NA", "", "NA", "C: Combination",
-      "", "34.8852459016393", "", "34.2794117647059", "", "NA", "",
-      "NA"
-    ),
-    .Dim = c(9L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

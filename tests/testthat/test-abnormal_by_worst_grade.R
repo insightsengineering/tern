@@ -1,5 +1,5 @@
 # Local data pre-processing
-adlb_tmp <- adlb_raw
+adlb_tmp <- tern_ex_adlb
 
 adlb_local <- local({
   # Data set is modified in order to have some parameters with grades only in one direction
@@ -62,14 +62,8 @@ testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
     variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
   )
 
-  expected <- list(count_fraction = list(
-    `1` = formatters::with_label(c(count = 14, fraction = 0.1044776), "1"),
-    `2` = formatters::with_label(c(count = 13, fraction = 0.09701493), "2"),
-    `3` = formatters::with_label(c(count = 20, fraction = 0.1492537), "3"),
-    `4` = formatters::with_label(c(count = 7, fraction = 0.05223881), "4"),
-    Any = formatters::with_label(c(count = 54, fraction = 0.4029851), "Any")
-  ))
-  testthat::expect_equal(result, expected, tolerance = 0.000001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_abnormal_by_worst_grade works as expected", {
@@ -96,46 +90,8 @@ testthat::test_that("count_abnormal_by_worst_grade works as expected", {
     ) %>%
     build_table(df = adlb_f)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <-
-    structure(
-      c(
-        "",
-        "Immunoglobulin A Measurement",
-        "HIGH",
-        "1",
-        "2",
-        "3",
-        "4",
-        "Any",
-        "ARM A",
-        "",
-        "",
-        "25 (18.7%)",
-        "14 (10.4%)",
-        "12 (9%)",
-        "11 (8.2%)",
-        "62 (46.3%)",
-        "ARM B",
-        "",
-        "",
-        "14 (10.4%)",
-        "20 (14.9%)",
-        "13 (9.7%)",
-        "13 (9.7%)",
-        "60 (44.8%)",
-        "ARM C",
-        "",
-        "",
-        "13 (9.8%)",
-        "16 (12.1%)",
-        "17 (12.9%)",
-        "4 (3%)",
-        "50 (37.9%)"
-      ),
-      .Dim = c(8L, 4L)
-    )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(

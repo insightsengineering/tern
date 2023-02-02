@@ -3,14 +3,14 @@ adlb_local <- local({
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
   # filtering as realistic as possible, will create the variable.
-  qntls <- adlb_raw %>%
+  qntls <- tern_ex_adlb %>%
     dplyr::group_by(.data$PARAMCD) %>%
     dplyr::summarise(
       q1 = stats::quantile(.data$AVAL, probs = c(0.1)),
       q2 = stats::quantile(.data$AVAL, probs = c(0.9))
     )
 
-  adlb_raw %>%
+  tern_ex_adlb %>%
     dplyr::left_join(qntls, by = "PARAMCD") %>%
     dplyr::group_by(.data$USUBJID, .data$PARAMCD, .data$BASETYPE) %>%
     dplyr::mutate(
@@ -76,14 +76,9 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
   )
 
-  expected <- list(count_fraction = list(
-    `Single, not last` = c(2.00000000, 0.01492537),
-    `Last or replicated` = c(10.00000000, 0.07462687),
-    `Any Abnormality` = c(12.00000000, 0.08955224)
-  ))
-  testthat::expect_equal(result, expected, tolerance = 0.000001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
-
 
 testthat::test_that("s_count_abnormal_by_marked works as expected", {
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
@@ -136,14 +131,9 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
     variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
   )
 
-  expected <- list(count_fraction = list(
-    `Single, not last` = c(1.000000000, 0.007462687),
-    `Last or replicated` = c(10.00000000, 0.07462687),
-    `Any Abnormality` = c(11.00000000, 0.08208955)
-  ))
-  testthat::expect_equal(result, expected, tolerance = 0.000001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
-
 
 testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
           two direction values", {
@@ -197,7 +187,6 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
     variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
   ))
 })
-
 
 testthat::test_that("count_abnormal_by_marked works as expected", {
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
@@ -260,19 +249,6 @@ testthat::test_that("count_abnormal_by_marked works as expected", {
     ) %>%
     build_table(df = adlb_f)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "CRP (n)", "Low", "Single, not last", "Last or replicated",
-      "Any Abnormality", "High", "Single, not last", "Last or replicated",
-      "Any Abnormality", "ARM A", "134", "", "2 (1.5%)", "10 (7.5%)",
-      "12 (9%)", "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "ARM B",
-      "134", "", "0", "7 (5.2%)", "7 (5.2%)", "", "2 (1.5%)", "9 (6.7%)",
-      "11 (8.2%)", "ARM C", "132", "", "0", "7 (5.3%)", "7 (5.3%)",
-      "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)"
-    ),
-    .Dim = c(10L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

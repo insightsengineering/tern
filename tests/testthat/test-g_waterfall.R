@@ -9,7 +9,7 @@ testthat::test_that("g_waterfall default plot works", {
 })
 
 testthat::test_that("g_waterfall plot with labels and colors works", {
-  adrs <- adrs_raw
+  adrs <- tern_ex_adrs
   adrs_f <- head(dplyr::filter(adrs, PARAMCD == "OVRINV"), 30)
   adrs_f$pchg <- rnorm(30, 10, 50)
   adrs_f <- adrs_f[!duplicated(adrs_f$USUBJID), ]
