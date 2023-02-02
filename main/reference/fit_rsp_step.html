@@ -26,7 +26,7 @@ Note that for the default degree 0 the biomarker variable is not included in the
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9036</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9037</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,15 +51,6 @@ Note that for the default degree 0 the biomarker variable is not included in the
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -161,6 +152,13 @@ customization options.</p></div>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
 <span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39 11</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
@@ -171,13 +169,13 @@ customization options.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,]             0.100                0            0.600        2.799776</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5,]             0.125                0            0.625        2.969998</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6,]             0.150                0            0.650        3.149068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      Interval Lower Interval Upper  n    logor       se  ci_lower ci_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      0.4459546       6.057928 75 17.97714 4646.387 -9088.774 9124.728</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]      0.4459546       6.371236 78 17.94902 4537.488 -8875.363 8911.261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]      0.4459546       6.701030 82 17.92897 4378.786 -8564.333 8600.191</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]      0.4459546       6.886642 85 17.92101 4235.225 -8282.967 8318.809</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]      0.4459546       7.026219 89 18.48641 4116.213 -8049.142 8086.115</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]      0.4459546       7.144031 92 18.48952 4060.485 -7939.915 7976.894</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Interval Lower Interval Upper  n    logor       se   ci_lower ci_upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      0.4459546       6.057928 75 1.230538 1.185904 -1.0937914 3.554868</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]      0.4459546       6.371236 78 1.244538 1.183795 -1.0756577 3.564734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]      0.4459546       6.701030 82 1.302066 1.182851 -1.0162794 3.620411</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]      0.4459546       6.886642 85 1.361186 1.182169 -0.9558222 3.678194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]      0.4459546       7.026219 89 1.231372 1.179518 -1.0804407 3.543184</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]      0.4459546       7.144031 92 1.242238 1.180350 -1.0712045 3.555681</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Specify different polynomial degree for the biomarker interaction to use more flexible local</span></span></span>
 <span class="r-in"><span><span class="co"># models. Or specify different logistic regression options, including confidence level.</span></span></span>
@@ -186,6 +184,15 @@ customization options.</p></div>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
 <span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="fl">0.6</span>, degree <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use a global constant model. This is helpful as a reference for the subgroup models.</span></span></span>
 <span class="r-in"><span><span class="va">step_matrix3</span> <span class="op">&lt;-</span> <span class="fu">fit_rsp_step</span><span class="op">(</span></span></span>
@@ -208,31 +215,6 @@ customization options.</p></div>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
 <span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="control_step.html">control_step</a></span><span class="op">(</span>bandwidth <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fit warnings occurred, please consider using a simpler model, or larger `bandwidth`, less `num_points` in `control_step()` settings</span>

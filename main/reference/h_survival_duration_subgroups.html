@@ -14,7 +14,7 @@ time and hazard ratio for population subgroups."><!-- mathjax --><script src="ht
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9036</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9037</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,15 +39,6 @@ time and hazard ratio for population subgroups."><!-- mathjax --><script src="ht
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -197,9 +188,9 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in"><span>  is_event <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">is_event</span>,</span></span>
 <span class="r-in"><span>  arm <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">ARM</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          arm  n n_events    median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 B: Placebo 73       57  571.1603</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  A: Drug X 69       41 1458.7844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          arm  n n_events   median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 B: Placebo 73       57 727.8043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  A: Drug X 69       44 974.6402</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Extract median survival time for multiple groups.</span></span></span>
 <span class="r-in"><span><span class="fu">h_survtime_subgroups_df</span><span class="op">(</span></span></span>
@@ -212,18 +203,18 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_events    median     subgroup    var    var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73       57  571.1603 All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69       41 1458.7844 All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40       31  722.4495            F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38       19 1617.6840            F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33       26  551.8749            M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31       22  763.4915            M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24       22  362.4989          LOW BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26       15 1218.1336          LOW BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 23       17  506.9159       MEDIUM BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 26       14 1549.4890       MEDIUM BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 26       18  835.0535         HIGH BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 17       12 1438.7642         HIGH BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73       57  727.8043 All Patients    ALL All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69       44  974.6402 All Patients    ALL All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40       31  599.1772            F    SEX          SEX analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38       24 1016.2982            F    SEX          SEX analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33       26  888.4916            M    SEX          SEX analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31       20  974.6402            M    SEX          SEX analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24       21  735.4722          LOW BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26       15  974.6402          LOW BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 23       14  731.8352       MEDIUM BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 26       17  964.2197       MEDIUM BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 26       22  654.8245         HIGH BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 17       12 1016.2982         HIGH BMRKR2       BMRKR2 analysis</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Define groupings for BMRKR2 levels.</span></span></span>
 <span class="r-in"><span><span class="fu">h_survtime_subgroups_df</span><span class="op">(</span></span></span>
@@ -243,18 +234,18 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_events    median        subgroup    var    var_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73       57  571.1603    All Patients    ALL All Patients</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69       41 1458.7844    All Patients    ALL All Patients</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40       31  722.4495               F    SEX          SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38       19 1617.6840               F    SEX          SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33       26  551.8749               M    SEX          SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31       22  763.4915               M    SEX          SEX</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24       22  362.4989             low BMRKR2       BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26       15 1218.1336             low BMRKR2       BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 47       39  483.6559      low/medium BMRKR2       BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 52       29 1487.4530      low/medium BMRKR2       BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 73       57  571.1603 low/medium/high BMRKR2       BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 69       41 1458.7844 low/medium/high BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73       57  727.8043    All Patients    ALL All Patients</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69       44  974.6402    All Patients    ALL All Patients</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40       31  599.1772               F    SEX          SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38       24 1016.2982               F    SEX          SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33       26  888.4916               M    SEX          SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31       20  974.6402               M    SEX          SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24       21  735.4722             low BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26       15  974.6402             low BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 47       35  735.4722      low/medium BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 52       32  964.2197      low/medium BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 73       57  727.8043 low/medium/high BMRKR2       BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 69       44  974.6402 low/medium/high BMRKR2       BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    row_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   content</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   content</span>
@@ -271,15 +262,15 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Extract hazard ratio for one group.</span></span></span>
 <span class="r-in"><span><span class="fu">h_coxph_df</span><span class="op">(</span><span class="va">adtte_f</span><span class="op">$</span><span class="va">AVAL</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">is_event</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">ARM</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level        pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142           98 0.5125892 0.3388862 0.7753272       0.95 0.001293042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl      ucl conf_level       pval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142          101 0.7108557 0.4779138 1.057337       0.95 0.09049511</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           pval_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 p-value (log-rank)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Extract hazard ratio for one group with stratification factor.</span></span></span>
 <span class="r-in"><span><span class="fu">h_coxph_df</span><span class="op">(</span><span class="va">adtte_f</span><span class="op">$</span><span class="va">AVAL</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">is_event</span>, <span class="va">adtte_f</span><span class="op">$</span><span class="va">ARM</span>, strata_data <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">STRATA1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level        pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142           98 0.5501093 0.3579158 0.8455069       0.95 0.005823678</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl     ucl conf_level       pval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142          101 0.6646586 0.4399495 1.00414       0.95 0.05089188</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           pval_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 p-value (log-rank)</span>
 <span class="r-in"><span></span></span>
@@ -293,13 +284,13 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level        pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142           98 0.5125892 0.3388862 0.7753272       0.95 0.001293042</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        78           50 0.4776406 0.2636437 0.8653365       0.95 0.012997814</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        64           48 0.5542360 0.3055256 1.0054069       0.95 0.049074335</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        50           37 0.3747258 0.1889873 0.7430097       0.95 0.003579595</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        49           31 0.4131657 0.1981187 0.8616346       0.95 0.015407117</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        43           30 0.7429373 0.3407495 1.6198288       0.95 0.453625856</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142          101 0.7108557 0.4779138 1.0573368       0.95 0.09049511</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        78           55 0.5595391 0.3246658 0.9643271       0.95 0.03411759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        64           46 0.9102874 0.5032732 1.6464678       0.95 0.75582028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        50           36 0.7617717 0.3854349 1.5055617       0.95 0.43236030</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        49           31 0.7651261 0.3641277 1.6077269       0.95 0.47860004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        43           34 0.6662356 0.3257413 1.3626456       0.95 0.26285846</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           pval_label     subgroup    var    var_label row_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 p-value (log-rank) All Patients    ALL All Patients  content</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 p-value (log-rank)            F    SEX          SEX analysis</span>
@@ -325,13 +316,13 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level         pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142           98 0.5125892 0.3388862 0.7753272       0.95 0.0012930417</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        78           50 0.4776406 0.2636437 0.8653365       0.95 0.0129978137</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        64           48 0.5542360 0.3055256 1.0054069       0.95 0.0490743345</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        50           37 0.3747258 0.1889873 0.7430097       0.95 0.0035795954</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        99           68 0.3858968 0.2340553 0.6362441       0.95 0.0001151133</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       142           98 0.5125892 0.3388862 0.7753272       0.95 0.0012930417</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142          101 0.7108557 0.4779138 1.0573368       0.95 0.09049511</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        78           55 0.5595391 0.3246658 0.9643271       0.95 0.03411759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        64           46 0.9102874 0.5032732 1.6464678       0.95 0.75582028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        50           36 0.7617717 0.3854349 1.5055617       0.95 0.43236030</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        99           67 0.7472958 0.4600419 1.2139136       0.95 0.23764314</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       142          101 0.7108557 0.4779138 1.0573368       0.95 0.09049511</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           pval_label        subgroup    var    var_label row_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 p-value (log-rank)    All Patients    ALL All Patients  content</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 p-value (log-rank)               F    SEX          SEX analysis</span>
@@ -352,12 +343,12 @@ groupings for <code>subgroups</code> variables.</p></li>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adtte_f</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142           98 0.5704184 0.3661934 0.8885392       0.95 0.01218876</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        78           50 0.4924189 0.2581633 0.9392363       0.95 0.02911654</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        64           48 0.8123554 0.4317266 1.5285630       0.95 0.51879110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        50           37 0.4307501 0.1988874 0.9329179       0.95 0.02830024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        49           31 0.5743510 0.2598406 1.2695443       0.95 0.16641406</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        43           30 0.9004102 0.3594855 2.2552747       0.95 0.82275609</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142          101 0.6126133 0.3913507 0.9589739       0.95 0.03086774</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        78           55 0.3934024 0.2027682 0.7632630       0.95 0.00469167</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        64           46 0.9501768 0.4730073 1.9087145       0.95 0.88580522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        50           36 0.7378635 0.3140465 1.7336363       0.95 0.48408079</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        49           31 0.9408062 0.4172095 2.1215148       0.95 0.88305965</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        43           34 0.5125617 0.2125140 1.2362459       0.95 0.13124382</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           pval_label     subgroup    var    var_label row_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 p-value (log-rank) All Patients    ALL All Patients  content</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 p-value (log-rank)            F    SEX          SEX analysis</span>
