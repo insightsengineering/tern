@@ -25,5 +25,5 @@ fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
 
 }
 \seealso{
-\code{\link[forcats:fct_explicit_na]{forcats::fct_explicit_na()}} which is used internally.
+\code{\link[forcats:fct_na_value_to_level]{forcats::fct_na_value_to_level()}} which is used internally.
 }

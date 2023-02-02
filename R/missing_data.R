@@ -21,7 +21,7 @@ explicit_na <- function(x, label = "<Missing>") {
   checkmate::assert_string(label)
 
   if (is.factor(x)) {
-    forcats::fct_explicit_na(x, label)
+    forcats::fct_na_value_to_level(x, label)
   } else if (is.character(x)) {
     x[is.na(x)] <- label
     x
@@ -29,7 +29,6 @@ explicit_na <- function(x, label = "<Missing>") {
     stop("only factors and character vectors allowed")
   }
 }
-
 
 #' Convert Strings to `NA`
 #'
