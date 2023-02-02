@@ -300,7 +300,11 @@ count_patients_with_flags <- function(lyt,
                                            flag_variables = flag_variables, .N_col = N_col_trt, denom = "N_col")
       s_placebo <- s_count_patients_with_flags(df = df[df$ARM == col_placebo, ], .var = .var,
                                                flag_variables = flag_variables, .N_col = N_col_placebo, denom = "N_col")
-      risk_diff(s_trt = s_trt, s_placebo = s_placebo, flag_variables = flag_variables, .indent_mods = .indent_mods)
+      risk_diff(n_frac_trt = c(n = list(s_trt[c("n")]$n),
+                               frac = list(lapply(s_trt[c("count_fraction")]$count_fraction, `[`, 2))),
+                n_frac_placebo = c(n = list(s_placebo[c("n")]$n),
+                                   frac = list(lapply(s_placebo[c("count_fraction")]$count_fraction, `[`, 2))),
+                flag_variables = flag_variables, .indent_mods = .indent_mods)
     } else {
       afun(df = df, .var = .var, flag_variables = flag_variables, .N_col = .N_col, .N_row = .N_row, denom = "N_col")
     }

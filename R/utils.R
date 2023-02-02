@@ -441,14 +441,26 @@ clogit_with_tryCatch <- function(formula, data, ...) { # nolint
 
 #' Risk Difference
 #' @export
-risk_diff <- function(s_trt, s_placebo, flag_variables, .indent_mods = .indent_mods) {
+risk_diff <- function(n_frac_trt, n_frac_placebo, flag_variables, .indent_mods = .indent_mods) {
   browser()
   rd_list <- list()
+
   for (flag in flag_variables) {
-    p1 <- s_trt$count_fraction[[flag]][2]
-    p2 <- s_placebo$count_fraction[[flag]][2]
-    rd_ci <- p1 - p2 + c(-1, 1) * qnorm(0.975) * sqrt(p1 * (1 - p1) / s_trt$n[[flag]] + p2 * (1 - p2) / s_placebo$n[[flag]])
+    p1 <- n_frac_trt$frac[[flag]]
+    p2 <- n_frac_placebo$frac[[flag]]
+    rd_ci <- p1 - p2 + c(-1, 1) * qnorm(0.975) * sqrt(p1 * (1 - p1) / n_frac_trt$n[[flag]] + p2 * (1 - p2) / n_frac_placebo$n[[flag]])
     rd_list[[flag]] <- c(p1 - p2, rd_ci) * 100
   }
-  in_rows(.list = rd_list, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
+  a <- lapply(flag_variables,
+              function (flag) {
+                p1 <- n_frac_trt$frac[[flag]]
+                p2 <- n_frac_placebo$frac[[flag]]
+                rd_ci <- p1 - p2 + c(-1, 1) * qnorm(0.975) * sqrt(p1 * (1 - p1) / n_frac_trt$n[[flag]] + p2 * (1 - p2) / n_frac_placebo$n[[flag]])
+                flag = c(p1 - p2, rd_ci) * 100
+              })
+  names(a) <- flag_variables
+  in_rows(
+    .list = a,
+    .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
+  # in_rows(.list = rd_list, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
 }
