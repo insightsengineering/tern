@@ -291,13 +291,15 @@ count_patients_with_flags <- function(lyt,
     .ungroup_stats = .stats
   )
 
-  afun_rd <- function(df, .var, .N_col, .N_row, .df_row) {
+  afun_rd <- function(df, .var, .N_col, .N_row, .df_row, .spl_context) {
     browser()
-    if (nrow(df) == sum(.df_row$ARM %in% c(col_trt, col_placebo))) {
-      s_trt <- s_count_patients_with_flags(df = df[df$ARM == col_trt, ], .var = .var, flag_variables = flag_variables,
-                                           .N_col = nrow(unique(df[df$ARM == col_trt, .var])), denom = "N_col")
-      s_placebo <- s_count_patients_with_flags(df = df[df$ARM == col_placebo, ], .var = .var, flag_variables = flag_variables,
-                                               .N_col = nrow(unique(df[df$ARM == col_placebo, .var])), denom = "N_col")
+    N_col_trt <- nrow(unique(df[df$ARM == col_trt, .var]))
+    N_col_placebo <- nrow(unique(df[df$ARM == col_placebo, .var]))
+    if (.spl_context$cur_col_n == sum(.spl_context[[col_trt]][[1]], .spl_context[[col_placebo]][[1]])) {
+      s_trt <- s_count_patients_with_flags(df = df[df$ARM == col_trt, ], .var = .var,
+                                           flag_variables = flag_variables, .N_col = N_col_trt, denom = "N_col")
+      s_placebo <- s_count_patients_with_flags(df = df[df$ARM == col_placebo, ], .var = .var,
+                                               flag_variables = flag_variables, .N_col = N_col_placebo, denom = "N_col")
       risk_diff(s_trt = s_trt, s_placebo = s_placebo, flag_variables = flag_variables, .indent_mods = .indent_mods)
     } else {
       afun(df = df, .var = .var, flag_variables = flag_variables, .N_col = .N_col, .N_row = .N_row, denom = "N_col")
