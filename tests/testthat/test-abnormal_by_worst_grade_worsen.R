@@ -1,5 +1,5 @@
 # Data pre-processing
-adlb_local <- adlb_raw %>%
+adlb_local <- tern_ex_adlb %>%
   dplyr::mutate(
     GRADDR = dplyr::case_when(
       PARAMCD == "ALT" ~ "B",
@@ -41,7 +41,6 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
       )
     )
 
-
   result <- h_adlb_worsen(
     input_data,
     worst_flag_low = c("WGRLOFL" = "Y"),
@@ -50,7 +49,6 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   )
 
   result <- result[order(result$VALUES), ]
-
 
   p1 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "L")
   p2 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "H")
@@ -62,14 +60,12 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   p3$GRADDR <- "Low" # nolint
   p4$GRADDR <- "High" # nolint
 
-  expected <- rbind(p1, p2, p3, p4)
-  expected <- expected[order(expected$VALUES), ]
-
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_adlb_worsen stacks data correctly", {
-  adlb_f <- adlb_local %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"))
+  adlb_f <- adlb_local %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-1-id-53", "AB12345-CHN-3-id-128"))
 
   result <- h_adlb_worsen(
     adlb_f,
@@ -79,29 +75,9 @@ testthat::test_that("h_adlb_worsen stacks data correctly", {
   )
 
   result <- result %>% dplyr::select(USUBJID, ARMCD, AVISIT, PARAMCD, ATOXGR, BTOXGR, WGRLOFL, WGRHIFL, GRADDR)
-  result_matrix <- matrix(c(as.matrix(result)), 8L, 9L)
 
-  expected_matrix <- structure(
-    c(
-      rep(c("AB12345-CHN-15-id-262", "AB12345-CHN-3-id-128"), 4L),
-      rep(c("ARM C", "ARM A"), 4L),
-      c(
-        "WEEK 4 DAY 29", "WEEK 3 DAY 22", "WEEK 5 DAY 36", "WEEK 3 DAY 22", "WEEK 3 DAY 22",
-        "WEEK 1 DAY 8", "WEEK 5 DAY 36", "WEEK 2 DAY 15"
-      ),
-      c("IGA", "IGA", "ALT", "ALT", "CRP", "CRP", "ALT", "ALT"),
-      c("0", "0", "0", "2", "-2", "-1", "0", "-3"),
-      c("0", "3", "0", "0", "2", "0", "0", "0"),
-      c("Y", "Y", "Y", "", "Y", "Y", "Y", "Y"),
-      c("Y", "Y", "Y", "Y", "", "", "Y", ""),
-      c("High", "High", "High", "High", "Low", "Low", "Low", "Low")
-    ),
-    .Dim = c(8L, 9L)
-  )
-
-  expected_matrix <- matrix(c(expected_matrix), 8L, 9L)
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_worsen_counter counts data (low) correctly", {
@@ -120,16 +96,8 @@ testthat::test_that("h_worsen_counter counts data (low) correctly", {
     direction_var = "GRADDR"
   )
 
-  expected <- list(
-    fraction = list(
-      "1" = c(num = 6, denom = 54),
-      "2" = c(num = 7, denom = 63),
-      "3" = c(num = 8, denom = 72),
-      "4" = c(num = 9, denom = 81),
-      "Any" = c(num = 30, denom = 81)
-    )
-  )
-  testthat::expect_equal(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_worsen_counter counts data (high) correctly", {
@@ -148,16 +116,8 @@ testthat::test_that("h_worsen_counter counts data (high) correctly", {
     direction_var = "GRADDR"
   )
 
-  expected <- list(
-    fraction = list(
-      "1" = c(num = 6, denom = 54),
-      "2" = c(num = 7, denom = 63),
-      "3" = c(num = 8, denom = 72),
-      "4" = c(num = 9, denom = 81),
-      "Any" = c(num = 30, denom = 81)
-    )
-  )
-  testthat::expect_equal(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_worsen_counter counts data (low), no high correctly", {
@@ -176,16 +136,8 @@ testthat::test_that("h_worsen_counter counts data (low), no high correctly", {
     direction_var = "GRADDR"
   )
 
-  expected <- list(
-    fraction = list(
-      "1" = c(num = 2, denom = 10),
-      "2" = c(num = 3, denom = 15),
-      "3" = c(num = 4, denom = 20),
-      "4" = c(num = 5, denom = 25),
-      "Any" = c(num = 14, denom = 25)
-    )
-  )
-  testthat::expect_equal(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_worsen_counter counts data (low), no low correctly", {
@@ -204,16 +156,8 @@ testthat::test_that("h_worsen_counter counts data (low), no low correctly", {
     direction_var = "GRADDR"
   )
 
-  expected <- list(
-    fraction = list(
-      "1" = c(num = 0, denom = 30),
-      "2" = c(num = 0, denom = 30),
-      "3" = c(num = 0, denom = 30),
-      "4" = c(num = 0, denom = 30),
-      "Any" = c(num = 0, denom = 30)
-    )
-  )
-  testthat::expect_equal(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_abnormal_lab_worsen_by_baseline", {
@@ -234,16 +178,8 @@ testthat::test_that("s_count_abnormal_lab_worsen_by_baseline", {
     )
   )
 
-  expected <- list(
-    fraction = list(
-      "1" = c(num = 6, denom = 54),
-      "2" = c(num = 7, denom = 63),
-      "3" = c(num = 8, denom = 72),
-      "4" = c(num = 9, denom = 81),
-      "Any" = c(num = 30, denom = 81)
-    )
-  )
-  testthat::expect_equal(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
@@ -267,40 +203,14 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
         direction_var = "GRADDR"
       )
     ) %>%
-    build_table(df = df, alt_counts_df = adsl_raw)
+    build_table(df = df, alt_counts_df = tern_ex_adsl)
 
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "ALT", "High", "1", "2", "3", "4", "Any",
-      "Low", "1", "2", "3", "4", "Any", "CRP", "Low", "1", "2", "3",
-      "4", "Any", "IGA", "High", "1", "2", "3", "4", "Any", "ARM A",
-      "(N=134)", "", "", "16/121 (13.2%)", "14/125 (11.2%)", "9/129 (7%)",
-      "12/131 (9.2%)", "51/131 (38.9%)", "", "13/124 (10.5%)", "13/127 (10.2%)",
-      "19/129 (14.7%)", "7/131 (5.3%)", "52/131 (39.7%)", "", "", "14/122 (11.5%)",
-      "21/124 (16.9%)", "12/129 (9.3%)", "10/131 (7.6%)", "57/131 (43.5%)",
-      "", "", "24/118 (20.3%)", "13/120 (10.8%)", "11/124 (8.9%)",
-      "11/129 (8.5%)", "59/129 (45.7%)", "ARM B", "(N=134)", "", "",
-      "13/117 (11.1%)", "12/121 (9.9%)", "15/125 (12%)", "11/130 (8.5%)",
-      "51/130 (39.2%)", "", "12/121 (9.9%)", "17/127 (13.4%)", "12/128 (9.4%)",
-      "7/131 (5.3%)", "48/131 (36.6%)", "", "", "17/125 (13.6%)", "12/130 (9.2%)",
-      "9/131 (6.9%)", "7/133 (5.3%)", "45/133 (33.8%)", "", "", "12/120 (10%)",
-      "19/124 (15.3%)", "10/128 (7.8%)", "13/130 (10%)", "54/130 (41.5%)",
-      "ARM C", "(N=132)", "", "", "17/117 (14.5%)", "17/120 (14.2%)",
-      "13/124 (10.5%)", "13/129 (10.1%)", "60/129 (46.5%)", "", "9/117 (7.7%)",
-      "11/124 (8.9%)", "10/128 (7.8%)", "10/132 (7.6%)", "40/132 (30.3%)",
-      "", "", "13/120 (10.8%)", "16/125 (12.8%)", "17/126 (13.5%)", "4/127 (3.1%)",
-      "50/127 (39.4%)", "", "", "13/119 (10.9%)", "13/125 (10.4%)",
-      "17/128 (13.3%)", "4/130 (3.1%)", "47/130 (36.2%)"
-    ),
-    .Dim = c(29L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_adlb_worsen all high", {
-  adlb_local <- adlb_raw %>%
+  adlb_local <- tern_ex_adlb %>%
     dplyr::mutate(
       GRADDR = dplyr::case_when(
         PARAMCD == "ALT" ~ "H",
@@ -315,21 +225,14 @@ testthat::test_that("h_adlb_worsen all high", {
     worst_flag_high = c("WGRHIFL" = "Y"),
     direction_var = "GRADDR"
   )
-  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD, result$PCHG), ]
+  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD), ]
 
-
-  expected <- adlb_local[adlb_local$WGRHIFL == "Y", ]
-  expected$GRADDR <- "High" # nolint
-  expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD, expected$PCHG), ]
-
-  result_matrix <- matrix(c(as.matrix(result)), nrow(result), ncol(result))
-  expected_matrix <- matrix(c(as.matrix(expected)), nrow(expected), ncol(expected))
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_adlb_worsen all low", {
-  adlb_local <- adlb_raw %>%
+  adlb_local <- tern_ex_adlb %>%
     dplyr::mutate(
       GRADDR = dplyr::case_when(
         PARAMCD == "ALT" ~ "L",
@@ -344,15 +247,8 @@ testthat::test_that("h_adlb_worsen all low", {
     worst_flag_low = c("WGRLOFL" = "Y"),
     direction_var = "GRADDR"
   )
-  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD, result$PCHG), ]
+  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD), ]
 
-
-  expected <- adlb_local[adlb_local$WGRLOFL == "Y", ]
-  expected$GRADDR <- "Low" # nolint
-  expected <- expected[order(expected$USUBJID, expected$AVISIT, expected$PARAMCD, expected$PCHG), ]
-
-  result_matrix <- matrix(c(as.matrix(result)), nrow(result), ncol(result))
-  expected_matrix <- matrix(c(as.matrix(expected)), nrow(expected), ncol(expected))
-
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

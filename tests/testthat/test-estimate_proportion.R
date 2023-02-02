@@ -3,11 +3,10 @@ testthat::test_that("prop_wilson returns right result", {
     TRUE, TRUE, TRUE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, FALSE
   )
-
-  expected <- c(0.2692718, 0.7307282)
   result <- prop_wilson(rsp, conf_level = 0.9)
 
-  testthat::expect_equal(expected, result, tolerance = 1e-5)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("strata_normal_quantile works with general factor table", {
@@ -26,7 +25,8 @@ testthat::test_that("strata_normal_quantile works with general factor table", {
 
   result <- strata_normal_quantile(vars, weights, 0.95)
 
-  testthat::expect_equal(result, 1.133272, tolerance = 0.000001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("update_weights_strat_wilson works with general inputs", {
@@ -38,12 +38,9 @@ testthat::test_that("update_weights_strat_wilson works with general inputs", {
   ns <- c(22, 18, 17, 17, 14, 12)
 
   result <- update_weights_strat_wilson(vs, sq, ws, ns, 100, 0.95, 0.001)
-  expected <- list(
-    "n_it" = 3,
-    "weights" = c(0.2067191, 0.1757727, 0.1896962, 0.1636346, 0.1357615, 0.1284160)
-  )
 
-  testthat::expect_equal(result[1:2], expected, tolerance = 0.000001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("update_weights_strat_wilson convergence test", {
@@ -76,7 +73,10 @@ testthat::test_that("update_weights_strat_wilson convergence test", {
   sq <- strata_normal_quantile(vs, ws, cl) # Initial quantiles
 
   result <- update_weights_strat_wilson(vs, sq, ws, ns, ni, cl, tol)
-  testthat::expect_equal(result$n_it, 2)
+
+  res <- testthat::expect_silent(result$n_it)
+  testthat::expect_snapshot(res)
+
   warning_message <- "The heuristic to find weights did not converge with max_iterations = 2"
   testthat::expect_warning(update_weights_strat_wilson(vs, sq, ws, ns, 2, cl, 0.000000001),
     regexp = warning_message
@@ -102,13 +102,8 @@ testthat::test_that("prop_strat_wilson returns right results", {
     conf_level = 0.90
   )
 
-  expected <- list(
-    conf_int = c(lower = 0.4072891, upper = 0.5647887),
-    weights = c(0.2074199, 0.1776464, 0.1915610, 0.1604678, 0.1351096, 0.1277952)
-  )
-  names(expected$weights) <- colnames(table_strata)
-
-  testthat::expect_equal(result, expected, tolerance = 1e-5)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("prop_strat_wilson returns right result with inserted weights", {
@@ -126,14 +121,14 @@ testthat::test_that("prop_strat_wilson returns right result with inserted weight
   n_ws <- ncol(table_strata) # Number of weights
 
   # Test without estimating weights (all equal here)
-  expected <- list(conf_int = c(lower = 0.4190436, upper = 0.5789733))
   result <- prop_strat_wilson(
     rsp = rsp, strata = strata,
     weights = rep(1 / n_ws, n_ws), # Not automatic setting of weights
     conf_level = 0.90
   )
 
-  testthat::expect_equal(expected, result, tolerance = 1e-5)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("prop_clopper_pearson returns right result", {
@@ -141,10 +136,10 @@ testthat::test_that("prop_clopper_pearson returns right result", {
     TRUE, TRUE, TRUE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, FALSE
   )
-
   result <- prop_clopper_pearson(rsp, conf_level = .95)
-  expected <- c(0.1871, 0.8129)
-  testthat::expect_equal(expected, result, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("prop_wald returns right result", {
@@ -154,12 +149,14 @@ testthat::test_that("prop_wald returns right result", {
   )
 
   result <- prop_wald(rsp, conf_level = 0.95, correct = TRUE)
-  expected <- c(0.1401, 0.8599)
-  testthat::expect_equal(expected, result, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   result <- prop_wald(rsp, conf_level = 0.95, correct = FALSE)
-  expected <- c(0.1901, 0.8099)
-  testthat::expect_equal(expected, result, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("prop_agresti_coull returns right result", {
@@ -167,22 +164,21 @@ testthat::test_that("prop_agresti_coull returns right result", {
     TRUE, TRUE, TRUE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, FALSE
   )
-
   result <- prop_agresti_coull(rsp, conf_level = 0.95)
-  expected <- c(0.2366, 0.7634)
-  testthat::expect_equal(expected, result, tolerance = 1e-4)
-})
 
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
 
 testthat::test_that("prop_jeffreys returns right result", {
   rsp <- c(
     TRUE, TRUE, TRUE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, FALSE
   )
-
   result <- prop_jeffreys(rsp, conf_level = 0.95)
-  expected <- c(0.2235, 0.7765)
-  testthat::expect_equal(expected, result, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("prop_strat_wilson output matches equivalent SAS function output", {
@@ -203,18 +199,15 @@ testthat::test_that("prop_strat_wilson output matches equivalent SAS function ou
   wilson <- prop_strat_wilson(rsp, strata, weights)
   result <- wilson$conf_int
 
-  expected <- c(lower = 0.4867, upper = 0.7186)
-
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_proportion returns right result", {
   result <- s_proportion(c(1, 0, 1, 0))
-  expected <- list(
-    n_prop = formatters::with_label(c(2, .5), "Responders"),
-    prop_ci = formatters::with_label(c(0, 100), "95% CI (Wald, with correction)")
-  )
-  testthat::expect_equal(expected, result, tolerance = 1e-4, ignore_attr = FALSE)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`s_proportion` works with Jeffreys CI", {
@@ -225,15 +218,9 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
     conf_level = 0.9,
     method = "jeffreys"
   )
-  # according to SAS.
-  expected <- list(
-    n_prop = formatters::with_label(c(4, 4 / 6), "Responders"),
-    prop_ci = formatters::with_label(
-      c(34.0802, 89.5730),
-      label = "90% CI (Jeffreys)"
-    )
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001, ignore_attr = FALSE)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Corner case: Only responders.
   rsp <- c(TRUE, TRUE, TRUE, TRUE)
@@ -242,15 +229,9 @@ testthat::test_that("`s_proportion` works with Jeffreys CI", {
     conf_level = 0.95,
     method = "jeffreys"
   )
-  # according to SAS.
-  expected <- list(
-    n_prop = formatters::with_label(c(4, 1), "Responders"),
-    prop_ci = formatters::with_label(
-      c(55.5237, 100),
-      label = "95% CI (Jeffreys)"
-    )
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001, ignore_attr = FALSE)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
@@ -261,15 +242,9 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
     conf_level = 0.9,
     method = "agresti-coull"
   )
-  # according to SAS.
-  expected <- list(
-    n_prop = formatters::with_label(c(4, 4 / 6), "Responders"),
-    prop_ci = formatters::with_label(
-      c(34.3585, 88.6154),
-      label = "90% CI (Agresti-Coull)"
-    )
-  )
-  testthat::expect_equal(result, expected, tolerance = 0.0001, ignore_attr = FALSE)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Edge case: Only responders.
   rsp <- c(TRUE, TRUE, TRUE, TRUE)
@@ -278,21 +253,14 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
     conf_level = 0.95,
     method = "agresti-coull"
   )
-  # according to SAS.
-  expected <- list(
-    n_prop = formatters::with_label(c(4, 1), "Responders"),
-    prop_ci = formatters::with_label(
-      c(45.4050, 100),
-      label = "95% CI (Agresti-Coull)"
-    )
-  )
-  # Small additional difference acknowledged here.
-  testthat::expect_equal(result, expected, tolerance = 0.00011, ignore_attr = FALSE)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
   # Data loading and processing
-  anl <- adrs_raw %>%
+  anl <- tern_ex_adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
     dplyr::mutate(is_rsp = AVALC %in% c("CR", "PR"))
 
@@ -308,23 +276,19 @@ testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
     ) %>%
     build_table(anl)
   result <- get_formatted_cells(result)
-  expected <- rbind(
-    c("133.00 (99.25%)", "127.00 (94.78%)", "131.00 (99.24%)", "391.00 (97.75%)"),
-    c("(95.8940, 99.8681)", "(89.6097, 97.4468)", "(95.8337, 99.8661)", "(95.7797, 98.8118)")
-  )
 
-  testthat::expect_equal(result, expected, tolerance = 0.0001)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `rtables`", {
   set.seed(1)
-
   # Data loading and processing
-  anl <- adrs_raw %>%
+  anl <- tern_ex_adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
     dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
 
-  result <- basic_table() %>%
+  suppressWarnings(result <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
     add_overall_col(label = "All") %>%
@@ -335,50 +299,42 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
       variables = list(strata = c("SEX", "REGION1")),
       .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
     ) %>%
-    build_table(anl)
+    build_table(anl))
 
   result <- get_formatted_cells(result)
 
-  expected <- rbind(
-    c("25.00 (18.66%)", "23.00 (17.16%)", "22.00 (16.67%)", "70.00 (17.50%)"),
-    c("(10.7692, 23.5028)", "(8.5334, 24.7046)", "(9.6237, 23.1385)", "(12.8136, 19.6358)")
-  )
-
-  testthat::expect_equal(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`estimate_proportion` and strat_wilson with equal weights
-                    and specific number of interactions is compatible with `rtables`", {
-  set.seed(1)
+testthat::test_that(
+  "`estimate_proportion` and strat_wilson with equal weights and specific number of interactions works with `rtables`",
+  {
+    set.seed(1)
 
-  # Data loading and processing
-  anl <- adrs_raw %>%
-    dplyr::filter(PARAMCD == "BESRSPI") %>%
-    dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
+    # Data loading and processing
+    anl <- tern_ex_adrs %>%
+      dplyr::filter(PARAMCD == "BESRSPI") %>%
+      dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
 
-  # Changing other variables (weights and max_nt)
-  n_ws <- length(unique(anl$SEX)) * length(unique(anl$REGION1))
-  result <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    add_colcounts() %>%
-    add_overall_col(label = "All") %>%
-    estimate_proportion(
-      vars = "DTHFL",
-      conf_level = 0.95,
-      method = "strat_wilson",
-      variables = list(strata = c("SEX", "REGION1")),
-      weights = rep(1 / n_ws, n_ws),
-      max_iterations = 1,
-      .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
-    ) %>%
-    build_table(anl)
+    # Changing other variables (weights and max_nt)
+    n_ws <- length(unique(anl$SEX)) * length(unique(anl$STRATA1))
+    result <- basic_table() %>%
+      split_cols_by(var = "ARM") %>%
+      add_colcounts() %>%
+      add_overall_col(label = "All") %>%
+      estimate_proportion(
+        vars = "DTHFL",
+        conf_level = 0.95,
+        method = "strat_wilson",
+        variables = list(strata = c("SEX", "STRATA1")),
+        weights = rep(1 / n_ws, n_ws),
+        max_iterations = 1,
+        .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
+      ) %>%
+      build_table(anl) %>%
+      get_formatted_cells()
 
-  result <- get_formatted_cells(result)
-
-  expected <- rbind(
-    c("25.00 (18.66%)", "23.00 (17.16%)", "22.00 (16.67%)", "70.00 (17.50%)"),
-    c("(13.0819, 37.5306)", "(13.0280, 40.8632)", "(8.5252, 30.6413)", "(14.1413, 27.6395)")
-  )
-
-  testthat::expect_equal(result, expected)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 })

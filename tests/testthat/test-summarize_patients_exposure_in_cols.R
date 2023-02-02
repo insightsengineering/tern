@@ -18,11 +18,9 @@ testthat::test_that("s_count_patients_sum_exposure works as expected", {
   df <- anl_local
   adsl <- adsl_local
   result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl)) # nolintr
-  expected <- list(
-    n_patients = formatters::with_label(c(12, 1), "Total patients numbers/person time"),
-    sum_exposure = formatters::with_label(35, "Total patients numbers/person time")
-  )
-  testthat::expect_equal(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 
@@ -37,19 +35,8 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with default
     summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE) %>%
     build_table(df = df, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "Total patients numbers/person time", "Female",
-      "Male", "ARM A", "Patients", "6 (100.0%)", "6 (100.0%)", "0 (0.0%)",
-      "ARM A", "Person time", "16", "16", "0", "ARM B", "Patients",
-      "6 (100.0%)", "0 (0.0%)", "6 (100.0%)", "ARM B", "Person time", "19",
-      "0", "19", "Total", "Patients", "12 (100.0%)", "6 (50.0%)", "6 (50.0%)",
-      "Total", "Person time", "35", "16", "19"
-    ),
-    .Dim = c(5L, 7L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("summarize_patients_exposure_in_cols works well with custom arguments", {
@@ -72,21 +59,12 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with custom 
     ) %>%
     build_table(df = df, alt_counts_df = adsl)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "xyz", "Female", "Male", "ARM A", "Person time",
-      "16", "16", "0", "ARM B", "Person time", "19", "0", "19", "Total",
-      "Person time", "35", "16", "19"
-    ),
-    .Dim = 5:4
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that(
-  "summarize_patients_exposure_in_cols returns the correct column label when there is no variable split
-          and when just one statistics is shown",
+  "summarize_patients_exposure_in_cols returns correct column label when no variable split and only one statistic",
   code = {
     df <- anl_local
     adsl <- adsl_local
@@ -101,7 +79,8 @@ testthat::test_that(
       build_table(df = df, alt_counts_df = adsl)
 
     invisible(capture.output(result <- col_paths_summary(table)$label))
-    expected_string <- "Patients"
-    testthat::expect_identical(result, expected_string)
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )

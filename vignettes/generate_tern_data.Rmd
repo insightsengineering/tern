@@ -138,7 +138,8 @@ generate_adsl <- function(N = 200) { # nolint
   # associate sites with countries and regions
   tern_ex_adsl <- adsl %>%
     dplyr::mutate(
-      REGION1 = dplyr::case_when(
+      SITEID = paste0(.data$COUNTRY, "-", .data$SITEID),
+      REGION1 = factor(dplyr::case_when(
         COUNTRY %in% c("NGA") ~ "Africa",
         COUNTRY %in% c("CHN", "JPN", "PAK") ~ "Asia",
         COUNTRY %in% c("RUS") ~ "Eurasia",
@@ -146,7 +147,7 @@ generate_adsl <- function(N = 200) { # nolint
         COUNTRY %in% c("CAN", "USA") ~ "North America",
         COUNTRY %in% c("BRA") ~ "South America",
         TRUE ~ as.character(NA)
-      ),
+      )),
       SAFFL = factor("Y")
     ) %>%
     dplyr::mutate(USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-"))
@@ -707,7 +708,10 @@ generate_adrs <- function(adsl = tern_ex_adsl) {
         )
     }) %>%
     Reduce(rbind, .) %>%
-    dplyr::mutate(AVALC = factor(.data$AVALC, levels = names(param_codes)))
+    dplyr::mutate(
+      AVALC = factor(.data$AVALC, levels = names(param_codes)),
+      DTHFL = factor(sample(c("Y", "N"), nrow(.), replace = TRUE, prob = c(1, 0.8)))
+    )
 
   adrs <- var_relabel(
     adrs,

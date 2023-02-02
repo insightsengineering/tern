@@ -11,7 +11,7 @@ raw_data <- data.frame(
   rsp = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)
 )
 
-adrs_local <- adrs_raw %>%
+adrs_local <- tern_ex_adrs %>%
   dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
   dplyr::mutate(
     RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
@@ -25,37 +25,44 @@ testthat::test_that("h_step_window works as expected for percentiles", {
   control <- control_step(use_percentile = TRUE, num_points = 5L, bandwidth = 0.2)
   result <- testthat::expect_silent(h_step_window(x = x, control = control))
   testthat::expect_type(result, "list")
-  testthat::expect_named(result, c("sel", "interval"))
+
+  res <- testthat::expect_silent(names(result))
+  testthat::expect_snapshot(res)
+
   sel <- result$sel
   testthat::expect_true(is.matrix(sel))
   testthat::expect_identical(dim(sel), c(length(x), control$num_points))
-  testthat::expect_identical(mode(sel), "logical")
+
+  res <- testthat::expect_silent(mode(sel))
+  testthat::expect_snapshot(res)
+
   interval <- result$interval
   testthat::expect_true(is.matrix(interval))
-  testthat::expect_identical(
-    colnames(interval),
-    c(
-      "Percentile Center", "Percentile Lower", "Percentile Upper",
-      "Interval Center", "Interval Lower", "Interval Upper"
-    )
-  )
   testthat::expect_identical(nrow(interval), control$num_points)
+
+  res <- testthat::expect_silent(colnames(interval))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(nrow(interval))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_step_window works as expected for actual biomarker values", {
   x <- -5:10
   control <- control_step(use_percentile = FALSE, num_points = 5L, bandwidth = 3)
   result <- testthat::expect_silent(h_step_window(x = x, control = control))
+
+  res <- testthat::expect_silent(names(result))
+  testthat::expect_snapshot(res)
   testthat::expect_type(result, "list")
-  testthat::expect_named(result, c("sel", "interval"))
+
   sel <- result$sel
   testthat::expect_true(all(colSums(sel) %in% (control$bandwidth * 2 + c(0L, 1L))))
   interval <- result$interval
+
+  res <- testthat::expect_silent(colnames(interval))
+  testthat::expect_snapshot(res)
   testthat::expect_true(is.matrix(interval))
-  testthat::expect_identical(
-    colnames(interval),
-    c("Interval Center", "Interval Lower", "Interval Upper")
-  )
 })
 
 testthat::test_that("h_step_window also works for bandwidth `NULL`", {
@@ -113,7 +120,8 @@ testthat::test_that("h_step_trt_effect works for Cox models with interaction", {
   est_manual <- sum(stats::coef(mod)[c("armcdB", "age", "armcdB:age")] * (c(1, 50, 50) - c(0, 50, 0)))
   testthat::expect_equal(result["est"], est_manual, ignore_attr = TRUE)
   # Regression test for se.
-  testthat::expect_equal(result["se"], 1.322242, tolerance = 1e-5, ignore_attr = TRUE)
+  res <- testthat::expect_silent(result["se"])
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_step_trt_effect works for Cox models with strata", {
@@ -181,7 +189,8 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
   est_manual <- sum(stats::coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
   testthat::expect_equal(result["est"], est_manual, ignore_attr = TRUE)
   # Regression test for se.
-  testthat::expect_equal(result["se"], 0.2153840, tolerance = 1e-5, ignore_attr = TRUE)
+  res <- testthat::expect_silent(result["se"])
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_step_trt_effect works for conditional logistic regression without interaction", {
@@ -219,7 +228,8 @@ testthat::test_that("h_step_trt_effect works for conditional logistic regression
   est_manual <- sum(stats::coef(mod)[c("ARMBINARM B", "AGE", "ARMBINARM B:AGE")] * (c(1, 50, 50) - c(0, 50, 0)))
   testthat::expect_equal(result["est"], est_manual, ignore_attr = TRUE)
   # Regression test for se.
-  testthat::expect_equal(result["se"], 0.2100507, tolerance = 1e-5, ignore_attr = TRUE)
+  res <- testthat::expect_silent(result["se"])
+  testthat::expect_snapshot(res)
 })
 
 # h_step_survival_formula ----
@@ -287,9 +297,15 @@ testthat::test_that("h_step_survival_est works as expected", {
     x = age_vals
   ))
   testthat::expect_true(is.matrix(result))
-  testthat::expect_identical(dim(result), c(3L, 6L))
-  testthat::expect_identical(colnames(result), c("n", "events", "loghr", "se", "ci_lower", "ci_upper"))
-  testthat::expect_equal(result[, "loghr"], c(1.075486, 1.082507, 1.089528), tolerance = 1e-6)
+
+  res <- testthat::expect_silent(dim(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(colnames(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(result[, "loghr"])
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_step_survival_est gives a readable warning when fitting warnings occur", {
@@ -406,10 +422,18 @@ testthat::test_that("h_step_rsp_est works as expected without strata", {
     x = age_vals
   ))
   testthat::expect_true(is.matrix(result))
-  testthat::expect_identical(dim(result), c(3L, 5L))
-  testthat::expect_identical(colnames(result), c("n", "logor", "se", "ci_lower", "ci_upper"))
-  testthat::expect_equal(result[, "logor"], c(2.008012, 1.025773, 0.043535), tolerance = 1e-6)
-  testthat::expect_equal(result[, "n"], rep(sum(subset), 3L))
+
+  res <- testthat::expect_silent(dim(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(colnames(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(result[, "logor"])
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(result[, "n"])
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_step_rsp_est works as expected with strata", {
@@ -435,10 +459,18 @@ testthat::test_that("h_step_rsp_est works as expected with strata", {
     x = age_vals
   ))
   testthat::expect_true(is.matrix(result))
-  testthat::expect_identical(dim(result), c(3L, 5L))
-  testthat::expect_identical(colnames(result), c("n", "logor", "se", "ci_lower", "ci_upper"))
-  testthat::expect_equal(result[, "logor"], c(1.134057, 0.511102, -0.111853), tolerance = 1e-6)
-  testthat::expect_equal(result[, "n"], rep(sum(subset), 3L))
+
+  res <- testthat::expect_silent(dim(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(colnames(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(result[, "logor"])
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(result[, "n"])
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_step_rsp_est gives a readable warning when fitting warnings occur", {

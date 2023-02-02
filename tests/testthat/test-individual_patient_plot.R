@@ -1,4 +1,4 @@
-adlb <- adlb_raw %>%
+adlb <- tern_ex_adlb %>%
   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
   slice(1:36)
 

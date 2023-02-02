@@ -18,13 +18,9 @@ testthat::test_that("s_count_patients_and_multiple_events works as expected", {
       fatal = c(AESDTH = "Y")
     )
   )
-  expected <- list(
-    unique = formatters::with_label(4, "counts"),
-    all = formatters::with_label(7, "counts"),
-    serious = formatters::with_label(7, "counts"),
-    fatal = formatters::with_label(4, "counts")
-  )
-  testthat::expect_equal(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_patients_and_multiple_events can have empty stats if requested", {
@@ -38,13 +34,9 @@ testthat::test_that("s_count_patients_and_multiple_events can have empty stats i
     ),
     empty_stats = c("all", "serious")
   )
-  expected <- list(
-    unique = formatters::with_label(4, "counts"),
-    all = formatters::with_label(character(), "counts"),
-    serious = formatters::with_label(character(), "counts"),
-    fatal = formatters::with_label(4, "counts")
-  )
-  testthat::expect_equal(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("summarize_patients_events_in_cols works well with default arguments", {
@@ -59,16 +51,8 @@ testthat::test_that("summarize_patients_events_in_cols works well with default a
     ) %>%
     build_table(df)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "counts", "Patients (All)", "4", "Events (All)",
-      "7", "Events (Related)", "5", "fatal", "4", "fatal_related",
-      "4"
-    ),
-    .Dim = c(2L, 6L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("summarize_patients_events_in_cols works well with custom arguments", {
@@ -87,10 +71,6 @@ testthat::test_that("summarize_patients_events_in_cols works well with custom ar
     ) %>%
     build_table(df)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c("", "bla", "Related", "5", "All", ""),
-    .Dim = c(2L, 3L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -22,11 +22,8 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for defaul
     dplyr::group_by(PARAM) %>%
     dplyr::arrange(ANRIND, .by_group = TRUE)
 
-  expected <- data.frame(
-    PARAM = c(rep("ALT", 3), rep("CPR", 3)),
-    ANRIND = rep(c("HIGH", "LOW", "NORMAL"), 2)
-  )
-  testthat::expect_identical(as.matrix(result), as.matrix(expected))
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_map_for_count_abnormal returns the correct map for range method with healthy single input", {
@@ -46,11 +43,8 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for range 
     dplyr::group_by(PARAM) %>%
     dplyr::arrange(ANRIND, .by_group = TRUE)
 
-  expected <- data.frame(
-    PARAM = c(rep("ALT", 3), rep("CPR", 3)),
-    ANRIND = rep(c("HIGH", "LOW", "NORMAL"), 2)
-  )
-  testthat::expect_identical(as.matrix(result), as.matrix(expected))
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 # for default method, if LOW LOW and HIGH HIGH are not observed in the input dataset, they are dropped
@@ -70,11 +64,8 @@ testthat::test_that(
       dplyr::group_by(PARAM) %>%
       dplyr::arrange(ANRIND, .by_group = TRUE)
 
-    expected <- data.frame(
-      PARAM = c(rep("ALT", 3), rep("CPR", 3)),
-      ANRIND = rep(c("HIGH", "LOW", "NORMAL"), 2)
-    )
-    testthat::expect_identical(as.matrix(result), as.matrix(expected))
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -99,11 +90,8 @@ testthat::test_that(
       dplyr::group_by(PARAM) %>%
       dplyr::arrange(ANRIND, .by_group = TRUE)
 
-    expected <- data.frame(
-      PARAM = c(rep("ALT", 5), rep("CPR", 5)),
-      ANRIND = rep(c("HIGH", "HIGH HIGH", "LOW", "LOW LOW", "NORMAL"), 2)
-    )
-    testthat::expect_identical(as.matrix(result), as.matrix(expected))
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -128,11 +116,8 @@ testthat::test_that(
       dplyr::group_by(PARAM) %>%
       dplyr::arrange(ANRIND, .by_group = TRUE)
 
-    expected <- data.frame(
-      PARAM = c(rep("ALT", 4), rep("CPR", 3)),
-      ANRIND = c(c("HIGH", "LOW", "LOW LOW", "NORMAL"), c("HIGH", "LOW", "NORMAL"))
-    )
-    testthat::expect_identical(as.matrix(result), as.matrix(expected))
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -159,11 +144,8 @@ testthat::test_that(
       dplyr::group_by(PARAM) %>%
       dplyr::arrange(ANRIND, .by_group = TRUE)
 
-    expected <- data.frame(
-      PARAM = c(rep("ALT", 3), rep("CPR", 3)),
-      ANRIND = rep(c("HIGH", "LOW", "NORMAL"), 2)
-    )
-    testthat::expect_identical(as.matrix(result), as.matrix(expected))
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )
 
@@ -189,10 +171,7 @@ testthat::test_that(
       dplyr::group_by(PARAM) %>%
       dplyr::arrange(ANRIND, .by_group = TRUE)
 
-    expected <- data.frame(
-      PARAM = c(rep("ALT", 2), rep("CPR", 2)),
-      ANRIND = c("HIGH", "NORMAL", "LOW", "NORMAL")
-    )
-    testthat::expect_identical(as.matrix(result), as.matrix(expected))
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
   }
 )

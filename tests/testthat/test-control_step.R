@@ -1,12 +1,8 @@
 testthat::test_that("control_step works with customized parameters", {
   result <- control_step(biomarker = 1:10, use_percentile = FALSE)
-  expected <- list(
-    use_percentile = FALSE,
-    bandwidth = 2.25,
-    degree = 0L,
-    num_points = 39L
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("control_step fails wrong inputs", {

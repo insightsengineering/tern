@@ -1,4 +1,4 @@
-# tern 0.7.10.9037
+# tern 0.7.10.9038
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -23,6 +23,8 @@
 * Created vignette which saves cached synthetic CDISC dataset files to the `data/` folder.
 * Added cached synthetic datasets to `data/` folder to use in tests/examples instead of `scda` data.
 * Updated examples to use datasets from the `tern` package instead of `scda` datasets.
+* Replaced all applicable tests with snapshot testing.
+* Updated all (non-table) tests to use `tern` data.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
