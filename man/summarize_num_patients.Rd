@@ -32,6 +32,7 @@ summarize_num_patients(
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
+  risk_diff = NULL,
   ...
 )
 
@@ -44,6 +45,7 @@ analyze_num_patients(
     "Number of events"),
   show_labels = c("default", "visible", "hidden"),
   indent_mod = 0L,
+  risk_diff = NULL,
   ...
 )
 }

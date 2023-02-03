@@ -62,7 +62,7 @@ count_patients_with_flags(
   flag_variables,
   var_labels = var,
   show_labels = "hidden",
-  risk_diff_col = FALSE,
+  risk_diff = NULL,
   ...,
   table_names = paste0("tbl_flags_", var),
   .stats = "count_fraction",

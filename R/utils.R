@@ -438,17 +438,3 @@ clogit_with_tryCatch <- function(formula, data, ...) { # nolint
     error = function(e) stop("model not built successfully with survival::clogit")
   )
 }
-
-#' Risk Difference
-#' @export
-risk_diff <- function(n_frac_x, n_frac_y, flag_variables, .indent_mods = .indent_mods) {
-  rd_list <- lapply(flag_variables, function (flag) {
-    p1 <- n_frac_x$frac[[flag]]
-    p2 <- n_frac_y$frac[[flag]]
-    rd_ci <- p1 - p2 + c(-1, 1) * qnorm(0.975) *
-      sqrt(p1 * (1 - p1) / n_frac_x$n[[flag]] + p2 * (1 - p2) / n_frac_y$n[[flag]])
-    c(p1 - p2, rd_ci) * 100
-  })
-  names(rd_list) <- flag_variables
-  in_rows(.list = rd_list, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
-}

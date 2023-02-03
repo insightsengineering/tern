@@ -157,6 +157,7 @@ count_occurrences <- function(lyt,
                               vars,
                               var_labels = vars,
                               show_labels = "hidden",
+                              risk_diff = NULL,
                               ...,
                               table_names = vars,
                               .stats = "count_fraction",
@@ -172,10 +173,28 @@ count_occurrences <- function(lyt,
     .ungroup_stats = .stats
   )
 
+  afun_risk_diff <- function(df, .var, .N_col, .spl_context) {
+    n_spl <- length(.spl_context$split)
+    if (.spl_context$cur_col_n[n_spl] == sum(.spl_context[[risk_diff$arm_x]][[n_spl]], .spl_context[[risk_diff$arm_y]][[n_spl]])) {
+      N_col_x <- round(.N_col/2)
+      N_col_y <- round(.N_col/2)
+      s_x <- s_count_occurrences(
+        df = df[df$ARM == risk_diff$arm_x, ], .var = .var, .df_row = df, .N_col = N_col_x, denom = "N_col", ...)
+      s_y <- s_count_occurrences(
+        df = df[df$ARM == risk_diff$arm_y, ], .var = .var, .df_row = df, .N_col = N_col_y, denom = "N_col", ...)
+      rd_ci <- stat_risk_diff_ci(frac_x = lapply(s_x["count_fraction"]$count_fraction, `[`, 2),
+                                 frac_y = lapply(s_y["count_fraction"]$count_fraction, `[`, 2),
+                                 N_x = N_col_x, N_y = N_col_y, row_names = names(s_x$count))
+      in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
+    } else {
+      afun(df = df, .var = .var, .df_row = df, .N_col = .N_col, denom = "N_col")
+    }
+  }
+
   analyze(
     lyt = lyt,
     vars = vars,
-    afun = afun,
+    afun = ifelse(is.null(risk_diff), afun, afun_risk_diff),
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
