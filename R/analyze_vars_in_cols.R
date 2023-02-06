@@ -95,7 +95,7 @@ analyze_vars_in_cols <- function(lyt,
                                    sd = "SD",
                                    
                                    se="SE",
-                                   cv = "CV (%)",
+                                   cv="CV (%)",
                                    geom_cv = "CV % Geometric Mean"
                                  ),
                                  labelstr = " ",
