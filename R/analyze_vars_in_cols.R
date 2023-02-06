@@ -90,7 +90,8 @@ analyze_vars_in_cols <- function(lyt,
                                  ),
                                  .labels = c(
                                    n = "n",
-                                   mean = "Mean",
+                                  
+                                           mean="Mean",
                                    sd = "SD",
                                    se = "SE",
                                    cv = "CV (%)",
