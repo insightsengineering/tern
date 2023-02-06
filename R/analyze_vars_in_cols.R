@@ -80,7 +80,7 @@ NULL
 analyze_vars_in_cols <- function(lyt,
                                  vars,
                                  ...,
-                                 .stats = c(
+                                 .stats=c(
                                    "n",
                                    "mean",
                                    "sd",
