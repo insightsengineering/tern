@@ -47,12 +47,13 @@ NULL
 #' )
 #'
 #' df <- df %>%
-#'   mutate(abn_dir = factor(case_when(
-#'     ANRIND == "LOW LOW" ~ "Low",
-#'     ANRIND == "HIGH HIGH" ~ "High",
-#'     TRUE ~ ""
-#'   ),
-#'   levels = c("Low", "High")
+#'   mutate(abn_dir = factor(
+#'     case_when(
+#'       ANRIND == "LOW LOW" ~ "Low",
+#'       ANRIND == "HIGH HIGH" ~ "High",
+#'       TRUE ~ ""
+#'     ),
+#'     levels = c("Low", "High")
 #'   ))
 #'
 #' # Select only post-baseline records.
@@ -80,10 +81,7 @@ NULL
 #' @keywords internal
 s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1",
-                                       
                                        .spl_context,
-
-
                                        category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
                                        variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")) {
   checkmate::assert_string(.var)
