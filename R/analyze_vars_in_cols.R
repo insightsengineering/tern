@@ -80,7 +80,7 @@ NULL
 analyze_vars_in_cols <- function(lyt,
                                  vars,
                                  ...,
-                                 .stats=c(
+                                 .stats = c(
                                    "n",
                                    "mean",
                                    "sd",
@@ -90,13 +90,11 @@ analyze_vars_in_cols <- function(lyt,
                                  ),
                                  .labels = c(
                                    n = "n",
-                                  
-                                           mean="Mean",
+                                   mean = "Mean",
                                    sd = "SD",
-                                   
-                                   se="SE",
-                                   cv="CV (%)",
-                                   geom_cv =  "CV % Geometric Mean"
+                                   se = "SE",
+                                   cv = "CV (%)",
+                                   geom_cv = "CV % Geometric Mean"
                                  ),
                                  labelstr = " ",
                                  nested = TRUE,

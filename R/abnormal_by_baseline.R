@@ -40,7 +40,6 @@ NULL
 #'
 #' @export
 d_count_abnormal_by_baseline <- function(abnormal) {
-  
   null_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
   not_abn_name <- paste("Not", tolower(abnormal), "baseline status")
   abn_name <- paste(null_name, "baseline status")
