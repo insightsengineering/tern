@@ -4,11 +4,9 @@ testthat::test_that("s_compare works for numeric", {
     .ref_group = stats::rnorm(5, -5, 1),
     .in_ref_col = FALSE
   ))
-  testthat::expect_named(result, c(
-    "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei",
-    "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr",
-    "range", "min", "max", "cv", "geom_mean", "geom_mean_ci", "geom_cv", "pval"
-  ))
+
+  res <- testthat::expect_silent(names(result))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for numeric does not give p-value when not at least 2 values in each group", {
@@ -17,15 +15,21 @@ testthat::test_that("s_compare for numeric does not give p-value when not at lea
     .ref_group = 1,
     .in_ref_col = FALSE
   ))
-  testthat::expect_identical(result$pval, character())
+
+  res <- testthat::expect_silent(result$pval)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for factor works in usual case", {
   x <- factor(c("a", "a", "b", "c", "a"))
   y <- factor(c("a", "b", "c"))
   result <- testthat::expect_silent(s_compare(x = x, .ref_group = y, .in_ref_col = FALSE))
-  testthat::expect_named(result, c("n", "count", "count_fraction", "n_blq", "pval"))
-  testthat::expect_equal(result$pval, 0.7659, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(names(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(result$pval)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for factor handles explicit NAs as expected", {
@@ -38,7 +42,9 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     .in_ref_col = FALSE,
     na.rm = TRUE
   ))
-  testthat::expect_equal(result_without_na$pval, 0.7659, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result_without_na$pval)
+  testthat::expect_snapshot(res)
 
   result_with_na <- testthat::expect_silent(s_compare(
     x = x,
@@ -46,7 +52,9 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     .in_ref_col = FALSE,
     na.rm = FALSE
   ))
-  testthat::expect_equal(result_with_na$pval, 0.9063, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result_with_na$pval)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for character works as expected", {
@@ -56,21 +64,18 @@ testthat::test_that("s_compare for character works as expected", {
     result <- s_compare(x, .ref_group = y, .in_ref_col = FALSE, .var = "x"),
     "automatically converting character variable x to factor"
   ))
-  expected <- list(
-    n = 5L,
-    count = list(a = 3L, b = 1L, c = 1L),
-    count_fraction = list(a = c(3, 0.6), b = c(1, 0.2), c = c(1, 0.2)),
-    n_blq = 0L,
-    pval = 0.7659
-  )
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for logical works as expected", {
   x <- c(TRUE, FALSE, TRUE, TRUE)
   y <- c(FALSE, FALSE, TRUE)
   result <- testthat::expect_silent(s_compare(x, .ref_group = y, .in_ref_col = FALSE))
-  testthat::expect_equal(result$pval, 0.2702, tolerance = 1e-3)
+
+  res <- testthat::expect_silent(result$pval)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_compare for logical handles NAs as FALSE if not removed", {
@@ -90,20 +95,9 @@ testthat::test_that("compare_vars works with default settings in rtables layout 
     split_cols_by("ARMCD", ref_group = "ARM B") %>%
     compare_vars(c("AGE", "SEX"))
   result <- build_table(lyt, tern_ex_adsl)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "AGE", "n", "Mean (SD)", "p-value (t-test)",
-      "SEX", "n", "F", "M", "p-value (chi-squared test)",
-      "ARM B", "", "73", "35.8 (7.1)", "", "", "73", "40 (54.8%)",
-      "33 (45.2%)", "", "ARM A", "", "69", "34.1 (6.8)",
-      "0.1446", "", "69", "38 (55.1%)", "31 (44.9%)",
-      "1.0000", "ARM C", "", "58", "36.1 (7.4)", "0.8212", "", "58",
-      "32 (55.2%)", "26 (44.8%)", "1.0000"
-    ),
-    .Dim = c(10L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("compare_vars works with custom settings", {
@@ -116,18 +110,7 @@ testthat::test_that("compare_vars works with custom settings", {
       .labels = c(mean_sd = "Mean, SD")
     )
   result <- build_table(lyt, df = tern_ex_adsl)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "AGE", "Mean, SD", "p-value (t-test)", "SEX",
-      "F", "M", "p-value (chi-squared test)",
-      "ARM C", "", "36.1, 7.4", "", "", "32.00 (55.17%)", "26.00 (44.83%)",
-      "", "ARM A", "", "34.1, 6.8", "0.1176",
-      "", "38.00 (55.07%)", "31.00 (44.93%)", "1.0000",
-      "ARM B", "", "35.8, 7.1", "0.8212", "", "40.00 (54.79%)", "33.00 (45.21%)",
-      "1.0000"
-    ),
-    .Dim = c(8L, 4L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

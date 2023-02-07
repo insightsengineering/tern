@@ -13,32 +13,29 @@ testthat::test_that("h_row_first_values works as expected", {
   sub_tab <- tbl_example[5, ]
 
   # Selected table is correct
-  testthat::expect_identical(
-    to_string_matrix(sub_tab, with_spaces = TRUE),
-    c(
-      "      A: Drug X   B: Placebo   C: Combination",
-      "—————————————————————————————————————————————",
-      "BRA   1 (3.7%)     4 (20%)        1 (3.2%)   "
-    )
-  )
+  res <- testthat::expect_silent(sub_tab)
+  testthat::expect_snapshot(res)
 
   # Extract data row
   table_row <- collect_leaves(sub_tab)[[1]]
 
   # Extract all first values
   result <- h_row_first_values(table_row)
-  expected <- c("A: Drug X" = 1, "B: Placebo" = 4, "C: Combination" = 1)
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Extract first values by specific column names
   result <- h_row_first_values(table_row, col_names = c("B: Placebo", "C: Combination"))
-  expected <- c("B: Placebo" = 4, "C: Combination" = 1)
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Extract first values by specific column indices
   result <- h_row_first_values(table_row, col_indices = c(1L, 3L))
-  expected <- c("A: Drug X" = 1, "C: Combination" = 1)
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Error if both are used
   testthat::expect_error(h_row_first_values(table_row, col_indices = c(1L, 3L), col_names = c("B: Placebo")))
@@ -47,56 +44,51 @@ testthat::test_that("h_row_first_values works as expected", {
 testthat::test_that("h_row_counts works as expected", {
   tab <- tbl_example
   sub_tab <- tab[5, ]
-  testthat::expect_identical(
-    to_string_matrix(sub_tab),
-    structure(
-      c("", "BRA", "A: Drug X", "1 (3.7%)", "B: Placebo", "4 (20%)", "C: Combination", "1 (3.2%)"),
-      .Dim = c(2L, 4L)
-    )
-  )
+
+  res <- testthat::expect_silent(sub_tab)
+  testthat::expect_snapshot(res)
+
   table_row <- collect_leaves(sub_tab)[[1]]
   result <- h_row_counts(table_row, col_names = c("B: Placebo", "C: Combination"))
-  expected <- c("B: Placebo" = 4, "C: Combination" = 1)
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_row_counts returns NA with empty analysis row", {
   tab <- tbl_with_empty
   sub_tab <- tab[3, ]
-  testthat::expect_identical(
-    to_string_matrix(sub_tab),
-    structure(
-      c("", "empty_row", "A: Drug X", "", "B: Placebo", "", "C: Combination", ""),
-      .Dim = c(2L, 4L)
-    )
-  )
+
+  res <- testthat::expect_silent(sub_tab)
+  testthat::expect_snapshot(res)
+
   table_row <- collect_leaves(sub_tab)[[1]]
   result <- h_row_counts(table_row, col_names = c("B: Placebo", "C: Combination"))
-  expected <- c(NA_real_, NA_real_)
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_row_fractions works as expected", {
   tab <- tbl_example
   sub_tab <- tab[5, ]
-  testthat::expect_identical(
-    to_string_matrix(sub_tab),
-    structure(
-      c("", "BRA", "A: Drug X", "1 (3.7%)", "B: Placebo", "4 (20%)", "C: Combination", "1 (3.2%)"),
-      .Dim = c(2L, 4L)
-    )
-  )
+
+  res <- testthat::expect_silent(sub_tab)
+  testthat::expect_snapshot(res)
+
   table_row <- collect_leaves(sub_tab)[[1]]
   result <- h_row_fractions(table_row, c("B: Placebo", "C: Combination"))
-  expected <- c("B: Placebo" = 0.2000, "C: Combination" = 0.03226)
-  testthat::expect_equal(result, expected, tolerance = 0.001)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_col_counts works as expected", {
   tab <- tbl_example
   result <- h_col_counts(tab, c("B: Placebo", "C: Combination"))
-  expected <- c("B: Placebo" = 106L, "C: Combination" = 129L)
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("is_leaf_table works as expected", {

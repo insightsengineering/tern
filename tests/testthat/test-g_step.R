@@ -31,19 +31,13 @@ testthat::test_that("g_step works with custom settings", {
 testthat::test_that("tidy.step works as expected for survival STEP results", {
   result <- broom::tidy(step_matrix)
   testthat::expect_true(tibble::is_tibble(result))
-  testthat::expect_named(
-    result,
-    c(
-      "Percentile Center", "Percentile Lower", "Percentile Upper",
-      "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
-      "Hazard Ratio", "se", "ci_lower", "ci_upper"
-    )
-  )
-  testthat::expect_named(
-    attributes(result),
-    c("class", "row.names", "names", "estimate", "biomarker", "ci"),
-    ignore.order = TRUE
-  )
+
+  res <- testthat::expect_silent(names(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(sort(names(attributes(result))))
+  testthat::expect_snapshot(res)
+
   testthat::expect_equal(result[["Hazard Ratio"]], exp(step_matrix[, "loghr"]))
   testthat::expect_equal(result$ci_lower, exp(step_matrix[, "ci_lower"]))
 })
@@ -66,19 +60,13 @@ testthat::test_that("tidy.step works as expected for response STEP results", {
   )
   result <- broom::tidy(step_matrix)
   testthat::expect_true(tibble::is_tibble(result))
-  testthat::expect_named(
-    result,
-    c(
-      "Percentile Center", "Percentile Lower", "Percentile Upper",
-      "Interval Center", "Interval Lower", "Interval Upper", "n",
-      "Odds Ratio", "se", "ci_lower", "ci_upper"
-    )
-  )
-  testthat::expect_named(
-    attributes(result),
-    c("class", "row.names", "names", "estimate", "biomarker", "ci"),
-    ignore.order = TRUE
-  )
+
+  res <- testthat::expect_silent(names(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(sort(names(attributes(result))))
+  testthat::expect_snapshot(res)
+
   testthat::expect_equal(result[["Odds Ratio"]], exp(step_matrix[, "logor"]))
   testthat::expect_equal(result$ci_lower, exp(step_matrix[, "ci_lower"]))
 })

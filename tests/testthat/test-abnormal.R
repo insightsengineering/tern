@@ -20,24 +20,8 @@ testthat::test_that("s_count_abnormal works with healthy input and default argum
     abnormal = list(high = "HIGH", low = "LOW")
   )
 
-  expected_result <- split(numeric(0), as.factor(c("low", "high")))
-  expected_result[["low"]] <- formatters::with_label(
-    label = "low",
-    c(
-      num = 1L, # Patient 1 had LOW during treatment.
-      denom = 2L # Both patients 1 and 2 have post-baseline assessments.
-    )
-  )
-  expected_result[["high"]] <- formatters::with_label(
-    label = "high",
-    c(
-      num = 1L, # Patient 2 had HIGH during treatment.
-      denom = 2L # Both patients 1 and 2 have post-baseline assessments.
-    )
-  )
-
-  expected <- list(fraction = expected_result)
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_abnormal works when excluding patients with abnormality at baseline", {
@@ -62,24 +46,9 @@ testthat::test_that("s_count_abnormal works when excluding patients with abnorma
     abnormal = list(high = "HIGH", low = "LOW"),
     exclude_base_abn = TRUE
   )
-  expected_result <- split(numeric(0), as.factor(c("low", "high")))
-  expected_result[["low"]] <- formatters::with_label(
-    label = "low",
-    c(
-      num = 1L, # Patient 1 had LOW during treatment.
-      denom = 2L # Both patients 1 and 2 have post-baseline assessments.
-    )
-  )
-  expected_result[["high"]] <- formatters::with_label(
-    label = "high",
-    c(
-      num = 1L, # Patient 3 had HIGH during treatment.
-      denom = 2L # Both patients 1 and 3 have post-baseline assessments.
-    )
-  )
 
-  expected <- list(fraction = expected_result)
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_abnormal also works with tibble and custom arguments", {
@@ -107,24 +76,8 @@ testthat::test_that("s_count_abnormal also works with tibble and custom argument
     exclude_base_abn = TRUE
   )
 
-  expected_result <- split(numeric(0), as.factor(c("low", "high")))
-  expected_result[["low"]] <- formatters::with_label(
-    label = "low",
-    c(
-      num = 0L, # Patient 1 is removed due to baseline being abnormal.
-      denom = 1L # Only patients 2 has post-baseline assessments.
-    )
-  )
-  expected_result[["high"]] <- formatters::with_label(
-    label = "high",
-    c(
-      num = 0L, # Patient 2 is removed due to baseline being abnormal.
-      denom = 1L # Only patients 1 has post-baseline assessments.
-    )
-  )
-
-  expected <- list(fraction = expected_result)
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_abnormal works with default arguments", {
@@ -145,14 +98,9 @@ testthat::test_that("count_abnormal works with default arguments", {
   result <- basic_table() %>%
     count_abnormal(var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"), exclude_base_abn = TRUE) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "low", "high", "all obs", "1/2 (50%)", "0/1"
-    ),
-    .Dim = 3:2
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_abnormal works with custom arguments", {
@@ -181,12 +129,9 @@ testthat::test_that("count_abnormal works with custom arguments", {
       exclude_base_abn = TRUE
     ) %>%
     build_table(df2)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c("", "< LLN", "> ULN", "all obs", "1 / 2", "0 / 1"),
-    .Dim = 3:2
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_abnormal works with default arguments and visit", {
@@ -210,15 +155,9 @@ testthat::test_that("count_abnormal works with default arguments and visit", {
     split_rows_by("AVISIT", split_fun = drop_split_levels) %>%
     count_abnormal(var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH")) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "WEEK 1", "low", "high", "WEEK 2", "low", "high",
-      "all obs", "", "1/2 (50%)", "1/2 (50%)", "", "1/2 (50%)", "0/2"
-    ),
-    .Dim = c(7L, 2L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_abnormal works with healthy input and grouped abnormal arguments", {
@@ -243,22 +182,6 @@ testthat::test_that("s_count_abnormal works with healthy input and grouped abnor
     abnormal = list(high = c("HIGH", "HIGH HIGH"), low = c("LOW", "LOW LOW"))
   )
 
-  expected_result <- split(numeric(0), as.factor(c("low", "high")))
-  expected_result[["low"]] <- formatters::with_label(
-    label = "low",
-    c(
-      num = 2L, # Patient 1 and 3 had LOW during treatment.
-      denom = 4L # Both patients 1, 2, 3 and 4 have post-baseline assessments.
-    )
-  )
-  expected_result[["high"]] <- formatters::with_label(
-    label = "high",
-    c(
-      num = 2L, # Patient 2 and 4 had HIGH during treatment.
-      denom = 4L # Both patients 1, 2, 3 and 4 have post-baseline assessments.
-    )
-  )
-
-  expected <- list(fraction = expected_result)
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -1,0 +1,55 @@
+# h_surv_to_coxreg_variables works as expected
+
+    Code
+      res
+    Output
+      $time
+      [1] "AVAL"
+      
+      $event
+      [1] "EVNT"
+      
+      $arm
+      [1] "AGE"
+      
+      $covariates
+      [1] "A" "B"
+      
+      $strata
+      [1] "D"
+      
+
+# h_coxreg_mult_cont_df works as expected
+
+    Code
+      res
+    Output
+        biomarker biomarker_label n_tot n_tot_events   median       hr       lcl
+      1    BMRKR1          BMRKR1   200          141 753.5176 1.000735 0.9541338
+      2       AGE             AGE   200          141 753.5176 1.008458 0.9846171
+             ucl conf_level      pval     pval_label
+      1 1.049611       0.95 0.9759230 p-value (Wald)
+      2 1.032877       0.95 0.4901995 p-value (Wald)
+
+# h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)
+
+    Code
+      res
+    Output
+        biomarker biomarker_label n_tot n_tot_events median hr lcl ucl conf_level
+      1    BMRKR1          BMRKR1     0            0     NA NA  NA  NA       0.95
+      2       AGE             AGE     0            0     NA NA  NA  NA       0.95
+        pval     pval_label
+      1   NA p-value (Wald)
+      2   NA p-value (Wald)
+
+# h_tab_surv_one_biomarker works as expected
+
+    Code
+      res
+    Output
+                     Total n   Hazard Ratio   95% Wald CI 
+      ————————————————————————————————————————————————————
+      All patients     48          0.99       (0.86, 1.15)
+      All patients     48          1.00       (0.95, 1.06)
+

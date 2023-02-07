@@ -1,5 +1,5 @@
 # Local data pre-processing
-adtte_local <- adtte_raw %>%
+adtte_local <- tern_ex_adtte %>%
   dplyr::filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X")
@@ -29,15 +29,12 @@ testthat::test_that("fit_survival_step works as expected with default options", 
     data = data
   ))
   testthat::expect_s3_class(result, c("matrix", "step"))
-  testthat::expect_identical(ncol(result), 12L)
-  testthat::expect_identical(
-    colnames(result),
-    c(
-      "Percentile Center", "Percentile Lower", "Percentile Upper",
-      "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
-      "loghr", "se", "ci_lower", "ci_upper"
-    )
-  )
+
+  res <- testthat::expect_silent(ncol(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(colnames(result))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("fit_survival_step works as expected with global model fit", {
@@ -63,14 +60,12 @@ testthat::test_that("fit_survival_step works as expected with global model fit",
     )
   ))
   testthat::expect_s3_class(result, c("matrix", "step"))
-  testthat::expect_identical(ncol(result), 9L)
-  testthat::expect_identical(
-    colnames(result),
-    c(
-      "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
-      "loghr", "se", "ci_lower", "ci_upper"
-    )
-  )
+
+  res <- testthat::expect_silent(ncol(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(colnames(result))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("fit_survival_step works as expected with null bandwidth", {
@@ -88,13 +83,10 @@ testthat::test_that("fit_survival_step works as expected with null bandwidth", {
     control = c(control_logistic(), control_step(bandwidth = NULL))
   ))
   testthat::expect_s3_class(result, c("matrix", "step"))
-  testthat::expect_identical(ncol(result), 12L)
-  testthat::expect_identical(
-    colnames(result),
-    c(
-      "Percentile Center", "Percentile Lower", "Percentile Upper",
-      "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
-      "loghr", "se", "ci_lower", "ci_upper"
-    )
-  )
+
+  res <- testthat::expect_silent(ncol(result))
+  testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(colnames(result))
+  testthat::expect_snapshot(res)
 })

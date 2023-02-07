@@ -3,23 +3,15 @@ testthat::test_that("s_count_values works for character input without NAs", {
 
   # Value which is present in vector.
   result <- s_count_values(x, values = "a")
-  expected <- list(
-    n = 3L,
-    count = 2L,
-    count_fraction = c(2, 2 / 3),
-    n_blq = 0L
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Value which is not present.
   result <- s_count_values(x, values = "c")
-  expected <- list(
-    n = 3L,
-    count = 0L,
-    count_fraction = c(0, 0),
-    n_blq = 0L
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_values works for character input with NAs", {
@@ -27,64 +19,49 @@ testthat::test_that("s_count_values works for character input with NAs", {
 
   # Default behavior does not count NAs for `n`.
   result <- s_count_values(x, values = "a")
-  expected <- list(
-    n = 5L,
-    count = 2L,
-    count_fraction = c(2, 2 / 5),
-    n_blq = 0L
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
   # Count the NAs with `na.rm` argument set.
   result <- s_count_values(x, values = c("bla", "c"), na.rm = FALSE)
-  expected <- list(
-    n = 6L,
-    count = 1L,
-    count_fraction = c(1, 1 / 6),
-    n_blq = 0L
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_values can pass options to s_summary's logical method", {
   x <- c("a", "b", "a")
 
   result <- s_count_values(x, .N_row = 10, values = "a", denom = "N_row")
-  expected <- list(
-    n = 3L,
-    count = 2L,
-    count_fraction = c(2, 2 / 10),
-    n_blq = 0L
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_values for factor gives same result as for character", {
   x <- c("a", "b", "a")
-
   result <- s_count_values(factor(x), .N_row = 10, values = "a", denom = "N_row")
-  expected <- s_count_values(x, .N_row = 10, values = "a", denom = "N_row")
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_values for factor gives the same result as for character for values not in factor level", {
   x <- c("a", "b", "a")
-
   result <- s_count_values(factor(x), values = "x")
-  expected <- s_count_values(x, values = "x")
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_values works as expected with a single value", {
   result <- basic_table() %>%
     count_values("Species", values = "setosa") %>%
     build_table(iris)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c("", "setosa", "all obs", "50 (33.33%)"),
-    .Dim = c(2L, 2L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_values works as expected with multiple values and variables", {
@@ -99,15 +76,9 @@ testthat::test_that("count_values works as expected with multiple values and var
       values = c("a", "f")
     ) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "x", "a, f", "y", "a, f", "all obs", "", "2 (50.00%)",
-      "", "3 (75.00%)"
-    ),
-    .Dim = c(5L, 2L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_values for logical vector", {
@@ -115,13 +86,9 @@ testthat::test_that("s_count_values for logical vector", {
 
   # Value which is present in vector.
   result <- s_count_values(x)
-  expected <- list(
-    n = 3L,
-    count = 2L,
-    count_fraction = c(2, 2 / 3),
-    n_blq = 0L
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_values for logical vector with NA", {
@@ -129,16 +96,10 @@ testthat::test_that("s_count_values for logical vector with NA", {
 
   # Value which is present in vector.
   result <- s_count_values(x)
-  expected <- list(
-    n = 3L,
-    count = 2L,
-    count_fraction = c(2, 2 / 3),
-    n_blq = 0L
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
-
-
 
 testthat::test_that("count_values works as expected with multiple values and variables", {
   df <- data.frame(
@@ -152,10 +113,7 @@ testthat::test_that("count_values works as expected with multiple values and var
       values = TRUE
     ) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c("", "TRUE", "all obs", "2 (50.00%)"),
-    .Dim = c(2L, 2L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

@@ -4,15 +4,14 @@ testthat::test_that("s_count_patients_with_event handles NA", {
     TRTEMFL = c("Y", "", "", "NA", "", ""),
     stringsAsFactors = FALSE
   )
-
   result <- s_count_patients_with_event(
     test_data,
     .var = "SUBJID",
     filters = c("TRTEMFL" = "Y")
   )
 
-  expected <- list(n = 2L, count = 1L, count_fraction = c(1.0, 0.5), n_blq = 0L)
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_patients_with_event handles multiple columns", {
@@ -22,16 +21,14 @@ testthat::test_that("s_count_patients_with_event handles multiple columns", {
     AEOUT = c("", "", "", "", "", "", "FATAL", "", "FATAL"),
     stringsAsFactors = FALSE
   )
-
   result <- s_count_patients_with_event(
     test_data,
     .var = "SUBJID",
     filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
   )
 
-  expected <- list(n = 3L, count = 1L, count_fraction = c(1.0, 0.3333333), n_blq = 0L)
-
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_patients_with_event works as expected", {
@@ -60,21 +57,10 @@ testthat::test_that("count_patients_with_event works as expected", {
       .labels = c(count_fraction = "Total number of patients with fatal AEs"),
       table_names = "total_pts_fatal_ae"
     )
-
   result <- build_table(l, test_data, alt_counts_df = test_adsl_like)
 
-  result <- to_string_matrix(result)
-
-  expected <- structure(
-    c(
-      "", "", "Total number of patients with at least one adverse event",
-      "Total number of patients with fatal AEs", "A", "(N=2)",
-      "1 (50.0%)", "0", "B", "(N=1)", "1 (100%)", "1 (100%)"
-    ),
-    .Dim = c(4L, 3L)
-  )
-
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_patients_with_event works as expected for different column count", {
@@ -109,19 +95,10 @@ testthat::test_that("count_patients_with_event works as expected for different c
       denom = "N_col",
       table_names = "total_pts_fatal_ae"
     )
-
   result <- build_table(lyt, df = test_data, alt_counts_df = test_adsl_like)
 
-  result <- to_string_matrix(result)
-  expected <- structure(
-    c(
-      "", "", "Total number of patients with at least one adverse event",
-      "Total number of patients with fatal AEs", "A", "(N=6)",
-      "1 (16.7%)", "0", "B", "(N=4)", "1 (25.0%)", "1 (25.0%)"
-    ),
-    .Dim = c(4L, 3L)
-  )
-  testthat::expect_identical(result, expected)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_patients_with_flags handles NA", {
@@ -135,10 +112,9 @@ testthat::test_that("s_count_patients_with_flags handles NA", {
     .var = "SUBJID",
     flag_variables = "TRTEMFL"
   )
-  expected <- list(
-    n = list(TRTEMFL = 2L), count = list(TRTEMFL = 2L), count_fraction = list(TRTEMFL = c(2.0, 1.0)), n_blq = list(0L)
-  )
-  testthat::expect_identical(result, expected)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_patients_with_flags handles multiple columns", {
@@ -153,11 +129,9 @@ testthat::test_that("s_count_patients_with_flags handles multiple columns", {
     .var = "SUBJID",
     flag_variables = c("TRTEMFL", "AEOUTFL")
   )
-  expected <- list(
-    n = list(TRTEMFL = 3L, AEOUTFL = 3L), count = list(TRTEMFL = 3L, AEOUTFL = 1L),
-    count_fraction = list(TRTEMFL = c(3.0, 1.0), AEOUTFL = c(1.0, 0.33333)), n_blq = list(TRTEMFL = 0L, AEOUTFL = 0L)
-  )
-  testthat::expect_equal(result, expected, tolerance = 1e-4)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_patients_with_flags works as expected", {
@@ -196,19 +170,10 @@ testthat::test_that("count_patients_with_flags works as expected", {
       flag_variables = formatters::var_labels(test_data[, c("flag1", "flag2")]),
       denom = "N_col"
     )
-
   result <- build_table(lyt, df = test_data, alt_counts_df = test_adsl_like)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "Total number of patients with at least one adverse event",
-      "Total number of patients with fatal AEs", "A", "(N=6)",
-      "1 (16.7%)", "0", "B", "(N=4)", "1 (25.0%)", "1 (25.0%)"
-    ),
-    .Dim = c(4L, 3L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_patients_with_flags works as expected when specifying table_names", {
@@ -253,26 +218,15 @@ testthat::test_that("count_patients_with_flags works as expected when specifying
       table_names = "USUBJID",
       denom = "N_col"
     )
-
   result <- build_table(lyt, df = test_data, alt_counts_df = test_adsl_like)
 
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "Total number of patients with at least one adverse event",
-      "Total number of patients with fatal AEs", "Total number of patients with at least one adverse event",
-      "Total number of patients with fatal AEs", "A", "(N=6)", "1 (16.7%)",
-      "0", "1 (16.7%)", "0", "B", "(N=4)", "1 (25.0%)", "1 (25.0%)",
-      "1 (25.0%)", "1 (25.0%)"
-    ),
-    .Dim = c(6L, 3L)
-  )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("count_patients_with_flags works with label row specified", {
   # Create custom flags:
-  adae_local <- adae_raw %>%
+  adae_local <- tern_ex_adae %>%
     dplyr::mutate(
       SER = AESER == "Y",
       REL = AEREL == "Y",
@@ -303,24 +257,10 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
       var_labels = "Total number of patients with at least one",
       show_labels = "visible"
     )
+  result <- build_table(lyt, df = adae_local, alt_counts_df = tern_ex_adsl)
 
-  result <- build_table(lyt, df = adae_local, alt_counts_df = adsl_raw)
-
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- t(structure(
-    c(
-      "", "A: Drug X", "B: Placebo", "C: Combination",
-      "", "(N=134)", "(N=134)", "(N=132)",
-      "Total number of patients with at least one adverse event", "122 (91.0%)", "123 (91.8%)", "120 (90.9%)",
-      "Total number of patients with at least one", "", "", "",
-      "Serious AE", "104 (77.6%)", "101 (75.4%)", "99 (75.0%)",
-      "Related AE", "105 (78.4%)", "108 (80.6%)", "109 (82.6%)",
-      "Grade 3-5 AE", "109 (81.3%)", "104 (77.6%)", "109 (82.6%)",
-      "Grade 4/5 AE", "91 (67.9%)", "90 (67.2%)", "93 (70.5%)"
-    ),
-    .Dim = c(4L, 8L)
-  ))
-  testthat::expect_identical(result_matrix, expected_matrix)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_patients_with_event works with factor filters", {
@@ -338,6 +278,7 @@ testthat::test_that("s_count_patients_with_event works with factor filters", {
     .var = "SUBJID",
     filters = c("AEOUT" = "FATAL")
   )
-  expected <- list(n = 3, count = 1, count_fraction = c(1.0000000, 0.33333333), n_blq = 0L)
-  testthat::expect_equal(result, expected, tolerance = 1e-7)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
