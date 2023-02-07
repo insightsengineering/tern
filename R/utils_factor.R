@@ -253,7 +253,8 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   checkmate::assert_factor(x, len = length(condition))
   checkmate::assert_logical(condition)
   x[condition] <- NA
-  forcats::fct_na_value_to_level(x, na_level = na_level)
+  x <- forcats::fct_na_value_to_level(x, level = na_level)
+  forcats::fct_drop(x, only = na_level)
 }
 
 #' Collapsing of Factor Levels and Keeping Only Those New Group Levels

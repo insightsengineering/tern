@@ -9,6 +9,36 @@
       3  A         A         A  F <Missing> <Missing>  3    NA
       4  B <Missing> <Missing>  E         C         C  4    NA
 
+---
+
+    Code
+      res
+    Output
+      $v1
+      [1] "B" "A"
+      
+      $v2
+      [1] "B"         "A"         "<Missing>"
+      
+      $v3
+      [1] "B"         "A"         "<Missing>"
+      
+      $v4
+      [1] "D" "E" "F"
+      
+      $v5
+      [1] "A"         "B"         "C"         "<Missing>"
+      
+      $v6
+      [1] "A"         "B"         "C"         "<Missing>"
+      
+      $v7
+      NULL
+      
+      $v8
+      NULL
+      
+
 # Default settings work when input data does not have labels
 
     Code

@@ -21,7 +21,8 @@ explicit_na <- function(x, label = "<Missing>") {
   checkmate::assert_string(label)
 
   if (is.factor(x)) {
-    forcats::fct_na_value_to_level(x, label)
+    x <- forcats::fct_na_value_to_level(x, label)
+    forcats::fct_drop(x, only = label)
   } else if (is.character(x)) {
     x[is.na(x)] <- label
     x
