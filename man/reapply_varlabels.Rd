@@ -4,15 +4,15 @@
 \alias{reapply_varlabels}
 \title{Reapply Variable Labels}
 \usage{
-reapply_varlabels(x, varlables, ...)
+reapply_varlabels(x, varlabels, ...)
 }
 \arguments{
-\item{x}{(\code{vector}) vector of elements that needs new labels.}
+\item{x}{(\code{vector})\cr vector of elements that needs new labels.}
+
+\item{varlabels}{(\code{vector})\cr labels for \code{x}.}
 
 \item{...}{further parameters to be added to the list.}
-
-\item{varlabels}{(\code{vector}) labels for \code{x}.}
 }
 \description{
-This is an internal function that is used in template tests.
+This is a helper function that is used in tests.
 }
