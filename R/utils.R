@@ -425,9 +425,9 @@ n_available <- function(x) {
 }
 
 #' Reapply Variable Labels
-#' @description 
+#' @description
 #'   This is an internal function that is used in template tests.
-#' 
+#'
 #' @param x (`vector`) vector of elements that needs new labels.
 #' @param varlabels (`vector`) labels for `x`.
 #' @param ... further parameters to be added to the list.
