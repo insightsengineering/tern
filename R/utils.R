@@ -424,6 +424,15 @@ n_available <- function(x) {
   sum(!is.na(x))
 }
 
+#' Reapply Variable Labels
+#' @description 
+#'   This is an internal function that is used in template tests.
+#' 
+#' @param x (`vector`) vector of elements that needs new labels.
+#' @param varlabels (`vector`) labels for `x`.
+#' @param ... further parameters to be added to the list.
+#'
+#' @export
 # used for tests at the moments
 reapply_varlabels <- function(x, varlables, ...) { # nolintr
   named_labels <- c(as.list(varlables), list(...))
