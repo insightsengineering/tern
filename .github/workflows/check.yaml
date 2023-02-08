@@ -22,7 +22,7 @@ jobs:
   style:
     if: github.event_name != 'push'
     name: Style Check 👗
-    uses: insightsengineering/r.pkg.template/.github/workflows/style.yaml@main
+    uses: insightsengineering/r.pkg.template/.github/workflows/style.yaml@check_styler_2
     with:
       auto-update: false
 
