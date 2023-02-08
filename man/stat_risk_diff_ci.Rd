@@ -10,7 +10,7 @@ stat_risk_diff_ci(
   N_x,
   N_y,
   conf_level = 0.95,
-  var_names = NULL,
+  row_names = NULL,
   pct = TRUE
 )
 }
@@ -25,7 +25,7 @@ stat_risk_diff_ci(
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{var_names}{(\code{character})\cr names of each variable/level corresponding to pair of proportions in
+\item{row_names}{(\code{character})\cr names of each variable/level corresponding to pair of proportions in
 \code{frac_x} and \code{frac_y}. Must be of equal length to \code{frac_x} and \code{frac_y}.}
 
 \item{pct}{(\code{logical})\cr should output be returned as percentage instead of a fraction. Defaults to \code{TRUE}.}
@@ -41,6 +41,6 @@ Convenient function for calculating the risk difference and confidence interval 
 Risk difference is calculated by subtracting cumulative incidence in arm Y from cumulative incidence in arm X.
 }
 \examples{
-stat_risk_diff_ci(frac_x = list(0.375), frac_y = list(0.01), N_x = 5, N_y = 5, var_names = c("x"), conf_level = 0.9)
+stat_risk_diff_ci(frac_x = list(0.375), frac_y = list(0.01), N_x = 5, N_y = 5, row_names = c("x"), conf_level = 0.9)
 stat_risk_diff_ci(frac_x = list(0.5, 0.75, 1), frac_y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE)
 }
