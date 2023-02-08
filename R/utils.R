@@ -424,9 +424,17 @@ n_available <- function(x) {
   sum(!is.na(x))
 }
 
-# used for tests at the moments
-reapply_varlabels <- function(x, varlables, ...) { # nolintr
-  named_labels <- c(as.list(varlables), list(...))
+#' Reapply Variable Labels
+#'
+#' @description This is a helper function that is used in tests.
+#'
+#' @param x (`vector`)\cr vector of elements that needs new labels.
+#' @param varlabels (`vector`)\cr labels for `x`.
+#' @param ... further parameters to be added to the list.
+#'
+#' @export
+reapply_varlabels <- function(x, varlabels, ...) {
+  named_labels <- c(as.list(varlabels), list(...))
   formatters::var_labels(x)[names(named_labels)] <- as.character(named_labels)
   x
 }
