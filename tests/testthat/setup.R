@@ -1,3 +1,7 @@
+# Extra libraries (suggested) for tests
+library(dplyr)
+
+# skip_if_too_deep
 skip_if_too_deep <- function(depth) { # nolintr
   checkmate::assert_number(depth, lower = 0, upper = 5)
 

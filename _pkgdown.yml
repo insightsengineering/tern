@@ -143,6 +143,7 @@ reference:
       - starts_with("f_")
       - h_data_plot
       - month2day
+      - reapply_varlabels
       - sas_na
       - starts_with("stat_")
       - strata_normal_quantile

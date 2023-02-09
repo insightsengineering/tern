@@ -1,4 +1,4 @@
-# tern 0.7.10.9038
+# tern 0.7.10.9040
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -24,7 +24,7 @@
 * Added cached synthetic datasets to `data/` folder to use in tests/examples instead of `scda` data.
 * Updated examples to use datasets from the `tern` package instead of `scda` datasets.
 * Replaced all applicable tests with snapshot testing.
-* Updated all (non-table) tests to use `tern` data.
+* Updated all tests to use `tern` data.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
@@ -49,6 +49,7 @@
 * Updated tests to use `testthat` 3rd edition.
 * Created separate documentation files for functions in different sections of pkgdown reference.
 * Created separate `.R` files for logistic regression and cox regression helper functions.
+* Removed all template tests from `tern`. These have been relocated to internal repo `scda.test`.
 
 # tern 0.7.10
 
