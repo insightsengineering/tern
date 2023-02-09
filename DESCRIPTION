@@ -29,7 +29,7 @@ Imports:
     cowplot,
     dplyr,
     emmeans (>= 1.4.5),
-    forcats,
+    forcats (>= 1.0.0),
     formatters (>= 0.3.4.13),
     ggplot2,
     grid,

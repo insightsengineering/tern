@@ -20,6 +20,9 @@ testthat::test_that("Default fill in of missing values and conversion to factor 
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  res <- testthat::expect_silent(sapply(result, levels))
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("Default settings work when input data does not have labels", {

@@ -92,7 +92,7 @@
       ——————————————————————————————————————————————————————————————————
       Number of patients with at least one event   3 (60.0%)   3 (75.0%)
       Number of events                                 4           4    
-       (n)                                             3           3    
+      (n)                                              3           3    
 
 ---
 
@@ -122,7 +122,7 @@
                A       B  
              (N=5)   (N=4)
       ————————————————————
-       (n)     3       3  
+      (n)      3       3  
 
 # s_num_patients count_by works as expected with healthy input
 
@@ -260,7 +260,7 @@
       ——————————————————————————————————————————————————————————————————
       Number of patients with at least one event   3 (60.0%)   3 (75.0%)
       Number of events                                 3           3    
-       (n)                                             3           3    
+      (n)                                              3           3    
 
 ---
 
@@ -290,7 +290,7 @@
                A       B  
              (N=5)   (N=4)
       ————————————————————
-       (n)     3       3  
+      (n)      3       3  
 
 # summarize_num_patients with count_by different combinations works as expected with healthy input
 
@@ -302,7 +302,7 @@
       ——————————————————————————————————————————————————————————————————
       Number of patients with at least one event   3 (60.0%)   3 (75.0%)
       Number of events                                 4           3    
-       (n)                                             3           3    
+      (n)                                              3           3    
 
 # analyze_num_patients works well for pagination
 

@@ -243,7 +243,7 @@ fct_discard <- function(x, discard) {
 #' @param na_level (`string`)\cr which level to use for missings.
 #'
 #' @return The modified factor with inserted and existing `NA` converted to `na_level`.
-#' @seealso [forcats::fct_explicit_na()] which is used internally.
+#' @seealso [forcats::fct_na_value_to_level()] which is used internally.
 #'
 #' @examples
 #' fct_explicit_na_if(factor(c("a", "b", NA)), c(TRUE, FALSE, FALSE))
@@ -253,7 +253,8 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   checkmate::assert_factor(x, len = length(condition))
   checkmate::assert_logical(condition)
   x[condition] <- NA
-  forcats::fct_explicit_na(x, na_level = na_level)
+  x <- forcats::fct_na_value_to_level(x, level = na_level)
+  forcats::fct_drop(x, only = na_level)
 }
 
 #' Collapsing of Factor Levels and Keeping Only Those New Group Levels
