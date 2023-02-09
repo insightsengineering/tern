@@ -216,7 +216,7 @@ g_lineplot <- function(df, # nolint
     df_grp <- tidyr::expand(df, NULL, .data[[x]])
   }
   df_grp <- df_grp %>%
-    dplyr::full_join(y = df[, c(strata, x, y)], by = c(strata, x)) %>%
+    dplyr::full_join(y = df[, c(strata, x, y)], by = c(strata, x), multiple = "all") %>%
     dplyr::group_by_at(c(strata, x))
 
   df_stats <- df_grp %>%
