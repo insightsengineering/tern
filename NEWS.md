@@ -25,6 +25,9 @@
 * Updated examples to use datasets from the `tern` package instead of `scda` datasets.
 * Replaced all applicable tests with snapshot testing.
 * Updated all tests to use `tern` data.
+* Added `stat_propdiff_ci` function to calculate proportion/risk difference and CI.
+* Added risk difference column functionality via the `riskdiff` argument to `count_occurrences`, `count_occurrences_by_grade`,
+  `count_patients_with_flags`, `analyze_num_patients`, and `summarize_num_patients`.
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
