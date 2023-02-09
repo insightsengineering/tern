@@ -1,4 +1,4 @@
-# tern 0.7.10.9040
+# tern 0.7.10.9042
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -52,7 +52,8 @@
 * Updated tests to use `testthat` 3rd edition.
 * Created separate documentation files for functions in different sections of pkgdown reference.
 * Created separate `.R` files for logistic regression and cox regression helper functions.
-* Removed all template tests from `tern`. These have been relocated to internal repo `scda.test`.
+* Removed all template tests from `tern`. These tests are in internal repo `scda.test`.
+* Replaced deprecated function `forcats::fct_explicit_na` with `forcats::fct_na_value_to_level`.
 
 # tern 0.7.10
 

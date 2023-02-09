@@ -262,7 +262,7 @@ count_occurrences_by_grade <- function(lyt,
   )
 
   afun_riskdiff <- function(df, .var, .N_col, .spl_context) { # nolint
-    checkmate::assert_names(riskdiff, permutation.of = c("arm_x", "arm_y"))
+    checkmate::assert_names(names(riskdiff), permutation.of = c("arm_x", "arm_y"))
     n_spl <- length(.spl_context$split)
     n_riskdiff_col <- sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])
     if (.spl_context$cur_col_n[n_spl] == n_riskdiff_col) {
