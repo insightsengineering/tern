@@ -5,7 +5,7 @@ adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 
 testthat::test_that("g_lineplot works with default settings", {
   some_warning <- capture_warnings(g_lineplot(adlb, adsl))
-  if (isTRUE(length(some_warning) > 0)){
+  if (isTRUE(length(some_warning) > 0)) {
     stop("THIS IS THE WARNING 1: ", some_warning)
   }
 })
@@ -23,7 +23,7 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
     subtitle = "Laboratory Test:",
     caption = "caption"
   ))
-  if (isTRUE(length(some_warning) > 0)){
+  if (isTRUE(length(some_warning) > 0)) {
     stop("THIS IS THE WARNING 2: ", some_warning)
   }
 })
