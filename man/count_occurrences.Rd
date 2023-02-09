@@ -31,7 +31,7 @@ count_occurrences(
   vars,
   var_labels = vars,
   show_labels = "hidden",
-  risk_diff = NULL,
+  riskdiff = NULL,
   ...,
   table_names = vars,
   .stats = "count_fraction",

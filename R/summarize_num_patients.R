@@ -130,7 +130,7 @@ summarize_num_patients <- function(lyt,
                                      unique = "Number of patients with at least one event",
                                      nonunique = "Number of events"
                                    ),
-                                   risk_diff = NULL,
+                                   riskdiff = NULL,
                                    ...) {
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
   if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
@@ -142,15 +142,14 @@ summarize_num_patients <- function(lyt,
     .labels = .labels
   )
 
-  cfun_risk_diff <- function(df, labelstr, .var, .N_col, .N_row, .spl_context) {
+  cfun_riskdiff <- function(df, labelstr, .var, .N_col, .N_row, .spl_context) {
     n_spl <- length(.spl_context$split)
-    if (.spl_context$cur_col_n[n_spl] == sum(.spl_context[[risk_diff$arm_x]][[n_spl]], .spl_context[[risk_diff$arm_y]][[n_spl]])) {
-      N_col_x <- nrow(unique(df[df$ARM == risk_diff$arm_x, .var]))
-      N_col_y <- nrow(unique(df[df$ARM == risk_diff$arm_y, .var]))
-      s_x <- s_num_patients_content(df = df[df$ARM == risk_diff$arm_x, ], .var = .var, .N_col = N_col_x, ...)
-      s_y <- s_num_patients_content(df = df[df$ARM == risk_diff$arm_y, ], .var = .var, .N_col = N_col_y, ...)
-      rd_ci <- stat_risk_diff_ci(frac_x = list(s_x[c("unique")]$unique[2]), frac_y = list(s_y[c("unique")]$unique[2]),
-                                 N_x = N_col_x, N_y = N_col_y, row_names = .var)
+    if (.spl_context$cur_col_n[n_spl] == sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])) {
+      N_col_x <- round(.N_col/2) # fix value after rtables#517
+      N_col_y <- round(.N_col/2) # fix value after rtables#517
+      s_x <- s_num_patients_content(df = df[df$ARM == riskdiff$arm_x, ], .var = .var, .N_col = N_col_x, ...)
+      s_y <- s_num_patients_content(df = df[df$ARM == riskdiff$arm_y, ], .var = .var, .N_col = N_col_y, ...)
+      rd_ci <- stat_riskdiff_ci(list(s_x[c("unique")]$unique[2]), list(s_y[c("unique")]$unique[2]), N_col_x, N_col_y, .var)
       in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)")
     } else {
       cfun(df = df, .var = .var, .N_col = .N_col, labelstr = .spl_context$value[n_spl])
@@ -160,7 +159,7 @@ summarize_num_patients <- function(lyt,
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = ifelse(is.null(risk_diff), cfun, cfun_risk_diff),
+    cfun = ifelse(is.null(riskdiff), cfun, cfun_riskdiff),
     extra_args = list(...)
   )
 }
@@ -201,7 +200,7 @@ analyze_num_patients <- function(lyt,
                                  ),
                                  show_labels = c("default", "visible", "hidden"),
                                  indent_mod = 0L,
-                                 risk_diff = NULL,
+                                 riskdiff = NULL,
                                  ...) {
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
   if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
@@ -213,23 +212,22 @@ analyze_num_patients <- function(lyt,
     .labels = .labels
   )
 
-  afun_risk_diff <- function(df, .var, .N_col, .spl_context) {
+  afun_riskdiff <- function(df, .var, .N_col, .spl_context) {
     n_spl <- length(.spl_context$split)
-    if (.spl_context$cur_col_n[n_spl] == sum(.spl_context[[risk_diff$arm_x]][[n_spl]], .spl_context[[risk_diff$arm_y]][[n_spl]])) {
-      N_col_x <- nrow(unique(df[df$ARM == risk_diff$arm_x, .var]))
-      N_col_y <- nrow(unique(df[df$ARM == risk_diff$arm_y, .var]))
-      s_x <- s_num_patients_content(df = df[df$ARM == risk_diff$arm_x, ], .var = .var, .N_col = N_col_x, ...)
-      s_y <- s_num_patients_content(df = df[df$ARM == risk_diff$arm_y, ], .var = .var, .N_col = N_col_y, ...)
-      rd_ci <- stat_risk_diff_ci(frac_x = list(s_x[c("unique")]$unique[2]), frac_y = list(s_y[c("unique")]$unique[2]),
-                                 N_x = N_col_x, N_y = N_col_y, row_names = vars)
-      in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
+    if (.spl_context$cur_col_n[n_spl] == sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])) {
+      N_col_x <- round(.N_col/2) # fix value after rtables#517
+      N_col_y <- round(.N_col/2) # fix value after rtables#517
+      s_x <- s_num_patients_content(df = df[df$ARM == riskdiff$arm_x, ], .var = .var, .N_col = N_col_x, ...)
+      s_y <- s_num_patients_content(df = df[df$ARM == riskdiff$arm_y, ], .var = .var, .N_col = N_col_y, ...)
+      rd_ci <- stat_riskdiff_ci(list(s_x[c("unique")]$unique[2]), list(s_y[c("unique")]$unique[2]), N_col_x, N_col_y, vars)
+      in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = indent_mod)
     } else {
       afun(df = df, .var = .var, .N_col = .N_col)
     }
   }
 
   analyze(
-    afun = ifelse(is.null(risk_diff), afun, afun_risk_diff),
+    afun = ifelse(is.null(riskdiff), afun, afun_riskdiff),
     lyt = lyt,
     vars = vars,
     extra_args = list(...),
