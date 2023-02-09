@@ -177,29 +177,30 @@ stat_mean_pval <- function(x,
   return(pv)
 }
 
-#' Risk Difference and Confidence Interval
+#' Proportion Difference and Confidence Interval
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Convenient function for calculating the risk difference and confidence interval between arm X and arm Y.
-#' Risk difference is calculated by subtracting cumulative incidence in arm Y from cumulative incidence in arm X.
+#' Convenient function for calculating the proportion (or risk) difference and confidence interval between arm X and
+#' arm Y. Risk difference is calculated by subtracting cumulative incidence in arm Y from cumulative incidence
+#' in arm X.
 #'
 #' @inheritParams argument_convention
-#' @param frac_x (`list`)\cr list of cumulative incidences (proportions) in arm X.
-#' @param frac_y (`list`)\cr list of cumulative incidences (proportions) in arm Y. Must be of equal length to `frac_x`.
+#' @param frac_x (`list`)\cr list of proportions in arm X.
+#' @param frac_y (`list`)\cr list of proportions in arm Y. Must be of equal length to `frac_x`.
 #' @param N_x (`numeric`)\cr total number of records in arm X.
 #' @param N_y (`numeric`)\cr total number of records in arm Y.
 #' @param list_names (`character`)\cr names of each variable/level corresponding to pair of proportions in
 #'   `frac_x` and `frac_y`. Must be of equal length to `frac_x` and `frac_y`.
 #' @param pct (`logical`)\cr should output be returned as percentage instead of a fraction. Defaults to `TRUE`.
-#' @returns list of risk differences and CIs corresponding to each pair of proportions in `frac_x` and `frac_y`.
-#'   Each list element consists of 3 statistics: risk difference, CI lower bound, and CI upper bound.
+#' @returns list of proportion differences and CIs corresponding to each pair of proportions in `frac_x` and `frac_y`.
+#'   Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
 #'
 #' @export
 #' @examples
-#' stat_riskdiff_ci(frac_x = list(0.375), frac_y = list(0.01), N_x = 5, N_y = 5, list_names = c("x"), conf_level = 0.9)
-#' stat_riskdiff_ci(frac_x = list(0.5, 0.75, 1), frac_y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE)
-stat_riskdiff_ci <- function(frac_x, frac_y, N_x, N_y, list_names = NULL, conf_level = 0.95, pct = TRUE) {
+#' stat_propdiff_ci(frac_x = list(0.375), frac_y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9)
+#' stat_propdiff_ci(frac_x = list(0.5, 0.75, 1), frac_y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE)
+stat_propdiff_ci <- function(frac_x, frac_y, N_x, N_y, list_names = NULL, conf_level = 0.95, pct = TRUE) {
   checkmate::assert_list(frac_x, types = "numeric")
   checkmate::assert_list(frac_y, types = "numeric", len = length(frac_x))
   checkmate::assert_character(list_names, len = length(frac_x), null.ok = TRUE)

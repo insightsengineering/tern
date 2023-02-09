@@ -336,3 +336,44 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
   )
   testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "A")
 })
+
+testthat::test_that("count_occurrences_by_grade works as expected with risk difference column", {
+  arm_x <- "A: Drug X"
+  arm_y <- "B: Placebo"
+
+  combodf <- tribble(
+    ~valname, ~label, ~levelcombo, ~exargs,
+    "riskdiff", "Risk Difference (%) (95% CI)", c(arm_x, arm_y), list()
+  )
+
+  # Default parameters
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    count_occurrences_by_grade(
+      var = "AESEV",
+      riskdiff = list(arm_x = arm_x, arm_y = arm_y)
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Grade groups, custom id var
+  grade_groups <- list("-Any-" = levels(adae$AESEV))
+
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    count_occurrences_by_grade(
+      var = "AESEV",
+      riskdiff = list(arm_x = arm_x, arm_y = arm_y),
+      show_labels = "hidden",
+      .indent_mods = 1L,
+      grade_groups = grade_groups,
+      id = "SITEID"
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+

@@ -261,15 +261,18 @@ count_occurrences_by_grade <- function(lyt,
     .ungroup_stats = "count_fraction"
   )
 
-  afun_riskdiff <- function(df, .var, .N_col, .spl_context) {
+  afun_riskdiff <- function(df, .var, .N_col, .spl_context) { # nolint
     n_spl <- length(.spl_context$split)
-    if (.spl_context$cur_col_n[n_spl] == sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])) {
-      N_col_x <- round(.N_col/2) # fix value after rtables#517
-      N_col_y <- round(.N_col/2) # fix value after rtables#517
+    n_riskdiff_col <- sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])
+    if (.spl_context$cur_col_n[n_spl] == n_riskdiff_col) {
+      N_col_x <- round(.N_col / 2) # fix value after rtables#517 # nolint
+      N_col_y <- round(.N_col / 2) # fix value after rtables#517 # nolint
       s_x <- s_count_occurrences_by_grade(df[df$ARM == riskdiff$arm_x, ], .var, N_col_x, ...)
       s_y <- s_count_occurrences_by_grade(df[df$ARM == riskdiff$arm_y, ], .var, N_col_y, ...)
-      rd_ci <- stat_riskdiff_ci(lapply(s_x["count_fraction"]$count_fraction, `[`, 2),
-                                lapply(s_y["count_fraction"]$count_fraction, `[`, 2), N_col_x, N_col_y, names(s_x$count_fraction))
+      rd_ci <- stat_propdiff_ci(
+        lapply(s_x["count_fraction"]$count_fraction, `[`, 2), lapply(s_y["count_fraction"]$count_fraction, `[`, 2),
+        N_col_x, N_col_y, names(s_x$count_fraction)
+      )
       in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
     } else {
       afun(df = df, .var = .var, .N_col = .N_col, ...)

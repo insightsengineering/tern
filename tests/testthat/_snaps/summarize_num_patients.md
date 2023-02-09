@@ -92,7 +92,7 @@
       ——————————————————————————————————————————————————————————————————
       Number of patients with at least one event   3 (60.0%)   3 (75.0%)
       Number of events                                 4           4    
-       (n)                                             3           3    
+      (n)                                              3           3    
 
 ---
 
@@ -122,7 +122,7 @@
                A       B  
              (N=5)   (N=4)
       ————————————————————
-       (n)     3       3  
+      (n)      3       3  
 
 # s_num_patients count_by works as expected with healthy input
 
@@ -260,7 +260,7 @@
       ——————————————————————————————————————————————————————————————————
       Number of patients with at least one event   3 (60.0%)   3 (75.0%)
       Number of events                                 3           3    
-       (n)                                             3           3    
+      (n)                                              3           3    
 
 ---
 
@@ -290,7 +290,7 @@
                A       B  
              (N=5)   (N=4)
       ————————————————————
-       (n)     3       3  
+      (n)      3       3  
 
 # summarize_num_patients with count_by different combinations works as expected with healthy input
 
@@ -302,7 +302,7 @@
       ——————————————————————————————————————————————————————————————————
       Number of patients with at least one event   3 (60.0%)   3 (75.0%)
       Number of events                                 4           3    
-       (n)                                             3           3    
+      (n)                                              3           3    
 
 # analyze_num_patients works well for pagination
 
@@ -326,4 +326,60 @@
         Number of events                                 1           1           2    
         17                                               0       1 (25.0%)   1 (11.1%)
         15                                           1 (20.0%)       0       1 (11.1%)
+
+# summarize_num_patients works as expected with risk difference column
+
+    Code
+      res
+    Output
+                                                   A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                                                    (N=202)      (N=177)        (N=162)                 (N=379)           
+      ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      Number of patients with at least one event   40 (19.8%)   40 (22.6%)     29 (17.9%)           0.0 (-8.2 - 8.2)      
+      Number of patients with at least one event   31 (15.3%)   23 (13.0%)     25 (15.4%)          4.2 (-2.8 - 11.2)      
+      Number of patients with at least one event   39 (19.3%)   36 (20.3%)     31 (19.1%)           1.6 (-6.4 - 9.6)      
+      Number of patients with at least one event   31 (15.3%)   24 (13.6%)     27 (16.7%)          3.7 (-3.4 - 10.7)      
+
+---
+
+    Code
+      res
+    Output
+                 A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                  (N=202)      (N=177)        (N=162)                 (N=379)           
+      ——————————————————————————————————————————————————————————————————————————————————
+      cl D       40 (19.8%)   40 (22.6%)     29 (17.9%)           0.0 (-8.2 - 8.2)      
+      cl D           66           57             43               0.0 (-8.2 - 8.2)      
+      cl D (n)       40           40             29               0.0 (-8.2 - 8.2)      
+      cl C       31 (15.3%)   23 (13.0%)     25 (15.4%)          4.2 (-2.8 - 11.2)      
+      cl C           38           30             33              4.2 (-2.8 - 11.2)      
+      cl C (n)       31           23             25              4.2 (-2.8 - 11.2)      
+      cl B       39 (19.3%)   36 (20.3%)     31 (19.1%)           1.6 (-6.4 - 9.6)      
+      cl B           59           57             51               1.6 (-6.4 - 9.6)      
+      cl B (n)       39           36             31               1.6 (-6.4 - 9.6)      
+      cl A       31 (15.3%)   24 (13.6%)     27 (16.7%)          3.7 (-3.4 - 10.7)      
+      cl A           39           33             35              3.7 (-3.4 - 10.7)      
+      cl A (n)       31           24             27              3.7 (-3.4 - 10.7)      
+
+# analyze_num_patients works as expected with risk difference column
+
+    Code
+      res
+    Output
+                A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                 (N=202)      (N=177)        (N=162)                 (N=379)           
+      —————————————————————————————————————————————————————————————————————————————————
+      Any SAE   59 (29.2%)   57 (32.2%)     48 (29.6%)          1.1 (-8.2 - 10.3)      
+
+---
+
+    Code
+      res
+    Output
+                A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                 (N=202)      (N=177)        (N=162)                 (N=379)           
+      —————————————————————————————————————————————————————————————————————————————————
+      Any SAE   59 (29.2%)   57 (32.2%)     48 (29.6%)          1.1 (-8.2 - 10.3)      
+                   202          177            162              1.1 (-8.2 - 10.3)      
+      (n)           59           57             48              1.1 (-8.2 - 10.3)      
 

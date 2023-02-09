@@ -267,3 +267,24 @@ testthat::test_that("stat_median_ci works for named numeric values when name is 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("stat_propdiff_ci works with names and multiple values in frac_x and frac_y)", {
+  frac_x <- list(0.5, 0.75, 1)
+  frac_y <- list(0.25, 0.05, 0.5)
+  list_names <- c("A", "B", "C")
+
+  result <- stat_propdiff_ci(frac_x = frac_x, frac_y = frac_y, N_x = 10, N_y = 20, list_names = list_names)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("stat_propdiff_ci works with custom arguments)", {
+  x <- integer(0)
+  attr(x, "names") <- character(0)
+
+  result <- stat_propdiff_ci(frac_x = list(0.39), frac_y = list(0.01), N_x = 5, N_y = 5, conf_level = 0.9, pct = FALSE)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

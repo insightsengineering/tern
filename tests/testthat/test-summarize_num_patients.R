@@ -190,23 +190,25 @@ testthat::test_that("summarize_num_patients with count_by works as expected with
 })
 
 testthat::test_that(
-  "summarize_num_patients with count_by different combinations works as expected with healthy input", {
-  df <- data.frame(
-    USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
-    ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
-    BY = as.character(c(10, 15, 11, 17, 8, 11, 11, 19, 17))
-  )
+  "summarize_num_patients with count_by different combinations works as expected with healthy input",
+  {
+    df <- data.frame(
+      USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
+      ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
+      BY = as.character(c(10, 15, 11, 17, 8, 11, 11, 19, 17))
+    )
 
-  # Check with both output
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", count_by = "BY") %>%
-    build_table(df)
+    # Check with both output
+    result <- basic_table() %>%
+      split_cols_by("ARM") %>%
+      add_colcounts() %>%
+      summarize_num_patients("USUBJID", count_by = "BY") %>%
+      build_table(df)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
 
 testthat::test_that("analyze_num_patients works well for pagination", {
   set.seed(1)
@@ -250,4 +252,79 @@ testthat::test_that("analyze_num_patients works well for pagination", {
     )
   )
   testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "e 1.1")
+})
+
+testthat::test_that("summarize_num_patients works as expected with risk difference column", {
+  arm_x <- "A: Drug X"
+  arm_y <- "B: Placebo"
+
+  combodf <- tribble(
+    ~valname, ~label, ~levelcombo, ~exargs,
+    "riskdiff", "Risk Difference (%) (95% CI)", c(arm_x, arm_y), list()
+  )
+
+  # One statistic
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    split_rows_by("AESOC") %>%
+    summarize_num_patients(
+      "USUBJID",
+      .stats = "unique",
+      riskdiff = list(arm_x = arm_x, arm_y = arm_y)
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Multiple statistics
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    split_rows_by("AESOC") %>%
+    summarize_num_patients(
+      "USUBJID",
+      .labels = c(unique = NULL),
+      riskdiff = list(arm_x = arm_x, arm_y = arm_y)
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("analyze_num_patients works as expected with risk difference column", {
+  arm_x <- "A: Drug X"
+  arm_y <- "B: Placebo"
+
+  combodf <- tribble(
+    ~valname, ~label, ~levelcombo, ~exargs,
+    "riskdiff", "Risk Difference (%) (95% CI)", c(arm_x, arm_y), list()
+  )
+
+  # One statistic
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    analyze_num_patients(
+      vars = "USUBJID",
+      .stats = "unique",
+      .labels = c(unique = "Any SAE"),
+      riskdiff = list(arm_x = arm_x, arm_y = arm_y)
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Multiple statistics
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    analyze_num_patients(
+      vars = "USUBJID",
+      .labels = c(unique = "Any SAE"),
+      riskdiff = list(arm_x = arm_x, arm_y = arm_y)
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

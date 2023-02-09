@@ -177,3 +177,27 @@
       [1] 0
       
 
+# count_patients_with_flags works as expected with risk difference column
+
+    Code
+      res
+    Output
+                               A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                                (N=202)      (N=177)        (N=162)                 (N=379)           
+      ————————————————————————————————————————————————————————————————————————————————————————————————
+      SAE                      53 (26.2%)   49 (27.7%)     39 (24.1%)          2.1 (-6.8 - 11.0)      
+      SAE with fatal outcome   50 (24.8%)   47 (26.6%)     42 (25.9%)          1.6 (-7.2 - 10.3)      
+
+---
+
+    Code
+      res
+    Output
+                               A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                                (N=202)      (N=177)        (N=162)                 (N=379)           
+      ————————————————————————————————————————————————————————————————————————————————————————————————
+      SAE                          53           49             39              2.1 (-6.8 - 11.0)      
+      SAE with fatal outcome       50           47             42              1.6 (-7.2 - 10.3)      
+      SAE                      53 (26.2%)   49 (27.7%)     39 (24.1%)          2.1 (-6.8 - 11.0)      
+      SAE with fatal outcome   50 (24.8%)   47 (26.6%)     42 (25.9%)          1.6 (-7.2 - 10.3)      
+

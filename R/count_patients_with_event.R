@@ -291,18 +291,23 @@ count_patients_with_flags <- function(lyt,
     .ungroup_stats = .stats
   )
 
-  afun_riskdiff <- function(df, .var, .N_col, .N_row, .spl_context) {
+  afun_riskdiff <- function(df, .var, .N_col, .N_row, .spl_context) { # nolint
     n_spl <- length(.spl_context$split)
-    if (.spl_context$cur_col_n[n_spl] == sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])) {
-      N_col_x <- round(.N_col/2) # fix value after rtables#517
-      N_col_y <- round(.N_col/2) # fix value after rtables#517
+    n_riskdiff_col <- sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])
+    if (.spl_context$cur_col_n[n_spl] == n_riskdiff_col) {
+      N_col_x <- round(.N_col / 2) # fix value after rtables#517 # nolint
+      N_col_y <- round(.N_col / 2) # fix value after rtables#517 # nolint
       s_x <- s_count_patients_with_flags(df[df$ARM == riskdiff$arm_x, ], .var, flag_variables, N_col_x, .N_row, "N_col")
       s_y <- s_count_patients_with_flags(df[df$ARM == riskdiff$arm_y, ], .var, flag_variables, N_col_y, .N_row, "N_col")
-      rd_ci <- stat_riskdiff_ci(lapply(s_x["count_fraction"]$count_fraction, `[`, 2),
-                                lapply(s_y["count_fraction"]$count_fraction, `[`, 2), N_col_x, N_col_y, flag_variables)
+      rd_ci <- rep(stat_propdiff_ci(
+        lapply(s_x["count_fraction"]$count_fraction, `[`, 2), lapply(s_y["count_fraction"]$count_fraction, `[`, 2),
+        N_col_x, N_col_y, flag_variables
+      ), length(.stats))
       in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
     } else {
-      afun(df = df, .var = .var, flag_variables = flag_variables, .N_col = .N_col, .N_row = .N_row, denom = "N_col", ...)
+      afun(
+        df = df, .var = .var, flag_variables = flag_variables, .N_col = .N_col, .N_row = .N_row, denom = "N_col", ...
+      )
     }
   }
 

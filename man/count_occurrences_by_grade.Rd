@@ -32,7 +32,6 @@ count_occurrences_by_grade(
   var,
   var_labels = var,
   show_labels = "default",
-  id = "USUBJID",
   riskdiff = NULL,
   ...,
   table_names = var,
