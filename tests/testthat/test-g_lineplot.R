@@ -23,6 +23,7 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
     subtitle = "Laboratory Test:",
     caption = "caption"
   ))
+  # phantom change
   if (isTRUE(length(some_warning) > 0)) {
     stop("THIS IS THE WARNING 2: ", some_warning)
   }
