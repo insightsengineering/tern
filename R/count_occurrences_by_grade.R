@@ -272,7 +272,7 @@ count_occurrences_by_grade <- function(lyt,
                                 lapply(s_y["count_fraction"]$count_fraction, `[`, 2), N_col_x, N_col_y, names(s_x$count_fraction))
       in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
     } else {
-      afun(df = df, .var = .var, .N_col = .N_col)
+      afun(df = df, .var = .var, .N_col = .N_col, ...)
     }
   }
 

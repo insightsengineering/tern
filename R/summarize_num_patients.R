@@ -152,7 +152,7 @@ summarize_num_patients <- function(lyt,
       rd_ci <- stat_riskdiff_ci(list(s_x[c("unique")]$unique[2]), list(s_y[c("unique")]$unique[2]), N_col_x, N_col_y, .var)
       in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)")
     } else {
-      cfun(df = df, .var = .var, .N_col = .N_col, labelstr = .spl_context$value[n_spl])
+      cfun(df = df, .var = .var, .N_col = .N_col, labelstr = .spl_context$value[n_spl], ...)
     }
   }
 
@@ -222,7 +222,7 @@ analyze_num_patients <- function(lyt,
       rd_ci <- stat_riskdiff_ci(list(s_x[c("unique")]$unique[2]), list(s_y[c("unique")]$unique[2]), N_col_x, N_col_y, vars)
       in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = indent_mod)
     } else {
-      afun(df = df, .var = .var, .N_col = .N_col)
+      afun(df = df, .var = .var, .N_col = .N_col, ...)
     }
   }
 

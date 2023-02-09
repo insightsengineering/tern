@@ -302,7 +302,7 @@ count_patients_with_flags <- function(lyt,
                                 lapply(s_y["count_fraction"]$count_fraction, `[`, 2), N_col_x, N_col_y, flag_variables)
       in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
     } else {
-      afun(df = df, .var = .var, flag_variables = flag_variables, .N_col = .N_col, .N_row = .N_row, denom = "N_col")
+      afun(df = df, .var = .var, flag_variables = flag_variables, .N_col = .N_col, .N_row = .N_row, denom = "N_col", ...)
     }
   }
 

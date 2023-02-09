@@ -184,7 +184,7 @@ count_occurrences <- function(lyt,
                                 lapply(s_y["count_fraction"]$count_fraction, `[`, 2), N_col_x, N_col_y, names(s_x$count))
       in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
     } else {
-      afun(df = df, .var = .var, .df_row = df, .N_col = .N_col, denom = "N_col")
+      afun(df = df, .var = .var, .df_row = df, .N_col = .N_col, denom = "N_col", ...)
     }
   }
 
