@@ -13,7 +13,7 @@
 #' attributes(x)
 `footnotes<-` <- function(x, value = NULL) { # nolint
   dep_msg <- 'Please use current implementation in rtables or directly attr(x, "footnote")'
-  lifecycle::deprecate_warn("0.7.10", "footnotes()", details = dep_msg)
+  lifecycle::deprecate_warn("0.7.11", "footnotes()", details = dep_msg)
   attr(x, "footnote") <- value
   x
 }
@@ -33,7 +33,7 @@
 #' footnotes(x)
 footnotes <- function(x) {
   dep_msg <- 'Please use current implementation in rtables or directly attr(x, "footnote")'
-  lifecycle::deprecate_warn("0.7.10", "footnotes()", details = dep_msg)
+  lifecycle::deprecate_warn("0.7.11", "footnotes()", details = dep_msg)
   attr(x, "footnote")
 }
 
@@ -54,7 +54,7 @@ footnotes <- function(x) {
 #' footnotes(x)
 `add_footnotes<-` <- function(x, value) { # nolint
   dep_msg <- 'Please use current implementation in rtables or directly attr(x, "footnote")'
-  lifecycle::deprecate_warn("0.7.10", "add_footnotes()", details = dep_msg)
+  lifecycle::deprecate_warn("0.7.11", "add_footnotes()", details = dep_msg)
   footnotes(x) <- c(footnotes(x), value)
   x
 }
