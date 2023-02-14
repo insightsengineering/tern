@@ -18,7 +18,6 @@
   x
 }
 
-
 #' Retrieve Footnotes
 #'
 #' @description `r lifecycle::badge("deprecated")`
