@@ -133,7 +133,7 @@ testthat::test_that("count_occurrences works as expected with risk difference co
       vars = "AEDECOD",
       riskdiff = list(arm_x = arm_x, arm_y = arm_y)
     ) %>%
-    build_table(adae)
+    build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -147,7 +147,7 @@ testthat::test_that("count_occurrences works as expected with risk difference co
       .stats = c("count", "count_fraction", "fraction"),
       id = "SITEID"
     ) %>%
-    build_table(adae)
+    build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

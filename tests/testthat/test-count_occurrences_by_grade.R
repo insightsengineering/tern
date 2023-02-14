@@ -345,6 +345,7 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
     ~valname, ~label, ~levelcombo, ~exargs,
     "riskdiff", "Risk Difference (%) (95% CI)", c(arm_x, arm_y), list()
   )
+  tern_ex_adae$AESEV <- factor(tern_ex_adae$AESEV)
 
   # Default parameters
   result <- basic_table(show_colcounts = TRUE) %>%
@@ -359,7 +360,7 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
   testthat::expect_snapshot(res)
 
   # Grade groups, custom id var
-  grade_groups <- list("-Any-" = levels(adae$AESEV))
+  grade_groups <- list("-Any-" = levels(tern_ex_adae$AESEV))
 
   result <- basic_table(show_colcounts = TRUE) %>%
     split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
@@ -376,4 +377,3 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
-
