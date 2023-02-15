@@ -14,7 +14,7 @@ output dataset."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9042</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9043</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,15 +39,6 @@ output dataset."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -130,7 +121,11 @@ Visits that are not considered for post-baseline worst toxicity grade. Defaults 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># `h_adsl_adlb_merge_using_worst_flag`</span></span></span>
-<span class="r-in"><span><span class="va">adlb_out</span> <span class="op">&lt;-</span> <span class="fu">h_adsl_adlb_merge_using_worst_flag</span><span class="op">(</span><span class="va">tern_ex_adsl</span>, <span class="va">tern_ex_adlb</span>, worst_flag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WGRHIFL"</span> <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adlb_out</span> <span class="op">&lt;-</span> <span class="fu">h_adsl_adlb_merge_using_worst_flag</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">tern_ex_adsl</span>,</span></span>
+<span class="r-in"><span>  <span class="va">tern_ex_adlb</span>,</span></span>
+<span class="r-in"><span>  worst_flag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WGRHIFL"</span> <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `h_adsl_adlb_merge_using_worst_flag` by visit example</span></span></span>
 <span class="r-in"><span><span class="va">adlb_out_by_visit</span> <span class="op">&lt;-</span> <span class="fu">h_adsl_adlb_merge_using_worst_flag</span><span class="op">(</span></span></span>
