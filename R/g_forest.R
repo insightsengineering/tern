@@ -246,12 +246,6 @@ g_forest <- function(tbl, # nolint
     vp = grid::plotViewport(margins = rep(1, 4))
   )
 
-  fn <- footnotes(tbl)
-  if (!is.null(fn)) {
-    footnotes(grob_forest) <- fn
-    message("grob footnote is not added to plot; suggest to use decorate_grob() to further decorate the grob")
-  }
-
   if (draw) {
     if (newpage) grid::grid.newpage()
     grid::grid.draw(grob_forest)
