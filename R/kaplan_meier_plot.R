@@ -193,12 +193,16 @@ g_km <- function(df,
                  annot_coxph = FALSE,
                  control_coxph_pw = control_coxph(),
                  position_coxph = c(0, 0.05),
-                 position_surv_med = c(0.9, 0.9)) {
+                 position_surv_med = c(0.9, 0.9),
+                 vlines = NULL,
+                 vlines_text = FALSE) {
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(footnotes, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
+  checkmate::assert_subset(vlines, c("median", "min"))
+  checkmate::assert_logical(vlines_text)
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -247,7 +251,55 @@ g_km <- function(df,
     ci_ribbon = ci_ribbon
   )
 
-  g_el <- h_decompose_gg(gg) # nolint
+  browser()
+
+  if (!is.null(vlines)) {
+    formula_all <- stats::as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", 1))
+    fit_km_all <- survival::survfit(
+      formula = formula_all,
+      data = df,
+      conf.int = control_surv$conf_level,
+      conf.type = control_surv$conf_type
+    )
+    if ("median" %in% vlines) {
+      gg <- gg + geom_segment(
+        aes(
+          x = median(fit_km_all), y = if (vlines_text) 0.75 else 0.5,
+          xend = median(fit_km_all), yend = -Inf),
+        linetype = 2, col = "darkgray"
+      )
+      if (vlines_text) {
+        gg <- gg + geom_text(
+          size = 0.6 * font_size / ggplot2::.pt,
+          x = median(fit_km_all),
+          y = 0.75 + 0.06,
+          label = paste("Median\nFollow-up\nTime =", round(median(fit_km_all), 1))
+        ) +
+          ggplot2::guides(
+            fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = ""))
+          )
+      }
+    }
+    if ("min" %in% vlines) {
+      gg <- gg + geom_segment(
+        aes(x = median(fit_km_all), y = 0.75, xend = median(fit_km_all), yend = -Inf),
+        linetype = 2, col = "darkgray"
+      )
+      if (vlines_text) {
+        gg <- gg + geom_text(
+          size = 0.6 * font_size / ggplot2::.pt,
+          x = median(fit_km_all),
+          y = 0.75 + 0.06,
+          label = paste("Minimum\nFollow-up\nTime =", round(median(fit_km_all), 1))
+        ) +
+          ggplot2::guides(
+            fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = ""))
+          )
+      }
+    }
+  }
+
+  g_el <- h_decompose_gg(gg)
 
   if (annot_at_risk) {
     # This is the content of the table that will be below the graph.
