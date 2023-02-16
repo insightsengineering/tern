@@ -47,6 +47,10 @@
 #' @param annot_surv_med (`flag`)\cr compute and add the annotation table
 #'   on the Kaplan-Meier curve estimating the median survival time per group.
 #' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
+#' @param annot_stats (`string`)\cr statistics annotations to add to the plot. Options are
+#'   `median` (median survival follow-up time) and `min` (minimum survival follow-up time).
+#' @param annot_stats_vlines (`flag`)\cr add vertical lines corresponding to each of the statistics
+#'   specified by `annot_stats`. If `annot_stats` is `NULL` no lines will be added.
 #' @param control_coxph_pw (`list`) \cr parameters for comparison details, specified by using \cr
 #'    the helper function [control_coxph()]. Some possible parameter options are: \cr
 #' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
@@ -104,6 +108,12 @@ NULL
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
 #' res <- g_km(df = df, variables = variables, max = 2000)
+#' res <- g_km(
+#'   df = df,
+#'   variables = variables,
+#'   annot_stats = c("min", "median"),
+#'   annot_stats_vlines = TRUE
+#' )
 #'
 #' # 2. Example - Arrange several KM curve on a single graph device
 #'
@@ -250,7 +260,7 @@ g_km <- function(df,
     ggtheme = ggtheme,
     ci_ribbon = ci_ribbon
   )
-  # browser()
+
   if (!is.null(annot_stats)) {
     if ("median" %in% annot_stats) {
       fit_km_all <- survival::survfit(
@@ -269,7 +279,8 @@ g_km <- function(df,
       if (annot_stats_vlines) {
         gg <- gg +
           geom_segment(aes(x = median(fit_km_all), xend = median(fit_km_all), y = -Inf, yend = Inf),
-                       linetype = 2, col = "darkgray")
+            linetype = 2, col = "darkgray"
+          )
       }
     }
     if ("min" %in% annot_stats) {

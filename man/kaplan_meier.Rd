@@ -76,6 +76,12 @@ on the Kaplan-Meier curve estimating the median survival time per group.}
 
 \item{annot_coxph}{(\code{flag})\cr add the annotation table from a \code{\link[survival:coxph]{survival::coxph()}} model.}
 
+\item{annot_stats}{(\code{string})\cr statistics annotations to add to the plot. Options are
+\code{median} (median survival follow-up time) and \code{min} (minimum survival follow-up time).}
+
+\item{annot_stats_vlines}{(\code{flag})\cr add vertical lines corresponding to each of the statistics
+specified by \code{annot_stats}. If \code{annot_stats} is \code{NULL} no lines will be added.}
+
 \item{control_coxph_pw}{(\code{list}) \cr parameters for comparison details, specified by using \cr
 the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
 \itemize{
