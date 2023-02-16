@@ -12,7 +12,7 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9043</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9044</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -99,6 +90,7 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>unique <span class="op">=</span> <span class="st">"Number of patients with at least one event"</span>, nonunique <span class="op">=</span></span>
 <span>    <span class="st">"Number of events"</span><span class="op">)</span>,</span>
+<span>  indent_mod <span class="op">=</span> <span class="fl">0L</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -170,6 +162,13 @@ by a statistics function.</p></dd>
 <dd><p>(named <code>character</code>)<br> labels for the statistics (without indent).</p></dd>
 
 
+<dt>indent_mod</dt>
+<dd><p>(<code>count</code>) <br> it can be negative. Modifier for the default indent position for the
+structure created by this function(subtable, content table, or row) and
+all of that structure's children. Defaults to 0, which corresponds to the
+unmodified default behavior.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments for the lower level functions.</p></dd>
 
@@ -180,13 +179,6 @@ by a statistics function.</p></dd>
 
 <dt>show_labels</dt>
 <dd><p>label visibility: one of "default", "visible" and "hidden".</p></dd>
-
-
-<dt>indent_mod</dt>
-<dd><p>(<code>count</code>) <br> it can be negative. Modifier for the default indent position for the
-structure created by this function(subtable, content table, or row) and
-all of that structure's children. Defaults to 0, which corresponds to the
-unmodified default behavior.</p></dd>
 
 </dl></div>
     <div class="section level2">
