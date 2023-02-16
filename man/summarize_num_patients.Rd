@@ -32,6 +32,7 @@ summarize_num_patients(
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
+  indent_mod = 0L,
   ...
 )
 
@@ -77,16 +78,16 @@ by a statistics function.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
+\item{indent_mod}{(\code{count}) \cr it can be negative. Modifier for the default indent position for the
+structure created by this function(subtable, content table, or row) and
+all of that structure's children. Defaults to 0, which corresponds to the
+unmodified default behavior.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
-
-\item{indent_mod}{(\code{count}) \cr it can be negative. Modifier for the default indent position for the
-structure created by this function(subtable, content table, or row) and
-all of that structure's children. Defaults to 0, which corresponds to the
-unmodified default behavior.}
 }
 \value{
 A list with:

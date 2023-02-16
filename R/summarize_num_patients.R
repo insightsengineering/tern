@@ -130,6 +130,7 @@ summarize_num_patients <- function(lyt,
                                      unique = "Number of patients with at least one event",
                                      nonunique = "Number of events"
                                    ),
+                                   indent_mod = 0L,
                                    ...) {
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
   if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
@@ -145,7 +146,8 @@ summarize_num_patients <- function(lyt,
     lyt = lyt,
     var = var,
     cfun = cfun,
-    extra_args = list(...)
+    extra_args = list(...),
+    indent_mod = indent_mod
   )
 }
 

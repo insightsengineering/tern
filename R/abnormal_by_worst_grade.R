@@ -51,12 +51,13 @@ NULL
 #' adlb_f <- adlb %>%
 #'   filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
 #'   mutate(
-#'     GRADE_DIR = factor(case_when(
-#'       ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
-#'       ATOXGR == "0" ~ "ZERO",
-#'       ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
-#'     ),
-#'     levels = c("LOW", "ZERO", "HIGH")
+#'     GRADE_DIR = factor(
+#'       case_when(
+#'         ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
+#'         ATOXGR == "0" ~ "ZERO",
+#'         ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
+#'       ),
+#'       levels = c("LOW", "ZERO", "HIGH")
 #'     ),
 #'     GRADE_ANL = fct_relevel(
 #'       fct_recode(ATOXGR, `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
@@ -122,7 +123,7 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
     } else {
       df_lvl <- df[df[[.var]] != 0, ]
     }
-    num <- nrow(unique(df_lvl[, c("USUBJID")]))
+    num <- length(unique(df_lvl[["USUBJID"]]))
     fraction <- ifelse(denom == 0, 0, num / denom)
     result[[lvl]] <- formatters::with_label(c(count = num, fraction = fraction), lvl)
   }

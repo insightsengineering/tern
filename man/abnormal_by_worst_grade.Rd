@@ -117,12 +117,13 @@ adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 adlb_f <- adlb \%>\%
   filter(!AVISIT \%in\% c("SCREENING", "BASELINE")) \%>\%
   mutate(
-    GRADE_DIR = factor(case_when(
-      ATOXGR \%in\% c("-1", "-2", "-3", "-4") ~ "LOW",
-      ATOXGR == "0" ~ "ZERO",
-      ATOXGR \%in\% c("1", "2", "3", "4") ~ "HIGH"
-    ),
-    levels = c("LOW", "ZERO", "HIGH")
+    GRADE_DIR = factor(
+      case_when(
+        ATOXGR \%in\% c("-1", "-2", "-3", "-4") ~ "LOW",
+        ATOXGR == "0" ~ "ZERO",
+        ATOXGR \%in\% c("1", "2", "3", "4") ~ "HIGH"
+      ),
+      levels = c("LOW", "ZERO", "HIGH")
     ),
     GRADE_ANL = fct_relevel(
       fct_recode(ATOXGR, `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
