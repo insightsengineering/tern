@@ -191,18 +191,18 @@ g_km <- function(df,
                  annot_at_risk = TRUE,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
+                 annot_stats = NULL,
+                 annot_stats_vlines = FALSE,
                  control_coxph_pw = control_coxph(),
                  position_coxph = c(0, 0.05),
-                 position_surv_med = c(0.9, 0.9),
-                 vlines = NULL,
-                 vlines_text = FALSE) {
+                 position_surv_med = c(0.9, 0.9)) {
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(footnotes, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
-  checkmate::assert_subset(vlines, c("median", "min"))
-  checkmate::assert_logical(vlines_text)
+  checkmate::assert_subset(annot_stats, c("median", "min"))
+  checkmate::assert_logical(annot_stats_vlines)
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -250,53 +250,43 @@ g_km <- function(df,
     ggtheme = ggtheme,
     ci_ribbon = ci_ribbon
   )
-
-  browser()
-
-  if (!is.null(vlines)) {
-    formula_all <- stats::as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", 1))
-    fit_km_all <- survival::survfit(
-      formula = formula_all,
-      data = df,
-      conf.int = control_surv$conf_level,
-      conf.type = control_surv$conf_type
-    )
-    if ("median" %in% vlines) {
-      gg <- gg + geom_segment(
-        aes(
-          x = median(fit_km_all), y = if (vlines_text) 0.75 else 0.5,
-          xend = median(fit_km_all), yend = -Inf),
-        linetype = 2, col = "darkgray"
+  # browser()
+  if (!is.null(annot_stats)) {
+    if ("median" %in% annot_stats) {
+      fit_km_all <- survival::survfit(
+        formula = stats::as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", 1)),
+        data = df,
+        conf.int = control_surv$conf_level,
+        conf.type = control_surv$conf_type
       )
-      if (vlines_text) {
-        gg <- gg + geom_text(
-          size = 0.6 * font_size / ggplot2::.pt,
-          x = median(fit_km_all),
-          y = 0.75 + 0.06,
-          label = paste("Median\nFollow-up\nTime =", round(median(fit_km_all), 1))
-        ) +
-          ggplot2::guides(
-            fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = ""))
-          )
+      gg <- gg +
+        geom_text(
+          size = 8 / ggplot2::.pt, col = 1,
+          x = median(fit_km_all) + 0.065 * max(data_plot$time),
+          y = ifelse(yval == "Survival", 0.62, 0.38),
+          label = paste("Median F/U:\n", round(median(fit_km_all), 1), tolower(df$AVALU[1]))
+        )
+      if (annot_stats_vlines) {
+        gg <- gg +
+          geom_segment(aes(x = median(fit_km_all), xend = median(fit_km_all), y = -Inf, yend = Inf),
+                       linetype = 2, col = "darkgray")
       }
     }
-    if ("min" %in% vlines) {
-      gg <- gg + geom_segment(
-        aes(x = median(fit_km_all), y = 0.75, xend = median(fit_km_all), yend = -Inf),
-        linetype = 2, col = "darkgray"
-      )
-      if (vlines_text) {
-        gg <- gg + geom_text(
-          size = 0.6 * font_size / ggplot2::.pt,
-          x = median(fit_km_all),
-          y = 0.75 + 0.06,
-          label = paste("Minimum\nFollow-up\nTime =", round(median(fit_km_all), 1))
-        ) +
-          ggplot2::guides(
-            fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = ""))
-          )
+    if ("min" %in% annot_stats) {
+      min_fu <- min(df[[tte]])
+      gg <- gg +
+        geom_text(
+          size = 8 / ggplot2::.pt, col = 1,
+          x = min_fu + max(data_plot$time) * ifelse(yval == "Survival", 0.05, 0.07),
+          y = ifelse(yval == "Survival", 1.0, 0.05),
+          label = paste("Min. F/U:\n", round(min_fu, 1), tolower(df$AVALU[1]))
+        )
+      if (annot_stats_vlines) {
+        gg <- gg +
+          geom_segment(aes(x = min_fu, xend = min_fu, y = Inf, yend = -Inf), linetype = 2, col = "darkgray")
       }
     }
+    gg <- gg + ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = "")))
   }
 
   g_el <- h_decompose_gg(gg)
