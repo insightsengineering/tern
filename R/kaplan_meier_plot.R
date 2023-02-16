@@ -1079,7 +1079,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
   conf.int <- summary(fit_km)$conf.int # nolint
   y$records <- round(y$records)
   y$median <- signif(y$median, 4)
-  y$`CI` <- paste0( # nolint
+  y$`CI` <- paste0(
     "(", signif(y[[paste0(conf.int, "LCL")]], 4), ", ", signif(y[[paste0(conf.int, "UCL")]], 4), ")"
   )
   stats::setNames(
@@ -1123,7 +1123,7 @@ h_grob_median_surv <- function(fit_km,
                                x = 0.9,
                                y = 0.9,
                                ttheme = gridExtra::ttheme_default()) {
-  data <- h_tbl_median_surv(fit_km, armval = armval) # nolint
+  data <- h_tbl_median_surv(fit_km, armval = armval)
   gt <- gridExtra::tableGrob(d = data, theme = ttheme)
   vp <- grid::viewport(
     x = grid::unit(x, "npc") + grid::unit(1, "lines"),
@@ -1236,7 +1236,7 @@ h_tbl_coxph_pairwise <- function(df,
     )
     res_df <- data.frame(
       hr = format(round(res$hr, 2), nsmall = 2),
-      hr_ci = paste0( # nolint
+      hr_ci = paste0(
         "(", format(round(res$hr_ci[1], 2), nsmall = 2), ", ",
         format(round(res$hr_ci[2], 2), nsmall = 2), ")"
       ),
@@ -1288,9 +1288,9 @@ h_grob_coxph <- function(...,
                            padding = grid::unit(c(1, .5), "lines"),
                            core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
                          )) {
-  data <- h_tbl_coxph_pairwise(...) # nolint
+  data <- h_tbl_coxph_pairwise(...)
   tryCatch(
-    expr = { # nolint
+    expr = {
       gt <- gridExtra::tableGrob(d = data, theme = ttheme) # ERROR 'data' must be of a vector type, was 'NULL'
       vp <- grid::viewport(
         x = grid::unit(x, "npc") + grid::unit(1, "lines"),
