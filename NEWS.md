@@ -24,6 +24,8 @@
 * Updated examples to use datasets from the `tern` package instead of `scda` datasets.
 * Replaced all applicable tests with snapshot testing.
 * Updated all tests to use `tern` data.
+* Added options to `g_km` to annotate with statistics (`annot_stats`) and add corresponding 
+  vertical lines (`annot_stats_lines`).
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
