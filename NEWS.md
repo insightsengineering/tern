@@ -1,4 +1,4 @@
-# tern 0.7.10.9044
+# tern 0.7.10.9045
 
 ### Enhancements
 * Added `summarize_glm_count` function to tern.
@@ -40,6 +40,7 @@
 * Removed deprecated `ggplot2` functions/arguments to resolve warnings.
 * Fixed bugs in `rtables_access.R` that did not check for specific combination
   (also the standard values, that where never used) of column indices and names.
+* Fixed single applicable record bug in `count_abnormal_by_grade`.
 
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
