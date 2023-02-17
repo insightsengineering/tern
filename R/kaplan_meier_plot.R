@@ -272,13 +272,13 @@ g_km <- function(df,
       gg <- gg +
         geom_text(
           size = 8 / ggplot2::.pt, col = 1,
-          x = median(fit_km_all) + 0.065 * max(data_plot$time),
+          x = stats::median(fit_km_all) + 0.065 * max(data_plot$time),
           y = ifelse(yval == "Survival", 0.62, 0.38),
-          label = paste("Median F/U:\n", round(median(fit_km_all), 1), tolower(df$AVALU[1]))
+          label = paste("Median F/U:\n", round(stats::median(fit_km_all), 1), tolower(df$AVALU[1]))
         )
       if (annot_stats_vlines) {
         gg <- gg +
-          geom_segment(aes(x = median(fit_km_all), xend = median(fit_km_all), y = -Inf, yend = Inf),
+          geom_segment(aes(x = stats::median(fit_km_all), xend = stats::median(fit_km_all), y = -Inf, yend = Inf),
             linetype = 2, col = "darkgray"
           )
       }
