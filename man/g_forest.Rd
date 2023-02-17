@@ -43,7 +43,7 @@ By default tries to get this from \code{tbl} attribute \code{forest_header}.}
 
 \item{logx}{(\code{flag})\cr show the x-values on logarithm scale.}
 
-\item{x_at}{(\verb{numeric)\\cr x-tick locations, if }NULL` they get automatically chosen.}
+\item{x_at}{(\code{numeric})\cr x-tick locations, if \code{NULL} they get automatically chosen.}
 
 \item{width_row_names}{(\code{unit})\cr
 width for row names. If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
