@@ -47,6 +47,10 @@
 #' @param annot_surv_med (`flag`)\cr compute and add the annotation table
 #'   on the Kaplan-Meier curve estimating the median survival time per group.
 #' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
+#' @param annot_stats (`string`)\cr statistics annotations to add to the plot. Options are
+#'   `median` (median survival follow-up time) and `min` (minimum survival follow-up time).
+#' @param annot_stats_vlines (`flag`)\cr add vertical lines corresponding to each of the statistics
+#'   specified by `annot_stats`. If `annot_stats` is `NULL` no lines will be added.
 #' @param control_coxph_pw (`list`) \cr parameters for comparison details, specified by using \cr
 #'    the helper function [control_coxph()]. Some possible parameter options are: \cr
 #' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
@@ -104,6 +108,12 @@ NULL
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
 #' res <- g_km(df = df, variables = variables, max = 2000)
+#' res <- g_km(
+#'   df = df,
+#'   variables = variables,
+#'   annot_stats = c("min", "median"),
+#'   annot_stats_vlines = TRUE
+#' )
 #'
 #' # 2. Example - Arrange several KM curve on a single graph device
 #'
@@ -191,6 +201,8 @@ g_km <- function(df,
                  annot_at_risk = TRUE,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
+                 annot_stats = NULL,
+                 annot_stats_vlines = FALSE,
                  control_coxph_pw = control_coxph(),
                  position_coxph = c(0, 0.05),
                  position_surv_med = c(0.9, 0.9)) {
@@ -199,6 +211,8 @@ g_km <- function(df,
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(footnotes, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
+  checkmate::assert_subset(annot_stats, c("median", "min"))
+  checkmate::assert_logical(annot_stats_vlines)
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -247,7 +261,46 @@ g_km <- function(df,
     ci_ribbon = ci_ribbon
   )
 
-  g_el <- h_decompose_gg(gg) # nolint
+  if (!is.null(annot_stats)) {
+    if ("median" %in% annot_stats) {
+      fit_km_all <- survival::survfit(
+        formula = stats::as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", 1)),
+        data = df,
+        conf.int = control_surv$conf_level,
+        conf.type = control_surv$conf_type
+      )
+      gg <- gg +
+        geom_text(
+          size = 8 / ggplot2::.pt, col = 1,
+          x = stats::median(fit_km_all) + 0.065 * max(data_plot$time),
+          y = ifelse(yval == "Survival", 0.62, 0.38),
+          label = paste("Median F/U:\n", round(stats::median(fit_km_all), 1), tolower(df$AVALU[1]))
+        )
+      if (annot_stats_vlines) {
+        gg <- gg +
+          geom_segment(aes(x = stats::median(fit_km_all), xend = stats::median(fit_km_all), y = -Inf, yend = Inf),
+            linetype = 2, col = "darkgray"
+          )
+      }
+    }
+    if ("min" %in% annot_stats) {
+      min_fu <- min(df[[tte]])
+      gg <- gg +
+        geom_text(
+          size = 8 / ggplot2::.pt, col = 1,
+          x = min_fu + max(data_plot$time) * ifelse(yval == "Survival", 0.05, 0.07),
+          y = ifelse(yval == "Survival", 1.0, 0.05),
+          label = paste("Min. F/U:\n", round(min_fu, 1), tolower(df$AVALU[1]))
+        )
+      if (annot_stats_vlines) {
+        gg <- gg +
+          geom_segment(aes(x = min_fu, xend = min_fu, y = Inf, yend = -Inf), linetype = 2, col = "darkgray")
+      }
+    }
+    gg <- gg + ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = "")))
+  }
+
+  g_el <- h_decompose_gg(gg)
 
   if (annot_at_risk) {
     # This is the content of the table that will be below the graph.
@@ -1027,7 +1080,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
   conf.int <- summary(fit_km)$conf.int # nolint
   y$records <- round(y$records)
   y$median <- signif(y$median, 4)
-  y$`CI` <- paste0( # nolint
+  y$`CI` <- paste0(
     "(", signif(y[[paste0(conf.int, "LCL")]], 4), ", ", signif(y[[paste0(conf.int, "UCL")]], 4), ")"
   )
   stats::setNames(
@@ -1071,7 +1124,7 @@ h_grob_median_surv <- function(fit_km,
                                x = 0.9,
                                y = 0.9,
                                ttheme = gridExtra::ttheme_default()) {
-  data <- h_tbl_median_surv(fit_km, armval = armval) # nolint
+  data <- h_tbl_median_surv(fit_km, armval = armval)
   gt <- gridExtra::tableGrob(d = data, theme = ttheme)
   vp <- grid::viewport(
     x = grid::unit(x, "npc") + grid::unit(1, "lines"),
@@ -1184,7 +1237,7 @@ h_tbl_coxph_pairwise <- function(df,
     )
     res_df <- data.frame(
       hr = format(round(res$hr, 2), nsmall = 2),
-      hr_ci = paste0( # nolint
+      hr_ci = paste0(
         "(", format(round(res$hr_ci[1], 2), nsmall = 2), ", ",
         format(round(res$hr_ci[2], 2), nsmall = 2), ")"
       ),
@@ -1236,9 +1289,9 @@ h_grob_coxph <- function(...,
                            padding = grid::unit(c(1, .5), "lines"),
                            core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
                          )) {
-  data <- h_tbl_coxph_pairwise(...) # nolint
+  data <- h_tbl_coxph_pairwise(...)
   tryCatch(
-    expr = { # nolint
+    expr = {
       gt <- gridExtra::tableGrob(d = data, theme = ttheme) # ERROR 'data' must be of a vector type, was 'NULL'
       vp <- grid::viewport(
         x = grid::unit(x, "npc") + grid::unit(1, "lines"),
