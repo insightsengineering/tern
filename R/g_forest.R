@@ -19,7 +19,7 @@
 #'   By default tries to get this from `tbl` attribute `forest_header`.
 #' @param xlim (`numeric`)\cr limits for x axis.
 #' @param logx (`flag`)\cr show the x-values on logarithm scale.
-#' @param x_at (`numeric)\cr x-tick locations, if `NULL` they get automatically chosen.
+#' @param x_at (`numeric`)\cr x-tick locations, if `NULL` they get automatically chosen.
 #' @param width_row_names (`unit`)\cr
 #'  width for row names. If `NULL` the widths get automatically calculated. See [grid::unit()].
 #' @param width_columns (`unit`)\cr
