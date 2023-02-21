@@ -3,13 +3,13 @@
     Code
       res
     Output
-        variable variable_label  term              term_label interaction
-      1    ARMCD          ARMCD ARM A Reference ARM A, n = 64            
-      2    ARMCD          ARMCD ARM B           ARM B, n = 68            
-      3    ARMCD          ARMCD ARM C           ARM C, n = 52            
-      4      AGE            AGE   AGE                     AGE            
-      5      SEX            SEX     F    Reference F, n = 100            
-      6      SEX            SEX     M               M, n = 84            
+        variable   variable_label  term              term_label interaction
+      1    ARMCD Planned Arm Code ARM A Reference ARM A, n = 64            
+      2    ARMCD Planned Arm Code ARM B           ARM B, n = 68            
+      3    ARMCD Planned Arm Code ARM C           ARM C, n = 52            
+      4      AGE              Age   AGE                     Age            
+      5      SEX              Sex     F    Reference F, n = 100            
+      6      SEX              Sex     M               M, n = 84            
         interaction_label reference reference_label  estimate  std_error df
       1                                                                   2
       2                                             -1.973924    1.14659  1
@@ -67,60 +67,60 @@
     Code
       res
     Output
-                                   Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 99% CI     p-value
-      ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-      SEX                                                                                                                           
-        Reference F, n = 100                                                                                                        
-        M, n = 84                          1                  0.744              0.941           2.10       (0.19, 23.73)    0.4292 
-      ARMCD                                2                                                                                 0.2016 
-        Reference ARM A, n = 64                                                                                                     
-        ARM B, n = 68                      1                 -11.532             6.443                                       0.0735 
-          AGE                                                                                                                       
-            35                                                                                   0.41       (0.01, 11.60)           
-        ARM C, n = 52                      1                  14.723           13103.521                                     0.9991 
-          AGE                                                                                                                       
-            35                                                                                 >999.99     (0.00, >999.99)          
-      AGE                                                                                                                           
-        AGE                                1                  -0.051             0.146                                       0.7263 
-          ARMCD                                                                                                                     
-            ARM A                                                                                0.95       (0.65, 1.38)            
-            ARM B                                                                                1.29       (0.95, 1.75)            
-            ARM C                                                                                1.00      (0.00, >999.99)          
-      Interaction of ARMCD * AGE           2                                                                                 0.2713 
-        Reference ARM A, n = 64                                                                                                     
-        ARM B, n = 68                      1                  0.304              0.188                                       0.1062 
-        ARM C, n = 52                      1                  0.048             356.266                                      0.9999 
+                                              Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 99% CI     p-value
+      —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      Sex                                                                                                                                      
+        Reference F, n = 100                                                                                                                   
+        M, n = 84                                     1                  0.744              0.941           2.10       (0.19, 23.73)    0.4292 
+      Planned Arm Code                                2                                                                                 0.2016 
+        Reference ARM A, n = 64                                                                                                                
+        ARM B, n = 68                                 1                 -11.532             6.443                                       0.0735 
+          Age                                                                                                                                  
+            35                                                                                              0.41       (0.01, 11.60)           
+        ARM C, n = 52                                 1                  14.723           13103.521                                     0.9991 
+          Age                                                                                                                                  
+            35                                                                                            >999.99     (0.00, >999.99)          
+      Age                                                                                                                                      
+        Age                                           1                  -0.051             0.146                                       0.7263 
+          Planned Arm Code                                                                                                                     
+            ARM A                                                                                           0.95       (0.65, 1.38)            
+            ARM B                                                                                           1.29       (0.95, 1.75)            
+            ARM C                                                                                           1.00      (0.00, >999.99)          
+      Interaction of Planned Arm Code * Age           2                                                                                 0.2713 
+        Reference ARM A, n = 64                                                                                                                
+        ARM B, n = 68                                 1                  0.304              0.188                                       0.1062 
+        ARM C, n = 52                                 1                  0.048             356.266                                      0.9999 
 
 # summarize_logistic works as expected for interaction model with categorical variable
 
     Code
       res
     Output
-                                        Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 99% CI     p-value
-      ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-      AGE                                                                                                                                
-        AGE                                     1                  0.186              0.093           1.21       (0.95, 1.53)     0.0461 
-      ARMCD                                     2                                                                                 1.0000 
-        Reference ARM A, n = 64                                                                                                          
-        ARM B, n = 68                           1                 -19.927            4655.091                                     0.9966 
-          SEX                                                                                                                            
-            F                                                                                         0.00      (0.00, >999.99)          
-            M                                                                                         1.05       (0.02, 45.12)           
-        ARM C, n = 52                           1                  -0.485            6977.551                                     0.9999 
-          SEX                                                                                                                            
-            F                                                                                         0.62      (0.00, >999.99)          
-            M                                                                                       >999.99     (0.00, >999.99)          
-      SEX                                                                                                                                
-        Reference F, n = 100                                                                                                             
-        M, n = 84                               1                 -18.467            4655.091                                     0.9968 
-          ARMCD                                                                                                                          
-            ARM A                                                                                     0.00      (0.00, >999.99)          
-            ARM B                                                                                     4.52       (0.22, 94.89)           
-            ARM C                                                                                     1.20      (0.00, >999.99)          
-      Interaction of ARMCD * SEX                2                                                                                 1.0000 
-        Reference ARM A or F, n = 129                                                                                                    
-        ARM B * M, n = 31                       1                  19.975            4655.091                                     0.9966 
-        ARM C * M, n = 24                       1                  18.649            8840.154                                     0.9983 
+                                              Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 99% CI     p-value
+      —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      Age                                                                                                                                      
+        Age                                           1                  0.186              0.093           1.21       (0.95, 1.53)     0.0461 
+      Planned Arm Code                                2                                                                                 1.0000 
+        Reference ARM A, n = 64                                                                                                                
+        ARM B, n = 68                                 1                 -19.927            4655.091                                     0.9966 
+          Sex                                                                                                                                  
+            F                                                                                               0.00      (0.00, >999.99)          
+            M                                                                                               1.05       (0.02, 45.12)           
+        ARM C, n = 52                                 1                  -0.485            6977.551                                     0.9999 
+          Sex                                                                                                                                  
+            F                                                                                               0.62      (0.00, >999.99)          
+            M                                                                                             >999.99     (0.00, >999.99)          
+      Sex                                                                                                                                      
+        Reference F, n = 100                                                                                                                   
+        M, n = 84                                     1                 -18.467            4655.091                                     0.9968 
+          Planned Arm Code                                                                                                                     
+            ARM A                                                                                           0.00      (0.00, >999.99)          
+            ARM B                                                                                           4.52       (0.22, 94.89)           
+            ARM C                                                                                           1.20      (0.00, >999.99)          
+      Interaction of Planned Arm Code * Sex           2                                                                                 1.0000 
+        Reference ARM A or F, n = 129                                                                                                          
+        ARM B * M, n = 31                             1                  19.975            4655.091                                     0.9966 
+        ARM C * M, n = 24                             1                  18.649            8840.154                                     0.9983 
 
 # summarize_logistic works as expected for simple model without interactions
 
@@ -129,10 +129,10 @@
     Output
                                   Degrees of Freedom   Parameter Estimate   Standard Error   Odds Ratio     Wald 99% CI     p-value
       —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-      ARMCD                               2                                                                                 0.2435 
+      Planned Arm Code                    2                                                                                 0.2435 
         Reference ARM A, n = 64                                                                                                    
         ARM B, n = 68                     1                  -1.905             1.134           0.15       (<0.01, 2.76)    0.0928 
         ARM C, n = 52                     1                  16.089            2306.294       >999.99     (0.00, >999.99)   0.9944 
-      AGE                                                                                                                          
-        AGE                               1                  0.165              0.090           1.18       (0.94, 1.49)     0.0665 
+      Age                                                                                                                          
+        Age                               1                  0.165              0.090           1.18       (0.94, 1.49)     0.0665 
 

@@ -24,24 +24,24 @@
     Code
       res
     Output
-        biomarker biomarker_label n_tot n_tot_events   median       hr       lcl
-      1    BMRKR1          BMRKR1   200          141 753.5176 1.000735 0.9541338
-      2       AGE             AGE   200          141 753.5176 1.008458 0.9846171
-             ucl conf_level      pval     pval_label
-      1 1.049611       0.95 0.9759230 p-value (Wald)
-      2 1.032877       0.95 0.4901995 p-value (Wald)
+        biomarker              biomarker_label n_tot n_tot_events   median       hr
+      1    BMRKR1 Continuous Level Biomarker 1   200          141 753.5176 1.000735
+      2       AGE                          Age   200          141 753.5176 1.008458
+              lcl      ucl conf_level      pval     pval_label
+      1 0.9541338 1.049611       0.95 0.9759230 p-value (Wald)
+      2 0.9846171 1.032877       0.95 0.4901995 p-value (Wald)
 
 # h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)
 
     Code
       res
     Output
-        biomarker biomarker_label n_tot n_tot_events median hr lcl ucl conf_level
-      1    BMRKR1          BMRKR1     0            0     NA NA  NA  NA       0.95
-      2       AGE             AGE     0            0     NA NA  NA  NA       0.95
-        pval     pval_label
-      1   NA p-value (Wald)
-      2   NA p-value (Wald)
+        biomarker              biomarker_label n_tot n_tot_events median hr lcl ucl
+      1    BMRKR1 Continuous Level Biomarker 1     0            0     NA NA  NA  NA
+      2       AGE                          Age     0            0     NA NA  NA  NA
+        conf_level pval     pval_label
+      1       0.95   NA p-value (Wald)
+      2       0.95   NA p-value (Wald)
 
 # h_tab_surv_one_biomarker works as expected
 

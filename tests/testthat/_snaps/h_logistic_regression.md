@@ -108,9 +108,9 @@
       res
     Output
         variable variable_label                      term
-      1     RACE           RACE                     ASIAN
-      2     RACE           RACE BLACK OR AFRICAN AMERICAN
-      3     RACE           RACE                     WHITE
+      1     RACE           Race                     ASIAN
+      2     RACE           Race BLACK OR AFRICAN AMERICAN
+      3     RACE           Race                     WHITE
                                term_label interaction interaction_label reference
       1          Reference ASIAN, n = 110                                        
       2 BLACK OR AFRICAN AMERICAN, n = 40                                        
@@ -130,7 +130,7 @@
       res
     Output
         variable variable_label term term_label interaction interaction_label
-      1      AGE            AGE  AGE        AGE                              
+      1      AGE            Age  AGE        Age                              
         reference reference_label  estimate  std_error df     pvalue
       1                           0.1698216 0.09524116  1 0.07457501
         is_variable_summary is_term_summary
@@ -157,40 +157,40 @@
     Code
       res
     Output
-          variable              variable_label                              term
-      1 ARMCD:RACE Interaction of ARMCD * RACE                      ARMCD * RACE
-      2 ARMCD:RACE Interaction of ARMCD * RACE ARM B * BLACK OR AFRICAN AMERICAN
-      3 ARMCD:RACE Interaction of ARMCD * RACE ARM C * BLACK OR AFRICAN AMERICAN
-      4 ARMCD:RACE Interaction of ARMCD * RACE                     ARM B * WHITE
-      5 ARMCD:RACE Interaction of ARMCD * RACE                     ARM C * WHITE
-                                       term_label interaction interaction_label
-      1         Reference ARM A or ASIAN, n = 136                              
-      2 ARM B * BLACK OR AFRICAN AMERICAN, n = 13                              
-      3 ARM C * BLACK OR AFRICAN AMERICAN, n = 12                              
-      4                     ARM B * WHITE, n = 12                              
-      5                     ARM C * WHITE, n = 11                              
-        reference reference_label  estimate std_error df    pvalue
-      1                                                4         1
-      2                            1.018378  10415.13  1  0.999922
-      3                           -17.92633  11842.72  1 0.9987922
-      4                           -18.10507  8366.027  1 0.9982733
-      5                           -17.10294  12735.87  1 0.9989285
-        is_variable_summary is_term_summary
-      1                TRUE           FALSE
-      2               FALSE            TRUE
-      3               FALSE            TRUE
-      4               FALSE            TRUE
-      5               FALSE            TRUE
+          variable                         variable_label
+      1 ARMCD:RACE Interaction of Planned Arm Code * Race
+      2 ARMCD:RACE Interaction of Planned Arm Code * Race
+      3 ARMCD:RACE Interaction of Planned Arm Code * Race
+      4 ARMCD:RACE Interaction of Planned Arm Code * Race
+      5 ARMCD:RACE Interaction of Planned Arm Code * Race
+                                     term                                term_label
+      1                      ARMCD * RACE         Reference ARM A or ASIAN, n = 136
+      2 ARM B * BLACK OR AFRICAN AMERICAN ARM B * BLACK OR AFRICAN AMERICAN, n = 13
+      3 ARM C * BLACK OR AFRICAN AMERICAN ARM C * BLACK OR AFRICAN AMERICAN, n = 12
+      4                     ARM B * WHITE                     ARM B * WHITE, n = 12
+      5                     ARM C * WHITE                     ARM C * WHITE, n = 11
+        interaction interaction_label reference reference_label  estimate std_error
+      1                                                                            
+      2                                                          1.018378  10415.13
+      3                                                         -17.92633  11842.72
+      4                                                         -18.10507  8366.027
+      5                                                         -17.10294  12735.87
+        df    pvalue is_variable_summary is_term_summary
+      1  4         1                TRUE           FALSE
+      2  1  0.999922               FALSE            TRUE
+      3  1 0.9987922               FALSE            TRUE
+      4  1 0.9982733               FALSE            TRUE
+      5  1 0.9989285               FALSE            TRUE
 
 # h_glm_interaction_extract works for continuous interaction
 
     Code
       res
     Output
-         variable             variable_label  term              term_label
-      1 ARMCD:AGE Interaction of ARMCD * AGE ARM A Reference ARM A, n = 64
-      2 ARMCD:AGE Interaction of ARMCD * AGE ARM B           ARM B, n = 68
-      3 ARMCD:AGE Interaction of ARMCD * AGE ARM C           ARM C, n = 52
+         variable                        variable_label  term              term_label
+      1 ARMCD:AGE Interaction of Planned Arm Code * Age ARM A Reference ARM A, n = 64
+      2 ARMCD:AGE Interaction of Planned Arm Code * Age ARM B           ARM B, n = 68
+      3 ARMCD:AGE Interaction of Planned Arm Code * Age ARM C           ARM C, n = 52
         interaction interaction_label reference reference_label   estimate std_error
       1                                                                             
       2                                                          0.3081205 0.2062392
@@ -206,9 +206,9 @@
       res
     Output
         variable variable_label term           term_label interaction
-      1      AGE            AGE  AGE                  AGE            
-      2      SEX            SEX    F Reference F, n = 100            
-      3      SEX            SEX    M            M, n = 84            
+      1      AGE            Age  AGE                  Age            
+      2      SEX            Sex    F Reference F, n = 100            
+      3      SEX            Sex    M            M, n = 84            
         interaction_label reference reference_label  estimate  std_error df
       1                                             0.1577267 0.09400483  1
       2                                                                    
@@ -228,8 +228,8 @@
       res
     Output
         variable variable_label term           term_label interaction
-      1      SEX            SEX    F Reference F, n = 100            
-      2      SEX            SEX    M            M, n = 84            
+      1      SEX            Sex    F Reference F, n = 100            
+      2      SEX            Sex    M            M, n = 84            
         interaction_label reference reference_label  estimate std_error df    pvalue
       1                                                                             
       2                                             0.6337791 0.9367545  1 0.4986794
@@ -265,26 +265,26 @@
     Code
       res
     Output
-             variable variable_label  term              term_label interaction
-      1         ARMCD          ARMCD ARM A Reference ARM A, n = 64            
-      2         ARMCD          ARMCD ARM B           ARM B, n = 68            
-      ARM B1    ARMCD          ARMCD ARM B           ARM B, n = 68        RACE
-      ARM B2    ARMCD          ARMCD ARM B           ARM B, n = 68        RACE
-      ARM B3    ARMCD          ARMCD ARM B           ARM B, n = 68        RACE
-      3         ARMCD          ARMCD ARM C           ARM C, n = 52            
-      ARM C1    ARMCD          ARMCD ARM C           ARM C, n = 52        RACE
-      ARM C2    ARMCD          ARMCD ARM C           ARM C, n = 52        RACE
-      ARM C3    ARMCD          ARMCD ARM C           ARM C, n = 52        RACE
+             variable   variable_label  term              term_label interaction
+      1         ARMCD Planned Arm Code ARM A Reference ARM A, n = 64            
+      2         ARMCD Planned Arm Code ARM B           ARM B, n = 68            
+      ARM B1    ARMCD Planned Arm Code ARM B           ARM B, n = 68        RACE
+      ARM B2    ARMCD Planned Arm Code ARM B           ARM B, n = 68        RACE
+      ARM B3    ARMCD Planned Arm Code ARM B           ARM B, n = 68        RACE
+      3         ARMCD Planned Arm Code ARM C           ARM C, n = 52            
+      ARM C1    ARMCD Planned Arm Code ARM C           ARM C, n = 52        RACE
+      ARM C2    ARMCD Planned Arm Code ARM C           ARM C, n = 52        RACE
+      ARM C3    ARMCD Planned Arm Code ARM C           ARM C, n = 52        RACE
              interaction_label                 reference           reference_label
       1                                                                           
       2                                                                           
-      ARM B1              RACE                     ASIAN                     ASIAN
-      ARM B2              RACE BLACK OR AFRICAN AMERICAN BLACK OR AFRICAN AMERICAN
-      ARM B3              RACE                     WHITE                     WHITE
+      ARM B1              Race                     ASIAN                     ASIAN
+      ARM B2              Race BLACK OR AFRICAN AMERICAN BLACK OR AFRICAN AMERICAN
+      ARM B3              Race                     WHITE                     WHITE
       3                                                                           
-      ARM C1              RACE                     ASIAN                     ASIAN
-      ARM C2              RACE BLACK OR AFRICAN AMERICAN BLACK OR AFRICAN AMERICAN
-      ARM C3              RACE                     WHITE                     WHITE
+      ARM C1              Race                     ASIAN                     ASIAN
+      ARM C2              Race BLACK OR AFRICAN AMERICAN BLACK OR AFRICAN AMERICAN
+      ARM C3              Race                     WHITE                     WHITE
               estimate std_error   odds_ratio     lcl      ucl df    pvalue
       1                                    NA      NA       NA  2 0.5036187
       2      -1.421604  1.213735           NA      NA       NA  1 0.2414927
@@ -320,7 +320,7 @@
     Code
       res
     Output
-       [1] "AGE"                           "Reference ARM A, n = 64"      
+       [1] "Age"                           "Reference ARM A, n = 64"      
        [3] "ARM B, n = 68"                 "ARM B, n = 68"                
        [5] "ARM B, n = 68"                 "ARM C, n = 52"                
        [7] "ARM C, n = 52"                 "ARM C, n = 52"                
@@ -345,8 +345,8 @@
        [1] "Reference F, n = 100"    "M, n = 84"              
        [3] "Reference ARM A, n = 64" "ARM B, n = 68"          
        [5] "ARM B, n = 68"           "ARM C, n = 52"          
-       [7] "ARM C, n = 52"           "AGE"                    
-       [9] "AGE"                     "AGE"                    
-      [11] "AGE"                     "Reference ARM A, n = 64"
+       [7] "ARM C, n = 52"           "Age"                    
+       [9] "Age"                     "Age"                    
+      [11] "Age"                     "Reference ARM A, n = 64"
       [13] "ARM B, n = 68"           "ARM C, n = 52"          
 
