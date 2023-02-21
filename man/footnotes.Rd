@@ -13,6 +13,9 @@ footnotes(x)
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Retrieve value from attribute \code{footnote} of object \code{x}.
+
+This function is deprecated and will be removed from \code{tern} in version 0.7.11.
+Please use the equivalent implementation from \code{rtables} or \code{attr(x, "footnote")} directly.
 }
 \examples{
 x <- table(iris$Species)

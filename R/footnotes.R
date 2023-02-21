@@ -4,6 +4,9 @@
 #'
 #' Assign value to attribute footnote of object `x`.
 #'
+#' This function is deprecated and will be removed from `tern` in version 0.7.11.
+#' Please use the equivalent implementation from `rtables` or `attr(x, "footnote")` directly.
+#'
 #' @param x an object
 #' @param value character vector
 #' @export
@@ -24,6 +27,9 @@
 #'
 #' Retrieve value from attribute `footnote` of object `x`.
 #'
+#' This function is deprecated and will be removed from `tern` in version 0.7.11.
+#' Please use the equivalent implementation from `rtables` or `attr(x, "footnote")` directly.
+#'
 #' @param x an object
 #' @export
 #' @examples
@@ -41,6 +47,9 @@ footnotes <- function(x) {
 #' @description `r lifecycle::badge("deprecated")`
 #'
 #' This adds more footnotes.
+#'
+#' This function is deprecated and will be removed from `tern` in version 0.7.11.
+#' Please use the equivalent implementation from `rtables` or `attr(x, "footnote")` directly.
 #'
 #' @param x an object
 #' @param value character vector
