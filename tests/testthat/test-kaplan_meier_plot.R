@@ -24,7 +24,8 @@ testthat::test_that("h_data_plot respects the ordering of the arm variable facto
   res <- testthat::expect_silent(levels(result$strata))
   testthat::expect_snapshot(res)
   testthat::expect_s3_class(result, "tbl_df")
-  testthat::expect_s3_class(result$strata, "factor")})
+  testthat::expect_s3_class(result$strata, "factor")
+})
 
 testthat::test_that("h_data_plot adds rows that have time 0 and estimate 1", {
   data <- test_fit
@@ -63,7 +64,8 @@ testthat::test_that("h_xticks works with xticks numeric", {
     h_xticks(xticks = expected)
 
   res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)})
+  testthat::expect_snapshot(res)
+})
 
 testthat::test_that("h_xticks returns error when xticks non-numeric", {
   testthat::expect_error(
@@ -76,7 +78,8 @@ testthat::test_that("h_xticks works with max_time only", {
     h_xticks(max_time = 3000)
 
   res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)})
+  testthat::expect_snapshot(res)
+})
 
 testthat::test_that("h_xticks works with xticks numeric when max_time is not NULL", {
   expected <- c(0, 365, 1000)
@@ -84,14 +87,16 @@ testthat::test_that("h_xticks works with xticks numeric when max_time is not NUL
     h_xticks(xticks = expected, max_time = 1500)
 
   res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)})
+  testthat::expect_snapshot(res)
+})
 
 testthat::test_that("h_xticks works with xticks number when max_time is not NULL", {
   result <- h_data_plot(test_fit, max_time = 1500) %>%
     h_xticks(xticks = 500, max_time = 1500)
 
   res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)})
+  testthat::expect_snapshot(res)
+})
 
 
 # h_tbl_median_surv ----

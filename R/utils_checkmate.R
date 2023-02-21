@@ -18,7 +18,6 @@
 NULL
 
 check_list_of_variables <- function(x) {
-
   # drop NULL elements in list
   x <- Filter(Negate(is.null), x)
 

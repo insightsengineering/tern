@@ -190,23 +190,25 @@ testthat::test_that("summarize_num_patients with count_by works as expected with
 })
 
 testthat::test_that(
-  "summarize_num_patients with count_by different combinations works as expected with healthy input", {
-  df <- data.frame(
-    USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
-    ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
-    BY = as.character(c(10, 15, 11, 17, 8, 11, 11, 19, 17))
-  )
+  "summarize_num_patients with count_by different combinations works as expected with healthy input",
+  {
+    df <- data.frame(
+      USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
+      ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
+      BY = as.character(c(10, 15, 11, 17, 8, 11, 11, 19, 17))
+    )
 
-  # Check with both output
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", count_by = "BY") %>%
-    build_table(df)
+    # Check with both output
+    result <- basic_table() %>%
+      split_cols_by("ARM") %>%
+      add_colcounts() %>%
+      summarize_num_patients("USUBJID", count_by = "BY") %>%
+      build_table(df)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
 
 testthat::test_that("analyze_num_patients works well for pagination", {
   set.seed(1)

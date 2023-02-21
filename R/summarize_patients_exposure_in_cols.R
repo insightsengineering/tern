@@ -124,14 +124,15 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolintr
                                                 .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
                                                 .indent_mods = NULL,
                                                 col_split = TRUE) {
-  afun_list <- Map(function(stat) {
-    make_afun(
-      s_count_patients_sum_exposure,
-      .stats = stat,
-      .formats = ifelse(stat == "n_patients", "xx (xx.x%)", "xx")
-    )
-  },
-  stat = .stats
+  afun_list <- Map(
+    function(stat) {
+      make_afun(
+        s_count_patients_sum_exposure,
+        .stats = stat,
+        .formats = ifelse(stat == "n_patients", "xx (xx.x%)", "xx")
+      )
+    },
+    stat = .stats
   )
 
   if (col_split) {

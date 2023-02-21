@@ -203,7 +203,6 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   l_df <- split(df_tte, arm)
 
   if (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) > 0) {
-
     # Hazard ratio and CI.
     result <- s_coxph_pairwise(
       df = l_df[[2]],

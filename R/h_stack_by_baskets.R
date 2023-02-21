@@ -64,7 +64,6 @@ h_stack_by_baskets <- function(df,
                                keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
                                aag_summary = NULL,
                                na_level = "<Missing>") {
-
   # Use of df_explicit_na() in case the user has not previously used
   df <- df_explicit_na(df, na_level = na_level)
 
@@ -103,7 +102,6 @@ h_stack_by_baskets <- function(df,
   if (all(is.na(df[, baskets]))) { # in case there is no level for the target baskets
     df_long <- df[-seq_len(nrow(df)), keys] # we just need an empty dataframe keeping all factor levels
   } else {
-
     # Concatenate SMQxxxNAM with corresponding SMQxxxSC
     df_cnct <- df[, c(keys, baskets[startsWith(baskets, "CQ")])]
 

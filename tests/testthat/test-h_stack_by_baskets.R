@@ -33,8 +33,10 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  paste("h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no",
-  "adverse events falling within any of the baskets selected"),
+  paste(
+    "h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no",
+    "adverse events falling within any of the baskets selected"
+  ),
   code = {
     adae <- adae_local
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)

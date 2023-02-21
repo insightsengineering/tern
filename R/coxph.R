@@ -391,7 +391,7 @@ s_cox_multivariate <- function(formula, data,
   y <- fit_n_aov(
     formula = formula,
     data = data,
-    conf_level  = conf_level,
+    conf_level = conf_level,
     pval_method = pval_method,
     ...
   )

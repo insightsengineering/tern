@@ -41,7 +41,6 @@ h_tab_one_biomarker <- function(df,
 
   # If there is any subgroup variables, we extend the layout accordingly.
   if ("analysis" %in% df$row_type) {
-
     # Now only continue with the subgroup rows.
     lyt <- split_rows_by(
       lyt = lyt,

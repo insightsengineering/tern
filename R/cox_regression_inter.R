@@ -1,4 +1,3 @@
-
 #' Cox Regression Helper: Interactions
 #'
 #' @description `r lifecycle::badge("stable")`

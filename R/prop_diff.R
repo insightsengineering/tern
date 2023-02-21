@@ -98,26 +98,26 @@ s_proportion_diff <- function(df,
     }
 
     y <- switch(method,
-                "wald" = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
-                "waldcc" = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
-                "ha" = prop_diff_ha(rsp, grp, conf_level),
-                "newcombe" = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
-                "newcombecc" = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
-                "strat_newcombe" = prop_diff_strat_nc(rsp,
-                                                      grp,
-                                                      strata,
-                                                      weights_method,
-                                                      conf_level,
-                                                      correct = FALSE
-                ),
-                "strat_newcombecc" = prop_diff_strat_nc(rsp,
-                                                        grp,
-                                                        strata,
-                                                        weights_method,
-                                                        conf_level,
-                                                        correct = TRUE
-                ),
-                "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
+      "wald" = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
+      "waldcc" = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
+      "ha" = prop_diff_ha(rsp, grp, conf_level),
+      "newcombe" = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
+      "newcombecc" = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
+      "strat_newcombe" = prop_diff_strat_nc(rsp,
+        grp,
+        strata,
+        weights_method,
+        conf_level,
+        correct = FALSE
+      ),
+      "strat_newcombecc" = prop_diff_strat_nc(rsp,
+        grp,
+        strata,
+        weights_method,
+        conf_level,
+        correct = TRUE
+      ),
+      "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
     )
 
     y$diff <- y$diff * 100
@@ -149,7 +149,7 @@ s_proportion_diff <- function(df,
 #' @export
 a_proportion_diff <- make_afun(
   s_proportion_diff,
-  .formats =  c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
+  .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
   .indent_mods = c(diff = 0L, diff_ci = 1L)
 )
 

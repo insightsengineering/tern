@@ -1,4 +1,3 @@
-
 # groups_list_to_df ----
 testthat::test_that("groups_list_to_df works as expected", {
   grade_groups <- list(
