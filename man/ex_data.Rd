@@ -15,7 +15,7 @@ rds (data.frame)
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 200 rows and 21 columns.
 
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 541 rows and 44 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 541 rows and 42 columns.
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4200 rows and 50 columns.
 

@@ -34,12 +34,12 @@
     Code
       res
     Output
-                          STUDYID                     USUBJID 
-                               NA                          NA 
-                           ASTDTM                     AEDECOD 
-                               NA                          NA 
-                            AESEQ                         SMQ 
-                               NA "Standardized MedDRA Query" 
+                           STUDYID                      USUBJID 
+                "Study Identifier"  "Unique Subject Identifier" 
+                            ASTDTM                      AEDECOD 
+         "Analysis Start Datetime"    "Dictionary-Derived Term" 
+                             AESEQ                          SMQ 
+      "Sponsor-Defined Identifier"  "Standardized MedDRA Query" 
 
 ---
 

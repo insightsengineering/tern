@@ -54,7 +54,6 @@ reference:
     desc: These functions are useful in defining an analysis.
     contents:
       - starts_with("create_", internal = TRUE)
-      - matches(".*footnotes.*")
       - starts_with("h_")
       - starts_with("or_")
       - starts_with("prop_")
@@ -161,4 +160,5 @@ reference:
       - starts_with("ex_")
 
   - title: Deprecated Functions
-    desc: No functions are currently deprecated within `tern`.
+    contents:
+      - matches(".*footnotes.*")

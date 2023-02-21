@@ -30,17 +30,28 @@
     Code
       res
     Output
-                arm  n n_rsp      prop     subgroup     var    var_label row_type
-      1  B: Placebo  9     7 0.7777778 All Patients     ALL All Patients  content
-      2   A: Drug X 11     8 0.7272727 All Patients     ALL All Patients  content
-      3  B: Placebo  5     4 0.8000000            F     SEX          SEX analysis
-      4   A: Drug X  6     6 1.0000000            F     SEX          SEX analysis
-      5  B: Placebo  4     3 0.7500000            M     SEX          SEX analysis
-      6   A: Drug X  5     2 0.4000000            M     SEX          SEX analysis
-      7  B: Placebo  5     4 0.8000000           S1 STRATA2      STRATA2 analysis
-      8   A: Drug X  5     4 0.8000000           S1 STRATA2      STRATA2 analysis
-      9  B: Placebo  4     3 0.7500000           S2 STRATA2      STRATA2 analysis
-      10  A: Drug X  6     4 0.6666667           S2 STRATA2      STRATA2 analysis
+                arm  n n_rsp      prop     subgroup     var               var_label
+      1  B: Placebo  9     7 0.7777778 All Patients     ALL            All Patients
+      2   A: Drug X 11     8 0.7272727 All Patients     ALL            All Patients
+      3  B: Placebo  5     4 0.8000000            F     SEX                     Sex
+      4   A: Drug X  6     6 1.0000000            F     SEX                     Sex
+      5  B: Placebo  4     3 0.7500000            M     SEX                     Sex
+      6   A: Drug X  5     2 0.4000000            M     SEX                     Sex
+      7  B: Placebo  5     4 0.8000000           S1 STRATA2 Stratification Factor 2
+      8   A: Drug X  5     4 0.8000000           S1 STRATA2 Stratification Factor 2
+      9  B: Placebo  4     3 0.7500000           S2 STRATA2 Stratification Factor 2
+      10  A: Drug X  6     4 0.6666667           S2 STRATA2 Stratification Factor 2
+         row_type
+      1   content
+      2   content
+      3  analysis
+      4  analysis
+      5  analysis
+      6  analysis
+      7  analysis
+      8  analysis
+      9  analysis
+      10 analysis
 
 # h_proportion_subgroups_df functions as expected when subgroups is NULL.
 
@@ -106,12 +117,12 @@
       3        46  0.7142857 0.1889048   2.700853       0.95            M     SEX
       4        51  2.1388889 0.5395114   8.479609       0.95           S1 STRATA2
       5        49  2.1111111 0.5405387   8.245089       0.95           S2 STRATA2
-           var_label row_type
-      1 All Patients  content
-      2          SEX analysis
-      3          SEX analysis
-      4      STRATA2 analysis
-      5      STRATA2 analysis
+                      var_label row_type
+      1            All Patients  content
+      2                     Sex analysis
+      3                     Sex analysis
+      4 Stratification Factor 2 analysis
+      5 Stratification Factor 2 analysis
 
 # h_odds_ratio_subgroups_df functions as expected when subgroups is NULL.
 
@@ -134,18 +145,18 @@
       3        46  0.6700931 0.1796710  2.499150       0.95 0.549837487
       4        51  2.2252093 0.5419286  9.136916       0.95 0.260432159
       5        49  1.9373524 0.4946238  7.588260       0.95 0.337843302
-                                    pval_label     subgroup     var    var_label
-      1 p-value (Cochran-Mantel-Haenszel Test) All Patients     ALL All Patients
-      2 p-value (Cochran-Mantel-Haenszel Test)            F     SEX          SEX
-      3 p-value (Cochran-Mantel-Haenszel Test)            M     SEX          SEX
-      4 p-value (Cochran-Mantel-Haenszel Test)           S1 STRATA2      STRATA2
-      5 p-value (Cochran-Mantel-Haenszel Test)           S2 STRATA2      STRATA2
-        row_type
-      1  content
-      2 analysis
-      3 analysis
-      4 analysis
-      5 analysis
+                                    pval_label     subgroup     var
+      1 p-value (Cochran-Mantel-Haenszel Test) All Patients     ALL
+      2 p-value (Cochran-Mantel-Haenszel Test)            F     SEX
+      3 p-value (Cochran-Mantel-Haenszel Test)            M     SEX
+      4 p-value (Cochran-Mantel-Haenszel Test)           S1 STRATA2
+      5 p-value (Cochran-Mantel-Haenszel Test)           S2 STRATA2
+                      var_label row_type
+      1            All Patients  content
+      2                     Sex analysis
+      3                     Sex analysis
+      4 Stratification Factor 2 analysis
+      5 Stratification Factor 2 analysis
 
 # h_odds_ratio_subgroups_df works as expected with groups_lists
 

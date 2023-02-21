@@ -102,19 +102,32 @@
     Code
       res
     Output
-                arm  n n_events    median     subgroup    var    var_label row_type
-      1  B: Placebo 73       57  727.8043 All Patients    ALL All Patients  content
-      2   A: Drug X 69       44  974.6402 All Patients    ALL All Patients  content
-      3  B: Placebo 40       31  599.1772            F    SEX          SEX analysis
-      4   A: Drug X 38       24 1016.2982            F    SEX          SEX analysis
-      5  B: Placebo 33       26  888.4916            M    SEX          SEX analysis
-      6   A: Drug X 31       20  974.6402            M    SEX          SEX analysis
-      7  B: Placebo 24       21  735.4722          LOW BMRKR2       BMRKR2 analysis
-      8   A: Drug X 26       15  974.6402          LOW BMRKR2       BMRKR2 analysis
-      9  B: Placebo 23       14  731.8352       MEDIUM BMRKR2       BMRKR2 analysis
-      10  A: Drug X 26       17  964.2197       MEDIUM BMRKR2       BMRKR2 analysis
-      11 B: Placebo 26       22  654.8245         HIGH BMRKR2       BMRKR2 analysis
-      12  A: Drug X 17       12 1016.2982         HIGH BMRKR2       BMRKR2 analysis
+                arm  n n_events    median     subgroup    var
+      1  B: Placebo 73       57  727.8043 All Patients    ALL
+      2   A: Drug X 69       44  974.6402 All Patients    ALL
+      3  B: Placebo 40       31  599.1772            F    SEX
+      4   A: Drug X 38       24 1016.2982            F    SEX
+      5  B: Placebo 33       26  888.4916            M    SEX
+      6   A: Drug X 31       20  974.6402            M    SEX
+      7  B: Placebo 24       21  735.4722          LOW BMRKR2
+      8   A: Drug X 26       15  974.6402          LOW BMRKR2
+      9  B: Placebo 23       14  731.8352       MEDIUM BMRKR2
+      10  A: Drug X 26       17  964.2197       MEDIUM BMRKR2
+      11 B: Placebo 26       22  654.8245         HIGH BMRKR2
+      12  A: Drug X 17       12 1016.2982         HIGH BMRKR2
+                            var_label row_type
+      1                  All Patients  content
+      2                  All Patients  content
+      3                           Sex analysis
+      4                           Sex analysis
+      5                           Sex analysis
+      6                           Sex analysis
+      7  Continuous Level Biomarker 2 analysis
+      8  Continuous Level Biomarker 2 analysis
+      9  Continuous Level Biomarker 2 analysis
+      10 Continuous Level Biomarker 2 analysis
+      11 Continuous Level Biomarker 2 analysis
+      12 Continuous Level Biomarker 2 analysis
 
 # h_survtime_subgroups_df functions as expected when subgroups is NULL.
 
@@ -183,13 +196,13 @@
       4        50           36 0.7617717 0.3854349 1.5055617       0.95 0.43236030
       5        49           31 0.7651261 0.3641277 1.6077269       0.95 0.47860004
       6        43           34 0.6662356 0.3257413 1.3626456       0.95 0.26285846
-                pval_label     subgroup    var    var_label row_type
-      1 p-value (log-rank) All Patients    ALL All Patients  content
-      2 p-value (log-rank)            F    SEX          SEX analysis
-      3 p-value (log-rank)            M    SEX          SEX analysis
-      4 p-value (log-rank)          LOW BMRKR2       BMRKR2 analysis
-      5 p-value (log-rank)       MEDIUM BMRKR2       BMRKR2 analysis
-      6 p-value (log-rank)         HIGH BMRKR2       BMRKR2 analysis
+                pval_label     subgroup    var                    var_label row_type
+      1 p-value (log-rank) All Patients    ALL                 All Patients  content
+      2 p-value (log-rank)            F    SEX                          Sex analysis
+      3 p-value (log-rank)            M    SEX                          Sex analysis
+      4 p-value (log-rank)          LOW BMRKR2 Continuous Level Biomarker 2 analysis
+      5 p-value (log-rank)       MEDIUM BMRKR2 Continuous Level Biomarker 2 analysis
+      6 p-value (log-rank)         HIGH BMRKR2 Continuous Level Biomarker 2 analysis
 
 ---
 
@@ -202,8 +215,8 @@
       3         2            2           NA  NA  NA       0.95        NA
                 pval_label     subgroup     var    var_label row_type
       1 p-value (log-rank) All Patients     ALL All Patients  content
-      2               <NA>          GBR COUNTRY      COUNTRY analysis
-      3               <NA>          CAN COUNTRY      COUNTRY analysis
+      2               <NA>          GBR COUNTRY      Country analysis
+      3               <NA>          CAN COUNTRY      Country analysis
 
 # h_coxph_subgroups_df functions as expected with stratification factors
 
@@ -216,8 +229,8 @@
       3        64           46 0.8256627 0.4434121 1.5374387       0.95 0.54529396
                 pval_label     subgroup var    var_label row_type
       1 p-value (log-rank) All Patients ALL All Patients  content
-      2 p-value (log-rank)            F SEX          SEX analysis
-      3 p-value (log-rank)            M SEX          SEX analysis
+      2 p-value (log-rank)            F SEX          Sex analysis
+      3 p-value (log-rank)            M SEX          Sex analysis
 
 # h_coxph_subgroups_df functions as expected when subgroups is NULL.
 
