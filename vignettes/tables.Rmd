@@ -184,7 +184,6 @@ basic_table() %>%
 One feature of a `layout` is that it can be used with different datasets to create different summaries. For example, here we can easily create the same summary of demographics for the Brazil and China subgroups, respectively:
 
 ```{r}
-
 lyt <- basic_table() %>%
   split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%

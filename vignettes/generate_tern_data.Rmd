@@ -555,13 +555,15 @@ generate_adlb <- function(adsl = tern_ex_adsl,
   adlb <- flag_variables(adlb, TRUE, TRUE, TRUE) %>% dplyr::rename(WGRHIVFL = "new_var")
   adlb <- flag_variables(adlb, TRUE, FALSE, TRUE) %>% dplyr::rename(WGRLOVFL = "new_var")
 
-  tern_ex_adlb <- adlb %>% dplyr::mutate(ANL01FL = ifelse(
-    (.data$ABLFL == "Y" | (.data$WORS01FL == "Y" & is.na(.data$DTYPE))) &
-      (.data$AVISIT != "SCREENING"),
-    "Y",
-    ""
-  ),
-  PARAM = as.factor(.data$PARAM))
+  tern_ex_adlb <- adlb %>% dplyr::mutate(
+    ANL01FL = ifelse(
+      (.data$ABLFL == "Y" | (.data$WORS01FL == "Y" & is.na(.data$DTYPE))) &
+        (.data$AVISIT != "SCREENING"),
+      "Y",
+      ""
+    ),
+    PARAM = as.factor(.data$PARAM)
+  )
 
   save(tern_ex_adlb, file = "data/tern_ex_adlb.rda", compress = "xz")
 }

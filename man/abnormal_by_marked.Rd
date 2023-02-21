@@ -117,12 +117,13 @@ df <- data.frame(
 )
 
 df <- df \%>\%
-  mutate(abn_dir = factor(case_when(
-    ANRIND == "LOW LOW" ~ "Low",
-    ANRIND == "HIGH HIGH" ~ "High",
-    TRUE ~ ""
-  ),
-  levels = c("Low", "High")
+  mutate(abn_dir = factor(
+    case_when(
+      ANRIND == "LOW LOW" ~ "Low",
+      ANRIND == "HIGH HIGH" ~ "High",
+      TRUE ~ ""
+    ),
+    levels = c("Low", "High")
   ))
 
 # Select only post-baseline records.

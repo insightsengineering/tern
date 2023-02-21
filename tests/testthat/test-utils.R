@@ -578,34 +578,40 @@ testthat::test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with In
 })
 
 testthat::test_that(
-  "range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
-  x <- c(Inf, -Inf, Inf, -Inf)
+  "range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = FALSE (def)]",
+  {
+    x <- c(Inf, -Inf, Inf, -Inf)
 
-  result <- range_noinf(x, na.rm = TRUE)
+    result <- range_noinf(x, na.rm = TRUE)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
-testthat::test_that(
-  "range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = FALSE (def), finite = TRUE]", {
-  x <- c(Inf, -Inf, Inf, -Inf)
-
-  result <- range_noinf(x, finite = TRUE)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
 
 testthat::test_that(
-  "range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = TRUE]", {
-  x <- c(Inf, -Inf, Inf, -Inf)
+  "range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = FALSE (def), finite = TRUE]",
+  {
+    x <- c(Inf, -Inf, Inf, -Inf)
 
-  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+    result <- range_noinf(x, finite = TRUE)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
+
+testthat::test_that(
+  "range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = TRUE]",
+  {
+    x <- c(Inf, -Inf, Inf, -Inf)
+
+    result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
 
 # DOUBLE with zero-len data, with NAs, no Inf
 

@@ -23,7 +23,8 @@ dta_bladder_raw <- local({
       armcd = formatters::with_label(as.factor(rx), "ARM"),
       covar1 = formatters::with_label(as.factor(enum), "A Covariate Label"),
       covar2 = formatters::with_label(
-        factor(sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")), "Sex (F/M)"),
+        factor(sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")), "Sex (F/M)"
+      ),
       age = sample(20:60, size = 340, replace = TRUE)
     )
   )

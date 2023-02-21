@@ -182,7 +182,6 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
   l_df <- split(df_rsp, arm)
 
   if (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) > 0) {
-
     # Odds ratio and CI.
     result_odds_ratio <- s_odds_ratio(
       df = l_df[[2]],
@@ -206,7 +205,6 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
     )
 
     if (!is.null(method)) {
-
       # Test for difference.
       result_test <- s_test_proportion_diff(
         df = l_df[[2]],

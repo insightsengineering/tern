@@ -90,7 +90,7 @@ h_row_counts(tree_row_elem) # Fails because there are no integers
 # Using values with integers
 tree_row_elem <- collect_leaves(tbl[3, ])[[1]]
 result <- h_row_counts(tree_row_elem)
-#result
+# result
 
 # Row fractions
 tree_row_elem <- collect_leaves(tbl[4, ])[[1]]

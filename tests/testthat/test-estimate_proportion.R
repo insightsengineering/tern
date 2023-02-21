@@ -337,4 +337,5 @@ testthat::test_that(
 
     res <- testthat::expect_silent(result)
     testthat::expect_snapshot(res)
-})
+  }
+)

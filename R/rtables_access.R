@@ -40,9 +40,8 @@ NULL
 #'
 #' @export
 h_row_first_values <- function(table_row,
-                         col_names = NULL,
-                         col_indices = NULL) {
-
+                               col_names = NULL,
+                               col_indices = NULL) {
   col_indices <- check_names_indices(table_row, col_names, col_indices)
   checkmate::assert_integerish(col_indices)
   checkmate::assert_subset(col_indices, seq_len(ncol(table_row)))
@@ -71,7 +70,7 @@ h_row_first_values <- function(table_row,
 #' # Using values with integers
 #' tree_row_elem <- collect_leaves(tbl[3, ])[[1]]
 #' result <- h_row_counts(tree_row_elem)
-#' #result
+#' # result
 #'
 #' @export
 h_row_counts <- function(table_row,
@@ -140,8 +139,10 @@ check_names_indices <- function(table_row,
                                 col_indices = NULL) {
   if (!is.null(col_names)) {
     if (!is.null(col_indices)) {
-      stop("Inserted both col_names and col_indices when selecting row values. ",
-           "Please choose one.")
+      stop(
+        "Inserted both col_names and col_indices when selecting row values. ",
+        "Please choose one."
+      )
     }
     col_indices <- h_col_indices(table_row, col_names)
   }

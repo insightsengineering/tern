@@ -111,7 +111,6 @@ h_adlb_worsen <- function(adlb,
 
   # extract data with worst lab
   if (!is.null(worst_flag_high) && !is.null(worst_flag_low)) {
-
     # change H to High, L to Low
     adlb_f_h[[direction_var]] <- rep("High", nrow(adlb_f_h))
     adlb_f_l[[direction_var]] <- rep("Low", nrow(adlb_f_l))

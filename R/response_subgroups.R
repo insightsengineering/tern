@@ -157,19 +157,20 @@ a_response_subgroups <- function(.formats = list(
     c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
   )
 
-  afun_lst <- Map(function(stat, fmt) {
-    if (stat == "ci") {
-      function(df, labelstr = "", ...) {
-        in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)
+  afun_lst <- Map(
+    function(stat, fmt) {
+      if (stat == "ci") {
+        function(df, labelstr = "", ...) {
+          in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)
+        }
+      } else {
+        function(df, labelstr = "", ...) {
+          in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), .formats = fmt)
+        }
       }
-    } else {
-      function(df, labelstr = "", ...) {
-        in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), .formats = fmt)
-      }
-    }
-  },
-  stat = names(.formats),
-  fmt = .formats
+    },
+    stat = names(.formats),
+    fmt = .formats
   )
 
   afun_lst
