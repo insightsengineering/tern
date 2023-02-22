@@ -8,8 +8,8 @@ upstream_repos:
   insightsengineering/formatters:
     repo: insightsengineering/formatters
     host: https://github.com
-  Roche/rtables:
-    repo: Roche/rtables
+  insightsengineering/rtables:
+    repo: insightsengineering/rtables
     host: https://github.com
 downstream_repos:
   insightsengineering/scda.test:
