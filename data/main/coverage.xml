@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.957770462027472" branch-rate="0" lines-covered="8437" lines-valid="8809" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-02-21 14:15:29">
+<coverage line-rate="0.957770462027472" branch-rate="0" lines-covered="8437" lines-valid="8809" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-02-22 07:58:20">
   <sources/>
   <packages>
     <package name="tern" line-rate="0.957770462027472" branch-rate="0" complexity="0">
@@ -5935,13 +5935,13 @@
                 <line number="68" hits="22" branch="false"/>
                 <line number="71" hits="22" branch="false"/>
                 <line number="73" hits="22" branch="false"/>
-                <line number="74" hits="527" branch="false"/>
-                <line number="75" hits="527" branch="false"/>
-                <line number="78" hits="527" branch="false"/>
-                <line number="79" hits="527" branch="false"/>
-                <line number="83" hits="527" branch="false"/>
+                <line number="74" hits="515" branch="false"/>
+                <line number="75" hits="515" branch="false"/>
+                <line number="78" hits="515" branch="false"/>
+                <line number="79" hits="515" branch="false"/>
+                <line number="83" hits="515" branch="false"/>
                 <line number="84" hits="2" branch="false"/>
-                <line number="87" hits="527" branch="false"/>
+                <line number="87" hits="515" branch="false"/>
                 <line number="89" hits="388" branch="false"/>
                 <line number="93" hits="388" branch="false"/>
                 <line number="94" hits="81" branch="false"/>
@@ -5969,13 +5969,13 @@
             <line number="68" hits="22" branch="false"/>
             <line number="71" hits="22" branch="false"/>
             <line number="73" hits="22" branch="false"/>
-            <line number="74" hits="527" branch="false"/>
-            <line number="75" hits="527" branch="false"/>
-            <line number="78" hits="527" branch="false"/>
-            <line number="79" hits="527" branch="false"/>
-            <line number="83" hits="527" branch="false"/>
+            <line number="74" hits="515" branch="false"/>
+            <line number="75" hits="515" branch="false"/>
+            <line number="78" hits="515" branch="false"/>
+            <line number="79" hits="515" branch="false"/>
+            <line number="83" hits="515" branch="false"/>
             <line number="84" hits="2" branch="false"/>
-            <line number="87" hits="527" branch="false"/>
+            <line number="87" hits="515" branch="false"/>
             <line number="89" hits="388" branch="false"/>
             <line number="93" hits="388" branch="false"/>
             <line number="94" hits="81" branch="false"/>
@@ -6712,40 +6712,40 @@
           <methods>
             <method name="footnotes&lt;-" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="15" hits="3" branch="false"/>
-                <line number="16" hits="3" branch="false"/>
-                <line number="17" hits="3" branch="false"/>
                 <line number="18" hits="3" branch="false"/>
+                <line number="19" hits="3" branch="false"/>
+                <line number="20" hits="3" branch="false"/>
+                <line number="21" hits="3" branch="false"/>
               </lines>
             </method>
             <method name="footnotes" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="34" hits="3" branch="false"/>
-                <line number="35" hits="3" branch="false"/>
-                <line number="36" hits="3" branch="false"/>
+                <line number="40" hits="3" branch="false"/>
+                <line number="41" hits="3" branch="false"/>
+                <line number="42" hits="3" branch="false"/>
               </lines>
             </method>
             <method name="add_footnotes&lt;-" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="55" hits="1" branch="false"/>
-                <line number="56" hits="1" branch="false"/>
-                <line number="57" hits="1" branch="false"/>
-                <line number="58" hits="1" branch="false"/>
+                <line number="64" hits="1" branch="false"/>
+                <line number="65" hits="1" branch="false"/>
+                <line number="66" hits="1" branch="false"/>
+                <line number="67" hits="1" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="15" hits="3" branch="false"/>
-            <line number="16" hits="3" branch="false"/>
-            <line number="17" hits="3" branch="false"/>
             <line number="18" hits="3" branch="false"/>
-            <line number="34" hits="3" branch="false"/>
-            <line number="35" hits="3" branch="false"/>
-            <line number="36" hits="3" branch="false"/>
-            <line number="55" hits="1" branch="false"/>
-            <line number="56" hits="1" branch="false"/>
-            <line number="57" hits="1" branch="false"/>
-            <line number="58" hits="1" branch="false"/>
+            <line number="19" hits="3" branch="false"/>
+            <line number="20" hits="3" branch="false"/>
+            <line number="21" hits="3" branch="false"/>
+            <line number="40" hits="3" branch="false"/>
+            <line number="41" hits="3" branch="false"/>
+            <line number="42" hits="3" branch="false"/>
+            <line number="64" hits="1" branch="false"/>
+            <line number="65" hits="1" branch="false"/>
+            <line number="66" hits="1" branch="false"/>
+            <line number="67" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="formats.R" filename="R/formats.R" line-rate="0.973913043478261" branch-rate="0" complexity="0">
