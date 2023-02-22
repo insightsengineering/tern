@@ -12,7 +12,7 @@ Helper functions used in calculations for logistic regression."><!-- mathjax -->
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9047</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ Helper functions used in calculations for logistic regression."><!-- mathjax -->
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -263,16 +254,16 @@ and categorical.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>glm.fit: fitted probabilities numerically 0 or 1 occurred</span>
 <span class="r-in"><span><span class="fu">h_glm_simple_term_extract</span><span class="op">(</span><span class="st">"AGE"</span>, <span class="va">mod1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable variable_label term term_label interaction interaction_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      AGE            AGE  AGE        AGE                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      AGE            Age  AGE        Age                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   reference reference_label  estimate  std_error df     pvalue</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                           0.1698216 0.09524116  1 0.07457501</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   is_variable_summary is_term_summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1               FALSE            TRUE</span>
 <span class="r-in"><span><span class="fu">h_glm_simple_term_extract</span><span class="op">(</span><span class="st">"ARMCD"</span>, <span class="va">mod1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   variable variable_label  term              term_label interaction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    ARMCD          ARMCD ARM A Reference ARM A, n = 64            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    ARMCD          ARMCD ARM B           ARM B, n = 68            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    ARMCD          ARMCD ARM C           ARM C, n = 52            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable   variable_label  term              term_label interaction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    ARMCD Planned Arm Code ARM A Reference ARM A, n = 64            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    ARMCD Planned Arm Code ARM B           ARM B, n = 68            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    ARMCD Planned Arm Code ARM C           ARM C, n = 52            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   interaction_label reference reference_label  estimate std_error df    pvalue</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                                  2 0.3004308</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                                             -1.774769  1.144405  1 0.1209443</span>
@@ -283,10 +274,10 @@ and categorical.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3               FALSE            TRUE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">h_glm_interaction_extract</span><span class="op">(</span><span class="st">"ARMCD:AGE"</span>, <span class="va">mod2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    variable             variable_label  term              term_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 ARMCD:AGE Interaction of ARMCD * AGE ARM A Reference ARM A, n = 64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 ARMCD:AGE Interaction of ARMCD * AGE ARM B           ARM B, n = 68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 ARMCD:AGE Interaction of ARMCD * AGE ARM C           ARM C, n = 52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    variable                        variable_label  term              term_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 ARMCD:AGE Interaction of Planned Arm Code * Age ARM A Reference ARM A, n = 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 ARMCD:AGE Interaction of Planned Arm Code * Age ARM B           ARM B, n = 68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 ARMCD:AGE Interaction of Planned Arm Code * Age ARM C           ARM C, n = 52</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   interaction interaction_label reference reference_label   estimate std_error</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                                             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                                                          0.3081205 0.2062392</span>
@@ -298,10 +289,10 @@ and categorical.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">h_glm_inter_term_extract</span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"ARMCD"</span>, <span class="va">mod2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable variable_label term term_label interaction interaction_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      AGE            AGE  AGE        AGE                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      AGE            AGE  AGE        AGE       ARMCD             ARMCD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      AGE            AGE  AGE        AGE       ARMCD             ARMCD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      AGE            AGE  AGE        AGE       ARMCD             ARMCD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      AGE            Age  AGE        Age                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      AGE            Age  AGE        Age       ARMCD  Planned Arm Code</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      AGE            Age  AGE        Age       ARMCD  Planned Arm Code</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      AGE            Age  AGE        Age       ARMCD  Planned Arm Code</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   reference reference_label    estimate std_error odds_ratio       lcl      ucl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                           -0.03873898 0.1514322         NA        NA       NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2     ARM A           ARM A          NA        NA  0.9620018 0.7149514 1.294420</span>
@@ -315,7 +306,7 @@ and categorical.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">h_logistic_simple_terms</span><span class="op">(</span><span class="st">"AGE"</span>, <span class="va">mod1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable variable_label term term_label interaction interaction_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      AGE            AGE  AGE        AGE                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      AGE            Age  AGE        Age                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   reference reference_label  estimate  std_error df     pvalue</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                           0.1698216 0.09524116  1 0.07457501</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   is_variable_summary is_term_summary odds_ratio       lcl      ucl</span>
@@ -323,35 +314,35 @@ and categorical.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.9832935, 1.4283084</span>
 <span class="r-in"><span><span class="fu">h_logistic_inter_terms</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RACE"</span>, <span class="st">"AGE"</span>, <span class="st">"ARMCD"</span>, <span class="st">"AGE:ARMCD"</span><span class="op">)</span>, <span class="va">mod2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        variable             variable_label                      term</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          RACE                       RACE                     ASIAN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          RACE                       RACE BLACK OR AFRICAN AMERICAN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          RACE                       RACE                     WHITE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13        ARMCD                      ARMCD                     ARM A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23        ARMCD                      ARMCD                     ARM B</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM B     ARMCD                      ARMCD                     ARM B</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33        ARMCD                      ARMCD                     ARM C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM C     ARMCD                      ARMCD                     ARM C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11          AGE                        AGE                       AGE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21          AGE                        AGE                       AGE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31          AGE                        AGE                       AGE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           AGE                        AGE                       AGE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12    AGE:ARMCD Interaction of ARMCD * AGE                     ARM A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22    AGE:ARMCD Interaction of ARMCD * AGE                     ARM B</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32    AGE:ARMCD Interaction of ARMCD * AGE                     ARM C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        variable                        variable_label                      term</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          RACE                                  Race                     ASIAN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          RACE                                  Race BLACK OR AFRICAN AMERICAN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          RACE                                  Race                     WHITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13        ARMCD                      Planned Arm Code                     ARM A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23        ARMCD                      Planned Arm Code                     ARM B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARM B     ARMCD                      Planned Arm Code                     ARM B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33        ARMCD                      Planned Arm Code                     ARM C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARM C     ARMCD                      Planned Arm Code                     ARM C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11          AGE                                   Age                       AGE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21          AGE                                   Age                       AGE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31          AGE                                   Age                       AGE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           AGE                                   Age                       AGE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    AGE:ARMCD Interaction of Planned Arm Code * Age                     ARM A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22    AGE:ARMCD Interaction of Planned Arm Code * Age                     ARM B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32    AGE:ARMCD Interaction of Planned Arm Code * Age                     ARM C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              term_label interaction interaction_label reference</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1              Reference ASIAN, n = 110                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2     BLACK OR AFRICAN AMERICAN, n = 40                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                         WHITE, n = 34                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 13              Reference ARM A, n = 64                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23                        ARM B, n = 68                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM B                     ARM B, n = 68         AGE               AGE        35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARM B                     ARM B, n = 68         AGE               Age        35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 33                        ARM C, n = 52                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM C                     ARM C, n = 52         AGE               AGE        35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                                  AGE                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21                                  AGE       ARMCD             ARMCD     ARM A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31                                  AGE       ARMCD             ARMCD     ARM B</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                   AGE       ARMCD             ARMCD     ARM C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARM C                     ARM C, n = 52         AGE               Age        35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                                  Age                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                                  Age       ARMCD  Planned Arm Code     ARM A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31                                  Age       ARMCD  Planned Arm Code     ARM B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                   Age       ARMCD  Planned Arm Code     ARM C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12              Reference ARM A, n = 64                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22                        ARM B, n = 68                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 32                        ARM C, n = 52                                        </span>

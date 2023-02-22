@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9047</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,15 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -188,19 +179,32 @@ and <code>strat</code>. <code>groups_lists</code> optionally specifies groupings
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="st">"rsp"</span>, arm <span class="op">=</span> <span class="st">"ARM"</span>, subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_rsp      prop     subgroup    var    var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73    50 0.6849315 All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69    59 0.8550725 All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40    25 0.6250000            F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38    36 0.9473684            F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33    25 0.7575758            M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31    23 0.7419355            M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24    13 0.5416667          LOW BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26    21 0.8076923          LOW BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 23    17 0.7391304       MEDIUM BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 26    23 0.8846154       MEDIUM BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 26    20 0.7692308         HIGH BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 17    15 0.8823529         HIGH BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_rsp      prop     subgroup    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73    50 0.6849315 All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69    59 0.8550725 All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40    25 0.6250000            F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38    36 0.9473684            F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33    25 0.7575758            M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31    23 0.7419355            M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24    13 0.5416667          LOW BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26    21 0.8076923          LOW BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 23    17 0.7391304       MEDIUM BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 26    23 0.8846154       MEDIUM BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 26    20 0.7692308         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 17    15 0.8823529         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 Continuous Level Biomarker 2 analysis</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Define groupings for BMRKR2 levels.</span></span></span>
 <span class="r-in"><span><span class="fu">h_proportion_subgroups_df</span><span class="op">(</span></span></span>
@@ -214,19 +218,32 @@ and <code>strat</code>. <code>groups_lists</code> optionally specifies groupings
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_rsp      prop        subgroup    var    var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73    50 0.6849315    All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69    59 0.8550725    All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40    25 0.6250000               F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38    36 0.9473684               F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33    25 0.7575758               M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31    23 0.7419355               M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24    13 0.5416667             low BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26    21 0.8076923             low BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 47    30 0.6382979      low/medium BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 52    44 0.8461538      low/medium BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 73    50 0.6849315 low/medium/high BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 69    59 0.8550725 low/medium/high BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_rsp      prop        subgroup    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73    50 0.6849315    All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69    59 0.8550725    All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40    25 0.6250000               F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38    36 0.9473684               F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33    25 0.7575758               M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31    23 0.7419355               M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24    13 0.5416667             low BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26    21 0.8076923             low BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 47    30 0.6382979      low/medium BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 52    44 0.8461538      low/medium BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 73    50 0.6849315 low/medium/high BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 69    59 0.8550725 low/medium/high BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 Continuous Level Biomarker 2 analysis</span>
 <span class="r-in"><span><span class="co"># Unstratatified analysis.</span></span></span>
 <span class="r-in"><span><span class="fu">h_odds_ratio_df</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
@@ -265,13 +282,13 @@ and <code>strat</code>. <code>groups_lists</code> optionally specifies groupings
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4        50  3.553846 1.0047370 12.570277       0.95          LOW BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5        49  2.705882 0.5911718 12.385232       0.95       MEDIUM BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        43  2.250000 0.3970298 12.750933       0.95         HIGH BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Continuous Level Biomarker 2 analysis</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Stratified analysis.</span></span></span>
 <span class="r-in"><span><span class="fu">h_odds_ratio_subgroups_df</span><span class="op">(</span></span></span>
@@ -290,13 +307,13 @@ and <code>strat</code>. <code>groups_lists</code> optionally specifies groupings
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4        50 3.0323726 0.8833232 10.409875       0.95          LOW BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5        49 2.1264996 0.4312008 10.486995       0.95       MEDIUM BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        43 2.5134820 0.4351747 14.517370       0.95         HIGH BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Continuous Level Biomarker 2 analysis</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Define groupings of BMRKR2 levels.</span></span></span>
 <span class="r-in"><span><span class="fu">h_odds_ratio_subgroups_df</span><span class="op">(</span></span></span>
@@ -321,13 +338,13 @@ and <code>strat</code>. <code>groups_lists</code> optionally specifies groupings
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4        50  3.553846 1.004737 12.570277       0.95             low BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5        99  3.116667 1.193409  8.139385       0.95      low/medium BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6       142  2.714000 1.180449  6.239827       0.95 low/medium/high BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Continuous Level Biomarker 2 analysis</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

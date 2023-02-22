@@ -12,7 +12,7 @@ Tabulate statistics such as median survival time and hazard ratio for population
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9047</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ Tabulate statistics such as median survival time and hazard ratio for population
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -194,19 +185,32 @@ the required statistics. Tables typically used as part of forest plot.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $survtime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_events    median     subgroup    var    var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73       57  727.8043 All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69       44  974.6402 All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40       31  599.1772            F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38       24 1016.2982            F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33       26  888.4916            M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31       20  974.6402            M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24       21  735.4722          LOW BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26       15  974.6402          LOW BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 23       14  731.8352       MEDIUM BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 26       17  964.2197       MEDIUM BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 26       22  654.8245         HIGH BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 17       12 1016.2982         HIGH BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_events    median     subgroup    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73       57  727.8043 All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69       44  974.6402 All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40       31  599.1772            F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38       24 1016.2982            F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33       26  888.4916            M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31       20  974.6402            M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24       21  735.4722          LOW BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26       15  974.6402          LOW BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 23       14  731.8352       MEDIUM BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 26       17  964.2197       MEDIUM BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 26       22  654.8245         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 17       12 1016.2982         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $hr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval</span>
@@ -216,13 +220,13 @@ the required statistics. Tables typically used as part of forest plot.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4        50           36 0.7617717 0.3854349 1.5055617       0.95 0.43236030</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5        49           31 0.7651261 0.3641277 1.6077269       0.95 0.47860004</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        43           34 0.6662356 0.3257413 1.3626456       0.95 0.26285846</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           pval_label     subgroup    var    var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 p-value (log-rank) All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 p-value (log-rank)            F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 p-value (log-rank)            M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 p-value (log-rank)          LOW BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 p-value (log-rank)       MEDIUM BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 p-value (log-rank)         HIGH BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           pval_label     subgroup    var                    var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 p-value (log-rank) All Patients    ALL                 All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 p-value (log-rank)            F    SEX                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 p-value (log-rank)            M    SEX                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 p-value (log-rank)          LOW BMRKR2 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 p-value (log-rank)       MEDIUM BMRKR2 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 p-value (log-rank)         HIGH BMRKR2 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># Internal function - a_survival_subgroups</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -233,17 +237,17 @@ the required statistics. Tables typically used as part of forest plot.</p>
 <span class="r-in"><span><span class="co">## Table with default columns.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">tabulate_survival_subgroups</span><span class="op">(</span><span class="va">df</span>, time_unit <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">AVALU</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Baseline Risk Factors                        B: Placebo               A: Drug X                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> All Patients                101          57         727.8         44         974.6           0.71       (0.48, 1.06)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEX                                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                          55          31         599.2         24        1016.3           0.56       (0.32, 0.96)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                          46          26         888.5         20         974.6           0.91       (0.50, 1.65)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR2                                                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   LOW                        36          21         735.5         15         974.6           0.76       (0.39, 1.51)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   MEDIUM                     31          14         731.8         17         964.2           0.77       (0.36, 1.61)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   HIGH                       34          22         654.8         12        1016.3           0.67       (0.33, 1.36)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Baseline Risk Factors                               B: Placebo               A: Drug X                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All Patients                       101          57         727.8         44         974.6           0.71       (0.48, 1.06)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sex                                                                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                 55          31         599.2         24        1016.3           0.56       (0.32, 0.96)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                 46          26         888.5         20         974.6           0.91       (0.50, 1.65)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Continuous Level Biomarker 2                                                                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   LOW                               36          21         735.5         15         974.6           0.76       (0.39, 1.51)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MEDIUM                            31          14         731.8         17         964.2           0.77       (0.36, 1.61)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   HIGH                              34          22         654.8         12        1016.3           0.67       (0.33, 1.36)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Table with a manually chosen set of columns: adding "pval".</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -252,17 +256,17 @@ the required statistics. Tables typically used as part of forest plot.</p>
 <span class="r-in"><span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot_events"</span>, <span class="st">"n_events"</span>, <span class="st">"median"</span>, <span class="st">"hr"</span>, <span class="st">"ci"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    time_unit <span class="op">=</span> <span class="va">adtte_f</span><span class="op">$</span><span class="va">AVALU</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Baseline Risk Factors                        B: Placebo               A: Drug X                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI    p-value (log-rank)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> All Patients                101          57         727.8         44         974.6           0.71       (0.48, 1.06)         0.0905      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEX                                                                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                          55          31         599.2         24        1016.3           0.56       (0.32, 0.96)         0.0341      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                          46          26         888.5         20         974.6           0.91       (0.50, 1.65)         0.7558      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR2                                                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   LOW                        36          21         735.5         15         974.6           0.76       (0.39, 1.51)         0.4324      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   MEDIUM                     31          14         731.8         17         964.2           0.77       (0.36, 1.61)         0.4786      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   HIGH                       34          22         654.8         12        1016.3           0.67       (0.33, 1.36)         0.2629      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Baseline Risk Factors                               B: Placebo               A: Drug X                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI    p-value (log-rank)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All Patients                       101          57         727.8         44         974.6           0.71       (0.48, 1.06)         0.0905      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sex                                                                                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                                 55          31         599.2         24        1016.3           0.56       (0.32, 0.96)         0.0341      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                                 46          26         888.5         20         974.6           0.91       (0.50, 1.65)         0.7558      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Continuous Level Biomarker 2                                                                                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   LOW                               36          21         735.5         15         974.6           0.76       (0.39, 1.51)         0.4324      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MEDIUM                            31          14         731.8         17         964.2           0.77       (0.36, 1.61)         0.4786      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   HIGH                              34          22         654.8         12        1016.3           0.67       (0.33, 1.36)         0.2629      </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

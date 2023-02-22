@@ -12,7 +12,7 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9047</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -174,19 +165,32 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $prop</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_rsp      prop     subgroup    var    var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73    50 0.6849315 All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69    59 0.8550725 All Patients    ALL All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40    25 0.6250000            F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38    36 0.9473684            F    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33    25 0.7575758            M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31    23 0.7419355            M    SEX          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24    13 0.5416667          LOW BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26    21 0.8076923          LOW BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 23    17 0.7391304       MEDIUM BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 26    23 0.8846154       MEDIUM BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 26    20 0.7692308         HIGH BMRKR2       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 17    15 0.8823529         HIGH BMRKR2       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_rsp      prop     subgroup    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73    50 0.6849315 All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69    59 0.8550725 All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40    25 0.6250000            F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38    36 0.9473684            F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33    25 0.7575758            M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31    23 0.7419355            M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24    13 0.5416667          LOW BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26    21 0.8076923          LOW BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 23    17 0.7391304       MEDIUM BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 26    23 0.8846154       MEDIUM BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 26    20 0.7692308         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 17    15 0.8823529         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $or</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot        or       lcl       ucl conf_level     subgroup    var</span>
@@ -196,13 +200,13 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4        50  3.553846 1.0047370 12.570277       0.95          LOW BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5        49  2.705882 0.5911718 12.385232       0.95       MEDIUM BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        43  2.250000 0.3970298 12.750933       0.95         HIGH BMRKR2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      var_label row_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 All Patients  content</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          SEX analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       BMRKR2 analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       BMRKR2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># Internal function - a_response_subgroups</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -212,17 +216,17 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-in"><span><span class="co">## Table with default columns.</span></span></span>
 <span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">tabulate_rsp_subgroups</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Baseline Risk Factors                B: Placebo           A: Drug X                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> All Patients              142     73      68.5%       69      85.5%          2.71      (1.18, 6.24) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEX                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                       78      40      62.5%       38      94.7%         10.80      (2.27, 51.45)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                       64      33      75.8%       31      74.2%          0.92      (0.30, 2.85) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR2                                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   LOW                     50      24      54.2%       26      80.8%          3.55      (1.00, 12.57)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   MEDIUM                  49      23      73.9%       26      88.5%          2.71      (0.59, 12.39)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   HIGH                    43      26      76.9%       17      88.2%          2.25      (0.40, 12.75)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Baseline Risk Factors                       B: Placebo           A: Drug X                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All Patients                     142     73      68.5%       69      85.5%          2.71      (1.18, 6.24) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sex                                                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                              78      40      62.5%       38      94.7%         10.80      (2.27, 51.45)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                              64      33      75.8%       31      74.2%          0.92      (0.30, 2.85) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Continuous Level Biomarker 2                                                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   LOW                            50      24      54.2%       26      80.8%          3.55      (1.00, 12.57)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MEDIUM                         49      23      73.9%       26      88.5%          2.71      (0.59, 12.39)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   HIGH                           43      26      76.9%       17      88.2%          2.25      (0.40, 12.75)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Table with selected columns.</span></span></span>
 <span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -230,17 +234,17 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-in"><span>    df <span class="op">=</span> <span class="va">df</span>,</span></span>
 <span class="r-in"><span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot"</span>, <span class="st">"n"</span>, <span class="st">"n_rsp"</span>, <span class="st">"prop"</span>, <span class="st">"or"</span>, <span class="st">"ci"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Baseline Risk Factors                       B: Placebo                       A: Drug X                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         Total n   n    Responders   Response (%)   n    Responders   Response (%)   Odds Ratio      95% CI    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> All Patients              142     73       50          68.5%       69       59          85.5%          2.71      (1.18, 6.24) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEX                                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                       78      40       25          62.5%       38       36          94.7%         10.80      (2.27, 51.45)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                       64      33       25          75.8%       31       23          74.2%          0.92      (0.30, 2.85) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR2                                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   LOW                     50      24       13          54.2%       26       21          80.8%          3.55      (1.00, 12.57)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   MEDIUM                  49      23       17          73.9%       26       23          88.5%          2.71      (0.59, 12.39)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   HIGH                    43      26       20          76.9%       17       15          88.2%          2.25      (0.40, 12.75)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Baseline Risk Factors                              B: Placebo                       A: Drug X                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                Total n   n    Responders   Response (%)   n    Responders   Response (%)   Odds Ratio      95% CI    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All Patients                     142     73       50          68.5%       69       59          85.5%          2.71      (1.18, 6.24) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sex                                                                                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                              78      40       25          62.5%       38       36          94.7%         10.80      (2.27, 51.45)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                              64      33       25          75.8%       31       23          74.2%          0.92      (0.30, 2.85) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Continuous Level Biomarker 2                                                                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   LOW                            50      24       13          54.2%       26       21          80.8%          3.55      (1.00, 12.57)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MEDIUM                         49      23       17          73.9%       26       23          88.5%          2.71      (0.59, 12.39)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   HIGH                           43      26       20          76.9%       17       15          88.2%          2.25      (0.40, 12.75)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
