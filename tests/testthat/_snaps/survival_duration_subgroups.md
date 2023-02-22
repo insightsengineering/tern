@@ -4,19 +4,32 @@
       res
     Output
       $survtime
-                arm  n n_events    median     subgroup    var    var_label row_type
-      1  B: Placebo 73       57  727.8043 All Patients    ALL All Patients  content
-      2   A: Drug X 69       44  974.6402 All Patients    ALL All Patients  content
-      3  B: Placebo 40       31  599.1772            F    SEX          SEX analysis
-      4   A: Drug X 38       24 1016.2982            F    SEX          SEX analysis
-      5  B: Placebo 33       26  888.4916            M    SEX          SEX analysis
-      6   A: Drug X 31       20  974.6402            M    SEX          SEX analysis
-      7  B: Placebo 24       21  735.4722          LOW BMRKR2       BMRKR2 analysis
-      8   A: Drug X 26       15  974.6402          LOW BMRKR2       BMRKR2 analysis
-      9  B: Placebo 23       14  731.8352       MEDIUM BMRKR2       BMRKR2 analysis
-      10  A: Drug X 26       17  964.2197       MEDIUM BMRKR2       BMRKR2 analysis
-      11 B: Placebo 26       22  654.8245         HIGH BMRKR2       BMRKR2 analysis
-      12  A: Drug X 17       12 1016.2982         HIGH BMRKR2       BMRKR2 analysis
+                arm  n n_events    median     subgroup    var
+      1  B: Placebo 73       57  727.8043 All Patients    ALL
+      2   A: Drug X 69       44  974.6402 All Patients    ALL
+      3  B: Placebo 40       31  599.1772            F    SEX
+      4   A: Drug X 38       24 1016.2982            F    SEX
+      5  B: Placebo 33       26  888.4916            M    SEX
+      6   A: Drug X 31       20  974.6402            M    SEX
+      7  B: Placebo 24       21  735.4722          LOW BMRKR2
+      8   A: Drug X 26       15  974.6402          LOW BMRKR2
+      9  B: Placebo 23       14  731.8352       MEDIUM BMRKR2
+      10  A: Drug X 26       17  964.2197       MEDIUM BMRKR2
+      11 B: Placebo 26       22  654.8245         HIGH BMRKR2
+      12  A: Drug X 17       12 1016.2982         HIGH BMRKR2
+                            var_label row_type
+      1                  All Patients  content
+      2                  All Patients  content
+      3                           Sex analysis
+      4                           Sex analysis
+      5                           Sex analysis
+      6                           Sex analysis
+      7  Continuous Level Biomarker 2 analysis
+      8  Continuous Level Biomarker 2 analysis
+      9  Continuous Level Biomarker 2 analysis
+      10 Continuous Level Biomarker 2 analysis
+      11 Continuous Level Biomarker 2 analysis
+      12 Continuous Level Biomarker 2 analysis
       
       $hr
         arm n_tot n_tot_events        hr       lcl       ucl conf_level       pval
@@ -26,13 +39,13 @@
       4        50           36 0.7617717 0.3854349 1.5055617       0.95 0.43236030
       5        49           31 0.7651261 0.3641277 1.6077269       0.95 0.47860004
       6        43           34 0.6662356 0.3257413 1.3626456       0.95 0.26285846
-                pval_label     subgroup    var    var_label row_type
-      1 p-value (log-rank) All Patients    ALL All Patients  content
-      2 p-value (log-rank)            F    SEX          SEX analysis
-      3 p-value (log-rank)            M    SEX          SEX analysis
-      4 p-value (log-rank)          LOW BMRKR2       BMRKR2 analysis
-      5 p-value (log-rank)       MEDIUM BMRKR2       BMRKR2 analysis
-      6 p-value (log-rank)         HIGH BMRKR2       BMRKR2 analysis
+                pval_label     subgroup    var                    var_label row_type
+      1 p-value (log-rank) All Patients    ALL                 All Patients  content
+      2 p-value (log-rank)            F    SEX                          Sex analysis
+      3 p-value (log-rank)            M    SEX                          Sex analysis
+      4 p-value (log-rank)          LOW BMRKR2 Continuous Level Biomarker 2 analysis
+      5 p-value (log-rank)       MEDIUM BMRKR2 Continuous Level Biomarker 2 analysis
+      6 p-value (log-rank)         HIGH BMRKR2 Continuous Level Biomarker 2 analysis
       
 
 # extract_survival_subgroups works as expected with groups_lists
@@ -82,17 +95,17 @@
     Code
       res
     Output
-      Baseline Risk Factors                        B: Placebo               A: Drug X                                     
-                              Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
-      ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-      All Patients                101          57         727.8         44         974.6           0.71       (0.48, 1.06)
-      SEX                                                                                                                 
-        F                          55          31         599.2         24        1016.3           0.56       (0.32, 0.96)
-        M                          46          26         888.5         20         974.6           0.91       (0.50, 1.65)
-      BMRKR2                                                                                                              
-        LOW                        36          21         735.5         15         974.6           0.76       (0.39, 1.51)
-        MEDIUM                     31          14         731.8         17         964.2           0.77       (0.36, 1.61)
-        HIGH                       34          22         654.8         12        1016.3           0.67       (0.33, 1.36)
+      Baseline Risk Factors                               B: Placebo               A: Drug X                                     
+                                     Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
+      ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      All Patients                       101          57         727.8         44         974.6           0.71       (0.48, 1.06)
+      Sex                                                                                                                        
+        F                                 55          31         599.2         24        1016.3           0.56       (0.32, 0.96)
+        M                                 46          26         888.5         20         974.6           0.91       (0.50, 1.65)
+      Continuous Level Biomarker 2                                                                                               
+        LOW                               36          21         735.5         15         974.6           0.76       (0.39, 1.51)
+        MEDIUM                            31          14         731.8         17         964.2           0.77       (0.36, 1.61)
+        HIGH                              34          22         654.8         12        1016.3           0.67       (0.33, 1.36)
 
 # tabulate_survival_subgroups functions as expected with NULL subgroups
 
@@ -113,7 +126,7 @@
                               Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
       ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients                 18          10         859.0         8          954.2           0.60       (0.23, 1.59)
-      REGION1                                                                                                             
+      Geographic Region 1                                                                                                 
         Asia                       9           4         1244.7         5          796.9           0.97       (0.26, 3.64)
         North America              2           2         1066.9         NA          NA              NA             NA     
         South America              7           4          859.0         3         1759.9           0.39       (0.07, 2.17)
@@ -127,7 +140,7 @@
                                                     Total Events   n    Events   Median (DAYS)   n    Events   Median (DAYS)   Hazard Ratio     95% Wald CI     p-value (log-rank)
       ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients                                      101        73     57         727.8       69     44         974.6           0.71        (0.48, 1.06)           0.0905      
-      RACE                                                                                                                                                                        
+      Race                                                                                                                                                                        
         ASIAN                                            51        43     31         731.8       38     20        1500.8           0.52        (0.29, 0.92)           0.0235      
         BLACK OR AFRICAN AMERICAN                        24        13     11         888.5       15     13         685.2           0.84        (0.35, 1.99)           0.6842      
         WHITE                                            20        12     11         589.4       11     9          796.9           1.15        (0.45, 2.92)           0.7719      

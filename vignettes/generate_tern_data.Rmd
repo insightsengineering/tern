@@ -101,44 +101,47 @@ generate_adsl <- function(N = 200) { # nolint
   country_site_prob <- c(.5, .121, .077, .077, .075, .052, .046, .025, .014, .003)
 
   adsl <- tibble::tibble(
-    STUDYID = rep("AB12345", N),
+    STUDYID = rep("AB12345", N) %>% with_label("Study Identifier"),
     COUNTRY = sample_fct(
       c("CHN", "USA", "BRA", "PAK", "NGA", "RUS", "JPN", "GBR", "CAN", "CHE"),
       N,
       prob = country_site_prob
-    ),
+    ) %>% with_label("Country"),
     SITEID = sample_fct(1:20, N, prob = rep(country_site_prob, times = 2)),
-    SUBJID = paste("id", seq_len(N), sep = "-"),
-    AGE = sapply(stats::rchisq(N, df = 5, ncp = 10), max, 0) + 20,
-    SEX = c("F", "M") %>% sample_fct(N, prob = c(.52, .48)),
-    ARMCD = c("ARM A", "ARM B", "ARM C") %>% sample_fct(N),
+    SUBJID = paste("id", seq_len(N), sep = "-") %>% with_label("Subject Identifier for the Study"),
+    AGE = (sapply(stats::rchisq(N, df = 5, ncp = 10), max, 0) + 20) %>% with_label("Age"),
+    SEX = c("F", "M") %>% sample_fct(N, prob = c(.52, .48)) %>% with_label("Sex"),
+    ARMCD = c("ARM A", "ARM B", "ARM C") %>% sample_fct(N) %>% with_label("Planned Arm Code"),
     ARM = dplyr::recode(
       .data$ARMCD,
       "ARM A" = "A: Drug X", "ARM B" = "B: Placebo", "ARM C" = "C: Combination"
-    ),
-    ACTARMCD = .data$ARMCD,
-    ACTARM = .data$ARM,
+    ) %>% with_label("Description of Planned Arm"),
+    ACTARMCD = .data$ARMCD %>% with_label("Actual Arm Code"),
+    ACTARM = .data$ARM %>% with_label("Description of Actual Arm"),
     RACE = c(
       "ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE",
       "MULTIPLE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER", "OTHER", "UNKNOWN"
     ) %>%
-      sample_fct(N, prob = c(.55, .23, .16, .05, .004, .003, .002, .002)),
+      sample_fct(N, prob = c(.55, .23, .16, .05, .004, .003, .002, .002)) %>%
+      with_label("Race"),
     TRTSDTM = as.POSIXct(
       sys_dtm + sample(seq(0, study_duration_secs), size = N, replace = TRUE),
       origin = "1970-01-01"
-    ),
-    TRTEDTM = as.POSIXct(as.numeric(.data$TRTSDTM) + study_duration_secs, origin = "1970-01-01"),
-    EOSDY = as.numeric(ceiling(difftime(.data$TRTEDTM, .data$TRTSDTM, units = "days"))),
-    STRATA1 = c("A", "B", "C") %>% sample_fct(N),
-    STRATA2 = c("S1", "S2") %>% sample_fct(N),
-    BMRKR1 = stats::rchisq(N, 6),
-    BMRKR2 = sample_fct(c("LOW", "MEDIUM", "HIGH"), N)
+    ) %>% with_label("Datetime of First Exposure to Treatment"),
+    TRTEDTM = as.POSIXct(as.numeric(.data$TRTSDTM) + study_duration_secs, origin = "1970-01-01") %>%
+      with_label("Datetime of Last Exposure to Treatment"),
+    EOSDY = as.numeric(ceiling(difftime(.data$TRTEDTM, .data$TRTSDTM, units = "days"))) %>%
+      with_label("End of Study Relative Day"),
+    STRATA1 = c("A", "B", "C") %>% sample_fct(N) %>% with_label("Stratification Factor 1"),
+    STRATA2 = c("S1", "S2") %>% sample_fct(N) %>% with_label("Stratification Factor 2"),
+    BMRKR1 = stats::rchisq(N, 6) %>% with_label("Continuous Level Biomarker 1"),
+    BMRKR2 = sample_fct(c("LOW", "MEDIUM", "HIGH"), N) %>% with_label("Continuous Level Biomarker 2")
   )
 
   # associate sites with countries and regions
   tern_ex_adsl <- adsl %>%
     dplyr::mutate(
-      SITEID = paste0(.data$COUNTRY, "-", .data$SITEID),
+      SITEID = paste0(.data$COUNTRY, "-", .data$SITEID) %>% with_label("Study Site Identifier"),
       REGION1 = factor(dplyr::case_when(
         COUNTRY %in% c("NGA") ~ "Africa",
         COUNTRY %in% c("CHN", "JPN", "PAK") ~ "Asia",
@@ -147,10 +150,11 @@ generate_adsl <- function(N = 200) { # nolint
         COUNTRY %in% c("CAN", "USA") ~ "North America",
         COUNTRY %in% c("BRA") ~ "South America",
         TRUE ~ as.character(NA)
-      )),
-      SAFFL = factor("Y")
+      )) %>% with_label("Geographic Region 1"),
+      SAFFL = factor("Y") %>% with_label("Safety Population Flag")
     ) %>%
-    dplyr::mutate(USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-"))
+    dplyr::mutate(USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-") %>%
+      with_label("Unique Subject Identifier"))
 
   save(tern_ex_adsl, file = "data/tern_ex_adsl.rda", compress = "xz")
 }
@@ -212,14 +216,8 @@ generate_adae <- function(adsl = tern_ex_adsl,
       AETOXGR %in% c(4, 5) ~ "SEVERE"
     ))
 
-  adae <- var_relabel(
-    adae,
-    STUDYID = "Study Identifier",
-    USUBJID = "Unique Subject Identifier"
-  )
-
   # merge adsl to be able to add AE date and study day variables
-  adae <- dplyr::inner_join(adsl, adae, by = c("STUDYID", "USUBJID")) %>%
+  adae <- dplyr::inner_join(adsl, adae, by = c("STUDYID", "USUBJID"), multiple = "all") %>%
     dplyr::rowwise() %>%
     dplyr::mutate(trtsdt_int = as.numeric(as.Date(.data$TRTSDTM))) %>%
     dplyr::mutate(trtedt_int = dplyr::case_when(
@@ -280,6 +278,34 @@ generate_adae <- function(adsl = tern_ex_adsl,
   }, adae)
 
   tern_ex_adae <- dplyr::bind_cols(adae, l_aesi)
+
+  tern_ex_adae <- tern_ex_adae %>%
+    dplyr::select(-"trtsdt_int", -"trtedt_int") %>%
+    var_relabel(
+      STUDYID = "Study Identifier",
+      USUBJID = "Unique Subject Identifier",
+      AEBODSYS = "Body System or Organ Class",
+      AELLT = "Lowest Level Term",
+      AEDECOD = "Dictionary-Derived Term",
+      AEHLT = "High Level Term",
+      AEHLGT = "High Level Group Term",
+      AETOXGR = "Analysis Toxicity Grade",
+      AESOC = "Primary System Organ Class",
+      AESER = "Serious Event",
+      AEREL = "Analysis Causality",
+      AETERM = "Reported Term for the Adverse Event",
+      AESEV = "Severity/Intensity",
+      ASTDTM = "Analysis Start Datetime",
+      AESEQ = "Sponsor-Defined Identifier",
+      ASEQ = "Analysis Sequence Number",
+      AEOUT = "Outcome of Adverse Event",
+      TRTEMFL = "Treatment Emergent Analysis Flag",
+      CQ01NAM = "CQ 01 Reference Name",
+      SMQ01NAM = "SMQ 01 Reference Name",
+      SMQ01SC = "SMQ 01 Scope",
+      SMQ02NAM = "SMQ 02 Reference Name",
+      SMQ02SC = "SMQ 02 Scope"
+    )
 
   save(tern_ex_adae, file = "data/tern_ex_adae.rda", compress = "xz")
 }
@@ -451,7 +477,8 @@ generate_adlb <- function(adsl = tern_ex_adsl,
   adlb <- dplyr::inner_join(
     adsl,
     adlb,
-    by = c("STUDYID", "USUBJID")
+    by = c("STUDYID", "USUBJID"),
+    multiple = "all"
   ) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(trtsdt_int = as.numeric(as.Date(.data$TRTSDTM))) %>%
@@ -555,15 +582,47 @@ generate_adlb <- function(adsl = tern_ex_adsl,
   adlb <- flag_variables(adlb, TRUE, TRUE, TRUE) %>% dplyr::rename(WGRHIVFL = "new_var")
   adlb <- flag_variables(adlb, TRUE, FALSE, TRUE) %>% dplyr::rename(WGRLOVFL = "new_var")
 
-  tern_ex_adlb <- adlb %>% dplyr::mutate(
-    ANL01FL = ifelse(
-      (.data$ABLFL == "Y" | (.data$WORS01FL == "Y" & is.na(.data$DTYPE))) &
-        (.data$AVISIT != "SCREENING"),
-      "Y",
-      ""
-    ),
-    PARAM = as.factor(.data$PARAM)
-  )
+  tern_ex_adlb <- adlb %>%
+    dplyr::mutate(
+      ANL01FL = ifelse(
+        (.data$ABLFL == "Y" | (.data$WORS01FL == "Y" & is.na(.data$DTYPE))) &
+          (.data$AVISIT != "SCREENING"),
+        "Y",
+        ""
+      ),
+      PARAM = as.factor(.data$PARAM)
+    ) %>%
+    var_relabel(
+      PARAM = "Parameter",
+      AVISIT = "Analysis Visit",
+      AVAL = "Analysis Value",
+      LBCAT = "Category for Lab Test",
+      PARAMCD = "Parameter Code",
+      AVALU = "Analysis Value Unit",
+      AVISITN = "Analysis Visit (N)",
+      ABLFL2 = "Screening Record Flag",
+      ABLFL = "Baseline Record Flag",
+      BASE = "Baseline Value",
+      BASETYPE = "Baseline Type",
+      ANRIND = "Analysis Reference Range Indicator",
+      ANRLO = "Analysis Normal Range Lower Limit",
+      ANRHI = "Analysis Normal Range Upper Limit",
+      DTYPE = "Derivation Type",
+      ATOXGR = "Analysis Toxicity Grade",
+      BTOXGR = "Baseline Toxicity Grade",
+      ATOXDSCL = "Analysis Toxicity Description Low",
+      ATOXDSCH = "Analysis Toxicity Description High",
+      ADTM = "Analysis Datetime",
+      ASPID = "Analysis Sponsor Identifier",
+      LBSEQ = "Sequence Number",
+      ONTRTFL = "On Treatment Record Flag",
+      WORS01FL = "Worst Observation in Window Flag 01",
+      WGRHIFL = "Worst High Grade per Patient",
+      WGRLOFL = "Worst Low Grade per Patient",
+      WGRHIVFL = "Worst High Grade per Patient per Visit",
+      WGRLOVFL = "Worst Low Grade per Patient per Visit",
+      ANL01FL = "Analysis Flag 01 Baseline Post-Baseline"
+    )
 
   save(tern_ex_adlb, file = "data/tern_ex_adlb.rda", compress = "xz")
 }
@@ -619,8 +678,14 @@ generate_adpp <- function(adsl = tern_ex_adsl) {
   ))
 
   tern_ex_adpp <- adsl %>%
-    dplyr::inner_join(adpp, by = c("STUDYID", "USUBJID")) %>%
-    dplyr::filter(.data$ACTARM != "B: Placebo", !(.data$ACTARM == "A: Drug X"))
+    dplyr::inner_join(adpp, by = c("STUDYID", "USUBJID"), multiple = "all") %>%
+    dplyr::filter(.data$ACTARM != "B: Placebo", !(.data$ACTARM == "A: Drug X")) %>%
+    var_relabel(
+      PARAM = "Parameter",
+      AVAL = "Analysis Value",
+      PARAMCD = "Parameter Code",
+      AVALU = "Analysis Value Unit"
+    )
 
   save(tern_ex_adpp, file = "data/tern_ex_adpp.rda", compress = "xz")
 }
@@ -715,17 +780,12 @@ generate_adrs <- function(adsl = tern_ex_adsl) {
       DTHFL = factor(sample(c("Y", "N"), nrow(.), replace = TRUE, prob = c(1, 0.8)))
     )
 
-  adrs <- var_relabel(
-    adrs,
-    STUDYID = "Study Identifier",
-    USUBJID = "Unique Subject Identifier"
-  )
-
   # merge ADSL to be able to add RS date and study day variables
   adrs <- dplyr::inner_join(
     adsl,
     adrs,
-    by = c("STUDYID", "USUBJID")
+    by = c("STUDYID", "USUBJID"),
+    multiple = "all"
   )
 
   tern_ex_adrs <- adrs %>%
@@ -735,6 +795,18 @@ generate_adrs <- function(adsl = tern_ex_adsl) {
       .data$PARAMCD,
       .data$AVISITN,
       .data$ADTM
+    ) %>%
+    var_relabel(
+      STUDYID = "Study Identifier",
+      USUBJID = "Unique Subject Identifier",
+      AVISIT = "Analysis Visit",
+      PARAMCD = "Parameter Code",
+      PARAM = "Parameter",
+      AVALC = "Analysis Value (C)",
+      AVAL = "Analysis Value",
+      ADTM = "Analysis Datetime",
+      AVISITN = "Analysis Visit (N)",
+      DTHFL = "Death Flag"
     )
 
   save(tern_ex_adrs, file = "data/tern_ex_adrs.rda", compress = "xz")
@@ -793,17 +865,12 @@ generate_adtte <- function(adsl = tern_ex_adsl) {
     }) %>%
     Reduce(rbind, .)
 
-  adtte <- var_relabel(
-    adtte,
-    STUDYID = "Study Identifier",
-    USUBJID = "Unique Subject Identifier"
-  )
-
   # merge ADSL to be able to add TTE date and study day variables
   adtte <- dplyr::inner_join(
     adsl,
     dplyr::select(adtte, -"ARM"),
-    by = c("STUDYID", "USUBJID")
+    by = c("STUDYID", "USUBJID"),
+    multiple = "all"
   ) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(trtsdt_int = as.numeric(as.Date(.data$TRTSDTM))) %>%
@@ -851,6 +918,20 @@ generate_adtte <- function(adsl = tern_ex_adsl) {
       .data$USUBJID,
       .data$PARAMCD,
       .data$ADTM
+    )
+
+  var_labels(tern_ex_adtte)[1:21] <- var_labels(adtte)[1:21]
+  tern_ex_adtte <- tern_ex_adtte %>%
+    var_relabel(
+      STUDYID = "Study Identifier",
+      USUBJID = "Unique Subject Identifier",
+      PARAMCD = "Parameter Code",
+      PARAM = "Parameter",
+      CNSR = "Censor",
+      AVAL = "Analysis Value",
+      AVALU = "Analysis Value Unit",
+      ADTM = "Analysis Datetime",
+      lgTMATRSK = "Log Time At Risk"
     )
 
   save(tern_ex_adtte, file = "data/tern_ex_adtte.rda", compress = "xz")
